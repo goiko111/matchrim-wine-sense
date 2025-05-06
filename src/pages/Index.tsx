@@ -64,7 +64,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-white py-8 px-4">
+    <div className="min-h-screen wine-bg py-8 px-4">
       <div className="container mx-auto">
         {quizState === QuizState.INTRO && (
           <QuizIntro onStart={handleStartQuiz} />
