@@ -28,31 +28,6 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   currentQuestionIndex,
   totalQuestions
 }) => {
-  // Imágenes para cada pregunta basadas en su ID
-  const getQuestionImage = () => {
-    const images = {
-      1: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=500&auto=format&fit=crop",
-      2: "https://images.unsplash.com/photo-1626692445033-8f6ed80eabf5?q=80&w=500&auto=format&fit=crop",
-      3: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=500&auto=format&fit=crop",
-      4: "https://images.unsplash.com/photo-1605195413839-8caefa025edd?q=80&w=500&auto=format&fit=crop",
-      5: "https://images.unsplash.com/photo-1626957341926-98752fc2ba23?q=80&w=500&auto=format&fit=crop",
-      6: "https://images.unsplash.com/photo-1595475207225-428b62bda831?q=80&w=500&auto=format&fit=crop",
-      7: "https://images.unsplash.com/photo-1607152571560-b32c8210f590?q=80&w=500&auto=format&fit=crop",
-      8: "https://images.unsplash.com/photo-1599819055803-717bea16e6c6?q=80&w=500&auto=format&fit=crop",
-      9: "https://images.unsplash.com/photo-1521302080334-4bebac2763a6?q=80&w=500&auto=format&fit=crop",
-      10: "https://images.unsplash.com/photo-1508061253366-f7da158b9d31?q=80&w=500&auto=format&fit=crop",
-      11: "https://images.unsplash.com/photo-1499889808931-317a0255c0e9?q=80&w=500&auto=format&fit=crop",
-      12: "https://images.unsplash.com/photo-1504630083234-14187a9df0f5?q=80&w=500&auto=format&fit=crop",
-      13: "https://images.unsplash.com/photo-1564182842519-8a3b2af3e228?q=80&w=500&auto=format&fit=crop",
-      14: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?q=80&w=500&auto=format&fit=crop", 
-      15: "https://images.unsplash.com/photo-1559138803-bcdd7e9a2176?q=80&w=500&auto=format&fit=crop",
-      16: "https://images.unsplash.com/photo-1633693765316-c5d2b7c47ab5?q=80&w=500&auto=format&fit=crop",
-      17: "https://images.unsplash.com/photo-1528750997573-91b62be67565?q=80&w=500&auto=format&fit=crop",
-      18: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?q=80&w=500&auto=format&fit=crop"
-    };
-    return images[question.id as keyof typeof images] || "";
-  };
-
   return (
     <div className="flex flex-col items-center max-w-2xl mx-auto p-6">
       <div className="w-full mb-6 bg-white/90 rounded-lg p-6 shadow-md">
@@ -66,14 +41,6 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
               style={{ width: `${((currentQuestionIndex + 1) / totalQuestions) * 100}%` }}
             ></div>
           </div>
-        </div>
-        
-        <div className="mb-4 flex justify-center">
-          <img 
-            src={getQuestionImage()} 
-            alt={`Imagen para ${question.text}`}
-            className="rounded-lg object-cover h-48 w-full max-w-md shadow-md"
-          />
         </div>
         
         <h2 className="text-2xl font-semibold text-purple-900 mb-6 text-center">
