@@ -54,9 +54,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                   fill="#9b87f5" 
                   fillOpacity={0.6} 
                 />
-                <ChartTooltip>
-                  <ChartTooltipContent />
-                </ChartTooltip>
+                <ChartTooltip content={<ChartTooltipContent />} />
               </RadarChart>
             </ChartContainer>
           </div>
