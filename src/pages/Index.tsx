@@ -1,11 +1,97 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import QuizIntro from '../components/QuizIntro';
+import QuizQuestion from '../components/QuizQuestion';
+import QuizResults from '../components/QuizResults';
+import { questions, calculateProfile, getProfileDescription, getRecommendedWines, QuizResult } from '../data/quizData';
+import { toast } from "@/hooks/use-toast";
+
+enum QuizState {
+  INTRO,
+  QUESTIONS,
+  RESULTS
+}
 
 const Index = () => {
+  const [quizState, setQuizState] = useState<QuizState>(QuizState.INTRO);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<{ [id: number]: string }>({});
+  const [result, setResult] = useState<QuizResult | null>(null);
+  const [profileDescription, setProfileDescription] = useState<string>("");
+  const [recommendations, setRecommendations] = useState<string[]>([]);
+
+  const handleStartQuiz = () => {
+    setQuizState(QuizState.QUESTIONS);
+    setCurrentQuestionIndex(0);
+    setAnswers({});
+  };
+
+  const handleAnswer = (answer: string) => {
+    setAnswers(prev => ({
+      ...prev,
+      [questions[currentQuestionIndex].id]: answer
+    }));
+  };
+
+  const handleNext = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+    } else {
+      // Calculate results
+      const profileResult = calculateProfile(answers);
+      setResult(profileResult);
+      setProfileDescription(getProfileDescription(profileResult));
+      setRecommendations(getRecommendedWines(profileResult));
+      setQuizState(QuizState.RESULTS);
+      toast({
+        title: "¡Test completado!",
+        description: "Descubre tu perfil sensorial para el vino.",
+      });
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
+    }
+  };
+
+  const handleRestart = () => {
+    setQuizState(QuizState.INTRO);
+    setCurrentQuestionIndex(0);
+    setAnswers({});
+    setResult(null);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-white py-8 px-4">
+      <div className="container mx-auto">
+        {quizState === QuizState.INTRO && (
+          <QuizIntro onStart={handleStartQuiz} />
+        )}
+        
+        {quizState === QuizState.QUESTIONS && (
+          <QuizQuestion
+            question={questions[currentQuestionIndex]}
+            currentAnswer={answers[questions[currentQuestionIndex].id] || ""}
+            onAnswer={handleAnswer}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+            isFirst={currentQuestionIndex === 0}
+            isLast={currentQuestionIndex === questions.length - 1}
+            currentQuestionIndex={currentQuestionIndex}
+            totalQuestions={questions.length}
+          />
+        )}
+        
+        {quizState === QuizState.RESULTS && result && (
+          <QuizResults
+            result={result}
+            description={profileDescription}
+            recommendations={recommendations}
+            onRestart={handleRestart}
+          />
+        )}
       </div>
     </div>
   );
