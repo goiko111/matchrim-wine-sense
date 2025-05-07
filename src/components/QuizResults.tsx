@@ -214,7 +214,20 @@ const generateRegionRecommendations = (result: QuizResult): string[] => {
 
 // Función para generar recomendaciones de vinos específicos
 const generateSpecificWines = (result: QuizResult): string[] => {
-  const allWines = [
+  // Define a wine type with compatibility property
+  interface Wine {
+    name: string;
+    profile: {
+      potente: number;
+      tanico: number;
+      acidez: number;
+      dulce: number;
+      afrutado: number;
+    };
+    compatibility?: number; // Make compatibility optional with '?'
+  }
+
+  const allWines: Wine[] = [
     // Potentes y tánicos
     { name: "Matarromera Crianza (Ribera del Duero)", profile: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
     { name: "Pago de los Capellanes Crianza (Ribera del Duero)", profile: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
@@ -263,14 +276,17 @@ const generateSpecificWines = (result: QuizResult): string[] => {
   };
   
   // Ordenar vinos por compatibilidad
-  allWines.forEach(wine => {
-    wine.compatibility = calculateCompatibility(result, wine.profile);
+  const winesWithCompatibility = allWines.map(wine => {
+    return {
+      ...wine,
+      compatibility: calculateCompatibility(result, wine.profile)
+    };
   });
   
-  allWines.sort((a: any, b: any) => b.compatibility - a.compatibility);
+  winesWithCompatibility.sort((a, b) => b.compatibility! - a.compatibility!); // Use non-null assertion
   
   // Devolver los 5 mejores
-  return allWines.slice(0, 5).map(wine => wine.name);
+  return winesWithCompatibility.slice(0, 5).map(wine => wine.name);
 };
 
 const QuizResults: React.FC<QuizResultsProps> = ({ result, onRestart }) => {
