@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Question } from '../data/quizData';
-import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
 interface QuizQuestionProps {
   question: Question;
@@ -27,6 +28,27 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   currentQuestionIndex,
   totalQuestions
 }) => {
+  // Función para manejar el cambio de respuesta que automáticamente avanza
+  const handleAnswerChange = (value: string) => {
+    onAnswer(value);
+    // Avanzar automáticamente después de responder
+    setTimeout(() => {
+      onNext();
+    }, 500); // Pequeño retraso para que el usuario vea su selección
+  };
+
+  // Mapeo de preguntas a imágenes (solo para la primera pregunta por ahora)
+  const getQuestionImage = () => {
+    switch (question.id) {
+      case 1:
+        return "/lovable-uploads/9619b04e-8a8f-4c87-94a5-c676792d96ad.png"; // Imagen de pimiento verde
+      default:
+        return null; // Sin imagen para el resto por ahora
+    }
+  };
+
+  const questionImage = getQuestionImage();
+
   return (
     <div className="flex flex-col items-center max-w-2xl mx-auto p-6">
       <div className="w-full mb-6 bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-md">
@@ -42,11 +64,15 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
           </div>
         </div>
         
-        <div className="flex items-center justify-center mb-6">
-          <div className="w-16 h-16 flex items-center justify-center">
-            <Heart className="h-10 w-10 text-red-700" />
+        {questionImage && (
+          <div className="flex items-center justify-center mb-6">
+            <img 
+              src={questionImage} 
+              alt="Ilustración de la pregunta" 
+              className="h-32 w-auto object-contain rounded-lg"
+            />
           </div>
-        </div>
+        )}
         
         <h2 className="text-2xl font-semibold text-red-900 mb-6 text-center">
           {question.text}
@@ -54,7 +80,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
         
         <RadioGroup 
           value={currentAnswer} 
-          onValueChange={onAnswer}
+          onValueChange={handleAnswerChange}
           className="flex flex-col space-y-4"
         >
           <label className="flex items-center space-x-2 border border-gray-200 rounded-md p-4 cursor-pointer hover:bg-red-50 transition-colors">
@@ -72,7 +98,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
         </RadioGroup>
       </div>
       
-      <div className="flex justify-between w-full mt-4">
+      <div className="flex justify-start w-full mt-4">
         <Button 
           onClick={onPrevious} 
           disabled={isFirst} 
@@ -81,24 +107,6 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
         >
           <ChevronLeft className="h-4 w-4 mr-2" />
           Anterior
-        </Button>
-        
-        <Button 
-          onClick={onNext} 
-          disabled={!currentAnswer} 
-          className="bg-red-700 hover:bg-red-800 text-white flex items-center"
-        >
-          {isLast ? (
-            <>
-              Ver resultados
-              <Heart className="h-4 w-4 ml-2" />
-            </>
-          ) : (
-            <>
-              Siguiente
-              <ChevronRight className="h-4 w-4 ml-2" />
-            </>
-          )}
         </Button>
       </div>
     </div>
