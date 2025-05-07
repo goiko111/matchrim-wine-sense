@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { QuizResult } from '../data/quizData';
@@ -209,7 +208,7 @@ const generateRegionRecommendations = (result: QuizResult): string[] => {
     }
   }
   
-  return regions.slice(0, 5); // Máximo 5 regiones
+  return regions.slice(0, 5); // M��ximo 5 regiones
 };
 
 // Función para generar recomendaciones de vinos específicos
@@ -474,14 +473,6 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, onRestart }) => {
           />
           Reiniciar Test
         </Button>
-        
-        <div className="mt-2 flex justify-center">
-          <img 
-            src={winerimLogo}
-            alt="Logo Winerim" 
-            className="h-12 w-auto"
-          />
-        </div>
       </div>
     </div>
   );
