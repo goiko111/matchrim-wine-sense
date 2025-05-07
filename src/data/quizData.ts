@@ -27,6 +27,22 @@ export interface Wine {
     tanico: number;
     afrutado: number;
   };
+  origin?: string;
+  type?: string;
+  price?: string;
+  score?: number;
+}
+
+export interface ProfileType {
+  name: string;
+  characteristics: {
+    potente: number;
+    acidez: number;
+    dulce: number;
+    tanico: number;
+    afrutado: number;
+  };
+  description: string;
 }
 
 export const questions: Question[] = [
@@ -163,6 +179,18 @@ export const calculateProfile = (answers: { [id: number]: string }): QuizResult 
 };
 
 export const getProfileDescription = (result: QuizResult): string => {
+  // Encuentra el perfil más cercano para dar una descripción más precisa
+  const profileMatches = profileTypes.map(profile => {
+    const scoreMatch = calculateCompatibility(result, profile.characteristics);
+    return { profile, scoreMatch };
+  }).sort((a, b) => b.scoreMatch - a.scoreMatch);
+
+  // Si hay un perfil con alta coincidencia, usa su descripción
+  if (profileMatches[0].scoreMatch > 35) {
+    return `${profileMatches[0].profile.description} Tu perfil sensorial muestra que te gustan los vinos con estas características. Descubre vinos que resalten estos atributos para una experiencia enológica perfecta para tu paladar.`;
+  }
+
+  // Si no hay un perfil claro, usa el método original
   const profiles = [];
   
   if (result.potente >= 4) profiles.push("vinos con cuerpo e intensidad");
@@ -185,75 +213,140 @@ export const getProfileDescription = (result: QuizResult): string => {
   return `Tu perfil sensorial muestra que te gustan los ${profiles.join(", ")}. Descubre vinos que resalten estas características para una experiencia enológica perfecta para tu paladar.`;
 };
 
-export const wines: Wine[] = [
-  // Potentes y tánicos
-  { name: "Roda I Reserva (Rioja)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
-  { name: "Pesus (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
-  { name: "Termanthia (Toro)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
-  { name: "Aalto PS (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
-  { name: "Alión (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
-  
-  // Acidez alta y potencia media-alta
-  { name: "Pazo Señorans Selección Añada (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
-  { name: "Do Ferreiro Cepas Vellas (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
-  { name: "Fillaboa La Fillaboa 1898 (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
-  { name: "Zárate El Palomar (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
-  { name: "La Caña Navia (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
-  
-  // Dulces
-  { name: "Tokaji Aszú 6 Puttonyos (Hungría)", profile: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 } },
-  { name: "Château d'Yquem (Sauternes)", profile: { potente: 4, acidez: 4, dulce: 5, tanico: 1, afrutado: 5 } },
-  { name: "Dolç de l'Obac (Priorat)", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 2, afrutado: 4 } },
-  { name: "Alvear Pedro Ximénez de Añada (Montilla-Moriles)", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 } },
-  { name: "Disznókö Tokaji Aszú 5 Puttonyos (Hungría)", profile: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 } },
-  
-  // Equilibrados y elegantes
-  { name: "Viña Tondonia Reserva (Rioja)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 } },
-  { name: "Dominio de Pingus PSI (Ribera del Duero)", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
-  { name: "Remelluri Reserva (Rioja)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 } },
-  { name: "Artadi Pagos Viejos (Rioja)", profile: { potente: 4, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 } },
-  { name: "Pintia (Toro)", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
-
-  // Frescos y afrutados
-  { name: "La Montesa (Rioja)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 } },
-  { name: "Belondrade y Lurton (Rueda)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 } },
-  { name: "Louro (Valdeorras)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 } },
-  { name: "As Sortes (Valdeorras)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 } },
-  { name: "Finca Antigua Moscatel (La Mancha)", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 } },
-
-  // Tánicos y estructurados
-  { name: "Vega Sicilia Único (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
-  { name: "Flor de Pingus (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
-  { name: "Mauro VS (Castilla y León)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
-  { name: "Teso La Monja (Toro)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
-  { name: "Viña El Pisón (Rioja)", profile: { potente: 4, acidez: 4, dulce: 2, tanico: 4, afrutado: 3 } }
+// Perfiles de vino (de la tabla de perfiles)
+export const profileTypes: ProfileType[] = [
+  {
+    name: "Tintos Potentes",
+    characteristics: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 },
+    description: "Vinos tintos con mucho cuerpo, intensos en boca y con taninos potentes. Ideales para carnes rojas y platos contundentes."
+  },
+  {
+    name: "Blancos Frescos",
+    characteristics: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
+    description: "Vinos blancos de acidez vibrante y aromas frescos. Perfectos para mariscos, pescados y aperitivos."
+  },
+  {
+    name: "Vinos Dulces",
+    characteristics: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 },
+    description: "Vinos con presencia marcada de dulzor, equilibrados con acidez. Excelentes para postres o como aperitivo."
+  },
+  {
+    name: "Vinos Equilibrados",
+    characteristics: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 },
+    description: "Vinos versátiles con buena armonía entre sus componentes. Ideales para multitud de ocasiones y maridajes."
+  },
+  {
+    name: "Tintos Afrutados",
+    characteristics: { potente: 3, acidez: 4, dulce: 3, tanico: 3, afrutado: 5 },
+    description: "Vinos tintos con protagonismo de aromas frutales y frescura en boca. Perfectos para carnes blancas y quesos."
+  }
 ];
 
 export const getRecommendedWines = (result: QuizResult): string[] => {
-  // Define an array to store wines with their compatibility scores
+  // Find what profile type the user matches closest with
+  const userProfileMatch = profileTypes.map(profile => {
+    return {
+      profileType: profile.name,
+      score: calculateCompatibility(result, profile.characteristics)
+    };
+  }).sort((a, b) => b.score - a.score)[0];
+  
+  // Prepare a selection of wines with their compatibility scores
   const winesWithCompatibility = wines.map(wine => {
-    // Calculate compatibility between user profile and wine profile
     const score = calculateCompatibility(result, wine.profile);
-    return { name: wine.name, score };
+    return { name: wine.name, score, origin: wine.origin, type: wine.type };
   });
   
-  // Sort wines by compatibility score (highest first)
+  // Sort by compatibility score
   winesWithCompatibility.sort((a, b) => b.score - a.score);
   
-  // Return the names of the top 5 wines
-  return winesWithCompatibility.slice(0, 5).map(wine => wine.name);
+  // Get top 20 most compatible wines
+  const topWines = winesWithCompatibility.slice(0, 20);
+  
+  // Randomly select 5 wines from the top 20 to ensure variety
+  const shuffled = [...topWines].sort(() => 0.5 - Math.random());
+  
+  // Return the selected wines' names
+  return shuffled.slice(0, 5).map(wine => {
+    if (wine.origin) {
+      return `${wine.name} (${wine.origin})`;
+    }
+    return wine.name;
+  });
 };
 
-// Helper function to calculate compatibility score
-const calculateCompatibility = (userProfile: QuizResult, wineProfile: Wine['profile']): number => {
+// Helper function to calculate compatibility score between profiles
+export const calculateCompatibility = (profile1: any, profile2: any): number => {
   let score = 0;
   
   // Calculate score based on how closely the profiles match
-  score += (5 - Math.abs(userProfile.potente - wineProfile.potente)) * 2;
-  score += (5 - Math.abs(userProfile.acidez - wineProfile.acidez)) * 2;
-  score += (5 - Math.abs(userProfile.dulce - wineProfile.dulce)) * 2;
-  score += (5 - Math.abs(userProfile.tanico - wineProfile.tanico)) * 2;
-  score += (5 - Math.abs(userProfile.afrutado - wineProfile.afrutado)) * 2;
+  score += (5 - Math.abs(profile1.potente - profile2.potente)) * 2;
+  score += (5 - Math.abs(profile1.acidez - profile2.acidez)) * 2;
+  score += (5 - Math.abs(profile1.dulce - profile2.dulce)) * 2;
+  score += (5 - Math.abs(profile1.tanico - profile2.tanico)) * 2;
+  score += (5 - Math.abs(profile1.afrutado - profile2.afrutado)) * 2;
   
   return score;
 };
+
+export const wines: Wine[] = [
+  // Potentes y tánicos
+  { name: "Aalto PS", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "80-100€", score: 95 },
+  { name: "Termanthia", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Toro", type: "Tinto", price: "150-200€", score: 96 },
+  { name: "Vega Sicilia Único", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "300-400€", score: 98 },
+  { name: "Pintia", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Toro", type: "Tinto", price: "50-70€", score: 93 },
+  { name: "Alión", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "60-80€", score: 94 },
+  { name: "Pago de Carraovejas El Anejón", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "80-100€", score: 95 },
+  { name: "Mauro VS", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Castilla y León", type: "Tinto", price: "70-90€", score: 94 },
+  { name: "Pago de los Capellanes Parcela El Nogal", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "50-70€", score: 92 },
+  { name: "Numanthia", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Toro", type: "Tinto", price: "40-60€", score: 91 },
+  { name: "Alto Moncayo Aquilón", profile: { potente: 5, acidez: 3, dulce: 3, tanico: 5, afrutado: 3 }, origin: "Campo de Borja", type: "Tinto", price: "80-100€", score: 93 },
+  
+  // Acidez alta - Blancos frescos
+  { name: "Pazo Señorans Selección de Añada", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "30-40€", score: 93 },
+  { name: "Do Ferreiro Cepas Vellas", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "40-50€", score: 94 },
+  { name: "Fillaboa La Fillaboa 1898", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "25-35€", score: 92 },
+  { name: "Mar de Frades Finca Valiñas", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "20-30€", score: 91 },
+  { name: "Terras Gauda O Rosal", profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "15-25€", score: 90 },
+  { name: "Zárate El Palomar", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "35-45€", score: 93 },
+  { name: "Godeval Godello Cepas Vellas", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 3 }, origin: "Valdeorras", type: "Blanco", price: "20-30€", score: 92 },
+  { name: "As Sortes", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 }, origin: "Valdeorras", type: "Blanco", price: "30-40€", score: 93 },
+  { name: "Belondrade y Lurton", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "30-40€", score: 93 },
+  { name: "José Pariente Fermentado en Barrica", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "15-25€", score: 92 },
+  
+  // Dulces
+  { name: "Tokaji Aszú 6 Puttonyos", profile: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Hungría", type: "Dulce", price: "60-80€", score: 96 },
+  { name: "Château d'Yquem", profile: { potente: 4, acidez: 4, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Sauternes", type: "Dulce", price: "300-400€", score: 99 },
+  { name: "Alvear Pedro Ximénez de Añada", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Montilla-Moriles", type: "Dulce", price: "25-35€", score: 95 },
+  { name: "Niepoort Colheita", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 2, afrutado: 4 }, origin: "Oporto", type: "Dulce", price: "40-60€", score: 94 },
+  { name: "Lustau Pedro Ximénez San Emilio", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Jerez", type: "Dulce", price: "15-25€", score: 93 },
+  { name: "Disznókö Tokaji Aszú 5 Puttonyos", profile: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Hungría", type: "Dulce", price: "40-60€", score: 94 },
+  { name: "Gewürztraminer Vendimia Tardía Gramona", profile: { potente: 3, acidez: 3, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Penedès", type: "Dulce", price: "20-30€", score: 92 },
+  { name: "Dolç de l'Obac", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 2, afrutado: 4 }, origin: "Priorat", type: "Dulce", price: "30-40€", score: 93 },
+  { name: "Casta Diva Recondita Armonia", profile: { potente: 3, acidez: 3, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Alicante", type: "Dulce", price: "25-35€", score: 92 },
+  { name: "Don PX Gran Reserva", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Montilla-Moriles", type: "Dulce", price: "30-40€", score: 94 },
+  
+  // Equilibrados y elegantes
+  { name: "Viña Tondonia Reserva", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "30-40€", score: 94 },
+  { name: "Remelluri Reserva", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "25-35€", score: 93 },
+  { name: "Artadi Pagos Viejos", profile: { potente: 4, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "80-100€", score: 95 },
+  { name: "Dominio de Pingus PSI", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "30-40€", score: 92 },
+  { name: "Hacienda Monasterio", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "30-40€", score: 92 },
+  { name: "Emilio Moro Malleolus", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "30-40€", score: 92 },
+  { name: "Marqués de Murrieta Capellanía", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 2, afrutado: 3 }, origin: "Rioja", type: "Blanco", price: "25-35€", score: 93 },
+  { name: "Algueira Pizarra", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Ribeira Sacra", type: "Tinto", price: "20-30€", score: 93 },
+  { name: "Gaba do Xil Mencía", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Valdeorras", type: "Tinto", price: "15-20€", score: 91 },
+  { name: "Petalos del Bierzo", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Bierzo", type: "Tinto", price: "15-20€", score: 92 },
+
+  // Frescos y afrutados
+  { name: "La Montesa", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Rioja", type: "Tinto", price: "15-20€", score: 91 },
+  { name: "Louro", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 }, origin: "Valdeorras", type: "Blanco", price: "15-25€", score: 92 },
+  { name: "Finca Antiga Moscatel", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 }, origin: "La Mancha", type: "Blanco", price: "10-15€", score: 90 },
+  { name: "Frontonio Microcósmico Garnacha", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 5 }, origin: "Valdejalón", type: "Tinto", price: "15-25€", score: 92 },
+  { name: "Enate Gewürztraminer", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 }, origin: "Somontano", type: "Blanco", price: "10-15€", score: 90 },
+  { name: "Habla del Silencio", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Extremadura", type: "Tinto", price: "10-15€", score: 90 },
+  { name: "Martín Códax Albariño", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "10-15€", score: 90 },
+  { name: "Honoro Vera Garnacha", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Calatayud", type: "Tinto", price: "5-10€", score: 89 },
+  { name: "Protos Verdejo", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "10-15€", score: 90 },
+  { name: "Marimar Estate La Masía Pinot Noir", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 5 }, origin: "California", type: "Tinto", price: "30-40€", score: 93 }
+];

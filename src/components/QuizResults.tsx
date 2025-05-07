@@ -1,14 +1,13 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { QuizResult, getRecommendedWines } from '../data/quizData';
+import { QuizResult } from '../data/quizData';
 import { 
   ChartContainer, 
   ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
-import { Copy, ChevronRight } from 'lucide-react';
+import { Copy, Wine } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
 interface QuizResultsProps {
@@ -289,7 +288,7 @@ const generateSpecificWines = (result: QuizResult): string[] => {
   return winesWithCompatibility.slice(0, 5).map(wine => wine.name);
 };
 
-const QuizResults: React.FC<QuizResultsProps> = ({ result, onRestart }) => {
+const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart }) => {
   const chartData = [
     { attribute: "Potente", value: result.potente },
     { attribute: "Acidez", value: result.acidez },
@@ -314,9 +313,6 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, onRestart }) => {
   const wineStyles = generateWineStyles(result);
   const recommendedGrapes = generateGrapeRecommendations(result);
   const recommendedRegions = generateRegionRecommendations(result);
-  
-  // Get wine recommendations from updated function
-  const specificWines = getRecommendedWines(result);
 
   // Función para copiar el perfil al portapapeles
   const copyProfileToClipboard = () => {
@@ -426,14 +422,14 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, onRestart }) => {
         
         <div className="border-t border-red-200 pt-6 mb-6">
           <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
-            <span className="text-2xl">🔎</span> Vinos que te encantarán (menos de 100€)
+            <span className="text-2xl">🔎</span> Vinos que te encantarán
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {specificWines.map((wine, index) => (
+            {recommendations.map((wine, index) => (
               <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
                 <div className="flex items-start gap-3">
                   <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                    <span className="text-sm font-bold">{index + 1}</span>
+                    <Wine className="h-4 w-4" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">{wine}</p>

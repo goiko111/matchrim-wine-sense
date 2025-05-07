@@ -49,7 +49,7 @@ const Index = () => {
       const description = getProfileDescription(profileResult);
       setProfileDescription(description);
       
-      // Get wine recommendations
+      // Get wine recommendations using updated function
       const wineRecs = getRecommendedWines(profileResult);
       setRecommendations(wineRecs);
       
