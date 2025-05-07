@@ -26,6 +26,10 @@ const Index = () => {
     setAnswers({});
   };
 
+  const handleBackToStart = () => {
+    setQuizState(QuizState.INTRO);
+  };
+
   const handleAnswer = (answer: string) => {
     setAnswers(prev => ({
       ...prev,
@@ -81,6 +85,7 @@ const Index = () => {
             isLast={currentQuestionIndex === questions.length - 1}
             currentQuestionIndex={currentQuestionIndex}
             totalQuestions={questions.length}
+            onBackToStart={handleBackToStart}
           />
         )}
         
