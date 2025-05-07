@@ -66,20 +66,6 @@ const Index = () => {
   return (
     <div className="min-h-screen winerim-bg py-8 px-4">
       <div className="container mx-auto">
-        <div className="flex justify-center mb-6">
-          <div className="flex items-center gap-2">
-            <img 
-              src="/lovable-uploads/b9329c73-68b0-4f4a-96a2-c96545694186.png" 
-              alt="Winerim Logo" 
-              className="w-8 h-8 object-contain"
-            />
-            <div className="flex flex-col">
-              <h1 className="text-3xl font-bold text-white">Matchrim</h1>
-              <p className="text-sm text-white/80">by Winerim</p>
-            </div>
-          </div>
-        </div>
-        
         {quizState === QuizState.INTRO && (
           <QuizIntro onStart={handleStartQuiz} />
         )}
