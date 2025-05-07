@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import QuizIntro from '../components/QuizIntro';
 import QuizQuestion from '../components/QuizQuestion';
 import QuizResults from '../components/QuizResults';
 import { questions, calculateProfile, getProfileDescription, getRecommendedWines, QuizResult } from '../data/quizData';
 import { toast } from "@/hooks/use-toast";
-import { Wine } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 enum QuizState {
   INTRO,
@@ -69,8 +68,8 @@ const Index = () => {
       <div className="container mx-auto">
         <div className="flex justify-center mb-6">
           <div className="flex items-center gap-2">
-            <Wine size={32} className="text-white" />
-            <h1 className="text-3xl font-bold text-white">Winerim</h1>
+            <Heart size={32} className="text-white" />
+            <h1 className="text-3xl font-bold text-white">Matchrim</h1>
           </div>
         </div>
         

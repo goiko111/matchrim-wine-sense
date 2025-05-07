@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { QuizResult } from '../data/quizData';
@@ -8,7 +7,7 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
-import { Wine, ChartPie } from 'lucide-react';
+import { Heart, ChartPie } from 'lucide-react';
 
 interface QuizResultsProps {
   result: QuizResult;
@@ -41,7 +40,9 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-md mb-8">
         <div className="flex items-center justify-center mb-6">
           <div className="flex flex-col items-center">
-            <div className="w-24 h-24 wine-glass-bg mb-2"></div>
+            <div className="w-24 h-24 flex items-center justify-center bg-red-100 rounded-full mb-2">
+              <Heart className="h-12 w-12 text-red-700" />
+            </div>
             <h2 className="text-3xl font-bold text-red-900">Tu Perfil Sensorial</h2>
           </div>
         </div>
@@ -74,7 +75,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             
             <div className="bg-red-50 p-4 rounded-lg mt-2">
               <h4 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
-                <Wine className="h-4 w-4" />
+                <Heart className="h-4 w-4" />
                 Recomendaciones para ti:
               </h4>
               <ul className="list-disc list-inside space-y-1">
@@ -111,7 +112,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
           onClick={onRestart}
           className="bg-red-700 hover:bg-red-800 text-white flex items-center gap-2"
         >
-          <Wine className="h-4 w-4" />
+          <Heart className="h-4 w-4" />
           Reiniciar Test
         </Button>
       </div>

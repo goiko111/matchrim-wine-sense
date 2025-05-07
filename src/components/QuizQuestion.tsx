@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Question } from '../data/quizData';
-import { ChevronLeft, ChevronRight, Wine } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 
 interface QuizQuestionProps {
   question: Question;
@@ -44,7 +43,9 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
         </div>
         
         <div className="flex items-center justify-center mb-6">
-          <div className="w-16 h-16 wine-glass-bg"></div>
+          <div className="w-16 h-16 flex items-center justify-center">
+            <Heart className="h-10 w-10 text-red-700" />
+          </div>
         </div>
         
         <h2 className="text-2xl font-semibold text-red-900 mb-6 text-center">
@@ -90,7 +91,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
           {isLast ? (
             <>
               Ver resultados
-              <Wine className="h-4 w-4 ml-2" />
+              <Heart className="h-4 w-4 ml-2" />
             </>
           ) : (
             <>
