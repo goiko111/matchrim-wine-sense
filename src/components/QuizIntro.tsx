@@ -14,7 +14,7 @@ const QuizIntro: React.FC<QuizIntroProps> = ({ onStart }) => {
         <div className="w-32 h-32 flex items-center justify-center bg-red-100 rounded-full mb-4">
           <Wine className="h-16 w-16 text-red-700" />
         </div>
-        <h1 className="text-4xl font-bold text-white">Winerim</h1>
+        <h1 className="text-4xl font-bold text-white">Matchrim</h1>
         <p className="text-xl text-white/80">Descubre tu perfil sensorial de vino</p>
       </div>
       
