@@ -208,7 +208,7 @@ const generateRegionRecommendations = (result: QuizResult): string[] => {
     }
   }
   
-  return regions.slice(0, 5); // M��ximo 5 regiones
+  return regions.slice(0, 5); // M���ximo 5 regiones
 };
 
 // Función para generar recomendaciones de vinos específicos
@@ -466,11 +466,6 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, onRestart }) => {
           onClick={onRestart}
           className="bg-red-700 hover:bg-red-800 text-white flex items-center gap-2"
         >
-          <img 
-            src={winerimLogo} 
-            alt="Logo Winerim" 
-            className="h-4 w-4"
-          />
           Reiniciar Test
         </Button>
       </div>
