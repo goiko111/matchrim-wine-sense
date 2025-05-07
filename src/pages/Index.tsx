@@ -5,6 +5,7 @@ import QuizQuestion from '../components/QuizQuestion';
 import QuizResults from '../components/QuizResults';
 import { questions, calculateProfile, getProfileDescription, getRecommendedWines, QuizResult } from '../data/quizData';
 import { toast } from "@/hooks/use-toast";
+import { Wine } from 'lucide-react';
 
 enum QuizState {
   INTRO,
@@ -64,8 +65,15 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-white py-8 px-4">
+    <div className="min-h-screen winerim-bg py-8 px-4">
       <div className="container mx-auto">
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center gap-2">
+            <Wine size={32} className="text-white" />
+            <h1 className="text-3xl font-bold text-white">Winerim</h1>
+          </div>
+        </div>
+        
         {quizState === QuizState.INTRO && (
           <QuizIntro onStart={handleStartQuiz} />
         )}
