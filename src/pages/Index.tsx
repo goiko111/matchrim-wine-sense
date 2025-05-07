@@ -73,7 +73,10 @@ const Index = () => {
               alt="Winerim Logo" 
               className="w-8 h-8 object-contain"
             />
-            <h1 className="text-3xl font-bold text-white">Winerim</h1>
+            <div className="flex flex-col">
+              <h1 className="text-3xl font-bold text-white">Matchrim</h1>
+              <p className="text-sm text-white/80">by Winerim</p>
+            </div>
           </div>
         </div>
         

@@ -18,7 +18,8 @@ const QuizIntro: React.FC<QuizIntroProps> = ({ onStart }) => {
           />
         </div>
         <h1 className="text-4xl font-bold text-white">Matchrim</h1>
-        <p className="text-xl text-white/80">Descubre tu perfil sensorial de vino</p>
+        <p className="text-xl text-white/80">by Winerim</p>
+        <p className="text-xl text-white/80 mt-2">Descubre tu perfil sensorial de vino</p>
       </div>
       
       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg max-w-2xl">
