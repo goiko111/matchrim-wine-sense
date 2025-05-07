@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Wine, Heart } from 'lucide-react';
+import { Wine } from 'lucide-react';
 
 interface QuizIntroProps {
   onStart: () => void;
@@ -14,14 +14,14 @@ const QuizIntro: React.FC<QuizIntroProps> = ({ onStart }) => {
         <div className="w-32 h-32 flex items-center justify-center bg-red-100 rounded-full mb-4">
           <Wine className="h-16 w-16 text-red-700" />
         </div>
-        <h1 className="text-4xl font-bold text-white">Matchrim</h1>
+        <h1 className="text-4xl font-bold text-white">Winerim</h1>
         <p className="text-xl text-white/80">Descubre tu perfil sensorial de vino</p>
       </div>
       
       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg max-w-2xl">
         <h2 className="text-2xl font-semibold text-red-900 mb-4">¿Cómo funciona?</h2>
         <p className="mb-4 text-left">
-          Responde 18 preguntas sobre tus gustos alimentarios para descubrir tu perfil sensorial 
+          Responde algunas preguntas sobre tus gustos alimentarios para descubrir tu perfil sensorial 
           y qué tipos de vino pueden gustarte más.
         </p>
         
