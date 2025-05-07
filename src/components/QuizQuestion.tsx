@@ -41,6 +41,8 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
 
   // Imagen fija de pimiento para todas las preguntas
   const questionImage = "/lovable-uploads/9619b04e-8a8f-4c87-94a5-c676792d96ad.png";
+  // Logo de Winerim
+  const winerimLogo = "/lovable-uploads/a4fc1eb2-1ed7-4f1d-a8fa-aa5825514114.png";
 
   return (
     <div className="flex flex-col items-center max-w-2xl mx-auto p-6">
@@ -108,6 +110,14 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
           <Home className="h-4 w-4 mr-2" />
           Volver al inicio
         </Button>
+      </div>
+      
+      <div className="mt-4 flex justify-center">
+        <img 
+          src={winerimLogo} 
+          alt="Winerim Logo" 
+          className="h-16 w-auto"
+        />
       </div>
     </div>
   );
