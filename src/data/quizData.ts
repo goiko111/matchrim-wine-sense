@@ -1,4 +1,3 @@
-
 export interface Question {
   id: number;
   text: string;
@@ -17,6 +16,17 @@ export interface QuizResult {
   dulce: number;
   tanico: number;
   afrutado: number;
+}
+
+export interface Wine {
+  name: string;
+  profile: {
+    potente: number;
+    acidez: number;
+    dulce: number;
+    tanico: number;
+    afrutado: number;
+  };
 }
 
 export const questions: Question[] = [
@@ -175,54 +185,75 @@ export const getProfileDescription = (result: QuizResult): string => {
   return `Tu perfil sensorial muestra que te gustan los ${profiles.join(", ")}. Descubre vinos que resalten estas características para una experiencia enológica perfecta para tu paladar.`;
 };
 
+export const wines: Wine[] = [
+  // Potentes y tánicos
+  { name: "Roda I Reserva (Rioja)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
+  { name: "Pesus (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
+  { name: "Termanthia (Toro)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
+  { name: "Aalto PS (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
+  { name: "Alión (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
+  
+  // Acidez alta y potencia media-alta
+  { name: "Pazo Señorans Selección Añada (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
+  { name: "Do Ferreiro Cepas Vellas (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
+  { name: "Fillaboa La Fillaboa 1898 (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
+  { name: "Zárate El Palomar (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
+  { name: "La Caña Navia (Rías Baixas)", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 } },
+  
+  // Dulces
+  { name: "Tokaji Aszú 6 Puttonyos (Hungría)", profile: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 } },
+  { name: "Château d'Yquem (Sauternes)", profile: { potente: 4, acidez: 4, dulce: 5, tanico: 1, afrutado: 5 } },
+  { name: "Dolç de l'Obac (Priorat)", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 2, afrutado: 4 } },
+  { name: "Alvear Pedro Ximénez de Añada (Montilla-Moriles)", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 } },
+  { name: "Disznókö Tokaji Aszú 5 Puttonyos (Hungría)", profile: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 } },
+  
+  // Equilibrados y elegantes
+  { name: "Viña Tondonia Reserva (Rioja)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 } },
+  { name: "Dominio de Pingus PSI (Ribera del Duero)", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
+  { name: "Remelluri Reserva (Rioja)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 } },
+  { name: "Artadi Pagos Viejos (Rioja)", profile: { potente: 4, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 } },
+  { name: "Pintia (Toro)", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 } },
+
+  // Frescos y afrutados
+  { name: "La Montesa (Rioja)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 } },
+  { name: "Belondrade y Lurton (Rueda)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 } },
+  { name: "Louro (Valdeorras)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 } },
+  { name: "As Sortes (Valdeorras)", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 } },
+  { name: "Finca Antigua Moscatel (La Mancha)", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 } },
+
+  // Tánicos y estructurados
+  { name: "Vega Sicilia Único (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
+  { name: "Flor de Pingus (Ribera del Duero)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
+  { name: "Mauro VS (Castilla y León)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
+  { name: "Teso La Monja (Toro)", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 } },
+  { name: "Viña El Pisón (Rioja)", profile: { potente: 4, acidez: 4, dulce: 2, tanico: 4, afrutado: 3 } }
+];
+
 export const getRecommendedWines = (result: QuizResult): string[] => {
-  const recommendations = [];
+  // Define an array to store wines with their compatibility scores
+  const winesWithCompatibility = wines.map(wine => {
+    // Calculate compatibility between user profile and wine profile
+    const score = calculateCompatibility(result, wine.profile);
+    return { name: wine.name, score };
+  });
   
-  // Alta potencia y tánico
-  if (result.potente >= 4 && result.tanico >= 4) {
-    recommendations.push("Ribera del Duero Reserva");
-  }
+  // Sort wines by compatibility score (highest first)
+  winesWithCompatibility.sort((a, b) => b.score - a.score);
   
-  // Alta acidez y afrutado
-  if (result.acidez >= 4 && result.afrutado >= 4) {
-    recommendations.push("Albariño de Rías Baixas");
-  }
+  // Return the names of the top 5 wines
+  return winesWithCompatibility.slice(0, 5).map(wine => wine.name);
+};
+
+// Helper function to calculate compatibility score
+const calculateCompatibility = (userProfile: QuizResult, wineProfile: Wine['profile']): number => {
+  let score = 0;
   
-  // Alto dulce y afrutado
-  if (result.dulce >= 4 && result.afrutado >= 4) {
-    recommendations.push("Moscatel de Valencia");
-  }
+  // Calculate score based on how closely the profiles match
+  score += (5 - Math.abs(userProfile.potente - wineProfile.potente)) * 2;
+  score += (5 - Math.abs(userProfile.acidez - wineProfile.acidez)) * 2;
+  score += (5 - Math.abs(userProfile.dulce - wineProfile.dulce)) * 2;
+  score += (5 - Math.abs(userProfile.tanico - wineProfile.tanico)) * 2;
+  score += (5 - Math.abs(userProfile.afrutado - wineProfile.afrutado)) * 2;
   
-  // Equilibrio entre potencia y acidez
-  if (result.potente >= 3 && result.acidez >= 3 && result.tanico >= 3) {
-    recommendations.push("Rioja Crianza");
-  }
-  
-  // Acidez alta, potencia baja
-  if (result.acidez >= 4 && result.potente <= 2) {
-    recommendations.push("Txakoli del País Vasco");
-  }
-  
-  // Afrutado alto, tanino bajo
-  if (result.afrutado >= 4 && result.tanico <= 2) {
-    recommendations.push("Garnacha joven de Campo de Borja");
-  }
-  
-  // Si no hay match específico o para completar
-  if (recommendations.length < 3) {
-    const remainingNeeded = 3 - recommendations.length;
-    const generalOptions = [
-      "Verdejo de Rueda",
-      "Mencía de Bierzo",
-      "Cava Brut Nature",
-      "Monastrell de Jumilla",
-      "Godello de Valdeorras"
-    ];
-    
-    for (let i = 0; i < remainingNeeded && i < generalOptions.length; i++) {
-      recommendations.push(generalOptions[i]);
-    }
-  }
-  
-  return recommendations.slice(0, 3);
+  return score;
 };

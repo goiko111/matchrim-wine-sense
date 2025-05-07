@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import QuizIntro from '../components/QuizIntro';
 import QuizQuestion from '../components/QuizQuestion';
 import QuizResults from '../components/QuizResults';
-import { questions, calculateProfile, QuizResult } from '../data/quizData';
+import { questions, calculateProfile, QuizResult, getProfileDescription, getRecommendedWines } from '../data/quizData';
 import { toast } from "@/hooks/use-toast";
 
 enum QuizState {
@@ -44,6 +44,15 @@ const Index = () => {
       // Calculate results
       const profileResult = calculateProfile(answers);
       setResult(profileResult);
+      
+      // Generate profile description
+      const description = getProfileDescription(profileResult);
+      setProfileDescription(description);
+      
+      // Get wine recommendations
+      const wineRecs = getRecommendedWines(profileResult);
+      setRecommendations(wineRecs);
+      
       setQuizState(QuizState.RESULTS);
       toast({
         title: "¡Test completado!",

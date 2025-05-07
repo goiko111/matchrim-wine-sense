@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { QuizResult } from '../data/quizData';
+import { QuizResult, getRecommendedWines } from '../data/quizData';
 import { 
   ChartContainer, 
   ChartTooltip,
@@ -313,10 +314,9 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, onRestart }) => {
   const wineStyles = generateWineStyles(result);
   const recommendedGrapes = generateGrapeRecommendations(result);
   const recommendedRegions = generateRegionRecommendations(result);
-  const specificWines = generateSpecificWines(result);
   
-  // Logo de Winerim
-  const winerimLogo = "/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png";
+  // Get wine recommendations from updated function
+  const specificWines = getRecommendedWines(result);
 
   // Función para copiar el perfil al portapapeles
   const copyProfileToClipboard = () => {
@@ -334,7 +334,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, onRestart }) => {
           <div className="flex flex-col items-center">
             <div className="w-24 h-24 flex items-center justify-center bg-red-100 rounded-full mb-2">
               <img 
-                src={winerimLogo} 
+                src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" 
                 alt="Logo Winerim" 
                 className="h-12 w-12"
               />
