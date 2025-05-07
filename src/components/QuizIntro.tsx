@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Badge, Heart } from 'lucide-react';
+import { Wine, Heart } from 'lucide-react';
 
 interface QuizIntroProps {
   onStart: () => void;
@@ -12,9 +12,9 @@ const QuizIntro: React.FC<QuizIntroProps> = ({ onStart }) => {
     <div className="flex flex-col items-center justify-center max-w-3xl mx-auto text-center space-y-8 py-10">
       <div className="flex flex-col items-center mb-4">
         <div className="w-32 h-32 flex items-center justify-center bg-red-100 rounded-full mb-4">
-          <Heart className="h-16 w-16 text-red-700" />
+          <Wine className="h-16 w-16 text-red-700" />
         </div>
-        <h1 className="text-4xl font-bold text-white">Matchrim</h1>
+        <h1 className="text-4xl font-bold text-white">Winerim</h1>
         <p className="text-xl text-white/80">Descubre tu perfil sensorial de vino</p>
       </div>
       
@@ -41,7 +41,7 @@ const QuizIntro: React.FC<QuizIntroProps> = ({ onStart }) => {
         onClick={onStart} 
         className="bg-red-700 hover:bg-red-800 text-white py-2 px-6 rounded-full text-lg"
       >
-        <Heart className="mr-2 h-5 w-5" />
+        <Wine className="mr-2 h-5 w-5" />
         Comenzar el test
       </Button>
     </div>
