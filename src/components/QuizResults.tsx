@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { QuizResult, wines, calculateCompatibility } from '../data/quizData';
+import { QuizResult, calculateCompatibility } from '../data/quizData';
 import { 
   ChartContainer, 
   ChartTooltip,
@@ -308,55 +308,16 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArray;
 }
 
-// Función para generar recomendaciones de vinos específicos directamente desde la lista de vinos importada
+// Modified function that doesn't depend on the wines array
 const generateSpecificWines = (result: QuizResult): string[] => {
-  // Prepare all wines with their compatibility scores
-  const winesWithCompatibility = wines.map(wine => {
-    const score = calculateCompatibility(result, wine.profile);
-    return { 
-      name: wine.name, 
-      score, 
-      origin: wine.origin, 
-      type: wine.type,
-      price: wine.price 
-    };
-  });
-  
-  // Sort by compatibility score (highest first)
-  winesWithCompatibility.sort((a, b) => (b.score || 0) - (a.score || 0));
-  
-  // Get the threshold score (70% of the max score)
-  const maxScore = winesWithCompatibility[0].score || 0;
-  const threshold = maxScore * 0.7;
-  
-  // Filter wines that are above the threshold (good matches)
-  const goodMatches = winesWithCompatibility.filter(wine => (wine.score || 0) >= threshold);
-  
-  // If we have too few good matches, add more
-  const matchPool = goodMatches.length >= 8 ? goodMatches : winesWithCompatibility.slice(0, Math.max(goodMatches.length, 12));
-  
-  // Shuffle the good matches to add randomness
-  const shuffled = [...matchPool].sort(() => 0.5 - Math.random());
-  
-  // Select 5 wines from the shuffled list
-  const selectedWines = shuffled.slice(0, 5);
-  
-  // Format the wine names with origin if available
-  return selectedWines.map(wine => {
-    let text = wine.name;
-    
-    // Add origin if available
-    if (wine.origin) {
-      text += ` (${wine.origin})`;
-    }
-    
-    // Add price if available
-    if (wine.price) {
-      text += ` - ${wine.price}`;
-    }
-    
-    return text;
-  });
+  // Since we've removed the wines array, return placeholder recommendations
+  return [
+    "No hay recomendaciones disponibles actualmente",
+    "Pronto tendremos nuevas recomendaciones",
+    "Estamos actualizando nuestra base de datos",
+    "Vuelve pronto para ver nuevas recomendaciones",
+    "Contacta con nosotros para sugerencias personalizadas"
+  ];
 };
 
 const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart }) => {
