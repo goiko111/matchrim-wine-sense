@@ -243,35 +243,52 @@ export const profileTypes: ProfileType[] = [
 ];
 
 export const getRecommendedWines = (result: QuizResult): string[] => {
-  // Find what profile type the user matches closest with
-  const userProfileMatch = profileTypes.map(profile => {
-    return {
-      profileType: profile.name,
-      score: calculateCompatibility(result, profile.characteristics)
-    };
-  }).sort((a, b) => b.score - a.score)[0];
-  
-  // Prepare a selection of wines with their compatibility scores
+  // Prepare all wines with their compatibility scores
   const winesWithCompatibility = wines.map(wine => {
     const score = calculateCompatibility(result, wine.profile);
-    return { name: wine.name, score, origin: wine.origin, type: wine.type };
+    return { 
+      name: wine.name, 
+      score, 
+      origin: wine.origin, 
+      type: wine.type,
+      price: wine.price 
+    };
   });
   
-  // Sort by compatibility score
+  // Sort by compatibility score (highest first)
   winesWithCompatibility.sort((a, b) => b.score - a.score);
   
-  // Get top 20 most compatible wines
-  const topWines = winesWithCompatibility.slice(0, 20);
+  // Get the threshold score (70% of the max score)
+  const maxScore = winesWithCompatibility[0].score;
+  const threshold = maxScore * 0.7;
   
-  // Randomly select 5 wines from the top 20 to ensure variety
-  const shuffled = [...topWines].sort(() => 0.5 - Math.random());
+  // Filter wines that are above the threshold (good matches)
+  const goodMatches = winesWithCompatibility.filter(wine => wine.score >= threshold);
   
-  // Return the selected wines' names
-  return shuffled.slice(0, 5).map(wine => {
+  // If we have too few good matches, add more
+  const matchPool = goodMatches.length >= 8 ? goodMatches : winesWithCompatibility.slice(0, Math.max(goodMatches.length, 12));
+  
+  // Shuffle the good matches to add randomness
+  const shuffled = [...matchPool].sort(() => 0.5 - Math.random());
+  
+  // Select 5 wines from the shuffled list
+  const selectedWines = shuffled.slice(0, 5);
+  
+  // Format the wine names with origin if available
+  return selectedWines.map(wine => {
+    let text = wine.name;
+    
+    // Add origin if available
     if (wine.origin) {
-      return `${wine.name} (${wine.origin})`;
+      text += ` (${wine.origin})`;
     }
-    return wine.name;
+    
+    // Add price if available
+    if (wine.price) {
+      text += ` - ${wine.price}`;
+    }
+    
+    return text;
   });
 };
 
