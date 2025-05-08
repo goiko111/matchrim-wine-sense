@@ -97,118 +97,205 @@ const generateEmotionalDescription = (result: QuizResult): string => {
   return description;
 };
 
-// Función para generar recomendaciones de estilo de vino
+// Función para generar recomendaciones de estilo de vino según la nueva tabla
 const generateWineStyles = (result: QuizResult): string[] => {
   const styles = [];
   
-  if (result.potente >= 4 && result.tanico >= 3) {
-    styles.push("Tintos con cuerpo y estructura");
-  }
+  // Tabla de correspondencia según el nuevo documento
+  const styleRecommendations = [
+    { name: "Vinos blancos frescos y ligeros", criteria: { acidez: 4, afrutado: 3, potente: 0, dulce: 0, tanico: 0 } },
+    { name: "Vinos blancos aromáticos", criteria: { acidez: 3, afrutado: 4, potente: 0, dulce: 0, tanico: 0 } },
+    { name: "Vinos blancos con volumen", criteria: { acidez: 2, potente: 3, dulce: 0, tanico: 0, afrutado: 3 } },
+    { name: "Vinos blancos dulces", criteria: { dulce: 4, acidez: 3, potente: 0, tanico: 0, afrutado: 4 } },
+    { name: "Vinos rosados frescos", criteria: { acidez: 4, afrutado: 3, potente: 2, dulce: 0, tanico: 1 } },
+    { name: "Vinos tintos ligeros", criteria: { potente: 2, tanico: 2, acidez: 3, dulce: 0, afrutado: 4 } },
+    { name: "Vinos tintos con cuerpo medio", criteria: { potente: 3, tanico: 3, acidez: 3, dulce: 0, afrutado: 3 } },
+    { name: "Vinos tintos potentes", criteria: { potente: 4, tanico: 4, acidez: 2, dulce: 0, afrutado: 3 } },
+    { name: "Vinos tintos maduros", criteria: { potente: 4, tanico: 3, acidez: 2, dulce: 2, afrutado: 3 } },
+    { name: "Vinos espumosos", criteria: { acidez: 4, afrutado: 3, potente: 2, dulce: 0, tanico: 0 } }
+  ];
+
+  // Calcular la compatibilidad con cada estilo
+  const compatibilityScores = styleRecommendations.map(style => {
+    const score = calculateCompatibilityForStyle(result, style.criteria);
+    return { name: style.name, score };
+  });
   
-  if (result.acidez >= 4 && result.afrutado >= 3) {
-    styles.push("Blancos frescos y aromáticos");
-  }
-  
-  if (result.dulce >= 4) {
-    styles.push("Vinos con cierta dulzura");
-  }
-  
-  if (result.tanico >= 4 && result.afrutado <= 2) {
-    styles.push("Tintos de guarda con complejidad");
-  }
-  
-  if (result.acidez >= 4 && result.potente <= 2) {
-    styles.push("Espumosos secos y vibrantes");
-  }
-  
-  // Asegurar que siempre haya al menos una recomendación
-  if (styles.length === 0) {
-    styles.push("Vinos equilibrados de carácter medio");
-  }
-  
-  return styles;
+  // Ordenar por puntuación y tomar los 3 mejores
+  compatibilityScores.sort((a, b) => b.score - a.score);
+  return compatibilityScores.slice(0, 3).map(style => style.name);
 };
 
-// Función para generar uvas recomendadas
+// Función para calcular la compatibilidad para estilos específicamente
+const calculateCompatibilityForStyle = (result: QuizResult, criteria: any): number => {
+  let score = 0;
+  let relevantFactors = 0;
+  
+  // Solo considerar los factores que tienen un valor > 0 en el criterio
+  Object.keys(criteria).forEach(factor => {
+    if (criteria[factor] > 0) {
+      const key = factor as keyof QuizResult;
+      const factorWeight = criteria[factor];
+      const similarity = 5 - Math.abs(result[key] - factorWeight);
+      score += similarity * factorWeight;
+      relevantFactors += factorWeight;
+    }
+  });
+  
+  // Normalizar la puntuación
+  return relevantFactors > 0 ? score / relevantFactors : 0;
+};
+
+// Función para generar uvas recomendadas según la nueva tabla
 const generateGrapeRecommendations = (result: QuizResult): string[] => {
-  const grapes = [];
+  // Tabla de correspondencia según el nuevo documento
+  const grapeRecommendations = [
+    // Uvas blancas frescas
+    { name: "Albariño", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Verdejo", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Sauvignon Blanc", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Godello", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
+    { name: "Riesling", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 2, tanico: 1 } },
+    
+    // Uvas blancas aromáticas
+    { name: "Gewürztraminer", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 3, tanico: 1 } },
+    { name: "Moscatel", criteria: { acidez: 3, afrutado: 5, potente: 2, dulce: 4, tanico: 1 } },
+    { name: "Viognier", criteria: { acidez: 3, afrutado: 4, potente: 3, dulce: 2, tanico: 1 } },
+    
+    // Uvas blancas con volumen
+    { name: "Chardonnay", criteria: { acidez: 3, afrutado: 3, potente: 4, dulce: 2, tanico: 1 } },
+    { name: "Garnacha Blanca", criteria: { acidez: 3, afrutado: 3, potente: 4, dulce: 2, tanico: 2 } },
+    { name: "Chenin Blanc", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
+    
+    // Uvas tintas ligeras
+    { name: "Pinot Noir", criteria: { potente: 3, tanico: 2, acidez: 4, dulce: 2, afrutado: 4 } },
+    { name: "Gamay", criteria: { potente: 2, tanico: 2, acidez: 4, dulce: 2, afrutado: 4 } },
+    { name: "Mencía", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
+    
+    // Uvas tintas con cuerpo medio
+    { name: "Tempranillo", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Garnacha", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 3, afrutado: 4 } },
+    { name: "Merlot", criteria: { potente: 3, tanico: 3, acidez: 3, dulce: 2, afrutado: 4 } },
+    { name: "Sangiovese", criteria: { potente: 3, tanico: 4, acidez: 4, dulce: 2, afrutado: 3 } },
+    
+    // Uvas tintas potentes
+    { name: "Cabernet Sauvignon", criteria: { potente: 4, tanico: 5, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Syrah", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Monastrell", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
+    { name: "Petit Verdot", criteria: { potente: 5, tanico: 5, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Malbec", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 3, afrutado: 4 } }
+  ];
+
+  // Calcular la compatibilidad con cada uva
+  const compatibilityScores = grapeRecommendations.map(grape => {
+    const score = calculateCompatibilityForGrape(result, grape.criteria);
+    return { name: grape.name, score };
+  });
   
-  // Uvas para perfiles potentes y tánicos
-  if (result.potente >= 4 && result.tanico >= 3) {
-    grapes.push("Tempranillo", "Cabernet Sauvignon", "Syrah");
-  }
+  // Ordenar por puntuación
+  compatibilityScores.sort((a, b) => b.score - a.score);
   
-  // Uvas para perfiles ácidos y afrutados
-  if (result.acidez >= 3 && result.afrutado >= 3) {
-    grapes.push("Albariño", "Verdejo", "Sauvignon Blanc");
-  }
+  // Tomar el top 40% de las uvas
+  const topGrapes = compatibilityScores.slice(0, Math.ceil(compatibilityScores.length * 0.4));
   
-  // Uvas para perfiles dulces
-  if (result.dulce >= 3) {
-    grapes.push("Moscatel", "Pedro Ximénez", "Gewürztraminer");
-  }
-  
-  // Uvas para perfiles tánicos
-  if (result.tanico >= 4 && result.afrutado <= 3) {
-    grapes.push("Mencía", "Nebbiolo", "Tinta de Toro");
-  }
-  
-  // Uvas para perfiles frescos
-  if (result.acidez >= 4 && result.potente <= 3) {
-    grapes.push("Godello", "Riesling", "Chardonnay");
-  }
-  
-  // Asegurar que haya al menos tres uvas
-  const defaultGrapes = ["Garnacha", "Merlot", "Tempranillo", "Verdejo", "Chardonnay"];
-  while (grapes.length < 3) {
-    const randomGrape = defaultGrapes[Math.floor(Math.random() * defaultGrapes.length)];
-    if (!grapes.includes(randomGrape)) {
-      grapes.push(randomGrape);
-    }
-  }
-  
-  return grapes.slice(0, 5); // Máximo 5 uvas
+  // Seleccionar 6 uvas aleatorias de entre las mejores
+  return shuffleArray(topGrapes).slice(0, 6).map(grape => grape.name);
 };
 
-// Función para generar regiones recomendadas
+// Función para generar regiones recomendadas según la nueva tabla
 const generateRegionRecommendations = (result: QuizResult): string[] => {
-  const regions = [];
+  // Tabla de correspondencia según el nuevo documento
+  const regionRecommendations = [
+    // Regiones de blancos frescos
+    { name: "Rías Baixas", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Rueda", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Txakoli", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 1, tanico: 1 } },
+    { name: "Mosel (Alemania)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Sancerre (Francia)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 1, tanico: 1 } },
+    
+    // Regiones de blancos con volumen
+    { name: "Valdeorras", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
+    { name: "Penedès", criteria: { acidez: 3, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
+    { name: "Borgoña (Francia)", criteria: { acidez: 4, afrutado: 3, potente: 4, dulce: 2, tanico: 1 } },
+    
+    // Regiones de blancos aromáticos
+    { name: "Somontano", criteria: { acidez: 3, afrutado: 4, potente: 3, dulce: 2, tanico: 1 } },
+    { name: "Alsacia (Francia)", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 3, tanico: 1 } },
+    
+    // Regiones de dulces
+    { name: "Jerez", criteria: { acidez: 3, afrutado: 4, potente: 4, dulce: 4, tanico: 1 } },
+    { name: "Málaga", criteria: { acidez: 3, afrutado: 4, potente: 3, dulce: 5, tanico: 1 } },
+    { name: "Tokaj (Hungría)", criteria: { acidez: 4, afrutado: 4, potente: 3, dulce: 5, tanico: 1 } },
+    
+    // Regiones de tintos ligeros
+    { name: "Bierzo", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
+    { name: "Ribeira Sacra", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
+    { name: "Borgoña (Francia)", criteria: { potente: 3, tanico: 2, acidez: 4, dulce: 2, afrutado: 4 } },
+    
+    // Regiones de tintos con cuerpo medio
+    { name: "Rioja", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Ribera del Duero", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Toro", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Navarra", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
+    
+    // Regiones de tintos potentes
+    { name: "Priorat", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Jumilla", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
+    { name: "Toro", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
+    { name: "Napa Valley (USA)", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
+    { name: "Barossa Valley (Australia)", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } }
+  ];
+
+  // Calcular la compatibilidad con cada región
+  const compatibilityScores = regionRecommendations.map(region => {
+    const score = calculateCompatibilityForRegion(result, region.criteria);
+    return { name: region.name, score };
+  });
   
-  // Regiones para perfiles potentes y tánicos
-  if (result.potente >= 4 && result.tanico >= 3) {
-    regions.push("Ribera del Duero", "Toro", "Priorat");
+  // Ordenar por puntuación
+  compatibilityScores.sort((a, b) => b.score - a.score);
+  
+  // Tomar el top 40% de las regiones
+  const topRegions = compatibilityScores.slice(0, Math.ceil(compatibilityScores.length * 0.4));
+  
+  // Seleccionar 6 regiones aleatorias de entre las mejores
+  return shuffleArray(topRegions).slice(0, 6).map(region => region.name);
+};
+
+// Función para calcular compatibilidad para uvas
+const calculateCompatibilityForGrape = (result: QuizResult, criteria: any): number => {
+  let score = 0;
+  
+  score += (5 - Math.abs(result.potente - criteria.potente)) * 2;
+  score += (5 - Math.abs(result.acidez - criteria.acidez)) * 2;
+  score += (5 - Math.abs(result.dulce - criteria.dulce)) * 2;
+  score += (5 - Math.abs(result.tanico - criteria.tanico)) * 2;
+  score += (5 - Math.abs(result.afrutado - criteria.afrutado)) * 2;
+  
+  return score;
+};
+
+// Función para calcular compatibilidad para regiones
+const calculateCompatibilityForRegion = (result: QuizResult, criteria: any): number => {
+  let score = 0;
+  
+  score += (5 - Math.abs(result.potente - criteria.potente)) * 2;
+  score += (5 - Math.abs(result.acidez - criteria.acidez)) * 2;
+  score += (5 - Math.abs(result.dulce - criteria.dulce)) * 2;
+  score += (5 - Math.abs(result.tanico - criteria.tanico)) * 2;
+  score += (5 - Math.abs(result.afrutado - criteria.afrutado)) * 2;
+  
+  return score;
+};
+
+// Función para mezclar un array (algoritmo de Fisher-Yates)
+const shuffleArray = <T>(array: T[]): T[] => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
-  
-  // Regiones para perfiles ácidos y afrutados
-  if (result.acidez >= 3 && result.afrutado >= 3) {
-    regions.push("Rías Baixas", "Rueda", "Bierzo");
-  }
-  
-  // Regiones para perfiles dulces
-  if (result.dulce >= 3) {
-    regions.push("Jerez", "Montilla-Moriles", "Alsacia");
-  }
-  
-  // Regiones para perfiles tánicos
-  if (result.tanico >= 4 && result.afrutado <= 3) {
-    regions.push("Rioja", "Piamonte", "Burdeos");
-  }
-  
-  // Regiones para perfiles frescos
-  if (result.acidez >= 4 && result.potente <= 3) {
-    regions.push("Valdeorras", "Mosel", "Chablis");
-  }
-  
-  // Asegurar que haya al menos tres regiones
-  const defaultRegions = ["Rioja", "Ribera del Duero", "Rueda", "Penedès", "Navarra"];
-  while (regions.length < 3) {
-    const randomRegion = defaultRegions[Math.floor(Math.random() * defaultRegions.length)];
-    if (!regions.includes(randomRegion)) {
-      regions.push(randomRegion);
-    }
-  }
-  
-  return regions.slice(0, 5); // M���ximo 5 regiones
+  return newArray;
 };
 
 // Función para generar recomendaciones de vinos específicos
