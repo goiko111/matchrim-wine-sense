@@ -307,63 +307,93 @@ export const calculateCompatibility = (profile1: any, profile2: any): number => 
 };
 
 export const wines: Wine[] = [
-  // Potentes y tánicos
-  { name: "Aalto PS", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "80-100€", score: 95 },
-  { name: "Termanthia", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Toro", type: "Tinto", price: "150-200€", score: 96 },
-  { name: "Vega Sicilia Único", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "300-400€", score: 98 },
-  { name: "Pintia", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Toro", type: "Tinto", price: "50-70€", score: 93 },
-  { name: "Alión", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "60-80€", score: 94 },
-  { name: "Pago de Carraovejas El Anejón", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "80-100€", score: 95 },
-  { name: "Mauro VS", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Castilla y León", type: "Tinto", price: "70-90€", score: 94 },
-  { name: "Pago de los Capellanes Parcela El Nogal", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "50-70€", score: 92 },
-  { name: "Numanthia", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 }, origin: "Toro", type: "Tinto", price: "40-60€", score: 91 },
-  { name: "Alto Moncayo Aquilón", profile: { potente: 5, acidez: 3, dulce: 3, tanico: 5, afrutado: 3 }, origin: "Campo de Borja", type: "Tinto", price: "80-100€", score: 93 },
+  // VINOS BLANCOS
+  { name: "Pazo Señorans", profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "15-20€" },
+  { name: "Terras Gauda", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "15-20€" },
+  { name: "Mar de Frades", profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "15-20€" },
+  { name: "Granbazán Etiqueta Verde", profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "15-20€" },
+  { name: "Santiago Ruiz", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "15-20€" },
+  { name: "Martín Códax", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "10-15€" },
+  { name: "Lagar de Cervera", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 3 }, origin: "Rías Baixas", type: "Blanco", price: "10-15€" },
   
-  // Acidez alta - Blancos frescos
-  { name: "Pazo Señorans Selección de Añada", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "30-40€", score: 93 },
-  { name: "Do Ferreiro Cepas Vellas", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "40-50€", score: 94 },
-  { name: "Fillaboa La Fillaboa 1898", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "25-35€", score: 92 },
-  { name: "Mar de Frades Finca Valiñas", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "20-30€", score: 91 },
-  { name: "Terras Gauda O Rosal", profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "15-25€", score: 90 },
-  { name: "Zárate El Palomar", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "35-45€", score: 93 },
-  { name: "Godeval Godello Cepas Vellas", profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 3 }, origin: "Valdeorras", type: "Blanco", price: "20-30€", score: 92 },
-  { name: "As Sortes", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 }, origin: "Valdeorras", type: "Blanco", price: "30-40€", score: 93 },
-  { name: "Belondrade y Lurton", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "30-40€", score: 93 },
-  { name: "José Pariente Fermentado en Barrica", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "15-25€", score: 92 },
+  { name: "Protos Verdejo", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "10-15€" },
+  { name: "José Pariente Verdejo", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "10-15€" },
+  { name: "Marqués de Riscal Verdejo", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 3 }, origin: "Rueda", type: "Blanco", price: "10-15€" },
+  { name: "Menade Verdejo", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "10-15€" },
+  { name: "Belondrade y Lurton", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "30-40€" },
   
-  // Dulces
-  { name: "Tokaji Aszú 6 Puttonyos", profile: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Hungría", type: "Dulce", price: "60-80€", score: 96 },
-  { name: "Château d'Yquem", profile: { potente: 4, acidez: 4, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Sauternes", type: "Dulce", price: "300-400€", score: 99 },
-  { name: "Alvear Pedro Ximénez de Añada", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Montilla-Moriles", type: "Dulce", price: "25-35€", score: 95 },
-  { name: "Niepoort Colheita", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 2, afrutado: 4 }, origin: "Oporto", type: "Dulce", price: "40-60€", score: 94 },
-  { name: "Lustau Pedro Ximénez San Emilio", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Jerez", type: "Dulce", price: "15-25€", score: 93 },
-  { name: "Disznókö Tokaji Aszú 5 Puttonyos", profile: { potente: 3, acidez: 4, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Hungría", type: "Dulce", price: "40-60€", score: 94 },
-  { name: "Gewürztraminer Vendimia Tardía Gramona", profile: { potente: 3, acidez: 3, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Penedès", type: "Dulce", price: "20-30€", score: 92 },
-  { name: "Dolç de l'Obac", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 2, afrutado: 4 }, origin: "Priorat", type: "Dulce", price: "30-40€", score: 93 },
-  { name: "Casta Diva Recondita Armonia", profile: { potente: 3, acidez: 3, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Alicante", type: "Dulce", price: "25-35€", score: 92 },
-  { name: "Don PX Gran Reserva", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Montilla-Moriles", type: "Dulce", price: "30-40€", score: 94 },
+  { name: "Godello Valdeorras", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 3 }, origin: "Valdeorras", type: "Blanco", price: "15-20€" },
+  { name: "Louro do Bolo", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 3 }, origin: "Valdeorras", type: "Blanco", price: "15-20€" },
+  { name: "As Sortes", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 3 }, origin: "Valdeorras", type: "Blanco", price: "30-40€" },
+  { name: "Avancia Godello", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 3 }, origin: "Valdeorras", type: "Blanco", price: "15-20€" },
   
-  // Equilibrados y elegantes
-  { name: "Viña Tondonia Reserva", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "30-40€", score: 94 },
-  { name: "Remelluri Reserva", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "25-35€", score: 93 },
-  { name: "Artadi Pagos Viejos", profile: { potente: 4, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "80-100€", score: 95 },
-  { name: "Dominio de Pingus PSI", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "30-40€", score: 92 },
-  { name: "Hacienda Monasterio", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "30-40€", score: 92 },
-  { name: "Emilio Moro Malleolus", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "30-40€", score: 92 },
-  { name: "Marqués de Murrieta Capellanía", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 2, afrutado: 3 }, origin: "Rioja", type: "Blanco", price: "25-35€", score: 93 },
-  { name: "Algueira Pizarra", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Ribeira Sacra", type: "Tinto", price: "20-30€", score: 93 },
-  { name: "Gaba do Xil Mencía", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Valdeorras", type: "Tinto", price: "15-20€", score: 91 },
-  { name: "Petalos del Bierzo", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Bierzo", type: "Tinto", price: "15-20€", score: 92 },
-
-  // Frescos y afrutados
-  { name: "La Montesa", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Rioja", type: "Tinto", price: "15-20€", score: 91 },
-  { name: "Louro", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 }, origin: "Valdeorras", type: "Blanco", price: "15-25€", score: 92 },
-  { name: "Finca Antiga Moscatel", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 }, origin: "La Mancha", type: "Blanco", price: "10-15€", score: 90 },
-  { name: "Frontonio Microcósmico Garnacha", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 5 }, origin: "Valdejalón", type: "Tinto", price: "15-25€", score: 92 },
-  { name: "Enate Gewürztraminer", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 }, origin: "Somontano", type: "Blanco", price: "10-15€", score: 90 },
-  { name: "Habla del Silencio", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Extremadura", type: "Tinto", price: "10-15€", score: 90 },
-  { name: "Martín Códax Albariño", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rías Baixas", type: "Blanco", price: "10-15€", score: 90 },
-  { name: "Honoro Vera Garnacha", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Calatayud", type: "Tinto", price: "5-10€", score: 89 },
-  { name: "Protos Verdejo", profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Rueda", type: "Blanco", price: "10-15€", score: 90 },
-  { name: "Marimar Estate La Masía Pinot Noir", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 5 }, origin: "California", type: "Tinto", price: "30-40€", score: 93 }
+  { name: "Jean Leon Chardonnay", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 2, afrutado: 3 }, origin: "Penedès", type: "Blanco", price: "15-20€" },
+  { name: "Enate Chardonnay 234", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 1, afrutado: 4 }, origin: "Somontano", type: "Blanco", price: "10-15€" },
+  { name: "Viña Esmeralda", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 }, origin: "Catalunya", type: "Blanco", price: "10-15€" },
+  { name: "Finca Antigua Moscatel", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 }, origin: "La Mancha", type: "Blanco", price: "10-15€" },
+  
+  // VINOS TINTOS
+  // Rioja
+  { name: "Marqués de Murrieta Reserva", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "20-25€" },
+  { name: "Marqués de Riscal Reserva", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "15-20€" },
+  { name: "Muga Reserva", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "20-25€" },
+  { name: "Viña Ardanza Reserva", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "20-25€" },
+  { name: "Ramón Bilbao Crianza", profile: { potente: 3, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "10-15€" },
+  { name: "La Montesa", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Rioja", type: "Tinto", price: "15-20€" },
+  { name: "Viña Tondonia Reserva", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "30-35€" },
+  { name: "Remelluri Reserva", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Rioja", type: "Tinto", price: "20-25€" },
+  
+  // Ribera del Duero
+  { name: "Protos Crianza", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "15-20€" },
+  { name: "Matarromera Crianza", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "20-25€" },
+  { name: "Emilio Moro", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "20-25€" },
+  { name: "Pesquera Crianza", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "20-25€" },
+  { name: "Pago de Carraovejas", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "35-40€" },
+  { name: "Pago de los Capellanes Crianza", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "25-30€" },
+  { name: "Carmelo Rodero Crianza", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "20-25€" },
+  { name: "Aalto", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "30-35€" },
+  { name: "Hacienda Monasterio", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 }, origin: "Ribera del Duero", type: "Tinto", price: "30-35€" },
+  
+  // Toro
+  { name: "Pintia", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Toro", type: "Tinto", price: "50-60€" },
+  { name: "Numanthia Termes", profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Toro", type: "Tinto", price: "20-25€" },
+  
+  // Bierzo
+  { name: "Pétalos del Bierzo", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Bierzo", type: "Tinto", price: "15-20€" },
+  { name: "Las Lamas", profile: { potente: 4, acidez: 4, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Bierzo", type: "Tinto", price: "60-70€" },
+  { name: "Dominio de Tares Cepas Viejas", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Bierzo", type: "Tinto", price: "15-20€" },
+  
+  // Priorat
+  { name: "Ferrer Bobet Vinyes Velles", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Priorat", type: "Tinto", price: "30-35€" },
+  { name: "Mas d'en Compte", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Priorat", type: "Tinto", price: "25-30€" },
+  
+  // Montsant
+  { name: "Acústic", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Montsant", type: "Tinto", price: "15-20€" },
+  
+  // Jumilla
+  { name: "El Nido", profile: { potente: 5, acidez: 3, dulce: 3, tanico: 5, afrutado: 3 }, origin: "Jumilla", type: "Tinto", price: "60-70€" },
+  { name: "Juan Gil 12 Meses", profile: { potente: 4, acidez: 3, dulce: 3, tanico: 4, afrutado: 3 }, origin: "Jumilla", type: "Tinto", price: "15-20€" },
+  
+  // Ribeira Sacra
+  { name: "Dominio do Bibei Lalama", profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 }, origin: "Ribeira Sacra", type: "Tinto", price: "20-25€" },
+  
+  // Otros
+  { name: "Abadía Retuerta Selección Especial", profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 }, origin: "Castilla y León", type: "Tinto", price: "25-30€" },
+  
+  // VINOS DULCES
+  { name: "Pedro Ximénez Tradición", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Jerez", type: "Dulce", price: "25-30€" },
+  { name: "Pedro Ximénez Néctar", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Jerez", type: "Dulce", price: "15-20€" },
+  { name: "Lustau Pedro Ximénez San Emilio", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Jerez", type: "Dulce", price: "15-20€" },
+  { name: "Barbadillo Pedro Ximénez", profile: { potente: 3, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Jerez", type: "Dulce", price: "10-15€" },
+  
+  { name: "Jorge Ordoñez Nº 1 Selección Especial", profile: { potente: 3, acidez: 3, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Málaga", type: "Dulce", price: "20-25€" },
+  { name: "Jorge Ordoñez Nº 2 Victoria", profile: { potente: 3, acidez: 3, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Málaga", type: "Dulce", price: "25-30€" },
+  
+  { name: "Don PX Gran Reserva", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Montilla-Moriles", type: "Dulce", price: "25-30€" },
+  { name: "Alvear Pedro Ximénez de Añada", profile: { potente: 4, acidez: 3, dulce: 5, tanico: 1, afrutado: 4 }, origin: "Montilla-Moriles", type: "Dulce", price: "25-30€" },
+  
+  { name: "Gewürztraminer Viñas del Vero", profile: { potente: 3, acidez: 3, dulce: 4, tanico: 1, afrutado: 5 }, origin: "Somontano", type: "Dulce", price: "15-20€" },
+  { name: "Enate Gewürztraminer", profile: { potente: 2, acidez: 3, dulce: 3, tanico: 1, afrutado: 5 }, origin: "Somontano", type: "Blanco", price: "10-15€" },
+  
+  { name: "Moscatel Torres", profile: { potente: 3, acidez: 3, dulce: 5, tanico: 1, afrutado: 5 }, origin: "Penedès", type: "Dulce", price: "15-20€" }
 ];
