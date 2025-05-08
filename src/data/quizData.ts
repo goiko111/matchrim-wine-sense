@@ -1,4 +1,3 @@
-
 export interface Question {
   id: number;
   text: string;
@@ -243,16 +242,220 @@ export const profileTypes: ProfileType[] = [
   }
 ];
 
+// Wine database from the Google Sheet
+export const wines: Wine[] = [
+  {
+    name: "Ramón Bilbao Crianza",
+    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Rioja",
+    type: "Tinto",
+    price: "€€",
+    score: 91
+  },
+  {
+    name: "Matsu El Pícaro",
+    profile: { potente: 4, acidez: 3, dulce: 3, tanico: 3, afrutado: 4 },
+    origin: "Toro",
+    type: "Tinto",
+    price: "€",
+    score: 90
+  },
+  {
+    name: "Protos Roble",
+    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Ribera del Duero",
+    type: "Tinto",
+    price: "€€",
+    score: 90
+  },
+  {
+    name: "Pago de los Capellanes Crianza",
+    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Ribera del Duero",
+    type: "Tinto",
+    price: "€€€",
+    score: 93
+  },
+  {
+    name: "Viña Ardanza Reserva",
+    profile: { potente: 4, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 },
+    origin: "Rioja",
+    type: "Tinto",
+    price: "€€€",
+    score: 95
+  },
+  {
+    name: "Marqués de Murrieta Reserva",
+    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Rioja",
+    type: "Tinto",
+    price: "€€€",
+    score: 93
+  },
+  {
+    name: "Muga Reserva",
+    profile: { potente: 4, acidez: 4, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Rioja",
+    type: "Tinto",
+    price: "€€€",
+    score: 94
+  },
+  {
+    name: "Emilio Moro",
+    profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Ribera del Duero",
+    type: "Tinto",
+    price: "€€",
+    score: 92
+  },
+  {
+    name: "Carmelo Rodero Crianza",
+    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Ribera del Duero",
+    type: "Tinto",
+    price: "€€",
+    score: 92
+  },
+  {
+    name: "Flor de Pingus",
+    profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 3 },
+    origin: "Ribera del Duero",
+    type: "Tinto",
+    price: "€€€€",
+    score: 96
+  },
+  {
+    name: "Martín Códax",
+    profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rías Baixas",
+    type: "Blanco",
+    price: "€€",
+    score: 90
+  },
+  {
+    name: "Terras Gauda",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rías Baixas",
+    type: "Blanco",
+    price: "€€",
+    score: 91
+  },
+  {
+    name: "Pazo de Señorans",
+    profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rías Baixas",
+    type: "Blanco",
+    price: "€€",
+    score: 92
+  },
+  {
+    name: "José Pariente",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rueda",
+    type: "Blanco",
+    price: "€€",
+    score: 90
+  },
+  {
+    name: "Menade",
+    profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rueda",
+    type: "Blanco",
+    price: "€",
+    score: 90
+  },
+  {
+    name: "Loess",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rueda",
+    type: "Blanco",
+    price: "€€",
+    score: 91
+  },
+  {
+    name: "Habla del Silencio",
+    profile: { potente: 4, acidez: 3, dulce: 3, tanico: 3, afrutado: 4 },
+    origin: "Extremadura",
+    type: "Tinto",
+    price: "€€",
+    score: 91
+  },
+  {
+    name: "Enate Chardonnay 234",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Somontano",
+    type: "Blanco",
+    price: "€€",
+    score: 90
+  },
+  {
+    name: "Juan Gil",
+    profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 3 },
+    origin: "Jumilla",
+    type: "Tinto",
+    price: "€€",
+    score: 91
+  },
+  {
+    name: "El Transistor",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rueda",
+    type: "Blanco",
+    price: "€€",
+    score: 92
+  },
+  {
+    name: "Dominio de Tares",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 },
+    origin: "Bierzo",
+    type: "Tinto",
+    price: "€€",
+    score: 91
+  },
+  {
+    name: "La Montesa",
+    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 },
+    origin: "Rioja",
+    type: "Tinto",
+    price: "€€",
+    score: 92
+  },
+  {
+    name: "Abadía Retuerta Selección Especial",
+    profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 3 },
+    origin: "Castilla y León",
+    type: "Tinto",
+    price: "€€€",
+    score: 94
+  },
+  {
+    name: "Aalto",
+    profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Ribera del Duero",
+    type: "Tinto",
+    price: "€€€",
+    score: 94
+  }
+];
+
 export const getRecommendedWines = (result: QuizResult): string[] => {
-  // Esta función ahora devuelve un array de strings vacío
-  // Se ha eliminado el array de vinos y la lógica de recomendación
-  return [
-    "No hay recomendaciones disponibles actualmente",
-    "Pronto tendremos nuevas recomendaciones",
-    "Estamos actualizando nuestra base de datos",
-    "Vuelve pronto para ver nuevas recomendaciones",
-    "Contacta con nosotros para sugerencias personalizadas"
-  ];
+  // Calculate compatibility with each wine
+  const wineCompatibility = wines.map(wine => {
+    const score = calculateCompatibility(result, wine.profile);
+    return { wine, score };
+  });
+  
+  // Sort by compatibility score (higher is better)
+  wineCompatibility.sort((a, b) => b.score - a.score);
+  
+  // Return the top 6 wines as formatted strings
+  return wineCompatibility.slice(0, 6).map(item => {
+    const { wine } = item;
+    let priceSymbol = "";
+    for (let i = 0; i < wine.price?.length || 0; i++) priceSymbol += "€";
+    
+    return `${wine.name} (${wine.origin}) - ${wine.type} - ${priceSymbol}`;
+  });
 };
 
 // Helper function to calculate compatibility score between profiles
@@ -268,5 +471,3 @@ export const calculateCompatibility = (profile1: any, profile2: any): number => 
   
   return score;
 };
-
-// Se ha eliminado completamente el array de vinos (wines)

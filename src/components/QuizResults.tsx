@@ -308,18 +308,6 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArray;
 }
 
-// Modified function that doesn't depend on the wines array
-const generateSpecificWines = (result: QuizResult): string[] => {
-  // Since we've removed the wines array, return placeholder recommendations
-  return [
-    "No hay recomendaciones disponibles actualmente",
-    "Pronto tendremos nuevas recomendaciones",
-    "Estamos actualizando nuestra base de datos",
-    "Vuelve pronto para ver nuevas recomendaciones",
-    "Contacta con nosotros para sugerencias personalizadas"
-  ];
-};
-
 const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart }) => {
   const chartData = [
     { attribute: "Potente", value: result.potente },
