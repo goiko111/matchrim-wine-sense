@@ -454,18 +454,37 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
               <span className="emoji">🇪🇸</span> España
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {spanishWines.map((wine, index) => (
-                <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                      <Wine className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-800">{wine}</p>
+              {spanishWines.map((wine, index) => {
+                const parts = wine.split(", ");
+                const name = parts[0];
+                const type = parts[1] || "";
+                const winery = parts[2] || "";
+                const region = parts[3] || "";
+                const country = parts[4] || "";
+                
+                return (
+                  <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
+                    <div className="flex items-start gap-3">
+                      <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
+                        <Wine className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-800">{name}</p>
+                        <p className="text-sm text-gray-600">{type}</p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Bodega:</span> {winery}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Región:</span> {region}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">País:</span> {country}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           
@@ -474,18 +493,37 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
               <span className="emoji">🌎</span> Internacional
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {internationalWines.map((wine, index) => (
-                <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                      <Wine className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-800">{wine}</p>
+              {internationalWines.map((wine, index) => {
+                const parts = wine.split(", ");
+                const name = parts[0];
+                const type = parts[1] || "";
+                const winery = parts[2] || "";
+                const region = parts[3] || "";
+                const country = parts[4] || "";
+                
+                return (
+                  <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
+                    <div className="flex items-start gap-3">
+                      <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
+                        <Wine className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-800">{name}</p>
+                        <p className="text-sm text-gray-600">{type}</p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Bodega:</span> {winery}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Región:</span> {region}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">País:</span> {country}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

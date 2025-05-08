@@ -387,10 +387,10 @@ export const getRecommendedWines = (result: QuizResult): string[] => {
   const topSpanishWines = spanishWines.slice(0, 3);
   const topInternationalWines = internationalWines.slice(0, 3);
   
-  // Combine and format results
+  // Combine and format results with Name, Type, Winery, Region, Country
   return [...topSpanishWines, ...topInternationalWines].map(item => {
     const { wine } = item;
-    return `${wine.name} (${wine.winery}, ${wine.region}, ${wine.country})`;
+    return `${wine.name}, ${wine.type}, ${wine.winery}, ${wine.region}, ${wine.country}`;
   });
 };
 
