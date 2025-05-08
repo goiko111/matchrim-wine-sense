@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { QuizResult } from '../data/quizData';
@@ -289,14 +290,14 @@ const calculateCompatibilityForRegion = (result: QuizResult, criteria: any): num
 };
 
 // Función para mezclar un array (algoritmo de Fisher-Yates)
-const shuffleArray = <T>(array: T[]): T[] => {
+function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
   return newArray;
-};
+}
 
 // Función para generar recomendaciones de vinos específicos
 const generateSpecificWines = (result: QuizResult): string[] => {
@@ -369,7 +370,7 @@ const generateSpecificWines = (result: QuizResult): string[] => {
     };
   });
   
-  winesWithCompatibility.sort((a, b) => b.compatibility! - a.compatibility!); // Use non-null assertion
+  winesWithCompatibility.sort((a, b) => (b.compatibility || 0) - (a.compatibility || 0));
   
   // Devolver los 5 mejores
   return winesWithCompatibility.slice(0, 5).map(wine => wine.name);
