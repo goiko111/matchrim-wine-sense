@@ -243,125 +243,134 @@ export const profileTypes: ProfileType[] = [
   }
 ];
 
-// Wine database - updated with Spanish and international wines
+// Wine database - updated with Spanish and international wines from the Google Sheet
 export const wines: Wine[] = [
   // Spanish wines
   {
-    name: "Tempranillo Reserva",
+    name: "Marqués de Riscal Reserva",
     profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
     origin: "Rioja",
     type: "Tinto",
-    winery: "Bodegas Murillo",
+    winery: "Marqués de Riscal",
     country: "España",
     region: "La Rioja"
   },
   {
-    name: "Garnacha Roble",
-    profile: { potente: 4, acidez: 3, dulce: 3, tanico: 3, afrutado: 4 },
-    origin: "Campo de Borja",
+    name: "Pago de los Capellanes Crianza",
+    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Ribera del Duero",
     type: "Tinto",
-    winery: "Viñedos Antiguos",
-    country: "España",
-    region: "Aragón"
-  },
-  {
-    name: "Mencía Crianza",
-    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 },
-    origin: "Bierzo",
-    type: "Tinto",
-    winery: "Finca Valdelaviña",
+    winery: "Pago de los Capellanes",
     country: "España",
     region: "Castilla y León"
   },
   {
-    name: "Albariño",
+    name: "Habla del Silencio",
+    profile: { potente: 4, acidez: 3, dulce: 3, tanico: 3, afrutado: 4 },
+    origin: "Extremadura",
+    type: "Tinto",
+    winery: "Bodegas Habla",
+    country: "España",
+    region: "Extremadura"
+  },
+  {
+    name: "Martín Códax",
     profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
     origin: "Rías Baixas",
     type: "Blanco",
-    winery: "Pazo del Mar",
+    winery: "Martín Códax",
     country: "España",
     region: "Galicia"
   },
   {
-    name: "Verdejo",
+    name: "Protos Verdejo",
     profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
     origin: "Rueda",
     type: "Blanco",
-    winery: "Viñas del Valle",
+    winery: "Bodegas Protos",
     country: "España",
     region: "Castilla y León"
   },
   {
-    name: "Monastrell",
+    name: "El Lagar de Isilla",
+    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
+    origin: "Ribera del Duero",
+    type: "Tinto",
+    winery: "El Lagar de Isilla",
+    country: "España",
+    region: "Castilla y León"
+  },
+  {
+    name: "Juan Gil Etiqueta Plata",
     profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 3 },
     origin: "Jumilla",
     type: "Tinto",
-    winery: "Viñas del Este",
+    winery: "Bodegas Juan Gil",
     country: "España",
     region: "Murcia"
   },
   {
-    name: "Priorat",
+    name: "Alvaro Palacios Camins del Priorat",
     profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
     origin: "Priorat",
     type: "Tinto",
-    winery: "Terraza Vieja",
+    winery: "Alvaro Palacios",
     country: "España",
     region: "Cataluña"
   },
   
   // International wines
   {
-    name: "Cabernet Sauvignon",
+    name: "Caymus Cabernet Sauvignon",
     profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 },
     origin: "Napa Valley",
     type: "Tinto",
-    winery: "Mountainview",
+    winery: "Caymus Vineyards",
     country: "Estados Unidos",
     region: "California"
   },
   {
-    name: "Shiraz",
+    name: "Penfolds Bin 389",
     profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 4 },
     origin: "Barossa Valley",
     type: "Tinto",
-    winery: "Southern Cross",
+    winery: "Penfolds",
     country: "Australia",
     region: "South Australia"
   },
   {
-    name: "Malbec Reserva",
+    name: "Catena Zapata Malbec",
     profile: { potente: 4, acidez: 3, dulce: 3, tanico: 4, afrutado: 4 },
     origin: "Mendoza",
     type: "Tinto",
-    winery: "Vista Andes",
+    winery: "Bodega Catena Zapata",
     country: "Argentina",
     region: "Mendoza"
   },
   {
-    name: "Pinot Noir",
+    name: "Louis Jadot Gevrey-Chambertin",
     profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 },
     origin: "Bourgogne",
     type: "Tinto",
-    winery: "Domaine du Mont",
+    winery: "Louis Jadot",
     country: "Francia",
     region: "Borgoña"
   },
   {
-    name: "Chardonnay",
+    name: "Cloudy Bay Chardonnay",
     profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 3 },
     origin: "Marlborough",
     type: "Blanco",
-    winery: "Pacific Bay",
+    winery: "Cloudy Bay",
     country: "Nueva Zelanda",
     region: "South Island"
   },
   {
-    name: "Sauvignon Blanc",
+    name: "Sancerre Pascal Jolivet",
     profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
     origin: "Loire Valley",
     type: "Blanco",
-    winery: "Château Riverside",
+    winery: "Pascal Jolivet",
     country: "Francia",
     region: "Valle del Loira"
   }
