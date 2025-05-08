@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { QuizResult } from '../data/quizData';
+import { QuizResult, wines, calculateCompatibility } from '../data/quizData';
 import { 
   ChartContainer, 
   ChartTooltip,
@@ -259,8 +258,18 @@ const generateRegionRecommendations = (result: QuizResult): string[] => {
   // Tomar el top 40% de las regiones
   const topRegions = compatibilityScores.slice(0, Math.ceil(compatibilityScores.length * 0.4));
   
-  // Seleccionar 6 regiones aleatorias de entre las mejores
-  return shuffleArray(topRegions).slice(0, 6).map(region => region.name);
+  // Seleccionar 6 regiones aleatorias de entre las mejores, asegurando que no haya duplicados
+  const selectedRegions = new Set<string>();
+  const shuffledTopRegions = shuffleArray(topRegions);
+  
+  // Seguir añadiendo regiones hasta tener 6 o hasta agotar las opciones
+  for (const region of shuffledTopRegions) {
+    selectedRegions.add(region.name);
+    if (selectedRegions.size >= 6) break;
+  }
+  
+  // Convertir el Set a array
+  return Array.from(selectedRegions);
 };
 
 // Función para calcular compatibilidad para uvas
@@ -299,81 +308,55 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArray;
 }
 
-// Función para generar recomendaciones de vinos específicos
+// Función para generar recomendaciones de vinos específicos directamente desde la lista de vinos importada
 const generateSpecificWines = (result: QuizResult): string[] => {
-  // Define a wine type with compatibility property
-  interface Wine {
-    name: string;
-    profile: {
-      potente: number;
-      tanico: number;
-      acidez: number;
-      dulce: number;
-      afrutado: number;
-    };
-    compatibility?: number; // Make compatibility optional with '?'
-  }
-
-  const allWines: Wine[] = [
-    // Potentes y tánicos
-    { name: "Matarromera Crianza (Ribera del Duero)", profile: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Pago de los Capellanes Crianza (Ribera del Duero)", profile: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Emilio Moro (Ribera del Duero)", profile: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Marqués de Murrieta Reserva (Rioja)", profile: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 2 } },
-    { name: "Muga Reserva (Rioja)", profile: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    
-    // Frescos y afrutados
-    { name: "Terras Gauda (Rías Baixas)", profile: { potente: 2, tanico: 1, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "Pazo de Señorans (Rías Baixas)", profile: { potente: 2, tanico: 1, acidez: 5, dulce: 2, afrutado: 4 } },
-    { name: "José Pariente Verdejo (Rueda)", profile: { potente: 3, tanico: 1, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "Protos Verdejo (Rueda)", profile: { potente: 2, tanico: 1, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "Menade Sauvignon Blanc (Rueda)", profile: { potente: 3, tanico: 1, acidez: 5, dulce: 2, afrutado: 5 } },
-    
-    // Dulces
-    { name: "Pedro Ximénez Tradición (Jerez)", profile: { potente: 4, tanico: 1, acidez: 3, dulce: 5, afrutado: 4 } },
-    { name: "Lustau Pedro Ximénez San Emilio (Jerez)", profile: { potente: 4, tanico: 1, acidez: 3, dulce: 5, afrutado: 4 } },
-    { name: "Jorge Ordoñez Nº 1 Selección Especial (Málaga)", profile: { potente: 3, tanico: 1, acidez: 3, dulce: 5, afrutado: 5 } },
-    { name: "Gewürztraminer Viñas del Vero (Somontano)", profile: { potente: 3, tanico: 1, acidez: 3, dulce: 4, afrutado: 5 } },
-    { name: "Moscatel Torres (Penedès)", profile: { potente: 3, tanico: 1, acidez: 3, dulce: 5, afrutado: 5 } },
-    
-    // Equilibrados
-    { name: "Viña Ardanza Reserva (Rioja)", profile: { potente: 3, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Ramón Bilbao Crianza (Rioja)", profile: { potente: 3, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Abadía Retuerta Selección Especial (Castilla y León)", profile: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Carmelo Rodero Crianza (Ribera del Duero)", profile: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Godelia Mencía (Bierzo)", profile: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
-    
-    // Más frescos
-    { name: "Godeval Godello (Valdeorras)", profile: { potente: 3, tanico: 1, acidez: 4, dulce: 2, afrutado: 3 } },
-    { name: "As Sortes Val de Paxariñas (Valdeorras)", profile: { potente: 3, tanico: 1, acidez: 4, dulce: 2, afrutado: 3 } },
-    { name: "Belondrade y Lurton (Rueda)", profile: { potente: 3, tanico: 1, acidez: 4, dulce: 2, afrutado: 3 } },
-    { name: "Dominio do Bibei Lalama (Ribeira Sacra)", profile: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "La Montesa (Rioja)", profile: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } }
-  ];
-  
-  // Función para calcular compatibilidad entre perfiles
-  const calculateCompatibility = (userProfile: QuizResult, wineProfile: any): number => {
-    let score = 0;
-    score += (5 - Math.abs(userProfile.potente - wineProfile.potente)) * 2;
-    score += (5 - Math.abs(userProfile.acidez - wineProfile.acidez)) * 2;
-    score += (5 - Math.abs(userProfile.dulce - wineProfile.dulce)) * 2;
-    score += (5 - Math.abs(userProfile.tanico - wineProfile.tanico)) * 2;
-    score += (5 - Math.abs(userProfile.afrutado - wineProfile.afrutado)) * 2;
-    return score;
-  };
-  
-  // Ordenar vinos por compatibilidad
-  const winesWithCompatibility = allWines.map(wine => {
-    return {
-      ...wine,
-      compatibility: calculateCompatibility(result, wine.profile)
+  // Prepare all wines with their compatibility scores
+  const winesWithCompatibility = wines.map(wine => {
+    const score = calculateCompatibility(result, wine.profile);
+    return { 
+      name: wine.name, 
+      score, 
+      origin: wine.origin, 
+      type: wine.type,
+      price: wine.price 
     };
   });
   
-  winesWithCompatibility.sort((a, b) => (b.compatibility || 0) - (a.compatibility || 0));
+  // Sort by compatibility score (highest first)
+  winesWithCompatibility.sort((a, b) => (b.score || 0) - (a.score || 0));
   
-  // Devolver los 5 mejores
-  return winesWithCompatibility.slice(0, 5).map(wine => wine.name);
+  // Get the threshold score (70% of the max score)
+  const maxScore = winesWithCompatibility[0].score || 0;
+  const threshold = maxScore * 0.7;
+  
+  // Filter wines that are above the threshold (good matches)
+  const goodMatches = winesWithCompatibility.filter(wine => (wine.score || 0) >= threshold);
+  
+  // If we have too few good matches, add more
+  const matchPool = goodMatches.length >= 8 ? goodMatches : winesWithCompatibility.slice(0, Math.max(goodMatches.length, 12));
+  
+  // Shuffle the good matches to add randomness
+  const shuffled = [...matchPool].sort(() => 0.5 - Math.random());
+  
+  // Select 5 wines from the shuffled list
+  const selectedWines = shuffled.slice(0, 5);
+  
+  // Format the wine names with origin if available
+  return selectedWines.map(wine => {
+    let text = wine.name;
+    
+    // Add origin if available
+    if (wine.origin) {
+      text += ` (${wine.origin})`;
+    }
+    
+    // Add price if available
+    if (wine.price) {
+      text += ` - ${wine.price}`;
+    }
+    
+    return text;
+  });
 };
 
 const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart }) => {
