@@ -343,6 +343,10 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     });
   };
 
+  // Organize recommendations into Spanish and International sections
+  const spanishWines = recommendations.filter(wine => wine.includes("España"));
+  const internationalWines = recommendations.filter(wine => !wine.includes("España"));
+
   return (
     <div className="flex flex-col max-w-4xl mx-auto p-6">
       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-md mb-8">
@@ -444,19 +448,45 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
           <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
             <span className="text-2xl">🔎</span> Vinos que te encantarán
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {recommendations.map((wine, index) => (
-              <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
-                <div className="flex items-start gap-3">
-                  <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                    <Wine className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-800">{wine}</p>
+          
+          <div className="mb-4">
+            <h4 className="font-medium text-red-700 mb-2 flex items-center gap-2">
+              <span className="emoji">🇪🇸</span> España
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {spanishWines.map((wine, index) => (
+                <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
+                      <Wine className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-800">{wine}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-medium text-red-700 mb-2 flex items-center gap-2">
+              <span className="emoji">🌎</span> Internacional
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {internationalWines.map((wine, index) => (
+                <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
+                      <Wine className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-800">{wine}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         

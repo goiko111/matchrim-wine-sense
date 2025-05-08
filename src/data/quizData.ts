@@ -29,8 +29,9 @@ export interface Wine {
   };
   origin?: string;
   type?: string;
-  price?: string;
-  score?: number;
+  winery?: string;
+  country?: string;
+  region?: string;
 }
 
 export interface ProfileType {
@@ -242,199 +243,127 @@ export const profileTypes: ProfileType[] = [
   }
 ];
 
-// Wine database from the Google Sheet
+// Wine database - updated with Spanish and international wines
 export const wines: Wine[] = [
+  // Spanish wines
   {
-    name: "Ramón Bilbao Crianza",
+    name: "Tempranillo Reserva",
     profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
     origin: "Rioja",
     type: "Tinto",
-    price: "€€",
-    score: 91
+    winery: "Bodegas Murillo",
+    country: "España",
+    region: "La Rioja"
   },
   {
-    name: "Matsu El Pícaro",
+    name: "Garnacha Roble",
     profile: { potente: 4, acidez: 3, dulce: 3, tanico: 3, afrutado: 4 },
-    origin: "Toro",
+    origin: "Campo de Borja",
     type: "Tinto",
-    price: "€",
-    score: 90
+    winery: "Viñedos Antiguos",
+    country: "España",
+    region: "Aragón"
   },
   {
-    name: "Protos Roble",
-    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
-    origin: "Ribera del Duero",
-    type: "Tinto",
-    price: "€€",
-    score: 90
-  },
-  {
-    name: "Pago de los Capellanes Crianza",
-    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
-    origin: "Ribera del Duero",
-    type: "Tinto",
-    price: "€€€",
-    score: 93
-  },
-  {
-    name: "Viña Ardanza Reserva",
-    profile: { potente: 4, acidez: 4, dulce: 2, tanico: 3, afrutado: 3 },
-    origin: "Rioja",
-    type: "Tinto",
-    price: "€€€",
-    score: 95
-  },
-  {
-    name: "Marqués de Murrieta Reserva",
-    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
-    origin: "Rioja",
-    type: "Tinto",
-    price: "€€€",
-    score: 93
-  },
-  {
-    name: "Muga Reserva",
-    profile: { potente: 4, acidez: 4, dulce: 2, tanico: 4, afrutado: 3 },
-    origin: "Rioja",
-    type: "Tinto",
-    price: "€€€",
-    score: 94
-  },
-  {
-    name: "Emilio Moro",
-    profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
-    origin: "Ribera del Duero",
-    type: "Tinto",
-    price: "€€",
-    score: 92
-  },
-  {
-    name: "Carmelo Rodero Crianza",
-    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
-    origin: "Ribera del Duero",
-    type: "Tinto",
-    price: "€€",
-    score: 92
-  },
-  {
-    name: "Flor de Pingus",
-    profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 3 },
-    origin: "Ribera del Duero",
-    type: "Tinto",
-    price: "€€€€",
-    score: 96
-  },
-  {
-    name: "Martín Códax",
-    profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
-    origin: "Rías Baixas",
-    type: "Blanco",
-    price: "€€",
-    score: 90
-  },
-  {
-    name: "Terras Gauda",
-    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
-    origin: "Rías Baixas",
-    type: "Blanco",
-    price: "€€",
-    score: 91
-  },
-  {
-    name: "Pazo de Señorans",
-    profile: { potente: 3, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
-    origin: "Rías Baixas",
-    type: "Blanco",
-    price: "€€",
-    score: 92
-  },
-  {
-    name: "José Pariente",
-    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
-    origin: "Rueda",
-    type: "Blanco",
-    price: "€€",
-    score: 90
-  },
-  {
-    name: "Menade",
-    profile: { potente: 2, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
-    origin: "Rueda",
-    type: "Blanco",
-    price: "€",
-    score: 90
-  },
-  {
-    name: "Loess",
-    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
-    origin: "Rueda",
-    type: "Blanco",
-    price: "€€",
-    score: 91
-  },
-  {
-    name: "Habla del Silencio",
-    profile: { potente: 4, acidez: 3, dulce: 3, tanico: 3, afrutado: 4 },
-    origin: "Extremadura",
-    type: "Tinto",
-    price: "€€",
-    score: 91
-  },
-  {
-    name: "Enate Chardonnay 234",
-    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
-    origin: "Somontano",
-    type: "Blanco",
-    price: "€€",
-    score: 90
-  },
-  {
-    name: "Juan Gil",
-    profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 3 },
-    origin: "Jumilla",
-    type: "Tinto",
-    price: "€€",
-    score: 91
-  },
-  {
-    name: "El Transistor",
-    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
-    origin: "Rueda",
-    type: "Blanco",
-    price: "€€",
-    score: 92
-  },
-  {
-    name: "Dominio de Tares",
+    name: "Mencía Crianza",
     profile: { potente: 3, acidez: 4, dulce: 2, tanico: 3, afrutado: 4 },
     origin: "Bierzo",
     type: "Tinto",
-    price: "€€",
-    score: 91
+    winery: "Finca Valdelaviña",
+    country: "España",
+    region: "Castilla y León"
   },
   {
-    name: "La Montesa",
-    profile: { potente: 4, acidez: 3, dulce: 2, tanico: 3, afrutado: 3 },
-    origin: "Rioja",
-    type: "Tinto",
-    price: "€€",
-    score: 92
+    name: "Albariño",
+    profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rías Baixas",
+    type: "Blanco",
+    winery: "Pazo del Mar",
+    country: "España",
+    region: "Galicia"
   },
   {
-    name: "Abadía Retuerta Selección Especial",
+    name: "Verdejo",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Rueda",
+    type: "Blanco",
+    winery: "Viñas del Valle",
+    country: "España",
+    region: "Castilla y León"
+  },
+  {
+    name: "Monastrell",
     profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 3 },
-    origin: "Castilla y León",
+    origin: "Jumilla",
     type: "Tinto",
-    price: "€€€",
-    score: 94
+    winery: "Viñas del Este",
+    country: "España",
+    region: "Murcia"
   },
   {
-    name: "Aalto",
+    name: "Priorat",
     profile: { potente: 5, acidez: 3, dulce: 2, tanico: 4, afrutado: 3 },
-    origin: "Ribera del Duero",
+    origin: "Priorat",
     type: "Tinto",
-    price: "€€€",
-    score: 94
+    winery: "Terraza Vieja",
+    country: "España",
+    region: "Cataluña"
+  },
+  
+  // International wines
+  {
+    name: "Cabernet Sauvignon",
+    profile: { potente: 5, acidez: 3, dulce: 2, tanico: 5, afrutado: 3 },
+    origin: "Napa Valley",
+    type: "Tinto",
+    winery: "Mountainview",
+    country: "Estados Unidos",
+    region: "California"
+  },
+  {
+    name: "Shiraz",
+    profile: { potente: 5, acidez: 3, dulce: 3, tanico: 4, afrutado: 4 },
+    origin: "Barossa Valley",
+    type: "Tinto",
+    winery: "Southern Cross",
+    country: "Australia",
+    region: "South Australia"
+  },
+  {
+    name: "Malbec Reserva",
+    profile: { potente: 4, acidez: 3, dulce: 3, tanico: 4, afrutado: 4 },
+    origin: "Mendoza",
+    type: "Tinto",
+    winery: "Vista Andes",
+    country: "Argentina",
+    region: "Mendoza"
+  },
+  {
+    name: "Pinot Noir",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 2, afrutado: 4 },
+    origin: "Bourgogne",
+    type: "Tinto",
+    winery: "Domaine du Mont",
+    country: "Francia",
+    region: "Borgoña"
+  },
+  {
+    name: "Chardonnay",
+    profile: { potente: 3, acidez: 4, dulce: 2, tanico: 1, afrutado: 3 },
+    origin: "Marlborough",
+    type: "Blanco",
+    winery: "Pacific Bay",
+    country: "Nueva Zelanda",
+    region: "South Island"
+  },
+  {
+    name: "Sauvignon Blanc",
+    profile: { potente: 2, acidez: 5, dulce: 2, tanico: 1, afrutado: 4 },
+    origin: "Loire Valley",
+    type: "Blanco",
+    winery: "Château Riverside",
+    country: "Francia",
+    region: "Valle del Loira"
   }
 ];
 
@@ -445,16 +374,23 @@ export const getRecommendedWines = (result: QuizResult): string[] => {
     return { wine, score };
   });
   
-  // Sort by compatibility score (higher is better)
-  wineCompatibility.sort((a, b) => b.score - a.score);
+  // Separate Spanish and international wines
+  const spanishWines = wineCompatibility
+    .filter(item => item.wine.country === "España")
+    .sort((a, b) => b.score - a.score);
   
-  // Return the top 6 wines as formatted strings
-  return wineCompatibility.slice(0, 6).map(item => {
+  const internationalWines = wineCompatibility
+    .filter(item => item.wine.country !== "España")
+    .sort((a, b) => b.score - a.score);
+  
+  // Get top 3 from each category
+  const topSpanishWines = spanishWines.slice(0, 3);
+  const topInternationalWines = internationalWines.slice(0, 3);
+  
+  // Combine and format results
+  return [...topSpanishWines, ...topInternationalWines].map(item => {
     const { wine } = item;
-    let priceSymbol = "";
-    for (let i = 0; i < wine.price?.length || 0; i++) priceSymbol += "€";
-    
-    return `${wine.name} (${wine.origin}) - ${wine.type} - ${priceSymbol}`;
+    return `${wine.name} (${wine.winery}, ${wine.region}, ${wine.country})`;
   });
 };
 
