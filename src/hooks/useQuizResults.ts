@@ -42,9 +42,18 @@ export const useQuizResults = () => {
 
       if (quizError) throw quizError;
 
-      // Save wine recommendations
-      const recommendationsToInsert = recommendations.map(rec => {
+      // Save wine recommendations with consistent scoring
+      const recommendationsToInsert = recommendations.map((rec, index) => {
         const parts = rec.split(", ");
+        // Generate consistent score based on position and profile
+        const baseScore = 95 - (index * 2); // Start at 95 and decrease by 2 for each recommendation
+        const profileSeed = `${result.potente}-${result.acidez}-${result.dulce}-${result.tanico}-${result.afrutado}`;
+        const hash = profileSeed.split('').reduce((a, b) => {
+          a = ((a << 5) - a) + b.charCodeAt(0);
+          return a & a;
+        }, 0);
+        const variation = Math.abs(hash) % 6 - 3; // Between -3 and +3
+        
         return {
           quiz_result_id: quizResultData.id,
           user_id: user.id,
@@ -53,7 +62,7 @@ export const useQuizResults = () => {
           winery: parts[2] || '',
           region: parts[3] || '',
           country: parts[4] || '',
-          compatibility_score: Math.floor(Math.random() * 20) + 80 // Score between 80-100
+          compatibility_score: Math.max(80, Math.min(100, baseScore + variation))
         };
       });
 

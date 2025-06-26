@@ -9,6 +9,12 @@ import {
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
 import { Copy, Wine } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
+import { 
+  generateMatchrimName, 
+  generateWineStyles, 
+  generateGrapeRecommendations, 
+  generateRegionRecommendations 
+} from '@/utils/profileUtils';
 
 interface QuizResultsProps {
   result: QuizResult;
@@ -16,44 +22,6 @@ interface QuizResultsProps {
   recommendations: string[];
   onRestart: () => void;
 }
-
-// Función para determinar el nombre Matchrim según el resultado
-const generateMatchrimName = (result: QuizResult): string => {
-  // Atributo dominante
-  const attributes = [
-    { name: "Potente", value: result.potente },
-    { name: "Acidez", value: result.acidez },
-    { name: "Dulce", value: result.dulce },
-    { name: "Tánico", value: result.tanico },
-    { name: "Afrutado", value: result.afrutado }
-  ];
-  
-  // Ordenar por valor más alto
-  attributes.sort((a, b) => b.value - a.value);
-  
-  // Primer nombre basado en el atributo dominante
-  const firstNames: {[key: string]: string[]} = {
-    "Potente": ["Garnacha", "Tempranillo", "Monastrell", "Malbec"],
-    "Acidez": ["Albariño", "Godello", "Riesling", "Sauvignon"],
-    "Dulce": ["Moscatel", "Pedro", "Malvasía", "Gewürztraminer"],
-    "Tánico": ["Cabernet", "Syrah", "Mencía", "Nebbiolo"],
-    "Afrutado": ["Merlot", "Pinot", "Verdejo", "Chardonnay"]
-  };
-  
-  // Segundo nombre basado en el segundo atributo más dominante
-  const lastNames: {[key: string]: string[]} = {
-    "Potente": ["Roble", "Bravo", "Intenso", "Solar"],
-    "Acidez": ["Fresco", "Vibrante", "Atlántico", "Luz"],
-    "Dulce": ["Miel", "Ámbar", "Terciopelo", "Dorado"],
-    "Tánico": ["Tierra", "Especia", "Fuego", "Noble"],
-    "Afrutado": ["Jardín", "Aroma", "Primavera", "Velo"]
-  };
-  
-  const firstName = firstNames[attributes[0].name][Math.floor(Math.random() * firstNames[attributes[0].name].length)];
-  const lastName = lastNames[attributes[1].name][Math.floor(Math.random() * lastNames[attributes[1].name].length)];
-  
-  return `${firstName} ${lastName}`;
-};
 
 // Función para generar descripción emocional basada en el radar de atributos
 const generateEmotionalDescription = (result: QuizResult): string => {
@@ -97,217 +65,6 @@ const generateEmotionalDescription = (result: QuizResult): string => {
   return description;
 };
 
-// Función para generar recomendaciones de estilo de vino según la nueva tabla
-const generateWineStyles = (result: QuizResult): string[] => {
-  const styles = [];
-  
-  // Tabla de correspondencia según el nuevo documento
-  const styleRecommendations = [
-    { name: "Vinos blancos frescos y ligeros", criteria: { acidez: 4, afrutado: 3, potente: 0, dulce: 0, tanico: 0 } },
-    { name: "Vinos blancos aromáticos", criteria: { acidez: 3, afrutado: 4, potente: 0, dulce: 0, tanico: 0 } },
-    { name: "Vinos blancos con volumen", criteria: { acidez: 2, potente: 3, dulce: 0, tanico: 0, afrutado: 3 } },
-    { name: "Vinos blancos dulces", criteria: { dulce: 4, acidez: 3, potente: 0, tanico: 0, afrutado: 4 } },
-    { name: "Vinos rosados frescos", criteria: { acidez: 4, afrutado: 3, potente: 2, dulce: 0, tanico: 1 } },
-    { name: "Vinos tintos ligeros", criteria: { potente: 2, tanico: 2, acidez: 3, dulce: 0, afrutado: 4 } },
-    { name: "Vinos tintos con cuerpo medio", criteria: { potente: 3, tanico: 3, acidez: 3, dulce: 0, afrutado: 3 } },
-    { name: "Vinos tintos potentes", criteria: { potente: 4, tanico: 4, acidez: 2, dulce: 0, afrutado: 3 } },
-    { name: "Vinos tintos maduros", criteria: { potente: 4, tanico: 3, acidez: 2, dulce: 2, afrutado: 3 } },
-    { name: "Vinos espumosos", criteria: { acidez: 4, afrutado: 3, potente: 2, dulce: 0, tanico: 0 } }
-  ];
-
-  // Calcular la compatibilidad con cada estilo
-  const compatibilityScores = styleRecommendations.map(style => {
-    const score = calculateCompatibilityForStyle(result, style.criteria);
-    return { name: style.name, score };
-  });
-  
-  // Ordenar por puntuación y tomar los 3 mejores
-  compatibilityScores.sort((a, b) => b.score - a.score);
-  return compatibilityScores.slice(0, 3).map(style => style.name);
-};
-
-// Función para calcular la compatibilidad para estilos específicamente
-const calculateCompatibilityForStyle = (result: QuizResult, criteria: any): number => {
-  let score = 0;
-  let relevantFactors = 0;
-  
-  // Solo considerar los factores que tienen un valor > 0 en el criterio
-  Object.keys(criteria).forEach(factor => {
-    if (criteria[factor] > 0) {
-      const key = factor as keyof QuizResult;
-      const factorWeight = criteria[factor];
-      const similarity = 5 - Math.abs(result[key] - factorWeight);
-      score += similarity * factorWeight;
-      relevantFactors += factorWeight;
-    }
-  });
-  
-  // Normalizar la puntuación
-  return relevantFactors > 0 ? score / relevantFactors : 0;
-};
-
-// Función para generar uvas recomendadas según la nueva tabla
-const generateGrapeRecommendations = (result: QuizResult): string[] => {
-  // Tabla de correspondencia según el nuevo documento
-  const grapeRecommendations = [
-    // Uvas blancas frescas
-    { name: "Albariño", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Verdejo", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Sauvignon Blanc", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Godello", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
-    { name: "Riesling", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 2, tanico: 1 } },
-    
-    // Uvas blancas aromáticas
-    { name: "Gewürztraminer", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 3, tanico: 1 } },
-    { name: "Moscatel", criteria: { acidez: 3, afrutado: 5, potente: 2, dulce: 4, tanico: 1 } },
-    { name: "Viognier", criteria: { acidez: 3, afrutado: 4, potente: 3, dulce: 2, tanico: 1 } },
-    
-    // Uvas blancas con volumen
-    { name: "Chardonnay", criteria: { acidez: 3, afrutado: 3, potente: 4, dulce: 2, tanico: 1 } },
-    { name: "Garnacha Blanca", criteria: { acidez: 3, afrutado: 3, potente: 4, dulce: 2, tanico: 2 } },
-    { name: "Chenin Blanc", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
-    
-    // Uvas tintas ligeras
-    { name: "Pinot Noir", criteria: { potente: 3, tanico: 2, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "Gamay", criteria: { potente: 2, tanico: 2, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "Mencía", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
-    
-    // Uvas tintas con cuerpo medio
-    { name: "Tempranillo", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Garnacha", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 3, afrutado: 4 } },
-    { name: "Merlot", criteria: { potente: 3, tanico: 3, acidez: 3, dulce: 2, afrutado: 4 } },
-    { name: "Sangiovese", criteria: { potente: 3, tanico: 4, acidez: 4, dulce: 2, afrutado: 3 } },
-    
-    // Uvas tintas potentes
-    { name: "Cabernet Sauvignon", criteria: { potente: 4, tanico: 5, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Syrah", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Monastrell", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
-    { name: "Petit Verdot", criteria: { potente: 5, tanico: 5, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Malbec", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 3, afrutado: 4 } }
-  ];
-
-  // Calcular la compatibilidad con cada uva
-  const compatibilityScores = grapeRecommendations.map(grape => {
-    const score = calculateCompatibilityForGrape(result, grape.criteria);
-    return { name: grape.name, score };
-  });
-  
-  // Ordenar por puntuación
-  compatibilityScores.sort((a, b) => b.score - a.score);
-  
-  // Tomar el top 40% de las uvas
-  const topGrapes = compatibilityScores.slice(0, Math.ceil(compatibilityScores.length * 0.4));
-  
-  // Seleccionar 6 uvas aleatorias de entre las mejores
-  return shuffleArray(topGrapes).slice(0, 6).map(grape => grape.name);
-};
-
-// Función para generar regiones recomendadas según la nueva tabla
-const generateRegionRecommendations = (result: QuizResult): string[] => {
-  // Tabla de correspondencia según el nuevo documento
-  const regionRecommendations = [
-    // Regiones de blancos frescos
-    { name: "Rías Baixas", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Rueda", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Txakoli", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 1, tanico: 1 } },
-    { name: "Mosel (Alemania)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Sancerre (Francia)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 1, tanico: 1 } },
-    
-    // Regiones de blancos con volumen
-    { name: "Valdeorras", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
-    { name: "Penedès", criteria: { acidez: 3, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
-    { name: "Borgoña (Francia)", criteria: { acidez: 4, afrutado: 3, potente: 4, dulce: 2, tanico: 1 } },
-    
-    // Regiones de blancos aromáticos
-    { name: "Somontano", criteria: { acidez: 3, afrutado: 4, potente: 3, dulce: 2, tanico: 1 } },
-    { name: "Alsacia (Francia)", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 3, tanico: 1 } },
-    
-    // Regiones de dulces
-    { name: "Jerez", criteria: { acidez: 3, afrutado: 4, potente: 4, dulce: 4, tanico: 1 } },
-    { name: "Málaga", criteria: { acidez: 3, afrutado: 4, potente: 3, dulce: 5, tanico: 1 } },
-    { name: "Tokaj (Hungría)", criteria: { acidez: 4, afrutado: 4, potente: 3, dulce: 5, tanico: 1 } },
-    
-    // Regiones de tintos ligeros
-    { name: "Bierzo", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "Ribeira Sacra", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "Borgoña (Francia)", criteria: { potente: 3, tanico: 2, acidez: 4, dulce: 2, afrutado: 4 } },
-    
-    // Regiones de tintos con cuerpo medio
-    { name: "Rioja", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Ribera del Duero", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Toro", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Navarra", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    
-    // Regiones de tintos potentes
-    { name: "Priorat", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Jumilla", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
-    { name: "Toro", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
-    { name: "Napa Valley (USA)", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
-    { name: "Barossa Valley (Australia)", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } }
-  ];
-
-  // Calcular la compatibilidad con cada región
-  const compatibilityScores = regionRecommendations.map(region => {
-    const score = calculateCompatibilityForRegion(result, region.criteria);
-    return { name: region.name, score };
-  });
-  
-  // Ordenar por puntuación
-  compatibilityScores.sort((a, b) => b.score - a.score);
-  
-  // Tomar el top 40% de las regiones
-  const topRegions = compatibilityScores.slice(0, Math.ceil(compatibilityScores.length * 0.4));
-  
-  // Seleccionar 6 regiones aleatorias de entre las mejores, asegurando que no haya duplicados
-  const selectedRegions = new Set<string>();
-  const shuffledTopRegions = shuffleArray(topRegions);
-  
-  // Seguir añadiendo regiones hasta tener 6 o hasta agotar las opciones
-  for (const region of shuffledTopRegions) {
-    selectedRegions.add(region.name);
-    if (selectedRegions.size >= 6) break;
-  }
-  
-  // Convertir el Set a array
-  return Array.from(selectedRegions);
-};
-
-// Función para calcular compatibilidad para uvas
-const calculateCompatibilityForGrape = (result: QuizResult, criteria: any): number => {
-  let score = 0;
-  
-  score += (5 - Math.abs(result.potente - criteria.potente)) * 2;
-  score += (5 - Math.abs(result.acidez - criteria.acidez)) * 2;
-  score += (5 - Math.abs(result.dulce - criteria.dulce)) * 2;
-  score += (5 - Math.abs(result.tanico - criteria.tanico)) * 2;
-  score += (5 - Math.abs(result.afrutado - criteria.afrutado)) * 2;
-  
-  return score;
-};
-
-// Función para calcular compatibilidad para regiones
-const calculateCompatibilityForRegion = (result: QuizResult, criteria: any): number => {
-  let score = 0;
-  
-  score += (5 - Math.abs(result.potente - criteria.potente)) * 2;
-  score += (5 - Math.abs(result.acidez - criteria.acidez)) * 2;
-  score += (5 - Math.abs(result.dulce - criteria.dulce)) * 2;
-  score += (5 - Math.abs(result.tanico - criteria.tanico)) * 2;
-  score += (5 - Math.abs(result.afrutado - criteria.afrutado)) * 2;
-  
-  return score;
-};
-
-// Función para mezclar un array (algoritmo de Fisher-Yates)
-function shuffleArray<T>(array: T[]): T[] {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-}
-
 const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart }) => {
   const chartData = [
     { attribute: "Potente", value: result.potente },
@@ -327,7 +84,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     },
   };
   
-  // Generar datos personalizados
+  // Generar datos personalizados usando las funciones consistentes
   const profileName = generateMatchrimName(result);
   const emotionalDescription = generateEmotionalDescription(result);
   const wineStyles = generateWineStyles(result);

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -11,125 +10,12 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import { Wine, User, History, Settings, Copy } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-
-// Import the profile name generation function from QuizResults
-const generateMatchrimName = (result: any): string => {
-  const attributes = [
-    { name: "Potente", value: result.potente },
-    { name: "Acidez", value: result.acidez },
-    { name: "Dulce", value: result.dulce },
-    { name: "Tánico", value: result.tanico },
-    { name: "Afrutado", value: result.afrutado }
-  ];
-  
-  attributes.sort((a, b) => b.value - a.value);
-  
-  const firstNames: {[key: string]: string[]} = {
-    "Potente": ["Garnacha", "Tempranillo", "Monastrell", "Malbec"],
-    "Acidez": ["Albariño", "Godello", "Riesling", "Sauvignon"],
-    "Dulce": ["Moscatel", "Pedro", "Malvasía", "Gewürztraminer"],
-    "Tánico": ["Cabernet", "Syrah", "Mencía", "Nebbiolo"],
-    "Afrutado": ["Merlot", "Pinot", "Verdejo", "Chardonnay"]
-  };
-  
-  const lastNames: {[key: string]: string[]} = {
-    "Potente": ["Roble", "Bravo", "Intenso", "Solar"],
-    "Acidez": ["Fresco", "Vibrante", "Atlántico", "Luz"],
-    "Dulce": ["Miel", "Ámbar", "Terciopelo", "Dorado"],
-    "Tánico": ["Tierra", "Especia", "Fuego", "Noble"],
-    "Afrutado": ["Jardín", "Aroma", "Primavera", "Velo"]
-  };
-  
-  const firstName = firstNames[attributes[0].name][Math.floor(Math.random() * firstNames[attributes[0].name].length)];
-  const lastName = lastNames[attributes[1].name][Math.floor(Math.random() * lastNames[attributes[1].name].length)];
-  
-  return `${firstName} ${lastName}`;
-};
-
-// Generate wine styles function
-const generateWineStyles = (result: any): string[] => {
-  const styleRecommendations = [
-    { name: "Vinos blancos frescos y ligeros", criteria: { acidez: 4, afrutado: 3, potente: 0, dulce: 0, tanico: 0 } },
-    { name: "Vinos blancos aromáticos", criteria: { acidez: 3, afrutado: 4, potente: 0, dulce: 0, tanico: 0 } },
-    { name: "Vinos blancos con volumen", criteria: { acidez: 2, potente: 3, dulce: 0, tanico: 0, afrutado: 3 } },
-    { name: "Vinos tintos ligeros", criteria: { potente: 2, tanico: 2, acidez: 3, dulce: 0, afrutado: 4 } },
-    { name: "Vinos tintos con cuerpo medio", criteria: { potente: 3, tanico: 3, acidez: 3, dulce: 0, afrutado: 3 } },
-    { name: "Vinos tintos potentes", criteria: { potente: 4, tanico: 4, acidez: 2, dulce: 0, afrutado: 3 } }
-  ];
-
-  const compatibilityScores = styleRecommendations.map(style => {
-    let score = 0;
-    let relevantFactors = 0;
-    
-    Object.keys(style.criteria).forEach(factor => {
-      if (style.criteria[factor] > 0) {
-        const key = factor as keyof typeof result;
-        const factorWeight = style.criteria[factor];
-        const similarity = 5 - Math.abs(result[key] - factorWeight);
-        score += similarity * factorWeight;
-        relevantFactors += factorWeight;
-      }
-    });
-    
-    return { name: style.name, score: relevantFactors > 0 ? score / relevantFactors : 0 };
-  });
-  
-  compatibilityScores.sort((a, b) => b.score - a.score);
-  return compatibilityScores.slice(0, 3).map(style => style.name);
-};
-
-// Generate grape recommendations
-const generateGrapeRecommendations = (result: any): string[] => {
-  const grapeRecommendations = [
-    { name: "Albariño", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Tempranillo", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Garnacha", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 3, afrutado: 4 } },
-    { name: "Syrah", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Monastrell", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
-    { name: "Garnacha Blanca", criteria: { acidez: 3, afrutado: 3, potente: 4, dulce: 2, tanico: 2 } },
-    { name: "Mencía", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } }
-  ];
-
-  const compatibilityScores = grapeRecommendations.map(grape => {
-    let score = 0;
-    score += (5 - Math.abs(result.potente - grape.criteria.potente)) * 2;
-    score += (5 - Math.abs(result.acidez - grape.criteria.acidez)) * 2;
-    score += (5 - Math.abs(result.dulce - grape.criteria.dulce)) * 2;
-    score += (5 - Math.abs(result.tanico - grape.criteria.tanico)) * 2;
-    score += (5 - Math.abs(result.afrutado - grape.criteria.afrutado)) * 2;
-    
-    return { name: grape.name, score };
-  });
-  
-  compatibilityScores.sort((a, b) => b.score - a.score);
-  return compatibilityScores.slice(0, 6).map(grape => grape.name);
-};
-
-// Generate region recommendations
-const generateRegionRecommendations = (result: any): string[] => {
-  const regionRecommendations = [
-    { name: "Jumilla", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
-    { name: "Ribera Sacra", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
-    { name: "Toro", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 3, afrutado: 3 } },
-    { name: "Penedès", criteria: { acidez: 3, afrutado: 3, potente: 3, dulce: 2, tanico: 1 } },
-    { name: "Navarra", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Ribera del Duero", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } }
-  ];
-
-  const compatibilityScores = regionRecommendations.map(region => {
-    let score = 0;
-    score += (5 - Math.abs(result.potente - region.criteria.potente)) * 2;
-    score += (5 - Math.abs(result.acidez - region.criteria.acidez)) * 2;
-    score += (5 - Math.abs(result.dulce - region.criteria.dulce)) * 2;
-    score += (5 - Math.abs(result.tanico - region.criteria.tanico)) * 2;
-    score += (5 - Math.abs(result.afrutado - region.criteria.afrutado)) * 2;
-    
-    return { name: region.name, score };
-  });
-  
-  compatibilityScores.sort((a, b) => b.score - a.score);
-  return compatibilityScores.slice(0, 6).map(region => region.name);
-};
+import { 
+  generateMatchrimName, 
+  generateWineStyles, 
+  generateGrapeRecommendations, 
+  generateRegionRecommendations 
+} from '@/utils/profileUtils';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -173,7 +59,7 @@ const Profile = () => {
     },
   };
 
-  // Generate profile data
+  // Generate profile data using the new consistent functions
   const profileName = currentProfile ? generateMatchrimName(currentProfile) : "";
   const wineStyles = currentProfile ? generateWineStyles(currentProfile) : [];
   const recommendedGrapes = currentProfile ? generateGrapeRecommendations(currentProfile) : [];
