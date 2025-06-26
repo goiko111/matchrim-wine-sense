@@ -1,12 +1,11 @@
-
 import React from 'react';
-import { ArrowLeft, Wine, ChefHat, Scale } from 'lucide-react';
+import { ArrowLeft, Wine, ChefHat, Scale, PartyPopper } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface MatchrimMenuProps {
   onBack: () => void;
-  onSelectFunction: (functionType: 'wine-for-dish' | 'dish-for-wine' | 'pairing-check') => void;
+  onSelectFunction: (functionType: 'wine-for-dish' | 'dish-for-wine' | 'pairing-check' | 'special-moments') => void;
 }
 
 const MatchrimMenu: React.FC<MatchrimMenuProps> = ({ onBack, onSelectFunction }) => {
@@ -34,6 +33,14 @@ const MatchrimMenu: React.FC<MatchrimMenuProps> = ({ onBack, onSelectFunction })
       description: 'Evalúa si tu vino y plato son una buena combinación',
       color: 'bg-red-100 text-red-800',
       example: 'Ej: "Malbec + asado"'
+    },
+    {
+      id: 'special-moments' as const,
+      icon: PartyPopper,
+      title: 'Vinos para momentos especiales',
+      description: 'Encuentra el vino perfecto para cualquier ocasión especial',
+      color: 'bg-red-100 text-red-800',
+      example: 'Ej: "Cena con amigos, cumpleaños..."'
     }
   ];
 

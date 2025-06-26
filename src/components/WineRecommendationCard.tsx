@@ -1,11 +1,10 @@
-
 import React from 'react';
-import { Wine, Star, Thermometer, Clock } from 'lucide-react';
+import { Wine, Star, Thermometer, Clock, PartyPopper } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface WineRecommendationCardProps {
   response: string;
-  functionType: 'wine-for-dish' | 'dish-for-wine' | 'pairing-check';
+  functionType: 'wine-for-dish' | 'dish-for-wine' | 'pairing-check' | 'special-moments';
 }
 
 const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ response, functionType }) => {
@@ -25,6 +24,8 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
         return <Clock className="h-5 w-5 text-red-700" />;
       case 'pairing-check':
         return <Star className="h-5 w-5 text-red-700" />;
+      case 'special-moments':
+        return <PartyPopper className="h-5 w-5 text-red-700" />;
       default:
         return <Wine className="h-5 w-5 text-red-700" />;
     }

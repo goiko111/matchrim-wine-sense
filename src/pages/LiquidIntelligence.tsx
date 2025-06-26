@@ -4,9 +4,10 @@ import Header from '@/components/Header';
 import MatchrimWelcome from '@/components/MatchrimWelcome';
 import MatchrimMenu from '@/components/MatchrimMenu';
 import MatchrimFunction from '@/components/MatchrimFunction';
+import SpecialMomentsFlow from '@/components/SpecialMomentsFlow';
 
 type AppState = 'welcome' | 'menu' | 'function';
-type FunctionType = 'wine-for-dish' | 'dish-for-wine' | 'pairing-check';
+type FunctionType = 'wine-for-dish' | 'dish-for-wine' | 'pairing-check' | 'special-moments';
 
 const LiquidIntelligence = () => {
   const [currentState, setCurrentState] = useState<AppState>('welcome');
@@ -39,6 +40,9 @@ const LiquidIntelligence = () => {
         return <MatchrimMenu onBack={handleBackToWelcome} onSelectFunction={handleSelectFunction} />;
       case 'function':
         if (!selectedFunction) return null;
+        if (selectedFunction === 'special-moments') {
+          return <SpecialMomentsFlow onBack={handleBackToMenu} />;
+        }
         return <MatchrimFunction functionType={selectedFunction} onBack={handleBackToMenu} />;
       default:
         return <MatchrimWelcome onGetStarted={handleGetStarted} />;
