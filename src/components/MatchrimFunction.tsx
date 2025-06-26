@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { ArrowLeft, Send, Loader, Wine, ChefHat, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import WineRecommendationCard from './WineRecommendationCard';
+import PairingScoreCard from './PairingScoreCard';
 
 interface MatchrimFunctionProps {
   functionType: 'wine-for-dish' | 'dish-for-wine' | 'pairing-check';
@@ -195,28 +196,21 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
 
       {/* Result */}
       {result && (
-        <Card className="max-w-md mx-auto border-red-200">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-red-900 mb-4">
-              Recomendación del Sommelier
-            </h3>
-            <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-              <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
-                {result}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="max-w-md mx-auto space-y-4">
+          {functionType === 'pairing-check' && <PairingScoreCard response={result} />}
+          <WineRecommendationCard response={result} functionType={functionType} />
+        </div>
       )}
 
       {/* Loading state */}
       {isLoading && !result && (
-        <Card className="max-w-md mx-auto border-red-200">
-          <CardContent className="p-6 text-center">
+        <div className="max-w-md mx-auto">
+          <div className="p-8 text-center bg-white rounded-lg border border-red-200 shadow-sm">
             <Loader className="h-8 w-8 animate-spin mx-auto mb-4 text-red-700" />
-            <p className="text-red-600">Nuestro sommelier está analizando...</p>
-          </CardContent>
-        </Card>
+            <p className="text-red-600 font-medium">Nuestro sommelier está analizando...</p>
+            <p className="text-red-500 text-sm mt-2">Esto puede tomar unos segundos</p>
+          </div>
+        </div>
       )}
     </div>
   );
