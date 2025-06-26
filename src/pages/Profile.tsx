@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -189,6 +190,10 @@ const Profile = () => {
   if (!user) {
     return null;
   }
+
+  // Organize recommendations by country
+  const spanishWines = currentProfile?.wine_recommendations?.filter(wine => wine.country === "España") || [];
+  const internationalWines = currentProfile?.wine_recommendations?.filter(wine => wine.country !== "España") || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100">
@@ -443,42 +448,78 @@ const Profile = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-900">
                   <Wine className="h-5 w-5" />
-                  Recomendaciones de Vinos
+                  Vinos que te encantarán
                 </CardTitle>
                 <CardDescription>
                   Vinos recomendados basados en tu perfil actual
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {currentProfile && currentProfile.wine_recommendations ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {currentProfile.wine_recommendations.map((wine, index) => (
-                      <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
-                        <div className="flex items-start gap-3">
-                          <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                            <Wine className="h-4 w-4" />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-gray-800">{wine.wine_name}</p>
-                            <p className="text-sm text-gray-600">{wine.wine_type}</p>
-                            <p className="text-sm text-gray-600">
-                              <span className="font-medium">Bodega:</span> {wine.winery}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              <span className="font-medium">Región:</span> {wine.region}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              <span className="font-medium">País:</span> {wine.country}
-                            </p>
-                            <div className="mt-2">
-                              <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">
-                                {wine.compatibility_score}% compatible
-                              </span>
+                {currentProfile && currentProfile.wine_recommendations && currentProfile.wine_recommendations.length > 0 ? (
+                  <div className="space-y-6">
+                    {spanishWines.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-red-800 flex items-center gap-2 mb-4">
+                          🇪🇸 España
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {spanishWines.map((wine, index) => (
+                            <div key={index} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                              <div className="flex items-start gap-3">
+                                <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0 mt-1">
+                                  <Wine className="h-4 w-4" />
+                                </div>
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-gray-900 text-sm mb-1">{wine.wine_name}</h4>
+                                  <p className="text-xs text-gray-600 mb-1">{wine.wine_type}</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    <span className="font-medium">Bodega:</span> {wine.winery}
+                                  </p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    <span className="font-medium">Región:</span> {wine.region}
+                                  </p>
+                                  <p className="text-xs text-gray-600">
+                                    <span className="font-medium">País:</span> {wine.country}
+                                  </p>
+                                </div>
+                              </div>
                             </div>
-                          </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
+                    )}
+                    
+                    {internationalWines.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-red-800 flex items-center gap-2 mb-4">
+                          🌎 Internacional
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {internationalWines.map((wine, index) => (
+                            <div key={index} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                              <div className="flex items-start gap-3">
+                                <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0 mt-1">
+                                  <Wine className="h-4 w-4" />
+                                </div>
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-gray-900 text-sm mb-1">{wine.wine_name}</h4>
+                                  <p className="text-xs text-gray-600 mb-1">{wine.wine_type}</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    <span className="font-medium">Bodega:</span> {wine.winery}
+                                  </p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    <span className="font-medium">Región:</span> {wine.region}
+                                  </p>
+                                  <p className="text-xs text-gray-600">
+                                    <span className="font-medium">País:</span> {wine.country}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <p className="text-gray-600 text-center py-8">
