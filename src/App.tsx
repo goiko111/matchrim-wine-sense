@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Registration from "./pages/Registration";
 import Profile from "./pages/Profile";
+import LiquidIntelligence from "./pages/LiquidIntelligence";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
