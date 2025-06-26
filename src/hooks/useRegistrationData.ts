@@ -60,6 +60,8 @@ export const useRegistrationData = () => {
     setIsSaving(true);
     
     try {
+      console.log('Starting registration process for:', registrationData.email);
+      
       // First, create the user account
       const { error: signUpError } = await signUp(
         registrationData.email,
@@ -69,6 +71,7 @@ export const useRegistrationData = () => {
       );
 
       if (signUpError) {
+        console.error('SignUp error:', signUpError);
         toast({
           title: "Error en el registro",
           description: signUpError.message,
@@ -77,17 +80,34 @@ export const useRegistrationData = () => {
         return false;
       }
 
+      console.log('User signup successful, waiting for session...');
+
+      // Wait a moment for the session to be established
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       // Get the current session to get user ID
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
-      if (!session?.user) {
+      if (sessionError) {
+        console.error('Session error:', sessionError);
         toast({
           title: "Error",
-          description: "No se pudo obtener la información del usuario",
+          description: "Error al obtener la sesión de usuario",
           variant: "destructive"
         });
         return false;
       }
+
+      if (!session?.user) {
+        console.log('No session available, user needs to verify email first');
+        toast({
+          title: "¡Registro exitoso!",
+          description: "Te hemos enviado un email de confirmación. Por favor revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.",
+        });
+        return true;
+      }
+
+      console.log('Session available, updating profile for user:', session.user.id);
 
       // Update profile with additional data
       const { error: profileError } = await supabase
@@ -103,10 +123,12 @@ export const useRegistrationData = () => {
 
       if (profileError) {
         console.error('Profile update error:', profileError);
+        // Don't fail the whole process for profile update errors
       }
 
       // Save wine preferences
       if (registrationData.wineTypes.length > 0 || registrationData.tastePreferences.length > 0 || registrationData.priceRange) {
+        console.log('Saving wine preferences...');
         const { error: wineError } = await supabase
           .from('wine_preferences')
           .insert({
@@ -119,11 +141,13 @@ export const useRegistrationData = () => {
 
         if (wineError) {
           console.error('Wine preferences error:', wineError);
+          // Don't fail the whole process for preferences errors
         }
       }
 
       // Save dietary preferences
       if (registrationData.dietaryRestrictions.length > 0 || registrationData.foodPairings.length > 0) {
+        console.log('Saving dietary preferences...');
         const { error: dietaryError } = await supabase
           .from('dietary_preferences')
           .insert({
@@ -134,12 +158,13 @@ export const useRegistrationData = () => {
 
         if (dietaryError) {
           console.error('Dietary preferences error:', dietaryError);
+          // Don't fail the whole process for dietary preferences errors
         }
       }
 
       toast({
         title: "¡Registro completado!",
-        description: "Tu cuenta ha sido creada exitosamente. Por favor verifica tu email."
+        description: "Tu cuenta ha sido creada exitosamente. Si no estás autenticado automáticamente, revisa tu email para verificar tu cuenta."
       });
 
       return true;
@@ -147,7 +172,7 @@ export const useRegistrationData = () => {
       console.error('Registration error:', error);
       toast({
         title: "Error en el registro",
-        description: "Ocurrió un error inesperado. Inténtalo de nuevo.",
+        description: `Ocurrió un error inesperado: ${error.message || 'Error desconocido'}`,
         variant: "destructive"
       });
       return false;

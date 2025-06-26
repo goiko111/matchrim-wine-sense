@@ -29,9 +29,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('Setting up auth state listener...');
+    
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -40,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session check:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -49,60 +53,139 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-          preferred_language: 'ES'
+    try {
+      console.log('Attempting signup for:', email);
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            preferred_language: 'ES'
+          }
         }
+      });
+      
+      if (error) {
+        console.error('Signup error:', error);
+        let errorMessage = error.message;
+        
+        // Translate common error messages to Spanish
+        if (error.message.includes('already registered')) {
+          errorMessage = 'Este email ya está registrado. Intenta iniciar sesión o usa otro email.';
+        } else if (error.message.includes('invalid email')) {
+          errorMessage = 'El formato del email no es válido.';
+        } else if (error.message.includes('weak password')) {
+          errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+        }
+        
+        toast({
+          title: "Error en el registro",
+          description: errorMessage,
+          variant: "destructive"
+        });
+        return { error };
       }
-    });
-    
-    if (error) {
+
+      console.log('Signup response:', data);
+      
+      if (data.user && !data.session) {
+        // User created but needs email confirmation
+        console.log('User created, email confirmation required');
+        toast({
+          title: "¡Registro exitoso!",
+          description: "Te hemos enviado un email de confirmación. Por favor revisa tu bandeja de entrada y spam, y haz clic en el enlace para activar tu cuenta.",
+        });
+      } else if (data.session) {
+        // User is immediately signed in (email confirmation disabled)
+        console.log('User created and signed in');
+        toast({
+          title: "¡Bienvenido!",
+          description: "Tu cuenta ha sido creada exitosamente."
+        });
+      }
+      
+      return { error: null };
+    } catch (error: any) {
+      console.error('Unexpected signup error:', error);
       toast({
         title: "Error en el registro",
-        description: error.message,
+        description: "Ocurrió un error inesperado. Por favor intenta de nuevo.",
         variant: "destructive"
       });
-    } else {
-      toast({
-        title: "¡Registro exitoso!",
-        description: "Por favor revisa tu email para confirmar tu cuenta."
-      });
+      return { error };
     }
-    
-    return { error };
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-    
-    if (error) {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      
+      if (error) {
+        console.error('Signin error:', error);
+        let errorMessage = error.message;
+        
+        // Translate common error messages to Spanish
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = 'Credenciales incorrectas. Verifica tu email y contraseña.';
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = 'Debes confirmar tu email antes de iniciar sesión. Revisa tu bandeja de entrada.';
+        }
+        
+        toast({
+          title: "Error de autenticación",
+          description: errorMessage,
+          variant: "destructive"
+        });
+        return { error };
+      }
+      
+      console.log('Signin successful for:', data.user?.email);
+      toast({
+        title: "¡Bienvenido de vuelta!",
+        description: "Has iniciado sesión exitosamente."
+      });
+      
+      return { error: null };
+    } catch (error: any) {
+      console.error('Unexpected signin error:', error);
       toast({
         title: "Error de autenticación",
-        description: error.message,
+        description: "Ocurrió un error inesperado. Por favor intenta de nuevo.",
         variant: "destructive"
       });
+      return { error };
     }
-    
-    return { error };
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Signout error:', error);
+        toast({
+          title: "Error al cerrar sesión",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Sesión cerrada",
+          description: "Has cerrado sesión exitosamente."
+        });
+      }
+    } catch (error: any) {
+      console.error('Unexpected signout error:', error);
       toast({
         title: "Error al cerrar sesión",
-        description: error.message,
+        description: "Ocurrió un error inesperado.",
         variant: "destructive"
       });
     }
