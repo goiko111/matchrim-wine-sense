@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Brain, Zap, MessageCircle, Calculator, TrendingUp, Sparkles } from 'lucide-react';
 import Header from '@/components/Header';
+import AIChatInterface from '@/components/AIChatInterface';
+import WineAnalysisCard from '@/components/WineAnalysisCard';
 
 const LiquidIntelligence = () => {
   const [selectedAI, setSelectedAI] = useState<string | null>(null);
@@ -62,21 +64,105 @@ const LiquidIntelligence = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="overview" className="w-full">
+        <Tabs defaultValue="chat" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <Brain className="h-4 w-4" />
-              Resumen
-            </TabsTrigger>
             <TabsTrigger value="chat" className="flex items-center gap-2">
               <MessageCircle className="h-4 w-4" />
               Chat IA
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
+            <TabsTrigger value="analysis" className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
               Análisis
             </TabsTrigger>
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <Brain className="h-4 w-4" />
+              Configuración
+            </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="chat" className="mt-6">
+            <div className="grid gap-6 lg:grid-cols-3">
+              <div className="lg:col-span-2">
+                <AIChatInterface context="Usuario interactuando con el sistema de Inteligencia Líquida" />
+              </div>
+              <div className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-red-900 text-lg">Sugerencias</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-left justify-start text-sm border-red-200 hover:bg-red-50"
+                      onClick={() => {/* Will be implemented in chat interface */}}
+                    >
+                      "¿Qué vino me recomiendas para una cena romántica?"
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-left justify-start text-sm border-red-200 hover:bg-red-50"
+                      onClick={() => {/* Will be implemented in chat interface */}}
+                    >
+                      "Analiza mi perfil sensorial"
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-left justify-start text-sm border-red-200 hover:bg-red-50"
+                      onClick={() => {/* Will be implemented in chat interface */}}
+                    >
+                      "¿Cómo debo maridar un Cabernet Sauvignon?"
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="analysis" className="mt-6">
+            <div className="grid gap-6">
+              <WineAnalysisCard />
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-red-900">
+                    <TrendingUp className="h-5 w-5" />
+                    Próximas Funcionalidades de Análisis
+                  </CardTitle>
+                  <CardDescription>
+                    Herramientas avanzadas que estarán disponibles próximamente
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="p-4 border border-red-200 rounded-lg bg-red-50">
+                      <h3 className="font-semibold text-red-900 mb-2">Análisis de Perfil Personal</h3>
+                      <p className="text-sm text-red-700">
+                        Análisis detallado de tus preferencias basado en tus respuestas del perfil sensorial.
+                      </p>
+                    </div>
+                    <div className="p-4 border border-red-200 rounded-lg bg-red-50">
+                      <h3 className="font-semibold text-red-900 mb-2">Predicciones de Maridaje</h3>
+                      <p className="text-sm text-red-700">
+                        Recomendaciones automáticas de maridajes basadas en machine learning.
+                      </p>
+                    </div>
+                    <div className="p-4 border border-red-200 rounded-lg bg-red-50">
+                      <h3 className="font-semibold text-red-900 mb-2">Análisis de Tendencias</h3>
+                      <p className="text-sm text-red-700">
+                        Insights sobre tendencias del mercado vinícola y preferencias emergentes.
+                      </p>
+                    </div>
+                    <div className="p-4 border border-red-200 rounded-lg bg-red-50">
+                      <h3 className="font-semibold text-red-900 mb-2">Comparativa de Vinos</h3>
+                      <p className="text-sm text-red-700">
+                        Herramienta para comparar diferentes vinos y obtener análisis detallados.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
           <TabsContent value="overview" className="mt-6">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -123,7 +209,7 @@ const LiquidIntelligence = () => {
                           className="w-full bg-red-700 hover:bg-red-800"
                           disabled={option.status !== 'Disponible'}
                         >
-                          {option.status === 'Disponible' ? 'Configurar' : 'Próximamente'}
+                          {option.status === 'Disponible' ? 'Activo' : 'Próximamente'}
                         </Button>
                       </div>
                     </CardContent>
@@ -132,85 +218,27 @@ const LiquidIntelligence = () => {
               })}
             </div>
 
-            {selectedAI && (
+            {selectedAI === 'openai' && (
               <Card className="mt-8 border-red-200">
                 <CardHeader>
                   <CardTitle className="text-red-900">
-                    Configuración de {aiOptions.find(ai => ai.id === selectedAI)?.name}
+                    Configuración de OpenAI GPT
                   </CardTitle>
                   <CardDescription>
-                    Configure los parámetros para optimizar la experiencia de IA
+                    El motor de IA está configurado y listo para usar
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-red-50 p-4 rounded-lg">
-                    <p className="text-red-800 text-sm">
-                      La configuración detallada para este motor de IA estará disponible próximamente. 
-                      Incluirá opciones para personalizar el comportamiento, ajustar la sensibilidad 
-                      y configurar las preferencias de análisis.
+                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <p className="text-green-800 text-sm">
+                      ✅ OpenAI API configurada correctamente. El asistente especializado en vinos 
+                      está disponible en la pestaña "Chat IA" y las herramientas de análisis en 
+                      la pestaña "Análisis".
                     </p>
                   </div>
                 </CardContent>
               </Card>
             )}
-          </TabsContent>
-
-          <TabsContent value="chat" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-900">
-                  <MessageCircle className="h-5 w-5" />
-                  Chat con IA Especializada
-                </CardTitle>
-                <CardDescription>
-                  Conversa con nuestro asistente especializado en vinos
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-gray-50 p-8 rounded-lg text-center">
-                  <MessageCircle className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                    Chat IA en Desarrollo
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Esta funcionalidad permitirá conversar en tiempo real con un asistente 
-                    especializado en vinos que conoce tu perfil sensorial.
-                  </p>
-                  <Button disabled className="bg-gray-300">
-                    Próximamente Disponible
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="analytics" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-900">
-                  <TrendingUp className="h-5 w-5" />
-                  Análisis Inteligente de Datos
-                </CardTitle>
-                <CardDescription>
-                  Insights avanzados sobre tu perfil y preferencias
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-gray-50 p-8 rounded-lg text-center">
-                  <TrendingUp className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                    Análisis Avanzado
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Aquí podrás ver análisis detallados de tus patrones de consumo, 
-                    evolución de tu perfil sensorial y predicciones personalizadas.
-                  </p>
-                  <Button disabled className="bg-gray-300">
-                    En Desarrollo
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </div>
