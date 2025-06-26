@@ -22,21 +22,35 @@ const Index = () => {
   const handleAnswer = (answer: string) => {
     const newAnswers = { ...answers, [questions[currentQuestion].id]: answer };
     setAnswers(newAnswers);
+  };
 
+  const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       // Quiz completed, calculate results and save to database
-      const result = calculateProfile(newAnswers);
+      const result = calculateProfile(answers);
       
       // Save to database (async, but don't wait for it)
-      saveQuizResult(result, newAnswers);
+      saveQuizResult(result, answers);
       
       setCurrentStep('results');
     }
   };
 
+  const handlePrevious = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
+
   const handleRestart = () => {
+    setCurrentStep('intro');
+    setCurrentQuestion(0);
+    setAnswers({});
+  };
+
+  const handleBackToStart = () => {
     setCurrentStep('intro');
     setCurrentQuestion(0);
     setAnswers({});
@@ -58,9 +72,15 @@ const Index = () => {
         {currentStep === 'quiz' && (
           <QuizQuestion
             question={questions[currentQuestion]}
+            currentAnswer={answers[questions[currentQuestion].id] || ''}
             onAnswer={handleAnswer}
-            currentQuestion={currentQuestion + 1}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+            isFirst={currentQuestion === 0}
+            isLast={currentQuestion === questions.length - 1}
+            currentQuestionIndex={currentQuestion}
             totalQuestions={questions.length}
+            onBackToStart={handleBackToStart}
           />
         )}
 
