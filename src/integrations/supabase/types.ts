@@ -92,6 +92,7 @@ export type Database = {
           id: string
           last_name: string | null
           location: string | null
+          name: string | null
           preferred_language: string | null
           privacy_accepted: boolean | null
           terms_accepted: boolean | null
@@ -105,6 +106,7 @@ export type Database = {
           id: string
           last_name?: string | null
           location?: string | null
+          name?: string | null
           preferred_language?: string | null
           privacy_accepted?: boolean | null
           terms_accepted?: boolean | null
@@ -118,6 +120,7 @@ export type Database = {
           id?: string
           last_name?: string | null
           location?: string | null
+          name?: string | null
           preferred_language?: string | null
           privacy_accepted?: boolean | null
           terms_accepted?: boolean | null
