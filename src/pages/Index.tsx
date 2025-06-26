@@ -3,108 +3,82 @@ import React, { useState } from 'react';
 import QuizIntro from '../components/QuizIntro';
 import QuizQuestion from '../components/QuizQuestion';
 import QuizResults from '../components/QuizResults';
-import { questions, calculateProfile, QuizResult, getProfileDescription, getRecommendedWines } from '../data/quizData';
-import { toast } from "@/hooks/use-toast";
-
-enum QuizState {
-  INTRO,
-  QUESTIONS,
-  RESULTS
-}
+import Header from '../components/Header';
+import { questions, calculateProfile, getProfileDescription, getRecommendedWines } from '../data/quizData';
+import { useQuizResults } from '@/hooks/useQuizResults';
 
 const Index = () => {
-  const [quizState, setQuizState] = useState<QuizState>(QuizState.INTRO);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentStep, setCurrentStep] = useState('intro');
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<{ [id: number]: string }>({});
-  const [result, setResult] = useState<QuizResult | null>(null);
-  const [profileDescription, setProfileDescription] = useState<string>("");
-  const [recommendations, setRecommendations] = useState<string[]>([]);
+  const { saveQuizResult, isSaving } = useQuizResults();
 
   const handleStartQuiz = () => {
-    setQuizState(QuizState.QUESTIONS);
-    setCurrentQuestionIndex(0);
+    setCurrentStep('quiz');
+    setCurrentQuestion(0);
     setAnswers({});
   };
 
-  const handleBackToStart = () => {
-    setQuizState(QuizState.INTRO);
-  };
-
   const handleAnswer = (answer: string) => {
-    setAnswers(prev => ({
-      ...prev,
-      [questions[currentQuestionIndex].id]: answer
-    }));
-  };
+    const newAnswers = { ...answers, [questions[currentQuestion].id]: answer };
+    setAnswers(newAnswers);
 
-  const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
     } else {
-      // Calculate results
-      const profileResult = calculateProfile(answers);
-      setResult(profileResult);
+      // Quiz completed, calculate results and save to database
+      const result = calculateProfile(newAnswers);
       
-      // Generate profile description
-      const description = getProfileDescription(profileResult);
-      setProfileDescription(description);
+      // Save to database (async, but don't wait for it)
+      saveQuizResult(result, newAnswers);
       
-      // Get wine recommendations using updated function
-      const wineRecs = getRecommendedWines(profileResult);
-      setRecommendations(wineRecs);
-      
-      setQuizState(QuizState.RESULTS);
-      toast({
-        title: "¡Test completado!",
-        description: "Descubre tu perfil sensorial para el vino.",
-      });
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
+      setCurrentStep('results');
     }
   };
 
   const handleRestart = () => {
-    setQuizState(QuizState.INTRO);
-    setCurrentQuestionIndex(0);
+    setCurrentStep('intro');
+    setCurrentQuestion(0);
     setAnswers({});
-    setResult(null);
   };
 
+  const result = currentStep === 'results' ? calculateProfile(answers) : null;
+  const description = result ? getProfileDescription(result) : '';
+  const recommendations = result ? getRecommendedWines(result) : [];
+
   return (
-    <div className="min-h-screen winerim-bg py-8 px-4">
-      <div className="container mx-auto">
-        {quizState === QuizState.INTRO && (
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100">
+      <Header />
+      
+      <main className="container mx-auto px-4 py-8">
+        {currentStep === 'intro' && (
           <QuizIntro onStart={handleStartQuiz} />
         )}
-        
-        {quizState === QuizState.QUESTIONS && (
+
+        {currentStep === 'quiz' && (
           <QuizQuestion
-            question={questions[currentQuestionIndex]}
-            currentAnswer={answers[questions[currentQuestionIndex].id] || ""}
+            question={questions[currentQuestion]}
             onAnswer={handleAnswer}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            isFirst={currentQuestionIndex === 0}
-            isLast={currentQuestionIndex === questions.length - 1}
-            currentQuestionIndex={currentQuestionIndex}
+            currentQuestion={currentQuestion + 1}
             totalQuestions={questions.length}
-            onBackToStart={handleBackToStart}
           />
         )}
-        
-        {quizState === QuizState.RESULTS && result && (
+
+        {currentStep === 'results' && result && (
           <QuizResults
             result={result}
-            description={profileDescription}
+            description={description}
             recommendations={recommendations}
             onRestart={handleRestart}
           />
         )}
-      </div>
+
+        {isSaving && (
+          <div className="fixed top-4 right-4 bg-red-100 border border-red-200 text-red-800 px-4 py-2 rounded-lg shadow-md">
+            Guardando resultados...
+          </div>
+        )}
+      </main>
     </div>
   );
 };
