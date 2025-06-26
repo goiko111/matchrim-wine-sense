@@ -5,11 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import BasicInfoStep from '@/components/registration/BasicInfoStep';
-import PreferencesStep from '@/components/registration/PreferencesStep';
-import TastePreferencesStep from '@/components/registration/TastePreferencesStep';
-import ExperienceStep from '@/components/registration/ExperienceStep';
-import DietaryStep from '@/components/registration/DietaryStep';
-import ConsentStep from '@/components/registration/ConsentStep';
+import WinePreferencesStep from '@/components/registration/WinePreferencesStep';
+import FinalStep from '@/components/registration/FinalStep';
 import { useRegistrationData } from '@/hooks/useRegistrationData';
 
 const Registration = () => {
@@ -18,7 +15,7 @@ const Registration = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const { registrationData, updateRegistrationData, saveRegistrationData, isSaving } = useRegistrationData();
 
-  const totalSteps = 6;
+  const totalSteps = 3;
 
   // Redirect if already authenticated
   React.useEffect(() => {
@@ -50,10 +47,7 @@ const Registration = () => {
     switch (currentStep) {
       case 1: return 'Información Básica';
       case 2: return 'Preferencias de Vino';
-      case 3: return 'Preferencias de Sabor';
-      case 4: return 'Tipo de Experiencia';
-      case 5: return 'Preferencias Dietéticas';
-      case 6: return 'Consentimientos';
+      case 3: return 'Finalizar Registro';
       default: return 'Registro';
     }
   };
@@ -70,7 +64,7 @@ const Registration = () => {
         );
       case 2:
         return (
-          <PreferencesStep
+          <WinePreferencesStep
             data={registrationData}
             onUpdate={updateRegistrationData}
             onNext={handleNext}
@@ -79,34 +73,7 @@ const Registration = () => {
         );
       case 3:
         return (
-          <TastePreferencesStep
-            data={registrationData}
-            onUpdate={updateRegistrationData}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-          />
-        );
-      case 4:
-        return (
-          <ExperienceStep
-            data={registrationData}
-            onUpdate={updateRegistrationData}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-          />
-        );
-      case 5:
-        return (
-          <DietaryStep
-            data={registrationData}
-            onUpdate={updateRegistrationData}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-          />
-        );
-      case 6:
-        return (
-          <ConsentStep
+          <FinalStep
             data={registrationData}
             onUpdate={updateRegistrationData}
             onComplete={handleComplete}
