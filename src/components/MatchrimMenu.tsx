@@ -50,7 +50,7 @@ const MatchrimMenu: React.FC<MatchrimMenuProps> = ({ onBack, onSelectFunction })
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-red-900">Matchrim</h1>
+          <h1 className="text-2xl font-bold text-red-900">Inteligencia Líquida</h1>
           <p className="text-sm text-red-600">Elige tu función</p>
         </div>
       </div>

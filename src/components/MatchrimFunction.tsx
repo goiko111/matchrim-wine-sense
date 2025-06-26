@@ -91,7 +91,7 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
       const { data, error } = await supabase.functions.invoke('ai-wine-chat', {
         body: {
           message: config.prompt,
-          context: 'Matchrim - Sistema de maridajes'
+          context: 'Inteligencia Líquida - Sistema de maridajes'
         }
       });
 
