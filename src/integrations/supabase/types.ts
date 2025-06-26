@@ -9,29 +9,118 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      classification_history: {
+        Row: {
+          acidez: number
+          afrutado: number
+          created_at: string | null
+          dulzura: number
+          estilo: string
+          id: string
+          potencia: number
+          session_id: string | null
+          taninos: number
+          wine_id: string | null
+        }
+        Insert: {
+          acidez: number
+          afrutado: number
+          created_at?: string | null
+          dulzura: number
+          estilo: string
+          id?: string
+          potencia: number
+          session_id?: string | null
+          taninos: number
+          wine_id?: string | null
+        }
+        Update: {
+          acidez?: number
+          afrutado?: number
+          created_at?: string | null
+          dulzura?: number
+          estilo?: string
+          id?: string
+          potencia?: number
+          session_id?: string | null
+          taninos?: number
+          wine_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "classification_history_wine_id_fkey"
+            columns: ["wine_id"]
+            isOneToOne: false
+            referencedRelation: "wines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dietary_preferences: {
+        Row: {
+          created_at: string
+          dietary_restrictions: string[] | null
+          food_pairings: string[] | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dietary_restrictions?: string[] | null
+          food_pairings?: string[] | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dietary_restrictions?: string[] | null
+          food_pairings?: string[] | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          birth_date: string | null
           created_at: string
           email: string | null
           first_name: string | null
           id: string
           last_name: string | null
+          location: string | null
+          preferred_language: string | null
+          privacy_accepted: boolean | null
+          terms_accepted: boolean | null
           updated_at: string
         }
         Insert: {
+          birth_date?: string | null
           created_at?: string
           email?: string | null
           first_name?: string | null
           id: string
           last_name?: string | null
+          location?: string | null
+          preferred_language?: string | null
+          privacy_accepted?: boolean | null
+          terms_accepted?: boolean | null
           updated_at?: string
         }
         Update: {
+          birth_date?: string | null
           created_at?: string
           email?: string | null
           first_name?: string | null
           id?: string
           last_name?: string | null
+          location?: string | null
+          preferred_language?: string | null
+          privacy_accepted?: boolean | null
+          terms_accepted?: boolean | null
           updated_at?: string
         }
         Relationships: []
@@ -69,6 +158,39 @@ export type Database = {
           profile_description?: string
           tanico?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      wine_preferences: {
+        Row: {
+          created_at: string
+          experience_type: string[] | null
+          id: string
+          price_range: string | null
+          taste_preferences: string[] | null
+          updated_at: string
+          user_id: string
+          wine_types: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          experience_type?: string[] | null
+          id?: string
+          price_range?: string | null
+          taste_preferences?: string[] | null
+          updated_at?: string
+          user_id: string
+          wine_types?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          experience_type?: string[] | null
+          id?: string
+          price_range?: string | null
+          taste_preferences?: string[] | null
+          updated_at?: string
+          user_id?: string
+          wine_types?: string[] | null
         }
         Relationships: []
       }
@@ -118,6 +240,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      wines: {
+        Row: {
+          acidez: number
+          afrutado: number
+          created_at: string | null
+          description: string | null
+          dulzura: number
+          estilo: string
+          id: string
+          maridage_recommendations: string[] | null
+          name: string
+          potencia: number
+          producer: string | null
+          region: string | null
+          taninos: number
+          updated_at: string | null
+          vintage: number | null
+        }
+        Insert: {
+          acidez: number
+          afrutado: number
+          created_at?: string | null
+          description?: string | null
+          dulzura: number
+          estilo: string
+          id?: string
+          maridage_recommendations?: string[] | null
+          name: string
+          potencia: number
+          producer?: string | null
+          region?: string | null
+          taninos: number
+          updated_at?: string | null
+          vintage?: number | null
+        }
+        Update: {
+          acidez?: number
+          afrutado?: number
+          created_at?: string | null
+          description?: string | null
+          dulzura?: number
+          estilo?: string
+          id?: string
+          maridage_recommendations?: string[] | null
+          name?: string
+          potencia?: number
+          producer?: string | null
+          region?: string | null
+          taninos?: number
+          updated_at?: string | null
+          vintage?: number | null
+        }
+        Relationships: []
       }
     }
     Views: {

@@ -9,7 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { user, signIn, signUp } = useAuth();
+  const { user, signIn } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   // Redirect if already authenticated
@@ -22,13 +22,6 @@ const Auth = () => {
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: ''
-  });
-
-  const [signupForm, setSignupForm] = useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: ''
   });
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -44,18 +37,8 @@ const Auth = () => {
     setIsLoading(false);
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    await signUp(
-      signupForm.email, 
-      signupForm.password, 
-      signupForm.firstName, 
-      signupForm.lastName
-    );
-    
-    setIsLoading(false);
+  const handleRegisterRedirect = () => {
+    navigate('/registration');
   };
 
   return (
@@ -116,47 +99,20 @@ const Auth = () => {
               </TabsContent>
               
               <TabsContent value="signup">
-                <form onSubmit={handleSignup} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input
-                      type="text"
-                      placeholder="Nombre"
-                      value={signupForm.firstName}
-                      onChange={(e) => setSignupForm({...signupForm, firstName: e.target.value})}
-                    />
-                    <Input
-                      type="text"
-                      placeholder="Apellido"
-                      value={signupForm.lastName}
-                      onChange={(e) => setSignupForm({...signupForm, lastName: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      value={signupForm.email}
-                      onChange={(e) => setSignupForm({...signupForm, email: e.target.value})}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      type="password"
-                      placeholder="Contraseña"
-                      value={signupForm.password}
-                      onChange={(e) => setSignupForm({...signupForm, password: e.target.value})}
-                      required
-                    />
-                  </div>
+                <div className="space-y-4">
+                  <p className="text-center text-sm text-gray-600">
+                    Crea tu cuenta y descubre tu perfil de vino personalizado
+                  </p>
                   <Button 
-                    type="submit" 
+                    onClick={handleRegisterRedirect}
                     className="w-full bg-red-700 hover:bg-red-800"
-                    disabled={isLoading}
                   >
-                    {isLoading ? 'Registrando...' : 'Crear Cuenta'}
+                    Crear Cuenta Completa
                   </Button>
-                </form>
+                  <p className="text-xs text-center text-gray-500">
+                    El registro incluye preferencias de vino, sabores y experiencias personalizadas
+                  </p>
+                </div>
               </TabsContent>
             </Tabs>
           </CardContent>
