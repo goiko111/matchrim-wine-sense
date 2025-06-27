@@ -57,6 +57,8 @@ const CSVImporter = () => {
       const lines = text.split('\n').filter(line => line.trim());
       const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
       
+      console.log('Headers encontrados en el CSV:', headers);
+      
       const data = lines.slice(1).map(line => {
         const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
         const row: CSVRow = {};
@@ -68,8 +70,19 @@ const CSVImporter = () => {
       
       setCsvData(data);
       console.log(`CSV parseado: ${data.length} filas cargadas`);
+      console.log('Primera fila de datos:', data[0]);
     };
     reader.readAsText(file);
+  };
+
+  // Función para buscar el valor de una columna con múltiples nombres posibles
+  const findColumnValue = (row: CSVRow, possibleNames: string[]): string => {
+    for (const name of possibleNames) {
+      if (row[name] && row[name].trim()) {
+        return row[name].trim();
+      }
+    }
+    return '';
   };
 
   const validateWineRow = (row: CSVRow) => {
@@ -99,17 +112,46 @@ const CSVImporter = () => {
   const validateWineStyleRow = (row: CSVRow) => {
     const errors: string[] = [];
     
-    // Verificar que tenemos el nombre del estilo
-    if (!row['Nombre Estilo'] && !row.name) {
+    console.log('Validando fila de estilo:', row);
+    
+    // Buscar el nombre del estilo en múltiples posibles columnas
+    const styleName = findColumnValue(row, [
+      'Nombre Estilo', 
+      'nombre estilo', 
+      'name', 
+      'Name', 
+      'NOMBRE ESTILO',
+      'Estilo',
+      'estilo',
+      'ESTILO'
+    ]);
+    
+    console.log('Nombre del estilo encontrado:', styleName);
+    
+    if (!styleName) {
       errors.push('Nombre del estilo es requerido');
     }
     
-    // Validar campos numéricos (1-5) usando nombres del Excel
-    const numericFields = ['Potente', 'Acidez', 'Dulce', 'Tánico', 'Afrutado'];
-    numericFields.forEach(field => {
-      const value = parseInt(row[field]);
-      if (isNaN(value) || value < 1 || value > 5) {
-        errors.push(`${field} debe ser un número entre 1 y 5`);
+    // Validar campos numéricos (1-5) buscando en múltiples variaciones de nombres
+    const numericFieldMappings = {
+      'Potente': ['Potente', 'potente', 'POTENTE', 'Potencia', 'potencia'],
+      'Acidez': ['Acidez', 'acidez', 'ACIDEZ', 'Acido', 'acido'],
+      'Dulce': ['Dulce', 'dulce', 'DULCE', 'Dulzura', 'dulzura'],
+      'Tánico': ['Tánico', 'tanico', 'TANICO', 'Taninos', 'taninos', 'Tánicos'],
+      'Afrutado': ['Afrutado', 'afrutado', 'AFRUTADO', 'Frutal', 'frutal']
+    };
+    
+    Object.entries(numericFieldMappings).forEach(([fieldName, possibleNames]) => {
+      const valueStr = findColumnValue(row, possibleNames);
+      console.log(`Campo ${fieldName}: valor encontrado = "${valueStr}"`);
+      
+      if (!valueStr) {
+        errors.push(`${fieldName} es requerido`);
+      } else {
+        const value = parseInt(valueStr);
+        if (isNaN(value) || value < 1 || value > 5) {
+          errors.push(`${fieldName} debe ser un número entre 1 y 5`);
+        }
       }
     });
     
@@ -286,12 +328,24 @@ const CSVImporter = () => {
       
       const validationErrors = validateWineStyleRow(row);
       if (validationErrors.length > 0) {
+        console.log(`Errores de validación en fila ${i + 2}:`, validationErrors);
         result.errors.push(`Fila ${i + 2}: ${validationErrors.join(', ')}`);
         continue;
       }
       
       try {
-        const styleName = row['Nombre Estilo'] || row.name;
+        // Buscar el nombre del estilo usando la función mejorada
+        const styleName = findColumnValue(row, [
+          'Nombre Estilo', 
+          'nombre estilo', 
+          'name', 
+          'Name', 
+          'NOMBRE ESTILO',
+          'Estilo',
+          'estilo',
+          'ESTILO'
+        ]);
+        
         const existingStyle = await checkForExistingRecord('wine_styles', styleName);
         
         if (existingStyle) {
@@ -310,30 +364,45 @@ const CSVImporter = () => {
           finalStyleName = await generateUniqueName('wine_styles', styleName);
         }
         
+        // Extraer valores numéricos usando la función mejorada
+        const numericFieldMappings = {
+          potente: ['Potente', 'potente', 'POTENTE', 'Potencia', 'potencia'],
+          acidez: ['Acidez', 'acidez', 'ACIDEZ', 'Acido', 'acido'],
+          dulce: ['Dulce', 'dulce', 'DULCE', 'Dulzura', 'dulzura'],
+          tanico: ['Tánico', 'tanico', 'TANICO', 'Taninos', 'taninos', 'Tánicos'],
+          afrutado: ['Afrutado', 'afrutado', 'AFRUTADO', 'Frutal', 'frutal']
+        };
+        
         const styleData = {
           name: finalStyleName,
-          description: row.description || null,
-          potente: parseInt(row.Potente || row.potente),
-          acidez: parseInt(row.Acidez || row.acidez),
-          dulce: parseInt(row.Dulce || row.dulce),
-          tanico: parseInt(row.Tánico || row.tanico),
-          afrutado: parseInt(row.Afrutado || row.afrutado)
+          description: findColumnValue(row, ['description', 'Description', 'descripcion', 'Descripcion']) || null,
+          potente: parseInt(findColumnValue(row, numericFieldMappings.potente)),
+          acidez: parseInt(findColumnValue(row, numericFieldMappings.acidez)),
+          dulce: parseInt(findColumnValue(row, numericFieldMappings.dulce)),
+          tanico: parseInt(findColumnValue(row, numericFieldMappings.tanico)),
+          afrutado: parseInt(findColumnValue(row, numericFieldMappings.afrutado))
         };
+        
+        console.log('Datos del estilo a insertar:', styleData);
         
         const { error } = await supabase
           .from('wine_styles')
           .insert(styleData);
         
         if (error) {
+          console.error(`Error insertando estilo ${styleName}:`, error);
           result.errors.push(`Fila ${i + 2}: ${error.message}`);
         } else {
           result.success++;
+          console.log(`Estilo insertado exitosamente: ${finalStyleName}`);
         }
       } catch (error: any) {
+        console.error(`Error procesando fila ${i + 2}:`, error);
         result.errors.push(`Fila ${i + 2}: ${error.message}`);
       }
     }
     
+    console.log(`Importación de estilos completada:`, result);
     return result;
   };
 
@@ -499,7 +568,7 @@ const CSVImporter = () => {
       case 'wines':
         return 'id,nombre,tipo,bodega,region,país,añada,potente,dulce,acidez,tánico,afrutado,nariz,boca,visual,cuerpo,estructura,final,crianza,elaboración,viñedo,info bodega,clima';
       case 'wine_styles':
-        return 'Potente,Acidez,Dulce,Tánico,Afrutado,Nombre Estilo';
+        return 'Nombre Estilo,Potente,Acidez,Dulce,Tánico,Afrutado,description';
       case 'matchrim_profiles':
         return 'Potente,Acidez,Dulce,Tánico,Afrutado,Nombre Perfil Matchrim';
       default:
@@ -526,7 +595,7 @@ const CSVImporter = () => {
       case 'wines':
         return 'Formato esperado para vinos: id, nombre, tipo, bodega, region, país, añada, potente, dulce, acidez, tánico, afrutado, nariz, boca, visual, cuerpo, estructura, final, crianza, elaboración, viñedo, info bodega, clima';
       case 'wine_styles':
-        return 'Formato esperado para estilos de vino: Potente, Acidez, Dulce, Tánico, Afrutado, Nombre Estilo';
+        return 'Formato esperado para estilos de vino: Nombre Estilo, Potente, Acidez, Dulce, Tánico, Afrutado, description. Los valores numéricos deben estar entre 1 y 5.';
       case 'matchrim_profiles':
         return 'Formato esperado para perfiles Matchrim: Potente, Acidez, Dulce, Tánico, Afrutado, Nombre Perfil Matchrim';
       default:
@@ -559,6 +628,8 @@ const CSVImporter = () => {
                 Filas: {csvData.length} | 
                 Tipo: {selectedType} | 
                 Estrategia: {duplicateStrategy}
+                <br />
+                <strong>Columnas detectadas:</strong> {csvData.length > 0 ? Object.keys(csvData[0]).join(', ') : 'Ninguna'}
               </AlertDescription>
             </Alert>
           )}
