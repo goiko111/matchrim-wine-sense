@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -483,94 +484,6 @@ const CSVImporter = () => {
       </Card>
     </div>
   );
-};
-
-const importWineStyles = async (data: CSVRow[]) => {
-  const result: ImportResult = { success: 0, errors: [], warnings: [] };
-  
-  for (let i = 0; i < data.length; i++) {
-    const row = data[i];
-    setProgress((i / data.length) * 100);
-    
-    const validationErrors = validateWineStyleRow(row);
-    if (validationErrors.length > 0) {
-      result.errors.push(`Fila ${i + 2}: ${validationErrors.join(', ')}`);
-      continue;
-    }
-    
-    try {
-      const styleData = {
-        name: row.name,
-        description: row.description || null,
-        potente: parseInt(row.potente),
-        acidez: parseInt(row.acidez),
-        dulce: parseInt(row.dulce),
-        tanico: parseInt(row.tanico),
-        afrutado: parseInt(row.afrutado)
-      };
-      
-      const { error } = await supabase
-        .from('wine_styles')
-        .insert(styleData);
-      
-      if (error) {
-        result.errors.push(`Fila ${i + 2}: ${error.message}`);
-      } else {
-        result.success++;
-      }
-    } catch (error: any) {
-      result.errors.push(`Fila ${i + 2}: ${error.message}`);
-    }
-  }
-  
-  return result;
-};
-
-const importMatchrimProfiles = async (data: CSVRow[]) => {
-  const result: ImportResult = { success: 0, errors: [], warnings: [] };
-  
-  for (let i = 0; i < data.length; i++) {
-    const row = data[i];
-    setProgress((i / data.length) * 100);
-    
-    const validationErrors = validateMatchrimProfileRow(row);
-    if (validationErrors.length > 0) {
-      result.errors.push(`Fila ${i + 2}: ${validationErrors.join(', ')}`);
-      continue;
-    }
-    
-    try {
-      const profileData = {
-        name: row.name,
-        description: row.description || null,
-        potente: parseInt(row.potente),
-        acidez: parseInt(row.acidez),
-        dulce: parseInt(row.dulce),
-        tanico: parseInt(row.tanico),
-        afrutado: parseInt(row.afrutado),
-        grape_recommendations: row.grape_recommendations ? 
-          row.grape_recommendations.split(';').map(s => s.trim()) : null,
-        region_recommendations: row.region_recommendations ? 
-          row.region_recommendations.split(';').map(s => s.trim()) : null,
-        style_recommendations: row.style_recommendations ? 
-          row.style_recommendations.split(';').map(s => s.trim()) : null
-      };
-      
-      const { error } = await supabase
-        .from('matchrim_profiles')
-        .insert(profileData);
-      
-      if (error) {
-        result.errors.push(`Fila ${i + 2}: ${error.message}`);
-      } else {
-        result.success++;
-      }
-    } catch (error: any) {
-      result.errors.push(`Fila ${i + 2}: ${error.message}`);
-    }
-  }
-  
-  return result;
 };
 
 export default CSVImporter;
