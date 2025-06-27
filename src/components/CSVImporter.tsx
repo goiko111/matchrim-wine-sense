@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -54,23 +55,63 @@ const CSVImporter = () => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const text = e.target?.result as string;
+      console.log('Contenido del archivo CSV:', text.substring(0, 500));
+      
       const lines = text.split('\n').filter(line => line.trim());
-      const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+      console.log('Líneas del CSV:', lines.slice(0, 5));
       
-      console.log('Headers encontrados en el CSV:', headers);
+      if (lines.length === 0) {
+        console.error('El archivo CSV está vacío');
+        return;
+      }
       
-      const data = lines.slice(1).map(line => {
-        const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+      // Mejorar el parsing para manejar comillas y campos con comas
+      const parseCSVLine = (line: string): string[] => {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          
+          if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            result.push(current.trim());
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        
+        result.push(current.trim());
+        return result.map(field => field.replace(/^"(.*)"$/, '$1'));
+      };
+      
+      const headers = parseCSVLine(lines[0]);
+      console.log('Headers detectados:', headers);
+      
+      const data = lines.slice(1).map((line, index) => {
+        const values = parseCSVLine(line);
         const row: CSVRow = {};
-        headers.forEach((header, index) => {
-          row[header] = values[index] || '';
+        
+        headers.forEach((header, headerIndex) => {
+          const cleanHeader = header.trim();
+          const value = values[headerIndex] ? values[headerIndex].trim() : '';
+          row[cleanHeader] = value;
         });
+        
+        console.log(`Fila ${index + 1}:`, row);
         return row;
+      }).filter(row => {
+        // Filtrar filas completamente vacías
+        return Object.values(row).some(value => value && value.trim());
       });
       
       setCsvData(data);
-      console.log(`CSV parseado: ${data.length} filas cargadas`);
+      console.log(`CSV parseado exitosamente: ${data.length} filas cargadas`);
       console.log('Primera fila de datos:', data[0]);
+      console.log('Todas las columnas encontradas:', data.length > 0 ? Object.keys(data[0]) : 'Ninguna');
     };
     reader.readAsText(file);
   };
@@ -78,7 +119,7 @@ const CSVImporter = () => {
   // Función para buscar el valor de una columna con múltiples nombres posibles
   const findColumnValue = (row: CSVRow, possibleNames: string[]): string => {
     for (const name of possibleNames) {
-      if (row[name] && row[name].trim()) {
+      if (row[name] !== undefined && row[name].trim()) {
         return row[name].trim();
       }
     }
@@ -113,12 +154,13 @@ const CSVImporter = () => {
     const errors: string[] = [];
     
     console.log('Validando fila de estilo:', row);
+    console.log('Columnas disponibles:', Object.keys(row));
     
     // Buscar el nombre del estilo usando exactamente los nombres de tu Excel
     const styleName = findColumnValue(row, [
-      'Estilo Winerim',  // Nombre exacto de tu columna
-      'estilo winerim',  // variación en minúsculas
-      'ESTILO WINERIM',  // variación en mayúsculas
+      'Estilo Winerim',
+      'estilo winerim',
+      'ESTILO WINERIM',
       'Estilo',
       'estilo',
       'name',
@@ -135,8 +177,8 @@ const CSVImporter = () => {
     const numericFieldMappings = {
       'Potente': ['Potente'],
       'Acidez': ['Acidez'], 
-      'Dulce': ['Dulzura'],  // Tu columna se llama "Dulzura"
-      'Tánico': ['Taninos'],  // Tu columna se llama "Taninos"
+      'Dulce': ['Dulzura'],
+      'Tánico': ['Taninos'],
       'Afrutado': ['Afrutado']
     };
     
@@ -364,8 +406,8 @@ const CSVImporter = () => {
           description: findColumnValue(row, ['description', 'Description', 'descripcion', 'Descripcion']) || null,
           potente: parseInt(findColumnValue(row, ['Potente'])),
           acidez: parseInt(findColumnValue(row, ['Acidez'])),
-          dulce: parseInt(findColumnValue(row, ['Dulzura'])),  // Tu columna es "Dulzura"
-          tanico: parseInt(findColumnValue(row, ['Taninos'])), // Tu columna es "Taninos"
+          dulce: parseInt(findColumnValue(row, ['Dulzura'])),
+          tanico: parseInt(findColumnValue(row, ['Taninos'])),
           afrutado: parseInt(findColumnValue(row, ['Afrutado']))
         };
         
