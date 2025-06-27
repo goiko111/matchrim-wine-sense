@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, Brain } from 'lucide-react';
+import { LogOut, User, Brain, Upload } from 'lucide-react';
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -24,6 +24,10 @@ const Header = () => {
 
   const handleLiquidIntelligenceClick = () => {
     navigate('/inteligencia-liquida');
+  };
+
+  const handleImportCSVClick = () => {
+    navigate('/import-csv');
   };
 
   return (
@@ -49,6 +53,15 @@ const Header = () => {
               >
                 <Brain className="h-4 w-4 mr-2" />
                 Inteligencia Líquida
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleImportCSVClick}
+                className="text-red-700 hover:bg-red-50"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Importar CSV
               </Button>
               <Button 
                 variant="ghost" 

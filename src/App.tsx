@@ -25,7 +25,7 @@ function App() {
               <Route path="/auth" element={<Auth />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/registration" element={<Registration />} />
-              <Route path="/liquid-intelligence" element={<LiquidIntelligence />} />
+              <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
               <Route path="/import-csv" element={<ImportCSV />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
