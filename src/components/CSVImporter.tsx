@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -69,18 +68,22 @@ const CSVImporter = () => {
   const validateWineRow = (row: CSVRow) => {
     const errors: string[] = [];
     
-    if (!row.name) errors.push('Nombre es requerido');
-    if (!row.estilo) errors.push('Estilo es requerido');
+    // Verificar campos requeridos usando los nombres de columnas del Excel
+    if (!row.nombre && !row.name) errors.push('Nombre es requerido');
+    if (!row.tipo && !row.estilo) errors.push('Tipo/Estilo es requerido');
     
-    ['potencia', 'acidez', 'dulzura', 'taninos', 'afrutado'].forEach(field => {
+    // Validar campos numéricos (1-5) - usar nombres del Excel
+    const numericFields = ['potente', 'dulce', 'acidez', 'tánico', 'afrutado'];
+    numericFields.forEach(field => {
       const value = parseInt(row[field]);
-      if (isNaN(value) || value < 1 || value > 5) {
+      if (row[field] && (isNaN(value) || value < 1 || value > 5)) {
         errors.push(`${field} debe ser un número entre 1 y 5`);
       }
     });
     
-    if (row.vintage && isNaN(parseInt(row.vintage))) {
-      errors.push('Vintage debe ser un año válido');
+    // Validar añada/vintage
+    if (row.añada && isNaN(parseInt(row.añada))) {
+      errors.push('Añada debe ser un año válido');
     }
     
     return errors;
@@ -130,20 +133,35 @@ const CSVImporter = () => {
       }
       
       try {
+        // Crear descripción extendida combinando múltiples campos
+        const descriptionParts = [];
+        if (row.nariz) descriptionParts.push(`Nariz: ${row.nariz}`);
+        if (row.boca) descriptionParts.push(`Boca: ${row.boca}`);
+        if (row.visual) descriptionParts.push(`Visual: ${row.visual}`);
+        if (row.cuerpo) descriptionParts.push(`Cuerpo: ${row.cuerpo}`);
+        if (row.estructura) descriptionParts.push(`Estructura: ${row.estructura}`);
+        if (row.final) descriptionParts.push(`Final: ${row.final}`);
+        if (row.crianza) descriptionParts.push(`Crianza: ${row.crianza}`);
+        if (row.elaboración) descriptionParts.push(`Elaboración: ${row.elaboración}`);
+        if (row.viñedo) descriptionParts.push(`Viñedo: ${row.viñedo}`);
+        if (row['info bodega']) descriptionParts.push(`Info Bodega: ${row['info bodega']}`);
+        if (row.clima) descriptionParts.push(`Clima: ${row.clima}`);
+        
+        const extendedDescription = descriptionParts.join('. ');
+        
         const wineData = {
-          name: row.name,
-          producer: row.producer || null,
+          name: row.nombre || row.name || '',
+          producer: row.bodega || row.producer || null,
           region: row.region || null,
-          vintage: row.vintage ? parseInt(row.vintage) : null,
-          estilo: row.estilo,
-          potencia: parseInt(row.potencia),
-          acidez: parseInt(row.acidez),
-          dulzura: parseInt(row.dulzura),
-          taninos: parseInt(row.taninos),
-          afrutado: parseInt(row.afrutado),
-          description: row.description || null,
-          maridage_recommendations: row.maridage_recommendations ? 
-            row.maridage_recommendations.split(';').map(s => s.trim()) : null
+          vintage: row.añada ? parseInt(row.añada) : (row.vintage ? parseInt(row.vintage) : null),
+          estilo: row.tipo || row.estilo || '',
+          potencia: row.potente ? parseInt(row.potente) : 3, // valor por defecto
+          acidez: row.acidez ? parseInt(row.acidez) : 3,
+          dulzura: row.dulce ? parseInt(row.dulce) : 3,
+          taninos: row.tánico ? parseInt(row.tánico) : 3,
+          afrutado: row.afrutado ? parseInt(row.afrutado) : 3,
+          description: extendedDescription || null,
+          maridage_recommendations: null
         };
         
         const { error } = await supabase
@@ -304,7 +322,7 @@ const CSVImporter = () => {
   const getCSVTemplate = () => {
     switch (selectedType) {
       case 'wines':
-        return 'name,producer,region,vintage,estilo,potencia,acidez,dulzura,taninos,afrutado,description,maridage_recommendations';
+        return 'id,nombre,tipo,bodega,region,país,añada,potente,dulce,acidez,tánico,afrutado,nariz,boca,visual,cuerpo,estructura,final,crianza,elaboración,viñedo,info bodega,clima';
       case 'wine_styles':
         return 'name,description,potente,acidez,dulce,tanico,afrutado';
       case 'matchrim_profiles':
@@ -374,6 +392,9 @@ const CSVImporter = () => {
               onChange={handleFileChange}
               disabled={isLoading}
             />
+            <p className="text-sm text-gray-600">
+              Formato esperado para vinos: id, nombre, tipo, bodega, region, país, añada, potente, dulce, acidez, tánico, afrutado, nariz, boca, visual, cuerpo, estructura, final, crianza, elaboración, viñedo, info bodega, clima
+            </p>
           </div>
           
           {csvData.length > 0 && (
@@ -462,6 +483,94 @@ const CSVImporter = () => {
       </Card>
     </div>
   );
+};
+
+const importWineStyles = async (data: CSVRow[]) => {
+  const result: ImportResult = { success: 0, errors: [], warnings: [] };
+  
+  for (let i = 0; i < data.length; i++) {
+    const row = data[i];
+    setProgress((i / data.length) * 100);
+    
+    const validationErrors = validateWineStyleRow(row);
+    if (validationErrors.length > 0) {
+      result.errors.push(`Fila ${i + 2}: ${validationErrors.join(', ')}`);
+      continue;
+    }
+    
+    try {
+      const styleData = {
+        name: row.name,
+        description: row.description || null,
+        potente: parseInt(row.potente),
+        acidez: parseInt(row.acidez),
+        dulce: parseInt(row.dulce),
+        tanico: parseInt(row.tanico),
+        afrutado: parseInt(row.afrutado)
+      };
+      
+      const { error } = await supabase
+        .from('wine_styles')
+        .insert(styleData);
+      
+      if (error) {
+        result.errors.push(`Fila ${i + 2}: ${error.message}`);
+      } else {
+        result.success++;
+      }
+    } catch (error: any) {
+      result.errors.push(`Fila ${i + 2}: ${error.message}`);
+    }
+  }
+  
+  return result;
+};
+
+const importMatchrimProfiles = async (data: CSVRow[]) => {
+  const result: ImportResult = { success: 0, errors: [], warnings: [] };
+  
+  for (let i = 0; i < data.length; i++) {
+    const row = data[i];
+    setProgress((i / data.length) * 100);
+    
+    const validationErrors = validateMatchrimProfileRow(row);
+    if (validationErrors.length > 0) {
+      result.errors.push(`Fila ${i + 2}: ${validationErrors.join(', ')}`);
+      continue;
+    }
+    
+    try {
+      const profileData = {
+        name: row.name,
+        description: row.description || null,
+        potente: parseInt(row.potente),
+        acidez: parseInt(row.acidez),
+        dulce: parseInt(row.dulce),
+        tanico: parseInt(row.tanico),
+        afrutado: parseInt(row.afrutado),
+        grape_recommendations: row.grape_recommendations ? 
+          row.grape_recommendations.split(';').map(s => s.trim()) : null,
+        region_recommendations: row.region_recommendations ? 
+          row.region_recommendations.split(';').map(s => s.trim()) : null,
+        style_recommendations: row.style_recommendations ? 
+          row.style_recommendations.split(';').map(s => s.trim()) : null
+      };
+      
+      const { error } = await supabase
+        .from('matchrim_profiles')
+        .insert(profileData);
+      
+      if (error) {
+        result.errors.push(`Fila ${i + 2}: ${error.message}`);
+      } else {
+        result.success++;
+      }
+    } catch (error: any) {
+      result.errors.push(`Fila ${i + 2}: ${error.message}`);
+    }
+  }
+  
+  return result;
 };
 
 export default CSVImporter;
