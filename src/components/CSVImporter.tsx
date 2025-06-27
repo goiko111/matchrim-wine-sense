@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Upload, FileText, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -17,14 +17,19 @@ interface ImportResult {
   success: number;
   errors: string[];
   warnings: string[];
+  skipped: number;
+  updated: number;
 }
 
 interface CSVRow {
   [key: string]: string;
 }
 
+type DuplicateStrategy = 'skip' | 'update' | 'suffix';
+
 const CSVImporter = () => {
   const [selectedType, setSelectedType] = useState<'wines' | 'wine_styles' | 'matchrim_profiles'>('wines');
+  const [duplicateStrategy, setDuplicateStrategy] = useState<DuplicateStrategy>('skip');
   const [file, setFile] = useState<File | null>(null);
   const [csvData, setCsvData] = useState<CSVRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -130,8 +135,36 @@ const CSVImporter = () => {
     return errors;
   };
 
+  const checkForExistingRecord = async (table: string, name: string) => {
+    const { data, error } = await supabase
+      .from(table)
+      .select('id, name')
+      .eq('name', name)
+      .maybeSingle();
+    
+    if (error && error.code !== 'PGRST116') {
+      throw error;
+    }
+    
+    return data;
+  };
+
+  const generateUniqueName = async (table: string, baseName: string): Promise<string> => {
+    let counter = 1;
+    let uniqueName = `${baseName} (${counter})`;
+    
+    while (true) {
+      const existing = await checkForExistingRecord(table, uniqueName);
+      if (!existing) {
+        return uniqueName;
+      }
+      counter++;
+      uniqueName = `${baseName} (${counter})`;
+    }
+  };
+
   const importWines = async (data: CSVRow[]) => {
-    const result: ImportResult = { success: 0, errors: [], warnings: [] };
+    const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
     
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
@@ -144,6 +177,21 @@ const CSVImporter = () => {
       }
       
       try {
+        const wineName = row.nombre || row.name || '';
+        const existingWine = await checkForExistingRecord('wines', wineName);
+        
+        if (existingWine) {
+          if (duplicateStrategy === 'skip') {
+            result.skipped++;
+            result.warnings.push(`Fila ${i + 2}: Vino "${wineName}" ya existe, omitido`);
+            continue;
+          } else if (duplicateStrategy === 'update') {
+            // Lógica de actualización aquí si es necesaria
+            result.updated++;
+            continue;
+          }
+        }
+
         // Crear descripción extendida combinando múltiples campos
         const descriptionParts = [];
         if (row.nariz) descriptionParts.push(`Nariz: ${row.nariz}`);
@@ -160,8 +208,13 @@ const CSVImporter = () => {
         
         const extendedDescription = descriptionParts.join('. ');
         
+        let finalWineName = wineName;
+        if (existingWine && duplicateStrategy === 'suffix') {
+          finalWineName = await generateUniqueName('wines', wineName);
+        }
+        
         const wineData = {
-          name: row.nombre || row.name || '',
+          name: finalWineName,
           producer: row.bodega || row.producer || null,
           region: row.region || null,
           vintage: row.añada ? parseInt(row.añada) : (row.vintage ? parseInt(row.vintage) : null),
@@ -193,7 +246,7 @@ const CSVImporter = () => {
   };
 
   const importWineStyles = async (data: CSVRow[]) => {
-    const result: ImportResult = { success: 0, errors: [], warnings: [] };
+    const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
     
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
@@ -206,8 +259,27 @@ const CSVImporter = () => {
       }
       
       try {
+        const styleName = row['Nombre Estilo'] || row.name;
+        const existingStyle = await checkForExistingRecord('wine_styles', styleName);
+        
+        if (existingStyle) {
+          if (duplicateStrategy === 'skip') {
+            result.skipped++;
+            result.warnings.push(`Fila ${i + 2}: Estilo "${styleName}" ya existe, omitido`);
+            continue;
+          } else if (duplicateStrategy === 'update') {
+            result.updated++;
+            continue;
+          }
+        }
+
+        let finalStyleName = styleName;
+        if (existingStyle && duplicateStrategy === 'suffix') {
+          finalStyleName = await generateUniqueName('wine_styles', styleName);
+        }
+        
         const styleData = {
-          name: row['Nombre Estilo'] || row.name,
+          name: finalStyleName,
           description: row.description || null,
           potente: parseInt(row.Potente || row.potente),
           acidez: parseInt(row.Acidez || row.acidez),
@@ -234,7 +306,7 @@ const CSVImporter = () => {
   };
 
   const importMatchrimProfiles = async (data: CSVRow[]) => {
-    const result: ImportResult = { success: 0, errors: [], warnings: [] };
+    const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
     
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
@@ -247,8 +319,52 @@ const CSVImporter = () => {
       }
       
       try {
+        const profileName = row['Nombre Perfil Matchrim'] || row.name;
+        const existingProfile = await checkForExistingRecord('matchrim_profiles', profileName);
+        
+        if (existingProfile) {
+          if (duplicateStrategy === 'skip') {
+            result.skipped++;
+            result.warnings.push(`Fila ${i + 2}: Perfil "${profileName}" ya existe, omitido`);
+            continue;
+          } else if (duplicateStrategy === 'update') {
+            // Actualizar perfil existente
+            const profileData = {
+              description: row.description || null,
+              potente: parseInt(row.Potente || row.potente),
+              acidez: parseInt(row.Acidez || row.acidez),
+              dulce: parseInt(row.Dulce || row.dulce),
+              tanico: parseInt(row.Tánico || row.tanico),
+              afrutado: parseInt(row.Afrutado || row.afrutado),
+              grape_recommendations: row.grape_recommendations ? 
+                row.grape_recommendations.split(';').map(s => s.trim()) : null,
+              region_recommendations: row.region_recommendations ? 
+                row.region_recommendations.split(';').map(s => s.trim()) : null,
+              style_recommendations: row.style_recommendations ? 
+                row.style_recommendations.split(';').map(s => s.trim()) : null
+            };
+            
+            const { error } = await supabase
+              .from('matchrim_profiles')
+              .update(profileData)
+              .eq('id', existingProfile.id);
+            
+            if (error) {
+              result.errors.push(`Fila ${i + 2}: ${error.message}`);
+            } else {
+              result.updated++;
+            }
+            continue;
+          }
+        }
+
+        let finalProfileName = profileName;
+        if (existingProfile && duplicateStrategy === 'suffix') {
+          finalProfileName = await generateUniqueName('matchrim_profiles', profileName);
+        }
+        
         const profileData = {
-          name: row['Nombre Perfil Matchrim'] || row.name,
+          name: finalProfileName,
           description: row.description || null,
           potente: parseInt(row.Potente || row.potente),
           acidez: parseInt(row.Acidez || row.acidez),
@@ -316,7 +432,7 @@ const CSVImporter = () => {
       
       toast({
         title: "Importación completada",
-        description: `${result.success} registros importados exitosamente`,
+        description: `${result.success} registros importados, ${result.skipped} omitidos, ${result.updated} actualizados`,
       });
       
     } catch (error: any) {
@@ -406,6 +522,24 @@ const CSVImporter = () => {
               </Button>
             </div>
           </div>
+
+          <div className="space-y-3">
+            <Label>¿Cómo manejar duplicados?</Label>
+            <RadioGroup value={duplicateStrategy} onValueChange={(value: DuplicateStrategy) => setDuplicateStrategy(value)}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="skip" id="skip" />
+                <Label htmlFor="skip">Omitir registros duplicados</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="update" id="update" />
+                <Label htmlFor="update">Actualizar registros existentes</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="suffix" id="suffix" />
+                <Label htmlFor="suffix">Agregar sufijo único a nombres duplicados</Label>
+              </div>
+            </RadioGroup>
+          </div>
           
           <div className="space-y-2">
             <Label htmlFor="csv-file">Archivo CSV</Label>
@@ -487,9 +621,22 @@ const CSVImporter = () => {
                 )}
                 <AlertDescription>
                   Importación completada: {importResult.success} registros exitosos
+                  {importResult.skipped > 0 && `, ${importResult.skipped} omitidos`}
+                  {importResult.updated > 0 && `, ${importResult.updated} actualizados`}
                   {importResult.errors.length > 0 && `, ${importResult.errors.length} errores`}
                 </AlertDescription>
               </Alert>
+              
+              {importResult.warnings.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="font-medium text-yellow-700">Advertencias:</h4>
+                  <div className="max-h-32 overflow-auto bg-yellow-50 p-3 rounded text-sm">
+                    {importResult.warnings.map((warning, index) => (
+                      <div key={index} className="text-yellow-700">{warning}</div>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               {importResult.errors.length > 0 && (
                 <div className="space-y-2">
