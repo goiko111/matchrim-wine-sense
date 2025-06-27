@@ -26,6 +26,11 @@ const Header = () => {
     navigate('/inteligencia-liquida');
   };
 
+  const handleMatchrimClick = () => {
+    // Navegar directamente al test/cuestionario de Matchrim
+    navigate('/matchrim');
+  };
+
   const handleImportCSVClick = () => {
     navigate('/import-csv');
   };
@@ -48,11 +53,20 @@ const Header = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={handleLiquidIntelligenceClick}
+                onClick={handleMatchrimClick}
                 className="text-red-700 hover:bg-red-50"
               >
                 <Sparkles className="h-4 w-4 mr-2" />
                 Matchrim
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleLiquidIntelligenceClick}
+                className="text-red-700 hover:bg-red-50"
+              >
+                <Brain className="h-4 w-4 mr-2" />
+                Inteligencia Líquida
               </Button>
               <Button 
                 variant="ghost" 
