@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, Brain, Upload } from 'lucide-react';
+import { LogOut, User, Brain, Upload, Sparkles } from 'lucide-react';
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -51,8 +51,8 @@ const Header = () => {
                 onClick={handleLiquidIntelligenceClick}
                 className="text-red-700 hover:bg-red-50"
               >
-                <Brain className="h-4 w-4 mr-2" />
-                Inteligencia Líquida
+                <Sparkles className="h-4 w-4 mr-2" />
+                Matchrim
               </Button>
               <Button 
                 variant="ghost" 
