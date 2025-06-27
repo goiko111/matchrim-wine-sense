@@ -16,25 +16,71 @@ const AdminRoleAssignment = () => {
 
   const assignAdminRole = async (userId: string) => {
     try {
-      const { error } = await supabase
+      console.log('Attempting to assign admin role to user:', userId);
+      
+      // First check if the user already has the admin role
+      const { data: existingRole, error: checkError } = await supabase
+        .from('user_roles')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .single();
+
+      if (checkError && checkError.code !== 'PGRST116') {
+        console.error('Error checking existing role:', checkError);
+        throw checkError;
+      }
+
+      if (existingRole) {
+        console.log('User already has admin role');
+        toast({
+          title: "Información",
+          description: "El usuario ya tiene el rol de administrador",
+        });
+        return;
+      }
+
+      console.log('Inserting admin role for user:', userId);
+      const { data, error } = await supabase
         .from('user_roles')
         .insert({
           user_id: userId,
           role: 'admin'
-        });
+        })
+        .select();
+
+      console.log('Insert result:', { data, error });
 
       if (error) {
+        console.error('Error inserting admin role:', error);
         throw error;
       }
 
+      console.log('Admin role assigned successfully:', data);
       toast({
         title: "Éxito",
         description: "Rol de administrador asignado correctamente",
       });
     } catch (error: any) {
+      console.error('Full error object:', error);
+      console.error('Error message:', error.message);
+      console.error('Error code:', error.code);
+      console.error('Error details:', error.details);
+      
+      let errorMessage = error.message || 'Error desconocido';
+      
+      // Handle specific error cases
+      if (error.code === '42501') {
+        errorMessage = 'No tienes permisos para asignar roles de administrador. Contacta con el administrador del sistema.';
+      } else if (error.code === '23505') {
+        errorMessage = 'El usuario ya tiene este rol asignado.';
+      } else if (error.message?.includes('RLS')) {
+        errorMessage = 'Error de permisos de seguridad. Verifica que estés autenticado correctamente.';
+      }
+      
       toast({
         title: "Error",
-        description: error.message,
+        description: errorMessage,
         variant: "destructive"
       });
     }
@@ -49,6 +95,10 @@ const AdminRoleAssignment = () => {
       });
       return;
     }
+
+    console.log('Current user:', user);
+    console.log('User ID:', user.id);
+    console.log('User email:', user.email);
 
     setIsLoading(true);
     await assignAdminRole(user.id);
@@ -96,6 +146,8 @@ const AdminRoleAssignment = () => {
         <Alert>
           <AlertDescription>
             <strong>Tu ID de usuario:</strong> {user.id}
+            <br />
+            <strong>Email:</strong> {user.email}
           </AlertDescription>
         </Alert>
 
