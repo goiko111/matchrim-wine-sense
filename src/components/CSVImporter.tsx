@@ -114,31 +114,30 @@ const CSVImporter = () => {
     
     console.log('Validando fila de estilo:', row);
     
-    // Buscar el nombre del estilo en múltiples posibles columnas
+    // Buscar el nombre del estilo usando exactamente los nombres de tu Excel
     const styleName = findColumnValue(row, [
-      'Nombre Estilo', 
-      'nombre estilo', 
-      'name', 
-      'Name', 
-      'NOMBRE ESTILO',
+      'Estilo Winerim',  // Nombre exacto de tu columna
+      'estilo winerim',  // variación en minúsculas
+      'ESTILO WINERIM',  // variación en mayúsculas
       'Estilo',
       'estilo',
-      'ESTILO'
+      'name',
+      'Name'
     ]);
     
     console.log('Nombre del estilo encontrado:', styleName);
     
     if (!styleName) {
-      errors.push('Nombre del estilo es requerido');
+      errors.push('Nombre del estilo es requerido (columna: Estilo Winerim)');
     }
     
-    // Validar campos numéricos (1-5) buscando en múltiples variaciones de nombres
+    // Validar campos numéricos usando exactamente los nombres de tu Excel
     const numericFieldMappings = {
-      'Potente': ['Potente', 'potente', 'POTENTE', 'Potencia', 'potencia'],
-      'Acidez': ['Acidez', 'acidez', 'ACIDEZ', 'Acido', 'acido'],
-      'Dulce': ['Dulce', 'dulce', 'DULCE', 'Dulzura', 'dulzura'],
-      'Tánico': ['Tánico', 'tanico', 'TANICO', 'Taninos', 'taninos', 'Tánicos'],
-      'Afrutado': ['Afrutado', 'afrutado', 'AFRUTADO', 'Frutal', 'frutal']
+      'Potente': ['Potente'],
+      'Acidez': ['Acidez'], 
+      'Dulce': ['Dulzura'],  // Tu columna se llama "Dulzura"
+      'Tánico': ['Taninos'],  // Tu columna se llama "Taninos"
+      'Afrutado': ['Afrutado']
     };
     
     Object.entries(numericFieldMappings).forEach(([fieldName, possibleNames]) => {
@@ -146,11 +145,11 @@ const CSVImporter = () => {
       console.log(`Campo ${fieldName}: valor encontrado = "${valueStr}"`);
       
       if (!valueStr) {
-        errors.push(`${fieldName} es requerido`);
+        errors.push(`${fieldName} es requerido (buscar en columnas: ${possibleNames.join(', ')})`);
       } else {
         const value = parseInt(valueStr);
         if (isNaN(value) || value < 1 || value > 5) {
-          errors.push(`${fieldName} debe ser un número entre 1 y 5`);
+          errors.push(`${fieldName} debe ser un número entre 1 y 5 (valor actual: "${valueStr}")`);
         }
       }
     });
@@ -334,16 +333,11 @@ const CSVImporter = () => {
       }
       
       try {
-        // Buscar el nombre del estilo usando la función mejorada
+        // Buscar el nombre del estilo usando exactamente el nombre de tu Excel
         const styleName = findColumnValue(row, [
-          'Nombre Estilo', 
-          'nombre estilo', 
-          'name', 
-          'Name', 
-          'NOMBRE ESTILO',
-          'Estilo',
-          'estilo',
-          'ESTILO'
+          'Estilo Winerim',
+          'estilo winerim',
+          'ESTILO WINERIM'
         ]);
         
         const existingStyle = await checkForExistingRecord('wine_styles', styleName);
@@ -364,23 +358,15 @@ const CSVImporter = () => {
           finalStyleName = await generateUniqueName('wine_styles', styleName);
         }
         
-        // Extraer valores numéricos usando la función mejorada
-        const numericFieldMappings = {
-          potente: ['Potente', 'potente', 'POTENTE', 'Potencia', 'potencia'],
-          acidez: ['Acidez', 'acidez', 'ACIDEZ', 'Acido', 'acido'],
-          dulce: ['Dulce', 'dulce', 'DULCE', 'Dulzura', 'dulzura'],
-          tanico: ['Tánico', 'tanico', 'TANICO', 'Taninos', 'taninos', 'Tánicos'],
-          afrutado: ['Afrutado', 'afrutado', 'AFRUTADO', 'Frutal', 'frutal']
-        };
-        
+        // Extraer valores usando exactamente los nombres de tu Excel
         const styleData = {
           name: finalStyleName,
           description: findColumnValue(row, ['description', 'Description', 'descripcion', 'Descripcion']) || null,
-          potente: parseInt(findColumnValue(row, numericFieldMappings.potente)),
-          acidez: parseInt(findColumnValue(row, numericFieldMappings.acidez)),
-          dulce: parseInt(findColumnValue(row, numericFieldMappings.dulce)),
-          tanico: parseInt(findColumnValue(row, numericFieldMappings.tanico)),
-          afrutado: parseInt(findColumnValue(row, numericFieldMappings.afrutado))
+          potente: parseInt(findColumnValue(row, ['Potente'])),
+          acidez: parseInt(findColumnValue(row, ['Acidez'])),
+          dulce: parseInt(findColumnValue(row, ['Dulzura'])),  // Tu columna es "Dulzura"
+          tanico: parseInt(findColumnValue(row, ['Taninos'])), // Tu columna es "Taninos"
+          afrutado: parseInt(findColumnValue(row, ['Afrutado']))
         };
         
         console.log('Datos del estilo a insertar:', styleData);
@@ -568,7 +554,7 @@ const CSVImporter = () => {
       case 'wines':
         return 'id,nombre,tipo,bodega,region,país,añada,potente,dulce,acidez,tánico,afrutado,nariz,boca,visual,cuerpo,estructura,final,crianza,elaboración,viñedo,info bodega,clima';
       case 'wine_styles':
-        return 'Nombre Estilo,Potente,Acidez,Dulce,Tánico,Afrutado,description';
+        return 'Estilo Winerim,Potente,Acidez,Dulzura,Taninos,Afrutado,description';
       case 'matchrim_profiles':
         return 'Potente,Acidez,Dulce,Tánico,Afrutado,Nombre Perfil Matchrim';
       default:
@@ -595,7 +581,7 @@ const CSVImporter = () => {
       case 'wines':
         return 'Formato esperado para vinos: id, nombre, tipo, bodega, region, país, añada, potente, dulce, acidez, tánico, afrutado, nariz, boca, visual, cuerpo, estructura, final, crianza, elaboración, viñedo, info bodega, clima';
       case 'wine_styles':
-        return 'Formato esperado para estilos de vino: Nombre Estilo, Potente, Acidez, Dulce, Tánico, Afrutado, description. Los valores numéricos deben estar entre 1 y 5.';
+        return 'Formato esperado para estilos de vino: Estilo Winerim, Potente, Acidez, Dulzura, Taninos, Afrutado, description. Los valores numéricos deben estar entre 1 y 5.';
       case 'matchrim_profiles':
         return 'Formato esperado para perfiles Matchrim: Potente, Acidez, Dulce, Tánico, Afrutado, Nombre Perfil Matchrim';
       default:
