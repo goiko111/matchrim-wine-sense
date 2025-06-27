@@ -135,12 +135,32 @@ const CSVImporter = () => {
     return errors;
   };
 
-  const checkForExistingRecord = async (table: string, name: string) => {
-    const { data, error } = await supabase
-      .from(table)
-      .select('id, name')
-      .eq('name', name)
-      .maybeSingle();
+  const checkForExistingRecord = async (tableName: string, name: string) => {
+    let query;
+    
+    if (tableName === 'wines') {
+      query = supabase
+        .from('wines')
+        .select('id, name')
+        .eq('name', name)
+        .maybeSingle();
+    } else if (tableName === 'wine_styles') {
+      query = supabase
+        .from('wine_styles')
+        .select('id, name')
+        .eq('name', name)
+        .maybeSingle();
+    } else if (tableName === 'matchrim_profiles') {
+      query = supabase
+        .from('matchrim_profiles')
+        .select('id, name')
+        .eq('name', name)
+        .maybeSingle();
+    } else {
+      throw new Error('Tabla no válida');
+    }
+    
+    const { data, error } = await query;
     
     if (error && error.code !== 'PGRST116') {
       throw error;
@@ -149,12 +169,12 @@ const CSVImporter = () => {
     return data;
   };
 
-  const generateUniqueName = async (table: string, baseName: string): Promise<string> => {
+  const generateUniqueName = async (tableName: string, baseName: string): Promise<string> => {
     let counter = 1;
     let uniqueName = `${baseName} (${counter})`;
     
     while (true) {
-      const existing = await checkForExistingRecord(table, uniqueName);
+      const existing = await checkForExistingRecord(tableName, uniqueName);
       if (!existing) {
         return uniqueName;
       }
