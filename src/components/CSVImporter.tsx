@@ -93,9 +93,14 @@ const CSVImporter = () => {
   const validateWineStyleRow = (row: CSVRow) => {
     const errors: string[] = [];
     
-    if (!row.name) errors.push('Nombre es requerido');
+    // Verificar que tenemos el nombre del estilo
+    if (!row['Nombre Estilo'] && !row.name) {
+      errors.push('Nombre del estilo es requerido');
+    }
     
-    ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'].forEach(field => {
+    // Validar campos numéricos (1-5) usando nombres del Excel
+    const numericFields = ['Potente', 'Acidez', 'Dulce', 'Tánico', 'Afrutado'];
+    numericFields.forEach(field => {
       const value = parseInt(row[field]);
       if (isNaN(value) || value < 1 || value > 5) {
         errors.push(`${field} debe ser un número entre 1 y 5`);
@@ -108,9 +113,14 @@ const CSVImporter = () => {
   const validateMatchrimProfileRow = (row: CSVRow) => {
     const errors: string[] = [];
     
-    if (!row.name) errors.push('Nombre es requerido');
+    // Verificar que tenemos el nombre del perfil
+    if (!row['Nombre Perfil Matchrim'] && !row.name) {
+      errors.push('Nombre del perfil es requerido');
+    }
     
-    ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'].forEach(field => {
+    // Validar campos numéricos (1-5) usando nombres del Excel
+    const numericFields = ['Potente', 'Acidez', 'Dulce', 'Tánico', 'Afrutado'];
+    numericFields.forEach(field => {
       const value = parseInt(row[field]);
       if (isNaN(value) || value < 1 || value > 5) {
         errors.push(`${field} debe ser un número entre 1 y 5`);
@@ -156,7 +166,7 @@ const CSVImporter = () => {
           region: row.region || null,
           vintage: row.añada ? parseInt(row.añada) : (row.vintage ? parseInt(row.vintage) : null),
           estilo: row.tipo || row.estilo || '',
-          potencia: row.potente ? parseInt(row.potente) : 3, // valor por defecto
+          potencia: row.potente ? parseInt(row.potente) : 3,
           acidez: row.acidez ? parseInt(row.acidez) : 3,
           dulzura: row.dulce ? parseInt(row.dulce) : 3,
           taninos: row.tánico ? parseInt(row.tánico) : 3,
@@ -197,13 +207,13 @@ const CSVImporter = () => {
       
       try {
         const styleData = {
-          name: row.name,
+          name: row['Nombre Estilo'] || row.name,
           description: row.description || null,
-          potente: parseInt(row.potente),
-          acidez: parseInt(row.acidez),
-          dulce: parseInt(row.dulce),
-          tanico: parseInt(row.tanico),
-          afrutado: parseInt(row.afrutado)
+          potente: parseInt(row.Potente || row.potente),
+          acidez: parseInt(row.Acidez || row.acidez),
+          dulce: parseInt(row.Dulce || row.dulce),
+          tanico: parseInt(row.Tánico || row.tanico),
+          afrutado: parseInt(row.Afrutado || row.afrutado)
         };
         
         const { error } = await supabase
@@ -238,13 +248,13 @@ const CSVImporter = () => {
       
       try {
         const profileData = {
-          name: row.name,
+          name: row['Nombre Perfil Matchrim'] || row.name,
           description: row.description || null,
-          potente: parseInt(row.potente),
-          acidez: parseInt(row.acidez),
-          dulce: parseInt(row.dulce),
-          tanico: parseInt(row.tanico),
-          afrutado: parseInt(row.afrutado),
+          potente: parseInt(row.Potente || row.potente),
+          acidez: parseInt(row.Acidez || row.acidez),
+          dulce: parseInt(row.Dulce || row.dulce),
+          tanico: parseInt(row.Tánico || row.tanico),
+          afrutado: parseInt(row.Afrutado || row.afrutado),
           grape_recommendations: row.grape_recommendations ? 
             row.grape_recommendations.split(';').map(s => s.trim()) : null,
           region_recommendations: row.region_recommendations ? 
@@ -325,9 +335,9 @@ const CSVImporter = () => {
       case 'wines':
         return 'id,nombre,tipo,bodega,region,país,añada,potente,dulce,acidez,tánico,afrutado,nariz,boca,visual,cuerpo,estructura,final,crianza,elaboración,viñedo,info bodega,clima';
       case 'wine_styles':
-        return 'name,description,potente,acidez,dulce,tanico,afrutado';
+        return 'Potente,Acidez,Dulce,Tánico,Afrutado,Nombre Estilo';
       case 'matchrim_profiles':
-        return 'name,description,potente,acidez,dulce,tanico,afrutado,grape_recommendations,region_recommendations,style_recommendations';
+        return 'Potente,Acidez,Dulce,Tánico,Afrutado,Nombre Perfil Matchrim';
       default:
         return '';
     }
@@ -345,6 +355,19 @@ const CSVImporter = () => {
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
+  };
+
+  const getFormatDescription = () => {
+    switch (selectedType) {
+      case 'wines':
+        return 'Formato esperado para vinos: id, nombre, tipo, bodega, region, país, añada, potente, dulce, acidez, tánico, afrutado, nariz, boca, visual, cuerpo, estructura, final, crianza, elaboración, viñedo, info bodega, clima';
+      case 'wine_styles':
+        return 'Formato esperado para estilos de vino: Potente, Acidez, Dulce, Tánico, Afrutado, Nombre Estilo';
+      case 'matchrim_profiles':
+        return 'Formato esperado para perfiles Matchrim: Potente, Acidez, Dulce, Tánico, Afrutado, Nombre Perfil Matchrim';
+      default:
+        return '';
+    }
   };
 
   return (
@@ -394,7 +417,7 @@ const CSVImporter = () => {
               disabled={isLoading}
             />
             <p className="text-sm text-gray-600">
-              Formato esperado para vinos: id, nombre, tipo, bodega, region, país, añada, potente, dulce, acidez, tánico, afrutado, nariz, boca, visual, cuerpo, estructura, final, crianza, elaboración, viñedo, info bodega, clima
+              {getFormatDescription()}
             </p>
           </div>
           
