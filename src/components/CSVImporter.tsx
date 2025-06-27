@@ -67,6 +67,7 @@ const CSVImporter = () => {
       });
       
       setCsvData(data);
+      console.log(`CSV parseado: ${data.length} filas cargadas`);
     };
     reader.readAsText(file);
   };
@@ -185,10 +186,13 @@ const CSVImporter = () => {
 
   const importWines = async (data: CSVRow[]) => {
     const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
+    console.log(`Iniciando importación de ${data.length} vinos`);
     
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
-      setProgress((i / data.length) * 100);
+      const currentProgress = ((i + 1) / data.length) * 100;
+      setProgress(currentProgress);
+      console.log(`Procesando vino ${i + 1}/${data.length} (${Math.round(currentProgress)}%)`);
       
       const validationErrors = validateWineRow(row);
       if (validationErrors.length > 0) {
@@ -201,6 +205,7 @@ const CSVImporter = () => {
         const existingWine = await checkForExistingRecord('wines', wineName);
         
         if (existingWine) {
+          console.log(`Vino duplicado encontrado: ${wineName}, estrategia: ${duplicateStrategy}`);
           if (duplicateStrategy === 'skip') {
             result.skipped++;
             result.warnings.push(`Fila ${i + 2}: Vino "${wineName}" ya existe, omitido`);
@@ -253,24 +258,31 @@ const CSVImporter = () => {
           .insert(wineData);
         
         if (error) {
+          console.error(`Error insertando vino ${wineName}:`, error);
           result.errors.push(`Fila ${i + 2}: ${error.message}`);
         } else {
           result.success++;
+          console.log(`Vino insertado exitosamente: ${finalWineName}`);
         }
       } catch (error: any) {
+        console.error(`Error procesando fila ${i + 2}:`, error);
         result.errors.push(`Fila ${i + 2}: ${error.message}`);
       }
     }
     
+    console.log(`Importación de vinos completada:`, result);
     return result;
   };
 
   const importWineStyles = async (data: CSVRow[]) => {
     const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
+    console.log(`Iniciando importación de ${data.length} estilos de vino`);
     
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
-      setProgress((i / data.length) * 100);
+      const currentProgress = ((i + 1) / data.length) * 100;
+      setProgress(currentProgress);
+      console.log(`Procesando estilo ${i + 1}/${data.length} (${Math.round(currentProgress)}%)`);
       
       const validationErrors = validateWineStyleRow(row);
       if (validationErrors.length > 0) {
@@ -327,10 +339,13 @@ const CSVImporter = () => {
 
   const importMatchrimProfiles = async (data: CSVRow[]) => {
     const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
+    console.log(`Iniciando importación de ${data.length} perfiles Matchrim`);
     
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
-      setProgress((i / data.length) * 100);
+      const currentProgress = ((i + 1) / data.length) * 100;
+      setProgress(currentProgress);
+      console.log(`Procesando perfil ${i + 1}/${data.length} (${Math.round(currentProgress)}%)`);
       
       const validationErrors = validateMatchrimProfileRow(row);
       if (validationErrors.length > 0) {
@@ -343,6 +358,7 @@ const CSVImporter = () => {
         const existingProfile = await checkForExistingRecord('matchrim_profiles', profileName);
         
         if (existingProfile) {
+          console.log(`Perfil duplicado encontrado: ${profileName}, estrategia: ${duplicateStrategy}`);
           if (duplicateStrategy === 'skip') {
             result.skipped++;
             result.warnings.push(`Fila ${i + 2}: Perfil "${profileName}" ya existe, omitido`);
@@ -364,15 +380,18 @@ const CSVImporter = () => {
                 row.style_recommendations.split(';').map(s => s.trim()) : null
             };
             
+            console.log(`Actualizando perfil existente: ${profileName}`);
             const { error } = await supabase
               .from('matchrim_profiles')
               .update(profileData)
               .eq('id', existingProfile.id);
             
             if (error) {
+              console.error(`Error actualizando perfil ${profileName}:`, error);
               result.errors.push(`Fila ${i + 2}: ${error.message}`);
             } else {
               result.updated++;
+              console.log(`Perfil actualizado exitosamente: ${profileName}`);
             }
             continue;
           }
@@ -399,20 +418,25 @@ const CSVImporter = () => {
             row.style_recommendations.split(';').map(s => s.trim()) : null
         };
         
+        console.log(`Insertando nuevo perfil: ${finalProfileName}`);
         const { error } = await supabase
           .from('matchrim_profiles')
           .insert(profileData);
         
         if (error) {
+          console.error(`Error insertando perfil ${finalProfileName}:`, error);
           result.errors.push(`Fila ${i + 2}: ${error.message}`);
         } else {
           result.success++;
+          console.log(`Perfil insertado exitosamente: ${finalProfileName}`);
         }
       } catch (error: any) {
+        console.error(`Error procesando fila ${i + 2}:`, error);
         result.errors.push(`Fila ${i + 2}: ${error.message}`);
       }
     }
     
+    console.log(`Importación de perfiles Matchrim completada:`, result);
     return result;
   };
 
@@ -426,6 +450,7 @@ const CSVImporter = () => {
       return;
     }
     
+    console.log(`Iniciando importación: ${selectedType}, estrategia: ${duplicateStrategy}, ${csvData.length} filas`);
     setIsLoading(true);
     setProgress(0);
     setImportResult(null);
@@ -450,12 +475,14 @@ const CSVImporter = () => {
       setImportResult(result);
       setProgress(100);
       
+      console.log('Importación completada:', result);
       toast({
         title: "Importación completada",
         description: `${result.success} registros importados, ${result.skipped} omitidos, ${result.updated} actualizados`,
       });
       
     } catch (error: any) {
+      console.error('Error en la importación:', error);
       toast({
         title: "Error en la importación",
         description: error.message,
@@ -463,6 +490,7 @@ const CSVImporter = () => {
       });
     } finally {
       setIsLoading(false);
+      console.log('Estado de carga establecido a false');
     }
   };
 
@@ -506,6 +534,8 @@ const CSVImporter = () => {
     }
   };
 
+  console.log(`Estado actual: isLoading=${isLoading}, progress=${progress}, csvData.length=${csvData.length}`);
+
   return (
     <div className="container mx-auto p-6 space-y-6">
       <Card>
@@ -519,6 +549,20 @@ const CSVImporter = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          {/* Debug info */}
+          {csvData.length > 0 && (
+            <Alert>
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                Estado: {isLoading ? 'Importando...' : 'Listo para importar'} | 
+                Progreso: {Math.round(progress)}% | 
+                Filas: {csvData.length} | 
+                Tipo: {selectedType} | 
+                Estrategia: {duplicateStrategy}
+              </AlertDescription>
+            </Alert>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="import-type">Tipo de datos a importar</Label>
