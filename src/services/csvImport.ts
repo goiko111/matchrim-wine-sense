@@ -3,16 +3,38 @@ import { CSVRow, ImportResult, DuplicateStrategy } from '@/types/csv';
 import { validateWineRow, validateWineStyleRow, validateMatchrimProfileRow } from '@/utils/csvValidation';
 import { findColumnValue } from '@/utils/csvParser';
 
+const checkForExistingWine = async (name: string, producer?: string, vintage?: number) => {
+  console.log(`Verificando duplicado de vino: nombre="${name}", bodega="${producer}", añada=${vintage}`);
+  
+  let query = supabase
+    .from('wines')
+    .select('id, name, producer, vintage')
+    .eq('name', name);
+  
+  // Si tenemos bodega, la incluimos en la verificación
+  if (producer) {
+    query = query.eq('producer', producer);
+  }
+  
+  // Si tenemos añada, la incluimos en la verificación
+  if (vintage) {
+    query = query.eq('vintage', vintage);
+  }
+  
+  const { data, error } = await query.maybeSingle();
+  
+  if (error && error.code !== 'PGRST116') {
+    throw error;
+  }
+  
+  console.log(`Resultado de verificación de duplicado:`, data);
+  return data;
+};
+
 const checkForExistingRecord = async (tableName: string, name: string) => {
   let query;
   
-  if (tableName === 'wines') {
-    query = supabase
-      .from('wines')
-      .select('id, name')
-      .eq('name', name)
-      .maybeSingle();
-  } else if (tableName === 'wine_styles') {
+  if (tableName === 'wine_styles') {
     query = supabase
       .from('wine_styles')
       .select('id, name')
@@ -95,8 +117,11 @@ export const importWines = async (
     console.log(`Procesando vino ${i + 1}/${data.length} (${Math.round(currentProgress)}%)`);
     console.log('Fila completa:', row);
     
-    // Extraer nombre del vino
+    // Extraer campos principales
     const wineName = getColumnValue(row, ['nombre', 'name', 'Name', 'Nombre']);
+    const producer = getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer']) || null;
+    const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage']);
+    const vintage = vintageStr ? parseInt(vintageStr) : null;
     
     if (!wineName) {
       result.errors.push(`Fila ${i + 2}: Nombre del vino es requerido`);
@@ -112,23 +137,21 @@ export const importWines = async (
     }
     
     try {
-      const existingWine = await checkForExistingRecord('wines', wineName);
+      // Usar la nueva función de verificación mejorada
+      const existingWine = await checkForExistingWine(wineName, producer || undefined, vintage || undefined);
       
       if (existingWine) {
-        console.log(`Vino duplicado encontrado: ${wineName}, estrategia: ${duplicateStrategy}`);
+        console.log(`Vino duplicado encontrado: ${wineName} (${producer}, ${vintage}), estrategia: ${duplicateStrategy}`);
         if (duplicateStrategy === 'skip') {
           result.skipped++;
-          result.warnings.push(`Fila ${i + 2}: Vino "${wineName}" ya existe, omitido`);
+          result.warnings.push(`Fila ${i + 2}: Vino "${wineName}" (${producer}, ${vintage}) ya existe, omitido`);
           continue;
         } else if (duplicateStrategy === 'update') {
           // Actualizar vino existente
           const updateData = {
-            producer: getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer']) || null,
+            producer,
             region: getColumnValue(row, ['region', 'Region']) || null,
-            vintage: (() => {
-              const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage']);
-              return vintageStr ? parseInt(vintageStr) : null;
-            })(),
+            vintage,
             estilo: wineType,
             potencia: getIntValue(getColumnValue(row, ['potente', 'power', 'Potente'])),
             acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity', 'Acidez'])),
@@ -194,19 +217,29 @@ export const importWines = async (
         }
       }
 
+      // Si llegamos aquí, no hay duplicado o la estrategia es 'suffix'
       let finalWineName = wineName;
       if (existingWine && duplicateStrategy === 'suffix') {
-        finalWineName = await generateUniqueName('wines', wineName);
+        // Para vinos, generamos nombre único considerando bodega y añada
+        let counter = 1;
+        let uniqueName = `${wineName} (${counter})`;
+        
+        while (true) {
+          const existing = await checkForExistingWine(uniqueName, producer || undefined, vintage || undefined);
+          if (!existing) {
+            finalWineName = uniqueName;
+            break;
+          }
+          counter++;
+          uniqueName = `${wineName} (${counter})`;
+        }
       }
       
       const wineData = {
         name: finalWineName,
-        producer: getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer']) || null,
+        producer,
         region: getColumnValue(row, ['region', 'Region']) || null,
-        vintage: (() => {
-          const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage']);
-          return vintageStr ? parseInt(vintageStr) : null;
-        })(),
+        vintage,
         estilo: wineType,
         potencia: getIntValue(getColumnValue(row, ['potente', 'power', 'Potente'])),
         acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity', 'Acidez'])),
