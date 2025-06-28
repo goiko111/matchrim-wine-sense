@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { CSVRow, ImportResult, DuplicateStrategy } from '@/types/csv';
 import { validateWineRow, validateWineStyleRow, validateMatchrimProfileRow } from '@/utils/csvValidation';
@@ -160,27 +159,79 @@ export const importWineStyles = async (
     onProgress(currentProgress);
     console.log(`Procesando estilo ${i + 1}/${data.length} (${Math.round(currentProgress)}%)`);
     
-    const validationErrors = validateWineStyleRow(row);
-    if (validationErrors.length > 0) {
-      console.log(`Errores de validación en fila ${i + 2}:`, validationErrors);
-      result.errors.push(`Fila ${i + 2}: ${validationErrors.join(', ')}`);
+    // Función auxiliar para buscar valor de forma más flexible
+    const findFlexibleValue = (possibleNames: string[]): string => {
+      // Primero buscar coincidencia exacta
+      for (const name of possibleNames) {
+        if (row[name] !== undefined && row[name].toString().trim()) {
+          return row[name].toString().trim();
+        }
+      }
+      
+      // Luego buscar coincidencia parcial
+      for (const name of possibleNames) {
+        const foundKey = Object.keys(row).find(key => 
+          key.toLowerCase().includes(name.toLowerCase()) ||
+          name.toLowerCase().includes(key.toLowerCase())
+        );
+        if (foundKey && row[foundKey] !== undefined && row[foundKey].toString().trim()) {
+          return row[foundKey].toString().trim();
+        }
+      }
+      
+      return '';
+    };
+    
+    // Buscar el nombre del estilo primero
+    let styleName = findFlexibleValue([
+      'Estilo', 'estilo', 'style', 'Style', 'nombre', 'Nombre', 'name', 'Name',
+      'Winerim', 'winerim', 'tipo', 'Tipo'
+    ]);
+    
+    // Si no encontramos nombre, usar la primera columna con contenido válido
+    if (!styleName) {
+      const firstNonEmptyEntry = Object.entries(row).find(([key, value]) => 
+        value && value.toString().trim() && 
+        !key.toLowerCase().includes('potent') &&
+        !key.toLowerCase().includes('acid') &&
+        !key.toLowerCase().includes('dulc') &&
+        !key.toLowerCase().includes('tanic') &&
+        !key.toLowerCase().includes('frut')
+      );
+      
+      if (firstNonEmptyEntry) {
+        styleName = firstNonEmptyEntry[1].toString().trim();
+        console.log(`Usando primera columna válida como nombre: "${styleName}"`);
+      }
+    }
+    
+    if (!styleName) {
+      console.log(`Fila ${i + 2}: No se pudo encontrar nombre del estilo, omitiendo`);
+      result.skipped++;
+      result.warnings.push(`Fila ${i + 2}: No se pudo encontrar nombre del estilo`);
+      continue;
+    }
+    
+    // Extraer valores numéricos de forma flexible
+    const potente = parseInt(findFlexibleValue(['potent', 'power', 'strength', 'fuerte', 'intenso', 'Potente'])) || 3;
+    const acidez = parseInt(findFlexibleValue(['acid', 'acido', 'sour', 'Acidez'])) || 3;
+    const dulce = parseInt(findFlexibleValue(['dulc', 'sweet', 'sugar', 'azucar', 'Dulce', 'Dulzura'])) || 3;
+    const tanico = parseInt(findFlexibleValue(['tanic', 'tanin', 'astringent', 'Tánico', 'Taninos'])) || 3;
+    const afrutado = parseInt(findFlexibleValue(['frut', 'fruit', 'berry', 'Afrutado'])) || 3;
+    
+    // Validar que los valores numéricos estén en rango
+    const numericValues = { potente, acidez, dulce, tanico, afrutado };
+    const invalidValues = Object.entries(numericValues).filter(([_, value]) => 
+      isNaN(value) || value < 1 || value > 5
+    );
+    
+    if (invalidValues.length > 0) {
+      console.log(`Fila ${i + 2}: Valores numéricos inválidos:`, invalidValues);
+      result.errors.push(`Fila ${i + 2}: Valores numéricos inválidos: ${invalidValues.map(([key, value]) => `${key}=${value}`).join(', ')}`);
       continue;
     }
     
     try {
-      // Buscar el nombre del estilo con más flexibilidad
-      const styleName = findColumnValue(row, [
-        'Estilo Winerim',
-        'estilo winerim',
-        'ESTILO WINERIM',
-        'Estilo',
-        'estilo',
-        'name',
-        'Name',
-        'nombre',
-        'Nombre'
-      ]);
-      
       const existingStyle = await checkForExistingRecord('wine_styles', styleName);
       
       if (existingStyle) {
@@ -189,7 +240,27 @@ export const importWineStyles = async (
           result.warnings.push(`Fila ${i + 2}: Estilo "${styleName}" ya existe, omitido`);
           continue;
         } else if (duplicateStrategy === 'update') {
-          result.updated++;
+          const updateData = {
+            description: findFlexibleValue(['description', 'Description', 'descripcion', 'Descripcion']) || null,
+            potente,
+            acidez,
+            dulce,
+            tanico,
+            afrutado
+          };
+          
+          const { error } = await supabase
+            .from('wine_styles')
+            .update(updateData)
+            .eq('id', existingStyle.id);
+          
+          if (error) {
+            console.error(`Error actualizando estilo ${styleName}:`, error);
+            result.errors.push(`Fila ${i + 2}: ${error.message}`);
+          } else {
+            result.updated++;
+            console.log(`Estilo actualizado exitosamente: ${styleName}`);
+          }
           continue;
         }
       }
@@ -199,15 +270,14 @@ export const importWineStyles = async (
         finalStyleName = await generateUniqueName('wine_styles', styleName);
       }
       
-      // Extraer valores usando el mapeo flexible
       const styleData = {
         name: finalStyleName,
-        description: findColumnValue(row, ['description', 'Description', 'descripcion', 'Descripcion']) || null,
-        potente: parseInt(findColumnValue(row, ['Potente', 'potente', 'POTENTE', 'Potencia', 'potencia'])),
-        acidez: parseInt(findColumnValue(row, ['Acidez', 'acidez', 'ACIDEZ'])),
-        dulce: parseInt(findColumnValue(row, ['Dulzura', 'dulzura', 'DULZURA', 'Dulce', 'dulce'])),
-        tanico: parseInt(findColumnValue(row, ['Taninos', 'taninos', 'TANINOS', 'Tánico', 'tanico'])),
-        afrutado: parseInt(findColumnValue(row, ['Afrutado', 'afrutado', 'AFRUTADO']))
+        description: findFlexibleValue(['description', 'Description', 'descripcion', 'Descripcion']) || null,
+        potente,
+        acidez,
+        dulce,
+        tanico,
+        afrutado
       };
       
       console.log('Datos del estilo a insertar:', styleData);
