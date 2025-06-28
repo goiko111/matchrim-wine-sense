@@ -1,27 +1,79 @@
-
 import { CSVRow } from '@/types/csv';
 import { findColumnValue } from './csvParser';
+
+// Función auxiliar para extraer valor de columna de forma flexible
+const getColumnValue = (row: CSVRow, possibleNames: string[]): string => {
+  for (const name of possibleNames) {
+    if (row[name] !== undefined && row[name] !== null && row[name].toString().trim()) {
+      return row[name].toString().trim();
+    }
+  }
+  
+  // Búsqueda flexible (case-insensitive)
+  for (const name of possibleNames) {
+    const foundKey = Object.keys(row).find(key => 
+      key.toLowerCase().includes(name.toLowerCase()) ||
+      name.toLowerCase().includes(key.toLowerCase())
+    );
+    if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null && row[foundKey].toString().trim()) {
+      return row[foundKey].toString().trim();
+    }
+  }
+  
+  return '';
+};
 
 export const validateWineRow = (row: CSVRow): string[] => {
   const errors: string[] = [];
   
-  // Verificar campos requeridos usando los nombres de columnas del Excel
-  if (!row.nombre && !row.name) errors.push('Nombre es requerido');
-  if (!row.tipo && !row.estilo) errors.push('Tipo/Estilo es requerido');
+  console.log('=== VALIDACIÓN DE VINO ===');
+  console.log('Fila completa:', JSON.stringify(row, null, 2));
+  console.log('Columnas disponibles:', Object.keys(row));
   
-  // Validar campos numéricos (1-5) - usar nombres del Excel
-  const numericFields = ['potente', 'dulce', 'acidez', 'tánico', 'afrutado'];
-  numericFields.forEach(field => {
-    const value = parseInt(row[field]);
-    if (row[field] && (isNaN(value) || value < 1 || value > 5)) {
-      errors.push(`${field} debe ser un número entre 1 y 5`);
+  // Verificar nombre del vino
+  const wineName = getColumnValue(row, ['nombre', 'name', 'Name', 'Nombre']);
+  console.log('Nombre del vino encontrado:', `"${wineName}"`);
+  
+  if (!wineName) {
+    errors.push('Nombre del vino es requerido');
+  }
+  
+  // Verificar tipo/estilo
+  const wineType = getColumnValue(row, ['tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo']);
+  console.log('Tipo/Estilo encontrado:', `"${wineType}"`);
+  
+  if (!wineType) {
+    errors.push('Tipo/Estilo del vino es requerido');
+  }
+  
+  // Validar campos numéricos opcionales (1-5)
+  const numericFields = {
+    'Potente': ['potente', 'power', 'Potente'],
+    'Acidez': ['acidez', 'acidity', 'Acidez'],
+    'Dulce': ['dulce', 'sweet', 'sweetness', 'Dulce'],
+    'Tánico': ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos'],
+    'Afrutado': ['afrutado', 'fruity', 'Afrutado']
+  };
+  
+  Object.entries(numericFields).forEach(([fieldName, searchTerms]) => {
+    const valueStr = getColumnValue(row, searchTerms);
+    
+    if (valueStr) {
+      const value = parseInt(valueStr);
+      if (isNaN(value) || value < 1 || value > 5) {
+        errors.push(`${fieldName} debe ser un número entre 1 y 5 (valor: "${valueStr}")`);
+      }
     }
   });
   
-  // Validar añada/vintage
-  if (row.añada && isNaN(parseInt(row.añada))) {
-    errors.push('Añada debe ser un año válido');
+  // Validar añada/vintage si existe
+  const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage']);
+  if (vintageStr && isNaN(parseInt(vintageStr))) {
+    errors.push('Añada/Vintage debe ser un año válido');
   }
+  
+  console.log('Errores de validación de vino:', errors);
+  console.log('=== FIN VALIDACIÓN DE VINO ===');
   
   return errors;
 };

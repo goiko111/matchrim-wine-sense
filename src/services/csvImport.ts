@@ -51,6 +51,35 @@ const generateUniqueName = async (tableName: string, baseName: string): Promise<
   }
 };
 
+// Función auxiliar para extraer valor de columna de forma flexible
+const getColumnValue = (row: CSVRow, possibleNames: string[]): string => {
+  for (const name of possibleNames) {
+    if (row[name] !== undefined && row[name] !== null && row[name].toString().trim()) {
+      return row[name].toString().trim();
+    }
+  }
+  
+  // Búsqueda flexible (case-insensitive)
+  for (const name of possibleNames) {
+    const foundKey = Object.keys(row).find(key => 
+      key.toLowerCase().includes(name.toLowerCase()) ||
+      name.toLowerCase().includes(key.toLowerCase())
+    );
+    if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null && row[foundKey].toString().trim()) {
+      return row[foundKey].toString().trim();
+    }
+  }
+  
+  return '';
+};
+
+// Función auxiliar para convertir a entero con valor por defecto
+const getIntValue = (value: string, defaultValue: number = 3): number => {
+  if (!value) return defaultValue;
+  const parsed = parseInt(value);
+  return isNaN(parsed) ? defaultValue : Math.max(1, Math.min(5, parsed));
+};
+
 export const importWines = async (
   data: CSVRow[], 
   duplicateStrategy: DuplicateStrategy,
@@ -64,15 +93,25 @@ export const importWines = async (
     const currentProgress = ((i + 1) / data.length) * 100;
     onProgress(currentProgress);
     console.log(`Procesando vino ${i + 1}/${data.length} (${Math.round(currentProgress)}%)`);
+    console.log('Fila completa:', row);
     
-    const validationErrors = validateWineRow(row);
-    if (validationErrors.length > 0) {
-      result.errors.push(`Fila ${i + 2}: ${validationErrors.join(', ')}`);
+    // Extraer nombre del vino
+    const wineName = getColumnValue(row, ['nombre', 'name', 'Name', 'Nombre']);
+    
+    if (!wineName) {
+      result.errors.push(`Fila ${i + 2}: Nombre del vino es requerido`);
+      continue;
+    }
+    
+    // Extraer tipo/estilo
+    const wineType = getColumnValue(row, ['tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo']);
+    
+    if (!wineType) {
+      result.errors.push(`Fila ${i + 2}: Tipo/Estilo del vino es requerido`);
       continue;
     }
     
     try {
-      const wineName = row.nombre || row.name || '';
       const existingWine = await checkForExistingRecord('wines', wineName);
       
       if (existingWine) {
@@ -82,28 +121,79 @@ export const importWines = async (
           result.warnings.push(`Fila ${i + 2}: Vino "${wineName}" ya existe, omitido`);
           continue;
         } else if (duplicateStrategy === 'update') {
-          // Lógica de actualización aquí si es necesaria
-          result.updated++;
+          // Actualizar vino existente
+          const updateData = {
+            producer: getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer']) || null,
+            region: getColumnValue(row, ['region', 'Region']) || null,
+            vintage: (() => {
+              const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage']);
+              return vintageStr ? parseInt(vintageStr) : null;
+            })(),
+            estilo: wineType,
+            potencia: getIntValue(getColumnValue(row, ['potente', 'power', 'Potente'])),
+            acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity', 'Acidez'])),
+            dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'sweetness', 'Dulce'])),
+            taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos'])),
+            afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity', 'Afrutado'])),
+            description: (() => {
+              // Crear descripción extendida con todas las columnas disponibles
+              const descriptionParts = [];
+              
+              const nariz = getColumnValue(row, ['nariz', 'nose', 'Nariz']);
+              if (nariz) descriptionParts.push(`Nariz: ${nariz}`);
+              
+              const boca = getColumnValue(row, ['boca', 'mouth', 'palate', 'Boca']);
+              if (boca) descriptionParts.push(`Boca: ${boca}`);
+              
+              const visual = getColumnValue(row, ['visual', 'appearance', 'Visual']);
+              if (visual) descriptionParts.push(`Visual: ${visual}`);
+              
+              const cuerpo = getColumnValue(row, ['cuerpo', 'body', 'Cuerpo']);
+              if (cuerpo) descriptionParts.push(`Cuerpo: ${cuerpo}`);
+              
+              const estructura = getColumnValue(row, ['estructura', 'structure', 'Estructura']);
+              if (estructura) descriptionParts.push(`Estructura: ${estructura}`);
+              
+              const final = getColumnValue(row, ['final', 'finish', 'Final']);
+              if (final) descriptionParts.push(`Final: ${final}`);
+              
+              const crianza = getColumnValue(row, ['crianza', 'aging', 'Crianza']);
+              if (crianza) descriptionParts.push(`Crianza: ${crianza}`);
+              
+              const elaboracion = getColumnValue(row, ['elaboración', 'winemaking', 'Elaboración']);
+              if (elaboracion) descriptionParts.push(`Elaboración: ${elaboracion}`);
+              
+              const vinedo = getColumnValue(row, ['viñedo', 'vineyard', 'Viñedo']);
+              if (vinedo) descriptionParts.push(`Viñedo: ${vinedo}`);
+              
+              const infoBodega = getColumnValue(row, ['info bodega', 'winery info', 'Info bodega', 'Info Bodega']);
+              if (infoBodega) descriptionParts.push(`Info Bodega: ${infoBodega}`);
+              
+              const clima = getColumnValue(row, ['clima', 'climate', 'Clima']);
+              if (clima) descriptionParts.push(`Clima: ${clima}`);
+              
+              return descriptionParts.length > 0 ? descriptionParts.join('. ') : null;
+            })(),
+            maridage_recommendations: null
+          };
+          
+          console.log(`Actualizando vino existente: ${wineName}`, updateData);
+          const { error } = await supabase
+            .from('wines')
+            .update(updateData)
+            .eq('id', existingWine.id);
+          
+          if (error) {
+            console.error(`Error actualizando vino ${wineName}:`, error);
+            result.errors.push(`Fila ${i + 2}: ${error.message}`);
+          } else {
+            result.updated++;
+            console.log(`Vino actualizado exitosamente: ${wineName}`);
+          }
           continue;
         }
       }
 
-      // Crear descripción extendida combinando múltiples campos
-      const descriptionParts = [];
-      if (row.nariz) descriptionParts.push(`Nariz: ${row.nariz}`);
-      if (row.boca) descriptionParts.push(`Boca: ${row.boca}`);
-      if (row.visual) descriptionParts.push(`Visual: ${row.visual}`);
-      if (row.cuerpo) descriptionParts.push(`Cuerpo: ${row.cuerpo}`);
-      if (row.estructura) descriptionParts.push(`Estructura: ${row.estructura}`);
-      if (row.final) descriptionParts.push(`Final: ${row.final}`);
-      if (row.crianza) descriptionParts.push(`Crianza: ${row.crianza}`);
-      if (row.elaboración) descriptionParts.push(`Elaboración: ${row.elaboración}`);
-      if (row.viñedo) descriptionParts.push(`Viñedo: ${row.viñedo}`);
-      if (row['info bodega']) descriptionParts.push(`Info Bodega: ${row['info bodega']}`);
-      if (row.clima) descriptionParts.push(`Clima: ${row.clima}`);
-      
-      const extendedDescription = descriptionParts.join('. ');
-      
       let finalWineName = wineName;
       if (existingWine && duplicateStrategy === 'suffix') {
         finalWineName = await generateUniqueName('wines', wineName);
@@ -111,19 +201,61 @@ export const importWines = async (
       
       const wineData = {
         name: finalWineName,
-        producer: row.bodega || row.producer || null,
-        region: row.region || null,
-        vintage: row.añada ? parseInt(row.añada) : (row.vintage ? parseInt(row.vintage) : null),
-        estilo: row.tipo || row.estilo || '',
-        potencia: row.potente ? parseInt(row.potente) : 3,
-        acidez: row.acidez ? parseInt(row.acidez) : 3,
-        dulzura: row.dulce ? parseInt(row.dulce) : 3,
-        taninos: row.tánico ? parseInt(row.tánico) : 3,
-        afrutado: row.afrutado ? parseInt(row.afrutado) : 3,
-        description: extendedDescription || null,
+        producer: getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer']) || null,
+        region: getColumnValue(row, ['region', 'Region']) || null,
+        vintage: (() => {
+          const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage']);
+          return vintageStr ? parseInt(vintageStr) : null;
+        })(),
+        estilo: wineType,
+        potencia: getIntValue(getColumnValue(row, ['potente', 'power', 'Potente'])),
+        acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity', 'Acidez'])),
+        dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'sweetness', 'Dulce'])),
+        taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos'])),
+        afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity', 'Afrutado'])),
+        description: (() => {
+          // Crear descripción extendida con todas las columnas disponibles
+          const descriptionParts = [];
+          
+          const nariz = getColumnValue(row, ['nariz', 'nose', 'Nariz']);
+          if (nariz) descriptionParts.push(`Nariz: ${nariz}`);
+          
+          const boca = getColumnValue(row, ['boca', 'mouth', 'palate', 'Boca']);
+          if (boca) descriptionParts.push(`Boca: ${boca}`);
+          
+          const visual = getColumnValue(row, ['visual', 'appearance', 'Visual']);
+          if (visual) descriptionParts.push(`Visual: ${visual}`);
+          
+          const cuerpo = getColumnValue(row, ['cuerpo', 'body', 'Cuerpo']);
+          if (cuerpo) descriptionParts.push(`Cuerpo: ${cuerpo}`);
+          
+          const estructura = getColumnValue(row, ['estructura', 'structure', 'Estructura']);
+          if (estructura) descriptionParts.push(`Estructura: ${estructura}`);
+          
+          const final = getColumnValue(row, ['final', 'finish', 'Final']);
+          if (final) descriptionParts.push(`Final: ${final}`);
+          
+          const crianza = getColumnValue(row, ['crianza', 'aging', 'Crianza']);
+          if (crianza) descriptionParts.push(`Crianza: ${crianza}`);
+          
+          const elaboracion = getColumnValue(row, ['elaboración', 'winemaking', 'Elaboración']);
+          if (elaboracion) descriptionParts.push(`Elaboración: ${elaboracion}`);
+          
+          const vinedo = getColumnValue(row, ['viñedo', 'vineyard', 'Viñedo']);
+          if (vinedo) descriptionParts.push(`Viñedo: ${vinedo}`);
+          
+          const infoBodega = getColumnValue(row, ['info bodega', 'winery info', 'Info bodega', 'Info Bodega']);
+          if (infoBodega) descriptionParts.push(`Info Bodega: ${infoBodega}`);
+          
+          const clima = getColumnValue(row, ['clima', 'climate', 'Clima']);
+          if (clima) descriptionParts.push(`Clima: ${clima}`);
+          
+          return descriptionParts.length > 0 ? descriptionParts.join('. ') : null;
+        })(),
         maridage_recommendations: null
       };
       
+      console.log(`Insertando nuevo vino: ${finalWineName}`, wineData);
       const { error } = await supabase
         .from('wines')
         .insert(wineData);
