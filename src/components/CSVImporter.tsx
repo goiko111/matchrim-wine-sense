@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Upload, AlertTriangle } from 'lucide-react';
+import { Upload, AlertTriangle, Info } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { parseCSVFile } from '@/utils/csvParser';
 import { importWines, importWineStyles, importMatchrimProfiles } from '@/services/csvImport';
@@ -29,6 +29,17 @@ const CSVImporter = () => {
       try {
         const data = await parseCSVFile(selectedFile);
         setCsvData(data);
+        console.log('=== DATOS CSV CARGADOS ===');
+        console.log('Número de filas:', data.length);
+        if (data.length > 0) {
+          console.log('Primera fila (ejemplo):', data[0]);
+          console.log('Columnas detectadas:', Object.keys(data[0]));
+          console.log('Todas las columnas y sus valores en la primera fila:');
+          Object.entries(data[0]).forEach(([key, value]) => {
+            console.log(`  "${key}": "${value}"`);
+          });
+        }
+        console.log('=== FIN DATOS CSV ===');
       } catch (error) {
         console.error('Error parsing CSV:', error);
         toast({
@@ -115,20 +126,35 @@ const CSVImporter = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Debug info */}
+          {/* Información detallada de debug */}
           {csvData.length > 0 && (
-            <Alert>
-              <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>
-                Estado: {isLoading ? 'Importando...' : 'Listo para importar'} | 
-                Progreso: {Math.round(progress)}% | 
-                Filas: {csvData.length} | 
-                Tipo: {selectedType} | 
-                Estrategia: {duplicateStrategy}
-                <br />
-                <strong>Columnas detectadas:</strong> {csvData.length > 0 ? Object.keys(csvData[0]).join(', ') : 'Ninguna'}
-              </AlertDescription>
-            </Alert>
+            <div className="space-y-3">
+              <Alert>
+                <Info className="h-4 w-4" />
+                <AlertDescription>
+                  <strong>Información del archivo:</strong><br />
+                  - Filas cargadas: {csvData.length}<br />
+                  - Tipo de importación: {selectedType}<br />
+                  - Estrategia de duplicados: {duplicateStrategy}<br />
+                  - Estado: {isLoading ? 'Importando...' : 'Listo para importar'}<br />
+                  - Progreso: {Math.round(progress)}%
+                </AlertDescription>
+              </Alert>
+              
+              <Alert>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                  <strong>Primeras 3 columnas detectadas:</strong><br />
+                  {csvData.length > 0 ? Object.keys(csvData[0]).slice(0, 3).map(col => `"${col}"`).join(', ') : 'Ninguna'}<br />
+                  {csvData.length > 0 && Object.keys(csvData[0]).length > 3 && (
+                    <>
+                      <strong>Total de columnas:</strong> {Object.keys(csvData[0]).length}<br />
+                      <strong>Todas las columnas:</strong> {Object.keys(csvData[0]).map(col => `"${col}"`).join(', ')}
+                    </>
+                  )}
+                </AlertDescription>
+              </Alert>
+            </div>
           )}
 
           <CSVUpload
