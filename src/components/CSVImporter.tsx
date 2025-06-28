@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -116,13 +115,31 @@ const CSVImporter = () => {
     reader.readAsText(file);
   };
 
-  // Función para buscar el valor de una columna con múltiples nombres posibles
+  // Función mejorada para buscar el valor de una columna con múltiples nombres posibles
   const findColumnValue = (row: CSVRow, possibleNames: string[]): string => {
+    console.log('Buscando valor en columnas:', possibleNames);
+    console.log('Columnas disponibles en la fila:', Object.keys(row));
+    
     for (const name of possibleNames) {
       if (row[name] !== undefined && row[name].trim()) {
+        console.log(`Valor encontrado en columna "${name}": "${row[name].trim()}"`);
         return row[name].trim();
       }
     }
+    
+    // Si no encuentra nada, buscar de forma más flexible (ignorando mayúsculas/minúsculas y espacios)
+    for (const name of possibleNames) {
+      const normalizedName = name.toLowerCase().replace(/\s+/g, '');
+      const foundKey = Object.keys(row).find(key => 
+        key.toLowerCase().replace(/\s+/g, '') === normalizedName
+      );
+      if (foundKey && row[foundKey] !== undefined && row[foundKey].trim()) {
+        console.log(`Valor encontrado (búsqueda flexible) en columna "${foundKey}": "${row[foundKey].trim()}"`);
+        return row[foundKey].trim();
+      }
+    }
+    
+    console.log('No se encontró valor para ninguna de las columnas:', possibleNames);
     return '';
   };
 
@@ -156,30 +173,32 @@ const CSVImporter = () => {
     console.log('Validando fila de estilo:', row);
     console.log('Columnas disponibles:', Object.keys(row));
     
-    // Buscar el nombre del estilo usando exactamente los nombres de tu Excel
+    // Buscar el nombre del estilo con más opciones posibles
     const styleName = findColumnValue(row, [
       'Estilo Winerim',
       'estilo winerim',
-      'ESTILO WINERIM',
+      'ESTILO WINERIM', 
       'Estilo',
       'estilo',
       'name',
-      'Name'
+      'Name',
+      'nombre',
+      'Nombre'
     ]);
     
     console.log('Nombre del estilo encontrado:', styleName);
     
     if (!styleName) {
-      errors.push('Nombre del estilo es requerido (columna: Estilo Winerim)');
+      errors.push('Nombre del estilo es requerido - verifica que la columna del nombre del estilo esté presente');
     }
     
-    // Validar campos numéricos usando exactamente los nombres de tu Excel
+    // Mapeo más flexible para campos numéricos - incluir todas las variaciones posibles
     const numericFieldMappings = {
-      'Potente': ['Potente'],
-      'Acidez': ['Acidez'], 
-      'Dulce': ['Dulzura'],
-      'Tánico': ['Taninos'],
-      'Afrutado': ['Afrutado']
+      'Potente': ['Potente', 'potente', 'POTENTE', 'Potencia', 'potencia', 'POTENCIA'],
+      'Acidez': ['Acidez', 'acidez', 'ACIDEZ', 'Acido', 'acido', 'ACIDO'], 
+      'Dulce': ['Dulzura', 'dulzura', 'DULZURA', 'Dulce', 'dulce', 'DULCE', 'Sweet', 'sweet'],
+      'Tánico': ['Taninos', 'taninos', 'TANINOS', 'Tánico', 'tanico', 'TANICO', 'Tannins', 'tannins'],
+      'Afrutado': ['Afrutado', 'afrutado', 'AFRUTADO', 'Frutal', 'frutal', 'FRUTAL', 'Fruity', 'fruity']
     };
     
     Object.entries(numericFieldMappings).forEach(([fieldName, possibleNames]) => {
@@ -187,7 +206,7 @@ const CSVImporter = () => {
       console.log(`Campo ${fieldName}: valor encontrado = "${valueStr}"`);
       
       if (!valueStr) {
-        errors.push(`${fieldName} es requerido (buscar en columnas: ${possibleNames.join(', ')})`);
+        errors.push(`${fieldName} es requerido - verifica que la columna esté presente`);
       } else {
         const value = parseInt(valueStr);
         if (isNaN(value) || value < 1 || value > 5) {
@@ -375,11 +394,17 @@ const CSVImporter = () => {
       }
       
       try {
-        // Buscar el nombre del estilo usando exactamente el nombre de tu Excel
+        // Buscar el nombre del estilo con más flexibilidad
         const styleName = findColumnValue(row, [
           'Estilo Winerim',
           'estilo winerim',
-          'ESTILO WINERIM'
+          'ESTILO WINERIM',
+          'Estilo',
+          'estilo',
+          'name',
+          'Name',
+          'nombre',
+          'Nombre'
         ]);
         
         const existingStyle = await checkForExistingRecord('wine_styles', styleName);
@@ -400,15 +425,15 @@ const CSVImporter = () => {
           finalStyleName = await generateUniqueName('wine_styles', styleName);
         }
         
-        // Extraer valores usando exactamente los nombres de tu Excel
+        // Extraer valores usando el mapeo flexible
         const styleData = {
           name: finalStyleName,
           description: findColumnValue(row, ['description', 'Description', 'descripcion', 'Descripcion']) || null,
-          potente: parseInt(findColumnValue(row, ['Potente'])),
-          acidez: parseInt(findColumnValue(row, ['Acidez'])),
-          dulce: parseInt(findColumnValue(row, ['Dulzura'])),
-          tanico: parseInt(findColumnValue(row, ['Taninos'])),
-          afrutado: parseInt(findColumnValue(row, ['Afrutado']))
+          potente: parseInt(findColumnValue(row, ['Potente', 'potente', 'POTENTE', 'Potencia', 'potencia'])),
+          acidez: parseInt(findColumnValue(row, ['Acidez', 'acidez', 'ACIDEZ'])),
+          dulce: parseInt(findColumnValue(row, ['Dulzura', 'dulzura', 'DULZURA', 'Dulce', 'dulce'])),
+          tanico: parseInt(findColumnValue(row, ['Taninos', 'taninos', 'TANINOS', 'Tánico', 'tanico'])),
+          afrutado: parseInt(findColumnValue(row, ['Afrutado', 'afrutado', 'AFRUTADO']))
         };
         
         console.log('Datos del estilo a insertar:', styleData);
