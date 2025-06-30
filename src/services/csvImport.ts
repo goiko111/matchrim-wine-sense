@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { CSVRow, ImportResult, DuplicateStrategy } from '@/types/csv';
 import { validateWineRow, validateWineStyleRow, validateMatchrimProfileRow } from '@/utils/csvValidation';
@@ -317,96 +318,153 @@ export const importWineStyles = async (
 ): Promise<ImportResult> => {
   const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
   console.log(`Iniciando importación de ${data.length} estilos de vino`);
+  console.log('=== INICIO ANÁLISIS DETALLADO DE ESTILOS ===');
   
   for (let i = 0; i < data.length; i++) {
     const row = data[i];
     const currentProgress = ((i + 1) / data.length) * 100;
     onProgress(currentProgress);
-    console.log(`Procesando estilo ${i + 1}/${data.length} (${Math.round(currentProgress)}%)`);
     
-    // Función auxiliar para buscar valor de forma más flexible
-    const findFlexibleValue = (possibleNames: string[]): string => {
+    console.log(`\n=== PROCESANDO ESTILO ${i + 1}/${data.length} ===`);
+    console.log('Fila completa:', JSON.stringify(row, null, 2));
+    console.log('Columnas disponibles:', Object.keys(row));
+    console.log('Valores de todas las columnas:');
+    Object.entries(row).forEach(([key, value]) => {
+      console.log(`  "${key}": "${value}" (tipo: ${typeof value}, vacío: ${!value || !value.toString().trim()})`);
+    });
+    
+    // Función auxiliar para buscar valor de forma muy flexible
+    const findFlexibleValue = (possibleNames: string[], description: string = ''): string => {
+      console.log(`\nBuscando ${description} en columnas:`, possibleNames);
+      
       // Primero buscar coincidencia exacta
       for (const name of possibleNames) {
-        if (row[name] !== undefined && row[name].toString().trim()) {
+        if (row[name] !== undefined && row[name] !== null && row[name].toString().trim()) {
+          console.log(`✓ Encontré ${description} por coincidencia exacta: "${name}" = "${row[name].toString().trim()}"`);
           return row[name].toString().trim();
         }
       }
       
-      // Luego buscar coincidencia parcial
+      // Luego buscar coincidencia parcial (case-insensitive)
       for (const name of possibleNames) {
-        const foundKey = Object.keys(row).find(key => 
-          key.toLowerCase().includes(name.toLowerCase()) ||
-          name.toLowerCase().includes(key.toLowerCase())
-        );
-        if (foundKey && row[foundKey] !== undefined && row[foundKey].toString().trim()) {
+        const foundKey = Object.keys(row).find(key => {
+          const lowerKey = key.toLowerCase();
+          const lowerName = name.toLowerCase();
+          return lowerKey.includes(lowerName) || lowerName.includes(lowerKey);
+        });
+        if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null && row[foundKey].toString().trim()) {
+          console.log(`✓ Encontré ${description} por coincidencia parcial: "${foundKey}" = "${row[foundKey].toString().trim()}"`);
           return row[foundKey].toString().trim();
         }
       }
       
+      console.log(`✗ No encontré ${description} en ninguna columna`);
       return '';
     };
     
-    // Buscar el nombre del estilo primero
+    // Buscar el nombre del estilo con máxima flexibilidad
     let styleName = findFlexibleValue([
       'Estilo', 'estilo', 'style', 'Style', 'nombre', 'Nombre', 'name', 'Name',
-      'Winerim', 'winerim', 'tipo', 'Tipo'
-    ]);
+      'Winerim', 'winerim', 'tipo', 'Tipo', 'category', 'Category', 'wine_style', 'Wine_Style'
+    ], 'nombre del estilo');
     
-    // Si no encontramos nombre, usar la primera columna con contenido válido
+    // Si no encontramos nombre del estilo, intentar usar cualquier columna que contenga texto válido
     if (!styleName) {
-      const firstNonEmptyEntry = Object.entries(row).find(([key, value]) => 
-        value && value.toString().trim() && 
-        !key.toLowerCase().includes('potent') &&
-        !key.toLowerCase().includes('acid') &&
-        !key.toLowerCase().includes('dulc') &&
-        !key.toLowerCase().includes('tanic') &&
-        !key.toLowerCase().includes('frut')
-      );
+      console.log('No se encontró nombre del estilo, buscando en todas las columnas...');
       
-      if (firstNonEmptyEntry) {
-        styleName = firstNonEmptyEntry[1].toString().trim();
-        console.log(`Usando primera columna válida como nombre: "${styleName}"`);
+      // Buscar la primera columna que no sea numérica y tenga contenido
+      const potentialNameEntry = Object.entries(row).find(([key, value]) => {
+        if (!value || !value.toString().trim()) return false;
+        
+        // Evitar columnas claramente numéricas
+        const numericPatterns = [
+          /potent/i, /acid/i, /dulc/i, /sweet/i, /tanic/i, /tanin/i, /frut/i, /fruit/i,
+          /strength/i, /power/i, /sour/i, /sugar/i, /berry/i, /astringent/i
+        ];
+        
+        const isNumericColumn = numericPatterns.some(pattern => pattern.test(key));
+        if (isNumericColumn) return false;
+        
+        // Verificar que no sea solo un número
+        const trimmedValue = value.toString().trim();
+        if (/^\d+$/.test(trimmedValue)) return false;
+        
+        return true;
+      });
+      
+      if (potentialNameEntry) {
+        styleName = potentialNameEntry[1].toString().trim();
+        console.log(`✓ Usando columna "${potentialNameEntry[0]}" como nombre del estilo: "${styleName}"`);
       }
     }
     
     if (!styleName) {
-      console.log(`Fila ${i + 2}: No se pudo encontrar nombre del estilo, omitiendo`);
-      result.skipped++;
-      result.warnings.push(`Fila ${i + 2}: No se pudo encontrar nombre del estilo`);
+      console.log(`✗ FILA ${i + 2}: No se pudo encontrar nombre del estilo`);
+      result.errors.push(`Fila ${i + 2}: No se pudo encontrar nombre del estilo. Columnas disponibles: ${Object.keys(row).join(', ')}`);
       continue;
     }
     
-    // Extraer valores numéricos de forma flexible
-    const potente = parseInt(findFlexibleValue(['potent', 'power', 'strength', 'fuerte', 'intenso', 'Potente'])) || 3;
-    const acidez = parseInt(findFlexibleValue(['acid', 'acido', 'sour', 'Acidez'])) || 3;
-    const dulce = parseInt(findFlexibleValue(['dulc', 'sweet', 'sugar', 'azucar', 'Dulce', 'Dulzura'])) || 3;
-    const tanico = parseInt(findFlexibleValue(['tanic', 'tanin', 'astringent', 'Tánico', 'Taninos'])) || 3;
-    const afrutado = parseInt(findFlexibleValue(['frut', 'fruit', 'berry', 'Afrutado'])) || 3;
+    console.log(`✓ Nombre del estilo confirmado: "${styleName}"`);
     
-    // Validar que los valores numéricos estén en rango
-    const numericValues = { potente, acidez, dulce, tanico, afrutado };
-    const invalidValues = Object.entries(numericValues).filter(([_, value]) => 
-      isNaN(value) || value < 1 || value > 5
-    );
+    // Extraer valores numéricos de forma muy flexible
+    const extractNumericValue = (fieldName: string, searchTerms: string[]): number => {
+      console.log(`\nBuscando valor numérico para ${fieldName}:`);
+      
+      // Buscar por términos exactos y parciales
+      const allSearchTerms = [fieldName.toLowerCase(), ...searchTerms.map(t => t.toLowerCase())];
+      
+      for (const term of allSearchTerms) {
+        // Búsqueda exacta
+        const exactMatch = Object.keys(row).find(key => key.toLowerCase() === term);
+        if (exactMatch && row[exactMatch] && row[exactMatch].toString().trim()) {
+          const value = parseInt(row[exactMatch].toString().trim());
+          if (!isNaN(value)) {
+            console.log(`✓ ${fieldName} encontrado (exacto): "${exactMatch}" = ${value}`);
+            return Math.max(1, Math.min(5, value));
+          }
+        }
+        
+        // Búsqueda parcial
+        const partialMatch = Object.keys(row).find(key => {
+          const lowerKey = key.toLowerCase();
+          return lowerKey.includes(term) || term.includes(lowerKey.substring(0, Math.min(4, lowerKey.length)));
+        });
+        
+        if (partialMatch && row[partialMatch] && row[partialMatch].toString().trim()) {
+          const value = parseInt(row[partialMatch].toString().trim());
+          if (!isNaN(value)) {
+            console.log(`✓ ${fieldName} encontrado (parcial): "${partialMatch}" = ${value}`);
+            return Math.max(1, Math.min(5, value));
+          }
+        }
+      }
+      
+      console.log(`✗ ${fieldName} no encontrado, usando valor por defecto: 3`);
+      return 3;
+    };
     
-    if (invalidValues.length > 0) {
-      console.log(`Fila ${i + 2}: Valores numéricos inválidos:`, invalidValues);
-      result.errors.push(`Fila ${i + 2}: Valores numéricos inválidos: ${invalidValues.map(([key, value]) => `${key}=${value}`).join(', ')}`);
-      continue;
-    }
+    const potente = extractNumericValue('Potente', ['potent', 'power', 'strength', 'fuerte', 'intenso']);
+    const acidez = extractNumericValue('Acidez', ['acid', 'acido', 'sour']);
+    const dulce = extractNumericValue('Dulce', ['dulc', 'sweet', 'sugar', 'azucar', 'dulzura']);
+    const tanico = extractNumericValue('Tánico', ['tanic', 'tanin', 'astringent', 'taninos']);
+    const afrutado = extractNumericValue('Afrutado', ['frut', 'fruit', 'berry']);
+    
+    console.log(`Valores extraídos: potente=${potente}, acidez=${acidez}, dulce=${dulce}, tanico=${tanico}, afrutado=${afrutado}`);
     
     try {
       const existingStyle = await checkForExistingRecord('wine_styles', styleName);
+      console.log(`Verificación de duplicado para "${styleName}":`, existingStyle ? 'EXISTE' : 'NO EXISTE');
       
       if (existingStyle) {
         if (duplicateStrategy === 'skip') {
           result.skipped++;
           result.warnings.push(`Fila ${i + 2}: Estilo "${styleName}" ya existe, omitido`);
+          console.log(`OMITIDO: Estilo "${styleName}" ya existe`);
           continue;
         } else if (duplicateStrategy === 'update') {
+          // Actualizar estilo existente
           const updateData = {
-            description: findFlexibleValue(['description', 'Description', 'descripcion', 'Descripcion']) || null,
+            description: findFlexibleValue(['description', 'Description', 'descripcion', 'Descripcion'], 'descripción') || null,
             potente,
             acidez,
             dulce,
@@ -414,6 +472,7 @@ export const importWineStyles = async (
             afrutado
           };
           
+          console.log(`Actualizando estilo existente: "${styleName}"`, updateData);
           const { error } = await supabase
             .from('wine_styles')
             .update(updateData)
@@ -424,7 +483,7 @@ export const importWineStyles = async (
             result.errors.push(`Fila ${i + 2}: ${error.message}`);
           } else {
             result.updated++;
-            console.log(`Estilo actualizado exitosamente: ${styleName}`);
+            console.log(`✓ Estilo actualizado exitosamente: ${styleName}`);
           }
           continue;
         }
@@ -433,11 +492,12 @@ export const importWineStyles = async (
       let finalStyleName = styleName;
       if (existingStyle && duplicateStrategy === 'suffix') {
         finalStyleName = await generateUniqueName('wine_styles', styleName);
+        console.log(`Generando nombre único: "${styleName}" -> "${finalStyleName}"`);
       }
       
       const styleData = {
         name: finalStyleName,
-        description: findFlexibleValue(['description', 'Description', 'descripcion', 'Descripcion']) || null,
+        description: findFlexibleValue(['description', 'Description', 'descripcion', 'Descripcion'], 'descripción') || null,
         potente,
         acidez,
         dulce,
@@ -445,7 +505,7 @@ export const importWineStyles = async (
         afrutado
       };
       
-      console.log('Datos del estilo a insertar:', styleData);
+      console.log(`Insertando nuevo estilo: "${finalStyleName}"`, styleData);
       
       const { error } = await supabase
         .from('wine_styles')
@@ -456,14 +516,17 @@ export const importWineStyles = async (
         result.errors.push(`Fila ${i + 2}: ${error.message}`);
       } else {
         result.success++;
-        console.log(`Estilo insertado exitosamente: ${finalStyleName}`);
+        console.log(`✓ Estilo insertado exitosamente: ${finalStyleName}`);
       }
     } catch (error: any) {
       console.error(`Error procesando fila ${i + 2}:`, error);
       result.errors.push(`Fila ${i + 2}: ${error.message}`);
     }
+    
+    console.log(`=== FIN PROCESAMIENTO ESTILO ${i + 1} ===\n`);
   }
   
+  console.log('=== FIN ANÁLISIS DETALLADO DE ESTILOS ===');
   console.log(`Importación de estilos completada:`, result);
   return result;
 };
