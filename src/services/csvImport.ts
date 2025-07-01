@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { CSVRow, ImportResult, DuplicateStrategy } from '@/types/csv';
 import { validateWineRow, validateWineStyleRow, validateMatchrimProfileRow } from '@/utils/csvValidation';
@@ -33,6 +32,8 @@ const checkForExistingWine = async (name: string, producer?: string, vintage?: n
 };
 
 const checkForExistingRecord = async (tableName: string, name: string) => {
+  console.log(`Verificando duplicado exacto en ${tableName} para: "${name}"`);
+  
   let query;
   
   if (tableName === 'wine_styles') {
@@ -54,9 +55,11 @@ const checkForExistingRecord = async (tableName: string, name: string) => {
   const { data, error } = await query;
   
   if (error && error.code !== 'PGRST116') {
+    console.error(`Error verificando duplicado en ${tableName}:`, error);
     throw error;
   }
   
+  console.log(`Resultado verificación duplicado en ${tableName}:`, data ? 'EXISTE' : 'NO EXISTE');
   return data;
 };
 
@@ -318,7 +321,7 @@ export const importWineStyles = async (
 ): Promise<ImportResult> => {
   const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
   console.log(`Iniciando importación de ${data.length} estilos de vino`);
-  console.log('=== INICIO ANÁLISIS DETALLADO DE ESTILOS ===');
+  console.log('=== INICIO IMPORTACIÓN OPTIMIZADA DE ESTILOS ===');
   
   for (let i = 0; i < data.length; i++) {
     const row = data[i];
@@ -326,75 +329,39 @@ export const importWineStyles = async (
     onProgress(currentProgress);
     
     console.log(`\n=== PROCESANDO ESTILO ${i + 1}/${data.length} ===`);
-    console.log('Fila completa:', JSON.stringify(row, null, 2));
     console.log('Columnas disponibles:', Object.keys(row));
-    console.log('Valores de todas las columnas:');
-    Object.entries(row).forEach(([key, value]) => {
-      console.log(`  "${key}": "${value}" (tipo: ${typeof value}, vacío: ${!value || !value.toString().trim()})`);
-    });
     
-    // Función auxiliar para buscar valor de forma muy flexible
-    const findFlexibleValue = (possibleNames: string[], description: string = ''): string => {
-      console.log(`\nBuscando ${description} en columnas:`, possibleNames);
-      
-      // Primero buscar coincidencia exacta
-      for (const name of possibleNames) {
-        if (row[name] !== undefined && row[name] !== null && row[name].toString().trim()) {
-          console.log(`✓ Encontré ${description} por coincidencia exacta: "${name}" = "${row[name].toString().trim()}"`);
-          return row[name].toString().trim();
+    // Buscar el nombre del estilo de forma MUY ESPECÍFICA para evitar falsos positivos
+    let styleName = '';
+    
+    // Primero buscar "Estilo Winerim" que es exactamente lo que veo en tu CSV
+    if (row['Estilo Winerim'] && row['Estilo Winerim'].toString().trim()) {
+      styleName = row['Estilo Winerim'].toString().trim();
+      console.log(`✓ Nombre encontrado en "Estilo Winerim": "${styleName}"`);
+    }
+    // Si no, buscar en otras posibles columnas de estilo
+    else if (row['Estilo'] && row['Estilo'].toString().trim()) {
+      styleName = row['Estilo'].toString().trim();
+      console.log(`✓ Nombre encontrado en "Estilo": "${styleName}"`);
+    }
+    // Buscar en columnas que contengan "estilo" pero no numéricas
+    else {
+      const styleColumn = Object.keys(row).find(key => {
+        const lowerKey = key.toLowerCase();
+        const value = row[key];
+        
+        // Debe contener "estilo" y no ser numérico
+        if (lowerKey.includes('estilo') && value && value.toString().trim()) {
+          const trimmedValue = value.toString().trim();
+          // No debe ser solo números
+          return !/^\d+$/.test(trimmedValue);
         }
-      }
-      
-      // Luego buscar coincidencia parcial (case-insensitive)
-      for (const name of possibleNames) {
-        const foundKey = Object.keys(row).find(key => {
-          const lowerKey = key.toLowerCase();
-          const lowerName = name.toLowerCase();
-          return lowerKey.includes(lowerName) || lowerName.includes(lowerKey);
-        });
-        if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null && row[foundKey].toString().trim()) {
-          console.log(`✓ Encontré ${description} por coincidencia parcial: "${foundKey}" = "${row[foundKey].toString().trim()}"`);
-          return row[foundKey].toString().trim();
-        }
-      }
-      
-      console.log(`✗ No encontré ${description} en ninguna columna`);
-      return '';
-    };
-    
-    // Buscar el nombre del estilo con máxima flexibilidad
-    let styleName = findFlexibleValue([
-      'Estilo', 'estilo', 'style', 'Style', 'nombre', 'Nombre', 'name', 'Name',
-      'Winerim', 'winerim', 'tipo', 'Tipo', 'category', 'Category', 'wine_style', 'Wine_Style'
-    ], 'nombre del estilo');
-    
-    // Si no encontramos nombre del estilo, intentar usar cualquier columna que contenga texto válido
-    if (!styleName) {
-      console.log('No se encontró nombre del estilo, buscando en todas las columnas...');
-      
-      // Buscar la primera columna que no sea numérica y tenga contenido
-      const potentialNameEntry = Object.entries(row).find(([key, value]) => {
-        if (!value || !value.toString().trim()) return false;
-        
-        // Evitar columnas claramente numéricas
-        const numericPatterns = [
-          /potent/i, /acid/i, /dulc/i, /sweet/i, /tanic/i, /tanin/i, /frut/i, /fruit/i,
-          /strength/i, /power/i, /sour/i, /sugar/i, /berry/i, /astringent/i
-        ];
-        
-        const isNumericColumn = numericPatterns.some(pattern => pattern.test(key));
-        if (isNumericColumn) return false;
-        
-        // Verificar que no sea solo un número
-        const trimmedValue = value.toString().trim();
-        if (/^\d+$/.test(trimmedValue)) return false;
-        
-        return true;
+        return false;
       });
       
-      if (potentialNameEntry) {
-        styleName = potentialNameEntry[1].toString().trim();
-        console.log(`✓ Usando columna "${potentialNameEntry[0]}" como nombre del estilo: "${styleName}"`);
+      if (styleColumn) {
+        styleName = row[styleColumn].toString().trim();
+        console.log(`✓ Nombre encontrado en "${styleColumn}": "${styleName}"`);
       }
     }
     
@@ -406,56 +373,34 @@ export const importWineStyles = async (
     
     console.log(`✓ Nombre del estilo confirmado: "${styleName}"`);
     
-    // Extraer valores numéricos de forma muy flexible
-    const extractNumericValue = (fieldName: string, searchTerms: string[]): number => {
-      console.log(`\nBuscando valor numérico para ${fieldName}:`);
-      
-      // Buscar por términos exactos y parciales
-      const allSearchTerms = [fieldName.toLowerCase(), ...searchTerms.map(t => t.toLowerCase())];
-      
-      for (const term of allSearchTerms) {
-        // Búsqueda exacta
-        const exactMatch = Object.keys(row).find(key => key.toLowerCase() === term);
-        if (exactMatch && row[exactMatch] && row[exactMatch].toString().trim()) {
-          const value = parseInt(row[exactMatch].toString().trim());
-          if (!isNaN(value)) {
-            console.log(`✓ ${fieldName} encontrado (exacto): "${exactMatch}" = ${value}`);
-            return Math.max(1, Math.min(5, value));
-          }
-        }
-        
-        // Búsqueda parcial
-        const partialMatch = Object.keys(row).find(key => {
-          const lowerKey = key.toLowerCase();
-          return lowerKey.includes(term) || term.includes(lowerKey.substring(0, Math.min(4, lowerKey.length)));
-        });
-        
-        if (partialMatch && row[partialMatch] && row[partialMatch].toString().trim()) {
-          const value = parseInt(row[partialMatch].toString().trim());
-          if (!isNaN(value)) {
-            console.log(`✓ ${fieldName} encontrado (parcial): "${partialMatch}" = ${value}`);
-            return Math.max(1, Math.min(5, value));
-          }
+    // Extraer valores numéricos usando nombres exactos del CSV
+    const extractNumericValue = (columnName: string): number => {
+      const value = row[columnName];
+      if (value !== undefined && value !== null && value.toString().trim()) {
+        const parsed = parseInt(value.toString().trim());
+        if (!isNaN(parsed) && parsed >= 1 && parsed <= 5) {
+          console.log(`✓ ${columnName} = ${parsed}`);
+          return parsed;
         }
       }
-      
-      console.log(`✗ ${fieldName} no encontrado, usando valor por defecto: 3`);
+      console.log(`✗ ${columnName} no válido, usando 3 por defecto`);
       return 3;
     };
     
-    const potente = extractNumericValue('Potente', ['potent', 'power', 'strength', 'fuerte', 'intenso']);
-    const acidez = extractNumericValue('Acidez', ['acid', 'acido', 'sour']);
-    const dulce = extractNumericValue('Dulce', ['dulc', 'sweet', 'sugar', 'azucar', 'dulzura']);
-    const tanico = extractNumericValue('Tánico', ['tanic', 'tanin', 'astringent', 'taninos']);
-    const afrutado = extractNumericValue('Afrutado', ['frut', 'fruit', 'berry']);
+    const potente = extractNumericValue('Potente');
+    const acidez = extractNumericValue('Acidez');
+    const dulce = extractNumericValue('Dulzura');
+    const tanico = extractNumericValue('Taninos');
+    const afrutado = extractNumericValue('Afrutado');
     
     console.log(`Valores extraídos: potente=${potente}, acidez=${acidez}, dulce=${dulce}, tanico=${tanico}, afrutado=${afrutado}`);
     
     try {
+      // Verificación de duplicado EXACTA para evitar falsos positivos
       const existingStyle = await checkForExistingRecord('wine_styles', styleName);
-      console.log(`Verificación de duplicado para "${styleName}":`, existingStyle ? 'EXISTE' : 'NO EXISTE');
       
       if (existingStyle) {
+        console.log(`DUPLICADO ENCONTRADO para "${styleName}", estrategia: ${duplicateStrategy}`);
         if (duplicateStrategy === 'skip') {
           result.skipped++;
           result.warnings.push(`Fila ${i + 2}: Estilo "${styleName}" ya existe, omitido`);
@@ -464,7 +409,7 @@ export const importWineStyles = async (
         } else if (duplicateStrategy === 'update') {
           // Actualizar estilo existente
           const updateData = {
-            description: findFlexibleValue(['description', 'Description', 'descripcion', 'Descripcion'], 'descripción') || null,
+            description: null, // No hay descripción en el CSV
             potente,
             acidez,
             dulce,
@@ -497,7 +442,7 @@ export const importWineStyles = async (
       
       const styleData = {
         name: finalStyleName,
-        description: findFlexibleValue(['description', 'Description', 'descripcion', 'Descripcion'], 'descripción') || null,
+        description: null, // No hay columna de descripción en tu CSV
         potente,
         acidez,
         dulce,
@@ -526,7 +471,7 @@ export const importWineStyles = async (
     console.log(`=== FIN PROCESAMIENTO ESTILO ${i + 1} ===\n`);
   }
   
-  console.log('=== FIN ANÁLISIS DETALLADO DE ESTILOS ===');
+  console.log('=== FIN IMPORTACIÓN OPTIMIZADA DE ESTILOS ===');
   console.log(`Importación de estilos completada:`, result);
   return result;
 };
