@@ -45,7 +45,8 @@ const DataManagement = () => {
         console.error(`Error contando registros restantes:`, countError);
       }
       
-      const deletedCount = data?.length || 0;
+      // Fix the TypeScript error by handling the null case properly
+      const deletedCount = Array.isArray(data) ? data.length : 0;
       
       setDeleteResult({ type: displayName, count: deletedCount });
       
