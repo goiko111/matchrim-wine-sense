@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { CSVRow, ImportResult, DuplicateStrategy } from '@/types/csv';
 import { validateWineRow, validateWineStyleRow, validateMatchrimProfileRow } from '@/utils/csvValidation';
@@ -320,164 +321,146 @@ export const importWineStyles = async (
   onProgress: (progress: number) => void
 ): Promise<ImportResult> => {
   const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
-  console.log(`Iniciando importación de ${data.length} estilos de vino`);
-  console.log('=== INICIO IMPORTACIÓN CORREGIDA DE ESTILOS ===');
+  console.log(`=== INICIO IMPORTACIÓN OPTIMIZADA DE ESTILOS (${data.length} filas) ===`);
   
-  for (let i = 0; i < data.length; i++) {
-    const row = data[i];
-    const currentProgress = ((i + 1) / data.length) * 100;
-    onProgress(currentProgress);
+  // OPTIMIZACIÓN 1: Cargar todos los estilos existentes al inicio
+  const { data: existingStyles, error: fetchError } = await supabase
+    .from('wine_styles')
+    .select('id, name');
+  
+  if (fetchError) {
+    console.error('Error cargando estilos existentes:', fetchError);
+    result.errors.push('Error cargando datos existentes de la base de datos');
+    return result;
+  }
+  
+  // Crear un Map para búsquedas rápidas O(1)
+  const existingStylesMap = new Map(
+    existingStyles?.map(style => [style.name.toLowerCase(), style]) || []
+  );
+  
+  console.log(`Estilos existentes cargados: ${existingStylesMap.size}`);
+  
+  // OPTIMIZACIÓN 2: Procesar en lotes para reducir overhead
+  const BATCH_SIZE = 10;
+  const totalBatches = Math.ceil(data.length / BATCH_SIZE);
+  
+  for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+    const startIndex = batchIndex * BATCH_SIZE;
+    const endIndex = Math.min(startIndex + BATCH_SIZE, data.length);
+    const batch = data.slice(startIndex, endIndex);
     
-    console.log(`\n=== PROCESANDO ESTILO ${i + 1}/${data.length} ===`);
-    console.log('Fila completa del CSV:', row);
-    console.log('Columnas disponibles:', Object.keys(row));
+    const batchProgress = ((batchIndex + 1) / totalBatches) * 100;
+    onProgress(batchProgress);
     
-    // NUEVA LÓGICA: Buscar el nombre del estilo en TODAS las columnas posibles
-    let styleName = '';
+    console.log(`\n=== PROCESANDO LOTE ${batchIndex + 1}/${totalBatches} (filas ${startIndex + 1}-${endIndex}) ===`);
     
-    // Lista de posibles nombres de columnas para el estilo
-    const possibleStyleColumns = [
-      'Estilo Winerim', 'Estilo', 'Style', 'Name', 'Nombre', 'estilo', 'style', 'name', 'nombre'
-    ];
-    
-    // Buscar en las columnas específicas primero
-    for (const columnName of possibleStyleColumns) {
-      if (row[columnName] && row[columnName].toString().trim()) {
-        const value = row[columnName].toString().trim();
-        // Verificar que no sea solo números (evitar confundir con valores numéricos)
-        if (!/^\d+$/.test(value)) {
-          styleName = value;
-          console.log(`✓ Nombre del estilo encontrado en columna "${columnName}": "${styleName}"`);
+    // Procesar lote
+    for (let i = 0; i < batch.length; i++) {
+      const row = batch[i];
+      const globalIndex = startIndex + i;
+      
+      // OPTIMIZACIÓN 3: Búsqueda simplificada del nombre del estilo
+      let styleName = '';
+      
+      // Buscar en columnas más probables primero
+      const styleColumns = ['Estilo Winerim', 'Estilo', 'Style', 'Name', 'Nombre'];
+      for (const col of styleColumns) {
+        if (row[col] && row[col].toString().trim() && !/^\d+$/.test(row[col].toString().trim())) {
+          styleName = row[col].toString().trim();
           break;
         }
       }
-    }
-    
-    // Si no encontramos en las columnas específicas, buscar en cualquier columna que contenga texto
-    if (!styleName) {
-      console.log('No se encontró en columnas específicas, buscando en todas las columnas...');
-      for (const [key, value] of Object.entries(row)) {
-        if (value && typeof value === 'string' && value.trim()) {
-          const trimmedValue = value.trim();
-          // Debe ser texto, no solo números, y no debe ser un valor de puntuación (1-5)
-          if (!/^\d+$/.test(trimmedValue) && !['1', '2', '3', '4', '5'].includes(trimmedValue)) {
-            styleName = trimmedValue;
-            console.log(`✓ Nombre del estilo encontrado en columna "${key}": "${styleName}"`);
-            break;
+      
+      // Si no encontramos, buscar en cualquier columna que no sea numérica
+      if (!styleName) {
+        for (const [key, value] of Object.entries(row)) {
+          if (value && typeof value === 'string' && value.trim()) {
+            const trimmedValue = value.trim();
+            if (!/^\d+$/.test(trimmedValue) && !['1', '2', '3', '4', '5'].includes(trimmedValue)) {
+              styleName = trimmedValue;
+              break;
+            }
           }
         }
       }
-    }
-    
-    if (!styleName) {
-      console.log(`✗ FILA ${i + 2}: No se pudo encontrar nombre del estilo`);
-      console.log('Valores de todas las columnas:', row);
-      result.errors.push(`Fila ${i + 2}: No se pudo encontrar nombre del estilo. Columnas disponibles: ${Object.keys(row).join(', ')}`);
-      continue;
-    }
-    
-    console.log(`✓ Nombre del estilo confirmado: "${styleName}"`);
-    
-    // Extraer valores numéricos usando nombres exactos del CSV
-    const extractNumericValue = (columnName: string): number => {
-      const value = row[columnName];
-      if (value !== undefined && value !== null && value.toString().trim()) {
-        const parsed = parseInt(value.toString().trim());
-        if (!isNaN(parsed) && parsed >= 1 && parsed <= 5) {
-          console.log(`✓ ${columnName} = ${parsed}`);
-          return parsed;
-        }
+      
+      if (!styleName) {
+        result.errors.push(`Fila ${globalIndex + 2}: No se pudo encontrar nombre del estilo`);
+        continue;
       }
-      console.log(`✗ ${columnName} no válido, usando 3 por defecto`);
-      return 3;
-    };
-    
-    const potente = extractNumericValue('Potente');
-    const acidez = extractNumericValue('Acidez');
-    const dulce = extractNumericValue('Dulzura');
-    const tanico = extractNumericValue('Taninos');
-    const afrutado = extractNumericValue('Afrutado');
-    
-    console.log(`Valores extraídos: potente=${potente}, acidez=${acidez}, dulce=${dulce}, tanico=${tanico}, afrutado=${afrutado}`);
-    
-    try {
-      // Verificación de duplicado EXACTA para evitar falsos positivos
-      const existingStyle = await checkForExistingRecord('wine_styles', styleName);
+      
+      // OPTIMIZACIÓN 4: Búsqueda rápida de duplicados usando Map
+      const existingStyle = existingStylesMap.get(styleName.toLowerCase());
       
       if (existingStyle) {
-        console.log(`DUPLICADO ENCONTRADO para "${styleName}", estrategia: ${duplicateStrategy}`);
         if (duplicateStrategy === 'skip') {
           result.skipped++;
-          result.warnings.push(`Fila ${i + 2}: Estilo "${styleName}" ya existe, omitido`);
-          console.log(`OMITIDO: Estilo "${styleName}" ya existe`);
           continue;
         } else if (duplicateStrategy === 'update') {
           // Actualizar estilo existente
           const updateData = {
-            description: null, // No hay descripción en el CSV
-            potente,
-            acidez,
-            dulce,
-            tanico,
-            afrutado
+            potente: getIntValue(row['Potente'] || ''),
+            acidez: getIntValue(row['Acidez'] || ''),
+            dulce: getIntValue(row['Dulzura'] || ''),
+            tanico: getIntValue(row['Taninos'] || ''),
+            afrutado: getIntValue(row['Afrutado'] || '')
           };
           
-          console.log(`Actualizando estilo existente: "${styleName}"`, updateData);
           const { error } = await supabase
             .from('wine_styles')
             .update(updateData)
             .eq('id', existingStyle.id);
           
           if (error) {
-            console.error(`Error actualizando estilo ${styleName}:`, error);
-            result.errors.push(`Fila ${i + 2}: ${error.message}`);
+            result.errors.push(`Fila ${globalIndex + 2}: ${error.message}`);
           } else {
             result.updated++;
-            console.log(`✓ Estilo actualizado exitosamente: ${styleName}`);
           }
           continue;
         }
       }
 
+      // OPTIMIZACIÓN 5: Generación de nombres únicos más eficiente para strategy 'suffix'
       let finalStyleName = styleName;
       if (existingStyle && duplicateStrategy === 'suffix') {
-        finalStyleName = await generateUniqueName('wine_styles', styleName);
-        console.log(`Generando nombre único: "${styleName}" -> "${finalStyleName}"`);
+        let counter = 1;
+        do {
+          finalStyleName = `${styleName} (${counter})`;
+          counter++;
+        } while (existingStylesMap.has(finalStyleName.toLowerCase()));
+        
+        // Agregar al Map para evitar duplicados en el mismo lote
+        existingStylesMap.set(finalStyleName.toLowerCase(), { id: 'temp', name: finalStyleName });
       }
       
+      // Insertar nuevo estilo
       const styleData = {
         name: finalStyleName,
-        description: null, // No hay columna de descripción en tu CSV
-        potente,
-        acidez,
-        dulce,
-        tanico,
-        afrutado
+        description: null,
+        potente: getIntValue(row['Potente'] || ''),
+        acidez: getIntValue(row['Acidez'] || ''),
+        dulce: getIntValue(row['Dulzura'] || ''),
+        tanico: getIntValue(row['Taninos'] || ''),
+        afrutado: getIntValue(row['Afrutado'] || '')
       };
-      
-      console.log(`Insertando nuevo estilo: "${finalStyleName}"`, styleData);
       
       const { error } = await supabase
         .from('wine_styles')
         .insert(styleData);
       
       if (error) {
-        console.error(`Error insertando estilo ${styleName}:`, error);
-        result.errors.push(`Fila ${i + 2}: ${error.message}`);
+        result.errors.push(`Fila ${globalIndex + 2}: ${error.message}`);
       } else {
         result.success++;
-        console.log(`✓ Estilo insertado exitosamente: ${finalStyleName}`);
+        // Agregar al Map para evitar duplicados futuros
+        existingStylesMap.set(finalStyleName.toLowerCase(), { id: 'new', name: finalStyleName });
       }
-    } catch (error: any) {
-      console.error(`Error procesando fila ${i + 2}:`, error);
-      result.errors.push(`Fila ${i + 2}: ${error.message}`);
     }
-    
-    console.log(`=== FIN PROCESAMIENTO ESTILO ${i + 1} ===\n`);
   }
   
-  console.log('=== FIN IMPORTACIÓN CORREGIDA DE ESTILOS ===');
-  console.log(`Importación de estilos completada:`, result);
+  console.log('=== FIN IMPORTACIÓN OPTIMIZADA DE ESTILOS ===');
+  console.log(`Importación completada:`, result);
   return result;
 };
 
