@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,7 +21,7 @@ const getCSVTemplate = (type: ImportType) => {
     case 'wines':
       return 'id,nombre,tipo,bodega,region,país,añada,potente,dulce,acidez,tánico,afrutado,nariz,boca,visual,cuerpo,estructura,final,crianza,elaboración,viñedo,info bodega,clima';
     case 'wine_styles':
-      return 'Estilo Winerim,Potente,Acidez,Dulzura,Taninos,Afrutado,description';
+      return 'Potente,Acidez,Dulzura,Taninos,Afrutado,Estilo Winerim';
     case 'matchrim_profiles':
       return 'Potente,Acidez,Dulce,Tánico,Afrutado,Nombre Perfil Matchrim';
     default:
@@ -35,7 +34,7 @@ const getFormatDescription = (type: ImportType) => {
     case 'wines':
       return 'Formato esperado para vinos: id, nombre, tipo, bodega, region, país, añada, potente, dulce, acidez, tánico, afrutado, nariz, boca, visual, cuerpo, estructura, final, crianza, elaboración, viñedo, info bodega, clima';
     case 'wine_styles':
-      return 'Formato esperado para estilos de vino: Estilo Winerim, Potente, Acidez, Dulzura, Taninos, Afrutado, description. Los valores numéricos deben estar entre 1 y 5.';
+      return 'Formato esperado para estilos de vino: Potente, Acidez, Dulzura, Taninos, Afrutado, Estilo Winerim. Los valores numéricos deben estar entre 1 y 5.';
     case 'matchrim_profiles':
       return 'Formato esperado para perfiles Matchrim: Potente, Acidez, Dulce, Tánico, Afrutado, Nombre Perfil Matchrim';
     default:
