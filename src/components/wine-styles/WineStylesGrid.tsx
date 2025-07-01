@@ -19,25 +19,38 @@ const WineStylesGrid = () => {
   const [styles, setStyles] = useState<WineStyle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Los 16 estilos Winerim predefinidos en el orden específico
+  const winerimStyles = [
+    'Elegante', 'Potente', 'Delicado', 'Fresco',
+    'Goloso', 'Mineral', 'Frutal', 'Especiado',
+    'Aromático', 'Estructurado', 'Sedoso', 'Vibrante',
+    'Opulento', 'Austero', 'Expresivo', 'Equilibrado'
+  ];
+
   useEffect(() => {
-    fetchStyles();
+    fetchWinerimStyles();
   }, []);
 
-  const fetchStyles = async () => {
+  const fetchWinerimStyles = async () => {
     try {
       const { data, error } = await supabase
         .from('wine_styles')
         .select('*')
-        .order('name');
+        .in('name', winerimStyles);
 
       if (error) throw error;
 
-      setStyles(data || []);
+      // Ordenar los estilos según el orden predefinido de winerimStyles
+      const sortedStyles = winerimStyles.map(styleName => 
+        data?.find(style => style.name === styleName)
+      ).filter(Boolean) as WineStyle[];
+
+      setStyles(sortedStyles);
     } catch (error: any) {
-      console.error('Error fetching wine styles:', error);
+      console.error('Error fetching Winerim styles:', error);
       toast({
         title: "Error",
-        description: "Error al cargar los estilos de vino",
+        description: "Error al cargar los estilos Winerim",
         variant: "destructive"
       });
     } finally {
@@ -76,6 +89,14 @@ const WineStylesGrid = () => {
     return (
       <div className="flex justify-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-900"></div>
+      </div>
+    );
+  }
+
+  if (styles.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-600">No se pudieron cargar los estilos Winerim.</p>
       </div>
     );
   }
