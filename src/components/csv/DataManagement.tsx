@@ -8,11 +8,13 @@ import { Trash2, Database, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
+type TableName = 'wines' | 'wine_styles' | 'matchrim_profiles';
+
 const DataManagement = () => {
-  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState<TableName | null>(null);
   const [deleteResult, setDeleteResult] = useState<{ type: string; count: number } | null>(null);
 
-  const deleteData = async (tableName: string, displayName: string) => {
+  const deleteData = async (tableName: TableName, displayName: string) => {
     setIsDeleting(tableName);
     setDeleteResult(null);
     
@@ -34,16 +36,20 @@ const DataManagement = () => {
         return;
       }
 
-      // Get count of deleted records
+      // Get count of remaining records to verify deletion
       const { count, error: countError } = await supabase
         .from(tableName)
         .select('*', { count: 'exact', head: true });
       
-      const deletedCount = data ? data.length : 0;
+      if (countError) {
+        console.error(`Error contando registros restantes:`, countError);
+      }
+      
+      const deletedCount = data?.length || 0;
       
       setDeleteResult({ type: displayName, count: deletedCount });
       
-      console.log(`Eliminados ${deletedCount} registros de ${tableName}`);
+      console.log(`Eliminados registros de ${tableName}`);
       toast({
         title: "Eliminación completada",
         description: `Se han eliminado todos los ${displayName.toLowerCase()}`,
@@ -67,7 +73,7 @@ const DataManagement = () => {
     description,
     variant = "destructive" as const
   }: { 
-    tableName: string; 
+    tableName: TableName; 
     displayName: string; 
     description: string;
     variant?: "destructive" | "outline";
