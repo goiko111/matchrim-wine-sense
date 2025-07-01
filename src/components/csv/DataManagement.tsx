@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -45,8 +44,8 @@ const DataManagement = () => {
         console.error(`Error contando registros restantes:`, countError);
       }
       
-      // Fix the TypeScript error by handling the null case properly
-      const deletedCount = Array.isArray(data) ? data.length : 0;
+      // Fix the TypeScript error by properly handling the null case
+      const deletedCount = data ? data.length : 0;
       
       setDeleteResult({ type: displayName, count: deletedCount });
       
