@@ -12,6 +12,7 @@ import CSVUpload from './csv/CSVUpload';
 import CSVPreview from './csv/CSVPreview';
 import ImportProgress from './csv/ImportProgress';
 import ImportResults from './csv/ImportResults';
+import DataManagement from './csv/DataManagement';
 
 const CSVImporter = () => {
   const [selectedType, setSelectedType] = useState<ImportType>('wines');
@@ -115,6 +116,9 @@ const CSVImporter = () => {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
+      {/* Sección de gestión de datos */}
+      <DataManagement />
+      
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
