@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, Brain, Upload, Sparkles } from 'lucide-react';
+import { LogOut, User, Brain, Upload, Sparkles, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -33,6 +34,10 @@ const Header = () => {
 
   const handleImportCSVClick = () => {
     navigate('/import-csv');
+  };
+
+  const handleWineStylesClick = () => {
+    navigate('/wine-styles');
   };
 
   return (
@@ -67,6 +72,15 @@ const Header = () => {
               >
                 <Brain className="h-4 w-4 mr-2" />
                 Inteligencia Líquida
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleWineStylesClick}
+                className="text-red-700 hover:bg-red-50"
+              >
+                <Palette className="h-4 w-4 mr-2" />
+                Estilos de Vino
               </Button>
               <Button 
                 variant="ghost" 
@@ -122,6 +136,9 @@ const Header = () => {
         </Link>
         <Link to="/inteligencia-liquida" className="text-white hover:text-amber-200 transition-colors">
           Inteligencia Líquida
+        </Link>
+        <Link to="/wine-styles" className="text-white hover:text-amber-200 transition-colors">
+          Estilos de Vino
         </Link>
         <Link to="/import-csv" className="text-white hover:text-amber-200 transition-colors">
           Importar CSV
