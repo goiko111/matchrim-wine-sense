@@ -20,7 +20,16 @@ const DataManagement = () => {
     try {
       console.log(`Eliminando todos los datos de la tabla: ${tableName}`);
       
-      const { data, error } = await supabase
+      // First, count how many records exist before deletion
+      const { count: beforeCount, error: countBeforeError } = await supabase
+        .from(tableName)
+        .select('*', { count: 'exact', head: true });
+      
+      if (countBeforeError) {
+        console.error(`Error contando registros antes de eliminar:`, countBeforeError);
+      }
+      
+      const { error } = await supabase
         .from(tableName)
         .delete()
         .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all records
@@ -36,23 +45,23 @@ const DataManagement = () => {
       }
 
       // Get count of remaining records to verify deletion
-      const { count, error: countError } = await supabase
+      const { count: afterCount, error: countAfterError } = await supabase
         .from(tableName)
         .select('*', { count: 'exact', head: true });
       
-      if (countError) {
-        console.error(`Error contando registros restantes:`, countError);
+      if (countAfterError) {
+        console.error(`Error contando registros restantes:`, countAfterError);
       }
       
-      // Fix the TypeScript error by properly handling the null case
-      const deletedCount = data ? data.length : 0;
+      // Calculate how many records were deleted
+      const deletedCount = (beforeCount || 0) - (afterCount || 0);
       
       setDeleteResult({ type: displayName, count: deletedCount });
       
-      console.log(`Eliminados registros de ${tableName}`);
+      console.log(`Eliminados ${deletedCount} registros de ${tableName}`);
       toast({
         title: "Eliminación completada",
-        description: `Se han eliminado todos los ${displayName.toLowerCase()}`,
+        description: `Se han eliminado ${deletedCount} ${displayName.toLowerCase()}`,
       });
       
     } catch (error: any) {
@@ -139,7 +148,7 @@ const DataManagement = () => {
         {deleteResult && (
           <Alert className="border-green-200 bg-green-50">
             <AlertDescription className="text-green-800">
-              ✓ Eliminación completada: {deleteResult.type}
+              ✓ Eliminación completada: {deleteResult.count} {deleteResult.type}
             </AlertDescription>
           </Alert>
         )}
