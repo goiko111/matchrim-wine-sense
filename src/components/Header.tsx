@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { LogOut, User, Brain, Upload, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -116,6 +116,23 @@ const Header = () => {
           )}
         </div>
       </div>
+      <nav className="hidden md:flex space-x-8">
+        <Link to="/" className="text-white hover:text-amber-200 transition-colors">
+          Inicio
+        </Link>
+        <Link to="/inteligencia-liquida" className="text-white hover:text-amber-200 transition-colors">
+          Inteligencia Líquida
+        </Link>
+        <Link to="/import-csv" className="text-white hover:text-amber-200 transition-colors">
+          Importar CSV
+        </Link>
+        <Link to="/data-viewer" className="text-white hover:text-amber-200 transition-colors">
+          Ver Datos
+        </Link>
+        <Link to="/admin-setup" className="text-white hover:text-amber-200 transition-colors">
+          Admin
+        </Link>
+      </nav>
     </header>
   );
 };

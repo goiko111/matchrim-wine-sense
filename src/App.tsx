@@ -10,6 +10,7 @@ import Registration from '@/pages/Registration';
 import LiquidIntelligence from '@/pages/LiquidIntelligence';
 import ImportCSV from '@/pages/ImportCSV';
 import AdminSetup from '@/pages/AdminSetup';
+import DataViewer from '@/pages/DataViewer';
 import NotFound from '@/pages/NotFound';
 import './App.css';
 
@@ -29,6 +30,7 @@ function App() {
               <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
               <Route path="/import-csv" element={<ImportCSV />} />
               <Route path="/admin-setup" element={<AdminSetup />} />
+              <Route path="/data-viewer" element={<DataViewer />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
