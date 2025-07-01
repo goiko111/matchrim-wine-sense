@@ -321,7 +321,7 @@ export const importWineStyles = async (
 ): Promise<ImportResult> => {
   const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
   console.log(`Iniciando importación de ${data.length} estilos de vino`);
-  console.log('=== INICIO IMPORTACIÓN OPTIMIZADA DE ESTILOS ===');
+  console.log('=== INICIO IMPORTACIÓN CORREGIDA DE ESTILOS ===');
   
   for (let i = 0; i < data.length; i++) {
     const row = data[i];
@@ -329,44 +329,49 @@ export const importWineStyles = async (
     onProgress(currentProgress);
     
     console.log(`\n=== PROCESANDO ESTILO ${i + 1}/${data.length} ===`);
+    console.log('Fila completa del CSV:', row);
     console.log('Columnas disponibles:', Object.keys(row));
     
-    // Buscar el nombre del estilo de forma MUY ESPECÍFICA para evitar falsos positivos
+    // NUEVA LÓGICA: Buscar el nombre del estilo en TODAS las columnas posibles
     let styleName = '';
     
-    // Primero buscar "Estilo Winerim" que es exactamente lo que veo en tu CSV
-    if (row['Estilo Winerim'] && row['Estilo Winerim'].toString().trim()) {
-      styleName = row['Estilo Winerim'].toString().trim();
-      console.log(`✓ Nombre encontrado en "Estilo Winerim": "${styleName}"`);
-    }
-    // Si no, buscar en otras posibles columnas de estilo
-    else if (row['Estilo'] && row['Estilo'].toString().trim()) {
-      styleName = row['Estilo'].toString().trim();
-      console.log(`✓ Nombre encontrado en "Estilo": "${styleName}"`);
-    }
-    // Buscar en columnas que contengan "estilo" pero no numéricas
-    else {
-      const styleColumn = Object.keys(row).find(key => {
-        const lowerKey = key.toLowerCase();
-        const value = row[key];
-        
-        // Debe contener "estilo" y no ser numérico
-        if (lowerKey.includes('estilo') && value && value.toString().trim()) {
-          const trimmedValue = value.toString().trim();
-          // No debe ser solo números
-          return !/^\d+$/.test(trimmedValue);
+    // Lista de posibles nombres de columnas para el estilo
+    const possibleStyleColumns = [
+      'Estilo Winerim', 'Estilo', 'Style', 'Name', 'Nombre', 'estilo', 'style', 'name', 'nombre'
+    ];
+    
+    // Buscar en las columnas específicas primero
+    for (const columnName of possibleStyleColumns) {
+      if (row[columnName] && row[columnName].toString().trim()) {
+        const value = row[columnName].toString().trim();
+        // Verificar que no sea solo números (evitar confundir con valores numéricos)
+        if (!/^\d+$/.test(value)) {
+          styleName = value;
+          console.log(`✓ Nombre del estilo encontrado en columna "${columnName}": "${styleName}"`);
+          break;
         }
-        return false;
-      });
-      
-      if (styleColumn) {
-        styleName = row[styleColumn].toString().trim();
-        console.log(`✓ Nombre encontrado en "${styleColumn}": "${styleName}"`);
+      }
+    }
+    
+    // Si no encontramos en las columnas específicas, buscar en cualquier columna que contenga texto
+    if (!styleName) {
+      console.log('No se encontró en columnas específicas, buscando en todas las columnas...');
+      for (const [key, value] of Object.entries(row)) {
+        if (value && typeof value === 'string' && value.trim()) {
+          const trimmedValue = value.trim();
+          // Debe ser texto, no solo números, y no debe ser un valor de puntuación (1-5)
+          if (!/^\d+$/.test(trimmedValue) && !['1', '2', '3', '4', '5'].includes(trimmedValue)) {
+            styleName = trimmedValue;
+            console.log(`✓ Nombre del estilo encontrado en columna "${key}": "${styleName}"`);
+            break;
+          }
+        }
       }
     }
     
     if (!styleName) {
       console.log(`✗ FILA ${i + 2}: No se pudo encontrar nombre del estilo`);
+      console.log('Valores de todas las columnas:', row);
       result.errors.push(`Fila ${i + 2}: No se pudo encontrar nombre del estilo. Columnas disponibles: ${Object.keys(row).join(', ')}`);
       continue;
     }
@@ -471,7 +476,7 @@ export const importWineStyles = async (
     console.log(`=== FIN PROCESAMIENTO ESTILO ${i + 1} ===\n`);
   }
   
-  console.log('=== FIN IMPORTACIÓN OPTIMIZADA DE ESTILOS ===');
+  console.log('=== FIN IMPORTACIÓN CORREGIDA DE ESTILOS ===');
   console.log(`Importación de estilos completada:`, result);
   return result;
 };
