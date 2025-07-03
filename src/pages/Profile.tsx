@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
 import QuizResults from '@/components/QuizResults';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
-import { Wine, User, History, Settings, Copy } from 'lucide-react';
+import { Wine, User, History, Settings, Copy, Palette } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   generateMatchrimName, 
   generateWineStyles, 
@@ -23,6 +25,7 @@ const Profile = () => {
   const { getQuizHistory } = useQuizResults();
   const [quizHistory, setQuizHistory] = useState([]);
   const [currentProfile, setCurrentProfile] = useState(null);
+  const [matchingWineStyle, setMatchingWineStyle] = useState(null);
 
   useEffect(() => {
     if (!user) {
@@ -40,6 +43,53 @@ const Profile = () => {
 
     loadQuizHistory();
   }, [user, navigate, getQuizHistory]);
+
+  // Efecto para calcular el estilo Winerim cuando cambie el perfil actual
+  useEffect(() => {
+    if (currentProfile) {
+      calculateMatchingWineStyle();
+    }
+  }, [currentProfile]);
+
+  const calculateMatchingWineStyle = async () => {
+    if (!currentProfile) return;
+
+    try {
+      const { data: wineStyles, error } = await supabase
+        .from('wine_styles')
+        .select('*');
+
+      if (error) throw error;
+
+      if (wineStyles && wineStyles.length > 0) {
+        // Calcular la distancia euclidiana entre el perfil del usuario y cada estilo
+        const distances = wineStyles.map(style => {
+          const distance = Math.sqrt(
+            Math.pow(currentProfile.potente - style.potente, 2) +
+            Math.pow(currentProfile.acidez - style.acidez, 2) +
+            Math.pow(currentProfile.dulce - style.dulce, 2) +
+            Math.pow(currentProfile.tanico - style.tanico, 2) +
+            Math.pow(currentProfile.afrutado - style.afrutado, 2)
+          );
+          return { style, distance };
+        });
+
+        // Encontrar el estilo con la menor distancia
+        const closest = distances.reduce((prev, current) => 
+          prev.distance < current.distance ? prev : current
+        );
+
+        setMatchingWineStyle(closest.style);
+      }
+    } catch (error) {
+      console.error('Error calculating matching wine style:', error);
+    }
+  };
+
+  const cleanStyleName = (name) => {
+    // Quitar IDs entre paréntesis al final del nombre
+    return name?.replace(/\s*\(\d+\)\s*$/, '').trim() || name;
+  };
 
   const chartData = currentProfile ? [
     { attribute: "Potente", value: currentProfile.potente },
@@ -185,6 +235,40 @@ const Profile = () => {
                           ))}
                         </div>
                       </div>
+                      
+                      {/* Nueva sección: Estilo Winerim que mejor encaja */}
+                      {matchingWineStyle && (
+                        <div>
+                          <h4 className="font-medium text-red-700 mb-2 flex items-center gap-2">
+                            <Palette className="h-4 w-4" />
+                            Tu estilo Winerim:
+                          </h4>
+                          <div className="bg-gradient-to-r from-red-100 to-red-50 p-4 rounded-lg border border-red-200">
+                            <div className="flex items-start gap-3">
+                              <div className="bg-red-200 rounded-full p-2 flex-shrink-0">
+                                <Wine className="h-4 w-4 text-red-700" />
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <Badge variant="secondary" className="bg-red-600 text-white hover:bg-red-700">
+                                    🍷 {cleanStyleName(matchingWineStyle.name)}
+                                  </Badge>
+                                </div>
+                                {matchingWineStyle.description && (
+                                  <p className="text-sm text-gray-700 mb-2">
+                                    {matchingWineStyle.description}
+                                  </p>
+                                )}
+                                <div className="text-xs text-red-600">
+                                  <strong>Perfil sensorial:</strong> Potente: {matchingWineStyle.potente}, 
+                                  Acidez: {matchingWineStyle.acidez}, Dulzor: {matchingWineStyle.dulce}, 
+                                  Tánico: {matchingWineStyle.tanico}, Afrutado: {matchingWineStyle.afrutado}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                   
