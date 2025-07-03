@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { Droplet, Diamond, Square, Circle, Star, Check, Plus, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface WineStyle {
   id: string;
@@ -58,31 +59,26 @@ const WineStylesGrid = () => {
     }
   };
 
-  const getColorByIndex = (index: number) => {
-    const colors = [
-      'bg-green-100 border-green-200',
-      'bg-blue-100 border-blue-200',
-      'bg-purple-100 border-purple-200',
-      'bg-red-100 border-red-200',
-      'bg-pink-100 border-pink-200',
-      'bg-orange-100 border-orange-200',
-      'bg-yellow-100 border-yellow-200',
-      'bg-indigo-100 border-indigo-200',
-      'bg-teal-100 border-teal-200',
-      'bg-emerald-100 border-emerald-200',
-      'bg-cyan-100 border-cyan-200',
-      'bg-violet-100 border-violet-200',
-      'bg-fuchsia-100 border-fuchsia-200',
-      'bg-rose-100 border-rose-200',
-      'bg-amber-100 border-amber-200',
-      'bg-lime-100 border-lime-200'
+  const getCardConfig = (index: number) => {
+    const configs = [
+      { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-200', icon: Droplet, iconColor: 'text-green-600' },
+      { bg: 'bg-slate-50', border: 'border-slate-100', iconBg: 'bg-slate-200', icon: Diamond, iconColor: 'text-slate-600' },
+      { bg: 'bg-yellow-50', border: 'border-yellow-100', iconBg: 'bg-yellow-200', icon: Circle, iconColor: 'text-yellow-600' },
+      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-200', icon: Circle, iconColor: 'text-orange-600' },
+      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-200', icon: ArrowUp, iconColor: 'text-amber-600' },
+      { bg: 'bg-yellow-50', border: 'border-yellow-100', iconBg: 'bg-yellow-200', icon: Square, iconColor: 'text-yellow-600' },
+      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-200', icon: Star, iconColor: 'text-orange-600' },
+      { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-200', icon: Check, iconColor: 'text-gray-600' },
+      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-200', icon: Droplet, iconColor: 'text-pink-600' },
+      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-200', icon: Droplet, iconColor: 'text-red-600' },
+      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-200', icon: Circle, iconColor: 'text-red-600' },
+      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-200', icon: Circle, iconColor: 'text-orange-600' },
+      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-200', icon: Square, iconColor: 'text-amber-600' },
+      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-200', icon: Droplet, iconColor: 'text-pink-600' },
+      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-200', icon: Droplet, iconColor: 'text-pink-600' },
+      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-200', icon: Droplet, iconColor: 'text-red-600' }
     ];
-    return colors[index % colors.length];
-  };
-
-  const getIconByIndex = (index: number) => {
-    const icons = ['🍷', '🍇', '🥂', '🍾', '🍃', '🌸', '🍑', '🍊', '🍋', '🍈', '🥝', '🍓', '🍒', '🍑', '🍊', '🍇'];
-    return icons[index % icons.length];
+    return configs[index % configs.length];
   };
 
   if (isLoading) {
@@ -103,63 +99,33 @@ const WineStylesGrid = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {styles.map((style, index) => (
-        <Card key={style.id} className={`${getColorByIndex(index)} border-2 hover:shadow-lg transition-shadow`}>
-          <CardContent className="p-6 text-center">
-            <div className="text-4xl mb-4">
-              {getIconByIndex(index)}
-            </div>
-            <h3 className="font-bold text-lg mb-3 text-gray-800">
-              {style.name}
-            </h3>
-            <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-              {style.description || 'Descripción no disponible'}
-            </p>
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between">
-                <span>Potente:</span>
-                <span className="flex">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span key={i} className={i < style.potente ? 'text-red-500' : 'text-gray-300'}>●</span>
-                  ))}
-                </span>
+      {styles.map((style, index) => {
+        const config = getCardConfig(index);
+        const IconComponent = config.icon;
+        
+        return (
+          <Card key={style.id} className={`${config.bg} ${config.border} border hover:shadow-lg transition-shadow rounded-2xl overflow-hidden`}>
+            <CardContent className="p-6">
+              <div className="flex flex-col items-center text-center">
+                {/* Icono circular */}
+                <div className={`w-16 h-16 ${config.iconBg} rounded-full flex items-center justify-center mb-4`}>
+                  <IconComponent className={`w-8 h-8 ${config.iconColor}`} />
+                </div>
+                
+                {/* Título */}
+                <h3 className="font-bold text-lg mb-3 text-gray-900">
+                  {style.name}
+                </h3>
+                
+                {/* Descripción */}
+                <p className="text-sm text-gray-700 leading-relaxed text-justify">
+                  {style.description || 'Descripción no disponible'}
+                </p>
               </div>
-              <div className="flex justify-between">
-                <span>Acidez:</span>
-                <span className="flex">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span key={i} className={i < style.acidez ? 'text-yellow-500' : 'text-gray-300'}>●</span>
-                  ))}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span>Dulce:</span>
-                <span className="flex">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span key={i} className={i < style.dulce ? 'text-pink-500' : 'text-gray-300'}>●</span>
-                  ))}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span>Tánico:</span>
-                <span className="flex">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span key={i} className={i < style.tanico ? 'text-purple-500' : 'text-gray-300'}>●</span>
-                  ))}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span>Afrutado:</span>
-                <span className="flex">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span key={i} className={i < style.afrutado ? 'text-green-500' : 'text-gray-300'}>●</span>
-                  ))}
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   );
 };
