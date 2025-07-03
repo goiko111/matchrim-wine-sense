@@ -85,6 +85,11 @@ const WineStylesGrid = () => {
     return configs[index % configs.length];
   };
 
+  const cleanStyleName = (name: string) => {
+    // Quitar IDs entre paréntesis al final del nombre (ej: "Tinto Ligero (87)" → "Tinto Ligero")
+    return name.replace(/\s*\(\d+\)\s*$/, '').trim();
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -118,7 +123,7 @@ const WineStylesGrid = () => {
                 
                 {/* Título */}
                 <h3 className="font-bold text-lg mb-3 text-gray-900">
-                  {style.name}
+                  {cleanStyleName(style.name)}
                 </h3>
                 
                 {/* Descripción */}

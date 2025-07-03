@@ -103,6 +103,11 @@ const SensoryCalculator = () => {
     setIsLoading(false);
   };
 
+  const cleanStyleName = (name: string) => {
+    // Quitar IDs entre paréntesis al final del nombre (ej: "Tinto Ligero (87)" → "Tinto Ligero")
+    return name.replace(/\s*\(\d+\)\s*$/, '').trim();
+  };
+
   const getAttributeDescription = (attribute: keyof SensoryProfile, value: number) => {
     const descriptions: Record<keyof SensoryProfile, Record<number, string>> = {
       potente: {
@@ -316,7 +321,7 @@ const SensoryCalculator = () => {
                 <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                   <h4 className="font-medium mb-2 text-green-800">Estilo Identificado</h4>
                   <Badge variant="secondary" className="mb-3">
-                    🍷 {identifiedStyle.name}
+                    🍷 {cleanStyleName(identifiedStyle.name)}
                   </Badge>
                   <div className="space-y-2">
                     <p className="text-sm text-green-700 font-medium">
