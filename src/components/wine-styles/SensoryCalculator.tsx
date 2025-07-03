@@ -16,11 +16,11 @@ interface SensoryProfile {
 
 const SensoryCalculator = () => {
   const [profile, setProfile] = useState<SensoryProfile>({
-    potente: 3,
-    acidez: 3,
-    dulce: 2,
-    tanico: 3,
-    afrutado: 3
+    potente: 2,
+    acidez: 2,
+    dulce: 1,
+    tanico: 2,
+    afrutado: 2
   });
 
   const [identifiedStyle, setIdentifiedStyle] = useState<string | null>(null);
@@ -56,6 +56,7 @@ const SensoryCalculator = () => {
   const getAttributeDescription = (attribute: keyof SensoryProfile, value: number) => {
     const descriptions: Record<keyof SensoryProfile, Record<number, string>> = {
       potente: {
+        0: "Sin intensidad",
         1: "Muy ligero",
         2: "Ligero", 
         3: "Moderado",
@@ -63,6 +64,7 @@ const SensoryCalculator = () => {
         5: "Muy intenso"
       },
       acidez: {
+        0: "Sin acidez",
         1: "Muy baja",
         2: "Baja",
         3: "Equilibrada", 
@@ -70,6 +72,7 @@ const SensoryCalculator = () => {
         5: "Muy alta"
       },
       dulce: {
+        0: "Muy seco",
         1: "Seco",
         2: "Ligeramente dulce",
         3: "Semidulce",
@@ -77,13 +80,15 @@ const SensoryCalculator = () => {
         5: "Muy dulce"
       },
       tanico: {
-        1: "Sin taninos",
+        0: "Sin taninos",
+        1: "Taninos mínimos",
         2: "Taninos suaves",
         3: "Taninos equilibrados",
         4: "Taninos marcados",
         5: "Taninos intensos"
       },
       afrutado: {
+        0: "Sin fruta",
         1: "Poco afrutado",
         2: "Ligeramente afrutado", 
         3: "Moderadamente afrutado",
@@ -123,7 +128,7 @@ const SensoryCalculator = () => {
                     value={[profile.potente]}
                     onValueChange={(value) => updateProfile('potente', value)}
                     max={5}
-                    min={1}
+                    min={0}
                     step={1}
                     className="w-full"
                   />
@@ -141,7 +146,7 @@ const SensoryCalculator = () => {
                     value={[profile.acidez]}
                     onValueChange={(value) => updateProfile('acidez', value)}
                     max={5}
-                    min={1}
+                    min={0}
                     step={1}
                     className="w-full"
                   />
@@ -159,7 +164,7 @@ const SensoryCalculator = () => {
                     value={[profile.dulce]}
                     onValueChange={(value) => updateProfile('dulce', value)}
                     max={5}
-                    min={1}
+                    min={0}
                     step={1}
                     className="w-full"
                   />
@@ -177,7 +182,7 @@ const SensoryCalculator = () => {
                     value={[profile.tanico]}
                     onValueChange={(value) => updateProfile('tanico', value)}
                     max={5}
-                    min={1}
+                    min={0}
                     step={1}
                     className="w-full"
                   />
@@ -195,7 +200,7 @@ const SensoryCalculator = () => {
                     value={[profile.afrutado]}
                     onValueChange={(value) => updateProfile('afrutado', value)}
                     max={5}
-                    min={1}
+                    min={0}
                     step={1}
                     className="w-full"
                   />
@@ -220,27 +225,27 @@ const SensoryCalculator = () => {
               
               <div className="space-y-4 text-sm">
                 <div>
-                  <h4 className="font-medium mb-2">Potente (1-5)</h4>
+                  <h4 className="font-medium mb-2">Potente (0-5)</h4>
                   <p className="text-gray-600">Intensidad general del vino en boca</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-medium mb-2">Acidez (1-5)</h4>
+                  <h4 className="font-medium mb-2">Acidez (0-5)</h4>
                   <p className="text-gray-600">Frescura y vivacidad del vino</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-medium mb-2">Dulzor (1-5)</h4>
+                  <h4 className="font-medium mb-2">Dulzor (0-5)</h4>
                   <p className="text-gray-600">Nivel de azúcar residual percibido</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-medium mb-2">Tánico (1-5)</h4>
+                  <h4 className="font-medium mb-2">Tánico (0-5)</h4>
                   <p className="text-gray-600">Estructura y astringencia</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-medium mb-2">Afrutado (1-5)</h4>
+                  <h4 className="font-medium mb-2">Afrutado (0-5)</h4>
                   <p className="text-gray-600">Presencia e intensidad frutal</p>
                 </div>
               </div>
