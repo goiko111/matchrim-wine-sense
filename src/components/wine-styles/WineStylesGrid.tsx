@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Droplet, Diamond, Square, Circle, Star, Check, Plus, ArrowUp, ArrowDown, Heart } from 'lucide-react';
+import { Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Wine, Sun, Utensils, Leaf } from 'lucide-react';
 
 interface WineStyle {
   id: string;
@@ -64,23 +64,23 @@ const WineStylesGrid = () => {
       // Fila 1: Burbuja Fresca, Brut Elegante, Blanco Vital, Blanco Goloso
       { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-200', icon: Droplet, iconColor: 'text-white' },
       { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-600', icon: Diamond, iconColor: 'text-white' },
-      { bg: 'bg-yellow-50', border: 'border-yellow-100', iconBg: 'bg-yellow-300', icon: Circle, iconColor: 'text-white' },
-      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Circle, iconColor: 'text-white' },
+      { bg: 'bg-yellow-50', border: 'border-yellow-100', iconBg: 'bg-yellow-300', icon: Zap, iconColor: 'text-white' },
+      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Grape, iconColor: 'text-white' },
       // Fila 2: Dulce Intenso, Oxidativo/Maduro, Experimental, Vino de Terruño
-      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: ArrowUp, iconColor: 'text-white' },
-      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-700', icon: Square, iconColor: 'text-white' },
-      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-400', icon: Star, iconColor: 'text-white' },
-      { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-500', icon: Check, iconColor: 'text-white' },
+      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Flame, iconColor: 'text-white' },
+      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-700', icon: Clock, iconColor: 'text-white' },
+      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-400', icon: Beaker, iconColor: 'text-white' },
+      { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-500', icon: Mountain, iconColor: 'text-white' },
       // Fila 3: Tinto Versátil, Tinto de Estructura, Tinto Goloso, Dulce Ligero
-      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Circle, iconColor: 'text-white' },
-      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-800', icon: Circle, iconColor: 'text-white' },
-      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-600', icon: Circle, iconColor: 'text-white' },
-      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Circle, iconColor: 'text-white' },
+      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Shield, iconColor: 'text-white' },
+      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-800', icon: Sword, iconColor: 'text-white' },
+      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-600', icon: Heart, iconColor: 'text-white' },
+      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Feather, iconColor: 'text-white' },
       // Fila 4: Blanco de Carácter, Rosado Ligero, Rosado Gastronómico, Tinto Ligero
-      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Square, iconColor: 'text-white' },
-      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-300', icon: Heart, iconColor: 'text-white' },
-      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-500', icon: Circle, iconColor: 'text-white' },
-      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Circle, iconColor: 'text-white' }
+      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Wine, iconColor: 'text-white' },
+      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-300', icon: Sun, iconColor: 'text-white' },
+      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-500', icon: Utensils, iconColor: 'text-white' },
+      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Leaf, iconColor: 'text-white' }
     ];
     return configs[index % configs.length];
   };
