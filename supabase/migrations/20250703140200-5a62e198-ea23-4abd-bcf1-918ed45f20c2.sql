@@ -1,0 +1,22 @@
+-- Primero eliminar los estilos Winerim anteriores para evitar conflictos
+DELETE FROM public.wine_styles WHERE name IN ('Elegante', 'Potente', 'Delicado', 'Fresco', 'Goloso', 'Mineral', 'Frutal', 'Especiado', 'Aromático', 'Estructurado', 'Sedoso', 'Vibrante', 'Opulento', 'Austero', 'Expresivo', 'Equilibrado');
+
+-- Insertar los estilos específicos de las imágenes
+INSERT INTO public.wine_styles (name, description, potente, acidez, dulce, tanico, afrutado) VALUES
+('Burbuja Fresca', 'Espumosos ligeros y refrescantes como Cava, Prosecco y Champagne joven. Perfectos para aperitivos, celebraciones y momentos informales. Su burbuja fina y acidez vibrante los hace ideales para despertar el apetito.', 2, 5, 2, 1, 4),
+('Brut Elegante', 'Champagnes premium, Cavas de larga crianza y espumosos de alta gama. Secos, complejos y gastronómicos. Ideales para maridajes sofisticados, cenas especiales y momentos de celebración elegante.', 3, 4, 1, 2, 3),
+('Blanco Vital', 'Blancos jóvenes como Albariño, Sauvignon Blanc y Verdejo. Muy frescos y ácidos, perfectos para pescados, mariscos y ensaladas. Su vivacidad los convierte en excelentes compañeros de la cocina mediterránea.', 2, 5, 1, 1, 4),
+('Blanco Goloso', 'Blancos afrutados como Viognier, Chardonnay joven y Moscatel seco. Amables y expresivos, ideales para quienes se inician en el vino blanco. Perfectos con pescados en salsa y platos con un toque dulce.', 3, 3, 3, 1, 5),
+('Dulce Intenso', 'Oportos, Sherries dulces y vinos de hielo. Concentrados y potentes, ideales para postres intensos, chocolate y quesos azules. Su complejidad los convierte en experiencias sensoriales únicas.', 5, 3, 5, 3, 4),
+('Oxidativo/Maduro', 'Jerez seco, vinos rancios y blancos con crianza oxidativa. Con notas de frutos secos y crianza, perfectos para jamón ibérico, frutos secos y platos tradicionales. Su singularidad los hace únicos en la gastronomía.', 4, 3, 2, 2, 2),
+('Experimental', 'Vinos naturales, biodinámicos y de perfil salvaje. Con carácter único y expresión libre, perfectos para paladares inquietos y aventureros. Ideales para descubrir nuevas sensaciones y experiencias vinícolas.', 3, 4, 2, 3, 4),
+('Vino de Terruño', 'Vinos que expresan su origen: Borgoña, Barolo, Priorat y otros grandes terruños. Equilibrados y minerales, reflejan la personalidad de su zona. Perfectos para entender la expresión del territorio en cada copa.', 4, 4, 2, 4, 3),
+('Tinto Versátil', 'Tempranillos jóvenes, Merlot y tintos de media intensidad. Equilibrados entre fruta y estructura. Perfectos para cualquier ocasión. Su versatilidad los hace ideales para carnes, pasta y quesos semicurados.', 3, 3, 2, 3, 4),
+('Tinto de Estructura', 'Cabernet Sauvignon, Tannat y grandes tintos de guarda. Potentes y tánicos, ideales para carnes a la caza y platos intensos. Su estructura los convierte en vinos para ocasiones especiales y maridajes potentes.', 5, 3, 1, 5, 3),
+('Tinto Goloso', 'Garnacha, Monastrell y tintos del Nuevo Mundo. Frutales y redondos, perfectos para quienes buscan tintos amables. Ideales con barbacoas, platos especiados y momentos de disfrute relajado.', 4, 3, 3, 3, 5),
+('Dulce Ligero', 'Moscateles, Rieslings dulces y vinos de postre ligeros. Suaves y frescos, perfectos para postres de fruta, quesos suaves y momentos de relax. Su equilibrio entre dulzor y acidez los hace muy agradables.', 2, 4, 4, 1, 4),
+('Blanco de Carácter', 'Chardonnays con crianza, blancos fermentados en barrica y variedades como Roussanne. Con volumen y estructura, perfectos para pescados grasos, aves y platos cremosos. Su complejidad los hace gastronómicos.', 4, 3, 2, 2, 3),
+('Rosado Ligero', 'Rosados de Provence, Pinot Noir rosé y rosados jóvenes. Refrescantes y frutales, ideales para el verano, tapas y momentos relajados. Su elegancia los hace perfectos para cualquier ocasión informal.', 2, 4, 3, 1, 4),
+('Rosado Gastronómico', 'Rosados de Bandol, Tavel y rosados con más estructura. Secos y complejos, perfectos para platos principales, pescados en salsa y carnes blancas. Su estructura los hace ideales para la gastronomía.', 3, 3, 2, 2, 3),
+('Tinto Ligero', 'Beaujolais, Pinot Noir joven y tintos ligeros del Bierzo. Suaves y afrutados, perfectos para iniciarse en tintos. Ideales con carnes blancas, pasta y platos no muy intensos. Muy versátiles y fáciles de beber.', 2, 4, 2, 2, 4)
+ON CONFLICT (name) DO NOTHING;
