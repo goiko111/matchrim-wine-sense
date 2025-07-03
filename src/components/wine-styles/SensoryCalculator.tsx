@@ -1,12 +1,25 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calculator, Wine } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 
 interface SensoryProfile {
+  potente: number;
+  acidez: number;
+  dulce: number;
+  tanico: number;
+  afrutado: number;
+}
+
+interface WineStyle {
+  id: string;
+  name: string;
+  description: string | null;
   potente: number;
   acidez: number;
   dulce: number;
@@ -23,7 +36,32 @@ const SensoryCalculator = () => {
     afrutado: 2
   });
 
-  const [identifiedStyle, setIdentifiedStyle] = useState<string | null>(null);
+  const [identifiedStyle, setIdentifiedStyle] = useState<WineStyle | null>(null);
+  const [wineStyles, setWineStyles] = useState<WineStyle[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    fetchWineStyles();
+  }, []);
+
+  const fetchWineStyles = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('wine_styles')
+        .select('*');
+
+      if (error) throw error;
+
+      setWineStyles(data || []);
+    } catch (error: any) {
+      console.error('Error fetching wine styles:', error);
+      toast({
+        title: "Error",
+        description: "Error al cargar los estilos de vino",
+        variant: "destructive"
+      });
+    }
+  };
 
   const updateProfile = (attribute: keyof SensoryProfile, value: number[]) => {
     setProfile(prev => ({
@@ -33,24 +71,36 @@ const SensoryCalculator = () => {
   };
 
   const calculateStyle = () => {
-    // Lógica simplificada para identificar el estilo basado en el perfil sensorial
-    const { potente, acidez, dulce, tanico, afrutado } = profile;
-    
-    if (potente >= 4 && tanico >= 4) {
-      setIdentifiedStyle("Tinto Versátil");
-    } else if (acidez >= 4 && afrutado >= 4) {
-      setIdentifiedStyle("Blanco Vivo");
-    } else if (dulce >= 4) {
-      setIdentifiedStyle("Rosado Ligero");
-    } else if (potente <= 2 && acidez >= 3) {
-      setIdentifiedStyle("Blanco de Carácter");
-    } else if (tanico >= 4 && potente >= 3) {
-      setIdentifiedStyle("Tinto de Estructura");
-    } else if (afrutado >= 4 && dulce >= 3) {
-      setIdentifiedStyle("Rosado Gastronómico");
-    } else {
-      setIdentifiedStyle("Tinto Ligero");
+    if (wineStyles.length === 0) {
+      toast({
+        title: "Error",
+        description: "No se han cargado los estilos de vino",
+        variant: "destructive"
+      });
+      return;
     }
+
+    setIsLoading(true);
+
+    // Calcular la distancia euclidiana entre el perfil del usuario y cada estilo
+    const distances = wineStyles.map(style => {
+      const distance = Math.sqrt(
+        Math.pow(profile.potente - style.potente, 2) +
+        Math.pow(profile.acidez - style.acidez, 2) +
+        Math.pow(profile.dulce - style.dulce, 2) +
+        Math.pow(profile.tanico - style.tanico, 2) +
+        Math.pow(profile.afrutado - style.afrutado, 2)
+      );
+      return { style, distance };
+    });
+
+    // Encontrar el estilo con la menor distancia
+    const closest = distances.reduce((prev, current) => 
+      prev.distance < current.distance ? prev : current
+    );
+
+    setIdentifiedStyle(closest.style);
+    setIsLoading(false);
   };
 
   const getAttributeDescription = (attribute: keyof SensoryProfile, value: number) => {
@@ -213,9 +263,10 @@ const SensoryCalculator = () => {
               <Button 
                 onClick={calculateStyle}
                 className="w-full bg-red-700 hover:bg-red-800"
+                disabled={isLoading}
               >
                 <Wine className="h-4 w-4 mr-2" />
-                Calcular Estilo
+                {isLoading ? 'Calculando...' : 'Calcular Estilo'}
               </Button>
             </div>
 
@@ -264,12 +315,22 @@ const SensoryCalculator = () => {
               {identifiedStyle && (
                 <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                   <h4 className="font-medium mb-2 text-green-800">Estilo Identificado</h4>
-                  <Badge variant="secondary" className="mb-2">
-                    🍷 {identifiedStyle}
+                  <Badge variant="secondary" className="mb-3">
+                    🍷 {identifiedStyle.name}
                   </Badge>
-                  <p className="text-sm text-green-700">
-                    Basado en tu perfil sensorial, este es el estilo de vino que mejor se adapta a tus preferencias.
-                  </p>
+                  <div className="space-y-2">
+                    <p className="text-sm text-green-700 font-medium">
+                      Basado en tu perfil sensorial, este es el estilo de vino que mejor se adapta a tus preferencias.
+                    </p>
+                    {identifiedStyle.description && (
+                      <p className="text-sm text-green-600">
+                        {identifiedStyle.description}
+                      </p>
+                    )}
+                    <div className="text-xs text-green-600 mt-2">
+                      <strong>Perfil del estilo:</strong> Potente: {identifiedStyle.potente}, Acidez: {identifiedStyle.acidez}, Dulzor: {identifiedStyle.dulce}, Tánico: {identifiedStyle.tanico}, Afrutado: {identifiedStyle.afrutado}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
