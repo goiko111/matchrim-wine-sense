@@ -56,6 +56,33 @@ export type Database = {
           },
         ]
       }
+      contact_submissions: {
+        Row: {
+          contact_name: string
+          created_at: string
+          email: string | null
+          id: string
+          phone_number: string
+          restaurant_name: string
+        }
+        Insert: {
+          contact_name: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          phone_number: string
+          restaurant_name: string
+        }
+        Update: {
+          contact_name?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          phone_number?: string
+          restaurant_name?: string
+        }
+        Relationships: []
+      }
       dietary_preferences: {
         Row: {
           created_at: string
