@@ -205,38 +205,7 @@ const Profile = () => {
                     </h3>
                     
                     <div className="space-y-4">
-                      <div>
-                        <h4 className="font-medium text-red-700 mb-2">Estilo de vino:</h4>
-                        <ul className="list-disc list-inside space-y-1 text-gray-700">
-                          {wineStyles.map((style, index) => (
-                            <li key={index}>{style}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-medium text-red-700 mb-2">Uvas que deberías probar:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {recommendedGrapes.map((grape, index) => (
-                            <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                              {grape}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-medium text-red-700 mb-2">Regiones que van contigo:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {recommendedRegions.map((region, index) => (
-                            <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                              {region}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      {/* Nueva sección: Estilo Winerim que mejor encaja */}
+                      {/* Tu estilo Winerim */}
                       {matchingWineStyle && (
                         <div>
                           <h4 className="font-medium text-red-700 mb-2 flex items-center gap-2">
@@ -269,6 +238,37 @@ const Profile = () => {
                           </div>
                         </div>
                       )}
+                      
+                      <div>
+                        <h4 className="font-medium text-red-700 mb-2">Estilos generales:</h4>
+                        <ul className="list-disc list-inside space-y-1 text-gray-700">
+                          {wineStyles.map((style, index) => (
+                            <li key={index}>{style}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium text-red-700 mb-2">Uvas que deberías probar:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {recommendedGrapes.map((grape, index) => (
+                            <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
+                              {grape}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium text-red-700 mb-2">Regiones que van contigo:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {recommendedRegions.map((region, index) => (
+                            <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
+                              {region}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
