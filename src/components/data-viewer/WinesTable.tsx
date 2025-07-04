@@ -4,9 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { Search, RefreshCw, Wine } from 'lucide-react';
+import { Search, RefreshCw, Wine, ExternalLink, Eye } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface Wine {
   id: string;
@@ -28,6 +30,21 @@ const WinesTable = () => {
   const [filteredWines, setFilteredWines] = useState<Wine[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  const generateSlug = (wineName: string) => {
+    return wineName
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
+
+  const navigateToWine = (wine: Wine) => {
+    const slug = generateSlug(wine.name);
+    navigate(`/wines/${wine.id}/${slug}`);
+  };
 
   const fetchWines = async () => {
     setIsLoading(true);
@@ -139,28 +156,106 @@ const WinesTable = () => {
                 <TableHead>Dulzura</TableHead>
                 <TableHead>Taninos</TableHead>
                 <TableHead>Afrutado</TableHead>
+                <TableHead className="text-center">Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredWines.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={10} className="text-center py-8 text-gray-500">
+                  <TableCell colSpan={11} className="text-center py-8 text-gray-500">
                     {searchTerm ? 'No se encontraron vinos que coincidan con la búsqueda' : 'No hay vinos cargados'}
                   </TableCell>
                 </TableRow>
               ) : (
                 filteredWines.map((wine) => (
-                  <TableRow key={wine.id}>
-                    <TableCell className="font-medium">{wine.name}</TableCell>
+                  <TableRow 
+                    key={wine.id} 
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                    onClick={() => navigateToWine(wine)}
+                  >
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        <Wine className="h-4 w-4 text-primary" />
+                        {wine.name}
+                      </div>
+                    </TableCell>
                     <TableCell>{wine.producer || '-'}</TableCell>
                     <TableCell>{wine.region || '-'}</TableCell>
-                    <TableCell>{wine.estilo}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary" className="text-xs">
+                        {wine.estilo}
+                      </Badge>
+                    </TableCell>
                     <TableCell>{wine.vintage || '-'}</TableCell>
-                    <TableCell>{wine.potencia}</TableCell>
-                    <TableCell>{wine.acidez}</TableCell>
-                    <TableCell>{wine.dulzura}</TableCell>
-                    <TableCell>{wine.taninos}</TableCell>
-                    <TableCell>{wine.afrutado}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <span>{wine.potencia}</span>
+                        <div className="w-8 h-2 bg-gray-200 rounded-full">
+                          <div 
+                            className="h-2 bg-primary rounded-full"
+                            style={{ width: `${(wine.potencia / 5) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <span>{wine.acidez}</span>
+                        <div className="w-8 h-2 bg-gray-200 rounded-full">
+                          <div 
+                            className="h-2 bg-primary rounded-full"
+                            style={{ width: `${(wine.acidez / 5) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <span>{wine.dulzura}</span>
+                        <div className="w-8 h-2 bg-gray-200 rounded-full">
+                          <div 
+                            className="h-2 bg-primary rounded-full"
+                            style={{ width: `${(wine.dulzura / 5) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <span>{wine.taninos}</span>
+                        <div className="w-8 h-2 bg-gray-200 rounded-full">
+                          <div 
+                            className="h-2 bg-primary rounded-full"
+                            style={{ width: `${(wine.taninos / 5) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <span>{wine.afrutado}</span>
+                        <div className="w-8 h-2 bg-gray-200 rounded-full">
+                          <div 
+                            className="h-2 bg-primary rounded-full"
+                            style={{ width: `${(wine.afrutado / 5) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigateToWine(wine);
+                        }}
+                        className="hover:bg-primary hover:text-primary-foreground"
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        Ver
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               )}

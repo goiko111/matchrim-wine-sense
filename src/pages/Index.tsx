@@ -30,18 +30,22 @@ const Index = () => {
   const { user } = useAuth();
 
   const wineStyles = [
-    { name: "Tinto Goloso", description: "Dulzura y placer", category: "golosos" },
-    { name: "Blanco Vital", description: "Energía y vivacidad", category: "vibrantes" },
-    { name: "Rosado Tenso", description: "Precisión y finura", category: "tensos" },
-    { name: "Tinto Terroso", description: "Suelo y tradición", category: "terrosos" },
-    { name: "Blanco Cremoso", description: "Textura y suavidad", category: "cremosos" },
-    { name: "Tinto Potente", description: "Fuerza y carácter", category: "potentes" },
-    { name: "Rosado Ligero", description: "Sutileza y gracia", category: "ligeros" },
-    { name: "Tinto Complejo", description: "Capas y misterio", category: "complejos" },
-    { name: "Blanco Mineral", description: "Pureza y transparencia", category: "minerales" },
-    { name: "Espumoso Elegante", description: "Efervescencia refinada", category: "elegantes" },
-    { name: "Tinto Estructurado", description: "Firmeza y arquitectura", category: "estructurados" },
-    { name: "Blanco Aromático", description: "Perfume intenso", category: "aromaticos" }
+    { name: "Burbuja Fresca", description: "Frescura efervescente", category: "espumosos" },
+    { name: "Brut Elegante", description: "Elegancia refinada", category: "espumosos" },
+    { name: "Blanco Vital", description: "Energía y vivacidad", category: "blancos" },
+    { name: "Blanco Goloso", description: "Dulzura y placer", category: "blancos" },
+    { name: "Dulce Intenso", description: "Intensidad aromática", category: "dulces" },
+    { name: "Oxidativo/Maduro", description: "Complejidad y tiempo", category: "maduros" },
+    { name: "Experimental", description: "Innovación vínica", category: "experimentales" },
+    { name: "Vino de Terruño", description: "Suelo y tradición", category: "terrosos" },
+    { name: "Tinto Versátil", description: "Adaptabilidad total", category: "tintos" },
+    { name: "Tinto de Estructura", description: "Firmeza y arquitectura", category: "tintos" },
+    { name: "Tinto Goloso", description: "Dulzura y placer", category: "tintos" },
+    { name: "Dulce Ligero", description: "Sutileza aromática", category: "dulces" },
+    { name: "Blanco de Carácter", description: "Personalidad única", category: "blancos" },
+    { name: "Rosado Ligero", description: "Sutileza y gracia", category: "rosados" },
+    { name: "Rosado Gastronómico", description: "Versatilidad culinaria", category: "rosados" },
+    { name: "Tinto Ligero", description: "Elegancia sutil", category: "tintos" }
   ];
 
   const testimonials = [
@@ -85,7 +89,7 @@ const Index = () => {
             </h1>
             
             <p className="text-xl md:text-2xl mb-4 opacity-95 font-medium max-w-4xl mx-auto">
-              Descubre tu perfil sensorial único entre <strong className="text-accent">7,776 combinaciones posibles</strong>
+              Descubre tu perfil sensorial único entre <strong className="text-accent">miles de combinaciones posibles</strong>
             </p>
             
             <p className="text-lg mb-12 opacity-80 max-w-3xl mx-auto">
