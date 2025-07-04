@@ -7,6 +7,7 @@ import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
 import Profile from '@/pages/Profile';
 import Registration from '@/pages/Registration';
+import Matchrim from '@/pages/Matchrim';
 import LiquidIntelligence from '@/pages/LiquidIntelligence';
 import ImportCSV from '@/pages/ImportCSV';
 import AdminSetup from '@/pages/AdminSetup';
@@ -28,6 +29,7 @@ function App() {
               <Route path="/auth" element={<Auth />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/registration" element={<Registration />} />
+              <Route path="/matchrim" element={<Matchrim />} />
               <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
               <Route path="/import-csv" element={<ImportCSV />} />
               <Route path="/admin-setup" element={<AdminSetup />} />
