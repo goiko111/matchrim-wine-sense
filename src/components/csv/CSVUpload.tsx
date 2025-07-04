@@ -19,7 +19,7 @@ interface CSVUploadProps {
 const getCSVTemplate = (type: ImportType) => {
   switch (type) {
     case 'wines':
-      return 'id,nombre,tipo,bodega,region,país,añada,potente,dulce,acidez,tánico,afrutado,nariz,boca,visual,cuerpo,estructura,final,crianza,elaboración,viñedo,info bodega,clima';
+      return 'id,__mwwid,restaurante,nombre,tipo,bodega,pais,añada,region,url_foto,ventana_optima_consumo,prime_consumo,uvas,maridajes,potente,dulce,acidez,tánico,afrutado,nariz,boca,visual,cuerpo,estructura,final,crianza,elaboracion,info bodega,viñedo,clima';
     case 'wine_styles':
       return 'Potente,Acidez,Dulzura,Taninos,Afrutado,Estilo Winerim';
     case 'matchrim_profiles':
@@ -32,7 +32,7 @@ const getCSVTemplate = (type: ImportType) => {
 const getFormatDescription = (type: ImportType) => {
   switch (type) {
     case 'wines':
-      return 'Formato esperado para vinos: id, nombre, tipo, bodega, region, país, añada, potente, dulce, acidez, tánico, afrutado, nariz, boca, visual, cuerpo, estructura, final, crianza, elaboración, viñedo, info bodega, clima';
+      return 'Formato esperado para vinos: id, __mwwid, restaurante, nombre, tipo, bodega, pais, añada, region, url_foto, ventana_optima_consumo, prime_consumo, uvas, maridajes, potente, dulce, acidez, tánico, afrutado, nariz, boca, visual, cuerpo, estructura, final, crianza, elaboracion, info bodega, viñedo, clima. Los campos nombre y tipo son obligatorios.';
     case 'wine_styles':
       return 'Formato esperado para estilos de vino: Potente, Acidez, Dulzura, Taninos, Afrutado, Estilo Winerim. Los valores numéricos deben estar entre 1 y 5.';
     case 'matchrim_profiles':

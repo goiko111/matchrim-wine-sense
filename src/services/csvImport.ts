@@ -122,7 +122,7 @@ export const importWines = async (
     console.log(`Procesando vino ${i + 1}/${data.length} (${Math.round(currentProgress)}%)`);
     console.log('Fila completa:', row);
     
-    // Extraer campos principales
+    // Extraer campos principales con todos los nombres posibles
     const wineName = getColumnValue(row, ['nombre', 'name', 'Name', 'Nombre']);
     const producer = getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer']) || null;
     const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage']);
@@ -133,7 +133,7 @@ export const importWines = async (
       continue;
     }
     
-    // Extraer tipo/estilo
+    // Extraer tipo/estilo con más variaciones
     const wineType = getColumnValue(row, ['tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo']);
     
     if (!wineType) {
@@ -164,9 +164,29 @@ export const importWines = async (
             taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos'])),
             afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity', 'Afrutado'])),
             description: (() => {
-              // Crear descripción extendida con todas las columnas disponibles
+              // Crear descripción extendida con TODOS los campos disponibles
               const descriptionParts = [];
               
+              // Campos básicos de información
+              const restaurante = getColumnValue(row, ['restaurante', 'restaurant', 'Restaurante']);
+              if (restaurante) descriptionParts.push(`Restaurante: ${restaurante}`);
+              
+              const pais = getColumnValue(row, ['pais', 'país', 'country', 'País']);
+              if (pais) descriptionParts.push(`País: ${pais}`);
+              
+              const urlFoto = getColumnValue(row, ['url_foto', 'foto', 'image_url', 'photo']);
+              if (urlFoto) descriptionParts.push(`Foto: ${urlFoto}`);
+              
+              const ventanaOptima = getColumnValue(row, ['ventana_optima_consumo', 'optimal_consumption', 'consumo_optimo']);
+              if (ventanaOptima) descriptionParts.push(`Ventana Óptima Consumo: ${ventanaOptima}`);
+              
+              const primeConsumo = getColumnValue(row, ['prime_consumo', 'prime_consumption', 'mejor_consumo']);
+              if (primeConsumo) descriptionParts.push(`Prime Consumo: ${primeConsumo}`);
+              
+              const uvas = getColumnValue(row, ['uvas', 'grapes', 'varietal', 'Uvas']);
+              if (uvas) descriptionParts.push(`Uvas: ${uvas}`);
+              
+              // Campos sensoriales
               const nariz = getColumnValue(row, ['nariz', 'nose', 'Nariz']);
               if (nariz) descriptionParts.push(`Nariz: ${nariz}`);
               
@@ -185,10 +205,11 @@ export const importWines = async (
               const final = getColumnValue(row, ['final', 'finish', 'Final']);
               if (final) descriptionParts.push(`Final: ${final}`);
               
+              // Campos de elaboración
               const crianza = getColumnValue(row, ['crianza', 'aging', 'Crianza']);
               if (crianza) descriptionParts.push(`Crianza: ${crianza}`);
               
-              const elaboracion = getColumnValue(row, ['elaboración', 'winemaking', 'Elaboración']);
+              const elaboracion = getColumnValue(row, ['elaboracion', 'elaboración', 'winemaking', 'Elaboración']);
               if (elaboracion) descriptionParts.push(`Elaboración: ${elaboracion}`);
               
               const vinedo = getColumnValue(row, ['viñedo', 'vineyard', 'Viñedo']);
@@ -202,7 +223,10 @@ export const importWines = async (
               
               return descriptionParts.length > 0 ? descriptionParts.join('. ') : null;
             })(),
-            maridage_recommendations: null
+            maridage_recommendations: (() => {
+              const maridajes = getColumnValue(row, ['maridajes', 'pairings', 'maridage', 'food_pairing']);
+              return maridajes ? maridajes.split(';').map(m => m.trim()).filter(m => m) : null;
+            })()
           };
           
           console.log(`Actualizando vino existente: ${wineName}`, updateData);
@@ -252,9 +276,29 @@ export const importWines = async (
         taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos'])),
         afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity', 'Afrutado'])),
         description: (() => {
-          // Crear descripción extendida con todas las columnas disponibles
+          // Crear descripción extendida con TODOS los campos disponibles
           const descriptionParts = [];
           
+          // Campos básicos de información
+          const restaurante = getColumnValue(row, ['restaurante', 'restaurant', 'Restaurante']);
+          if (restaurante) descriptionParts.push(`Restaurante: ${restaurante}`);
+          
+          const pais = getColumnValue(row, ['pais', 'país', 'country', 'País']);
+          if (pais) descriptionParts.push(`País: ${pais}`);
+          
+          const urlFoto = getColumnValue(row, ['url_foto', 'foto', 'image_url', 'photo']);
+          if (urlFoto) descriptionParts.push(`Foto: ${urlFoto}`);
+          
+          const ventanaOptima = getColumnValue(row, ['ventana_optima_consumo', 'optimal_consumption', 'consumo_optimo']);
+          if (ventanaOptima) descriptionParts.push(`Ventana Óptima Consumo: ${ventanaOptima}`);
+          
+          const primeConsumo = getColumnValue(row, ['prime_consumo', 'prime_consumption', 'mejor_consumo']);
+          if (primeConsumo) descriptionParts.push(`Prime Consumo: ${primeConsumo}`);
+          
+          const uvas = getColumnValue(row, ['uvas', 'grapes', 'varietal', 'Uvas']);
+          if (uvas) descriptionParts.push(`Uvas: ${uvas}`);
+          
+          // Campos sensoriales
           const nariz = getColumnValue(row, ['nariz', 'nose', 'Nariz']);
           if (nariz) descriptionParts.push(`Nariz: ${nariz}`);
           
@@ -273,10 +317,11 @@ export const importWines = async (
           const final = getColumnValue(row, ['final', 'finish', 'Final']);
           if (final) descriptionParts.push(`Final: ${final}`);
           
+          // Campos de elaboración
           const crianza = getColumnValue(row, ['crianza', 'aging', 'Crianza']);
           if (crianza) descriptionParts.push(`Crianza: ${crianza}`);
           
-          const elaboracion = getColumnValue(row, ['elaboración', 'winemaking', 'Elaboración']);
+          const elaboracion = getColumnValue(row, ['elaboracion', 'elaboración', 'winemaking', 'Elaboración']);
           if (elaboracion) descriptionParts.push(`Elaboración: ${elaboracion}`);
           
           const vinedo = getColumnValue(row, ['viñedo', 'vineyard', 'Viñedo']);
@@ -290,7 +335,10 @@ export const importWines = async (
           
           return descriptionParts.length > 0 ? descriptionParts.join('. ') : null;
         })(),
-        maridage_recommendations: null
+        maridage_recommendations: (() => {
+          const maridajes = getColumnValue(row, ['maridajes', 'pairings', 'maridage', 'food_pairing']);
+          return maridajes ? maridajes.split(';').map(m => m.trim()).filter(m => m) : null;
+        })()
       };
       
       console.log(`Insertando nuevo vino: ${finalWineName}`, wineData);
