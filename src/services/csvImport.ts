@@ -470,7 +470,7 @@ export const importMatchrimProfiles = async (
   onProgress: (progress: number) => void
 ): Promise<ImportResult> => {
   const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
-  console.log(`=== INICIO IMPORTACIÓN OPTIMIZADA DE PERFILES MATCHRIM (${data.length} filas) ===`);
+  console.log(`=== INICIO IMPORTACIÓN ULTRA-RÁPIDA DE PERFILES MATCHRIM (${data.length} filas) ===`);
   
   // OPTIMIZACIÓN 1: Cargar todos los perfiles existentes al inicio
   const { data: existingProfiles, error: fetchError } = await supabase
@@ -490,8 +490,8 @@ export const importMatchrimProfiles = async (
   
   console.log(`Perfiles existentes cargados: ${existingProfilesMap.size}`);
   
-  // OPTIMIZACIÓN 2: Procesar en lotes para reducir overhead
-  const BATCH_SIZE = 20;
+  // OPTIMIZACIÓN 2: Procesar en lotes GRANDES y usar bulk insert
+  const BATCH_SIZE = 100; // Lotes más grandes
   const totalBatches = Math.ceil(data.length / BATCH_SIZE);
   
   for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
@@ -502,14 +502,18 @@ export const importMatchrimProfiles = async (
     const batchProgress = ((batchIndex + 1) / totalBatches) * 100;
     onProgress(batchProgress);
     
-    console.log(`\n=== PROCESANDO LOTE ${batchIndex + 1}/${totalBatches} (filas ${startIndex + 1}-${endIndex}) ===`);
+    console.log(`Procesando lote ${batchIndex + 1}/${totalBatches} (filas ${startIndex + 1}-${endIndex})`);
     
-    // Procesar lote
+    // Arrays para operaciones en lote
+    const profilesToInsert = [];
+    const profilesToUpdate = [];
+    
+    // Procesar lote y preparar operaciones
     for (let i = 0; i < batch.length; i++) {
       const row = batch[i];
       const globalIndex = startIndex + i;
       
-      // OPTIMIZACIÓN 3: Búsqueda simplificada del nombre del perfil
+      // Buscar nombre del perfil
       const profileName = row['Nombre Perfil Matchrim'] || row.name || row['Matchrim'] || row['MATCHRIM'];
       
       if (!profileName) {
@@ -517,7 +521,6 @@ export const importMatchrimProfiles = async (
         continue;
       }
       
-      // OPTIMIZACIÓN 4: Búsqueda rápida de duplicados usando Map
       const existingProfile = existingProfilesMap.get(profileName.toLowerCase());
       
       if (existingProfile) {
@@ -525,37 +528,28 @@ export const importMatchrimProfiles = async (
           result.skipped++;
           continue;
         } else if (duplicateStrategy === 'update') {
-          // Actualizar perfil existente
-          const updateData = {
-            description: row.description || null,
-            potente: getIntValue(row.Potente || row.potente || ''),
-            acidez: getIntValue(row.Acidez || row.acidez || ''),
-            dulce: getIntValue(row.Dulce || row.dulce || ''),
-            tanico: getIntValue(row.Tánico || row.tanico || ''),
-            afrutado: getIntValue(row.Afrutado || row.afrutado || ''),
-            grape_recommendations: row.grape_recommendations ? 
-              row.grape_recommendations.split(';').map(s => s.trim()) : null,
-            region_recommendations: row.region_recommendations ? 
-              row.region_recommendations.split(';').map(s => s.trim()) : null,
-            style_recommendations: row.style_recommendations ? 
-              row.style_recommendations.split(';').map(s => s.trim()) : null
-          };
-          
-          const { error } = await supabase
-            .from('matchrim_profiles')
-            .update(updateData)
-            .eq('id', existingProfile.id);
-          
-          if (error) {
-            result.errors.push(`Fila ${globalIndex + 2}: ${error.message}`);
-          } else {
-            result.updated++;
-          }
+          profilesToUpdate.push({
+            id: existingProfile.id,
+            data: {
+              description: row.description || null,
+              potente: getIntValue(row.Potente || row.potente || ''),
+              acidez: getIntValue(row.Acidez || row.acidez || ''),
+              dulce: getIntValue(row.Dulce || row.dulce || ''),
+              tanico: getIntValue(row.Tánico || row.tanico || ''),
+              afrutado: getIntValue(row.Afrutado || row.afrutado || ''),
+              grape_recommendations: row.grape_recommendations ? 
+                row.grape_recommendations.split(';').map(s => s.trim()) : null,
+              region_recommendations: row.region_recommendations ? 
+                row.region_recommendations.split(';').map(s => s.trim()) : null,
+              style_recommendations: row.style_recommendations ? 
+                row.style_recommendations.split(';').map(s => s.trim()) : null
+            }
+          });
           continue;
         }
       }
 
-      // OPTIMIZACIÓN 5: Generación de nombres únicos más eficiente para strategy 'suffix'
+      // Generar nombre único si es necesario
       let finalProfileName = profileName;
       if (existingProfile && duplicateStrategy === 'suffix') {
         let counter = 1;
@@ -564,12 +558,11 @@ export const importMatchrimProfiles = async (
           counter++;
         } while (existingProfilesMap.has(finalProfileName.toLowerCase()));
         
-        // Agregar al Map para evitar duplicados en el mismo lote
         existingProfilesMap.set(finalProfileName.toLowerCase(), { id: 'temp', name: finalProfileName });
       }
       
-      // Insertar nuevo perfil
-      const profileData = {
+      // Preparar para inserción
+      profilesToInsert.push({
         name: finalProfileName,
         description: row.description || null,
         potente: getIntValue(row.Potente || row.potente || ''),
@@ -583,23 +576,43 @@ export const importMatchrimProfiles = async (
           row.region_recommendations.split(';').map(s => s.trim()) : null,
         style_recommendations: row.style_recommendations ? 
           row.style_recommendations.split(';').map(s => s.trim()) : null
-      };
+      });
       
+      // Agregar al Map para evitar duplicados futuros
+      existingProfilesMap.set(finalProfileName.toLowerCase(), { id: 'new', name: finalProfileName });
+    }
+    
+    // OPTIMIZACIÓN 3: Ejecutar operaciones en lote
+    
+    // Bulk insert
+    if (profilesToInsert.length > 0) {
+      const { error: insertError } = await supabase
+        .from('matchrim_profiles')
+        .insert(profilesToInsert);
+      
+      if (insertError) {
+        result.errors.push(`Error en lote ${batchIndex + 1}: ${insertError.message}`);
+      } else {
+        result.success += profilesToInsert.length;
+      }
+    }
+    
+    // Bulk update (uno por uno para updates porque Supabase no soporta bulk update fácilmente)
+    for (const profile of profilesToUpdate) {
       const { error } = await supabase
         .from('matchrim_profiles')
-        .insert(profileData);
+        .update(profile.data)
+        .eq('id', profile.id);
       
       if (error) {
-        result.errors.push(`Fila ${globalIndex + 2}: ${error.message}`);
+        result.errors.push(`Error actualizando perfil: ${error.message}`);
       } else {
-        result.success++;
-        // Agregar al Map para evitar duplicados futuros
-        existingProfilesMap.set(finalProfileName.toLowerCase(), { id: 'new', name: finalProfileName });
+        result.updated++;
       }
     }
   }
   
-  console.log('=== FIN IMPORTACIÓN OPTIMIZADA DE PERFILES MATCHRIM ===');
+  console.log('=== FIN IMPORTACIÓN ULTRA-RÁPIDA ===');
   console.log(`Importación completada:`, result);
   return result;
 };
