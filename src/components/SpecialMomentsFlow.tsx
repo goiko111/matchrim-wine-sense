@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, PartyPopper, Users, ChefHat, Brain, Star, Send, Loader } from 'lucide-react';
+import { ArrowLeft, PartyPopper, Users, ChefHat, Brain, Star, DollarSign, Send, Loader } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
@@ -19,6 +19,7 @@ interface QuestionData {
   food: string;
   guestLevel: string;
   approach: string;
+  budget: string;
 }
 
 const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
@@ -28,7 +29,8 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
     people: '',
     food: '',
     guestLevel: '',
-    approach: ''
+    approach: '',
+    budget: ''
   });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [result, setResult] = useState('');
@@ -86,6 +88,12 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
       question: '¿Quieres sorprender o acertar seguro?',
       options: ['Acertar seguro (clásico)', 'Sorprender moderadamente', 'Algo muy disruptivo'],
       key: 'approach' as keyof QuestionData
+    },
+    {
+      icon: DollarSign,
+      question: '¿Cuál es tu presupuesto por botella?',
+      options: ['Hasta $15.000', '$15.000 - $30.000', '$30.000 - $50.000', '$50.000 - $100.000', 'Más de $100.000'],
+      key: 'budget' as keyof QuestionData
     }
   ];
 
@@ -122,21 +130,22 @@ Detalles del evento:
 - Tipo de comida: ${data.food}
 - Nivel de conocimiento de los invitados: ${data.guestLevel}
 - Enfoque deseado: ${data.approach}
+- Presupuesto por botella: ${data.budget}
 
 Por favor proporciona una recomendación completa que incluya:
-1. Tipo de vino ideal (con características específicas)
-2. Número de botellas sugeridas
-3. Si conviene algo clásico o disruptivo
-4. Justificación de por qué esta selección funcionará para la ocasión
-5. Consejos adicionales para el servicio
+1. 3 opciones específicas de vinos con nombres y bodegas reales
+2. Justificación de por qué cada vino funciona para la ocasión
+3. Número de botellas sugeridas según el número de personas
+4. Consejos sobre temperatura de servicio y copa ideal
+5. Información adicional relevante para el presupuesto indicado
 
-Responde de forma conversacional, práctica y educativa.`;
+Responde de forma conversacional, práctica y educativa, adaptándote al presupuesto especificado.`;
 
     try {
       const { data: response, error } = await supabase.functions.invoke('ai-wine-chat', {
         body: {
           message: prompt,
-          context: 'Inteligencia Líquida - Vinos para momentos especiales'
+          context: 'AIRIM - Vinos para momentos especiales'
         }
       });
 
@@ -164,7 +173,8 @@ Responde de forma conversacional, práctica y educativa.`;
       people: '',
       food: '',
       guestLevel: '',
-      approach: ''
+      approach: '',
+      budget: ''
     });
     setCurrentQuestion(0);
     setResult('');

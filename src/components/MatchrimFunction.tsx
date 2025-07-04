@@ -29,12 +29,27 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
           placeholder1: 'Describe tu plato (ej: canelones de espinacas)',
           showSecondInput: false,
           prompt: `Soy un sommelier experto. El usuario va a comer: "${input1}". 
-          Recomiéndame:
-          1. Tipo de vino ideal (tinto, blanco, rosado, espumoso)
-          2. Estilo específico y características
-          3. 2-3 ejemplos concretos de vinos
-          4. Por qué funciona este maridaje
+          Proporciona exactamente 3 recomendaciones específicas de vinos que mariden perfectamente con este plato:
           
+          VINO 1:
+          - Nombre específico y bodega
+          - Tipo y estilo del vino
+          - Por qué funciona con este plato
+          - Rango de precio estimado
+          
+          VINO 2:
+          - Nombre específico y bodega
+          - Tipo y estilo del vino
+          - Por qué funciona con este plato
+          - Rango de precio estimado
+          
+          VINO 3:
+          - Nombre específico y bodega
+          - Tipo y estilo del vino
+          - Por qué funciona con este plato
+          - Rango de precio estimado
+          
+          Incluye también consejos generales sobre temperatura de servicio y copa ideal.
           Responde de forma conversacional, educativa y cercana.`
         };
       case 'dish-for-wine':
@@ -91,7 +106,7 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
       const { data, error } = await supabase.functions.invoke('ai-wine-chat', {
         body: {
           message: config.prompt,
-          context: 'Inteligencia Líquida - Sistema de maridajes'
+          context: 'AIRIM - Sistema de maridajes'
         }
       });
 

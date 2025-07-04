@@ -17,10 +17,10 @@ const MatchrimWelcome: React.FC<MatchrimWelcomeProps> = ({ onGetStarted }) => {
             <Wine className="h-10 w-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-red-900 mb-2">
-            Inteligencia Líquida
+            AIRIM
           </h1>
           <p className="text-lg text-red-700 leading-relaxed">
-            Descubre el vino perfecto para cada plato
+            Tu asistente inteligente de maridajes
           </p>
         </div>
 
