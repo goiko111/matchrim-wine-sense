@@ -184,7 +184,7 @@ export const validateMatchrimProfileRow = (row: CSVRow): string[] => {
   const errors: string[] = [];
   
   // Verificar que tenemos el nombre del perfil
-  if (!row['Nombre Perfil Matchrim'] && !row.name) {
+  if (!row['Nombre Perfil Matchrim'] && !row.name && !row['Matchrim']) {
     errors.push('Nombre del perfil es requerido');
   }
   

@@ -485,7 +485,7 @@ export const importMatchrimProfiles = async (
     }
     
     try {
-      const profileName = row['Nombre Perfil Matchrim'] || row.name;
+      const profileName = row['Nombre Perfil Matchrim'] || row.name || row['Matchrim'];
       const existingProfile = await checkForExistingRecord('matchrim_profiles', profileName);
       
       if (existingProfile) {
