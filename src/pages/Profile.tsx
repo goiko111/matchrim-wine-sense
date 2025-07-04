@@ -28,18 +28,21 @@ const Profile = () => {
   const [matchingWineStyle, setMatchingWineStyle] = useState(null);
 
   useEffect(() => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+
     const loadQuizHistory = async () => {
-      if (user) {
-        const history = await getQuizHistory();
-        setQuizHistory(history);
-        if (history.length > 0) {
-          setCurrentProfile(history[0]);
-        }
+      const history = await getQuizHistory();
+      setQuizHistory(history);
+      if (history.length > 0) {
+        setCurrentProfile(history[0]);
       }
     };
 
     loadQuizHistory();
-  }, [user, getQuizHistory]);
+  }, [user, navigate, getQuizHistory]);
 
   // Efecto para calcular el estilo Winerim cuando cambie el perfil actual
   useEffect(() => {
@@ -120,6 +123,9 @@ const Profile = () => {
     });
   };
 
+  if (!user) {
+    return null;
+  }
 
   // Organize recommendations by country
   const spanishWines = currentProfile?.wine_recommendations?.filter(wine => wine.country === "España") || [];
@@ -159,31 +165,7 @@ const Profile = () => {
           </TabsList>
 
           <TabsContent value="current" className="mt-6">
-            {!user ? (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-red-900">Inicia sesión para ver tu perfil</CardTitle>
-                  <CardDescription>
-                    Necesitas iniciar sesión para acceder a tu perfil personalizado y ver tus resultados
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button 
-                    onClick={() => navigate('/auth')}
-                    className="bg-red-700 hover:bg-red-800 mr-4"
-                  >
-                    Iniciar Sesión
-                  </Button>
-                  <Button 
-                    onClick={() => navigate('/')}
-                    variant="outline"
-                    className="border-red-700 text-red-700 hover:bg-red-50"
-                  >
-                    Realizar Test sin Cuenta
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : currentProfile ? (
+            {currentProfile ? (
               <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-md">
                 <div className="flex items-center justify-center mb-8">
                   <div className="flex flex-col items-center">
@@ -369,11 +351,7 @@ const Profile = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {!user ? (
-                  <p className="text-gray-600 text-center py-8">
-                    Inicia sesión para ver tu historial de tests
-                  </p>
-                ) : quizHistory.length > 0 ? (
+                {quizHistory.length > 0 ? (
                   <div className="space-y-4">
                     {quizHistory.map((result, index) => (
                       <div key={result.id} className="border border-red-200 rounded-lg p-4">
@@ -447,11 +425,7 @@ const Profile = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {!user ? (
-                  <p className="text-gray-600 text-center py-8">
-                    Inicia sesión para ver recomendaciones de vinos personalizadas
-                  </p>
-                ) : currentProfile && currentProfile.wine_recommendations && currentProfile.wine_recommendations.length > 0 ? (
+                {currentProfile && currentProfile.wine_recommendations && currentProfile.wine_recommendations.length > 0 ? (
                   <div className="space-y-6">
                     {spanishWines.length > 0 && (
                       <div>
