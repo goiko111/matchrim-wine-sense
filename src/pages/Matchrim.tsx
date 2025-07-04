@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizIntro from '@/components/QuizIntro';
 import QuizQuestion from '@/components/QuizQuestion';
 import QuizResults from '@/components/QuizResults';
-import { questions, calculateProfile, getProfileDescription, getRecommendedWines } from '@/data/quizData';
+import { questions, calculateProfile, getProfileDescription } from '@/data/quizData';
+import { getDiverseWineRecommendations, UserProfile, WineRecommendation } from '@/utils/wineRecommendations';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
@@ -13,6 +14,8 @@ const Matchrim = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [id: number]: string }>({});
   const [quizResult, setQuizResult] = useState(null);
+  const [recommendations, setRecommendations] = useState<string[]>([]);
+  const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
 
   const handleStart = () => {
     setCurrentStep('quiz');
@@ -54,7 +57,45 @@ const Matchrim = () => {
     setCurrentQuestionIndex(0);
     setAnswers({});
     setQuizResult(null);
+    setRecommendations([]);
   };
+
+  // Fetch recommendations when quiz result is available
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (!quizResult) return;
+      
+      setIsLoadingRecommendations(true);
+      try {
+        const userProfile: UserProfile = {
+          potente: quizResult.potente,
+          acidez: quizResult.acidez,
+          dulce: quizResult.dulce,
+          tanico: quizResult.tanico,
+          afrutado: quizResult.afrutado
+        };
+        
+        const wineRecommendations = await getDiverseWineRecommendations(userProfile, 8);
+        
+        // Convert to the format expected by QuizResults
+        const formattedRecommendations = wineRecommendations.map(rec => {
+          const wine = rec.wine;
+          const region = wine.region || 'No especificada';
+          const country = wine.region?.includes('España') || wine.region?.includes('Spain') ? 'España' : 'Internacional';
+          return `${wine.name}, ${wine.estilo}, ${wine.producer || 'Desconocido'}, ${region}, ${country}`;
+        });
+        
+        setRecommendations(formattedRecommendations);
+      } catch (error) {
+        console.error('Error fetching recommendations:', error);
+        setRecommendations([]);
+      } finally {
+        setIsLoadingRecommendations(false);
+      }
+    };
+
+    fetchRecommendations();
+  }, [quizResult]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-950">
@@ -95,7 +136,7 @@ const Matchrim = () => {
           <QuizResults
             result={quizResult}
             description={getProfileDescription(quizResult)}
-            recommendations={getRecommendedWines(quizResult)}
+            recommendations={recommendations}
             onRestart={handleRestartQuiz}
           />
         )}

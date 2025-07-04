@@ -1,9 +1,10 @@
 
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { QuizResult, getRecommendedWines, getProfileDescription } from '@/data/quizData';
+import { QuizResult, getProfileDescription } from '@/data/quizData';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
+import { getDiverseWineRecommendations, UserProfile } from '@/utils/wineRecommendations';
 
 export const useQuizResults = () => {
   const [isSaving, setIsSaving] = useState(false);
@@ -23,7 +24,17 @@ export const useQuizResults = () => {
     
     try {
       const description = getProfileDescription(result);
-      const recommendations = getRecommendedWines(result);
+      
+      // Get wine recommendations from database
+      const userProfile: UserProfile = {
+        potente: result.potente,
+        acidez: result.acidez,
+        dulce: result.dulce,
+        tanico: result.tanico,
+        afrutado: result.afrutado
+      };
+      
+      const recommendations = await getDiverseWineRecommendations(userProfile, 12);
 
       // Save quiz result
       const { data: quizResultData, error: quizError } = await supabase
@@ -42,35 +53,31 @@ export const useQuizResults = () => {
 
       if (quizError) throw quizError;
 
-      // Save wine recommendations with consistent scoring
-      const recommendationsToInsert = recommendations.map((rec, index) => {
-        const parts = rec.split(", ");
-        // Generate consistent score based on position and profile
-        const baseScore = 95 - (index * 2); // Start at 95 and decrease by 2 for each recommendation
-        const profileSeed = `${result.potente}-${result.acidez}-${result.dulce}-${result.tanico}-${result.afrutado}`;
-        const hash = profileSeed.split('').reduce((a, b) => {
-          a = ((a << 5) - a) + b.charCodeAt(0);
-          return a & a;
-        }, 0);
-        const variation = Math.abs(hash) % 6 - 3; // Between -3 and +3
+      // Save wine recommendations from database
+      const recommendationsToInsert = recommendations.map((rec) => {
+        const wine = rec.wine;
+        const country = wine.region?.includes('España') || wine.region?.includes('Spain') || 
+                       wine.producer?.includes('España') || wine.producer?.includes('Spain') ? 'España' : 'Internacional';
         
         return {
           quiz_result_id: quizResultData.id,
           user_id: user.id,
-          wine_name: parts[0] || '',
-          wine_type: parts[1] || '',
-          winery: parts[2] || '',
-          region: parts[3] || '',
-          country: parts[4] || '',
-          compatibility_score: Math.max(80, Math.min(100, baseScore + variation))
+          wine_name: wine.name,
+          wine_type: wine.estilo,
+          winery: wine.producer || 'Desconocido',
+          region: wine.region || 'No especificada',
+          country: country,
+          compatibility_score: rec.compatibilityScore
         };
       });
 
-      const { error: recommendationsError } = await supabase
-        .from('wine_recommendations')
-        .insert(recommendationsToInsert);
+      if (recommendationsToInsert.length > 0) {
+        const { error: recommendationsError } = await supabase
+          .from('wine_recommendations')
+          .insert(recommendationsToInsert);
 
-      if (recommendationsError) throw recommendationsError;
+        if (recommendationsError) throw recommendationsError;
+      }
 
       toast({
         title: "¡Resultados guardados!",

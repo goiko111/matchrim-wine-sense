@@ -314,7 +314,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">Inteligencia Líquida</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">AIRIM</h2>
               <p className="text-2xl text-primary mb-8 font-semibold">
                 Cómo la IA de Winerim analiza cartas de vino y recomienda opciones personalizadas según tu Matchrim.
               </p>
@@ -699,7 +699,7 @@ const Index = () => {
                 <ul className="space-y-2 text-gray-400">
                   <li><button onClick={() => navigate('/registration')} className="hover:text-white transition-colors">Test Matchrim</button></li>
                   <li><button onClick={() => navigate('/wine-styles')} className="hover:text-white transition-colors">Estilos de Vino</button></li>
-                  <li><button onClick={() => navigate('/inteligencia-liquida')} className="hover:text-white transition-colors">Inteligencia Líquida</button></li>
+                  <li><button onClick={() => navigate('/inteligencia-liquida')} className="hover:text-white transition-colors">AIRIM</button></li>
                 </ul>
               </div>
               
