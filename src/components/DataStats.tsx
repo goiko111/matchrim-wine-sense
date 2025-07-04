@@ -2,40 +2,88 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import { BarChart3, Wine, Palette, Users } from 'lucide-react';
+import { Wine, Palette, Users, TrendingUp, Database, Calendar } from 'lucide-react';
 
-interface Stats {
-  matchrimProfiles: number;
+interface DataCounts {
   wines: number;
   wineStyles: number;
+  matchrimProfiles: number;
+  totalClassifications: number;
+}
+
+interface WineStyleStats {
+  name: string;
+  count: number;
+}
+
+interface RecentActivity {
+  lastWineAdded: string | null;
+  lastStyleAdded: string | null;
+  lastProfileAdded: string | null;
 }
 
 const DataStats = () => {
-  const [stats, setStats] = useState<Stats>({ matchrimProfiles: 0, wines: 0, wineStyles: 0 });
+  const [stats, setStats] = useState<DataCounts>({
+    wines: 0,
+    wineStyles: 0,
+    matchrimProfiles: 0,
+    totalClassifications: 0
+  });
+  const [wineStyleStats, setWineStyleStats] = useState<WineStyleStats[]>([]);
+  const [recentActivity, setRecentActivity] = useState<RecentActivity>({
+    lastWineAdded: null,
+    lastStyleAdded: null,
+    lastProfileAdded: null
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Obtener conteo de perfiles Matchrim
-        const { count: matchrimCount } = await supabase
-          .from('matchrim_profiles')
-          .select('*', { count: 'exact', head: true });
+        // Fetch counts from all tables
+        const [winesResult, stylesResult, profilesResult, classificationsResult] = await Promise.all([
+          supabase.from('wines').select('id', { count: 'exact' }),
+          supabase.from('wine_styles').select('id', { count: 'exact' }),
+          supabase.from('matchrim_profiles').select('id', { count: 'exact' }),
+          supabase.from('classification_history').select('id', { count: 'exact' })
+        ]);
 
-        // Obtener conteo de vinos
-        const { count: winesCount } = await supabase
+        // Fetch wine styles distribution
+        const { data: winesWithStyles } = await supabase
           .from('wines')
-          .select('*', { count: 'exact', head: true });
+          .select('estilo')
+          .order('estilo');
 
-        // Obtener conteo de estilos de vino
-        const { count: stylesCount } = await supabase
-          .from('wine_styles')
-          .select('*', { count: 'exact', head: true });
+        // Count wines by style
+        const styleDistribution: { [key: string]: number } = {};
+        winesWithStyles?.forEach(wine => {
+          styleDistribution[wine.estilo] = (styleDistribution[wine.estilo] || 0) + 1;
+        });
+
+        const sortedStyles = Object.entries(styleDistribution)
+          .map(([name, count]) => ({ name, count }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 5); // Top 5 styles
+
+        // Fetch recent activity
+        const [lastWine, lastStyle, lastProfile] = await Promise.all([
+          supabase.from('wines').select('created_at').order('created_at', { ascending: false }).limit(1),
+          supabase.from('wine_styles').select('created_at').order('created_at', { ascending: false }).limit(1),
+          supabase.from('matchrim_profiles').select('created_at').order('created_at', { ascending: false }).limit(1)
+        ]);
 
         setStats({
-          matchrimProfiles: matchrimCount || 0,
-          wines: winesCount || 0,
-          wineStyles: stylesCount || 0
+          wines: winesResult.count || 0,
+          wineStyles: stylesResult.count || 0,
+          matchrimProfiles: profilesResult.count || 0,
+          totalClassifications: classificationsResult.count || 0
+        });
+
+        setWineStyleStats(sortedStyles);
+        setRecentActivity({
+          lastWineAdded: lastWine.data?.[0]?.created_at || null,
+          lastStyleAdded: lastStyle.data?.[0]?.created_at || null,
+          lastProfileAdded: lastProfile.data?.[0]?.created_at || null
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -47,59 +95,159 @@ const DataStats = () => {
     fetchStats();
   }, []);
 
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const statsItems = [
+    {
+      title: 'Vinos Totales',
+      value: stats.wines,
+      icon: Wine,
+      description: 'Vinos importados en la base de datos',
+      color: 'text-red-600',
+      bgColor: 'bg-red-50'
+    },
+    {
+      title: 'Estilos de Vino',
+      value: stats.wineStyles,
+      icon: Palette,
+      description: 'Estilos únicos disponibles',
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-50'
+    },
+    {
+      title: 'Perfiles Matchrim',
+      value: stats.matchrimProfiles,
+      icon: Users,
+      description: 'Perfiles de usuario creados',
+      color: 'text-amber-600',
+      bgColor: 'bg-amber-50'
+    },
+    {
+      title: 'Clasificaciones',
+      value: stats.totalClassifications,
+      icon: TrendingUp,
+      description: 'Total de clasificaciones realizadas',
+      color: 'text-green-600',
+      bgColor: 'bg-green-50'
+    }
+  ];
+
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
-        {[...Array(3)].map((_, i) => (
-          <Card key={i} className="animate-pulse">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <div className="h-4 bg-gray-200 rounded w-20"></div>
-              <div className="h-4 w-4 bg-gray-200 rounded"></div>
-            </CardHeader>
-            <CardContent>
-              <div className="h-8 bg-gray-200 rounded w-16 mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-24"></div>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardContent className="p-6">
+                <div className="h-16 bg-gray-200 rounded"></div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="h-32 bg-gray-200 rounded"></div>
             </CardContent>
           </Card>
-        ))}
+          <Card className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Perfiles Matchrim</CardTitle>
-          <Users className="h-4 w-4 text-red-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-red-700">{stats.matchrimProfiles}</div>
-          <CardDescription>Perfiles de usuario para maridajes</CardDescription>
-        </CardContent>
-      </Card>
+    <div className="space-y-6">
+      {/* Main Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {statsItems.map((item, index) => {
+          const IconComponent = item.icon;
+          return (
+            <Card key={index} className={`hover:shadow-lg transition-shadow ${item.bgColor} border-0`}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-gray-700">
+                  {item.title}
+                </CardTitle>
+                <IconComponent className={`h-5 w-5 ${item.color}`} />
+              </CardHeader>
+              <CardContent>
+                <div className={`text-3xl font-bold ${item.color}`}>
+                  {item.value.toLocaleString()}
+                </div>
+                <p className="text-xs text-gray-600 mt-1">
+                  {item.description}
+                </p>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Vinos</CardTitle>
-          <Wine className="h-4 w-4 text-purple-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-purple-700">{stats.wines}</div>
-          <CardDescription>Vinos en la base de datos</CardDescription>
-        </CardContent>
-      </Card>
+      {/* Detailed Information Cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Top Wine Styles */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Database className="h-5 w-5 text-blue-600" />
+              Estilos Más Populares
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {wineStyleStats.length > 0 ? (
+              <div className="space-y-3">
+                {wineStyleStats.map((style, index) => (
+                  <div key={index} className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-700">{style.name}</span>
+                    <span className="text-sm font-bold text-blue-600">{style.count} vinos</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-sm">No hay datos de distribución disponibles</p>
+            )}
+          </CardContent>
+        </Card>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Estilos de Vino</CardTitle>
-          <Palette className="h-4 w-4 text-amber-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-amber-700">{stats.wineStyles}</div>
-          <CardDescription>Clasificaciones de estilos</CardDescription>
-        </CardContent>
-      </Card>
+        {/* Recent Activity */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-purple-600" />
+              Actividad Reciente
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Último vino:</span>
+                <span className="text-sm font-medium">{formatDate(recentActivity.lastWineAdded)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Último estilo:</span>
+                <span className="text-sm font-medium">{formatDate(recentActivity.lastStyleAdded)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Último perfil:</span>
+                <span className="text-sm font-medium">{formatDate(recentActivity.lastProfileAdded)}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

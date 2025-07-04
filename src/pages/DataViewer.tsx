@@ -2,6 +2,7 @@
 import React from 'react';
 import Header from '@/components/Header';
 import DataViewerTabs from '@/components/data-viewer/DataViewerTabs';
+import DataStats from '@/components/DataStats';
 
 const DataViewer = () => {
   return (
@@ -12,7 +13,10 @@ const DataViewer = () => {
           <h1 className="text-3xl font-bold text-center mb-8">
             Consulta de Datos Cargados
           </h1>
-          <DataViewerTabs />
+          <DataStats />
+          <div className="mt-8">
+            <DataViewerTabs />
+          </div>
         </div>
       </main>
     </div>
