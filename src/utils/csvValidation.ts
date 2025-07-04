@@ -188,12 +188,12 @@ export const validateMatchrimProfileRow = (row: CSVRow): string[] => {
     errors.push('Nombre del perfil es requerido');
   }
   
-  // Validar campos numéricos (1-5) usando nombres del Excel
+  // Validar campos numéricos (0-5) usando nombres del Excel
   const numericFields = ['Potente', 'Acidez', 'Dulce', 'Tánico', 'Afrutado'];
   numericFields.forEach(field => {
     const value = parseInt(row[field]);
-    if (isNaN(value) || value < 1 || value > 5) {
-      errors.push(`${field} debe ser un número entre 1 y 5`);
+    if (isNaN(value) || value < 0 || value > 5) {
+      errors.push(`${field} debe ser un número entre 0 y 5`);
     }
   });
   

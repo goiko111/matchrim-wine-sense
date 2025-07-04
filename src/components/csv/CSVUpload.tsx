@@ -36,7 +36,7 @@ const getFormatDescription = (type: ImportType) => {
     case 'wine_styles':
       return 'Formato esperado para estilos de vino: Potente, Acidez, Dulzura, Taninos, Afrutado, Estilo Winerim. Los valores numéricos deben estar entre 1 y 5.';
     case 'matchrim_profiles':
-      return 'Formato esperado para perfiles Matchrim: Potente, Acidez, Dulce, Tánico, Afrutado, Nombre Perfil Matchrim';
+      return 'Formato esperado para perfiles Matchrim: Potente, Acidez, Dulce, Tánico, Afrutado, Nombre Perfil Matchrim. Los valores numéricos deben estar entre 0 y 5.';
     default:
       return '';
   }
