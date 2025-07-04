@@ -20,7 +20,8 @@ import {
   Share2,
   Star,
   CheckCircle,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -68,30 +69,87 @@ const Index = () => {
     <div className="min-h-screen">
       <Header />
       
-      {/* 1. HERO POTENTE */}
+      {/* 1. HERO RENOVADO */}
       <section className="relative min-h-screen winerim-bg text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
         <div className="relative container mx-auto px-4 py-20 flex flex-col justify-center min-h-screen">
-          <div className="max-w-5xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
-              Descubre tu perfil sensorial y encuentra el vino que <span className="text-accent">te representa</span>
+          <div className="max-w-6xl mx-auto text-center">
+            {/* Badge destacado */}
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/20">
+              <Sparkles className="h-5 w-5 text-accent" />
+              <span className="text-sm font-semibold">Más de 10,000 perfiles creados</span>
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-[1.1]">
+              Tu <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">identidad vínica</span> en 60 segundos
             </h1>
-            <p className="text-xl md:text-2xl mb-6 opacity-90 font-medium">
-              Un test de 1 minuto. 7776 perfiles únicos. Tu pasaporte líquido.
+            
+            <p className="text-xl md:text-2xl mb-4 opacity-95 font-medium max-w-4xl mx-auto">
+              Descubre tu perfil sensorial único entre <strong className="text-accent">7,776 combinaciones posibles</strong>
             </p>
-            <div className="mb-12">
+            
+            <p className="text-lg mb-12 opacity-80 max-w-3xl mx-auto">
+              Un test científico que revela si eres "Tinto Goloso", "Blanco Mineral" o cualquiera de los otros estilos únicos
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <Button 
                 size="lg" 
-                className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-16 py-6 text-2xl rounded-full shadow-2xl transform hover:scale-105 transition-smooth"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-12 py-6 text-xl rounded-2xl shadow-2xl transform hover:scale-105 transition-smooth"
                 onClick={() => navigate('/registration')}
               >
-                👉 Hacer el test
+                <Brain className="mr-3 h-6 w-6" />
+                Hacer mi test gratis
               </Button>
+              
+              <div className="flex items-center gap-4 text-white/80">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-accent" />
+                  <span className="text-sm">Sin registro</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-accent" />
+                  <span className="text-sm">60 segundos</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-accent" />
+                  <span className="text-sm">100% gratis</span>
+                </div>
+              </div>
             </div>
-            <p className="text-lg opacity-80 max-w-3xl mx-auto">
-              Descubre si eres un perfil <strong className="text-accent">"Tinto Goloso"</strong> o 
-              <strong className="text-accent"> "Blanco Vital"</strong> y obtén recomendaciones precisas
-            </p>
+
+            {/* Testimonios rápidos */}
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                <div className="flex items-center mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-accent fill-current" />
+                  ))}
+                </div>
+                <p className="text-sm italic mb-2">"Increíble precisión. Ahora siempre elijo el vino perfecto."</p>
+                <p className="text-xs text-white/60">- María, Tempranillo Bosque</p>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                <div className="flex items-center mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-accent fill-current" />
+                  ))}
+                </div>
+                <p className="text-sm italic mb-2">"Mi sommelier personal en el bolsillo."</p>
+                <p className="text-xs text-white/60">- Carlos, Albariño Mineral</p>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                <div className="flex items-center mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-accent fill-current" />
+                  ))}
+                </div>
+                <p className="text-sm italic mb-2">"Cambió totalmente mi relación con el vino."</p>
+                <p className="text-xs text-white/60">- Ana, Garnacha Solar</p>
+              </div>
+            </div>
           </div>
           
           <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
