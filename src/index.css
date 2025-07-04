@@ -3,7 +3,7 @@
 @tailwind utilities;
  
 @layer base {
-  :root {
+:root {
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
 
@@ -13,8 +13,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
  
-    --primary: 346 83.3% 41%;
+    --primary: 343 96% 26%; /* Pantone #860024 - Winerim burgundy */
     --primary-foreground: 210 20% 98%;
+    --primary-variant: 343 96% 35%; /* Lighter burgundy */
+    --primary-light: 343 30% 85%; /* Very light burgundy for backgrounds */
  
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
@@ -22,7 +24,7 @@
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
  
-    --accent: 346 83.3% 41%;
+    --accent: 45 93% 47%; /* Gold accent for CTAs */
     --accent-foreground: 220.9 39.3% 11%;
  
     --destructive: 0 84.2% 60.2%;
@@ -30,9 +32,9 @@
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 346 83.3% 41%;
+    --ring: 343 96% 26%;
  
-    --radius: 0.5rem;
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 224 71.4% 4.1%;
@@ -84,10 +86,36 @@
   }
 }
 
-/* Custom Matchrim styles */
+/* Winerim Design System */
 .winerim-bg {
-  background-image: linear-gradient(to right, rgba(120, 20, 30, 0.8), rgba(80, 10, 20, 0.9));
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-variant)));
+}
+
+.gradient-subtle {
+  background: linear-gradient(180deg, hsl(343 30% 98%), hsl(0 0% 100%));
+}
+
+.shadow-elegant {
+  box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.15);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 40px hsl(var(--primary) / 0.1);
+}
+
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Radar chart styles */
+.radar-attribute {
+  @apply text-sm font-medium text-gray-700 mb-2;
+}
+
+.radar-bar {
+  @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+}
+
+.radar-fill {
+  @apply h-full bg-primary rounded-full transition-all duration-700 ease-out;
 }
