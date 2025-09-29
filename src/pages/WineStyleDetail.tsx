@@ -429,10 +429,8 @@ const WineStyleDetail = () => {
             <div className="lg:order-first">
               <div className={`w-full h-80 bg-gradient-to-br ${config.gradient} rounded-3xl shadow-2xl relative overflow-hidden`}>
                 <div className="absolute inset-0 bg-black/10"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="flex items-center justify-center">
-                    <IconComponent className="h-24 w-24 text-white/80" />
-                  </div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <IconComponent className="h-32 w-32 text-white/90" />
                 </div>
               </div>
             </div>
