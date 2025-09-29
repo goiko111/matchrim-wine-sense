@@ -488,9 +488,9 @@ const WineStyleDetail = () => {
                         </div>
                       </div>
                       <div className="relative">
-                        <Progress value={attr.value * 20} className="h-3" />
+                        <Progress value={(attr.value / 5) * 100} className="h-3" />
                         <div className="flex justify-between mt-1">
-                          {[1,2,3,4,5].map((num) => (
+                          {[0,1,2,3,4,5].map((num) => (
                             <div key={num} className={`w-2 h-2 rounded-full ${attr.value >= num ? `bg-${config.color}-500` : 'bg-gray-200'}`}></div>
                           ))}
                         </div>
