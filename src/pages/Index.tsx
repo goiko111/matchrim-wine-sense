@@ -24,29 +24,11 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import WineStylesGrid from '@/components/wine-styles/WineStylesGrid';
 
 const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-
-  const wineStyles = [
-    { name: "Burbuja Fresca", description: "Frescura efervescente", category: "espumosos" },
-    { name: "Brut Elegante", description: "Elegancia refinada", category: "espumosos" },
-    { name: "Blanco Vital", description: "Energía y vivacidad", category: "blancos" },
-    { name: "Blanco Goloso", description: "Dulzura y placer", category: "blancos" },
-    { name: "Dulce Intenso", description: "Intensidad aromática", category: "dulces" },
-    { name: "Oxidativo/Maduro", description: "Complejidad y tiempo", category: "maduros" },
-    { name: "Experimental", description: "Innovación vínica", category: "experimentales" },
-    { name: "Vino de Terruño", description: "Suelo y tradición", category: "terrosos" },
-    { name: "Tinto Versátil", description: "Adaptabilidad total", category: "tintos" },
-    { name: "Tinto de Estructura", description: "Firmeza y arquitectura", category: "tintos" },
-    { name: "Tinto Goloso", description: "Dulzura y placer", category: "tintos" },
-    { name: "Dulce Ligero", description: "Sutileza aromática", category: "dulces" },
-    { name: "Blanco de Carácter", description: "Personalidad única", category: "blancos" },
-    { name: "Rosado Ligero", description: "Sutileza y gracia", category: "rosados" },
-    { name: "Rosado Gastronómico", description: "Versatilidad culinaria", category: "rosados" },
-    { name: "Tinto Ligero", description: "Elegancia sutil", category: "tintos" }
-  ];
 
   const testimonials = [
     {
@@ -273,23 +255,8 @@ const Index = () => {
             </div>
             
             {/* Grid de estilos principales */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
-              {wineStyles.map((style, index) => (
-                <Card 
-                  key={index} 
-                  className="group hover:shadow-elegant transition-all duration-300 cursor-pointer rounded-2xl transform hover:scale-105"
-                >
-                  <CardContent className="p-6 text-center">
-                    <div className="w-16 h-16 bg-primary rounded-2xl mx-auto mb-4 shadow-md flex items-center justify-center">
-                      <Wine className="h-8 w-8 text-primary-foreground" />
-                    </div>
-                    <h3 className="font-bold text-gray-900 mb-2 text-sm group-hover:text-primary transition-colors">
-                      {style.name}
-                    </h3>
-                    <p className="text-xs text-gray-600">{style.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="mb-12">
+              <WineStylesGrid />
             </div>
             
             <div className="text-center">
