@@ -181,32 +181,32 @@ const WineStyleDetail = () => {
     let description = `${cleanName} despierta los sentidos desde el primer encuentro. `;
     
     // Aroma
-    if (style.afrutado >= 7) {
+    if (style.afrutado >= 4) {
       description += `Su nariz estalla en una sinfonía de aromas frutales, donde cada inhalación revela capas de complejidad aromática. `;
-    } else if (style.afrutado <= 3) {
+    } else if (style.afrutado <= 1) {
       description += `Su perfil aromático es sutil y mineral, invitando a descubrir matices terrosos y especiados que hablan de su origen. `;
     } else {
       description += `Su bouquet equilibrado combina notas frutales con toques minerales, creando una armonía olfativa única. `;
     }
     
     // Textura en boca
-    if (style.tanico >= 7) {
+    if (style.tanico >= 4) {
       description += `En boca, sus taninos firmes estructuran cada sorbo, proporcionando una sensación de plenitud y carácter robusto. `;
-    } else if (style.tanico <= 3) {
+    } else if (style.tanico <= 1) {
       description += `Su textura sedosa acaricia el paladar, ofreciendo una experiencia suave y envolvente. `;
     } else {
       description += `Su estructura equilibrada proporciona una sensación armoniosa, ni demasiado robusta ni excesivamente delicada. `;
     }
     
     // Acidez y frescura
-    if (style.acidez >= 7) {
+    if (style.acidez >= 4) {
       description += `Su acidez vibrante aporta una frescura revitalizante que limpia el paladar y prepara para el siguiente sorbo. `;
-    } else if (style.acidez <= 3) {
+    } else if (style.acidez <= 1) {
       description += `Su acidez contenida permite que otros sabores se expresen plenamente, creando una sensación de redondez. `;
     }
     
     // Final
-    description += `Es el vino perfecto para momentos donde se busca ${style.potente >= 7 ? 'intensidad y carácter' : style.potente <= 3 ? 'elegancia y sutileza' : 'equilibrio y versatilidad'}.`;
+    description += `Es el vino perfecto para momentos donde se busca ${style.potente >= 4 ? 'intensidad y carácter' : style.potente <= 1 ? 'elegancia y sutileza' : 'equilibrio y versatilidad'}.`;
     
     return description;
   };
@@ -263,6 +263,25 @@ const WineStyleDetail = () => {
         { name: 'Salmón', icon: Fish, description: 'Pescado graso de textura oleosa' },
         { name: 'Magret de pato', icon: ChefHat, description: 'Ave de caza refinada' },
         { name: 'Tartar de atún', icon: Star, description: 'Pescado crudo de alta calidad' }
+      );
+    }
+
+    // Maridajes adicionales basados en características específicas (escala 0-5)
+    if (style.potente >= 4) {
+      pairings.gastronomicos.push(
+        { name: 'Carnes rojas', icon: Beef, description: 'Intensidad que complementa' }
+      );
+    }
+    
+    if (style.acidez >= 4) {
+      pairings.cotidianos.push(
+        { name: 'Mariscos', icon: Fish, description: 'Frescura marina perfecta' }
+      );
+    }
+    
+    if (style.dulce >= 4) {
+      pairings.gastronomicos.push(
+        { name: 'Postres', icon: Cake, description: 'Dulzura que se complementa' }
       );
     }
 
@@ -463,16 +482,16 @@ const WineStyleDetail = () => {
                         <div className="flex-1">
                           <div className="flex justify-between items-center">
                             <span className="font-medium">{attr.label}</span>
-                            <span className="text-sm text-gray-500">{attr.value}/10</span>
+                            <span className="text-sm text-gray-500">{attr.value}/5</span>
                           </div>
                           <p className="text-xs text-gray-500">{attr.description}</p>
                         </div>
                       </div>
                       <div className="relative">
-                        <Progress value={attr.value * 10} className="h-3" />
+                        <Progress value={attr.value * 20} className="h-3" />
                         <div className="flex justify-between mt-1">
-                          {[1,2,3,4,5,6,7,8,9,10].map((num) => (
-                            <div key={num} className={`w-1 h-2 rounded-full ${attr.value >= num ? `bg-${config.color}-500` : 'bg-gray-200'}`}></div>
+                          {[1,2,3,4,5].map((num) => (
+                            <div key={num} className={`w-2 h-2 rounded-full ${attr.value >= num ? `bg-${config.color}-500` : 'bg-gray-200'}`}></div>
                           ))}
                         </div>
                       </div>
@@ -606,7 +625,7 @@ const WineStyleDetail = () => {
                 <div>
                   <h4 className="font-semibold mb-2">Decantación</h4>
                   <p className="text-sm text-gray-600">
-                    {style.tanico >= 6 ? 'Recomendada 30-60 min' : 'No necesaria'}
+                    {style.tanico >= 3 ? 'Recomendada 30-60 min' : 'No necesaria'}
                   </p>
                 </div>
                 
