@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Wine, Sun, Utensils, Leaf } from 'lucide-react';
+import { Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Wine, Sun, Utensils, Leaf, ArrowRight } from 'lucide-react';
 
 interface WineStyle {
   id: string;
@@ -117,26 +117,35 @@ const WineStylesGrid = () => {
         return (
           <Card 
             key={style.id} 
-            className={`${config.bg} ${config.border} border hover:shadow-lg transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer transform hover:scale-105`}
+            className={`${config.bg} ${config.border} border-2 hover:border-red-300 hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer transform hover:scale-105 hover:shadow-red-100/50 group relative`}
             onClick={() => navigate(`/wine-styles/${style.id}`)}
           >
-            <CardContent className="p-6">
+            <CardContent className="p-6 relative">
               <div className="flex flex-col items-center text-center">
                 {/* Icono circular */}
-                <div className={`w-16 h-16 ${config.iconBg} rounded-full flex items-center justify-center mb-4`}>
+                <div className={`w-16 h-16 ${config.iconBg} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md group-hover:shadow-lg`}>
                   <IconComponent className={`w-8 h-8 ${config.iconColor}`} />
                 </div>
                 
                 {/* Título */}
-                <h3 className="font-bold text-lg mb-3 text-gray-900 hover:text-red-700 transition-colors">
+                <h3 className="font-bold text-lg mb-3 text-gray-900 group-hover:text-red-700 transition-colors">
                   {cleanStyleName(style.name)}
                 </h3>
                 
                 {/* Descripción */}
-                <p className="text-sm text-gray-700 leading-relaxed text-justify">
+                <p className="text-sm text-gray-700 leading-relaxed text-justify mb-4">
                   {style.description || 'Descripción no disponible'}
                 </p>
+                
+                {/* Indicador de click */}
+                <div className="flex items-center justify-center text-red-600 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span>Ver detalles</span>
+                  <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
+                </div>
               </div>
+              
+              {/* Efecto de brillo en hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
             </CardContent>
           </Card>
         );
