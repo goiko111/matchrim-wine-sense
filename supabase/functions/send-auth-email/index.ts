@@ -1,9 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Webhook } from "https://esm.sh/standardwebhooks@1.0.0";
 import { Resend } from "npm:resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY") as string);
-const hookSecret = Deno.env.get("SEND_EMAIL_HOOK_SECRET") as string;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -21,19 +19,6 @@ serve(async (req) => {
 
   try {
     const payload = await req.text();
-    const headers = Object.fromEntries(req.headers);
-    
-    // Verify webhook signature if secret is provided
-    if (hookSecret) {
-      const wh = new Webhook(hookSecret);
-      try {
-        wh.verify(payload, headers);
-      } catch (err) {
-        console.error("Webhook verification failed:", err);
-        return new Response("Unauthorized", { status: 401 });
-      }
-    }
-
     const data = JSON.parse(payload);
     const { user, email_data } = data;
 
@@ -165,7 +150,7 @@ serve(async (req) => {
       },
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in send-auth-email function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
