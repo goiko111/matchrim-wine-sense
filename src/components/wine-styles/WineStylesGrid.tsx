@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -17,6 +18,7 @@ interface WineStyle {
 }
 
 const WineStylesGrid = () => {
+  const navigate = useNavigate();
   const [styles, setStyles] = useState<WineStyle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -113,7 +115,11 @@ const WineStylesGrid = () => {
         const IconComponent = config.icon;
         
         return (
-          <Card key={style.id} className={`${config.bg} ${config.border} border hover:shadow-lg transition-shadow rounded-2xl overflow-hidden`}>
+          <Card 
+            key={style.id} 
+            className={`${config.bg} ${config.border} border hover:shadow-lg transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer transform hover:scale-105`}
+            onClick={() => navigate(`/wine-styles/${style.id}`)}
+          >
             <CardContent className="p-6">
               <div className="flex flex-col items-center text-center">
                 {/* Icono circular */}
@@ -122,7 +128,7 @@ const WineStylesGrid = () => {
                 </div>
                 
                 {/* Título */}
-                <h3 className="font-bold text-lg mb-3 text-gray-900">
+                <h3 className="font-bold text-lg mb-3 text-gray-900 hover:text-red-700 transition-colors">
                   {cleanStyleName(style.name)}
                 </h3>
                 

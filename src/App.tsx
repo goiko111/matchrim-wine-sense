@@ -13,6 +13,7 @@ import ImportCSV from '@/pages/ImportCSV';
 import AdminSetup from '@/pages/AdminSetup';
 import DataViewer from '@/pages/DataViewer';
 import WineStyles from '@/pages/WineStyles';
+import WineStyleDetail from '@/pages/WineStyleDetail';
 import WineDetail from '@/pages/WineDetail';
 import NotFound from '@/pages/NotFound';
 import './App.css';
@@ -36,6 +37,7 @@ function App() {
               <Route path="/admin-setup" element={<AdminSetup />} />
               <Route path="/data-viewer" element={<DataViewer />} />
               <Route path="/wine-styles" element={<WineStyles />} />
+              <Route path="/wine-styles/:id" element={<WineStyleDetail />} />
               <Route path="/wines/:id/:slug?" element={<WineDetail />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
