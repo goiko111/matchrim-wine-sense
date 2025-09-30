@@ -38,14 +38,13 @@ const WineStylesGrid = () => {
     try {
       const { data, error } = await supabase
         .from('wine_styles')
-        .select('*')
-        .in('name', winerimStyles);
+        .select('*');
 
       if (error) throw error;
 
-      // Ordenar los estilos según el orden predefinido de winerimStyles
+      // Filtrar y ordenar los estilos según el orden predefinido de winerimStyles
       const sortedStyles = winerimStyles.map(styleName => 
-        data?.find(style => style.name === styleName)
+        data?.find(style => style.name.startsWith(styleName))
       ).filter(Boolean) as WineStyle[];
 
       setStyles(sortedStyles);
