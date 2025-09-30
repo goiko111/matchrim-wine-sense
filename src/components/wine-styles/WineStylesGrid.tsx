@@ -42,12 +42,24 @@ const WineStylesGrid = () => {
 
       if (error) throw error;
 
-      // Filtrar y ordenar los estilos según el orden predefinido de winerimStyles
-      const sortedStyles = winerimStyles.map(styleName => 
-        data?.find(style => style.name.startsWith(styleName))
-      ).filter(Boolean) as WineStyle[];
+      const rows = data || [];
+      const pickFor = (name: string) => {
+        const exact = rows.find(r => r.name === name);
+        if (exact) return exact;
+        const withDesc = rows.find(r => r.name.startsWith(name) && r.description);
+        if (withDesc) return withDesc;
+        return rows.find(r => r.name.startsWith(name));
+      };
+
+      const sortedStyles = winerimStyles
+        .map(name => pickFor(name))
+        .filter(Boolean) as WineStyle[];
 
       setStyles(sortedStyles);
+
+      if (sortedStyles.length < winerimStyles.length) {
+        console.warn(`Faltan estilos: ${winerimStyles.length - sortedStyles.length}`);
+      }
     } catch (error: any) {
       console.error('Error fetching Winerim styles:', error);
       toast({
