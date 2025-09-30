@@ -59,7 +59,8 @@ const DataExporter = () => {
       const { data, error } = await supabase
         .from('wines')
         .select('*')
-        .order('name');
+        .order('name')
+        .range(0, 9999);
 
       if (error) throw error;
 
@@ -87,7 +88,8 @@ const DataExporter = () => {
       const { data, error } = await supabase
         .from('wine_styles')
         .select('*')
-        .order('name');
+        .order('name')
+        .range(0, 9999);
 
       if (error) throw error;
 
@@ -115,7 +117,8 @@ const DataExporter = () => {
       const { data, error } = await supabase
         .from('matchrim_profiles')
         .select('*')
-        .order('name');
+        .order('name')
+        .range(0, 9999);
 
       if (error) throw error;
 
