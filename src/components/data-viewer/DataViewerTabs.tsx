@@ -4,12 +4,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import WinesTable from './WinesTable';
 import WineStylesTable from './WineStylesTable';
 import MatchrimProfilesTable from './MatchrimProfilesTable';
-import { Wine, Palette, Users } from 'lucide-react';
+import DataExporter from './DataExporter';
+import { Wine, Palette, Users, Download } from 'lucide-react';
 
 const DataViewerTabs = () => {
   return (
     <Tabs defaultValue="wines" className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
+      <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="wines" className="flex items-center gap-2">
           <Wine className="h-4 w-4" />
           Vinos
@@ -21,6 +22,10 @@ const DataViewerTabs = () => {
         <TabsTrigger value="profiles" className="flex items-center gap-2">
           <Users className="h-4 w-4" />
           Perfiles Matchrim
+        </TabsTrigger>
+        <TabsTrigger value="export" className="flex items-center gap-2">
+          <Download className="h-4 w-4" />
+          Exportar
         </TabsTrigger>
       </TabsList>
       
@@ -34,6 +39,10 @@ const DataViewerTabs = () => {
       
       <TabsContent value="profiles" className="mt-6">
         <MatchrimProfilesTable />
+      </TabsContent>
+      
+      <TabsContent value="export" className="mt-6">
+        <DataExporter />
       </TabsContent>
     </Tabs>
   );
