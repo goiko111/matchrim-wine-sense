@@ -8,6 +8,26 @@ import { toast } from '@/hooks/use-toast';
 const DataExporter = () => {
   const [exporting, setExporting] = useState<string | null>(null);
 
+  // Fetch all rows in pages of 1000 to bypass PostgREST page limit
+  const fetchAll = async <T,>(table: string, orderBy: string) => {
+    const pageSize = 1000;
+    let from = 0;
+    let all: T[] = [];
+    while (true) {
+      const { data, error } = await supabase
+        .from(table as any)
+        .select('*')
+        .order(orderBy as any, { ascending: true })
+        .range(from, from + pageSize - 1);
+      if (error) throw error;
+      const batch = (data || []) as T[];
+      all = all.concat(batch);
+      if (batch.length < pageSize) break;
+      from += pageSize;
+    }
+    return all;
+  };
+
   const downloadCSV = (data: any[], filename: string) => {
     if (data.length === 0) {
       toast({
@@ -56,13 +76,7 @@ const DataExporter = () => {
   const exportWines = async () => {
     setExporting('wines');
     try {
-      const { data, error } = await supabase
-        .from('wines')
-        .select('*')
-        .order('name')
-        .range(0, 9999);
-
-      if (error) throw error;
+      const data = await fetchAll<any>('wines', 'name');
 
       downloadCSV(data, 'vinos_winerim.csv');
       
@@ -85,13 +99,7 @@ const DataExporter = () => {
   const exportWineStyles = async () => {
     setExporting('styles');
     try {
-      const { data, error } = await supabase
-        .from('wine_styles')
-        .select('*')
-        .order('name')
-        .range(0, 9999);
-
-      if (error) throw error;
+      const data = await fetchAll<any>('wine_styles', 'name');
 
       downloadCSV(data, 'estilos_vino_winerim.csv');
       
@@ -114,13 +122,7 @@ const DataExporter = () => {
   const exportMatchrimProfiles = async () => {
     setExporting('profiles');
     try {
-      const { data, error } = await supabase
-        .from('matchrim_profiles')
-        .select('*')
-        .order('name')
-        .range(0, 9999);
-
-      if (error) throw error;
+      const data = await fetchAll<any>('matchrim_profiles', 'name');
 
       downloadCSV(data, 'perfiles_matchrim.csv');
       
