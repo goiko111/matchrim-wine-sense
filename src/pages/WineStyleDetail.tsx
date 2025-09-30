@@ -227,10 +227,10 @@ const WineStyleDetail = () => {
 
     return configs[cleanName] || {
       icon: Wine,
-      color: 'purple',
-      gradient: 'from-purple-600 to-purple-800',
+      color: 'gray',
+      gradient: 'from-gray-600 to-gray-800',
       heroPhrase: 'Un estilo único con personalidad propia',
-      bgImage: 'bg-gradient-to-br from-purple-50 via-violet-50 to-indigo-100',
+      bgImage: 'bg-gradient-to-br from-gray-50 via-slate-50 to-zinc-100',
       curiosity: 'Cada vino tiene su propia historia y características únicas.',
       story: 'Un estilo especial que merece ser descubierto y apreciado en toda su complejidad.'
     };
@@ -632,9 +632,15 @@ const WineStyleDetail = () => {
                         
                         {/* Visualización simplificada */}
                         <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
-                          {/* Rango completo del estilo */}
+                          {/* Rango completo del estilo - usar color basado en el índice */}
                           <div 
-                            className={`absolute top-0 h-full bg-${config.color}-200 transition-all duration-300`}
+                            className={`absolute top-0 h-full transition-all duration-300 ${
+                              index === 0 ? 'bg-purple-200' :
+                              index === 1 ? 'bg-blue-200' :
+                              index === 2 ? 'bg-green-200' :
+                              index === 3 ? 'bg-yellow-200' :
+                              'bg-red-200'
+                            }`}
                             style={{
                               left: `${(minRange / 5) * 100}%`,
                               width: `${((maxRange - minRange) / 5) * 100}%`
@@ -643,7 +649,13 @@ const WineStyleDetail = () => {
                           
                           {/* Valor típico (centro del estilo) */}
                           <div 
-                            className={`absolute top-1 bottom-1 w-1 bg-${config.color}-600 rounded-full shadow-sm`}
+                            className={`absolute top-1 bottom-1 w-1 rounded-full shadow-sm ${
+                              index === 0 ? 'bg-purple-600' :
+                              index === 1 ? 'bg-blue-600' :
+                              index === 2 ? 'bg-green-600' :
+                              index === 3 ? 'bg-yellow-600' :
+                              'bg-red-600'
+                            }`}
                             style={{
                               left: `calc(${(attr.value / 5) * 100}% - 2px)`
                             }}
