@@ -476,10 +476,9 @@ const WineStyleDetail = () => {
                     { label: 'Taninos', value: style.tanico, icon: Grape, description: 'Estructura y cuerpo' },
                     { label: 'Afrutado', value: style.afrutado, icon: Apple, description: 'Aromas frutales' }
                   ].map((attr, index) => {
-                    // Calcular el rango que abarca cada estilo (±0.5 del valor central)
-                    const minValue = Math.max(0, attr.value - 0.5);
-                    const maxValue = Math.min(5, attr.value + 0.5);
-                    const rangeText = minValue === maxValue ? `${attr.value}` : `${minValue}-${maxValue}`;
+                    // Rango típico del estilo: valor central ±0.5
+                    const minRange = Math.max(0, attr.value - 0.5);
+                    const maxRange = Math.min(5, attr.value + 0.5);
                     
                     return (
                       <div key={index} className="space-y-3">
@@ -488,43 +487,51 @@ const WineStyleDetail = () => {
                           <div className="flex-1">
                             <div className="flex justify-between items-center">
                               <span className="font-medium">{attr.label}</span>
-                              <span className="text-sm text-gray-500">{rangeText}/5</span>
+                              <span className="text-sm text-gray-500">
+                                {minRange === maxRange ? attr.value : `${minRange}-${maxRange}`} / 5
+                              </span>
                             </div>
                             <p className="text-xs text-gray-500">{attr.description}</p>
                           </div>
                         </div>
-                        <div className="relative">
-                          {/* Barra de fondo completa */}
-                          <div className="h-3 bg-gray-200 rounded-full"></div>
-                          {/* Rango del estilo */}
+                        
+                        {/* Visualización simplificada */}
+                        <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
+                          {/* Rango completo del estilo */}
                           <div 
-                            className={`absolute top-0 h-3 bg-${config.color}-300 rounded-full opacity-60`}
+                            className={`absolute top-0 h-full bg-${config.color}-200 transition-all duration-300`}
                             style={{
-                              left: `${(minValue / 5) * 100}%`,
-                              width: `${((maxValue - minValue) / 5) * 100}%`
+                              left: `${(minRange / 5) * 100}%`,
+                              width: `${((maxRange - minRange) / 5) * 100}%`
                             }}
                           ></div>
-                          {/* Valor central destacado */}
+                          
+                          {/* Valor típico (centro del estilo) */}
                           <div 
-                            className={`absolute top-0 h-3 bg-${config.color}-500 rounded-full`}
+                            className={`absolute top-1 bottom-1 w-1 bg-${config.color}-600 rounded-full shadow-sm`}
                             style={{
-                              left: `${((attr.value - 0.2) / 5) * 100}%`,
-                              width: `${(0.4 / 5) * 100}%`
+                              left: `calc(${(attr.value / 5) * 100}% - 2px)`
                             }}
                           ></div>
-                          {/* Marcas de escala */}
-                          <div className="flex justify-between mt-1">
-                            {[0,1,2,3,4,5].map((num) => (
-                              <div 
-                                key={num} 
-                                className={`w-2 h-2 rounded-full ${
-                                  num >= minValue && num <= maxValue 
-                                    ? `bg-${config.color}-400` 
-                                    : 'bg-gray-300'
-                                }`}
-                              ></div>
-                            ))}
-                          </div>
+                          
+                          {/* Marcadores de escala */}
+                          {[1, 2, 3, 4].map((mark) => (
+                            <div
+                              key={mark}
+                              className="absolute top-0 bottom-0 w-px bg-gray-300"
+                              style={{ left: `${(mark / 5) * 100}%` }}
+                            ></div>
+                          ))}
+                        </div>
+                        
+                        {/* Leyenda de la escala */}
+                        <div className="flex justify-between text-xs text-gray-400 px-1">
+                          <span>0</span>
+                          <span>1</span>
+                          <span>2</span>
+                          <span>3</span>
+                          <span>4</span>
+                          <span>5</span>
                         </div>
                       </div>
                     );
