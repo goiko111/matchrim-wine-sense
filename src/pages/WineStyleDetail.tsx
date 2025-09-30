@@ -475,28 +475,60 @@ const WineStyleDetail = () => {
                     { label: 'Dulzura', value: style.dulce, icon: Heart, description: 'Percepción dulce' },
                     { label: 'Taninos', value: style.tanico, icon: Grape, description: 'Estructura y cuerpo' },
                     { label: 'Afrutado', value: style.afrutado, icon: Apple, description: 'Aromas frutales' }
-                  ].map((attr, index) => (
-                    <div key={index} className="space-y-3">
-                      <div className="flex items-center gap-3">
-                        <attr.icon className="h-5 w-5 text-gray-600" />
-                        <div className="flex-1">
-                          <div className="flex justify-between items-center">
-                            <span className="font-medium">{attr.label}</span>
-                            <span className="text-sm text-gray-500">{attr.value}/5</span>
+                  ].map((attr, index) => {
+                    // Calcular el rango que abarca cada estilo (±0.5 del valor central)
+                    const minValue = Math.max(0, attr.value - 0.5);
+                    const maxValue = Math.min(5, attr.value + 0.5);
+                    const rangeText = minValue === maxValue ? `${attr.value}` : `${minValue}-${maxValue}`;
+                    
+                    return (
+                      <div key={index} className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <attr.icon className="h-5 w-5 text-gray-600" />
+                          <div className="flex-1">
+                            <div className="flex justify-between items-center">
+                              <span className="font-medium">{attr.label}</span>
+                              <span className="text-sm text-gray-500">{rangeText}/5</span>
+                            </div>
+                            <p className="text-xs text-gray-500">{attr.description}</p>
                           </div>
-                          <p className="text-xs text-gray-500">{attr.description}</p>
+                        </div>
+                        <div className="relative">
+                          {/* Barra de fondo completa */}
+                          <div className="h-3 bg-gray-200 rounded-full"></div>
+                          {/* Rango del estilo */}
+                          <div 
+                            className={`absolute top-0 h-3 bg-${config.color}-300 rounded-full opacity-60`}
+                            style={{
+                              left: `${(minValue / 5) * 100}%`,
+                              width: `${((maxValue - minValue) / 5) * 100}%`
+                            }}
+                          ></div>
+                          {/* Valor central destacado */}
+                          <div 
+                            className={`absolute top-0 h-3 bg-${config.color}-500 rounded-full`}
+                            style={{
+                              left: `${((attr.value - 0.2) / 5) * 100}%`,
+                              width: `${(0.4 / 5) * 100}%`
+                            }}
+                          ></div>
+                          {/* Marcas de escala */}
+                          <div className="flex justify-between mt-1">
+                            {[0,1,2,3,4,5].map((num) => (
+                              <div 
+                                key={num} 
+                                className={`w-2 h-2 rounded-full ${
+                                  num >= minValue && num <= maxValue 
+                                    ? `bg-${config.color}-400` 
+                                    : 'bg-gray-300'
+                                }`}
+                              ></div>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                      <div className="relative">
-                        <Progress value={(attr.value / 5) * 100} className="h-3" />
-                        <div className="flex justify-between mt-1">
-                          {[0,1,2,3,4,5].map((num) => (
-                            <div key={num} className={`w-2 h-2 rounded-full ${attr.value >= num ? `bg-${config.color}-500` : 'bg-gray-200'}`}></div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
