@@ -703,12 +703,12 @@ const WineStyleDetail = () => {
                   </h3>
                   <div className="grid md:grid-cols-3 gap-4">
                     {pairings.cotidianos.map((pairing, index) => (
-                      <div key={index} className={`p-4 bg-${config.color}-50 rounded-lg border border-${config.color}-100`}>
+                      <div key={index} className="p-4 bg-blue-50 rounded-lg border border-blue-100">
                         <div className="flex items-center gap-3 mb-2">
-                          <pairing.icon className={`h-6 w-6 text-${config.color}-600`} />
-                          <h4 className={`font-semibold text-${config.color}-800`}>{pairing.name}</h4>
+                          <pairing.icon className="h-6 w-6 text-blue-600" />
+                          <h4 className="font-semibold text-blue-800">{pairing.name}</h4>
                         </div>
-                        <p className={`text-sm text-${config.color}-700`}>{pairing.description}</p>
+                        <p className="text-sm text-blue-700">{pairing.description}</p>
                       </div>
                     ))}
                   </div>
@@ -721,12 +721,12 @@ const WineStyleDetail = () => {
                   </h3>
                   <div className="grid md:grid-cols-3 gap-4">
                     {pairings.gastronomicos.map((pairing, index) => (
-                      <div key={index} className={`p-4 bg-gradient-to-br from-${config.color}-100 to-${config.color}-50 rounded-lg border border-${config.color}-200`}>
+                      <div key={index} className="p-4 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg border border-blue-200">
                         <div className="flex items-center gap-3 mb-2">
-                          <pairing.icon className={`h-6 w-6 text-${config.color}-700`} />
-                          <h4 className={`font-semibold text-${config.color}-900`}>{pairing.name}</h4>
+                          <pairing.icon className="h-6 w-6 text-blue-700" />
+                          <h4 className="font-semibold text-blue-900">{pairing.name}</h4>
                         </div>
-                        <p className={`text-sm text-${config.color}-800`}>{pairing.description}</p>
+                        <p className="text-sm text-blue-800">{pairing.description}</p>
                       </div>
                     ))}
                   </div>
@@ -746,7 +746,7 @@ const WineStyleDetail = () => {
                 <div className="grid md:grid-cols-3 gap-6">
                   {occasions.map((occasion, index) => (
                     <div key={index} className="text-center space-y-3">
-                      <div className={`w-16 h-16 bg-gradient-to-r ${config.gradient} rounded-full flex items-center justify-center mx-auto shadow-lg`}>
+                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
                         <occasion.icon className="h-8 w-8 text-white" />
                       </div>
                       <h3 className="font-semibold text-lg">{occasion.time}</h3>
@@ -768,10 +768,10 @@ const WineStyleDetail = () => {
               <CardContent className="p-6">
                 <div className="grid gap-4">
                   {wineExamples.map((wine, index) => (
-                    <div key={index} className={`p-4 border border-${config.color}-200 rounded-lg hover:shadow-md transition-shadow`}>
+                    <div key={index} className="p-4 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-semibold text-lg">{wine.name}</h3>
-                        <Badge variant="outline" className={`text-${config.color}-700 border-${config.color}-300`}>
+                        <Badge variant="outline" className="text-blue-700 border-blue-300">
                           {wine.priceRange}
                         </Badge>
                       </div>
@@ -835,7 +835,7 @@ const WineStyleDetail = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className={`p-4 bg-${config.color}-50 rounded-lg`}>
+                <div className="p-4 bg-blue-50 rounded-lg">
                   <p className="text-sm text-gray-700 mb-3">
                     <strong>Curiosidad:</strong> {config.curiosity}
                   </p>
