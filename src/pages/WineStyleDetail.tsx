@@ -327,24 +327,61 @@ const WineStyleDetail = () => {
         { name: 'Magret de pato', icon: ChefHat, description: 'Ave de caza refinada' },
         { name: 'Tartar de atún', icon: Star, description: 'Pescado crudo de alta calidad' }
       );
-    }
-
-    // Maridajes adicionales basados en características específicas (escala 0-5)
-    if (style.potente >= 4) {
-      pairings.gastronomicos.push(
-        { name: 'Carnes rojas', icon: Beef, description: 'Intensidad que complementa' }
-      );
-    }
-    
-    if (style.acidez >= 4) {
+    } else if (cleanName.includes('dulce')) {
       pairings.cotidianos.push(
-        { name: 'Mariscos', icon: Fish, description: 'Frescura marina perfecta' }
+        { name: 'Tarta de manzana', icon: Cake, description: 'Postre clásico reconfortante' },
+        { name: 'Queso azul', icon: Cake, description: 'Contraste salado perfecto' },
+        { name: 'Frutos secos', icon: Apple, description: 'Combinación natural dulce' }
       );
-    }
-    
-    if (style.dulce >= 4) {
       pairings.gastronomicos.push(
-        { name: 'Postres', icon: Cake, description: 'Dulzura que se complementa' }
+        { name: 'Foie gras', icon: ChefHat, description: 'Lujo gastronómico supremo' },
+        { name: 'Chocolate negro', icon: Star, description: 'Intensidad aromática única' },
+        { name: 'Postres elaborados', icon: Cake, description: 'Creaciones de alta repostería' }
+      );
+    } else if (cleanName.includes('experimental')) {
+      pairings.cotidianos.push(
+        { name: 'Quesos artesanos', icon: Cake, description: 'Sabores únicos y naturales' },
+        { name: 'Charcutería ibérica', icon: Beef, description: 'Tradición y modernidad' },
+        { name: 'Panes de masa madre', icon: Utensils, description: 'Fermentación natural' }
+      );
+      pairings.gastronomicos.push(
+        { name: 'Cocina de autor', icon: ChefHat, description: 'Creatividad gastronómica' },
+        { name: 'Fermentados', icon: Star, description: 'Técnicas ancestrales' },
+        { name: 'Platos veganos', icon: Apple, description: 'Nueva gastronomía sostenible' }
+      );
+    } else if (cleanName.includes('oxidativo') || cleanName.includes('maduro')) {
+      pairings.cotidianos.push(
+        { name: 'Jamón ibérico', icon: Beef, description: 'Curación perfecta' },
+        { name: 'Almendras', icon: Apple, description: 'Frutos secos tostados' },
+        { name: 'Tapas tradicionales', icon: Utensils, description: 'Tradición española pura' }
+      );
+      pairings.gastronomicos.push(
+        { name: 'Consommés', icon: ChefHat, description: 'Caldos concentrados' },
+        { name: 'Pato confitado', icon: Star, description: 'Cocción lenta tradicional' },
+        { name: 'Quesos añejos', icon: Cake, description: 'Maduración perfecta' }
+      );
+    } else if (cleanName.includes('terruño')) {
+      pairings.cotidianos.push(
+        { name: 'Productos locales', icon: Apple, description: 'Ingredientes del territorio' },
+        { name: 'Carnes de caza', icon: Beef, description: 'Sabores silvestres auténticos' },
+        { name: 'Setas de temporada', icon: Utensils, description: 'Frutos del bosque' }
+      );
+      pairings.gastronomicos.push(
+        { name: 'Cuisine terroir', icon: ChefHat, description: 'Cocina del territorio' },
+        { name: 'Trufa negra', icon: Star, description: 'Diamante negro gastronómico' },
+        { name: 'Preparaciones ancestrales', icon: Cake, description: 'Técnicas tradicionales' }
+      );
+    } else {
+      // Maridajes genéricos para estilos no específicos
+      pairings.cotidianos.push(
+        { name: 'Tabla de quesos', icon: Cake, description: 'Variedad de sabores y texturas' },
+        { name: 'Jamón serrano', icon: Beef, description: 'Clásico español universal' },
+        { name: 'Frutos secos', icon: Apple, description: 'Aperitivo tradicional' }
+      );
+      pairings.gastronomicos.push(
+        { name: 'Platos de temporada', icon: ChefHat, description: 'Ingredientes estacionales' },
+        { name: 'Carnes selectas', icon: Star, description: 'Cortes premium' },
+        { name: 'Pescados nobles', icon: Fish, description: 'Especies de alta calidad' }
       );
     }
 
@@ -378,6 +415,37 @@ const WineStyleDetail = () => {
         { icon: Sun, time: 'Comida al aire libre', description: 'Picnics y barbacoas' },
         { icon: Heart, time: 'Cita romántica', description: 'Ambiente delicado y especial' },
         { icon: Users, time: 'Reunión familiar', description: 'Versatilidad para todos los gustos' }
+      );
+    } else if (cleanName.includes('dulce')) {
+      occasions.push(
+        { icon: Moon, time: 'Sobremesa', description: 'Final perfecto de una cena' },
+        { icon: Heart, time: 'Momento íntimo', description: 'Compartir dulzura especial' },
+        { icon: Star, time: 'Ocasión especial', description: 'Celebraciones memorables' }
+      );
+    } else if (cleanName.includes('experimental')) {
+      occasions.push(
+        { icon: Coffee, time: 'Cata exploratoria', description: 'Descubrir nuevos sabores' },
+        { icon: Users, time: 'Reunión de curiosos', description: 'Paladares aventureros' },
+        { icon: Star, time: 'Experiencia única', description: 'Momentos de descubrimiento' }
+      );
+    } else if (cleanName.includes('oxidativo') || cleanName.includes('maduro')) {
+      occasions.push(
+        { icon: Clock, time: 'Sobremesa larga', description: 'Conversaciones pausadas' },
+        { icon: Coffee, time: 'Aperitivo tradicional', description: 'Ritual español auténtico' },
+        { icon: Users, time: 'Tertulia', description: 'Intercambio cultural y social' }
+      );
+    } else if (cleanName.includes('terruño')) {
+      occasions.push(
+        { icon: Mountain, time: 'Cena gastronómica', description: 'Experiencia del territorio' },
+        { icon: Calendar, time: 'Ocasión especial', description: 'Momentos memorables' },
+        { icon: Heart, time: 'Cena íntima', description: 'Compartir autenticidad' }
+      );
+    } else {
+      // Ocasiones genéricas para cualquier estilo
+      occasions.push(
+        { icon: Sun, time: 'Comida casual', description: 'Momentos relajados y agradables' },
+        { icon: Users, time: 'Reunión social', description: 'Compartir con amigos' },
+        { icon: Heart, time: 'Momento especial', description: 'Ocasiones que merecen celebrarse' }
       );
     }
 
