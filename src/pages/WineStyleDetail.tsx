@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import {
   ArrowLeft, Wine, Droplet, Zap, Grape, Heart, Clock, Sun, Moon, Star,
-  Users, Utensils, Coffee, Cake, Fish, Beef, Apple,
+  Users, Utensils, Coffee, Cake, Fish, Beef, Apple, Flame, Beaker, Shield, Sword, Feather, Leaf,
   Mountain, Diamond, Thermometer, Eye, ChefHat, Calendar
 } from 'lucide-react';
 import Header from '@/components/Header';
@@ -159,6 +159,69 @@ const WineStyleDetail = () => {
         bgImage: 'bg-gradient-to-br from-pink-100 via-rose-50 to-red-100',
         curiosity: 'Su versatilidad gastronómica lo hace el favorito de chefs estrella Michelin.',
         story: 'Nacido para acompañar las creaciones más exquisitas, es el puente perfecto entre plato y placer.'
+      },
+      'dulce intenso': {
+        icon: Flame,
+        color: 'amber',
+        gradient: 'from-amber-500 to-orange-600',
+        heroPhrase: 'Intensidad dulce que abraza el alma',
+        bgImage: 'bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-100',
+        curiosity: 'Su concentración azucarera puede alcanzar los 300 gramos por litro.',
+        story: 'Un vino que despierta emociones profundas, perfecto para momentos de contemplación y celebración.'
+      },
+      'dulce ligero': {
+        icon: Feather,
+        color: 'orange',
+        gradient: 'from-orange-300 to-amber-400',
+        heroPhrase: 'Dulzura sutil que acaricia el paladar',
+        bgImage: 'bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-100',
+        curiosity: 'Su equilibrio permite maridar tanto con postres como con foie gras.',
+        story: 'La elegancia de lo sutil, donde cada sorbo es una caricia delicada al paladar.'
+      },
+      'experimental': {
+        icon: Beaker,
+        color: 'purple',
+        gradient: 'from-purple-500 to-indigo-600',
+        heroPhrase: 'La vanguardia enológica sin límites',
+        bgImage: 'bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-100',
+        curiosity: 'Técnicas innovadoras como la maceración carbónica o fermentación en ánforas.',
+        story: 'Donde la tradición se encuentra con la innovación, creando experiencias únicas e inolvidables.'
+      },
+      'oxidativo/maduro': {
+        icon: Clock,
+        color: 'amber',
+        gradient: 'from-amber-600 to-orange-700',
+        heroPhrase: 'El tiempo como maestro enólogo',
+        bgImage: 'bg-gradient-to-br from-amber-100 via-orange-50 to-yellow-100',
+        curiosity: 'La crianza oxidativa puede durar décadas, desarrollando aromas únicos de frutos secos.',
+        story: 'Paciencia convertida en néctar, donde cada año añade una nueva capa de complejidad.'
+      },
+      'vino de terruño': {
+        icon: Mountain,
+        color: 'stone',
+        gradient: 'from-stone-600 to-slate-700',
+        heroPhrase: 'La expresión pura de la tierra',
+        bgImage: 'bg-gradient-to-br from-stone-50 via-slate-50 to-gray-100',
+        curiosity: 'Cada viñedo transmite características únicas del suelo, clima y microclima.',
+        story: 'La voz de la tierra hecha vino, donde cada sorbo narra la historia de su origen.'
+      },
+      'blanco de carácter': {
+        icon: Wine,
+        color: 'amber',
+        gradient: 'from-amber-500 to-yellow-600',
+        heroPhrase: 'Personalidad definida en cada copa',
+        bgImage: 'bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-100',
+        curiosity: 'Su crianza en barrica aporta complejidad y capacidad de guarda.',
+        story: 'Un blanco con alma de tinto, que desafía las expectativas y conquista paladares exigentes.'
+      },
+      'tinto ligero': {
+        icon: Leaf,
+        color: 'red',
+        gradient: 'from-red-400 to-pink-500',
+        heroPhrase: 'Elegancia en ligereza, frescura sin límites',
+        bgImage: 'bg-gradient-to-br from-red-50 via-pink-50 to-rose-100',
+        curiosity: 'Su bajo contenido tánico permite servirlo ligeramente refrigerado.',
+        story: 'La demostración de que la elegancia no requiere peso, sino finura y equilibrio.'
       }
     };
 
@@ -339,15 +402,87 @@ const WineStyleDetail = () => {
       ];
     } else if (cleanName.includes('blanco vital')) {
       return [
-        { name: 'Riesling', region: 'D.O. Rías Baixas', grape: 'Riesling', priceRange: '12-25€', description: 'Acidez vibrante y mineralidad' },
+        { name: 'Albariño', region: 'D.O. Rías Baixas', grape: 'Albariño', priceRange: '10-20€', description: 'Mineralidad atlántica única' },
         { name: 'Sauvignon Blanc', region: 'D.O. Rueda', grape: 'Sauvignon Blanc', priceRange: '8-16€', description: 'Frescura herbácea intensa' },
-        { name: 'Albariño', region: 'D.O. Rías Baixas', grape: 'Albariño', priceRange: '10-20€', description: 'Mineralidad atlántica única' }
+        { name: 'Riesling', region: 'Alemania', grape: 'Riesling', priceRange: '12-25€', description: 'Acidez vibrante y mineralidad' }
+      ];
+    } else if (cleanName.includes('blanco goloso')) {
+      return [
+        { name: 'Gewürztraminer', region: 'Alsacia', grape: 'Gewürztraminer', priceRange: '15-28€', description: 'Aromático y seductor' },
+        { name: 'Viognier', region: 'D.O. Conca de Barberà', grape: 'Viognier', priceRange: '12-22€', description: 'Expresividad floral y frutal' },
+        { name: 'Moscatel', region: 'D.O. Valencia', grape: 'Moscatel', priceRange: '8-18€', description: 'Dulzura natural equilibrada' }
+      ];
+    } else if (cleanName.includes('blanco de carácter')) {
+      return [
+        { name: 'Chardonnay Barrica', region: 'D.O. Somontano', grape: 'Chardonnay', priceRange: '15-30€', description: 'Complejidad y estructura' },
+        { name: 'Godello', region: 'D.O. Valdeorras', grape: 'Godello', priceRange: '12-25€', description: 'Mineralidad y carácter atlántico' },
+        { name: 'Verdejo Reserva', region: 'D.O. Rueda', grape: 'Verdejo', priceRange: '18-35€', description: 'Evolución y elegancia' }
       ];
     } else if (cleanName.includes('tinto versátil')) {
       return [
         { name: 'Tempranillo Crianza', region: 'D.O. Ribera del Duero', grape: 'Tempranillo', priceRange: '15-30€', description: 'Equilibrio perfecto español' },
         { name: 'Garnacha', region: 'D.O. Campo de Borja', grape: 'Garnacha', priceRange: '8-18€', description: 'Versatilidad mediterránea' },
         { name: 'Merlot', region: 'V.T. Castilla', grape: 'Merlot', priceRange: '6-15€', description: 'Suavidad internacional' }
+      ];
+    } else if (cleanName.includes('tinto de estructura')) {
+      return [
+        { name: 'Cabernet Sauvignon Reserva', region: 'D.O. Penedès', grape: 'Cabernet Sauvignon', priceRange: '20-45€', description: 'Potencia y longevidad' },
+        { name: 'Tempranillo Gran Reserva', region: 'D.O.Ca. Rioja', grape: 'Tempranillo', priceRange: '25-60€', description: 'Madurez y complejidad' },
+        { name: 'Monastrell', region: 'D.O. Jumilla', grape: 'Monastrell', priceRange: '12-25€', description: 'Concentración mediterránea' }
+      ];
+    } else if (cleanName.includes('tinto goloso')) {
+      return [
+        { name: 'Garnacha Joven', region: 'D.O. Navarra', grape: 'Garnacha', priceRange: '6-12€', description: 'Fruta exuberante y jugosa' },
+        { name: 'Mencia', region: 'D.O. Bierzo', grape: 'Mencía', priceRange: '10-20€', description: 'Elegancia frutal del noroeste' },
+        { name: 'Bobal', region: 'D.O. Utiel-Requena', grape: 'Bobal', priceRange: '8-16€', description: 'Autenticidad y frescura' }
+      ];
+    } else if (cleanName.includes('tinto ligero')) {
+      return [
+        { name: 'Pinot Noir', region: 'D.O. Cataluña', grape: 'Pinot Noir', priceRange: '18-35€', description: 'Elegancia y finura' },
+        { name: 'Gamay', region: 'Francia - Beaujolais', grape: 'Gamay', priceRange: '12-22€', description: 'Ligereza y frescura' },
+        { name: 'Tempranillo Joven', region: 'D.O. Ribera del Duero', grape: 'Tempranillo', priceRange: '8-15€', description: 'Juventud y vivacidad' }
+      ];
+    } else if (cleanName.includes('rosado ligero')) {
+      return [
+        { name: 'Rosado de Garnacha', region: 'D.O. Navarra', grape: 'Garnacha', priceRange: '6-12€', description: 'Frescura mediterránea' },
+        { name: 'Rosé de Provence', region: 'Francia', grape: 'Cinsault, Grenache', priceRange: '15-25€', description: 'Delicadeza provenzal' },
+        { name: 'Rosado de Tempranillo', region: 'D.O.Ca. Rioja', grape: 'Tempranillo', priceRange: '8-15€', description: 'Tradición española' }
+      ];
+    } else if (cleanName.includes('rosado gastronómico')) {
+      return [
+        { name: 'Rosado Fermentado en Barrica', region: 'D.O. Somontano', grape: 'Pinot Noir', priceRange: '18-30€', description: 'Complejidad gastronómica' },
+        { name: 'Rosé de Saignée', region: 'D.O. Toro', grape: 'Tinta de Toro', priceRange: '15-25€', description: 'Intensidad y carácter' },
+        { name: 'Rosado de Syrah', region: 'D.O. Jumilla', grape: 'Syrah', priceRange: '12-20€', description: 'Estructura y elegancia' }
+      ];
+    } else if (cleanName.includes('dulce intenso')) {
+      return [
+        { name: 'Pedro Ximénez', region: 'D.O. Jerez', grape: 'Pedro Ximénez', priceRange: '20-40€', description: 'Dulzura concentrada extrema' },
+        { name: 'Moscatel de Alejandría', region: 'D.O. Málaga', grape: 'Moscatel', priceRange: '15-30€', description: 'Tradición dulce andaluza' },
+        { name: 'Eiswein', region: 'Alemania', grape: 'Riesling', priceRange: '35-80€', description: 'Dulzura de hielo concentrada' }
+      ];
+    } else if (cleanName.includes('dulce ligero')) {
+      return [
+        { name: 'Moscatel de Grano Menudo', region: 'D.O. Rías Baixas', grape: 'Moscatel', priceRange: '12-25€', description: 'Dulzura delicada atlántica' },
+        { name: 'Gewürztraminer Vendimia Tardía', region: 'D.O. Somontano', grape: 'Gewürztraminer', priceRange: '18-30€', description: 'Aromático y equilibrado' },
+        { name: 'Riesling Semidulce', region: 'Alemania', grape: 'Riesling', priceRange: '15-25€', description: 'Equilibrio perfecto dulce-ácido' }
+      ];
+    } else if (cleanName.includes('experimental')) {
+      return [
+        { name: 'Vino Naranja', region: 'D.O. Penedès', grape: 'Xarel·lo', priceRange: '20-35€', description: 'Maceración pelicular innovadora' },
+        { name: 'Pet-Nat', region: 'V.T. Castilla', grape: 'Airén', priceRange: '15-25€', description: 'Método ancestral moderno' },
+        { name: 'Blend Experimental', region: 'D.O. Terra Alta', grape: 'Garnacha Blanca, Syrah', priceRange: '18-32€', description: 'Fusión creativa de variedades' }
+      ];
+    } else if (cleanName.includes('oxidativo') || cleanName.includes('maduro')) {
+      return [
+        { name: 'Amontillado', region: 'D.O. Jerez', grape: 'Palomino', priceRange: '18-35€', description: 'Crianza oxidativa compleja' },
+        { name: 'Palo Cortado', region: 'D.O. Jerez', grape: 'Palomino', priceRange: '25-50€', description: 'Elegancia oxidativa única' },
+        { name: 'Rancio Catalán', region: 'D.O. Empordà', grape: 'Garnacha Blanca', priceRange: '20-40€', description: 'Tradición oxidativa catalana' }
+      ];
+    } else if (cleanName.includes('vino de terruño')) {
+      return [
+        { name: 'Clos de Vougeot', region: 'Borgoña', grape: 'Pinot Noir', priceRange: '80-200€', description: 'Expresión máxima del terruño' },
+        { name: 'Priorat Vi de Vila', region: 'D.O.Q. Priorat', grape: 'Garnacha, Cariñena', priceRange: '30-60€', description: 'Mineralidad de licorella' },
+        { name: 'Ribeira Sacra Heroica', region: 'D.O. Ribeira Sacra', grape: 'Mencía', priceRange: '25-45€', description: 'Terrazas de pizarra milenarias' }
       ];
     } else {
       return [
