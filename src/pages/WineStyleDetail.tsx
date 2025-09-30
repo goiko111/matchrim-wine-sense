@@ -410,7 +410,9 @@ const WineStyleDetail = () => {
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <div className={`w-16 h-16 bg-gradient-to-r ${config.gradient} rounded-2xl flex items-center justify-center shadow-lg`}>
-                  <IconComponent className="h-8 w-8 text-white" />
+                  <span className="text-2xl font-bold text-white">
+                    {cleanStyleName(style.name).split(' ').map(word => word[0]).join('').toUpperCase()}
+                  </span>
                 </div>
                 <Badge className={`bg-${config.color}-100 text-${config.color}-800 px-4 py-2 text-lg`}>
                   {cleanStyleName(style.name)}
