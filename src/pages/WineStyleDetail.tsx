@@ -476,9 +476,9 @@ const WineStyleDetail = () => {
                     { label: 'Taninos', value: style.tanico, icon: Grape, description: 'Estructura y cuerpo' },
                     { label: 'Afrutado', value: style.afrutado, icon: Apple, description: 'Aromas frutales' }
                   ].map((attr, index) => {
-                    // Rango típico del estilo: valor central ±0.5
-                    const minRange = Math.max(0, attr.value - 0.5);
-                    const maxRange = Math.min(5, attr.value + 0.5);
+                    // Rango típico del estilo: números enteros alrededor del valor central
+                    const minRange = Math.max(0, attr.value - 1);
+                    const maxRange = Math.min(5, attr.value + 1);
                     
                     return (
                       <div key={index} className="space-y-3">
