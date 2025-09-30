@@ -42,13 +42,27 @@ const WineStylesGrid = () => {
 
       if (error) throw error;
 
-      const rows = data || [];
+      const rows = (data || []) as any[];
+      const normalize = (s: string) => s
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+
+      const rowsWithBase = rows.map(r => ({
+        ...r,
+        __base: (r.name as string).replace(/\s*\(\d+\)\s*$/, '').trim(),
+      }));
+
       const pickFor = (name: string) => {
-        const exact = rows.find(r => r.name === name);
+        const nBase = normalize(name);
+        const candidates = rowsWithBase.filter(r => normalize(r.__base) === nBase);
+        if (candidates.length === 0) return undefined;
+        const exact = candidates.find(r => r.name === name);
         if (exact) return exact;
-        const withDesc = rows.find(r => r.name.startsWith(name) && r.description);
+        const withDesc = candidates.find(r => r.description && String(r.description).trim().length > 0);
         if (withDesc) return withDesc;
-        return rows.find(r => r.name.startsWith(name));
+        return candidates[0];
       };
 
       const sortedStyles = winerimStyles
@@ -59,7 +73,12 @@ const WineStylesGrid = () => {
 
       if (sortedStyles.length < winerimStyles.length) {
         console.warn(`Faltan estilos: ${winerimStyles.length - sortedStyles.length}`);
+        toast({
+          title: 'Aviso',
+          description: `Se muestran ${sortedStyles.length}/16 estilos. Algunos no están en la base con nombre esperado`,
+        });
       }
+
     } catch (error: any) {
       console.error('Error fetching Winerim styles:', error);
       toast({
