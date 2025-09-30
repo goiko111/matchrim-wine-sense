@@ -9,7 +9,7 @@ import { toast } from '@/hooks/use-toast';
 import {
   ArrowLeft, Wine, Droplet, Zap, Grape, Heart, Clock, Sun, Moon, Star,
   Users, Utensils, Coffee, Cake, Fish, Beef, Apple,
-  Mountain, Sparkles, Thermometer, Eye, ChefHat, Calendar
+  Mountain, Diamond, Thermometer, Eye, ChefHat, Calendar
 } from 'lucide-react';
 import Header from '@/components/Header';
 
@@ -89,7 +89,7 @@ const WineStyleDetail = () => {
         story: 'Cada burbuja es una pequeña celebración que estalla en tu paladar, recordándonos que la vida está llena de momentos efervescentes por descubrir.'
       },
       'brut elegante': {
-        icon: Sparkles,
+        icon: Diamond,
         color: 'emerald',
         gradient: 'from-emerald-700 to-green-800',
         heroPhrase: 'La sofisticación en su máxima expresión',
@@ -644,7 +644,7 @@ const WineStyleDetail = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="text-xl flex items-center gap-2">
-                  <Sparkles className="h-5 w-5" />
+                  <Star className="h-5 w-5" />
                   ¿Sabías que...?
                 </CardTitle>
               </CardHeader>
