@@ -36,46 +36,75 @@ const WineStylesGrid = () => {
 
   const fetchWinerimStyles = async () => {
     try {
-      const { data, error } = await supabase
+      // 1) Intentar obtener las 16 filas canónicas por coincidencia EXACTA
+      const { data: exactRows, error: exactError } = await supabase
         .from('wine_styles')
-        .select('*');
+        .select('*')
+        .in('name', winerimStyles);
 
-      if (error) throw error;
+      if (exactError) throw exactError;
 
-      const rows = (data || []) as any[];
+      const exactMap = new Map<string, WineStyle>();
+      (exactRows || []).forEach((r: any) => exactMap.set(r.name, r));
+
+      // 2) Resolver faltantes con variantes "(n)" usando ILIKE por prefijo
+      const missing = winerimStyles.filter((n) => !exactMap.has(n));
+
+      let fallbackRows: any[] = [];
+      if (missing.length > 0) {
+        // Construir filtro OR: name ILIKE "{base}%"
+        const orFilter = missing
+          .map((n) => `name.ilike.${n.replace(/[%]/g, '\\%').replace(/_/g, '\\_')}%`)
+          .join(',');
+
+        const { data: fb, error: fbError } = await supabase
+          .from('wine_styles')
+          .select('*')
+          .or(orFilter)
+          .range(0, 2999); // aseguramos suficiente rango por si hay muchas variantes
+
+        if (fbError) throw fbError;
+        fallbackRows = fb || [];
+      }
+
+      // Utilidades de normalización y elección de mejor candidato
       const normalize = (s: string) => s
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase()
         .trim();
 
-      const rowsWithBase = rows.map(r => ({
+      const rowsWithBase = fallbackRows.map((r) => ({
         ...r,
         __base: (r.name as string).replace(/\s*\(\d+\)\s*$/, '').trim(),
       }));
 
-      const pickFor = (name: string) => {
+      const pickFromFallback = (name: string) => {
         const nBase = normalize(name);
-        const candidates = rowsWithBase.filter(r => normalize(r.__base) === nBase);
+        const candidates = rowsWithBase.filter((r) => normalize(r.__base) === nBase);
         if (candidates.length === 0) return undefined;
-        const exact = candidates.find(r => r.name === name);
+        const exact = candidates.find((r) => r.name === name);
         if (exact) return exact;
-        const withDesc = candidates.find(r => r.description && String(r.description).trim().length > 0);
+        const withDesc = candidates.find((r) => r.description && String(r.description).trim().length > 0);
         if (withDesc) return withDesc;
         return candidates[0];
       };
 
+      // 3) Armar la lista ordenada final (exactos primero, luego fallback)
       const sortedStyles = winerimStyles
-        .map(name => pickFor(name))
+        .map((name) => exactMap.get(name) || pickFromFallback(name))
         .filter(Boolean) as WineStyle[];
 
       setStyles(sortedStyles);
 
       if (sortedStyles.length < winerimStyles.length) {
+        const missingNames = winerimStyles.filter(
+          (n) => !sortedStyles.some((s) => s && normalize((s as any).name).startsWith(normalize(n)))
+        );
         console.warn(`Faltan estilos: ${winerimStyles.length - sortedStyles.length}`);
         toast({
           title: 'Aviso',
-          description: `Se muestran ${sortedStyles.length}/16 estilos. Algunos no están en la base con nombre esperado`,
+          description: `Se muestran ${sortedStyles.length}/16 estilos. Faltan: ${missingNames.join(', ')}`,
         });
       }
 
