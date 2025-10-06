@@ -5,6 +5,7 @@ import QuizQuestion from '@/components/QuizQuestion';
 import QuizResults from '@/components/QuizResults';
 import { questions, calculateProfile, getProfileDescription } from '@/data/quizData';
 import { getDiverseWineRecommendations, UserProfile, WineRecommendation } from '@/utils/wineRecommendations';
+import { generateWineStyles } from '@/utils/profileUtils';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
@@ -75,13 +76,48 @@ const Matchrim = () => {
           afrutado: quizResult.afrutado
         };
         
-        const wineRecommendations = await getDiverseWineRecommendations(userProfile, 8);
+        // Get recommended styles for the user profile
+        const recommendedStyles = generateWineStyles(quizResult);
+        
+        const wineRecommendations = await getDiverseWineRecommendations(userProfile, 12, recommendedStyles);
         
         // Convert to the format expected by QuizResults
         const formattedRecommendations = wineRecommendations.map(rec => {
           const wine = rec.wine;
           const region = wine.region || 'No especificada';
-          const country = wine.region?.includes('España') || wine.region?.includes('Spain') ? 'España' : 'Internacional';
+          
+          // Extraer el país desde la región
+          let country = 'Desconocido';
+          const regionLower = region.toLowerCase();
+          
+          if (regionLower.includes('españa') || regionLower.includes('spain') || regionLower.includes('rioja') || regionLower.includes('ribera') || regionLower.includes('priorat') || regionLower.includes('rías baixas')) {
+            country = 'España';
+          } else if (regionLower.includes('francia') || regionLower.includes('france') || regionLower.includes('bordeaux') || regionLower.includes('borgoña') || regionLower.includes('burgundy') || regionLower.includes('champagne')) {
+            country = 'Francia';
+          } else if (regionLower.includes('italia') || regionLower.includes('italy') || regionLower.includes('toscana') || regionLower.includes('tuscany') || regionLower.includes('piemonte') || regionLower.includes('piedmont')) {
+            country = 'Italia';
+          } else if (regionLower.includes('portugal')) {
+            country = 'Portugal';
+          } else if (regionLower.includes('alemania') || regionLower.includes('germany') || regionLower.includes('mosel') || regionLower.includes('rheingau')) {
+            country = 'Alemania';
+          } else if (regionLower.includes('argentina') || regionLower.includes('mendoza')) {
+            country = 'Argentina';
+          } else if (regionLower.includes('chile') || regionLower.includes('maipo') || regionLower.includes('colchagua')) {
+            country = 'Chile';
+          } else if (regionLower.includes('eeuu') || regionLower.includes('usa') || regionLower.includes('estados unidos') || regionLower.includes('united states') || regionLower.includes('california') || regionLower.includes('napa') || regionLower.includes('sonoma')) {
+            country = 'EE.UU.';
+          } else if (regionLower.includes('australia') || regionLower.includes('barossa')) {
+            country = 'Australia';
+          } else if (regionLower.includes('nueva zelanda') || regionLower.includes('new zealand') || regionLower.includes('marlborough')) {
+            country = 'Nueva Zelanda';
+          } else if (regionLower.includes('sudáfrica') || regionLower.includes('south africa')) {
+            country = 'Sudáfrica';
+          } else if (regionLower.includes('grecia') || regionLower.includes('greece')) {
+            country = 'Grecia';
+          } else if (regionLower.includes('georgia')) {
+            country = 'Georgia';
+          }
+          
           return `${wine.name}, ${wine.estilo}, ${wine.producer || 'Desconocido'}, ${region}, ${country}`;
         });
         
