@@ -175,11 +175,11 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     });
   };
 
-  // Organize recommendations into Spanish and International sections
-  const getCountryEmoji = (wineString: string): string => {
+  // Extract country from wine recommendation string and return specific flag
+  const getCountryFlag = (wineString: string): string => {
     const lowerWine = wineString.toLowerCase();
     
-    // Mapeo de países a banderas
+    // Mapeo de países a banderas (ordenado por prioridad)
     const countryFlags: {[key: string]: string} = {
       'españa': '🇪🇸',
       'spain': '🇪🇸',
@@ -196,11 +196,22 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       'usa': '🇺🇸',
       'estados unidos': '🇺🇸',
       'united states': '🇺🇸',
+      'california': '🇺🇸',
+      'napa': '🇺🇸',
       'australia': '🇦🇺',
       'nueva zelanda': '🇳🇿',
       'new zealand': '🇳🇿',
+      'marlborough': '🇳🇿',
       'sudáfrica': '🇿🇦',
       'south africa': '🇿🇦',
+      'grecia': '🇬🇷',
+      'greece': '🇬🇷',
+      'georgia': '🇬🇪',
+      'hungría': '🇭🇺',
+      'hungary': '🇭🇺',
+      'austria': '🇦🇹',
+      'croacia': '🇭🇷',
+      'croatia': '🇭🇷',
     };
     
     for (const [country, flag] of Object.entries(countryFlags)) {
@@ -209,11 +220,20 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       }
     }
     
-    return '🌍'; // Bandera genérica para países no identificados
+    // Si no se encuentra el país, intentar extraer de la estructura del string
+    // Formato esperado: "name, type, winery, region, country"
+    const parts = wineString.split(", ");
+    if (parts.length >= 5) {
+      const countryPart = parts[4].toLowerCase().trim();
+      for (const [country, flag] of Object.entries(countryFlags)) {
+        if (countryPart.includes(country)) {
+          return flag;
+        }
+      }
+    }
+    
+    return '🍷'; // Icono de vino si no se identifica el país
   };
-
-  const spanishWines = recommendations.filter(wine => wine.includes("España"));
-  const internationalWines = recommendations.filter(wine => !wine.includes("España"));
 
   return (
     <div className="flex flex-col max-w-4xl mx-auto p-6">
@@ -356,82 +376,37 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             <span className="text-2xl">🔎</span> Vinos que te encantarán
           </h3>
           
-          <div className="mb-4">
-            <h4 className="font-medium text-red-700 mb-2 flex items-center gap-2">
-              <span className="emoji">🇪🇸</span> España
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {spanishWines.map((wine, index) => {
-                const parts = wine.split(", ");
-                const name = parts[0];
-                const type = parts[1] || "";
-                const winery = parts[2] || "";
-                const region = parts[3] || "";
-                const country = parts[4] || "";
-                
-                return (
-                  <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
-                    <div className="flex items-start gap-3">
-                      <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                        <Wine className="h-4 w-4" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {recommendations.map((wine, index) => {
+              const parts = wine.split(", ");
+              const name = parts[0];
+              const type = parts[1] || "";
+              const winery = parts[2] || "";
+              const region = parts[3] || "";
+              
+              return (
+                <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
+                      <Wine className="h-4 w-4" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xl">{getCountryFlag(wine)}</span>
+                        <p className="font-semibold text-gray-800 flex-1">{name}</p>
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xl">{getCountryEmoji(wine)}</span>
-                          <p className="font-semibold text-gray-800 flex-1">{name}</p>
-                        </div>
-                        <p className="text-sm text-gray-600">{type}</p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">Bodega:</span> {winery}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">Región:</span> {region}
-                        </p>
-                      </div>
+                      <p className="text-sm text-gray-600">{type}</p>
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium">Bodega:</span> {winery}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium">Región:</span> {region}
+                      </p>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-medium text-red-700 mb-2 flex items-center gap-2">
-              <span className="emoji">🌎</span> Internacional
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {internationalWines.map((wine, index) => {
-                const parts = wine.split(", ");
-                const name = parts[0];
-                const type = parts[1] || "";
-                const winery = parts[2] || "";
-                const region = parts[3] || "";
-                const country = parts[4] || "";
-                
-                return (
-                  <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
-                    <div className="flex items-start gap-3">
-                      <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                        <Wine className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xl">{getCountryEmoji(wine)}</span>
-                          <p className="font-semibold text-gray-800 flex-1">{name}</p>
-                        </div>
-                        <p className="text-sm text-gray-600">{type}</p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">Bodega:</span> {winery}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">Región:</span> {region}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
         
