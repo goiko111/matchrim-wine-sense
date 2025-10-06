@@ -458,81 +458,94 @@ const WineStyleDetail = () => {
     // Ejemplos representativos basados en el estilo
     if (cleanName.includes('burbuja fresca')) {
       return [
-        { name: 'Cava Brut Nature', region: 'D.O. Cava', grape: 'Macabeo, Xarel·lo', priceRange: '8-15€', description: 'Frescura y elegancia mediterránea' },
-        { name: 'Prosecco di Valdobbiadene', region: 'DOCG Italia', grape: 'Glera', priceRange: '12-20€', description: 'Burbujas finas y aromáticas' },
-        { name: 'Crémant de Loire', region: 'Francia', grape: 'Chenin Blanc', priceRange: '10-18€', description: 'Mineralidad del Valle del Loira' }
+        { name: 'Cava Brut Nature', region: 'D.O. Cava, España', grape: 'Macabeo, Xarel·lo', priceRange: '8-15€', description: 'Frescura y elegancia mediterránea' },
+        { name: 'Prosecco di Valdobbiadene', region: 'DOCG, Italia', grape: 'Glera', priceRange: '12-20€', description: 'Burbujas finas y aromáticas' },
+        { name: 'Crémant de Loire', region: 'Valle del Loira, Francia', grape: 'Chenin Blanc', priceRange: '10-18€', description: 'Mineralidad del Valle del Loira' },
+        { name: 'Sekt', region: 'Alemania', grape: 'Riesling', priceRange: '10-22€', description: 'Precisión alemana espumosa' }
       ];
     } else if (cleanName.includes('brut elegante')) {
       return [
-        { name: 'Champagne Brut', region: 'A.O.C. Champagne', grape: 'Chardonnay, Pinot Noir', priceRange: '35-80€', description: 'La referencia mundial en elegancia' },
-        { name: 'Cava Gran Reserva', region: 'D.O. Cava', grape: 'Chardonnay, Pinot Noir', priceRange: '18-35€', description: 'Complejidad tras larga crianza' },
-        { name: 'Franciacorta DOCG', region: 'Italia', grape: 'Chardonnay', priceRange: '25-45€', description: 'Sofisticación italiana' }
+        { name: 'Champagne Brut', region: 'A.O.C. Champagne, Francia', grape: 'Chardonnay, Pinot Noir', priceRange: '35-80€', description: 'La referencia mundial en elegancia' },
+        { name: 'Cava Gran Reserva', region: 'D.O. Cava, España', grape: 'Chardonnay, Pinot Noir', priceRange: '18-35€', description: 'Complejidad tras larga crianza' },
+        { name: 'Franciacorta DOCG', region: 'Lombardía, Italia', grape: 'Chardonnay', priceRange: '25-45€', description: 'Sofisticación italiana' },
+        { name: 'English Sparkling Wine', region: 'Sussex, Reino Unido', grape: 'Chardonnay, Pinot Noir', priceRange: '30-55€', description: 'Nueva elegancia británica' }
       ];
     } else if (cleanName.includes('blanco vital')) {
       return [
-        { name: 'Albariño', region: 'D.O. Rías Baixas', grape: 'Albariño', priceRange: '10-20€', description: 'Mineralidad atlántica única' },
-        { name: 'Sauvignon Blanc', region: 'D.O. Rueda', grape: 'Sauvignon Blanc', priceRange: '8-16€', description: 'Frescura herbácea intensa' },
-        { name: 'Riesling', region: 'Alemania', grape: 'Riesling', priceRange: '12-25€', description: 'Acidez vibrante y mineralidad' }
+        { name: 'Albariño', region: 'D.O. Rías Baixas, España', grape: 'Albariño', priceRange: '10-20€', description: 'Mineralidad atlántica única' },
+        { name: 'Sauvignon Blanc', region: 'Marlborough, Nueva Zelanda', grape: 'Sauvignon Blanc', priceRange: '12-22€', description: 'Explosión aromática del Pacífico' },
+        { name: 'Riesling Trocken', region: 'Mosel, Alemania', grape: 'Riesling', priceRange: '12-25€', description: 'Acidez vibrante y mineralidad' },
+        { name: 'Vermentino', region: 'Cerdeña, Italia', grape: 'Vermentino', priceRange: '10-18€', description: 'Frescura mediterránea' }
       ];
     } else if (cleanName.includes('blanco goloso')) {
       return [
-        { name: 'Gewürztraminer', region: 'Alsacia', grape: 'Gewürztraminer', priceRange: '15-28€', description: 'Aromático y seductor' },
-        { name: 'Viognier', region: 'D.O. Conca de Barberà', grape: 'Viognier', priceRange: '12-22€', description: 'Expresividad floral y frutal' },
-        { name: 'Moscatel', region: 'D.O. Valencia', grape: 'Moscatel', priceRange: '8-18€', description: 'Dulzura natural equilibrada' }
+        { name: 'Gewürztraminer', region: 'Alsacia, Francia', grape: 'Gewürztraminer', priceRange: '15-28€', description: 'Aromático y seductor' },
+        { name: 'Viognier', region: 'Condrieu, Francia', grape: 'Viognier', priceRange: '18-35€', description: 'Expresividad floral única del Ródano' },
+        { name: 'Moscatel', region: 'D.O. Valencia, España', grape: 'Moscatel', priceRange: '8-18€', description: 'Dulzura natural equilibrada' },
+        { name: 'Torrontés', region: 'Salta, Argentina', grape: 'Torrontés', priceRange: '10-20€', description: 'Aromático de alta montaña' }
       ];
     } else if (cleanName.includes('blanco de carácter')) {
       return [
-        { name: 'Chardonnay Barrica', region: 'D.O. Somontano', grape: 'Chardonnay', priceRange: '15-30€', description: 'Complejidad y estructura' },
-        { name: 'Godello', region: 'D.O. Valdeorras', grape: 'Godello', priceRange: '12-25€', description: 'Mineralidad y carácter atlántico' },
-        { name: 'Verdejo Reserva', region: 'D.O. Rueda', grape: 'Verdejo', priceRange: '18-35€', description: 'Evolución y elegancia' }
+        { name: 'Chardonnay Barrica', region: 'D.O. Somontano, España', grape: 'Chardonnay', priceRange: '15-30€', description: 'Complejidad y estructura' },
+        { name: 'Chablis Premier Cru', region: 'Borgoña, Francia', grape: 'Chardonnay', priceRange: '25-50€', description: 'Mineralidad y elegancia borgoñona' },
+        { name: 'Godello', region: 'D.O. Valdeorras, España', grape: 'Godello', priceRange: '12-25€', description: 'Mineralidad y carácter atlántico' },
+        { name: 'Grüner Veltliner Smaragd', region: 'Wachau, Austria', grape: 'Grüner Veltliner', priceRange: '18-35€', description: 'Potencia y finura austríaca' }
       ];
     } else if (cleanName.includes('tinto versátil')) {
       return [
-        { name: 'Tempranillo Crianza', region: 'D.O. Ribera del Duero', grape: 'Tempranillo', priceRange: '15-30€', description: 'Equilibrio perfecto español' },
-        { name: 'Garnacha', region: 'D.O. Campo de Borja', grape: 'Garnacha', priceRange: '8-18€', description: 'Versatilidad mediterránea' },
-        { name: 'Merlot', region: 'V.T. Castilla', grape: 'Merlot', priceRange: '6-15€', description: 'Suavidad internacional' }
+        { name: 'Tempranillo Crianza', region: 'D.O. Ribera del Duero, España', grape: 'Tempranillo', priceRange: '15-30€', description: 'Equilibrio perfecto español' },
+        { name: 'Chianti Classico', region: 'Toscana, Italia', grape: 'Sangiovese', priceRange: '12-25€', description: 'Versatilidad italiana clásica' },
+        { name: 'Côtes du Rhône', region: 'Valle del Ródano, Francia', grape: 'Garnacha, Syrah', priceRange: '10-20€', description: 'Equilibrio mediterráneo francés' },
+        { name: 'Malbec', region: 'Mendoza, Argentina', grape: 'Malbec', priceRange: '12-22€', description: 'Suavidad andina concentrada' }
       ];
     } else if (cleanName.includes('tinto de estructura')) {
       return [
-        { name: 'Cabernet Sauvignon Reserva', region: 'D.O. Penedès', grape: 'Cabernet Sauvignon', priceRange: '20-45€', description: 'Potencia y longevidad' },
-        { name: 'Tempranillo Gran Reserva', region: 'D.O.Ca. Rioja', grape: 'Tempranillo', priceRange: '25-60€', description: 'Madurez y complejidad' },
-        { name: 'Monastrell', region: 'D.O. Jumilla', grape: 'Monastrell', priceRange: '12-25€', description: 'Concentración mediterránea' }
+        { name: 'Cabernet Sauvignon Reserva', region: 'Valle de Maipo, Chile', grape: 'Cabernet Sauvignon', priceRange: '18-40€', description: 'Potencia andina estructurada' },
+        { name: 'Tempranillo Gran Reserva', region: 'D.O.Ca. Rioja, España', grape: 'Tempranillo', priceRange: '25-60€', description: 'Madurez y complejidad' },
+        { name: 'Barolo DOCG', region: 'Piemonte, Italia', grape: 'Nebbiolo', priceRange: '35-80€', description: 'Rey de los vinos italianos' },
+        { name: 'Priorat', region: 'D.O.Q. Priorat, España', grape: 'Garnacha, Cariñena', priceRange: '25-70€', description: 'Concentración y mineralidad' }
       ];
     } else if (cleanName.includes('tinto goloso')) {
       return [
-        { name: 'Garnacha Joven', region: 'D.O. Navarra', grape: 'Garnacha', priceRange: '6-12€', description: 'Fruta exuberante y jugosa' },
-        { name: 'Mencia', region: 'D.O. Bierzo', grape: 'Mencía', priceRange: '10-20€', description: 'Elegancia frutal del noroeste' },
-        { name: 'Bobal', region: 'D.O. Utiel-Requena', grape: 'Bobal', priceRange: '8-16€', description: 'Autenticidad y frescura' }
+        { name: 'Garnacha Joven', region: 'D.O. Navarra, España', grape: 'Garnacha', priceRange: '6-12€', description: 'Fruta exuberante y jugosa' },
+        { name: 'Zinfandel', region: 'California, EE.UU.', grape: 'Zinfandel', priceRange: '15-30€', description: 'Fruta madura californiana' },
+        { name: 'Valpolicella Ripasso', region: 'Véneto, Italia', grape: 'Corvina', priceRange: '15-28€', description: 'Dulzura frutal italiana' },
+        { name: 'Carmenère', region: 'Valle de Colchagua, Chile', grape: 'Carmenère', priceRange: '12-22€', description: 'Jugosidad chilena especiada' }
       ];
     } else if (cleanName.includes('tinto ligero')) {
       return [
-        { name: 'Pinot Noir', region: 'D.O. Cataluña', grape: 'Pinot Noir', priceRange: '18-35€', description: 'Elegancia y finura' },
-        { name: 'Gamay', region: 'Francia - Beaujolais', grape: 'Gamay', priceRange: '12-22€', description: 'Ligereza y frescura' },
-        { name: 'Tempranillo Joven', region: 'D.O. Ribera del Duero', grape: 'Tempranillo', priceRange: '8-15€', description: 'Juventud y vivacidad' }
+        { name: 'Pinot Noir', region: 'Borgoña, Francia', grape: 'Pinot Noir', priceRange: '20-50€', description: 'Elegancia borgoñona suprema' },
+        { name: 'Gamay', region: 'Beaujolais, Francia', grape: 'Gamay', priceRange: '12-22€', description: 'Ligereza y frescura francesa' },
+        { name: 'Mencía', region: 'D.O. Bierzo, España', grape: 'Mencía', priceRange: '10-20€', description: 'Finura atlántica española' },
+        { name: 'Schiava', region: 'Alto Adige, Italia', grape: 'Schiava', priceRange: '12-20€', description: 'Delicadeza alpina' }
       ];
     } else if (cleanName.includes('rosado ligero')) {
       return [
-        { name: 'Rosado de Garnacha', region: 'D.O. Navarra', grape: 'Garnacha', priceRange: '6-12€', description: 'Frescura mediterránea' },
-        { name: 'Rosé de Provence', region: 'Francia', grape: 'Cinsault, Grenache', priceRange: '15-25€', description: 'Delicadeza provenzal' },
-        { name: 'Rosado de Tempranillo', region: 'D.O.Ca. Rioja', grape: 'Tempranillo', priceRange: '8-15€', description: 'Tradición española' }
+        { name: 'Rosado de Garnacha', region: 'D.O. Navarra, España', grape: 'Garnacha', priceRange: '6-12€', description: 'Frescura mediterránea' },
+        { name: 'Rosé de Provence', region: 'Provenza, Francia', grape: 'Cinsault, Grenache', priceRange: '15-25€', description: 'Delicadeza provenzal icónica' },
+        { name: 'Bardolino Chiaretto', region: 'Véneto, Italia', grape: 'Corvina', priceRange: '8-15€', description: 'Ligereza del lago de Garda' },
+        { name: 'White Zinfandel', region: 'California, EE.UU.', grape: 'Zinfandel', priceRange: '6-12€', description: 'Dulzura frutal americana' }
       ];
     } else if (cleanName.includes('rosado gastronómico')) {
       return [
-        { name: 'Rosado Fermentado en Barrica', region: 'D.O. Somontano', grape: 'Pinot Noir', priceRange: '18-30€', description: 'Complejidad gastronómica' },
-        { name: 'Rosé de Saignée', region: 'D.O. Toro', grape: 'Tinta de Toro', priceRange: '15-25€', description: 'Intensidad y carácter' },
-        { name: 'Rosado de Syrah', region: 'D.O. Jumilla', grape: 'Syrah', priceRange: '12-20€', description: 'Estructura y elegancia' }
+        { name: 'Rosado Fermentado en Barrica', region: 'D.O. Somontano, España', grape: 'Pinot Noir', priceRange: '18-30€', description: 'Complejidad gastronómica' },
+        { name: 'Tavel Rosé', region: 'Valle del Ródano, Francia', grape: 'Grenache', priceRange: '15-28€', description: 'Potencia rosada francesa' },
+        { name: 'Rosé de Saignée', region: 'D.O. Toro, España', grape: 'Tinta de Toro', priceRange: '15-25€', description: 'Intensidad y carácter' },
+        { name: 'Cerasuolo d\'Abruzzo', region: 'Abruzzo, Italia', grape: 'Montepulciano', priceRange: '12-20€', description: 'Estructura rosada italiana' }
       ];
     } else if (cleanName.includes('dulce intenso')) {
       return [
-        { name: 'Pedro Ximénez', region: 'D.O. Jerez', grape: 'Pedro Ximénez', priceRange: '20-40€', description: 'Dulzura concentrada extrema' },
-        { name: 'Moscatel de Alejandría', region: 'D.O. Málaga', grape: 'Moscatel', priceRange: '15-30€', description: 'Tradición dulce andaluza' },
-        { name: 'Eiswein', region: 'Alemania', grape: 'Riesling', priceRange: '35-80€', description: 'Dulzura de hielo concentrada' }
+        { name: 'Pedro Ximénez', region: 'D.O. Jerez, España', grape: 'Pedro Ximénez', priceRange: '20-40€', description: 'Dulzura concentrada extrema' },
+        { name: 'Sauternes', region: 'Burdeos, Francia', grape: 'Sémillon, Sauvignon', priceRange: '30-80€', description: 'Noble dulzura botritizada' },
+        { name: 'Tokaji Aszú', region: 'Tokaj, Hungría', grape: 'Furmint', priceRange: '25-60€', description: 'Dulzura imperial histórica' },
+        { name: 'Eiswein', region: 'Rheingau, Alemania', grape: 'Riesling', priceRange: '35-80€', description: 'Dulzura de hielo concentrada' }
       ];
     } else if (cleanName.includes('dulce ligero')) {
       return [
-        { name: 'Moscatel de Grano Menudo', region: 'D.O. Rías Baixas', grape: 'Moscatel', priceRange: '12-25€', description: 'Dulzura delicada atlántica' },
-        { name: 'Gewürztraminer Vendimia Tardía', region: 'D.O. Somontano', grape: 'Gewürztraminer', priceRange: '18-30€', description: 'Aromático y equilibrado' },
-        { name: 'Riesling Semidulce', region: 'Alemania', grape: 'Riesling', priceRange: '15-25€', description: 'Equilibrio perfecto dulce-ácido' }
+        { name: 'Moscatel de Grano Menudo', region: 'D.O. Rías Baixas, España', grape: 'Moscatel', priceRange: '12-25€', description: 'Dulzura delicada atlántica' },
+        { name: 'Vin Santo', region: 'Toscana, Italia', grape: 'Trebbiano, Malvasia', priceRange: '20-40€', description: 'Tradición toscana dulce' },
+        { name: 'Riesling Kabinett', region: 'Mosel, Alemania', grape: 'Riesling', priceRange: '15-25€', description: 'Equilibrio perfecto dulce-ácido' },
+        { name: 'Muscat de Beaumes-de-Venise', region: 'Valle del Ródano, Francia', grape: 'Muscat', priceRange: '15-30€', description: 'Dulzura aromática sureña' }
       ];
     } else if (cleanName.includes('experimental')) {
       return [
