@@ -67,24 +67,24 @@ export const generateMatchrimName = (result: any): string => {
 };
 
 export const generateWineStyles = (result: any): string[] => {
-  // Los 16 estilos de vino Winerim con sus criterios sensoriales
+  // Los 16 estilos de vino Winerim con sus criterios sensoriales ajustados
   const winerimStyles = [
     { name: "Burbuja Fresca", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 1, tanico: 1 } },
     { name: "Brut Elegante", criteria: { acidez: 5, afrutado: 2, potente: 3, dulce: 1, tanico: 1 } },
     { name: "Blanco Vital", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 1, tanico: 1 } },
     { name: "Blanco Goloso", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 4, tanico: 1 } },
-    { name: "Blanco de Carácter", criteria: { acidez: 3, afrutado: 3, potente: 4, dulce: 2, tanico: 2 } },
-    { name: "Rosado Ligero", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Rosado Gastronómico", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 2 } },
+    { name: "Blanco de Carácter", criteria: { acidez: 3, afrutado: 2, potente: 4, dulce: 2, tanico: 2 } },
+    { name: "Rosado Ligero", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Rosado Gastronómico", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 1, tanico: 2 } },
     { name: "Tinto Ligero", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 1, tanico: 2 } },
     { name: "Tinto Versátil", criteria: { acidez: 3, afrutado: 3, potente: 3, dulce: 2, tanico: 3 } },
-    { name: "Tinto de Estructura", criteria: { acidez: 3, afrutado: 3, potente: 5, dulce: 1, tanico: 5 } },
+    { name: "Tinto de Estructura", criteria: { acidez: 3, afrutado: 2, potente: 5, dulce: 1, tanico: 5 } },
     { name: "Tinto Goloso", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 3, tanico: 2 } },
     { name: "Dulce Ligero", criteria: { acidez: 3, afrutado: 4, potente: 2, dulce: 4, tanico: 1 } },
     { name: "Dulce Intenso", criteria: { acidez: 2, afrutado: 4, potente: 4, dulce: 5, tanico: 1 } },
     { name: "Oxidativo/Maduro", criteria: { acidez: 2, afrutado: 2, potente: 4, dulce: 3, tanico: 2 } },
     { name: "Experimental", criteria: { acidez: 3, afrutado: 3, potente: 3, dulce: 2, tanico: 3 } },
-    { name: "Vino de Terruño", criteria: { acidez: 4, afrutado: 3, potente: 4, dulce: 1, tanico: 4 } }
+    { name: "Vino de Terruño", criteria: { acidez: 4, afrutado: 2, potente: 4, dulce: 1, tanico: 4 } }
   ];
 
   // Calcular compatibilidad con cada estilo
