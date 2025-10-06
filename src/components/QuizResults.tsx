@@ -225,61 +225,109 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const getCountryFlag = (wineString: string): string => {
     const lowerWine = wineString.toLowerCase();
     
-    // Primero buscar por palabras clave específicas de países y regiones
+    // ESPAÑA - Regiones españolas
     if (lowerWine.includes('rioja') || lowerWine.includes('ribera') || lowerWine.includes('priorat') || 
         lowerWine.includes('rías baixas') || lowerWine.includes('galicia') || lowerWine.includes('penedès') ||
         lowerWine.includes('jerez') || lowerWine.includes('toro') || lowerWine.includes('rueda') ||
+        lowerWine.includes('somontano') || lowerWine.includes('bierzo') || lowerWine.includes('jumilla') ||
+        lowerWine.includes('montsant') || lowerWine.includes('empordà') || lowerWine.includes('navarra') ||
+        lowerWine.includes('cataluña') || lowerWine.includes('valencia') || lowerWine.includes('muga') ||
         lowerWine.includes('españa') || lowerWine.includes('spain')) {
       return '🇪🇸';
     }
+    
+    // FRANCIA - Regiones francesas (más exhaustivo)
     if (lowerWine.includes('bordeaux') || lowerWine.includes('borgoña') || lowerWine.includes('burgundy') ||
         lowerWine.includes('champagne') || lowerWine.includes('rhône') || lowerWine.includes('loire') ||
         lowerWine.includes('alsace') || lowerWine.includes('languedoc') || lowerWine.includes('provence') ||
+        lowerWine.includes('beaujolais') || lowerWine.includes('morgon') || lowerWine.includes('chiroubles') ||
+        lowerWine.includes('fleurie') || lowerWine.includes('moulin') || lowerWine.includes('châteauneuf') ||
+        lowerWine.includes('côtes du rhône') || lowerWine.includes('sancerre') || lowerWine.includes('pouilly') ||
+        lowerWine.includes('chablis') || lowerWine.includes('meursault') || lowerWine.includes('pomerol') ||
+        lowerWine.includes('pauillac') || lowerWine.includes('margaux') || lowerWine.includes('saint-émilion') ||
+        lowerWine.includes('côtes du jura') || lowerWine.includes('jura') || lowerWine.includes('arbois') ||
+        lowerWine.includes('chinon') || lowerWine.includes('vouvray') || lowerWine.includes('muscadet') ||
+        lowerWine.includes('bandol') || lowerWine.includes('cassis') || lowerWine.includes('gigondas') ||
+        lowerWine.includes('hermitage') || lowerWine.includes('condrieu') || lowerWine.includes('côte-rôtie') ||
+        lowerWine.includes('vin de france') || lowerWine.includes('château') || lowerWine.includes('domaine') ||
         lowerWine.includes('francia') || lowerWine.includes('france')) {
       return '🇫🇷';
     }
+    
+    // ITALIA - Regiones italianas
     if (lowerWine.includes('toscana') || lowerWine.includes('tuscany') || lowerWine.includes('piemonte') ||
         lowerWine.includes('piedmont') || lowerWine.includes('veneto') || lowerWine.includes('sicilia') ||
-        lowerWine.includes('sicily') || lowerWine.includes('puglia') || lowerWine.includes('italia') || 
-        lowerWine.includes('italy')) {
+        lowerWine.includes('sicily') || lowerWine.includes('puglia') || lowerWine.includes('lombardia') ||
+        lowerWine.includes('friuli') || lowerWine.includes('alto adige') || lowerWine.includes('abruzzo') ||
+        lowerWine.includes('campania') || lowerWine.includes('marche') || lowerWine.includes('umbria') ||
+        lowerWine.includes('barolo') || lowerWine.includes('barbaresco') || lowerWine.includes('chianti') ||
+        lowerWine.includes('brunello') || lowerWine.includes('valpolicella') || lowerWine.includes('amarone') ||
+        lowerWine.includes('soave') || lowerWine.includes('prosecco') || lowerWine.includes('franciacorta') ||
+        lowerWine.includes('italia') || lowerWine.includes('italy')) {
       return '🇮🇹';
     }
-    if (lowerWine.includes('mendoza') || lowerWine.includes('salta') || lowerWine.includes('argentina')) {
+    
+    // PORTUGAL
+    if (lowerWine.includes('douro') || lowerWine.includes('alentejo') || lowerWine.includes('dão') ||
+        lowerWine.includes('vinho verde') || lowerWine.includes('lisboa') || lowerWine.includes('vinhas') ||
+        lowerWine.includes('tortuga') || lowerWine.includes('portugal')) {
+      return '🇵🇹';
+    }
+    
+    // ALEMANIA
+    if (lowerWine.includes('mosel') || lowerWine.includes('rheingau') || lowerWine.includes('pfalz') ||
+        lowerWine.includes('rheinhessen') || lowerWine.includes('baden') || lowerWine.includes('franken') ||
+        lowerWine.includes('alemania') || lowerWine.includes('germany')) {
+      return '🇩🇪';
+    }
+    
+    // ARGENTINA
+    if (lowerWine.includes('mendoza') || lowerWine.includes('salta') || lowerWine.includes('patagonia') ||
+        lowerWine.includes('cafayate') || lowerWine.includes('argentina')) {
       return '🇦🇷';
     }
+    
+    // CHILE
     if (lowerWine.includes('maipo') || lowerWine.includes('colchagua') || lowerWine.includes('casablanca') ||
-        lowerWine.includes('chile')) {
+        lowerWine.includes('aconcagua') || lowerWine.includes('rapel') || lowerWine.includes('chile')) {
       return '🇨🇱';
     }
+    
+    // ESTADOS UNIDOS
     if (lowerWine.includes('napa') || lowerWine.includes('sonoma') || lowerWine.includes('california') ||
-        lowerWine.includes('oregon') || lowerWine.includes('washington') || lowerWine.includes('eeuu') ||
-        lowerWine.includes('usa') || lowerWine.includes('estados unidos') || lowerWine.includes('united states')) {
+        lowerWine.includes('oregon') || lowerWine.includes('washington') || lowerWine.includes('willamette') ||
+        lowerWine.includes('paso robles') || lowerWine.includes('santa barbara') || lowerWine.includes('russian river') ||
+        lowerWine.includes('eeuu') || lowerWine.includes('usa') || lowerWine.includes('estados unidos') || 
+        lowerWine.includes('united states')) {
       return '🇺🇸';
     }
+    
+    // AUSTRALIA
     if (lowerWine.includes('barossa') || lowerWine.includes('hunter valley') || lowerWine.includes('margaret river') ||
-        lowerWine.includes('australia')) {
+        lowerWine.includes('mclaren vale') || lowerWine.includes('yarra valley') || lowerWine.includes('australia')) {
       return '🇦🇺';
     }
+    
+    // NUEVA ZELANDA
     if (lowerWine.includes('marlborough') || lowerWine.includes('hawke') || lowerWine.includes('central otago') ||
         lowerWine.includes('nueva zelanda') || lowerWine.includes('new zealand')) {
       return '🇳🇿';
     }
-    if (lowerWine.includes('douro') || lowerWine.includes('alentejo') || lowerWine.includes('dão') ||
-        lowerWine.includes('portugal')) {
-      return '🇵🇹';
-    }
-    if (lowerWine.includes('mosel') || lowerWine.includes('rheingau') || lowerWine.includes('pfalz') ||
-        lowerWine.includes('alemania') || lowerWine.includes('germany')) {
-      return '🇩🇪';
-    }
-    if (lowerWine.includes('stellenbosch') || lowerWine.includes('paarl') || lowerWine.includes('sudáfrica') || 
-        lowerWine.includes('south africa')) {
+    
+    // SUDÁFRICA
+    if (lowerWine.includes('stellenbosch') || lowerWine.includes('paarl') || lowerWine.includes('constantia') ||
+        lowerWine.includes('sudáfrica') || lowerWine.includes('south africa')) {
       return '🇿🇦';
     }
-    if (lowerWine.includes('grecia') || lowerWine.includes('greece') || lowerWine.includes('santorini')) {
+    
+    // GRECIA
+    if (lowerWine.includes('grecia') || lowerWine.includes('greece') || lowerWine.includes('santorini') ||
+        lowerWine.includes('nemea') || lowerWine.includes('naoussa')) {
       return '🇬🇷';
     }
-    if (lowerWine.includes('georgia') || lowerWine.includes('kakheti')) {
+    
+    // GEORGIA
+    if (lowerWine.includes('georgia') || lowerWine.includes('kakheti') || lowerWine.includes('qvevri')) {
       return '🇬🇪';
     }
     
