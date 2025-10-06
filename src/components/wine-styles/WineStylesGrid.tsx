@@ -54,14 +54,14 @@ const WineStylesGrid = () => {
       if (missing.length > 0) {
         // Construir filtro OR: name ILIKE "{base}%"
         const orFilter = missing
-          .map((n) => `name.ilike.${n.replace(/[%]/g, '\\%').replace(/_/g, '\\_')}%`)
+          .map((n) => `name.ilike.*${n}*`)
           .join(',');
 
         const { data: fb, error: fbError } = await supabase
           .from('wine_styles')
           .select('*')
           .or(orFilter)
-          .range(0, 2999); // aseguramos suficiente rango por si hay muchas variantes
+          .range(0, 9999); // aseguramos suficiente rango por si hay muchas variantes
 
         if (fbError) throw fbError;
         fallbackRows = fb || [];
@@ -81,7 +81,10 @@ const WineStylesGrid = () => {
 
       const pickFromFallback = (name: string) => {
         const nBase = normalize(name);
-        const candidates = rowsWithBase.filter((r) => normalize(r.__base) === nBase);
+        const candidates = rowsWithBase.filter((r) => {
+          const nb = normalize(r.__base);
+          return nb === nBase || nb.includes(nBase) || nBase.includes(nb);
+        });
         if (candidates.length === 0) return undefined;
         const exact = candidates.find((r) => r.name === name);
         if (exact) return exact;
