@@ -549,21 +549,24 @@ const WineStyleDetail = () => {
       ];
     } else if (cleanName.includes('experimental')) {
       return [
-        { name: 'Vino Naranja', region: 'D.O. Penedès', grape: 'Xarel·lo', priceRange: '20-35€', description: 'Maceración pelicular innovadora' },
-        { name: 'Pet-Nat', region: 'V.T. Castilla', grape: 'Airén', priceRange: '15-25€', description: 'Método ancestral moderno' },
-        { name: 'Blend Experimental', region: 'D.O. Terra Alta', grape: 'Garnacha Blanca, Syrah', priceRange: '18-32€', description: 'Fusión creativa de variedades' }
+        { name: 'Vino Naranja', region: 'D.O. Penedès, España', grape: 'Xarel·lo', priceRange: '20-35€', description: 'Maceración pelicular innovadora' },
+        { name: 'Vino Naranja de Georgia', region: 'Kakheti, Georgia', grape: 'Rkatsiteli', priceRange: '18-35€', description: 'Tradición milenaria en qvevri' },
+        { name: 'Pet-Nat', region: 'Loire, Francia', grape: 'Chenin Blanc', priceRange: '15-28€', description: 'Método ancestral francés' },
+        { name: 'Natural Wine', region: 'Friuli, Italia', grape: 'Ribolla Gialla', priceRange: '22-40€', description: 'Vino natural italiano de vanguardia' }
       ];
     } else if (cleanName.includes('oxidativo') || cleanName.includes('maduro')) {
       return [
-        { name: 'Amontillado', region: 'D.O. Jerez', grape: 'Palomino', priceRange: '18-35€', description: 'Crianza oxidativa compleja' },
-        { name: 'Palo Cortado', region: 'D.O. Jerez', grape: 'Palomino', priceRange: '25-50€', description: 'Elegancia oxidativa única' },
-        { name: 'Rancio Catalán', region: 'D.O. Empordà', grape: 'Garnacha Blanca', priceRange: '20-40€', description: 'Tradición oxidativa catalana' }
+        { name: 'Amontillado', region: 'D.O. Jerez, España', grape: 'Palomino', priceRange: '18-35€', description: 'Crianza oxidativa compleja' },
+        { name: 'Palo Cortado', region: 'D.O. Jerez, España', grape: 'Palomino', priceRange: '25-50€', description: 'Elegancia oxidativa única' },
+        { name: 'Vin Jaune', region: 'Jura, Francia', grape: 'Savagnin', priceRange: '35-70€', description: 'Crianza oxidativa francesa bajo velo' },
+        { name: 'Marsala Vergine', region: 'Sicilia, Italia', grape: 'Grillo', priceRange: '20-45€', description: 'Tradición oxidativa siciliana' }
       ];
-    } else if (cleanName.includes('vino de terruño')) {
+    } else if (cleanName.includes('vino de terruño') || cleanName.includes('terruno')) {
       return [
-        { name: 'Clos de Vougeot', region: 'Borgoña', grape: 'Pinot Noir', priceRange: '80-200€', description: 'Expresión máxima del terruño' },
-        { name: 'Priorat Vi de Vila', region: 'D.O.Q. Priorat', grape: 'Garnacha, Cariñena', priceRange: '30-60€', description: 'Mineralidad de licorella' },
-        { name: 'Ribeira Sacra Heroica', region: 'D.O. Ribeira Sacra', grape: 'Mencía', priceRange: '25-45€', description: 'Terrazas de pizarra milenarias' }
+        { name: 'Priorat Vi de Vila', region: 'D.O.Q. Priorat, España', grape: 'Garnacha, Cariñena', priceRange: '30-60€', description: 'Mineralidad de licorella' },
+        { name: 'Clos de Vougeot', region: 'Borgoña, Francia', grape: 'Pinot Noir', priceRange: '80-200€', description: 'Expresión máxima del terruño borgoñón' },
+        { name: 'Barolo Bussia', region: 'Piemonte, Italia', grape: 'Nebbiolo', priceRange: '50-120€', description: 'Terruño singular de las Langhe' },
+        { name: 'Etna Rosso', region: 'Sicilia, Italia', grape: 'Nerello Mascalese', priceRange: '25-55€', description: 'Mineralidad volcánica única' }
       ];
     } else {
       return [
