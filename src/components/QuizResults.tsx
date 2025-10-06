@@ -176,6 +176,42 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   };
 
   // Organize recommendations into Spanish and International sections
+  const getCountryEmoji = (wineString: string): string => {
+    const lowerWine = wineString.toLowerCase();
+    
+    // Mapeo de países a banderas
+    const countryFlags: {[key: string]: string} = {
+      'españa': '🇪🇸',
+      'spain': '🇪🇸',
+      'francia': '🇫🇷',
+      'france': '🇫🇷',
+      'italia': '🇮🇹',
+      'italy': '🇮🇹',
+      'portugal': '🇵🇹',
+      'alemania': '🇩🇪',
+      'germany': '🇩🇪',
+      'argentina': '🇦🇷',
+      'chile': '🇨🇱',
+      'eeuu': '🇺🇸',
+      'usa': '🇺🇸',
+      'estados unidos': '🇺🇸',
+      'united states': '🇺🇸',
+      'australia': '🇦🇺',
+      'nueva zelanda': '🇳🇿',
+      'new zealand': '🇳🇿',
+      'sudáfrica': '🇿🇦',
+      'south africa': '🇿🇦',
+    };
+    
+    for (const [country, flag] of Object.entries(countryFlags)) {
+      if (lowerWine.includes(country)) {
+        return flag;
+      }
+    }
+    
+    return '🌍'; // Bandera genérica para países no identificados
+  };
+
   const spanishWines = recommendations.filter(wine => wine.includes("España"));
   const internationalWines = recommendations.filter(wine => !wine.includes("España"));
 
@@ -339,17 +375,17 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                       <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
                         <Wine className="h-4 w-4" />
                       </div>
-                      <div>
-                        <p className="font-semibold text-gray-800">{name}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xl">{getCountryEmoji(wine)}</span>
+                          <p className="font-semibold text-gray-800 flex-1">{name}</p>
+                        </div>
                         <p className="text-sm text-gray-600">{type}</p>
                         <p className="text-sm text-gray-600">
                           <span className="font-medium">Bodega:</span> {winery}
                         </p>
                         <p className="text-sm text-gray-600">
                           <span className="font-medium">Región:</span> {region}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">País:</span> {country}
                         </p>
                       </div>
                     </div>
@@ -378,17 +414,17 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                       <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
                         <Wine className="h-4 w-4" />
                       </div>
-                      <div>
-                        <p className="font-semibold text-gray-800">{name}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xl">{getCountryEmoji(wine)}</span>
+                          <p className="font-semibold text-gray-800 flex-1">{name}</p>
+                        </div>
                         <p className="text-sm text-gray-600">{type}</p>
                         <p className="text-sm text-gray-600">
                           <span className="font-medium">Bodega:</span> {winery}
                         </p>
                         <p className="text-sm text-gray-600">
                           <span className="font-medium">Región:</span> {region}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">País:</span> {country}
                         </p>
                       </div>
                     </div>

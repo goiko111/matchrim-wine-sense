@@ -64,7 +64,8 @@ export const calculateCompatibility = (userProfile: UserProfile, wine: Wine): nu
  */
 export const getWineRecommendationsFromDB = async (
   userProfile: UserProfile,
-  limit: number = 10
+  limit: number = 10,
+  recommendedStyles?: string[]
 ): Promise<WineRecommendation[]> => {
   try {
     // Fetch wines in batches to handle large datasets
@@ -95,8 +96,22 @@ export const getWineRecommendationsFromDB = async (
       return [];
     }
 
+    // Filtrar por estilos recomendados si se proporcionan
+    let filteredWines = allWines;
+    if (recommendedStyles && recommendedStyles.length > 0) {
+      filteredWines = allWines.filter(wine => 
+        recommendedStyles.some(style => 
+          wine.estilo && wine.estilo.toLowerCase().includes(style.toLowerCase())
+        )
+      );
+    }
+
+    if (filteredWines.length === 0) {
+      return [];
+    }
+
     // Calculate compatibility for each wine
-    const recommendations: WineRecommendation[] = allWines.map(wine => {
+    const recommendations: WineRecommendation[] = filteredWines.map(wine => {
       const compatibilityScore = calculateCompatibility(userProfile, wine);
       
       return {
@@ -128,9 +143,10 @@ export const getWineRecommendationsFromDB = async (
  */
 export const getDiverseWineRecommendations = async (
   userProfile: UserProfile,
-  limit: number = 10
+  limit: number = 10,
+  recommendedStyles?: string[]
 ): Promise<WineRecommendation[]> => {
-  const allRecommendations = await getWineRecommendationsFromDB(userProfile, 100);
+  const allRecommendations = await getWineRecommendationsFromDB(userProfile, 100, recommendedStyles);
   
   if (allRecommendations.length === 0) return [];
 

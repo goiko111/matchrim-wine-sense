@@ -5,6 +5,7 @@ import { QuizResult, getProfileDescription } from '@/data/quizData';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
 import { getDiverseWineRecommendations, UserProfile } from '@/utils/wineRecommendations';
+import { generateWineStyles } from '@/utils/profileUtils';
 
 export const useQuizResults = () => {
   const [isSaving, setIsSaving] = useState(false);
@@ -34,7 +35,10 @@ export const useQuizResults = () => {
         afrutado: result.afrutado
       };
       
-      const recommendations = await getDiverseWineRecommendations(userProfile, 12);
+      // Get recommended styles for the user profile
+      const recommendedStyles = generateWineStyles(result);
+      
+      const recommendations = await getDiverseWineRecommendations(userProfile, 12, recommendedStyles);
 
       // Save quiz result
       const { data: quizResultData, error: quizError } = await supabase
