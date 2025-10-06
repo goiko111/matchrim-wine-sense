@@ -621,36 +621,90 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
         </div>
 
         <div className="mb-8">
-          <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
-            <span className="text-2xl">🍇</span> Uvas que deberías probar
+          <h3 className="text-2xl font-bold text-red-800 flex items-center gap-3 mb-6">
+            <span className="text-4xl">🍇</span> 
+            <span>Uvas que deberías probar</span>
           </h3>
-          <p className="text-gray-700 mb-4">
+          <p className="text-gray-700 mb-6 text-lg">
             Estas uvas encajan perfectamente con tu perfil sensorial:
           </p>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {recommendedGrapes.map((grape, index) => (
-              <div key={index} className="bg-red-50 p-4 rounded-lg border border-red-100">
-                <h4 className="font-semibold text-red-800 mb-1">{grape}</h4>
-                <p className="text-sm text-gray-700">{getGrapeDescription(grape)}</p>
+              <div 
+                key={index} 
+                className="group relative bg-gradient-to-br from-purple-50 via-red-50 to-pink-50 p-6 rounded-2xl border-2 border-purple-200 hover:border-purple-400 hover:shadow-xl transition-all duration-300 overflow-hidden"
+              >
+                {/* Efecto de brillo */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-[slide-in-right_1s_ease-in-out]"></div>
+                
+                {/* Contenido */}
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-red-500 rounded-full flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      🍇
+                    </div>
+                    <h4 className="font-bold text-xl text-gray-900 group-hover:text-red-700 transition-colors">{grape}</h4>
+                  </div>
+                  <p className="text-sm text-gray-700 leading-relaxed">{getGrapeDescription(grape)}</p>
+                  
+                  {/* Indicador decorativo */}
+                  <div className="mt-4 h-1 w-0 bg-gradient-to-r from-purple-500 to-red-500 group-hover:w-full transition-all duration-500 rounded-full"></div>
+                </div>
               </div>
             ))}
           </div>
         </div>
         
         <div className="mb-8">
-          <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
-            <span className="text-2xl">🌍</span> Regiones que van contigo
+          <h3 className="text-2xl font-bold text-red-800 flex items-center gap-3 mb-6">
+            <span className="text-4xl">🌍</span> 
+            <span>Regiones que van contigo</span>
           </h3>
-          <p className="text-gray-700 mb-4">
+          <p className="text-gray-700 mb-6 text-lg">
             Estas regiones vinícolas producen vinos que se alinean con tus preferencias:
           </p>
-          <div className="space-y-3">
-            {recommendedRegions.map((region, index) => (
-              <div key={index} className="bg-red-50 p-4 rounded-lg border border-red-100">
-                <h4 className="font-semibold text-red-800 mb-1">{region}</h4>
-                <p className="text-sm text-gray-700">{getRegionDescription(region)}</p>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {recommendedRegions.map((region, index) => {
+              // Obtener el emoji del país basado en la región
+              const getRegionEmoji = (regionName: string): string => {
+                const regionLower = regionName.toLowerCase();
+                if (regionLower.includes('francia') || regionLower.includes('france')) return '🇫🇷';
+                if (regionLower.includes('italia') || regionLower.includes('italy')) return '🇮🇹';
+                if (regionLower.includes('españa') || regionLower.includes('spain')) return '🇪🇸';
+                if (regionLower.includes('eeuu') || regionLower.includes('usa')) return '🇺🇸';
+                if (regionLower.includes('argentina')) return '🇦🇷';
+                if (regionLower.includes('chile')) return '🇨🇱';
+                if (regionLower.includes('australia')) return '🇦🇺';
+                if (regionLower.includes('nueva zelanda') || regionLower.includes('new zealand')) return '🇳🇿';
+                if (regionLower.includes('portugal')) return '🇵🇹';
+                if (regionLower.includes('alemania') || regionLower.includes('germany')) return '🇩🇪';
+                return '🌍';
+              };
+              
+              return (
+                <div 
+                  key={index} 
+                  className="group relative bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 p-6 rounded-2xl border-2 border-amber-200 hover:border-amber-400 hover:shadow-xl transition-all duration-300 overflow-hidden"
+                >
+                  {/* Efecto de brillo */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-[slide-in-right_1s_ease-in-out]"></div>
+                  
+                  {/* Contenido */}
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-red-600 rounded-full flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        {getRegionEmoji(region)}
+                      </div>
+                      <h4 className="font-bold text-xl text-gray-900 group-hover:text-red-700 transition-colors flex-1">{region}</h4>
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed">{getRegionDescription(region)}</p>
+                    
+                    {/* Indicador decorativo */}
+                    <div className="mt-4 h-1 w-0 bg-gradient-to-r from-amber-500 to-red-600 group-hover:w-full transition-all duration-500 rounded-full"></div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
