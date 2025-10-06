@@ -236,7 +236,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       return '🇪🇸';
     }
     
-    // FRANCIA - Regiones francesas (más exhaustivo)
+    // FRANCIA - Regiones francesas
     if (lowerWine.includes('bordeaux') || lowerWine.includes('borgoña') || lowerWine.includes('burgundy') ||
         lowerWine.includes('champagne') || lowerWine.includes('rhône') || lowerWine.includes('loire') ||
         lowerWine.includes('alsace') || lowerWine.includes('languedoc') || lowerWine.includes('provence') ||
@@ -258,12 +258,13 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     if (lowerWine.includes('toscana') || lowerWine.includes('tuscany') || lowerWine.includes('piemonte') ||
         lowerWine.includes('piedmont') || lowerWine.includes('veneto') || lowerWine.includes('sicilia') ||
         lowerWine.includes('sicily') || lowerWine.includes('puglia') || lowerWine.includes('lombardia') ||
-        lowerWine.includes('friuli') || lowerWine.includes('alto adige') || lowerWine.includes('abruzzo') ||
-        lowerWine.includes('campania') || lowerWine.includes('marche') || lowerWine.includes('umbria') ||
-        lowerWine.includes('barolo') || lowerWine.includes('barbaresco') || lowerWine.includes('chianti') ||
-        lowerWine.includes('brunello') || lowerWine.includes('valpolicella') || lowerWine.includes('amarone') ||
-        lowerWine.includes('soave') || lowerWine.includes('prosecco') || lowerWine.includes('franciacorta') ||
-        lowerWine.includes('italia') || lowerWine.includes('italy')) {
+        lowerWine.includes('lombardy') || lowerWine.includes('friuli') || lowerWine.includes('alto adige') ||
+        lowerWine.includes('abruzzo') || lowerWine.includes('campania') || lowerWine.includes('marche') ||
+        lowerWine.includes('umbria') || lowerWine.includes('barolo') || lowerWine.includes('barbaresco') ||
+        lowerWine.includes('chianti') || lowerWine.includes('brunello') || lowerWine.includes('valpolicella') ||
+        lowerWine.includes('amarone') || lowerWine.includes('soave') || lowerWine.includes('prosecco') ||
+        lowerWine.includes('franciacorta') || lowerWine.includes('ottelia') || lowerWine.includes('italia') || 
+        lowerWine.includes('italy')) {
       return '🇮🇹';
     }
     
@@ -302,6 +303,13 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       return '🇺🇸';
     }
     
+    // MÉXICO
+    if (lowerWine.includes('jalisco') || lowerWine.includes('baja california') || lowerWine.includes('valle de guadalupe') ||
+        lowerWine.includes('ensenada') || lowerWine.includes('queretaro') || lowerWine.includes('querétaro') ||
+        lowerWine.includes('méxico') || lowerWine.includes('mexico')) {
+      return '🇲🇽';
+    }
+    
     // AUSTRALIA
     if (lowerWine.includes('barossa') || lowerWine.includes('hunter valley') || lowerWine.includes('margaret river') ||
         lowerWine.includes('mclaren vale') || lowerWine.includes('yarra valley') || lowerWine.includes('australia')) {
@@ -316,7 +324,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     
     // SUDÁFRICA
     if (lowerWine.includes('stellenbosch') || lowerWine.includes('paarl') || lowerWine.includes('constantia') ||
-        lowerWine.includes('sudáfrica') || lowerWine.includes('south africa')) {
+        lowerWine.includes('swartland') || lowerWine.includes('sudáfrica') || lowerWine.includes('south africa')) {
       return '🇿🇦';
     }
     
@@ -331,6 +339,150 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       return '🇬🇪';
     }
     
+    // AUSTRIA
+    if (lowerWine.includes('wachau') || lowerWine.includes('burgenland') || lowerWine.includes('kremstal') ||
+        lowerWine.includes('austria') || lowerWine.includes('österreich')) {
+      return '🇦🇹';
+    }
+    
+    // HUNGRÍA
+    if (lowerWine.includes('tokaj') || lowerWine.includes('eger') || lowerWine.includes('villány') ||
+        lowerWine.includes('hungría') || lowerWine.includes('hungary')) {
+      return '🇭🇺';
+    }
+    
+    // CROACIA
+    if (lowerWine.includes('istria') || lowerWine.includes('dalmacia') || lowerWine.includes('pelješac') ||
+        lowerWine.includes('croacia') || lowerWine.includes('croatia')) {
+      return '🇭🇷';
+    }
+    
+    // URUGUAY
+    if (lowerWine.includes('canelones') || lowerWine.includes('maldonado') || lowerWine.includes('uruguay')) {
+      return '🇺🇾';
+    }
+    
+    // BRASIL
+    if (lowerWine.includes('serra gaúcha') || lowerWine.includes('vale dos vinhedos') || 
+        lowerWine.includes('brasil') || lowerWine.includes('brazil')) {
+      return '🇧🇷';
+    }
+    
+    // CANADÁ
+    if (lowerWine.includes('niagara') || lowerWine.includes('okanagan') || lowerWine.includes('british columbia') ||
+        lowerWine.includes('canadá') || lowerWine.includes('canada')) {
+      return '🇨🇦';
+    }
+    
+    // SUIZA
+    if (lowerWine.includes('valais') || lowerWine.includes('vaud') || lowerWine.includes('ticino') ||
+        lowerWine.includes('suiza') || lowerWine.includes('switzerland')) {
+      return '🇨🇭';
+    }
+    
+    // LÍBANO
+    if (lowerWine.includes('bekaa') || lowerWine.includes('líbano') || lowerWine.includes('lebanon')) {
+      return '🇱🇧';
+    }
+    
+    // ISRAEL
+    if (lowerWine.includes('golan') || lowerWine.includes('galilee') || lowerWine.includes('israel')) {
+      return '🇮🇱';
+    }
+    
+    // TURQUÍA
+    if (lowerWine.includes('anatolia') || lowerWine.includes('capadocia') || lowerWine.includes('turquía') || 
+        lowerWine.includes('turkey')) {
+      return '🇹🇷';
+    }
+    
+    // RUMANIA
+    if (lowerWine.includes('transilvania') || lowerWine.includes('dealu mare') || lowerWine.includes('rumania') || 
+        lowerWine.includes('romania')) {
+      return '🇷🇴';
+    }
+    
+    // BULGARIA
+    if (lowerWine.includes('thracian valley') || lowerWine.includes('bulgaria')) {
+      return '🇧🇬';
+    }
+    
+    // ESLOVENIA
+    if (lowerWine.includes('primorska') || lowerWine.includes('podravje') || lowerWine.includes('eslovenia') || 
+        lowerWine.includes('slovenia')) {
+      return '🇸🇮';
+    }
+    
+    // CHINA
+    if (lowerWine.includes('ningxia') || lowerWine.includes('shandong') || lowerWine.includes('china')) {
+      return '🇨🇳';
+    }
+    
+    // JAPÓN
+    if (lowerWine.includes('yamanashi') || lowerWine.includes('koshu') || lowerWine.includes('japón') || 
+        lowerWine.includes('japan')) {
+      return '🇯🇵';
+    }
+    
+    // MARRUECOS
+    if (lowerWine.includes('meknes') || lowerWine.includes('marruecos') || lowerWine.includes('morocco')) {
+      return '🇲🇦';
+    }
+    
+    // REINO UNIDO
+    if (lowerWine.includes('sussex') || lowerWine.includes('kent') || lowerWine.includes('hampshire') ||
+        lowerWine.includes('reino unido') || lowerWine.includes('united kingdom') || lowerWine.includes('england')) {
+      return '🇬🇧';
+    }
+    
+    // Si no se encuentra, intentar extraer del quinto campo (país)
+    const parts = wineString.split(", ");
+    if (parts.length >= 5) {
+      const countryPart = parts[4].toLowerCase().trim();
+      
+      // Mapeo directo de nombres de países
+      const countryMap: {[key: string]: string} = {
+        'españa': '🇪🇸', 'spain': '🇪🇸',
+        'francia': '🇫🇷', 'france': '🇫🇷',
+        'italia': '🇮🇹', 'italy': '🇮🇹',
+        'portugal': '🇵🇹',
+        'alemania': '🇩🇪', 'germany': '🇩🇪',
+        'argentina': '🇦🇷',
+        'chile': '🇨🇱',
+        'méxico': '🇲🇽', 'mexico': '🇲🇽',
+        'eeuu': '🇺🇸', 'usa': '🇺🇸', 'estados unidos': '🇺🇸', 'united states': '🇺🇸',
+        'australia': '🇦🇺',
+        'nueva zelanda': '🇳🇿', 'new zealand': '🇳🇿',
+        'sudáfrica': '🇿🇦', 'south africa': '🇿🇦',
+        'grecia': '🇬🇷', 'greece': '🇬🇷',
+        'georgia': '🇬🇪',
+        'austria': '🇦🇹',
+        'hungría': '🇭🇺', 'hungary': '🇭🇺',
+        'croacia': '🇭🇷', 'croatia': '🇭🇷',
+        'uruguay': '🇺🇾',
+        'brasil': '🇧🇷', 'brazil': '🇧🇷',
+        'canadá': '🇨🇦', 'canada': '🇨🇦',
+        'suiza': '🇨🇭', 'switzerland': '🇨🇭',
+        'líbano': '🇱🇧', 'lebanon': '🇱🇧',
+        'israel': '🇮🇱',
+        'turquía': '🇹🇷', 'turkey': '🇹🇷',
+        'rumania': '🇷🇴', 'romania': '🇷🇴',
+        'bulgaria': '🇧🇬',
+        'eslovenia': '🇸🇮', 'slovenia': '🇸🇮',
+        'china': '🇨🇳',
+        'japón': '🇯🇵', 'japan': '🇯🇵',
+        'marruecos': '🇲🇦', 'morocco': '🇲🇦',
+        'reino unido': '🇬🇧', 'united kingdom': '🇬🇧', 'england': '🇬🇧'
+      };
+      
+      for (const [country, flag] of Object.entries(countryMap)) {
+        if (countryPart.includes(country)) {
+          return flag;
+        }
+      }
+    }
+    
+    // Si aún no se encuentra, devolver bandera de vino genérica
     return '🍷';
   };
 
@@ -343,6 +495,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       '🇮🇹': 'Italia',
       '🇦🇷': 'Argentina',
       '🇨🇱': 'Chile',
+      '🇲🇽': 'México',
       '🇺🇸': 'Estados Unidos',
       '🇦🇺': 'Australia',
       '🇳🇿': 'Nueva Zelanda',
@@ -351,8 +504,25 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       '🇿🇦': 'Sudáfrica',
       '🇬🇷': 'Grecia',
       '🇬🇪': 'Georgia',
+      '🇦🇹': 'Austria',
+      '🇭🇺': 'Hungría',
+      '🇭🇷': 'Croacia',
+      '🇺🇾': 'Uruguay',
+      '🇧🇷': 'Brasil',
+      '🇨🇦': 'Canadá',
+      '🇨🇭': 'Suiza',
+      '🇱🇧': 'Líbano',
+      '🇮🇱': 'Israel',
+      '🇹🇷': 'Turquía',
+      '🇷🇴': 'Rumania',
+      '🇧🇬': 'Bulgaria',
+      '🇸🇮': 'Eslovenia',
+      '🇨🇳': 'China',
+      '🇯🇵': 'Japón',
+      '🇲🇦': 'Marruecos',
+      '🇬🇧': 'Reino Unido',
     };
-    return countryMap[flag] || 'Otros';
+    return countryMap[flag] || 'Internacional';
   };
 
   // Agrupar y ordenar vinos por país
