@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
 import { QuizResult, calculateCompatibility } from '../data/quizData';
@@ -79,6 +80,7 @@ const generateEmotionalDescription = (result: QuizResult): string => {
 };
 
 const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart }) => {
+  const navigate = useNavigate();
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
 
@@ -320,31 +322,38 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
-          <div className="bg-red-50/50 p-6 rounded-lg">
-            <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
-              <span className="text-2xl">🍇</span> Uvas que deberías probar
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {recommendedGrapes.map((grape, index) => (
-                <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                  {grape}
-                </span>
-              ))}
-            </div>
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
+            <span className="text-2xl">🍇</span> Uvas que deberías probar
+          </h3>
+          <p className="text-gray-700 mb-4">
+            Estas uvas encajan perfectamente con tu perfil sensorial. Las hemos seleccionado considerando tu preferencia por vinos {result.potente >= 4 ? 'potentes y con cuerpo' : result.potente <= 2 ? 'ligeros y elegantes' : 'equilibrados'}, 
+            tu gusto por {result.acidez >= 4 ? 'la frescura y vivacidad' : result.acidez <= 2 ? 'vinos suaves y redondos' : 'un equilibrio entre frescura y suavidad'}, 
+            y tu inclinación {result.afrutado >= 4 ? 'hacia aromas frutales intensos' : result.afrutado <= 2 ? 'por perfiles más minerales y complejos' : 'por un balance aromático'}.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {recommendedGrapes.map((grape, index) => (
+              <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
+                {grape}
+              </span>
+            ))}
           </div>
-          
-          <div className="bg-red-50/50 p-6 rounded-lg">
-            <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
-              <span className="text-2xl">🌍</span> Regiones que van contigo
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {recommendedRegions.map((region, index) => (
-                <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                  {region}
-                </span>
-              ))}
-            </div>
+        </div>
+        
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
+            <span className="text-2xl">🌍</span> Regiones que van contigo
+          </h3>
+          <p className="text-gray-700 mb-4">
+            Estas regiones vinícolas producen vinos que se alinean con tus preferencias. Hemos considerado tu perfil de {result.tanico >= 4 ? 'taninos marcados' : result.tanico <= 2 ? 'taninos suaves' : 'estructura media'} 
+            y tu preferencia por {result.dulce >= 4 ? 'vinos con dulzor y untuosidad' : result.dulce <= 2 ? 'vinos secos y directos' : 'un toque de suavidad sin ser empalagosos'}.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {recommendedRegions.map((region, index) => (
+              <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
+                {region}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -376,38 +385,59 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             <span className="text-2xl">🔎</span> Vinos que te encantarán
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {recommendations.map((wine, index) => {
-              const parts = wine.split(", ");
-              const name = parts[0];
-              const type = parts[1] || "";
-              const winery = parts[2] || "";
-              const region = parts[3] || "";
-              
-              return (
-                <div key={index} className="bg-white border border-red-100 p-4 rounded-lg shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                      <Wine className="h-4 w-4" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xl">{getCountryFlag(wine)}</span>
-                        <p className="font-semibold text-gray-800 flex-1">{name}</p>
+          {recommendations.length === 0 ? (
+            <div className="text-center py-8 bg-red-50 rounded-lg">
+              <p className="text-gray-700">No se encontraron vinos en la base de datos que coincidan con tu perfil. Intenta agregar más vinos a la base de datos.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {recommendations.map((wine, index) => {
+                const parts = wine.split(", ");
+                const name = parts[0];
+                const type = parts[1] || "";
+                const winery = parts[2] || "";
+                const region = parts[3] || "";
+                
+                // Buscar el ID del estilo en styleDetails para navegar
+                const matchingStyle = styleDetails.find(s => 
+                  cleanStyleName(s.name).toLowerCase() === type.toLowerCase() ||
+                  type.toLowerCase().includes(cleanStyleName(s.name).toLowerCase())
+                );
+                
+                return (
+                  <div 
+                    key={index} 
+                    className="bg-white border border-red-100 p-4 rounded-lg shadow-sm hover:shadow-md hover:border-red-300 transition-all cursor-pointer group"
+                    onClick={() => matchingStyle && navigate(`/wine-styles/${matchingStyle.id}`)}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
+                        <Wine className="h-4 w-4" />
                       </div>
-                      <p className="text-sm text-gray-600">{type}</p>
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">Bodega:</span> {winery}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">Región:</span> {region}
-                      </p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xl">{getCountryFlag(wine)}</span>
+                          <p className="font-semibold text-gray-800 flex-1 group-hover:text-red-700 transition-colors">{name}</p>
+                        </div>
+                        <p className="text-sm text-gray-600">{type}</p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Bodega:</span> {winery}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Región:</span> {region}
+                        </p>
+                        {matchingStyle && (
+                          <p className="text-xs text-red-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Ver estilo {cleanStyleName(matchingStyle.name)} →
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
         
         <div className="bg-red-50 p-5 rounded-lg border border-red-200 mt-8">

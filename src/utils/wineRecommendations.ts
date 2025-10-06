@@ -99,11 +99,23 @@ export const getWineRecommendationsFromDB = async (
     // Filtrar por estilos recomendados si se proporcionan
     let filteredWines = allWines;
     if (recommendedStyles && recommendedStyles.length > 0) {
-      filteredWines = allWines.filter(wine => 
-        recommendedStyles.some(style => 
-          wine.estilo && wine.estilo.toLowerCase().includes(style.toLowerCase())
-        )
-      );
+      filteredWines = allWines.filter(wine => {
+        if (!wine.estilo) return false;
+        const wineStyle = wine.estilo.toLowerCase().trim();
+        return recommendedStyles.some(style => {
+          const recommendedStyle = style.toLowerCase().trim();
+          // Comparación flexible: coincidencia exacta o parcial
+          return wineStyle === recommendedStyle || 
+                 wineStyle.includes(recommendedStyle) || 
+                 recommendedStyle.includes(wineStyle);
+        });
+      });
+      
+      // Si el filtro es demasiado restrictivo y no hay resultados, usar todos los vinos
+      if (filteredWines.length === 0) {
+        console.log('No wines found matching recommended styles, using all wines');
+        filteredWines = allWines;
+      }
     }
 
     if (filteredWines.length === 0) {
