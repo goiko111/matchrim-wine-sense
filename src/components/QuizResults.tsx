@@ -109,6 +109,50 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const recommendedGrapes = generateGrapeRecommendations(result);
   const recommendedRegions = generateRegionRecommendations(result);
 
+  // Descripciones detalladas de uvas basadas en el perfil
+  const getGrapeDescription = (grape: string): string => {
+    const descriptions: {[key: string]: string} = {
+      'Chardonnay': `Versátil y elegante, esta uva te ofrece ${result.potente >= 3 ? 'cuerpo y estructura' : 'finesse'}, con ${result.acidez >= 3 ? 'buena acidez' : 'redondez'} que se adapta a tu perfil.`,
+      'Cabernet Sauvignon': `Potente y estructurada, ideal por tu gusto por ${result.tanico >= 3 ? 'taninos marcados' : 'vinos con carácter'} y ${result.potente >= 3 ? 'intensidad' : 'equilibrio'}.`,
+      'Merlot': `Suave y afrutada, encaja con tu preferencia por ${result.afrutado >= 3 ? 'aromas frutales' : 'vinos amables'} y ${result.tanico <= 3 ? 'taninos sedosos' : 'estructura equilibrada'}.`,
+      'Pinot Noir': `Elegante y delicada, perfecta por tu inclinación hacia ${result.potente <= 3 ? 'vinos sutiles' : 'complejidad'} con ${result.acidez >= 3 ? 'frescura vibrante' : 'equilibrio'}.`,
+      'Sauvignon Blanc': `Fresca y aromática, te va bien por tu gusto por ${result.acidez >= 3 ? 'acidez marcada' : 'vivacidad'} y ${result.afrutado >= 3 ? 'expresión frutal' : 'carácter definido'}.`,
+      'Syrah': `Especiada y compleja, se alinea con tu perfil ${result.potente >= 3 ? 'potente' : 'estructurado'} y ${result.tanico >= 3 ? 'tánico' : 'equilibrado'}.`,
+      'Riesling': `Aromática y vibrante, combina ${result.acidez >= 3 ? 'acidez refrescante' : 'equilibrio'} con ${result.dulce >= 2 ? 'notas dulces' : 'precisión'} que te gustan.`,
+      'Tempranillo': `La gran uva española que ofrece ${result.potente >= 3 ? 'estructura' : 'elegancia'} y ${result.tanico >= 3 ? 'taninos firmes' : 'suavidad'} según tu preferencia.`,
+      'Malbec': `Intensa y frutal, perfecta por tu gusto por ${result.afrutado >= 3 ? 'aromas intensos' : 'expresión frutal'} y ${result.potente >= 3 ? 'cuerpo generoso' : 'estructura media'}.`,
+      'Garnacha': `Generosa y especiada, se adapta a tu perfil ${result.dulce >= 2 ? 'con dulzor' : 'equilibrado'} y ${result.afrutado >= 3 ? 'frutal' : 'complejo'}.`,
+      'Albariño': `Atlántica y refrescante, ideal por tu preferencia por ${result.acidez >= 3 ? 'frescura vibrante' : 'vinos vivos'} y ${result.afrutado >= 3 ? 'aromas frutales' : 'carácter mineral'}.`,
+      'Sangiovese': `Estructurada y elegante, combina ${result.acidez >= 3 ? 'acidez marcada' : 'vivacidad'} con ${result.tanico >= 3 ? 'taninos firmes' : 'estructura media'}.`,
+      'Nebbiolo': `Potente y compleja, perfecta por tu gusto por ${result.tanico >= 4 ? 'taninos poderosos' : 'estructura seria'} y ${result.potente >= 3 ? 'intensidad' : 'carácter'}.`,
+      'Gewürztraminer': `Aromática y exótica, se alinea con tu perfil ${result.dulce >= 3 ? 'con dulzor' : 'aromático'} y ${result.afrutado >= 4 ? 'muy frutal' : 'expresivo'}.`,
+      'Mencía': `Fresca y frutal, ideal por tu preferencia por ${result.acidez >= 3 ? 'frescura' : 'vivacidad'} y ${result.afrutado >= 3 ? 'expresión frutal' : 'elegancia'}.`,
+      'Godello': `Atlántica y mineral, encaja con tu gusto por ${result.acidez >= 3 ? 'acidez vibrante' : 'frescura'} y ${result.potente >= 2 ? 'cuerpo medio' : 'elegancia'}.`
+    };
+    return descriptions[grape] || `Una uva que se adapta perfectamente a tu perfil sensorial.`;
+  };
+
+  // Descripciones detalladas de regiones
+  const getRegionDescription = (region: string): string => {
+    const descriptions: {[key: string]: string} = {
+      'Borgoña (Francia)': `Cuna del Pinot Noir y Chardonnay, produce vinos ${result.potente <= 3 ? 'elegantes y sutiles' : 'con carácter'} con ${result.acidez >= 3 ? 'excelente acidez' : 'equilibrio'}.`,
+      'Burdeos (Francia)': `Región de grandes tintos estructurados, perfecta por tu gusto por ${result.tanico >= 3 ? 'taninos firmes' : 'vinos estructurados'} y ${result.potente >= 3 ? 'potencia' : 'equilibrio'}.`,
+      'Toscana (Italia)': `Hogar del Sangiovese, ofrece vinos con ${result.acidez >= 3 ? 'acidez vibrante' : 'frescura'} y ${result.tanico >= 3 ? 'estructura tánica' : 'elegancia'}.`,
+      'Rioja (España)': `La región española icónica que produce vinos ${result.potente >= 3 ? 'con cuerpo' : 'equilibrados'} y ${result.tanico >= 2 ? 'taninos pulidos' : 'suaves'}.`,
+      'Ribera del Duero (España)': `Tintos potentes y concentrados, ideales por tu preferencia por ${result.potente >= 3 ? 'intensidad' : 'estructura'} y ${result.tanico >= 3 ? 'taninos marcados' : 'carácter'}.`,
+      'Rías Baixas (España)': `La tierra del Albariño, perfecta por tu gusto por ${result.acidez >= 4 ? 'acidez refrescante' : 'frescura atlántica'} y ${result.afrutado >= 3 ? 'aromas frutales' : 'elegancia'}.`,
+      'Priorat (España)': `Vinos de terruño único, muy ${result.potente >= 4 ? 'potentes' : 'concentrados'} con ${result.tanico >= 4 ? 'taninos poderosos' : 'estructura seria'}.`,
+      'Piemonte (Italia)': `Hogar del Nebbiolo, produce vinos con ${result.tanico >= 4 ? 'taninos serios' : 'estructura'} y ${result.acidez >= 3 ? 'acidez elevada' : 'vivacidad'}.`,
+      'Mosel (Alemania)': `Rieslings elegantes con ${result.acidez >= 4 ? 'acidez brillante' : 'frescura'} y ${result.dulce >= 2 ? 'dulzor equilibrado' : 'pureza frutal'}.`,
+      'Napa Valley (EE.UU.)': `Vinos ${result.potente >= 4 ? 'muy potentes' : 'generosos'} y ${result.afrutado >= 3 ? 'frutales' : 'expresivos'} con carácter californiano.`,
+      'Mendoza (Argentina)': `Malbecs intensos que combinan ${result.afrutado >= 3 ? 'fruta generosa' : 'expresión frutal'} con ${result.potente >= 3 ? 'cuerpo robusto' : 'estructura media'}.`,
+      'Valle de Maipo (Chile)': `Cabernets estructurados con ${result.potente >= 3 ? 'potencia' : 'equilibrio'} y ${result.tanico >= 3 ? 'taninos firmes' : 'estructura definida'}.`,
+      'Marlborough (Nueva Zelanda)': `Sauvignon Blancs con ${result.acidez >= 4 ? 'acidez brillante' : 'frescura intensa'} y ${result.afrutado >= 4 ? 'aromas explosivos' : 'expresión frutal'}.`,
+      'Barossa Valley (Australia)': `Shiraz potentes y especiadas, ideales por tu gusto por ${result.potente >= 4 ? 'vinos con músculo' : 'intensidad'} y ${result.afrutado >= 3 ? 'fruta madura' : 'carácter frutal'}.`
+    };
+    return descriptions[region] || `Una región que produce vinos alineados con tu perfil.`;
+  };
+
   // Configuración de los iconos para los estilos (mismo orden que WineStylesGrid)
   const getCardConfig = (styleName: string) => {
     const configs: {[key: string]: any} = {
@@ -181,61 +225,97 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const getCountryFlag = (wineString: string): string => {
     const lowerWine = wineString.toLowerCase();
     
-    // Mapeo de países a banderas (ordenado por prioridad)
-    const countryFlags: {[key: string]: string} = {
-      'españa': '🇪🇸',
-      'spain': '🇪🇸',
-      'francia': '🇫🇷',
-      'france': '🇫🇷',
-      'italia': '🇮🇹',
-      'italy': '🇮🇹',
-      'portugal': '🇵🇹',
-      'alemania': '🇩🇪',
-      'germany': '🇩🇪',
-      'argentina': '🇦🇷',
-      'chile': '🇨🇱',
-      'eeuu': '🇺🇸',
-      'usa': '🇺🇸',
-      'estados unidos': '🇺🇸',
-      'united states': '🇺🇸',
-      'california': '🇺🇸',
-      'napa': '🇺🇸',
-      'australia': '🇦🇺',
-      'nueva zelanda': '🇳🇿',
-      'new zealand': '🇳🇿',
-      'marlborough': '🇳🇿',
-      'sudáfrica': '🇿🇦',
-      'south africa': '🇿🇦',
-      'grecia': '🇬🇷',
-      'greece': '🇬🇷',
-      'georgia': '🇬🇪',
-      'hungría': '🇭🇺',
-      'hungary': '🇭🇺',
-      'austria': '🇦🇹',
-      'croacia': '🇭🇷',
-      'croatia': '🇭🇷',
-    };
-    
-    for (const [country, flag] of Object.entries(countryFlags)) {
-      if (lowerWine.includes(country)) {
-        return flag;
-      }
+    // Primero buscar por palabras clave específicas de países y regiones
+    if (lowerWine.includes('rioja') || lowerWine.includes('ribera') || lowerWine.includes('priorat') || 
+        lowerWine.includes('rías baixas') || lowerWine.includes('galicia') || lowerWine.includes('penedès') ||
+        lowerWine.includes('jerez') || lowerWine.includes('toro') || lowerWine.includes('rueda') ||
+        lowerWine.includes('españa') || lowerWine.includes('spain')) {
+      return '🇪🇸';
+    }
+    if (lowerWine.includes('bordeaux') || lowerWine.includes('borgoña') || lowerWine.includes('burgundy') ||
+        lowerWine.includes('champagne') || lowerWine.includes('rhône') || lowerWine.includes('loire') ||
+        lowerWine.includes('alsace') || lowerWine.includes('languedoc') || lowerWine.includes('provence') ||
+        lowerWine.includes('francia') || lowerWine.includes('france')) {
+      return '🇫🇷';
+    }
+    if (lowerWine.includes('toscana') || lowerWine.includes('tuscany') || lowerWine.includes('piemonte') ||
+        lowerWine.includes('piedmont') || lowerWine.includes('veneto') || lowerWine.includes('sicilia') ||
+        lowerWine.includes('sicily') || lowerWine.includes('puglia') || lowerWine.includes('italia') || 
+        lowerWine.includes('italy')) {
+      return '🇮🇹';
+    }
+    if (lowerWine.includes('mendoza') || lowerWine.includes('salta') || lowerWine.includes('argentina')) {
+      return '🇦🇷';
+    }
+    if (lowerWine.includes('maipo') || lowerWine.includes('colchagua') || lowerWine.includes('casablanca') ||
+        lowerWine.includes('chile')) {
+      return '🇨🇱';
+    }
+    if (lowerWine.includes('napa') || lowerWine.includes('sonoma') || lowerWine.includes('california') ||
+        lowerWine.includes('oregon') || lowerWine.includes('washington') || lowerWine.includes('eeuu') ||
+        lowerWine.includes('usa') || lowerWine.includes('estados unidos') || lowerWine.includes('united states')) {
+      return '🇺🇸';
+    }
+    if (lowerWine.includes('barossa') || lowerWine.includes('hunter valley') || lowerWine.includes('margaret river') ||
+        lowerWine.includes('australia')) {
+      return '🇦🇺';
+    }
+    if (lowerWine.includes('marlborough') || lowerWine.includes('hawke') || lowerWine.includes('central otago') ||
+        lowerWine.includes('nueva zelanda') || lowerWine.includes('new zealand')) {
+      return '🇳🇿';
+    }
+    if (lowerWine.includes('douro') || lowerWine.includes('alentejo') || lowerWine.includes('dão') ||
+        lowerWine.includes('portugal')) {
+      return '🇵🇹';
+    }
+    if (lowerWine.includes('mosel') || lowerWine.includes('rheingau') || lowerWine.includes('pfalz') ||
+        lowerWine.includes('alemania') || lowerWine.includes('germany')) {
+      return '🇩🇪';
+    }
+    if (lowerWine.includes('stellenbosch') || lowerWine.includes('paarl') || lowerWine.includes('sudáfrica') || 
+        lowerWine.includes('south africa')) {
+      return '🇿🇦';
+    }
+    if (lowerWine.includes('grecia') || lowerWine.includes('greece') || lowerWine.includes('santorini')) {
+      return '🇬🇷';
+    }
+    if (lowerWine.includes('georgia') || lowerWine.includes('kakheti')) {
+      return '🇬🇪';
     }
     
-    // Si no se encuentra el país, intentar extraer de la estructura del string
-    // Formato esperado: "name, type, winery, region, country"
-    const parts = wineString.split(", ");
-    if (parts.length >= 5) {
-      const countryPart = parts[4].toLowerCase().trim();
-      for (const [country, flag] of Object.entries(countryFlags)) {
-        if (countryPart.includes(country)) {
-          return flag;
-        }
-      }
-    }
-    
-    return '🍷'; // Icono de vino si no se identifica el país
+    return '🍷';
   };
+
+  // Extraer país del string de vino
+  const getCountryFromWine = (wineString: string): string => {
+    const flag = getCountryFlag(wineString);
+    const countryMap: {[key: string]: string} = {
+      '🇪🇸': 'España',
+      '🇫🇷': 'Francia',
+      '🇮🇹': 'Italia',
+      '🇦🇷': 'Argentina',
+      '🇨🇱': 'Chile',
+      '🇺🇸': 'Estados Unidos',
+      '🇦🇺': 'Australia',
+      '🇳🇿': 'Nueva Zelanda',
+      '🇵🇹': 'Portugal',
+      '🇩🇪': 'Alemania',
+      '🇿🇦': 'Sudáfrica',
+      '🇬🇷': 'Grecia',
+      '🇬🇪': 'Georgia',
+    };
+    return countryMap[flag] || 'Otros';
+  };
+
+  // Agrupar y ordenar vinos por país
+  const winesByCountry = recommendations.reduce((acc, wine) => {
+    const country = getCountryFromWine(wine);
+    if (!acc[country]) acc[country] = [];
+    acc[country].push(wine);
+    return acc;
+  }, {} as Record<string, string[]>);
+
+  const sortedCountries = Object.keys(winesByCountry).sort();
 
   return (
     <div className="flex flex-col max-w-4xl mx-auto p-6">
@@ -327,15 +407,14 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             <span className="text-2xl">🍇</span> Uvas que deberías probar
           </h3>
           <p className="text-gray-700 mb-4">
-            Estas uvas encajan perfectamente con tu perfil sensorial. Las hemos seleccionado considerando tu preferencia por vinos {result.potente >= 4 ? 'potentes y con cuerpo' : result.potente <= 2 ? 'ligeros y elegantes' : 'equilibrados'}, 
-            tu gusto por {result.acidez >= 4 ? 'la frescura y vivacidad' : result.acidez <= 2 ? 'vinos suaves y redondos' : 'un equilibrio entre frescura y suavidad'}, 
-            y tu inclinación {result.afrutado >= 4 ? 'hacia aromas frutales intensos' : result.afrutado <= 2 ? 'por perfiles más minerales y complejos' : 'por un balance aromático'}.
+            Estas uvas encajan perfectamente con tu perfil sensorial:
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="space-y-3">
             {recommendedGrapes.map((grape, index) => (
-              <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                {grape}
-              </span>
+              <div key={index} className="bg-red-50 p-4 rounded-lg border border-red-100">
+                <h4 className="font-semibold text-red-800 mb-1">{grape}</h4>
+                <p className="text-sm text-gray-700">{getGrapeDescription(grape)}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -345,14 +424,14 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             <span className="text-2xl">🌍</span> Regiones que van contigo
           </h3>
           <p className="text-gray-700 mb-4">
-            Estas regiones vinícolas producen vinos que se alinean con tus preferencias. Hemos considerado tu perfil de {result.tanico >= 4 ? 'taninos marcados' : result.tanico <= 2 ? 'taninos suaves' : 'estructura media'} 
-            y tu preferencia por {result.dulce >= 4 ? 'vinos con dulzor y untuosidad' : result.dulce <= 2 ? 'vinos secos y directos' : 'un toque de suavidad sin ser empalagosos'}.
+            Estas regiones vinícolas producen vinos que se alinean con tus preferencias:
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="space-y-3">
             {recommendedRegions.map((region, index) => (
-              <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                {region}
-              </span>
+              <div key={index} className="bg-red-50 p-4 rounded-lg border border-red-100">
+                <h4 className="font-semibold text-red-800 mb-1">{region}</h4>
+                <p className="text-sm text-gray-700">{getRegionDescription(region)}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -390,52 +469,59 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
               <p className="text-gray-700">No se encontraron vinos en la base de datos que coincidan con tu perfil. Intenta agregar más vinos a la base de datos.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {recommendations.map((wine, index) => {
-                const parts = wine.split(", ");
-                const name = parts[0];
-                const type = parts[1] || "";
-                const winery = parts[2] || "";
-                const region = parts[3] || "";
-                
-                // Buscar el ID del estilo en styleDetails para navegar
-                const matchingStyle = styleDetails.find(s => 
-                  cleanStyleName(s.name).toLowerCase() === type.toLowerCase() ||
-                  type.toLowerCase().includes(cleanStyleName(s.name).toLowerCase())
-                );
-                
-                return (
-                  <div 
-                    key={index} 
-                    className="bg-white border border-red-100 p-4 rounded-lg shadow-sm hover:shadow-md hover:border-red-300 transition-all cursor-pointer group"
-                    onClick={() => matchingStyle && navigate(`/wine-styles/${matchingStyle.id}`)}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
-                        <Wine className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xl">{getCountryFlag(wine)}</span>
-                          <p className="font-semibold text-gray-800 flex-1 group-hover:text-red-700 transition-colors">{name}</p>
+            <div className="space-y-6">
+              {sortedCountries.map((country) => (
+                <div key={country}>
+                  <h4 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
+                    <span className="text-2xl">{getCountryFlag(winesByCountry[country][0])}</span>
+                    {country}
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {winesByCountry[country].map((wine, index) => {
+                      const parts = wine.split(", ");
+                      const name = parts[0];
+                      const type = parts[1] || "";
+                      const winery = parts[2] || "";
+                      const region = parts[3] || "";
+                      
+                      // Buscar el ID del estilo en styleDetails para navegar
+                      const matchingStyle = styleDetails.find(s => 
+                        cleanStyleName(s.name).toLowerCase() === type.toLowerCase() ||
+                        type.toLowerCase().includes(cleanStyleName(s.name).toLowerCase())
+                      );
+                      
+                      return (
+                        <div 
+                          key={`${country}-${index}`}
+                          className="bg-white border border-red-100 p-4 rounded-lg shadow-sm hover:shadow-md hover:border-red-300 transition-all cursor-pointer group"
+                          onClick={() => matchingStyle && navigate(`/wine-styles/${matchingStyle.id}`)}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">
+                              <Wine className="h-4 w-4" />
+                            </div>
+                            <div className="flex-1">
+                              <p className="font-semibold text-gray-800 mb-1 group-hover:text-red-700 transition-colors">{name}</p>
+                              <p className="text-sm text-gray-600">{type}</p>
+                              <p className="text-sm text-gray-600">
+                                <span className="font-medium">Bodega:</span> {winery}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                <span className="font-medium">Región:</span> {region}
+                              </p>
+                              {matchingStyle && (
+                                <p className="text-xs text-red-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  Ver estilo {cleanStyleName(matchingStyle.name)} →
+                                </p>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-sm text-gray-600">{type}</p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">Bodega:</span> {winery}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">Región:</span> {region}
-                        </p>
-                        {matchingStyle && (
-                          <p className="text-xs text-red-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            Ver estilo {cleanStyleName(matchingStyle.name)} →
-                          </p>
-                        )}
-                      </div>
-                    </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           )}
         </div>
