@@ -15,9 +15,7 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
     if (!mapContainer.current) return;
 
     // Configurar token de Mapbox
-    // TODO: Reemplaza este token con tu propio token público de Mapbox
-    // Obtén tu token en: https://account.mapbox.com/access-tokens/
-    mapboxgl.accessToken = 'TU_TOKEN_PUBLICO_DE_MAPBOX_AQUI';
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZ29pa28td2luZXJpbSIsImEiOiJjbWdmM3R1anQwNHE5MmtyMW02Nmp1OTFhIn0.0PGiNnLfvOiZNghcsNeK4g';
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
