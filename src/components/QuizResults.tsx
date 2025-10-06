@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
 import { QuizResult, calculateCompatibility } from '../data/quizData';
@@ -9,7 +11,8 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
-import { Copy, Wine, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, ArrowRight } from 'lucide-react';
+import { Copy, Wine, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, ArrowRight, MapPin } from 'lucide-react';
+import RegionMap from './RegionMap';
 import { toast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -152,6 +155,40 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     };
     return descriptions[region] || `Una región que produce vinos alineados con tu perfil.`;
   };
+
+  // Coordenadas de las regiones para mapas
+  const getRegionCoordinates = (region: string): [number, number] => {
+    const coordinates: {[key: string]: [number, number]} = {
+      'Borgoña (Francia)': [4.8357, 47.0502],
+      'Burdeos (Francia)': [-0.5792, 44.8378],
+      'Toscana (Italia)': [11.2558, 43.7696],
+      'Rioja (España)': [-2.4450, 42.2871],
+      'Ribera del Duero (España)': [-4.0580, 41.6370],
+      'Rías Baixas (España)': [-8.6446, 42.4296],
+      'Priorat (España)': [0.7356, 41.1573],
+      'Piemonte (Italia)': [7.6869, 45.0522],
+      'Mosel (Alemania)': [6.6371, 49.9929],
+      'Napa Valley (EE.UU.)': [-122.2869, 38.5025],
+      'Mendoza (Argentina)': [-68.8458, -32.8895],
+      'Valle de Maipo (Chile)': [-70.6693, -33.4489],
+      'Marlborough (Nueva Zelanda)': [173.9654, -41.5135],
+      'Barossa Valley (Australia)': [138.9969, -34.5598]
+    };
+    return coordinates[region] || [0, 0];
+  };
+
+  // Agrupar regiones por país
+  const regionsByCountry = recommendedRegions.reduce((acc, region) => {
+    const country = region.split('(')[1]?.replace(')', '') || 'Otros';
+    if (!acc[country]) acc[country] = [];
+    acc[country].push(region);
+    return acc;
+  }, {} as Record<string, string[]>);
+
+  // Ordenar países por número de regiones (mayor a menor)
+  const sortedCountries = Object.entries(regionsByCountry)
+    .sort((a, b) => b[1].length - a[1].length)
+    .map(([country, regions]) => ({ country, regions }));
 
   // Configuración de los iconos para los estilos (mismo orden que WineStylesGrid)
   const getCardConfig = (styleName: string) => {
@@ -533,7 +570,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     return acc;
   }, {} as Record<string, string[]>);
 
-  const sortedCountries = Object.keys(winesByCountry).sort();
+  const sortedWineCountries = Object.keys(winesByCountry).sort();
 
   return (
     <div className="flex flex-col max-w-4xl mx-auto p-6">
@@ -663,49 +700,68 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
           <p className="text-gray-700 mb-6 text-lg">
             Estas regiones vinícolas producen vinos que se alinean con tus preferencias:
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {recommendedRegions.map((region, index) => {
-              // Obtener el emoji del país basado en la región
-              const getRegionEmoji = (regionName: string): string => {
-                const regionLower = regionName.toLowerCase();
-                if (regionLower.includes('francia') || regionLower.includes('france')) return '🇫🇷';
-                if (regionLower.includes('italia') || regionLower.includes('italy')) return '🇮🇹';
-                if (regionLower.includes('españa') || regionLower.includes('spain')) return '🇪🇸';
-                if (regionLower.includes('eeuu') || regionLower.includes('usa')) return '🇺🇸';
-                if (regionLower.includes('argentina')) return '🇦🇷';
-                if (regionLower.includes('chile')) return '🇨🇱';
-                if (regionLower.includes('australia')) return '🇦🇺';
-                if (regionLower.includes('nueva zelanda') || regionLower.includes('new zealand')) return '🇳🇿';
-                if (regionLower.includes('portugal')) return '🇵🇹';
-                if (regionLower.includes('alemania') || regionLower.includes('germany')) return '🇩🇪';
-                return '🌍';
-              };
-              
-              return (
-                <div 
-                  key={index} 
-                  className="group relative bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 p-6 rounded-2xl border-2 border-amber-200 hover:border-amber-400 hover:shadow-xl transition-all duration-300 overflow-hidden"
-                >
-                  {/* Efecto de brillo */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-[slide-in-right_1s_ease-in-out]"></div>
-                  
-                  {/* Contenido */}
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-red-600 rounded-full flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        {getRegionEmoji(region)}
+          
+          {sortedCountries.map(({ country, regions }, countryIndex) => {
+            // Obtener el emoji del país
+            const getCountryEmoji = (countryName: string): string => {
+              const countryLower = countryName.toLowerCase();
+              if (countryLower.includes('francia') || countryLower.includes('france')) return '🇫🇷';
+              if (countryLower.includes('italia') || countryLower.includes('italy')) return '🇮🇹';
+              if (countryLower.includes('españa') || countryLower.includes('spain')) return '🇪🇸';
+              if (countryLower.includes('eeuu') || countryLower.includes('usa')) return '🇺🇸';
+              if (countryLower.includes('argentina')) return '🇦🇷';
+              if (countryLower.includes('chile')) return '🇨🇱';
+              if (countryLower.includes('australia')) return '🇦🇺';
+              if (countryLower.includes('nueva zelanda') || countryLower.includes('new zealand')) return '🇳🇿';
+              if (countryLower.includes('portugal')) return '🇵🇹';
+              if (countryLower.includes('alemania') || countryLower.includes('germany')) return '🇩🇪';
+              return '🌍';
+            };
+            
+            return (
+              <div key={`country-${countryIndex}`} className="mb-8">
+                <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                  <span className="text-3xl">{getCountryEmoji(country)}</span>
+                  <span>{country}</span>
+                  <span className="text-sm font-normal text-gray-600">({regions.length} {regions.length === 1 ? 'región' : 'regiones'})</span>
+                </h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {regions.map((region: string, index: number) => (
+                    <div 
+                      key={index} 
+                      className="group relative bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 p-6 rounded-2xl border-2 border-amber-200 hover:border-amber-400 hover:shadow-xl transition-all duration-300 overflow-hidden"
+                    >
+                      {/* Efecto de brillo */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-[slide-in-right_1s_ease-in-out]"></div>
+                      
+                      {/* Contenido */}
+                      <div className="relative z-10">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <MapPin className="w-6 h-6 text-white" />
+                          </div>
+                          <h5 className="font-bold text-lg text-gray-900 group-hover:text-red-700 transition-colors flex-1">
+                            {region.split('(')[0].trim()}
+                          </h5>
+                        </div>
+                        <p className="text-sm text-gray-700 leading-relaxed mb-4">{getRegionDescription(region)}</p>
+                        
+                        {/* Mapa de la región */}
+                        <RegionMap 
+                          region={region} 
+                          coordinates={getRegionCoordinates(region)} 
+                        />
+                        
+                        {/* Indicador decorativo */}
+                        <div className="mt-4 h-1 w-0 bg-gradient-to-r from-amber-500 to-red-600 group-hover:w-full transition-all duration-500 rounded-full"></div>
                       </div>
-                      <h4 className="font-bold text-xl text-gray-900 group-hover:text-red-700 transition-colors flex-1">{region}</h4>
                     </div>
-                    <p className="text-sm text-gray-700 leading-relaxed">{getRegionDescription(region)}</p>
-                    
-                    {/* Indicador decorativo */}
-                    <div className="mt-4 h-1 w-0 bg-gradient-to-r from-amber-500 to-red-600 group-hover:w-full transition-all duration-500 rounded-full"></div>
-                  </div>
+                  ))}
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
 
         <div className="mb-8">
@@ -742,7 +798,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             </div>
           ) : (
             <div className="space-y-6">
-              {sortedCountries.map((country) => (
+              {sortedWineCountries.map((country) => (
                 <div key={country}>
                   <h4 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
                     <span className="text-2xl">{getCountryFlag(winesByCountry[country][0])}</span>
