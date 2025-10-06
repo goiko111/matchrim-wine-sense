@@ -15,8 +15,9 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
     if (!mapContainer.current) return;
 
     // Configurar token de Mapbox
-    // NOTA: El usuario debe añadir MAPBOX_PUBLIC_TOKEN en los secretos de Supabase Edge Functions
-    mapboxgl.accessToken = 'pk.eyJ1IjoibG92YWJsZS1kZXYiLCJhIjoiY20zc2RydmlqMGN3NjJrcjNtc244dXF0aiJ9.vJUhQmwl_Y-3gGb-_xnJZQ';
+    // TODO: Reemplaza este token con tu propio token público de Mapbox
+    // Obtén tu token en: https://account.mapbox.com/access-tokens/
+    mapboxgl.accessToken = 'TU_TOKEN_PUBLICO_DE_MAPBOX_AQUI';
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
