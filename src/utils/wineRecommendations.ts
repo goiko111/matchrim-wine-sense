@@ -67,22 +67,36 @@ export const getWineRecommendationsFromDB = async (
   limit: number = 10
 ): Promise<WineRecommendation[]> => {
   try {
-    // Fetch all wines from database
-    const { data: wines, error } = await supabase
-      .from('wines')
-      .select('*');
+    // Fetch wines in batches to handle large datasets
+    const pageSize = 1000;
+    let from = 0;
+    let allWines: any[] = [];
+    
+    while (true) {
+      const { data: wines, error } = await supabase
+        .from('wines')
+        .select('*')
+        .range(from, from + pageSize - 1);
 
-    if (error) {
-      console.error('Error fetching wines:', error);
-      return [];
+      if (error) {
+        console.error('Error fetching wines:', error);
+        break;
+      }
+
+      if (!wines || wines.length === 0) break;
+      
+      allWines = allWines.concat(wines);
+      
+      if (wines.length < pageSize) break;
+      from += pageSize;
     }
 
-    if (!wines || wines.length === 0) {
+    if (allWines.length === 0) {
       return [];
     }
 
     // Calculate compatibility for each wine
-    const recommendations: WineRecommendation[] = wines.map(wine => {
+    const recommendations: WineRecommendation[] = allWines.map(wine => {
       const compatibilityScore = calculateCompatibility(userProfile, wine);
       
       return {
@@ -110,36 +124,59 @@ export const getWineRecommendationsFromDB = async (
 };
 
 /**
- * Get diverse wine recommendations (different styles/regions)
+ * Get diverse wine recommendations (different wines, no repetitions)
  */
 export const getDiverseWineRecommendations = async (
   userProfile: UserProfile,
   limit: number = 10
 ): Promise<WineRecommendation[]> => {
-  const allRecommendations = await getWineRecommendationsFromDB(userProfile, 50);
+  const allRecommendations = await getWineRecommendationsFromDB(userProfile, 100);
   
   if (allRecommendations.length === 0) return [];
 
-  // Group by style to ensure diversity
-  const byStyle = allRecommendations.reduce((acc, rec) => {
-    const style = rec.wine.estilo;
-    if (!acc[style]) acc[style] = [];
-    acc[style].push(rec);
+  // Asegurar que no hay vinos duplicados (por ID)
+  const uniqueWines = new Map<string, WineRecommendation>();
+  
+  for (const rec of allRecommendations) {
+    if (!uniqueWines.has(rec.wine.id)) {
+      uniqueWines.set(rec.wine.id, rec);
+    }
+  }
+  
+  const uniqueRecommendations = Array.from(uniqueWines.values());
+
+  // Dividir por región para diversidad geográfica
+  const byRegion = uniqueRecommendations.reduce((acc, rec) => {
+    const region = rec.wine.region || 'Desconocida';
+    if (!acc[region]) acc[region] = [];
+    acc[region].push(rec);
     return acc;
   }, {} as Record<string, WineRecommendation[]>);
 
   const diverseRecommendations: WineRecommendation[] = [];
-  const maxPerStyle = Math.max(1, Math.floor(limit / Object.keys(byStyle).length));
-
-  // Take top wines from each style
-  for (const style in byStyle) {
-    const styleRecs = byStyle[style].slice(0, maxPerStyle);
-    diverseRecommendations.push(...styleRecs);
+  const regions = Object.keys(byRegion);
+  
+  // Tomar 1-2 vinos de cada región de forma rotativa
+  let round = 0;
+  while (diverseRecommendations.length < limit && round < 10) {
+    for (const region of regions) {
+      if (diverseRecommendations.length >= limit) break;
+      
+      const regionWines = byRegion[region];
+      const index = round % regionWines.length;
+      
+      const candidate = regionWines[index];
+      // Verificar que no esté ya añadido
+      if (!diverseRecommendations.some(existing => existing.wine.id === candidate.wine.id)) {
+        diverseRecommendations.push(candidate);
+      }
+    }
+    round++;
   }
 
-  // Fill remaining slots with best overall matches
-  while (diverseRecommendations.length < limit && diverseRecommendations.length < allRecommendations.length) {
-    const remaining = allRecommendations.find(rec => 
+  // Si aún faltan, rellenar con los mejores matches restantes
+  while (diverseRecommendations.length < limit && diverseRecommendations.length < uniqueRecommendations.length) {
+    const remaining = uniqueRecommendations.find(rec => 
       !diverseRecommendations.some(existing => existing.wine.id === rec.wine.id)
     );
     if (remaining) {
