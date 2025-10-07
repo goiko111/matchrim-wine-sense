@@ -58,41 +58,173 @@ const GRAPE_VARIETIES = [
 
 // Lista exhaustiva de regiones vitivinícolas
 const WINE_REGIONS = [
-  // España
+  // España - DOs y regiones principales
   "Rioja", "Ribera del Duero", "Priorat", "Rías Baixas", "Rueda", "Toro", "Bierzo", "Jumilla",
   "Penedès", "Montsant", "Somontano", "Navarra", "Valdepeñas", "La Mancha", "Utiel-Requena",
   "Yecla", "Alicante", "Valencia", "Campo de Borja", "Cariñena", "Calatayud", "Méntrida",
-  // Francia
-  "Bordeaux", "Borgoña", "Champagne", "Valle del Ródano", "Valle del Loira", "Alsacia",
-  "Languedoc-Roussillon", "Provenza", "Beaujolais", "Jura", "Saboya", "Sud-Ouest",
-  "Pomerol", "Saint-Émilion", "Médoc", "Graves", "Sauternes", "Chablis", "Côte de Nuits",
-  "Côte de Beaune", "Châteauneuf-du-Pape", "Hermitage", "Côte-Rôtie", "Condrieu",
-  // Italia
-  "Toscana", "Piamonte", "Veneto", "Sicilia", "Puglia", "Friuli-Venezia Giulia", "Lombardía",
-  "Chianti", "Brunello di Montalcino", "Barolo", "Barbaresco", "Amarone", "Valpolicella",
-  "Franciacorta", "Montepulciano d'Abruzzo", "Primitivo di Manduria",
-  // Portugal
-  "Douro", "Alentejo", "Dão", "Vinho Verde", "Bairrada", "Lisboa", "Tejo", "Península de Setúbal",
-  // Alemania
-  "Mosel", "Rheingau", "Pfalz", "Rheinhessen", "Baden", "Franconia", "Nahe",
-  // Argentina
-  "Mendoza", "Salta", "San Juan", "Patagonia", "Valle de Uco", "Luján de Cuyo", "Cafayate",
-  // Chile
-  "Valle de Maipo", "Valle de Colchagua", "Valle de Casablanca", "Valle de Aconcagua",
-  "Valle del Maule", "Valle de Curicó", "Valle de Limarí", "Valle de Elqui",
-  // Estados Unidos
-  "Napa Valley", "Sonoma", "Paso Robles", "Santa Barbara", "Willamette Valley",
-  "Columbia Valley", "Finger Lakes", "Long Island",
-  // Australia
-  "Barossa Valley", "Margaret River", "Hunter Valley", "McLaren Vale", "Yarra Valley",
-  "Coonawarra", "Clare Valley", "Adelaide Hills",
+  "Txakoli", "Getariako Txakolina", "Bizkaiko Txakolina", "Arabako Txakolina",
+  "Monterrei", "Valdeorras", "Ribeira Sacra", "Ribeiro", "Condado de Huelva",
+  "Jerez-Xérès-Sherry", "Manzanilla-Sanlúcar de Barrameda", "Montilla-Moriles",
+  "Málaga", "Sierras de Málaga", "Granada", "Almansa", "Bullas", "Cigales", "Arlanza",
+  "Arribes", "Tierra de León", "Tierra del Vino de Zamora", "Valtiendas", "Ribera del Guadiana",
+  "Manchuela", "Uclés", "Almansa", "Costers del Segre", "Conca de Barberà", "Empordà",
+  "Alella", "Pla de Bages", "Tarragona", "Terra Alta", "Catalunya", "Cava",
+  
+  // Francia - Regiones y appellations principales
+  "Bordeaux", "Médoc", "Haut-Médoc", "Pauillac", "Margaux", "Saint-Julien", "Saint-Estèphe",
+  "Pomerol", "Saint-Émilion", "Graves", "Pessac-Léognan", "Sauternes", "Barsac", "Entre-Deux-Mers",
+  "Côtes de Bordeaux", "Fronsac", "Canon-Fronsac", "Lalande-de-Pomerol",
+  "Borgoña", "Chablis", "Côte de Nuits", "Côte de Beaune", "Côte Chalonnaise", "Mâconnais",
+  "Gevrey-Chambertin", "Vosne-Romanée", "Nuits-Saint-Georges", "Beaune", "Pommard", "Volnay",
+  "Meursault", "Puligny-Montrachet", "Chassagne-Montrachet", "Pouilly-Fuissé",
+  "Champagne", "Montagne de Reims", "Vallée de la Marne", "Côte des Blancs",
+  "Valle del Ródano", "Côte-Rôtie", "Condrieu", "Hermitage", "Crozes-Hermitage", "Saint-Joseph",
+  "Cornas", "Châteauneuf-du-Pape", "Gigondas", "Vacqueyras", "Côtes du Rhône", "Tavel",
+  "Valle del Loira", "Sancerre", "Pouilly-Fumé", "Muscadet", "Vouvray", "Chinon", "Bourgueil",
+  "Saumur", "Anjou", "Savennières", "Coteaux du Layon",
+  "Alsacia", "Alsace Grand Cru",
+  "Languedoc-Roussillon", "Corbières", "Minervois", "Pic Saint-Loup", "Faugères", "Saint-Chinian",
+  "Côtes du Roussillon", "Collioure", "Banyuls",
+  "Provenza", "Côtes de Provence", "Bandol", "Cassis", "Palette",
+  "Beaujolais", "Morgon", "Fleurie", "Moulin-à-Vent", "Chiroubles", "Brouilly",
+  "Jura", "Arbois", "Côtes du Jura", "L'Étoile", "Château-Chalon",
+  "Saboya", "Vin de Savoie", "Roussette de Savoie", "Crépy",
+  "Sud-Ouest", "Cahors", "Madiran", "Jurançon", "Gaillac", "Bergerac", "Monbazillac",
+  
+  // Italia - Regiones y DOCs principales
+  "Toscana", "Chianti", "Chianti Classico", "Brunello di Montalcino", "Vino Nobile di Montepulciano",
+  "Bolgheri", "Carmignano", "Vernaccia di San Gimignano", "Montecucco", "Morellino di Scansano",
+  "Piamonte", "Barolo", "Barbaresco", "Barbera d'Asti", "Barbera d'Alba", "Dolcetto d'Alba",
+  "Gavi", "Roero", "Asti", "Moscato d'Asti", "Langhe", "Monferrato",
+  "Veneto", "Valpolicella", "Amarone della Valpolicella", "Soave", "Bardolino", "Prosecco",
+  "Conegliano Valdobbiadene", "Lugana", "Custoza",
+  "Friuli-Venezia Giulia", "Collio", "Colli Orientali del Friuli", "Friuli Isonzo", "Friuli Grave",
+  "Lombardía", "Franciacorta", "Oltrepò Pavese", "Valtellina", "Sforzato di Valtellina",
+  "Trentino-Alto Adige", "Alto Adige", "Trentino", "Teroldego Rotaliano", "Trento DOC",
+  "Sicilia", "Etna", "Marsala", "Nero d'Avola", "Cerasuolo di Vittoria", "Pantelleria",
+  "Puglia", "Primitivo di Manduria", "Salice Salentino", "Castel del Monte", "Gioia del Colle",
+  "Campania", "Taurasi", "Fiano di Avellino", "Greco di Tufo", "Aglianico del Taburno",
+  "Abruzzo", "Montepulciano d'Abruzzo", "Trebbiano d'Abruzzo",
+  "Marche", "Verdicchio dei Castelli di Jesi", "Rosso Conero", "Rosso Piceno",
+  "Umbria", "Sagrantino di Montefalco", "Orvieto", "Torgiano",
+  "Lazio", "Frascati", "Est! Est!! Est!!!",
+  "Emilia-Romagna", "Lambrusco", "Sangiovese di Romagna", "Albana di Romagna",
+  "Sardegna", "Vermentino di Gallura", "Cannonau di Sardegna", "Carignano del Sulcis",
+  
+  // Portugal - Regiões e DOCs
+  "Douro", "Porto", "Dão", "Alentejo", "Vinho Verde", "Bairrada", "Lisboa", "Tejo",
+  "Península de Setúbal", "Madeira", "Pico", "Douro Superior", "Távora-Varosa",
+  "Trás-os-Montes", "Beira Interior", "Ribatejo", "Palmela", "Bucelas", "Carcavelos", "Colares",
+  
+  // Alemania - Regiones principales
+  "Mosel", "Rheingau", "Rheinhessen", "Pfalz", "Baden", "Württemberg", "Franken",
+  "Nahe", "Mittelrhein", "Ahr", "Saale-Unstrut", "Sachsen", "Hessische Bergstraße",
+  
+  // Austria
+  "Wachau", "Kremstal", "Kamptal", "Weinviertel", "Burgenland", "Neusiedlersee",
+  "Carnuntum", "Thermenregion", "Steiermark", "Südsteiermark",
+  
+  // Argentina - Regiones principales
+  "Mendoza", "Luján de Cuyo", "Valle de Uco", "Maipú", "San Rafael",
+  "Salta", "Cafayate", "Valles Calchaquíes",
+  "San Juan", "Tulum Valley", "Ullum Valley",
+  "Patagonia", "Neuquén", "Río Negro",
+  "La Rioja (Argentina)", "Catamarca",
+  
+  // Chile - Valles principales
+  "Valle de Maipo", "Valle de Colchagua", "Valle de Cachapoal", "Valle de Casablanca",
+  "Valle de Aconcagua", "Valle del Maule", "Valle de Curicó", "Valle de Limarí",
+  "Valle de Elqui", "Valle de Leyda", "Valle de San Antonio", "Valle de Itata",
+  "Valle del Bío-Bío", "Valle del Choapa",
+  
+  // Estados Unidos - Regiones principales
+  "Napa Valley", "Sonoma County", "Russian River Valley", "Dry Creek Valley", "Alexander Valley",
+  "Paso Robles", "Santa Barbara County", "Santa Ynez Valley", "Santa Maria Valley",
+  "Santa Cruz Mountains", "Monterey", "Carneros", "Stags Leap District", "Oakville",
+  "Rutherford", "Howell Mountain", "Mount Veeder", "Diamond Mountain",
+  "Willamette Valley", "Columbia Valley", "Walla Walla Valley", "Yakima Valley",
+  "Finger Lakes", "Long Island", "North Fork", "Hamptons",
+  "Lodi", "Sierra Foothills", "Mendocino", "Lake County", "El Dorado",
+  
+  // Australia - Regiones principales
+  "Barossa Valley", "McLaren Vale", "Adelaide Hills", "Clare Valley", "Coonawarra",
+  "Margaret River", "Hunter Valley", "Yarra Valley", "Mornington Peninsula",
+  "Heathcote", "Rutherglen", "Goulburn Valley", "Grampians", "Pyrenees",
+  "Eden Valley", "Langhorne Creek", "Riverland", "Mudgee", "Orange",
+  "Tasmania", "Coal River Valley", "Tamar Valley",
+  
   // Nueva Zelanda
-  "Marlborough", "Central Otago", "Hawke's Bay", "Martinborough", "Waipara Valley",
+  "Marlborough", "Central Otago", "Hawke's Bay", "Martinborough", "Wairarapa",
+  "Waipara Valley", "Canterbury", "Gisborne", "Nelson", "Auckland",
+  
   // Sudáfrica
-  "Stellenbosch", "Paarl", "Constantia", "Swartland", "Franschhoek", "Walker Bay",
-  // Otros países
-  "Tokaj (Hungría)", "Santorini (Grecia)", "Nemea (Grecia)", "Finger Lakes (USA)",
-  "Wachau (Austria)", "Kamptal (Austria)", "Goriška Brda (Eslovenia)"
+  "Stellenbosch", "Paarl", "Franschhoek", "Constantia", "Swartland", "Walker Bay",
+  "Elgin", "Hemel-en-Aarde Valley", "Robertson", "Worcester", "Durbanville",
+  "Tulbagh", "Elim", "Cape South Coast",
+  
+  // Grecia
+  "Santorini", "Nemea", "Naoussa", "Mantinia", "Paros", "Samos", "Rapsani",
+  "Amyndeo", "Goumenissa", "Cephalonia",
+  
+  // Hungría
+  "Tokaj", "Eger", "Villány", "Szekszárd", "Somló", "Badacsony",
+  
+  // Rumania
+  "Dealu Mare", "Murfatlar", "Cotnari", "Târnave",
+  
+  // Bulgaria
+  "Thracian Valley", "Danube Plain", "Black Sea Region",
+  
+  // Croacia
+  "Istria", "Dalmacia", "Slavonia", "Plavac Mali", "Pelješac",
+  
+  // Eslovenia
+  "Goriška Brda", "Vipava Valley", "Slovenian Istria", "Štajerska",
+  
+  // Israel
+  "Galilee", "Golan Heights", "Judean Hills", "Negev",
+  
+  // Líbano
+  "Bekaa Valley", "Mount Lebanon",
+  
+  // Uruguay
+  "Canelones", "Montevideo", "Maldonado",
+  
+  // Brasil
+  "Vale dos Vinhedos", "Serra Gaúcha", "Campanha",
+  
+  // México
+  "Valle de Guadalupe", "Ensenada", "San Vicente",
+  
+  // Canadá
+  "Okanagan Valley", "Niagara Peninsula", "Prince Edward County",
+  
+  // Inglaterra
+  "Sussex", "Kent", "Hampshire", "Cornwall",
+  
+  // Suiza
+  "Valais", "Vaud", "Ticino", "Geneva",
+  
+  // República Checa
+  "Moravia", "Bohemia",
+  
+  // Eslovaquia
+  "Malokarpatská", "Južnoslovenská",
+  
+  // Georgia
+  "Kakheti", "Imereti", "Kartli",
+  
+  // Turquía
+  "Thrace", "Anatolia Central", "Aegean",
+  
+  // Marruecos
+  "Meknès", "Casablanca", "Essaouira",
+  
+  // China
+  "Ningxia", "Shandong", "Hebei", "Shanxi",
+  
+  // Japón
+  "Yamanashi", "Nagano", "Hokkaido"
 ].sort();
 
 const WineSearch = () => {
