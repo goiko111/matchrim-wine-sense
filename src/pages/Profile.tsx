@@ -275,12 +275,12 @@ const Profile = () => {
                 <h3 className="text-xl font-semibold text-red-800 mb-4 flex items-center gap-2">
                   <span className="text-2xl">📊</span> Tu radar sensorial
                 </h3>
-                <div className="h-80 bg-white rounded-lg p-4 shadow-md">
-                  <ChartContainer config={chartConfig} className="h-full w-full">
-                    <RadarChart data={chartData}>
+                <div className="h-80 bg-white rounded-lg p-6 shadow-md flex items-center justify-center">
+                  <ChartContainer config={chartConfig} className="w-full max-w-md aspect-square">
+                    <RadarChart data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                       <PolarGrid stroke="#be123c33" />
-                      <PolarAngleAxis dataKey="attribute" tick={{ fill: '#be123c' }} />
-                      <PolarRadiusAxis domain={[1, 5]} stroke="#be123c" />
+                      <PolarAngleAxis dataKey="attribute" tick={{ fill: '#be123c', fontSize: 12 }} />
+                      <PolarRadiusAxis domain={[1, 5]} stroke="#be123c" tick={{ fontSize: 10 }} />
                       <Radar 
                         name="Perfil" 
                         dataKey="value" 
