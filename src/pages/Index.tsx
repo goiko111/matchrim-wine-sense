@@ -83,7 +83,7 @@ const Index = () => {
               <Button 
                 size="lg" 
                 className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-12 py-6 text-xl rounded-2xl shadow-2xl transform hover:scale-105 transition-smooth"
-                onClick={() => navigate('/registration')}
+                onClick={() => navigate('/matchrim')}
               >
                 <Brain className="mr-3 h-6 w-6" />
                 Hacer mi test gratis
