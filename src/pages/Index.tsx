@@ -779,7 +779,22 @@ const Index = () => {
               <Button 
                 variant="outline"
                 size="lg" 
-                className="border-white text-white hover:bg-white hover:text-primary font-bold px-12 py-6 text-lg rounded-full"
+                className="border-primary text-primary hover:bg-primary hover:text-white font-bold px-12 py-6 text-lg rounded-full shadow-lg transition-smooth"
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: 'Matchrim',
+                      text: 'Descubre qué vinos son perfectos para ti con Matchrim',
+                      url: window.location.origin
+                    }).catch(() => {});
+                  } else {
+                    navigator.clipboard.writeText(window.location.origin);
+                    toast({
+                      title: "Enlace copiado",
+                      description: "El enlace de Matchrim se ha copiado al portapapeles",
+                    });
+                  }
+                }}
               >
                 Compartir Matchrim
                 <Share2 className="ml-2 h-6 w-6" />
