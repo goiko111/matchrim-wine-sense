@@ -46,12 +46,21 @@ const WineStylesGrid = () => {
       if (error) throw error;
 
       if (!data || data.length === 0) {
-        console.error('No se encontraron estilos en la base de datos');
-        setIsLoading(false);
+        console.warn('Tabla wine_styles vacía. Usando estilos por defecto.');
+        const placeholderStyles: WineStyle[] = winerimStyles.map((name, idx) => ({
+          id: `placeholder-${idx}`,
+          name,
+          description: 'Próximamente',
+          potente: 0,
+          acidez: 0,
+          dulce: 0,
+          tanico: 0,
+          afrutado: 0,
+        }));
+        setStyles(placeholderStyles);
         toast({
-          title: "Error",
-          description: "No se pudieron cargar los estilos de vino",
-          variant: "destructive"
+          title: "Estilos por defecto",
+          description: "Mostrando estilos mientras se cargan los datos",
         });
         return;
       }
@@ -80,12 +89,21 @@ const WineStylesGrid = () => {
       console.log('Estilos cargados:', sortedStyles.length, 'de', winerimStyles.length);
       
       if (sortedStyles.length === 0) {
-        console.error('No se encontraron coincidencias de estilos');
-        setIsLoading(false);
+        console.warn('No se encontraron coincidencias de estilos. Usando estilos por defecto.');
+        const placeholderStyles: WineStyle[] = winerimStyles.map((name, idx) => ({
+          id: `placeholder-${idx}`,
+          name,
+          description: 'Próximamente',
+          potente: 0,
+          acidez: 0,
+          dulce: 0,
+          tanico: 0,
+          afrutado: 0,
+        }));
+        setStyles(placeholderStyles);
         toast({
-          title: "Error",
-          description: "No se encontraron los estilos de vino configurados",
-          variant: "destructive"
+          title: "Estilos por defecto",
+          description: "Mostrando estilos mientras se cargan los datos",
         });
         return;
       }
