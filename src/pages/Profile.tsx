@@ -115,162 +115,135 @@ const Profile = () => {
   const recommendedGrapes = currentProfile ? generateGrapeRecommendations(currentProfile) : [];
   const recommendedRegions = currentProfile ? generateRegionRecommendations(currentProfile) : [];
 
-  const copyProfileToClipboard = () => {
-    navigator.clipboard.writeText(profileName);
-    toast({
-      title: "¡Perfil copiado!",
-      description: `Tu perfil ${profileName} está listo para usar en Winerim.`,
-    });
+  // Wine style details state
+  const [styleDetails, setStyleDetails] = useState([]);
+  const [isLoadingStyles, setIsLoadingStyles] = useState(true);
+
+  // Fetch wine style details from database
+  useEffect(() => {
+    const fetchStyleDetails = async () => {
+      if (!currentProfile || wineStyles.length === 0) {
+        setIsLoadingStyles(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('wine_styles')
+          .select('*')
+          .in('name', wineStyles);
+
+        if (error) throw error;
+        
+        // Ordenar según el orden de wineStyles
+        const ordered = wineStyles
+          .map(styleName => data?.find(s => s.name === styleName))
+          .filter(Boolean);
+        
+        setStyleDetails(ordered);
+      } catch (error) {
+        console.error('Error fetching wine styles:', error);
+      } finally {
+        setIsLoadingStyles(false);
+      }
+    };
+
+    fetchStyleDetails();
+  }, [currentProfile, wineStyles]);
+
+  // Configuración de los iconos para los estilos
+  const getCardConfig = (styleName) => {
+    const configs = {
+      'Burbuja Fresca': { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-200', icon: Droplet, iconColor: 'text-white' },
+      'Brut Elegante': { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-600', icon: Diamond, iconColor: 'text-white' },
+      'Blanco Vital': { bg: 'bg-yellow-50', border: 'border-yellow-100', iconBg: 'bg-yellow-300', icon: Zap, iconColor: 'text-white' },
+      'Blanco Goloso': { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Grape, iconColor: 'text-white' },
+      'Dulce Intenso': { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Flame, iconColor: 'text-white' },
+      'Oxidativo/Maduro': { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-700', icon: Clock, iconColor: 'text-white' },
+      'Experimental': { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-400', icon: Beaker, iconColor: 'text-white' },
+      'Vino de Terruño': { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-500', icon: Mountain, iconColor: 'text-white' },
+      'Tinto Versátil': { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Shield, iconColor: 'text-white' },
+      'Tinto de Estructura': { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-800', icon: Sword, iconColor: 'text-white' },
+      'Tinto Goloso': { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-600', icon: Heart, iconColor: 'text-white' },
+      'Dulce Ligero': { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Feather, iconColor: 'text-white' },
+      'Blanco de Carácter': { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Wine, iconColor: 'text-white' },
+      'Rosado Ligero': { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-300', icon: Sun, iconColor: 'text-white' },
+      'Rosado Gastronómico': { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-500', icon: Utensils, iconColor: 'text-white' },
+      'Tinto Ligero': { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Leaf, iconColor: 'text-white' }
+    };
+    return configs[styleName] || { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-500', icon: Wine, iconColor: 'text-white' };
   };
 
-  if (!user) {
-    return null;
-  }
+  // Descripciones detalladas de uvas
+  const getGrapeDescription = (grape) => {
+    const descriptions = {
+      'Chardonnay': `Versátil y elegante, esta uva te ofrece ${currentProfile?.potente >= 3 ? 'cuerpo y estructura' : 'finesse'}, con ${currentProfile?.acidez >= 3 ? 'buena acidez' : 'redondez'} que se adapta a tu perfil.`,
+      'Cabernet Sauvignon': `Potente y estructurada, ideal por tu gusto por ${currentProfile?.tanico >= 3 ? 'taninos marcados' : 'vinos con carácter'} y ${currentProfile?.potente >= 3 ? 'intensidad' : 'equilibrio'}.`,
+      'Merlot': `Suave y afrutada, encaja con tu preferencia por ${currentProfile?.afrutado >= 3 ? 'aromas frutales' : 'vinos amables'} y ${currentProfile?.tanico <= 3 ? 'taninos sedosos' : 'estructura equilibrada'}.`,
+      'Pinot Noir': `Elegante y delicada, perfecta por tu inclinación hacia ${currentProfile?.potente <= 3 ? 'vinos sutiles' : 'complejidad'} con ${currentProfile?.acidez >= 3 ? 'frescura vibrante' : 'equilibrio'}.`,
+      'Sauvignon Blanc': `Fresca y aromática, te va bien por tu gusto por ${currentProfile?.acidez >= 3 ? 'acidez marcada' : 'vivacidad'} y ${currentProfile?.afrutado >= 3 ? 'expresión frutal' : 'carácter definido'}.`,
+      'Syrah': `Especiada y compleja, se alinea con tu perfil ${currentProfile?.potente >= 3 ? 'potente' : 'estructurado'} y ${currentProfile?.tanico >= 3 ? 'tánico' : 'equilibrado'}.`,
+      'Riesling': `Aromática y vibrante, combina ${currentProfile?.acidez >= 3 ? 'acidez refrescante' : 'equilibrio'} con ${currentProfile?.dulce >= 2 ? 'notas dulces' : 'precisión'} que te gustan.`,
+      'Tempranillo': `La gran uva española que ofrece ${currentProfile?.potente >= 3 ? 'estructura' : 'elegancia'} y ${currentProfile?.tanico >= 3 ? 'taninos firmes' : 'suavidad'} según tu preferencia.`,
+      'Malbec': `Intensa y frutal, perfecta por tu gusto por ${currentProfile?.afrutado >= 3 ? 'aromas intensos' : 'expresión frutal'} y ${currentProfile?.potente >= 3 ? 'cuerpo generoso' : 'estructura media'}.`,
+      'Garnacha': `Generosa y especiada, se adapta a tu perfil ${currentProfile?.dulce >= 2 ? 'con dulzor' : 'equilibrado'} y ${currentProfile?.afrutado >= 3 ? 'frutal' : 'complejo'}.`,
+      'Albariño': `Atlántica y refrescante, ideal por tu preferencia por ${currentProfile?.acidez >= 3 ? 'frescura vibrante' : 'vinos vivos'} y ${currentProfile?.afrutado >= 3 ? 'aromas frutales' : 'carácter mineral'}.`,
+      'Sangiovese': `Estructurada y elegante, combina ${currentProfile?.acidez >= 3 ? 'acidez marcada' : 'vivacidad'} con ${currentProfile?.tanico >= 3 ? 'taninos firmes' : 'estructura media'}.`,
+      'Nebbiolo': `Potente y compleja, perfecta por tu gusto por ${currentProfile?.tanico >= 4 ? 'taninos poderosos' : 'estructura seria'} y ${currentProfile?.potente >= 3 ? 'intensidad' : 'carácter'}.`,
+      'Gewürztraminer': `Aromática y exótica, se alinea con tu perfil ${currentProfile?.dulce >= 3 ? 'con dulzor' : 'aromático'} y ${currentProfile?.afrutado >= 4 ? 'muy frutal' : 'expresivo'}.`,
+      'Mencía': `Fresca y frutal, ideal por tu preferencia por ${currentProfile?.acidez >= 3 ? 'frescura' : 'vivacidad'} y ${currentProfile?.afrutado >= 3 ? 'expresión frutal' : 'elegancia'}.`,
+      'Godello': `Atlántica y mineral, encaja con tu gusto por ${currentProfile?.acidez >= 3 ? 'acidez vibrante' : 'frescura'} y ${currentProfile?.potente >= 2 ? 'cuerpo medio' : 'elegancia'}.`
+    };
+    return descriptions[grape] || `Una uva que se adapta perfectamente a tu perfil sensorial.`;
+  };
 
-  // Organize recommendations by country
-  const spanishWines = currentProfile?.wine_recommendations?.filter(wine => wine.country === "España") || [];
-  const internationalWines = currentProfile?.wine_recommendations?.filter(wine => wine.country !== "España") || [];
+  // Descripciones detalladas de regiones
+  const getRegionDescription = (region) => {
+    const descriptions = {
+      'Borgoña (Francia)': `Cuna del Pinot Noir y Chardonnay, produce vinos ${currentProfile?.potente <= 3 ? 'elegantes y sutiles' : 'con carácter'} con ${currentProfile?.acidez >= 3 ? 'excelente acidez' : 'equilibrio'}.`,
+      'Burdeos (Francia)': `Región de grandes tintos estructurados, perfecta por tu gusto por ${currentProfile?.tanico >= 3 ? 'taninos firmes' : 'vinos estructurados'} y ${currentProfile?.potente >= 3 ? 'potencia' : 'equilibrio'}.`,
+      'Toscana (Italia)': `Hogar del Sangiovese, ofrece vinos con ${currentProfile?.acidez >= 3 ? 'acidez vibrante' : 'frescura'} y ${currentProfile?.tanico >= 3 ? 'estructura tánica' : 'elegancia'}.`,
+      'Rioja (España)': `La región española icónica que produce vinos ${currentProfile?.potente >= 3 ? 'con cuerpo' : 'equilibrados'} y ${currentProfile?.tanico >= 2 ? 'taninos pulidos' : 'suaves'}.`,
+      'Ribera del Duero (España)': `Tintos potentes y concentrados, ideales por tu preferencia por ${currentProfile?.potente >= 3 ? 'intensidad' : 'estructura'} y ${currentProfile?.tanico >= 3 ? 'taninos marcados' : 'carácter'}.`,
+      'Rías Baixas (España)': `La tierra del Albariño, perfecta por tu gusto por ${currentProfile?.acidez >= 4 ? 'acidez refrescante' : 'frescura atlántica'} y ${currentProfile?.afrutado >= 3 ? 'aromas frutales' : 'elegancia'}.`,
+      'Priorat (España)': `Vinos de terruño único, muy ${currentProfile?.potente >= 4 ? 'potentes' : 'concentrados'} con ${currentProfile?.tanico >= 4 ? 'taninos poderosos' : 'estructura seria'}.`,
+      'Piemonte (Italia)': `Hogar del Nebbiolo, produce vinos con ${currentProfile?.tanico >= 4 ? 'taninos serios' : 'estructura'} y ${currentProfile?.acidez >= 3 ? 'acidez elevada' : 'vivacidad'}.`,
+      'Mosel (Alemania)': `Rieslings elegantes con ${currentProfile?.acidez >= 4 ? 'acidez brillante' : 'frescura'} y ${currentProfile?.dulce >= 2 ? 'dulzor equilibrado' : 'pureza frutal'}.`,
+      'Napa Valley (EE.UU.)': `Vinos ${currentProfile?.potente >= 4 ? 'muy potentes' : 'generosos'} y ${currentProfile?.afrutado >= 3 ? 'frutales' : 'expresivos'} con carácter californiano.`,
+      'Mendoza (Argentina)': `Malbecs intensos que combinan ${currentProfile?.afrutado >= 3 ? 'fruta generosa' : 'expresión frutal'} con ${currentProfile?.potente >= 3 ? 'cuerpo robusto' : 'estructura media'}.`,
+      'Valle de Maipo (Chile)': `Cabernets estructurados con ${currentProfile?.potente >= 3 ? 'potencia' : 'equilibrio'} y ${currentProfile?.tanico >= 3 ? 'taninos firmes' : 'estructura definida'}.`,
+      'Marlborough (Nueva Zelanda)': `Sauvignon Blancs con ${currentProfile?.acidez >= 4 ? 'acidez brillante' : 'frescura intensa'} y ${currentProfile?.afrutado >= 4 ? 'aromas explosivos' : 'expresión frutal'}.`,
+      'Barossa Valley (Australia)': `Shiraz potentes y especiadas, ideales por tu gusto por ${currentProfile?.potente >= 4 ? 'vinos con músculo' : 'intensidad'} y ${currentProfile?.afrutado >= 3 ? 'fruta madura' : 'carácter frutal'}.`
+    };
+    return descriptions[region] || `Una región que produce vinos alineados con tu perfil.`;
+  };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="w-16 h-16 flex items-center justify-center bg-red-100 rounded-full">
-            <img 
-              src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" 
-              alt="Logo Winerim" 
-              className="h-8 w-8"
-            />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-red-900">Mi Perfil Matchrim</h1>
-            <p className="text-red-600">Descubre y gestiona tu perfil sensorial de vino</p>
-          </div>
-        </div>
+  // Agrupar regiones por país
+  const regionsByCountry = recommendedRegions.reduce((acc, region) => {
+    const country = region.split('(')[1]?.replace(')', '') || 'Otros';
+    if (!acc[country]) acc[country] = [];
+    acc[country].push(region);
+    return acc;
+  }, {});
 
-        <Tabs defaultValue="current" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="current" className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              Perfil Actual
-            </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center gap-2">
-              <History className="h-4 w-4" />
-              Historial
-            </TabsTrigger>
-            <TabsTrigger value="recommendations" className="flex items-center gap-2">
-              <Wine className="h-4 w-4" />
-              Recomendaciones
-            </TabsTrigger>
-          </TabsList>
+  const sortedCountries = Object.entries(regionsByCountry)
+    .sort((a, b) => b[1].length - a[1].length)
+    .map(([country, regions]) => ({ country, regions }));
 
-          <TabsContent value="current" className="mt-6">
-            {currentProfile ? (
-              <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-md">
-                <div className="flex items-center justify-center mb-8">
-                  <div className="flex flex-col items-center">
-                    <div className="w-24 h-24 flex items-center justify-center bg-red-100 rounded-full mb-2">
-                      <img 
-                        src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" 
-                        alt="Logo Winerim" 
-                        className="h-12 w-12"
-                      />
-                    </div>
-                    <h2 className="text-3xl font-bold text-red-900">Resultados de tu perfil</h2>
-                  </div>
-                </div>
-                
-                <div className="border-b border-red-200 pb-6 mb-6">
-                  <div className="text-center mb-6">
-                    <h3 className="text-2xl font-bold text-red-800 mb-2">
-                      🎉 Tu perfil sensorial es:
-                    </h3>
-                    <div className="inline-flex items-center gap-2 bg-red-50 px-4 py-2 rounded-lg">
-                      <span className="text-xl font-semibold text-red-900">{profileName}</span>
-                      <button 
-                        onClick={copyProfileToClipboard} 
-                        className="text-red-600 hover:text-red-800 transition-colors"
-                        aria-label="Copiar perfil"
-                      >
-                        <Copy className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  <div className="bg-red-50/50 p-6 rounded-lg">
-                    <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2 mb-4">
-                      <span className="text-2xl">🧭</span> Tu estilo de vino
-                    </h3>
-                    
-                    <div className="space-y-4">
-                      {/* Tu estilo Winerim */}
-                      {matchingWineStyle && (
-                        <div>
-                          <h4 className="font-medium text-red-700 mb-2 flex items-center gap-2">
-                            <Palette className="h-4 w-4" />
-                            Tu estilo Winerim:
-                          </h4>
-                          <div className="bg-gradient-to-r from-red-100 to-red-50 p-4 rounded-lg border border-red-200">
-                            <div className="flex items-start gap-3">
-                              <div className="bg-red-200 rounded-full p-2 flex-shrink-0">
-                                <Wine className="h-4 w-4 text-red-700" />
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <Badge variant="secondary" className="bg-red-600 text-white hover:bg-red-700">
-                                    🍷 {cleanStyleName(matchingWineStyle.name)}
-                                  </Badge>
-                                </div>
-                                {matchingWineStyle.description && (
-                                  <p className="text-sm text-gray-700 mb-2">
-                                    {matchingWineStyle.description}
-                                  </p>
-                                )}
-                                <div className="text-xs text-red-600">
-                                  <strong>Perfil sensorial:</strong> Potente: {matchingWineStyle.potente}, 
-                                  Acidez: {matchingWineStyle.acidez}, Dulzor: {matchingWineStyle.dulce}, 
-                                  Tánico: {matchingWineStyle.tanico}, Afrutado: {matchingWineStyle.afrutado}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div>
-                        <h4 className="font-medium text-red-700 mb-2">Estilos generales:</h4>
-                        <ul className="list-disc list-inside space-y-1 text-gray-700">
-                          {wineStyles.map((style, index) => (
-                            <li key={index}>{style}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-medium text-red-700 mb-2">Uvas que deberías probar:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {recommendedGrapes.map((grape, index) => (
-                            <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                              {grape}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-medium text-red-700 mb-2">Regiones que van contigo:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {recommendedRegions.map((region, index) => (
-                            <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                              {region}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+  const getCountryEmoji = (countryName) => {
+    const countryLower = countryName.toLowerCase();
+    if (countryLower.includes('francia') || countryLower.includes('france')) return '🇫🇷';
+    if (countryLower.includes('italia') || countryLower.includes('italy')) return '🇮🇹';
+    if (countryLower.includes('españa') || countryLower.includes('spain')) return '🇪🇸';
+    if (countryLower.includes('eeuu') || countryLower.includes('usa')) return '🇺🇸';
+    if (countryLower.includes('argentina')) return '🇦🇷';
+    if (countryLower.includes('chile')) return '🇨🇱';
+    if (countryLower.includes('australia')) return '🇦🇺';
+    if (countryLower.includes('nueva zelanda') || countryLower.includes('new zealand')) return '🇳🇿';
+    if (countryLower.includes('portugal')) return '🇵🇹';
+    if (countryLower.includes('alemania') || countryLower.includes('germany')) return '🇩🇪';
+    return '🌍';
+  };
                   
                   <div className="h-80">
                     <h3 className="text-xl font-semibold text-red-800 mb-4 flex items-center gap-2">
