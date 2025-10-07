@@ -180,7 +180,7 @@ const WineStyles = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a 
-                    href="/registration" 
+                    href="/matchrim" 
                     className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-2xl font-semibold shadow-lg transform hover:scale-105 transition-smooth"
                   >
                     Hacer Test Matchrim

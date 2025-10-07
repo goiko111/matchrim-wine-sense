@@ -454,7 +454,7 @@ const Profile = () => {
               </CardHeader>
               <CardContent>
                 <Button 
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/matchrim')}
                   className="bg-red-700 hover:bg-red-800"
                 >
                   Realizar Test de Perfil
