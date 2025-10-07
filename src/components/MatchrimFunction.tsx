@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import WineRecommendationCard from './WineRecommendationCard';
 import DishRecommendationCard from './DishRecommendationCard';
 import PairingScoreCard from './PairingScoreCard';
+import PairingAnalysisCard from './PairingAnalysisCard';
 
 interface MatchrimFunctionProps {
   functionType: 'wine-for-dish' | 'dish-for-wine' | 'pairing-check';
@@ -132,12 +133,41 @@ IMPORTANTE:
           placeholder2: 'Tu plato (ej: asado)',
           showSecondInput: true,
           prompt: `Eres Winerim. Evalúa este maridaje: "${input1}" con "${input2}".
-          
-Analiza:
-1. Puntuación del maridaje (1-10)
-2. Por qué funciona o no funciona
-3. Si no es ideal, sugiere alternativas
-4. Consejos para mejorar la experiencia
+
+Usa este formato exacto:
+
+**Puntuación del maridaje:** [Número del 1-10]/10
+
+**Evaluación general:** [Frase corta sobre si es excelente, bueno o mejorable]
+
+**¿Por qué funciona (o no)?**
+
+[Explicación detallada de 4-5 líneas sobre:
+- Cómo interactúan los sabores
+- Balance de taninos/acidez
+- Intensidades que se complementan o chocan
+- Texturas y cuerpo]
+
+**Aspectos positivos:**
+
+- [Punto positivo 1]
+- [Punto positivo 2]
+- [Punto positivo 3]
+
+**Aspectos a considerar:**
+
+- [Aspecto 1 a tener en cuenta]
+- [Aspecto 2 a tener en cuenta]
+
+**Consejos para mejorar la experiencia:**
+
+- **Temperatura:** [Temperatura ideal de servicio]
+- **Preparación:** [Sugerencias sobre la preparación del plato]
+- **Acompañamientos:** [Guarniciones o complementos que mejoren el maridaje]
+
+**Alternativas si no es ideal:**
+
+[Si la puntuación es menor a 7, sugiere 2-3 vinos alternativos que funcionen mejor con este plato]
 
 IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
         };
@@ -339,8 +369,9 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
       {/* Result */}
       {result && (
         <div className="max-w-md mx-auto space-y-4">
-          {functionType === 'pairing-check' && <PairingScoreCard response={result} />}
-          {functionType === 'dish-for-wine' ? (
+          {functionType === 'pairing-check' ? (
+            <PairingAnalysisCard response={result} />
+          ) : functionType === 'dish-for-wine' ? (
             <DishRecommendationCard response={result} />
           ) : (
             <WineRecommendationCard response={result} functionType={functionType} />
