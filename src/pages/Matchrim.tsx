@@ -93,11 +93,32 @@ const Matchrim = () => {
           let country = 'Desconocido';
           const regionLower = region.toLowerCase();
           
-          if (regionLower.includes('españa') || regionLower.includes('spain') || regionLower.includes('rioja') || regionLower.includes('ribera') || regionLower.includes('priorat') || regionLower.includes('rías baixas')) {
+          if (
+            regionLower.includes('españa') || regionLower.includes('spain') ||
+            regionLower.includes('rioja') || regionLower.includes('ribera') || regionLower.includes('priorat') ||
+            regionLower.includes('rías baixas') || regionLower.includes('rias baixas') ||
+            regionLower.includes('cataluña') || regionLower.includes('cataluna') ||
+            regionLower.includes('costers del segre') ||
+            regionLower.includes('castilla y león') || regionLower.includes('castilla y leon') ||
+            regionLower.includes('tierra de castilla y león') || regionLower.includes('tierra de castilla y leon') ||
+            regionLower.includes('granada') ||
+            regionLower.includes('rueda') || regionLower.includes('navarra') ||
+            regionLower.includes('penedès') || regionLower.includes('penedes')
+          ) {
             country = 'España';
-          } else if (regionLower.includes('francia') || regionLower.includes('france') || regionLower.includes('bordeaux') || regionLower.includes('borgoña') || regionLower.includes('burgundy') || regionLower.includes('champagne')) {
+          } else if (
+            regionLower.includes('francia') || regionLower.includes('france') ||
+            regionLower.includes('bordeaux') || regionLower.includes('borgoña') || regionLower.includes('burgundy') ||
+            regionLower.includes('champagne') || regionLower.includes('banyuls') ||
+            regionLower.includes('roussillon') || regionLower.includes('languedoc')
+          ) {
             country = 'Francia';
-          } else if (regionLower.includes('italia') || regionLower.includes('italy') || regionLower.includes('toscana') || regionLower.includes('tuscany') || regionLower.includes('piemonte') || regionLower.includes('piedmont')) {
+          } else if (
+            regionLower.includes('italia') || regionLower.includes('italy') ||
+            regionLower.includes('toscana') || regionLower.includes('tuscany') ||
+            regionLower.includes('piemonte') || regionLower.includes('piedmont') ||
+            regionLower.includes("barbera d'asti") || regionLower.includes('asti')
+          ) {
             country = 'Italia';
           } else if (regionLower.includes('portugal')) {
             country = 'Portugal';
@@ -107,8 +128,8 @@ const Matchrim = () => {
             country = 'Argentina';
           } else if (regionLower.includes('chile') || regionLower.includes('maipo') || regionLower.includes('colchagua')) {
             country = 'Chile';
-          } else if (regionLower.includes('eeuu') || regionLower.includes('usa') || regionLower.includes('estados unidos') || regionLower.includes('united states') || regionLower.includes('california') || regionLower.includes('napa') || regionLower.includes('sonoma')) {
-            country = 'EE.UU.';
+          } else if (regionLower.includes('estados unidos') || regionLower.includes('united states') || regionLower.includes('usa') || regionLower.includes('california') || regionLower.includes('napa') || regionLower.includes('sonoma')) {
+            country = 'Estados Unidos';
           } else if (regionLower.includes('australia') || regionLower.includes('barossa')) {
             country = 'Australia';
           } else if (regionLower.includes('nueva zelanda') || regionLower.includes('new zealand') || regionLower.includes('marlborough')) {
