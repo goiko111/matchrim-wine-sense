@@ -36,10 +36,10 @@ const WineStylesGrid = () => {
 
   const fetchWinerimStyles = async () => {
     try {
+      // Obtener TODOS los estilos para poder filtrar por patrón de nombre
       const { data, error } = await supabase
         .from('wine_styles')
-        .select('*')
-        .in('name', winerimStyles);
+        .select('*');
 
       if (error) throw error;
 
@@ -53,20 +53,30 @@ const WineStylesGrid = () => {
         return;
       }
 
-      // Crear un mapa para mantener el orden de winerimStyles
-      const styleMap = new Map<string, WineStyle>();
-      data.forEach((style: any) => styleMap.set(style.name, style));
+      // Función para limpiar el nombre del estilo (remover números entre paréntesis)
+      const cleanName = (name: string) => name.replace(/\s*\(\d+\)$/, '').trim();
 
-      // Ordenar según el array winerimStyles
+      // Agrupar por nombre base y tomar el primero de cada grupo
+      const uniqueStylesMap = new Map<string, WineStyle>();
+      data.forEach((style: any) => {
+        const baseName = cleanName(style.name);
+        if (!uniqueStylesMap.has(baseName)) {
+          // Guardar el estilo con el nombre limpio
+          uniqueStylesMap.set(baseName, { ...style, name: baseName });
+        }
+      });
+
+      // Ordenar según winerimStyles y filtrar solo los que existen
       const sortedStyles = winerimStyles
-        .map(name => styleMap.get(name))
+        .map(name => uniqueStylesMap.get(name))
         .filter(Boolean) as WineStyle[];
 
+      console.log('Estilos cargados:', sortedStyles.length, 'de', winerimStyles.length);
       setStyles(sortedStyles);
 
       if (sortedStyles.length < winerimStyles.length) {
-        const missingNames = winerimStyles.filter(name => !styleMap.has(name));
-        console.warn(`Faltan estilos: ${winerimStyles.length - sortedStyles.length}`, missingNames);
+        const missingNames = winerimStyles.filter(name => !uniqueStylesMap.has(name));
+        console.warn(`Faltan estilos: ${missingNames.join(', ')}`);
       }
 
     } catch (error: any) {
