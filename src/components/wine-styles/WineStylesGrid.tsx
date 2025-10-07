@@ -154,6 +154,17 @@ const WineStylesGrid = () => {
     return name.replace(/\s*\(\d+\)\s*$/, '').trim();
   };
 
+  const generateSlug = (name: string) => {
+    return cleanStyleName(name)
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -180,7 +191,7 @@ const WineStylesGrid = () => {
           <Card 
             key={style.id} 
             className={`${config.bg} ${config.border} border-2 hover:border-red-300 hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer transform hover:scale-105 hover:shadow-red-100/50 group relative`}
-            onClick={() => navigate(`/wine-styles/${style.id}`)}
+            onClick={() => navigate(`/wine-styles/${generateSlug(style.name)}`)}
           >
             <CardContent className="p-6 relative">
               <div className="flex flex-col items-center text-center">

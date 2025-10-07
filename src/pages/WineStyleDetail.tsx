@@ -36,30 +36,38 @@ interface WineExample {
 
 const WineStyleDetail = () => {
   const { user } = useAuth();
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [style, setStyle] = useState<WineStyle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
+    if (slug) {
       fetchWineStyle();
     }
-  }, [id]);
+  }, [slug]);
 
   const fetchWineStyle = async () => {
-    if (!id) return;
+    if (!slug) return;
 
     try {
+      // Convertir el slug de vuelta a un nombre legible
+      const searchName = slug
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+
       const { data, error } = await supabase
         .from('wine_styles')
         .select('*')
-        .eq('id', id)
+        .ilike('name', `%${searchName}%`)
         .maybeSingle();
 
       if (error) throw error;
       if (data) {
         setStyle(data);
+      } else {
+        throw new Error('Wine style not found');
       }
     } catch (error: any) {
       console.error('Error fetching wine style:', error);

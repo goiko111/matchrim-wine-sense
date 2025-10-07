@@ -38,7 +38,7 @@ function App() {
               <Route path="/admin-setup" element={<AdminSetup />} />
               <Route path="/data-viewer" element={<DataViewer />} />
               <Route path="/wine-styles" element={<WineStyles />} />
-              <Route path="/wine-styles/:id" element={<WineStyleDetail />} />
+              <Route path="/wine-styles/:slug" element={<WineStyleDetail />} />
               <Route path="/wines/:id/:slug?" element={<WineDetail />} />
               <Route path="/wine-search" element={<WineSearch />} />
               <Route path="*" element={<NotFound />} />
