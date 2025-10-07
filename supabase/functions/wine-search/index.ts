@@ -107,7 +107,7 @@ INSTRUCCIONES CRÍTICAS:
 - Usa SOLO vinos que existan realmente en el mercado
 - Incluye información precisa: bodega real, uva(s), país, puntuación estimada
 - Las puntuaciones deben ser realistas (70-100)
-- Las URLs deben seguir el formato: https://www.vivino.com/search/wines?q={nombre-del-vino}
+- Las URLs deben usar Wine-Searcher (agregador neutral): https://www.wine-searcher.com/find/{nombre-del-vino-con-guiones}
 - Responde SOLO con un array JSON válido, sin texto adicional
 
 Formato de salida (array JSON):
@@ -118,7 +118,7 @@ Formato de salida (array JSON):
     "tipo_de_uva": "Uva(s) principal(es)",
     "pais": "País de origen",
     "puntuacion": 85,
-    "url": "https://www.vivino.com/search/wines?q=nombre-del-vino"
+    "url": "https://www.wine-searcher.com/find/nombre-del-vino-con-guiones"
   }
 ]`
         },
@@ -188,7 +188,7 @@ async function searchWinesSpoonacular(params: WineSearchParams): Promise<WineRes
     tipo_de_uva: wine.grape || 'N/A',
     pais: wine.country || 'N/A',
     puntuacion: wine.rating ? Math.round(wine.rating * 20) : 75,
-    url: wine.link || `https://www.vivino.com/search/wines?q=${encodeURIComponent(wine.title)}`,
+    url: `https://www.wine-searcher.com/find/${encodeURIComponent(wine.title.replace(/\s+/g, '-').toLowerCase())}`,
   }));
 }
 

@@ -3,12 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Search, Loader2, Wine, ExternalLink, Lightbulb } from "lucide-react";
+import { Search, Loader2, Wine, ExternalLink, Lightbulb, Check, ChevronsUpDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface WineResult {
   nombre: string;
@@ -24,6 +27,35 @@ interface SearchResponse {
   resultados: WineResult[];
 }
 
+// Lista exhaustiva de variedades de uva
+const GRAPE_VARIETIES = [
+  "Tempranillo", "Malbec", "Cabernet Sauvignon", "Merlot", "Pinot Noir", "Syrah", "Garnacha",
+  "Chardonnay", "Sauvignon Blanc", "Albariño", "Verdejo", "Riesling", "Viognier",
+  "Monastrell", "Mencía", "Graciano", "Mazuelo", "Cariñena", "Bobal", "Prieto Picudo",
+  "Sangiovese", "Nebbiolo", "Barbera", "Corvina", "Montepulciano", "Nero d'Avola",
+  "Grenache", "Mourvèdre", "Carignan", "Cinsault", "Counoise",
+  "Cabernet Franc", "Petit Verdot", "Malbec", "Tannat", "Carmenère",
+  "Zinfandel", "Petite Sirah", "Primitivo",
+  "Shiraz", "Pinotage", "Chenin Blanc",
+  "Gewürztraminer", "Grüner Veltliner", "Müller-Thurgau",
+  "Moscatel", "Pedro Ximénez", "Palomino", "Airén", "Macabeo", "Parellada", "Xarel·lo",
+  "Godello", "Treixadura", "Loureira", "Torrontés",
+  "Semillon", "Marsanne", "Roussanne", "Viura",
+  "Pinot Grigio", "Pinot Gris", "Pinot Blanc",
+  "Gamay", "Dolcetto", "Freisa", "Grignolino",
+  "Aglianico", "Negroamaro", "Primitivo",
+  "Touriga Nacional", "Touriga Franca", "Tinta Roriz", "Tinta Barroca",
+  "Aragonês", "Trincadeira", "Castelão", "Baga", "Alvarinho", "Loureiro", "Arinto",
+  "Assyrtiko", "Agiorgitiko", "Xinomavro",
+  "Zweigelt", "Blaufränkisch", "St. Laurent",
+  "Kadarka", "Furmint", "Hárslevelű",
+  "Saperavi", "Rkatsiteli",
+  "Mavrud", "Melnik",
+  "Fetească Neagră", "Fetească Regală", "Tămâioasă Românească",
+  "Prokupac", "Vranac", "Plavac Mali",
+  "Crljenak Kaštelanski", "Pošip", "Malvasia Istriana"
+].sort();
+
 const WineSearch = () => {
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState<string>("");
@@ -32,6 +64,7 @@ const WineSearch = () => {
   const [winery, setWinery] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<SearchResponse | null>(null);
+  const [openGrapeCombobox, setOpenGrapeCombobox] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,23 +183,64 @@ const WineSearch = () => {
                   <Label htmlFor="grape" className="text-red-900">
                     Uva (opcional)
                   </Label>
-                  <Select value={grape} onValueChange={setGrape}>
-                    <SelectTrigger id="grape" className="mt-1.5 border-red-200">
-                      <SelectValue placeholder="Cualquier uva" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value=" ">Cualquier uva</SelectItem>
-                      <SelectItem value="Tempranillo">Tempranillo</SelectItem>
-                      <SelectItem value="Malbec">Malbec</SelectItem>
-                      <SelectItem value="Cabernet Sauvignon">Cabernet Sauvignon</SelectItem>
-                      <SelectItem value="Merlot">Merlot</SelectItem>
-                      <SelectItem value="Pinot Noir">Pinot Noir</SelectItem>
-                      <SelectItem value="Chardonnay">Chardonnay</SelectItem>
-                      <SelectItem value="Sauvignon Blanc">Sauvignon Blanc</SelectItem>
-                      <SelectItem value="Albariño">Albariño</SelectItem>
-                      <SelectItem value="Garnacha">Garnacha</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Popover open={openGrapeCombobox} onOpenChange={setOpenGrapeCombobox}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openGrapeCombobox}
+                        className="w-full justify-between mt-1.5 border-red-200 hover:border-red-400"
+                      >
+                        {grape ? grape : "Buscar variedad de uva..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0 bg-white" align="start">
+                      <Command className="bg-white">
+                        <CommandInput placeholder="Buscar uva..." className="border-0" />
+                        <CommandList className="max-h-[300px] overflow-y-auto">
+                          <CommandEmpty>No se encontró esa variedad.</CommandEmpty>
+                          <CommandGroup>
+                            <CommandItem
+                              value=""
+                              onSelect={() => {
+                                setGrape("");
+                                setOpenGrapeCombobox(false);
+                              }}
+                              className="hover:bg-red-50"
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  grape === "" ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              Cualquier uva
+                            </CommandItem>
+                            {GRAPE_VARIETIES.map((variety) => (
+                              <CommandItem
+                                key={variety}
+                                value={variety}
+                                onSelect={(currentValue) => {
+                                  setGrape(currentValue === grape ? "" : currentValue);
+                                  setOpenGrapeCombobox(false);
+                                }}
+                                className="hover:bg-red-50"
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    grape === variety ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {variety}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 <div>
@@ -302,9 +376,9 @@ const WineSearch = () => {
                           href={wine.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm"
+                          className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors"
                         >
-                          Ver más información
+                          Buscar en Wine-Searcher
                           <ExternalLink className="ml-1 w-4 h-4" />
                         </a>
                       </CardContent>
