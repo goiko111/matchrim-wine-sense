@@ -28,29 +28,35 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
           title: '¿Qué vino va con mi plato?',
           placeholder1: 'Describe tu plato (ej: canelones de espinacas)',
           showSecondInput: false,
-          prompt: `Soy un sommelier experto. El usuario va a comer: "${input1}". 
-          Proporciona exactamente 3 recomendaciones específicas de vinos que mariden perfectamente con este plato:
+          prompt: `Eres Winerim, un experto en maridajes de vinos. El usuario va a comer: "${input1}". 
+          
+          Proporciona exactamente 3 recomendaciones de vinos diferentes que mariden perfectamente con este plato. Para cada vino incluye:
           
           VINO 1:
-          - Nombre específico y bodega
+          - Nombre específico del vino y bodega
           - Tipo y estilo del vino
-          - Por qué funciona con este plato
-          - Rango de precio estimado
+          - Por qué este vino funciona perfectamente con este plato (explicación detallada del maridaje)
+          - Rango de precio aproximado
           
           VINO 2:
-          - Nombre específico y bodega
+          - Nombre específico del vino y bodega
           - Tipo y estilo del vino
-          - Por qué funciona con este plato
-          - Rango de precio estimado
+          - Por qué este vino funciona perfectamente con este plato (explicación detallada del maridaje)
+          - Rango de precio aproximado
           
           VINO 3:
-          - Nombre específico y bodega
+          - Nombre específico del vino y bodega
           - Tipo y estilo del vino
-          - Por qué funciona con este plato
-          - Rango de precio estimado
+          - Por qué este vino funciona perfectamente con este plato (explicación detallada del maridaje)
+          - Rango de precio aproximado
           
-          Incluye también consejos generales sobre temperatura de servicio y copa ideal.
-          Responde de forma conversacional, educativa y cercana.`
+          Incluye también:
+          - Consejos sobre temperatura de servicio
+          - Tipo de copa ideal
+          
+          IMPORTANTE: Habla en primera persona como Winerim. Por ejemplo: "Te recomiendo...", "He seleccionado...", "En mi experiencia...". No hables en tercera persona ni te refieras a ti mismo como "un sommelier" o "tu colega sommelier".
+          
+          Responde de forma conversacional, educativa y cercana en español.`
         };
       case 'dish-for-wine':
         return {
@@ -292,7 +298,7 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
           <div className="p-8 text-center bg-white rounded-lg border border-red-200 shadow-sm">
             <Loader className="h-8 w-8 animate-spin mx-auto mb-4 text-red-700" />
             <p className="text-red-600 font-medium">Winerim está analizando...</p>
-            <p className="text-red-500 text-sm mt-2">Esto puede tomar unos segundos</p>
+            <p className="text-red-500 text-sm mt-2">Un momento, por favor</p>
           </div>
         </div>
       )}
