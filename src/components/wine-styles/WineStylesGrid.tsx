@@ -37,11 +37,10 @@ const WineStylesGrid = () => {
   const fetchWinerimStyles = async () => {
     try {
       console.log('Fetching wine styles...');
-      // Obtener TODOS los estilos que tienen descripción
+      // Obtener TODOS los estilos para poder filtrar por patrón de nombre
       const { data, error } = await supabase
         .from('wine_styles')
-        .select('*')
-        .not('description', 'is', null);
+        .select('*');
 
       console.log('Query result:', { dataLength: data?.length, error });
       if (error) throw error;
