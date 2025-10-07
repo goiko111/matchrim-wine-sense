@@ -36,15 +36,18 @@ const WineStylesGrid = () => {
 
   const fetchWinerimStyles = async () => {
     try {
+      console.log('Fetching wine styles...');
       // Obtener TODOS los estilos para poder filtrar por patrón de nombre
       const { data, error } = await supabase
         .from('wine_styles')
         .select('*');
 
+      console.log('Query result:', { dataLength: data?.length, error });
       if (error) throw error;
 
       if (!data || data.length === 0) {
         console.error('No se encontraron estilos en la base de datos');
+        setIsLoading(false);
         toast({
           title: "Error",
           description: "No se pudieron cargar los estilos de vino",
@@ -66,12 +69,27 @@ const WineStylesGrid = () => {
         }
       });
 
+      console.log('Estilos únicos encontrados:', Array.from(uniqueStylesMap.keys()));
+      console.log('Estilos buscados:', winerimStyles);
+
       // Ordenar según winerimStyles y filtrar solo los que existen
       const sortedStyles = winerimStyles
         .map(name => uniqueStylesMap.get(name))
         .filter(Boolean) as WineStyle[];
 
       console.log('Estilos cargados:', sortedStyles.length, 'de', winerimStyles.length);
+      
+      if (sortedStyles.length === 0) {
+        console.error('No se encontraron coincidencias de estilos');
+        setIsLoading(false);
+        toast({
+          title: "Error",
+          description: "No se encontraron los estilos de vino configurados",
+          variant: "destructive"
+        });
+        return;
+      }
+      
       setStyles(sortedStyles);
 
       if (sortedStyles.length < winerimStyles.length) {
