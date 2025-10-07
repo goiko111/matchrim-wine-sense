@@ -92,7 +92,7 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
     {
       icon: DollarSign,
       question: '¿Cuál es tu presupuesto por botella?',
-      options: ['Hasta $15.000', '$15.000 - $30.000', '$30.000 - $50.000', '$50.000 - $100.000', 'Más de $100.000'],
+      options: ['Hasta 15 €', '15 € - 30 €', '30 € - 50 €', '50 € - 100 €', 'Más de 100 €'],
       key: 'budget' as keyof QuestionData
     }
   ];
@@ -142,25 +142,96 @@ Por favor proporciona una recomendación completa que incluya:
 Responde de forma conversacional, práctica y educativa, adaptándote al presupuesto especificado.`;
 
     try {
-      const { data: response, error } = await supabase.functions.invoke('ai-wine-chat', {
-        body: {
+      const CHAT_URL = `https://tuoczkxunuoyfjlnqinc.supabase.co/functions/v1/ai-wine-chat`;
+      const resp = await fetch(CHAT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2N6a3h1bnVveWZqbG5xaW5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5NDIzMDMsImV4cCI6MjA2NjUxODMwM30.t9E5WIHp7HCoO68MkQ4-1gTTZTQiw7jI-3_w11yRxJ8`,
+        },
+        body: JSON.stringify({
           message: prompt,
           context: 'AIRIM - Vinos para momentos especiales'
-        }
+        }),
       });
 
-      if (error) throw new Error(error.message);
-      if (!response.success) throw new Error(response.error);
+      if (!resp.ok) {
+        let errText = 'Error en la respuesta del servidor';
+        try { const e = await resp.json(); errText = e.error || errText; } catch {}
+        throw new Error(errText);
+      }
+      if (!resp.body) throw new Error('No se recibió respuesta del servidor');
 
-      setResult(response.response);
+      // Pasamos a la vista de resultado y vamos actualizando por streaming
+      setResult('');
       setStep('result');
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let textBuffer = '';
+      let accumulatedResponse = '';
+      let streamDone = false;
+
+      while (!streamDone) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf('\n')) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith('\r')) line = line.slice(0, -1);
+          if (line.startsWith(':') || line.trim() === '') continue;
+          if (!line.startsWith('data: ')) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === '[DONE]') {
+            streamDone = true;
+            break;
+          }
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              accumulatedResponse += content;
+              setResult(accumulatedResponse);
+            }
+          } catch {
+            textBuffer = line + '\n' + textBuffer;
+            break;
+          }
+        }
+      }
+
+      // Flush final
+      if (textBuffer.trim()) {
+        for (let raw of textBuffer.split('\n')) {
+          if (!raw) continue;
+          if (raw.endsWith('\r')) raw = raw.slice(0, -1);
+          if (raw.startsWith(':') || raw.trim() === '') continue;
+          if (!raw.startsWith('data: ')) continue;
+          const jsonStr = raw.slice(6).trim();
+          if (jsonStr === '[DONE]') continue;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              accumulatedResponse += content;
+              setResult(accumulatedResponse);
+            }
+          } catch { /* ignore partial leftovers */ }
+        }
+      }
 
     } catch (error) {
       console.error('Error:', error);
       toast({
-        title: "Error",
-        description: "No se pudo procesar tu consulta. Inténtalo de nuevo.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'No se pudo procesar tu consulta. Inténtalo de nuevo.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
