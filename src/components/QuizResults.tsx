@@ -829,11 +829,15 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {winesByCountry[country].map((wine, index) => {
                       const parts = wine.split(", ");
-                      const name = parts[0];
-                      const type = parts[1] || "";
+                      const rawName = parts[0];
+                      const rawType = parts[1] || "";
                       const winery = parts[2] || "";
                       const region = parts[3] || "";
                       const wineCountry = getCountryFromWine(wine);
+                      
+                      // Limpiar números entre paréntesis del nombre y tipo
+                      const name = cleanStyleName(rawName);
+                      const type = cleanStyleName(rawType);
                       
                       // Buscar el ID del estilo en styleDetails para navegar
                       const matchingStyle = styleDetails.find(s => 
