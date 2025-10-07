@@ -35,9 +35,10 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
     // Process each numbered section
     for (let i = 1; i < parts.length; i++) {
       const section = parts[i];
+      const sectionText = section.trimStart();
       
       // Check if this is a numbered wine section (1., 2., 3.)
-      const numberMatch = section.match(/^(\d+)\./);
+      const numberMatch = sectionText.match(/^(\d+)\./);
       if (numberMatch) {
         const wineInfo: WineInfo = {
           name: '',
@@ -51,7 +52,7 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
         };
         
         // Extract title (first line after number)
-        const lines = section.split('\n').map(l => l.trim()).filter(l => l);
+        const lines = sectionText.split('\n').map(l => l.trim()).filter(l => l);
         if (lines[0]) {
           wineInfo.name = lines[0].replace(/^\d+\.\s*/, '').trim();
         }
@@ -59,9 +60,9 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
         // Try different patterns for each field
         
         // Recomendación or first bold line
-        let recoMatch = section.match(/\*\*Recomendación:\*\*\s*([^\n]+)/i);
+        let recoMatch = sectionText.match(/\*\*Recomendación:\*\*\s*([^\n]+)/i);
         if (!recoMatch) {
-          recoMatch = section.match(/[-•]\s*Nombre específico y bodega:\s*([^\n]+)/i);
+          recoMatch = sectionText.match(/[-•]\s*Nombre específico y bodega:\s*([^\n]+)/i);
         }
         if (recoMatch) {
           wineInfo.recommendation = recoMatch[1].trim();
@@ -70,35 +71,35 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
         }
         
         // Type - try multiple patterns
-        let tipoMatch = section.match(/\*\*Tipo:\*\*\s*([^\n]+)/i);
-        if (!tipoMatch) tipoMatch = section.match(/[-•]\s*\*?Tipo y estilo\*?:\s*([^\n]+)/i);
-        if (!tipoMatch) tipoMatch = section.match(/[-•]\s*Tipo:\s*([^\n]+)/i);
+        let tipoMatch = sectionText.match(/\*\*Tipo:\*\*\s*([^\n]+)/i);
+        if (!tipoMatch) tipoMatch = sectionText.match(/[-•]\s*\*?Tipo y estilo\*?:\s*([^\n]+)/i);
+        if (!tipoMatch) tipoMatch = sectionText.match(/[-•]\s*Tipo:\s*([^\n]+)/i);
         if (tipoMatch) wineInfo.type = tipoMatch[1].replace(/\*\*/g, '').trim();
         
         // Bodega
-        let bodegaMatch = section.match(/\*\*Bodega:\*\*\s*([^\n]+)/i);
-        if (!bodegaMatch) bodegaMatch = section.match(/[-•]\s*\*?Bodega\*?:\s*([^\n]+)/i);
+        let bodegaMatch = sectionText.match(/\*\*Bodega:\*\*\s*([^\n]+)/i);
+        if (!bodegaMatch) bodegaMatch = sectionText.match(/[-•]\s*\*?Bodega\*?:\s*([^\n]+)/i);
         if (bodegaMatch) wineInfo.bodega = bodegaMatch[1].replace(/\*\*/g, '').trim();
         
         // Region
-        let regionMatch = section.match(/\*\*Región:\*\*\s*([^\n]+)/i);
-        if (!regionMatch) regionMatch = section.match(/[-•]\s*\*?Región\*?:\s*([^\n]+)/i);
+        let regionMatch = sectionText.match(/\*\*Región:\*\*\s*([^\n]+)/i);
+        if (!regionMatch) regionMatch = sectionText.match(/[-•]\s*\*?Región\*?:\s*([^\n]+)/i);
         if (regionMatch) wineInfo.region = regionMatch[1].replace(/\*\*/g, '').trim();
         
         // Country
-        let countryMatch = section.match(/\*\*País:\*\*\s*([^\n]+)/i);
-        if (!countryMatch) countryMatch = section.match(/[-•]\s*\*?País\*?:\s*([^\n]+)/i);
+        let countryMatch = sectionText.match(/\*\*País:\*\*\s*([^\n]+)/i);
+        if (!countryMatch) countryMatch = sectionText.match(/[-•]\s*\*?País\*?:\s*([^\n]+)/i);
         if (countryMatch) wineInfo.country = countryMatch[1].replace(/\*\*/g, '').trim();
         
         // Price
-        let priceMatch = section.match(/\*\*Precio aproximado:\*\*\s*([^\n]+)/i);
-        if (!priceMatch) priceMatch = section.match(/\*\*Rango de precio:\*\*\s*([^\n]+)/i);
-        if (!priceMatch) priceMatch = section.match(/[-•]\s*\*?(?:Precio aproximado|Rango de precio)\*?:\s*([^\n]+)/i);
+        let priceMatch = sectionText.match(/\*\*Precio aproximado:\*\*\s*([^\n]+)/i);
+        if (!priceMatch) priceMatch = sectionText.match(/\*\*Rango de precio:\*\*\s*([^\n]+)/i);
+        if (!priceMatch) priceMatch = sectionText.match(/[-•]\s*\*?(?:Precio aproximado|Rango de precio)\*?:\s*([^\n]+)/i);
         if (priceMatch) wineInfo.price = priceMatch[1].replace(/\*\*/g, '').trim();
         
         // Why it works - this can be multi-line
-        let whyMatch = section.match(/\*\*Por qué funciona(?:\s+con\s+este\s+plato)?:\*\*\s*([^#]+?)(?=\n\n|###|$)/is);
-        if (!whyMatch) whyMatch = section.match(/[-•]\s*\*?Por qué funciona(?:\s+con\s+este\s+plato)?\*?:\s*([^#\n-]+)/i);
+        let whyMatch = sectionText.match(/\*\*Por qué funciona(?:\s+con\s+este\s+plato)?:\*\*\s*([^#]+?)(?=\n\n|###|$)/is);
+        if (!whyMatch) whyMatch = sectionText.match(/[-•]\s*\*?Por qué funciona(?:\s+con\s+este\s+plato)?\*?:\s*([^#\n-]+)/i);
         if (whyMatch) {
           wineInfo.whyItWorks = whyMatch[1].replace(/\*\*/g, '').trim();
         }
