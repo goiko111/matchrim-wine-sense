@@ -68,8 +68,14 @@ const PairingAnalysisCard: React.FC<PairingAnalysisCardProps> = ({ response }) =
     const accompMatch = text.match(/[-•]\s*\*\*Acompañamientos:\*\*\s*([^\n]+)/i);
     if (accompMatch) result.tips.accompaniments = accompMatch[1].trim();
 
-    // Extract alternatives
-    const altMatch = text.match(/\*\*Alternativas si no es ideal:\*\*\s*\n\n([^*]+?)(?=\*\*|$)/is);
+    // Extract alternatives - try multiple patterns
+    let altMatch = text.match(/\*\*Alternativas si no es ideal:\*\*\s*\n\n([^*]+?)(?=$)/is);
+    if (!altMatch) {
+      altMatch = text.match(/\*\*Alternativas si no es ideal:\*\*\s*\n([^*]+?)(?=\n\n\*\*|$)/is);
+    }
+    if (!altMatch) {
+      altMatch = text.match(/\*\*Alternativas.*?:\*\*\s*\n\n?([^\n]+(?:\n(?!\*\*)[^\n]+)*)/is);
+    }
     if (altMatch) {
       result.alternatives = altMatch[1].trim();
     }
