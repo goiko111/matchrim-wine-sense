@@ -291,7 +291,7 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
         <div className="max-w-md mx-auto">
           <div className="p-8 text-center bg-white rounded-lg border border-red-200 shadow-sm">
             <Loader className="h-8 w-8 animate-spin mx-auto mb-4 text-red-700" />
-            <p className="text-red-600 font-medium">Nuestro sommelier está analizando...</p>
+            <p className="text-red-600 font-medium">Winerim está analizando...</p>
             <p className="text-red-500 text-sm mt-2">Esto puede tomar unos segundos</p>
           </div>
         </div>
