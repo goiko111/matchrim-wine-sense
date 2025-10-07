@@ -1,9 +1,17 @@
 
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import Header from '../components/Header';
 import AppNav from '@/components/AppNav';
 import { 
@@ -27,10 +35,32 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import WineStylesGrid from '@/components/wine-styles/WineStylesGrid';
 
+const restaurantRecommendationSchema = z.object({
+  restaurantName: z.string().trim().min(1, "El nombre del restaurante es requerido").max(200, "Máximo 200 caracteres"),
+  contactName: z.string().trim().min(1, "Tu nombre es requerido").max(100, "Máximo 100 caracteres"),
+  email: z.string().trim().email("Email inválido").max(255, "Máximo 255 caracteres"),
+  phoneNumber: z.string().trim().min(1, "El teléfono es requerido").max(20, "Máximo 20 caracteres"),
+});
+
+type RestaurantRecommendationForm = z.infer<typeof restaurantRecommendationSchema>;
+
 const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [hasQuizResults, setHasQuizResults] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<RestaurantRecommendationForm>({
+    resolver: zodResolver(restaurantRecommendationSchema),
+    defaultValues: {
+      restaurantName: '',
+      contactName: '',
+      email: '',
+      phoneNumber: '',
+    },
+  });
 
   useEffect(() => {
     const checkQuizResults = async () => {
@@ -52,6 +82,39 @@ const Index = () => {
       navigate('/profile');
     } else {
       navigate('/matchrim');
+    }
+  };
+
+  const onSubmitRecommendation = async (data: RestaurantRecommendationForm) => {
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          restaurant_name: data.restaurantName,
+          contact_name: data.contactName,
+          email: data.email,
+          phone_number: data.phoneNumber,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "¡Gracias!",
+        description: "Hemos recibido tu recomendación. Contactaremos con el restaurante pronto.",
+      });
+
+      form.reset();
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error('Error submitting recommendation:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo enviar la recomendación. Por favor, inténtalo de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -481,20 +544,83 @@ const Index = () => {
               <Button 
                 size="lg"
                 className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl px-8 py-4 font-bold"
-                onClick={() => navigate('/registration')}
+                onClick={() => navigate('/matchrim')}
               >
                 Obtener mi Matchrim
                 <CheckCircle className="ml-2 h-5 w-5" />
               </Button>
               
-              <Button 
-                variant="outline"
-                size="lg"
-                className="border-white text-white hover:bg-white hover:text-primary rounded-2xl px-8 py-4"
-              >
-                Recomendar Winerim a tu restaurante favorito
-                <Heart className="ml-2 h-5 w-5" />
-              </Button>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    className="border-white text-white hover:bg-white hover:text-primary rounded-2xl px-8 py-4"
+                  >
+                    Recomendar Winerim a tu restaurante favorito
+                    <Heart className="ml-2 h-5 w-5" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Recomendar Winerim</DialogTitle>
+                    <DialogDescription>
+                      Ayúdanos a llevar Winerim a tu restaurante favorito. Nos pondremos en contacto con ellos.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <form onSubmit={form.handleSubmit(onSubmitRecommendation)} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="restaurantName">Nombre del restaurante *</Label>
+                      <Input
+                        id="restaurantName"
+                        placeholder="Ej: La Taberna de Juan"
+                        {...form.register('restaurantName')}
+                      />
+                      {form.formState.errors.restaurantName && (
+                        <p className="text-sm text-destructive">{form.formState.errors.restaurantName.message}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="contactName">Tu nombre *</Label>
+                      <Input
+                        id="contactName"
+                        placeholder="Tu nombre completo"
+                        {...form.register('contactName')}
+                      />
+                      {form.formState.errors.contactName && (
+                        <p className="text-sm text-destructive">{form.formState.errors.contactName.message}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Tu email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="tu@email.com"
+                        {...form.register('email')}
+                      />
+                      {form.formState.errors.email && (
+                        <p className="text-sm text-destructive">{form.formState.errors.email.message}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phoneNumber">Tu teléfono *</Label>
+                      <Input
+                        id="phoneNumber"
+                        type="tel"
+                        placeholder="+34 600 000 000"
+                        {...form.register('phoneNumber')}
+                      />
+                      {form.formState.errors.phoneNumber && (
+                        <p className="text-sm text-destructive">{form.formState.errors.phoneNumber.message}</p>
+                      )}
+                    </div>
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                      {isSubmitting ? 'Enviando...' : 'Enviar recomendación'}
+                    </Button>
+                  </form>
+                </DialogContent>
+              </Dialog>
             </div>
             
             <Card className="p-6 bg-accent text-accent-foreground max-w-md mx-auto rounded-2xl shadow-2xl">
