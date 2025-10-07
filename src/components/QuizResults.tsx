@@ -938,7 +938,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                               {/* País (ocultar si no está resuelto) */}
                               {!/^(otros|desconocido)$/i.test(wineCountry) && (
                                 <p className="text-sm text-gray-700 flex items-center gap-1">
-                                  <span className="text-base">{getCountryFlag(wine)}</span>
+                                  <span className="text-base">{getCountryFlag(wineCountry)}</span>
                                   <span className="font-medium">{wineCountry}</span>
                                 </p>
                               )}
