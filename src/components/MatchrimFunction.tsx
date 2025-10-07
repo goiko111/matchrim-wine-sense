@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import WineRecommendationCard from './WineRecommendationCard';
+import DishRecommendationCard from './DishRecommendationCard';
 import PairingScoreCard from './PairingScoreCard';
 
 interface MatchrimFunctionProps {
@@ -80,11 +81,48 @@ IMPORTANTE:
           placeholder1: 'Describe tu vino (ej: Barolo 2016)',
           showSecondInput: false,
           prompt: `Eres Winerim. El usuario tiene este vino: "${input1}".
-          
-Sugiere 3-4 platos ideales, ocasiones perfectas y explica por qué estos maridajes funcionan.
-Incluye también temperatura de servicio y tipo de copa.
 
-IMPORTANTE: Habla en primera persona. Usa "Te sugiero", "Te recomiendo".`
+Debes dar EXACTAMENTE 3 platos diferentes. Usa este formato exacto:
+
+### 1. [Nombre del plato]
+
+**Recomendación:** [Nombre completo del plato con breve descripción]
+
+- **Tipo de cocina:** [Tipo de cocina (italiana, española, etc.)]
+- **Ingredientes principales:** [Ingredientes clave del plato]
+- **Técnica de cocción:** [Cómo se prepara (asado, guisado, etc.)]
+- **Ocasión ideal:** [Cuándo servir este plato]
+- **Dificultad:** [Fácil, Media, Alta]
+
+**Por qué funciona:** [Explicación detallada de 3-4 líneas sobre por qué este plato marida perfectamente con el vino]
+
+### 2. [Nombre del plato]
+
+**Recomendación:** [Nombre completo del plato con breve descripción]
+
+- **Tipo de cocina:** [Tipo de cocina (italiana, española, etc.)]
+- **Ingredientes principales:** [Ingredientes clave del plato]
+- **Técnica de cocción:** [Cómo se prepara (asado, guisado, etc.)]
+- **Ocasión ideal:** [Cuándo servir este plato]
+- **Dificultad:** [Fácil, Media, Alta]
+
+**Por qué funciona:** [Explicación detallada de 3-4 líneas sobre por qué este plato marida perfectamente con el vino]
+
+### 3. [Nombre del plato]
+
+**Recomendación:** [Nombre completo del plato con breve descripción]
+
+- **Tipo de cocina:** [Tipo de cocina (italiana, española, etc.)]
+- **Ingredientes principales:** [Ingredientes clave del plato]
+- **Técnica de cocción:** [Cómo se prepara (asado, guisado, etc.)]
+- **Ocasión ideal:** [Cuándo servir este plato]
+- **Dificultad:** [Fácil, Media, Alta]
+
+**Por qué funciona:** [Explicación detallada de 3-4 líneas sobre por qué este plato marida perfectamente con el vino]
+
+IMPORTANTE: 
+- Habla en primera persona. Usa "Te sugiero", "Te recomiendo". 
+- NO uses tercera persona.`
         };
       case 'pairing-check':
         return {
@@ -302,7 +340,11 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
       {result && (
         <div className="max-w-md mx-auto space-y-4">
           {functionType === 'pairing-check' && <PairingScoreCard response={result} />}
-          <WineRecommendationCard response={result} functionType={functionType} />
+          {functionType === 'dish-for-wine' ? (
+            <DishRecommendationCard response={result} />
+          ) : (
+            <WineRecommendationCard response={result} functionType={functionType} />
+          )}
         </div>
       )}
 
