@@ -142,14 +142,17 @@ export const generateGrapeRecommendations = (result: any): string[] => {
     score += (5 - Math.abs(result.tanico - grape.criteria.tanico)) * 2;
     score += (5 - Math.abs(result.afrutado - grape.criteria.afrutado)) * 2;
     
-    // Bonus por fama (las más famosas tienen prioridad)
-    const fameBonus = grape.fame * 2;
+    // Bonus por fama reducido para dar más peso a compatibilidad
+    const fameBonus = grape.fame * 1;
     
     return { name: grape.name, score: score + fameBonus, fame: grape.fame };
   });
   
   // Ordenar por score (incluye compatibilidad + fama)
   compatibilityScores.sort((a, b) => b.score - a.score);
+  
+  console.log('Grape recommendations for profile:', result);
+  console.log('Top 5 grapes:', compatibilityScores.slice(0, 5));
   
   // Devolver top 5
   return compatibilityScores.slice(0, 5).map(grape => grape.name);
@@ -191,6 +194,9 @@ export const generateRegionRecommendations = (result: any): string[] => {
   });
   
   compatibilityScores.sort((a, b) => b.score - a.score);
+  
+  console.log('Region recommendations for profile:', result);
+  console.log('Top 5 regions:', compatibilityScores.slice(0, 5));
   
   // Devolver top 5 regiones más compatibles
   return compatibilityScores.slice(0, 5).map(region => region.name);
