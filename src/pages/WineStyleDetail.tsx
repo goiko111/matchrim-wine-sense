@@ -51,21 +51,32 @@ const WineStyleDetail = () => {
     if (!slug) return;
 
     try {
-      // Convertir el slug de vuelta a un nombre legible
-      const searchName = slug
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-
-      const { data, error } = await supabase
+      // Primero obtenemos todos los estilos
+      const { data: allStyles, error } = await supabase
         .from('wine_styles')
-        .select('*')
-        .ilike('name', `%${searchName}%`)
-        .maybeSingle();
+        .select('*');
 
       if (error) throw error;
-      if (data) {
-        setStyle(data);
+
+      // Función para generar slug (igual que en WineStylesGrid)
+      const generateSlug = (name: string) => {
+        return name
+          .replace(/\s*\(\d+\)\s*$/, '') // Limpiar números entre paréntesis
+          .trim()
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '') // Remover acentos
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .trim();
+      };
+
+      // Buscar el estilo que coincida con el slug
+      const matchedStyle = allStyles?.find(s => generateSlug(s.name) === slug);
+
+      if (matchedStyle) {
+        setStyle(matchedStyle);
       } else {
         throw new Error('Wine style not found');
       }
