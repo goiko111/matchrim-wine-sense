@@ -215,6 +215,17 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     return name.replace(/\s*\(\d+\)\s*$/, '').trim();
   };
 
+  const generateSlug = (name: string) => {
+    return cleanStyleName(name)
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
+
   // Fetch wine style details from database
   useEffect(() => {
     const fetchStyleDetails = async () => {
@@ -820,7 +831,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                         <div 
                           key={`${country}-${index}`}
                           className="bg-white border border-red-100 p-4 rounded-lg shadow-sm hover:shadow-md hover:border-red-300 transition-all cursor-pointer group"
-                          onClick={() => matchingStyle && navigate(`/wine-styles/${matchingStyle.id}`)}
+                          onClick={() => matchingStyle && navigate(`/wine-styles/${generateSlug(matchingStyle.name)}`)}
                         >
                           <div className="flex items-start gap-3">
                             <div className="bg-red-100 rounded-full p-2 text-red-700 flex-shrink-0">

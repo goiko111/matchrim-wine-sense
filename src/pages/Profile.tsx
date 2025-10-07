@@ -133,6 +133,19 @@ const Profile = () => {
     return configs[styleName] || { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-500', icon: Wine, iconColor: 'text-white' };
   };
 
+  const generateSlug = (name: string) => {
+    return name
+      .replace(/\s*\(\d+\)\s*$/, '')
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
+
   const getGrapeDescription = (grape: string) => {
     const descriptions: Record<string, string> = {
       'Chardonnay': `Versátil y elegante, esta uva te ofrece ${currentProfile?.potente >= 3 ? 'cuerpo y estructura' : 'finesse'}, con ${currentProfile?.acidez >= 3 ? 'buena acidez' : 'redondez'} que se adapta a tu perfil.`,
@@ -311,7 +324,7 @@ const Profile = () => {
                       
                       return (
                         <Card key={style.id} className={`${config.bg} ${config.border} border-2 hover:shadow-lg transition-shadow cursor-pointer`}
-                          onClick={() => navigate(`/wine-styles/${style.id}`)}>
+                          onClick={() => navigate(`/wine-styles/${generateSlug(style.name)}`)}>
                           <CardContent className="pt-6">
                             <div className="flex items-start gap-4 mb-4">
                               <div className={`${config.iconBg} rounded-lg p-3 flex-shrink-0`}>
