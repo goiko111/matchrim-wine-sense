@@ -84,7 +84,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const navigate = useNavigate();
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
-
+  const [countryOverrides, setCountryOverrides] = useState<Record<string, string>>({});
   const chartData = [
     { attribute: "Potente", value: result.potente },
     { attribute: "Acidez", value: result.acidez },
@@ -584,9 +584,65 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     return inferred || 'Otros';
   };
 
+  // Resolver país a partir de región vía Mapbox (solo para desconocidos)
+  useEffect(() => {
+    const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29pa28td2luZXJpbSIsImEiOiJjbWdmM3R1anQwNHE5MmtyMW02Nmp1OTFhIn0.0PGiNnLfvOiZNghcsNeK4g';
+
+    const normalizeCountry = (name: string) => {
+      const n = name.trim().toLowerCase();
+      if (/^ee\.?uu\.?$|usa|united states|estados unidos/.test(n)) return 'Estados Unidos';
+      if (/^uk$|united kingdom|reino unido|england|scotland|wales/.test(n)) return 'Reino Unido';
+      return name;
+    };
+
+    const resolveAll = async () => {
+      const updates: Record<string, string> = {};
+      await Promise.all(
+        recommendations.map(async (wine) => {
+          const current = getCountryFromWine(wine);
+          if (!current || /^(otros|desconocido)$/i.test(current)) {
+            const parts = wine.split(', ');
+            const region = parts[3] || '';
+            if (!region) return;
+            try {
+              const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(region)}.json?types=region,place,district,locality&language=es&limit=1&access_token=${MAPBOX_TOKEN}`;
+              const res = await fetch(url);
+              if (!res.ok) return;
+              const data = await res.json();
+              const feat = data?.features?.[0];
+              const ctx = feat?.context || [];
+              const countryObj = ctx.find((c: any) => typeof c?.id === 'string' && c.id.startsWith('country.'));
+              let country = countryObj?.text_es || countryObj?.text || feat?.properties?.country || '';
+              if (!country && typeof feat?.place_name_es === 'string') {
+                // Tomar última parte del place_name como aproximación
+                const parts = feat.place_name_es.split(',').map((s: string) => s.trim());
+                country = parts[parts.length - 1] || '';
+              }
+              if (country) {
+                updates[wine] = normalizeCountry(country);
+              }
+            } catch (e) {
+              console.warn('Fallo al resolver país por región', e);
+            }
+          }
+        })
+      );
+      if (Object.keys(updates).length) {
+        setCountryOverrides((prev) => ({ ...prev, ...updates }));
+      }
+    };
+
+    if (recommendations.length) {
+      resolveAll();
+    }
+  }, [recommendations]);
+
+  // Helper para obtener país final (override -> heurística -> fallback)
+  const getResolvedCountry = (wine: string) => countryOverrides[wine] || getCountryFromWine(wine);
+
   // Agrupar y ordenar vinos por país
   const winesByCountry = recommendations.reduce((acc, wine) => {
-    const country = getCountryFromWine(wine);
+    const country = getResolvedCountry(wine);
     if (!acc[country]) acc[country] = [];
     acc[country].push(wine);
     return acc;
@@ -833,7 +889,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                       const rawType = parts[1] || "";
                       const winery = parts[2] || "";
                       const region = parts[3] || "";
-                      const wineCountry = getCountryFromWine(wine);
+                      const wineCountry = getResolvedCountry(wine);
                       
                       // Limpiar números entre paréntesis del nombre y tipo
                       const name = cleanStyleName(rawName);
@@ -864,10 +920,13 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                               <p className="text-sm text-gray-600">
                                 <span className="font-medium">Región:</span> {region}
                               </p>
-                              <p className="text-sm text-gray-700 flex items-center gap-1">
-                                <span className="text-base">{getCountryFlag(wine)}</span>
-                                <span className="font-medium">{wineCountry}</span>
-                              </p>
+                              {/* País (ocultar si no está resuelto) */}
+                              {!/^(otros|desconocido)$/i.test(wineCountry) && (
+                                <p className="text-sm text-gray-700 flex items-center gap-1">
+                                  <span className="text-base">{getCountryFlag(wine)}</span>
+                                  <span className="font-medium">{wineCountry}</span>
+                                </p>
+                              )}
                               {matchingStyle && (
                                 <p className="text-xs text-red-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                   Ver estilo {cleanStyleName(matchingStyle.name)} →
