@@ -532,18 +532,56 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     return '🍷';
   };
 
-  // Extraer país del string de vino
+  // Mapa de emoji a nombre de país (normalizado en español)
+  const emojiToCountryName: Record<string, string> = {
+    '🇪🇸': 'España',
+    '🇫🇷': 'Francia',
+    '🇮🇹': 'Italia',
+    '🇩🇪': 'Alemania',
+    '🇵🇹': 'Portugal',
+    '🇺🇸': 'Estados Unidos',
+    '🇨🇱': 'Chile',
+    '🇦🇷': 'Argentina',
+    '🇦🇺': 'Australia',
+    '🇳🇿': 'Nueva Zelanda',
+    '🇿🇦': 'Sudáfrica',
+    '🇬🇷': 'Grecia',
+    '🇬🇪': 'Georgia',
+    '🇦🇹': 'Austria',
+    '🇭🇺': 'Hungría',
+    '🇭🇷': 'Croacia',
+    '🇺🇾': 'Uruguay',
+    '🇧🇷': 'Brasil',
+    '🇨🇦': 'Canadá',
+    '🇨🇭': 'Suiza',
+    '🇱🇧': 'Líbano',
+    '🇮🇱': 'Israel',
+    '🇹🇷': 'Turquía',
+    '🇷🇴': 'Rumania',
+    '🇧🇬': 'Bulgaria',
+    '🇸🇮': 'Eslovenia',
+    '🇨🇳': 'China',
+    '🇯🇵': 'Japón',
+    '🇲🇦': 'Marruecos',
+    '🇬🇧': 'Reino Unido'
+  };
+
+  // Extraer país del string de vino alineado con la detección de bandera
   const getCountryFromWine = (wineString: string): string => {
-    // El formato es: Name, Type, Winery, Region, Country
+    // Formato esperado: Name, Type, Winery, Region, Country
     const parts = wineString.split(", ");
-    const country = parts[4]; // El país está en la posición 4
-    
-    if (country && country.trim()) {
-      return country.trim();
+    const rawCountry = parts[4]?.trim();
+
+    // Si viene un país explícito y no es desconocido, usarlo (normalizando EEUU)
+    if (rawCountry && !/^(desconocido|otros|no especificada)$/i.test(rawCountry)) {
+      if (/^ee\.?uu\.?$/i.test(rawCountry)) return 'Estados Unidos';
+      return rawCountry;
     }
-    
-    // Fallback: si no hay país explícito, devolver "Otros"
-    return 'Otros';
+
+    // Si no hay país fiable, inferirlo a partir de la misma lógica que la bandera
+    const flag = getCountryFlag(wineString);
+    const inferred = emojiToCountryName[flag];
+    return inferred || 'Otros';
   };
 
   // Agrupar y ordenar vinos por país
