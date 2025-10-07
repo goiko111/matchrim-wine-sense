@@ -1,6 +1,8 @@
 
 import React from 'react';
 import Header from '@/components/Header';
+import AppNav from '@/components/AppNav';
+import { useAuth } from '@/contexts/AuthContext';
 import WineStylesGrid from '@/components/wine-styles/WineStylesGrid';
 import SensoryCalculator from '@/components/wine-styles/SensoryCalculator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,9 +11,11 @@ import { Badge } from '@/components/ui/badge';
 import { Palette, Calculator, Wine, Zap, Target, Lightbulb, CheckCircle } from 'lucide-react';
 
 const WineStyles = () => {
+  const { user } = useAuth();
+  
   return (
     <div className="min-h-screen">
-      <Header />
+      {user ? <AppNav /> : <Header />}
       
       {/* Hero mejorado */}
       <section className="relative py-20 winerim-bg text-white overflow-hidden">

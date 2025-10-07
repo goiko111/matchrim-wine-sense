@@ -8,9 +8,12 @@ import { getDiverseWineRecommendations, UserProfile, WineRecommendation } from '
 import { generateWineStyles } from '@/utils/profileUtils';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import AppNav from '@/components/AppNav';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Matchrim = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState('intro'); // 'intro', 'quiz', 'results'
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [id: number]: string }>({});
@@ -135,17 +138,21 @@ const Matchrim = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-950">
+      {user && <AppNav />}
+      
       {/* Header with back button */}
-      <div className="container mx-auto px-4 py-6">
-        <Button
-          variant="ghost"
-          onClick={handleBackToHome}
-          className="text-white hover:bg-white/10"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Volver al inicio
-        </Button>
-      </div>
+      {!user && (
+        <div className="container mx-auto px-4 py-6">
+          <Button
+            variant="ghost"
+            onClick={handleBackToHome}
+            className="text-white hover:bg-white/10"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Volver al inicio
+          </Button>
+        </div>
+      )}
 
       {/* Content */}
       <div className="container mx-auto px-4 pb-20">

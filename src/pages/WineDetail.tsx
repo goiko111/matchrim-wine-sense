@@ -8,6 +8,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { ArrowLeft, Wine, MapPin, Calendar, Grape, Star, Share2 } from 'lucide-react';
 import Header from '@/components/Header';
+import AppNav from '@/components/AppNav';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface WineDetail {
   id: string;
@@ -27,6 +29,7 @@ interface WineDetail {
 }
 
 const WineDetail = () => {
+  const { user } = useAuth();
   const { id, slug } = useParams();
   const navigate = useNavigate();
   const [wine, setWine] = useState<WineDetail | null>(null);
@@ -108,37 +111,42 @@ const WineDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen">
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <>
+        {user ? <AppNav /> : <Header />}
+        <div className="min-h-screen">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (!wine) {
     return (
-      <div className="min-h-screen">
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Vino no encontrado</h1>
-            <Button onClick={() => navigate('/data-viewer')} className="bg-primary hover:bg-primary/90">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Volver a la lista
-            </Button>
+      <>
+        {user ? <AppNav /> : <Header />}
+        <div className="min-h-screen">
+          <div className="container mx-auto px-4 py-8">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">Vino no encontrado</h1>
+              <Button onClick={() => navigate('/data-viewer')} className="bg-primary hover:bg-primary/90">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Volver a la lista
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <Header />
+    <>
+      {user ? <AppNav /> : <Header />}
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
@@ -299,7 +307,8 @@ const WineDetail = () => {
           </Card>
         </div>
       </main>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -12,6 +12,8 @@ import {
   Mountain, Diamond, Thermometer, Eye, ChefHat, Calendar
 } from 'lucide-react';
 import Header from '@/components/Header';
+import AppNav from '@/components/AppNav';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface WineStyle {
   id: string;
@@ -33,6 +35,7 @@ interface WineExample {
 }
 
 const WineStyleDetail = () => {
+  const { user } = useAuth();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [style, setStyle] = useState<WineStyle | null>(null);
@@ -609,8 +612,9 @@ const WineStyleDetail = () => {
   const wineExamples = getWineExamples(style);
 
   return (
-    <div className="min-h-screen">
-      <Header />
+    <>
+      {user ? <AppNav /> : <Header />}
+      <div className="min-h-screen">
       
       {/* Hero Section */}
       <div className={`relative ${config.bgImage} overflow-hidden`}>
@@ -933,6 +937,7 @@ const WineStyleDetail = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

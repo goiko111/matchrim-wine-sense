@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Header from '../components/Header';
+import AppNav from '@/components/AppNav';
 import { 
   Wine, 
   Brain, 
@@ -53,7 +54,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      <Header />
+      {user ? <AppNav /> : <Header />}
       
       {/* 1. HERO RENOVADO */}
       <section className="relative min-h-screen winerim-bg text-white overflow-hidden">

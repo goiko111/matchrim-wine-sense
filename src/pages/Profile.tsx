@@ -11,6 +11,7 @@ import { Wine, User, History, Copy, Droplet, Diamond, Zap, Grape, Flame, Clock, 
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import RegionMap from '@/components/RegionMap';
+import AppNav from '@/components/AppNav';
 import { 
   generateMatchrimName, 
   generateWineStyles, 
@@ -215,7 +216,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <>
+      <AppNav />
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-red-900 mb-2 flex items-center gap-2">
           <User className="w-8 h-8" />
@@ -536,6 +539,7 @@ const Profile = () => {
         </TabsContent>
       </Tabs>
     </div>
+    </>
   );
 };
 

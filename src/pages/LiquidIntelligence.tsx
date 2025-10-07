@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
 import Header from '@/components/Header';
+import AppNav from '@/components/AppNav';
+import { useAuth } from '@/contexts/AuthContext';
 import MatchrimWelcome from '@/components/MatchrimWelcome';
 import MatchrimMenu from '@/components/MatchrimMenu';
 import MatchrimFunction from '@/components/MatchrimFunction';
@@ -10,6 +12,7 @@ type AppState = 'welcome' | 'menu' | 'function';
 type FunctionType = 'wine-for-dish' | 'dish-for-wine' | 'pairing-check' | 'special-moments';
 
 const LiquidIntelligence = () => {
+  const { user } = useAuth();
   const [currentState, setCurrentState] = useState<AppState>('welcome');
   const [selectedFunction, setSelectedFunction] = useState<FunctionType | null>(null);
 
@@ -50,15 +53,18 @@ const LiquidIntelligence = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Solo mostrar el header en modo debug o si necesitas navegación adicional */}
-      <div className="hidden">
-        <Header />
+    <>
+      {user && <AppNav />}
+      <div className="min-h-screen">
+        {/* Solo mostrar el header en modo debug o si necesitas navegación adicional */}
+        <div className="hidden">
+          <Header />
+        </div>
+        
+        {/* App content */}
+        {renderContent()}
       </div>
-      
-      {/* App content */}
-      {renderContent()}
-    </div>
+    </>
   );
 };
 

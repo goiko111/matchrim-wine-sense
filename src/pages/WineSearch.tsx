@@ -12,6 +12,8 @@ import { Search, Loader2, Wine, ExternalLink, Lightbulb, Check, ChevronsUpDown }
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import AppNav from "@/components/AppNav";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface WineResult {
   nombre: string;
@@ -228,6 +230,7 @@ const WINE_REGIONS = [
 ].sort();
 
 const WineSearch = () => {
+  const { user } = useAuth();
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState<string>("");
   const [grape, setGrape] = useState<string>("");
@@ -285,8 +288,10 @@ const WineSearch = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-rose-50">
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
+    <>
+      {user && <AppNav />}
+      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-rose-50">
+        <div className="container mx-auto px-4 py-12 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -630,8 +635,9 @@ const WineSearch = () => {
             </div>
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
