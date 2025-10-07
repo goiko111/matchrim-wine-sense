@@ -127,25 +127,108 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
 
   const renderSection = (section: any, index: number) => {
     if (section.type === 'numbered') {
+      // Parse the content to extract structured information
+      const lines = section.content.split('\n').filter((line: string) => line.trim());
+      const structuredInfo: { label: string; value: string; icon: string }[] = [];
+      let remainingContent = '';
+
+      lines.forEach((line: string) => {
+        const trimmedLine = line.trim();
+        // Match patterns like "- Label: value" or "**Label**: value"
+        const labelMatch = trimmedLine.match(/^[-•]\s*\*?\*?([^:*]+)\*?\*?:\s*(.+)$/);
+        
+        if (labelMatch) {
+          const label = labelMatch[1].trim();
+          const value = labelMatch[2].trim();
+          let icon = '📌';
+
+          // Assign icons based on label content
+          if (label.toLowerCase().includes('nombre') || label.toLowerCase().includes('bodega')) {
+            icon = '🏷️';
+          } else if (label.toLowerCase().includes('tipo') || label.toLowerCase().includes('estilo')) {
+            icon = '🍷';
+          } else if (label.toLowerCase().includes('funciona') || label.toLowerCase().includes('maridaje') || label.toLowerCase().includes('por qué')) {
+            icon = '✨';
+          } else if (label.toLowerCase().includes('precio') || label.toLowerCase().includes('rango')) {
+            icon = '💰';
+          } else if (label.toLowerCase().includes('temperatura')) {
+            icon = '🌡️';
+          } else if (label.toLowerCase().includes('copa')) {
+            icon = '🥂';
+          } else if (label.toLowerCase().includes('plato') || label.toLowerCase().includes('comida')) {
+            icon = '🍽️';
+          } else if (label.toLowerCase().includes('ocasión')) {
+            icon = '🎉';
+          }
+
+          structuredInfo.push({ label, value, icon });
+        } else if (trimmedLine && !trimmedLine.startsWith('-') && !trimmedLine.startsWith('•')) {
+          remainingContent += (remainingContent ? ' ' : '') + trimmedLine;
+        }
+      });
+
       return (
-        <div key={index} className="mb-4">
-          <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-red-100 shadow-sm">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
-                {section.number}
+        <div key={index} className="mb-6 animate-fade-in">
+          <div className="bg-gradient-to-br from-white to-red-50/30 rounded-xl border-2 border-red-100 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            {/* Header with number */}
+            <div className="bg-gradient-to-r from-red-600 to-red-700 px-5 py-4">
+              <div className="flex items-center gap-4">
+                <div className="flex-shrink-0">
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md">
+                    <span className="text-red-700 font-bold text-lg">{section.number}</span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-white text-lg leading-tight">
+                    {section.title}
+                  </h4>
+                  {section.highlight && (
+                    <span className="inline-block mt-2 text-xs bg-white/20 text-white px-3 py-1 rounded-full font-medium backdrop-blur-sm">
+                      {section.highlight}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="flex-1">
-              <h4 className="font-semibold text-red-900 mb-2">
-                {section.title}
-                {section.highlight && (
-                  <span className="ml-2 text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-medium">
-                    {section.highlight}
-                  </span>
-                )}
-              </h4>
-              {section.content && (
-                <p className="text-gray-700 text-sm leading-relaxed">
+
+            {/* Content */}
+            <div className="p-5 space-y-4">
+              {/* Structured information in grid */}
+              {structuredInfo.length > 0 && (
+                <div className="grid grid-cols-1 gap-3">
+                  {structuredInfo.map((info, idx) => (
+                    <div 
+                      key={idx} 
+                      className="flex items-start gap-3 p-3 bg-white rounded-lg border border-red-100 hover:border-red-300 transition-colors"
+                    >
+                      <div className="flex-shrink-0 text-xl mt-0.5">
+                        {info.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-red-900 text-sm mb-1">
+                          {info.label}
+                        </div>
+                        <div className="text-gray-700 text-sm leading-relaxed">
+                          {info.value}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Additional content */}
+              {remainingContent && (
+                <div className="p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg border-l-4 border-amber-400">
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    {remainingContent}
+                  </p>
+                </div>
+              )}
+
+              {/* Fallback if no structured info was found */}
+              {structuredInfo.length === 0 && section.content && (
+                <p className="text-gray-700 text-sm leading-relaxed p-3 bg-white rounded-lg border border-red-100">
                   {section.content}
                 </p>
               )}
