@@ -555,7 +555,7 @@ const Index = () => {
                   <Button 
                     variant="outline"
                     size="lg"
-                    className="border-white text-white hover:bg-white hover:text-primary rounded-2xl px-8 py-4"
+                    className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary rounded-2xl px-8 py-4 font-semibold"
                   >
                     Recomendar Winerim a tu restaurante favorito
                     <Heart className="ml-2 h-5 w-5" />
