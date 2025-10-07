@@ -77,15 +77,37 @@ const WineStyleDetail = () => {
 
       if (matchedStyle) {
         setStyle(matchedStyle);
-      } else {
-        throw new Error('Wine style not found');
+        return;
       }
+
+      // Fallback: usar placeholder si el slug pertenece a uno de los 16 estilos base
+      const baseNames = [
+        'Burbuja Fresca', 'Brut Elegante', 'Blanco Vital', 'Blanco Goloso',
+        'Dulce Intenso', 'Oxidativo/Maduro', 'Experimental', 'Vino de Terruño',
+        'Tinto Versátil', 'Tinto de Estructura', 'Tinto Goloso', 'Dulce Ligero',
+        'Blanco de Carácter', 'Rosado Ligero', 'Rosado Gastronómico', 'Tinto Ligero'
+      ];
+      const fallbackName = baseNames.find(n => generateSlug(n) === slug);
+      if (fallbackName) {
+        setStyle({
+          id: `placeholder-${slug}`,
+          name: fallbackName,
+          description: 'Próximamente',
+          potente: 0,
+          acidez: 0,
+          dulce: 0,
+          tanico: 0,
+          afrutado: 0,
+        });
+        return;
+      }
+
+      throw new Error('Wine style not found');
     } catch (error: any) {
       console.error('Error fetching wine style:', error);
       toast({
         title: "Error",
-        description: "Error al cargar el estilo de vino",
-        variant: "destructive"
+        description: "No hemos encontrado este estilo.",
       });
       navigate('/wine-styles');
     } finally {

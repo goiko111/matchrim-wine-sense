@@ -82,16 +82,10 @@ const WineStylesGrid = () => {
       console.log('Estilos únicos encontrados:', Array.from(uniqueStylesMap.keys()));
       console.log('Estilos buscados:', winerimStyles);
 
-      // Ordenar según winerimStyles y filtrar solo los que existen
-      const sortedStyles = winerimStyles
-        .map(name => uniqueStylesMap.get(name))
-        .filter(Boolean) as WineStyle[];
-
-      console.log('Estilos cargados:', sortedStyles.length, 'de', winerimStyles.length);
-      
-      if (sortedStyles.length === 0) {
-        console.warn('No se encontraron coincidencias de estilos. Usando estilos por defecto.');
-        const placeholderStyles: WineStyle[] = winerimStyles.map((name, idx) => ({
+      // Construir lista final en el orden de winerimStyles rellenando faltantes con placeholders
+      const finalStyles: WineStyle[] = winerimStyles.map((name, idx) => {
+        const found = uniqueStylesMap.get(name);
+        return found ?? {
           id: `placeholder-${idx}`,
           name,
           description: 'Próximamente',
@@ -100,21 +94,23 @@ const WineStylesGrid = () => {
           dulce: 0,
           tanico: 0,
           afrutado: 0,
-        }));
-        setStyles(placeholderStyles);
+        };
+      });
+
+      const foundCount = finalStyles.filter(s => !(typeof s.id === 'string' && s.id.startsWith('placeholder-'))).length;
+      console.log('Estilos cargados:', foundCount, 'de', winerimStyles.length);
+
+      if (foundCount === 0) {
         toast({
           title: "Estilos por defecto",
           description: "Mostrando estilos mientras se cargan los datos",
         });
-        return;
-      }
-      
-      setStyles(sortedStyles);
-
-      if (sortedStyles.length < winerimStyles.length) {
+      } else if (foundCount < winerimStyles.length) {
         const missingNames = winerimStyles.filter(name => !uniqueStylesMap.has(name));
         console.warn(`Faltan estilos: ${missingNames.join(', ')}`);
       }
+
+      setStyles(finalStyles);
 
     } catch (error: any) {
       console.error('Error fetching Winerim styles:', error);
