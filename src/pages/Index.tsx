@@ -780,18 +780,34 @@ const Index = () => {
                 variant="outline"
                 size="lg" 
                 className="border-primary text-primary hover:bg-primary hover:text-white font-bold px-12 py-6 text-lg rounded-full shadow-lg transition-smooth"
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: 'Matchrim',
-                      text: 'Descubre qué vinos son perfectos para ti con Matchrim',
-                      url: window.location.origin
-                    }).catch(() => {});
-                  } else {
-                    navigator.clipboard.writeText(window.location.origin);
+                onClick={async () => {
+                  try {
+                    console.log('Compartir button clicked');
+                    if (navigator.share) {
+                      console.log('Using navigator.share');
+                      await navigator.share({
+                        title: 'Matchrim',
+                        text: 'Descubre qué vinos son perfectos para ti con Matchrim',
+                        url: window.location.origin
+                      });
+                      toast({
+                        title: "Compartido",
+                        description: "Gracias por compartir Matchrim",
+                      });
+                    } else {
+                      console.log('Using clipboard');
+                      await navigator.clipboard.writeText(window.location.origin);
+                      toast({
+                        title: "Enlace copiado",
+                        description: "El enlace de Matchrim se ha copiado al portapapeles",
+                      });
+                    }
+                  } catch (error) {
+                    console.error('Share error:', error);
                     toast({
-                      title: "Enlace copiado",
-                      description: "El enlace de Matchrim se ha copiado al portapapeles",
+                      title: "Error",
+                      description: "No se pudo compartir. Intenta copiando el enlace manualmente.",
+                      variant: "destructive"
                     });
                   }
                 }}
