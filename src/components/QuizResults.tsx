@@ -833,7 +833,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                       const type = parts[1] || "";
                       const winery = parts[2] || "";
                       const region = parts[3] || "";
-                      const wineCountry = parts[4] || "";
+                      const wineCountry = getCountryFromWine(wine);
                       
                       // Buscar el ID del estilo en styleDetails para navegar
                       const matchingStyle = styleDetails.find(s => 
