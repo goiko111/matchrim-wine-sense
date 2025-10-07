@@ -38,9 +38,6 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
       onNext();
     }, 500); // Pequeño retraso para que el usuario vea su selección
   };
-
-  // Imagen fija de pimiento para todas las preguntas
-  const questionImage = "/lovable-uploads/9619b04e-8a8f-4c87-94a5-c676792d96ad.png";
   
   return (
     <div className="flex flex-col items-center max-w-2xl mx-auto p-6">
@@ -59,9 +56,9 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
         
         <div className="flex items-center justify-center mb-6">
           <img 
-            src={questionImage} 
-            alt="Ilustración de la pregunta" 
-            className="h-32 w-auto object-contain rounded-lg"
+            src={question.image} 
+            alt={question.text} 
+            className="h-48 w-auto object-contain rounded-lg shadow-lg"
           />
         </div>
         

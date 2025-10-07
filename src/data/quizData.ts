@@ -1,6 +1,7 @@
 export interface Question {
   id: number;
   text: string;
+  image: string;
   scores: {
     potente: number;
     acidez: number;
@@ -50,91 +51,109 @@ export const questions: Question[] = [
   {
     id: 1,
     text: "¿Te gusta el pimiento verde?",
+    image: "/src/assets/quiz/question-1-pimiento.jpg",
     scores: { potente: 1, acidez: 1, dulce: 0, tanico: 0, afrutado: 1 }
   },
   {
     id: 2,
     text: "¿Te gusta el olor a tierra?",
+    image: "/src/assets/quiz/question-2-tierra.jpg",
     scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 }
   },
   {
     id: 3,
     text: "¿Te gustan los tomates?",
+    image: "/src/assets/quiz/question-3-tomates.jpg",
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 1 }
   },
   {
     id: 4,
     text: "¿Te gusta el olor a puro?",
+    image: "/src/assets/quiz/question-4-puro.jpg",
     scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 }
   },
   {
     id: 5,
     text: "¿Te gusta el queso de cabra?",
+    image: "/src/assets/quiz/question-5-queso-cabra.jpg",
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 1 }
   },
   {
     id: 6,
     text: "¿Te gustan las aceitunas negras?",
+    image: "/src/assets/quiz/question-6-aceitunas.jpg",
     scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 }
   },
   {
     id: 7,
     text: "¿Te gustan los champiñones?",
+    image: "/src/assets/quiz/question-7-champinones.jpg",
     scores: { potente: 1, acidez: 0, dulce: 0, tanico: 1, afrutado: 0 }
   },
   {
     id: 8,
     text: "¿Te gustan las pasas?",
+    image: "/src/assets/quiz/question-8-pasas.jpg",
     scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 1 }
   },
   {
     id: 9,
     text: "¿Te gusta el sabor del café solo sin azúcar?",
+    image: "/src/assets/quiz/question-9-cafe.jpg",
     scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 }
   },
   {
     id: 10,
     text: "¿Te gustan las almendras?",
+    image: "/src/assets/quiz/question-10-almendras.jpg",
     scores: { potente: 1, acidez: 0, dulce: 1, tanico: 1, afrutado: 0 }
   },
   {
     id: 11,
     text: "¿Te gusta la canela?",
+    image: "/src/assets/quiz/question-11-canela.jpg",
     scores: { potente: 1, acidez: 0, dulce: 1, tanico: 1, afrutado: 1 }
   },
   {
     id: 12,
     text: "¿Te gusta el café azucarado?",
+    image: "/src/assets/quiz/question-12-cafe-dulce.jpg",
     scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 1 }
   },
   {
     id: 13,
     text: "¿Te gusta la menta?",
+    image: "/src/assets/quiz/question-13-menta.jpg",
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 1 }
   },
   {
     id: 14,
     text: "¿Te gusta el plátano?",
+    image: "/src/assets/quiz/question-14-platano.jpg",
     scores: { potente: 0, acidez: 0, dulce: 1, tanico: 0, afrutado: 2 }
   },
   {
     id: 15,
     text: "¿Te gusta el marisco?",
+    image: "/src/assets/quiz/question-15-marisco.jpg",
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 }
   },
   {
     id: 16,
     text: "¿Te gusta el vinagre?",
+    image: "/src/assets/quiz/question-16-vinagre.jpg",
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 }
   },
   {
     id: 17,
     text: "¿Te gusta la mostaza?",
+    image: "/src/assets/quiz/question-17-mostaza.jpg",
     scores: { potente: 1, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 }
   },
   {
     id: 18,
     text: "¿Te gustan las gominolas?",
+    image: "/src/assets/quiz/question-18-gominolas.jpg",
     scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 2 }
   }
 ];
