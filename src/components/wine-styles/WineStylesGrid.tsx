@@ -37,10 +37,11 @@ const WineStylesGrid = () => {
   const fetchWinerimStyles = async () => {
     try {
       console.log('Fetching wine styles...');
-      // Obtener TODOS los estilos para poder filtrar por patrón de nombre
+      // Obtener TODOS los estilos que tienen descripción
       const { data, error } = await supabase
         .from('wine_styles')
-        .select('*');
+        .select('*')
+        .not('description', 'is', null);
 
       console.log('Query result:', { dataLength: data?.length, error });
       if (error) throw error;
@@ -68,12 +69,13 @@ const WineStylesGrid = () => {
       // Función para limpiar el nombre del estilo (remover números entre paréntesis)
       const cleanName = (name: string) => name.replace(/\s*\(\d+\)$/, '').trim();
 
-      // Agrupar por nombre base y tomar el primero de cada grupo
+      // Agrupar por nombre base y tomar el primero que tenga descripción
       const uniqueStylesMap = new Map<string, WineStyle>();
       data.forEach((style: any) => {
         const baseName = cleanName(style.name);
-        if (!uniqueStylesMap.has(baseName)) {
-          // Guardar el estilo con el nombre limpio
+        // Solo agregar si no existe o si este tiene descripción y el anterior no
+        if (!uniqueStylesMap.has(baseName) || 
+            (style.description && !uniqueStylesMap.get(baseName)?.description)) {
           uniqueStylesMap.set(baseName, { ...style, name: baseName });
         }
       });
