@@ -132,6 +132,7 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
       const structuredInfo: { label: string; value: string; icon: string }[] = [];
       let remainingContent = '';
       let wineName = '';
+      let whyItWorks = '';
 
       lines.forEach((line: string) => {
         const trimmedLine = line.trim();
@@ -147,11 +148,14 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
           if (label.toLowerCase().includes('nombre')) {
             wineName = value;
             icon = '🏷️';
+          } else if (label.toLowerCase().includes('por qué funciona') || label.toLowerCase().includes('funciona')) {
+            whyItWorks = value;
+            icon = '✨';
           } else if (label.toLowerCase().includes('bodega')) {
             icon = '🏷️';
           } else if (label.toLowerCase().includes('tipo') || label.toLowerCase().includes('estilo')) {
             icon = '🍷';
-          } else if (label.toLowerCase().includes('funciona') || label.toLowerCase().includes('maridaje') || label.toLowerCase().includes('por qué')) {
+          } else if (label.toLowerCase().includes('maridaje')) {
             icon = '✨';
           } else if (label.toLowerCase().includes('precio') || label.toLowerCase().includes('rango')) {
             icon = '💰';
@@ -165,7 +169,10 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
             icon = '🎉';
           }
 
-          structuredInfo.push({ label, value, icon });
+          // Don't add "Por qué funciona" to structuredInfo, we'll show it separately
+          if (!label.toLowerCase().includes('por qué funciona') && !label.toLowerCase().includes('funciona')) {
+            structuredInfo.push({ label, value, icon });
+          }
         } else if (trimmedLine && !trimmedLine.startsWith('-') && !trimmedLine.startsWith('•')) {
           remainingContent += (remainingContent ? ' ' : '') + trimmedLine;
         }
@@ -221,8 +228,21 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
                 </div>
               )}
 
+              {/* Why it works explanation */}
+              {whyItWorks && (
+                <div className="p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg border-l-4 border-amber-400">
+                  <h5 className="font-bold text-amber-900 mb-2 flex items-center gap-2">
+                    <span>✨</span>
+                    Por qué funciona
+                  </h5>
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    {whyItWorks}
+                  </p>
+                </div>
+              )}
+
               {/* Additional content */}
-              {remainingContent && (
+              {remainingContent && !whyItWorks && (
                 <div className="p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg border-l-4 border-amber-400">
                   <p className="text-gray-700 text-sm leading-relaxed">
                     {remainingContent}
