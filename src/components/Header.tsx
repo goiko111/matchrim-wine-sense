@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, Brain, Upload, Sparkles, Palette } from 'lucide-react';
+import { LogOut, User, Brain, Upload, Sparkles, Palette, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -81,6 +81,15 @@ const Header = () => {
               >
                 <Palette className="h-4 w-4 mr-2" />
                 Estilos de Vino
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => navigate('/wine-search')}
+                className="text-red-700 hover:bg-red-50"
+              >
+                <Search className="h-4 w-4 mr-2" />
+                Buscador
               </Button>
               <Button 
                 variant="ghost" 
