@@ -534,6 +534,15 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
 
   // Extraer país del string de vino
   const getCountryFromWine = (wineString: string): string => {
+    // El formato es: Name, Type, Winery, Region, Country
+    const parts = wineString.split(", ");
+    const country = parts[4]; // El país está en la posición 4
+    
+    if (country) {
+      return country.trim();
+    }
+    
+    // Fallback: intentar detectar por bandera si no hay país en parts[4]
     const flag = getCountryFlag(wineString);
     const countryMap: {[key: string]: string} = {
       '🇪🇸': 'España',
@@ -568,7 +577,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       '🇲🇦': 'Marruecos',
       '🇬🇧': 'Reino Unido',
     };
-    return countryMap[flag] || 'Internacional';
+    return countryMap[flag] || 'Otros';
   };
 
   // Agrupar y ordenar vinos por país
