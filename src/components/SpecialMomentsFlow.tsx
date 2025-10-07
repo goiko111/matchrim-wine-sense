@@ -123,23 +123,57 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
       'celebration': 'cumpleaños/celebración'
     };
 
-    const prompt = `Soy un sommelier experto. El usuario quiere vino para: ${momentLabels[data.momentType!]}.
+    const prompt = `Eres Winerim. El usuario quiere vino para: ${momentLabels[data.momentType!]}.
 
 Detalles del evento:
 - Número de personas: ${data.people}
 - Tipo de comida: ${data.food}
 - Nivel de conocimiento de los invitados: ${data.guestLevel}
 - Enfoque deseado: ${data.approach}
-- Presupuesto por botella: ${data.budget}
+- Presupuesto por botella: ${data.budget} (en euros)
 
-Por favor proporciona una recomendación completa que incluya:
-1. 3 opciones específicas de vinos con nombres y bodegas reales
-2. Justificación de por qué cada vino funciona para la ocasión
-3. Número de botellas sugeridas según el número de personas
-4. Consejos sobre temperatura de servicio y copa ideal
-5. Información adicional relevante para el presupuesto indicado
+Debes dar EXACTAMENTE 3 vinos diferentes usando este formato EXACTO (respetando los títulos y negritas):
 
-Responde de forma conversacional, práctica y educativa, adaptándote al presupuesto especificado.`;
+### 1. [Nombre del vino]
+
+**Recomendación:** [Nombre completo del vino - Bodega]
+
+- **Tipo:** [Tipo de vino]
+- **Bodega:** [Nombre de la bodega]
+- **Región:** [Región específica]
+- **País:** [País de origen]
+- **Precio aproximado:** [Rango de precio en euros]
+
+**Por qué funciona:** [Explicación detallada de 3-4 líneas]
+
+### 2. [Nombre del vino]
+
+**Recomendación:** [Nombre completo del vino - Bodega]
+
+- **Tipo:** [Tipo de vino]
+- **Bodega:** [Nombre de la bodega]
+- **Región:** [Región específica]
+- **País:** [País de origen]
+- **Precio aproximado:** [Rango de precio en euros]
+
+**Por qué funciona:** [Explicación detallada de 3-4 líneas]
+
+### 3. [Nombre del vino]
+
+**Recomendación:** [Nombre completo del vino - Bodega]
+
+- **Tipo:** [Tipo de vino]
+- **Bodega:** [Nombre de la bodega]
+- **Región:** [Región específica]
+- **País:** [País de origen]
+- **Precio aproximado:** [Rango de precio en euros]
+
+**Por qué funciona:** [Explicación detallada de 3-4 líneas]
+
+IMPORTANTE:
+- Habla en primera persona ("Te recomiendo", "He seleccionado para ti").
+- No te refieras a ti mismo en tercera persona.
+- Usa precios en euros.`;
 
     try {
       const CHAT_URL = `https://tuoczkxunuoyfjlnqinc.supabase.co/functions/v1/ai-wine-chat`;
