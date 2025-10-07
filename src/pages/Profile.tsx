@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
 import { Wine, User, History, Copy, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -155,8 +155,37 @@ const Profile = () => {
       'Toscana (Italia)': `Hogar del Sangiovese, ofrece vinos con ${currentProfile?.acidez >= 3 ? 'acidez vibrante' : 'frescura'} y ${currentProfile?.tanico >= 3 ? 'estructura tánica' : 'elegancia'}.`,
       'Rioja (España)': `La región española icónica que produce vinos ${currentProfile?.potente >= 3 ? 'con cuerpo' : 'equilibrados'} y ${currentProfile?.tanico >= 2 ? 'taninos pulidos' : 'suaves'}.`,
       'Ribera del Duero (España)': `Tintos potentes y concentrados, ideales por tu preferencia por ${currentProfile?.potente >= 3 ? 'intensidad' : 'estructura'} y ${currentProfile?.tanico >= 3 ? 'taninos marcados' : 'carácter'}.`,
+      'Rías Baixas (España)': `La tierra del Albariño, perfecta por tu gusto por ${currentProfile?.acidez >= 4 ? 'acidez refrescante' : 'frescura atlántica'} y ${currentProfile?.afrutado >= 3 ? 'aromas frutales' : 'elegancia'}.`,
+      'Priorat (España)': `Vinos de terruño único, muy ${currentProfile?.potente >= 4 ? 'potentes' : 'concentrados'} con ${currentProfile?.tanico >= 4 ? 'taninos poderosos' : 'estructura seria'}.`,
+      'Piemonte (Italia)': `Hogar del Nebbiolo, produce vinos con ${currentProfile?.tanico >= 4 ? 'taninos serios' : 'estructura'} y ${currentProfile?.acidez >= 3 ? 'acidez elevada' : 'vivacidad'}.`,
+      'Mosel (Alemania)': `Rieslings elegantes con ${currentProfile?.acidez >= 4 ? 'acidez brillante' : 'frescura'} y ${currentProfile?.dulce >= 2 ? 'dulzor equilibrado' : 'pureza frutal'}.`,
+      'Napa Valley (EE.UU.)': `Vinos ${currentProfile?.potente >= 4 ? 'muy potentes' : 'generosos'} y ${currentProfile?.afrutado >= 3 ? 'frutales' : 'expresivos'} con carácter californiano.`,
+      'Mendoza (Argentina)': `Malbecs intensos que combinan ${currentProfile?.afrutado >= 3 ? 'fruta generosa' : 'expresión frutal'} con ${currentProfile?.potente >= 3 ? 'cuerpo robusto' : 'estructura media'}.`,
+      'Valle de Maipo (Chile)': `Cabernets estructurados con ${currentProfile?.potente >= 3 ? 'potencia' : 'equilibrio'} y ${currentProfile?.tanico >= 3 ? 'taninos firmes' : 'estructura definida'}.`,
+      'Marlborough (Nueva Zelanda)': `Sauvignon Blancs con ${currentProfile?.acidez >= 4 ? 'acidez brillante' : 'frescura intensa'} y ${currentProfile?.afrutado >= 4 ? 'aromas explosivos' : 'expresión frutal'}.`,
+      'Barossa Valley (Australia)': `Shiraz potentes y especiadas, ideales por tu gusto por ${currentProfile?.potente >= 4 ? 'vinos con músculo' : 'intensidad'} y ${currentProfile?.afrutado >= 3 ? 'fruta madura' : 'carácter frutal'}.`
     };
     return descriptions[region] || `Una región que produce vinos alineados con tu perfil.`;
+  };
+
+  const getRegionCoordinates = (region: string): [number, number] => {
+    const coordinates: Record<string, [number, number]> = {
+      'Borgoña (Francia)': [4.8357, 47.0502],
+      'Burdeos (Francia)': [-0.5792, 44.8378],
+      'Toscana (Italia)': [11.2558, 43.7696],
+      'Rioja (España)': [-2.4450, 42.2871],
+      'Ribera del Duero (España)': [-4.0580, 41.6370],
+      'Rías Baixas (España)': [-8.6446, 42.4296],
+      'Priorat (España)': [0.7356, 41.1573],
+      'Piemonte (Italia)': [7.6869, 45.0522],
+      'Mosel (Alemania)': [6.6371, 49.9929],
+      'Napa Valley (EE.UU.)': [-122.2869, 38.5025],
+      'Mendoza (Argentina)': [-68.8458, -32.8895],
+      'Valle de Maipo (Chile)': [-70.6693, -33.4489],
+      'Marlborough (Nueva Zelanda)': [173.9654, -41.5135],
+      'Barossa Valley (Australia)': [138.9969, -34.5598]
+    };
+    return coordinates[region] || [0, 0];
   };
 
   const regionsByCountry = recommendedRegions.reduce((acc, region) => {
@@ -242,30 +271,28 @@ const Profile = () => {
               </div>
 
               {/* Radar Chart */}
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="h-80">
-                    <h3 className="text-xl font-semibold text-red-800 mb-4 flex items-center gap-2">
-                      <span className="text-2xl">🍷</span> Tu radar sensorial
-                    </h3>
-                    <ChartContainer config={chartConfig}>
-                      <RadarChart outerRadius={90} data={chartData}>
-                        <PolarGrid stroke="#be123c33" />
-                        <PolarAngleAxis dataKey="attribute" tick={{ fill: '#be123c' }} />
-                        <PolarRadiusAxis domain={[1, 5]} stroke="#be123c" />
-                        <Radar 
-                          name="Perfil" 
-                          dataKey="value" 
-                          stroke="#be123c" 
-                          fill="#be123c" 
-                          fillOpacity={0.6} 
-                        />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                      </RadarChart>
-                    </ChartContainer>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-red-800 mb-4 flex items-center gap-2">
+                  <span className="text-2xl">📊</span> Tu radar sensorial
+                </h3>
+                <div className="h-80 bg-white rounded-lg p-4 shadow-md">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart data={chartData}>
+                      <PolarGrid stroke="#be123c33" />
+                      <PolarAngleAxis dataKey="attribute" tick={{ fill: '#be123c' }} />
+                      <PolarRadiusAxis domain={[1, 5]} stroke="#be123c" />
+                      <Radar 
+                        name="Perfil" 
+                        dataKey="value" 
+                        stroke="#be123c" 
+                        fill="#be123c" 
+                        fillOpacity={0.6} 
+                      />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
 
               {/* Wine Styles Section */}
               {styleDetails.length > 0 && (
@@ -338,30 +365,49 @@ const Profile = () => {
                     <MapPin className="w-6 h-6" />
                     Regiones que van con tu estilo
                   </h3>
+                  <p className="text-gray-700 mb-6 text-lg">
+                    Estas regiones vinícolas producen vinos que se alinean con tus preferencias:
+                  </p>
                   
                   {sortedCountries.map(({ country, regions }) => (
                     <div key={country} className="mb-8">
-                      <h4 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                        <span className="text-2xl">{getCountryEmoji(country)}</span>
-                        {country}
+                      <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                        <span className="text-3xl">{getCountryEmoji(country)}</span>
+                        <span>{country}</span>
+                        <span className="text-sm font-normal text-gray-600">({regions.length} {regions.length === 1 ? 'región' : 'regiones'})</span>
                       </h4>
+                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {regions.map((region, index) => (
-                          <Card key={index} className="bg-blue-50 border-blue-200 hover:shadow-md transition-shadow">
-                            <CardContent className="pt-6">
-                              <div className="flex items-start gap-3">
-                                <div className="bg-blue-200 rounded-full p-2 flex-shrink-0">
-                                  <MapPin className="w-5 h-5 text-blue-700" />
+                          <div 
+                            key={index} 
+                            className="group relative bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 p-6 rounded-2xl border-2 border-amber-200 hover:border-amber-400 hover:shadow-xl transition-all duration-300 overflow-hidden"
+                          >
+                            {/* Efecto de brillo */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            
+                            {/* Contenido */}
+                            <div className="relative z-10">
+                              <div className="flex items-center gap-3 mb-3">
+                                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                  <MapPin className="w-6 h-6 text-white" />
                                 </div>
-                                <div className="flex-1">
-                                  <h5 className="font-bold text-blue-900 mb-2">{region}</h5>
-                                  <p className="text-sm text-gray-700 leading-relaxed">
-                                    {getRegionDescription(region)}
-                                  </p>
-                                </div>
+                                <h5 className="font-bold text-lg text-gray-900 group-hover:text-red-700 transition-colors flex-1">
+                                  {region.split('(')[0].trim()}
+                                </h5>
                               </div>
-                            </CardContent>
-                          </Card>
+                              <p className="text-sm text-gray-700 leading-relaxed mb-4">{getRegionDescription(region)}</p>
+                              
+                              {/* Mapa de la región */}
+                              <RegionMap 
+                                region={region} 
+                                coordinates={getRegionCoordinates(region)} 
+                              />
+                              
+                              {/* Indicador decorativo */}
+                              <div className="mt-4 h-1 w-0 bg-gradient-to-r from-amber-500 to-red-600 group-hover:w-full transition-all duration-500 rounded-full"></div>
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
