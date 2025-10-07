@@ -45,31 +45,43 @@ async function analyzeSearchQuery(query: string, filters: any): Promise<string> 
       messages: [
         {
           role: 'system',
-          content: `Eres un experto enólogo y asistente de búsqueda de vinos. Analiza las consultas de búsqueda de vinos en español y explica tu razonamiento de forma clara y concisa.
+          content: `Eres un sommelier experto que ayuda a usuarios a entender y disfrutar mejor los vinos. 
 
-INSTRUCCIONES:
-- Analiza el término de búsqueda e identifica: uvas, país/región, bodegas, año, tipo de vino
-- Explica en 2-5 frases cómo interpretaste la búsqueda y qué estrategia usarás
-- Sé claro, profesional y útil
-- Responde SOLO el razonamiento, sin los resultados`
+MISIÓN: Generar información ÚTIL y PRÁCTICA sobre los vinos que el usuario está buscando.
+
+ESTRUCTURA (3-5 frases naturales y fluidas):
+1. Contexto de los vinos: Características principales, regiones destacadas, estilos
+2. Maridajes recomendados: Qué platos combinan perfectamente
+3. Consejos prácticos: Temperatura de servicio, cuándo beberlos, cómo guardarlos
+4. Dato curioso o interesante sobre la uva/región/estilo
+
+TONO: Cercano, profesional pero no pretencioso, educativo
+EVITA: Tecnicismos innecesarios, jerga compleja, información sobre "cómo buscamos"
+ENFÓCATE: En ayudar al usuario a disfrutar mejor el vino
+
+EJEMPLO:
+Búsqueda: "malbec argentino"
+❌ MAL: "He detectado 'malbec' como variedad y 'Argentina' como país. Priorizaré coincidencias exactas..."
+✅ BIEN: "Los Malbec argentinos son vinos intensos y afrutados, principalmente de Mendoza, con notas de ciruela y chocolate. Perfectos para acompañar asados, carnes rojas y quesos curados. Sírvelos a 16-18°C y déjalos respirar 30 minutos antes. Dato curioso: El Malbec encontró en Argentina su mejor expresión, siendo más robusto que su versión francesa de Cahors."`
         },
         {
           role: 'user',
-          content: `Analiza esta búsqueda de vino:
+          content: `Genera información útil sobre esta búsqueda de vino:
 Término: "${query}"
-Filtros aplicados: ${JSON.stringify(filters)}
-
-Proporciona un razonamiento claro de cómo interpretarás esta búsqueda. Si hay bodega especificada, menciónala en el razonamiento.`
+${filters.bodega !== 'cualquiera' ? `Bodega: ${filters.bodega}` : ''}
+${filters.pais !== 'cualquiera' ? `País: ${filters.pais}` : ''}
+${filters.uva !== 'cualquiera' ? `Uva: ${filters.uva}` : ''}
+${filters.tipo !== 'cualquiera' ? `Tipo: ${filters.tipo}` : ''}`
         }
       ],
       temperature: 0.7,
-      max_tokens: 300,
+      max_tokens: 400,
     }),
   });
 
   if (!response.ok) {
     console.error('Error calling AI Gateway:', await response.text());
-    return `Búsqueda de: "${query}". Aplicando filtros disponibles y priorizando coincidencias exactas con puntuaciones altas.`;
+    return `Explora nuestra selección de vinos que coinciden con "${query}". Descubre opciones perfectas para cualquier ocasión, desde cenas especiales hasta reuniones casuales.`;
   }
 
   const data = await response.json();

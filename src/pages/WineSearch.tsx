@@ -226,15 +226,15 @@ const WineSearch = () => {
         {/* Results */}
         {response && (
           <div className="space-y-8">
-            {/* Reasoning Section */}
+            {/* Info Section */}
             <Card className="shadow-lg border-blue-100 bg-blue-50/50">
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Lightbulb className="w-5 h-5 text-blue-700" />
-                  <CardTitle className="text-blue-900">Razonamiento</CardTitle>
+                  <CardTitle className="text-blue-900">Sobre tu búsqueda</CardTitle>
                 </div>
                 <CardDescription>
-                  Cómo interpretamos tu búsqueda
+                  Información útil sobre estos vinos
                 </CardDescription>
               </CardHeader>
               <CardContent>
