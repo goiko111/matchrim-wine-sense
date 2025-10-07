@@ -17,6 +17,7 @@ interface WineSearchParams {
   grape?: string;
   type?: string;
   winery?: string;
+  region?: string;
 }
 
 interface WineResult {
@@ -71,7 +72,8 @@ Término: "${query}"
 ${filters.bodega !== 'cualquiera' ? `Bodega: ${filters.bodega}` : ''}
 ${filters.pais !== 'cualquiera' ? `País: ${filters.pais}` : ''}
 ${filters.uva !== 'cualquiera' ? `Uva: ${filters.uva}` : ''}
-${filters.tipo !== 'cualquiera' ? `Tipo: ${filters.tipo}` : ''}`
+${filters.tipo !== 'cualquiera' ? `Tipo: ${filters.tipo}` : ''}
+${filters.region !== 'cualquiera' ? `Región: ${filters.region}` : ''}`
         }
       ],
       temperature: 0.7,
@@ -131,6 +133,7 @@ ${params.country ? `País filtrado: ${params.country}` : ''}
 ${params.grape ? `Uva filtrada: ${params.grape}` : ''}
 ${params.type ? `Tipo filtrado: ${params.type}` : ''}
 ${params.winery ? `Bodega filtrada: ${params.winery}` : ''}
+${params.region ? `Región filtrada: ${params.region}` : ''}
 
 Genera entre 3 y 10 vinos reales que coincidan. Responde SOLO con el array JSON.`
         }
@@ -215,6 +218,7 @@ serve(async (req) => {
       uva: params.grape || 'cualquiera',
       tipo: params.type || 'cualquiera',
       bodega: params.winery || 'cualquiera',
+      region: params.region || 'cualquiera',
     };
     
     const razonamiento = await analyzeSearchQuery(params.query, filters);

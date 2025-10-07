@@ -56,15 +56,56 @@ const GRAPE_VARIETIES = [
   "Crljenak Kaštelanski", "Pošip", "Malvasia Istriana"
 ].sort();
 
+// Lista exhaustiva de regiones vitivinícolas
+const WINE_REGIONS = [
+  // España
+  "Rioja", "Ribera del Duero", "Priorat", "Rías Baixas", "Rueda", "Toro", "Bierzo", "Jumilla",
+  "Penedès", "Montsant", "Somontano", "Navarra", "Valdepeñas", "La Mancha", "Utiel-Requena",
+  "Yecla", "Alicante", "Valencia", "Campo de Borja", "Cariñena", "Calatayud", "Méntrida",
+  // Francia
+  "Bordeaux", "Borgoña", "Champagne", "Valle del Ródano", "Valle del Loira", "Alsacia",
+  "Languedoc-Roussillon", "Provenza", "Beaujolais", "Jura", "Saboya", "Sud-Ouest",
+  "Pomerol", "Saint-Émilion", "Médoc", "Graves", "Sauternes", "Chablis", "Côte de Nuits",
+  "Côte de Beaune", "Châteauneuf-du-Pape", "Hermitage", "Côte-Rôtie", "Condrieu",
+  // Italia
+  "Toscana", "Piamonte", "Veneto", "Sicilia", "Puglia", "Friuli-Venezia Giulia", "Lombardía",
+  "Chianti", "Brunello di Montalcino", "Barolo", "Barbaresco", "Amarone", "Valpolicella",
+  "Franciacorta", "Montepulciano d'Abruzzo", "Primitivo di Manduria",
+  // Portugal
+  "Douro", "Alentejo", "Dão", "Vinho Verde", "Bairrada", "Lisboa", "Tejo", "Península de Setúbal",
+  // Alemania
+  "Mosel", "Rheingau", "Pfalz", "Rheinhessen", "Baden", "Franconia", "Nahe",
+  // Argentina
+  "Mendoza", "Salta", "San Juan", "Patagonia", "Valle de Uco", "Luján de Cuyo", "Cafayate",
+  // Chile
+  "Valle de Maipo", "Valle de Colchagua", "Valle de Casablanca", "Valle de Aconcagua",
+  "Valle del Maule", "Valle de Curicó", "Valle de Limarí", "Valle de Elqui",
+  // Estados Unidos
+  "Napa Valley", "Sonoma", "Paso Robles", "Santa Barbara", "Willamette Valley",
+  "Columbia Valley", "Finger Lakes", "Long Island",
+  // Australia
+  "Barossa Valley", "Margaret River", "Hunter Valley", "McLaren Vale", "Yarra Valley",
+  "Coonawarra", "Clare Valley", "Adelaide Hills",
+  // Nueva Zelanda
+  "Marlborough", "Central Otago", "Hawke's Bay", "Martinborough", "Waipara Valley",
+  // Sudáfrica
+  "Stellenbosch", "Paarl", "Constantia", "Swartland", "Franschhoek", "Walker Bay",
+  // Otros países
+  "Tokaj (Hungría)", "Santorini (Grecia)", "Nemea (Grecia)", "Finger Lakes (USA)",
+  "Wachau (Austria)", "Kamptal (Austria)", "Goriška Brda (Eslovenia)"
+].sort();
+
 const WineSearch = () => {
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState<string>("");
   const [grape, setGrape] = useState<string>("");
   const [type, setType] = useState<string>("");
   const [winery, setWinery] = useState<string>("");
+  const [region, setRegion] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<SearchResponse | null>(null);
   const [openGrapeCombobox, setOpenGrapeCombobox] = useState(false);
+  const [openRegionCombobox, setOpenRegionCombobox] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +126,7 @@ const WineSearch = () => {
           grape: grape || undefined,
           type: type || undefined,
           winery: winery || undefined,
+          region: region || undefined,
         },
       });
 
@@ -155,7 +197,8 @@ const WineSearch = () => {
               </div>
 
               {/* Filters */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* País */}
                 <div>
                   <Label htmlFor="country" className="text-red-900">
                     País (opcional)
@@ -261,6 +304,72 @@ const WineSearch = () => {
                   </Select>
                 </div>
 
+                {/* Región */}
+                <div>
+                  <Label htmlFor="region" className="text-red-900">
+                    Región (opcional)
+                  </Label>
+                  <Popover open={openRegionCombobox} onOpenChange={setOpenRegionCombobox}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openRegionCombobox}
+                        className="w-full justify-between mt-1.5 border-red-200 hover:border-red-400"
+                      >
+                        {region ? region : "Buscar región..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0 bg-white" align="start">
+                      <Command className="bg-white">
+                        <CommandInput placeholder="Buscar región..." className="border-0" />
+                        <CommandList className="max-h-[300px] overflow-y-auto">
+                          <CommandEmpty>No se encontró esa región.</CommandEmpty>
+                          <CommandGroup>
+                            <CommandItem
+                              value=""
+                              onSelect={() => {
+                                setRegion("");
+                                setOpenRegionCombobox(false);
+                              }}
+                              className="hover:bg-red-50"
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  region === "" ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              Cualquier región
+                            </CommandItem>
+                            {WINE_REGIONS.map((reg) => (
+                              <CommandItem
+                                key={reg}
+                                value={reg}
+                                onSelect={(currentValue) => {
+                                  setRegion(currentValue === region ? "" : currentValue);
+                                  setOpenRegionCombobox(false);
+                                }}
+                                className="hover:bg-red-50"
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    region === reg ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {reg}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                {/* Tipo */}
                 <div>
                   <Label htmlFor="winery" className="text-red-900">
                     Bodega (opcional)
