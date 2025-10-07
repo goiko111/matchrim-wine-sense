@@ -19,7 +19,7 @@ const PairingAnalysisCard: React.FC<PairingAnalysisCardProps> = ({ response }) =
         preparation: '',
         accompaniments: ''
       },
-      alternatives: ''
+      alternatives: [] as string[]
     };
 
     // Extract score
@@ -68,16 +68,26 @@ const PairingAnalysisCard: React.FC<PairingAnalysisCardProps> = ({ response }) =
     const accompMatch = text.match(/[-•]\s*\*\*Acompañamientos:\*\*\s*([^\n]+)/i);
     if (accompMatch) result.tips.accompaniments = accompMatch[1].trim();
 
-    // Extract alternatives - try multiple patterns
-    let altMatch = text.match(/\*\*Alternativas si no es ideal:\*\*\s*\n\n([^*]+?)(?=$)/is);
-    if (!altMatch) {
-      altMatch = text.match(/\*\*Alternativas si no es ideal:\*\*\s*\n([^*]+?)(?=\n\n\*\*|$)/is);
+    // Extract alternatives - flexible header and list formats
+    let altBlock: string | null = null;
+    const altHeaderMatch = text.match(/(?:\*\*)?\s*Alternativas(?:[^:\n]*)?:\s*(?:\*\*)?\s*\n([\s\S]+)/i);
+    if (altHeaderMatch) {
+      altBlock = altHeaderMatch[1];
     }
-    if (!altMatch) {
-      altMatch = text.match(/\*\*Alternativas.*?:\*\*\s*\n\n?([^\n]+(?:\n(?!\*\*)[^\n]+)*)/is);
-    }
-    if (altMatch) {
-      result.alternatives = altMatch[1].trim();
+    if (altBlock) {
+      // Cut off at next bold header if present
+      const cut = altBlock.split(/\n\n\*\*[^\n]+:\*\*/)[0];
+      const lines = cut.split('\n').map(l => l.trim()).filter(Boolean);
+      const items: string[] = [];
+      for (const l of lines) {
+        const m = l.match(/^[-•*]\s*(.+)$/) || l.match(/^\d+\.\s*(.+)$/) || l.match(/^—\s*(.+)$/);
+        if (m) items.push(m[1].trim());
+      }
+      if (items.length) {
+        result.alternatives = items;
+      } else if (cut.trim()) {
+        result.alternatives = [cut.trim()];
+      }
     }
 
     return result;
@@ -242,13 +252,20 @@ const PairingAnalysisCard: React.FC<PairingAnalysisCardProps> = ({ response }) =
           )}
 
           {/* Alternatives */}
-          {analysis.alternatives && (
+          {analysis.alternatives.length > 0 && (
             <div className="p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg border-l-4 border-red-400">
               <h4 className="font-bold text-red-900 mb-2 flex items-center gap-2">
                 <span>🔄</span>
                 Alternativas si no es ideal
               </h4>
-              <p className="text-gray-700 leading-relaxed">{analysis.alternatives}</p>
+              <div className="space-y-2">
+                {analysis.alternatives.map((alt, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-100">
+                    <div className="text-red-600 mt-0.5">↪</div>
+                    <p className="text-gray-700 text-sm">{alt}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
