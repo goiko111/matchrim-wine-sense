@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,6 +30,30 @@ import WineStylesGrid from '@/components/wine-styles/WineStylesGrid';
 const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [hasQuizResults, setHasQuizResults] = useState(false);
+
+  useEffect(() => {
+    const checkQuizResults = async () => {
+      if (user) {
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { data } = await supabase
+          .from('quiz_results')
+          .select('id')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        setHasQuizResults(!!data);
+      }
+    };
+    checkQuizResults();
+  }, [user]);
+
+  const handleDiscoverProfile = () => {
+    if (user && hasQuizResults) {
+      navigate('/profile');
+    } else {
+      navigate('/matchrim');
+    }
+  };
 
   const testimonials = [
     {
@@ -224,7 +248,7 @@ const Index = () => {
                 <Button 
                   size="lg"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl px-8 py-4 w-full"
-                  onClick={() => navigate('/registration')}
+                  onClick={handleDiscoverProfile}
                 >
                   Descubrir mi perfil
                   <ArrowRight className="ml-2 h-5 w-5" />
