@@ -30,6 +30,26 @@ const WineStylesGrid = () => {
     'Blanco de Carácter', 'Rosado Ligero', 'Rosado Gastronómico', 'Tinto Ligero'
   ];
 
+  // Descripciones por defecto para cada estilo base
+  const defaultDescriptions: Record<string, string> = {
+    'Burbuja Fresca': 'Efervescencia fresca y ligera, perfecta para aperitivos y celebraciones.',
+    'Brut Elegante': 'Espumoso seco y sofisticado, de burbuja fina y final largo.',
+    'Blanco Vital': 'Blanco vibrante y cítrico, con acidez refrescante y energía.',
+    'Blanco Goloso': 'Blanco aromático y amable, con fruta madura y tacto goloso.',
+    'Dulce Intenso': 'Dulce de gran concentración y complejidad, ideal para postres.',
+    'Oxidativo/Maduro': 'Perfil evolucionado con notas de frutos secos, especias y crianza.',
+    'Experimental': 'Vinos de vanguardia con técnicas innovadoras y carácter único.',
+    'Vino de Terruño': 'Expresión pura del origen: suelo, clima y tradición en equilibrio.',
+    'Tinto Versátil': 'Tinto equilibrado y adaptable, compañero ideal para cualquier ocasión.',
+    'Tinto de Estructura': 'Tinto con cuerpo y taninos firmes, profundo y de larga guarda.',
+    'Tinto Goloso': 'Tinto frutal y seductor, de paso amable y final jugoso.',
+    'Dulce Ligero': 'Dulce sutil y fresco, armonioso y fácil de disfrutar.',
+    'Blanco de Carácter': 'Blanco con personalidad, estructura y complejidad aromática.',
+    'Rosado Ligero': 'Rosado fresco y delicado, perfecto para días soleados.',
+    'Rosado Gastronómico': 'Rosado con estructura y precisión para grandes maridajes.',
+    'Tinto Ligero': 'Tinto fresco y ligero, taninos suaves y gran bebibilidad.'
+  };
+
   useEffect(() => {
     fetchWinerimStyles();
   }, []);
@@ -88,7 +108,7 @@ const WineStylesGrid = () => {
         return found ?? {
           id: `placeholder-${idx}`,
           name,
-          description: 'Próximamente',
+          description: defaultDescriptions[name] ?? 'Próximamente',
           potente: 0,
           acidez: 0,
           dulce: 0,
@@ -208,7 +228,7 @@ const WineStylesGrid = () => {
                 
                 {/* Descripción */}
                 <p className="text-sm text-gray-700 leading-relaxed text-justify mb-4">
-                  {style.description || 'Descripción no disponible'}
+                  {style.description || defaultDescriptions[cleanStyleName(style.name)] || 'Descripción no disponible'}
                 </p>
                 
                 {/* Indicador de click */}

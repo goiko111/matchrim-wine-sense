@@ -688,7 +688,7 @@ const WineStyleDetail = () => {
               </h1>
               
               <p className="text-xl text-gray-700 leading-relaxed">
-                {style.description}
+                {style.description || config.story || getEvocativeDescription(style)}
               </p>
             </div>
             
