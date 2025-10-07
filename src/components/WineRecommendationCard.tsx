@@ -144,11 +144,11 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
           const value = labelMatch[2].trim();
           let icon = '📌';
 
-          // Extract wine name if this is the "Nombre" field
-          if (label.toLowerCase().includes('nombre')) {
-            wineName = value;
+          // Extract wine name if this is the "Nombre" or "Recomendación" field
+          if (label.toLowerCase().includes('nombre') || label.toLowerCase().includes('recomendación') || label.toLowerCase().includes('recomendacion')) {
+            wineName = value.replace(/^(Recomendación|Recomendacion)\s*:\s*/i, '').trim();
             icon = '🏷️';
-          } else if (label.toLowerCase().includes('por qué funciona') || label.toLowerCase().includes('funciona')) {
+          } else if (label.toLowerCase().includes('por qué funciona') || label.toLowerCase().includes('por que funciona') || label.toLowerCase().includes('funciona')) {
             whyItWorks = value;
             icon = '✨';
           } else if (label.toLowerCase().includes('bodega')) {
@@ -169,8 +169,14 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
             icon = '🎉';
           }
 
-          // Don't add "Por qué funciona" to structuredInfo, we'll show it separately
-          if (!label.toLowerCase().includes('por qué funciona') && !label.toLowerCase().includes('funciona')) {
+          // Don't add "Por qué funciona" or "Recomendación" to structuredInfo, we'll show them separately
+          if (
+            !label.toLowerCase().includes('por qué funciona') &&
+            !label.toLowerCase().includes('por que funciona') &&
+            !label.toLowerCase().includes('funciona') &&
+            !label.toLowerCase().includes('recomendación') &&
+            !label.toLowerCase().includes('recomendacion')
+          ) {
             structuredInfo.push({ label, value, icon });
           }
         } else if (trimmedLine && !trimmedLine.startsWith('-') && !trimmedLine.startsWith('•')) {
@@ -191,7 +197,7 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
                 </div>
                 <div className="flex-1">
                   <h4 className="font-bold text-white text-lg leading-tight">
-                    {wineName || section.title}
+                    {wineName || (section.highlight ? section.highlight.replace(/^(Recomendación|Recomendacion)\s*:\s*/i, '') : section.title) || section.title}
                   </h4>
                   {section.highlight && (
                     <span className="inline-block mt-2 text-xs bg-white/20 text-white px-3 py-1 rounded-full font-medium backdrop-blur-sm">
