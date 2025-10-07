@@ -54,39 +54,55 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
           wineInfo.name = lines[0].replace(/^\d+\.\s*/, '').trim();
         }
         
-        // Extract Recomendación
-        const recoMatch = section.match(/\*\*Recomendación:\*\*\s*([^\n]+)/i);
+        // Extract Recomendación (can be bold or in bullet)
+        const recoMatch = section.match(/\*\*Recomendación:\*\*\s*([^\n]+)/i) || 
+                         section.match(/[-•]\s*\*\*Recomendación:\*\*\s*([^\n]+)/i);
         if (recoMatch) {
           wineInfo.recommendation = recoMatch[1].trim();
         }
         
-        // Extract fields
-        const tipoMatch = section.match(/\*\*Tipo:\*\*\s*([^\n]+)/i);
+        // Extract Tipo (flexible matching)
+        const tipoMatch = section.match(/\*\*Tipo(?:\s+y\s+estilo)?:\*\*\s*([^\n]+)/i) ||
+                         section.match(/[-•]\s*\*\*Tipo(?:\s+y\s+estilo)?:\*\*\s*([^\n]+)/i);
         if (tipoMatch) wineInfo.type = tipoMatch[1].trim();
         
-        const bodegaMatch = section.match(/\*\*Bodega:\*\*\s*([^\n]+)/i);
+        // Extract Bodega (can include "y bodega" or "específico y bodega")
+        const bodegaMatch = section.match(/\*\*(?:Nombre específico y )?Bodega:\*\*\s*([^\n]+)/i) ||
+                           section.match(/[-•]\s*\*\*(?:Nombre específico y )?Bodega:\*\*\s*([^\n]+)/i);
         if (bodegaMatch) wineInfo.bodega = bodegaMatch[1].trim();
         
-        const regionMatch = section.match(/\*\*Región:\*\*\s*([^\n]+)/i);
+        // Extract Región
+        const regionMatch = section.match(/\*\*Región:\*\*\s*([^\n]+)/i) ||
+                           section.match(/[-•]\s*\*\*Región:\*\*\s*([^\n]+)/i);
         if (regionMatch) wineInfo.region = regionMatch[1].trim();
         
-        const countryMatch = section.match(/\*\*País:\*\*\s*([^\n]+)/i);
+        // Extract País
+        const countryMatch = section.match(/\*\*País:\*\*\s*([^\n]+)/i) ||
+                            section.match(/[-•]\s*\*\*País:\*\*\s*([^\n]+)/i);
         if (countryMatch) wineInfo.country = countryMatch[1].trim();
         
-        const priceMatch = section.match(/\*\*Precio aproximado:\*\*\s*([^\n]+)/i);
+        // Extract Precio (flexible matching)
+        const priceMatch = section.match(/\*\*(?:Precio aproximado|Rango de precio):\*\*\s*([^\n]+)/i) ||
+                          section.match(/[-•]\s*\*\*(?:Precio aproximado|Rango de precio):\*\*\s*([^\n]+)/i);
         if (priceMatch) wineInfo.price = priceMatch[1].trim();
         
-        const whyMatch = section.match(/\*\*Por qué funciona:\*\*\s*([^\n#]+)/i);
-        if (whyMatch) wineInfo.whyItWorks = whyMatch[1].trim();
+        // Extract "Por qué funciona" (flexible matching)
+        const whyMatch = section.match(/\*\*Por qué funciona(?:\s+con\s+este\s+plato)?:\*\*\s*([^\n#]+)/i) ||
+                        section.match(/[-•]\s*\*\*Por qué funciona(?:\s+con\s+este\s+plato)?:\*\*\s*([^\n#]+)/i);
+        if (whyMatch) {
+          wineInfo.whyItWorks = whyMatch[1].trim();
+        }
         
         wines.push(wineInfo);
       }
     });
     
     // Extract conclusion (text after last wine that contains closing phrases)
-    const lastSection = sections[sections.length - 1];
-    if (lastSection && !lastSection.match(/^\d+\./)) {
-      conclusion = lastSection.trim();
+    if (wines.length > 0) {
+      const lastWineSection = text.split('###').filter(s => s.trim())[wines.length];
+      if (lastWineSection && !lastWineSection.match(/^\d+\./)) {
+        conclusion = lastWineSection.trim();
+      }
     }
     
     return { intro, wines, conclusion };
