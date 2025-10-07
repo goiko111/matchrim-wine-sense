@@ -538,46 +538,12 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     const parts = wineString.split(", ");
     const country = parts[4]; // El país está en la posición 4
     
-    if (country) {
+    if (country && country.trim()) {
       return country.trim();
     }
     
-    // Fallback: intentar detectar por bandera si no hay país en parts[4]
-    const flag = getCountryFlag(wineString);
-    const countryMap: {[key: string]: string} = {
-      '🇪🇸': 'España',
-      '🇫🇷': 'Francia',
-      '🇮🇹': 'Italia',
-      '🇦🇷': 'Argentina',
-      '🇨🇱': 'Chile',
-      '🇲🇽': 'México',
-      '🇺🇸': 'Estados Unidos',
-      '🇦🇺': 'Australia',
-      '🇳🇿': 'Nueva Zelanda',
-      '🇵🇹': 'Portugal',
-      '🇩🇪': 'Alemania',
-      '🇿🇦': 'Sudáfrica',
-      '🇬🇷': 'Grecia',
-      '🇬🇪': 'Georgia',
-      '🇦🇹': 'Austria',
-      '🇭🇺': 'Hungría',
-      '🇭🇷': 'Croacia',
-      '🇺🇾': 'Uruguay',
-      '🇧🇷': 'Brasil',
-      '🇨🇦': 'Canadá',
-      '🇨🇭': 'Suiza',
-      '🇱🇧': 'Líbano',
-      '🇮🇱': 'Israel',
-      '🇹🇷': 'Turquía',
-      '🇷🇴': 'Rumania',
-      '🇧🇬': 'Bulgaria',
-      '🇸🇮': 'Eslovenia',
-      '🇨🇳': 'China',
-      '🇯🇵': 'Japón',
-      '🇲🇦': 'Marruecos',
-      '🇬🇧': 'Reino Unido',
-    };
-    return countryMap[flag] || 'Otros';
+    // Fallback: si no hay país explícito, devolver "Otros"
+    return 'Otros';
   };
 
   // Agrupar y ordenar vinos por país
