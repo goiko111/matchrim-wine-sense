@@ -29,6 +29,7 @@ const WineSearch = () => {
   const [country, setCountry] = useState<string>("");
   const [grape, setGrape] = useState<string>("");
   const [type, setType] = useState<string>("");
+  const [winery, setWinery] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<SearchResponse | null>(null);
 
@@ -50,6 +51,7 @@ const WineSearch = () => {
           country: country || undefined,
           grape: grape || undefined,
           type: type || undefined,
+          winery: winery || undefined,
         },
       });
 
@@ -120,7 +122,7 @@ const WineSearch = () => {
               </div>
 
               {/* Filters */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <Label htmlFor="country" className="text-red-900">
                     País (opcional)
@@ -183,6 +185,20 @@ const WineSearch = () => {
                       <SelectItem value="Espumoso">Espumoso</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="winery" className="text-red-900">
+                    Bodega (opcional)
+                  </Label>
+                  <Input
+                    id="winery"
+                    type="text"
+                    placeholder="Ej: Marqués de Riscal, Catena Zapata..."
+                    value={winery}
+                    onChange={(e) => setWinery(e.target.value)}
+                    className="mt-1.5 border-red-200 focus:border-red-400"
+                  />
                 </div>
               </div>
 
