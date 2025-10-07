@@ -271,17 +271,22 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const getCountryFlag = (wineString: string): string => {
     const lowerWine = wineString.toLowerCase();
     
-    // ESPAÑA - Regiones españolas
+    // ESPAÑA - Regiones españolas (ampliado)
     if (lowerWine.includes('rioja') || lowerWine.includes('ribera') || lowerWine.includes('priorat') || 
         lowerWine.includes('rías baixas') || lowerWine.includes('galicia') || lowerWine.includes('penedès') ||
         lowerWine.includes('jerez') || lowerWine.includes('toro') || lowerWine.includes('rueda') ||
         lowerWine.includes('somontano') || lowerWine.includes('bierzo') || lowerWine.includes('jumilla') ||
         lowerWine.includes('montsant') || lowerWine.includes('empordà') || lowerWine.includes('navarra') ||
         lowerWine.includes('cataluña') || lowerWine.includes('valencia') || lowerWine.includes('muga') ||
+        lowerWine.includes('madrid') || lowerWine.includes('castilla') || lowerWine.includes('león') ||
+        lowerWine.includes('manchuela') || lowerWine.includes('la mancha') || lowerWine.includes('valdepeñas') ||
+        lowerWine.includes('yecla') || lowerWine.includes('alicante') || lowerWine.includes('utiel') ||
+        lowerWine.includes('requena') || lowerWine.includes('tierra de') || lowerWine.includes('costers del segre') ||
+        lowerWine.includes('cava') || lowerWine.includes('tarragona') || lowerWine.includes('almansa') ||
         lowerWine.includes('españa') || lowerWine.includes('spain')) {
       return '🇪🇸';
     }
-    
+
     // FRANCIA - Regiones francesas
     if (lowerWine.includes('bordeaux') || lowerWine.includes('borgoña') || lowerWine.includes('burgundy') ||
         lowerWine.includes('champagne') || lowerWine.includes('rhône') || lowerWine.includes('loire') ||
@@ -605,24 +610,34 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             const region = parts[3] || '';
             if (!region) return;
             try {
-              const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(region)}.json?types=region,place,district,locality&language=es&limit=1&access_token=${MAPBOX_TOKEN}`;
+              // Añadir "wine region" para mejorar contexto y forzar idioma español
+              const searchQuery = `${region} wine region`;
+              const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json?types=region,place,district,locality&language=es&limit=1&access_token=${MAPBOX_TOKEN}`;
               const res = await fetch(url);
               if (!res.ok) return;
               const data = await res.json();
               const feat = data?.features?.[0];
+              
+              // Buscar el país en el contexto (más confiable)
               const ctx = feat?.context || [];
-              const countryObj = ctx.find((c: any) => typeof c?.id === 'string' && c.id.startsWith('country.'));
-              let country = countryObj?.text_es || countryObj?.text || feat?.properties?.country || '';
+              const countryObj = ctx.find((c: any) => 
+                typeof c?.id === 'string' && c.id.startsWith('country.')
+              );
+              
+              let country = countryObj?.text_es || countryObj?.text || '';
+              
+              // Fallback: usar la última parte del place_name si no hay contexto
               if (!country && typeof feat?.place_name_es === 'string') {
-                // Tomar última parte del place_name como aproximación
                 const parts = feat.place_name_es.split(',').map((s: string) => s.trim());
                 country = parts[parts.length - 1] || '';
               }
+              
               if (country) {
+                console.log(`Región "${region}" → País detectado: "${country}"`);
                 updates[wine] = normalizeCountry(country);
               }
             } catch (e) {
-              console.warn('Fallo al resolver país por región', e);
+              console.warn(`Fallo al resolver país para región "${region}"`, e);
             }
           }
         })
