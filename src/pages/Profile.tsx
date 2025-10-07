@@ -276,8 +276,8 @@ const Profile = () => {
                   <span className="text-2xl">📊</span> Tu radar sensorial
                 </h3>
                 <div className="h-80 bg-white rounded-lg p-4 shadow-md">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart data={chartData}>
+                  <ChartContainer config={chartConfig}>
+                    <RadarChart outerRadius={90} data={chartData}>
                       <PolarGrid stroke="#be123c33" />
                       <PolarAngleAxis dataKey="attribute" tick={{ fill: '#be123c' }} />
                       <PolarRadiusAxis domain={[1, 5]} stroke="#be123c" />
@@ -290,7 +290,7 @@ const Profile = () => {
                       />
                       <ChartTooltip content={<ChartTooltipContent />} />
                     </RadarChart>
-                  </ResponsiveContainer>
+                  </ChartContainer>
                 </div>
               </div>
 
