@@ -32,32 +32,46 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
 
 Debes dar EXACTAMENTE 3 vinos diferentes. Usa este formato exacto:
 
-### 1. [Nombre completo del vino - Bodega]
+### 1. [Nombre del vino]
 
-- Nombre específico y bodega: [Escribe el nombre completo aquí]
-- Tipo y estilo: [Tipo de vino y características]
-- Por qué funciona con este plato: [Explicación detallada de por qué este vino marida perfectamente con el plato]
-- Rango de precio: [Precio aproximado]
+**Recomendación:** [Nombre completo del vino - Bodega]
 
-### 2. [Nombre completo del vino - Bodega]
+- **Tipo:** [Tipo de vino]
+- **Bodega:** [Nombre de la bodega]
+- **Región:** [Región específica]
+- **País:** [País de origen]
+- **Precio aproximado:** [Rango de precio en euros]
 
-- Nombre específico y bodega: [Escribe el nombre completo aquí]
-- Tipo y estilo: [Tipo de vino y características]
-- Por qué funciona con este plato: [Explicación detallada de por qué este vino marida perfectamente con el plato]
-- Rango de precio: [Precio aproximado]
+**Por qué funciona:** [Explicación detallada de 3-4 líneas sobre por qué este vino marida perfectamente con el plato]
 
-### 3. [Nombre completo del vino - Bodega]
+### 2. [Nombre del vino]
 
-- Nombre específico y bodega: [Escribe el nombre completo aquí]
-- Tipo y estilo: [Tipo de vino y características]
-- Por qué funciona con este plato: [Explicación detallada de por qué este vino marida perfectamente con el plato]
-- Rango de precio: [Precio aproximado]
+**Recomendación:** [Nombre completo del vino - Bodega]
 
-Al final incluye:
-- Temperatura de servicio: [Temperatura recomendada]
-- Copa ideal: [Tipo de copa]
+- **Tipo:** [Tipo de vino]
+- **Bodega:** [Nombre de la bodega]
+- **Región:** [Región específica]
+- **País:** [País de origen]
+- **Precio aproximado:** [Rango de precio en euros]
 
-IMPORTANTE: Habla en primera persona. Usa "Te recomiendo", "He seleccionado para ti". NO uses tercera persona.`
+**Por qué funciona:** [Explicación detallada de 3-4 líneas sobre por qué este vino marida perfectamente con el plato]
+
+### 3. [Nombre del vino]
+
+**Recomendación:** [Nombre completo del vino - Bodega]
+
+- **Tipo:** [Tipo de vino]
+- **Bodega:** [Nombre de la bodega]
+- **Región:** [Región específica]
+- **País:** [País de origen]
+- **Precio aproximado:** [Rango de precio en euros]
+
+**Por qué funciona:** [Explicación detallada de 3-4 líneas sobre por qué este vino marida perfectamente con el plato]
+
+IMPORTANTE: 
+- Habla en primera persona. Usa "Te recomiendo", "He seleccionado para ti". 
+- NO uses tercera persona.
+- Evita latinismos como "platillo". Usa "plato".`
         };
       case 'dish-for-wine':
         return {
