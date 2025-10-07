@@ -40,7 +40,7 @@ async function analyzeSearchQuery(query: string, filters: any): Promise<string> 
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'google/gemini-2.0-flash-exp',
+      model: 'google/gemini-2.5-flash',
       messages: [
         {
           role: 'system',
@@ -83,7 +83,7 @@ async function searchWinesWithAI(params: WineSearchParams, reasoning: string): P
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'google/gemini-2.0-flash-exp',
+      model: 'google/gemini-2.5-flash',
       messages: [
         {
           role: 'system',
