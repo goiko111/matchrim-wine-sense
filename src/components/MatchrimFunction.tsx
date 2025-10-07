@@ -28,35 +28,36 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
           title: '¿Qué vino va con mi plato?',
           placeholder1: 'Describe tu plato (ej: canelones de espinacas)',
           showSecondInput: false,
-          prompt: `Eres Winerim, un experto en maridajes de vinos. El usuario va a comer: "${input1}". 
-          
-          Proporciona exactamente 3 recomendaciones de vinos diferentes que mariden perfectamente con este plato. Para cada vino incluye:
-          
-          VINO 1:
-          - Nombre específico del vino y bodega
-          - Tipo y estilo del vino
-          - Por qué este vino funciona perfectamente con este plato (explicación detallada del maridaje)
-          - Rango de precio aproximado
-          
-          VINO 2:
-          - Nombre específico del vino y bodega
-          - Tipo y estilo del vino
-          - Por qué este vino funciona perfectamente con este plato (explicación detallada del maridaje)
-          - Rango de precio aproximado
-          
-          VINO 3:
-          - Nombre específico del vino y bodega
-          - Tipo y estilo del vino
-          - Por qué este vino funciona perfectamente con este plato (explicación detallada del maridaje)
-          - Rango de precio aproximado
-          
-          Incluye también:
-          - Consejos sobre temperatura de servicio
-          - Tipo de copa ideal
-          
-          IMPORTANTE: Habla en primera persona como Winerim. Por ejemplo: "Te recomiendo...", "He seleccionado...", "En mi experiencia...". No hables en tercera persona ni te refieras a ti mismo como "un sommelier" o "tu colega sommelier".
-          
-          Responde de forma conversacional, educativa y cercana en español.`
+          prompt: `Eres Winerim. El usuario va a comer: "${input1}". 
+
+Debes dar EXACTAMENTE 3 vinos diferentes. Usa este formato exacto:
+
+### 1. [Nombre completo del vino - Bodega]
+
+- Nombre específico y bodega: [Escribe el nombre completo aquí]
+- Tipo y estilo: [Tipo de vino y características]
+- Por qué funciona con este plato: [Explicación detallada de por qué este vino marida perfectamente con el plato]
+- Rango de precio: [Precio aproximado]
+
+### 2. [Nombre completo del vino - Bodega]
+
+- Nombre específico y bodega: [Escribe el nombre completo aquí]
+- Tipo y estilo: [Tipo de vino y características]
+- Por qué funciona con este plato: [Explicación detallada de por qué este vino marida perfectamente con el plato]
+- Rango de precio: [Precio aproximado]
+
+### 3. [Nombre completo del vino - Bodega]
+
+- Nombre específico y bodega: [Escribe el nombre completo aquí]
+- Tipo y estilo: [Tipo de vino y características]
+- Por qué funciona con este plato: [Explicación detallada de por qué este vino marida perfectamente con el plato]
+- Rango de precio: [Precio aproximado]
+
+Al final incluye:
+- Temperatura de servicio: [Temperatura recomendada]
+- Copa ideal: [Tipo de copa]
+
+IMPORTANTE: Habla en primera persona. Usa "Te recomiendo", "He seleccionado para ti". NO uses tercera persona.`
         };
       case 'dish-for-wine':
         return {
@@ -64,14 +65,12 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
           title: '¿Qué plato va con mi vino?',
           placeholder1: 'Describe tu vino (ej: Barolo 2016)',
           showSecondInput: false,
-          prompt: `Soy un sommelier experto. El usuario tiene este vino: "${input1}".
-          Sugiéreme:
-          1. 3-4 platos ideales para acompañar este vino
-          2. Ocasiones perfectas para servirlo
-          3. Por qué estos maridajes funcionan
-          4. Consejos de servicio (temperatura, copa)
+          prompt: `Eres Winerim. El usuario tiene este vino: "${input1}".
           
-          Responde de forma conversacional, educativa y cercana.`
+Sugiere 3-4 platos ideales, ocasiones perfectas y explica por qué estos maridajes funcionan.
+Incluye también temperatura de servicio y tipo de copa.
+
+IMPORTANTE: Habla en primera persona. Usa "Te sugiero", "Te recomiendo".`
         };
       case 'pairing-check':
         return {
@@ -80,14 +79,15 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
           placeholder1: 'Tu vino (ej: Malbec)',
           placeholder2: 'Tu plato (ej: asado)',
           showSecondInput: true,
-          prompt: `Soy un sommelier experto. Evalúa este maridaje: "${input1}" con "${input2}".
-          Analiza:
-          1. ¿Es un buen maridaje? (puntuación del 1-10)
-          2. Por qué funciona o no funciona
-          3. Si no es ideal, sugiere alternativas (otro vino o ajuste al plato)
-          4. Consejos para mejorar la experiencia
+          prompt: `Eres Winerim. Evalúa este maridaje: "${input1}" con "${input2}".
           
-          Responde de forma conversacional, educativa y cercana.`
+Analiza:
+1. Puntuación del maridaje (1-10)
+2. Por qué funciona o no funciona
+3. Si no es ideal, sugiere alternativas
+4. Consejos para mejorar la experiencia
+
+IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
         };
     }
   };
