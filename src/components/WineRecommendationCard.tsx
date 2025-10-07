@@ -125,12 +125,13 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
     );
   };
 
-  const renderSection = (section: any, index: number) => {
+      const renderSection = (section: any, index: number) => {
     if (section.type === 'numbered') {
       // Parse the content to extract structured information
       const lines = section.content.split('\n').filter((line: string) => line.trim());
       const structuredInfo: { label: string; value: string; icon: string }[] = [];
       let remainingContent = '';
+      let wineName = '';
 
       lines.forEach((line: string) => {
         const trimmedLine = line.trim();
@@ -142,8 +143,11 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
           const value = labelMatch[2].trim();
           let icon = '📌';
 
-          // Assign icons based on label content
-          if (label.toLowerCase().includes('nombre') || label.toLowerCase().includes('bodega')) {
+          // Extract wine name if this is the "Nombre" field
+          if (label.toLowerCase().includes('nombre')) {
+            wineName = value;
+            icon = '🏷️';
+          } else if (label.toLowerCase().includes('bodega')) {
             icon = '🏷️';
           } else if (label.toLowerCase().includes('tipo') || label.toLowerCase().includes('estilo')) {
             icon = '🍷';
@@ -180,7 +184,7 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
                 </div>
                 <div className="flex-1">
                   <h4 className="font-bold text-white text-lg leading-tight">
-                    {section.title}
+                    {wineName || section.title}
                   </h4>
                   {section.highlight && (
                     <span className="inline-block mt-2 text-xs bg-white/20 text-white px-3 py-1 rounded-full font-medium backdrop-blur-sm">
