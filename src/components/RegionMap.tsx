@@ -134,7 +134,9 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
 
             const bounds = getFeatureBounds(feature);
             if (!bounds.isEmpty()) {
-              map.current!.fitBounds(bounds, { padding: 24, maxZoom: 9 });
+              const center = bounds.getCenter();
+              map.current!.setCenter(center);
+              map.current!.setZoom(6);
               return; // Éxito
             }
           }
@@ -186,7 +188,10 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
               'line-opacity': 0.8,
             },
           });
-          map.current!.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], { padding: 24, maxZoom: 9 });
+          const centerLng = (bbox[0] + bbox[2]) / 2;
+          const centerLat = (bbox[1] + bbox[3]) / 2;
+          map.current!.setCenter([centerLng, centerLat]);
+          map.current!.setZoom(6);
           return;
         }
       } catch (e) {
@@ -194,7 +199,7 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
       }
 
       // 3) Fallback: solo centrar en coordenadas
-      const zoom = coordinates[0] === 0 && coordinates[1] === 0 ? 2 : 8;
+      const zoom = coordinates[0] === 0 && coordinates[1] === 0 ? 2 : 6;
       map.current!.setCenter(coordinates);
       map.current!.setZoom(zoom);
     };
