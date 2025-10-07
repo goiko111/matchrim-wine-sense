@@ -829,6 +829,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                       const type = parts[1] || "";
                       const winery = parts[2] || "";
                       const region = parts[3] || "";
+                      const wineCountry = parts[4] || "";
                       
                       // Buscar el ID del estilo en styleDetails para navegar
                       const matchingStyle = styleDetails.find(s => 
@@ -854,6 +855,10 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                               </p>
                               <p className="text-sm text-gray-600">
                                 <span className="font-medium">Región:</span> {region}
+                              </p>
+                              <p className="text-sm text-gray-700 flex items-center gap-1">
+                                <span className="text-base">{getCountryFlag(wine)}</span>
+                                <span className="font-medium">{wineCountry}</span>
                               </p>
                               {matchingStyle && (
                                 <p className="text-xs text-red-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
