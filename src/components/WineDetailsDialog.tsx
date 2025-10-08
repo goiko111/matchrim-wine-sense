@@ -29,6 +29,7 @@ interface WineDetails {
   };
   caracteristicas: {
     varietal: string;
+    capacidad: string;
     alcohol: string;
     temperatura_servicio: string;
     potencial_guarda: string;
@@ -116,6 +117,10 @@ export const WineDetailsDialog = ({ open, onOpenChange, wine }: WineDetailsDialo
                   <div>
                     <span className="font-semibold text-red-900">Varietal:</span>
                     <p className="text-gray-700">{details.caracteristicas.varietal}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-red-900">Capacidad:</span>
+                    <p className="text-gray-700">{details.caracteristicas.capacidad}</p>
                   </div>
                   <div>
                     <span className="font-semibold text-red-900">Alcohol:</span>

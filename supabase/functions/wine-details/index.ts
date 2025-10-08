@@ -54,6 +54,7 @@ Formato de salida:
   },
   "caracteristicas": {
     "varietal": "Uva(s) principal(es)",
+    "capacidad": "Capacidad de la botella (ej: 750ml, 1.5L)",
     "alcohol": "% Vol aproximado",
     "temperatura_servicio": "Temperatura ideal",
     "potencial_guarda": "Años de guarda"
