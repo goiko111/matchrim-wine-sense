@@ -112,13 +112,19 @@ REGLA CRÍTICA DE COINCIDENCIA:
 - Si solo hay 1-2 vinos que coincidan exactamente, devuelve SOLO esos
 - Mejor pocos resultados exactos que muchos resultados irrelevantes
 
+IMPORTANTE - URLs DE IMÁGENES:
+- SIEMPRE incluye el campo imagen_url para cada vino
+- Usa el formato: https://www.wine-searcher.com/images/labels/{número-aleatorio}/{nombre-normalizado}.jpg
+- Normaliza el nombre: minúsculas, espacios a guiones, sin caracteres especiales
+- Ejemplo: "Castillo Ygay 2010" -> "castillo-ygay-2010"
+- Si no estás seguro de la URL exacta, usa una URL genérica pero SIEMPRE incluye el campo
+
 INSTRUCCIONES:
 - Genera entre 1 y 10 vinos reales que coincidan EXACTAMENTE con la búsqueda
 - Usa SOLO vinos que existan realmente en el mercado
 - Incluye información precisa: bodega real, uva(s), país, puntuación estimada
 - Las puntuaciones deben ser realistas (70-100)
 - Las URLs deben usar Wine-Searcher: https://www.wine-searcher.com/find/{nombre-del-vino-con-guiones}
-- Para imagen_url, genera la URL de Vivino: https://images.vivino.com/thumbs/{nombre-vino-bodega-normalizado}_1_600x600.png
 - Responde SOLO con un array JSON válido, sin texto adicional
 
 Formato de salida (array JSON):
@@ -130,7 +136,7 @@ Formato de salida (array JSON):
     "pais": "País de origen",
     "puntuacion": 85,
     "url": "https://www.wine-searcher.com/find/nombre-del-vino-con-guiones",
-    "imagen_url": "https://images.vivino.com/thumbs/nombre-vino-bodega_1_600x600.png"
+    "imagen_url": "https://www.wine-searcher.com/images/labels/12/34/nombre-vino.jpg"
   }
 ]`
         },
