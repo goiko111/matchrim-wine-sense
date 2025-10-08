@@ -23,6 +23,7 @@ interface WineResult {
   pais: string;
   puntuacion: number;
   url: string;
+  imagen_url: string;
 }
 
 interface SearchResponse {
@@ -596,9 +597,12 @@ const WineSearch = () => {
                         <div className="flex items-start gap-4">
                           <div className="flex-shrink-0">
                             <img 
-                              src={wineBottlePlaceholder} 
+                              src={wine.imagen_url || wineBottlePlaceholder} 
                               alt={`Botella de ${wine.nombre}`}
                               className="w-16 h-20 object-contain"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = wineBottlePlaceholder;
+                              }}
                             />
                           </div>
                           <div className="flex-1">

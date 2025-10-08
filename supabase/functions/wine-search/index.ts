@@ -27,6 +27,7 @@ interface WineResult {
   pais: string;
   puntuacion: number;
   url: string;
+  imagen_url: string;
 }
 
 interface SearchResponse {
@@ -110,6 +111,7 @@ INSTRUCCIONES CRÍTICAS:
 - Incluye información precisa: bodega real, uva(s), país, puntuación estimada
 - Las puntuaciones deben ser realistas (70-100)
 - Las URLs deben usar Wine-Searcher (agregador neutral): https://www.wine-searcher.com/find/{nombre-del-vino-con-guiones}
+- Para imagen_url, genera la URL de Vivino: https://images.vivino.com/thumbs/{nombre-vino-bodega-normalizado}_1_600x600.png
 - Responde SOLO con un array JSON válido, sin texto adicional
 
 Formato de salida (array JSON):
@@ -120,7 +122,8 @@ Formato de salida (array JSON):
     "tipo_de_uva": "Uva(s) principal(es)",
     "pais": "País de origen",
     "puntuacion": 85,
-    "url": "https://www.wine-searcher.com/find/nombre-del-vino-con-guiones"
+    "url": "https://www.wine-searcher.com/find/nombre-del-vino-con-guiones",
+    "imagen_url": "https://images.vivino.com/thumbs/nombre-vino-bodega_1_600x600.png"
   }
 ]`
         },
@@ -192,6 +195,7 @@ async function searchWinesSpoonacular(params: WineSearchParams): Promise<WineRes
     pais: wine.country || 'N/A',
     puntuacion: wine.rating ? Math.round(wine.rating * 20) : 75,
     url: `https://www.wine-searcher.com/find/${encodeURIComponent(wine.title.replace(/\s+/g, '-').toLowerCase())}`,
+    imagen_url: wine.imageUrl || `https://images.vivino.com/thumbs/${encodeURIComponent(wine.title.replace(/\s+/g, '-').toLowerCase())}_1_600x600.png`,
   }));
 }
 
