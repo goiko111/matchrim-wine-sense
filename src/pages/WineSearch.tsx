@@ -763,6 +763,66 @@ const WineSearch = () => {
                               </a>
                               <span className="text-gray-300">•</span>
                               <a
+                                href={`https://www.vivino.com/search/wines?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Vivino Market
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.totalwine.com/search/all?text=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Total Wine
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.masterofmalt.com/search/?query=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Master of Malt
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.thewineso ciety.com/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                The Wine Society
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.laithwaites.co.uk/search?search=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Laithwaites
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.bbr.com/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Berry Bros. & Rudd
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
                                 href={`https://www.amazon.es/s?k=${encodeURIComponent(wine.nombre + ' ' + wine.bodega + ' vino')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -779,6 +839,26 @@ const WineSearch = () => {
                                 className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
                               >
                                 1000 Vins
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.nicolas.com/fr/recherche?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Nicolas
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.lagrandeepicerie.com/fr/recherche?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                La Grande Épicerie
                                 <ExternalLink className="ml-1 w-3.5 h-3.5" />
                               </a>
                             </div>
@@ -824,6 +904,46 @@ const WineSearch = () => {
                                 className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
                               >
                                 Decántalo
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.uvinum.es/buscar?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Uvinum
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.vinoseleccion.com/buscar?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Vinoselección
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.drinksco.es/buscar?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Drinks&Co
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.elcorteingles.es/alimentacion/search/?term=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                El Corte Inglés
                                 <ExternalLink className="ml-1 w-3.5 h-3.5" />
                               </a>
                             </div>
