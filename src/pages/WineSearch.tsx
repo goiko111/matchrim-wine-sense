@@ -17,6 +17,7 @@ import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
 import wineBottlePlaceholder from "@/assets/wine-bottle-placeholder.png";
 import { WineImporter, WineImportData } from "@/components/wine-import/WineImporter";
+import { WineDetailsDialog } from "@/components/WineDetailsDialog";
 
 interface WineResult {
   nombre: string;
@@ -246,6 +247,8 @@ const WineSearch = () => {
   const [response, setResponse] = useState<SearchResponse | null>(null);
   const [openGrapeCombobox, setOpenGrapeCombobox] = useState(false);
   const [openRegionCombobox, setOpenRegionCombobox] = useState(false);
+  const [selectedWine, setSelectedWine] = useState<WineResult | null>(null);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -696,7 +699,13 @@ const WineSearch = () => {
                           <div className="flex-1">
                             <div className="flex items-start justify-between gap-4">
                               <div className="flex-1">
-                                <CardTitle className="text-red-900 text-lg mb-1">
+                                <CardTitle 
+                                  className="text-red-900 text-lg mb-1 cursor-pointer hover:text-red-700 hover:underline transition-colors"
+                                  onClick={() => {
+                                    setSelectedWine(wine);
+                                    setDetailsDialogOpen(true);
+                                  }}
+                                >
                                   {wine.nombre}
                                 </CardTitle>
                                 <CardDescription className="text-base">
@@ -1080,8 +1089,17 @@ const WineSearch = () => {
             </div>
           </div>
         )}
+
+        {/* Wine Details Dialog */}
+        {selectedWine && (
+          <WineDetailsDialog
+            open={detailsDialogOpen}
+            onOpenChange={setDetailsDialogOpen}
+            wine={selectedWine}
+          />
+        )}
       </div>
-      </div>
+    </div>
     </>
   );
 };

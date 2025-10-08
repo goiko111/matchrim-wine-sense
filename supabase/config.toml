@@ -3,6 +3,9 @@ project_id = "tuoczkxunuoyfjlnqinc"
 [functions.wine-search]
 verify_jwt = false
 
+[functions.wine-details]
+verify_jwt = false
+
 [functions.extract-wines-ocr]
 verify_jwt = false
 
