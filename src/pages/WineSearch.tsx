@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
+import wineBottlePlaceholder from "@/assets/wine-bottle-placeholder.png";
 
 interface WineResult {
   nombre: string;
@@ -592,18 +593,29 @@ const WineSearch = () => {
                   {response.resultados.map((wine, index) => (
                     <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow border-red-100">
                       <CardHeader>
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1">
-                            <CardTitle className="text-red-900 text-lg mb-1">
-                              {wine.nombre}
-                            </CardTitle>
-                            <CardDescription className="text-base">
-                              {wine.bodega}
-                            </CardDescription>
+                        <div className="flex items-start gap-4">
+                          <div className="flex-shrink-0">
+                            <img 
+                              src={wineBottlePlaceholder} 
+                              alt={`Botella de ${wine.nombre}`}
+                              className="w-16 h-20 object-contain"
+                            />
                           </div>
-                          <Badge className={`${getScoreColor(wine.puntuacion)} font-bold`}>
-                            {wine.puntuacion}
-                          </Badge>
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <CardTitle className="text-red-900 text-lg mb-1">
+                                  {wine.nombre}
+                                </CardTitle>
+                                <CardDescription className="text-base">
+                                  {wine.bodega}
+                                </CardDescription>
+                              </div>
+                              <Badge className={`${getScoreColor(wine.puntuacion)} font-bold`}>
+                                {wine.puntuacion}
+                              </Badge>
+                            </div>
+                          </div>
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-3">
