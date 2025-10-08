@@ -8,6 +8,7 @@ interface WineWithPrice {
   nombre: string;
   bodega: string;
   precio: number;
+  moneda: string;
 }
 
 interface DistributorCSVImportProps {
@@ -30,17 +31,32 @@ export const DistributorCSVImport = ({ onImportComplete }: DistributorCSVImportP
       
       const nombreIdx = headers.findIndex(h => h.includes('nombre') || h.includes('wine') || h.includes('vino'));
       const bodegaIdx = headers.findIndex(h => h.includes('bodega') || h.includes('winery') || h.includes('productor'));
-      const precioIdx = headers.findIndex(h => h.includes('precio') || h.includes('price') || h.includes('€'));
+      const precioIdx = headers.findIndex(h => h.includes('precio') || h.includes('price'));
+      const monedaIdx = headers.findIndex(h => h.includes('moneda') || h.includes('currency'));
 
       if (nombreIdx >= 0 && bodegaIdx >= 0 && precioIdx >= 0) {
         const precioStr = values[precioIdx]?.replace(/[^0-9.]/g, '');
         const precio = parseFloat(precioStr) || 0;
+        
+        // Detectar moneda del texto del precio o de la columna moneda
+        let moneda = 'MXN'; // Por defecto pesos mexicanos
+        const precioOriginal = values[precioIdx] || '';
+        if (monedaIdx >= 0 && values[monedaIdx]) {
+          moneda = values[monedaIdx].toUpperCase();
+        } else if (precioOriginal.includes('€') || precioOriginal.toLowerCase().includes('eur')) {
+          moneda = 'EUR';
+        } else if (precioOriginal.includes('$') && (precioOriginal.toLowerCase().includes('usd') || precioOriginal.toLowerCase().includes('us'))) {
+          moneda = 'USD';
+        } else if (precioOriginal.includes('$')) {
+          moneda = 'MXN';
+        }
 
         if (values[nombreIdx] && values[bodegaIdx] && precio > 0) {
           wines.push({
             nombre: values[nombreIdx],
             bodega: values[bodegaIdx],
-            precio
+            precio,
+            moneda
           });
         }
       }
@@ -87,12 +103,13 @@ export const DistributorCSVImport = ({ onImportComplete }: DistributorCSVImportP
       <div className="text-sm text-gray-600 space-y-2">
         <p className="font-semibold">Formato esperado del CSV:</p>
         <code className="block bg-gray-100 p-2 rounded text-xs">
-          nombre,bodega,precio<br/>
-          Castillo Ygay,Marqués de Murrieta,45.90<br/>
-          Pingus,Dominio de Pingus,350.00
+          nombre,bodega,precio,moneda<br/>
+          Castillo Ygay,Marqués de Murrieta,850,MXN<br/>
+          Pingus,Dominio de Pingus,7500,MXN
         </code>
         <p className="text-xs mt-2">
           * Los campos nombre, bodega y precio son obligatorios<br/>
+          * Monedas soportadas: MXN (default), EUR, USD<br/>
           * Acepta separadores: coma (,), punto y coma (;) o tabulador
         </p>
       </div>

@@ -9,6 +9,7 @@ interface WineWithPrice {
   nombre: string;
   bodega: string;
   precio: number;
+  moneda: string;
 }
 
 serve(async (req) => {
@@ -34,12 +35,15 @@ serve(async (req) => {
         const prompt = `Analiza el precio de este vino:
 - Nombre: ${wine.nombre}
 - Bodega: ${wine.bodega}
-- Precio actual: ${wine.precio}€
+- Precio actual: ${wine.precio} ${wine.moneda}
 
 Basándote en tu conocimiento del mercado de vinos, indica:
-1. Si el precio está correcto, alto o bajo
-2. El precio medio de mercado aproximado para un vino similar
+1. Si el precio está correcto, alto o bajo para esta moneda (${wine.moneda})
+2. El precio medio de mercado aproximado para un vino similar en ${wine.moneda}
 3. Una breve explicación (máximo 50 palabras)
+
+IMPORTANTE: Considera que estamos en ${wine.moneda === 'MXN' ? 'México (pesos mexicanos)' : wine.moneda === 'EUR' ? 'Europa (euros)' : 'Estados Unidos (dólares)'}.
+Los precios en MXN son naturalmente más altos que en EUR o USD debido a la conversión de moneda.
 
 Responde SOLO con un JSON válido en este formato exacto:
 {

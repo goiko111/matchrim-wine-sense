@@ -10,6 +10,7 @@ interface WineWithPrice {
   nombre: string;
   bodega: string;
   precio: number;
+  moneda: string;
 }
 
 interface DistributorTextImportProps {
@@ -55,13 +56,14 @@ export const DistributorTextImport = ({ onImportComplete }: DistributorTextImpor
       <div className="text-sm text-gray-600 space-y-2">
         <p className="font-semibold">Formatos aceptados:</p>
         <code className="block bg-gray-100 p-2 rounded text-xs">
-          - Castillo Ygay - Marqués de Murrieta - 45.90€<br/>
-          - Pingus 2015 - Dominio de Pingus - 350€<br/>
-          - Vega Sicilia Único - 280.50€
+          - Castillo Ygay - Marqués de Murrieta - $850 MXN<br/>
+          - Pingus 2015 - Dominio de Pingus - $7,500<br/>
+          - Vega Sicilia Único - 5200 pesos
         </code>
         <p className="text-xs mt-2">
           * Separa cada vino en una línea diferente<br/>
-          * Incluye el precio con € o sin símbolo<br/>
+          * Incluye el precio con $, € o sin símbolo<br/>
+          * Indica la moneda si es posible (MXN, EUR, USD, pesos)<br/>
           * Usa guiones, comas o paréntesis para separar información
         </p>
       </div>
@@ -74,7 +76,7 @@ export const DistributorTextImport = ({ onImportComplete }: DistributorTextImpor
           id="wine-text"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Pega o escribe tu lista de vinos con precios aquí...&#10;&#10;Ejemplo:&#10;Castillo Ygay - Marqués de Murrieta - 45.90€&#10;Pingus 2015 - Dominio de Pingus - 350€&#10;Vega Sicilia Único - 280.50€"
+          placeholder="Pega o escribe tu lista de vinos con precios aquí...&#10;&#10;Ejemplo:&#10;Castillo Ygay - Marqués de Murrieta - $850 MXN&#10;Pingus 2015 - Dominio de Pingus - $7,500&#10;Vega Sicilia Único - 5200 pesos"
           className="min-h-[200px] mt-2 border-red-200 focus:border-red-400"
           disabled={loading}
         />

@@ -9,6 +9,7 @@ interface WineWithPrice {
   nombre: string;
   bodega: string;
   precio: number;
+  moneda: string;
 }
 
 interface DistributorPDFImportProps {

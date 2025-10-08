@@ -15,6 +15,7 @@ interface WineWithPrice {
   nombre: string;
   bodega: string;
   precio: number;
+  moneda: string;
   analisis?: {
     estado: 'correcto' | 'alto' | 'bajo';
     razonamiento: string;
@@ -148,7 +149,7 @@ export const DistributorImport = () => {
                     <h4 className="font-semibold text-red-900">{wine.nombre}</h4>
                     <p className="text-sm text-gray-600">{wine.bodega}</p>
                     <p className="text-lg font-bold text-red-700 mt-1">
-                      {wine.precio.toFixed(2)}€
+                      {wine.precio.toFixed(2)} {wine.moneda}
                     </p>
                   </div>
                   
@@ -163,7 +164,7 @@ export const DistributorImport = () => {
                       </Badge>
                       {wine.analisis.precio_medio_mercado && (
                         <p className="text-xs text-gray-600">
-                          Precio medio: {wine.analisis.precio_medio_mercado.toFixed(2)}€
+                          Precio medio: {wine.analisis.precio_medio_mercado.toFixed(2)} {wine.moneda}
                         </p>
                       )}
                       <p className="text-sm text-gray-700 text-right max-w-md">

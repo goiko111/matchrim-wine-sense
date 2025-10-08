@@ -27,18 +27,21 @@ serve(async (req) => {
 Para cada vino, extrae:
 - nombre: Nombre del vino
 - bodega: Nombre de la bodega/productor
-- precio: Precio en euros (solo el número, sin símbolo)
+- precio: Precio (solo el número, sin símbolo ni comas)
+- moneda: Código de moneda (MXN, EUR, USD) - detecta del símbolo o texto ($=MXN por defecto, €=EUR, USD si está especificado)
 
 IMPORTANTE: 
 - Extrae TODOS los vinos que encuentres
 - Si no encuentras el precio de algún vino, omítelo
 - Si hay múltiples formatos de botella con precios diferentes, créalos como vinos separados
+- Si ves $ sin especificar, asume que son pesos mexicanos (MXN)
+- Si ves "pesos", usa MXN como moneda
 
 Responde SOLO con un JSON válido en este formato:
 {
   "wines": [
-    {"nombre": "Nombre Vino 1", "bodega": "Bodega 1", "precio": 45.90},
-    {"nombre": "Nombre Vino 2", "bodega": "Bodega 2", "precio": 38.50}
+    {"nombre": "Nombre Vino 1", "bodega": "Bodega 1", "precio": 850, "moneda": "MXN"},
+    {"nombre": "Nombre Vino 2", "bodega": "Bodega 2", "precio": 45.90, "moneda": "EUR"}
   ]
 }`;
 
