@@ -32,24 +32,26 @@ serve(async (req) => {
     // Analizar cada vino
     const analyzedWines = await Promise.all(
       wines.map(async (wine) => {
-        const prompt = `Analiza el precio de este vino:
+        const prompt = `Analiza el precio MAYORISTA/DISTRIBUIDOR de este vino (precio de venta de distribuidor a restaurante, NO precio de venta al público):
+
 - Nombre: ${wine.nombre}
 - Bodega: ${wine.bodega}
-- Precio actual: ${wine.precio} ${wine.moneda}
+- Precio distribuidor: ${wine.precio} ${wine.moneda}
 
-Basándote en tu conocimiento del mercado de vinos, indica:
-1. Si el precio está correcto, alto o bajo para esta moneda (${wine.moneda})
-2. El precio medio de mercado aproximado para un vino similar en ${wine.moneda}
-3. Una breve explicación (máximo 50 palabras)
+IMPORTANTE: Este es un precio WHOLESALE (distribuidor a restaurante), típicamente 40-60% menor que el precio retail.
 
-IMPORTANTE: Considera que estamos en ${wine.moneda === 'MXN' ? 'México (pesos mexicanos)' : wine.moneda === 'EUR' ? 'Europa (euros)' : 'Estados Unidos (dólares)'}.
-Los precios en MXN son naturalmente más altos que en EUR o USD debido a la conversión de moneda.
+Basándote en tu conocimiento del mercado mayorista de vinos, indica:
+1. Si el precio de distribuidor está correcto, alto o bajo para esta moneda (${wine.moneda})
+2. El precio medio de DISTRIBUIDOR aproximado para un vino similar en ${wine.moneda}
+3. Una breve explicación (máximo 50 palabras) enfocada en precios mayoristas
+
+CONTEXTO: ${wine.moneda === 'MXN' ? 'Mercado mexicano - precios de distribuidor a restaurantes' : wine.moneda === 'EUR' ? 'Mercado europeo - precios mayoristas' : 'Mercado estadounidense - precios wholesale'}
 
 Responde SOLO con un JSON válido en este formato exacto:
 {
   "estado": "correcto" o "alto" o "bajo",
-  "precio_medio_mercado": número,
-  "razonamiento": "texto breve"
+  "precio_medio_mercado": número (precio de distribuidor, no retail),
+  "razonamiento": "texto breve sobre el precio mayorista"
 }`;
 
         try {

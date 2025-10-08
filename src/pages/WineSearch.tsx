@@ -638,7 +638,7 @@ const WineSearch = () => {
           <CardHeader>
             <CardTitle className="text-red-900">Importar Carta de Distribuidor</CardTitle>
             <CardDescription>
-              Importa una carta de distribuidor y analiza si los precios son correctos
+              Importa una carta de distribuidor con precios mayoristas (distribuidor → restaurante) y analiza si los precios son competitivos
             </CardDescription>
           </CardHeader>
           <CardContent>
