@@ -640,22 +640,42 @@ const WineSearch = () => {
                           </a>
                           <span className="text-gray-300">•</span>
                           <a
-                            href={`https://www.decanter.com/search/?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
-                          >
-                            Decanter
-                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
-                          </a>
-                          <span className="text-gray-300">•</span>
-                          <a
                             href={`https://www.wine.com/search/${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
                           >
                             Wine.com
+                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                          </a>
+                          <span className="text-gray-300">•</span>
+                          <a
+                            href={`https://www.cellartracker.com/list.asp?szSearch=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                          >
+                            CellarTracker
+                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                          </a>
+                          <span className="text-gray-300">•</span>
+                          <a
+                            href={`https://www.winespectator.com/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                          >
+                            Wine Spectator
+                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                          </a>
+                          <span className="text-gray-300">•</span>
+                          <a
+                            href={`https://www.guiapenin.com/es-es/vinos?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                          >
+                            Guía Peñín
                             <ExternalLink className="ml-1 w-3.5 h-3.5" />
                           </a>
                         </div>
