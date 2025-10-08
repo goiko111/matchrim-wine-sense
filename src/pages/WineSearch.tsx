@@ -618,66 +618,161 @@ const WineSearch = () => {
                           </div>
                         </div>
                         <Separator />
-                        <div className="flex flex-wrap gap-2">
-                          <a
-                            href={wine.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
-                          >
-                            Wine-Searcher
-                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
-                          </a>
-                          <span className="text-gray-300">•</span>
-                          <a
-                            href={`https://www.vivino.com/search/wines?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
-                          >
-                            Vivino
-                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
-                          </a>
-                          <span className="text-gray-300">•</span>
-                          <a
-                            href={`https://www.wine.com/search/${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
-                          >
-                            Wine.com
-                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
-                          </a>
-                          <span className="text-gray-300">•</span>
-                          <a
-                            href={`https://www.cellartracker.com/list.asp?szSearch=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
-                          >
-                            CellarTracker
-                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
-                          </a>
-                          <span className="text-gray-300">•</span>
-                          <a
-                            href={`https://www.winespectator.com/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
-                          >
-                            Wine Spectator
-                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
-                          </a>
-                          <span className="text-gray-300">•</span>
-                          <a
-                            href={`https://www.guiapenin.com/es-es/vinos?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
-                          >
-                            Guía Peñín
-                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
-                          </a>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-xs font-semibold text-gray-500 mb-2">Puntuaciones y Críticas</p>
+                            <div className="flex flex-wrap gap-2">
+                              <a
+                                href={wine.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Wine-Searcher
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.decanter.com/search/?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Decanter
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.winespectator.com/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Wine Spectator
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.wineenthusiast.com/search?searchTerm=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Wine Enthusiast
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.jamessuckling.com/?s=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                James Suckling
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://vinous.com/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Vinous
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.jancisrobinson.com/search?search_api_fulltext=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Jancis Robinson
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.guiapenin.com/es-es/vinos?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Guía Peñín
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <p className="text-xs font-semibold text-gray-500 mb-2">Comunidad y Tracking</p>
+                            <div className="flex flex-wrap gap-2">
+                              <a
+                                href={`https://www.vivino.com/search/wines?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Vivino
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.cellartracker.com/list.asp?szSearch=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                CellarTracker
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="text-xs font-semibold text-gray-500 mb-2">Comprar Online</p>
+                            <div className="flex flex-wrap gap-2">
+                              <a
+                                href={`https://www.wine.com/search/${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Wine.com
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.vinissimus.com/es/buscar/?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Vinissimus
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.bodeboca.com/es/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Bodeboca
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.lavinia.es/buscar?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Lavinia
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
