@@ -51,7 +51,7 @@ Responde SOLO con un JSON válido en este formato:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'google/gemini-2.5-pro',
         messages: [
           { 
             role: 'user', 
@@ -67,7 +67,15 @@ Responde SOLO con un JSON válido en este formato:
     if (!response.ok) {
       const errorText = await response.text();
       console.error('AI API error:', response.status, errorText);
-      throw new Error('AI API request failed');
+      
+      if (response.status === 429) {
+        throw new Error('Demasiadas solicitudes. Por favor, espera un momento e intenta de nuevo.');
+      }
+      if (response.status === 402) {
+        throw new Error('Créditos agotados. Por favor, añade créditos a tu cuenta.');
+      }
+      
+      throw new Error('Error al procesar el PDF. Por favor, intenta con un archivo más pequeño o en formato diferente.');
     }
 
     const data = await response.json();
