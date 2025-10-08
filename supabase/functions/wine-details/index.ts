@@ -117,9 +117,12 @@ Responde SOLO con el objeto JSON especificado.`
         messages: [
           {
             role: 'user',
-            content: `Generate a photorealistic image of a wine bottle for: ${nombre} from ${bodega}. 
-The bottle should be centered on a clean white background, showing the full bottle with label clearly visible. 
-High quality product photography style, professional lighting.
+            content: `Generate a photorealistic PNG of the wine bottle for: ${nombre} from ${bodega}.
+Requirements:
+- Transparent background (alpha PNG), no background scene
+- Full bottle centered, straight perspective
+- Label text sharp and legible
+- Professional product photo lighting
 ${pais ? `Country: ${pais}` : ''}
 ${region ? `Region: ${region}` : ''}
 ${uva ? `Grape variety: ${uva}` : ''}`

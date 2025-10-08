@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Loader2, Wine, Thermometer, Award, UtensilsCrossed, Download } from "lucide-react";
+import { Loader2, Wine, Thermometer, Award, UtensilsCrossed, Download, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -73,11 +73,11 @@ export const WineDetailsDialog = ({ open, onOpenChange, wine }: WineDetailsDialo
   };
 
   const handleDownloadImage = () => {
-    if (!details?.imagen_generada) return;
-    
-    // Create a download link for the base64 image
+    const src = details?.imagen_generada || wine.imagen_url;
+    if (!src) return;
+
     const link = document.createElement('a');
-    link.href = details.imagen_generada;
+    link.href = src;
     link.download = `${wine.nombre.replace(/\s+/g, '_')}_${wine.bodega.replace(/\s+/g, '_')}.png`;
     document.body.appendChild(link);
     link.click();
@@ -85,12 +85,21 @@ export const WineDetailsDialog = ({ open, onOpenChange, wine }: WineDetailsDialo
     toast.success("Imagen descargada correctamente");
   };
 
+  const handleViewImage = () => {
+    const src = details?.imagen_generada || wine.imagen_url;
+    if (!src) {
+      toast.error("No hay imagen disponible");
+      return;
+    }
+    window.open(src, '_blank', 'noopener');
+  };
+
   // Fetch details when dialog opens
-  useState(() => {
+  useEffect(() => {
     if (open) {
       fetchWineDetails();
     }
-  });
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -100,6 +109,7 @@ export const WineDetailsDialog = ({ open, onOpenChange, wine }: WineDetailsDialo
             <Wine className="w-6 h-6" />
             {wine.nombre}
           </DialogTitle>
+          <DialogDescription>Detalles completos del vino, imagen y descarga.</DialogDescription>
           <p className="text-gray-600">{wine.bodega}</p>
         </DialogHeader>
 
@@ -118,16 +128,16 @@ export const WineDetailsDialog = ({ open, onOpenChange, wine }: WineDetailsDialo
                   alt={wine.nombre}
                   className="max-h-80 object-contain rounded-lg shadow-lg"
                 />
-                {details.imagen_generada && (
-                  <Button
-                    onClick={handleDownloadImage}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Descargar Imagen
-                  </Button>
-                )}
+                {details.imagen_generada || wine.imagen_url ? (
+                  <div className="w-full flex gap-2">
+                    <Button onClick={handleViewImage} variant="secondary" className="w-full">
+                      <Eye className="w-4 h-4 mr-2" /> Ver imagen
+                    </Button>
+                    <Button onClick={handleDownloadImage} variant="outline" className="w-full">
+                      <Download className="w-4 h-4 mr-2" /> Descargar PNG
+                    </Button>
+                  </div>
+                ) : null}
               </div>
 
               <div className="md:col-span-2 space-y-4">
