@@ -115,10 +115,11 @@ REGLA CRÍTICA DE COINCIDENCIA:
 
 IMPORTANTE - URLs DE IMÁGENES:
 - SIEMPRE incluye el campo imagen_url para cada vino
-- Usa el formato: https://www.wine-searcher.com/images/labels/{número-aleatorio}/{nombre-normalizado}.jpg
-- Normaliza el nombre: minúsculas, espacios a guiones, sin caracteres especiales
-- Ejemplo: "Castillo Ygay 2010" -> "castillo-ygay-2010"
-- Si no estás seguro de la URL exacta, usa una URL genérica pero SIEMPRE incluye el campo
+- Genera URLs genéricas de placeholder en este formato: https://placehold.co/400x600/8B0000/FFFFFF/png?text={Nombre+Vino}
+- Reemplaza espacios con + en el texto
+- Ejemplo: "Castillo Ygay 2010" -> "https://placehold.co/400x600/8B0000/FFFFFF/png?text=Castillo+Ygay+2010"
+- El color 8B0000 es un rojo vino elegante, FFFFFF es blanco para el texto
+- NUNCA uses URLs de servicios externos que puedan dar error 410
 
 INSTRUCCIONES:
 - Genera entre 1 y 10 vinos reales que coincidan EXACTAMENTE con la búsqueda
@@ -138,7 +139,7 @@ Formato de salida (array JSON):
     "region": "Región vitivinícola (ej: Rioja, Ribera del Duero, Napa Valley)",
     "puntuacion": 85,
     "url": "https://www.wine-searcher.com/find/nombre-del-vino-con-guiones",
-    "imagen_url": "https://www.wine-searcher.com/images/labels/12/34/nombre-vino.jpg"
+    "imagen_url": "https://placehold.co/400x600/8B0000/FFFFFF/png?text=Nombre+del+Vino"
   }
 ]`
         },
