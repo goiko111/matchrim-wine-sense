@@ -104,13 +104,20 @@ async function searchWinesWithAI(params: WineSearchParams, reasoning: string): P
         {
           role: 'system',
           content: `Eres un experto sommelier con acceso a una extensa base de datos de vinos internacionales. 
-          
-INSTRUCCIONES CRÍTICAS:
-- Genera entre 3 y 10 vinos reales que coincidan con la búsqueda
+
+REGLA CRÍTICA DE COINCIDENCIA:
+- SOLO devuelve vinos que REALMENTE coincidan con el término de búsqueda exacto
+- Si buscas "Castillo de Ygay", SOLO devuelve variantes de Castillo de Ygay (diferentes añadas, tipos, etc.)
+- NO devuelvas vinos "similares", "de la misma región" o "del mismo estilo"
+- Si solo hay 1-2 vinos que coincidan exactamente, devuelve SOLO esos
+- Mejor pocos resultados exactos que muchos resultados irrelevantes
+
+INSTRUCCIONES:
+- Genera entre 1 y 10 vinos reales que coincidan EXACTAMENTE con la búsqueda
 - Usa SOLO vinos que existan realmente en el mercado
 - Incluye información precisa: bodega real, uva(s), país, puntuación estimada
 - Las puntuaciones deben ser realistas (70-100)
-- Las URLs deben usar Wine-Searcher (agregador neutral): https://www.wine-searcher.com/find/{nombre-del-vino-con-guiones}
+- Las URLs deben usar Wine-Searcher: https://www.wine-searcher.com/find/{nombre-del-vino-con-guiones}
 - Para imagen_url, genera la URL de Vivino: https://images.vivino.com/thumbs/{nombre-vino-bodega-normalizado}_1_600x600.png
 - Responde SOLO con un array JSON válido, sin texto adicional
 
@@ -129,16 +136,16 @@ Formato de salida (array JSON):
         },
         {
           role: 'user',
-          content: `Basándote en este razonamiento: "${reasoning}"
+          content: `IMPORTANTE: Devuelve SOLO vinos que coincidan EXACTAMENTE con el término de búsqueda. NO incluyas vinos similares o de la misma categoría.
 
-Búsqueda: "${params.query}"
+Búsqueda exacta: "${params.query}"
 ${params.country ? `País filtrado: ${params.country}` : ''}
 ${params.grape ? `Uva filtrada: ${params.grape}` : ''}
 ${params.type ? `Tipo filtrado: ${params.type}` : ''}
 ${params.winery ? `Bodega filtrada: ${params.winery}` : ''}
 ${params.region ? `Región filtrada: ${params.region}` : ''}
 
-Genera entre 3 y 10 vinos reales que coincidan. Responde SOLO con el array JSON.`
+Genera entre 1 y 10 vinos reales que coincidan EXACTAMENTE. Responde SOLO con el array JSON.`
         }
       ],
       temperature: 0.8,
@@ -233,7 +240,7 @@ serve(async (req) => {
     let attempt = 0;
     const maxAttempts = 2;
 
-    while (resultados.length < 3 && attempt < maxAttempts) {
+    while (resultados.length < 1 && attempt < maxAttempts) {
       attempt++;
       console.log(`Search attempt ${attempt}`);
 
@@ -245,22 +252,10 @@ serve(async (req) => {
           resultados = await searchWinesWithAI(params, razonamiento);
         }
 
-        // Si tenemos pocos resultados y es el primer intento, relajar filtros
-        if (resultados.length < 3 && attempt === 1) {
-          console.log('Few results, retrying with relaxed filters');
-          // En el segundo intento, quitar algunos filtros
-          const relaxedParams = {
-            ...params,
-            country: undefined,
-            type: undefined,
-          };
-          
-          if (WINE_API_PROVIDER === 'spoonacular' && WINE_API_KEY) {
-            resultados = await searchWinesSpoonacular(relaxedParams);
-          } else {
-            resultados = await searchWinesWithAI(relaxedParams, 
-              razonamiento + ' (búsqueda ampliada sin filtros de país y tipo)');
-          }
+        // Si no tenemos resultados y es el primer intento, relajar filtros
+        if (resultados.length < 1 && attempt === 1) {
+          console.log('No exact results found, search completed');
+          break; // No relajar filtros, mejor devolver pocos resultados exactos
         }
       } catch (error) {
         console.error(`Error in attempt ${attempt}:`, error);
