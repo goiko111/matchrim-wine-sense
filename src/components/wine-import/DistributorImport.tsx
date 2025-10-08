@@ -142,8 +142,17 @@ export const DistributorImport = () => {
             Vinos Importados ({wines.length})
           </h3>
           <div className="grid gap-4">
-            {wines.map((wine, index) => (
-              <Card key={index} className="p-4 border-red-100">
+            {wines.map((wine, index) => {
+              const isGoodDeal = wine.analisis?.estado === 'bajo';
+              return (
+              <Card 
+                key={index} 
+                className={`p-4 transition-all ${
+                  isGoodDeal 
+                    ? 'border-green-300 bg-green-50 shadow-md' 
+                    : 'border-red-100'
+                }`}
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <h4 className="font-semibold text-red-900">{wine.nombre}</h4>
@@ -155,7 +164,12 @@ export const DistributorImport = () => {
                   
                   {wine.analisis && (
                     <div className="flex flex-col items-end gap-2">
-                      <Badge 
+                      {isGoodDeal && (
+                        <Badge className="bg-green-600 hover:bg-green-700 text-white mb-1">
+                          ✓ Buena Oportunidad
+                        </Badge>
+                      )}
+                      <Badge
                         variant={getPriceBadgeVariant(wine.analisis.estado)}
                         className="flex items-center gap-1"
                       >
@@ -174,7 +188,7 @@ export const DistributorImport = () => {
                   )}
                 </div>
               </Card>
-            ))}
+            )})}
           </div>
         </div>
       )}
