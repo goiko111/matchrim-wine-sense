@@ -8,13 +8,15 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Search, Loader2, Wine, ExternalLink, Lightbulb, Check, ChevronsUpDown } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Search, Loader2, Wine, ExternalLink, Lightbulb, Check, ChevronsUpDown, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
 import wineBottlePlaceholder from "@/assets/wine-bottle-placeholder.png";
+import { WineImporter, WineImportData } from "@/components/wine-import/WineImporter";
 
 interface WineResult {
   nombre: string;
@@ -321,15 +323,29 @@ const WineSearch = () => {
           </p>
         </div>
 
-        {/* Search Form */}
-        <Card className="mb-8 shadow-lg border-red-100">
-          <CardHeader>
-            <CardTitle className="text-red-900">Búsqueda de Vinos</CardTitle>
-            <CardDescription>
-              Introduce el nombre del vino, bodega, uva o región que buscas
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+        {/* Tabs for Search and Import */}
+        <Tabs defaultValue="search" className="mb-8">
+          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+            <TabsTrigger value="search">
+              <Search className="w-4 h-4 mr-2" />
+              Búsqueda Individual
+            </TabsTrigger>
+            <TabsTrigger value="import">
+              <Upload className="w-4 h-4 mr-2" />
+              Importar Múltiples
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Search Tab */}
+          <TabsContent value="search">
+            <Card className="shadow-lg border-red-100">
+              <CardHeader>
+                <CardTitle className="text-red-900">Búsqueda de Vinos</CardTitle>
+                <CardDescription>
+                  Introduce el nombre del vino, bodega, uva o región que buscas
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
             <form onSubmit={handleSearch} className="space-y-6">
               {/* Main Search Input */}
               <div>
@@ -555,9 +571,61 @@ const WineSearch = () => {
             </form>
           </CardContent>
         </Card>
+      </TabsContent>
 
-        {/* Results */}
-        {response && (
+      {/* Import Tab */}
+      <TabsContent value="import">
+        <WineImporter onImportComplete={async (wines) => {
+          toast.info(`Importados ${wines.length} vinos. Buscando información...`);
+          
+          // Buscar el primer vino automáticamente
+          if (wines.length > 0) {
+            const firstWine = wines[0];
+            const searchQuery = `${firstWine.nombre} ${firstWine.bodega}`.trim();
+            
+            setQuery(searchQuery);
+            setCountry(firstWine.pais || "");
+            setGrape(firstWine.uva || "");
+            setRegion(firstWine.region || "");
+            setWinery(firstWine.bodega || "");
+            
+            // Ejecutar búsqueda automática
+            setLoading(true);
+            setResponse(null);
+
+            try {
+              const { data, error } = await supabase.functions.invoke('wine-search', {
+                body: {
+                  query: searchQuery,
+                  country: firstWine.pais || undefined,
+                  grape: firstWine.uva || undefined,
+                  region: firstWine.region || undefined,
+                  winery: firstWine.bodega || undefined,
+                },
+              });
+
+              if (error) throw error;
+
+              setResponse(data);
+              
+              if (data.resultados.length === 0) {
+                toast.info("No se encontraron vinos con esos criterios.");
+              } else {
+                toast.success(`Se encontraron ${data.resultados.length} vinos`);
+              }
+            } catch (error) {
+              console.error('Error searching wines:', error);
+              toast.error("Error al buscar vinos");
+            } finally {
+              setLoading(false);
+            }
+          }
+        }} />
+      </TabsContent>
+    </Tabs>
+
+    {/* Results */}
+    {response && (
           <div className="space-y-8">
             {/* Info Section */}
             <Card className="shadow-lg border-blue-100 bg-blue-50/50">
@@ -1012,7 +1080,7 @@ const WineSearch = () => {
             </div>
           </div>
         )}
-        </div>
+      </div>
       </div>
     </>
   );
