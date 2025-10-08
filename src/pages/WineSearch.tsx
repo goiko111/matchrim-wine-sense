@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Loader2, Wine, ExternalLink, Lightbulb, Check, ChevronsUpDown, Upload } from "lucide-react";
+import { Search, Loader2, Wine, ExternalLink, Lightbulb, Check, ChevronsUpDown, Upload, Download, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -28,6 +28,7 @@ interface WineResult {
   puntuacion: number;
   url: string;
   imagen_url: string;
+  imagen_generada?: string | null;
 }
 
 interface SearchResponse {
@@ -677,24 +678,46 @@ const WineSearch = () => {
                     <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow border-red-100">
                       <CardHeader>
                         <div className="flex items-start gap-4">
-                          <div className="flex-shrink-0 text-center">
-                            <a 
-                              href={getWineImageUrl(wine)} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="block"
-                            >
+                          <div className="flex-shrink-0">
+                            <div className="w-32 h-40 flex flex-col items-center gap-2">
                               <img 
-                                src={getWineImageUrl(wine)} 
+                                src={wine.imagen_generada || getWineImageUrl(wine)} 
                                 alt={`Botella de ${wine.nombre}`}
                                 loading="lazy"
-                                className="w-16 h-20 object-contain mb-1"
+                                className="w-full h-full object-contain rounded-lg"
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src = wineBottlePlaceholder;
                                 }}
                               />
-                              <span className="text-xs text-red-700 hover:underline">Ver imagen</span>
-                            </a>
+                              <div className="flex gap-1 w-full">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex-1 text-xs px-2 py-1 h-7"
+                                  onClick={() => window.open(wine.imagen_generada || getWineImageUrl(wine), '_blank', 'noopener')}
+                                >
+                                  <Eye className="w-3 h-3 mr-1" />
+                                  Ver
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex-1 text-xs px-2 py-1 h-7"
+                                  onClick={() => {
+                                    const link = document.createElement('a');
+                                    link.href = wine.imagen_generada || getWineImageUrl(wine);
+                                    link.download = `${wine.nombre.replace(/\s+/g, '_')}_${wine.bodega.replace(/\s+/g, '_')}.png`;
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                    toast.success("Imagen descargada");
+                                  }}
+                                >
+                                  <Download className="w-3 h-3 mr-1" />
+                                  PNG
+                                </Button>
+                              </div>
+                            </div>
                           </div>
                           <div className="flex-1">
                             <div className="flex items-start justify-between gap-4">
