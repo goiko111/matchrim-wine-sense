@@ -19,6 +19,7 @@ import wineBottlePlaceholder from "@/assets/wine-bottle-placeholder.png";
 import { WineImporter, WineImportData } from "@/components/wine-import/WineImporter";
 import { WineDetailsDialog } from "@/components/WineDetailsDialog";
 import { DistributorImport } from "@/components/wine-import/DistributorImport";
+import { RestaurantImport } from "@/components/wine-import/RestaurantImport";
 
 interface WineResult {
   nombre: string;
@@ -330,7 +331,7 @@ const WineSearch = () => {
 
         {/* Tabs for Search and Import */}
         <Tabs defaultValue="search" className="mb-8">
-          <TabsList className="grid w-full grid-cols-3 max-w-3xl mx-auto">
+          <TabsList className="grid w-full grid-cols-4 max-w-4xl mx-auto">
             <TabsTrigger value="search">
               <Search className="w-4 h-4 mr-2" />
               Búsqueda Individual
@@ -342,6 +343,10 @@ const WineSearch = () => {
             <TabsTrigger value="distributor">
               <Upload className="w-4 h-4 mr-2" />
               Carta Distribuidor
+            </TabsTrigger>
+            <TabsTrigger value="restaurant">
+              <Upload className="w-4 h-4 mr-2" />
+              Carta Restaurante
             </TabsTrigger>
           </TabsList>
 
@@ -643,6 +648,21 @@ const WineSearch = () => {
           </CardHeader>
           <CardContent>
             <DistributorImport />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      {/* Restaurant Import Tab */}
+      <TabsContent value="restaurant">
+        <Card className="shadow-lg border-red-100">
+          <CardHeader>
+            <CardTitle className="text-red-900">Importar Carta de Restaurante</CardTitle>
+            <CardDescription>
+              Importa una carta de restaurante con precios de venta al público y analiza si son competitivos
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <RestaurantImport />
           </CardContent>
         </Card>
       </TabsContent>
