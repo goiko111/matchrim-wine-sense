@@ -726,11 +726,31 @@ const WineSearch = () => {
                                 CellarTracker
                                 <ExternalLink className="ml-1 w-3.5 h-3.5" />
                               </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://delectable.com/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Delectable
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://vineconnect.com/search?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                VineConnect
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
                             </div>
                           </div>
 
                           <div>
-                            <p className="text-xs font-semibold text-gray-500 mb-2">Comprar Online</p>
+                            <p className="text-xs font-semibold text-gray-500 mb-2">Comprar Online - Internacional</p>
                             <div className="flex flex-wrap gap-2">
                               <a
                                 href={`https://www.wine.com/search/${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
@@ -742,6 +762,31 @@ const WineSearch = () => {
                                 <ExternalLink className="ml-1 w-3.5 h-3.5" />
                               </a>
                               <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.amazon.es/s?k=${encodeURIComponent(wine.nombre + ' ' + wine.bodega + ' vino')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Amazon Wine
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.1000vins.com/fr/recherche?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                1000 Vins
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="text-xs font-semibold text-gray-500 mb-2">Comprar Online - España</p>
+                            <div className="flex flex-wrap gap-2">
                               <a
                                 href={`https://www.vinissimus.com/es/buscar/?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
                                 target="_blank"
@@ -769,6 +814,31 @@ const WineSearch = () => {
                                 className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
                               >
                                 Lavinia
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                              <span className="text-gray-300">•</span>
+                              <a
+                                href={`https://www.decantalo.com/es/buscar?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Decántalo
+                                <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="text-xs font-semibold text-gray-500 mb-2">Información de la Bodega</p>
+                            <div className="flex flex-wrap gap-2">
+                              <a
+                                href={`https://www.google.com/search?q=${encodeURIComponent(wine.bodega + ' bodega oficial')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                              >
+                                Buscar Bodega en Google
                                 <ExternalLink className="ml-1 w-3.5 h-3.5" />
                               </a>
                             </div>
