@@ -14,3 +14,27 @@ verify_jwt = false
 
 [functions.extract-wines-text]
 verify_jwt = false
+
+[functions.extract-distributor-pdf]
+verify_jwt = false
+
+[functions.extract-distributor-ocr]
+verify_jwt = false
+
+[functions.extract-distributor-text]
+verify_jwt = false
+
+[functions.analyze-distributor-prices]
+verify_jwt = false
+
+[functions.extract-restaurant-pdf]
+verify_jwt = false
+
+[functions.extract-restaurant-ocr]
+verify_jwt = false
+
+[functions.extract-restaurant-text]
+verify_jwt = false
+
+[functions.analyze-restaurant-prices]
+verify_jwt = false
