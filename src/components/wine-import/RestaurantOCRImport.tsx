@@ -14,9 +14,10 @@ interface WineWithPrice {
 
 interface RestaurantOCRImportProps {
   onImportComplete: (wines: WineWithPrice[]) => void;
+  onImportStart?: () => void;
 }
 
-export const RestaurantOCRImport = ({ onImportComplete }: RestaurantOCRImportProps) => {
+export const RestaurantOCRImport = ({ onImportComplete, onImportStart }: RestaurantOCRImportProps) => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,6 +42,7 @@ export const RestaurantOCRImport = ({ onImportComplete }: RestaurantOCRImportPro
 
   const processImage = async (file: File) => {
     setLoading(true);
+    onImportStart?.();
 
     try {
       const reader = new FileReader();

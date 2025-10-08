@@ -13,9 +13,10 @@ interface WineWithPrice {
 
 interface RestaurantCSVImportProps {
   onImportComplete: (wines: WineWithPrice[]) => void;
+  onImportStart?: () => void;
 }
 
-export const RestaurantCSVImport = ({ onImportComplete }: RestaurantCSVImportProps) => {
+export const RestaurantCSVImport = ({ onImportComplete, onImportStart }: RestaurantCSVImportProps) => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -77,6 +78,7 @@ export const RestaurantCSVImport = ({ onImportComplete }: RestaurantCSVImportPro
     }
 
     setLoading(true);
+    onImportStart?.();
 
     try {
       const text = await file.text();

@@ -26,10 +26,16 @@ interface WineWithPrice {
 export const DistributorImport = () => {
   const [activeTab, setActiveTab] = useState("csv");
   const [analyzing, setAnalyzing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [wines, setWines] = useState<WineWithPrice[]>([]);
 
   const handleImportComplete = (importedWines: WineWithPrice[]) => {
     setWines(importedWines);
+    setLoading(false);
+  };
+
+  const handleImportStart = () => {
+    setLoading(true);
   };
 
   const handleAnalyzePrices = async () => {
@@ -75,7 +81,22 @@ export const DistributorImport = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
+      {/* Loading Overlay */}
+      {(loading || analyzing) && (
+        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center rounded-lg">
+          <div className="text-center space-y-4">
+            <Loader2 className="w-12 h-12 animate-spin text-red-700 mx-auto" />
+            <p className="text-lg font-semibold text-red-900">
+              {loading ? "Procesando carta de distribución..." : "Analizando precios..."}
+            </p>
+            <p className="text-sm text-gray-600">
+              Esto puede tardar unos segundos
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Import Methods Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
@@ -98,19 +119,19 @@ export const DistributorImport = () => {
         </TabsList>
 
         <TabsContent value="csv" className="mt-6">
-          <DistributorCSVImport onImportComplete={handleImportComplete} />
+          <DistributorCSVImport onImportComplete={handleImportComplete} onImportStart={handleImportStart} />
         </TabsContent>
 
         <TabsContent value="ocr" className="mt-6">
-          <DistributorOCRImport onImportComplete={handleImportComplete} />
+          <DistributorOCRImport onImportComplete={handleImportComplete} onImportStart={handleImportStart} />
         </TabsContent>
 
         <TabsContent value="pdf" className="mt-6">
-          <DistributorPDFImport onImportComplete={handleImportComplete} />
+          <DistributorPDFImport onImportComplete={handleImportComplete} onImportStart={handleImportStart} />
         </TabsContent>
 
         <TabsContent value="text" className="mt-6">
-          <DistributorTextImport onImportComplete={handleImportComplete} />
+          <DistributorTextImport onImportComplete={handleImportComplete} onImportStart={handleImportStart} />
         </TabsContent>
       </Tabs>
 

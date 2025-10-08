@@ -14,9 +14,10 @@ interface WineWithPrice {
 
 interface DistributorOCRImportProps {
   onImportComplete: (wines: WineWithPrice[]) => void;
+  onImportStart?: () => void;
 }
 
-export const DistributorOCRImport = ({ onImportComplete }: DistributorOCRImportProps) => {
+export const DistributorOCRImport = ({ onImportComplete, onImportStart }: DistributorOCRImportProps) => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,6 +42,7 @@ export const DistributorOCRImport = ({ onImportComplete }: DistributorOCRImportP
 
   const processImage = async (file: File) => {
     setLoading(true);
+    onImportStart?.();
 
     try {
       const reader = new FileReader();

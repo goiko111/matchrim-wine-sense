@@ -15,9 +15,10 @@ interface WineWithPrice {
 
 interface DistributorTextImportProps {
   onImportComplete: (wines: WineWithPrice[]) => void;
+  onImportStart?: () => void;
 }
 
-export const DistributorTextImport = ({ onImportComplete }: DistributorTextImportProps) => {
+export const DistributorTextImport = ({ onImportComplete, onImportStart }: DistributorTextImportProps) => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +29,7 @@ export const DistributorTextImport = ({ onImportComplete }: DistributorTextImpor
     }
 
     setLoading(true);
+    onImportStart?.();
 
     try {
       const { data, error } = await supabase.functions.invoke('extract-distributor-text', {

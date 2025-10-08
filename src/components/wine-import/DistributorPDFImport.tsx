@@ -14,9 +14,10 @@ interface WineWithPrice {
 
 interface DistributorPDFImportProps {
   onImportComplete: (wines: WineWithPrice[]) => void;
+  onImportStart?: () => void;
 }
 
-export const DistributorPDFImport = ({ onImportComplete }: DistributorPDFImportProps) => {
+export const DistributorPDFImport = ({ onImportComplete, onImportStart }: DistributorPDFImportProps) => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,6 +36,7 @@ export const DistributorPDFImport = ({ onImportComplete }: DistributorPDFImportP
     }
 
     setLoading(true);
+    onImportStart?.();
 
     try {
       const reader = new FileReader();

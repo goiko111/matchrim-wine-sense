@@ -13,9 +13,10 @@ interface WineWithPrice {
 
 interface DistributorCSVImportProps {
   onImportComplete: (wines: WineWithPrice[]) => void;
+  onImportStart?: () => void;
 }
 
-export const DistributorCSVImport = ({ onImportComplete }: DistributorCSVImportProps) => {
+export const DistributorCSVImport = ({ onImportComplete, onImportStart }: DistributorCSVImportProps) => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -78,6 +79,7 @@ export const DistributorCSVImport = ({ onImportComplete }: DistributorCSVImportP
     }
 
     setLoading(true);
+    onImportStart?.();
 
     try {
       const text = await file.text();

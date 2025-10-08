@@ -15,9 +15,10 @@ interface WineWithPrice {
 
 interface RestaurantTextImportProps {
   onImportComplete: (wines: WineWithPrice[]) => void;
+  onImportStart?: () => void;
 }
 
-export const RestaurantTextImport = ({ onImportComplete }: RestaurantTextImportProps) => {
+export const RestaurantTextImport = ({ onImportComplete, onImportStart }: RestaurantTextImportProps) => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +29,7 @@ export const RestaurantTextImport = ({ onImportComplete }: RestaurantTextImportP
     }
 
     setLoading(true);
+    onImportStart?.();
 
     try {
       const { data, error } = await supabase.functions.invoke('extract-restaurant-text', {

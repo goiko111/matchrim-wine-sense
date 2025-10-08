@@ -14,9 +14,10 @@ interface WineWithPrice {
 
 interface RestaurantPDFImportProps {
   onImportComplete: (wines: WineWithPrice[]) => void;
+  onImportStart?: () => void;
 }
 
-export const RestaurantPDFImport = ({ onImportComplete }: RestaurantPDFImportProps) => {
+export const RestaurantPDFImport = ({ onImportComplete, onImportStart }: RestaurantPDFImportProps) => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,6 +36,7 @@ export const RestaurantPDFImport = ({ onImportComplete }: RestaurantPDFImportPro
     }
 
     setLoading(true);
+    onImportStart?.();
 
     try {
       const reader = new FileReader();
