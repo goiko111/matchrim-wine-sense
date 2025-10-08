@@ -278,6 +278,70 @@ serve(async (req) => {
     // Limitar a máximo 10 resultados
     resultados = resultados.slice(0, 10);
 
+    // Enriquecer con imágenes reales cuando sea posible
+    const makePlaceholder = (name: string) =>
+      `https://placehold.co/400x600/8B0000/FFFFFF/png?text=${encodeURIComponent(name || 'Vino')}`;
+
+    const isValidImage = async (url?: string | null): Promise<boolean> => {
+      if (!url) return false;
+      try {
+        const head = await fetch(url, { method: 'HEAD' });
+        if (head.ok && (head.headers.get('content-type') || '').startsWith('image')) return true;
+        // Algunos CDNs no soportan HEAD: probar GET con rango mínimo
+        const getResp = await fetch(url, { headers: { Range: 'bytes=0-1024' } });
+        return getResp.ok && (getResp.headers.get('content-type') || '').startsWith('image');
+      } catch {
+        return false;
+      }
+    };
+
+    const getImageCandidatesAI = async (wine: WineResult): Promise<string[]> => {
+      try {
+        const resp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${LOVABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash',
+            messages: [
+              {
+                role: 'system',
+                content:
+                  'Devuelve SOLO un array JSON de URLs directas a imágenes (.jpg/.png/.webp) de alta calidad y públicas del vino indicado. Fuentes válidas: web oficial de la bodega, Vivino, Wine.com, TotalWine, Decántalo, El Corte Inglés, Laithwaites, Berry Bros. Prohíbe redirecciones HTML o páginas de producto; deben ser URLs directas a la imagen. Máximo 5.',
+              },
+              {
+                role: 'user',
+                content: `Vino: ${wine.nombre}\nBodega: ${wine.bodega}\nPaís: ${wine.pais}\nRegión: ${wine.region || ''}`,
+              },
+            ],
+            temperature: 0.2,
+            max_tokens: 400,
+          }),
+        });
+        if (!resp.ok) return [];
+        const data = await resp.json();
+        const content: string = data.choices?.[0]?.message?.content || '[]';
+        const match = content.match(/\[[\s\S]*\]/);
+        const arr = JSON.parse(match ? match[0] : content);
+        return Array.isArray(arr) ? arr.filter((u: any) => typeof u === 'string') : [];
+      } catch {
+        return [];
+      }
+    };
+
+    for (const wine of resultados) {
+      if (!(await isValidImage(wine.imagen_url))) {
+        const candidates = await getImageCandidatesAI(wine);
+        let chosen: string | null = null;
+        for (const c of candidates) {
+          if (await isValidImage(c)) { chosen = c; break; }
+        }
+        wine.imagen_url = chosen || makePlaceholder(wine.nombre);
+      }
+    }
+
     const response: SearchResponse = {
       razonamiento,
       resultados,
