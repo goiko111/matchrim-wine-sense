@@ -18,6 +18,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import wineBottlePlaceholder from "@/assets/wine-bottle-placeholder.png";
 import { WineImporter, WineImportData } from "@/components/wine-import/WineImporter";
 import { WineDetailsDialog } from "@/components/WineDetailsDialog";
+import { DistributorImport } from "@/components/wine-import/DistributorImport";
 
 interface WineResult {
   nombre: string;
@@ -329,7 +330,7 @@ const WineSearch = () => {
 
         {/* Tabs for Search and Import */}
         <Tabs defaultValue="search" className="mb-8">
-          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+          <TabsList className="grid w-full grid-cols-3 max-w-3xl mx-auto">
             <TabsTrigger value="search">
               <Search className="w-4 h-4 mr-2" />
               Búsqueda Individual
@@ -337,6 +338,10 @@ const WineSearch = () => {
             <TabsTrigger value="import">
               <Upload className="w-4 h-4 mr-2" />
               Importar Múltiples
+            </TabsTrigger>
+            <TabsTrigger value="distributor">
+              <Upload className="w-4 h-4 mr-2" />
+              Carta Distribuidor
             </TabsTrigger>
           </TabsList>
 
@@ -625,6 +630,21 @@ const WineSearch = () => {
             }
           }
         }} />
+      </TabsContent>
+
+      {/* Distributor Import Tab */}
+      <TabsContent value="distributor">
+        <Card className="shadow-lg border-red-100">
+          <CardHeader>
+            <CardTitle className="text-red-900">Importar Carta de Distribuidor</CardTitle>
+            <CardDescription>
+              Importa una carta de distribuidor y analiza si los precios son correctos
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DistributorImport />
+          </CardContent>
+        </Card>
       </TabsContent>
     </Tabs>
 
