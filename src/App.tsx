@@ -16,6 +16,7 @@ import WineStyles from '@/pages/WineStyles';
 import WineStyleDetail from '@/pages/WineStyleDetail';
 import WineDetail from '@/pages/WineDetail';
 import WineSearch from '@/pages/WineSearch';
+import WineImport from '@/pages/WineImport';
 import NotFound from '@/pages/NotFound';
 import './App.css';
 
@@ -41,6 +42,7 @@ function App() {
               <Route path="/wine-styles/:slug" element={<WineStyleDetail />} />
               <Route path="/wines/:id/:slug?" element={<WineDetail />} />
               <Route path="/wine-search" element={<WineSearch />} />
+              <Route path="/wine-import" element={<WineImport />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />

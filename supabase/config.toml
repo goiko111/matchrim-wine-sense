@@ -1,1 +1,13 @@
 project_id = "tuoczkxunuoyfjlnqinc"
+
+[functions.wine-search]
+verify_jwt = false
+
+[functions.extract-wines-ocr]
+verify_jwt = false
+
+[functions.extract-wines-pdf]
+verify_jwt = false
+
+[functions.extract-wines-text]
+verify_jwt = false
