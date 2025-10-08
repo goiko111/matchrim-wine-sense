@@ -25,6 +25,7 @@ interface WineResult {
   bodega: string;
   tipo_de_uva: string;
   pais: string;
+  region: string;
   puntuacion: number;
   url: string;
   imagen_url: string;
@@ -134,6 +135,7 @@ Formato de salida (array JSON):
     "bodega": "Nombre de la bodega",
     "tipo_de_uva": "Uva(s) principal(es)",
     "pais": "País de origen",
+    "region": "Región vitivinícola (ej: Rioja, Ribera del Duero, Napa Valley)",
     "puntuacion": 85,
     "url": "https://www.wine-searcher.com/find/nombre-del-vino-con-guiones",
     "imagen_url": "https://www.wine-searcher.com/images/labels/12/34/nombre-vino.jpg"
@@ -206,6 +208,7 @@ async function searchWinesSpoonacular(params: WineSearchParams): Promise<WineRes
     bodega: wine.winery || 'Desconocida',
     tipo_de_uva: wine.grape || 'N/A',
     pais: wine.country || 'N/A',
+    region: wine.region || 'N/A',
     puntuacion: wine.rating ? Math.round(wine.rating * 20) : 75,
     url: `https://www.wine-searcher.com/find/${encodeURIComponent(wine.title.replace(/\s+/g, '-').toLowerCase())}`,
     imagen_url: wine.imageUrl || `https://images.vivino.com/thumbs/${encodeURIComponent(wine.title.replace(/\s+/g, '-').toLowerCase())}_1_600x600.png`,

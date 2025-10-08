@@ -21,6 +21,7 @@ interface WineResult {
   bodega: string;
   tipo_de_uva: string;
   pais: string;
+  region: string;
   puntuacion: number;
   url: string;
   imagen_url: string;
@@ -631,6 +632,10 @@ const WineSearch = () => {
                           <div>
                             <span className="font-semibold text-red-900">País:</span>
                             <p className="text-gray-700">{wine.pais}</p>
+                          </div>
+                          <div className="col-span-2">
+                            <span className="font-semibold text-red-900">Región:</span>
+                            <p className="text-gray-700">{wine.region}</p>
                           </div>
                         </div>
                         <Separator />
