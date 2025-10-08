@@ -290,6 +290,16 @@ const WineSearch = () => {
     return "bg-gray-100 text-gray-800 border-gray-200";
   };
 
+  // Imagen segura: usa la URL del backend si es válida o genera un placeholder legible
+  const getWineImageUrl = (wine: WineResult) => {
+    const url = wine.imagen_url?.trim();
+    const hasHttp = url && /^(https?:)?\/\//i.test(url);
+    if (hasHttp) return url as string;
+    const text = encodeURIComponent(wine.nombre || 'Vino');
+    // Tamaño acorde al contenedor (se redimensiona por CSS)
+    return `https://placehold.co/160x200/8B0000/FFFFFF/png?text=${text}`;
+  };
+
   return (
     <>
       {user && <AppNav />}
@@ -598,14 +608,15 @@ const WineSearch = () => {
                         <div className="flex items-start gap-4">
                           <div className="flex-shrink-0 text-center">
                             <a 
-                              href={wine.imagen_url} 
+                              href={getWineImageUrl(wine)} 
                               target="_blank" 
                               rel="noopener noreferrer"
                               className="block"
                             >
                               <img 
-                                src={wine.imagen_url || wineBottlePlaceholder} 
+                                src={getWineImageUrl(wine)} 
                                 alt={`Botella de ${wine.nombre}`}
+                                loading="lazy"
                                 className="w-16 h-20 object-contain mb-1"
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src = wineBottlePlaceholder;
