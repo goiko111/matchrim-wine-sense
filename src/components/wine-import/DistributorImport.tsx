@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Upload, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Loader2, TrendingUp, TrendingDown, Minus, Camera, FileSpreadsheet, FileText, Type } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { DistributorOCRImport } from "./DistributorOCRImport";
+import { DistributorCSVImport } from "./DistributorCSVImport";
+import { DistributorPDFImport } from "./DistributorPDFImport";
+import { DistributorTextImport } from "./DistributorTextImport";
 
 interface WineWithPrice {
   nombre: string;
@@ -20,73 +23,12 @@ interface WineWithPrice {
 }
 
 export const DistributorImport = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("csv");
   const [analyzing, setAnalyzing] = useState(false);
   const [wines, setWines] = useState<WineWithPrice[]>([]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setWines([]);
-    }
-  };
-
-  const handleImport = async () => {
-    if (!file) {
-      toast.error("Por favor, selecciona un archivo");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const text = e.target?.result as string;
-        const lines = text.split('\n').filter(line => line.trim());
-        
-        if (lines.length === 0) {
-          toast.error("El archivo está vacío");
-          setLoading(false);
-          return;
-        }
-
-        // Parsear CSV (asumiendo formato: nombre, bodega, precio)
-        const parsedWines: WineWithPrice[] = [];
-        const headers = lines[0].toLowerCase().split(',').map(h => h.trim());
-        
-        for (let i = 1; i < lines.length; i++) {
-          const values = lines[i].split(',').map(v => v.trim());
-          const nombreIdx = headers.findIndex(h => h.includes('nombre') || h.includes('wine') || h.includes('vino'));
-          const bodegaIdx = headers.findIndex(h => h.includes('bodega') || h.includes('winery') || h.includes('productor'));
-          const precioIdx = headers.findIndex(h => h.includes('precio') || h.includes('price') || h.includes('€'));
-
-          if (nombreIdx >= 0 && bodegaIdx >= 0 && precioIdx >= 0) {
-            parsedWines.push({
-              nombre: values[nombreIdx] || '',
-              bodega: values[bodegaIdx] || '',
-              precio: parseFloat(values[precioIdx]?.replace(/[^0-9.]/g, '')) || 0
-            });
-          }
-        }
-
-        setWines(parsedWines);
-        toast.success(`${parsedWines.length} vinos importados`);
-        setLoading(false);
-      };
-
-      reader.onerror = () => {
-        toast.error("Error al leer el archivo");
-        setLoading(false);
-      };
-
-      reader.readAsText(file);
-    } catch (error) {
-      console.error('Error importing:', error);
-      toast.error("Error al importar el archivo");
-      setLoading(false);
-    }
+  const handleImportComplete = (importedWines: WineWithPrice[]) => {
+    setWines(importedWines);
   };
 
   const handleAnalyzePrices = async () => {
@@ -133,62 +75,64 @@ export const DistributorImport = () => {
 
   return (
     <div className="space-y-6">
-      {/* Upload Section */}
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="distributor-file" className="text-red-900">
-            Carta de Distribuidor (CSV)
-          </Label>
-          <p className="text-sm text-gray-600 mb-2">
-            Formato: Nombre del vino, Bodega, Precio
-          </p>
-          <Input
-            id="distributor-file"
-            type="file"
-            accept=".csv,.txt"
-            onChange={handleFileChange}
-            className="border-red-200"
-          />
-        </div>
+      {/* Import Methods Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="csv" className="gap-2">
+            <FileSpreadsheet className="w-4 h-4" />
+            CSV/Excel
+          </TabsTrigger>
+          <TabsTrigger value="ocr" className="gap-2">
+            <Camera className="w-4 h-4" />
+            OCR Imagen
+          </TabsTrigger>
+          <TabsTrigger value="pdf" className="gap-2">
+            <FileText className="w-4 h-4" />
+            PDF
+          </TabsTrigger>
+          <TabsTrigger value="text" className="gap-2">
+            <Type className="w-4 h-4" />
+            Texto
+          </TabsTrigger>
+        </TabsList>
 
-        <div className="flex gap-2">
+        <TabsContent value="csv" className="mt-6">
+          <DistributorCSVImport onImportComplete={handleImportComplete} />
+        </TabsContent>
+
+        <TabsContent value="ocr" className="mt-6">
+          <DistributorOCRImport onImportComplete={handleImportComplete} />
+        </TabsContent>
+
+        <TabsContent value="pdf" className="mt-6">
+          <DistributorPDFImport onImportComplete={handleImportComplete} />
+        </TabsContent>
+
+        <TabsContent value="text" className="mt-6">
+          <DistributorTextImport onImportComplete={handleImportComplete} />
+        </TabsContent>
+      </Tabs>
+
+      {/* Analyze Button */}
+      {wines.length > 0 && (
+        <div className="flex justify-end">
           <Button
-            onClick={handleImport}
-            disabled={!file || loading}
+            onClick={handleAnalyzePrices}
+            disabled={analyzing}
+            size="lg"
             className="bg-red-700 hover:bg-red-800"
           >
-            {loading ? (
+            {analyzing ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Importando...
+                Analizando precios...
               </>
             ) : (
-              <>
-                <Upload className="w-4 h-4 mr-2" />
-                Importar
-              </>
+              <>Analizar Precios de {wines.length} Vinos</>
             )}
           </Button>
-
-          {wines.length > 0 && (
-            <Button
-              onClick={handleAnalyzePrices}
-              disabled={analyzing}
-              variant="outline"
-              className="border-red-700 text-red-700 hover:bg-red-50"
-            >
-              {analyzing ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Analizando...
-                </>
-              ) : (
-                <>Analizar Precios</>
-              )}
-            </Button>
-          )}
         </div>
-      </div>
+      )}
 
       {/* Results Section */}
       {wines.length > 0 && (
