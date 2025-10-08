@@ -618,15 +618,47 @@ const WineSearch = () => {
                           </div>
                         </div>
                         <Separator />
-                        <a
-                          href={wine.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors"
-                        >
-                          Buscar en Wine-Searcher
-                          <ExternalLink className="ml-1 w-4 h-4" />
-                        </a>
+                        <div className="flex flex-wrap gap-2">
+                          <a
+                            href={wine.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                          >
+                            Wine-Searcher
+                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                          </a>
+                          <span className="text-gray-300">•</span>
+                          <a
+                            href={`https://www.vivino.com/search/wines?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                          >
+                            Vivino
+                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                          </a>
+                          <span className="text-gray-300">•</span>
+                          <a
+                            href={`https://www.decanter.com/search/?q=${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                          >
+                            Decanter
+                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                          </a>
+                          <span className="text-gray-300">•</span>
+                          <a
+                            href={`https://www.wine.com/search/${encodeURIComponent(wine.nombre + ' ' + wine.bodega)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-red-700 hover:text-red-900 font-medium text-sm transition-colors hover:underline"
+                          >
+                            Wine.com
+                            <ExternalLink className="ml-1 w-3.5 h-3.5" />
+                          </a>
+                        </div>
                       </CardContent>
                     </Card>
                   ))}
