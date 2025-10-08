@@ -25,7 +25,8 @@ serve(async (req) => {
 
     console.log(`Searching detailed info for: ${nombre} - ${bodega}`);
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // First, get wine details
+    const detailsResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
@@ -82,14 +83,14 @@ Responde SOLO con el objeto JSON especificado.`
       }),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
+    if (!detailsResponse.ok) {
+      const errorText = await detailsResponse.text();
       console.error('Error from Lovable AI:', errorText);
       throw new Error('Error al consultar información del vino');
     }
 
-    const data = await response.json();
-    const content = data.choices[0].message.content;
+    const detailsData = await detailsResponse.json();
+    const content = detailsData.choices[0].message.content;
     
     console.log('Raw AI response:', content);
 
@@ -101,6 +102,43 @@ Responde SOLO con el objeto JSON especificado.`
     }
     
     const wineInfo = JSON.parse(jsonMatch[0]);
+
+    // Now generate wine bottle image
+    console.log('Generating wine bottle image...');
+    
+    const imageResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash-image-preview',
+        messages: [
+          {
+            role: 'user',
+            content: `Generate a photorealistic image of a wine bottle for: ${nombre} from ${bodega}. 
+The bottle should be centered on a clean white background, showing the full bottle with label clearly visible. 
+High quality product photography style, professional lighting.
+${pais ? `Country: ${pais}` : ''}
+${region ? `Region: ${region}` : ''}
+${uva ? `Grape variety: ${uva}` : ''}`
+          }
+        ],
+        modalities: ['image', 'text']
+      }),
+    });
+
+    if (!imageResponse.ok) {
+      console.error('Error generating image:', await imageResponse.text());
+      // Continue without image if generation fails
+      wineInfo.imagen_generada = null;
+    } else {
+      const imageData = await imageResponse.json();
+      const generatedImage = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+      wineInfo.imagen_generada = generatedImage || null;
+      console.log('Image generated successfully');
+    }
 
     console.log('Wine info extracted successfully');
 

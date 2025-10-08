@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Wine, Thermometer, Award, UtensilsCrossed } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Loader2, Wine, Thermometer, Award, UtensilsCrossed, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -37,6 +38,7 @@ interface WineDetails {
   maridajes: string[];
   historia: string;
   premios: string[] | null;
+  imagen_generada: string | null;
 }
 
 export const WineDetailsDialog = ({ open, onOpenChange, wine }: WineDetailsDialogProps) => {
@@ -70,6 +72,19 @@ export const WineDetailsDialog = ({ open, onOpenChange, wine }: WineDetailsDialo
     }
   };
 
+  const handleDownloadImage = () => {
+    if (!details?.imagen_generada) return;
+    
+    // Create a download link for the base64 image
+    const link = document.createElement('a');
+    link.href = details.imagen_generada;
+    link.download = `${wine.nombre.replace(/\s+/g, '_')}_${wine.bodega.replace(/\s+/g, '_')}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Imagen descargada correctamente");
+  };
+
   // Fetch details when dialog opens
   useState(() => {
     if (open) {
@@ -97,12 +112,22 @@ export const WineDetailsDialog = ({ open, onOpenChange, wine }: WineDetailsDialo
           <div className="space-y-6">
             {/* Image and Basic Info */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-1 flex justify-center">
+              <div className="md:col-span-1 flex flex-col items-center gap-3">
                 <img
-                  src={wine.imagen_url || '/placeholder.svg'}
+                  src={details.imagen_generada || wine.imagen_url || '/placeholder.svg'}
                   alt={wine.nombre}
                   className="max-h-80 object-contain rounded-lg shadow-lg"
                 />
+                {details.imagen_generada && (
+                  <Button
+                    onClick={handleDownloadImage}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Descargar Imagen
+                  </Button>
+                )}
               </div>
 
               <div className="md:col-span-2 space-y-4">
