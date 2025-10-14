@@ -25,18 +25,24 @@ serve(async (req) => {
 
     console.log('Processing image with Gemini Vision...');
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
-        messages: [
-          {
-            role: 'system',
-            content: `Eres un experto sommelier y analista de imágenes de vinos. Tu tarea es extraer información de vinos de cualquier imagen que contenga:
+    // Create AbortController with timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+
+    try {
+      const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash',
+          messages: [
+            {
+              role: 'system',
+              content: `Eres un experto sommelier y analista de imágenes de vinos. Tu tarea es extraer información de vinos de cualquier imagen que contenga:
 - Etiquetas de botellas
 - Cartas de vino de restaurantes
 - Listas manuscritas o impresas
@@ -59,29 +65,39 @@ Formato de salida:
     "anada": "Año o null"
   }
 ]`
-          },
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: 'Extrae todos los vinos de esta imagen siguiendo el formato JSON especificado.' },
-              { type: 'image_url', image_url: { url: image } }
-            ]
-          }
-        ],
-        max_tokens: 4096,
-      }),
-    });
+            },
+            {
+              role: 'user',
+              content: [
+                { type: 'text', text: 'Extrae todos los vinos de esta imagen siguiendo el formato JSON especificado.' },
+                { type: 'image_url', image_url: { url: image } }
+              ]
+            }
+          ],
+          max_tokens: 4096,
+        }),
+      });
+      
+      clearTimeout(timeout);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Error from Lovable AI:', response.status, errorText);
-      if (response.status === 429) {
-        throw new Error('Demasiadas solicitudes. Por favor, inténtalo de nuevo en unos segundos.');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error from Lovable AI:', response.status, errorText);
+        if (response.status === 429) {
+          throw new Error('Demasiadas solicitudes. Por favor, inténtalo de nuevo en unos segundos.');
+        }
+        if (response.status === 402) {
+          throw new Error('Créditos agotados. Añade créditos en tu workspace de Lovable AI.');
+        }
+        throw new Error('Error al procesar la imagen con IA');
       }
-      if (response.status === 402) {
-        throw new Error('Créditos agotados. Añade créditos en tu workspace de Lovable AI.');
+    } catch (fetchError) {
+      clearTimeout(timeout);
+      if (fetchError.name === 'AbortError') {
+        console.error('Request timeout after 60 seconds');
+        throw new Error('La imagen tomó demasiado tiempo en procesarse. Intenta con una imagen más pequeña.');
       }
-      throw new Error('Error al procesar la imagen con IA');
+      throw fetchError;
     }
 
     const data = await response.json();
