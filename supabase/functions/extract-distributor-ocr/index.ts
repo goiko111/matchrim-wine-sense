@@ -52,7 +52,7 @@ Responde SOLO con un JSON válido en este formato:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'google/gemini-2.5-pro',
         messages: [
           { 
             role: 'user', 
@@ -62,20 +62,53 @@ Responde SOLO con un JSON válido en este formato:
             ]
           }
         ],
+        max_tokens: 4096,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error('AI API error:', response.status, errorText);
-      throw new Error('AI API request failed');
+      
+      if (response.status === 429) {
+        throw new Error('Demasiadas solicitudes. Espera un momento e intenta de nuevo.');
+      }
+      if (response.status === 402) {
+        throw new Error('Créditos agotados. Añade créditos en Settings.');
+      }
+      
+      throw new Error('Error al procesar la imagen. Intenta con una más pequeña.');
     }
 
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || '{"wines":[]}';
+    let content = data.choices?.[0]?.message?.content || '{"wines":[]}';
     
-    const cleanContent = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    const result = JSON.parse(cleanContent);
+    console.log('Raw AI response:', content);
+    
+    // Limpiar markdown
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    // Si el JSON está incompleto, intentar arreglarlo
+    if (!content.endsWith('}') && !content.endsWith(']')) {
+      console.log('Incomplete JSON detected, attempting to fix...');
+      const winesMatch = content.match(/"wines"\s*:\s*\[/);
+      if (winesMatch) {
+        let depth = 0;
+        let lastCompleteIndex = -1;
+        for (let i = winesMatch.index + winesMatch[0].length; i < content.length; i++) {
+          if (content[i] === '{') depth++;
+          if (content[i] === '}') {
+            depth--;
+            if (depth === 0) lastCompleteIndex = i;
+          }
+        }
+        if (lastCompleteIndex > 0) {
+          content = content.substring(0, lastCompleteIndex + 1) + ']}';
+        }
+      }
+    }
+    
+    const result = JSON.parse(content);
 
     console.log(`Extracted ${result.wines?.length || 0} wines with prices from image`);
 
