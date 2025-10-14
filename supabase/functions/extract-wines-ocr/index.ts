@@ -32,7 +32,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'google/gemini-2.5-pro',
         messages: [
           {
             role: 'system',
@@ -63,43 +63,79 @@ Formato de salida:
           {
             role: 'user',
             content: [
-              {
-                type: 'text',
-                text: 'Extrae todos los vinos de esta imagen siguiendo el formato JSON especificado.'
-              },
-              {
-                type: 'image_url',
-                image_url: {
-                  url: image
-                }
-              }
+              { type: 'text', text: 'Extrae todos los vinos de esta imagen siguiendo el formato JSON especificado.' },
+              { type: 'image_url', image_url: { url: image } }
             ]
           }
         ],
-        temperature: 0.3,
-        max_tokens: 2000,
+        max_tokens: 4096,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Error from Lovable AI:', errorText);
+      console.error('Error from Lovable AI:', response.status, errorText);
+      if (response.status === 429) {
+        throw new Error('Demasiadas solicitudes. Por favor, inténtalo de nuevo en unos segundos.');
+      }
+      if (response.status === 402) {
+        throw new Error('Créditos agotados. Añade créditos en tu workspace de Lovable AI.');
+      }
       throw new Error('Error al procesar la imagen con IA');
     }
 
     const data = await response.json();
-    const content = data.choices[0].message.content;
+    let content = data.choices?.[0]?.message?.content || '';
     
     console.log('Raw AI response:', content);
 
-    // Extract JSON from the response
-    const jsonMatch = content.match(/\[[\s\S]*\]/);
-    if (!jsonMatch) {
-      console.error('No JSON found in response:', content);
+    // Limpieza de posibles fences markdown
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+
+    // Si el modelo devolvió un objeto con wines, úsalo
+    if (content.startsWith('{')) {
+      try {
+        const obj = JSON.parse(content);
+        if (Array.isArray(obj.wines)) {
+          console.log(`Extracted ${obj.wines.length} wines from image`);
+          return new Response(
+            JSON.stringify({ wines: obj.wines }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+          );
+        }
+      } catch (_) { /* fall through */ }
+    }
+
+    // Intentar parsear como array
+    let wines: any[] = [];
+    try {
+      wines = JSON.parse(content);
+    } catch (_) {
+      // Intentar reparar JSON incompleto: recortar hasta el último '}' balanceado y cerrar el array
+      let depth = 0;
+      let lastCompleteIndex = -1;
+      for (let i = 0; i < content.length; i++) {
+        const ch = content[i];
+        if (ch === '{') depth++;
+        if (ch === '}') {
+          depth--;
+          if (depth === 0) lastCompleteIndex = i;
+        }
+      }
+      if (lastCompleteIndex > -1) {
+        const fixed = content.slice(0, lastCompleteIndex + 1) + ']';
+        try {
+          wines = JSON.parse(fixed);
+        } catch (e2) {
+          console.error('Failed to fix JSON:', e2);
+        }
+      }
+    }
+
+    if (!Array.isArray(wines)) {
+      console.error('No JSON array found/parsed.');
       throw new Error('No se pudo parsear la respuesta de IA');
     }
-    
-    const wines = JSON.parse(jsonMatch[0]);
 
     console.log(`Extracted ${wines.length} wines from image`);
 
@@ -113,10 +149,11 @@ Formato de salida:
 
   } catch (error) {
     console.error('Error in extract-wines-ocr function:', error);
+    const message = error instanceof Error ? error.message : 'Error desconocido';
     return new Response(
       JSON.stringify({ 
         error: 'Error al extraer vinos de la imagen',
-        details: error.message,
+        details: message,
       }),
       { 
         status: 500, 

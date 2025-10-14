@@ -8,9 +8,10 @@ import { WineImportData } from "./WineImporter";
 
 interface ImageOCRImportProps {
   onImportComplete: (wines: WineImportData[]) => void;
+  onImportStart?: () => void;
 }
 
-export const ImageOCRImport = ({ onImportComplete }: ImageOCRImportProps) => {
+export const ImageOCRImport = ({ onImportComplete, onImportStart }: ImageOCRImportProps) => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -36,6 +37,7 @@ export const ImageOCRImport = ({ onImportComplete }: ImageOCRImportProps) => {
 
   const processImage = async (file: File) => {
     setLoading(true);
+    onImportStart?.();
 
     try {
       // Convert to base64
@@ -54,12 +56,14 @@ export const ImageOCRImport = ({ onImportComplete }: ImageOCRImportProps) => {
           onImportComplete(data.wines);
         } else {
           toast.info("No se encontraron vinos en la imagen");
+          onImportComplete([]);
         }
       };
       reader.readAsDataURL(file);
     } catch (error) {
       console.error('Error processing image:', error);
       toast.error("Error al procesar la imagen");
+      onImportComplete([]);
     } finally {
       setLoading(false);
     }
