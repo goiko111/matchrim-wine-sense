@@ -29,8 +29,10 @@ serve(async (req) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 60000); // 60 second timeout
 
+    let aiResponse: Response;
+
     try {
-      const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${LOVABLE_API_KEY}`,
@@ -80,27 +82,27 @@ Formato de salida:
       
       clearTimeout(timeout);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error from Lovable AI:', response.status, errorText);
-        if (response.status === 429) {
+      if (!aiResponse.ok) {
+        const errorText = await aiResponse.text();
+        console.error('Error from Lovable AI:', aiResponse.status, errorText);
+        if (aiResponse.status === 429) {
           throw new Error('Demasiadas solicitudes. Por favor, inténtalo de nuevo en unos segundos.');
         }
-        if (response.status === 402) {
+        if (aiResponse.status === 402) {
           throw new Error('Créditos agotados. Añade créditos en tu workspace de Lovable AI.');
         }
         throw new Error('Error al procesar la imagen con IA');
       }
     } catch (fetchError) {
       clearTimeout(timeout);
-      if (fetchError.name === 'AbortError') {
+      if ((fetchError as any).name === 'AbortError') {
         console.error('Request timeout after 60 seconds');
         throw new Error('La imagen tomó demasiado tiempo en procesarse. Intenta con una imagen más pequeña.');
       }
       throw fetchError;
     }
 
-    const data = await response.json();
+    const data = await aiResponse.json();
     let content = data.choices?.[0]?.message?.content || '';
     
     console.log('Raw AI response:', content);
