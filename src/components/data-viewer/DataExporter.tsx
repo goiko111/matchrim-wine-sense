@@ -101,11 +101,21 @@ const DataExporter = () => {
     try {
       const data = await fetchAll<any>('wine_styles', 'name');
 
-      downloadCSV(data, 'estilos_vino_winerim.csv');
+      // Export only name and sensory attributes
+      const exportData = data.map((style: any) => ({
+        nombre: style.name,
+        potente: style.potente,
+        acidez: style.acidez,
+        dulce: style.dulce,
+        tanico: style.tanico,
+        afrutado: style.afrutado
+      }));
+
+      downloadCSV(exportData, 'estilos_vino_winerim.csv');
       
       toast({
         title: "Exportación exitosa",
-        description: `${data.length} estilos de vino exportados correctamente`,
+        description: `${exportData.length} estilos de vino exportados correctamente`,
       });
     } catch (error: any) {
       console.error('Error exporting wine styles:', error);
@@ -119,57 +129,27 @@ const DataExporter = () => {
     }
   };
 
-  const exportWineStyleCombinations = async () => {
-    setExporting('style-combinations');
-    try {
-      const data = await fetchAll<any>('wine_styles', 'name');
-      
-      // Create unique combinations based on the 5 sensory attributes
-      const combinationsMap = new Map<string, any>();
-      
-      data.forEach((style: any) => {
-        const key = `${style.potente}-${style.acidez}-${style.dulce}-${style.tanico}-${style.afrutado}`;
-        if (!combinationsMap.has(key)) {
-          combinationsMap.set(key, {
-            potente: style.potente,
-            acidez: style.acidez,
-            dulce: style.dulce,
-            tanico: style.tanico,
-            afrutado: style.afrutado,
-            ejemplo_estilo: style.name
-          });
-        }
-      });
-
-      const combinations = Array.from(combinationsMap.values());
-      downloadCSV(combinations, 'combinaciones_estilos_winerim.csv');
-      
-      toast({
-        title: "Exportación exitosa",
-        description: `${combinations.length} combinaciones únicas de atributos exportadas`,
-      });
-    } catch (error: any) {
-      console.error('Error exporting style combinations:', error);
-      toast({
-        title: "Error",
-        description: `Error al exportar combinaciones: ${error.message}`,
-        variant: "destructive"
-      });
-    } finally {
-      setExporting(null);
-    }
-  };
 
   const exportMatchrimProfiles = async () => {
     setExporting('profiles');
     try {
       const data = await fetchAll<any>('matchrim_profiles', 'name');
 
-      downloadCSV(data, 'perfiles_matchrim.csv');
+      // Export only name and sensory attributes
+      const exportData = data.map((profile: any) => ({
+        nombre: profile.name,
+        potente: profile.potente,
+        acidez: profile.acidez,
+        dulce: profile.dulce,
+        tanico: profile.tanico,
+        afrutado: profile.afrutado
+      }));
+
+      downloadCSV(exportData, 'perfiles_matchrim.csv');
       
       toast({
         title: "Exportación exitosa",
-        description: `${data.length} perfiles Matchrim exportados correctamente`,
+        description: `${exportData.length} perfiles Matchrim exportados correctamente`,
       });
     } catch (error: any) {
       console.error('Error exporting matchrim profiles:', error);
@@ -183,46 +163,6 @@ const DataExporter = () => {
     }
   };
 
-  const exportProfileCombinations = async () => {
-    setExporting('profile-combinations');
-    try {
-      const data = await fetchAll<any>('matchrim_profiles', 'name');
-      
-      // Create unique combinations based on the 5 sensory attributes
-      const combinationsMap = new Map<string, any>();
-      
-      data.forEach((profile: any) => {
-        const key = `${profile.potente}-${profile.acidez}-${profile.dulce}-${profile.tanico}-${profile.afrutado}`;
-        if (!combinationsMap.has(key)) {
-          combinationsMap.set(key, {
-            potente: profile.potente,
-            acidez: profile.acidez,
-            dulce: profile.dulce,
-            tanico: profile.tanico,
-            afrutado: profile.afrutado,
-            ejemplo_perfil: profile.name
-          });
-        }
-      });
-
-      const combinations = Array.from(combinationsMap.values());
-      downloadCSV(combinations, 'combinaciones_perfiles_matchrim.csv');
-      
-      toast({
-        title: "Exportación exitosa",
-        description: `${combinations.length} combinaciones únicas de atributos exportadas`,
-      });
-    } catch (error: any) {
-      console.error('Error exporting profile combinations:', error);
-      toast({
-        title: "Error",
-        description: `Error al exportar combinaciones: ${error.message}`,
-        variant: "destructive"
-      });
-    } finally {
-      setExporting(null);
-    }
-  };
 
   return (
     <Card>
@@ -267,92 +207,52 @@ const DataExporter = () => {
           <div className="space-y-3 p-4 border rounded-lg">
             <h3 className="font-semibold text-lg">Estilos de Vino</h3>
             <p className="text-sm text-muted-foreground">
-              Los estilos Winerim con sus descripciones y atributos
+              Nombre y atributos sensoriales de todos los estilos
             </p>
-            <div className="flex flex-col gap-2">
-              <Button 
-                onClick={exportWineStyles}
-                disabled={exporting === 'styles'}
-                className="w-full"
-                variant="outline"
-              >
-                {exporting === 'styles' ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Exportando...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4 mr-2" />
-                    Exportar Todos
-                  </>
-                )}
-              </Button>
-              <Button 
-                onClick={exportWineStyleCombinations}
-                disabled={exporting === 'style-combinations'}
-                className="w-full"
-                variant="secondary"
-              >
-                {exporting === 'style-combinations' ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Exportando...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4 mr-2" />
-                    Combinaciones Únicas
-                  </>
-                )}
-              </Button>
-            </div>
+            <Button 
+              onClick={exportWineStyles}
+              disabled={exporting === 'styles'}
+              className="w-full"
+              variant="outline"
+            >
+              {exporting === 'styles' ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Exportando...
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-2" />
+                  Exportar Estilos
+                </>
+              )}
+            </Button>
           </div>
 
           {/* Export Matchrim Profiles */}
           <div className="space-y-3 p-4 border rounded-lg">
             <h3 className="font-semibold text-lg">Perfiles Matchrim</h3>
             <p className="text-sm text-muted-foreground">
-              Perfiles con recomendaciones de cepas y regiones
+              Nombre y atributos sensoriales de todos los perfiles
             </p>
-            <div className="flex flex-col gap-2">
-              <Button 
-                onClick={exportMatchrimProfiles}
-                disabled={exporting === 'profiles'}
-                className="w-full"
-                variant="outline"
-              >
-                {exporting === 'profiles' ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Exportando...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4 mr-2" />
-                    Exportar Todos
-                  </>
-                )}
-              </Button>
-              <Button 
-                onClick={exportProfileCombinations}
-                disabled={exporting === 'profile-combinations'}
-                className="w-full"
-                variant="secondary"
-              >
-                {exporting === 'profile-combinations' ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Exportando...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4 mr-2" />
-                    Combinaciones Únicas
-                  </>
-                )}
-              </Button>
-            </div>
+            <Button 
+              onClick={exportMatchrimProfiles}
+              disabled={exporting === 'profiles'}
+              className="w-full"
+              variant="outline"
+            >
+              {exporting === 'profiles' ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Exportando...
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-2" />
+                  Exportar Perfiles
+                </>
+              )}
+            </Button>
           </div>
         </div>
 
@@ -360,8 +260,7 @@ const DataExporter = () => {
           <h4 className="font-semibold mb-2">Información sobre los archivos:</h4>
           <ul className="text-sm space-y-1 text-muted-foreground">
             <li>• Los archivos se descargan en formato CSV compatible con Excel</li>
-            <li>• <strong>Exportar Todos:</strong> Incluye todos los registros con todos sus campos</li>
-            <li>• <strong>Combinaciones Únicas:</strong> Solo las combinaciones únicas de los 5 atributos sensoriales (potente, acidez, dulce, tanico, afrutado)</li>
+            <li>• Cada archivo incluye el nombre y los 5 atributos sensoriales: potente, acidez, dulce, tanico, afrutado</li>
             <li>• Para abrir en Excel: Archivo → Abrir → Seleccionar archivo CSV</li>
           </ul>
         </div>
