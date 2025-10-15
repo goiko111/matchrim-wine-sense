@@ -8,22 +8,37 @@ import { toast } from '@/hooks/use-toast';
 const DataExporter = () => {
   const [exporting, setExporting] = useState<string | null>(null);
 
-  // Fetch all rows in pages of 1000 to bypass PostgREST page limit
+  // Fetch all rows in pages to bypass PostgREST limits
   const fetchAll = async <T,>(table: string, orderBy: string) => {
     const pageSize = 1000;
-    let from = 0;
     let all: T[] = [];
-    while (true) {
-      const { data, error } = await supabase
+    let hasMore = true;
+    let lastValue: any = null;
+
+    while (hasMore) {
+      let query = supabase
         .from(table as any)
         .select('*')
         .order(orderBy as any, { ascending: true })
-        .range(from, from + pageSize - 1);
+        .limit(pageSize);
+
+      // Use cursor-based pagination instead of offset
+      if (lastValue !== null) {
+        query = query.gt(orderBy as any, lastValue);
+      }
+
+      const { data, error } = await query;
+      
       if (error) throw error;
       const batch = (data || []) as T[];
-      all = all.concat(batch);
-      if (batch.length < pageSize) break;
-      from += pageSize;
+      
+      if (batch.length === 0) {
+        hasMore = false;
+      } else {
+        all = all.concat(batch);
+        lastValue = batch[batch.length - 1][orderBy];
+        hasMore = batch.length === pageSize;
+      }
     }
     return all;
   };
