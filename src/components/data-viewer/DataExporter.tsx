@@ -119,6 +119,47 @@ const DataExporter = () => {
     }
   };
 
+  const exportWineStyleCombinations = async () => {
+    setExporting('style-combinations');
+    try {
+      const data = await fetchAll<any>('wine_styles', 'name');
+      
+      // Create unique combinations based on the 5 sensory attributes
+      const combinationsMap = new Map<string, any>();
+      
+      data.forEach((style: any) => {
+        const key = `${style.potente}-${style.acidez}-${style.dulce}-${style.tanico}-${style.afrutado}`;
+        if (!combinationsMap.has(key)) {
+          combinationsMap.set(key, {
+            potente: style.potente,
+            acidez: style.acidez,
+            dulce: style.dulce,
+            tanico: style.tanico,
+            afrutado: style.afrutado,
+            ejemplo_estilo: style.name
+          });
+        }
+      });
+
+      const combinations = Array.from(combinationsMap.values());
+      downloadCSV(combinations, 'combinaciones_estilos_winerim.csv');
+      
+      toast({
+        title: "Exportación exitosa",
+        description: `${combinations.length} combinaciones únicas de atributos exportadas`,
+      });
+    } catch (error: any) {
+      console.error('Error exporting style combinations:', error);
+      toast({
+        title: "Error",
+        description: `Error al exportar combinaciones: ${error.message}`,
+        variant: "destructive"
+      });
+    } finally {
+      setExporting(null);
+    }
+  };
+
   const exportMatchrimProfiles = async () => {
     setExporting('profiles');
     try {
@@ -142,6 +183,47 @@ const DataExporter = () => {
     }
   };
 
+  const exportProfileCombinations = async () => {
+    setExporting('profile-combinations');
+    try {
+      const data = await fetchAll<any>('matchrim_profiles', 'name');
+      
+      // Create unique combinations based on the 5 sensory attributes
+      const combinationsMap = new Map<string, any>();
+      
+      data.forEach((profile: any) => {
+        const key = `${profile.potente}-${profile.acidez}-${profile.dulce}-${profile.tanico}-${profile.afrutado}`;
+        if (!combinationsMap.has(key)) {
+          combinationsMap.set(key, {
+            potente: profile.potente,
+            acidez: profile.acidez,
+            dulce: profile.dulce,
+            tanico: profile.tanico,
+            afrutado: profile.afrutado,
+            ejemplo_perfil: profile.name
+          });
+        }
+      });
+
+      const combinations = Array.from(combinationsMap.values());
+      downloadCSV(combinations, 'combinaciones_perfiles_matchrim.csv');
+      
+      toast({
+        title: "Exportación exitosa",
+        description: `${combinations.length} combinaciones únicas de atributos exportadas`,
+      });
+    } catch (error: any) {
+      console.error('Error exporting profile combinations:', error);
+      toast({
+        title: "Error",
+        description: `Error al exportar combinaciones: ${error.message}`,
+        variant: "destructive"
+      });
+    } finally {
+      setExporting(null);
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -154,11 +236,11 @@ const DataExporter = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Export Wines */}
-          <div className="space-y-3">
+          <div className="space-y-3 p-4 border rounded-lg">
             <h3 className="font-semibold text-lg">Vinos</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Todos los vinos con sus características sensoriales y metadatos
             </p>
             <Button 
@@ -182,65 +264,104 @@ const DataExporter = () => {
           </div>
 
           {/* Export Wine Styles */}
-          <div className="space-y-3">
+          <div className="space-y-3 p-4 border rounded-lg">
             <h3 className="font-semibold text-lg">Estilos de Vino</h3>
-            <p className="text-sm text-gray-600">
-              Los 16 estilos Winerim con sus descripciones y atributos
+            <p className="text-sm text-muted-foreground">
+              Los estilos Winerim con sus descripciones y atributos
             </p>
-            <Button 
-              onClick={exportWineStyles}
-              disabled={exporting === 'styles'}
-              className="w-full"
-              variant="outline"
-            >
-              {exporting === 'styles' ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Exportando...
-                </>
-              ) : (
-                <>
-                  <Download className="h-4 w-4 mr-2" />
-                  Exportar Estilos
-                </>
-              )}
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button 
+                onClick={exportWineStyles}
+                disabled={exporting === 'styles'}
+                className="w-full"
+                variant="outline"
+              >
+                {exporting === 'styles' ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exportando...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Exportar Todos
+                  </>
+                )}
+              </Button>
+              <Button 
+                onClick={exportWineStyleCombinations}
+                disabled={exporting === 'style-combinations'}
+                className="w-full"
+                variant="secondary"
+              >
+                {exporting === 'style-combinations' ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exportando...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Combinaciones Únicas
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
 
           {/* Export Matchrim Profiles */}
-          <div className="space-y-3">
+          <div className="space-y-3 p-4 border rounded-lg">
             <h3 className="font-semibold text-lg">Perfiles Matchrim</h3>
-            <p className="text-sm text-gray-600">
-              Todos los perfiles con recomendaciones de cepas y regiones
+            <p className="text-sm text-muted-foreground">
+              Perfiles con recomendaciones de cepas y regiones
             </p>
-            <Button 
-              onClick={exportMatchrimProfiles}
-              disabled={exporting === 'profiles'}
-              className="w-full"
-              variant="outline"
-            >
-              {exporting === 'profiles' ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Exportando...
-                </>
-              ) : (
-                <>
-                  <Download className="h-4 w-4 mr-2" />
-                  Exportar Perfiles
-                </>
-              )}
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button 
+                onClick={exportMatchrimProfiles}
+                disabled={exporting === 'profiles'}
+                className="w-full"
+                variant="outline"
+              >
+                {exporting === 'profiles' ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exportando...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Exportar Todos
+                  </>
+                )}
+              </Button>
+              <Button 
+                onClick={exportProfileCombinations}
+                disabled={exporting === 'profile-combinations'}
+                className="w-full"
+                variant="secondary"
+              >
+                {exporting === 'profile-combinations' ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exportando...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Combinaciones Únicas
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <h4 className="font-semibold text-blue-900 mb-2">Información sobre los archivos:</h4>
-          <ul className="text-sm text-blue-800 space-y-1">
+        <div className="mt-6 p-4 bg-muted rounded-lg">
+          <h4 className="font-semibold mb-2">Información sobre los archivos:</h4>
+          <ul className="text-sm space-y-1 text-muted-foreground">
             <li>• Los archivos se descargan en formato CSV compatible con Excel</li>
-            <li>• Vinos: ~6,781 registros con todos los atributos sensoriales</li>
-            <li>• Estilos: ~7,778 registros incluyendo variantes numéricas</li>
-            <li>• Perfiles: ~7,776 registros con recomendaciones completas</li>
+            <li>• <strong>Exportar Todos:</strong> Incluye todos los registros con todos sus campos</li>
+            <li>• <strong>Combinaciones Únicas:</strong> Solo las combinaciones únicas de los 5 atributos sensoriales (potente, acidez, dulce, tanico, afrutado)</li>
             <li>• Para abrir en Excel: Archivo → Abrir → Seleccionar archivo CSV</li>
           </ul>
         </div>
