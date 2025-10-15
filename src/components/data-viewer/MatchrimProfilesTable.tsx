@@ -36,7 +36,8 @@ const MatchrimProfilesTable = () => {
       const { data, error } = await supabase
         .from('matchrim_profiles')
         .select('*')
-        .order('name');
+        .order('name')
+        .limit(100);
 
       if (error) {
         console.error('Error fetching matchrim profiles:', error);

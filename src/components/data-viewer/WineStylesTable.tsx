@@ -32,7 +32,8 @@ const WineStylesTable = () => {
       const { data, error } = await supabase
         .from('wine_styles')
         .select('*')
-        .order('name');
+        .order('name')
+        .limit(100);
 
       if (error) {
         console.error('Error fetching wine styles:', error);
