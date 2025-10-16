@@ -38,8 +38,6 @@ const Profile = () => {
   const [currentProfile, setCurrentProfile] = useState<any>(null);
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
-  const [allWines, setAllWines] = useState<any[]>([]);
-  const [isLoadingWines, setIsLoadingWines] = useState(true);
 
   useEffect(() => {
     if (!user) {
@@ -58,32 +56,11 @@ const Profile = () => {
     loadQuizHistory();
   }, [user, navigate, getQuizHistory]);
 
-  // Fetch all wines for recommendations
-  useEffect(() => {
-    const fetchWines = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('wines')
-          .select('*');
-        
-        if (error) throw error;
-        setAllWines(data || []);
-      } catch (error) {
-        console.error('Error fetching wines:', error);
-        setAllWines([]);
-      } finally {
-        setIsLoadingWines(false);
-      }
-    };
-
-    fetchWines();
-  }, []);
-
   // Generate profile data
   const profileName = currentProfile ? generateMatchrimName(currentProfile) : "";
   const wineStyles = currentProfile ? generateWineStyles(currentProfile) : [];
-  const recommendedGrapes = currentProfile ? generateGrapeRecommendations(currentProfile, allWines) : [];
-  const recommendedRegions = currentProfile ? generateRegionRecommendations(currentProfile, allWines) : [];
+  const recommendedGrapes = currentProfile ? generateGrapeRecommendations(currentProfile) : [];
+  const recommendedRegions = currentProfile ? generateRegionRecommendations(currentProfile) : [];
 
   // Fetch wine style details from database
   useEffect(() => {

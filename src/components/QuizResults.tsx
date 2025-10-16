@@ -85,9 +85,6 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
   const [countryOverrides, setCountryOverrides] = useState<Record<string, string>>({});
-  const [allWines, setAllWines] = useState<any[]>([]);
-  const [isLoadingWines, setIsLoadingWines] = useState(true);
-  
   const chartData = [
     { attribute: "Potente", value: result.potente },
     { attribute: "Acidez", value: result.acidez },
@@ -106,33 +103,12 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     },
   };
   
-  // Fetch all wines for recommendations
-  useEffect(() => {
-    const fetchWines = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('wines')
-          .select('*');
-        
-        if (error) throw error;
-        setAllWines(data || []);
-      } catch (error) {
-        console.error('Error fetching wines:', error);
-        setAllWines([]);
-      } finally {
-        setIsLoadingWines(false);
-      }
-    };
-
-    fetchWines();
-  }, []);
-  
   // Generar datos personalizados usando las funciones consistentes
   const profileName = generateMatchrimName(result);
   const emotionalDescription = generateEmotionalDescription(result);
   const wineStyles = generateWineStyles(result);
-  const recommendedGrapes = generateGrapeRecommendations(result, allWines);
-  const recommendedRegions = generateRegionRecommendations(result, allWines);
+  const recommendedGrapes = generateGrapeRecommendations(result);
+  const recommendedRegions = generateRegionRecommendations(result);
 
   // Descripciones detalladas de uvas basadas en el perfil
   const getGrapeDescription = (grape: string): string => {

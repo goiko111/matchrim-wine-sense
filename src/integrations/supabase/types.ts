@@ -392,7 +392,6 @@ export type Database = {
           description: string | null
           dulzura: number
           estilo: string
-          grape_varieties: string[] | null
           id: string
           maridage_recommendations: string[] | null
           name: string
@@ -410,7 +409,6 @@ export type Database = {
           description?: string | null
           dulzura: number
           estilo: string
-          grape_varieties?: string[] | null
           id?: string
           maridage_recommendations?: string[] | null
           name: string
@@ -428,7 +426,6 @@ export type Database = {
           description?: string | null
           dulzura?: number
           estilo?: string
-          grape_varieties?: string[] | null
           id?: string
           maridage_recommendations?: string[] | null
           name?: string
