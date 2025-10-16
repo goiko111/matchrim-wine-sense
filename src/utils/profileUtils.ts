@@ -123,14 +123,32 @@ export const generateGrapeRecommendations = (result: any): string[] => {
     { name: "Tempranillo", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 }, fame: 4 },
     { name: "Malbec", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 }, fame: 4 },
     { name: "Garnacha", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 3, afrutado: 4 }, fame: 4 },
+    { name: "Pinot Grigio", criteria: { acidez: 4, afrutado: 3, potente: 2, dulce: 1, tanico: 1 }, fame: 4 },
+    { name: "Zinfandel", criteria: { potente: 5, tanico: 3, acidez: 3, dulce: 3, afrutado: 5 }, fame: 4 },
     
     // Uvas conocidas
     { name: "Albariño", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 }, fame: 3 },
     { name: "Sangiovese", criteria: { potente: 4, tanico: 4, acidez: 4, dulce: 1, afrutado: 3 }, fame: 3 },
     { name: "Nebbiolo", criteria: { potente: 4, tanico: 5, acidez: 4, dulce: 1, afrutado: 3 }, fame: 3 },
     { name: "Gewürztraminer", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 4, tanico: 1 }, fame: 3 },
-    { name: "Mencía", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 }, fame: 2 },
-    { name: "Godello", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 }, fame: 2 }
+    { name: "Mencía", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 }, fame: 3 },
+    { name: "Godello", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 }, fame: 3 },
+    { name: "Verdejo", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 2, tanico: 1 }, fame: 3 },
+    { name: "Monastrell", criteria: { potente: 5, tanico: 4, acidez: 2, dulce: 2, afrutado: 4 }, fame: 3 },
+    { name: "Viognier", criteria: { acidez: 3, afrutado: 4, potente: 3, dulce: 3, tanico: 1 }, fame: 3 },
+    { name: "Grüner Veltliner", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 1, tanico: 1 }, fame: 3 },
+    
+    // Uvas menos conocidas pero importantes
+    { name: "Carmenère", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 }, fame: 2 },
+    { name: "Petit Verdot", criteria: { potente: 5, tanico: 5, acidez: 3, dulce: 1, afrutado: 2 }, fame: 2 },
+    { name: "Touriga Nacional", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 }, fame: 2 },
+    { name: "Chenin Blanc", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 2, tanico: 1 }, fame: 2 },
+    { name: "Mourvèdre", criteria: { potente: 5, tanico: 5, acidez: 3, dulce: 1, afrutado: 3 }, fame: 2 },
+    { name: "Carignan", criteria: { potente: 4, tanico: 4, acidez: 4, dulce: 1, afrutado: 3 }, fame: 2 },
+    { name: "Petit Manseng", criteria: { acidez: 5, afrutado: 4, potente: 3, dulce: 4, tanico: 1 }, fame: 2 },
+    { name: "Graciano", criteria: { potente: 4, tanico: 4, acidez: 4, dulce: 1, afrutado: 2 }, fame: 2 },
+    { name: "Bobal", criteria: { potente: 4, tanico: 3, acidez: 4, dulce: 1, afrutado: 3 }, fame: 2 },
+    { name: "Prieto Picudo", criteria: { potente: 4, tanico: 4, acidez: 4, dulce: 1, afrutado: 4 }, fame: 2 }
   ];
 
   // Calcular puntuación de compatibilidad
@@ -161,21 +179,39 @@ export const generateGrapeRecommendations = (result: any): string[] => {
 export const generateRegionRecommendations = (result: any): string[] => {
   // Regiones internacionales diversas
   const regionRecommendations = [
-    // Europa
-    { name: "Borgoña (Francia)", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 1, afrutado: 4 } },
-    { name: "Burdeos (Francia)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 1, afrutado: 3 } },
-    { name: "Toscana (Italia)", criteria: { potente: 4, tanico: 4, acidez: 4, dulce: 1, afrutado: 3 } },
+    // España
     { name: "Rioja (España)", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
     { name: "Ribera del Duero (España)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
     { name: "Rías Baixas (España)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
     { name: "Priorat (España)", criteria: { potente: 5, tanico: 5, acidez: 3, dulce: 1, afrutado: 3 } },
+    { name: "Rueda (España)", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Bierzo (España)", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 } },
+    { name: "Jerez (España)", criteria: { acidez: 2, afrutado: 2, potente: 4, dulce: 3, tanico: 2 } },
+    { name: "Penedès (España)", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 1, tanico: 1 } },
+    
+    // Francia
+    { name: "Borgoña (Francia)", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 1, afrutado: 4 } },
+    { name: "Burdeos (Francia)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 1, afrutado: 3 } },
+    { name: "Valle del Ródano (Francia)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Champagne (Francia)", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 1, tanico: 1 } },
+    { name: "Valle del Loira (Francia)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
+    { name: "Alsacia (Francia)", criteria: { acidez: 4, afrutado: 4, potente: 3, dulce: 3, tanico: 1 } },
+    
+    // Italia
+    { name: "Toscana (Italia)", criteria: { potente: 4, tanico: 4, acidez: 4, dulce: 1, afrutado: 3 } },
     { name: "Piemonte (Italia)", criteria: { potente: 4, tanico: 5, acidez: 4, dulce: 1, afrutado: 3 } },
+    { name: "Véneto (Italia)", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 2, tanico: 2 } },
+    { name: "Sicilia (Italia)", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 4 } },
+    
+    // Alemania y Austria
     { name: "Mosel (Alemania)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 3, tanico: 1 } },
+    { name: "Wachau (Austria)", criteria: { acidez: 5, afrutado: 3, potente: 3, dulce: 1, tanico: 1 } },
     
     // Américas
     { name: "Napa Valley (EE.UU.)", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 } },
     { name: "Mendoza (Argentina)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 } },
     { name: "Valle de Maipo (Chile)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 1, afrutado: 3 } },
+    { name: "Valle de Colchagua (Chile)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 } },
     
     // Oceanía
     { name: "Marlborough (Nueva Zelanda)", criteria: { acidez: 5, afrutado: 5, potente: 2, dulce: 1, tanico: 1 } },
