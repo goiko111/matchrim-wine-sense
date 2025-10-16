@@ -47,131 +47,131 @@ export interface ProfileType {
   description: string;
 }
 
-import question1 from '@/assets/quiz/question-1-pimiento.jpg';
-import question2 from '@/assets/quiz/question-2-tierra.jpg';
-import question3 from '@/assets/quiz/question-3-tomates.jpg';
-import question4 from '@/assets/quiz/question-4-puro.jpg';
-import question5 from '@/assets/quiz/question-5-queso-cabra.jpg';
-import question6 from '@/assets/quiz/question-6-aceitunas.jpg';
-import question7 from '@/assets/quiz/question-7-champinones.jpg';
-import question8 from '@/assets/quiz/question-8-pasas.jpg';
-import question9 from '@/assets/quiz/question-9-cafe.jpg';
-import question10 from '@/assets/quiz/question-10-almendras.jpg';
-import question11 from '@/assets/quiz/question-11-canela.jpg';
-import question12 from '@/assets/quiz/question-12-cafe-dulce.jpg';
-import question13 from '@/assets/quiz/question-13-menta.jpg';
-import question14 from '@/assets/quiz/question-14-platano.jpg';
-import question15 from '@/assets/quiz/question-15-marisco.jpg';
-import question16 from '@/assets/quiz/question-16-vinagre.jpg';
-import question17 from '@/assets/quiz/question-17-mostaza.jpg';
-import question18 from '@/assets/quiz/question-18-gominolas.jpg';
+import question1 from '@/assets/quiz/question-1-kiwi.jpg';
+import question2 from '@/assets/quiz/question-2-cuero.jpg';
+import question3 from '@/assets/quiz/question-3-fresas.jpg';
+import question4 from '@/assets/quiz/question-4-regaliz.jpg';
+import question5 from '@/assets/quiz/question-5-manzanas-verdes.jpg';
+import question6 from '@/assets/quiz/question-6-berenjenas.jpg';
+import question7 from '@/assets/quiz/question-7-trufas.jpg';
+import question8 from '@/assets/quiz/question-8-datiles.jpg';
+import question9 from '@/assets/quiz/question-9-espresso.jpg';
+import question10 from '@/assets/quiz/question-10-vainilla.jpg';
+import question11 from '@/assets/quiz/question-11-anis.jpg';
+import question12 from '@/assets/quiz/question-12-bombones.jpg';
+import question13 from '@/assets/quiz/question-13-limon.jpg';
+import question14 from '@/assets/quiz/question-14-melocotones.jpg';
+import question15 from '@/assets/quiz/question-15-pescado-blanco.jpg';
+import question16 from '@/assets/quiz/question-16-encurtidos.jpg';
+import question17 from '@/assets/quiz/question-17-salsas-acidas.jpg';
+import question18 from '@/assets/quiz/question-18-mermeladas.jpg';
 
 export const questions: Question[] = [
   {
     id: 1,
-    text: "¿Te gusta el pimiento verde?",
+    text: "¿Te gusta el kiwi?",
     image: question1,
     scores: { potente: 1, acidez: 1, dulce: 0, tanico: 0, afrutado: 1 }
   },
   {
     id: 2,
-    text: "¿Te gusta el olor a tierra?",
+    text: "¿Te gusta el olor a cuero?",
     image: question2,
     scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 }
   },
   {
     id: 3,
-    text: "¿Te gustan los tomates?",
+    text: "¿Te gustan las fresas?",
     image: question3,
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 1 }
   },
   {
     id: 4,
-    text: "¿Te gusta el olor a puro?",
+    text: "¿Te gusta el regaliz?",
     image: question4,
     scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 }
   },
   {
     id: 5,
-    text: "¿Te gusta el queso de cabra?",
+    text: "¿Te gustan las manzanas verdes?",
     image: question5,
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 1 }
   },
   {
     id: 6,
-    text: "¿Te gustan las aceitunas negras?",
+    text: "¿Te gustan las berenjenas asadas?",
     image: question6,
     scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 }
   },
   {
     id: 7,
-    text: "¿Te gustan los champiñones?",
+    text: "¿Te gustan las trufas?",
     image: question7,
     scores: { potente: 1, acidez: 0, dulce: 0, tanico: 1, afrutado: 0 }
   },
   {
     id: 8,
-    text: "¿Te gustan las pasas?",
+    text: "¿Te gustan los dátiles?",
     image: question8,
     scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 1 }
   },
   {
     id: 9,
-    text: "¿Te gusta el sabor del café solo sin azúcar?",
+    text: "¿Te gusta el espresso sin azúcar?",
     image: question9,
     scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 }
   },
   {
     id: 10,
-    text: "¿Te gustan las almendras?",
+    text: "¿Te gusta la vainilla?",
     image: question10,
     scores: { potente: 1, acidez: 0, dulce: 1, tanico: 1, afrutado: 0 }
   },
   {
     id: 11,
-    text: "¿Te gusta la canela?",
+    text: "¿Te gusta el anís?",
     image: question11,
     scores: { potente: 1, acidez: 0, dulce: 1, tanico: 1, afrutado: 1 }
   },
   {
     id: 12,
-    text: "¿Te gusta el café azucarado?",
+    text: "¿Te gustan los bombones?",
     image: question12,
     scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 1 }
   },
   {
     id: 13,
-    text: "¿Te gusta la menta?",
+    text: "¿Te gusta el limón?",
     image: question13,
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 1 }
   },
   {
     id: 14,
-    text: "¿Te gusta el plátano?",
+    text: "¿Te gustan los melocotones?",
     image: question14,
     scores: { potente: 0, acidez: 0, dulce: 1, tanico: 0, afrutado: 2 }
   },
   {
     id: 15,
-    text: "¿Te gusta el marisco?",
+    text: "¿Te gusta el pescado blanco?",
     image: question15,
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 }
   },
   {
     id: 16,
-    text: "¿Te gusta el vinagre?",
+    text: "¿Te gustan los encurtidos?",
     image: question16,
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 }
   },
   {
     id: 17,
-    text: "¿Te gusta la mostaza?",
+    text: "¿Te gustan las salsas ácidas?",
     image: question17,
     scores: { potente: 1, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 }
   },
   {
     id: 18,
-    text: "¿Te gustan las gominolas?",
+    text: "¿Te gustan las mermeladas?",
     image: question18,
     scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 2 }
   }
