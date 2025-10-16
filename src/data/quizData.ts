@@ -183,10 +183,10 @@ export const calculateProfile = (answers: { [id: number]: string }): QuizResult 
     result.afrutado += question.scores.afrutado * multiplier;
   });
   
-  // Normalize to a scale of 1-5
+  // Normalize to a scale of 0-5
   const normalize = (value: number, total: number) => {
-    if (total === 0) return 1;
-    return Math.round((value / total) * 4) + 1;
+    if (total === 0) return 0;
+    return Math.round((value / total) * 5);
   };
   
   return {
