@@ -52,7 +52,52 @@ const SensoryCalculator = () => {
 
       if (error) throw error;
 
-      setWineStyles(data || []);
+      if (!data || data.length === 0) {
+        toast({
+          title: "Advertencia",
+          description: "No hay estilos de vino en la base de datos",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Limpiar y agrupar estilos por nombre base
+      const cleanedStyles = data.map(style => ({
+        ...style,
+        cleanName: cleanStyleName(style.name)
+      }));
+
+      // Agrupar por nombre limpio y tomar el que tenga mejores valores (no todos en 3)
+      const uniqueStylesMap = new Map<string, WineStyle>();
+      cleanedStyles.forEach((style: any) => {
+        const existing = uniqueStylesMap.get(style.cleanName);
+        
+        // Calcular "variabilidad" - preferir estilos con valores diversos (no todos = 3)
+        const calculateVariability = (s: WineStyle) => {
+          const values = [s.potente, s.acidez, s.dulce, s.tanico, s.afrutado];
+          const avg = values.reduce((a, b) => a + b, 0) / values.length;
+          return values.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0);
+        };
+        
+        if (!existing || calculateVariability(style) > calculateVariability(existing)) {
+          uniqueStylesMap.set(style.cleanName, {
+            id: style.id,
+            name: style.cleanName,
+            description: style.description,
+            potente: style.potente,
+            acidez: style.acidez,
+            dulce: style.dulce,
+            tanico: style.tanico,
+            afrutado: style.afrutado
+          });
+        }
+      });
+
+      const uniqueStyles = Array.from(uniqueStylesMap.values());
+      console.log('Estilos únicos cargados:', uniqueStyles.length);
+      console.log('Nombres:', uniqueStyles.map(s => s.name).join(', '));
+      
+      setWineStyles(uniqueStyles);
     } catch (error: any) {
       console.error('Error fetching wine styles:', error);
       toast({
@@ -104,8 +149,11 @@ const SensoryCalculator = () => {
   };
 
   const cleanStyleName = (name: string) => {
-    // Quitar IDs entre paréntesis al final del nombre (ej: "Tinto Ligero (87)" → "Tinto Ligero")
-    return name.replace(/\s*\(\d+\)\s*$/, '').trim();
+    // Quitar prefijos de formato "0;0;0;0;0;" y números entre paréntesis
+    return name
+      .replace(/^\d+;\d+;\d+;\d+;\d+;/, '') // Quitar prefijo numérico
+      .replace(/\s*\(\d+\)\s*$/, '') // Quitar números entre paréntesis al final
+      .trim();
   };
 
   const getAttributeDescription = (attribute: keyof SensoryProfile, value: number) => {
