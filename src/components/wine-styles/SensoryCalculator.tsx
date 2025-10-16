@@ -74,50 +74,70 @@ const SensoryCalculator = () => {
         } as SensoryProfile;
       };
 
-      const cleanedStyles = data.map(style => {
+      // Normalizamos todos los registros a una estructura común
+      const items = data.map((style) => {
         const extracted = extractFromName(style.name);
-        return {
-          ...style,
-          // Si el nombre viene con prefijo numérico, usar esos valores en lugar de los de BD
-          potente: extracted?.potente ?? style.potente,
-          acidez: extracted?.acidez ?? style.acidez,
-          dulce: extracted?.dulce ?? style.dulce,
-          tanico: extracted?.tanico ?? style.tanico,
-          afrutado: extracted?.afrutado ?? style.afrutado,
-          cleanName: cleanStyleName(style.name)
-        } as WineStyle & { cleanName: string };
-      });
-
-      // Agrupar por nombre limpio y tomar el que tenga mejores valores (no todos en 3)
-      const uniqueStylesMap = new Map<string, WineStyle>();
-      cleanedStyles.forEach((style: any) => {
-        const existing = uniqueStylesMap.get(style.cleanName);
-        
-        // Calcular "variabilidad" - preferir estilos con valores diversos (no todos = 3)
-        const calculateVariability = (s: WineStyle) => {
-          const values = [s.potente, s.acidez, s.dulce, s.tanico, s.afrutado];
-          const avg = values.reduce((a, b) => a + b, 0) / values.length;
-          return values.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0);
+        const values: SensoryProfile = extracted ?? {
+          potente: style.potente,
+          acidez: style.acidez,
+          dulce: style.dulce,
+          tanico: style.tanico,
+          afrutado: style.afrutado,
         };
-        
-        if (!existing || calculateVariability(style) > calculateVariability(existing)) {
-          uniqueStylesMap.set(style.cleanName, {
-            id: style.id,
-            name: style.cleanName,
-            description: style.description,
-            potente: style.potente,
-            acidez: style.acidez,
-            dulce: style.dulce,
-            tanico: style.tanico,
-            afrutado: style.afrutado
-          });
-        }
+        const fromPrefix = Boolean(extracted);
+        const cleanName = cleanStyleName(style.name);
+        return { id: style.id, description: style.description, cleanName, fromPrefix, ...values };
       });
 
-      const uniqueStyles = Array.from(uniqueStylesMap.values());
-      console.log('Estilos únicos cargados:', uniqueStyles.length);
-      console.log('Nombres:', uniqueStyles.map(s => s.name).join(', '));
-      
+      // Agrupar y calcular un centro canónico por nombre
+      const groups = new Map<string, { sum: SensoryProfile; count: number; countPrefix: number; description: string | null }>();
+      items.forEach((it) => {
+        if (!groups.has(it.cleanName)) {
+          groups.set(it.cleanName, { sum: { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 }, count: 0, countPrefix: 0, description: it.description || null });
+        }
+        const g = groups.get(it.cleanName)!;
+        g.sum.potente += it.potente;
+        g.sum.acidez += it.acidez;
+        g.sum.dulce += it.dulce;
+        g.sum.tanico += it.tanico;
+        g.sum.afrutado += it.afrutado;
+        g.count += 1;
+        if (it.fromPrefix) g.countPrefix += 1;
+        if ((it.description?.length || 0) > (g.description?.length || 0)) g.description = it.description;
+      });
+
+      const uniqueStyles: WineStyle[] = [];
+      groups.forEach((g, name) => {
+        const denom = g.countPrefix > 0 ? g.countPrefix : g.count;
+        // En caso de contar con prefijos, usamos solo esos para el promedio
+        const sourceItems = g.countPrefix > 0 ? items.filter(i => i.cleanName === name && i.fromPrefix) : items.filter(i => i.cleanName === name);
+        const avg = sourceItems.reduce((acc, i) => ({
+          potente: acc.potente + i.potente,
+          acidez: acc.acidez + i.acidez,
+          dulce: acc.dulce + i.dulce,
+          tanico: acc.tanico + i.tanico,
+          afrutado: acc.afrutado + i.afrutado,
+        }), { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 });
+        const center: SensoryProfile = {
+          potente: Math.round(avg.potente / denom),
+          acidez: Math.round(avg.acidez / denom),
+          dulce: Math.round(avg.dulce / denom),
+          tanico: Math.round(avg.tanico / denom),
+          afrutado: Math.round(avg.afrutado / denom),
+        };
+        uniqueStyles.push({
+          id: name,
+          name,
+          description: g.description,
+          ...center,
+        });
+      });
+
+      // Orden estable por nombre para depurar
+      uniqueStyles.sort((a, b) => a.name.localeCompare(b.name));
+      console.debug('Perfil usuario:', profile);
+      console.debug('Estilos (centros canónicos):', uniqueStyles.map(s => ({ n: s.name, p: [s.potente, s.acidez, s.dulce, s.tanico, s.afrutado] })));
+
       setWineStyles(uniqueStyles);
     } catch (error: any) {
       console.error('Error fetching wine styles:', error);
