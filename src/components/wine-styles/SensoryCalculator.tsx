@@ -61,11 +61,32 @@ const SensoryCalculator = () => {
         return;
       }
 
-      // Limpiar y agrupar estilos por nombre base
-      const cleanedStyles = data.map(style => ({
-        ...style,
-        cleanName: cleanStyleName(style.name)
-      }));
+      // Limpiar, extraer valores del prefijo y agrupar estilos por nombre base
+      const extractFromName = (name: string) => {
+        const match = name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
+        if (!match) return null;
+        return {
+          potente: parseInt(match[1]),
+          acidez: parseInt(match[2]),
+          dulce: parseInt(match[3]),
+          tanico: parseInt(match[4]),
+          afrutado: parseInt(match[5])
+        } as SensoryProfile;
+      };
+
+      const cleanedStyles = data.map(style => {
+        const extracted = extractFromName(style.name);
+        return {
+          ...style,
+          // Si el nombre viene con prefijo numérico, usar esos valores en lugar de los de BD
+          potente: extracted?.potente ?? style.potente,
+          acidez: extracted?.acidez ?? style.acidez,
+          dulce: extracted?.dulce ?? style.dulce,
+          tanico: extracted?.tanico ?? style.tanico,
+          afrutado: extracted?.afrutado ?? style.afrutado,
+          cleanName: cleanStyleName(style.name)
+        } as WineStyle & { cleanName: string };
+      });
 
       // Agrupar por nombre limpio y tomar el que tenga mejores valores (no todos en 3)
       const uniqueStylesMap = new Map<string, WineStyle>();
@@ -380,7 +401,10 @@ const SensoryCalculator = () => {
                         {identifiedStyle.description}
                       </p>
                     )}
-                    <div className="text-xs text-green-600 mt-2">
+                    <div className="text-xs text-green-700 mt-2">
+                      <strong>Tu perfil:</strong> Potente: {profile.potente}, Acidez: {profile.acidez}, Dulzor: {profile.dulce}, Tánico: {profile.tanico}, Afrutado: {profile.afrutado}
+                    </div>
+                    <div className="text-xs text-green-600">
                       <strong>Perfil del estilo:</strong> Potente: {identifiedStyle.potente}, Acidez: {identifiedStyle.acidez}, Dulzor: {identifiedStyle.dulce}, Tánico: {identifiedStyle.tanico}, Afrutado: {identifiedStyle.afrutado}
                     </div>
                   </div>
