@@ -401,10 +401,30 @@ export const importMatchrimProfiles = async (
       const row = batch[i];
       const globalIndex = startIndex + i;
       
-      const profileName = row['Nombre Perfil Matchrim'] || row.name || row['Matchrim'] || row['MATCHRIM'];
+      // Buscar nombre del perfil de forma flexible
+      let profileName = getColumnValue(row, [
+        'Nombre Perfil Matchrim', 'nombre perfil matchrim', 'NOMBRE PERFIL MATCHRIM',
+        'name', 'Name', 'NAME', 'nombre', 'Nombre', 'NOMBRE',
+        'Matchrim', 'matchrim', 'MATCHRIM',
+        'perfil', 'Perfil', 'PERFIL', 'profile', 'Profile', 'PROFILE'
+      ]);
+      
+      // Si no encontramos nombre, usar la primera columna no numérica
+      if (!profileName) {
+        for (const [key, value] of Object.entries(row)) {
+          if (value && typeof value === 'string' && value.trim()) {
+            const trimmedValue = value.trim();
+            // Verificar que no sea solo un número o valores sensoriales (1-5)
+            if (!/^\d+$/.test(trimmedValue) && !['1', '2', '3', '4', '5'].includes(trimmedValue)) {
+              profileName = trimmedValue;
+              break;
+            }
+          }
+        }
+      }
       
       if (!profileName) {
-        result.errors.push(`Fila ${globalIndex + 2}: No se pudo encontrar nombre del perfil`);
+        result.errors.push(`Fila ${globalIndex + 2}: No se pudo encontrar nombre del perfil (columnas: ${Object.keys(row).join(', ')})`);
         continue;
       }
       
