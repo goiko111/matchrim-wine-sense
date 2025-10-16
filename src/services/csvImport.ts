@@ -78,22 +78,31 @@ const generateUniqueName = async (tableName: string, baseName: string): Promise<
   }
 };
 
-// Función auxiliar para extraer valor de columna de forma flexible
+// Función auxiliar para extraer valor de columna de forma MUY flexible
 const getColumnValue = (row: CSVRow, possibleNames: string[]): string => {
+  // 1. Búsqueda exacta
   for (const name of possibleNames) {
     if (row[name] !== undefined && row[name] !== null && row[name].toString().trim()) {
       return row[name].toString().trim();
     }
   }
   
-  // Búsqueda flexible (case-insensitive)
+  // 2. Búsqueda case-insensitive
+  const rowKeysLower = Object.keys(row).map(k => ({ original: k, lower: k.toLowerCase() }));
   for (const name of possibleNames) {
-    const foundKey = Object.keys(row).find(key => 
-      key.toLowerCase().includes(name.toLowerCase()) ||
-      name.toLowerCase().includes(key.toLowerCase())
-    );
-    if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null && row[foundKey].toString().trim()) {
-      return row[foundKey].toString().trim();
+    const nameLower = name.toLowerCase();
+    const found = rowKeysLower.find(k => k.lower === nameLower);
+    if (found && row[found.original] !== undefined && row[found.original] !== null && row[found.original].toString().trim()) {
+      return row[found.original].toString().trim();
+    }
+  }
+  
+  // 3. Búsqueda parcial (contiene)
+  for (const name of possibleNames) {
+    const nameLower = name.toLowerCase();
+    const found = rowKeysLower.find(k => k.lower.includes(nameLower) || nameLower.includes(k.lower));
+    if (found && row[found.original] !== undefined && row[found.original] !== null && row[found.original].toString().trim()) {
+      return row[found.original].toString().trim();
     }
   }
   
@@ -159,15 +168,45 @@ export const importWines = async (
       const row = batch[i];
       const globalIndex = startIndex + i;
       
-      // Extraer campos principales
-      const wineName = getColumnValue(row, ['nombre', 'name', 'Name', 'Nombre']);
-      const producer = getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer']) || null;
-      const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage']);
+      // Extraer campos principales con búsqueda MUY flexible
+      const wineName = getColumnValue(row, [
+        'nombre', 'name', 'Name', 'Nombre', 'NOMBRE', 'NAME',
+        'wine', 'Wine', 'WINE', 'vino', 'Vino', 'VINO',
+        'denominacion', 'denominación', 'denomination'
+      ]);
+      const producer = getColumnValue(row, [
+        'bodega', 'producer', 'Bodega', 'Producer', 'BODEGA', 'PRODUCER',
+        'winery', 'Winery', 'WINERY', 'productor', 'Productor'
+      ]) || null;
+      const vintageStr = getColumnValue(row, [
+        'añada', 'vintage', 'Añada', 'Vintage', 'AÑADA', 'VINTAGE',
+        'año', 'year', 'Año', 'Year', 'AÑO', 'YEAR', 'anada'
+      ]);
       const vintage = vintageStr ? parseInt(vintageStr) : null;
-      const wineType = getColumnValue(row, ['tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo']);
+      const wineType = getColumnValue(row, [
+        'tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo', 'TIPO', 'ESTILO',
+        'categoria', 'categoría', 'category', 'Category',
+        'Estilo Winerim', 'estilo winerim', 'ESTILO WINERIM'
+      ]);
       
-      if (!wineName) {
-        result.errors.push(`Fila ${globalIndex + 2}: Nombre del vino es requerido`);
+      // Si no hay nombre de vino, intentar usar la primera columna que no sea vacía
+      let finalWineName = wineName;
+      if (!finalWineName) {
+        // Buscar la primera columna con valor no numérico
+        for (const [key, value] of Object.entries(row)) {
+          if (value && typeof value === 'string' && value.trim()) {
+            const trimmedValue = value.trim();
+            // Verificar que no sea solo un número
+            if (!/^\d+$/.test(trimmedValue) && !['1', '2', '3', '4', '5'].includes(trimmedValue)) {
+              finalWineName = trimmedValue;
+              break;
+            }
+          }
+        }
+      }
+      
+      if (!finalWineName) {
+        result.errors.push(`Fila ${globalIndex + 2}: Nombre del vino es requerido (columnas: ${Object.keys(row).join(', ')})`);
         continue;
       }
       
@@ -273,12 +312,11 @@ export const importWines = async (
       }
 
       // Generar nombre único si es necesario
-      let finalWineName = wineName;
       if (existingWine && duplicateStrategy === 'suffix') {
         let counter = 1;
         let uniqueKey;
         do {
-          finalWineName = `${wineName} (${counter})`;
+          finalWineName = `${finalWineName} (${counter})`;
           uniqueKey = `${finalWineName.toLowerCase()}|${(producer || '').toLowerCase()}|${vintage || ''}`;
           counter++;
         } while (existingWinesMap.has(uniqueKey));
@@ -286,18 +324,18 @@ export const importWines = async (
         existingWinesMap.set(uniqueKey, { id: 'temp', name: finalWineName });
       }
       
-      // Preparar para inserción
+      // Preparar para inserción - usar finalWineName ya validado
       winesToInsert.push({
         name: finalWineName,
         producer,
-        region: getColumnValue(row, ['region', 'Region']) || null,
+        region: getColumnValue(row, ['region', 'Region', 'REGION', 'región', 'Región']) || null,
         vintage,
         estilo: wineType,
-        potencia: getIntValue(getColumnValue(row, ['potente', 'power', 'Potente'])),
-        acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity', 'Acidez'])),
-        dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'sweetness', 'Dulce'])),
-        taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos'])),
-        afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity', 'Afrutado'])),
+        potencia: getIntValue(getColumnValue(row, ['potente', 'power', 'Potente', 'POTENTE', 'Power'])),
+        acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity', 'Acidez', 'ACIDEZ', 'Acidity'])),
+        dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'sweetness', 'Dulce', 'DULCE', 'dulzura', 'Dulzura'])),
+        taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos', 'TANICO', 'TANINOS', 'tanico'])),
+        afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity', 'Afrutado', 'AFRUTADO', 'Fruity'])),
         description: createDescription(),
         maridage_recommendations: createMaridajes()
       });
