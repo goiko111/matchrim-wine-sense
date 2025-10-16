@@ -26,19 +26,20 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
         style: 'mapbox://styles/mapbox/streets-v12',
         center: [0, 0],
         zoom: 2,
-        interactive: true,
+        interactive: false, // Desactivar interacción para mapas estáticos
+        dragPan: false,
+        scrollZoom: false,
+        boxZoom: false,
+        dragRotate: false,
+        keyboard: false,
+        doubleClickZoom: false,
+        touchZoomRotate: false,
       });
 
       map.current.on('error', (e) => {
         console.error('Mapbox error', e);
         setHasError(true);
       });
-
-      // Añadir controles de navegación
-      map.current.addControl(
-        new mapboxgl.NavigationControl({ visualizePitch: false }),
-        'top-right'
-      );
     } catch (err) {
       console.error('Map init error', err);
       setHasError(true);
