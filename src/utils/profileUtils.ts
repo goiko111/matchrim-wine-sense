@@ -195,10 +195,10 @@ export const generateGrapeRecommendations = (result: any): string[] => {
 };
 
 export const generateRegionRecommendations = (result: any): string[] => {
-  // 100+ regiones vinícolas del mundo
+  // 120 regiones vinícolas del mundo organizadas por país
   const regionRecommendations = [
     // ESPAÑA (30 regiones)
-    { name: "Rioja (España)", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
+    { name: "Rioja (España)", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 }, country: "España" },
     { name: "Ribera del Duero (España)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
     { name: "Rías Baixas (España)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
     { name: "Priorat (España)", criteria: { potente: 5, tanico: 5, acidez: 3, dulce: 1, afrutado: 3 } },
