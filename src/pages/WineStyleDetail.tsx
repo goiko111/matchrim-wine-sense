@@ -61,6 +61,7 @@ const WineStyleDetail = () => {
       // Función para generar slug (igual que en WineStylesGrid)
       const generateSlug = (name: string) => {
         return name
+          .replace(/^\d+;\d+;\d+;\d+;\d+;/, '') // Quitar prefijo numérico primero
           .replace(/\s*\(\d+\)\s*$/, '') // Limpiar números entre paréntesis
           .trim()
           .toLowerCase()
@@ -72,11 +73,39 @@ const WineStyleDetail = () => {
           .trim();
       };
 
+      // Función para extraer valores sensoriales del nombre si tiene el prefijo
+      const extractSensoryValues = (name: string) => {
+        const match = name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
+        if (match) {
+          return {
+            potente: parseInt(match[1]),
+            acidez: parseInt(match[2]),
+            dulce: parseInt(match[3]),
+            tanico: parseInt(match[4]),
+            afrutado: parseInt(match[5])
+          };
+        }
+        return null;
+      };
+
       // Buscar el estilo que coincida con el slug
       const matchedStyle = allStyles?.find(s => generateSlug(s.name) === slug);
 
       if (matchedStyle) {
-        setStyle(matchedStyle);
+        // Extraer valores sensoriales del nombre si existen
+        const sensoryValues = extractSensoryValues(matchedStyle.name);
+        
+        // Si el nombre tiene el prefijo con valores, usarlos; si no, usar los de la BD
+        const finalStyle = sensoryValues ? {
+          ...matchedStyle,
+          potente: sensoryValues.potente,
+          acidez: sensoryValues.acidez,
+          dulce: sensoryValues.dulce,
+          tanico: sensoryValues.tanico,
+          afrutado: sensoryValues.afrutado
+        } : matchedStyle;
+        
+        setStyle(finalStyle);
         return;
       }
 
