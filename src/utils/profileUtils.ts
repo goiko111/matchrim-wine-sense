@@ -107,97 +107,120 @@ export const generateWineStyles = (result: any): string[] => {
   return matchingStyles.slice(0, 3).map(style => style.name);
 };
 
-export const generateGrapeRecommendations = (result: any): string[] => {
-  // Uvas internacionales ordenadas de más famosas a menos
-  const grapeRecommendations = [
-    // Uvas muy famosas
-    { name: "Chardonnay", criteria: { acidez: 3, afrutado: 3, potente: 3, dulce: 2, tanico: 1 }, fame: 5 },
-    { name: "Cabernet Sauvignon", criteria: { potente: 5, tanico: 5, acidez: 3, dulce: 1, afrutado: 3 }, fame: 5 },
-    { name: "Merlot", criteria: { potente: 3, tanico: 3, acidez: 3, dulce: 2, afrutado: 4 }, fame: 5 },
-    { name: "Pinot Noir", criteria: { potente: 2, tanico: 2, acidez: 4, dulce: 1, afrutado: 4 }, fame: 5 },
-    { name: "Sauvignon Blanc", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 1, tanico: 1 }, fame: 5 },
-    
-    // Uvas famosas
-    { name: "Syrah", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 }, fame: 4 },
-    { name: "Riesling", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 3, tanico: 1 }, fame: 4 },
-    { name: "Tempranillo", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 }, fame: 4 },
-    { name: "Malbec", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 }, fame: 4 },
-    { name: "Garnacha", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 3, afrutado: 4 }, fame: 4 },
-    
-    // Uvas conocidas
-    { name: "Albariño", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 }, fame: 3 },
-    { name: "Sangiovese", criteria: { potente: 4, tanico: 4, acidez: 4, dulce: 1, afrutado: 3 }, fame: 3 },
-    { name: "Nebbiolo", criteria: { potente: 4, tanico: 5, acidez: 4, dulce: 1, afrutado: 3 }, fame: 3 },
-    { name: "Gewürztraminer", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 4, tanico: 1 }, fame: 3 },
-    { name: "Mencía", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 2, afrutado: 4 }, fame: 2 },
-    { name: "Godello", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 2, tanico: 1 }, fame: 2 }
-  ];
+export const generateGrapeRecommendations = (result: any, wines: any[]): string[] => {
+  if (!wines || wines.length === 0) {
+    return [];
+  }
 
-  // Calcular puntuación de compatibilidad
-  const compatibilityScores = grapeRecommendations.map(grape => {
+  // Extraer todas las uvas únicas de los vinos con sus atributos sensoriales promedio
+  const grapeMap = new Map<string, { scores: number[], count: number }>();
+  
+  wines.forEach(wine => {
+    if (!wine.grape_varieties || wine.grape_varieties.length === 0) return;
+    
+    wine.grape_varieties.forEach((grape: string) => {
+      if (!grapeMap.has(grape)) {
+        grapeMap.set(grape, { scores: [0, 0, 0, 0, 0], count: 0 });
+      }
+      const grapeData = grapeMap.get(grape)!;
+      grapeData.scores[0] += wine.potencia || 0;
+      grapeData.scores[1] += wine.acidez || 0;
+      grapeData.scores[2] += wine.dulzura || 0;
+      grapeData.scores[3] += wine.taninos || 0;
+      grapeData.scores[4] += wine.afrutado || 0;
+      grapeData.count++;
+    });
+  });
+
+  // Calcular compatibilidad para cada uva
+  const compatibilityScores: { name: string; score: number }[] = [];
+  
+  grapeMap.forEach((data, grape) => {
+    // Promediar los atributos de todos los vinos de esta uva
+    const avgCriteria = {
+      potente: Math.round(data.scores[0] / data.count),
+      acidez: Math.round(data.scores[1] / data.count),
+      dulce: Math.round(data.scores[2] / data.count),
+      tanico: Math.round(data.scores[3] / data.count),
+      afrutado: Math.round(data.scores[4] / data.count)
+    };
+    
+    // Calcular score de compatibilidad
     let score = 0;
-    score += (5 - Math.abs(result.potente - grape.criteria.potente)) * 2;
-    score += (5 - Math.abs(result.acidez - grape.criteria.acidez)) * 2;
-    score += (5 - Math.abs(result.dulce - grape.criteria.dulce)) * 2;
-    score += (5 - Math.abs(result.tanico - grape.criteria.tanico)) * 2;
-    score += (5 - Math.abs(result.afrutado - grape.criteria.afrutado)) * 2;
+    score += (5 - Math.abs(result.potente - avgCriteria.potente)) * 2;
+    score += (5 - Math.abs(result.acidez - avgCriteria.acidez)) * 2;
+    score += (5 - Math.abs(result.dulce - avgCriteria.dulce)) * 2;
+    score += (5 - Math.abs(result.tanico - avgCriteria.tanico)) * 2;
+    score += (5 - Math.abs(result.afrutado - avgCriteria.afrutado)) * 2;
     
-    // Bonus por fama reducido para dar más peso a compatibilidad
-    const fameBonus = grape.fame * 1;
-    
-    return { name: grape.name, score: score + fameBonus, fame: grape.fame };
+    compatibilityScores.push({ name: grape, score });
   });
   
-  // Ordenar por score (incluye compatibilidad + fama)
+  // Ordenar por compatibilidad
   compatibilityScores.sort((a, b) => b.score - a.score);
   
   console.log('Grape recommendations for profile:', result);
-  console.log('Top 5 grapes:', compatibilityScores.slice(0, 5));
+  console.log('Available grapes:', compatibilityScores.length);
+  console.log('Top grapes:', compatibilityScores.slice(0, 8));
   
-  // Devolver top 5
-  return compatibilityScores.slice(0, 5).map(grape => grape.name);
+  // Devolver top 8 (o todas si hay menos)
+  return compatibilityScores.slice(0, 8).map(grape => grape.name);
 };
 
-export const generateRegionRecommendations = (result: any): string[] => {
-  // Regiones internacionales diversas
-  const regionRecommendations = [
-    // Europa
-    { name: "Borgoña (Francia)", criteria: { potente: 3, tanico: 3, acidez: 4, dulce: 1, afrutado: 4 } },
-    { name: "Burdeos (Francia)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 1, afrutado: 3 } },
-    { name: "Toscana (Italia)", criteria: { potente: 4, tanico: 4, acidez: 4, dulce: 1, afrutado: 3 } },
-    { name: "Rioja (España)", criteria: { potente: 4, tanico: 3, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Ribera del Duero (España)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 3 } },
-    { name: "Rías Baixas (España)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Priorat (España)", criteria: { potente: 5, tanico: 5, acidez: 3, dulce: 1, afrutado: 3 } },
-    { name: "Piemonte (Italia)", criteria: { potente: 4, tanico: 5, acidez: 4, dulce: 1, afrutado: 3 } },
-    { name: "Mosel (Alemania)", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 3, tanico: 1 } },
-    
-    // Américas
-    { name: "Napa Valley (EE.UU.)", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 } },
-    { name: "Mendoza (Argentina)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 } },
-    { name: "Valle de Maipo (Chile)", criteria: { potente: 4, tanico: 4, acidez: 3, dulce: 1, afrutado: 3 } },
-    
-    // Oceanía
-    { name: "Marlborough (Nueva Zelanda)", criteria: { acidez: 5, afrutado: 5, potente: 2, dulce: 1, tanico: 1 } },
-    { name: "Barossa Valley (Australia)", criteria: { potente: 5, tanico: 4, acidez: 3, dulce: 2, afrutado: 4 } }
-  ];
+export const generateRegionRecommendations = (result: any, wines: any[]): string[] => {
+  if (!wines || wines.length === 0) {
+    return [];
+  }
 
-  const compatibilityScores = regionRecommendations.map(region => {
-    let score = 0;
-    score += (5 - Math.abs(result.potente - region.criteria.potente)) * 2;
-    score += (5 - Math.abs(result.acidez - region.criteria.acidez)) * 2;
-    score += (5 - Math.abs(result.dulce - region.criteria.dulce)) * 2;
-    score += (5 - Math.abs(result.tanico - region.criteria.tanico)) * 2;
-    score += (5 - Math.abs(result.afrutado - region.criteria.afrutado)) * 2;
+  // Extraer todas las regiones únicas de los vinos con sus atributos sensoriales promedio
+  const regionMap = new Map<string, { scores: number[], count: number }>();
+  
+  wines.forEach(wine => {
+    if (!wine.region) return;
     
-    return { name: region.name, score };
+    if (!regionMap.has(wine.region)) {
+      regionMap.set(wine.region, { scores: [0, 0, 0, 0, 0], count: 0 });
+    }
+    const regionData = regionMap.get(wine.region)!;
+    regionData.scores[0] += wine.potencia || 0;
+    regionData.scores[1] += wine.acidez || 0;
+    regionData.scores[2] += wine.dulzura || 0;
+    regionData.scores[3] += wine.taninos || 0;
+    regionData.scores[4] += wine.afrutado || 0;
+    regionData.count++;
+  });
+
+  // Calcular compatibilidad para cada región
+  const compatibilityScores: { name: string; score: number }[] = [];
+  
+  regionMap.forEach((data, region) => {
+    // Promediar los atributos de todos los vinos de esta región
+    const avgCriteria = {
+      potente: Math.round(data.scores[0] / data.count),
+      acidez: Math.round(data.scores[1] / data.count),
+      dulce: Math.round(data.scores[2] / data.count),
+      tanico: Math.round(data.scores[3] / data.count),
+      afrutado: Math.round(data.scores[4] / data.count)
+    };
+    
+    // Calcular score de compatibilidad
+    let score = 0;
+    score += (5 - Math.abs(result.potente - avgCriteria.potente)) * 2;
+    score += (5 - Math.abs(result.acidez - avgCriteria.acidez)) * 2;
+    score += (5 - Math.abs(result.dulce - avgCriteria.dulce)) * 2;
+    score += (5 - Math.abs(result.tanico - avgCriteria.tanico)) * 2;
+    score += (5 - Math.abs(result.afrutado - avgCriteria.afrutado)) * 2;
+    
+    compatibilityScores.push({ name: region, score });
   });
   
+  // Ordenar por compatibilidad
   compatibilityScores.sort((a, b) => b.score - a.score);
   
   console.log('Region recommendations for profile:', result);
-  console.log('Top 5 regions:', compatibilityScores.slice(0, 5));
+  console.log('Available regions:', compatibilityScores.length);
+  console.log('Top regions:', compatibilityScores.slice(0, 8));
   
-  // Devolver top 5 regiones más compatibles
-  return compatibilityScores.slice(0, 5).map(region => region.name);
+  // Devolver top 8 (o todas si hay menos)
+  return compatibilityScores.slice(0, 8).map(region => region.name);
 };
