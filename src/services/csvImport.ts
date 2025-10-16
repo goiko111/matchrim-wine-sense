@@ -1,40 +1,9 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { CSVRow, ImportResult, DuplicateStrategy } from '@/types/csv';
 import { validateWineRow, validateWineStyleRow, validateMatchrimProfileRow } from '@/utils/csvValidation';
 import { findColumnValue } from '@/utils/csvParser';
 
-const checkForExistingWine = async (name: string, producer?: string, vintage?: number) => {
-  console.log(`Verificando duplicado de vino: nombre="${name}", bodega="${producer}", añada=${vintage}`);
-  
-  let query = supabase
-    .from('wines')
-    .select('id, name, producer, vintage')
-    .eq('name', name);
-  
-  // Si tenemos bodega, la incluimos en la verificación
-  if (producer) {
-    query = query.eq('producer', producer);
-  }
-  
-  // Si tenemos añada, la incluimos en la verificación
-  if (vintage) {
-    query = query.eq('vintage', vintage);
-  }
-  
-  const { data, error } = await query.maybeSingle();
-  
-  if (error && error.code !== 'PGRST116') {
-    throw error;
-  }
-  
-  console.log(`Resultado de verificación de duplicado:`, data);
-  return data;
-};
-
 const checkForExistingRecord = async (tableName: string, name: string) => {
-  console.log(`Verificando duplicado exacto en ${tableName} para: "${name}"`);
-  
   let query;
   
   if (tableName === 'wine_styles') {
@@ -60,22 +29,7 @@ const checkForExistingRecord = async (tableName: string, name: string) => {
     throw error;
   }
   
-  console.log(`Resultado verificación duplicado en ${tableName}:`, data ? 'EXISTE' : 'NO EXISTE');
   return data;
-};
-
-const generateUniqueName = async (tableName: string, baseName: string): Promise<string> => {
-  let counter = 1;
-  let uniqueName = `${baseName} (${counter})`;
-  
-  while (true) {
-    const existing = await checkForExistingRecord(tableName, uniqueName);
-    if (!existing) {
-      return uniqueName;
-    }
-    counter++;
-    uniqueName = `${baseName} (${counter})`;
-  }
 };
 
 // Función auxiliar para extraer valor de columna de forma MUY flexible
@@ -122,263 +76,198 @@ export const importWines = async (
   onProgress: (progress: number) => void
 ): Promise<ImportResult> => {
   const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
-  console.log(`=== INICIO IMPORTACIÓN ULTRA-RÁPIDA DE VINOS (${data.length} filas) ===`);
   
-  // OPTIMIZACIÓN 1: Cargar todos los vinos existentes al inicio
-  const { data: existingWines, error: fetchError } = await supabase
+  // Cargar todos los vinos existentes al inicio
+  const { data: existingWines } = await supabase
     .from('wines')
     .select('id, name, producer, vintage');
   
-  if (fetchError) {
-    console.error('Error cargando vinos existentes:', fetchError);
-    result.errors.push('Error cargando datos existentes de la base de datos');
-    return result;
-  }
-  
-  // Crear un Map para búsquedas rápidas O(1)
+  // Crear un Map para búsquedas rápidas
   const existingWinesMap = new Map();
   existingWines?.forEach(wine => {
-    // Crear clave única combinando nombre, bodega y añada
     const key = `${wine.name.toLowerCase()}|${(wine.producer || '').toLowerCase()}|${wine.vintage || ''}`;
     existingWinesMap.set(key, wine);
   });
   
-  console.log(`Vinos existentes cargados: ${existingWinesMap.size}`);
-  
-  // OPTIMIZACIÓN 2: Procesar en lotes GRANDES
-  const BATCH_SIZE = 50; // Lotes optimizados para vinos
+  // Procesar en lotes paralelos
+  const BATCH_SIZE = 200;
+  const PARALLEL_BATCHES = 5;
   const totalBatches = Math.ceil(data.length / BATCH_SIZE);
   
-  for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
-    const startIndex = batchIndex * BATCH_SIZE;
-    const endIndex = Math.min(startIndex + BATCH_SIZE, data.length);
-    const batch = data.slice(startIndex, endIndex);
+  // Procesar lotes en grupos paralelos
+  for (let groupStart = 0; groupStart < totalBatches; groupStart += PARALLEL_BATCHES) {
+    const groupEnd = Math.min(groupStart + PARALLEL_BATCHES, totalBatches);
+    const batchPromises = [];
     
-    const batchProgress = ((batchIndex + 1) / totalBatches) * 100;
-    onProgress(batchProgress);
+    for (let batchIndex = groupStart; batchIndex < groupEnd; batchIndex++) {
+      const startIndex = batchIndex * BATCH_SIZE;
+      const endIndex = Math.min(startIndex + BATCH_SIZE, data.length);
+      const batch = data.slice(startIndex, endIndex);
+      
+      batchPromises.push(processBatch(batch, startIndex, existingWinesMap, duplicateStrategy));
+    }
     
-    console.log(`Procesando lote ${batchIndex + 1}/${totalBatches} (filas ${startIndex + 1}-${endIndex})`);
+    // Esperar a que todos los lotes del grupo terminen
+    const batchResults = await Promise.all(batchPromises);
     
-    // Arrays para operaciones en lote
-    const winesToInsert = [];
-    const winesToUpdate = [];
+    // Agregar resultados
+    batchResults.forEach(batchResult => {
+      result.success += batchResult.success;
+      result.errors.push(...batchResult.errors);
+      result.skipped += batchResult.skipped;
+      result.updated += batchResult.updated;
+    });
     
-    // Procesar lote y preparar operaciones
-    for (let i = 0; i < batch.length; i++) {
-      const row = batch[i];
-      const globalIndex = startIndex + i;
-      
-      // Extraer campos principales con búsqueda MUY flexible
-      const wineName = getColumnValue(row, [
-        'nombre', 'name', 'Name', 'Nombre', 'NOMBRE', 'NAME',
-        'wine', 'Wine', 'WINE', 'vino', 'Vino', 'VINO',
-        'denominacion', 'denominación', 'denomination'
-      ]);
-      const producer = getColumnValue(row, [
-        'bodega', 'producer', 'Bodega', 'Producer', 'BODEGA', 'PRODUCER',
-        'winery', 'Winery', 'WINERY', 'productor', 'Productor'
-      ]) || null;
-      const vintageStr = getColumnValue(row, [
-        'añada', 'vintage', 'Añada', 'Vintage', 'AÑADA', 'VINTAGE',
-        'año', 'year', 'Año', 'Year', 'AÑO', 'YEAR', 'anada'
-      ]);
-      const vintage = vintageStr ? parseInt(vintageStr) : null;
-      const wineType = getColumnValue(row, [
-        'tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo', 'TIPO', 'ESTILO',
-        'categoria', 'categoría', 'category', 'Category',
-        'Estilo Winerim', 'estilo winerim', 'ESTILO WINERIM'
-      ]);
-      
-      // Si no hay nombre de vino, intentar usar la primera columna que no sea vacía
-      let finalWineName = wineName;
-      if (!finalWineName) {
-        // Buscar la primera columna con valor no numérico
-        for (const [key, value] of Object.entries(row)) {
-          if (value && typeof value === 'string' && value.trim()) {
-            const trimmedValue = value.trim();
-            // Verificar que no sea solo un número
-            if (!/^\d+$/.test(trimmedValue) && !['1', '2', '3', '4', '5'].includes(trimmedValue)) {
-              finalWineName = trimmedValue;
-              break;
-            }
-          }
-        }
-      }
-      
-      if (!finalWineName) {
-        result.errors.push(`Fila ${globalIndex + 2}: Nombre del vino es requerido (columnas: ${Object.keys(row).join(', ')})`);
-        continue;
-      }
-      
-      if (!wineType) {
-        result.errors.push(`Fila ${globalIndex + 2}: Tipo/Estilo del vino es requerido`);
-        continue;
-      }
-      
-      // OPTIMIZACIÓN 3: Búsqueda rápida de duplicados usando Map
-      const wineKey = `${wineName.toLowerCase()}|${(producer || '').toLowerCase()}|${vintage || ''}`;
-      const existingWine = existingWinesMap.get(wineKey);
-      
-      // Función helper para crear descripción completa
-      const createDescription = () => {
-        const descriptionParts = [];
-        
-        // Campos básicos de información
-        const restaurante = getColumnValue(row, ['restaurante', 'restaurant', 'Restaurante']);
-        if (restaurante) descriptionParts.push(`Restaurante: ${restaurante}`);
-        
-        const pais = getColumnValue(row, ['pais', 'país', 'country', 'País']);
-        if (pais) descriptionParts.push(`País: ${pais}`);
-        
-        const urlFoto = getColumnValue(row, ['url_foto', 'foto', 'image_url', 'photo']);
-        if (urlFoto) descriptionParts.push(`Foto: ${urlFoto}`);
-        
-        const ventanaOptima = getColumnValue(row, ['ventana_optima_consumo', 'optimal_consumption', 'consumo_optimo']);
-        if (ventanaOptima) descriptionParts.push(`Ventana Óptima Consumo: ${ventanaOptima}`);
-        
-        const primeConsumo = getColumnValue(row, ['prime_consumo', 'prime_consumption', 'mejor_consumo']);
-        if (primeConsumo) descriptionParts.push(`Prime Consumo: ${primeConsumo}`);
-        
-        const uvas = getColumnValue(row, ['uvas', 'grapes', 'varietal', 'Uvas']);
-        if (uvas) descriptionParts.push(`Uvas: ${uvas}`);
-        
-        // Campos sensoriales
-        const nariz = getColumnValue(row, ['nariz', 'nose', 'Nariz']);
-        if (nariz) descriptionParts.push(`Nariz: ${nariz}`);
-        
-        const boca = getColumnValue(row, ['boca', 'mouth', 'palate', 'Boca']);
-        if (boca) descriptionParts.push(`Boca: ${boca}`);
-        
-        const visual = getColumnValue(row, ['visual', 'appearance', 'Visual']);
-        if (visual) descriptionParts.push(`Visual: ${visual}`);
-        
-        const cuerpo = getColumnValue(row, ['cuerpo', 'body', 'Cuerpo']);
-        if (cuerpo) descriptionParts.push(`Cuerpo: ${cuerpo}`);
-        
-        const estructura = getColumnValue(row, ['estructura', 'structure', 'Estructura']);
-        if (estructura) descriptionParts.push(`Estructura: ${estructura}`);
-        
-        const final = getColumnValue(row, ['final', 'finish', 'Final']);
-        if (final) descriptionParts.push(`Final: ${final}`);
-        
-        // Campos de elaboración
-        const crianza = getColumnValue(row, ['crianza', 'aging', 'Crianza']);
-        if (crianza) descriptionParts.push(`Crianza: ${crianza}`);
-        
-        const elaboracion = getColumnValue(row, ['elaboracion', 'elaboración', 'winemaking', 'Elaboración']);
-        if (elaboracion) descriptionParts.push(`Elaboración: ${elaboracion}`);
-        
-        const vinedo = getColumnValue(row, ['viñedo', 'vineyard', 'Viñedo']);
-        if (vinedo) descriptionParts.push(`Viñedo: ${vinedo}`);
-        
-        const infoBodega = getColumnValue(row, ['info bodega', 'winery info', 'Info bodega', 'Info Bodega']);
-        if (infoBodega) descriptionParts.push(`Info Bodega: ${infoBodega}`);
-        
-        const clima = getColumnValue(row, ['clima', 'climate', 'Clima']);
-        if (clima) descriptionParts.push(`Clima: ${clima}`);
-        
-        return descriptionParts.length > 0 ? descriptionParts.join('. ') : null;
-      };
-      
-      // Función helper para crear maridajes
-      const createMaridajes = () => {
-        const maridajes = getColumnValue(row, ['maridajes', 'pairings', 'maridage', 'food_pairing']);
-        return maridajes ? maridajes.split(';').map(m => m.trim()).filter(m => m) : null;
-      };
-      
-      if (existingWine) {
-        if (duplicateStrategy === 'skip') {
-          result.skipped++;
-          continue;
-        } else if (duplicateStrategy === 'update') {
-          winesToUpdate.push({
-            id: existingWine.id,
-            data: {
-              producer,
-              region: getColumnValue(row, ['region', 'Region']) || null,
-              vintage,
-              estilo: wineType,
-              potencia: getIntValue(getColumnValue(row, ['potente', 'power', 'Potente'])),
-              acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity', 'Acidez'])),
-              dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'sweetness', 'Dulce'])),
-              taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos'])),
-              afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity', 'Afrutado'])),
-              description: createDescription(),
-              maridage_recommendations: createMaridajes()
-            }
-          });
-          continue;
-        }
-      }
+    onProgress((groupEnd / totalBatches) * 100);
+  }
+  
+  return result;
+};
 
-      // Generar nombre único si es necesario
-      if (existingWine && duplicateStrategy === 'suffix') {
+async function processBatch(
+  batch: CSVRow[], 
+  startIndex: number, 
+  existingWinesMap: Map<string, any>,
+  duplicateStrategy: DuplicateStrategy
+) {
+  const batchResult = { success: 0, errors: [], skipped: 0, updated: 0 };
+  const winesToInsert = [];
+  const winesToUpdate = [];
+  
+  for (let i = 0; i < batch.length; i++) {
+    const row = batch[i];
+    const globalIndex = startIndex + i;
+    
+    // Extraer campos principales
+    let wineName = getColumnValue(row, [
+      'nombre', 'name', 'Name', 'Nombre', 'NOMBRE', 'NAME',
+      'wine', 'Wine', 'WINE', 'vino', 'Vino', 'VINO'
+    ]);
+    
+    // Si no hay nombre, buscar primera columna no numérica
+    if (!wineName) {
+      for (const [key, value] of Object.entries(row)) {
+        if (value && typeof value === 'string' && value.trim() && !/^\d+$/.test(value.trim())) {
+          wineName = value.trim();
+          break;
+        }
+      }
+    }
+    
+    const producer = getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer', 'winery']) || null;
+    const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage', 'año', 'year', 'anada']);
+    const vintage = vintageStr ? parseInt(vintageStr) : null;
+    const wineType = getColumnValue(row, ['tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo', 'Estilo Winerim']);
+    
+    if (!wineName) {
+      batchResult.errors.push(`Fila ${globalIndex + 2}: Nombre del vino es requerido`);
+      continue;
+    }
+    
+    if (!wineType) {
+      batchResult.errors.push(`Fila ${globalIndex + 2}: Tipo/Estilo del vino es requerido`);
+      continue;
+    }
+    
+    // Verificar duplicados
+    const wineKey = `${wineName.toLowerCase()}|${(producer || '').toLowerCase()}|${vintage || ''}`;
+    const existingWine = existingWinesMap.get(wineKey);
+    
+    // Helpers para descripción y maridajes
+    const createDescription = () => {
+      const parts = [];
+      const fields = [
+        ['restaurante', 'restaurant'],
+        ['pais', 'país', 'country'],
+        ['nariz', 'nose'],
+        ['boca', 'mouth', 'palate'],
+        ['visual', 'appearance'],
+        ['crianza', 'aging']
+      ];
+      fields.forEach(names => {
+        const val = getColumnValue(row, names);
+        if (val) parts.push(`${names[0]}: ${val}`);
+      });
+      return parts.length > 0 ? parts.join('. ') : null;
+    };
+    
+    const createMaridajes = () => {
+      const m = getColumnValue(row, ['maridajes', 'pairings', 'maridage']);
+      return m ? m.split(';').map(x => x.trim()).filter(x => x) : null;
+    };
+    
+    if (existingWine) {
+      if (duplicateStrategy === 'skip') {
+        batchResult.skipped++;
+        continue;
+      } else if (duplicateStrategy === 'update') {
+        winesToUpdate.push({
+          id: existingWine.id,
+          data: {
+            producer,
+            region: getColumnValue(row, ['region', 'Region', 'región']) || null,
+            vintage,
+            estilo: wineType,
+            potencia: getIntValue(getColumnValue(row, ['potente', 'power'])),
+            acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity'])),
+            dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'dulzura'])),
+            taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanico'])),
+            afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity'])),
+            description: createDescription(),
+            maridage_recommendations: createMaridajes()
+          }
+        });
+        continue;
+      } else if (duplicateStrategy === 'suffix') {
         let counter = 1;
         let uniqueKey;
         do {
-          finalWineName = `${finalWineName} (${counter})`;
-          uniqueKey = `${finalWineName.toLowerCase()}|${(producer || '').toLowerCase()}|${vintage || ''}`;
+          wineName = `${wineName} (${counter})`;
+          uniqueKey = `${wineName.toLowerCase()}|${(producer || '').toLowerCase()}|${vintage || ''}`;
           counter++;
         } while (existingWinesMap.has(uniqueKey));
-        
-        existingWinesMap.set(uniqueKey, { id: 'temp', name: finalWineName });
-      }
-      
-      // Preparar para inserción - usar finalWineName ya validado
-      winesToInsert.push({
-        name: finalWineName,
-        producer,
-        region: getColumnValue(row, ['region', 'Region', 'REGION', 'región', 'Región']) || null,
-        vintage,
-        estilo: wineType,
-        potencia: getIntValue(getColumnValue(row, ['potente', 'power', 'Potente', 'POTENTE', 'Power'])),
-        acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity', 'Acidez', 'ACIDEZ', 'Acidity'])),
-        dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'sweetness', 'Dulce', 'DULCE', 'dulzura', 'Dulzura'])),
-        taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanic', 'tanin', 'Tánico', 'Taninos', 'TANICO', 'TANINOS', 'tanico'])),
-        afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity', 'Afrutado', 'AFRUTADO', 'Fruity'])),
-        description: createDescription(),
-        maridage_recommendations: createMaridajes()
-      });
-      
-      // Agregar al Map para evitar duplicados futuros
-      const newKey = `${finalWineName.toLowerCase()}|${(producer || '').toLowerCase()}|${vintage || ''}`;
-      existingWinesMap.set(newKey, { id: 'new', name: finalWineName });
-    }
-    
-    // OPTIMIZACIÓN 4: Ejecutar operaciones en lote
-    
-    // Bulk insert
-    if (winesToInsert.length > 0) {
-      const { error: insertError } = await supabase
-        .from('wines')
-        .insert(winesToInsert);
-      
-      if (insertError) {
-        result.errors.push(`Error en lote ${batchIndex + 1}: ${insertError.message}`);
-      } else {
-        result.success += winesToInsert.length;
       }
     }
     
-    // Bulk update (uno por uno para updates)
-    for (const wine of winesToUpdate) {
-      const { error } = await supabase
-        .from('wines')
-        .update(wine.data)
-        .eq('id', wine.id);
-      
-      if (error) {
-        result.errors.push(`Error actualizando vino: ${error.message}`);
-      } else {
-        result.updated++;
-      }
+    // Insertar nuevo
+    winesToInsert.push({
+      name: wineName,
+      producer,
+      region: getColumnValue(row, ['region', 'Region', 'región']) || null,
+      vintage,
+      estilo: wineType,
+      potencia: getIntValue(getColumnValue(row, ['potente', 'power'])),
+      acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity'])),
+      dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'dulzura'])),
+      taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanico'])),
+      afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity'])),
+      description: createDescription(),
+      maridage_recommendations: createMaridajes()
+    });
+  }
+  
+  // Bulk insert
+  if (winesToInsert.length > 0) {
+    const { error } = await supabase.from('wines').insert(winesToInsert);
+    if (error) {
+      batchResult.errors.push(`Error insertando lote: ${error.message}`);
+    } else {
+      batchResult.success += winesToInsert.length;
     }
   }
   
-  console.log('=== FIN IMPORTACIÓN ULTRA-RÁPIDA DE VINOS ===');
-  console.log(`Importación completada:`, result);
-  return result;
-};
+  // Bulk update
+  for (const wine of winesToUpdate) {
+    const { error } = await supabase.from('wines').update(wine.data).eq('id', wine.id);
+    if (error) {
+      batchResult.errors.push(`Error actualizando: ${error.message}`);
+    } else {
+      batchResult.updated++;
+    }
+  }
+  
+  return batchResult;
+}
 
 export const importWineStyles = async (
   data: CSVRow[], 
@@ -386,28 +275,11 @@ export const importWineStyles = async (
   onProgress: (progress: number) => void
 ): Promise<ImportResult> => {
   const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
-  console.log(`=== INICIO IMPORTACIÓN OPTIMIZADA DE ESTILOS (${data.length} filas) ===`);
   
-  // OPTIMIZACIÓN 1: Cargar todos los estilos existentes al inicio
-  const { data: existingStyles, error: fetchError } = await supabase
-    .from('wine_styles')
-    .select('id, name');
+  const { data: existingStyles } = await supabase.from('wine_styles').select('id, name');
+  const existingStylesMap = new Map(existingStyles?.map(s => [s.name.toLowerCase(), s]) || []);
   
-  if (fetchError) {
-    console.error('Error cargando estilos existentes:', fetchError);
-    result.errors.push('Error cargando datos existentes de la base de datos');
-    return result;
-  }
-  
-  // Crear un Map para búsquedas rápidas O(1)
-  const existingStylesMap = new Map(
-    existingStyles?.map(style => [style.name.toLowerCase(), style]) || []
-  );
-  
-  console.log(`Estilos existentes cargados: ${existingStylesMap.size}`);
-  
-  // OPTIMIZACIÓN 2: Procesar en lotes GRANDES
-  const BATCH_SIZE = 50; // Aumentado para mayor velocidad
+  const BATCH_SIZE = 100;
   const totalBatches = Math.ceil(data.length / BATCH_SIZE);
   
   for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
@@ -415,24 +287,16 @@ export const importWineStyles = async (
     const endIndex = Math.min(startIndex + BATCH_SIZE, data.length);
     const batch = data.slice(startIndex, endIndex);
     
-    const batchProgress = ((batchIndex + 1) / totalBatches) * 100;
-    onProgress(batchProgress);
+    onProgress(((batchIndex + 1) / totalBatches) * 100);
     
-    console.log(`Procesando lote ${batchIndex + 1}/${totalBatches} (filas ${startIndex + 1}-${endIndex})`);
-    
-    // Arrays para operaciones en lote
     const stylesToInsert = [];
     const stylesToUpdate = [];
     
-    // Procesar lote y preparar operaciones
     for (let i = 0; i < batch.length; i++) {
       const row = batch[i];
       const globalIndex = startIndex + i;
       
-      // OPTIMIZACIÓN 3: Búsqueda simplificada del nombre del estilo
       let styleName = '';
-      
-      // Buscar en columnas más probables primero
       const styleColumns = ['Estilo Winerim', 'Estilo', 'Style', 'Name', 'Nombre'];
       for (const col of styleColumns) {
         if (row[col] && row[col].toString().trim() && !/^\d+$/.test(row[col].toString().trim())) {
@@ -441,15 +305,11 @@ export const importWineStyles = async (
         }
       }
       
-      // Si no encontramos, buscar en cualquier columna que no sea numérica
       if (!styleName) {
         for (const [key, value] of Object.entries(row)) {
-          if (value && typeof value === 'string' && value.trim()) {
-            const trimmedValue = value.trim();
-            if (!/^\d+$/.test(trimmedValue) && !['1', '2', '3', '4', '5'].includes(trimmedValue)) {
-              styleName = trimmedValue;
-              break;
-            }
+          if (value && typeof value === 'string' && value.trim() && !/^\d+$/.test(value.trim())) {
+            styleName = value.trim();
+            break;
           }
         }
       }
@@ -459,7 +319,6 @@ export const importWineStyles = async (
         continue;
       }
       
-      // OPTIMIZACIÓN 4: Búsqueda rápida de duplicados usando Map
       const existingStyle = existingStylesMap.get(styleName.toLowerCase());
       
       if (existingStyle) {
@@ -478,49 +337,40 @@ export const importWineStyles = async (
             }
           });
           continue;
+        } else if (duplicateStrategy === 'suffix') {
+          let counter = 1;
+          do {
+            styleName = `${styleName} (${counter})`;
+            counter++;
+          } while (existingStylesMap.has(styleName.toLowerCase()));
         }
       }
-
-      // OPTIMIZACIÓN 5: Generación de nombres únicos más eficiente para strategy 'suffix'
-      let finalStyleName = styleName;
-      if (existingStyle && duplicateStrategy === 'suffix') {
-        let counter = 1;
-        do {
-          finalStyleName = `${styleName} (${counter})`;
-          counter++;
-        } while (existingStylesMap.has(finalStyleName.toLowerCase()));
-        
-        // Agregar al Map para evitar duplicados en el mismo lote
-        existingStylesMap.set(finalStyleName.toLowerCase(), { id: 'temp', name: finalStyleName });
-      }
       
-      // Insertar nuevo estilo
-      const styleData = {
-        name: finalStyleName,
-        description: null,
+      stylesToInsert.push({
+        name: styleName,
         potente: getIntValue(row['Potente'] || ''),
         acidez: getIntValue(row['Acidez'] || ''),
         dulce: getIntValue(row['Dulzura'] || ''),
         tanico: getIntValue(row['Taninos'] || ''),
         afrutado: getIntValue(row['Afrutado'] || '')
-      };
-      
-      const { error } = await supabase
-        .from('wine_styles')
-        .insert(styleData);
-      
+      });
+    }
+    
+    if (stylesToInsert.length > 0) {
+      const { error } = await supabase.from('wine_styles').insert(stylesToInsert);
       if (error) {
-        result.errors.push(`Fila ${globalIndex + 2}: ${error.message}`);
+        result.errors.push(`Error en lote: ${error.message}`);
       } else {
-        result.success++;
-        // Agregar al Map para evitar duplicados futuros
-        existingStylesMap.set(finalStyleName.toLowerCase(), { id: 'new', name: finalStyleName });
+        result.success += stylesToInsert.length;
       }
+    }
+    
+    for (const style of stylesToUpdate) {
+      const { error } = await supabase.from('wine_styles').update(style.data).eq('id', style.id);
+      if (!error) result.updated++;
     }
   }
   
-  console.log('=== FIN IMPORTACIÓN OPTIMIZADA DE ESTILOS ===');
-  console.log(`Importación completada:`, result);
   return result;
 };
 
@@ -530,28 +380,11 @@ export const importMatchrimProfiles = async (
   onProgress: (progress: number) => void
 ): Promise<ImportResult> => {
   const result: ImportResult = { success: 0, errors: [], warnings: [], skipped: 0, updated: 0 };
-  console.log(`=== INICIO IMPORTACIÓN ULTRA-RÁPIDA DE PERFILES MATCHRIM (${data.length} filas) ===`);
   
-  // OPTIMIZACIÓN 1: Cargar todos los perfiles existentes al inicio
-  const { data: existingProfiles, error: fetchError } = await supabase
-    .from('matchrim_profiles')
-    .select('id, name');
+  const { data: existingProfiles } = await supabase.from('matchrim_profiles').select('id, name');
+  const existingProfilesMap = new Map(existingProfiles?.map(p => [p.name.toLowerCase(), p]) || []);
   
-  if (fetchError) {
-    console.error('Error cargando perfiles existentes:', fetchError);
-    result.errors.push('Error cargando datos existentes de la base de datos');
-    return result;
-  }
-  
-  // Crear un Map para búsquedas rápidas O(1)
-  const existingProfilesMap = new Map(
-    existingProfiles?.map(profile => [profile.name.toLowerCase(), profile]) || []
-  );
-  
-  console.log(`Perfiles existentes cargados: ${existingProfilesMap.size}`);
-  
-  // OPTIMIZACIÓN 2: Procesar en lotes GRANDES y usar bulk insert
-  const BATCH_SIZE = 100; // Lotes más grandes
+  const BATCH_SIZE = 100;
   const totalBatches = Math.ceil(data.length / BATCH_SIZE);
   
   for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
@@ -559,21 +392,15 @@ export const importMatchrimProfiles = async (
     const endIndex = Math.min(startIndex + BATCH_SIZE, data.length);
     const batch = data.slice(startIndex, endIndex);
     
-    const batchProgress = ((batchIndex + 1) / totalBatches) * 100;
-    onProgress(batchProgress);
+    onProgress(((batchIndex + 1) / totalBatches) * 100);
     
-    console.log(`Procesando lote ${batchIndex + 1}/${totalBatches} (filas ${startIndex + 1}-${endIndex})`);
-    
-    // Arrays para operaciones en lote
     const profilesToInsert = [];
     const profilesToUpdate = [];
     
-    // Procesar lote y preparar operaciones
     for (let i = 0; i < batch.length; i++) {
       const row = batch[i];
       const globalIndex = startIndex + i;
       
-      // Buscar nombre del perfil
       const profileName = row['Nombre Perfil Matchrim'] || row.name || row['Matchrim'] || row['MATCHRIM'];
       
       if (!profileName) {
@@ -597,82 +424,43 @@ export const importMatchrimProfiles = async (
               dulce: getIntValue(row.Dulce || row.dulce || ''),
               tanico: getIntValue(row.Tánico || row.tanico || ''),
               afrutado: getIntValue(row.Afrutado || row.afrutado || ''),
-              grape_recommendations: row.grape_recommendations ? 
-                row.grape_recommendations.split(';').map(s => s.trim()) : null,
-              region_recommendations: row.region_recommendations ? 
-                row.region_recommendations.split(';').map(s => s.trim()) : null,
-              style_recommendations: row.style_recommendations ? 
-                row.style_recommendations.split(';').map(s => s.trim()) : null
+              grape_recommendations: row.grape_recommendations ? row.grape_recommendations.split(';').map(s => s.trim()) : null,
+              region_recommendations: row.region_recommendations ? row.region_recommendations.split(';').map(s => s.trim()) : null,
+              style_recommendations: row.style_recommendations ? row.style_recommendations.split(';').map(s => s.trim()) : null
             }
           });
           continue;
         }
       }
-
-      // Generar nombre único si es necesario
-      let finalProfileName = profileName;
-      if (existingProfile && duplicateStrategy === 'suffix') {
-        let counter = 1;
-        do {
-          finalProfileName = `${profileName} (${counter})`;
-          counter++;
-        } while (existingProfilesMap.has(finalProfileName.toLowerCase()));
-        
-        existingProfilesMap.set(finalProfileName.toLowerCase(), { id: 'temp', name: finalProfileName });
-      }
       
-      // Preparar para inserción
       profilesToInsert.push({
-        name: finalProfileName,
+        name: profileName,
         description: row.description || null,
         potente: getIntValue(row.Potente || row.potente || ''),
         acidez: getIntValue(row.Acidez || row.acidez || ''),
         dulce: getIntValue(row.Dulce || row.dulce || ''),
         tanico: getIntValue(row.Tánico || row.tanico || ''),
         afrutado: getIntValue(row.Afrutado || row.afrutado || ''),
-        grape_recommendations: row.grape_recommendations ? 
-          row.grape_recommendations.split(';').map(s => s.trim()) : null,
-        region_recommendations: row.region_recommendations ? 
-          row.region_recommendations.split(';').map(s => s.trim()) : null,
-        style_recommendations: row.style_recommendations ? 
-          row.style_recommendations.split(';').map(s => s.trim()) : null
+        grape_recommendations: row.grape_recommendations ? row.grape_recommendations.split(';').map(s => s.trim()) : null,
+        region_recommendations: row.region_recommendations ? row.region_recommendations.split(';').map(s => s.trim()) : null,
+        style_recommendations: row.style_recommendations ? row.style_recommendations.split(';').map(s => s.trim()) : null
       });
-      
-      // Agregar al Map para evitar duplicados futuros
-      existingProfilesMap.set(finalProfileName.toLowerCase(), { id: 'new', name: finalProfileName });
     }
     
-    // OPTIMIZACIÓN 3: Ejecutar operaciones en lote
-    
-    // Bulk insert
     if (profilesToInsert.length > 0) {
-      const { error: insertError } = await supabase
-        .from('matchrim_profiles')
-        .insert(profilesToInsert);
-      
-      if (insertError) {
-        result.errors.push(`Error en lote ${batchIndex + 1}: ${insertError.message}`);
+      const { error } = await supabase.from('matchrim_profiles').insert(profilesToInsert);
+      if (error) {
+        result.errors.push(`Error en lote: ${error.message}`);
       } else {
         result.success += profilesToInsert.length;
       }
     }
     
-    // Bulk update (uno por uno para updates porque Supabase no soporta bulk update fácilmente)
     for (const profile of profilesToUpdate) {
-      const { error } = await supabase
-        .from('matchrim_profiles')
-        .update(profile.data)
-        .eq('id', profile.id);
-      
-      if (error) {
-        result.errors.push(`Error actualizando perfil: ${error.message}`);
-      } else {
-        result.updated++;
-      }
+      const { error } = await supabase.from('matchrim_profiles').update(profile.data).eq('id', profile.id);
+      if (!error) result.updated++;
     }
   }
   
-  console.log('=== FIN IMPORTACIÓN ULTRA-RÁPIDA ===');
-  console.log(`Importación completada:`, result);
   return result;
 };
