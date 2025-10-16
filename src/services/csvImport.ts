@@ -368,8 +368,8 @@ export const importWineStyles = async (
   
   console.log(`Estilos existentes cargados: ${existingStylesMap.size}`);
   
-  // OPTIMIZACIÓN 2: Procesar en lotes para reducir overhead
-  const BATCH_SIZE = 10;
+  // OPTIMIZACIÓN 2: Procesar en lotes GRANDES
+  const BATCH_SIZE = 50; // Aumentado para mayor velocidad
   const totalBatches = Math.ceil(data.length / BATCH_SIZE);
   
   for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
@@ -380,9 +380,13 @@ export const importWineStyles = async (
     const batchProgress = ((batchIndex + 1) / totalBatches) * 100;
     onProgress(batchProgress);
     
-    console.log(`\n=== PROCESANDO LOTE ${batchIndex + 1}/${totalBatches} (filas ${startIndex + 1}-${endIndex}) ===`);
+    console.log(`Procesando lote ${batchIndex + 1}/${totalBatches} (filas ${startIndex + 1}-${endIndex})`);
     
-    // Procesar lote
+    // Arrays para operaciones en lote
+    const stylesToInsert = [];
+    const stylesToUpdate = [];
+    
+    // Procesar lote y preparar operaciones
     for (let i = 0; i < batch.length; i++) {
       const row = batch[i];
       const globalIndex = startIndex + i;
@@ -425,25 +429,16 @@ export const importWineStyles = async (
           result.skipped++;
           continue;
         } else if (duplicateStrategy === 'update') {
-          // Actualizar estilo existente
-          const updateData = {
-            potente: getIntValue(row['Potente'] || ''),
-            acidez: getIntValue(row['Acidez'] || ''),
-            dulce: getIntValue(row['Dulzura'] || ''),
-            tanico: getIntValue(row['Taninos'] || ''),
-            afrutado: getIntValue(row['Afrutado'] || '')
-          };
-          
-          const { error } = await supabase
-            .from('wine_styles')
-            .update(updateData)
-            .eq('id', existingStyle.id);
-          
-          if (error) {
-            result.errors.push(`Fila ${globalIndex + 2}: ${error.message}`);
-          } else {
-            result.updated++;
-          }
+          stylesToUpdate.push({
+            id: existingStyle.id,
+            data: {
+              potente: getIntValue(row['Potente'] || ''),
+              acidez: getIntValue(row['Acidez'] || ''),
+              dulce: getIntValue(row['Dulzura'] || ''),
+              tanico: getIntValue(row['Taninos'] || ''),
+              afrutado: getIntValue(row['Afrutado'] || '')
+            }
+          });
           continue;
         }
       }
