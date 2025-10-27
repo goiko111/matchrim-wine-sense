@@ -111,20 +111,44 @@ const DataExporter = () => {
     }
   };
 
+  const extractSensoryValues = (name: string) => {
+    const match = name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
+    if (match) {
+      return {
+        potente: parseInt(match[1]),
+        acidez: parseInt(match[2]),
+        dulce: parseInt(match[3]),
+        tanico: parseInt(match[4]),
+        afrutado: parseInt(match[5])
+      };
+    }
+    return null;
+  };
+
+  const cleanName = (name: string) => {
+    return name
+      .replace(/^\d+;\d+;\d+;\d+;\d+;/, '')
+      .replace(/\s*\(\d+\)\s*$/, '')
+      .trim();
+  };
+
   const exportWineStyles = async () => {
     setExporting('styles');
     try {
       const data = await fetchAll<any>('wine_styles', 'name');
 
-      // Export only name and sensory attributes
-      const exportData = data.map((style: any) => ({
-        nombre: style.name,
-        potente: style.potente,
-        acidez: style.acidez,
-        dulce: style.dulce,
-        tanico: style.tanico,
-        afrutado: style.afrutado
-      }));
+      // Export only name and sensory attributes, extracting from name prefix
+      const exportData = data.map((style: any) => {
+        const sensoryValues = extractSensoryValues(style.name);
+        return {
+          nombre: cleanName(style.name),
+          potente: sensoryValues?.potente ?? style.potente,
+          acidez: sensoryValues?.acidez ?? style.acidez,
+          dulce: sensoryValues?.dulce ?? style.dulce,
+          tanico: sensoryValues?.tanico ?? style.tanico,
+          afrutado: sensoryValues?.afrutado ?? style.afrutado
+        };
+      });
 
       downloadCSV(exportData, 'estilos_vino_winerim.csv');
       
@@ -150,15 +174,18 @@ const DataExporter = () => {
     try {
       const data = await fetchAll<any>('matchrim_profiles', 'name');
 
-      // Export only name and sensory attributes
-      const exportData = data.map((profile: any) => ({
-        nombre: profile.name,
-        potente: profile.potente,
-        acidez: profile.acidez,
-        dulce: profile.dulce,
-        tanico: profile.tanico,
-        afrutado: profile.afrutado
-      }));
+      // Export only name and sensory attributes, extracting from name prefix
+      const exportData = data.map((profile: any) => {
+        const sensoryValues = extractSensoryValues(profile.name);
+        return {
+          nombre: cleanName(profile.name),
+          potente: sensoryValues?.potente ?? profile.potente,
+          acidez: sensoryValues?.acidez ?? profile.acidez,
+          dulce: sensoryValues?.dulce ?? profile.dulce,
+          tanico: sensoryValues?.tanico ?? profile.tanico,
+          afrutado: sensoryValues?.afrutado ?? profile.afrutado
+        };
+      });
 
       downloadCSV(exportData, 'perfiles_matchrim.csv');
       
