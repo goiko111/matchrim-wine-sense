@@ -160,7 +160,31 @@ const SensoryCalculator = () => {
     setIsLoading(true);
 
     try {
-      // Obtener todos los estilos directamente de la BD
+      // 1) Intentar coincidencia exacta por prefijo
+      const prefix = `${profile.potente};${profile.acidez};${profile.dulce};${profile.tanico};${profile.afrutado};`;
+      const { data: exactRows, error: exactError } = await supabase
+        .from('wine_styles')
+        .select('*')
+        .like('name', `${prefix}%`);
+
+      if (exactError) throw exactError;
+
+      if (exactRows && exactRows.length > 0) {
+        const preferred = exactRows.find(r => cleanStyleName(r.name).toLowerCase().includes('versátil')) ?? exactRows[0];
+        setIdentifiedStyle({
+          ...(preferred as any),
+          name: cleanStyleName(preferred.name),
+          potente: profile.potente,
+          acidez: profile.acidez,
+          dulce: profile.dulce,
+          tanico: profile.tanico,
+          afrutado: profile.afrutado,
+        } as any);
+        console.log('Coincidencia exacta encontrada:', cleanStyleName(preferred.name));
+        return;
+      }
+
+      // 2) Si no hay exacto, obtener todos los estilos
       const { data, error } = await supabase
         .from('wine_styles')
         .select('*');
