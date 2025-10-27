@@ -779,10 +779,37 @@ const WineStyleDetail = () => {
                     const minRange = Math.max(0, attr.value - 1);
                     const maxRange = Math.min(5, attr.value + 1);
                     
+                    // Obtener colores de la paleta del estilo
+                    const getAttributeColors = () => {
+                      const baseColor = config.color;
+                      switch(baseColor) {
+                        case 'emerald':
+                          return { light: 'bg-emerald-200', medium: 'bg-emerald-400', dark: 'bg-emerald-600' };
+                        case 'yellow':
+                          return { light: 'bg-yellow-200', medium: 'bg-yellow-400', dark: 'bg-yellow-600' };
+                        case 'orange':
+                          return { light: 'bg-orange-200', medium: 'bg-orange-400', dark: 'bg-orange-600' };
+                        case 'red':
+                          return { light: 'bg-red-200', medium: 'bg-red-400', dark: 'bg-red-600' };
+                        case 'pink':
+                          return { light: 'bg-pink-200', medium: 'bg-pink-400', dark: 'bg-pink-600' };
+                        case 'amber':
+                          return { light: 'bg-amber-200', medium: 'bg-amber-400', dark: 'bg-amber-600' };
+                        case 'purple':
+                          return { light: 'bg-purple-200', medium: 'bg-purple-400', dark: 'bg-purple-600' };
+                        case 'stone':
+                          return { light: 'bg-stone-200', medium: 'bg-stone-400', dark: 'bg-stone-600' };
+                        default:
+                          return { light: 'bg-gray-200', medium: 'bg-gray-400', dark: 'bg-gray-600' };
+                      }
+                    };
+                    
+                    const colors = getAttributeColors();
+                    
                     return (
                       <div key={index} className="space-y-3">
                         <div className="flex items-center gap-3">
-                          <attr.icon className="h-5 w-5 text-gray-600" />
+                          <attr.icon className={`h-5 w-5 text-${config.color}-600`} />
                           <div className="flex-1">
                             <div className="flex justify-between items-center">
                               <span className="font-medium">{attr.label}</span>
@@ -794,32 +821,20 @@ const WineStyleDetail = () => {
                           </div>
                         </div>
                         
-                        {/* Visualización simplificada */}
+                        {/* Visualización con colores del estilo */}
                         <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
-                          {/* Rango completo del estilo - usar color basado en el índice */}
+                          {/* Rango del estilo con color del estilo */}
                           <div 
-                            className={`absolute top-0 h-full transition-all duration-300 ${
-                              index === 0 ? 'bg-purple-200' :
-                              index === 1 ? 'bg-blue-200' :
-                              index === 2 ? 'bg-green-200' :
-                              index === 3 ? 'bg-yellow-200' :
-                              'bg-red-200'
-                            }`}
+                            className={`absolute top-0 h-full transition-all duration-300 ${colors.light}`}
                             style={{
                               left: `${(minRange / 5) * 100}%`,
-                              width: `${((maxRange - minRange) / 5) * 100}%`
+                              width: `${((maxRange - minRange + 1) / 5) * 100}%`
                             }}
                           ></div>
                           
                           {/* Valor típico (centro del estilo) */}
                           <div 
-                            className={`absolute top-1 bottom-1 w-1 rounded-full shadow-sm ${
-                              index === 0 ? 'bg-purple-600' :
-                              index === 1 ? 'bg-blue-600' :
-                              index === 2 ? 'bg-green-600' :
-                              index === 3 ? 'bg-yellow-600' :
-                              'bg-red-600'
-                            }`}
+                            className={`absolute top-1 bottom-1 w-1 rounded-full shadow-sm ${colors.dark}`}
                             style={{
                               left: `calc(${(attr.value / 5) * 100}% - 2px)`
                             }}
