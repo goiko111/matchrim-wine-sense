@@ -190,34 +190,32 @@ const SensoryCalculator = () => {
         };
       };
 
-      // Calcular distancia para cada registro
+      // Calcular distancia para cada registro usando SIEMPRE los valores del prefijo
       const distances = data.map(style => {
         const extracted = extractFromName(style.name);
-        const values = extracted ?? {
-          potente: style.potente,
-          acidez: style.acidez,
-          dulce: style.dulce,
-          tanico: style.tanico,
-          afrutado: style.afrutado
-        };
+        
+        // Si no hay prefijo, saltar este registro
+        if (!extracted) {
+          return null;
+        }
 
         const distance = Math.sqrt(
-          Math.pow(profile.potente - values.potente, 2) +
-          Math.pow(profile.acidez - values.acidez, 2) +
-          Math.pow(profile.dulce - values.dulce, 2) +
-          Math.pow(profile.tanico - values.tanico, 2) +
-          Math.pow(profile.afrutado - values.afrutado, 2)
+          Math.pow(profile.potente - extracted.potente, 2) +
+          Math.pow(profile.acidez - extracted.acidez, 2) +
+          Math.pow(profile.dulce - extracted.dulce, 2) +
+          Math.pow(profile.tanico - extracted.tanico, 2) +
+          Math.pow(profile.afrutado - extracted.afrutado, 2)
         );
 
         return {
           style: {
             ...style,
             name: cleanStyleName(style.name),
-            ...values
+            ...extracted
           },
           distance
         };
-      });
+      }).filter(Boolean) as Array<{ style: WineStyle; distance: number }>;
 
       // Encontrar el registro con la menor distancia
       const closest = distances.reduce((prev, current) => 
