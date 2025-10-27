@@ -156,37 +156,95 @@ const SensoryCalculator = () => {
     }));
   };
 
-  const calculateStyle = () => {
-    if (wineStyles.length === 0) {
-      toast({
-        title: "Error",
-        description: "No se han cargado los estilos de vino",
-        variant: "destructive"
-      });
-      return;
-    }
-
+  const calculateStyle = async () => {
     setIsLoading(true);
 
-    // Calcular la distancia euclidiana entre el perfil del usuario y cada estilo
-    const distances = wineStyles.map(style => {
-      const distance = Math.sqrt(
-        Math.pow(profile.potente - style.potente, 2) +
-        Math.pow(profile.acidez - style.acidez, 2) +
-        Math.pow(profile.dulce - style.dulce, 2) +
-        Math.pow(profile.tanico - style.tanico, 2) +
-        Math.pow(profile.afrutado - style.afrutado, 2)
+    try {
+      // Obtener todos los estilos directamente de la BD
+      const { data, error } = await supabase
+        .from('wine_styles')
+        .select('*');
+
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        toast({
+          title: "Error",
+          description: "No se han cargado los estilos de vino",
+          variant: "destructive"
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // Extraer valores del prefijo si existen
+      const extractFromName = (name: string) => {
+        const match = name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
+        if (!match) return null;
+        return {
+          potente: parseInt(match[1]),
+          acidez: parseInt(match[2]),
+          dulce: parseInt(match[3]),
+          tanico: parseInt(match[4]),
+          afrutado: parseInt(match[5])
+        };
+      };
+
+      // Calcular distancia para cada registro
+      const distances = data.map(style => {
+        const extracted = extractFromName(style.name);
+        const values = extracted ?? {
+          potente: style.potente,
+          acidez: style.acidez,
+          dulce: style.dulce,
+          tanico: style.tanico,
+          afrutado: style.afrutado
+        };
+
+        const distance = Math.sqrt(
+          Math.pow(profile.potente - values.potente, 2) +
+          Math.pow(profile.acidez - values.acidez, 2) +
+          Math.pow(profile.dulce - values.dulce, 2) +
+          Math.pow(profile.tanico - values.tanico, 2) +
+          Math.pow(profile.afrutado - values.afrutado, 2)
+        );
+
+        return {
+          style: {
+            ...style,
+            name: cleanStyleName(style.name),
+            ...values
+          },
+          distance
+        };
+      });
+
+      // Encontrar el registro con la menor distancia
+      const closest = distances.reduce((prev, current) => 
+        prev.distance < current.distance ? prev : current
       );
-      return { style, distance };
-    });
 
-    // Encontrar el estilo con la menor distancia
-    const closest = distances.reduce((prev, current) => 
-      prev.distance < current.distance ? prev : current
-    );
+      console.log('Perfil buscado:', profile);
+      console.log('Estilo más cercano:', closest.style.name, 'Distancia:', closest.distance);
+      console.log('Valores del estilo:', {
+        potente: closest.style.potente,
+        acidez: closest.style.acidez,
+        dulce: closest.style.dulce,
+        tanico: closest.style.tanico,
+        afrutado: closest.style.afrutado
+      });
 
-    setIdentifiedStyle(closest.style);
-    setIsLoading(false);
+      setIdentifiedStyle(closest.style);
+    } catch (error: any) {
+      console.error('Error calculating style:', error);
+      toast({
+        title: "Error",
+        description: "Error al calcular el estilo",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const cleanStyleName = (name: string) => {
