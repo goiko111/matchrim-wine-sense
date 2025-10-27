@@ -30,6 +30,20 @@ const WineStylesTable = () => {
     return name.replace(/^\d+;\d+;\d+;\d+;\d+;/, '').replace(/\s*\(\d+\)$/, '').trim();
   };
 
+  const extractSensoryValues = (name: string) => {
+    const match = name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
+    if (match) {
+      return {
+        potente: parseInt(match[1]),
+        acidez: parseInt(match[2]),
+        dulce: parseInt(match[3]),
+        tanico: parseInt(match[4]),
+        afrutado: parseInt(match[5])
+      };
+    }
+    return null;
+  };
+
   const fetchStyles = async () => {
     setIsLoading(true);
     try {
@@ -148,18 +162,21 @@ const WineStylesTable = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredStyles.map((style) => (
-                  <TableRow key={style.id}>
-                    <TableCell className="font-medium">{cleanName(style.name)}</TableCell>
-                    <TableCell className="max-w-xs truncate">{style.description || '-'}</TableCell>
-                    <TableCell>{style.potente}</TableCell>
-                    <TableCell>{style.acidez}</TableCell>
-                    <TableCell>{style.dulce}</TableCell>
-                    <TableCell>{style.tanico}</TableCell>
-                    <TableCell>{style.afrutado}</TableCell>
-                    <TableCell>{new Date(style.created_at).toLocaleDateString()}</TableCell>
-                  </TableRow>
-                ))
+                filteredStyles.map((style) => {
+                  const sensoryValues = extractSensoryValues(style.name);
+                  return (
+                    <TableRow key={style.id}>
+                      <TableCell className="font-medium">{cleanName(style.name)}</TableCell>
+                      <TableCell className="max-w-xs truncate">{style.description || '-'}</TableCell>
+                      <TableCell>{sensoryValues?.potente ?? style.potente}</TableCell>
+                      <TableCell>{sensoryValues?.acidez ?? style.acidez}</TableCell>
+                      <TableCell>{sensoryValues?.dulce ?? style.dulce}</TableCell>
+                      <TableCell>{sensoryValues?.tanico ?? style.tanico}</TableCell>
+                      <TableCell>{sensoryValues?.afrutado ?? style.afrutado}</TableCell>
+                      <TableCell>{new Date(style.created_at).toLocaleDateString()}</TableCell>
+                    </TableRow>
+                  );
+                })
               )}
             </TableBody>
           </Table>

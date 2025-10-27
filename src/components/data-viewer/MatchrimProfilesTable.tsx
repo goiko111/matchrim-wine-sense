@@ -30,6 +30,24 @@ const MatchrimProfilesTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const cleanName = (name: string) => {
+    return name.replace(/;?\d+;\d+;\d+;\d+;\d+;?/, '').replace(/\s*\(\d+\)$/, '').trim();
+  };
+
+  const extractSensoryValues = (name: string) => {
+    const match = name.match(/;?(\d+);(\d+);(\d+);(\d+);(\d+);?/);
+    if (match) {
+      return {
+        potente: parseInt(match[1]),
+        acidez: parseInt(match[2]),
+        dulce: parseInt(match[3]),
+        tanico: parseInt(match[4]),
+        afrutado: parseInt(match[5])
+      };
+    }
+    return null;
+  };
+
   const fetchProfiles = async () => {
     setIsLoading(true);
     try {
@@ -71,10 +89,11 @@ const MatchrimProfilesTable = () => {
     if (!searchTerm) {
       setFilteredProfiles(profiles);
     } else {
-      const filtered = profiles.filter(profile =>
-        profile.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        profile.description?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const filtered = profiles.filter(profile => {
+        const cleanedName = cleanName(profile.name);
+        return cleanedName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          profile.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      });
       setFilteredProfiles(filtered);
     }
   }, [searchTerm, profiles]);
@@ -170,25 +189,28 @@ const MatchrimProfilesTable = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredProfiles.map((profile) => (
-                  <TableRow key={profile.id}>
-                    <TableCell className="font-medium">{profile.name}</TableCell>
-                    <TableCell>{profile.potente}</TableCell>
-                    <TableCell>{profile.acidez}</TableCell>
-                    <TableCell>{profile.dulce}</TableCell>
-                    <TableCell>{profile.tanico}</TableCell>
-                    <TableCell>{profile.afrutado}</TableCell>
-                    <TableCell className="max-w-xs">
-                      {renderRecommendations(profile.grape_recommendations)}
-                    </TableCell>
-                    <TableCell className="max-w-xs">
-                      {renderRecommendations(profile.region_recommendations)}
-                    </TableCell>
-                    <TableCell className="max-w-xs">
-                      {renderRecommendations(profile.style_recommendations)}
-                    </TableCell>
-                  </TableRow>
-                ))
+                filteredProfiles.map((profile) => {
+                  const sensoryValues = extractSensoryValues(profile.name);
+                  return (
+                    <TableRow key={profile.id}>
+                      <TableCell className="font-medium">{cleanName(profile.name)}</TableCell>
+                      <TableCell>{sensoryValues?.potente ?? profile.potente}</TableCell>
+                      <TableCell>{sensoryValues?.acidez ?? profile.acidez}</TableCell>
+                      <TableCell>{sensoryValues?.dulce ?? profile.dulce}</TableCell>
+                      <TableCell>{sensoryValues?.tanico ?? profile.tanico}</TableCell>
+                      <TableCell>{sensoryValues?.afrutado ?? profile.afrutado}</TableCell>
+                      <TableCell className="max-w-xs">
+                        {renderRecommendations(profile.grape_recommendations)}
+                      </TableCell>
+                      <TableCell className="max-w-xs">
+                        {renderRecommendations(profile.region_recommendations)}
+                      </TableCell>
+                      <TableCell className="max-w-xs">
+                        {renderRecommendations(profile.style_recommendations)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
               )}
             </TableBody>
           </Table>
