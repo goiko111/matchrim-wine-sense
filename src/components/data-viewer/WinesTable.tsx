@@ -32,6 +32,10 @@ const WinesTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
+  const cleanStyleName = (name: string) => {
+    return name.replace(/^\d+;\d+;\d+;\d+;\d+;/, '').replace(/\s*\(\d+\)$/, '').trim();
+  };
+
   const generateSlug = (wineName: string) => {
     return wineName
       .toLowerCase()
@@ -86,12 +90,13 @@ const WinesTable = () => {
     if (!searchTerm) {
       setFilteredWines(wines);
     } else {
-      const filtered = wines.filter(wine =>
-        wine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        wine.producer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        wine.region?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        wine.estilo.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const filtered = wines.filter(wine => {
+        const cleanedStyle = cleanStyleName(wine.estilo);
+        return wine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          wine.producer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          wine.region?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          cleanedStyle.toLowerCase().includes(searchTerm.toLowerCase());
+      });
       setFilteredWines(filtered);
     }
   }, [searchTerm, wines]);
@@ -183,7 +188,7 @@ const WinesTable = () => {
                     <TableCell>{wine.region || '-'}</TableCell>
                     <TableCell>
                       <Badge variant="secondary" className="text-xs">
-                        {wine.estilo}
+                        {cleanStyleName(wine.estilo)}
                       </Badge>
                     </TableCell>
                     <TableCell>{wine.vintage || '-'}</TableCell>

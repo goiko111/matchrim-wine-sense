@@ -26,6 +26,10 @@ const WineStylesTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const cleanName = (name: string) => {
+    return name.replace(/^\d+;\d+;\d+;\d+;\d+;/, '').replace(/\s*\(\d+\)$/, '').trim();
+  };
+
   const fetchStyles = async () => {
     setIsLoading(true);
     try {
@@ -67,10 +71,11 @@ const WineStylesTable = () => {
     if (!searchTerm) {
       setFilteredStyles(styles);
     } else {
-      const filtered = styles.filter(style =>
-        style.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        style.description?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const filtered = styles.filter(style => {
+        const cleanedName = cleanName(style.name);
+        return cleanedName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          style.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      });
       setFilteredStyles(filtered);
     }
   }, [searchTerm, styles]);
@@ -145,7 +150,7 @@ const WineStylesTable = () => {
               ) : (
                 filteredStyles.map((style) => (
                   <TableRow key={style.id}>
-                    <TableCell className="font-medium">{style.name}</TableCell>
+                    <TableCell className="font-medium">{cleanName(style.name)}</TableCell>
                     <TableCell className="max-w-xs truncate">{style.description || '-'}</TableCell>
                     <TableCell>{style.potente}</TableCell>
                     <TableCell>{style.acidez}</TableCell>
