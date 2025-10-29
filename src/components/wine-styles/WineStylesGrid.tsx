@@ -17,7 +17,8 @@ interface WineStyle {
   afrutado: number;
 }
 
-const WineStylesGrid = () => {
+interface WineStylesGridProps { showIntro?: boolean }
+const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => {
   const navigate = useNavigate();
   const [styles, setStyles] = useState<WineStyle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -203,47 +204,61 @@ const WineStylesGrid = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {styles.map((style, index) => {
-        const config = getCardConfig(index);
-        const IconComponent = config.icon;
-        
-        return (
-          <Card 
-            key={style.id} 
-            className={`${config.bg} ${config.border} border-2 hover:border-red-300 hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer transform hover:scale-105 hover:shadow-red-100/50 group relative`}
-            onClick={() => navigate(`/wine-styles/${generateSlug(style.name)}`)}
-          >
-            <CardContent className="p-6 relative">
-              <div className="flex flex-col items-center text-center">
-                {/* Icono circular */}
-                <div className={`w-16 h-16 ${config.iconBg} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md group-hover:shadow-lg`}>
-                  <IconComponent className={`w-8 h-8 ${config.iconColor}`} />
+    <div>
+      {showIntro && (
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20 rounded-full px-4 py-2 mb-4">
+            <span className="text-xs font-semibold">16 Estilos Únicos</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Los Estilos de Vino</h2>
+          <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto">
+            Los vinos se agrupan por estilos sensoriales. Descubre si conectas más con perfiles Golosos, Vibrantes, Terrosos o Tensos.
+          </p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {styles.map((style, index) => {
+          const config = getCardConfig(index);
+          const IconComponent = config.icon;
+          
+          return (
+            <Card 
+              key={style.id} 
+              className={`${config.bg} ${config.border} border-2 hover:border-red-300 hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer transform hover:scale-105 hover:shadow-red-100/50 group relative`}
+              onClick={() => navigate(`/wine-styles/${generateSlug(style.name)}`)}
+            >
+              <CardContent className="p-6 relative">
+                <div className="flex flex-col items-center text-center">
+                  {/* Icono circular */}
+                  <div className={`w-16 h-16 ${config.iconBg} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md group-hover:shadow-lg`}>
+                    <IconComponent className={`w-8 h-8 ${config.iconColor}`} />
+                  </div>
+                  
+                  {/* Título */}
+                  <h3 className="font-bold text-lg mb-3 text-gray-900 group-hover:text-red-700 transition-colors">
+                    {cleanStyleName(style.name)}
+                  </h3>
+                  
+                  {/* Descripción */}
+                  <p className="text-sm text-gray-700 leading-relaxed text-justify mb-4">
+                    {style.description || defaultDescriptions[cleanStyleName(style.name)] || 'Descripción no disponible'}
+                  </p>
+                  
+                  {/* Indicador de click */}
+                  <div className="flex items-center justify-center text-red-600 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span>Ver detalles</span>
+                    <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
                 </div>
                 
-                {/* Título */}
-                <h3 className="font-bold text-lg mb-3 text-gray-900 group-hover:text-red-700 transition-colors">
-                  {cleanStyleName(style.name)}
-                </h3>
-                
-                {/* Descripción */}
-                <p className="text-sm text-gray-700 leading-relaxed text-justify mb-4">
-                  {style.description || defaultDescriptions[cleanStyleName(style.name)] || 'Descripción no disponible'}
-                </p>
-                
-                {/* Indicador de click */}
-                <div className="flex items-center justify-center text-red-600 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span>Ver detalles</span>
-                  <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
-              </div>
-              
-              {/* Efecto de brillo en hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-            </CardContent>
-          </Card>
-        );
-      })}
+                {/* Efecto de brillo en hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 };

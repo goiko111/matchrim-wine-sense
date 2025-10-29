@@ -367,7 +367,7 @@ const Index = () => {
             
             {/* Grid de estilos principales */}
             <div className="mb-12">
-              <WineStylesGrid />
+              <WineStylesGrid showIntro={false} />
             </div>
             
             <div className="text-center">
