@@ -898,7 +898,7 @@ const WineStyleDetail = () => {
                     } else {
                       // Fallback: rango aproximado a partir del valor central
                       if (attr.value === 0) {
-                        minRange = 0; maxRange = 0;
+                        minRange = 0; maxRange = 1; // rango mínimo estimado para evitar barra invisible
                       } else if (attr.value === 1) {
                         minRange = 0; maxRange = 2;
                       } else if (attr.value === 5) {
