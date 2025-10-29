@@ -163,41 +163,59 @@ const WineStyleDetail = () => {
     }
   };
 
-  // Obtiene las combinaciones reales existentes en la base de datos para este estilo
+  // Obtiene las combinaciones reales existentes desde la tabla de estilos (wine_styles)
   const fetchStyleCombinations = async (styleName: string) => {
     try {
-      const clean = cleanStyleName(styleName);
-      // Intento 1: coincidencia exacta por estilo
-      let { data, error } = await supabase
-        .from('wines')
-        .select('potencia, acidez, dulzura, taninos, afrutado, estilo')
-        .eq('estilo', clean);
+      const displayName = cleanStyleName(styleName);
+
+      // Traemos todos los registros cuyo nombre contiene el displayName
+      const { data, error } = await supabase
+        .from('wine_styles')
+        .select('name, potente, acidez, dulce, tanico, afrutado');
 
       if (error) throw error;
 
-      // Intento 2: búsqueda flexible si no hay resultados
-      if (!data || data.length === 0) {
-        const res = await supabase
-          .from('wines')
-          .select('potencia, acidez, dulzura, taninos, afrutado, estilo')
-          .ilike('estilo', `%${clean}%`);
-        if (res.error) throw res.error;
-        data = res.data ?? [];
-      }
+      // Filtramos solo los que correspondan exactamente al estilo (parte después del 5º ;) ignorando mayúsculas/acentos
+      const normalize = (s: string) => s
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
 
-      // Deduplicar combinaciones
-      const unique = new Map<string, {potencia:number; acidez:number; dulzura:number; taninos:number; afrutado:number}>();
-      for (const row of data) {
-        const combo = {
-          potencia: row.potencia ?? 0,
-          acidez: row.acidez ?? 0,
-          dulzura: row.dulzura ?? 0,
-          taninos: row.taninos ?? 0,
-          afrutado: row.afrutado ?? 0,
+      const target = normalize(displayName);
+
+      // Extrae la parte del estilo al final del campo name: p;a;d;t;f;Estilo
+      const getNameTail = (raw: string) => {
+        const parts = raw.split(';');
+        return parts.length >= 6 ? parts.slice(5).join(';') : raw;
+      };
+
+      const rows = (data ?? []).filter(row => normalize(getNameTail(row.name)) === target);
+
+      // Construimos combinaciones a partir de columnas numéricas o del prefijo si hiciera falta
+      const toCombo = (row: any) => {
+        let p = row.potente, a = row.acidez, d = row.dulce, t = row.tanico, f = row.afrutado;
+        if ([p, a, d, t, f].some((v) => v === null || v === undefined)) {
+          const m = row.name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
+          if (m) {
+            p = parseInt(m[1]); a = parseInt(m[2]); d = parseInt(m[3]); t = parseInt(m[4]); f = parseInt(m[5]);
+          }
+        }
+        return {
+          potencia: Number(p ?? 0),
+          acidez: Number(a ?? 0),
+          dulzura: Number(d ?? 0),
+          taninos: Number(t ?? 0),
+          afrutado: Number(f ?? 0),
         };
+      };
+
+      const unique = new Map<string, { potencia: number; acidez: number; dulzura: number; taninos: number; afrutado: number }>();
+      rows.forEach((row) => {
+        const combo = toCombo(row);
         const key = `${combo.potencia}-${combo.acidez}-${combo.dulzura}-${combo.taninos}-${combo.afrutado}`;
         if (!unique.has(key)) unique.set(key, combo);
-      }
+      });
 
       const combos = Array.from(unique.values()).sort(
         (a, b) => a.potencia - b.potencia || a.acidez - b.acidez || a.dulzura - b.dulzura || a.taninos - b.taninos || a.afrutado - b.afrutado
@@ -209,7 +227,6 @@ const WineStyleDetail = () => {
       setCombinations([]);
     }
   };
-
   const cleanStyleName = (name: string) => {
     return name.replace(/\s*\(\d+\)\s*$/, '').trim();
   };
@@ -835,21 +852,28 @@ const WineStyleDetail = () => {
                     { label: 'Taninos', value: style.tanico, icon: Grape, description: 'Estructura y cuerpo' },
                     { label: 'Afrutado', value: style.afrutado, icon: Apple, description: 'Aromas frutales' }
                   ].map((attr, index) => {
-                    // Determinar rango típico del estilo basado en el valor central
-                    let minRange, maxRange;
-                    
-                    if (attr.value === 0) {
-                      minRange = 0;
-                      maxRange = 0;
-                    } else if (attr.value === 1) {
-                      minRange = 0;
-                      maxRange = 2;
-                    } else if (attr.value === 5) {
-                      minRange = 4;
-                      maxRange = 5;
+                    // Determinar rango del estilo a partir de combinaciones reales si existen
+                    const keys = ['potencia','acidez','dulzura','taninos','afrutado'] as const;
+                    const field = keys[index];
+
+                    let minRange: number;
+                    let maxRange: number;
+
+                    if (combinations && combinations.length > 0) {
+                      const values = combinations.map(c => c[field]);
+                      minRange = Math.min(...values);
+                      maxRange = Math.max(...values);
                     } else {
-                      minRange = attr.value - 1;
-                      maxRange = attr.value + 1;
+                      // Fallback: rango aproximado a partir del valor central
+                      if (attr.value === 0) {
+                        minRange = 0; maxRange = 0;
+                      } else if (attr.value === 1) {
+                        minRange = 0; maxRange = 2;
+                      } else if (attr.value === 5) {
+                        minRange = 4; maxRange = 5;
+                      } else {
+                        minRange = attr.value - 1; maxRange = attr.value + 1;
+                      }
                     }
                     
                     // Obtener colores de la paleta del estilo
