@@ -215,10 +215,11 @@ const WineStyleDetail = () => {
 
       const target = normalize(displayName);
 
-      // Extrae la parte del estilo al final del campo name: p;a;d;t;f;Estilo
+      // Extrae la parte del estilo al final del campo name: p;a;d;t;f;Estilo y limpia sufijos como (n)
       const getNameTail = (raw: string) => {
         const parts = raw.split(';');
-        return parts.length >= 6 ? parts.slice(5).join(';') : raw;
+        const tail = parts.length >= 6 ? parts.slice(5).join(';') : raw;
+        return tail.replace(/\s*\(\d+\)\s*$/, '').trim();
       };
 
       const rows = (data ?? []).filter(row => normalize(getNameTail(row.name)) === target);
