@@ -40,12 +40,25 @@ const WineStyleDetail = () => {
   const navigate = useNavigate();
   const [style, setStyle] = useState<WineStyle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [combinations, setCombinations] = useState<Array<{
+    potencia: number;
+    acidez: number;
+    dulzura: number;
+    taninos: number;
+    afrutado: number;
+  }>>([]);
 
   useEffect(() => {
     if (slug) {
       fetchWineStyle();
     }
   }, [slug]);
+
+  useEffect(() => {
+    if (style?.name) {
+      fetchStyleCombinations(style.name);
+    }
+  }, [style?.name]);
 
   const fetchWineStyle = async () => {
     if (!slug) return;
@@ -150,11 +163,56 @@ const WineStyleDetail = () => {
     }
   };
 
+  // Obtiene las combinaciones reales existentes en la base de datos para este estilo
+  const fetchStyleCombinations = async (styleName: string) => {
+    try {
+      const clean = cleanStyleName(styleName);
+      // Intento 1: coincidencia exacta por estilo
+      let { data, error } = await supabase
+        .from('wines')
+        .select('potencia, acidez, dulzura, taninos, afrutado, estilo')
+        .eq('estilo', clean);
+
+      if (error) throw error;
+
+      // Intento 2: búsqueda flexible si no hay resultados
+      if (!data || data.length === 0) {
+        const res = await supabase
+          .from('wines')
+          .select('potencia, acidez, dulzura, taninos, afrutado, estilo')
+          .ilike('estilo', `%${clean}%`);
+        if (res.error) throw res.error;
+        data = res.data ?? [];
+      }
+
+      // Deduplicar combinaciones
+      const unique = new Map<string, {potencia:number; acidez:number; dulzura:number; taninos:number; afrutado:number}>();
+      for (const row of data) {
+        const combo = {
+          potencia: row.potencia ?? 0,
+          acidez: row.acidez ?? 0,
+          dulzura: row.dulzura ?? 0,
+          taninos: row.taninos ?? 0,
+          afrutado: row.afrutado ?? 0,
+        };
+        const key = `${combo.potencia}-${combo.acidez}-${combo.dulzura}-${combo.taninos}-${combo.afrutado}`;
+        if (!unique.has(key)) unique.set(key, combo);
+      }
+
+      const combos = Array.from(unique.values()).sort(
+        (a, b) => a.potencia - b.potencia || a.acidez - b.acidez || a.dulzura - b.dulzura || a.taninos - b.taninos || a.afrutado - b.afrutado
+      );
+
+      setCombinations(combos);
+    } catch (e) {
+      console.error('Error fetching style combinations', e);
+      setCombinations([]);
+    }
+  };
+
   const cleanStyleName = (name: string) => {
     return name.replace(/\s*\(\d+\)\s*$/, '').trim();
   };
-
-  const getStyleConfig = (name: string) => {
     const cleanName = cleanStyleName(name).toLowerCase();
     
     const configs: Record<string, any> = {
