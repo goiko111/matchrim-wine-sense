@@ -106,25 +106,56 @@ const WineStyleDetail = () => {
         return null;
       };
 
-      // Buscar el estilo que coincida con el slug
+      // Buscar CUALQUIER estilo que coincida con el slug
       const matchedStyle = allStyles?.find(s => generateSlug(s.name) === slug);
 
       if (matchedStyle) {
         // Extraer valores sensoriales del nombre si existen
         const sensoryValues = extractSensoryValues(matchedStyle.name);
         
-        // Si el nombre tiene el prefijo con valores, usarlos; si no, usar los de la BD
-        const finalStyle = {
-          ...matchedStyle,
-          name: cleanName(matchedStyle.name), // Limpiar el nombre para mostrar
-          potente: sensoryValues?.potente ?? matchedStyle.potente,
-          acidez: sensoryValues?.acidez ?? matchedStyle.acidez,
-          dulce: sensoryValues?.dulce ?? matchedStyle.dulce,
-          tanico: sensoryValues?.tanico ?? matchedStyle.tanico,
-          afrutado: sensoryValues?.afrutado ?? matchedStyle.afrutado
-        };
-        
-        setStyle(finalStyle);
+        // Para estilos base (sin prefijo numérico), calculamos el promedio de todas las combinaciones
+        if (!sensoryValues) {
+          // Obtener todas las combinaciones de este estilo
+          const styleName = cleanName(matchedStyle.name);
+          const allCombinations = allStyles?.filter(s => cleanName(s.name) === styleName) || [];
+          
+          if (allCombinations.length > 0) {
+            // Calcular promedio de cada atributo
+            const avgPotente = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.potente ?? s.potente), 0) / allCombinations.length);
+            const avgAcidez = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.acidez ?? s.acidez), 0) / allCombinations.length);
+            const avgDulce = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.dulce ?? s.dulce), 0) / allCombinations.length);
+            const avgTanico = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.tanico ?? s.tanico), 0) / allCombinations.length);
+            const avgAfrutado = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.afrutado ?? s.afrutado), 0) / allCombinations.length);
+            
+            setStyle({
+              ...matchedStyle,
+              name: styleName,
+              potente: avgPotente,
+              acidez: avgAcidez,
+              dulce: avgDulce,
+              tanico: avgTanico,
+              afrutado: avgAfrutado
+            });
+          } else {
+            setStyle({
+              ...matchedStyle,
+              name: styleName,
+            });
+          }
+        } else {
+          // Si el nombre tiene el prefijo con valores, usarlos
+          const finalStyle = {
+            ...matchedStyle,
+            name: cleanName(matchedStyle.name),
+            potente: sensoryValues.potente,
+            acidez: sensoryValues.acidez,
+            dulce: sensoryValues.dulce,
+            tanico: sensoryValues.tanico,
+            afrutado: sensoryValues.afrutado
+          };
+          
+          setStyle(finalStyle);
+        }
         return;
       }
 
