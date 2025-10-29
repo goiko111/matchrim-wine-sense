@@ -775,17 +775,14 @@ const WineStyleDetail = () => {
                     { label: 'Taninos', value: style.tanico, icon: Grape, description: 'Estructura y cuerpo' },
                     { label: 'Afrutado', value: style.afrutado, icon: Apple, description: 'Aromas frutales' }
                   ].map((attr, index) => {
-                    // Determinar rango basado en el valor
-                    // Si el valor es 0, mostrar solo 0
-                    // Si es 1-2, mostrar rango de 2 (valor ±1)
-                    // Si es 3-5, mostrar rango de 2 (valor ±1)
+                    // Determinar rango típico del estilo basado en el valor central
                     let minRange, maxRange;
                     
                     if (attr.value === 0) {
                       minRange = 0;
                       maxRange = 0;
                     } else if (attr.value === 1) {
-                      minRange = 1;
+                      minRange = 0;
                       maxRange = 2;
                     } else if (attr.value === 5) {
                       minRange = 4;
@@ -829,22 +826,22 @@ const WineStyleDetail = () => {
                           <div className="flex-1">
                             <div className="flex justify-between items-center">
                               <span className="font-medium">{attr.label}</span>
-                              <span className="text-sm text-gray-500">
-                                {minRange === maxRange ? attr.value : `${minRange}-${maxRange}`} / 5
+                              <span className="text-sm font-semibold text-gray-700">
+                                {minRange === maxRange ? `${attr.value}` : `${minRange} a ${maxRange}`}
                               </span>
                             </div>
                             <p className="text-xs text-gray-500">{attr.description}</p>
                           </div>
                         </div>
                         
-                        {/* Visualización con colores del estilo */}
-                        <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
-                          {/* Rango del estilo con color del estilo */}
+                        {/* Visualización de rango típico del estilo */}
+                        <div className="relative h-8 bg-gray-100 rounded-lg overflow-hidden">
+                          {/* Rango completo del estilo */}
                           <div 
-                            className={`absolute top-0 h-full transition-all duration-300 ${colors.light}`}
+                            className={`absolute top-0 h-full transition-all duration-300 ${colors.light} opacity-60`}
                             style={{
                               left: `${(minRange / 5) * 100}%`,
-                              width: `${((maxRange - minRange + 1) / 5) * 100}%`
+                              width: `${((maxRange - minRange) / 5) * 100}%`
                             }}
                           ></div>
                           
