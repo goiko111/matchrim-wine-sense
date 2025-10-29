@@ -86,8 +86,14 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
         return;
       }
 
-      // Función para limpiar el nombre del estilo (remover números entre paréntesis)
-      const cleanName = (name: string) => name.replace(/\s*\(\d+\)$/, '').trim();
+      // Función para limpiar el nombre del estilo (remover números entre paréntesis y prefijos numéricos)
+      const cleanName = (name: string) => {
+        // Primero quitar el patrón "X;X;X;X;X;" del inicio
+        let cleaned = name.replace(/^\d+;\d+;\d+;\d+;\d+;/, '').trim();
+        // Luego quitar números entre paréntesis al final
+        cleaned = cleaned.replace(/\s*\(\d+\)\s*$/, '').trim();
+        return cleaned;
+      };
 
       // Agrupar por nombre base y tomar el primero que tenga descripción
       const uniqueStylesMap = new Map<string, WineStyle>();
