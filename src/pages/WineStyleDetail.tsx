@@ -775,9 +775,25 @@ const WineStyleDetail = () => {
                     { label: 'Taninos', value: style.tanico, icon: Grape, description: 'Estructura y cuerpo' },
                     { label: 'Afrutado', value: style.afrutado, icon: Apple, description: 'Aromas frutales' }
                   ].map((attr, index) => {
-                    // Rango típico del estilo: números enteros alrededor del valor central
-                    const minRange = Math.max(0, attr.value - 1);
-                    const maxRange = Math.min(5, attr.value + 1);
+                    // Determinar rango basado en el valor
+                    // Si el valor es 0, mostrar solo 0
+                    // Si es 1-2, mostrar rango de 2 (valor ±1)
+                    // Si es 3-5, mostrar rango de 2 (valor ±1)
+                    let minRange, maxRange;
+                    
+                    if (attr.value === 0) {
+                      minRange = 0;
+                      maxRange = 0;
+                    } else if (attr.value === 1) {
+                      minRange = 1;
+                      maxRange = 2;
+                    } else if (attr.value === 5) {
+                      minRange = 4;
+                      maxRange = 5;
+                    } else {
+                      minRange = attr.value - 1;
+                      maxRange = attr.value + 1;
+                    }
                     
                     // Obtener colores de la paleta del estilo
                     const getAttributeColors = () => {
