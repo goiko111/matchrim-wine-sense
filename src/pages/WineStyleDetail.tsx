@@ -213,6 +213,8 @@ const WineStyleDetail = () => {
   const cleanStyleName = (name: string) => {
     return name.replace(/\s*\(\d+\)\s*$/, '').trim();
   };
+
+  const getStyleConfig = (name: string) => {
     const cleanName = cleanStyleName(name).toLowerCase();
     
     const configs: Record<string, any> = {
