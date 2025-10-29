@@ -327,15 +327,42 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
+              <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20 mb-6">
+                <Palette className="h-4 w-4" />
+                16 Estilos Únicos
+              </Badge>
+              
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">Los Estilos de Vino</h2>
+              
               <p className="text-2xl text-primary mb-8 font-semibold">
                 ¿Eres un Tinto Goloso? ¿O quizás un Blanco Vital?
               </p>
+              
               <p className="text-lg text-gray-700 leading-relaxed max-w-4xl mx-auto mb-8">
                 Los vinos se pueden agrupar por estilos sensoriales únicos. Más allá del color, descubre si tus gustos 
                 te conectan con vinos <strong className="text-primary">Golosos</strong>, <strong className="text-primary">Vibrantes</strong>, 
                 <strong className="text-primary"> Terrosos</strong> o <strong className="text-primary">Tensos</strong>.
               </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <Radar className="h-8 w-8 text-primary mb-3 mx-auto" />
+                  <h3 className="font-semibold mb-2">5 Atributos Sensoriales</h3>
+                  <p className="text-sm text-gray-600">Potencia, Acidez, Dulzura, Taninos y Afrutado</p>
+                </div>
+                
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <Target className="h-8 w-8 text-primary mb-3 mx-auto" />
+                  <h3 className="font-semibold mb-2">Clasificación Precisa</h3>
+                  <p className="text-sm text-gray-600">Algoritmo que identifica el estilo perfecto</p>
+                </div>
+                
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <Wine className="h-8 w-8 text-primary mb-3 mx-auto" />
+                  <h3 className="font-semibold mb-2">Sistema Universal</h3>
+                  <p className="text-sm text-gray-600">Aplica a todos los vinos del mundo</p>
+                </div>
+              </div>
             </div>
             
             {/* Grid de estilos principales */}
