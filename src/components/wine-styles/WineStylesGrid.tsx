@@ -246,9 +246,9 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
                     {cleanStyleName(style.name)}
                   </h3>
                   
-                  {/* Descripción */}
+                   {/* Descripción */}
                   <p className="text-sm text-gray-700 leading-relaxed text-justify mb-4">
-                    {style.description || defaultDescriptions[cleanStyleName(style.name)] || 'Descripción no disponible'}
+                    {defaultDescriptions[cleanStyleName(style.name)] || style.description || 'Descripción no disponible'}
                   </p>
                   
                   {/* Indicador de click */}
