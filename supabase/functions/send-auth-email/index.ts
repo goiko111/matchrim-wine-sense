@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY") as string);
+const hookSecret = Deno.env.get("SEND_EMAIL_HOOK_SECRET") as string;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -18,6 +19,16 @@ serve(async (req) => {
   }
 
   try {
+    // Verify the webhook signature
+    const signature = req.headers.get("authorization");
+    if (!signature || signature !== `Bearer ${hookSecret}`) {
+      console.error("Invalid authorization header");
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     const payload = await req.text();
     const data = JSON.parse(payload);
     const { user, email_data } = data;
