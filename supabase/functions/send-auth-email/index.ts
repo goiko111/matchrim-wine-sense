@@ -203,7 +203,7 @@ serve(async (req) => {
 
     // Send email using Resend
     const { error } = await resend.emails.send({
-      from: "Winerim <noreply@resend.dev>", // Cambia esto por tu dominio verificado en Resend
+      from: "Winerim <noreply@winerim.com>",
       to: [user.email],
       subject: subject,
       html: htmlContent,
