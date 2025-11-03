@@ -184,88 +184,88 @@ const Profile = () => {
 
   const getRegionCoordinates = (region: string): [number, number] => {
     const coordinates: Record<string, [number, number]> = {
-      // España
-      'Rioja (España)': [-2.4450, 42.2871],
-      'Ribera del Duero (España)': [-4.0580, 41.6370],
-      'Rías Baixas (España)': [-8.6446, 42.4296],
-      'Priorat (España)': [0.7356, 41.1573],
-      'Rueda (España)': [-4.9570, 41.4020],
-      'Bierzo (España)': [-6.5800, 42.5400],
-      'Jerez (España)': [-6.1264, 36.6840],
-      'Penedès (España)': [1.8150, 41.3874],
-      'Toro (España)': [-5.3960, 41.5215],
-      'Somontano (España)': [-0.1400, 42.1300],
-      'Montsant (España)': [0.7400, 41.2500],
-      'Navarra (España)': [-1.6440, 42.6954],
-      'Valdeorras (España)': [-7.0600, 42.3500],
-      'Ronda (España)': [-5.1654, 36.7423],
-      'Jumilla (España)': [-1.3269, 38.4750],
-      'Yecla (España)': [-1.1134, 38.6172],
-      'Alicante (España)': [-0.4906, 38.3452],
-      'Valencia (España)': [-0.3763, 39.4699],
-      'Utiel-Requena (España)': [-1.1000, 39.5700],
-      'Cariñena (España)': [-1.2200, 41.3400],
-      'Campo de Borja (España)': [-1.5350, 41.8350],
-      'Calatayud (España)': [-1.6444, 41.3527],
-      'Cigales (España)': [-4.7100, 41.7600],
-      'Arribes (España)': [-6.4700, 41.2000],
-      'Sierra de Málaga (España)': [-4.5500, 36.7500],
-      'Méntrida (España)': [-4.3500, 40.0500],
-      'Vinos de Madrid (España)': [-3.6900, 40.4200],
-      'Mallorca (España)': [2.6500, 39.5696],
-      'Canarias (España)': [-16.2500, 28.2916],
-      'Monterrei (España)': [-7.4400, 41.9500],
+      // España - Coordenadas de las zonas vitivinícolas específicas
+      'Rioja (España)': [-2.6800, 42.4600], // Haro, corazón de Rioja Alta
+      'Ribera del Duero (España)': [-3.9800, 41.6800], // Peñafiel, centro vitivinícola
+      'Rías Baixas (España)': [-8.8100, 42.4300], // Cambados, capital del Albariño
+      'Priorat (España)': [0.7300, 41.1700], // Gratallops, centro DOQ Priorat
+      'Rueda (España)': [-4.9600, 41.4100], // Rueda, centro de la DO
+      'Bierzo (España)': [-6.7500, 42.5500], // Villafranca del Bierzo
+      'Jerez (España)': [-6.1400, 36.6900], // Jerez de la Frontera, zona vinícola
+      'Penedès (España)': [1.7700, 41.3500], // Sant Sadurní d'Anoia, capital del cava
+      'Toro (España)': [-5.3900, 41.5200], // Toro, zona de viñedos
+      'Somontano (España)': [0.0800, 42.1200], // Barbastro, zona vitivinícola
+      'Montsant (España)': [0.8500, 41.2200], // Falset, centro de Montsant
+      'Navarra (España)': [-1.8500, 42.4500], // Olite, zona vinícola
+      'Valdeorras (España)': [-7.0500, 42.4000], // Viñedos de Valdeorras
+      'Ronda (España)': [-5.1400, 36.7500], // Zona vitivinícola de Ronda
+      'Jumilla (España)': [-1.3200, 38.4800], // Jumilla, zona DO
+      'Yecla (España)': [-1.1100, 38.6200], // Yecla, zona DO
+      'Alicante (España)': [-0.6500, 38.5500], // Zona vitivinícola de Alicante
+      'Valencia (España)': [-0.7500, 39.3000], // Zona vinícola de Valencia
+      'Utiel-Requena (España)': [-1.2000, 39.5700], // Requena, centro vitivinícola
+      'Cariñena (España)': [-1.2200, 41.3300], // Cariñena, pueblo vinícola
+      'Campo de Borja (España)': [-1.6000, 41.8300], // Borja, zona vinícola
+      'Calatayud (España)': [-1.6500, 41.3500], // Calatayud, zona DO
+      'Cigales (España)': [-4.7100, 41.7600], // Cigales, zona vinícola
+      'Arribes (España)': [-6.6500, 41.1500], // Zona vitivinícola de Arribes
+      'Sierra de Málaga (España)': [-4.7000, 36.8500], // Zona vitivinícola serrana
+      'Méntrida (España)': [-4.3500, 40.0500], // Méntrida, zona vinícola
+      'Vinos de Madrid (España)': [-3.8500, 40.3500], // Zona vitivinícola de Madrid
+      'Mallorca (España)': [2.9500, 39.5500], // Binissalem, zona vinícola
+      'Canarias (España)': [-16.5500, 28.4500], // Valle de la Orotava, zona vinícola
+      'Monterrei (España)': [-7.4400, 41.9500], // Monterrei, zona DO
       
-      // Francia
-      'Borgoña (Francia)': [4.8357, 47.0502],
-      'Burdeos (Francia)': [-0.5792, 44.8378],
-      'Valle del Ródano (Francia)': [4.8357, 44.5583],
-      'Champagne (Francia)': [4.0333, 49.2583],
-      'Valle del Loira (Francia)': [0.6889, 47.3900],
-      'Alsacia (Francia)': [7.3500, 48.3181],
-      'Languedoc (Francia)': [3.2765, 43.2951],
-      'Provenza (Francia)': [5.4500, 43.5333],
+      // Francia - Zonas vitivinícolas específicas
+      'Borgoña (Francia)': [4.8600, 47.0200], // Beaune, capital del vino de Borgoña
+      'Burdeos (Francia)': [-0.5700, 44.8900], // Médoc, zona vinícola
+      'Valle del Ródano (Francia)': [4.8000, 44.1200], // Châteauneuf-du-Pape
+      'Champagne (Francia)': [4.0400, 49.0500], // Épernay, capital del Champagne
+      'Valle del Loira (Francia)': [1.0000, 47.4000], // Sancerre, zona vinícola
+      'Alsacia (Francia)': [7.2800, 48.1500], // Ruta del vino de Alsacia
+      'Languedoc (Francia)': [2.8500, 43.3500], // Zona vitivinícola de Languedoc
+      'Provenza (Francia)': [6.1500, 43.4000], // Zona rosados de Provenza
       
-      // Italia
-      'Toscana (Italia)': [11.2558, 43.7696],
-      'Piemonte (Italia)': [7.6869, 45.0522],
-      'Véneto (Italia)': [11.8767, 45.4408],
-      'Sicilia (Italia)': [14.0154, 37.5999],
-      'Barolo (Italia)': [7.9333, 44.6100],
-      'Barbaresco (Italia)': [8.0833, 44.7167],
+      // Italia - Zonas vitivinícolas específicas
+      'Toscana (Italia)': [11.2500, 43.5500], // Chianti, zona vinícola
+      'Piemonte (Italia)': [8.0300, 44.6500], // Barolo, zona DOCG
+      'Véneto (Italia)': [11.0000, 45.4500], // Valpolicella, zona vinícola
+      'Sicilia (Italia)': [14.3500, 37.5000], // Etna, zona vitivinícola
+      'Barolo (Italia)': [7.9300, 44.6100], // La Morra, corazón de Barolo
+      'Barbaresco (Italia)': [8.0800, 44.7200], // Barbaresco, zona DOCG
       
-      // Portugal
-      'Douro (Portugal)': [-7.4500, 41.2000],
-      'Alentejo (Portugal)': [-7.9000, 38.5667],
-      'Dão (Portugal)': [-7.9167, 40.5167],
-      'Vinho Verde (Portugal)': [-8.4167, 41.5000],
+      // Portugal - Zonas vitivinícolas específicas
+      'Douro (Portugal)': [-7.2000, 41.1500], // Alto Douro Vinhateiro
+      'Alentejo (Portugal)': [-7.5000, 38.3500], // Zona vinícola de Alentejo
+      'Dão (Portugal)': [-7.9000, 40.5000], // Viseu, zona vitivinícola
+      'Vinho Verde (Portugal)': [-8.5000, 41.6500], // Zona del Vinho Verde
       
-      // Alemania
-      'Mosel (Alemania)': [6.6371, 49.9929],
-      'Rheingau (Alemania)': [7.9900, 50.0000],
-      'Pfalz (Alemania)': [8.1500, 49.4500],
+      // Alemania - Zonas vitivinícolas específicas
+      'Mosel (Alemania)': [7.0500, 49.9500], // Bernkastel, zona vinícola
+      'Rheingau (Alemania)': [7.9500, 50.0000], // Rüdesheim, zona vinícola
+      'Pfalz (Alemania)': [8.1500, 49.4500], // Zona del Pfalz vinícola
       
-      // Austria
-      'Wachau (Austria)': [15.4167, 48.3667],
+      // Austria - Zonas vitivinícolas específicas
+      'Wachau (Austria)': [15.4200, 48.3700], // Wachau, zona vinícola del Danubio
       
-      // Estados Unidos
-      'Napa Valley (EE.UU.)': [-122.2869, 38.5025],
-      'Sonoma (EE.UU.)': [-122.9548, 38.2920],
-      'Willamette Valley (EE.UU.)': [-123.0231, 45.0902],
+      // Estados Unidos - Zonas vitivinícolas específicas
+      'Napa Valley (EE.UU.)': [-122.4200, 38.5000], // Oakville, corazón de Napa
+      'Sonoma (EE.UU.)': [-122.8000, 38.4500], // Healdsburg, zona vinícola
+      'Willamette Valley (EE.UU.)': [-123.3000, 45.2500], // Dundee, zona Pinot Noir
       
-      // Sudamérica
-      'Mendoza (Argentina)': [-68.8458, -32.8895],
-      'Valle de Maipo (Chile)': [-70.6693, -33.4489],
-      'Valle de Colchagua (Chile)': [-71.0833, -34.5833],
-      'Salta (Argentina)': [-65.4167, -24.7833],
+      // Sudamérica - Zonas vitivinícolas específicas
+      'Mendoza (Argentina)': [-69.0000, -33.0500], // Luján de Cuyo, zona vitivinícola
+      'Valle de Maipo (Chile)': [-70.7500, -33.6500], // Pirque, zona vinícola
+      'Valle de Colchagua (Chile)': [-71.0000, -34.6000], // Santa Cruz, zona vitivinícola
+      'Salta (Argentina)': [-65.9800, -25.6500], // Cafayate, zona de altura
       
-      // Oceanía
-      'Marlborough (Nueva Zelanda)': [173.9654, -41.5135],
-      'Barossa Valley (Australia)': [138.9969, -34.5598],
-      'Yarra Valley (Australia)': [145.4167, -37.7000],
+      // Oceanía - Zonas vitivinícolas específicas
+      'Marlborough (Nueva Zelanda)': [173.8000, -41.5200], // Blenheim, zona Sauvignon Blanc
+      'Barossa Valley (Australia)': [139.0500, -34.5500], // Tanunda, corazón de Barossa
+      'Yarra Valley (Australia)': [145.4500, -37.6500], // Zona vitivinícola de Yarra
       
-      // Sudáfrica
-      'Stellenbosch (Sudáfrica)': [18.8667, -33.9333]
+      // Sudáfrica - Zonas vitivinícolas específicas
+      'Stellenbosch (Sudáfrica)': [18.8700, -33.9300] // Stellenbosch, zona vinícola
     };
     return coordinates[region] || [0, 0];
   };
