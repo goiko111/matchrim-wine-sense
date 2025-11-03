@@ -1084,6 +1084,15 @@ const WineStyleDetail = () => {
                               left: `calc(${((Math.min(5, Math.max(0, attr.value)) / 5) * 100)}% - 2px)`
                             }}
                           ></div>
+                          
+                          {/* Marcadores de escala */}
+                          {[1, 2, 3, 4].map((mark) => (
+                            <div
+                              key={mark}
+                              className="absolute top-0 bottom-0 w-px bg-gray-300"
+                              style={{ left: `${(mark / 5) * 100}%` }}
+                            ></div>
+                          ))}
                         </div>
                         
                         {/* Leyenda de la escala */}
