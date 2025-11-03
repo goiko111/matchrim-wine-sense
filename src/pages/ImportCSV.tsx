@@ -1,6 +1,7 @@
 
 import React from 'react';
 import CSVImporter from '@/components/CSVImporter';
+import WineStylesCSVImporter from '@/components/WineStylesCSVImporter';
 import DataStats from '@/components/DataStats';
 import Header from '@/components/Header';
 import AppNav from '@/components/AppNav';
@@ -13,7 +14,10 @@ const ImportCSV = () => {
       <main>
         <DataStats />
         <Separator className="mx-6" />
-        <CSVImporter />
+        <div className="container mx-auto px-6 py-8 space-y-6">
+          <WineStylesCSVImporter />
+          <CSVImporter />
+        </div>
       </main>
     </div>
   );
