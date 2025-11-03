@@ -199,6 +199,7 @@ const WineStyleDetail = () => {
   const fetchStyleCombinations = async (styleName: string) => {
     try {
       const displayName = cleanStyleName(styleName);
+      console.log('🔍 Buscando combinaciones para:', displayName);
 
       // Traemos todos los registros cuyo nombre contiene el displayName
       const { data, error } = await supabase
@@ -224,6 +225,7 @@ const WineStyleDetail = () => {
       };
 
       const rows = (data ?? []).filter(row => normalize(getNameTail(row.name)) === target);
+      console.log(`📊 Combinaciones encontradas en wine_styles: ${rows.length}`);
 
       // Construimos combinaciones a partir de columnas numéricas o del prefijo si hiciera falta
       const toCombo = (row: any) => {
@@ -256,12 +258,15 @@ const WineStyleDetail = () => {
 
       // Si no encontramos combinaciones en wine_styles, buscamos en la tabla de wines por estilo
       if (!combos.length) {
+        console.log('🔎 No hay combinaciones en wine_styles, buscando en wines...');
+        
         const { data: winesEq } = await supabase
           .from('wines')
           .select('potencia, acidez, dulzura, taninos, afrutado, estilo')
           .eq('estilo', displayName);
 
         let winesData = winesEq ?? [];
+        console.log(`📊 Vinos encontrados con .eq: ${winesData.length}`);
 
         if (!winesData.length) {
           const { data: winesLike } = await supabase
@@ -269,6 +274,7 @@ const WineStyleDetail = () => {
             .select('potencia, acidez, dulzura, taninos, afrutado, estilo')
             .ilike('estilo', `%${displayName}%`);
           winesData = winesLike ?? [];
+          console.log(`📊 Vinos encontrados con .ilike: ${winesData.length}`);
         }
 
         const winesUnique = new Map<string, { potencia: number; acidez: number; dulzura: number; taninos: number; afrutado: number }>();
@@ -287,8 +293,10 @@ const WineStyleDetail = () => {
         combos = Array.from(winesUnique.values()).sort(
           (a, b) => a.potencia - b.potencia || a.acidez - b.acidez || a.dulzura - b.dulzura || a.taninos - b.taninos || a.afrutado - b.afrutado
         );
+        console.log(`✅ Total combinaciones únicas desde wines: ${combos.length}`);
       }
 
+      console.log(`✅ Total combinaciones finales: ${combos.length}`, combos);
       setCombinations(combos);
     } catch (e) {
       console.error('Error fetching style combinations', e);
