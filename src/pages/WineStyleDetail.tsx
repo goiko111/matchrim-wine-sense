@@ -324,7 +324,7 @@ const WineStyleDetail = () => {
 
   const DEFAULT_STYLE_RANGES: Record<string, Ranges> = {
     'burbuja fresca': { potencia: [0,2], acidez: [3,5], dulzura: [0,2], taninos: [0,1], afrutado: [2,4] },
-    'brut elegante':  { potencia: [0,2], acidez: [1,3], dulzura: [0,1], taninos: [0,1], afrutado: [1,3] },
+    'brut elegante':  { potencia: [2,4], acidez: [3,5], dulzura: [1,3], taninos: [2,5], afrutado: [3,4] },
     'blanco vital':   { potencia: [1,3], acidez: [3,5], dulzura: [0,1], taninos: [0,1], afrutado: [2,4] },
     'blanco goloso':  { potencia: [1,3], acidez: [1,3], dulzura: [2,4], taninos: [0,1], afrutado: [2,4] },
     'dulce intenso':  { potencia: [2,4], acidez: [1,3], dulzura: [4,5], taninos: [0,1], afrutado: [2,4] },
@@ -1002,6 +1002,16 @@ const WineStyleDetail = () => {
                         }
                       }
                     }
+
+                    // Si el rango es demasiado estrecho, intenta usar defaults del estilo
+                    {
+                      const fallbackDefaults = getDefaultRanges(cleanStyleName(style.name));
+                      if ((maxRange - minRange) < 1 && fallbackDefaults) {
+                        const tuple = fallbackDefaults[field];
+                        minRange = tuple[0];
+                        maxRange = tuple[1];
+                      }
+                    }
                     
                     // Obtener colores de la paleta del estilo
                     const getAttributeColors = () => {
@@ -1049,7 +1059,7 @@ const WineStyleDetail = () => {
                             <div className="flex justify-between items-center">
                               <span className="font-medium">{attr.label}</span>
                               <span className="text-sm font-semibold text-gray-700">
-                                {combinations.length > 0 ? `${minRange} a ${maxRange}` : (minRange === maxRange ? `${attr.value}` : `${minRange} a ${maxRange}`)}
+                                {`${minRange} a ${maxRange}`}
                               </span>
                             </div>
                             <p className="text-xs text-gray-500">{attr.description}</p>
