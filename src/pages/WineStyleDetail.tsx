@@ -195,6 +195,7 @@ const WineStyleDetail = () => {
   };
 
   // Obtiene las combinaciones reales existentes desde la tabla de estilos (wine_styles)
+  // Obtiene las combinaciones reales existentes desde la tabla de estilos (wine_styles)
   const fetchStyleCombinations = async (styleName: string) => {
     try {
       const displayName = cleanStyleName(styleName);
@@ -249,9 +250,44 @@ const WineStyleDetail = () => {
         if (!unique.has(key)) unique.set(key, combo);
       });
 
-      const combos = Array.from(unique.values()).sort(
+      let combos = Array.from(unique.values()).sort(
         (a, b) => a.potencia - b.potencia || a.acidez - b.acidez || a.dulzura - b.dulzura || a.taninos - b.taninos || a.afrutado - b.afrutado
       );
+
+      // Si no encontramos combinaciones en wine_styles, buscamos en la tabla de wines por estilo
+      if (!combos.length) {
+        const { data: winesEq } = await supabase
+          .from('wines')
+          .select('potencia, acidez, dulzura, taninos, afrutado, estilo')
+          .eq('estilo', displayName);
+
+        let winesData = winesEq ?? [];
+
+        if (!winesData.length) {
+          const { data: winesLike } = await supabase
+            .from('wines')
+            .select('potencia, acidez, dulzura, taninos, afrutado, estilo')
+            .ilike('estilo', `%${displayName}%`);
+          winesData = winesLike ?? [];
+        }
+
+        const winesUnique = new Map<string, { potencia: number; acidez: number; dulzura: number; taninos: number; afrutado: number }>();
+        winesData.forEach((row: any) => {
+          const combo = {
+            potencia: Number(row.potencia ?? 0),
+            acidez: Number(row.acidez ?? 0),
+            dulzura: Number(row.dulzura ?? 0),
+            taninos: Number(row.taninos ?? 0),
+            afrutado: Number(row.afrutado ?? 0),
+          };
+          const key = `${combo.potencia}-${combo.acidez}-${combo.dulzura}-${combo.taninos}-${combo.afrutado}`;
+          if (!winesUnique.has(key)) winesUnique.set(key, combo);
+        });
+
+        combos = Array.from(winesUnique.values()).sort(
+          (a, b) => a.potencia - b.potencia || a.acidez - b.acidez || a.dulzura - b.dulzura || a.taninos - b.taninos || a.afrutado - b.afrutado
+        );
+      }
 
       setCombinations(combos);
     } catch (e) {
@@ -943,7 +979,7 @@ const WineStyleDetail = () => {
                             <div className="flex justify-between items-center">
                               <span className="font-medium">{attr.label}</span>
                               <span className="text-sm font-semibold text-gray-700">
-                                {minRange === maxRange ? `${attr.value}` : `${minRange} a ${maxRange}`}
+                                {combinations.length > 0 ? `${minRange} a ${maxRange}` : (minRange === maxRange ? `${attr.value}` : `${minRange} a ${maxRange}`)}
                               </span>
                             </div>
                             <p className="text-xs text-gray-500">{attr.description}</p>
