@@ -10,9 +10,11 @@ export interface RegistrationData {
   lastName: string;
   email: string;
   password: string;
+  phone: string;
   preferredLanguage: string;
   location: string;
   birthDate: string;
+  referralSource: string;
   
   // Wine Preferences
   wineTypes: string[];
@@ -34,9 +36,11 @@ const initialData: RegistrationData = {
   lastName: '',
   email: '',
   password: '',
+  phone: '',
   preferredLanguage: 'ES',
   location: '',
   birthDate: '',
+  referralSource: '',
   wineTypes: [],
   tastePreferences: [],
   priceRange: '',

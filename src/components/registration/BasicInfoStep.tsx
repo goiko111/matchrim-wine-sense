@@ -15,12 +15,12 @@ interface BasicInfoStepProps {
 const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (data.firstName && data.lastName && data.email && data.password) {
+    if (data.firstName && data.lastName && data.email && data.password && data.phone) {
       onNext();
     }
   };
 
-  const isValid = data.firstName && data.lastName && data.email && data.password;
+  const isValid = data.firstName && data.lastName && data.email && data.password && data.phone;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -63,6 +63,18 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
           type="password"
           value={data.password}
           onChange={(e) => onUpdate({ password: e.target.value })}
+          required
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="phone">Teléfono *</Label>
+        <Input
+          id="phone"
+          type="tel"
+          value={data.phone}
+          onChange={(e) => onUpdate({ phone: e.target.value })}
+          placeholder="+34 600 000 000"
           required
         />
       </div>

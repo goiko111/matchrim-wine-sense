@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RegistrationData } from '@/hooks/useRegistrationData';
 
 interface FinalStepProps {
@@ -14,6 +15,14 @@ interface FinalStepProps {
 }
 
 const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPrevious, isSaving }) => {
+  const referralOptions = [
+    { value: 'redes_sociales', label: 'Redes Sociales' },
+    { value: 'recomendacion', label: 'Recomendación de un amigo' },
+    { value: 'google', label: 'Búsqueda en Google' },
+    { value: 'publicidad', label: 'Publicidad' },
+    { value: 'otro', label: 'Otro' }
+  ];
+
   const dietaryOptions = [
     { value: 'vegana', label: 'Vegana' },
     { value: 'vegetariana', label: 'Vegetariana' },
@@ -46,6 +55,26 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
 
   return (
     <div className="space-y-6">
+      <div>
+        <Label htmlFor="referralSource" className="text-lg font-semibold">¿Cómo nos conociste?</Label>
+        <p className="text-sm text-gray-600 mb-4">Ayúdanos a mejorar (Opcional)</p>
+        <Select 
+          value={data.referralSource} 
+          onValueChange={(value) => onUpdate({ referralSource: value })}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Selecciona una opción" />
+          </SelectTrigger>
+          <SelectContent>
+            {referralOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div>
         <Label className="text-lg font-semibold">Restricciones Dietéticas</Label>
         <p className="text-sm text-gray-600 mb-4">¿Tienes alguna restricción dietética? (Opcional)</p>
