@@ -98,9 +98,15 @@ const AppNav = () => {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
+                        <Link to="/admin" className="flex items-center gap-2 cursor-pointer">
+                          <Shield className="h-4 w-4" />
+                          Panel Admin
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
                         <Link to="/admin-setup" className="flex items-center gap-2 cursor-pointer">
                           <Shield className="h-4 w-4" />
-                          Admin
+                          Admin Setup
                         </Link>
                       </DropdownMenuItem>
                     </>

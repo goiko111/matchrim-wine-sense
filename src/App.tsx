@@ -11,6 +11,7 @@ import Matchrim from '@/pages/Matchrim';
 import LiquidIntelligence from '@/pages/LiquidIntelligence';
 import ImportCSV from '@/pages/ImportCSV';
 import AdminSetup from '@/pages/AdminSetup';
+import Admin from '@/pages/Admin';
 import DataViewer from '@/pages/DataViewer';
 import WineStyles from '@/pages/WineStyles';
 import WineStyleDetail from '@/pages/WineStyleDetail';
@@ -37,6 +38,7 @@ function App() {
               <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
               <Route path="/import-csv" element={<ImportCSV />} />
               <Route path="/admin-setup" element={<AdminSetup />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="/data-viewer" element={<DataViewer />} />
               <Route path="/wine-styles" element={<WineStyles />} />
               <Route path="/wine-styles/:slug" element={<WineStyleDetail />} />
