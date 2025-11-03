@@ -77,7 +77,7 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
         .addTo(map.current!);
 
       // Centrar en la región directamente usando las coordenadas
-      const zoom = coordinates[0] === 0 && coordinates[1] === 0 ? 2 : 10;
+      const zoom = coordinates[0] === 0 && coordinates[1] === 0 ? 2 : 8;
       if (!map.current) return;
       map.current.flyTo({
         center: coordinates,
