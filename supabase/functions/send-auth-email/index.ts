@@ -3,6 +3,7 @@ import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY") as string);
 const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") as string;
+const supabaseUrl = Deno.env.get("SUPABASE_URL") as string;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -84,7 +85,7 @@ serve(async (req) => {
                           <table width="100%" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" style="padding: 20px 0;">
-                                <a href="${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to || `${site_url}`)}&apikey=${supabaseAnonKey}"
+                                <a href="${supabaseUrl}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to)}&apikey=${supabaseAnonKey}"
                                    style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); 
                                           color: #ffffff; 
                                           padding: 16px 40px; 
@@ -106,7 +107,7 @@ serve(async (req) => {
                             Si el botón no funciona, copia y pega este enlace en tu navegador:
                           </p>
                           <p style="color: #7f1d1d; font-size: 13px; word-break: break-all; margin: 10px 0; font-family: 'Courier New', monospace; background-color: #fef2f2; padding: 12px; border-radius: 6px; border-left: 4px solid #991b1b;">
-                            ${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to || `${site_url}`)}&apikey=${supabaseAnonKey}
+                            ${supabaseUrl}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to)}&apikey=${supabaseAnonKey}
                           </p>
                         </td>
                       </tr>
@@ -160,7 +161,7 @@ serve(async (req) => {
                           <table width="100%" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" style="padding: 20px 0;">
-                                <a href="${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to || `${site_url}`)}&apikey=${supabaseAnonKey}"
+                                <a href="${supabaseUrl}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to)}&apikey=${supabaseAnonKey}"
                                    style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); color: #ffffff; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: bold; display: inline-block; font-family: Arial, sans-serif;">
                                   🔑 Restablecer Contraseña
                                 </a>
@@ -194,7 +195,7 @@ serve(async (req) => {
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h1 style="color: #333;">Liquid Intelligence</h1>
             <p>Tienes una notificación pendiente.</p>
-            <a href="${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${redirect_to}&apikey=${supabaseAnonKey}">
+            <a href="${supabaseUrl}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to)}&apikey=${supabaseAnonKey}">
               Hacer clic aquí
             </a>
           </div>
