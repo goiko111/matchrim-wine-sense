@@ -307,6 +307,47 @@ const WineStyleDetail = () => {
     return name.replace(/\s*\(\d+\)\s*$/, '').trim();
   };
 
+  // Normaliza nombres (sin acentos, minúsculas, sin barras)
+  const normalizeName = (s: string) => s
+    .toLowerCase()
+    .replace(/\//g, ' ')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // Rangos por defecto para cada estilo base (0-5)
+  type RangeTuple = [number, number];
+  type Ranges = { potencia: RangeTuple; acidez: RangeTuple; dulzura: RangeTuple; taninos: RangeTuple; afrutado: RangeTuple };
+
+  const DEFAULT_STYLE_RANGES: Record<string, Ranges> = {
+    'burbuja fresca': { potencia: [0,2], acidez: [3,5], dulzura: [0,2], taninos: [0,1], afrutado: [2,4] },
+    'brut elegante':  { potencia: [0,2], acidez: [1,3], dulzura: [0,1], taninos: [0,1], afrutado: [1,3] },
+    'blanco vital':   { potencia: [1,3], acidez: [3,5], dulzura: [0,1], taninos: [0,1], afrutado: [2,4] },
+    'blanco goloso':  { potencia: [1,3], acidez: [1,3], dulzura: [2,4], taninos: [0,1], afrutado: [2,4] },
+    'dulce intenso':  { potencia: [2,4], acidez: [1,3], dulzura: [4,5], taninos: [0,1], afrutado: [2,4] },
+    'oxidativo maduro': { potencia: [3,5], acidez: [0,2], dulzura: [1,3], taninos: [2,4], afrutado: [0,2] },
+    'experimental':   { potencia: [1,4], acidez: [1,4], dulzura: [0,3], taninos: [0,3], afrutado: [1,4] },
+    'vino de terruno': { potencia: [2,4], acidez: [1,3], dulzura: [0,2], taninos: [1,3], afrutado: [1,3] },
+    'tinto versatil': { potencia: [2,4], acidez: [1,3], dulzura: [0,2], taninos: [1,3], afrutado: [2,4] },
+    'tinto de estructura': { potencia: [3,5], acidez: [1,3], dulzura: [0,1], taninos: [3,5], afrutado: [1,3] },
+    'tinto goloso':   { potencia: [2,4], acidez: [1,3], dulzura: [2,4], taninos: [1,3], afrutado: [3,5] },
+    'dulce ligero':   { potencia: [0,2], acidez: [1,3], dulzura: [2,4], taninos: [0,1], afrutado: [2,4] },
+    'blanco de caracter': { potencia: [2,4], acidez: [2,4], dulzura: [0,2], taninos: [0,2], afrutado: [2,4] },
+    'rosado ligero':  { potencia: [0,2], acidez: [2,4], dulzura: [0,2], taninos: [0,1], afrutado: [2,4] },
+    'rosado gastronomico': { potencia: [1,3], acidez: [2,4], dulzura: [0,2], taninos: [0,2], afrutado: [2,4] },
+    'tinto ligero':   { potencia: [1,3], acidez: [2,4], dulzura: [0,2], taninos: [0,2], afrutado: [2,4] },
+  };
+
+  const getDefaultRanges = (name: string): Ranges | null => {
+    const n = normalizeName(name);
+    // soporta variantes con barra
+    if (DEFAULT_STYLE_RANGES[n]) return DEFAULT_STYLE_RANGES[n];
+    const withSlash = n.replace(' / ', ' ').replace('/', ' ');
+    if (DEFAULT_STYLE_RANGES[withSlash]) return DEFAULT_STYLE_RANGES[withSlash];
+    return null;
+  };
+
   const getStyleConfig = (name: string) => {
     const cleanName = cleanStyleName(name).toLowerCase();
     
@@ -940,15 +981,23 @@ const WineStyleDetail = () => {
                       minRange = Math.min(...values);
                       maxRange = Math.max(...values);
                     } else {
-                      // Fallback: rango aproximado a partir del valor central
-                      if (attr.value === 0) {
-                        minRange = 0; maxRange = 1; // rango mínimo estimado para evitar barra invisible
-                      } else if (attr.value === 1) {
-                        minRange = 0; maxRange = 2;
-                      } else if (attr.value === 5) {
-                        minRange = 4; maxRange = 5;
+                      // Intentar usar rangos por defecto del estilo
+                      const defaults = getDefaultRanges(cleanStyleName(style.name));
+                      if (defaults) {
+                        const tuple = defaults[field];
+                        minRange = tuple[0];
+                        maxRange = tuple[1];
                       } else {
-                        minRange = attr.value - 1; maxRange = attr.value + 1;
+                        // Fallback: rango aproximado a partir del valor central
+                        if (attr.value === 0) {
+                          minRange = 0; maxRange = 1; // rango mínimo estimado para evitar barra invisible
+                        } else if (attr.value === 1) {
+                          minRange = 0; maxRange = 2;
+                        } else if (attr.value === 5) {
+                          minRange = 4; maxRange = 5;
+                        } else {
+                          minRange = attr.value - 1; maxRange = attr.value + 1;
+                        }
                       }
                     }
                     
