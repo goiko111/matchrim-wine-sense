@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { Webhook } from "https://esm.sh/standardwebhooks@1.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY") as string);
 const hookSecret = Deno.env.get("SEND_EMAIL_HOOK_SECRET") as string;
@@ -19,19 +20,24 @@ serve(async (req) => {
   }
 
   try {
-    // Verify the webhook signature
-    const signature = req.headers.get("authorization");
-    if (!signature || signature !== `Bearer ${hookSecret}`) {
-      console.error("Invalid authorization header");
-      return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
-    }
-
+    // Verify webhook using Standard Webhooks signature
     const payload = await req.text();
-    const data = JSON.parse(payload);
-    const { user, email_data } = data;
+    const headersObj = Object.fromEntries(req.headers);
+
+    const wh = new Webhook(hookSecret);
+    const { user, email_data } = wh.verify(payload, headersObj) as {
+      user: { email: string; user_metadata?: Record<string, unknown> };
+      email_data: {
+        token: string;
+        token_hash: string;
+        redirect_to: string;
+        email_action_type: string;
+        site_url: string;
+        token_new?: string;
+        token_hash_new?: string;
+      };
+    };
+
 
     if (!user?.email) {
       return new Response("Missing user email", { status: 400 });
