@@ -1,5 +1,8 @@
 project_id = "tuoczkxunuoyfjlnqinc"
 
+[functions.send-auth-email]
+verify_jwt = false
+
 [functions.wine-search]
 verify_jwt = false
 
