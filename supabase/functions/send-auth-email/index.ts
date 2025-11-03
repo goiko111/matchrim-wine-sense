@@ -84,7 +84,7 @@ serve(async (req) => {
                           <table width="100%" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" style="padding: 20px 0;">
-                                <a href="${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${redirect_to || 'https://7e9b6f66-d4ee-404a-8678-c9afab22de75.lovableproject.com/'}&apikey=${supabaseAnonKey}"
+                                <a href="${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to || `${site_url}`)}&apikey=${supabaseAnonKey}"
                                    style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); 
                                           color: #ffffff; 
                                           padding: 16px 40px; 
@@ -106,7 +106,7 @@ serve(async (req) => {
                             Si el botón no funciona, copia y pega este enlace en tu navegador:
                           </p>
                           <p style="color: #7f1d1d; font-size: 13px; word-break: break-all; margin: 10px 0; font-family: 'Courier New', monospace; background-color: #fef2f2; padding: 12px; border-radius: 6px; border-left: 4px solid #991b1b;">
-                            ${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${redirect_to || 'https://7e9b6f66-d4ee-404a-8678-c9afab22de75.lovableproject.com/'}&apikey=${supabaseAnonKey}
+                            ${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to || `${site_url}`)}&apikey=${supabaseAnonKey}
                           </p>
                         </td>
                       </tr>
@@ -160,7 +160,7 @@ serve(async (req) => {
                           <table width="100%" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" style="padding: 20px 0;">
-                                <a href="${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${redirect_to || 'https://7e9b6f66-d4ee-404a-8678-c9afab22de75.lovableproject.com/'}&apikey=${supabaseAnonKey}"
+                                <a href="${site_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to || `${site_url}`)}&apikey=${supabaseAnonKey}"
                                    style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); color: #ffffff; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: bold; display: inline-block; font-family: Arial, sans-serif;">
                                   🔑 Restablecer Contraseña
                                 </a>
