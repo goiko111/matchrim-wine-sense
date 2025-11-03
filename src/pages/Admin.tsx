@@ -8,6 +8,7 @@ import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { AdminUsers } from "@/components/admin/AdminUsers";
 import { AdminAnalytics } from "@/components/admin/AdminAnalytics";
 import { AdminData } from "@/components/admin/AdminData";
+import { AdminMetrics } from "@/components/admin/AdminMetrics";
 
 export default function Admin() {
   const { isAdmin, loading } = useIsAdmin();
@@ -50,10 +51,11 @@ export default function Admin() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="users">Usuarios</TabsTrigger>
             <TabsTrigger value="analytics">Analíticas</TabsTrigger>
+            <TabsTrigger value="metrics">Métricas</TabsTrigger>
             <TabsTrigger value="data">Datos</TabsTrigger>
           </TabsList>
 
@@ -67,6 +69,10 @@ export default function Admin() {
 
           <TabsContent value="analytics" className="space-y-6">
             <AdminAnalytics />
+          </TabsContent>
+
+          <TabsContent value="metrics" className="space-y-6">
+            <AdminMetrics />
           </TabsContent>
 
           <TabsContent value="data" className="space-y-6">
