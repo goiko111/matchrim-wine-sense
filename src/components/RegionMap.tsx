@@ -23,17 +23,17 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
     try {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v12',
+        style: 'mapbox://styles/mapbox/outdoors-v12', // Estilo con más detalles geográficos
         center: [0, 0],
         zoom: 2,
-        interactive: false, // Desactivar interacción para mapas estáticos
-        dragPan: false,
-        scrollZoom: false,
-        boxZoom: false,
+        interactive: true, // Habilitar interacción
+        dragPan: true,
+        scrollZoom: true,
+        boxZoom: true,
         dragRotate: false,
-        keyboard: false,
-        doubleClickZoom: false,
-        touchZoomRotate: false,
+        keyboard: true,
+        doubleClickZoom: true,
+        touchZoomRotate: true,
       });
 
       map.current.on('error', (e) => {
