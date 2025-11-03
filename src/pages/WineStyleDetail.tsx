@@ -1028,12 +1028,16 @@ const WineStyleDetail = () => {
                       }
                     };
                     
-                    // Cálculo seguro del rango visible
-                    let leftPercent = (minRange / 5) * 100;
-                    let widthPercent = ((maxRange - minRange) / 5) * 100;
-                    const MIN_WIDTH_PERCENT = 2; // asegura visibilidad
+                    // Cálculo seguro del rango visible (clamp 0-5 y evita NaN)
+                    const clamp05 = (v: number) => Math.min(5, Math.max(0, Number.isFinite(v) ? v : 0));
+                    let min = clamp05(minRange);
+                    let max = clamp05(maxRange);
+                    if (max < min) { const tmp = min; min = max; max = tmp; }
+                    let leftPercent = (min / 5) * 100;
+                    let widthPercent = ((max - min) / 5) * 100;
+                    const MIN_WIDTH_PERCENT = 6; // asegura visibilidad
                     if (widthPercent < MIN_WIDTH_PERCENT) widthPercent = MIN_WIDTH_PERCENT;
-                    if (leftPercent + widthPercent > 100) leftPercent = 100 - widthPercent;
+                    if (leftPercent + widthPercent > 100) leftPercent = Math.max(0, 100 - widthPercent);
                     
                     const colors = getAttributeColors();
                     
@@ -1067,7 +1071,7 @@ const WineStyleDetail = () => {
                           <div 
                             className={`absolute top-1 bottom-1 w-1 rounded-full shadow-sm ${colors.dark}`}
                             style={{
-                              left: `calc(${(attr.value / 5) * 100}% - 2px)`
+                              left: `calc(${((Math.min(5, Math.max(0, attr.value)) / 5) * 100)}% - 2px)`
                             }}
                           ></div>
                           
