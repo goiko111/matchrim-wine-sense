@@ -200,6 +200,8 @@ const WineStyleDetail = () => {
     try {
       const displayName = cleanStyleName(styleName);
       console.log('🔍 Buscando combinaciones para:', displayName);
+      // limpiar combinaciones previas para evitar parpadeos de otro estilo
+      setCombinations([]);
 
       // Traemos todos los registros cuyo nombre contiene el displayName
       const { data, error } = await supabase
