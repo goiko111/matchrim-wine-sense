@@ -23,7 +23,7 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
     try {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/satellite-streets-v12', // Estilo satélite con información geográfica
+        style: 'mapbox://styles/mapbox/outdoors-v12',
         center: [0, 0],
         zoom: 2,
         interactive: true,
@@ -77,7 +77,7 @@ const RegionMap: React.FC<RegionMapProps> = ({ region, coordinates }) => {
         .addTo(map.current!);
 
       // Centrar en la región directamente usando las coordenadas
-      const zoom = coordinates[0] === 0 && coordinates[1] === 0 ? 2 : 7;
+      const zoom = coordinates[0] === 0 && coordinates[1] === 0 ? 2 : 9;
       if (!map.current) return;
       map.current.flyTo({
         center: coordinates,
