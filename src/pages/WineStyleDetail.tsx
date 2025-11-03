@@ -1028,6 +1028,13 @@ const WineStyleDetail = () => {
                       }
                     };
                     
+                    // Cálculo seguro del rango visible
+                    let leftPercent = (minRange / 5) * 100;
+                    let widthPercent = ((maxRange - minRange) / 5) * 100;
+                    const MIN_WIDTH_PERCENT = 2; // asegura visibilidad
+                    if (widthPercent < MIN_WIDTH_PERCENT) widthPercent = MIN_WIDTH_PERCENT;
+                    if (leftPercent + widthPercent > 100) leftPercent = 100 - widthPercent;
+                    
                     const colors = getAttributeColors();
                     
                     return (
@@ -1051,8 +1058,8 @@ const WineStyleDetail = () => {
                           <div 
                             className={`absolute top-0 h-full transition-all duration-300 ${colors.light} opacity-60`}
                             style={{
-                              left: `${(minRange / 5) * 100}%`,
-                              width: `${((maxRange - minRange) / 5) * 100}%`
+                              left: `${leftPercent}%`,
+                              width: `${widthPercent}%`
                             }}
                           ></div>
                           
