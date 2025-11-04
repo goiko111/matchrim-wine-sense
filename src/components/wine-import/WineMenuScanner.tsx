@@ -43,6 +43,10 @@ export const WineMenuScanner = () => {
       return;
     }
 
+    // Activar loader inmediatamente
+    setLoading(true);
+    setScannedWines([]);
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result as string);
@@ -53,9 +57,6 @@ export const WineMenuScanner = () => {
   };
 
   const processImage = async (file: File) => {
-    setLoading(true);
-    setScannedWines([]);
-
     try {
       const reader = new FileReader();
       reader.onloadend = async () => {
