@@ -104,6 +104,18 @@ const AppNav = () => {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
+                        <Link to="/wine-search" className="flex items-center gap-2 cursor-pointer">
+                          <Wine className="h-4 w-4" />
+                          Buscador de Vinos
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/wine-import" className="flex items-center gap-2 cursor-pointer">
+                          <Upload className="h-4 w-4" />
+                          Importar Vinos
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
                         <Link to="/admin-setup" className="flex items-center gap-2 cursor-pointer">
                           <Shield className="h-4 w-4" />
                           Admin Setup

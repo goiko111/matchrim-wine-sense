@@ -85,15 +85,6 @@ const Header = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={() => navigate('/wine-search')}
-                className="text-red-700 hover:bg-red-50"
-              >
-                <Search className="h-4 w-4 mr-2" />
-                Buscador
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
                 onClick={handleImportCSVClick}
                 className="text-red-700 hover:bg-red-50"
               >
