@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { MapPin, Home, Building2, Navigation, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
 interface LocationData {
   type: 'winerim_restaurant' | 'external_restaurant' | 'home' | 'other';
@@ -28,6 +29,43 @@ export const LocationSelector = ({ onLocationSelected, onCancel }: LocationSelec
   const [nearbyPlaces, setNearbyPlaces] = useState<any[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
   const [customPlaceName, setCustomPlaceName] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchingPlaces, setSearchingPlaces] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.length >= 3) {
+        searchPlaces(searchQuery);
+      } else {
+        setSearchResults([]);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const searchPlaces = async (query: string) => {
+    setSearchingPlaces(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('search-places', {
+        body: { query }
+      });
+
+      if (error) throw error;
+
+      if (data.places && data.places.length > 0) {
+        setSearchResults(data.places);
+      } else {
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.error('Error searching places:', error);
+      setSearchResults([]);
+    } finally {
+      setSearchingPlaces(false);
+    }
+  };
 
   const detectLocation = async () => {
     setDetectingLocation(true);
@@ -179,12 +217,55 @@ export const LocationSelector = ({ onLocationSelected, onCancel }: LocationSelec
               </div>
 
               {locationType === 'other' && (
-                <div className="ml-9">
-                  <Input
-                    placeholder="Nombre del lugar..."
-                    value={customPlaceName}
-                    onChange={(e) => setCustomPlaceName(e.target.value)}
-                  />
+                <div className="ml-9 space-y-2">
+                  <div className="relative">
+                    <Input
+                      placeholder="Buscar lugar..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    {searchingPlaces && (
+                      <Loader2 className="h-4 w-4 animate-spin absolute right-3 top-3 text-muted-foreground" />
+                    )}
+                  </div>
+                  
+                  {searchResults.length > 0 && (
+                    <Card>
+                      <CardContent className="p-2 max-h-60 overflow-y-auto">
+                        <Command>
+                          <CommandList>
+                            <CommandGroup>
+                              {searchResults.map((place, index) => (
+                                <CommandItem
+                                  key={index}
+                                  onSelect={() => {
+                                    setCustomPlaceName(place.name);
+                                    setSearchQuery(place.name);
+                                    setSearchResults([]);
+                                  }}
+                                  className="cursor-pointer"
+                                >
+                                  <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+                                  <div className="flex-1">
+                                    <div className="font-medium">{place.name}</div>
+                                    <div className="text-xs text-muted-foreground">{place.address}</div>
+                                  </div>
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {!searchQuery && (
+                    <Input
+                      placeholder="O escribe manualmente..."
+                      value={customPlaceName}
+                      onChange={(e) => setCustomPlaceName(e.target.value)}
+                    />
+                  )}
                 </div>
               )}
             </div>

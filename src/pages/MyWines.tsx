@@ -229,16 +229,25 @@ const MyWines = () => {
 
       if (error) throw error;
 
-      // Calculate affinity in background
-      if (newWine) {
-        supabase.functions.invoke('calculate-wine-affinity', {
-          body: { wine_id: newWine.id }
-        }).then(() => loadWines());
-      }
-
       toast.success("¡Vino añadido a tu colección!");
       setShowAddDialog(false);
       resetForm();
+
+      // Calculate affinity in background - will search for attributes and calculate affinity
+      if (newWine) {
+        toast.info("Calculando afinidad Matchrim...");
+        const { data: affinityData, error: affinityError } = await supabase.functions.invoke('calculate-wine-affinity', {
+          body: { wine_id: newWine.id }
+        });
+
+        if (affinityError) {
+          console.error('Error calculating affinity:', affinityError);
+          toast.error("No se pudo calcular la afinidad");
+        } else if (affinityData?.affinity) {
+          toast.success(`Afinidad Matchrim: ${affinityData.affinity}%`);
+        }
+      }
+
       loadWines();
     } catch (error) {
       console.error("Error saving wine:", error);

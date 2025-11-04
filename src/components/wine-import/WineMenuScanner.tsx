@@ -68,7 +68,38 @@ export const WineMenuScanner = () => {
         if (error) throw error;
 
         if (data.vinos && data.vinos.length > 0) {
-          setScannedWines(data.vinos);
+          // For each detected wine, search in database and calculate affinity
+          const winesWithAffinity = await Promise.all(
+            data.vinos.map(async (wine: ScannedWine) => {
+              try {
+                // Search for wine in database
+                const { data: searchData } = await supabase.functions.invoke('search-wines', {
+                  body: { query: wine.nombre, limit: 1 }
+                });
+
+                if (searchData?.wines && searchData.wines.length > 0) {
+                  const foundWine = searchData.wines[0];
+
+                  // Calculate affinity if wine has sensory attributes
+                  if (foundWine.potencia !== undefined) {
+                    const { data: affinityData } = await supabase.functions.invoke('calculate-wine-affinity', {
+                      body: { wine_id: foundWine.id }
+                    });
+
+                    if (affinityData?.affinity) {
+                      wine.compatibilidad = affinityData.affinity;
+                      wine.razon = affinityData.reason || `Este vino tiene una afinidad del ${affinityData.affinity}% con tu perfil Matchrim`;
+                    }
+                  }
+                }
+              } catch (err) {
+                console.error('Error processing wine:', wine.nombre, err);
+              }
+              return wine;
+            })
+          );
+
+          setScannedWines(winesWithAffinity);
           setHasProfile(data.has_profile);
           toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
         } else {

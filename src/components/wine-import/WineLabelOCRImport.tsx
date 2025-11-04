@@ -33,6 +33,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
       return;
     }
 
+    setLoading(true);
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result as string);
@@ -43,8 +44,6 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
   };
 
   const processImage = async (file: File) => {
-    setLoading(true);
-
     try {
       const reader = new FileReader();
       reader.onloadend = async () => {
