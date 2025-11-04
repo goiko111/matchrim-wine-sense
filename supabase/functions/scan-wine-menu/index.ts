@@ -94,7 +94,7 @@ Responde SOLO con un JSON válido:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
+        model: 'google/gemini-2.5-flash',
         messages: [
           { 
             role: 'user', 
@@ -104,7 +104,7 @@ Responde SOLO con un JSON válido:
             ]
           }
         ],
-        max_tokens: 4096,
+        max_tokens: 8192,
       }),
     });
 
@@ -136,7 +136,38 @@ Responde SOLO con un JSON válido:
     } catch (parseError) {
       console.error('JSON Parse Error:', parseError);
       console.error('Content that failed to parse:', content);
-      throw new Error('La respuesta del AI no pudo ser procesada. Por favor intenta de nuevo.');
+      
+      // Try to salvage partial JSON by closing arrays/objects
+      try {
+        // Count opening and closing braces/brackets
+        const openBraces = (content.match(/{/g) || []).length;
+        const closeBraces = (content.match(/}/g) || []).length;
+        const openBrackets = (content.match(/\[/g) || []).length;
+        const closeBrackets = (content.match(/\]/g) || []).length;
+        
+        let fixedContent = content;
+        
+        // Close incomplete strings
+        const quotes = (content.match(/"/g) || []).length;
+        if (quotes % 2 !== 0) {
+          fixedContent += '"';
+        }
+        
+        // Close brackets and braces
+        for (let i = 0; i < openBrackets - closeBrackets; i++) {
+          fixedContent += ']';
+        }
+        for (let i = 0; i < openBraces - closeBraces; i++) {
+          fixedContent += '}';
+        }
+        
+        console.log('Attempting to fix JSON:', fixedContent);
+        result = JSON.parse(fixedContent);
+        console.log('Successfully fixed and parsed JSON');
+      } catch (fixError) {
+        console.error('Could not fix JSON:', fixError);
+        throw new Error('La carta de vinos es muy extensa. Por favor fotografía solo una sección.');
+      }
     }
     
     const extractedWines = result.vinos || [];
