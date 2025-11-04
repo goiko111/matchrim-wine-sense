@@ -255,12 +255,12 @@ export const WineMenuScanner = () => {
                           <p className="text-xs font-medium text-muted-foreground uppercase">
                             Atributos Estimados
                           </p>
-                          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs">
+                          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-xs">
                             {Object.entries(wine.atributos).map(([key, value]) => (
-                              <div key={key} className="space-y-1">
-                                <div className="flex justify-between">
-                                  <span className="capitalize">{key}</span>
-                                  <span className="font-medium">{value}/10</span>
+                              <div key={key} className="space-y-1 min-w-0">
+                                <div className="flex justify-between items-center gap-1">
+                                  <span className="capitalize text-muted-foreground truncate">{key}</span>
+                                  <span className="font-medium shrink-0">{value}/10</span>
                                 </div>
                                 <Progress value={value * 10} className="h-1.5" />
                               </div>
