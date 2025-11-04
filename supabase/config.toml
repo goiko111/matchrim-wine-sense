@@ -44,3 +44,6 @@ verify_jwt = false
 
 [functions.extract-wine-label-ocr]
 verify_jwt = false
+
+[functions.scan-wine-menu]
+verify_jwt = true

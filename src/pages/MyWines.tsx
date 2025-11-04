@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
+import { WineMenuScanner } from "@/components/wine-import/WineMenuScanner";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Wine, Plus, Trash2, Loader2, Calendar, MapPin, Grape } from "lucide-react";
+import { Wine, Plus, Trash2, Loader2, Calendar, MapPin, Grape, ScanLine } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -198,7 +200,26 @@ const MyWines = () => {
           <p className="text-muted-foreground">Tu colección personal de vinos</p>
         </div>
 
-        {/* OCR Import Section */}
+        {/* Tabs for different sections */}
+        <Tabs defaultValue="scan-menu" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="scan-menu" className="gap-2">
+              <ScanLine className="h-4 w-4" />
+              Scanner de Cartas
+            </TabsTrigger>
+            <TabsTrigger value="my-collection" className="gap-2">
+              <Wine className="h-4 w-4" />
+              Mi Colección
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Wine Menu Scanner Tab */}
+          <TabsContent value="scan-menu" className="space-y-6">
+            <WineMenuScanner />
+          </TabsContent>
+
+          {/* My Collection Tab */}
+          <TabsContent value="my-collection" className="space-y-6">
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -299,6 +320,8 @@ const MyWines = () => {
             ))}
           </div>
         )}
+          </TabsContent>
+        </Tabs>
 
         {/* Add/Edit Dialog */}
         <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
