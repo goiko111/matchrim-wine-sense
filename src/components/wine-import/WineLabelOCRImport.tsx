@@ -45,24 +45,26 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
 
   const processImage = async (file: File) => {
     try {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Image = reader.result as string;
+      // Convert file to base64 and await before calling the function
+      const base64Image = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
 
-        const { data, error } = await supabase.functions.invoke('extract-wine-label-ocr', {
-          body: { image: base64Image }
-        });
+      const { data, error } = await supabase.functions.invoke('extract-wine-label-ocr', {
+        body: { image: base64Image }
+      });
 
-        if (error) throw error;
+      if (error) throw error;
 
-        if (data.wine) {
-          toast.success("✨ Etiqueta analizada correctamente");
-          onExtractComplete(data.wine);
-        } else {
-          toast.info("No se pudo extraer información de la etiqueta");
-        }
-      };
-      reader.readAsDataURL(file);
+      if (data.wine) {
+        toast.success("✨ Etiqueta analizada correctamente");
+        onExtractComplete(data.wine);
+      } else {
+        toast.info("No se pudo extraer información de la etiqueta");
+      }
     } catch (error) {
       console.error('Error processing image:', error);
       toast.error("Error al procesar la imagen");
