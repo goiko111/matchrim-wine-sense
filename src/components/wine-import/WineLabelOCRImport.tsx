@@ -151,6 +151,14 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
           </div>
         )}
       </div>
+      {loading && (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center">
+          <div className="flex items-center gap-3 text-primary">
+            <Loader2 className="h-6 w-6 animate-spin" />
+            <span className="text-sm font-medium">Analizando etiqueta...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

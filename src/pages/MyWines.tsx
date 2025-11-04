@@ -179,10 +179,10 @@ const MyWines = () => {
       producer: wine.producer || "",
       vintage: wine.vintage?.toString() || "",
       region: wine.region || "",
-      country: "",
+      country: wine.country || "",
       grape_varieties: wine.grape_varieties?.join(", ") || "",
-      alcohol_content: "",
-      tasting_notes: "",
+      alcohol_content: wine.alcohol_content != null ? String(wine.alcohol_content) : "",
+      tasting_notes: wine.tasting_notes || "",
       personal_note: "",
     });
     setShowLocationDialog(true);
