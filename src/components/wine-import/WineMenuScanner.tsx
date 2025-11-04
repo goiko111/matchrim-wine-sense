@@ -57,60 +57,68 @@ export const WineMenuScanner = () => {
   };
 
   const processImage = async (file: File) => {
+    // Mantener el loader activo durante todo el proceso real
+    setLoading(true);
+    setScannedWines([]);
+
     try {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Image = reader.result as string;
+      // Leer el archivo como base64 y esperar a que termine
+      const base64Image = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
 
-        const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
-          body: { image: base64Image }
-        });
+      // Invocar la función de escaneo
+      const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
+        body: { image: base64Image }
+      });
 
-        if (error) throw error;
+      if (error) throw error;
 
-        if (data.vinos && data.vinos.length > 0) {
-          // For each detected wine, search in database and calculate affinity
-          const winesWithAffinity = await Promise.all(
-            data.vinos.map(async (wine: ScannedWine) => {
-              try {
-                // Search for wine in database
-                const { data: searchData } = await supabase.functions.invoke('search-wines', {
-                  body: { query: wine.nombre, limit: 1 }
-                });
+      if (data?.vinos && data.vinos.length > 0) {
+        // Para cada vino detectado, buscar en BD y calcular afinidad
+        const winesWithAffinity = await Promise.all(
+          data.vinos.map(async (wine: ScannedWine) => {
+            try {
+              // Buscar vino en BD
+              const { data: searchData } = await supabase.functions.invoke('search-wines', {
+                body: { query: wine.nombre, limit: 1 }
+              });
 
-                if (searchData?.wines && searchData.wines.length > 0) {
-                  const foundWine = searchData.wines[0];
+              if (searchData?.wines && searchData.wines.length > 0) {
+                const foundWine = searchData.wines[0];
 
-                  // Calculate affinity if wine has sensory attributes
-                  if (foundWine.potencia !== undefined) {
-                    const { data: affinityData } = await supabase.functions.invoke('calculate-wine-affinity', {
-                      body: { wine_id: foundWine.id }
-                    });
+                // Calcular afinidad si hay atributos sensoriales
+                if (foundWine.potencia !== undefined) {
+                  const { data: affinityData } = await supabase.functions.invoke('calculate-wine-affinity', {
+                    body: { wine_id: foundWine.id }
+                  });
 
-                    if (affinityData?.affinity) {
-                      wine.compatibilidad = affinityData.affinity;
-                      wine.razon = affinityData.reason || `Este vino tiene una afinidad del ${affinityData.affinity}% con tu perfil Matchrim`;
-                    }
+                  if (affinityData?.affinity) {
+                    wine.compatibilidad = affinityData.affinity;
+                    wine.razon = affinityData.reason || `Este vino tiene una afinidad del ${affinityData.affinity}% con tu perfil Matchrim`;
                   }
                 }
-              } catch (err) {
-                console.error('Error processing wine:', wine.nombre, err);
               }
-              return wine;
-            })
-          );
+            } catch (err) {
+              console.error('Error processing wine:', wine.nombre, err);
+            }
+            return wine;
+          })
+        );
 
-          setScannedWines(winesWithAffinity);
-          setHasProfile(data.has_profile);
-          toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
-        } else {
-          toast.info("No se encontraron vinos en la imagen");
-        }
-      };
-      reader.readAsDataURL(file);
-    } catch (error) {
+        setScannedWines(winesWithAffinity);
+        setHasProfile(!!data.has_profile);
+        toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
+      } else {
+        toast.info("No se encontraron vinos en la imagen");
+      }
+    } catch (error: any) {
       console.error('Error processing image:', error);
-      toast.error("Error al procesar la imagen");
+      const message = error?.message || 'Error al procesar la imagen';
+      toast.error(message);
     } finally {
       setLoading(false);
     }
