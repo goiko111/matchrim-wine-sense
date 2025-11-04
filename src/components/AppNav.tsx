@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home } from 'lucide-react';
+import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
@@ -30,7 +30,7 @@ const AppNav = () => {
     { path: '/matchrim', label: 'Matchrim', icon: Wine },
     { path: '/inteligencia-liquida', label: 'Inteligencia Líquida', icon: Sparkles },
     { path: '/wine-styles', label: 'Estilos de Vino', icon: Wine },
-    { path: '/wine-search', label: 'Buscar Vinos', icon: Wine },
+    { path: '/my-wines', label: 'Mis Vinos', icon: BookOpen, requiresAuth: true },
   ];
 
   return (
@@ -45,7 +45,7 @@ const AppNav = () => {
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => {
+            {navLinks.filter(link => !link.requiresAuth || user).map((link) => {
               const Icon = link.icon;
               return (
                 <Link
@@ -129,7 +129,7 @@ const AppNav = () => {
 
       {/* Mobile Navigation */}
       <div className="md:hidden border-t border-gray-200 px-2 pt-2 pb-3 space-y-1">
-        {navLinks.map((link) => {
+        {navLinks.filter(link => !link.requiresAuth || user).map((link) => {
           const Icon = link.icon;
           return (
             <Link

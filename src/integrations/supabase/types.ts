@@ -265,6 +265,62 @@ export type Database = {
         }
         Relationships: []
       }
+      user_wines: {
+        Row: {
+          alcohol_content: number | null
+          country: string | null
+          created_at: string
+          grape_varieties: string[] | null
+          id: string
+          image_url: string | null
+          name: string
+          producer: string | null
+          region: string | null
+          tasting_notes: string | null
+          updated_at: string
+          user_id: string
+          vintage: number | null
+        }
+        Insert: {
+          alcohol_content?: number | null
+          country?: string | null
+          created_at?: string
+          grape_varieties?: string[] | null
+          id?: string
+          image_url?: string | null
+          name: string
+          producer?: string | null
+          region?: string | null
+          tasting_notes?: string | null
+          updated_at?: string
+          user_id: string
+          vintage?: number | null
+        }
+        Update: {
+          alcohol_content?: number | null
+          country?: string | null
+          created_at?: string
+          grape_varieties?: string[] | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          producer?: string | null
+          region?: string | null
+          tasting_notes?: string | null
+          updated_at?: string
+          user_id?: string
+          vintage?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_wines_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wine_preferences: {
         Row: {
           created_at: string
