@@ -182,9 +182,15 @@ export const WineMenuScanner = () => {
               <div className="space-y-4">
                 <Loader2 className="w-12 h-12 mx-auto text-primary animate-spin" />
                 <div>
-                  <p className="text-lg font-semibold mb-2">Analizando carta...</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-lg font-semibold mb-2">Analizando carta de vinos...</p>
+                  <p className="text-sm text-muted-foreground mb-3">
                     Extrayendo vinos y calculando compatibilidad
+                  </p>
+                  <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
+                    <div className="h-full bg-primary animate-pulse" style={{ width: '70%' }} />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Esto puede tardar 30-60 segundos dependiendo del tamaño de la carta
                   </p>
                 </div>
               </div>
