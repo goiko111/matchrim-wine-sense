@@ -130,7 +130,15 @@ Responde SOLO con un JSON válido:
     // Clean markdown
     content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     
-    const result = JSON.parse(content);
+    let result;
+    try {
+      result = JSON.parse(content);
+    } catch (parseError) {
+      console.error('JSON Parse Error:', parseError);
+      console.error('Content that failed to parse:', content);
+      throw new Error('La respuesta del AI no pudo ser procesada. Por favor intenta de nuevo.');
+    }
+    
     const extractedWines = result.vinos || [];
 
     console.log(`Extracted ${extractedWines.length} wines from menu`);
@@ -196,7 +204,15 @@ Responde SOLO con JSON:
         let compatContent = compatData.choices?.[0]?.message?.content || '{"vinos":[]}';
         compatContent = compatContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
         
-        const compatResult = JSON.parse(compatContent);
+        let compatResult;
+        try {
+          compatResult = JSON.parse(compatContent);
+        } catch (parseError) {
+          console.error('Compatibility JSON Parse Error:', parseError);
+          console.error('Compatibility content that failed:', compatContent);
+          // Continue without compatibility data if parsing fails
+          compatResult = { vinos: [] };
+        }
         
         // Merge compatibility data with extracted wines
         const winesWithCompatibility = extractedWines.map((wine: any, index: number) => {
