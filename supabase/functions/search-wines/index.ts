@@ -26,11 +26,14 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
+    // Escape special characters for PostgREST query (especially commas)
+    const sanitizedQuery = query.replace(/,/g, '\\,');
+
     // Search in wines table
     const { data: wines, error } = await supabaseClient
       .from('wines')
       .select('*')
-      .or(`name.ilike.%${query}%,producer.ilike.%${query}%,region.ilike.%${query}%`)
+      .or(`name.ilike.%${sanitizedQuery}%,producer.ilike.%${sanitizedQuery}%,region.ilike.%${sanitizedQuery}%`)
       .limit(limit);
 
     if (error) {
