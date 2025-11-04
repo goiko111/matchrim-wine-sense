@@ -268,46 +268,79 @@ export type Database = {
       user_wines: {
         Row: {
           alcohol_content: number | null
+          consumption_date: string | null
+          consumption_place: string | null
+          consumption_place_type: string | null
           country: string | null
           created_at: string
           grape_varieties: string[] | null
           id: string
           image_url: string | null
+          is_favorite: boolean | null
+          matchrim_affinity: number | null
           name: string
+          personal_note: string | null
+          place_details: Json | null
           producer: string | null
+          rating: string | null
           region: string | null
+          restaurant_id: string | null
+          sensory_attributes: Json | null
           tasting_notes: string | null
           updated_at: string
+          use_for_profile_training: boolean | null
           user_id: string
           vintage: number | null
         }
         Insert: {
           alcohol_content?: number | null
+          consumption_date?: string | null
+          consumption_place?: string | null
+          consumption_place_type?: string | null
           country?: string | null
           created_at?: string
           grape_varieties?: string[] | null
           id?: string
           image_url?: string | null
+          is_favorite?: boolean | null
+          matchrim_affinity?: number | null
           name: string
+          personal_note?: string | null
+          place_details?: Json | null
           producer?: string | null
+          rating?: string | null
           region?: string | null
+          restaurant_id?: string | null
+          sensory_attributes?: Json | null
           tasting_notes?: string | null
           updated_at?: string
+          use_for_profile_training?: boolean | null
           user_id: string
           vintage?: number | null
         }
         Update: {
           alcohol_content?: number | null
+          consumption_date?: string | null
+          consumption_place?: string | null
+          consumption_place_type?: string | null
           country?: string | null
           created_at?: string
           grape_varieties?: string[] | null
           id?: string
           image_url?: string | null
+          is_favorite?: boolean | null
+          matchrim_affinity?: number | null
           name?: string
+          personal_note?: string | null
+          place_details?: Json | null
           producer?: string | null
+          rating?: string | null
           region?: string | null
+          restaurant_id?: string | null
+          sensory_attributes?: Json | null
           tasting_notes?: string | null
           updated_at?: string
+          use_for_profile_training?: boolean | null
           user_id?: string
           vintage?: number | null
         }
