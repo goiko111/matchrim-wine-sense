@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +16,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import wineBottlePlaceholder from "@/assets/wine-bottle-placeholder.png";
 import { WineImporter, WineImportData } from "@/components/wine-import/WineImporter";
 import { WineDetailsDialog } from "@/components/WineDetailsDialog";
@@ -240,6 +242,8 @@ const WINE_REGIONS = [
 
 const WineSearch = () => {
   const { user } = useAuth();
+  const { isAdmin, loading: loadingAdmin } = useIsAdmin();
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState<string>("");
   const [grape, setGrape] = useState<string>("");
@@ -252,6 +256,12 @@ const WineSearch = () => {
   const [openRegionCombobox, setOpenRegionCombobox] = useState(false);
   const [selectedWine, setSelectedWine] = useState<WineResult | null>(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (!loadingAdmin && !isAdmin) {
+      navigate("/");
+    }
+  }, [isAdmin, loadingAdmin, navigate]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -307,6 +317,23 @@ const WineSearch = () => {
     // Tamaño acorde al contenedor (se redimensiona por CSS)
     return `https://placehold.co/160x200/8B0000/FFFFFF/png?text=${text}`;
   };
+
+  if (loadingAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20">
+        <Card className="w-96">
+          <CardContent className="flex flex-col items-center justify-center p-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+            <p className="text-muted-foreground">Verificando permisos...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return null;
+  }
 
   return (
     <>
