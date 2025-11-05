@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -98,6 +99,47 @@ Responde SOLO con un JSON válido en este formato:
     const result = JSON.parse(content);
 
     console.log('Extracted wine data from label:', result);
+
+    // Si faltan datos y tenemos nombre + productor, buscar en la base de datos local
+    if ((!result.region || !result.alcohol) && result.nombre && result.productor) {
+      console.log('Missing region or alcohol, searching in database...');
+      
+      try {
+        const supabaseClient = createClient(
+          Deno.env.get('SUPABASE_URL') ?? '',
+          Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+        );
+
+        // Buscar vinos similares en la base de datos
+        const { data: wines, error } = await supabaseClient
+          .from('wines')
+          .select('region, alcohol')
+          .ilike('name', `%${result.nombre}%`)
+          .ilike('producer', `%${result.productor}%`)
+          .limit(1);
+
+        if (!error && wines && wines.length > 0) {
+          const dbWine = wines[0];
+          
+          // Completar solo los campos que faltan con datos de la BD
+          if (!result.region && dbWine.region) {
+            result.region = dbWine.region;
+            console.log('Region found in database:', dbWine.region);
+          }
+          if (!result.alcohol && dbWine.alcohol) {
+            result.alcohol = dbWine.alcohol;
+            console.log('Alcohol found in database:', dbWine.alcohol);
+          }
+        } else {
+          console.log('No matching wine found in database');
+        }
+      } catch (searchError) {
+        console.error('Error searching database:', searchError);
+        // Continuar con los datos extraídos de la etiqueta
+      }
+    }
+
+    console.log('Final wine data:', result);
 
     return new Response(
       JSON.stringify({ wine: result }),
