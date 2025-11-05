@@ -99,6 +99,67 @@ Responde SOLO con un JSON válido en este formato:
 
     console.log('Extracted wine data from label:', result);
 
+    // Si falta región o alcohol, buscar información adicional
+    if ((!result.region || !result.alcohol) && result.nombre && result.productor) {
+      console.log('Missing region or alcohol, searching additional info...');
+      
+      try {
+        const searchPrompt = `Busca información sobre este vino y proporciona SOLO los datos faltantes:
+        
+Nombre: ${result.nombre}
+Bodega: ${result.productor}
+${result.pais ? `País: ${result.pais}` : ''}
+${result.anada ? `Añada: ${result.anada}` : ''}
+
+Proporciona:
+- region: Región vinícola oficial (DO, DOCa, IGP, AOC, etc.) si la conoces
+- alcohol: Grado alcohólico típico de este vino (número decimal, ej: 13.5)
+
+Responde SOLO con JSON:
+{
+  "region": "Región" o null,
+  "alcohol": número o null
+}`;
+
+        const searchResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash',
+            messages: [
+              { role: 'user', content: searchPrompt }
+            ],
+            max_tokens: 500,
+          }),
+        });
+
+        if (searchResponse.ok) {
+          const searchData = await searchResponse.json();
+          let searchContent = searchData.choices?.[0]?.message?.content || '{}';
+          searchContent = searchContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+          const additionalInfo = JSON.parse(searchContent);
+          
+          // Completar solo los campos que faltan
+          if (!result.region && additionalInfo.region) {
+            result.region = additionalInfo.region;
+            console.log('Region found:', additionalInfo.region);
+          }
+          if (!result.alcohol && additionalInfo.alcohol) {
+            result.alcohol = additionalInfo.alcohol;
+            console.log('Alcohol found:', additionalInfo.alcohol);
+          }
+        }
+      } catch (searchError) {
+        console.error('Error searching additional info:', searchError);
+        // Continuar con los datos extraídos de la etiqueta
+      }
+    }
+
+    console.log('Final wine data:', result);
+
     return new Response(
       JSON.stringify({ wine: result }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
