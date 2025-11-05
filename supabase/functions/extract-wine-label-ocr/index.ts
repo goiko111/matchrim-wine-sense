@@ -139,6 +139,75 @@ Responde SOLO con un JSON válido en este formato:
       }
     }
 
+    // Si aún faltan datos, buscar en internet con verificación de fiabilidad
+    if ((!result.region || !result.alcohol) && result.nombre && result.productor) {
+      console.log('Still missing data, searching on internet...');
+      
+      try {
+        const webSearchPrompt = `Busca información VERIFICABLE sobre este vino en fuentes confiables:
+
+Vino: ${result.nombre}
+Bodega: ${result.productor}
+${result.anada ? `Añada: ${result.anada}` : ''}
+${result.pais ? `País: ${result.pais}` : ''}
+
+IMPORTANTE: 
+- Solo proporciona datos si encuentras fuentes FIABLES (páginas oficiales de bodegas, sitios especializados en vinos)
+- Si no encuentras información verificable, devuelve null
+- NO inventes ni supongas ningún dato
+
+Necesito:
+- region: Denominación de origen oficial (DO, DOCa, IGP, AOC, etc.)
+- alcohol: Grado alcohólico exacto
+
+Responde SOLO con JSON:
+{
+  "region": "región verificada" o null,
+  "alcohol": número decimal exacto o null,
+  "confiable": true o false
+}`;
+
+        const webResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash',
+            messages: [
+              { role: 'user', content: webSearchPrompt }
+            ],
+            max_tokens: 500,
+          }),
+        });
+
+        if (webResponse.ok) {
+          const webData = await webResponse.json();
+          let webContent = webData.choices?.[0]?.message?.content || '{}';
+          webContent = webContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+          const webInfo = JSON.parse(webContent);
+          
+          // Solo usar los datos si se marca como confiable
+          if (webInfo.confiable) {
+            if (!result.region && webInfo.region) {
+              result.region = webInfo.region;
+              console.log('Region found on internet (verified):', webInfo.region);
+            }
+            if (!result.alcohol && webInfo.alcohol) {
+              result.alcohol = webInfo.alcohol;
+              console.log('Alcohol found on internet (verified):', webInfo.alcohol);
+            }
+          } else {
+            console.log('Internet search did not find reliable data');
+          }
+        }
+      } catch (webSearchError) {
+        console.error('Error searching on internet:', webSearchError);
+        // Continuar con los datos que tenemos
+      }
+    }
+
     console.log('Final wine data:', result);
 
     return new Response(
