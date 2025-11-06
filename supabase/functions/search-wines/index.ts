@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { query, limit = 10 } = await req.json();
+    const { query, limit = 20 } = await req.json();
     
     if (!query || query.trim().length < 2) {
       return new Response(
@@ -26,10 +26,9 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Escape special characters for PostgREST query (especially commas)
     const sanitizedQuery = query.replace(/,/g, '\\,');
 
-    // Search in wines table
+    // Search in local database first
     const { data: wines, error } = await supabaseClient
       .from('wines')
       .select('*')
@@ -41,10 +40,73 @@ serve(async (req) => {
       throw error;
     }
 
-    console.log(`Found ${wines?.length || 0} wines matching "${query}"`);
+    let allWines = wines || [];
+    console.log(`Found ${allWines.length} wines in database matching "${query}"`);
+
+    // If we don't have enough results, search externally
+    if (allWines.length < limit) {
+      const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+      if (LOVABLE_API_KEY) {
+        try {
+          console.log('Searching external sources for more wines...');
+          
+          const searchPrompt = `Busca vinos reales que coincidan con: "${query}"
+
+IMPORTANTE:
+- Solo vinos que existan realmente
+- Incluye información verificable: nombre, bodega, región, país, variedades de uva
+- Devuelve máximo ${limit - allWines.length} vinos
+- Si no encuentras vinos verificables, devuelve array vacío
+
+Responde SOLO con JSON:
+{
+  "wines": [
+    {
+      "name": "nombre del vino",
+      "producer": "bodega",
+      "region": "denominación de origen",
+      "country": "país",
+      "grape_varieties": ["uva1", "uva2"],
+      "estilo": "estilo del vino (Tinto Potente, Blanco Fresco, etc.)"
+    }
+  ]
+}`;
+
+          const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: 'google/gemini-2.5-flash',
+              messages: [
+                { role: 'user', content: searchPrompt }
+              ],
+              max_tokens: 1500,
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            let content = data.choices?.[0]?.message?.content || '{}';
+            content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+            const externalData = JSON.parse(content);
+            
+            if (externalData.wines && Array.isArray(externalData.wines)) {
+              console.log(`Found ${externalData.wines.length} wines from external sources`);
+              allWines = [...allWines, ...externalData.wines];
+            }
+          }
+        } catch (externalError) {
+          console.error('Error searching external sources:', externalError);
+          // Continue with database results
+        }
+      }
+    }
 
     return new Response(
-      JSON.stringify({ wines: wines || [] }),
+      JSON.stringify({ wines: allWines }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {

@@ -69,6 +69,7 @@ interface UserWine {
   matchrim_affinity: number | null;
   sensory_attributes: any;
   use_for_profile_training: boolean;
+  status: 'collection' | 'wishlist' | 'tasted';
 }
 
 interface ExtractedWineData {
@@ -94,6 +95,7 @@ const MyWines = () => {
   const [extractedData, setExtractedData] = useState<ExtractedWineData | null>(null);
   const [selectedWine, setSelectedWine] = useState<UserWine | null>(null);
   const [filterType, setFilterType] = useState<'all' | 'favorites' | 'high_affinity'>('all');
+  const [statusFilter, setStatusFilter] = useState<'collection' | 'wishlist' | 'tasted'>('collection');
 
   // Form state
   const [formData, setFormData] = useState({
@@ -116,7 +118,7 @@ const MyWines = () => {
       return;
     }
     loadWines();
-  }, [user, navigate]);
+  }, [user, navigate, statusFilter]);
 
   useEffect(() => {
     applyFilters();
@@ -145,6 +147,7 @@ const MyWines = () => {
       const { data, error } = await supabase
         .from("user_wines")
         .select("*")
+        .eq("status", statusFilter)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -216,6 +219,7 @@ const MyWines = () => {
         tasting_notes: formData.tasting_notes || null,
         personal_note: formData.personal_note || null,
         consumption_date: new Date().toISOString(),
+        status: statusFilter,
       };
 
       if (locationData) {
@@ -229,12 +233,12 @@ const MyWines = () => {
 
       if (error) throw error;
 
-      toast.success("¡Vino añadido a tu colección!");
+      toast.success("¡Vino añadido!");
       setShowAddDialog(false);
       resetForm();
 
-      // Calculate affinity in background - will search for attributes and calculate affinity
-      if (newWine) {
+      // Calculate affinity in background for collection and tasted wines
+      if (newWine && (statusFilter === 'collection' || statusFilter === 'tasted')) {
         toast.info("Calculando afinidad Matchrim...");
         const { data: affinityData, error: affinityError } = await supabase.functions.invoke('calculate-wine-affinity', {
           body: { wine_id: newWine.id }
@@ -369,7 +373,7 @@ const MyWines = () => {
             </TabsTrigger>
             <TabsTrigger value="collection" className="gap-2">
               <Wine className="h-4 w-4" />
-              Mi Colección
+              Colección
             </TabsTrigger>
           </TabsList>
 
@@ -410,204 +414,229 @@ const MyWines = () => {
             </div>
           </TabsContent>
 
-          {/* Collection Tab */}
+          {/* Collection Tab with Status Filters */}
           <TabsContent value="collection" className="space-y-6">
-            {/* Search and Add */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Search className="h-5 w-5" />
-                  Buscar y Añadir Vino
-                </CardTitle>
-                <CardDescription>
-                  Busca en nuestra base de datos o añade manualmente
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <WineSearchBar onSelectWine={handleSearchWineSelect} />
-                <Button
-                  onClick={() => {
-                    resetForm();
-                    setShowLocationDialog(true);
-                  }}
-                  variant="outline"
-                  className="w-full gap-2"
-                >
-                  <Plus className="h-4 w-4" />
-                  Añadir Manualmente
-                </Button>
-              </CardContent>
-            </Card>
+            <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as any)}>
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="collection" className="gap-2">
+                  <Wine className="h-4 w-4" />
+                  Mi Colección
+                </TabsTrigger>
+                <TabsTrigger value="wishlist" className="gap-2">
+                  <Heart className="h-4 w-4" />
+                  Quiero Probar
+                </TabsTrigger>
+                <TabsTrigger value="tasted" className="gap-2">
+                  <Star className="h-4 w-4" />
+                  Ya Probados
+                </TabsTrigger>
+              </TabsList>
 
-            {/* Filters */}
-            <div className="flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <Filter className="h-4 w-4" />
-                    Filtros
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => setFilterType('all')}>
-                    Todos ({wines.length})
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterType('favorites')}>
-                    <Heart className="h-4 w-4 mr-2" />
-                    Favoritos ({wines.filter(w => w.is_favorite).length})
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterType('high_affinity')}>
-                    <Star className="h-4 w-4 mr-2" />
-                    Alta Afinidad ({wines.filter(w => w.matchrim_affinity && w.matchrim_affinity >= 70).length})
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="mt-6 space-y-6">
+                {/* Search and Add */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Search className="h-5 w-5" />
+                      Buscar y Añadir Vino
+                    </CardTitle>
+                    <CardDescription>
+                      Busca en nuestra base de datos o añade manualmente
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <WineSearchBar onSelectWine={handleSearchWineSelect} />
+                    <Button
+                      onClick={() => {
+                        resetForm();
+                        setShowLocationDialog(true);
+                      }}
+                      variant="outline"
+                      className="w-full gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Añadir Manualmente
+                    </Button>
+                  </CardContent>
+                </Card>
 
-              {filterType !== 'all' && (
-                <Badge variant="secondary">
-                  {filterType === 'favorites' && '❤️ Favoritos'}
-                  {filterType === 'high_affinity' && '⭐ Alta Afinidad'}
-                </Badge>
-              )}
-            </div>
+                {/* Filters */}
+                <div className="flex items-center gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <Filter className="h-4 w-4" />
+                        Filtros
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onClick={() => setFilterType('all')}>
+                        Todos ({wines.length})
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setFilterType('favorites')}>
+                        <Heart className="h-4 w-4 mr-2" />
+                        Favoritos ({wines.filter(w => w.is_favorite).length})
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setFilterType('high_affinity')}>
+                        <Star className="h-4 w-4 mr-2" />
+                        Alta Afinidad ({wines.filter(w => w.matchrim_affinity && w.matchrim_affinity >= 70).length})
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
 
-            {/* Wine Collection Grid */}
-            {filteredWines.length === 0 ? (
-              <Card>
-                <CardContent className="py-12 text-center">
-                  <Wine className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">
-                    {filterType === 'all' 
-                      ? "Aún no tienes vinos en tu colección."
-                      : "No hay vinos que coincidan con este filtro."
-                    }
-                  </p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredWines.map((wine) => (
-                  <Card key={wine.id} className="relative group">
-                    <CardHeader>
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="text-lg truncate flex items-center gap-2">
-                            {wine.name}
-                            {getRatingIcon(wine.rating)}
-                          </CardTitle>
-                          {wine.producer && (
-                            <CardDescription className="truncate">{wine.producer}</CardDescription>
-                          )}
-                        </div>
-                        <div className="flex gap-1">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => handleToggleFavorite(wine.id, wine.is_favorite)}
-                          >
-                            <Heart className={`h-4 w-4 ${wine.is_favorite ? 'fill-red-500 text-red-500' : ''}`} />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={() => handleDeleteWine(wine.id)}
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {/* Affinity Score */}
-                      {wine.matchrim_affinity !== null && (
-                        <div className="space-y-1.5">
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Afinidad Matchrim</span>
-                            <span className={`font-bold ${getAffinityColor(wine.matchrim_affinity)}`}>
-                              {wine.matchrim_affinity}%
-                            </span>
-                          </div>
-                          <Progress value={wine.matchrim_affinity} className="h-2" />
-                        </div>
-                      )}
+                  {filterType !== 'all' && (
+                    <Badge variant="secondary">
+                      {filterType === 'favorites' && '❤️ Favoritos'}
+                      {filterType === 'high_affinity' && '⭐ Alta Afinidad'}
+                    </Badge>
+                  )}
+                </div>
 
-                      {/* Wine Details */}
-                      <div className="flex flex-wrap gap-1.5 text-sm">
-                        {wine.vintage && <Badge variant="outline">{wine.vintage}</Badge>}
-                        {wine.region && <Badge variant="outline">{wine.region}</Badge>}
-                        {wine.country && <Badge variant="outline">{wine.country}</Badge>}
-                        {wine.alcohol_content && (
-                          <Badge variant="secondary">{wine.alcohol_content}% ABV</Badge>
-                        )}
-                      </div>
-
-                      {wine.grape_varieties && wine.grape_varieties.length > 0 && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Grape className="h-4 w-4" />
-                          <span className="truncate">{wine.grape_varieties.join(", ")}</span>
-                        </div>
-                      )}
-
-                      {/* Location */}
-                      {wine.consumption_place && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4" />
-                          <span className="truncate">{wine.consumption_place}</span>
-                        </div>
-                      )}
-
-                      {/* Date */}
-                      {wine.consumption_date && (
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Calendar className="h-3 w-3" />
-                          <span>{new Date(wine.consumption_date).toLocaleDateString('es-ES')}</span>
-                        </div>
-                      )}
-
-                      {/* Personal Note */}
-                      {wine.personal_note && (
-                        <p className="text-sm text-muted-foreground italic line-clamp-2 border-l-2 border-primary pl-2">
-                          {wine.personal_note}
-                        </p>
-                      )}
-
-                      {/* Rating Buttons */}
-                      <div className="flex gap-2 pt-2">
-                        <Button
-                          variant={wine.rating === 'love' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => handleRating(wine.id, 'love')}
-                        >
-                          <ThumbsUp className="h-3.5 w-3.5 mr-1" />
-                          Me encanta
-                        </Button>
-                        <Button
-                          variant={wine.rating === 'ok' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => handleRating(wine.id, 'ok')}
-                        >
-                          <Meh className="h-3.5 w-3.5 mr-1" />
-                          Correcto
-                        </Button>
-                        <Button
-                          variant={wine.rating === 'not_for_me' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => handleRating(wine.id, 'not_for_me')}
-                        >
-                          <ThumbsDown className="h-3.5 w-3.5 mr-1" />
-                          No va
-                        </Button>
-                      </div>
+                {/* Wine Collection Grid */}
+                {filteredWines.length === 0 ? (
+                  <Card>
+                    <CardContent className="py-12 text-center">
+                      <Wine className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                      <p className="text-muted-foreground">
+                        {statusFilter === 'collection' && 'No tienes vinos en tu colección'}
+                        {statusFilter === 'wishlist' && 'No tienes vinos en tu lista de deseos'}
+                        {statusFilter === 'tasted' && 'Aún no has probado ningún vino'}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {statusFilter === 'collection' && 'Escanea una etiqueta o añade uno manualmente'}
+                        {statusFilter === 'wishlist' && 'Añade vinos que quieras probar en el futuro'}
+                        {statusFilter === 'tasted' && 'Puntúa los vinos que hayas probado para mejorar tus recomendaciones'}
+                      </p>
                     </CardContent>
                   </Card>
-                ))}
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredWines.map((wine) => (
+                      <Card key={wine.id} className="relative group">
+                        <CardHeader>
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1 min-w-0">
+                              <CardTitle className="text-lg truncate flex items-center gap-2">
+                                {wine.name}
+                                {getRatingIcon(wine.rating)}
+                              </CardTitle>
+                              {wine.producer && (
+                                <CardDescription className="truncate">{wine.producer}</CardDescription>
+                              )}
+                            </div>
+                            <div className="flex gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={() => handleToggleFavorite(wine.id, wine.is_favorite)}
+                              >
+                                <Heart className={`h-4 w-4 ${wine.is_favorite ? 'fill-red-500 text-red-500' : ''}`} />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={() => handleDeleteWine(wine.id)}
+                              >
+                                <Trash2 className="h-4 w-4 text-destructive" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          {/* Affinity Score */}
+                          {wine.matchrim_affinity !== null && (
+                            <div className="space-y-1.5">
+                              <div className="flex items-center justify-between text-sm">
+                                <span className="text-muted-foreground">Afinidad Matchrim</span>
+                                <span className={`font-bold ${getAffinityColor(wine.matchrim_affinity)}`}>
+                                  {wine.matchrim_affinity}%
+                                </span>
+                              </div>
+                              <Progress value={wine.matchrim_affinity} className="h-2" />
+                            </div>
+                          )}
+
+                          {/* Wine Details */}
+                          <div className="flex flex-wrap gap-1.5 text-sm">
+                            {wine.vintage && <Badge variant="outline">{wine.vintage}</Badge>}
+                            {wine.region && <Badge variant="outline">{wine.region}</Badge>}
+                            {wine.country && <Badge variant="outline">{wine.country}</Badge>}
+                            {wine.alcohol_content && (
+                              <Badge variant="secondary">{wine.alcohol_content}% ABV</Badge>
+                            )}
+                          </div>
+
+                          {wine.grape_varieties && wine.grape_varieties.length > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Grape className="h-4 w-4" />
+                              <span className="truncate">{wine.grape_varieties.join(", ")}</span>
+                            </div>
+                          )}
+
+                          {/* Location */}
+                          {wine.consumption_place && (
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <MapPin className="h-4 w-4" />
+                              <span className="truncate">{wine.consumption_place}</span>
+                            </div>
+                          )}
+
+                          {/* Date */}
+                          {wine.consumption_date && (
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <Calendar className="h-3 w-3" />
+                              <span>{new Date(wine.consumption_date).toLocaleDateString('es-ES')}</span>
+                            </div>
+                          )}
+
+                          {/* Personal Note */}
+                          {wine.personal_note && (
+                            <p className="text-sm text-muted-foreground italic line-clamp-2 border-l-2 border-primary pl-2">
+                              {wine.personal_note}
+                            </p>
+                          )}
+
+                          {/* Rating Buttons - Only for tasted wines */}
+                          {statusFilter === 'tasted' && (
+                            <div className="flex gap-2 pt-2">
+                              <Button
+                                variant={wine.rating === 'love' ? 'default' : 'outline'}
+                                size="sm"
+                                className="flex-1"
+                                onClick={() => handleRating(wine.id, 'love')}
+                              >
+                                <ThumbsUp className="h-3.5 w-3.5 mr-1" />
+                                Me encanta
+                              </Button>
+                              <Button
+                                variant={wine.rating === 'ok' ? 'default' : 'outline'}
+                                size="sm"
+                                className="flex-1"
+                                onClick={() => handleRating(wine.id, 'ok')}
+                              >
+                                <Meh className="h-3.5 w-3.5 mr-1" />
+                                Correcto
+                              </Button>
+                              <Button
+                                variant={wine.rating === 'not_for_me' ? 'default' : 'outline'}
+                                size="sm"
+                                className="flex-1"
+                                onClick={() => handleRating(wine.id, 'not_for_me')}
+                              >
+                                <ThumbsDown className="h-3.5 w-3.5 mr-1" />
+                                No va
+                              </Button>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            </Tabs>
           </TabsContent>
         </Tabs>
 

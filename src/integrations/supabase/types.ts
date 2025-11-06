@@ -286,6 +286,7 @@ export type Database = {
           region: string | null
           restaurant_id: string | null
           sensory_attributes: Json | null
+          status: string
           tasting_notes: string | null
           updated_at: string
           use_for_profile_training: boolean | null
@@ -312,6 +313,7 @@ export type Database = {
           region?: string | null
           restaurant_id?: string | null
           sensory_attributes?: Json | null
+          status?: string
           tasting_notes?: string | null
           updated_at?: string
           use_for_profile_training?: boolean | null
@@ -338,6 +340,7 @@ export type Database = {
           region?: string | null
           restaurant_id?: string | null
           sensory_attributes?: Json | null
+          status?: string
           tasting_notes?: string | null
           updated_at?: string
           use_for_profile_training?: boolean | null
