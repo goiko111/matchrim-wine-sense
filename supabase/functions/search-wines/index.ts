@@ -43,65 +43,86 @@ serve(async (req) => {
     let allWines = wines || [];
     console.log(`Found ${allWines.length} wines in database matching "${query}"`);
 
-    // If we don't have enough results, search externally
-    if (allWines.length < limit) {
-      const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-      if (LOVABLE_API_KEY) {
-        try {
-          console.log('Searching external sources for more wines...');
-          
-          const searchPrompt = `Busca vinos reales que coincidan con: "${query}"
+    // Always search externally to complement results
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (LOVABLE_API_KEY) {
+      try {
+        console.log('Searching external sources for wines...');
+        
+        const remainingSlots = Math.max(5, limit - allWines.length);
+        const searchPrompt = `Busca vinos REALES que coincidan con la búsqueda: "${query}"
 
-IMPORTANTE:
-- Solo vinos que existan realmente
-- Incluye información verificable: nombre, bodega, región, país, variedades de uva
-- Devuelve máximo ${limit - allWines.length} vinos
-- Si no encuentras vinos verificables, devuelve array vacío
+INSTRUCCIONES CRÍTICAS:
+- SOLO vinos que existan realmente en el mercado
+- Da prioridad a vinos icónicos y reconocidos de la bodega/región mencionada
+- Si buscas "Muga", incluye OBLIGATORIAMENTE: Muga Reserva, Muga Crianza, Prado Enea, Torre Muga
+- Si buscas una bodega, incluye su gama completa de vinos principales
+- Información completa y verificable de cada vino
+- Devuelve máximo ${remainingSlots} vinos
+- ORDENA por importancia/reconocimiento del vino
 
-Responde SOLO con JSON:
+Formato JSON (sin markdown):
 {
   "wines": [
     {
-      "name": "nombre del vino",
-      "producer": "bodega",
+      "name": "nombre completo del vino",
+      "producer": "nombre de la bodega",
       "region": "denominación de origen",
       "country": "país",
-      "grape_varieties": ["uva1", "uva2"],
-      "estilo": "estilo del vino (Tinto Potente, Blanco Fresco, etc.)"
+      "grape_varieties": ["variedad1", "variedad2"],
+      "estilo": "categoría del vino (ej: Tinto Crianza, Blanco Fresco)"
     }
   ]
-}`;
+}
 
-          const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              model: 'google/gemini-2.5-flash',
-              messages: [
-                { role: 'user', content: searchPrompt }
-              ],
-              max_tokens: 1500,
-            }),
-          });
+DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
 
-          if (response.ok) {
-            const data = await response.json();
-            let content = data.choices?.[0]?.message?.content || '{}';
-            content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-            const externalData = JSON.parse(content);
-            
-            if (externalData.wines && Array.isArray(externalData.wines)) {
-              console.log(`Found ${externalData.wines.length} wines from external sources`);
-              allWines = [...allWines, ...externalData.wines];
-            }
+        const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash',
+            messages: [
+              { role: 'user', content: searchPrompt }
+            ],
+            temperature: 0.3,
+            max_tokens: 2000,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          let content = data.choices?.[0]?.message?.content || '{}';
+          
+          // Clean up markdown code blocks
+          content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+          
+          // Remove any text before the first {
+          const firstBrace = content.indexOf('{');
+          if (firstBrace > 0) {
+            content = content.substring(firstBrace);
           }
-        } catch (externalError) {
-          console.error('Error searching external sources:', externalError);
-          // Continue with database results
+          
+          const externalData = JSON.parse(content);
+          
+          if (externalData.wines && Array.isArray(externalData.wines)) {
+            console.log(`Found ${externalData.wines.length} wines from external sources`);
+            
+            // Merge results, avoiding duplicates
+            const existingNames = new Set(allWines.map(w => w.name?.toLowerCase()));
+            const newWines = externalData.wines.filter((wine: any) => 
+              !existingNames.has(wine.name?.toLowerCase())
+            );
+            
+            allWines = [...allWines, ...newWines];
+          }
         }
+      } catch (externalError) {
+        console.error('Error searching external sources:', externalError);
+        // Continue with database results
       }
     }
 
