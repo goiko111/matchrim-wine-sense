@@ -282,6 +282,7 @@ export type Database = {
           personal_note: string | null
           place_details: Json | null
           producer: string | null
+          quantity: number | null
           rating: string | null
           region: string | null
           restaurant_id: string | null
@@ -309,6 +310,7 @@ export type Database = {
           personal_note?: string | null
           place_details?: Json | null
           producer?: string | null
+          quantity?: number | null
           rating?: string | null
           region?: string | null
           restaurant_id?: string | null
@@ -336,6 +338,7 @@ export type Database = {
           personal_note?: string | null
           place_details?: Json | null
           producer?: string | null
+          quantity?: number | null
           rating?: string | null
           region?: string | null
           restaurant_id?: string | null

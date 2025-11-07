@@ -70,6 +70,7 @@ interface UserWine {
   sensory_attributes: any;
   use_for_profile_training: boolean;
   status: 'collection' | 'wishlist' | 'tasted';
+  quantity: number | null;
 }
 
 interface ExtractedWineData {
@@ -108,6 +109,7 @@ const MyWines = () => {
     alcohol_content: "",
     tasting_notes: "",
     personal_note: "",
+    quantity: "1",
   });
 
   const [locationData, setLocationData] = useState<any>(null);
@@ -172,6 +174,7 @@ const MyWines = () => {
       alcohol_content: wine.alcohol?.toString() || "",
       tasting_notes: wine.notas_cata || "",
       personal_note: "",
+      quantity: "1",
     });
     setShowLocationDialog(true);
   };
@@ -187,6 +190,7 @@ const MyWines = () => {
       alcohol_content: wine.alcohol_content != null ? String(wine.alcohol_content) : "",
       tasting_notes: wine.tasting_notes || "",
       personal_note: "",
+      quantity: "1",
     });
     setShowLocationDialog(true);
   };
@@ -220,6 +224,7 @@ const MyWines = () => {
         personal_note: formData.personal_note || null,
         consumption_date: new Date().toISOString(),
         status: statusFilter,
+        quantity: statusFilter === 'collection' ? (formData.quantity ? parseInt(formData.quantity) : 1) : null,
       };
 
       if (locationData) {
@@ -280,14 +285,26 @@ const MyWines = () => {
 
   const handleRating = async (wineId: string, rating: 'love' | 'ok' | 'not_for_me') => {
     try {
+      const wine = wines.find(w => w.id === wineId);
+      
+      // If wine is in collection, move it to tasted when rating
+      const updateData: any = { rating };
+      if (wine?.status === 'collection') {
+        updateData.status = 'tasted';
+        updateData.consumption_date = new Date().toISOString();
+      }
+
       const { error } = await supabase
         .from("user_wines")
-        .update({ rating })
+        .update(updateData)
         .eq("id", wineId);
 
       if (error) throw error;
 
-      toast.success("Valoración guardada");
+      toast.success(wine?.status === 'collection' 
+        ? "Vino puntuado y movido a 'Ya Probados'" 
+        : "Valoración guardada"
+      );
       loadWines();
     } catch (error) {
       console.error("Error rating wine:", error);
@@ -322,6 +339,7 @@ const MyWines = () => {
       alcohol_content: "",
       tasting_notes: "",
       personal_note: "",
+      quantity: "1",
     });
     setExtractedData(null);
     setLocationData(null);
@@ -420,15 +438,24 @@ const MyWines = () => {
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="collection" className="gap-2">
                   <Wine className="h-4 w-4" />
-                  Mi Colección
+                  <div className="flex flex-col items-start">
+                    <span>Mi Bodega</span>
+                    <span className="text-[10px] text-muted-foreground font-normal">Vinos que tengo</span>
+                  </div>
                 </TabsTrigger>
                 <TabsTrigger value="wishlist" className="gap-2">
                   <Heart className="h-4 w-4" />
-                  Quiero Probar
+                  <div className="flex flex-col items-start">
+                    <span>Quiero Probar</span>
+                    <span className="text-[10px] text-muted-foreground font-normal">Lista de deseos</span>
+                  </div>
                 </TabsTrigger>
                 <TabsTrigger value="tasted" className="gap-2">
                   <Star className="h-4 w-4" />
-                  Ya Probados
+                  <div className="flex flex-col items-start">
+                    <span>Ya Probados</span>
+                    <span className="text-[10px] text-muted-foreground font-normal">Puntúa y entrena</span>
+                  </div>
                 </TabsTrigger>
               </TabsList>
 
@@ -545,6 +572,16 @@ const MyWines = () => {
                           </div>
                         </CardHeader>
                         <CardContent className="space-y-3">
+                          {/* Quantity for collection items */}
+                          {statusFilter === 'collection' && wine.quantity !== null && (
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Stock en bodega</span>
+                              <Badge variant={wine.quantity > 0 ? 'default' : 'secondary'}>
+                                {wine.quantity} {wine.quantity === 1 ? 'botella' : 'botellas'}
+                              </Badge>
+                            </div>
+                          )}
+
                           {/* Affinity Score */}
                           {wine.matchrim_affinity !== null && (
                             <div className="space-y-1.5">
@@ -598,8 +635,8 @@ const MyWines = () => {
                             </p>
                           )}
 
-                          {/* Rating Buttons - Only for tasted wines */}
-                          {statusFilter === 'tasted' && (
+                          {/* Rating Buttons - For tasted wines and collection wines */}
+                          {(statusFilter === 'tasted' || statusFilter === 'collection') && (
                             <div className="flex gap-2 pt-2">
                               <Button
                                 variant={wine.rating === 'love' ? 'default' : 'outline'}
@@ -766,6 +803,21 @@ const MyWines = () => {
                     rows={2}
                   />
                 </div>
+
+                {/* Quantity field only for collection */}
+                {statusFilter === 'collection' && (
+                  <div>
+                    <Label htmlFor="quantity">Cantidad en Bodega</Label>
+                    <Input
+                      id="quantity"
+                      type="number"
+                      min="0"
+                      value={formData.quantity}
+                      onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                      placeholder="Número de botellas"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
