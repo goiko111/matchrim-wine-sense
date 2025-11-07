@@ -36,6 +36,7 @@ interface QuizResultsProps {
   description: string;
   recommendations: string[];
   onRestart: () => void;
+  isLoggedIn: boolean;
 }
 
 // Función para generar descripción emocional basada en el radar de atributos
@@ -80,7 +81,7 @@ const generateEmotionalDescription = (result: QuizResult): string => {
   return description;
 };
 
-const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart }) => {
+const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart, isLoggedIn }) => {
   const navigate = useNavigate();
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
@@ -974,6 +975,32 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             </div>
           </div>
         </div>
+        
+        {!isLoggedIn && (
+          <div className="bg-gradient-to-br from-red-600 to-red-800 p-6 rounded-xl shadow-lg border-2 border-red-400 mt-6 mb-6">
+            <div className="flex flex-col md:flex-row items-center gap-4 text-white">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                  <Wine className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h4 className="font-bold text-xl mb-2">¡Descubre más ventajas!</h4>
+                <p className="text-red-100 mb-3">
+                  Crea tu cuenta gratis y disfruta de tests ilimitados, guarda tus resultados y recibe recomendaciones personalizadas de vinos.
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <Button 
+                  onClick={() => navigate('/auth')}
+                  className="bg-white text-red-700 hover:bg-red-50 font-semibold px-6 py-3 shadow-lg"
+                >
+                  Registrarse gratis
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       
       <div className="flex flex-col items-center gap-4">

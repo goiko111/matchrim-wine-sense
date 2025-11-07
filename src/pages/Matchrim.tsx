@@ -7,7 +7,8 @@ import { questions, calculateProfile, getProfileDescription } from '@/data/quizD
 import { getDiverseWineRecommendations, UserProfile, WineRecommendation } from '@/utils/wineRecommendations';
 import { generateWineStyles } from '@/utils/profileUtils';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { ArrowLeft, Wine } from 'lucide-react';
 import AppNav from '@/components/AppNav';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -21,7 +22,25 @@ const Matchrim = () => {
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
 
+  // Check if user has already taken the test (for non-logged users)
+  useEffect(() => {
+    if (!user) {
+      const hasCompletedTest = localStorage.getItem('matchrim_test_completed');
+      if (hasCompletedTest === 'true') {
+        setCurrentStep('limit-reached');
+      }
+    }
+  }, [user]);
+
   const handleStart = () => {
+    // Check if non-logged user has already completed the test
+    if (!user) {
+      const hasCompletedTest = localStorage.getItem('matchrim_test_completed');
+      if (hasCompletedTest === 'true') {
+        setCurrentStep('limit-reached');
+        return;
+      }
+    }
     setCurrentStep('quiz');
   };
 
@@ -37,6 +56,11 @@ const Matchrim = () => {
       const result = calculateProfile(newAnswers);
       setQuizResult(result);
       setCurrentStep('results');
+      
+      // Mark test as completed for non-logged users
+      if (!user) {
+        localStorage.setItem('matchrim_test_completed', 'true');
+      }
     }
   };
 
@@ -57,6 +81,11 @@ const Matchrim = () => {
   };
 
   const handleRestartQuiz = () => {
+    // Only allow restart for logged users
+    if (!user) {
+      setCurrentStep('limit-reached');
+      return;
+    }
     setCurrentStep('intro');
     setCurrentQuestionIndex(0);
     setAnswers({});
@@ -202,7 +231,46 @@ const Matchrim = () => {
             description={getProfileDescription(quizResult)}
             recommendations={recommendations}
             onRestart={handleRestartQuiz}
+            isLoggedIn={!!user}
           />
+        )}
+
+        {currentStep === 'limit-reached' && (
+          <div className="min-h-[80vh] flex items-center justify-center px-4">
+            <Card className="max-w-md w-full bg-white/95 backdrop-blur">
+              <CardContent className="pt-6 text-center space-y-6">
+                <div className="w-20 h-20 mx-auto bg-red-100 rounded-full flex items-center justify-center">
+                  <Wine className="h-10 w-10 text-red-900" />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-bold text-red-900">
+                    Ya has completado el test
+                  </h2>
+                  <p className="text-red-700">
+                    Los usuarios sin cuenta pueden realizar el test una sola vez.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <Button
+                    onClick={() => navigate('/auth')}
+                    className="w-full bg-red-900 hover:bg-red-800 text-white"
+                  >
+                    Crear cuenta gratis
+                  </Button>
+                  <Button
+                    onClick={handleBackToHome}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Volver al inicio
+                  </Button>
+                </div>
+                <p className="text-sm text-red-600">
+                  Regístrate para repetir el test ilimitadamente y guardar tus resultados
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         )}
       </div>
     </div>
