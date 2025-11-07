@@ -59,7 +59,7 @@ import datiles from '@/assets/quiz/question-8-datiles.jpg';
 import anis from '@/assets/quiz/question-11-anis.jpg';
 import cafeSolo from '@/assets/quiz/question-9-espresso.jpg';
 import avellanas from '@/assets/quiz/question-12-avellanas-tostadas.jpg';
-import vainilla from '@/assets/quiz/question-10-vainilla.jpg';
+import vainilla from '@/assets/quiz/question-13-vainilla.jpg';
 import cafeDulce from '@/assets/quiz/question-14-cafe-con-leche.jpg';
 import hierbabuena from '@/assets/quiz/question-15-hierbabuena.jpg';
 import mango from '@/assets/quiz/question-16-mango.jpg';
