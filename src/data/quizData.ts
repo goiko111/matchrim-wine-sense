@@ -65,6 +65,8 @@ import question15 from '@/assets/quiz/question-15-pescado-blanco.jpg';
 import question16 from '@/assets/quiz/question-16-encurtidos.jpg';
 import question17 from '@/assets/quiz/question-17-salsas-acidas.jpg';
 import question18 from '@/assets/quiz/question-18-mermeladas.jpg';
+import question19 from '@/assets/quiz/question-19-hierbas.jpg';
+import question20 from '@/assets/quiz/question-20-avellanas.jpg';
 
 export const questions: Question[] = [
   {
@@ -174,6 +176,18 @@ export const questions: Question[] = [
     text: "¿Te gustan las mermeladas?",
     image: question18,
     scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 2 }
+  },
+  {
+    id: 19,
+    text: "¿Te gustan las hierbas frescas?",
+    image: question19,
+    scores: { potente: 0, acidez: 1, dulce: 0, tanico: 0, afrutado: 1 }
+  },
+  {
+    id: 20,
+    text: "¿Te gustan las avellanas tostadas?",
+    image: question20,
+    scores: { potente: 1, acidez: 0, dulce: 1, tanico: 1, afrutado: 0 }
   }
 ];
 
