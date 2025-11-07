@@ -977,26 +977,69 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
         </div>
         
         {!isLoggedIn && (
-          <div className="bg-gradient-to-br from-red-600 to-red-800 p-6 rounded-xl shadow-lg border-2 border-red-400 mt-6 mb-6">
-            <div className="flex flex-col md:flex-row items-center gap-4 text-white">
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                  <Wine className="h-8 w-8 text-white" />
+          <div className="bg-gradient-to-br from-red-600 via-red-700 to-red-800 p-8 rounded-2xl shadow-2xl border-2 border-red-400 mt-8 mb-6 relative overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16"></div>
+            
+            <div className="relative z-10">
+              <div className="flex flex-col items-center text-center mb-6">
+                <div className="w-20 h-20 bg-white/20 backdrop-blur rounded-full flex items-center justify-center mb-4 shadow-lg">
+                  <Wine className="h-10 w-10 text-white" />
                 </div>
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <h4 className="font-bold text-xl mb-2">¡Descubre más ventajas!</h4>
-                <p className="text-red-100 mb-3">
-                  Crea tu cuenta gratis y disfruta de tests ilimitados, guarda tus resultados y recibe recomendaciones personalizadas de vinos.
+                <h3 className="font-bold text-3xl mb-3 text-white">
+                  🎉 ¡Lleva tu experiencia al siguiente nivel!
+                </h3>
+                <p className="text-xl text-red-100 font-medium max-w-2xl">
+                  Has descubierto tu perfil de vino. Ahora regístrate gratis y accede a todas las ventajas exclusivas de Winerim.
                 </p>
               </div>
-              <div className="flex-shrink-0">
+
+              {/* Benefits grid */}
+              <div className="grid md:grid-cols-3 gap-4 mb-6">
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+                  <div className="text-3xl mb-2">🔄</div>
+                  <h4 className="font-bold text-white mb-1">Tests Ilimitados</h4>
+                  <p className="text-sm text-red-100">Repite el test cuando quieras y ve cómo evoluciona tu paladar</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+                  <div className="text-3xl mb-2">💾</div>
+                  <h4 className="font-bold text-white mb-1">Guarda tus Resultados</h4>
+                  <p className="text-sm text-red-100">Historial completo de todos tus perfiles y recomendaciones</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+                  <div className="text-3xl mb-2">🎯</div>
+                  <h4 className="font-bold text-white mb-1">Recomendaciones IA</h4>
+                  <p className="text-sm text-red-100">Sugerencias personalizadas basadas en tus preferencias únicas</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+                  <div className="text-3xl mb-2">🍽️</div>
+                  <h4 className="font-bold text-white mb-1">Maridajes Perfectos</h4>
+                  <p className="text-sm text-red-100">Descubre qué vino combina mejor con cada comida</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+                  <div className="text-3xl mb-2">📚</div>
+                  <h4 className="font-bold text-white mb-1">Base de Datos Premium</h4>
+                  <p className="text-sm text-red-100">Miles de vinos catalogados con información detallada</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+                  <div className="text-3xl mb-2">⭐</div>
+                  <h4 className="font-bold text-white mb-1">Experiencia Premium</h4>
+                  <p className="text-sm text-red-100">Sin límites, sin anuncios, solo el mejor contenido</p>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <div className="flex flex-col items-center gap-3">
                 <Button 
                   onClick={() => navigate('/auth')}
-                  className="bg-white text-red-700 hover:bg-red-50 font-semibold px-6 py-3 shadow-lg"
+                  className="bg-white text-red-700 hover:bg-red-50 font-bold px-10 py-6 text-lg shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-105"
                 >
-                  Registrarse gratis
+                  🚀 Registrarme gratis ahora
                 </Button>
+                <p className="text-sm text-red-100">
+                  ✓ Sin tarjeta de crédito  •  ✓ Acceso inmediato  •  ✓ 100% gratuito
+                </p>
               </div>
             </div>
           </div>

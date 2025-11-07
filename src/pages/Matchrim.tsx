@@ -237,37 +237,109 @@ const Matchrim = () => {
 
         {currentStep === 'limit-reached' && (
           <div className="min-h-[80vh] flex items-center justify-center px-4">
-            <Card className="max-w-md w-full bg-white/95 backdrop-blur">
-              <CardContent className="pt-6 text-center space-y-6">
-                <div className="w-20 h-20 mx-auto bg-red-100 rounded-full flex items-center justify-center">
-                  <Wine className="h-10 w-10 text-red-900" />
-                </div>
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-bold text-red-900">
-                    Ya has completado el test
-                  </h2>
-                  <p className="text-red-700">
-                    Los usuarios sin cuenta pueden realizar el test una sola vez.
+            <Card className="max-w-2xl w-full bg-white/95 backdrop-blur shadow-2xl">
+              <CardContent className="pt-8 pb-8 px-6 md:px-10">
+                <div className="text-center space-y-6">
+                  {/* Icon */}
+                  <div className="w-24 h-24 mx-auto bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center shadow-lg">
+                    <Wine className="h-12 w-12 text-white" />
+                  </div>
+                  
+                  {/* Title */}
+                  <div className="space-y-3">
+                    <h2 className="text-3xl md:text-4xl font-bold text-red-900">
+                      ¡Desbloquea todo el potencial de Winerim!
+                    </h2>
+                    <p className="text-lg text-red-700 font-medium">
+                      Ya completaste tu test gratuito. Regístrate ahora y disfruta de beneficios exclusivos.
+                    </p>
+                  </div>
+
+                  {/* Benefits List */}
+                  <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-xl p-6 border-2 border-red-200 text-left space-y-4">
+                    <h3 className="font-bold text-xl text-red-900 text-center mb-4">
+                      ✨ Con tu cuenta gratuita obtienes:
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-xs font-bold">✓</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">Tests ilimitados</p>
+                          <p className="text-sm text-gray-700">Repite el test todas las veces que quieras</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-xs font-bold">✓</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">Historial completo</p>
+                          <p className="text-sm text-gray-700">Guarda y compara todos tus resultados</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-xs font-bold">✓</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">Recomendaciones personalizadas</p>
+                          <p className="text-sm text-gray-700">Vinos perfectos para tu perfil único</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-xs font-bold">✓</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">Maridajes inteligentes</p>
+                          <p className="text-sm text-gray-700">Encuentra el vino perfecto para cada comida</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-xs font-bold">✓</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">Base de datos completa</p>
+                          <p className="text-sm text-gray-700">Acceso a miles de vinos catalogados</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-xs font-bold">✓</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">Sin anuncios</p>
+                          <p className="text-sm text-gray-700">Experiencia premium sin interrupciones</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA Buttons */}
+                  <div className="space-y-3 pt-4">
+                    <Button
+                      onClick={() => navigate('/auth')}
+                      className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-lg py-6 shadow-lg hover:shadow-xl transition-all duration-300 font-bold"
+                    >
+                      🚀 Crear cuenta gratis ahora
+                    </Button>
+                    <Button
+                      onClick={handleBackToHome}
+                      variant="outline"
+                      className="w-full border-red-300 text-red-700 hover:bg-red-50"
+                    >
+                      Volver al inicio
+                    </Button>
+                  </div>
+
+                  {/* Footer note */}
+                  <p className="text-sm text-gray-600 pt-2">
+                    🔒 Registro 100% gratuito • No requiere tarjeta de crédito
                   </p>
                 </div>
-                <div className="space-y-3">
-                  <Button
-                    onClick={() => navigate('/auth')}
-                    className="w-full bg-red-900 hover:bg-red-800 text-white"
-                  >
-                    Crear cuenta gratis
-                  </Button>
-                  <Button
-                    onClick={handleBackToHome}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    Volver al inicio
-                  </Button>
-                </div>
-                <p className="text-sm text-red-600">
-                  Regístrate para repetir el test ilimitadamente y guardar tus resultados
-                </p>
               </CardContent>
             </Card>
           </div>
