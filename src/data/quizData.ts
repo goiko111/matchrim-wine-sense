@@ -61,7 +61,7 @@ import question11 from '@/assets/quiz/question-11-anis.jpg';
 import question12 from '@/assets/quiz/question-12-bombones.jpg';
 import question13 from '@/assets/quiz/question-13-limon.jpg';
 import question14 from '@/assets/quiz/question-14-melocotones.jpg';
-import question15 from '@/assets/quiz/question-15-pescado-blanco.jpg';
+import question15 from '@/assets/quiz/question-15-marisco.jpg';
 import question16 from '@/assets/quiz/question-16-encurtidos.jpg';
 import question17 from '@/assets/quiz/question-17-salsas-acidas.jpg';
 import question18 from '@/assets/quiz/question-18-mermeladas.jpg';
@@ -155,7 +155,7 @@ export const questions: Question[] = [
   },
   {
     id: 15,
-    text: "¿Te gusta el pescado blanco?",
+    text: "¿Te gusta el marisco?",
     image: question15,
     scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 }
   },
