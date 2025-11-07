@@ -50,23 +50,23 @@ export interface ProfileType {
 import manzanaVerde from '@/assets/quiz/question-5-manzanas-verdes.jpg';
 import cayena from '@/assets/quiz/question-1-pimiento.jpg';
 import trufas from '@/assets/quiz/question-7-trufas.jpg';
-import pimientoRojo from '@/assets/quiz/question-1-pimiento.jpg';
-import cuero from '@/assets/quiz/question-2-cuero.jpg';
-import quesoAzul from '@/assets/quiz/question-5-queso-cabra.jpg';
-import pepinillos from '@/assets/quiz/question-16-encurtidos.jpg';
+import pimientoRojo from '@/assets/quiz/question-4-pimiento-rojo.jpg';
+import cuero from '@/assets/quiz/question-5-cuero.jpg';
+import quesoAzul from '@/assets/quiz/question-6-queso-azul.jpg';
+import pepinillos from '@/assets/quiz/question-7-pepinillos.jpg';
 import berenjenas from '@/assets/quiz/question-6-berenjenas.jpg';
 import datiles from '@/assets/quiz/question-8-datiles.jpg';
 import anis from '@/assets/quiz/question-11-anis.jpg';
 import cafeSolo from '@/assets/quiz/question-9-espresso.jpg';
-import avellanas from '@/assets/quiz/question-20-avellanas.jpg';
+import avellanas from '@/assets/quiz/question-12-avellanas-tostadas.jpg';
 import vainilla from '@/assets/quiz/question-10-vainilla.jpg';
-import cafeDulce from '@/assets/quiz/question-12-cafe-dulce.jpg';
-import hierbabuena from '@/assets/quiz/question-13-menta.jpg';
-import mango from '@/assets/quiz/question-14-melocotones.jpg';
-import marisco from '@/assets/quiz/question-15-marisco.jpg';
-import encurtidos from '@/assets/quiz/question-16-encurtidos.jpg';
-import curry from '@/assets/quiz/question-4-regaliz.jpg';
-import caramelosLimon from '@/assets/quiz/question-13-limon.jpg';
+import cafeDulce from '@/assets/quiz/question-14-cafe-con-leche.jpg';
+import hierbabuena from '@/assets/quiz/question-15-hierbabuena.jpg';
+import mango from '@/assets/quiz/question-16-mango.jpg';
+import marisco from '@/assets/quiz/question-17-marisco.jpg';
+import encurtidos from '@/assets/quiz/question-18-encurtidos.jpg';
+import curry from '@/assets/quiz/question-19-curry.jpg';
+import caramelosLimon from '@/assets/quiz/question-20-caramelos-limon.jpg';
 
 export const questions: Question[] = [
   {
