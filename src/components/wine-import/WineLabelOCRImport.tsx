@@ -13,6 +13,7 @@ interface ExtractedWineData {
   uvas: string[];
   alcohol: number | null;
   notas_cata: string | null;
+  imagen_url?: string | null;
 }
 
 interface WineLabelOCRImportProps {
@@ -61,6 +62,26 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
 
       if (data.wine) {
         toast.success("✨ Etiqueta analizada correctamente");
+        
+        // Search for bottle image
+        try {
+          const { data: imageData } = await supabase.functions.invoke('search-wine-image', {
+            body: {
+              wineName: data.wine.nombre,
+              producer: data.wine.productor,
+              vintage: data.wine.anada
+            }
+          });
+
+          if (imageData?.imageUrl) {
+            data.wine.imagen_url = imageData.imageUrl;
+            toast.success("🍾 Imagen de la botella encontrada");
+          }
+        } catch (imageError) {
+          console.error('Error searching for wine image:', imageError);
+          // Continue without image if search fails
+        }
+        
         onExtractComplete(data.wine);
       } else {
         toast.info("No se pudo extraer información de la etiqueta");

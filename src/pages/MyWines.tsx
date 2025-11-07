@@ -82,6 +82,7 @@ interface ExtractedWineData {
   uvas: string[];
   alcohol: number | null;
   notas_cata: string | null;
+  imagen_url?: string | null;
 }
 
 const MyWines = () => {
@@ -94,6 +95,7 @@ const MyWines = () => {
   const [showLocationDialog, setShowLocationDialog] = useState(false);
   const [saving, setSaving] = useState(false);
   const [extractedData, setExtractedData] = useState<ExtractedWineData | null>(null);
+  const [extractedImageUrl, setExtractedImageUrl] = useState<string | null>(null);
   const [selectedWine, setSelectedWine] = useState<UserWine | null>(null);
   const [filterType, setFilterType] = useState<'all' | 'favorites' | 'high_affinity'>('all');
   const [statusFilter, setStatusFilter] = useState<'collection' | 'wishlist' | 'tasted'>('collection');
@@ -172,6 +174,7 @@ const MyWines = () => {
 
   const handleExtractComplete = (wine: ExtractedWineData) => {
     setExtractedData(wine);
+    setExtractedImageUrl(wine.imagen_url || null);
     setFormData({
       name: wine.nombre || "",
       producer: wine.productor || "",
@@ -233,6 +236,7 @@ const MyWines = () => {
         consumption_date: new Date().toISOString(),
         status: statusFilter,
         quantity: statusFilter === 'collection' ? (formData.quantity ? parseInt(formData.quantity) : 1) : null,
+        image_url: extractedImageUrl || null,
       };
 
       if (locationData) {
@@ -351,6 +355,7 @@ const MyWines = () => {
       quantity: "1",
     });
     setExtractedData(null);
+    setExtractedImageUrl(null);
     setLocationData(null);
   };
 
@@ -549,6 +554,20 @@ const MyWines = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredWines.map((wine) => (
                       <Card key={wine.id} className="relative group">
+                        {/* Wine Image */}
+                        {wine.image_url && (
+                          <div className="w-full h-48 overflow-hidden rounded-t-lg bg-muted">
+                            <img 
+                              src={wine.image_url} 
+                              alt={wine.name}
+                              className="w-full h-full object-contain"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+                        
                         <CardHeader>
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex-1 min-w-0">
