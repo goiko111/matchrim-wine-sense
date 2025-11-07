@@ -146,11 +146,19 @@ const MyWines = () => {
 
   const loadWines = async () => {
     try {
-      const { data, error } = await supabase
-        .from("user_wines")
-        .select("*")
-        .eq("status", statusFilter)
-        .order("created_at", { ascending: false });
+      let query = supabase.from("user_wines").select("*");
+      
+      // Filter based on status
+      if (statusFilter === 'collection') {
+        query = query.eq("status", "collection");
+      } else if (statusFilter === 'wishlist') {
+        query = query.eq("status", "wishlist");
+      } else if (statusFilter === 'tasted') {
+        // Ya Probados shows all wines with a rating, regardless of status
+        query = query.not("rating", "is", null);
+      }
+      
+      const { data, error } = await query.order("created_at", { ascending: false });
 
       if (error) throw error;
       setWines((data as any) || []);
@@ -287,11 +295,11 @@ const MyWines = () => {
     try {
       const wine = wines.find(w => w.id === wineId);
       
-      // If wine is in collection, move it to tasted when rating
       const updateData: any = { rating };
-      if (wine?.status === 'collection') {
-        updateData.status = 'tasted';
-        updateData.consumption_date = new Date().toISOString();
+      
+      // If rating from collection, optionally decrement quantity
+      if (wine?.status === 'collection' && wine.quantity && wine.quantity > 0) {
+        updateData.quantity = wine.quantity - 1;
       }
 
       const { error } = await supabase
@@ -301,10 +309,11 @@ const MyWines = () => {
 
       if (error) throw error;
 
-      toast.success(wine?.status === 'collection' 
-        ? "Vino puntuado y movido a 'Ya Probados'" 
-        : "Valoración guardada"
-      );
+      const message = wine?.status === 'collection' 
+        ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' (última botella)'}` 
+        : "Valoración guardada";
+      
+      toast.success(message);
       loadWines();
     } catch (error) {
       console.error("Error rating wine:", error);
