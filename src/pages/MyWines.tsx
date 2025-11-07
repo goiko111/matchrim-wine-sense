@@ -13,6 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
 import { WineMenuScanner } from "@/components/wine-import/WineMenuScanner";
 import { WineSearchBar } from "@/components/wine-import/WineSearchBar";
+import { PurchaseInfoSelector } from "@/components/wine-import/PurchaseInfoSelector";
 import { LocationSelector } from "@/components/wine-import/LocationSelector";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -71,6 +72,7 @@ interface UserWine {
   use_for_profile_training: boolean;
   status: 'collection' | 'wishlist' | 'tasted';
   quantity: number | null;
+  price: number | null;
 }
 
 interface ExtractedWineData {
@@ -92,7 +94,7 @@ const MyWines = () => {
   const [filteredWines, setFilteredWines] = useState<UserWine[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
-  const [showLocationDialog, setShowLocationDialog] = useState(false);
+  const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [saving, setSaving] = useState(false);
   const [extractedData, setExtractedData] = useState<ExtractedWineData | null>(null);
   const [extractedImageUrl, setExtractedImageUrl] = useState<string | null>(null);
@@ -114,7 +116,7 @@ const MyWines = () => {
     quantity: "1",
   });
 
-  const [locationData, setLocationData] = useState<any>(null);
+  const [purchaseData, setPurchaseData] = useState<any>(null);
 
   useEffect(() => {
     if (!user) {
@@ -187,7 +189,7 @@ const MyWines = () => {
       personal_note: "",
       quantity: "1",
     });
-    setShowLocationDialog(true);
+    setShowPurchaseDialog(true);
   };
 
   const handleSearchWineSelect = (wine: any) => {
@@ -203,12 +205,12 @@ const MyWines = () => {
       personal_note: "",
       quantity: "1",
     });
-    setShowLocationDialog(true);
+    setShowPurchaseDialog(true);
   };
 
-  const handleLocationSelected = (location: any) => {
-    setLocationData(location);
-    setShowLocationDialog(false);
+  const handlePurchaseInfoConfirm = (data: any) => {
+    setPurchaseData(data);
+    setShowPurchaseDialog(false);
     setShowAddDialog(true);
   };
 
@@ -239,11 +241,11 @@ const MyWines = () => {
         image_url: extractedImageUrl || null,
       };
 
-      if (locationData) {
-        wineData.consumption_place_type = locationData.type;
-        wineData.consumption_place = locationData.place_name || null;
-        wineData.place_details = locationData.place_details || null;
-        wineData.restaurant_id = locationData.restaurant_id || null;
+      if (purchaseData) {
+        wineData.consumption_place_type = purchaseData.location_type;
+        wineData.consumption_place = purchaseData.place_name || null;
+        wineData.price = purchaseData.price || null;
+        wineData.consumption_date = purchaseData.purchase_date || new Date().toISOString();
       }
 
       const { data: newWine, error } = await supabase.from("user_wines").insert([wineData]).select().single();
@@ -356,7 +358,7 @@ const MyWines = () => {
     });
     setExtractedData(null);
     setExtractedImageUrl(null);
-    setLocationData(null);
+    setPurchaseData(null);
   };
 
   const getAffinityColor = (score: number) => {
@@ -490,7 +492,7 @@ const MyWines = () => {
                     <Button
                       onClick={() => {
                         resetForm();
-                        setShowLocationDialog(true);
+                        setShowPurchaseDialog(true);
                       }}
                       variant="outline"
                       className="w-full gap-2"
@@ -705,13 +707,14 @@ const MyWines = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Location Dialog */}
-        <Dialog open={showLocationDialog} onOpenChange={setShowLocationDialog}>
+        {/* Purchase Info Dialog */}
+        <Dialog open={showPurchaseDialog} onOpenChange={setShowPurchaseDialog}>
           <DialogContent className="max-w-2xl">
-            <LocationSelector
-              onLocationSelected={handleLocationSelected}
+            <PurchaseInfoSelector
+              mode={statusFilter}
+              onConfirm={handlePurchaseInfoConfirm}
               onCancel={() => {
-                setShowLocationDialog(false);
+                setShowPurchaseDialog(false);
                 resetForm();
               }}
             />

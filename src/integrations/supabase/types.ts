@@ -281,6 +281,7 @@ export type Database = {
           name: string
           personal_note: string | null
           place_details: Json | null
+          price: number | null
           producer: string | null
           quantity: number | null
           rating: string | null
@@ -309,6 +310,7 @@ export type Database = {
           name: string
           personal_note?: string | null
           place_details?: Json | null
+          price?: number | null
           producer?: string | null
           quantity?: number | null
           rating?: string | null
@@ -337,6 +339,7 @@ export type Database = {
           name?: string
           personal_note?: string | null
           place_details?: Json | null
+          price?: number | null
           producer?: string | null
           quantity?: number | null
           rating?: string | null
