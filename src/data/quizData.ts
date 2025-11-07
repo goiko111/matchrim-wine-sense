@@ -48,7 +48,7 @@ export interface ProfileType {
 }
 
 import manzanaVerde from '@/assets/quiz/question-5-manzanas-verdes.jpg';
-import cayena from '@/assets/quiz/question-1-pimiento.jpg';
+import cayena from '@/assets/quiz/question-2-cayena.jpg';
 import trufas from '@/assets/quiz/question-7-trufas.jpg';
 import pimientoRojo from '@/assets/quiz/question-4-pimiento-rojo.jpg';
 import cuero from '@/assets/quiz/question-5-cuero.jpg';
