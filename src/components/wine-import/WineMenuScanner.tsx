@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,8 +8,13 @@ import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Configure PDF.js worker - use bundled worker
+const setupPdfWorker = async () => {
+  const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.mjs');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(
+    new Blob([pdfjsWorker.default], { type: 'application/javascript' })
+  );
+};
 
 interface ScannedWine {
   nombre: string;
@@ -37,7 +42,12 @@ export const WineMenuScanner = () => {
   const [scannedWines, setScannedWines] = useState<ScannedWine[]>([]);
   const [hasProfile, setHasProfile] = useState(false);
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
+  const [convertingPdf, setConvertingPdf] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setupPdfWorker().catch(console.error);
+  }, []);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -57,6 +67,8 @@ export const WineMenuScanner = () => {
     setFileType(isPDF ? 'pdf' : 'image');
 
     if (isPDF) {
+      setConvertingPdf(true);
+      setPreview(null); // Limpiar preview anterior
       await convertPdfToImage(file);
     } else {
       const reader = new FileReader();
@@ -70,6 +82,8 @@ export const WineMenuScanner = () => {
 
   const convertPdfToImage = async (file: File) => {
     try {
+      toast.info("Convirtiendo PDF a imagen...");
+      
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       
@@ -99,6 +113,7 @@ export const WineMenuScanner = () => {
       reader.onloadend = async () => {
         const base64 = reader.result as string;
         setPreview(base64);
+        setConvertingPdf(false);
         
         // Crear un archivo temporal con la imagen
         const imageFile = new File([blob], 'pdf-page.jpg', { type: 'image/jpeg' });
@@ -106,11 +121,11 @@ export const WineMenuScanner = () => {
       };
       reader.readAsDataURL(blob);
       
-      toast.success("PDF convertido a imagen correctamente");
     } catch (error) {
       console.error('Error converting PDF:', error);
       toast.error("Error al convertir el PDF. Por favor intenta con una imagen.");
       setLoading(false);
+      setConvertingPdf(false);
     }
   };
 
@@ -156,6 +171,7 @@ export const WineMenuScanner = () => {
     setScannedWines([]);
     setHasProfile(false);
     setFileType(null);
+    setConvertingPdf(false);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -195,7 +211,7 @@ export const WineMenuScanner = () => {
               disabled={loading}
             />
 
-            {(preview || fileType === 'pdf') && !loading ? (
+            {(preview || convertingPdf) && !loading ? (
               <div className="space-y-4">
                 <div className="relative inline-block">
                   {preview ? (
@@ -204,11 +220,12 @@ export const WineMenuScanner = () => {
                       alt="Preview"
                       className="max-h-60 mx-auto rounded-lg shadow-lg"
                     />
-                  ) : (
-                    <div className="max-h-60 mx-auto p-8 bg-muted rounded-lg">
-                      <p className="text-sm text-muted-foreground">Procesando PDF...</p>
+                  ) : convertingPdf ? (
+                    <div className="max-h-60 mx-auto p-8 bg-muted rounded-lg flex flex-col items-center gap-4">
+                      <Loader2 className="w-12 h-12 text-primary animate-spin" />
+                      <p className="text-sm text-muted-foreground">Convirtiendo PDF a imagen...</p>
                     </div>
-                  )}
+                  ) : null}
                   <Button
                     onClick={clearScan}
                     variant="destructive"
@@ -219,15 +236,15 @@ export const WineMenuScanner = () => {
                   </Button>
                 </div>
               </div>
-            ) : loading ? (
+            ) : loading || convertingPdf ? (
               <div className="space-y-4">
                 <Loader2 className="w-12 h-12 mx-auto text-primary animate-spin" />
                 <div>
                   <p className="text-lg font-semibold mb-2">
-                    {fileType === 'pdf' ? 'Convirtiendo PDF a imagen...' : 'Analizando carta de vinos...'}
+                    {convertingPdf ? 'Convirtiendo PDF a imagen...' : 'Analizando carta de vinos...'}
                   </p>
                   <p className="text-sm text-muted-foreground mb-3">
-                    {fileType === 'pdf' 
+                    {convertingPdf 
                       ? 'Renderizando primera página del PDF' 
                       : 'Extrayendo vinos y calculando compatibilidad'}
                   </p>
