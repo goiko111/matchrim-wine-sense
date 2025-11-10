@@ -6,6 +6,10 @@ import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles } from "
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Configure PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 interface ScannedWine {
   nombre: string;
@@ -40,24 +44,74 @@ export const WineMenuScanner = () => {
     if (!file) return;
 
     const isImage = file.type.startsWith('image/');
+    const isPDF = file.type === 'application/pdf';
 
-    if (!isImage) {
-      toast.error("Por favor selecciona solo imágenes (JPG, PNG, WEBP)");
+    if (!isImage && !isPDF) {
+      toast.error("Por favor selecciona una imagen o PDF válido");
       return;
     }
 
     // Activar loader inmediatamente
     setLoading(true);
     setScannedWines([]);
-    setFileType('image');
+    setFileType(isPDF ? 'pdf' : 'image');
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+    if (isPDF) {
+      await convertPdfToImage(file);
+    } else {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      await processFile(file, 'image');
+    }
+  };
 
-    await processFile(file, 'image');
+  const convertPdfToImage = async (file: File) => {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      
+      // Renderizar la primera página
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: 2.0 }); // Escala 2x para mejor calidad
+      
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      if (!context) throw new Error('No se pudo crear el contexto del canvas');
+      
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      
+      await page.render({
+        canvasContext: context,
+        viewport: viewport,
+        canvas: canvas
+      }).promise;
+      
+      // Convertir canvas a blob y luego a base64
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.95);
+      });
+      
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64 = reader.result as string;
+        setPreview(base64);
+        
+        // Crear un archivo temporal con la imagen
+        const imageFile = new File([blob], 'pdf-page.jpg', { type: 'image/jpeg' });
+        await processFile(imageFile, 'image');
+      };
+      reader.readAsDataURL(blob);
+      
+      toast.success("PDF convertido a imagen correctamente");
+    } catch (error) {
+      console.error('Error converting PDF:', error);
+      toast.error("Error al convertir el PDF. Por favor intenta con una imagen.");
+      setLoading(false);
+    }
   };
 
   const processFile = async (file: File, type: 'image' | 'pdf') => {
@@ -135,20 +189,26 @@ export const WineMenuScanner = () => {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept="image/*,application/pdf"
               onChange={handleFileSelect}
               className="hidden"
               disabled={loading}
             />
 
-            {preview && !loading ? (
+            {(preview || fileType === 'pdf') && !loading ? (
               <div className="space-y-4">
                 <div className="relative inline-block">
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="max-h-60 mx-auto rounded-lg shadow-lg"
-                  />
+                  {preview ? (
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="max-h-60 mx-auto rounded-lg shadow-lg"
+                    />
+                  ) : (
+                    <div className="max-h-60 mx-auto p-8 bg-muted rounded-lg">
+                      <p className="text-sm text-muted-foreground">Procesando PDF...</p>
+                    </div>
+                  )}
                   <Button
                     onClick={clearScan}
                     variant="destructive"
@@ -163,9 +223,13 @@ export const WineMenuScanner = () => {
               <div className="space-y-4">
                 <Loader2 className="w-12 h-12 mx-auto text-primary animate-spin" />
                 <div>
-                  <p className="text-lg font-semibold mb-2">Analizando carta de vinos...</p>
+                  <p className="text-lg font-semibold mb-2">
+                    {fileType === 'pdf' ? 'Convirtiendo PDF a imagen...' : 'Analizando carta de vinos...'}
+                  </p>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Extrayendo vinos y calculando compatibilidad
+                    {fileType === 'pdf' 
+                      ? 'Renderizando primera página del PDF' 
+                      : 'Extrayendo vinos y calculando compatibilidad'}
                   </p>
                   <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
                     <div className="h-full bg-primary animate-pulse" style={{ width: '70%' }} />
@@ -183,7 +247,7 @@ export const WineMenuScanner = () => {
                     Sube la carta de vinos
                   </p>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Imagen (JPG, PNG, WEBP) hasta 20MB
+                    Imagen (JPG, PNG, WEBP) o PDF hasta 20MB
                   </p>
                 </div>
                 <Button
