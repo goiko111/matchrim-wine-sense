@@ -32,47 +32,56 @@ export const WineMenuScanner = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const [scannedWines, setScannedWines] = useState<ScannedWine[]>([]);
   const [hasProfile, setHasProfile] = useState(false);
+  const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      toast.error("Por favor selecciona una imagen válida");
+    const isImage = file.type.startsWith('image/');
+    const isPDF = file.type === 'application/pdf';
+
+    if (!isImage && !isPDF) {
+      toast.error("Por favor selecciona una imagen o PDF válido");
       return;
     }
 
     // Activar loader inmediatamente
     setLoading(true);
     setScannedWines([]);
+    setFileType(isPDF ? 'pdf' : 'image');
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+    if (isImage) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreview(null);
+    }
 
-    await processImage(file);
+    await processFile(file, isPDF ? 'pdf' : 'image');
   };
 
-  const processImage = async (file: File) => {
+  const processFile = async (file: File, type: 'image' | 'pdf') => {
     // Mantener el loader activo durante todo el proceso real
     setLoading(true);
     setScannedWines([]);
 
     try {
       // Leer el archivo como base64 y esperar a que termine
-      const base64Image = await new Promise<string>((resolve, reject) => {
+      const base64File = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result as string);
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
 
-      // Invocar la función de escaneo
+      // Invocar la función de escaneo apropiada
       const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
-        body: { image: base64Image }
+        body: type === 'pdf' ? { pdf: base64File } : { image: base64File }
       });
 
       if (error) throw error;
@@ -82,11 +91,11 @@ export const WineMenuScanner = () => {
         setHasProfile(!!data.has_profile);
         toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
       } else {
-        toast.info("No se encontraron vinos en la imagen");
+        toast.info("No se encontraron vinos en el documento");
       }
     } catch (error: any) {
-      console.error('Error processing image:', error);
-      const message = error?.message || 'Error al procesar la imagen';
+      console.error('Error processing file:', error);
+      const message = error?.message || 'Error al procesar el documento';
       toast.error(message);
     } finally {
       setLoading(false);
@@ -97,6 +106,7 @@ export const WineMenuScanner = () => {
     setPreview(null);
     setScannedWines([]);
     setHasProfile(false);
+    setFileType(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -130,21 +140,26 @@ export const WineMenuScanner = () => {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
-              capture="environment"
+              accept="image/*,application/pdf"
               onChange={handleFileSelect}
               className="hidden"
               disabled={loading}
             />
 
-            {preview && !loading ? (
+            {(preview || fileType === 'pdf') && !loading ? (
               <div className="space-y-4">
                 <div className="relative inline-block">
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="max-h-60 mx-auto rounded-lg shadow-lg"
-                  />
+                  {preview ? (
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="max-h-60 mx-auto rounded-lg shadow-lg"
+                    />
+                  ) : (
+                    <div className="max-h-60 mx-auto p-8 bg-muted rounded-lg">
+                      <p className="text-sm text-muted-foreground">PDF seleccionado</p>
+                    </div>
+                  )}
                   <Button
                     onClick={clearScan}
                     variant="destructive"
@@ -176,10 +191,10 @@ export const WineMenuScanner = () => {
                 <Camera className="w-16 h-16 mx-auto text-primary/40" />
                 <div>
                   <p className="text-lg font-semibold text-foreground mb-2">
-                    Fotografía la carta de vinos
+                    Sube la carta de vinos
                   </p>
                   <p className="text-sm text-muted-foreground mb-4">
-                    JPG, PNG, WEBP hasta 20MB
+                    Imagen (JPG, PNG, WEBP) o PDF hasta 20MB
                   </p>
                 </div>
                 <Button
@@ -188,7 +203,7 @@ export const WineMenuScanner = () => {
                   className="gap-2"
                 >
                   <Upload className="h-4 w-4" />
-                  Seleccionar Imagen
+                  Seleccionar Archivo
                 </Button>
               </div>
             )}

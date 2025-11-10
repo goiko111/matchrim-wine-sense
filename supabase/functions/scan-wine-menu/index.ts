@@ -12,10 +12,10 @@ serve(async (req) => {
   }
 
   try {
-    const { image } = await req.json();
+    const { image, pdf } = await req.json();
     
-    if (!image) {
-      throw new Error('No image provided');
+    if (!image && !pdf) {
+      throw new Error('No image or PDF provided');
     }
 
     // Get user from auth header
@@ -87,7 +87,7 @@ Responde SOLO con un JSON válido:
   ]
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
@@ -100,7 +100,10 @@ Responde SOLO con un JSON válido:
             role: 'user', 
             content: [
               { type: 'text', text: prompt },
-              { type: 'image_url', image_url: { url: image } }
+              { 
+                type: 'image_url', 
+                image_url: { url: pdf || image }
+              }
             ]
           }
         ],
