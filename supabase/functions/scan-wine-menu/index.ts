@@ -18,6 +18,15 @@ serve(async (req) => {
       throw new Error('No image or PDF provided');
     }
 
+    // Validate data URL format
+    const dataUrl = pdf || image;
+    if (!dataUrl.startsWith('data:')) {
+      throw new Error('Invalid image/PDF format. Must be a data URL.');
+    }
+
+    console.log('Processing file type:', pdf ? 'PDF' : 'Image');
+    console.log('Data URL prefix:', dataUrl.substring(0, 50));
+
     // Get user from auth header
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
@@ -87,7 +96,15 @@ Responde SOLO con un JSON válido:
   ]
 }`;
 
-     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+     // For PDFs, convert to image format that Gemini can process
+    // Gemini doesn't support PDF data URLs directly, only images
+    let imageUrl = image;
+    if (pdf) {
+      console.log('PDF detected - user should upload as image instead');
+      throw new Error('Por favor, convierte el PDF a imagen (captura de pantalla) antes de subirlo.');
+    }
+
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
@@ -102,7 +119,7 @@ Responde SOLO con un JSON válido:
               { type: 'text', text: prompt },
               { 
                 type: 'image_url', 
-                image_url: { url: pdf || image }
+                image_url: { url: imageUrl }
               }
             ]
           }

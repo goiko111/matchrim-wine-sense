@@ -40,29 +40,24 @@ export const WineMenuScanner = () => {
     if (!file) return;
 
     const isImage = file.type.startsWith('image/');
-    const isPDF = file.type === 'application/pdf';
 
-    if (!isImage && !isPDF) {
-      toast.error("Por favor selecciona una imagen o PDF válido");
+    if (!isImage) {
+      toast.error("Por favor selecciona solo imágenes (JPG, PNG, WEBP)");
       return;
     }
 
     // Activar loader inmediatamente
     setLoading(true);
     setScannedWines([]);
-    setFileType(isPDF ? 'pdf' : 'image');
+    setFileType('image');
 
-    if (isImage) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPreview(null);
-    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
 
-    await processFile(file, isPDF ? 'pdf' : 'image');
+    await processFile(file, 'image');
   };
 
   const processFile = async (file: File, type: 'image' | 'pdf') => {
@@ -79,9 +74,9 @@ export const WineMenuScanner = () => {
         reader.readAsDataURL(file);
       });
 
-      // Invocar la función de escaneo apropiada
+      // Invocar la función de escaneo
       const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
-        body: type === 'pdf' ? { pdf: base64File } : { image: base64File }
+        body: { image: base64File }
       });
 
       if (error) throw error;
@@ -140,26 +135,20 @@ export const WineMenuScanner = () => {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*,application/pdf"
+              accept="image/*"
               onChange={handleFileSelect}
               className="hidden"
               disabled={loading}
             />
 
-            {(preview || fileType === 'pdf') && !loading ? (
+            {preview && !loading ? (
               <div className="space-y-4">
                 <div className="relative inline-block">
-                  {preview ? (
-                    <img
-                      src={preview}
-                      alt="Preview"
-                      className="max-h-60 mx-auto rounded-lg shadow-lg"
-                    />
-                  ) : (
-                    <div className="max-h-60 mx-auto p-8 bg-muted rounded-lg">
-                      <p className="text-sm text-muted-foreground">PDF seleccionado</p>
-                    </div>
-                  )}
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="max-h-60 mx-auto rounded-lg shadow-lg"
+                  />
                   <Button
                     onClick={clearScan}
                     variant="destructive"
@@ -194,7 +183,7 @@ export const WineMenuScanner = () => {
                     Sube la carta de vinos
                   </p>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Imagen (JPG, PNG, WEBP) o PDF hasta 20MB
+                    Imagen (JPG, PNG, WEBP) hasta 20MB
                   </p>
                 </div>
                 <Button
