@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { QuizResult, getProfileDescription } from '@/data/quizData';
 import { useAuth } from '@/contexts/AuthContext';
@@ -203,7 +203,7 @@ export const useQuizResults = () => {
     }
   };
 
-  const getQuizHistory = async () => {
+  const getQuizHistory = useCallback(async () => {
     if (!user) return [];
 
     try {
@@ -222,7 +222,7 @@ export const useQuizResults = () => {
       console.error('Error fetching quiz history:', error);
       return [];
     }
-  };
+  }, [user]);
 
   return {
     saveQuizResult,

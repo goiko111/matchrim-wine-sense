@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Wine, Sun, Utensils, Leaf, ArrowRight } from 'lucide-react';
+import { cleanWineStyleName } from '@/utils/wineStyleUtils';
 
 interface WineStyle {
   id: string;
@@ -86,21 +87,12 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
         return;
       }
 
-      // Función para limpiar el nombre del estilo (remover números entre paréntesis y prefijos numéricos)
-      const cleanName = (name: string) => {
-        // Primero quitar el patrón "X;X;X;X;X;" del inicio
-        let cleaned = name.replace(/^\d+;\d+;\d+;\d+;\d+;/, '').trim();
-        // Luego quitar números entre paréntesis al final
-        cleaned = cleaned.replace(/\s*\(\d+\)\s*$/, '').trim();
-        return cleaned;
-      };
-
       // Agrupar por nombre base y tomar el primero que tenga descripción
       const uniqueStylesMap = new Map<string, WineStyle>();
       data.forEach((style: any) => {
-        const baseName = cleanName(style.name);
+        const baseName = cleanWineStyleName(style.name);
         // Solo agregar si no existe o si este tiene descripción y el anterior no
-        if (!uniqueStylesMap.has(baseName) || 
+        if (!uniqueStylesMap.has(baseName) ||
             (style.description && !uniqueStylesMap.get(baseName)?.description)) {
           uniqueStylesMap.set(baseName, { ...style, name: baseName });
         }

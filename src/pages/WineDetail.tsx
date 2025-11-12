@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { ArrowLeft, Wine, MapPin, Calendar, Grape, Star, Share2 } from 'lucide-react';
+import { ArrowLeft, Wine, MapPin, Calendar, Grape, Star, Share2, ExternalLink } from 'lucide-react';
 import Header from '@/components/Header';
 import AppNav from '@/components/AppNav';
 import { useAuth } from '@/contexts/AuthContext';
@@ -82,13 +82,16 @@ const WineDetail = () => {
     return labels[attribute]?.[value] || 'No definido';
   };
 
-  const generateSlug = (wineName: string) => {
-    return wineName
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
+  const generateSlug = (wineName: string, vintage?: number | null) => {
+    const nameSlug = wineName
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join('-')
+      .replace(/[^a-zA-Z0-9-]/g, '')
       .replace(/-+/g, '-')
       .trim();
+
+    return vintage ? `${nameSlug}_${vintage}` : nameSlug;
   };
 
   const shareWine = async () => {
@@ -107,6 +110,13 @@ const WineDetail = () => {
         description: "Enlace copiado al portapapeles",
       });
     }
+  };
+
+  const openInWinerim = () => {
+    if (!wine) return;
+    const slug = generateSlug(wine.name, wine.vintage);
+    const winerimUrl = `${import.meta.env.VITE_WINERIM_STORE_URL}/matchrim/store/${wine.id}/${slug}`;
+    window.open(winerimUrl, '_blank', 'noopener,noreferrer');
   };
 
   if (isLoading) {
@@ -283,11 +293,11 @@ const WineDetail = () => {
                 <div>
                   <h4 className="font-semibold mb-2">Temperatura de Servicio</h4>
                   <p className="text-gray-700 text-sm">
-                    {wine.estilo.toLowerCase().includes('tinto') 
-                      ? '16-18°C - Servir a temperatura ambiente' 
-                      : wine.estilo.toLowerCase().includes('blanco') 
-                      ? '8-10°C - Bien frío' 
-                      : wine.estilo.toLowerCase().includes('rosado') 
+                    {wine.estilo.toLowerCase().includes('tinto')
+                      ? '16-18°C - Servir a temperatura ambiente'
+                      : wine.estilo.toLowerCase().includes('blanco')
+                      ? '8-10°C - Bien frío'
+                      : wine.estilo.toLowerCase().includes('rosado')
                       ? '6-8°C - Muy frío'
                       : '6-8°C - Muy frío'}
                   </p>
@@ -295,8 +305,8 @@ const WineDetail = () => {
                 <div>
                   <h4 className="font-semibold mb-2">Copa Recomendada</h4>
                   <p className="text-gray-700 text-sm">
-                    {wine.estilo.toLowerCase().includes('tinto') 
-                      ? 'Copa de vino tinto - Amplia para oxigenar' 
+                    {wine.estilo.toLowerCase().includes('tinto')
+                      ? 'Copa de vino tinto - Amplia para oxigenar'
                       : wine.estilo.toLowerCase().includes('burbuja') || wine.estilo.toLowerCase().includes('brut')
                       ? 'Copa flauta - Para conservar las burbujas'
                       : 'Copa de vino blanco - Más estrecha'}
@@ -305,6 +315,18 @@ const WineDetail = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Botón para ver en Winerim */}
+          <div className="mt-6">
+            <Button
+              onClick={openInWinerim}
+              className="w-full bg-primary hover:bg-primary/90 text-white"
+              size="lg"
+            >
+              <ExternalLink className="h-5 w-5 mr-2" />
+              Ver en Winerim
+            </Button>
+          </div>
         </div>
       </main>
       </div>
