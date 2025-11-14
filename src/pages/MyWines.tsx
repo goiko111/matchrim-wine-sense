@@ -208,10 +208,78 @@ const MyWines = () => {
     setShowPurchaseDialog(true);
   };
 
-  const handlePurchaseInfoConfirm = (data: any) => {
-    setPurchaseData(data);
-    setShowPurchaseDialog(false);
-    setShowAddDialog(true);
+  const handlePurchaseInfoConfirm = async (data: any) => {
+    if (!formData.name || !user) {
+      toast.error("El nombre del vino es obligatorio");
+      return;
+    }
+
+    // Validate restaurant is selected
+    if (data?.location_type === 'restaurant' && !data?.place_name) {
+      toast.error("Debes seleccionar un restaurante");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const wineData = {
+        user_id: user.id,
+        name: formData.name,
+        producer: formData.producer || null,
+        vintage: formData.vintage ? parseInt(formData.vintage) : null,
+        region: formData.region || null,
+        country: formData.country || null,
+        grape_varieties: formData.grape_varieties 
+          ? formData.grape_varieties.split(",").map(g => g.trim()).filter(Boolean)
+          : null,
+        alcohol_content: formData.alcohol_content ? parseFloat(formData.alcohol_content) : null,
+        tasting_notes: formData.tasting_notes || null,
+        personal_note: formData.personal_note || null,
+        image_url: extractedImageUrl || null,
+        status: statusFilter,
+        quantity: statusFilter === 'collection' ? parseInt(formData.quantity) || 1 : null,
+        consumption_place: data?.place_name || null,
+        consumption_place_type: data?.location_type || null,
+        consumption_date: data?.purchase_date || null,
+        price: data?.price || null,
+      };
+
+      const { data: insertedWine, error } = await supabase
+        .from("user_wines")
+        .insert([wineData])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Calculate affinity in background
+      if (insertedWine && (statusFilter === 'collection' || statusFilter === 'tasted')) {
+        supabase.functions
+          .invoke("calculate-wine-affinity", {
+            body: { wine_id: insertedWine.id }
+          })
+          .then(({ data: affinityData }) => {
+            if (affinityData?.affinity) {
+              setWines((prev) =>
+                prev.map((w) =>
+                  w.id === insertedWine.id ? { ...w, matchrim_affinity: affinityData.affinity } : w
+                )
+              );
+            }
+          });
+      }
+
+      toast.success("Vino añadido exitosamente");
+      setShowPurchaseDialog(false);
+      setShowAddDialog(false);
+      resetForm();
+      loadWines();
+    } catch (error) {
+      console.error("Error saving wine:", error);
+      toast.error("Error al guardar el vino");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSaveWine = async () => {
@@ -722,7 +790,10 @@ const MyWines = () => {
         </Dialog>
 
         {/* Add/Edit Wine Dialog */}
-        <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <Dialog open={showAddDialog} onOpenChange={(open) => {
+          setShowAddDialog(open);
+          if (!open) resetForm();
+        }}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
@@ -853,6 +924,7 @@ const MyWines = () => {
 
               <div className="flex justify-end gap-2 pt-4">
                 <Button
+                  type="button"
                   variant="outline"
                   onClick={() => {
                     setShowAddDialog(false);
@@ -862,16 +934,45 @@ const MyWines = () => {
                 >
                   Cancelar
                 </Button>
-                <Button onClick={handleSaveWine} disabled={saving}>
-                  {saving ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Guardando...
-                    </>
-                  ) : (
-                    "Guardar Vino"
-                  )}
-                </Button>
+                
+                {/* Status Selection Buttons */}
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setStatusFilter('collection');
+                      setShowPurchaseDialog(true);
+                      setShowAddDialog(false);
+                    }}
+                    disabled={saving}
+                  >
+                    Mi Bodega
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setStatusFilter('wishlist');
+                      setShowPurchaseDialog(true);
+                      setShowAddDialog(false);
+                    }}
+                    disabled={saving}
+                  >
+                    Quiero Probar
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setStatusFilter('tasted');
+                      setShowPurchaseDialog(true);
+                      setShowAddDialog(false);
+                    }}
+                    disabled={saving}
+                  >
+                    Ya Probado
+                  </Button>
+                </div>
               </div>
             </div>
           </DialogContent>
