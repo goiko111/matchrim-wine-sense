@@ -194,43 +194,56 @@ Responde SOLO con un JSON válido:
 
     console.log(`Extracted ${extractedWines.length} wines from menu`);
 
-    // If user has a profile, estimate compatibility for each wine
+    // If user has a profile, enrich wines and estimate compatibility
     if (profile && extractedWines.length > 0) {
-      // Use AI to estimate sensory attributes and calculate compatibility
-      const compatibilityPrompt = `Eres un sommelier experto. Dado este perfil de preferencias del usuario y esta lista de vinos, estima los atributos sensoriales de cada vino y calcula la compatibilidad.
+      console.log('User profile found, enriching wine data and estimating compatibility...');
+      
+      const compatibilityPrompt = `Tienes el perfil de preferencias de vino de un usuario:
+- Potencia: ${profile.potente}/10
+- Acidez: ${profile.acidez}/10
+- Dulzura: ${profile.dulce}/10
+- Taninos: ${profile.tanico}/10
+- Afrutado: ${profile.afrutado}/10
 
-Perfil del usuario (escala 1-10):
-- Potencia: ${profile.potente}
-- Acidez: ${profile.acidez}
-- Dulzura: ${profile.dulce}
-- Taninos: ${profile.tanico}
-- Afrutado: ${profile.afrutado}
-
-Vinos:
+Aquí está la lista de vinos de una carta de restaurante:
 ${JSON.stringify(extractedWines, null, 2)}
 
-Para cada vino, estima sus atributos sensoriales (1-10) basándote en:
-- Tipo de vino (tinto/blanco/rosado)
-- Región y país (estilos regionales conocidos)
-- Año de cosecha (vinos jóvenes vs reservas)
-- Descripción si está disponible
+Para CADA vino en la lista:
+1. ENRIQUECE la información del vino con datos reales (investiga online si es necesario):
+   - Completa el productor si falta
+   - Verifica y completa la región
+   - Añade las variedades de uva principales
+   - Añade una descripción detallada del vino (aromas, notas de cata, maridajes recomendados)
+   
+2. Estima sus atributos sensoriales (escala 1-10):
+   - potencia
+   - acidez
+   - dulzura
+   - taninos
+   - afrutado
+   
+3. Calcula la compatibilidad con el perfil del usuario (0-100%)
+4. Explica brevemente por qué es o no compatible
 
-Luego calcula compatibilidad (0-100%) comparando con las preferencias del usuario.
+IMPORTANTE: Responde SOLO con JSON válido, sin markdown ni bloques de código.
 
-Responde SOLO con JSON:
 {
   "vinos": [
     {
-      "nombre": "...",
+      "nombre": "nombre del vino",
+      "productor": "nombre de la bodega",
+      "region": "región verificada",
+      "uvas": ["Tempranillo", "Garnacha"],
+      "descripcion": "Descripción detallada del vino con aromas, notas de cata y maridajes",
       "atributos": {
-        "potencia": 8,
+        "potencia": 7,
         "acidez": 6,
-        "dulzura": 2,
+        "dulzura": 3,
         "taninos": 7,
         "afrutado": 6
       },
-      "compatibilidad": 85,
-      "razon": "Alta potencia y taninos como prefieres. Moderada acidez y afrutado."
+      "compatibilidad": 75,
+      "razon": "Este vino tiene características similares a tu perfil..."
     }
   ]
 }`;
@@ -242,38 +255,64 @@ Responde SOLO con JSON:
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'google/gemini-2.5-flash',
+          model: 'google/gemini-2.5-pro',
           messages: [
             { role: 'user', content: compatibilityPrompt }
           ],
-          max_tokens: 4096,
+          max_tokens: 8192,
         }),
       });
 
       if (compatResponse.ok) {
         const compatData = await compatResponse.json();
         let compatContent = compatData.choices?.[0]?.message?.content || '{"vinos":[]}';
-        compatContent = compatContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        
+        console.log('Raw compatibility response (first 500 chars):', compatContent.substring(0, 500));
+        
+        // Clean JSON from markdown and code blocks more aggressively
+        compatContent = compatContent
+          .replace(/```json\s*/g, '')
+          .replace(/```\s*/g, '')
+          .trim();
+        
+        // Ensure we only have the JSON object
+        const firstBrace = compatContent.indexOf('{');
+        const lastBrace = compatContent.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1) {
+          compatContent = compatContent.substring(firstBrace, lastBrace + 1);
+        }
         
         let compatResult;
         try {
           compatResult = JSON.parse(compatContent);
+          console.log('Successfully parsed compatibility JSON');
         } catch (parseError) {
           console.error('Compatibility JSON Parse Error:', parseError);
-          console.error('Compatibility content that failed:', compatContent);
+          console.error('Attempted to parse (first 1000 chars):', compatContent.substring(0, 1000));
           // Continue without compatibility data if parsing fails
           compatResult = { vinos: [] };
         }
         
-        // Merge compatibility data with extracted wines
-        const winesWithCompatibility = extractedWines.map((wine: any, index: number) => {
-          const compatData = compatResult.vinos?.[index] || {};
-          return {
-            ...wine,
-            atributos: compatData.atributos || null,
-            compatibilidad: compatData.compatibilidad || null,
-            razon: compatData.razon || null
-          };
+        // Merge enriched data and compatibility with extracted wines
+        const winesWithCompatibility = extractedWines.map((wine: any) => {
+          const enrichedInfo = compatResult.vinos?.find(
+            (c: any) => c.nombre.toLowerCase().trim() === wine.nombre.toLowerCase().trim()
+          );
+          
+          if (enrichedInfo) {
+            return {
+              ...wine,
+              productor: enrichedInfo.productor || wine.productor,
+              region: enrichedInfo.region || wine.region,
+              uvas: enrichedInfo.uvas || [],
+              descripcion: enrichedInfo.descripcion || wine.descripcion,
+              atributos: enrichedInfo.atributos || null,
+              compatibilidad: enrichedInfo.compatibilidad || null,
+              razon: enrichedInfo.razon || null
+            };
+          }
+          
+          return wine;
         });
 
         return new Response(
