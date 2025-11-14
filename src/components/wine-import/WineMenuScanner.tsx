@@ -25,6 +25,7 @@ interface ScannedWine {
   precio: number | null;
   tipo: string;
   descripcion: string | null;
+  uvas?: string[];
   atributos?: {
     potencia: number;
     acidez: number;
@@ -302,7 +303,7 @@ export const WineMenuScanner = () => {
                 <CardContent className="p-6">
                   <div className="flex gap-4">
                     {/* Wine Info */}
-                    <div className="flex-1 space-y-2">
+                    <div className="flex-1 space-y-3">
                       <div>
                         <h4 className="text-lg font-semibold">{wine.nombre}</h4>
                         {wine.productor && (
@@ -310,7 +311,7 @@ export const WineMenuScanner = () => {
                         )}
                       </div>
 
-                      <div className="flex flex-wrap gap-2 text-sm">
+                      <div className="flex flex-wrap gap-2">
                         {wine.anada && (
                           <Badge variant="outline">{wine.anada}</Badge>
                         )}
@@ -320,36 +321,51 @@ export const WineMenuScanner = () => {
                         {wine.pais && (
                           <Badge variant="outline">{wine.pais}</Badge>
                         )}
-                        <Badge variant="secondary">{wine.tipo}</Badge>
+                        <Badge variant="secondary" className="capitalize">{wine.tipo}</Badge>
                         {wine.precio && (
-                          <Badge className="bg-green-100 text-green-800">
-                            ${wine.precio.toFixed(2)}
+                          <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">
+                            {wine.precio.toFixed(2)}€
                           </Badge>
                         )}
                       </div>
 
+                      {wine.uvas && wine.uvas.length > 0 && (
+                        <div>
+                          <span className="text-xs text-muted-foreground">Variedades: </span>
+                          <span className="text-sm font-medium">{wine.uvas.join(', ')}</span>
+                        </div>
+                      )}
+
                       {wine.descripcion && (
-                        <p className="text-sm text-muted-foreground italic">
+                        <p className="text-sm text-muted-foreground leading-relaxed">
                           {wine.descripcion}
                         </p>
                       )}
 
-                      {/* Sensory Attributes */}
                       {wine.atributos && (
-                        <div className="pt-3 space-y-2">
-                          <p className="text-xs font-semibold text-foreground uppercase tracking-wide">
-                            Atributos Estimados
-                          </p>
-                          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-xs">
-                            {Object.entries(wine.atributos).map(([key, value]) => (
-                              <div key={key} className="space-y-1.5">
-                                <div className="flex justify-between items-center">
-                                  <span className="capitalize text-muted-foreground font-medium">{key}</span>
-                                  <span className="font-bold text-foreground">{value}/5</span>
-                                </div>
-                                <Progress value={value * 20} className="h-2" />
-                              </div>
-                            ))}
+                        <div className="pt-2 border-t">
+                          <p className="text-xs font-medium mb-2 text-muted-foreground">Perfil sensorial</p>
+                          <div className="grid grid-cols-5 gap-2 text-xs">
+                            <div className="text-center">
+                              <div className="font-medium">{wine.atributos.potencia}</div>
+                              <div className="text-muted-foreground">Potencia</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-medium">{wine.atributos.acidez}</div>
+                              <div className="text-muted-foreground">Acidez</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-medium">{wine.atributos.dulzura}</div>
+                              <div className="text-muted-foreground">Dulzura</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-medium">{wine.atributos.taninos}</div>
+                              <div className="text-muted-foreground">Taninos</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-medium">{wine.atributos.afrutado}</div>
+                              <div className="text-muted-foreground">Afrutado</div>
+                            </div>
                           </div>
                         </div>
                       )}
