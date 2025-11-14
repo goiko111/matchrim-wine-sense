@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
-import { ShoppingCart, Eye, MapPin, Home, Building2, Calendar } from "lucide-react";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { supabase } from "@/integrations/supabase/client";
+import { ShoppingCart, Eye, MapPin, Home, Building2, Calendar, Loader2, Navigation } from "lucide-react";
+import { toast } from "sonner";
 
 interface PurchaseData {
   type: 'purchase' | 'seen' | 'consumed';
@@ -12,6 +15,7 @@ interface PurchaseData {
   price?: number;
   purchase_date?: string;
   location_type?: 'store' | 'online' | 'restaurant' | 'home' | 'other';
+  place_id?: string;
 }
 
 interface PurchaseInfoSelectorProps {
@@ -25,6 +29,12 @@ export const PurchaseInfoSelector = ({ mode, onConfirm, onCancel }: PurchaseInfo
   const [placeName, setPlaceName] = useState("");
   const [price, setPrice] = useState("");
   const [purchaseDate, setPurchaseDate] = useState(new Date().toISOString().split('T')[0]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [nearbyPlaces, setNearbyPlaces] = useState<any[]>([]);
+  const [selectedPlace, setSelectedPlace] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [detectingLocation, setDetectingLocation] = useState(false);
 
   const getTitle = () => {
     switch (mode) {
@@ -52,11 +62,79 @@ export const PurchaseInfoSelector = ({ mode, onConfirm, onCancel }: PurchaseInfo
 
   const Icon = getIcon();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.length >= 3) {
+        searchPlaces(searchQuery);
+      } else {
+        setSearchResults([]);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const searchPlaces = async (query: string) => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('search-places', {
+        body: { query }
+      });
+
+      if (error) throw error;
+      setSearchResults(data?.places || []);
+    } catch (error) {
+      console.error('Error searching places:', error);
+      toast.error("Error al buscar lugares");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const detectLocation = async () => {
+    setDetectingLocation(true);
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+
+      const { data, error } = await supabase.functions.invoke('detect-location', {
+        body: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        }
+      });
+
+      if (error) throw error;
+      
+      const places = data?.nearby_places || [];
+      setNearbyPlaces(places);
+      
+      if (places.length > 0) {
+        toast.success(`${places.length} lugares encontrados cerca`);
+      } else {
+        toast.info("No se encontraron lugares cercanos");
+      }
+    } catch (error) {
+      console.error('Error detecting location:', error);
+      toast.error("Error al detectar ubicación");
+    } finally {
+      setDetectingLocation(false);
+    }
+  };
+
   const handleConfirm = () => {
+    // Validar que si es restaurante, se haya seleccionado un lugar
+    if (locationType === 'restaurant' && !selectedPlace && !placeName) {
+      toast.error("Selecciona un restaurante o introduce su nombre");
+      return;
+    }
+
     const data: PurchaseData = {
       type: mode === 'collection' ? 'purchase' : mode === 'wishlist' ? 'seen' : 'consumed',
       location_type: locationType as any,
-      place_name: placeName || undefined,
+      place_name: selectedPlace?.name || placeName || undefined,
+      place_id: selectedPlace?.place_id,
       price: price ? parseFloat(price) : undefined,
       purchase_date: purchaseDate,
     };
@@ -74,6 +152,29 @@ export const PurchaseInfoSelector = ({ mode, onConfirm, onCancel }: PurchaseInfo
         <CardDescription>{getDescription()}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Detect Location Button */}
+        {(mode === 'wishlist' || mode === 'tasted') && (
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={detectLocation}
+            disabled={detectingLocation}
+          >
+            {detectingLocation ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Detectando ubicación...
+              </>
+            ) : (
+              <>
+                <Navigation className="mr-2 h-4 w-4" />
+                Detectar mi ubicación
+              </>
+            )}
+          </Button>
+        )}
+
         {/* Location Type */}
         <div className="space-y-2">
           <Label>Tipo de lugar</Label>
@@ -95,6 +196,14 @@ export const PurchaseInfoSelector = ({ mode, onConfirm, onCancel }: PurchaseInfo
                     <Label htmlFor="online" className="cursor-pointer flex-1 flex items-center gap-2">
                       <Building2 className="h-4 w-4" />
                       Compra online
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-3 p-3 rounded-lg border cursor-pointer hover:bg-accent"
+                       onClick={() => setLocationType('restaurant')}>
+                    <RadioGroupItem value="restaurant" id="restaurant-collection" />
+                    <Label htmlFor="restaurant-collection" className="cursor-pointer flex-1 flex items-center gap-2">
+                      <MapPin className="h-4 w-4" />
+                      Restaurante / Bar
                     </Label>
                   </div>
                 </>
