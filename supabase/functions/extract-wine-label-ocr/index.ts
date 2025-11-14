@@ -100,48 +100,9 @@ Responde SOLO con un JSON válido en este formato:
 
     console.log('Extracted wine data from label:', result);
 
-    // Si faltan datos y tenemos nombre + productor, buscar en la base de datos local
-    if ((!result.region || !result.alcohol) && result.nombre && result.productor) {
-      console.log('Missing region or alcohol, searching in database...');
-      
-      try {
-        const supabaseClient = createClient(
-          Deno.env.get('SUPABASE_URL') ?? '',
-          Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-        );
-
-        // Buscar vinos similares en la base de datos
-        const { data: wines, error } = await supabaseClient
-          .from('wines')
-          .select('region, alcohol')
-          .ilike('name', `%${result.nombre}%`)
-          .ilike('producer', `%${result.productor}%`)
-          .limit(1);
-
-        if (!error && wines && wines.length > 0) {
-          const dbWine = wines[0];
-          
-          // Completar solo los campos que faltan con datos de la BD
-          if (!result.region && dbWine.region) {
-            result.region = dbWine.region;
-            console.log('Region found in database:', dbWine.region);
-          }
-          if (!result.alcohol && dbWine.alcohol) {
-            result.alcohol = dbWine.alcohol;
-            console.log('Alcohol found in database:', dbWine.alcohol);
-          }
-        } else {
-          console.log('No matching wine found in database');
-        }
-      } catch (searchError) {
-        console.error('Error searching database:', searchError);
-        // Continuar con los datos extraídos de la etiqueta
-      }
-    }
-
-    // Si aún faltan datos, buscar en internet con verificación de fiabilidad
-    if ((!result.region || !result.alcohol) && result.nombre && result.productor) {
-      console.log('Still missing data, searching on internet...');
+    // SIEMPRE verificar la información extraída con internet para contrastar
+    if (result.nombre && result.productor) {
+      console.log('Verifying wine data with internet sources...');
       
       try {
         const webSearchPrompt = `Busca información VERIFICABLE sobre este vino en fuentes confiables:
@@ -152,19 +113,21 @@ ${result.anada ? `Añada: ${result.anada}` : ''}
 ${result.pais ? `País: ${result.pais}` : ''}
 
 IMPORTANTE: 
-- Solo proporciona datos si encuentras fuentes FIABLES (páginas oficiales de bodegas, sitios especializados en vinos)
-- Si no encuentras información verificable, devuelve null
-- NO inventes ni supongas ningún dato
+- Busca en páginas oficiales de bodegas, sitios especializados en vinos, guías reconocidas
+- CONTRASTA la información extraída con lo que encuentres
+- Si encuentras discrepancias, usa la información verificada de fuentes fiables
+- Si no encuentras información verificable, indica que los datos no se pueden confirmar
 
-Necesito:
-- region: Denominación de origen oficial (DO, DOCa, IGP, AOC, etc.)
-- alcohol: Grado alcohólico exacto
+Datos extraídos de la etiqueta para verificar:
+- Region extraída: ${result.region || 'no encontrada'}
+- Alcohol extraído: ${result.alcohol || 'no encontrado'}
 
 Responde SOLO con JSON:
 {
-  "region": "región verificada" o null,
-  "alcohol": número decimal exacto o null,
-  "confiable": true o false
+  "region": "región VERIFICADA y CORRECTA" o null si no se puede verificar,
+  "alcohol": número decimal VERIFICADO o null si no se puede verificar,
+  "verificado": true si encontraste fuentes fiables, false si no,
+  "nota": "explicación breve de las fuentes consultadas o por qué no se pudo verificar"
 }`;
 
         const webResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
@@ -188,23 +151,26 @@ Responde SOLO con JSON:
           webContent = webContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
           const webInfo = JSON.parse(webContent);
           
-          // Solo usar los datos si se marca como confiable
-          if (webInfo.confiable) {
-            if (!result.region && webInfo.region) {
+          console.log('Web verification result:', webInfo);
+          
+          // Si se verificó con fuentes fiables, usar esos datos (tienen prioridad sobre lo extraído)
+          if (webInfo.verificado) {
+            if (webInfo.region) {
               result.region = webInfo.region;
-              console.log('Region found on internet (verified):', webInfo.region);
+              console.log('Region verified/corrected from internet:', webInfo.region);
             }
-            if (!result.alcohol && webInfo.alcohol) {
+            if (webInfo.alcohol) {
               result.alcohol = webInfo.alcohol;
-              console.log('Alcohol found on internet (verified):', webInfo.alcohol);
+              console.log('Alcohol verified/corrected from internet:', webInfo.alcohol);
             }
           } else {
-            console.log('Internet search did not find reliable data');
+            console.log('Could not verify data from reliable sources:', webInfo.nota);
           }
         }
       } catch (webSearchError) {
-        console.error('Error searching on internet:', webSearchError);
-        // Continuar con los datos que tenemos
+        console.error('Error verifying with internet:', webSearchError);
+        // Continuar con los datos extraídos de la etiqueta
+        console.log('Using data extracted from label only');
       }
     }
 
