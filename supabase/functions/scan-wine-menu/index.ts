@@ -64,18 +64,20 @@ serve(async (req) => {
     }
 
     // Build a comprehensive prompt that extracts, enriches and calculates compatibility in ONE call
-    let prompt = `Analiza esta carta de vinos de restaurante y extrae TODOS los vinos visibles con sus características COMPLETAS.
+    let prompt = `Analiza esta carta de vinos y extrae un MÁXIMO de 15 vinos con sus características.
 
-Para cada vino, INVESTIGA ONLINE si es necesario y proporciona:
+IMPORTANTE: Solo incluye hasta 15 vinos máximo. Si hay más, prioriza los más interesantes.
+
+Para cada vino proporciona:
 - nombre: Nombre del vino
-- productor: Bodega/productor (investiga si falta)
-- anada: Año de cosecha (solo número, null si no está)
-- region: Región vinícola (verificada)
+- productor: Bodega/productor
+- anada: Año (solo número, null si no está)
+- region: Región vinícola
 - pais: País
-- precio: Precio (solo el número, sin símbolo)
-- tipo: Tipo de vino (tinto, blanco, rosado, espumoso)
-- uvas: Array con las variedades de uva principales
-- descripcion: Descripción detallada del vino (aromas, notas de cata, maridajes recomendados)`;
+- precio: Precio (solo número)
+- tipo: tinto, blanco, rosado o espumoso
+- uvas: Array con variedades principales
+- descripcion: Breve descripción (máximo 150 palabras) con aromas y notas de cata`;
 
     // If user has profile, add compatibility calculation to the same prompt
     if (profile) {
@@ -96,7 +98,7 @@ Para cada vino, estima también:
 
     prompt += `
 
-Responde SOLO con un JSON válido:
+RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
 {
   "vinos": [
     {
@@ -108,7 +110,7 @@ Responde SOLO con un JSON válido:
       "precio": 24.50,
       "tipo": "tinto",
       "uvas": ["Tempranillo", "Garnacha"],
-      "descripcion": "Descripción detallada con aromas y notas de cata"${profile ? `,
+      "descripcion": "Breve descripción con aromas y notas"${profile ? `,
       "atributos": {
         "potencia": 7,
         "acidez": 6,
@@ -117,7 +119,7 @@ Responde SOLO con un JSON válido:
         "afrutado": 6
       },
       "compatibilidad": 85,
-      "razon": "Explicación de compatibilidad"` : ''}
+      "razon": "Breve explicación"` : ''}
     }
   ]
 }`;
@@ -137,7 +139,7 @@ Responde SOLO con un JSON válido:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-pro', // Usar Pro para mejor manejo de respuestas largas
+        model: 'google/gemini-2.5-flash', // Usar Flash para respuestas más rápidas y controladas
         messages: [
           { 
             role: 'user', 
@@ -150,7 +152,7 @@ Responde SOLO con un JSON válido:
             ]
           }
         ],
-        max_tokens: 16384, // Aumentar límite de tokens para respuestas más largas
+        max_tokens: 8192, // Suficiente para 15 vinos con descripciones breves
       }),
     });
 
@@ -197,49 +199,72 @@ Responde SOLO con un JSON válido:
       console.error('First 500 chars:', content.substring(0, 500));
       console.error('Last 500 chars:', content.substring(Math.max(0, content.length - 500)));
       
-      // Intentar reparar el JSON de forma más inteligente
-      try {
-        let fixedContent = content;
-        
-        // Si el contenido es muy corto, probablemente está incompleto
-        if (content.length < 100) {
-          throw new Error('Respuesta de IA muy corta, probablemente truncada');
-        }
-        
-        // Encontrar el último objeto completo en el array de vinos
-        const vinosMatch = content.match(/"vinos"\s*:\s*\[/);
-        if (vinosMatch) {
+        // Intentar reparar el JSON de forma más inteligente
+        try {
+          let fixedContent = content;
+          
+          // Si el contenido es muy corto, probablemente está incompleto
+          if (content.length < 100) {
+            console.error('Response too short:', content.length, 'chars');
+            throw new Error('Respuesta de IA muy corta. Intenta con una sección más pequeña de la carta.');
+          }
+          
+          // Encontrar el último objeto completo en el array de vinos
+          const vinosMatch = content.match(/"vinos"\s*:\s*\[/);
+          if (!vinosMatch) {
+            console.error('Could not find vinos array in response');
+            throw new Error('No se encontró la lista de vinos en la respuesta.');
+          }
+
           const vinosStart = vinosMatch.index! + vinosMatch[0].length;
           let bracketCount = 0;
+          let braceCount = 0;
           let lastCompleteObject = vinosStart;
+          let inString = false;
+          let escapeNext = false;
           
+          // Rastrear objetos completos con más precisión
           for (let i = vinosStart; i < content.length; i++) {
-            if (content[i] === '{') bracketCount++;
-            if (content[i] === '}') {
-              bracketCount--;
-              if (bracketCount === 0) {
-                lastCompleteObject = i + 1;
+            const char = content[i];
+            
+            // Manejar strings para no contar llaves/corchetes dentro de ellas
+            if (char === '"' && !escapeNext) {
+              inString = !inString;
+            }
+            escapeNext = char === '\\' && !escapeNext;
+            
+            if (!inString) {
+              if (char === '{') braceCount++;
+              if (char === '}') {
+                braceCount--;
+                if (braceCount === 0 && bracketCount === 0) {
+                  // Encontramos el final de un objeto completo
+                  lastCompleteObject = i + 1;
+                }
               }
+              if (char === '[') bracketCount++;
+              if (char === ']') bracketCount--;
             }
           }
           
-          // Reconstruir el JSON con los objetos completos
-          fixedContent = content.substring(0, lastCompleteObject);
+          // Reconstruir el JSON con solo objetos completos
+          fixedContent = content.substring(0, lastCompleteObject).trim();
           
-          // Cerrar el array y el objeto principal
-          if (!fixedContent.endsWith(']')) fixedContent += ']';
-          if (!fixedContent.endsWith('}')) fixedContent += '}';
+          // Asegurar que el array y objeto principal están cerrados
+          if (!fixedContent.endsWith(']')) {
+            fixedContent += '\n  ]\n}';
+          } else if (!fixedContent.endsWith('}')) {
+            fixedContent += '\n}';
+          }
           
-          console.log('Attempting repair with last complete object at position:', lastCompleteObject);
+          console.log('Attempting JSON repair. Original length:', content.length, 'Fixed length:', fixedContent.length);
           result = JSON.parse(fixedContent);
           console.log('Successfully repaired JSON, extracted', result.vinos?.length || 0, 'wines');
-        } else {
-          throw new Error('Could not find vinos array in response');
+        } catch (fixError) {
+          console.error('JSON repair failed:', fixError);
+          console.error('This usually means the response was truncated mid-generation');
+          throw new Error('La carta es muy extensa. Por favor fotografía solo una sección con menos vinos.');
         }
-      } catch (fixError) {
-        console.error('Could not repair JSON:', fixError);
-        throw new Error('Error al procesar la imagen. Por favor, intenta con una imagen más clara o con menos vinos en la foto.');
-      }
     }
     
     const winesData = result;
