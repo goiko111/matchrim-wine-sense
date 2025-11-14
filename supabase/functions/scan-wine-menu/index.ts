@@ -137,7 +137,7 @@ Responde SOLO con un JSON válido:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'google/gemini-2.5-pro', // Usar Pro para mejor manejo de respuestas largas
         messages: [
           { 
             role: 'user', 
@@ -150,7 +150,7 @@ Responde SOLO con un JSON válido:
             ]
           }
         ],
-        max_tokens: 8192,
+        max_tokens: 16384, // Aumentar límite de tokens para respuestas más largas
       }),
     });
 
@@ -173,46 +173,72 @@ Responde SOLO con un JSON válido:
     
     console.log('Raw AI response:', content);
     
-    // Clean markdown
-    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    // Clean markdown más agresivamente
+    content = content
+      .replace(/```json\s*/g, '')
+      .replace(/```\s*/g, '')
+      .replace(/^[^{]*/g, '') // Eliminar todo antes del primer {
+      .replace(/[^}]*$/g, '') // Eliminar todo después del último }
+      .trim();
+    
+    // Extraer solo el objeto JSON
+    const firstBrace = content.indexOf('{');
+    const lastBrace = content.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      content = content.substring(firstBrace, lastBrace + 1);
+    }
     
     let result;
     try {
       result = JSON.parse(content);
     } catch (parseError) {
       console.error('JSON Parse Error:', parseError);
-      console.error('Content that failed to parse:', content);
+      console.error('Content length:', content.length);
+      console.error('First 500 chars:', content.substring(0, 500));
+      console.error('Last 500 chars:', content.substring(Math.max(0, content.length - 500)));
       
-      // Try to salvage partial JSON by closing arrays/objects
+      // Intentar reparar el JSON de forma más inteligente
       try {
-        // Count opening and closing braces/brackets
-        const openBraces = (content.match(/{/g) || []).length;
-        const closeBraces = (content.match(/}/g) || []).length;
-        const openBrackets = (content.match(/\[/g) || []).length;
-        const closeBrackets = (content.match(/\]/g) || []).length;
-        
         let fixedContent = content;
         
-        // Close incomplete strings
-        const quotes = (content.match(/"/g) || []).length;
-        if (quotes % 2 !== 0) {
-          fixedContent += '"';
+        // Si el contenido es muy corto, probablemente está incompleto
+        if (content.length < 100) {
+          throw new Error('Respuesta de IA muy corta, probablemente truncada');
         }
         
-        // Close brackets and braces
-        for (let i = 0; i < openBrackets - closeBrackets; i++) {
-          fixedContent += ']';
+        // Encontrar el último objeto completo en el array de vinos
+        const vinosMatch = content.match(/"vinos"\s*:\s*\[/);
+        if (vinosMatch) {
+          const vinosStart = vinosMatch.index! + vinosMatch[0].length;
+          let bracketCount = 0;
+          let lastCompleteObject = vinosStart;
+          
+          for (let i = vinosStart; i < content.length; i++) {
+            if (content[i] === '{') bracketCount++;
+            if (content[i] === '}') {
+              bracketCount--;
+              if (bracketCount === 0) {
+                lastCompleteObject = i + 1;
+              }
+            }
+          }
+          
+          // Reconstruir el JSON con los objetos completos
+          fixedContent = content.substring(0, lastCompleteObject);
+          
+          // Cerrar el array y el objeto principal
+          if (!fixedContent.endsWith(']')) fixedContent += ']';
+          if (!fixedContent.endsWith('}')) fixedContent += '}';
+          
+          console.log('Attempting repair with last complete object at position:', lastCompleteObject);
+          result = JSON.parse(fixedContent);
+          console.log('Successfully repaired JSON, extracted', result.vinos?.length || 0, 'wines');
+        } else {
+          throw new Error('Could not find vinos array in response');
         }
-        for (let i = 0; i < openBraces - closeBraces; i++) {
-          fixedContent += '}';
-        }
-        
-        console.log('Attempting to fix JSON:', fixedContent);
-        result = JSON.parse(fixedContent);
-        console.log('Successfully fixed and parsed JSON');
       } catch (fixError) {
-        console.error('Could not fix JSON:', fixError);
-        throw new Error('La carta de vinos es muy extensa. Por favor fotografía solo una sección.');
+        console.error('Could not repair JSON:', fixError);
+        throw new Error('Error al procesar la imagen. Por favor, intenta con una imagen más clara o con menos vinos en la foto.');
       }
     }
     
