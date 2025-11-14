@@ -244,9 +244,16 @@ Responde SOLO con un JSON válido:
     
     const winesData = result;
 
-    console.log(`Extracted ${winesData.vinos?.length || 0} wines from menu with ${profile ? 'compatibility' : 'basic info'}`);
+    // Normalizar clave: aceptar "wines" o "vinos"
+    const vinos = Array.isArray(winesData.vinos)
+      ? winesData.vinos
+      : Array.isArray((winesData as any).wines)
+        ? (winesData as any).wines
+        : [];
 
-    return new Response(JSON.stringify({ wines: winesData.vinos || [] }), {
+    console.log(`Extracted ${vinos.length} wines from menu with ${profile ? 'compatibility' : 'basic info'}`);
+
+    return new Response(JSON.stringify({ vinos, has_profile: !!profile }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
