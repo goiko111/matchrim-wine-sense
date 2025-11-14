@@ -63,22 +63,38 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    const prompt = `Analiza esta carta de vinos de restaurante y extrae TODOS los vinos visibles con sus características.
+    // Build a comprehensive prompt that extracts, enriches and calculates compatibility in ONE call
+    let prompt = `Analiza esta carta de vinos de restaurante y extrae TODOS los vinos visibles con sus características COMPLETAS.
 
-Para cada vino, extrae:
+Para cada vino, INVESTIGA ONLINE si es necesario y proporciona:
 - nombre: Nombre del vino
-- productor: Bodega/productor (si está visible)
+- productor: Bodega/productor (investiga si falta)
 - anada: Año de cosecha (solo número, null si no está)
-- region: Región vinícola
-- pais: País (infiere del idioma/región si no está explícito)
+- region: Región vinícola (verificada)
+- pais: País
 - precio: Precio (solo el número, sin símbolo)
 - tipo: Tipo de vino (tinto, blanco, rosado, espumoso)
-- descripcion: Descripción breve si está presente
+- uvas: Array con las variedades de uva principales
+- descripcion: Descripción detallada del vino (aromas, notas de cata, maridajes recomendados)`;
 
-IMPORTANTE:
-- Extrae TODOS los vinos que veas en la carta
-- Si no encuentras algún campo, usa null
-- Para el país, infiere: Rioja/Ribera=España, Bordeaux=Francia, etc.
+    // If user has profile, add compatibility calculation to the same prompt
+    if (profile) {
+      prompt += `
+
+ADEMÁS, calcula la compatibilidad de cada vino con este perfil de usuario (escala 1-10):
+- Potencia: ${profile.potente}
+- Acidez: ${profile.acidez}
+- Dulzura: ${profile.dulce}
+- Taninos: ${profile.tanico}
+- Afrutado: ${profile.afrutado}
+
+Para cada vino, estima también:
+- atributos: objeto con potencia, acidez, dulzura, taninos, afrutado (valores 1-10)
+- compatibilidad: porcentaje 0-100 de compatibilidad con el perfil del usuario
+- razon: explicación breve de la compatibilidad`;
+    }
+
+    prompt += `
 
 Responde SOLO con un JSON válido:
 {
@@ -91,7 +107,17 @@ Responde SOLO con un JSON válido:
       "pais": "España",
       "precio": 24.50,
       "tipo": "tinto",
-      "descripcion": "Crianza de 24 meses en barrica"
+      "uvas": ["Tempranillo", "Garnacha"],
+      "descripcion": "Descripción detallada con aromas y notas de cata"${profile ? `,
+      "atributos": {
+        "potencia": 7,
+        "acidez": 6,
+        "dulzura": 3,
+        "taninos": 7,
+        "afrutado": 6
+      },
+      "compatibilidad": 85,
+      "razon": "Explicación de compatibilidad"` : ''}
     }
   ]
 }`;
@@ -190,7 +216,13 @@ Responde SOLO con un JSON válido:
       }
     }
     
-    const extractedWines = result.vinos || [];
+    const winesData = result;
+
+    console.log(`Extracted ${winesData.vinos?.length || 0} wines from menu with ${profile ? 'compatibility' : 'basic info'}`);
+
+    return new Response(JSON.stringify({ wines: winesData.vinos || [] }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
 
     console.log(`Extracted ${extractedWines.length} wines from menu`);
 
