@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,11 +12,11 @@ import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import RegionMap from '@/components/RegionMap';
 import AppNav from '@/components/AppNav';
-import { 
-  generateMatchrimName, 
-  generateWineStyles, 
-  generateGrapeRecommendations, 
-  generateRegionRecommendations 
+import {
+  generateMatchrimName,
+  generateWineStyles,
+  generateGrapeRecommendations,
+  generateRegionRecommendations
 } from '@/utils/profileUtils';
 
 interface WineStyle {
@@ -45,20 +45,26 @@ const Profile = () => {
       return;
     }
 
-    const loadQuizHistory = async () => {
-      const history = await getQuizHistory();
-      setQuizHistory(history);
-      if (history.length > 0) {
-        setCurrentProfile(history[0]);
-      }
-    };
+    // Only load if we don't already have quiz history
+    if (quizHistory.length === 0) {
+      const loadQuizHistory = async () => {
+        const history = await getQuizHistory();
+        setQuizHistory(history);
+        if (history.length > 0) {
+          setCurrentProfile(history[0]);
+        }
+      };
 
-    loadQuizHistory();
-  }, [user, navigate, getQuizHistory]);
+      loadQuizHistory();
+    }
+  }, [user, navigate, getQuizHistory, quizHistory.length]);
 
   // Generate profile data
   const profileName = currentProfile ? generateMatchrimName(currentProfile) : "";
-  const wineStyles = currentProfile ? generateWineStyles(currentProfile) : [];
+  const wineStyles = useMemo(() =>
+    currentProfile ? generateWineStyles(currentProfile) : [],
+    [currentProfile?.potente, currentProfile?.acidez, currentProfile?.dulce, currentProfile?.tanico, currentProfile?.afrutado]
+  );
   const recommendedGrapes = currentProfile ? generateGrapeRecommendations(currentProfile) : [];
   const recommendedRegions = currentProfile ? generateRegionRecommendations(currentProfile) : [];
 
@@ -77,11 +83,11 @@ const Profile = () => {
           .in('name', wineStyles);
 
         if (error) throw error;
-        
+
         const ordered = wineStyles
           .map(styleName => data?.find(s => s.name === styleName))
           .filter(Boolean) as WineStyle[];
-        
+
         setStyleDetails(ordered);
       } catch (error) {
         console.error('Error fetching wine styles:', error);
@@ -215,7 +221,7 @@ const Profile = () => {
       'Mallorca (España)': [2.9500, 39.5500], // Binissalem, zona vinícola
       'Canarias (España)': [-16.5500, 28.4500], // Valle de la Orotava, zona vinícola
       'Monterrei (España)': [-7.4400, 41.9500], // Monterrei, zona DO
-      
+
       // Francia - Zonas vitivinícolas específicas
       'Borgoña (Francia)': [4.8600, 47.0200], // Beaune, capital del vino de Borgoña
       'Burdeos (Francia)': [-0.5700, 44.8900], // Médoc, zona vinícola
@@ -225,7 +231,7 @@ const Profile = () => {
       'Alsacia (Francia)': [7.2800, 48.1500], // Ruta del vino de Alsacia
       'Languedoc (Francia)': [2.8500, 43.3500], // Zona vitivinícola de Languedoc
       'Provenza (Francia)': [6.1500, 43.4000], // Zona rosados de Provenza
-      
+
       // Italia - Zonas vitivinícolas específicas
       'Toscana (Italia)': [11.2500, 43.5500], // Chianti, zona vinícola
       'Piemonte (Italia)': [8.0300, 44.6500], // Barolo, zona DOCG
@@ -233,37 +239,37 @@ const Profile = () => {
       'Sicilia (Italia)': [14.3500, 37.5000], // Etna, zona vitivinícola
       'Barolo (Italia)': [7.9300, 44.6100], // La Morra, corazón de Barolo
       'Barbaresco (Italia)': [8.0800, 44.7200], // Barbaresco, zona DOCG
-      
+
       // Portugal - Zonas vitivinícolas específicas
       'Douro (Portugal)': [-7.2000, 41.1500], // Alto Douro Vinhateiro
       'Alentejo (Portugal)': [-7.5000, 38.3500], // Zona vinícola de Alentejo
       'Dão (Portugal)': [-7.9000, 40.5000], // Viseu, zona vitivinícola
       'Vinho Verde (Portugal)': [-8.5000, 41.6500], // Zona del Vinho Verde
-      
+
       // Alemania - Zonas vitivinícolas específicas
       'Mosel (Alemania)': [7.0500, 49.9500], // Bernkastel, zona vinícola
       'Rheingau (Alemania)': [7.9500, 50.0000], // Rüdesheim, zona vinícola
       'Pfalz (Alemania)': [8.1500, 49.4500], // Zona del Pfalz vinícola
-      
+
       // Austria - Zonas vitivinícolas específicas
       'Wachau (Austria)': [15.4200, 48.3700], // Wachau, zona vinícola del Danubio
-      
+
       // Estados Unidos - Zonas vitivinícolas específicas
       'Napa Valley (EE.UU.)': [-122.4200, 38.5000], // Oakville, corazón de Napa
       'Sonoma (EE.UU.)': [-122.8000, 38.4500], // Healdsburg, zona vinícola
       'Willamette Valley (EE.UU.)': [-123.3000, 45.2500], // Dundee, zona Pinot Noir
-      
+
       // Sudamérica - Zonas vitivinícolas específicas
       'Mendoza (Argentina)': [-69.0000, -33.0500], // Luján de Cuyo, zona vitivinícola
       'Valle de Maipo (Chile)': [-70.7500, -33.6500], // Pirque, zona vinícola
       'Valle de Colchagua (Chile)': [-71.0000, -34.6000], // Santa Cruz, zona vitivinícola
       'Salta (Argentina)': [-65.9800, -25.6500], // Cafayate, zona de altura
-      
+
       // Oceanía - Zonas vitivinícolas específicas
       'Marlborough (Nueva Zelanda)': [173.8000, -41.5200], // Blenheim, zona Sauvignon Blanc
       'Barossa Valley (Australia)': [139.0500, -34.5500], // Tanunda, corazón de Barossa
       'Yarra Valley (Australia)': [145.4500, -37.6500], // Zona vitivinícola de Yarra
-      
+
       // Sudáfrica - Zonas vitivinícolas específicas
       'Stellenbosch (Sudáfrica)': [18.8700, -33.9300] // Stellenbosch, zona vinícola
     };
@@ -356,21 +362,21 @@ const Profile = () => {
 
               {/* Radar Chart */}
               <div className="mb-8">
-                <h3 className="text-xl font-semibold text-red-800 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2">
                   <span className="text-2xl">📊</span> Tu radar sensorial
                 </h3>
-                <div className="h-80 bg-white rounded-lg p-6 shadow-md flex items-center justify-center">
+                <div className="h-80 bg-white rounded-lg shadow-md flex items-center justify-center">
                   <ChartContainer config={chartConfig} className="w-full max-w-md aspect-square">
                     <RadarChart data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                       <PolarGrid stroke="#be123c33" />
                       <PolarAngleAxis dataKey="attribute" tick={{ fill: '#be123c', fontSize: 12 }} />
                       <PolarRadiusAxis domain={[1, 5]} stroke="#be123c" tick={{ fontSize: 10 }} />
-                      <Radar 
-                        name="Perfil" 
-                        dataKey="value" 
-                        stroke="#be123c" 
-                        fill="#be123c" 
-                        fillOpacity={0.6} 
+                      <Radar
+                        name="Perfil"
+                        dataKey="value"
+                        stroke="#be123c"
+                        fill="#be123c"
+                        fillOpacity={0.6}
                       />
                       <ChartTooltip content={<ChartTooltipContent />} />
                     </RadarChart>
@@ -389,7 +395,7 @@ const Profile = () => {
                     {styleDetails.map((style) => {
                       const config = getCardConfig(style.name);
                       const IconComponent = config.icon;
-                      
+
                       return (
                         <Card key={style.id} className={`${config.bg} ${config.border} border-2 hover:shadow-lg transition-shadow cursor-pointer`}
                           onClick={() => navigate(`/wine-styles/${generateSlug(style.name)}`)}>
@@ -452,7 +458,7 @@ const Profile = () => {
                   <p className="text-gray-700 mb-6 text-lg">
                     Estas regiones vinícolas producen vinos que se alinean con tus preferencias:
                   </p>
-                  
+
                   {sortedCountries.map(({ country, regions }) => (
                     <div key={country} className="mb-8">
                       <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
@@ -460,16 +466,16 @@ const Profile = () => {
                         <span>{country}</span>
                         <span className="text-sm font-normal text-gray-600">({regions.length} {regions.length === 1 ? 'región' : 'regiones'})</span>
                       </h4>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {regions.map((region, index) => (
-                          <div 
-                            key={index} 
+                          <div
+                            key={index}
                             className="group relative bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 p-6 rounded-2xl border-2 border-amber-200 hover:border-amber-400 hover:shadow-xl transition-all duration-300 overflow-hidden"
                           >
                             {/* Efecto de brillo */}
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                            
+
                             {/* Contenido */}
                             <div className="relative z-10">
                               <div className="flex items-center gap-3 mb-3">
@@ -481,13 +487,13 @@ const Profile = () => {
                                 </h5>
                               </div>
                               <p className="text-sm text-gray-700 leading-relaxed mb-4">{getRegionDescription(region)}</p>
-                              
+
                               {/* Mapa de la región */}
-                              <RegionMap 
-                                region={region} 
-                                coordinates={getRegionCoordinates(region)} 
+                              <RegionMap
+                                region={region}
+                                coordinates={getRegionCoordinates(region)}
                               />
-                              
+
                               {/* Indicador decorativo */}
                               <div className="mt-4 h-1 w-0 bg-gradient-to-r from-amber-500 to-red-600 group-hover:w-full transition-all duration-500 rounded-full"></div>
                             </div>
@@ -508,16 +514,16 @@ const Profile = () => {
                   <div>
                     <h4 className="font-medium text-red-800 mb-2">Tip del sumiller:</h4>
                     <p className="text-gray-700">
-                      Guarda tu perfil <span className="font-semibold text-red-700">{profileName}</span> y, 
-                      cuando estés en un restaurante con Winerim, introdúcelo para recibir solo los vinos 
+                      Guarda tu perfil <span className="font-semibold text-red-700">{profileName}</span> y,
+                      cuando estés en un restaurante con Winerim, introdúcelo para recibir solo los vinos
                       que encajan contigo.
                     </p>
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex flex-col items-center gap-4">
-                <Button 
+                <Button
                   onClick={() => navigate('/')}
                   className="bg-red-700 hover:bg-red-800 text-white flex items-center gap-2"
                 >
@@ -534,7 +540,7 @@ const Profile = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button 
+                <Button
                   onClick={() => navigate('/matchrim')}
                   className="bg-red-700 hover:bg-red-800"
                 >

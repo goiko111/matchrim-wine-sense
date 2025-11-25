@@ -11,10 +11,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Wine } from 'lucide-react';
 import AppNav from '@/components/AppNav';
 import { useAuth } from '@/contexts/AuthContext';
+import { useQuizResults } from '@/hooks/useQuizResults';
 
 const Matchrim = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { saveQuizResult, getQuizHistory, isSaving } = useQuizResults();
   const [currentStep, setCurrentStep] = useState('intro'); // 'intro', 'quiz', 'results'
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [id: number]: string }>({});
@@ -22,25 +24,41 @@ const Matchrim = () => {
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
 
-  // Check if user has already taken the test (for non-logged users)
+  // Load saved quiz results on mount
   useEffect(() => {
-    if (!user) {
-      const hasCompletedTest = localStorage.getItem('matchrim_test_completed');
-      if (hasCompletedTest === 'true') {
-        setCurrentStep('limit-reached');
+    const loadSavedResults = async () => {
+      if (user) {
+        // For authenticated users, load from database
+        const history = await getQuizHistory();
+        if (history && history.length > 0) {
+          const lastResult = history[0];
+          setQuizResult({
+            potente: lastResult.potente,
+            acidez: lastResult.acidez,
+            dulce: lastResult.dulce,
+            tanico: lastResult.tanico,
+            afrutado: lastResult.afrutado
+          });
+          setCurrentStep('results');
+        }
+      } else {
+        const savedResult = localStorage.getItem('matchrim_quiz_result');
+        const savedAnswers = localStorage.getItem('matchrim_quiz_answers');
+
+        if (savedResult) {
+          setQuizResult(JSON.parse(savedResult));
+          if (savedAnswers) {
+            setAnswers(JSON.parse(savedAnswers));
+          }
+          setCurrentStep('results');
+        }
       }
-    }
-  }, [user]);
+    };
+
+    loadSavedResults();
+  }, [user, getQuizHistory]);
 
   const handleStart = () => {
-    // Check if non-logged user has already completed the test
-    if (!user) {
-      const hasCompletedTest = localStorage.getItem('matchrim_test_completed');
-      if (hasCompletedTest === 'true') {
-        setCurrentStep('limit-reached');
-        return;
-      }
-    }
     setCurrentStep('quiz');
   };
 
@@ -56,9 +74,13 @@ const Matchrim = () => {
       const result = calculateProfile(newAnswers);
       setQuizResult(result);
       setCurrentStep('results');
-      
-      // Mark test as completed for non-logged users
-      if (!user) {
+
+      // Save results based on user authentication status
+      if (user) {
+        saveQuizResult(result, newAnswers);
+      } else {
+        localStorage.setItem('matchrim_quiz_result', JSON.stringify(result));
+        localStorage.setItem('matchrim_quiz_answers', JSON.stringify(newAnswers));
         localStorage.setItem('matchrim_test_completed', 'true');
       }
     }
@@ -81,11 +103,13 @@ const Matchrim = () => {
   };
 
   const handleRestartQuiz = () => {
-    // Only allow restart for logged users
+    // Clear localStorage for anonymous users
     if (!user) {
-      setCurrentStep('limit-reached');
-      return;
+      localStorage.removeItem('matchrim_quiz_result');
+      localStorage.removeItem('matchrim_quiz_answers');
+      localStorage.removeItem('matchrim_test_completed');
     }
+
     setCurrentStep('intro');
     setCurrentQuestionIndex(0);
     setAnswers({});
@@ -97,7 +121,7 @@ const Matchrim = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       if (!quizResult) return;
-      
+
       setIsLoadingRecommendations(true);
       try {
         const userProfile: UserProfile = {
@@ -107,21 +131,21 @@ const Matchrim = () => {
           tanico: quizResult.tanico,
           afrutado: quizResult.afrutado
         };
-        
+
         // Get recommended styles for the user profile
         const recommendedStyles = generateWineStyles(quizResult);
-        
+
         const wineRecommendations = await getDiverseWineRecommendations(userProfile, 12, recommendedStyles);
-        
+
         // Convert to the format expected by QuizResults
         const formattedRecommendations = wineRecommendations.map(rec => {
           const wine = rec.wine;
           const region = wine.region || 'No especificada';
-          
+
           // Extraer el país desde la región
           let country = 'Desconocido';
           const regionLower = region.toLowerCase();
-          
+
           if (
             regionLower.includes('españa') || regionLower.includes('spain') ||
             regionLower.includes('rioja') || regionLower.includes('ribera') || regionLower.includes('priorat') ||
@@ -170,10 +194,10 @@ const Matchrim = () => {
           } else if (regionLower.includes('georgia')) {
             country = 'Georgia';
           }
-          
+
           return `${wine.name}, ${wine.estilo}, ${wine.producer || 'Desconocido'}, ${region}, ${country}`;
         });
-        
+
         setRecommendations(formattedRecommendations);
       } catch (error) {
         console.error('Error fetching recommendations:', error);
@@ -189,7 +213,7 @@ const Matchrim = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-950">
       {user && <AppNav />}
-      
+
       {/* Header with back button */}
       {!user && (
         <div className="container mx-auto px-4 py-6">
@@ -244,7 +268,7 @@ const Matchrim = () => {
                   <div className="w-24 h-24 mx-auto bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center shadow-lg">
                     <Wine className="h-12 w-12 text-white" />
                   </div>
-                  
+
                   {/* Title */}
                   <div className="space-y-3">
                     <h2 className="text-3xl md:text-4xl font-bold text-red-900">
