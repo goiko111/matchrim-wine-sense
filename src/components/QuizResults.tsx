@@ -117,7 +117,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     queryKey: ['winerim-wines', result.potente, result.acidez, result.dulce, result.tanico, result.afrutado],
     queryFn: () => fetchWinesByAttributes(result),
     staleTime: Infinity,
-    cacheTime: Infinity,
+    gcTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
