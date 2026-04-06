@@ -22,8 +22,10 @@ export const aggregateGrapes = (wines: WinerimWineWithMatch[]): GrapeRecommendat
 
   wines.forEach(wine => {
     if (wine.grapes && wine.grapes.length > 0) {
-      wine.grapes.forEach(grape => {
-        const grapeName = grape.trim();
+      wine.grapes.forEach((grape: any) => {
+        // La API puede devolver strings o objetos con campo name
+        const grapeName = typeof grape === 'string' ? grape.trim() : (grape?.name ?? String(grape)).trim();
+        if (!grapeName) return;
         if (!grapeMap.has(grapeName)) {
           grapeMap.set(grapeName, []);
         }
@@ -85,7 +87,10 @@ export const aggregateRegions = (wines: WinerimWineWithMatch[]): RegionRecommend
  */
 export const filterWinesByGrape = (wines: WinerimWineWithMatch[], grapeName: string): WinerimWineWithMatch[] => {
   return wines.filter(wine =>
-    wine.grapes?.some(g => g.trim() === grapeName)
+    wine.grapes?.some((g: any) => {
+      const name = typeof g === 'string' ? g.trim() : (g?.name ?? String(g)).trim();
+      return name === grapeName;
+    })
   );
 };
 
