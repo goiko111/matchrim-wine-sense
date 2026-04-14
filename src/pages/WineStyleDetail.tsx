@@ -60,128 +60,39 @@ const WineStyleDetail = () => {
     }
   }, [style?.name]);
 
+  // Mapa de slug → nombre de estilo para evitar traer toda la tabla
+  const baseNames = [
+    'Burbuja Fresca', 'Brut Elegante', 'Blanco Vital', 'Blanco Goloso',
+    'Dulce Intenso', 'Oxidativo/Maduro', 'Experimental', 'Vino de Terruño',
+    'Tinto Versátil', 'Tinto de Estructura', 'Tinto Goloso', 'Dulce Ligero',
+    'Blanco de Carácter', 'Rosado Ligero', 'Rosado Gastronómico', 'Tinto Ligero'
+  ];
+
+  const slugToName = (s: string) => {
+    const toSlug = (name: string) =>
+      name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+    return baseNames.find(n => toSlug(n) === s) ?? null;
+  };
+
   const fetchWineStyle = async () => {
     if (!slug) return;
 
     try {
-      // Primero obtenemos todos los estilos
-      const { data: allStyles, error } = await supabase
-        .from('wine_styles')
-        .select('*');
+      const displayName = slugToName(slug);
+      if (!displayName) throw new Error('Wine style not found');
 
-      if (error) throw error;
-
-      // Función para limpiar el nombre
-      const cleanName = (name: string) => {
-        return name
-          .replace(/^\d+;\d+;\d+;\d+;\d+;/, '') // Quitar prefijo numérico
-          .replace(/\s*\(\d+\)\s*$/, '') // Quitar números entre paréntesis
-          .trim();
-      };
-
-      // Función para generar slug (igual que en WineStylesGrid)
-      const generateSlug = (name: string) => {
-        return cleanName(name)
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '') // Remover acentos
-          .replace(/[^a-z0-9\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .trim();
-      };
-
-      // Función para extraer valores sensoriales del nombre si tiene el prefijo
-      const extractSensoryValues = (name: string) => {
-        const match = name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
-        if (match) {
-          return {
-            potente: parseInt(match[1]),
-            acidez: parseInt(match[2]),
-            dulce: parseInt(match[3]),
-            tanico: parseInt(match[4]),
-            afrutado: parseInt(match[5])
-          };
-        }
-        return null;
-      };
-
-      // Buscar CUALQUIER estilo que coincida con el slug
-      const matchedStyle = allStyles?.find(s => generateSlug(s.name) === slug);
-
-      if (matchedStyle) {
-        // Extraer valores sensoriales del nombre si existen
-        const sensoryValues = extractSensoryValues(matchedStyle.name);
-        
-        // Para estilos base (sin prefijo numérico), calculamos el promedio de todas las combinaciones
-        if (!sensoryValues) {
-          // Obtener todas las combinaciones de este estilo
-          const styleName = cleanName(matchedStyle.name);
-          const allCombinations = allStyles?.filter(s => cleanName(s.name) === styleName) || [];
-          
-          if (allCombinations.length > 0) {
-            // Calcular promedio de cada atributo
-            const avgPotente = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.potente ?? s.potente), 0) / allCombinations.length);
-            const avgAcidez = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.acidez ?? s.acidez), 0) / allCombinations.length);
-            const avgDulce = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.dulce ?? s.dulce), 0) / allCombinations.length);
-            const avgTanico = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.tanico ?? s.tanico), 0) / allCombinations.length);
-            const avgAfrutado = Math.round(allCombinations.reduce((sum, s) => sum + (extractSensoryValues(s.name)?.afrutado ?? s.afrutado), 0) / allCombinations.length);
-            
-            setStyle({
-              ...matchedStyle,
-              name: styleName,
-              potente: avgPotente,
-              acidez: avgAcidez,
-              dulce: avgDulce,
-              tanico: avgTanico,
-              afrutado: avgAfrutado
-            });
-          } else {
-            setStyle({
-              ...matchedStyle,
-              name: styleName,
-            });
-          }
-        } else {
-          // Si el nombre tiene el prefijo con valores, usarlos
-          const finalStyle = {
-            ...matchedStyle,
-            name: cleanName(matchedStyle.name),
-            potente: sensoryValues.potente,
-            acidez: sensoryValues.acidez,
-            dulce: sensoryValues.dulce,
-            tanico: sensoryValues.tanico,
-            afrutado: sensoryValues.afrutado
-          };
-          
-          setStyle(finalStyle);
-        }
-        return;
-      }
-
-      // Fallback: usar placeholder si el slug pertenece a uno de los 16 estilos base
-      const baseNames = [
-        'Burbuja Fresca', 'Brut Elegante', 'Blanco Vital', 'Blanco Goloso',
-        'Dulce Intenso', 'Oxidativo/Maduro', 'Experimental', 'Vino de Terruño',
-        'Tinto Versátil', 'Tinto de Estructura', 'Tinto Goloso', 'Dulce Ligero',
-        'Blanco de Carácter', 'Rosado Ligero', 'Rosado Gastronómico', 'Tinto Ligero'
-      ];
-      const fallbackName = baseNames.find(n => generateSlug(n) === slug);
-      if (fallbackName) {
-        setStyle({
-          id: `placeholder-${slug}`,
-          name: fallbackName,
-          description: 'Próximamente',
-          potente: 0,
-          acidez: 0,
-          dulce: 0,
-          tanico: 0,
-          afrutado: 0,
-        });
-        return;
-      }
-
-      throw new Error('Wine style not found');
+      // Establecemos el estilo con el nombre conocido — los valores se calculan en fetchStyleCombinations
+      setStyle({
+        id: `style-${slug}`,
+        name: displayName,
+        description: null,
+        potente: 0,
+        acidez: 0,
+        dulce: 0,
+        tanico: 0,
+        afrutado: 0,
+      });
     } catch (error: any) {
       console.error('Error fetching wine style:', error);
       toast({
@@ -194,62 +105,55 @@ const WineStyleDetail = () => {
     }
   };
 
-  // Obtiene las combinaciones reales existentes desde la tabla de estilos (wine_styles)
+  // Función auxiliar para limpiar nombre de estilo
+  const cleanStyleName = (name: string): string => {
+    return name.replace(/^\d+;\d+;\d+;\d+;\d+;/, '').replace(/\s*\(\d+\)\s*$/, '').trim();
+  };
+
   // Obtiene las combinaciones reales existentes desde la tabla de estilos (wine_styles)
   const fetchStyleCombinations = async (styleName: string) => {
     try {
       const displayName = cleanStyleName(styleName);
       console.log('🔍 Buscando combinaciones para:', displayName);
-      // limpiar combinaciones previas para evitar parpadeos de otro estilo
       setCombinations([]);
 
-      // Traemos todos los registros cuyo nombre contiene el displayName
+      // Query filtrada server-side: solo trae filas que contengan el nombre del estilo
       const { data, error } = await supabase
         .from('wine_styles')
-        .select('name, potente, acidez, dulce, tanico, afrutado');
+        .select('name')
+        .ilike('name', `%${displayName}%`)
+        .limit(1000);
 
       if (error) throw error;
 
-      // Filtramos solo los que correspondan exactamente al estilo (parte después del 5º ;) ignorando mayúsculas/acentos
-      const normalize = (s: string) => s
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim();
-
-      const target = normalize(displayName);
-
-      // Extrae la parte del estilo al final del campo name: p;a;d;t;f;Estilo y limpia sufijos como (n)
-      const getNameTail = (raw: string) => {
-        const parts = raw.split(';');
-        const tail = parts.length >= 6 ? parts.slice(5).join(';') : raw;
-        return tail.replace(/\s*\(\d+\)\s*$/, '').trim();
-      };
-
-      const rows = (data ?? []).filter(row => normalize(getNameTail(row.name)) === target);
+      // Extraer valores sensoriales del prefijo p;a;d;t;f;Estilo
+      const rows = (data ?? []).filter(row => {
+        const parts = row.name.split(';');
+        if (parts.length >= 6) {
+          const tail = parts.slice(5).join(';').trim();
+          return tail.toLowerCase() === displayName.toLowerCase();
+        }
+        return false;
+      });
       console.log(`📊 Combinaciones encontradas en wine_styles: ${rows.length}`);
 
-      // Construimos combinaciones a partir de columnas numéricas o del prefijo si hiciera falta
+      // Extraemos los valores sensoriales del prefijo del nombre: p;a;d;t;f;Estilo
       const toCombo = (row: any) => {
-        let p = row.potente, a = row.acidez, d = row.dulce, t = row.tanico, f = row.afrutado;
-        if ([p, a, d, t, f].some((v) => v === null || v === undefined)) {
-          const m = row.name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
-          if (m) {
-            p = parseInt(m[1]); a = parseInt(m[2]); d = parseInt(m[3]); t = parseInt(m[4]); f = parseInt(m[5]);
-          }
-        }
+        const m = row.name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
+        if (!m) return null;
         return {
-          potencia: Number(p ?? 0),
-          acidez: Number(a ?? 0),
-          dulzura: Number(d ?? 0),
-          taninos: Number(t ?? 0),
-          afrutado: Number(f ?? 0),
+          potencia: parseInt(m[1]),
+          acidez: parseInt(m[2]),
+          dulzura: parseInt(m[3]),
+          taninos: parseInt(m[4]),
+          afrutado: parseInt(m[5]),
         };
       };
 
       const unique = new Map<string, { potencia: number; acidez: number; dulzura: number; taninos: number; afrutado: number }>();
       rows.forEach((row) => {
         const combo = toCombo(row);
+        if (!combo) return;
         const key = `${combo.potencia}-${combo.acidez}-${combo.dulzura}-${combo.taninos}-${combo.afrutado}`;
         if (!unique.has(key)) unique.set(key, combo);
       });
@@ -305,50 +209,8 @@ const WineStyleDetail = () => {
       setCombinations([]);
     }
   };
-  const cleanStyleName = (name: string) => {
-    return name.replace(/\s*\(\d+\)\s*$/, '').trim();
-  };
 
-  // Normaliza nombres (sin acentos, minúsculas, sin barras)
-  const normalizeName = (s: string) => s
-    .toLowerCase()
-    .replace(/\//g, ' ')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
 
-  // Rangos por defecto para cada estilo base (0-5)
-  type RangeTuple = [number, number];
-  type Ranges = { potencia: RangeTuple; acidez: RangeTuple; dulzura: RangeTuple; taninos: RangeTuple; afrutado: RangeTuple };
-
-  const DEFAULT_STYLE_RANGES: Record<string, Ranges> = {
-    'burbuja fresca': { potencia: [0,3], acidez: [0,5], dulzura: [0,1], taninos: [0,5], afrutado: [2,5] },
-    'brut elegante':  { potencia: [0,5], acidez: [0,5], dulzura: [0,5], taninos: [0,3], afrutado: [0,3] },
-    'blanco vital':   { potencia: [3,5], acidez: [2,5], dulzura: [0,4], taninos: [0,3], afrutado: [3,5] },
-    'blanco goloso':  { potencia: [0,4], acidez: [0,5], dulzura: [0,5], taninos: [0,5], afrutado: [2,5] },
-    'dulce intenso':  { potencia: [3,5], acidez: [0,5], dulzura: [3,5], taninos: [0,5], afrutado: [0,5] },
-    'oxidativo maduro': { potencia: [0,5], acidez: [0,2], dulzura: [0,5], taninos: [1,5], afrutado: [0,3] },
-    'experimental':   { potencia: [0,5], acidez: [1,5], dulzura: [0,3], taninos: [3,5], afrutado: [0,3] },
-    'vino de terruno': { potencia: [0,5], acidez: [1,5], dulzura: [0,5], taninos: [1,5], afrutado: [0,5] },
-    'tinto versatil': { potencia: [0,5], acidez: [0,5], dulzura: [0,5], taninos: [0,5], afrutado: [0,3] },
-    'tinto de estructura': { potencia: [1,5], acidez: [0,5], dulzura: [0,4], taninos: [1,5], afrutado: [1,5] },
-    'tinto goloso':   { potencia: [0,5], acidez: [0,5], dulzura: [2,5], taninos: [0,5], afrutado: [1,5] },
-    'dulce ligero':   { potencia: [0,5], acidez: [0,5], dulzura: [3,5], taninos: [0,4], afrutado: [1,5] },
-    'blanco de caracter': { potencia: [1,5], acidez: [0,5], dulzura: [0,5], taninos: [0,5], afrutado: [0,3] },
-    'rosado ligero':  { potencia: [0,2], acidez: [1,5], dulzura: [2,5], taninos: [0,5], afrutado: [1,5] },
-    'rosado gastronomico': { potencia: [0,5], acidez: [0,5], dulzura: [0,4], taninos: [0,5], afrutado: [4,5] },
-    'tinto ligero':   { potencia: [1,2], acidez: [3,5], dulzura: [1,3], taninos: [0,5], afrutado: [4,5] },
-  };
-
-  const getDefaultRanges = (name: string): Ranges | null => {
-    const n = normalizeName(name);
-    // soporta variantes con barra
-    if (DEFAULT_STYLE_RANGES[n]) return DEFAULT_STYLE_RANGES[n];
-    const withSlash = n.replace(' / ', ' ').replace('/', ' ');
-    if (DEFAULT_STYLE_RANGES[withSlash]) return DEFAULT_STYLE_RANGES[withSlash];
-    return null;
-  };
 
   const getStyleConfig = (name: string) => {
     const cleanName = cleanStyleName(name).toLowerCase();
@@ -965,52 +827,28 @@ const WineStyleDetail = () => {
               <CardContent className="p-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   {[
-                    { label: 'Potencia', value: style.potente, icon: Mountain, description: 'Intensidad general' },
-                    { label: 'Acidez', value: style.acidez, icon: Zap, description: 'Frescura y vivacidad' },
-                    { label: 'Dulzura', value: style.dulce, icon: Heart, description: 'Percepción dulce' },
-                    { label: 'Taninos', value: style.tanico, icon: Grape, description: 'Estructura y cuerpo' },
-                    { label: 'Afrutado', value: style.afrutado, icon: Apple, description: 'Aromas frutales' }
+                    { label: 'Potencia', field: 'potencia' as const, icon: Mountain, description: 'Intensidad general' },
+                    { label: 'Acidez', field: 'acidez' as const, icon: Zap, description: 'Frescura y vivacidad' },
+                    { label: 'Dulzura', field: 'dulzura' as const, icon: Heart, description: 'Percepción dulce' },
+                    { label: 'Taninos', field: 'taninos' as const, icon: Grape, description: 'Estructura y cuerpo' },
+                    { label: 'Afrutado', field: 'afrutado' as const, icon: Apple, description: 'Aromas frutales' }
                   ].map((attr, index) => {
-                    // Determinar rango del estilo a partir de combinaciones reales si existen
-                    const keys = ['potencia','acidez','dulzura','taninos','afrutado'] as const;
-                    const field = keys[index];
+                    const field = attr.field;
 
                     let minRange: number;
                     let maxRange: number;
+
+                    let typicalValue = 0;
 
                     if (combinations && combinations.length > 0) {
                       const values = combinations.map(c => c[field]);
                       minRange = Math.min(...values);
                       maxRange = Math.max(...values);
+                      typicalValue = Math.round(values.reduce((a, b) => a + b, 0) / values.length);
                     } else {
-                      // Intentar usar rangos por defecto del estilo
-                      const defaults = getDefaultRanges(cleanStyleName(style.name));
-                      if (defaults) {
-                        const tuple = defaults[field];
-                        minRange = tuple[0];
-                        maxRange = tuple[1];
-                      } else {
-                        // Fallback: rango aproximado a partir del valor central
-                        if (attr.value === 0) {
-                          minRange = 0; maxRange = 1; // rango mínimo estimado para evitar barra invisible
-                        } else if (attr.value === 1) {
-                          minRange = 0; maxRange = 2;
-                        } else if (attr.value === 5) {
-                          minRange = 4; maxRange = 5;
-                        } else {
-                          minRange = attr.value - 1; maxRange = attr.value + 1;
-                        }
-                      }
-                    }
-
-                    // Si el rango es demasiado estrecho, intenta usar defaults del estilo
-                    {
-                      const fallbackDefaults = getDefaultRanges(cleanStyleName(style.name));
-                      if ((maxRange - minRange) < 1 && fallbackDefaults) {
-                        const tuple = fallbackDefaults[field];
-                        minRange = tuple[0];
-                        maxRange = tuple[1];
-                      }
+                      // Sin datos de BD — mostrar rango completo como indicador de que no hay datos
+                      minRange = 0;
+                      maxRange = 5;
                     }
                     
                     // Obtener colores de la paleta del estilo
@@ -1081,7 +919,7 @@ const WineStyleDetail = () => {
                           <div 
                             className={`absolute top-1 bottom-1 w-1 rounded-full shadow-sm ${colors.dark}`}
                             style={{
-                              left: `calc(${((Math.min(5, Math.max(0, attr.value)) / 5) * 100)}% - 2px)`
+                              left: `calc(${((Math.min(5, Math.max(0, typicalValue)) / 5) * 100)}% - 2px)`
                             }}
                           ></div>
                           

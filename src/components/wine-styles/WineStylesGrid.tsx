@@ -2,10 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
 import { Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Wine, Sun, Utensils, Leaf, ArrowRight } from 'lucide-react';
-import { cleanWineStyleName } from '@/utils/wineStyleUtils';
 
 interface WineStyle {
   id: string;
@@ -53,95 +50,19 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
   };
 
   useEffect(() => {
-    fetchWinerimStyles();
+    const fixedStyles: WineStyle[] = winerimStyles.map((name, idx) => ({
+      id: `style-${idx}`,
+      name,
+      description: defaultDescriptions[name] ?? 'Próximamente',
+      potente: 0,
+      acidez: 0,
+      dulce: 0,
+      tanico: 0,
+      afrutado: 0,
+    }));
+    setStyles(fixedStyles);
+    setIsLoading(false);
   }, []);
-
-  const fetchWinerimStyles = async () => {
-    try {
-      console.log('Fetching wine styles...');
-      // Obtener TODOS los estilos para poder filtrar por patrón de nombre
-      const { data, error } = await supabase
-        .from('wine_styles')
-        .select('*');
-
-      console.log('Query result:', { dataLength: data?.length, error });
-      if (error) throw error;
-
-      if (!data || data.length === 0) {
-        console.warn('Tabla wine_styles vacía. Usando estilos por defecto.');
-        const placeholderStyles: WineStyle[] = winerimStyles.map((name, idx) => ({
-          id: `placeholder-${idx}`,
-          name,
-          description: 'Próximamente',
-          potente: 0,
-          acidez: 0,
-          dulce: 0,
-          tanico: 0,
-          afrutado: 0,
-        }));
-        setStyles(placeholderStyles);
-        toast({
-          title: "Estilos por defecto",
-          description: "Mostrando estilos mientras se cargan los datos",
-        });
-        return;
-      }
-
-      // Agrupar por nombre base y tomar el primero que tenga descripción
-      const uniqueStylesMap = new Map<string, WineStyle>();
-      data.forEach((style: any) => {
-        const baseName = cleanWineStyleName(style.name);
-        // Solo agregar si no existe o si este tiene descripción y el anterior no
-        if (!uniqueStylesMap.has(baseName) ||
-            (style.description && !uniqueStylesMap.get(baseName)?.description)) {
-          uniqueStylesMap.set(baseName, { ...style, name: baseName });
-        }
-      });
-
-      console.log('Estilos únicos encontrados:', Array.from(uniqueStylesMap.keys()));
-      console.log('Estilos buscados:', winerimStyles);
-
-      // Construir lista final en el orden de winerimStyles rellenando faltantes con placeholders
-      const finalStyles: WineStyle[] = winerimStyles.map((name, idx) => {
-        const found = uniqueStylesMap.get(name);
-        return found ?? {
-          id: `placeholder-${idx}`,
-          name,
-          description: defaultDescriptions[name] ?? 'Próximamente',
-          potente: 0,
-          acidez: 0,
-          dulce: 0,
-          tanico: 0,
-          afrutado: 0,
-        };
-      });
-
-      const foundCount = finalStyles.filter(s => !(typeof s.id === 'string' && s.id.startsWith('placeholder-'))).length;
-      console.log('Estilos cargados:', foundCount, 'de', winerimStyles.length);
-
-      if (foundCount === 0) {
-        toast({
-          title: "Estilos por defecto",
-          description: "Mostrando estilos mientras se cargan los datos",
-        });
-      } else if (foundCount < winerimStyles.length) {
-        const missingNames = winerimStyles.filter(name => !uniqueStylesMap.has(name));
-        console.warn(`Faltan estilos: ${missingNames.join(', ')}`);
-      }
-
-      setStyles(finalStyles);
-
-    } catch (error: any) {
-      console.error('Error fetching Winerim styles:', error);
-      toast({
-        title: "Error",
-        description: "Error al cargar los estilos Winerim",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const getCardConfig = (index: number) => {
     const configs = [
@@ -219,10 +140,10 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
         {styles.map((style, index) => {
           const config = getCardConfig(index);
           const IconComponent = config.icon;
-          
+
           return (
-            <Card 
-              key={style.id} 
+            <Card
+              key={style.id}
               className={`${config.bg} ${config.border} border-2 hover:border-red-300 hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer transform hover:scale-105 hover:shadow-red-100/50 group relative`}
               onClick={() => navigate(`/wine-styles/${generateSlug(style.name)}`)}
             >
@@ -232,24 +153,24 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
                   <div className={`w-16 h-16 ${config.iconBg} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md group-hover:shadow-lg`}>
                     <IconComponent className={`w-8 h-8 ${config.iconColor}`} />
                   </div>
-                  
+
                   {/* Título */}
                   <h3 className="font-bold text-lg mb-3 text-gray-900 group-hover:text-red-700 transition-colors">
                     {cleanStyleName(style.name)}
                   </h3>
-                  
+
                    {/* Descripción */}
                   <p className="text-sm text-gray-700 leading-relaxed text-justify mb-4">
                     {defaultDescriptions[cleanStyleName(style.name)] || style.description || 'Descripción no disponible'}
                   </p>
-                  
+
                   {/* Indicador de click */}
                   <div className="flex items-center justify-center text-red-600 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span>Ver detalles</span>
                     <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
                 </div>
-                
+
                 {/* Efecto de brillo en hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
               </CardContent>
