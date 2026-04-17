@@ -175,7 +175,7 @@ Responde SOLO con JSON:
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in calculate-wine-affinity:', error);
     return new Response(
       JSON.stringify({ error: error.message }),

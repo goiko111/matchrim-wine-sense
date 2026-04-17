@@ -130,7 +130,7 @@ DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
       JSON.stringify({ wines: allWines }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in search-wines:', error);
     return new Response(
       JSON.stringify({ error: error.message, wines: [] }),

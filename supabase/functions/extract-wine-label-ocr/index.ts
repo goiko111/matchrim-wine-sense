@@ -180,7 +180,7 @@ Responde SOLO con JSON:
       JSON.stringify({ wine: result }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in extract-wine-label-ocr:', error);
     return new Response(
       JSON.stringify({ error: error.message, wine: null }),

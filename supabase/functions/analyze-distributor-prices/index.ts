@@ -100,7 +100,7 @@ Responde SOLO con un JSON válido en este formato exacto:
               precio_medio_mercado: analisis.precio_medio_mercado || wine.precio
             }
           };
-        } catch (error) {
+        } catch (error: any) {
           console.error(`Error analyzing wine ${wine.nombre}:`, error);
           return {
             ...wine,
@@ -118,7 +118,7 @@ Responde SOLO con un JSON válido en este formato exacto:
       JSON.stringify({ wines: analyzedWines }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in analyze-distributor-prices:', error);
     return new Response(
       JSON.stringify({ error: error.message }),

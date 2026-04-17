@@ -102,7 +102,7 @@ Formato de salida:
       }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in extract-wines-text function:', error);
     return new Response(
       JSON.stringify({ 
