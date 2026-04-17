@@ -267,7 +267,7 @@ serve(async (req) => {
           console.log('No exact results found, search completed');
           break; // No relajar filtros, mejor devolver pocos resultados exactos
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error(`Error in attempt ${attempt}:`, error);
         if (attempt === maxAttempts) {
           throw error;
@@ -355,7 +355,7 @@ serve(async (req) => {
       }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in wine-search function:', error);
     return new Response(
       JSON.stringify({ 

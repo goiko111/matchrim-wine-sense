@@ -153,7 +153,7 @@ ${uva ? `Grape variety: ${uva}` : ''}`
       }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in wine-details function:', error);
     return new Response(
       JSON.stringify({ 

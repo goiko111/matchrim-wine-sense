@@ -108,7 +108,7 @@ Formato:
       }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in extract-wines-pdf function:', error);
     return new Response(
       JSON.stringify({ 

@@ -116,7 +116,7 @@ Responde SOLO con un JSON válido en este formato:
       JSON.stringify(result),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in extract-distributor-ocr:', error);
     return new Response(
       JSON.stringify({ error: error.message, wines: [] }),
