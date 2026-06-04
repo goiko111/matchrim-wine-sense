@@ -189,7 +189,7 @@ const WineStyles = () => {
                     href="/matchrim" 
                     className="border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 rounded-2xl font-semibold transition-smooth"
                   >
-                    Explorar AIRIM
+                    Explorar aiRIM
                   </a>
                 </div>
               </div>

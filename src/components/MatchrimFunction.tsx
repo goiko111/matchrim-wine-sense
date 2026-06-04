@@ -4,7 +4,7 @@ import { ArrowLeft, Send, Loader, Wine, ChefHat, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { streamAiRimResponse } from '@/lib/aiRimStream';
 import WineRecommendationCard from './WineRecommendationCard';
 import DishRecommendationCard from './DishRecommendationCard';
 import PairingScoreCard from './PairingScoreCard';
@@ -191,86 +191,15 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
     setResult('');
 
     try {
-      const CHAT_URL = `https://tuoczkxunuoyfjlnqinc.supabase.co/functions/v1/ai-wine-chat`;
-      
-      const resp = await fetch(CHAT_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2N6a3h1bnVveWZqbG5xaW5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5NDIzMDMsImV4cCI6MjA2NjUxODMwM30.t9E5WIHp7HCoO68MkQ4-1gTTZTQiw7jI-3_w11yRxJ8`,
+      await streamAiRimResponse(
+        {
+          functionType,
+          input1: input1.trim(),
+          input2: input2.trim() || null,
+          context: 'aiRIM - Sistema de maridajes',
         },
-        body: JSON.stringify({
-          message: config.prompt,
-          context: 'AIRIM - Sistema de maridajes'
-        }),
-      });
-
-      if (!resp.ok) {
-        const errorData = await resp.json();
-        throw new Error(errorData.error || 'Error en la respuesta del servidor');
-      }
-
-      if (!resp.body) throw new Error('No se recibió respuesta del servidor');
-
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let textBuffer = '';
-      let streamDone = false;
-      let accumulatedResponse = '';
-
-      while (!streamDone) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        textBuffer += decoder.decode(value, { stream: true });
-
-        let newlineIndex: number;
-        while ((newlineIndex = textBuffer.indexOf('\n')) !== -1) {
-          let line = textBuffer.slice(0, newlineIndex);
-          textBuffer = textBuffer.slice(newlineIndex + 1);
-
-          if (line.endsWith('\r')) line = line.slice(0, -1);
-          if (line.startsWith(':') || line.trim() === '') continue;
-          if (!line.startsWith('data: ')) continue;
-
-          const jsonStr = line.slice(6).trim();
-          if (jsonStr === '[DONE]') {
-            streamDone = true;
-            break;
-          }
-
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-            if (content) {
-              accumulatedResponse += content;
-              setResult(accumulatedResponse);
-            }
-          } catch {
-            textBuffer = line + '\n' + textBuffer;
-            break;
-          }
-        }
-      }
-
-      // Final flush
-      if (textBuffer.trim()) {
-        for (let raw of textBuffer.split('\n')) {
-          if (!raw) continue;
-          if (raw.endsWith('\r')) raw = raw.slice(0, -1);
-          if (raw.startsWith(':') || raw.trim() === '') continue;
-          if (!raw.startsWith('data: ')) continue;
-          const jsonStr = raw.slice(6).trim();
-          if (jsonStr === '[DONE]') continue;
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-            if (content) {
-              accumulatedResponse += content;
-              setResult(accumulatedResponse);
-            }
-          } catch { /* ignore partial leftovers */ }
-        }
-      }
+        setResult,
+      );
 
     } catch (error) {
       console.error('Error:', error);

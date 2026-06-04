@@ -4,7 +4,7 @@ import { ArrowLeft, PartyPopper, Users, ChefHat, Brain, Star, DollarSign, Send, 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { streamAiRimResponse } from '@/lib/aiRimStream';
 import WineRecommendationCard from './WineRecommendationCard';
 
 interface SpecialMomentsFlowProps {
@@ -123,142 +123,26 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
       'celebration': 'cumpleaños/celebración'
     };
 
-    const prompt = `Eres Winerim. El usuario quiere vino para: ${momentLabels[data.momentType!]}.
-
-Detalles del evento:
-- Número de personas: ${data.people}
-- Tipo de comida: ${data.food}
-- Nivel de conocimiento de los invitados: ${data.guestLevel}
-- Enfoque deseado: ${data.approach}
-- Presupuesto por botella: ${data.budget} (en euros)
-
-Debes dar EXACTAMENTE 3 vinos diferentes usando este formato EXACTO (respetando los títulos y negritas):
-
-### 1. [Nombre del vino]
-
-**Recomendación:** [Nombre completo del vino - Bodega]
-
-- **Tipo:** [Tipo de vino]
-- **Bodega:** [Nombre de la bodega]
-- **Región:** [Región específica]
-- **País:** [País de origen]
-- **Precio aproximado:** [Rango de precio en euros]
-
-**Por qué funciona:** [Explicación detallada de 3-4 líneas]
-
-### 2. [Nombre del vino]
-
-**Recomendación:** [Nombre completo del vino - Bodega]
-
-- **Tipo:** [Tipo de vino]
-- **Bodega:** [Nombre de la bodega]
-- **Región:** [Región específica]
-- **País:** [País de origen]
-- **Precio aproximado:** [Rango de precio en euros]
-
-**Por qué funciona:** [Explicación detallada de 3-4 líneas]
-
-### 3. [Nombre del vino]
-
-**Recomendación:** [Nombre completo del vino - Bodega]
-
-- **Tipo:** [Tipo de vino]
-- **Bodega:** [Nombre de la bodega]
-- **Región:** [Región específica]
-- **País:** [País de origen]
-- **Precio aproximado:** [Rango de precio en euros]
-
-**Por qué funciona:** [Explicación detallada de 3-4 líneas]
-
-IMPORTANTE:
-- Habla en primera persona ("Te recomiendo", "He seleccionado para ti").
-- No te refieras a ti mismo en tercera persona.
-- Usa precios en euros.`;
-
     try {
-      const CHAT_URL = `https://tuoczkxunuoyfjlnqinc.supabase.co/functions/v1/ai-wine-chat`;
-      const resp = await fetch(CHAT_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2N6a3h1bnVveWZqbG5xaW5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5NDIzMDMsImV4cCI6MjA2NjUxODMwM30.t9E5WIHp7HCoO68MkQ4-1gTTZTQiw7jI-3_w11yRxJ8`,
-        },
-        body: JSON.stringify({
-          message: prompt,
-          context: 'AIRIM - Vinos para momentos especiales'
-        }),
-      });
-
-      if (!resp.ok) {
-        let errText = 'Error en la respuesta del servidor';
-        try { const e = await resp.json(); errText = e.error || errText; } catch {}
-        throw new Error(errText);
-      }
-      if (!resp.body) throw new Error('No se recibió respuesta del servidor');
-
       // Pasamos a la vista de resultado y vamos actualizando por streaming
       setResult('');
       setStep('result');
 
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let textBuffer = '';
-      let accumulatedResponse = '';
-      let streamDone = false;
-
-      while (!streamDone) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        textBuffer += decoder.decode(value, { stream: true });
-
-        let newlineIndex: number;
-        while ((newlineIndex = textBuffer.indexOf('\n')) !== -1) {
-          let line = textBuffer.slice(0, newlineIndex);
-          textBuffer = textBuffer.slice(newlineIndex + 1);
-
-          if (line.endsWith('\r')) line = line.slice(0, -1);
-          if (line.startsWith(':') || line.trim() === '') continue;
-          if (!line.startsWith('data: ')) continue;
-
-          const jsonStr = line.slice(6).trim();
-          if (jsonStr === '[DONE]') {
-            streamDone = true;
-            break;
-          }
-
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-            if (content) {
-              accumulatedResponse += content;
-              setResult(accumulatedResponse);
-            }
-          } catch {
-            textBuffer = line + '\n' + textBuffer;
-            break;
-          }
-        }
-      }
-
-      // Flush final
-      if (textBuffer.trim()) {
-        for (let raw of textBuffer.split('\n')) {
-          if (!raw) continue;
-          if (raw.endsWith('\r')) raw = raw.slice(0, -1);
-          if (raw.startsWith(':') || raw.trim() === '') continue;
-          if (!raw.startsWith('data: ')) continue;
-          const jsonStr = raw.slice(6).trim();
-          if (jsonStr === '[DONE]') continue;
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-            if (content) {
-              accumulatedResponse += content;
-              setResult(accumulatedResponse);
-            }
-          } catch { /* ignore partial leftovers */ }
-        }
-      }
+      await streamAiRimResponse(
+        {
+          functionType: 'special-moments',
+          input1: momentLabels[data.momentType!],
+          context: 'aiRIM - Vinos para momentos especiales',
+          eventDetails: {
+            people: data.people,
+            food: data.food,
+            guestLevel: data.guestLevel,
+            approach: data.approach,
+            budget: data.budget,
+          },
+        },
+        setResult,
+      );
 
     } catch (error) {
       console.error('Error:', error);

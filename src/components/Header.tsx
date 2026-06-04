@@ -71,7 +71,7 @@ const Header = () => {
                 className="text-red-700 hover:bg-red-50"
               >
                 <Brain className="h-4 w-4 mr-2" />
-                AIRIM
+                aiRIM
               </Button>
               <Button 
                 variant="ghost" 
@@ -135,7 +135,7 @@ const Header = () => {
           Inicio
         </Link>
         <Link to="/inteligencia-liquida" className="text-white hover:text-amber-200 transition-colors">
-          AIRIM
+          aiRIM
         </Link>
         <Link to="/wine-styles" className="text-white hover:text-amber-200 transition-colors">
           Estilos de Vino
