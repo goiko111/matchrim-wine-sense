@@ -2,12 +2,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, Brain, Upload, Sparkles, Palette, Search } from 'lucide-react';
+import { LogOut, User, Brain, Upload, Sparkles, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
   const { user, signOut } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -82,15 +84,17 @@ const Header = () => {
                 <Palette className="h-4 w-4 mr-2" />
                 Estilos de Vino
               </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleImportCSVClick}
-                className="text-red-700 hover:bg-red-50"
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                Importar CSV
-              </Button>
+              {isAdmin && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleImportCSVClick}
+                  className="text-red-700 hover:bg-red-50"
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  Importar CSV
+                </Button>
+              )}
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -140,15 +144,19 @@ const Header = () => {
         <Link to="/wine-styles" className="text-white hover:text-amber-200 transition-colors">
           Estilos de Vino
         </Link>
-        <Link to="/import-csv" className="text-white hover:text-amber-200 transition-colors">
-          Importar CSV
-        </Link>
-        <Link to="/data-viewer" className="text-white hover:text-amber-200 transition-colors">
-          Ver Datos
-        </Link>
-        <Link to="/admin-setup" className="text-white hover:text-amber-200 transition-colors">
-          Admin
-        </Link>
+        {isAdmin && (
+          <>
+            <Link to="/import-csv" className="text-white hover:text-amber-200 transition-colors">
+              Importar CSV
+            </Link>
+            <Link to="/data-viewer" className="text-white hover:text-amber-200 transition-colors">
+              Ver Datos
+            </Link>
+            <Link to="/admin" className="text-white hover:text-amber-200 transition-colors">
+              Admin
+            </Link>
+          </>
+        )}
       </nav>
     </header>
   );
