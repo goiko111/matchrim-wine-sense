@@ -16,7 +16,11 @@ interface WineDetail {
   name: string;
   producer: string | null;
   region: string | null;
+  tipo: string;
   estilo: string;
+  estilo_origen: string | null;
+  encaje_pct: number | null;
+  flag_reasignacion: string | null;
   potencia: number;
   acidez: number;
   dulzura: number;
@@ -51,7 +55,7 @@ const WineDetail = () => {
 
       if (error) throw error;
       setWine(data);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching wine detail:', error);
       toast({
         title: "Error",
@@ -212,6 +216,20 @@ const WineDetail = () => {
                     <Wine className="h-4 w-4 mr-1" />
                     {wine.estilo}
                   </Badge>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    <Badge variant="outline">{wine.tipo}</Badge>
+                    {wine.estilo_origen && wine.estilo_origen !== wine.estilo && (
+                      <Badge variant="outline">Origen: {wine.estilo_origen}</Badge>
+                    )}
+                    {wine.flag_reasignacion && (
+                      <Badge variant={wine.flag_reasignacion === 'sin_encaje' ? 'destructive' : 'outline'}>
+                        {wine.flag_reasignacion}
+                      </Badge>
+                    )}
+                    {wine.encaje_pct !== null && wine.encaje_pct !== undefined && (
+                      <Badge variant="outline">{wine.encaje_pct}% encaje</Badge>
+                    )}
+                  </div>
                 </div>
                 
                 {/* Placeholder para imagen del vino */}

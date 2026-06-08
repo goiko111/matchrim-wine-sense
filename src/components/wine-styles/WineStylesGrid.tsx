@@ -1,8 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
-import { Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Wine, Sun, Utensils, Leaf, ArrowRight } from 'lucide-react';
+import { Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Wine, Sun, Utensils, Leaf, ArrowRight, type LucideIcon } from 'lucide-react';
+import { WINE_STYLE_CATALOG, type PublicWineStyle } from '@/lib/winerimClassifier';
 
 interface WineStyle {
   id: string;
@@ -13,81 +14,76 @@ interface WineStyle {
   dulce: number;
   tanico: number;
   afrutado: number;
+  types: string[];
 }
 
 interface WineStylesGridProps { showIntro?: boolean }
+
+type StyleCardConfig = {
+  bg: string;
+  border: string;
+  iconBg: string;
+  icon: LucideIcon;
+  iconColor: string;
+};
+
+const WINERIM_STYLES = WINE_STYLE_CATALOG
+  .filter((style) => style.visiblePublicamente)
+  .map((style) => style.estilo as PublicWineStyle);
+
+const DEFAULT_DESCRIPTIONS: Record<string, string> = {
+  'Burbuja Fresca': 'Efervescencia fresca y ligera, perfecta para aperitivos y celebraciones.',
+  'Brut Elegante': 'Espumoso seco y sofisticado, de burbuja fina y final largo.',
+  'Blanco Vital': 'Blanco vibrante y cítrico, con acidez refrescante y energía.',
+  'Blanco Goloso': 'Blanco aromático y amable, con fruta madura y tacto goloso.',
+  'Dulce Intenso': 'Dulce de gran concentración y complejidad, ideal para postres.',
+  'Oxidativo/Maduro': 'Perfil evolucionado con notas de frutos secos, especias y crianza.',
+  'Experimental': 'Vinos de vanguardia con técnicas innovadoras y carácter único.',
+  'Vino de Terruño': 'Expresión pura del origen: suelo, clima y tradición en equilibrio.',
+  'Tinto Versátil': 'Tinto equilibrado y adaptable, compañero ideal para cualquier ocasión.',
+  'Tinto de Estructura': 'Tinto con cuerpo y taninos firmes, profundo y de larga guarda.',
+  'Tinto Goloso': 'Tinto frutal y seductor, de paso amable y final jugoso.',
+  'Dulce Ligero': 'Dulce sutil y fresco, armonioso y fácil de disfrutar.',
+  'Blanco de Carácter': 'Blanco con personalidad, estructura y complejidad aromática.',
+  'Rosado Ligero': 'Rosado fresco y delicado, perfecto para días soleados.',
+  'Rosado Gastronómico': 'Rosado con estructura y precisión para grandes maridajes.',
+  'Tinto Ligero': 'Tinto fresco y ligero, taninos suaves y gran bebibilidad.',
+};
+
 const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => {
   const navigate = useNavigate();
-  const [styles, setStyles] = useState<WineStyle[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const styles: WineStyle[] = WINERIM_STYLES.map((name, idx) => ({
+    id: `style-${idx}`,
+    name,
+    description: DEFAULT_DESCRIPTIONS[name] ?? 'Próximamente',
+    potente: 0,
+    acidez: 0,
+    dulce: 0,
+    tanico: 0,
+    afrutado: 0,
+    types: WINE_STYLE_CATALOG.find((item) => item.estilo === name)?.tiposCompatibles ?? [],
+  }));
 
-  // Los estilos específicos de las imágenes en el orden mostrado
-  const winerimStyles = [
-    'Burbuja Fresca', 'Brut Elegante', 'Blanco Vital', 'Blanco Goloso',
-    'Dulce Intenso', 'Oxidativo/Maduro', 'Experimental', 'Vino de Terruño',
-    'Tinto Versátil', 'Tinto de Estructura', 'Tinto Goloso', 'Dulce Ligero',
-    'Blanco de Carácter', 'Rosado Ligero', 'Rosado Gastronómico', 'Tinto Ligero'
-  ];
-
-  // Descripciones por defecto para cada estilo base
-  const defaultDescriptions: Record<string, string> = {
-    'Burbuja Fresca': 'Efervescencia fresca y ligera, perfecta para aperitivos y celebraciones.',
-    'Brut Elegante': 'Espumoso seco y sofisticado, de burbuja fina y final largo.',
-    'Blanco Vital': 'Blanco vibrante y cítrico, con acidez refrescante y energía.',
-    'Blanco Goloso': 'Blanco aromático y amable, con fruta madura y tacto goloso.',
-    'Dulce Intenso': 'Dulce de gran concentración y complejidad, ideal para postres.',
-    'Oxidativo/Maduro': 'Perfil evolucionado con notas de frutos secos, especias y crianza.',
-    'Experimental': 'Vinos de vanguardia con técnicas innovadoras y carácter único.',
-    'Vino de Terruño': 'Expresión pura del origen: suelo, clima y tradición en equilibrio.',
-    'Tinto Versátil': 'Tinto equilibrado y adaptable, compañero ideal para cualquier ocasión.',
-    'Tinto de Estructura': 'Tinto con cuerpo y taninos firmes, profundo y de larga guarda.',
-    'Tinto Goloso': 'Tinto frutal y seductor, de paso amable y final jugoso.',
-    'Dulce Ligero': 'Dulce sutil y fresco, armonioso y fácil de disfrutar.',
-    'Blanco de Carácter': 'Blanco con personalidad, estructura y complejidad aromática.',
-    'Rosado Ligero': 'Rosado fresco y delicado, perfecto para días soleados.',
-    'Rosado Gastronómico': 'Rosado con estructura y precisión para grandes maridajes.',
-    'Tinto Ligero': 'Tinto fresco y ligero, taninos suaves y gran bebibilidad.'
-  };
-
-  useEffect(() => {
-    const fixedStyles: WineStyle[] = winerimStyles.map((name, idx) => ({
-      id: `style-${idx}`,
-      name,
-      description: defaultDescriptions[name] ?? 'Próximamente',
-      potente: 0,
-      acidez: 0,
-      dulce: 0,
-      tanico: 0,
-      afrutado: 0,
-    }));
-    setStyles(fixedStyles);
-    setIsLoading(false);
-  }, []);
-
-  const getCardConfig = (index: number) => {
-    const configs = [
-      // Fila 1: Burbuja Fresca, Brut Elegante, Blanco Vital, Blanco Goloso
-      { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-200', icon: Droplet, iconColor: 'text-white' },
-      { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-600', icon: Diamond, iconColor: 'text-white' },
-      { bg: 'bg-yellow-50', border: 'border-yellow-100', iconBg: 'bg-yellow-300', icon: Zap, iconColor: 'text-white' },
-      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Grape, iconColor: 'text-white' },
-      // Fila 2: Dulce Intenso, Oxidativo/Maduro, Experimental, Vino de Terruño
-      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Flame, iconColor: 'text-white' },
-      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-700', icon: Clock, iconColor: 'text-white' },
-      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-400', icon: Beaker, iconColor: 'text-white' },
-      { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-500', icon: Mountain, iconColor: 'text-white' },
-      // Fila 3: Tinto Versátil, Tinto de Estructura, Tinto Goloso, Dulce Ligero
-      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Shield, iconColor: 'text-white' },
-      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-800', icon: Sword, iconColor: 'text-white' },
-      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-600', icon: Heart, iconColor: 'text-white' },
-      { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Feather, iconColor: 'text-white' },
-      // Fila 4: Blanco de Carácter, Rosado Ligero, Rosado Gastronómico, Tinto Ligero
-      { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Wine, iconColor: 'text-white' },
-      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-300', icon: Sun, iconColor: 'text-white' },
-      { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-500', icon: Utensils, iconColor: 'text-white' },
-      { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Leaf, iconColor: 'text-white' }
-    ];
-    return configs[index % configs.length];
+  const getCardConfig = (name: string) => {
+    const configs: Record<string, StyleCardConfig> = {
+      'Burbuja Fresca': { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-200', icon: Droplet, iconColor: 'text-white' },
+      'Brut Elegante': { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-600', icon: Diamond, iconColor: 'text-white' },
+      'Blanco Vital': { bg: 'bg-yellow-50', border: 'border-yellow-100', iconBg: 'bg-yellow-300', icon: Zap, iconColor: 'text-white' },
+      'Blanco Goloso': { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Grape, iconColor: 'text-white' },
+      'Dulce Intenso': { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Flame, iconColor: 'text-white' },
+      'Oxidativo/Maduro': { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-700', icon: Clock, iconColor: 'text-white' },
+      'Experimental': { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-400', icon: Beaker, iconColor: 'text-white' },
+      'Vino de Terruño': { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-500', icon: Mountain, iconColor: 'text-white' },
+      'Tinto Versátil': { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Shield, iconColor: 'text-white' },
+      'Tinto de Estructura': { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-800', icon: Sword, iconColor: 'text-white' },
+      'Tinto Goloso': { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-600', icon: Heart, iconColor: 'text-white' },
+      'Dulce Ligero': { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-300', icon: Feather, iconColor: 'text-white' },
+      'Blanco de Carácter': { bg: 'bg-amber-50', border: 'border-amber-100', iconBg: 'bg-amber-500', icon: Wine, iconColor: 'text-white' },
+      'Rosado Ligero': { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-300', icon: Sun, iconColor: 'text-white' },
+      'Rosado Gastronómico': { bg: 'bg-pink-50', border: 'border-pink-100', iconBg: 'bg-pink-500', icon: Utensils, iconColor: 'text-white' },
+      'Tinto Ligero': { bg: 'bg-red-50', border: 'border-red-100', iconBg: 'bg-red-400', icon: Leaf, iconColor: 'text-white' },
+    };
+    return configs[name] ?? { bg: 'bg-gray-50', border: 'border-gray-100', iconBg: 'bg-gray-500', icon: Wine, iconColor: 'text-white' };
   };
 
   const cleanStyleName = (name: string) => {
@@ -106,14 +102,6 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
       .trim();
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-900"></div>
-      </div>
-    );
-  }
-
   if (styles.length === 0) {
     return (
       <div className="text-center py-8">
@@ -127,18 +115,18 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
       {showIntro && (
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20 rounded-full px-4 py-2 mb-4">
-            <span className="text-xs font-semibold">16 Estilos Únicos</span>
+            <span className="text-xs font-semibold">16 Estilos Visibles</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Los Estilos de Vino</h2>
           <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto">
-            Los vinos se agrupan por estilos sensoriales. Descubre si conectas más con perfiles Golosos, Vibrantes, Terrosos o Tensos.
+            Los vinos se agrupan por estilo sensorial y tipo físico para que cada búsqueda sea coherente.
           </p>
         </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {styles.map((style, index) => {
-          const config = getCardConfig(index);
+        {styles.map((style) => {
+          const config = getCardConfig(style.name);
           const IconComponent = config.icon;
 
           return (
@@ -159,9 +147,17 @@ const WineStylesGrid: React.FC<WineStylesGridProps> = ({ showIntro = true }) => 
                     {cleanStyleName(style.name)}
                   </h3>
 
+                  <div className="flex flex-wrap justify-center gap-1 mb-3">
+                    {style.types.map((type) => (
+                      <span key={type} className="text-[11px] rounded-full bg-white/80 border border-gray-200 px-2 py-0.5 text-gray-700">
+                        {type}
+                      </span>
+                    ))}
+                  </div>
+
                    {/* Descripción */}
                   <p className="text-sm text-gray-700 leading-relaxed text-justify mb-4">
-                    {defaultDescriptions[cleanStyleName(style.name)] || style.description || 'Descripción no disponible'}
+                    {DEFAULT_DESCRIPTIONS[cleanStyleName(style.name)] || style.description || 'Descripción no disponible'}
                   </p>
 
                   {/* Indicador de click */}

@@ -1,5 +1,13 @@
 
-import { QuizResult } from '@/data/quizData';
+import { suggestWineStylesForProfile } from '@/lib/winerimClassifier';
+
+interface MatchrimProfileLike {
+  potente: number;
+  acidez: number;
+  dulce: number;
+  tanico: number;
+  afrutado: number;
+}
 
 // Función para generar un hash simple a partir de un string
 const simpleHash = (str: string): number => {
@@ -13,7 +21,7 @@ const simpleHash = (str: string): number => {
 };
 
 // Función para generar índices consistentes basados en el perfil
-const getConsistentIndex = (result: any, seed: string, max: number): number => {
+const getConsistentIndex = (result: MatchrimProfileLike, seed: string, max: number): number => {
   const profileString = `${result.potente}-${result.acidez}-${result.dulce}-${result.tanico}-${result.afrutado}-${seed}`;
   return simpleHash(profileString) % max;
 };
@@ -30,7 +38,7 @@ const consistentShuffle = <T>(array: T[], seed: string): T[] => {
   return newArray;
 };
 
-export const generateMatchrimName = (result: any): string => {
+export const generateMatchrimName = (result: MatchrimProfileLike): string => {
   const attributes = [
     { name: "Potente", value: result.potente },
     { name: "Acidez", value: result.acidez },
@@ -66,48 +74,11 @@ export const generateMatchrimName = (result: any): string => {
   return `${firstName} ${lastName}`;
 };
 
-export const generateWineStyles = (result: any): string[] => {
-  // Los 16 estilos de vino Winerim con sus criterios sensoriales ajustados
-  const winerimStyles = [
-    { name: "Burbuja Fresca", criteria: { acidez: 5, afrutado: 3, potente: 2, dulce: 1, tanico: 1 } },
-    { name: "Brut Elegante", criteria: { acidez: 5, afrutado: 2, potente: 3, dulce: 1, tanico: 1 } },
-    { name: "Blanco Vital", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 1, tanico: 1 } },
-    { name: "Blanco Goloso", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 4, tanico: 1 } },
-    { name: "Blanco de Carácter", criteria: { acidez: 3, afrutado: 2, potente: 4, dulce: 2, tanico: 2 } },
-    { name: "Rosado Ligero", criteria: { acidez: 5, afrutado: 4, potente: 2, dulce: 2, tanico: 1 } },
-    { name: "Rosado Gastronómico", criteria: { acidez: 4, afrutado: 3, potente: 3, dulce: 1, tanico: 2 } },
-    { name: "Tinto Ligero", criteria: { acidez: 4, afrutado: 4, potente: 2, dulce: 1, tanico: 2 } },
-    { name: "Tinto Versátil", criteria: { acidez: 3, afrutado: 3, potente: 3, dulce: 2, tanico: 3 } },
-    { name: "Tinto de Estructura", criteria: { acidez: 3, afrutado: 2, potente: 5, dulce: 1, tanico: 5 } },
-    { name: "Tinto Goloso", criteria: { acidez: 3, afrutado: 5, potente: 3, dulce: 3, tanico: 2 } },
-    { name: "Dulce Ligero", criteria: { acidez: 3, afrutado: 4, potente: 2, dulce: 4, tanico: 1 } },
-    { name: "Dulce Intenso", criteria: { acidez: 2, afrutado: 4, potente: 4, dulce: 5, tanico: 1 } },
-    { name: "Oxidativo/Maduro", criteria: { acidez: 2, afrutado: 2, potente: 4, dulce: 3, tanico: 2 } },
-    { name: "Experimental", criteria: { acidez: 3, afrutado: 3, potente: 3, dulce: 2, tanico: 3 } },
-    { name: "Vino de Terruño", criteria: { acidez: 4, afrutado: 2, potente: 4, dulce: 1, tanico: 4 } }
-  ];
-
-  // Calcular compatibilidad con cada estilo
-  const compatibilityScores = winerimStyles.map(style => {
-    let score = 0;
-    score += (5 - Math.abs(result.potente - style.criteria.potente)) * 2;
-    score += (5 - Math.abs(result.acidez - style.criteria.acidez)) * 2;
-    score += (5 - Math.abs(result.dulce - style.criteria.dulce)) * 2;
-    score += (5 - Math.abs(result.tanico - style.criteria.tanico)) * 2;
-    score += (5 - Math.abs(result.afrutado - style.criteria.afrutado)) * 2;
-    
-    return { name: style.name, score };
-  });
-  
-  // Ordenar por compatibilidad
-  compatibilityScores.sort((a, b) => b.score - a.score);
-  
-  // Devolver estilos con score superior a 35 (alta compatibilidad), mínimo 1, máximo 3
-  const matchingStyles = compatibilityScores.filter(s => s.score > 35);
-  return matchingStyles.slice(0, 3).map(style => style.name);
+export const generateWineStyles = (result: MatchrimProfileLike): string[] => {
+  return suggestWineStylesForProfile(result, 3);
 };
 
-export const generateGrapeRecommendations = (result: any): string[] => {
+export const generateGrapeRecommendations = (result: MatchrimProfileLike): string[] => {
   // 50 uvas internacionales ordenadas de más famosas a menos
   const grapeRecommendations = [
     // Uvas muy famosas (fame: 5)
@@ -194,7 +165,7 @@ export const generateGrapeRecommendations = (result: any): string[] => {
   return compatibilityScores.slice(0, 5).map(grape => grape.name);
 };
 
-export const generateRegionRecommendations = (result: any): string[] => {
+export const generateRegionRecommendations = (result: MatchrimProfileLike): string[] => {
   // 120 regiones vinícolas del mundo organizadas por país
   const regionRecommendations = [
     // ESPAÑA (30 regiones)

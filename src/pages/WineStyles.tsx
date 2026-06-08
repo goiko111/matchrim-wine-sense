@@ -24,7 +24,7 @@ const WineStyles = () => {
           <div className="max-w-5xl mx-auto text-center">
             <Badge className="inline-flex items-center gap-2 bg-white/20 text-white border-white/30 mb-6">
               <Wine className="h-4 w-4" />
-              16 Estilos Únicos
+              16 Estilos Visibles
             </Badge>
             
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
@@ -32,8 +32,7 @@ const WineStyles = () => {
             </h1>
             
             <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
-              Cada vino tiene su <strong>personalidad única</strong>. Descubre los estilos que definen 
-              la experiencia sensorial perfecta para cada momento.
+              Cada vino combina una personalidad sensorial y un tipo físico para que cada estilo sea preciso.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
@@ -84,11 +83,10 @@ const WineStyles = () => {
             <TabsContent value="styles" className="mt-8">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Descubre los 16 Estilos Únicos
+                  Descubre los 16 Estilos Visibles
                 </h2>
                 <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  Cada estilo representa una combinación única de atributos sensoriales, 
-                  creando una experiencia vínica distintiva y memorable.
+                  Cada estilo visible mantiene coherencia entre atributos sensoriales y tipo físico.
                 </p>
               </div>
               <WineStylesGrid />
@@ -130,8 +128,7 @@ const WineStyles = () => {
                       ¿Qué son los Estilos Winerim?
                     </h3>
                     <p className="text-gray-600 leading-relaxed">
-                      16 categorías únicas que clasifican todos los vinos según 5 atributos sensoriales: 
-                      Potencia, Acidez, Dulzura, Taninos y Afrutado.
+                      16 estilos visibles que clasifican los vinos por 5 atributos sensoriales y tipo físico.
                     </p>
                   </CardContent>
                 </Card>
@@ -145,8 +142,7 @@ const WineStyles = () => {
                       ¿Cómo funciona?
                     </h3>
                     <p className="text-gray-600 leading-relaxed">
-                      Cada vino se evalúa del 1 al 5 en los 5 atributos. Nuestro algoritmo asigna 
-                      automáticamente el estilo más apropiado.
+                      Cada vino se evalúa de 0 a 5 en los 5 atributos y se valida contra su tipo físico.
                     </p>
                   </CardContent>
                 </Card>
@@ -180,7 +176,7 @@ const WineStyles = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a 
-                    href="/matchrim" 
+                    href="/inteligencia-liquida" 
                     className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-2xl font-semibold shadow-lg transform hover:scale-105 transition-smooth"
                   >
                     Hacer Test Matchrim

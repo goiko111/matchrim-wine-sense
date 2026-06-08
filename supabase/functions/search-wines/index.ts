@@ -6,6 +6,16 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+type SearchWine = {
+  name?: string;
+  producer?: string | null;
+  region?: string | null;
+  country?: string | null;
+  grape_varieties?: string[] | null;
+  tipo?: string | null;
+  estilo?: string | null;
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -70,7 +80,8 @@ Formato JSON (sin markdown):
       "region": "denominación de origen",
       "country": "país",
       "grape_varieties": ["variedad1", "variedad2"],
-      "estilo": "categoría del vino (ej: Tinto Crianza, Blanco Fresco)"
+      "tipo": "uno de: Espumoso, Blanco, Tinto, Rosado, Dulce, Fortificado",
+      "estilo": "estilo Winerim si se puede inferir; si no, categoría descriptiva"
     }
   ]
 }
@@ -106,14 +117,14 @@ DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
             content = content.substring(firstBrace);
           }
           
-          const externalData = JSON.parse(content);
+          const externalData = JSON.parse(content) as { wines?: SearchWine[] };
           
           if (externalData.wines && Array.isArray(externalData.wines)) {
             console.log(`Found ${externalData.wines.length} wines from external sources`);
             
             // Merge results, avoiding duplicates
             const existingNames = new Set(allWines.map(w => w.name?.toLowerCase()));
-            const newWines = externalData.wines.filter((wine: any) => 
+            const newWines = externalData.wines.filter((wine) => 
               !existingNames.has(wine.name?.toLowerCase())
             );
             
@@ -130,10 +141,11 @@ DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
       JSON.stringify({ wines: allWines }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error in search-wines:', error);
+    const message = error instanceof Error ? error.message : 'Error desconocido';
     return new Response(
-      JSON.stringify({ error: error.message, wines: [] }),
+      JSON.stringify({ error: message, wines: [] }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }

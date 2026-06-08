@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Wine, Palette, Users, TrendingUp, Database, Calendar } from 'lucide-react';
+import { DIAGNOSTIC_STYLE } from '@/lib/winerimClassifier';
 
 interface DataCounts {
   wines: number;
@@ -57,6 +58,7 @@ const DataStats = () => {
         // Count wines by style
         const styleDistribution: { [key: string]: number } = {};
         winesWithStyles?.forEach(wine => {
+          if (wine.estilo === DIAGNOSTIC_STYLE) return;
           styleDistribution[wine.estilo] = (styleDistribution[wine.estilo] || 0) + 1;
         });
 

@@ -329,7 +329,7 @@ const Index = () => {
             <div className="text-center mb-16">
               <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20 mb-6">
                 <Palette className="h-4 w-4" />
-                16 Estilos Únicos
+                16 Estilos Visibles
               </Badge>
               
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">Los Estilos de Vino</h2>

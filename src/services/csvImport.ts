@@ -1,7 +1,13 @@
 import { supabase } from '@/integrations/supabase/client';
 import { CSVRow, ImportResult, DuplicateStrategy } from '@/types/csv';
-import { validateWineRow, validateWineStyleRow, validateMatchrimProfileRow } from '@/utils/csvValidation';
-import { findColumnValue } from '@/utils/csvParser';
+import { clasificarVino, inferWineTypeFromStyle, normalizeWineType } from '@/lib/winerimClassifier';
+
+type ExistingWineRecord = {
+  id: string;
+  name: string;
+  producer: string | null;
+  vintage: number | null;
+};
 
 const checkForExistingRecord = async (tableName: string, name: string) => {
   let query;
@@ -67,7 +73,7 @@ const getColumnValue = (row: CSVRow, possibleNames: string[]): string => {
 const getIntValue = (value: string, defaultValue: number = 3): number => {
   if (!value) return defaultValue;
   const parsed = parseInt(value);
-  return isNaN(parsed) ? defaultValue : Math.max(1, Math.min(5, parsed));
+  return isNaN(parsed) ? defaultValue : Math.max(0, Math.min(5, parsed));
 };
 
 export const importWines = async (
@@ -83,7 +89,7 @@ export const importWines = async (
     .select('id, name, producer, vintage');
   
   // Crear un Map para búsquedas rápidas
-  const existingWinesMap = new Map();
+  const existingWinesMap = new Map<string, ExistingWineRecord>();
   existingWines?.forEach(wine => {
     const key = `${wine.name.toLowerCase()}|${(wine.producer || '').toLowerCase()}|${wine.vintage || ''}`;
     existingWinesMap.set(key, wine);
@@ -114,6 +120,7 @@ export const importWines = async (
     batchResults.forEach(batchResult => {
       result.success += batchResult.success;
       result.errors.push(...batchResult.errors);
+      result.warnings.push(...batchResult.warnings);
       result.skipped += batchResult.skipped;
       result.updated += batchResult.updated;
     });
@@ -127,10 +134,10 @@ export const importWines = async (
 async function processBatch(
   batch: CSVRow[], 
   startIndex: number, 
-  existingWinesMap: Map<string, any>,
+  existingWinesMap: Map<string, ExistingWineRecord>,
   duplicateStrategy: DuplicateStrategy
 ) {
-  const batchResult = { success: 0, errors: [], skipped: 0, updated: 0 };
+  const batchResult = { success: 0, errors: [] as string[], warnings: [] as string[], skipped: 0, updated: 0 };
   const winesToInsert = [];
   const winesToUpdate = [];
   
@@ -157,16 +164,39 @@ async function processBatch(
     const producer = getColumnValue(row, ['bodega', 'producer', 'Bodega', 'Producer', 'winery']) || null;
     const vintageStr = getColumnValue(row, ['añada', 'vintage', 'Añada', 'Vintage', 'año', 'year', 'anada']);
     const vintage = vintageStr ? parseInt(vintageStr) : null;
-    const wineType = getColumnValue(row, ['tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo', 'Estilo Winerim']);
+    const rawType = getColumnValue(row, [
+      'tipo físico', 'tipo fisico', 'tipo_fisico', 'tipo', 'type', 'wine_type',
+      'Tipo físico', 'Tipo Físico', 'Tipo', 'Wine Type'
+    ]);
+    const providedStyle = getColumnValue(row, ['estilo', 'style', 'Estilo', 'Style', 'Estilo Winerim']);
+    const potencia = getIntValue(getColumnValue(row, ['potente', 'potencia', 'power']));
+    const acidez = getIntValue(getColumnValue(row, ['acidez', 'acidity']));
+    const dulzura = getIntValue(getColumnValue(row, ['dulce', 'sweet', 'dulzura']));
+    const taninos = getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanico']));
+    const afrutado = getIntValue(getColumnValue(row, ['afrutado', 'fruity']));
+    const tipo = normalizeWineType(rawType) ?? inferWineTypeFromStyle(providedStyle || rawType, {
+      potente: potencia,
+      acidez,
+      dulzura,
+      taninos,
+      afrutado,
+    });
     
     if (!wineName) {
       batchResult.errors.push(`Fila ${globalIndex + 2}: Nombre del vino es requerido`);
       continue;
     }
     
-    if (!wineType) {
-      batchResult.errors.push(`Fila ${globalIndex + 2}: Tipo/Estilo del vino es requerido`);
+    if (!tipo) {
+      batchResult.errors.push(`Fila ${globalIndex + 2}: Tipo físico del vino es requerido`);
       continue;
+    }
+
+    const classification = clasificarVino(potencia, acidez, dulzura, taninos, afrutado, tipo);
+    if (providedStyle && providedStyle !== classification.estiloFinal) {
+      batchResult.warnings.push(
+        `Fila ${globalIndex + 2}: estilo importado "${providedStyle}" recalculado como "${classification.estiloFinal}"`
+      );
     }
     
     // Verificar duplicados
@@ -207,12 +237,17 @@ async function processBatch(
             producer,
             region: getColumnValue(row, ['region', 'Region', 'región']) || null,
             vintage,
-            estilo: wineType,
-            potencia: getIntValue(getColumnValue(row, ['potente', 'power'])),
-            acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity'])),
-            dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'dulzura'])),
-            taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanico'])),
-            afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity'])),
+            tipo,
+            estilo: classification.estiloFinal,
+            estilo_origen: classification.estiloOrigen,
+            encaje_pct: classification.encajePct,
+            flag_reasignacion: classification.flag,
+            alternativas_reasignacion: classification.alternativas,
+            potencia,
+            acidez,
+            dulzura,
+            taninos,
+            afrutado,
             description: createDescription(),
             maridage_recommendations: createMaridajes()
           }
@@ -235,12 +270,17 @@ async function processBatch(
       producer,
       region: getColumnValue(row, ['region', 'Region', 'región']) || null,
       vintage,
-      estilo: wineType,
-      potencia: getIntValue(getColumnValue(row, ['potente', 'power'])),
-      acidez: getIntValue(getColumnValue(row, ['acidez', 'acidity'])),
-      dulzura: getIntValue(getColumnValue(row, ['dulce', 'sweet', 'dulzura'])),
-      taninos: getIntValue(getColumnValue(row, ['tánico', 'taninos', 'tanico'])),
-      afrutado: getIntValue(getColumnValue(row, ['afrutado', 'fruity'])),
+      tipo,
+      estilo: classification.estiloFinal,
+      estilo_origen: classification.estiloOrigen,
+      encaje_pct: classification.encajePct,
+      flag_reasignacion: classification.flag,
+      alternativas_reasignacion: classification.alternativas,
+      potencia,
+      acidez,
+      dulzura,
+      taninos,
+      afrutado,
       description: createDescription(),
       maridage_recommendations: createMaridajes()
     });

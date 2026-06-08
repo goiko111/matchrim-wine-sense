@@ -14,6 +14,7 @@ interface Wine {
   region: string | null;
   vintage: number | null;
   grape_varieties: string[] | null;
+  tipo?: string | null;
   estilo: string;
 }
 
@@ -99,6 +100,9 @@ export const WineSearchBar = ({ onSelectWine }: WineSearchBarProps) => {
                       )}
                       {wine.region && (
                         <Badge variant="outline" className="text-xs">{wine.region}</Badge>
+                      )}
+                      {wine.tipo && (
+                        <Badge variant="outline" className="text-xs">{wine.tipo}</Badge>
                       )}
                       <Badge variant="secondary" className="text-xs">{wine.estilo}</Badge>
                     </div>
