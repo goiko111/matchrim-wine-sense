@@ -52,7 +52,7 @@ ALTER FUNCTION public.winerim_rangos_estilo_v4_1(text)
   SET search_path = pg_catalog, public;
 ALTER FUNCTION public.winerim_especificidad_v4_1(text)
   SET search_path = pg_catalog, public;
-ALTER FUNCTION public.winerim_calcular_encaje_v4_1(text, integer, integer, integer, integer, integer)
+ALTER FUNCTION public.winerim_calcular_encaje_v4_1(integer, integer, integer, integer, integer, text)
   SET search_path = pg_catalog, public;
 ALTER FUNCTION public.winerim_estilos_del_tipo_v4_1(text, boolean)
   SET search_path = pg_catalog, public;
