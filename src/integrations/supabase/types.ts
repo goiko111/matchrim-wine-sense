@@ -489,7 +489,10 @@ export type Database = {
           created_at: string | null
           description: string | null
           dulzura: number
+          encaje_pct: number | null
           estilo: string
+          estilo_origen: string | null
+          flag_reasignacion: string | null
           grape_varieties: string[] | null
           id: string
           maridage_recommendations: string[] | null
@@ -498,6 +501,8 @@ export type Database = {
           producer: string | null
           region: string | null
           taninos: number
+          tipo: string
+          alternativas_reasignacion: Json | null
           updated_at: string | null
           vintage: number | null
         }
@@ -507,7 +512,10 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           dulzura: number
+          encaje_pct?: number | null
           estilo: string
+          estilo_origen?: string | null
+          flag_reasignacion?: string | null
           grape_varieties?: string[] | null
           id?: string
           maridage_recommendations?: string[] | null
@@ -516,6 +524,8 @@ export type Database = {
           producer?: string | null
           region?: string | null
           taninos: number
+          tipo: string
+          alternativas_reasignacion?: Json | null
           updated_at?: string | null
           vintage?: number | null
         }
@@ -525,7 +535,10 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           dulzura?: number
+          encaje_pct?: number | null
           estilo?: string
+          estilo_origen?: string | null
+          flag_reasignacion?: string | null
           grape_varieties?: string[] | null
           id?: string
           maridage_recommendations?: string[] | null
@@ -534,6 +547,8 @@ export type Database = {
           producer?: string | null
           region?: string | null
           taninos?: number
+          tipo?: string
+          alternativas_reasignacion?: Json | null
           updated_at?: string | null
           vintage?: number | null
         }

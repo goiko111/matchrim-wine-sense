@@ -38,15 +38,18 @@ export const validateWineRow = (row: CSVRow): string[] => {
     errors.push('Nombre del vino es requerido');
   }
   
-  // Verificar tipo/estilo
-  const wineType = getColumnValue(row, ['tipo', 'estilo', 'type', 'style', 'Tipo', 'Estilo']);
+  // Verificar tipo físico o estilo inferible
+  const wineType = getColumnValue(row, [
+    'tipo físico', 'tipo fisico', 'tipo_fisico', 'tipo', 'estilo', 'type', 'style',
+    'Tipo físico', 'Tipo Físico', 'Tipo', 'Estilo', 'Estilo Winerim'
+  ]);
   console.log('Tipo/Estilo encontrado:', `"${wineType}"`);
   
   if (!wineType) {
-    errors.push('Tipo/Estilo del vino es requerido');
+    errors.push('Tipo físico o estilo inferible del vino es requerido');
   }
   
-  // Validar campos numéricos opcionales (1-5)
+  // Validar campos numéricos opcionales (0-5)
   const numericFields = {
     'Potente': ['potente', 'power', 'Potente'],
     'Acidez': ['acidez', 'acidity', 'Acidez'],
@@ -60,8 +63,8 @@ export const validateWineRow = (row: CSVRow): string[] => {
     
     if (valueStr) {
       const value = parseInt(valueStr);
-      if (isNaN(value) || value < 1 || value > 5) {
-        errors.push(`${fieldName} debe ser un número entre 1 y 5 (valor: "${valueStr}")`);
+      if (isNaN(value) || value < 0 || value > 5) {
+        errors.push(`${fieldName} debe ser un número entre 0 y 5 (valor: "${valueStr}")`);
       }
     }
   });

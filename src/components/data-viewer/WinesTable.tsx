@@ -15,7 +15,11 @@ interface Wine {
   name: string;
   producer: string | null;
   region: string | null;
+  tipo: string;
   estilo: string;
+  estilo_origen: string | null;
+  encaje_pct: number | null;
+  flag_reasignacion: string | null;
   potencia: number;
   acidez: number;
   dulzura: number;
@@ -70,7 +74,7 @@ const WinesTable = () => {
 
       setWines(data || []);
       setFilteredWines(data || []);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching wines:', error);
       toast({
         title: "Error",
@@ -95,6 +99,8 @@ const WinesTable = () => {
         return wine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           wine.producer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           wine.region?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          wine.tipo?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          wine.flag_reasignacion?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           cleanedStyle.toLowerCase().includes(searchTerm.toLowerCase());
       });
       setFilteredWines(filtered);
@@ -154,7 +160,10 @@ const WinesTable = () => {
                 <TableHead>Nombre</TableHead>
                 <TableHead>Productor</TableHead>
                 <TableHead>Región</TableHead>
+                <TableHead>Tipo</TableHead>
                 <TableHead>Estilo</TableHead>
+                <TableHead>Flag</TableHead>
+                <TableHead>Encaje</TableHead>
                 <TableHead>Añada</TableHead>
                 <TableHead>Potencia</TableHead>
                 <TableHead>Acidez</TableHead>
@@ -167,7 +176,7 @@ const WinesTable = () => {
             <TableBody>
               {filteredWines.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={11} className="text-center py-8 text-gray-500">
+                  <TableCell colSpan={14} className="text-center py-8 text-gray-500">
                     {searchTerm ? 'No se encontraron vinos que coincidan con la búsqueda' : 'No hay vinos cargados'}
                   </TableCell>
                 </TableRow>
@@ -186,11 +195,18 @@ const WinesTable = () => {
                     </TableCell>
                     <TableCell>{wine.producer || '-'}</TableCell>
                     <TableCell>{wine.region || '-'}</TableCell>
+                    <TableCell>{wine.tipo || '-'}</TableCell>
                     <TableCell>
                       <Badge variant="secondary" className="text-xs">
                         {cleanStyleName(wine.estilo)}
                       </Badge>
                     </TableCell>
+                    <TableCell>
+                      <Badge variant={wine.flag_reasignacion === 'sin_encaje' ? 'destructive' : 'outline'} className="text-xs">
+                        {wine.flag_reasignacion || '-'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{wine.encaje_pct ?? '-'}</TableCell>
                     <TableCell>{wine.vintage || '-'}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">

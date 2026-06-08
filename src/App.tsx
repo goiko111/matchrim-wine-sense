@@ -1,8 +1,10 @@
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
 import Profile from '@/pages/Profile';
@@ -10,7 +12,6 @@ import Registration from '@/pages/Registration';
 import Matchrim from '@/pages/Matchrim';
 import LiquidIntelligence from '@/pages/LiquidIntelligence';
 import ImportCSV from '@/pages/ImportCSV';
-import AdminSetup from '@/pages/AdminSetup';
 import Admin from '@/pages/Admin';
 import DataViewer from '@/pages/DataViewer';
 import WineStyles from '@/pages/WineStyles';
@@ -23,6 +24,20 @@ import NotFound from '@/pages/NotFound';
 import './App.css';
 
 const queryClient = new QueryClient();
+
+function AdminOnly({ children }: { children: ReactNode }) {
+  const { isAdmin, loading } = useIsAdmin();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20">
+        <p className="text-muted-foreground">Verificando permisos...</p>
+      </div>
+    );
+  }
+
+  return isAdmin ? <>{children}</> : <Navigate to="/" replace />;
+}
 
 function App() {
   return (
@@ -37,15 +52,14 @@ function App() {
               <Route path="/registration" element={<Registration />} />
               <Route path="/matchrim" element={<Matchrim />} />
               <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
-              <Route path="/import-csv" element={<ImportCSV />} />
-              <Route path="/admin-setup" element={<AdminSetup />} />
+              <Route path="/import-csv" element={<AdminOnly><ImportCSV /></AdminOnly>} />
               <Route path="/admin" element={<Admin />} />
-              <Route path="/data-viewer" element={<DataViewer />} />
+              <Route path="/data-viewer" element={<AdminOnly><DataViewer /></AdminOnly>} />
               <Route path="/wine-styles" element={<WineStyles />} />
               <Route path="/wine-styles/:slug" element={<WineStyleDetail />} />
               <Route path="/wines/:id/:slug?" element={<WineDetail />} />
-              <Route path="/wine-search" element={<WineSearch />} />
-              <Route path="/wine-import" element={<WineImport />} />
+              <Route path="/wine-search" element={<AdminOnly><WineSearch /></AdminOnly>} />
+              <Route path="/wine-import" element={<AdminOnly><WineImport /></AdminOnly>} />
               <Route path="/my-wines" element={<MyWines />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

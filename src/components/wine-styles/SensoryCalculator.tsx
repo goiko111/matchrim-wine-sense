@@ -1,331 +1,114 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calculator, Wine } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
+import {
+  DIAGNOSTIC_STYLE,
+  WINE_TYPES,
+  clasificarVino,
+  type WineClassification,
+  type WineType,
+} from '@/lib/winerimClassifier';
 
 interface SensoryProfile {
   potente: number;
   acidez: number;
-  dulce: number;
-  tanico: number;
+  dulzura: number;
+  taninos: number;
   afrutado: number;
 }
 
-interface WineStyle {
-  id: string;
-  name: string;
-  description: string | null;
-  potente: number;
-  acidez: number;
-  dulce: number;
-  tanico: number;
-  afrutado: number;
-}
+const ATTRIBUTE_LABELS: Record<keyof SensoryProfile, string> = {
+  potente: 'Potencia',
+  acidez: 'Acidez',
+  dulzura: 'Dulzor',
+  taninos: 'Taninos',
+  afrutado: 'Afrutado',
+};
+
+const ATTRIBUTE_DESCRIPTIONS: Record<keyof SensoryProfile, Record<number, string>> = {
+  potente: {
+    0: 'Sin intensidad',
+    1: 'Muy ligero',
+    2: 'Ligero',
+    3: 'Moderado',
+    4: 'Intenso',
+    5: 'Muy intenso',
+  },
+  acidez: {
+    0: 'Sin acidez',
+    1: 'Muy baja',
+    2: 'Baja',
+    3: 'Equilibrada',
+    4: 'Alta',
+    5: 'Muy alta',
+  },
+  dulzura: {
+    0: 'Muy seco',
+    1: 'Seco',
+    2: 'Ligeramente dulce',
+    3: 'Semidulce',
+    4: 'Dulce',
+    5: 'Muy dulce',
+  },
+  taninos: {
+    0: 'Sin taninos',
+    1: 'Mínimos',
+    2: 'Suaves',
+    3: 'Equilibrados',
+    4: 'Marcados',
+    5: 'Intensos',
+  },
+  afrutado: {
+    0: 'Sin fruta',
+    1: 'Poco afrutado',
+    2: 'Ligeramente afrutado',
+    3: 'Moderadamente afrutado',
+    4: 'Muy afrutado',
+    5: 'Intensamente afrutado',
+  },
+};
+
+const FLAG_LABELS: Record<WineClassification['flag'], string> = {
+  directo: 'Directo',
+  auto_reasignado: 'Reasignado',
+  auto_reasignado_revisar: 'Revisar',
+  sin_encaje: 'Solo admin',
+};
+
+const FLAG_CLASSES: Record<WineClassification['flag'], string> = {
+  directo: 'bg-green-100 text-green-800 border-green-200',
+  auto_reasignado: 'bg-blue-100 text-blue-800 border-blue-200',
+  auto_reasignado_revisar: 'bg-amber-100 text-amber-800 border-amber-200',
+  sin_encaje: 'bg-red-100 text-red-800 border-red-200',
+};
 
 const SensoryCalculator = () => {
   const [profile, setProfile] = useState<SensoryProfile>({
     potente: 2,
-    acidez: 2,
-    dulce: 1,
-    tanico: 2,
-    afrutado: 2
+    acidez: 4,
+    dulzura: 0,
+    taninos: 0,
+    afrutado: 3,
   });
+  const [tipo, setTipo] = useState<WineType>('Blanco');
 
-  const [identifiedStyle, setIdentifiedStyle] = useState<WineStyle | null>(null);
-  const [wineStyles, setWineStyles] = useState<WineStyle[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    fetchWineStyles();
-  }, []);
-
-  const fetchWineStyles = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('wine_styles')
-        .select('*');
-
-      if (error) throw error;
-
-      if (!data || data.length === 0) {
-        toast({
-          title: "Advertencia",
-          description: "No hay estilos de vino en la base de datos",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      // Limpiar, extraer valores del prefijo y agrupar estilos por nombre base
-      const extractFromName = (name: string) => {
-        const match = name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
-        if (!match) return null;
-        return {
-          potente: parseInt(match[1]),
-          acidez: parseInt(match[2]),
-          dulce: parseInt(match[3]),
-          tanico: parseInt(match[4]),
-          afrutado: parseInt(match[5])
-        } as SensoryProfile;
-      };
-
-      // Normalizamos todos los registros a una estructura común
-      const items = data.map((style) => {
-        const extracted = extractFromName(style.name);
-        const values: SensoryProfile = extracted ?? {
-          potente: style.potente,
-          acidez: style.acidez,
-          dulce: style.dulce,
-          tanico: style.tanico,
-          afrutado: style.afrutado,
-        };
-        const fromPrefix = Boolean(extracted);
-        const cleanName = cleanStyleName(style.name);
-        return { id: style.id, description: style.description, cleanName, fromPrefix, ...values };
-      });
-
-      // Agrupar y calcular un centro canónico por nombre
-      const groups = new Map<string, { sum: SensoryProfile; count: number; countPrefix: number; description: string | null }>();
-      items.forEach((it) => {
-        if (!groups.has(it.cleanName)) {
-          groups.set(it.cleanName, { sum: { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 }, count: 0, countPrefix: 0, description: it.description || null });
-        }
-        const g = groups.get(it.cleanName)!;
-        g.sum.potente += it.potente;
-        g.sum.acidez += it.acidez;
-        g.sum.dulce += it.dulce;
-        g.sum.tanico += it.tanico;
-        g.sum.afrutado += it.afrutado;
-        g.count += 1;
-        if (it.fromPrefix) g.countPrefix += 1;
-        if ((it.description?.length || 0) > (g.description?.length || 0)) g.description = it.description;
-      });
-
-      const uniqueStyles: WineStyle[] = [];
-      groups.forEach((g, name) => {
-        const denom = g.countPrefix > 0 ? g.countPrefix : g.count;
-        // En caso de contar con prefijos, usamos solo esos para el promedio
-        const sourceItems = g.countPrefix > 0 ? items.filter(i => i.cleanName === name && i.fromPrefix) : items.filter(i => i.cleanName === name);
-        const avg = sourceItems.reduce((acc, i) => ({
-          potente: acc.potente + i.potente,
-          acidez: acc.acidez + i.acidez,
-          dulce: acc.dulce + i.dulce,
-          tanico: acc.tanico + i.tanico,
-          afrutado: acc.afrutado + i.afrutado,
-        }), { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 });
-        const center: SensoryProfile = {
-          potente: Math.round(avg.potente / denom),
-          acidez: Math.round(avg.acidez / denom),
-          dulce: Math.round(avg.dulce / denom),
-          tanico: Math.round(avg.tanico / denom),
-          afrutado: Math.round(avg.afrutado / denom),
-        };
-        uniqueStyles.push({
-          id: name,
-          name,
-          description: g.description,
-          ...center,
-        });
-      });
-
-      // Orden estable por nombre para depurar
-      uniqueStyles.sort((a, b) => a.name.localeCompare(b.name));
-      console.debug('Perfil usuario:', profile);
-      console.debug('Estilos (centros canónicos):', uniqueStyles.map(s => ({ n: s.name, p: [s.potente, s.acidez, s.dulce, s.tanico, s.afrutado] })));
-
-      setWineStyles(uniqueStyles);
-    } catch (error: any) {
-      console.error('Error fetching wine styles:', error);
-      toast({
-        title: "Error",
-        description: "Error al cargar los estilos de vino",
-        variant: "destructive"
-      });
-    }
-  };
+  const classification = useMemo(
+    () => clasificarVino(profile.potente, profile.acidez, profile.dulzura, profile.taninos, profile.afrutado, tipo),
+    [profile, tipo],
+  );
 
   const updateProfile = (attribute: keyof SensoryProfile, value: number[]) => {
-    setProfile(prev => ({
-      ...prev,
-      [attribute]: value[0]
+    setProfile((current) => ({
+      ...current,
+      [attribute]: value[0],
     }));
   };
 
-  const calculateStyle = async () => {
-    setIsLoading(true);
-
-    try {
-      // 1) Intentar coincidencia exacta por prefijo
-      const prefix = `${profile.potente};${profile.acidez};${profile.dulce};${profile.tanico};${profile.afrutado};`;
-      const { data: exactRows, error: exactError } = await supabase
-        .from('wine_styles')
-        .select('*')
-        .like('name', `${prefix}%`);
-
-      if (exactError) throw exactError;
-
-      if (exactRows && exactRows.length > 0) {
-        const preferred = exactRows.find(r => cleanStyleName(r.name).toLowerCase().includes('versátil')) ?? exactRows[0];
-        setIdentifiedStyle({
-          ...(preferred as any),
-          name: cleanStyleName(preferred.name),
-          potente: profile.potente,
-          acidez: profile.acidez,
-          dulce: profile.dulce,
-          tanico: profile.tanico,
-          afrutado: profile.afrutado,
-        } as any);
-        console.log('Coincidencia exacta encontrada:', cleanStyleName(preferred.name));
-        return;
-      }
-
-      // 2) Si no hay exacto, obtener todos los estilos
-      const { data, error } = await supabase
-        .from('wine_styles')
-        .select('*');
-
-      if (error) throw error;
-
-      if (!data || data.length === 0) {
-        toast({
-          title: "Error",
-          description: "No se han cargado los estilos de vino",
-          variant: "destructive"
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      // Extraer valores del prefijo si existen
-      const extractFromName = (name: string) => {
-        const match = name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
-        if (!match) return null;
-        return {
-          potente: parseInt(match[1]),
-          acidez: parseInt(match[2]),
-          dulce: parseInt(match[3]),
-          tanico: parseInt(match[4]),
-          afrutado: parseInt(match[5])
-        };
-      };
-
-      // Calcular distancia para cada registro usando SIEMPRE los valores del prefijo
-      const distances = data.map(style => {
-        const extracted = extractFromName(style.name);
-        
-        // Si no hay prefijo, saltar este registro
-        if (!extracted) {
-          return null;
-        }
-
-        const distance = Math.sqrt(
-          Math.pow(profile.potente - extracted.potente, 2) +
-          Math.pow(profile.acidez - extracted.acidez, 2) +
-          Math.pow(profile.dulce - extracted.dulce, 2) +
-          Math.pow(profile.tanico - extracted.tanico, 2) +
-          Math.pow(profile.afrutado - extracted.afrutado, 2)
-        );
-
-        return {
-          style: {
-            ...style,
-            name: cleanStyleName(style.name),
-            ...extracted
-          },
-          distance
-        };
-      }).filter(Boolean) as Array<{ style: WineStyle; distance: number }>;
-
-      // Encontrar el registro con la menor distancia
-      const closest = distances.reduce((prev, current) => 
-        prev.distance < current.distance ? prev : current
-      );
-
-      console.log('Perfil buscado:', profile);
-      console.log('Estilo más cercano:', closest.style.name, 'Distancia:', closest.distance);
-      console.log('Valores del estilo:', {
-        potente: closest.style.potente,
-        acidez: closest.style.acidez,
-        dulce: closest.style.dulce,
-        tanico: closest.style.tanico,
-        afrutado: closest.style.afrutado
-      });
-
-      setIdentifiedStyle(closest.style);
-    } catch (error: any) {
-      console.error('Error calculating style:', error);
-      toast({
-        title: "Error",
-        description: "Error al calcular el estilo",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const cleanStyleName = (name: string) => {
-    // Quitar prefijos de formato "0;0;0;0;0;" y números entre paréntesis
-    return name
-      .replace(/^\d+;\d+;\d+;\d+;\d+;/, '') // Quitar prefijo numérico
-      .replace(/\s*\(\d+\)\s*$/, '') // Quitar números entre paréntesis al final
-      .trim();
-  };
-
-  const getAttributeDescription = (attribute: keyof SensoryProfile, value: number) => {
-    const descriptions: Record<keyof SensoryProfile, Record<number, string>> = {
-      potente: {
-        0: "Sin intensidad",
-        1: "Muy ligero",
-        2: "Ligero", 
-        3: "Moderado",
-        4: "Intenso",
-        5: "Muy intenso"
-      },
-      acidez: {
-        0: "Sin acidez",
-        1: "Muy baja",
-        2: "Baja",
-        3: "Equilibrada", 
-        4: "Alta",
-        5: "Muy alta"
-      },
-      dulce: {
-        0: "Muy seco",
-        1: "Seco",
-        2: "Ligeramente dulce",
-        3: "Semidulce",
-        4: "Dulce", 
-        5: "Muy dulce"
-      },
-      tanico: {
-        0: "Sin taninos",
-        1: "Taninos mínimos",
-        2: "Taninos suaves",
-        3: "Taninos equilibrados",
-        4: "Taninos marcados",
-        5: "Taninos intensos"
-      },
-      afrutado: {
-        0: "Sin fruta",
-        1: "Poco afrutado",
-        2: "Ligeramente afrutado", 
-        3: "Moderadamente afrutado",
-        4: "Muy afrutado",
-        5: "Intensamente afrutado"
-      }
-    };
-    
-    return descriptions[attribute][value] || "No definido";
-  };
-
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="flex items-center justify-center gap-2">
@@ -333,183 +116,103 @@ const SensoryCalculator = () => {
             Calculadora de Perfil Sensorial
           </CardTitle>
           <CardDescription>
-            Ajusta los valores de los 5 atributos sensoriales para obtener tu perfil característico de estilo del vino y la descripción pedagógica del estilo encontrado.
+            Clasificación híbrida V4.1 por atributos sensoriales y tipo físico.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Panel de controles */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-8">
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-red-800">Perfil Sensorial</h3>
-              
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="font-medium">Potente</label>
-                    <span className="text-sm text-gray-600">{profile.potente}</span>
-                  </div>
-                  <Slider
-                    value={[profile.potente]}
-                    onValueChange={(value) => updateProfile('potente', value)}
-                    max={5}
-                    min={0}
-                    step={1}
-                    className="w-full"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {getAttributeDescription('potente', profile.potente)}
-                  </p>
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="font-medium">Acidez</label>
-                    <span className="text-sm text-gray-600">{profile.acidez}</span>
-                  </div>
-                  <Slider
-                    value={[profile.acidez]}
-                    onValueChange={(value) => updateProfile('acidez', value)}
-                    max={5}
-                    min={0}
-                    step={1}
-                    className="w-full"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {getAttributeDescription('acidez', profile.acidez)}
-                  </p>
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="font-medium">Dulzor</label>
-                    <span className="text-sm text-gray-600">{profile.dulce}</span>
-                  </div>
-                  <Slider
-                    value={[profile.dulce]}
-                    onValueChange={(value) => updateProfile('dulce', value)}
-                    max={5}
-                    min={0}
-                    step={1}
-                    className="w-full"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {getAttributeDescription('dulce', profile.dulce)}
-                  </p>
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="font-medium">Tánico</label>
-                    <span className="text-sm text-gray-600">{profile.tanico}</span>
-                  </div>
-                  <Slider
-                    value={[profile.tanico]}
-                    onValueChange={(value) => updateProfile('tanico', value)}
-                    max={5}
-                    min={0}
-                    step={1}
-                    className="w-full"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {getAttributeDescription('tanico', profile.tanico)}
-                  </p>
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="font-medium">Afrutado</label>
-                    <span className="text-sm text-gray-600">{profile.afrutado}</span>
-                  </div>
-                  <Slider
-                    value={[profile.afrutado]}
-                    onValueChange={(value) => updateProfile('afrutado', value)}
-                    max={5}
-                    min={0}
-                    step={1}
-                    className="w-full"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {getAttributeDescription('afrutado', profile.afrutado)}
-                  </p>
-                </div>
+              <div>
+                <label className="block font-medium text-red-800 mb-2">Tipo físico</label>
+                <Select value={tipo} onValueChange={(value) => setTipo(value as WineType)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {WINE_TYPES.map((wineType) => (
+                      <SelectItem key={wineType} value={wineType}>
+                        {wineType}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
-              <Button 
-                onClick={calculateStyle}
-                className="w-full bg-red-700 hover:bg-red-800"
-                disabled={isLoading}
-              >
-                <Wine className="h-4 w-4 mr-2" />
-                {isLoading ? 'Calculando...' : 'Calcular Estilo'}
-              </Button>
+              <div className="space-y-6">
+                {(Object.keys(ATTRIBUTE_LABELS) as Array<keyof SensoryProfile>).map((attribute) => (
+                  <div key={attribute}>
+                    <div className="flex justify-between items-center mb-2">
+                      <label className="font-medium">{ATTRIBUTE_LABELS[attribute]}</label>
+                      <span className="text-sm text-gray-600">{profile[attribute]}</span>
+                    </div>
+                    <Slider
+                      value={[profile[attribute]]}
+                      onValueChange={(value) => updateProfile(attribute, value)}
+                      max={5}
+                      min={0}
+                      step={1}
+                      className="w-full"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {ATTRIBUTE_DESCRIPTIONS[attribute][profile[attribute]]}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Panel de resultados */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-red-800">Leyenda de Atributos</h3>
-              
-              <div className="space-y-4 text-sm">
-                <div>
-                  <h4 className="font-medium mb-2">Potente (0-5)</h4>
-                  <p className="text-gray-600">Intensidad general del vino en boca</p>
-                </div>
-                
-                <div>
-                  <h4 className="font-medium mb-2">Acidez (0-5)</h4>
-                  <p className="text-gray-600">Frescura y vivacidad del vino</p>
-                </div>
-                
-                <div>
-                  <h4 className="font-medium mb-2">Dulzor (0-5)</h4>
-                  <p className="text-gray-600">Nivel de azúcar residual percibido</p>
-                </div>
-                
-                <div>
-                  <h4 className="font-medium mb-2">Tánico (0-5)</h4>
-                  <p className="text-gray-600">Estructura y astringencia</p>
-                </div>
-                
-                <div>
-                  <h4 className="font-medium mb-2">Afrutado (0-5)</h4>
-                  <p className="text-gray-600">Presencia e intensidad frutal</p>
-                </div>
-              </div>
-
-              <div className="bg-red-50 p-4 rounded-lg">
-                <h4 className="font-medium mb-2 text-red-800">Ventajas del Sistema</h4>
-                <ul className="text-sm text-red-700 space-y-1">
-                  <li>• Facilita la comunicación enológica</li>
-                  <li>• Codificación universal de 1-16 clasificaciones</li>
-                  <li>• Fácil memorización de números únicos</li>
-                  <li>• Búsquedas muy rápidas dentro del portafolio</li>
-                  <li>• Control del perfil de preferencias</li>
-                </ul>
-              </div>
-
-              {identifiedStyle && (
-                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                  <h4 className="font-medium mb-2 text-green-800">Estilo Identificado</h4>
-                  <Badge variant="secondary" className="mb-3">
-                    🍷 {cleanStyleName(identifiedStyle.name)}
+              <div className="rounded-lg border border-red-100 bg-red-50/60 p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm text-red-700 font-medium">Estilo final</p>
+                    <h3 className="text-2xl font-bold text-red-950 mt-1">
+                      {classification.estiloFinal}
+                    </h3>
+                  </div>
+                  <Badge variant="outline" className={FLAG_CLASSES[classification.flag]}>
+                    {FLAG_LABELS[classification.flag]}
                   </Badge>
-                  <div className="space-y-2">
-                    <p className="text-sm text-green-700 font-medium">
-                      Basado en tu perfil sensorial, este es el estilo de vino que mejor se adapta a tus preferencias.
-                    </p>
-                    {identifiedStyle.description && (
-                      <p className="text-sm text-green-600">
-                        {identifiedStyle.description}
-                      </p>
-                    )}
-                    <div className="text-xs text-green-700 mt-2">
-                      <strong>Tu perfil:</strong> Potente: {profile.potente}, Acidez: {profile.acidez}, Dulzor: {profile.dulce}, Tánico: {profile.tanico}, Afrutado: {profile.afrutado}
-                    </div>
-                    <div className="text-xs text-green-600">
-                      <strong>Perfil del estilo:</strong> Potente: {identifiedStyle.potente}, Acidez: {identifiedStyle.acidez}, Dulzor: {identifiedStyle.dulce}, Tánico: {identifiedStyle.tanico}, Afrutado: {identifiedStyle.afrutado}
-                    </div>
+                </div>
+
+                <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
+                  <div className="rounded-md bg-white p-3 border">
+                    <p className="text-gray-500">Origen V3</p>
+                    <p className="font-semibold text-gray-900">{classification.estiloOrigen}</p>
+                  </div>
+                  <div className="rounded-md bg-white p-3 border">
+                    <p className="text-gray-500">Encaje</p>
+                    <p className="font-semibold text-gray-900">{classification.encajePct}%</p>
                   </div>
                 </div>
-              )}
+
+                {classification.estiloFinal === DIAGNOSTIC_STYLE && (
+                  <p className="mt-4 text-sm text-red-800">
+                    Este resultado queda fuera del catálogo público y entra en revisión interna.
+                  </p>
+                )}
+              </div>
+
+              <div className="rounded-lg border bg-white p-5">
+                <h4 className="flex items-center gap-2 font-semibold text-gray-900 mb-4">
+                  <Wine className="h-4 w-4 text-red-700" />
+                  Alternativas por tipo
+                </h4>
+                {classification.alternativas.length ? (
+                  <div className="space-y-3">
+                    {classification.alternativas.map((alternative) => (
+                      <div key={alternative.estilo} className="flex items-center justify-between gap-3">
+                        <span className="text-sm text-gray-700">{alternative.estilo}</span>
+                        <span className="text-sm font-semibold text-gray-900">{alternative.encaje}%</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">
+                    El estilo de origen ya es compatible con el tipo físico.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </CardContent>

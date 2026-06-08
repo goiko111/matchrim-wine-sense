@@ -9,11 +9,12 @@ import { toast } from '@/hooks/use-toast';
 import {
   ArrowLeft, Wine, Droplet, Zap, Grape, Heart, Clock, Sun, Moon, Star,
   Users, Utensils, Coffee, Cake, Fish, Beef, Apple, Flame, Beaker, Shield, Sword, Feather, Leaf,
-  Mountain, Diamond, Thermometer, Eye, ChefHat, Calendar
+  Mountain, Diamond, Thermometer, Eye, ChefHat, Calendar, type LucideIcon
 } from 'lucide-react';
 import Header from '@/components/Header';
 import AppNav from '@/components/AppNav';
 import { useAuth } from '@/contexts/AuthContext';
+import { PUBLIC_WINE_STYLES } from '@/lib/winerimClassifier';
 
 interface WineStyle {
   id: string;
@@ -33,6 +34,35 @@ interface WineExample {
   priceRange: string;
   description: string;
 }
+
+type StyleNameRow = {
+  name: string;
+};
+
+type WineAttributesRow = {
+  potencia: number | null;
+  acidez: number | null;
+  dulzura: number | null;
+  taninos: number | null;
+  afrutado: number | null;
+  estilo?: string | null;
+};
+
+type StyleConfig = {
+  icon: LucideIcon;
+  color: string;
+  gradient: string;
+  heroPhrase: string;
+  bgImage: string;
+  curiosity: string;
+  story: string;
+};
+
+type PairingItem = {
+  name: string;
+  icon: LucideIcon;
+  description: string;
+};
 
 const WineStyleDetail = () => {
   const { user } = useAuth();
@@ -61,12 +91,7 @@ const WineStyleDetail = () => {
   }, [style?.name]);
 
   // Mapa de slug → nombre de estilo para evitar traer toda la tabla
-  const baseNames = [
-    'Burbuja Fresca', 'Brut Elegante', 'Blanco Vital', 'Blanco Goloso',
-    'Dulce Intenso', 'Oxidativo/Maduro', 'Experimental', 'Vino de Terruño',
-    'Tinto Versátil', 'Tinto de Estructura', 'Tinto Goloso', 'Dulce Ligero',
-    'Blanco de Carácter', 'Rosado Ligero', 'Rosado Gastronómico', 'Tinto Ligero'
-  ];
+  const baseNames = [...PUBLIC_WINE_STYLES];
 
   const slugToName = (s: string) => {
     const toSlug = (name: string) =>
@@ -93,7 +118,7 @@ const WineStyleDetail = () => {
         tanico: 0,
         afrutado: 0,
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching wine style:', error);
       toast({
         title: "Error",
@@ -138,7 +163,7 @@ const WineStyleDetail = () => {
       console.log(`📊 Combinaciones encontradas en wine_styles: ${rows.length}`);
 
       // Extraemos los valores sensoriales del prefijo del nombre: p;a;d;t;f;Estilo
-      const toCombo = (row: any) => {
+      const toCombo = (row: StyleNameRow) => {
         const m = row.name.match(/^(\d+);(\d+);(\d+);(\d+);(\d+);/);
         if (!m) return null;
         return {
@@ -184,7 +209,7 @@ const WineStyleDetail = () => {
         }
 
         const winesUnique = new Map<string, { potencia: number; acidez: number; dulzura: number; taninos: number; afrutado: number }>();
-        winesData.forEach((row: any) => {
+        winesData.forEach((row: WineAttributesRow) => {
           const combo = {
             potencia: Number(row.potencia ?? 0),
             acidez: Number(row.acidez ?? 0),
@@ -215,7 +240,7 @@ const WineStyleDetail = () => {
   const getStyleConfig = (name: string) => {
     const cleanName = cleanStyleName(name).toLowerCase();
     
-    const configs: Record<string, any> = {
+    const configs: Record<string, StyleConfig> = {
       'burbuja fresca': {
         icon: Droplet,
         color: 'emerald',
@@ -413,8 +438,8 @@ const WineStyleDetail = () => {
 
   const getPairings = (style: WineStyle) => {
     const pairings = {
-      cotidianos: [] as Array<{name: string, icon: any, description: string}>,
-      gastronomicos: [] as Array<{name: string, icon: any, description: string}>
+      cotidianos: [] as PairingItem[],
+      gastronomicos: [] as PairingItem[]
     };
 
     const cleanName = cleanStyleName(style.name).toLowerCase();
