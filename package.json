@@ -9,7 +9,11 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "tsx scripts/check-winerim-classifier.ts"
+    "test": "tsx scripts/check-winerim-classifier.ts",
+    "cap:sync": "npm run build && npx cap sync",
+    "android:bundle": "npm run build && npx cap sync android && cd android && ./gradlew bundleRelease",
+    "android:apk": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease",
+    "ios:copy": "npm run build && npx cap copy ios"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",
