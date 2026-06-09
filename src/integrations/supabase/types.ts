@@ -115,6 +115,60 @@ export type Database = {
         }
         Relationships: []
       }
+      liquid_intelligence_queries: {
+        Row: {
+          completion_tokens: number | null
+          context: string | null
+          cost_usd: number | null
+          created_at: string
+          event_details: Json | null
+          function_type: string
+          had_profile: boolean
+          id: string
+          input1: string
+          input2: string | null
+          model: string | null
+          prompt_tokens: number | null
+          recommended_wine_ids: string[] | null
+          response_summary: string | null
+          user_id: string
+        }
+        Insert: {
+          completion_tokens?: number | null
+          context?: string | null
+          cost_usd?: number | null
+          created_at?: string
+          event_details?: Json | null
+          function_type: string
+          had_profile?: boolean
+          id?: string
+          input1: string
+          input2?: string | null
+          model?: string | null
+          prompt_tokens?: number | null
+          recommended_wine_ids?: string[] | null
+          response_summary?: string | null
+          user_id: string
+        }
+        Update: {
+          completion_tokens?: number | null
+          context?: string | null
+          cost_usd?: number | null
+          created_at?: string
+          event_details?: Json | null
+          function_type?: string
+          had_profile?: boolean
+          id?: string
+          input1?: string
+          input2?: string | null
+          model?: string | null
+          prompt_tokens?: number | null
+          recommended_wine_ids?: string[] | null
+          response_summary?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       matchrim_profiles: {
         Row: {
           acidez: number
@@ -486,6 +540,7 @@ export type Database = {
         Row: {
           acidez: number
           afrutado: number
+          alternativas_reasignacion: Json | null
           created_at: string | null
           description: string | null
           dulzura: number
@@ -502,13 +557,13 @@ export type Database = {
           region: string | null
           taninos: number
           tipo: string
-          alternativas_reasignacion: Json | null
           updated_at: string | null
           vintage: number | null
         }
         Insert: {
           acidez: number
           afrutado: number
+          alternativas_reasignacion?: Json | null
           created_at?: string | null
           description?: string | null
           dulzura: number
@@ -525,13 +580,13 @@ export type Database = {
           region?: string | null
           taninos: number
           tipo: string
-          alternativas_reasignacion?: Json | null
           updated_at?: string | null
           vintage?: number | null
         }
         Update: {
           acidez?: number
           afrutado?: number
+          alternativas_reasignacion?: Json | null
           created_at?: string | null
           description?: string | null
           dulzura?: number
@@ -548,7 +603,6 @@ export type Database = {
           region?: string | null
           taninos?: number
           tipo?: string
-          alternativas_reasignacion?: Json | null
           updated_at?: string | null
           vintage?: number | null
         }
@@ -565,6 +619,85 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      winerim_calcular_encaje_v4_1: {
+        Args: {
+          acidez: number
+          afrutado: number
+          dulzura: number
+          potente: number
+          style_name: string
+          taninos: number
+        }
+        Returns: number
+      }
+      winerim_clasificar_por_atributos_v4_1: {
+        Args: {
+          acidez: number
+          afrutado: number
+          dulzura: number
+          potente: number
+          taninos: number
+        }
+        Returns: string
+      }
+      winerim_clasificar_v4_1: {
+        Args: {
+          acidez: number
+          afrutado: number
+          dulzura: number
+          potente: number
+          taninos: number
+          tipo: string
+        }
+        Returns: {
+          alternativas: Json
+          encaje_pct: number
+          estilo_final: string
+          estilo_origen: string
+          flag: string
+        }[]
+      }
+      winerim_especificidad_v4_1: {
+        Args: { style_name: string }
+        Returns: number
+      }
+      winerim_estilo_compatible_v4_1: {
+        Args: { style_name: string; tipo_input: string }
+        Returns: boolean
+      }
+      winerim_estilos_del_tipo_v4_1: {
+        Args: { incluir_excluidos?: boolean; tipo_input: string }
+        Returns: {
+          estilo: string
+        }[]
+      }
+      winerim_infer_tipo_v4_1: {
+        Args: {
+          acidez: number
+          afrutado: number
+          dulzura: number
+          potente: number
+          style_name: string
+          taninos: number
+        }
+        Returns: string
+      }
+      winerim_rangos_estilo_v4_1: {
+        Args: { style_name: string }
+        Returns: {
+          a_max: number
+          a_min: number
+          af_max: number
+          af_min: number
+          d_max: number
+          d_min: number
+          estilo: string
+          p_max: number
+          p_min: number
+          t_max: number
+          t_min: number
+        }[]
       }
     }
     Enums: {
