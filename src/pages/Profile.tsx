@@ -19,6 +19,7 @@ import {
   generateRegionRecommendations
 } from '@/utils/profileUtils';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { buildAuthRedirectPath } from '@/utils/navigation';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 
 const RegionMap = React.lazy(() => import('@/components/RegionMap'));
@@ -59,7 +60,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate('/auth');
+      navigate(buildAuthRedirectPath('/profile'));
       return;
     }
 

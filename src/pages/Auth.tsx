@@ -1,25 +1,28 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
+import { getSafeRedirectPath } from '@/utils/navigation';
 
 const Auth = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, signIn } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const redirectPath = getSafeRedirectPath(searchParams.get('redirect'));
 
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate(redirectPath, { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, navigate, redirectPath]);
 
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -33,14 +36,14 @@ const Auth = () => {
     const { error } = await signIn(loginForm.email, loginForm.password);
     
     if (!error) {
-      navigate('/');
+      navigate(redirectPath);
     }
     
     setIsLoading(false);
   };
 
   const handleRegisterRedirect = () => {
-    navigate('/registration');
+    navigate(`/registration?redirect=${encodeURIComponent(redirectPath)}`);
   };
 
   return (

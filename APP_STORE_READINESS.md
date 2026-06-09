@@ -15,6 +15,7 @@
 - La version nativa detecta Capacitor y usa una home de app, orientada a acciones directas, en lugar de la landing larga de la web.
 - En nativo, la barra inferior prioriza Inicio, Test, Codigo, Perfil y Vinos para que la experiencia se parezca a una app de consumo y no a la web empaquetada.
 - El flujo nativo inicial explica el uso esperado: crear codigo, filtrar carta Winerim y guardar/puntuar vinos para afinar el perfil.
+- Los flujos que requieren cuenta o perfil conservan el contexto: desde un QR/restaurante, el usuario puede hacer login o crear Matchrim y volver al mismo uso de carta.
 - El checklist operativo de publicacion esta en `docs/STORE_RELEASE_CHECKLIST.md`.
 - Android release puede firmarse con variables de entorno `WINERIM_UPLOAD_STORE_FILE`, `WINERIM_UPLOAD_STORE_PASSWORD`, `WINERIM_UPLOAD_KEY_ALIAS` y `WINERIM_UPLOAD_KEY_PASSWORD`.
 - El scanner de cartas carga PDF.js solo cuando el usuario sube un PDF; el chunk principal del scanner queda alrededor de 10 kB.

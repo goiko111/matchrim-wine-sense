@@ -15,6 +15,7 @@ import { WineSearchBar } from "@/components/wine-import/WineSearchBar";
 import { PurchaseInfoSelector } from "@/components/wine-import/PurchaseInfoSelector";
 import { LocationSelector } from "@/components/wine-import/LocationSelector";
 import { supabase } from "@/integrations/supabase/client";
+import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
 import {
   Wine,
@@ -129,7 +130,7 @@ const MyWines = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate("/auth");
+      navigate(buildAuthRedirectPath("/my-wines"));
       return;
     }
     loadWines();

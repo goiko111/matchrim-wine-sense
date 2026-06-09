@@ -20,6 +20,7 @@ import {
   type MatchrimProfileLike,
 } from '@/utils/matchrimPassport';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { buildAuthRedirectPath } from '@/utils/navigation';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
 import { AlertCircle, BookmarkPlus, CheckCircle, ExternalLink, Loader2, MapPin, ScanLine, Sparkles, Wine } from 'lucide-react';
 import { toast } from 'sonner';
@@ -68,6 +69,11 @@ const UseMatchrim = () => {
   const [winerimError, setWinerimError] = useState<string | null>(null);
   const [savingWineId, setSavingWineId] = useState<string | number | null>(null);
   const [savedWinerimWineKeys, setSavedWinerimWineKeys] = useState<Set<string>>(new Set());
+
+  const currentUseMatchrimPath = useMemo(() => {
+    const queryString = searchParams.toString();
+    return `/usar-matchrim${queryString ? `?${queryString}` : ''}`;
+  }, [searchParams]);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -171,7 +177,7 @@ const UseMatchrim = () => {
     if (!user) {
       if (requireRestaurantName) {
         toast.error('Inicia sesión para escanear cartas y guardar el restaurante');
-        navigate('/auth');
+        navigate(buildAuthRedirectPath(currentUseMatchrimPath));
       }
       return null;
     }
@@ -254,7 +260,7 @@ const UseMatchrim = () => {
   const saveWinerimWineToMyWines = async (wine: WinerimWineWithMatch) => {
     if (!user) {
       toast.error('Inicia sesión para guardar vinos');
-      navigate('/auth');
+      navigate(buildAuthRedirectPath(currentUseMatchrimPath));
       return;
     }
 
@@ -337,7 +343,10 @@ const UseMatchrim = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button onClick={() => navigate('/matchrim')} className="bg-red-800 hover:bg-red-900">
+              <Button
+                onClick={() => navigate(`/matchrim?returnTo=${encodeURIComponent(currentUseMatchrimPath)}`)}
+                className="bg-red-800 hover:bg-red-900"
+              >
                 Crear mi código Matchrim
               </Button>
             </CardContent>

@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 
 interface QuizIntroProps {
   onStart: () => void;
+  returnTo?: string | null;
 }
 
-const QuizIntro: React.FC<QuizIntroProps> = ({ onStart }) => {
+const QuizIntro: React.FC<QuizIntroProps> = ({ onStart, returnTo }) => {
   return (
     <div className="flex flex-col items-center justify-center max-w-3xl mx-auto text-center space-y-8 py-10">
       <div className="flex flex-col items-center mb-4">
@@ -24,6 +25,11 @@ const QuizIntro: React.FC<QuizIntroProps> = ({ onStart }) => {
       
       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg max-w-2xl">
         <h2 className="text-2xl font-semibold text-red-900 mb-4">¿Cómo funciona?</h2>
+        {returnTo && (
+          <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 p-4 text-left text-amber-950">
+            Crea tu código ahora y te llevaremos de vuelta al restaurante para filtrar la carta.
+          </div>
+        )}
         <p className="mb-4 text-left">
           Responde algunas preguntas sobre tus gustos alimentarios para descubrir tu perfil sensorial 
           y qué tipos de vino pueden gustarte más.
