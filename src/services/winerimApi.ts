@@ -13,6 +13,8 @@ export interface WinerimWine {
   country?: string;
   type?: string;
   vintage?: number | string;
+  photo?: string;
+  section?: string | null;
   grapes?: string[];
   tastingAttributes?: {
     power: number;
@@ -49,7 +51,25 @@ export interface FetchWinerimWinesOptions {
 }
 
 const normalizePrice = (rawWine: RawWinerimWine) => {
-  if (Array.isArray(rawWine.prices)) return rawWine.prices as WinerimWine['prices'];
+  if (Array.isArray(rawWine.prices)) {
+    const prices = rawWine.prices
+      .map((rawPrice) => {
+        const priceRecord = asRecord(rawPrice);
+        if (!priceRecord) return null;
+
+        const numericPrice = Number(priceRecord.price ?? priceRecord.precio);
+        if (!Number.isFinite(numericPrice)) return null;
+
+        return {
+          price: numericPrice,
+          currency: priceRecord.currency || priceRecord.moneda || '€',
+        };
+      })
+      .filter((price): price is NonNullable<WinerimWine['prices']>[number] => price !== null);
+
+    return prices.length > 0 ? prices : undefined;
+  }
+
   const price = rawWine.price ?? rawWine.precio;
   if (price == null) return undefined;
   return [{
@@ -101,7 +121,16 @@ const normalizeMatchPercentage = (rawWine: RawWinerimWine) => {
 };
 
 const stringValue = (value: unknown) => typeof value === 'string' ? value : undefined;
-const stringArrayValue = (value: unknown) => Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : undefined;
+const normalizeGrapes = (value: unknown): string[] | undefined => {
+  if (!Array.isArray(value)) return undefined;
+
+  const grapes = value
+    .flat(Number.POSITIVE_INFINITY)
+    .filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+    .map((item) => item.trim());
+
+  return grapes.length > 0 ? Array.from(new Set(grapes)) : undefined;
+};
 
 const normalizeWinerimWine = (rawWine: RawWinerimWine, index: number): WinerimWineWithMatch => ({
   id: normalizeWineId(rawWine, index),
@@ -112,12 +141,14 @@ const normalizeWinerimWine = (rawWine: RawWinerimWine, index: number): WinerimWi
   region: stringValue(rawWine.region),
   country: stringValue(rawWine.country) ?? stringValue(rawWine.pais),
   type: stringValue(rawWine.type) ?? stringValue(rawWine.tipo),
+  photo: stringValue(rawWine.photo) ?? stringValue(rawWine.image) ?? stringValue(rawWine.image_url),
+  section: stringValue(rawWine.section) ?? stringValue(rawWine.seccion) ?? null,
   vintage: typeof rawWine.vintage === 'number' || typeof rawWine.vintage === 'string'
     ? rawWine.vintage
     : typeof rawWine.anada === 'number' || typeof rawWine.anada === 'string'
       ? rawWine.anada
       : undefined,
-  grapes: stringArrayValue(rawWine.grapes) ?? stringArrayValue(rawWine.uvas) ?? stringArrayValue(rawWine.grape_varieties),
+  grapes: normalizeGrapes(rawWine.grapes) ?? normalizeGrapes(rawWine.uvas) ?? normalizeGrapes(rawWine.grape_varieties),
   tastingAttributes: normalizeTastingAttributes(rawWine),
   prices: normalizePrice(rawWine),
   matchPercentage: normalizeMatchPercentage(rawWine),

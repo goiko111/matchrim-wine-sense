@@ -91,14 +91,26 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
       <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-              <Wine className="h-6 w-6 text-red-700" />
+            <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+              {wine.photo ? (
+                <img
+                  src={wine.photo}
+                  alt={`Botella de ${wine.name}`}
+                  className="h-full w-full object-contain p-1"
+                  loading="lazy"
+                />
+              ) : (
+                <Wine className="h-6 w-6 text-red-700" />
+              )}
             </div>
           </div>
           <div className="flex-1">
             <h4 className="text-white font-bold text-xl leading-tight">
               {wine.name}
             </h4>
+            {wine.section && (
+              <p className="text-red-100 text-sm mt-1">{wine.section}</p>
+            )}
             {wine.vintage && (
               <p className="text-red-100 text-sm mt-1">Añada: {wine.vintage}</p>
             )}
