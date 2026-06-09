@@ -33,6 +33,7 @@ import {
   Filter,
   Star,
   Edit3,
+  Sparkles,
 } from "lucide-react";
 import {
   Dialog,
@@ -465,6 +466,11 @@ const MyWines = () => {
     }
   };
 
+  const trainingReadyCount = wines.filter(
+    (wine) => wine.rating && wine.use_for_profile_training && wine.sensory_attributes
+  ).length;
+  const ratedCount = wines.filter((wine) => wine.rating).length;
+
   if (!user) return null;
 
   if (loading) {
@@ -567,6 +573,42 @@ const MyWines = () => {
               </TabsList>
 
               <div className="mt-6 space-y-6">
+                {statusFilter === 'tasted' && (
+                  <Card className="border-green-200 bg-green-50/80">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-green-950">
+                        <Sparkles className="h-5 w-5" />
+                        Tu perfil aprende con tus valoraciones
+                      </CardTitle>
+                      <CardDescription className="text-green-900">
+                        {trainingReadyCount > 0
+                          ? `${trainingReadyCount} vino${trainingReadyCount !== 1 ? 's' : ''} con atributos está${trainingReadyCount !== 1 ? 'n' : ''} afinando tu código Matchrim.`
+                          : ratedCount > 0
+                            ? 'Tienes vinos puntuados, pero todavía faltan atributos sensoriales para entrenar el perfil.'
+                            : 'Puntúa vinos guardados desde cartas Winerim para que tu código se vuelva más preciso.'}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex flex-wrap gap-2">
+                        <Badge className="bg-green-700 hover:bg-green-700">
+                          {trainingReadyCount} entrenando
+                        </Badge>
+                        <Badge variant="outline">
+                          {ratedCount} puntuado{ratedCount !== 1 ? 's' : ''}
+                        </Badge>
+                      </div>
+                      <Button
+                        variant="outline"
+                        className="gap-2 bg-white"
+                        onClick={() => navigate('/profile')}
+                      >
+                        <Sparkles className="h-4 w-4" />
+                        Ver perfil afinado
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
+
                 {/* Search and Add */}
                 <Card>
                   <CardHeader>
