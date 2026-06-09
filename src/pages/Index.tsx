@@ -478,7 +478,7 @@ const Index = () => {
                 <Button 
                   size="lg"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl px-8 py-4 w-full"
-                  onClick={() => navigate('/liquid-intelligence')}
+                  onClick={() => navigate('/inteligencia-liquida')}
                 >
                   Probarlo ahora
                   <Brain className="ml-2 h-5 w-5" />
@@ -505,7 +505,7 @@ const Index = () => {
                 <div className="bg-primary-light rounded-2xl p-4 w-16 h-16 mx-auto mb-4">
                   <Wine className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold text-gray-900 mb-2">Usalo en restaurantes</h3>
+                <h3 className="font-bold text-gray-900 mb-2">Úsalo en restaurantes</h3>
                 <p className="text-gray-600 text-sm">En cualquier restaurante que tenga Winerim</p>
               </Card>
 
@@ -538,9 +538,9 @@ const Index = () => {
               <Button 
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl px-12 py-4"
-                onClick={() => navigate('/matchrim')}
+                onClick={() => navigate(user && hasQuizResults ? '/usar-matchrim' : '/matchrim')}
               >
-                Crear mi Matchrim ahora
+                {user && hasQuizResults ? 'Usar mi Matchrim ahora' : 'Crear mi Matchrim ahora'}
                 <CheckCircle className="ml-2 h-5 w-5" />
               </Button>
             </div>

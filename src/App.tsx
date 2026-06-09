@@ -20,6 +20,7 @@ import WineDetail from '@/pages/WineDetail';
 import WineSearch from '@/pages/WineSearch';
 import WineImport from '@/pages/WineImport';
 import MyWines from '@/pages/MyWines';
+import UseMatchrim from '@/pages/UseMatchrim';
 import NotFound from '@/pages/NotFound';
 import './App.css';
 
@@ -51,7 +52,9 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/registration" element={<Registration />} />
               <Route path="/matchrim" element={<Matchrim />} />
+              <Route path="/usar-matchrim" element={<UseMatchrim />} />
               <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
+              <Route path="/liquid-intelligence" element={<Navigate to="/inteligencia-liquida" replace />} />
               <Route path="/import-csv" element={<AdminOnly><ImportCSV /></AdminOnly>} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/data-viewer" element={<AdminOnly><DataViewer /></AdminOnly>} />

@@ -3,21 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
-import { Wine, User, History, Copy, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import RegionMap from '@/components/RegionMap';
 import AppNav from '@/components/AppNav';
+import MatchrimPassport from '@/components/MatchrimPassport';
 import {
   generateMatchrimName,
   generateWineStyles,
   generateGrapeRecommendations,
   generateRegionRecommendations
 } from '@/utils/profileUtils';
+import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 
 interface WineStyle {
   id: string;
@@ -30,14 +33,28 @@ interface WineStyle {
   afrutado: number;
 }
 
+interface ProfileHistoryItem extends MatchrimProfileLike {
+  id?: string;
+  created_at?: string | null;
+}
+
+interface StyleCardConfig {
+  bg: string;
+  border: string;
+  iconBg: string;
+  icon: LucideIcon;
+  iconColor: string;
+}
+
 const Profile = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { getQuizHistory } = useQuizResults();
-  const [quizHistory, setQuizHistory] = useState<any[]>([]);
-  const [currentProfile, setCurrentProfile] = useState<any>(null);
+  const [quizHistory, setQuizHistory] = useState<ProfileHistoryItem[]>([]);
+  const [currentProfile, setCurrentProfile] = useState<ProfileHistoryItem | null>(null);
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
+  const [trainingWines, setTrainingWines] = useState<TrainableWine[]>([]);
 
   useEffect(() => {
     if (!user) {
@@ -49,9 +66,9 @@ const Profile = () => {
     if (quizHistory.length === 0) {
       const loadQuizHistory = async () => {
         const history = await getQuizHistory();
-        setQuizHistory(history);
+        setQuizHistory(history as ProfileHistoryItem[]);
         if (history.length > 0) {
-          setCurrentProfile(history[0]);
+          setCurrentProfile(history[0] as ProfileHistoryItem);
         }
       };
 
@@ -59,14 +76,46 @@ const Profile = () => {
     }
   }, [user, navigate, getQuizHistory, quizHistory.length]);
 
-  // Generate profile data
-  const profileName = currentProfile ? generateMatchrimName(currentProfile) : "";
-  const wineStyles = useMemo(() =>
-    currentProfile ? generateWineStyles(currentProfile) : [],
-    [currentProfile?.potente, currentProfile?.acidez, currentProfile?.dulce, currentProfile?.tanico, currentProfile?.afrutado]
+  useEffect(() => {
+    if (!user || !currentProfile) return;
+
+    const loadTrainingWines = async () => {
+      const { data, error } = await supabase
+        .from('user_wines')
+        .select('rating, sensory_attributes')
+        .eq('user_id', user.id)
+        .not('rating', 'is', null)
+        .not('sensory_attributes', 'is', null);
+
+      if (error) {
+        console.error('Error loading training wines:', error);
+        setTrainingWines([]);
+        return;
+      }
+
+      setTrainingWines(data || []);
+    };
+
+    loadTrainingWines();
+  }, [user, currentProfile]);
+
+  const learnedProfile = useMemo(
+    () => currentProfile ? calculateLearnedMatchrimProfile(currentProfile, trainingWines) : null,
+    [currentProfile, trainingWines]
   );
-  const recommendedGrapes = currentProfile ? generateGrapeRecommendations(currentProfile) : [];
-  const recommendedRegions = currentProfile ? generateRegionRecommendations(currentProfile) : [];
+
+  const activeProfile = learnedProfile && learnedProfile.samples > 0
+    ? learnedProfile.profile
+    : currentProfile;
+
+  // Generate profile data
+  const profileName = activeProfile ? generateMatchrimName(activeProfile) : "";
+  const wineStyles = useMemo(() =>
+    activeProfile ? generateWineStyles(activeProfile) : [],
+    [activeProfile]
+  );
+  const recommendedGrapes = activeProfile ? generateGrapeRecommendations(activeProfile) : [];
+  const recommendedRegions = activeProfile ? generateRegionRecommendations(activeProfile) : [];
 
   // Fetch wine style details from database
   useEffect(() => {
@@ -99,12 +148,12 @@ const Profile = () => {
     fetchStyleDetails();
   }, [currentProfile, wineStyles]);
 
-  const chartData = currentProfile ? [
-    { attribute: "Potente", value: currentProfile.potente },
-    { attribute: "Acidez", value: currentProfile.acidez },
-    { attribute: "Dulce", value: currentProfile.dulce },
-    { attribute: "Tánico", value: currentProfile.tanico },
-    { attribute: "Afrutado", value: currentProfile.afrutado },
+  const chartData = activeProfile ? [
+    { attribute: "Potente", value: activeProfile.potente },
+    { attribute: "Acidez", value: activeProfile.acidez },
+    { attribute: "Dulce", value: activeProfile.dulce },
+    { attribute: "Tánico", value: activeProfile.tanico },
+    { attribute: "Afrutado", value: activeProfile.afrutado },
   ] : [];
 
   const chartConfig = {
@@ -118,7 +167,7 @@ const Profile = () => {
   };
 
   const getCardConfig = (styleName: string) => {
-    const configs: Record<string, any> = {
+    const configs: Record<string, StyleCardConfig> = {
       'Burbuja Fresca': { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-200', icon: Droplet, iconColor: 'text-white' },
       'Brut Elegante': { bg: 'bg-green-50', border: 'border-green-100', iconBg: 'bg-green-600', icon: Diamond, iconColor: 'text-white' },
       'Blanco Vital': { bg: 'bg-yellow-50', border: 'border-yellow-100', iconBg: 'bg-yellow-300', icon: Zap, iconColor: 'text-white' },
@@ -331,34 +380,30 @@ const Profile = () => {
         <TabsContent value="profile">
           {currentProfile ? (
             <div className="space-y-8">
-              {/* Profile Header */}
-              <div className="bg-gradient-to-r from-red-50 to-red-100 p-6 rounded-lg border border-red-200">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h2 className="text-2xl font-bold text-red-900 mb-2">
-                      {profileName}
-                    </h2>
-                    <p className="text-gray-700">
-                      Tu perfil sensorial único que define tus preferencias
-                    </p>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      navigator.clipboard.writeText(profileName);
-                      toast({
-                        title: "Código copiado",
-                        description: "Tu código de perfil ha sido copiado al portapapeles",
-                      });
-                    }}
-                    className="flex items-center gap-2"
-                  >
-                    <Copy className="w-4 h-4" />
-                    Copiar código
-                  </Button>
-                </div>
-              </div>
+              <MatchrimPassport profile={activeProfile} />
+
+              {learnedProfile && learnedProfile.samples > 0 && (
+                <Card className="border-amber-200 bg-amber-50/70">
+                  <CardContent className="p-5">
+                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                      <div>
+                        <h3 className="font-bold text-amber-950">Perfil aprendido activo</h3>
+                        <p className="text-sm text-amber-900">
+                          Tu código se está afinando con {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} puntuado{learnedProfile.samples !== 1 ? 's' : ''}.
+                          El test sigue siendo la base, pero tus valoraciones ya ajustan el match.
+                        </p>
+                      </div>
+                      <div className="min-w-[220px]">
+                        <div className="mb-1 flex justify-between text-xs font-medium text-amber-900">
+                          <span>Confianza</span>
+                          <span>{learnedProfile.confidence}%</span>
+                        </div>
+                        <Progress value={learnedProfile.confidence} className="h-2" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Radar Chart */}
               <div className="mb-8">

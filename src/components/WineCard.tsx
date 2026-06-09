@@ -9,7 +9,7 @@ interface WineCardProps {
   wine: WinerimWineWithMatch;
   index: number;
   isHighlighted?: boolean;
-  setWineRef?: (id: number, ref: HTMLDivElement | null) => void;
+  setWineRef?: (id: string | number, ref: HTMLDivElement | null) => void;
 }
 
 const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false, setWineRef }) => {
@@ -34,7 +34,8 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
 
   const openInWinerim = () => {
     const slug = wine.slugname || generateSlug(wine.name, wine.vintage);
-    const winerimUrl = `${import.meta.env.VITE_WINERIM_STORE_URL}/matchrim/store/${wine.id}/${slug}`;
+    const storeBaseUrl = import.meta.env.VITE_WINERIM_STORE_URL || import.meta.env.VITE_WINERIM_APP_URL || 'https://winerim.wine';
+    const winerimUrl = `${storeBaseUrl.replace(/\/$/, '')}/matchrim/store/${wine.id}/${slug}`;
     window.open(winerimUrl, '_blank', 'noopener,noreferrer');
   };
 

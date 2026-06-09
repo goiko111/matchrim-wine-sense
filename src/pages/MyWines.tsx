@@ -238,6 +238,7 @@ const MyWines = () => {
         image_url: extractedImageUrl || null,
         status: statusFilter,
         quantity: statusFilter === 'collection' ? parseInt(formData.quantity) || 1 : null,
+        use_for_profile_training: statusFilter === 'tasted',
         consumption_place: data?.place_name || null,
         consumption_place_type: data?.location_type || null,
         consumption_date: data?.purchase_date || null,
@@ -307,6 +308,7 @@ const MyWines = () => {
         status: statusFilter,
         quantity: statusFilter === 'collection' ? (formData.quantity ? parseInt(formData.quantity) : 1) : null,
         image_url: extractedImageUrl || null,
+        use_for_profile_training: statusFilter === 'tasted',
       };
 
       if (purchaseData) {
@@ -369,7 +371,7 @@ const MyWines = () => {
     try {
       const wine = wines.find(w => w.id === wineId);
       
-      const updateData: any = { rating };
+      const updateData: any = { rating, use_for_profile_training: true };
       
       // If rating from collection, optionally decrement quantity
       if (wine?.status === 'collection' && wine.quantity && wine.quantity > 0) {
@@ -388,6 +390,17 @@ const MyWines = () => {
         : "Valoración guardada";
       
       toast.success(message);
+
+      supabase.functions
+        .invoke("calculate-wine-affinity", {
+          body: { wine_id: wineId }
+        })
+        .then(({ error }) => {
+          if (error) {
+            console.error("Error recalculating affinity after rating:", error);
+          }
+        });
+
       loadWines();
     } catch (error) {
       console.error("Error rating wine:", error);

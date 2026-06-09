@@ -37,7 +37,19 @@ interface ScannedWine {
   razon?: string | null;
 }
 
-export const WineMenuScanner = () => {
+interface WineMenuScannerProps {
+  restaurantName?: string;
+  matchrimCode?: string;
+  restaurantSessionId?: string | null;
+  onScanComplete?: (winesDetected: number) => void;
+}
+
+export const WineMenuScanner = ({
+  restaurantName,
+  matchrimCode,
+  restaurantSessionId,
+  onScanComplete,
+}: WineMenuScannerProps = {}) => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [scannedWines, setScannedWines] = useState<ScannedWine[]>([]);
@@ -154,13 +166,29 @@ export const WineMenuScanner = () => {
       if (data?.vinos && data.vinos.length > 0) {
         setScannedWines(data.vinos);
         setHasProfile(!!data.has_profile);
+        onScanComplete?.(data.vinos.length);
+
+        if (restaurantSessionId) {
+          const { error: sessionError } = await supabase
+            .from('restaurant_matchrim_sessions')
+            .update({
+              menu_scan_used: true,
+              wines_detected: data.vinos.length,
+            })
+            .eq('id', restaurantSessionId);
+
+          if (sessionError) {
+            console.error('Error updating restaurant Matchrim session:', sessionError);
+          }
+        }
+
         toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
       } else {
         toast.info("No se encontraron vinos en el documento");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error processing file:', error);
-      const message = error?.message || 'Error al procesar el documento';
+      const message = error instanceof Error ? error.message : 'Error al procesar el documento';
       toast.error(message);
     } finally {
       setLoading(false);
@@ -190,6 +218,26 @@ export const WineMenuScanner = () => {
 
   return (
     <div className="space-y-6">
+      {(restaurantName || matchrimCode) && (
+        <div className="rounded-lg border border-red-100 bg-red-50 p-4">
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            {restaurantName && (
+              <span className="font-medium text-red-950">
+                Restaurante: {restaurantName}
+              </span>
+            )}
+            {matchrimCode && (
+              <Badge variant="outline" className="border-red-300 text-red-800">
+                Código {matchrimCode}
+              </Badge>
+            )}
+          </div>
+          <p className="mt-2 text-sm text-red-900/80">
+            Esta carta se analizará contra tu perfil Matchrim para ordenar las mejores opciones.
+          </p>
+        </div>
+      )}
+
       {/* Scanner Section */}
       <Card>
         <CardHeader>
