@@ -17,7 +17,7 @@ export const encodeProfileVector = (profile: MatchrimProfileLike) =>
   `${encodeDigit(profile.potente)}${encodeDigit(profile.acidez)}${encodeDigit(profile.dulce)}${encodeDigit(profile.tanico)}${encodeDigit(profile.afrutado)}`;
 
 export const buildMatchrimShareUrl = (profile: MatchrimProfileLike, code = generateMatchrimCode(profile)) => {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://matchrim-wine-sense.lovable.app';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://winerim.wine';
   const params = new URLSearchParams({
     code,
     v: encodeProfileVector(profile),

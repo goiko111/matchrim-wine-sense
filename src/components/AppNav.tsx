@@ -18,6 +18,14 @@ const AppNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    document.body.classList.add('has-mobile-app-nav');
+
+    return () => {
+      document.body.classList.remove('has-mobile-app-nav');
+    };
+  }, []);
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/auth');
@@ -34,15 +42,27 @@ const AppNav = () => {
     { path: '/my-wines', label: 'Mis Vinos', icon: BookOpen, requiresAuth: true },
   ];
 
+  const mobileNavLinks = [
+    { path: '/', label: 'Inicio', icon: Home },
+    { path: '/matchrim', label: 'Test', icon: Wine },
+    { path: '/usar-matchrim', label: 'Código', icon: ScanLine },
+    { path: '/inteligencia-liquida', label: 'aiRIM', icon: Sparkles },
+    { path: '/my-wines', label: 'Vinos', icon: BookOpen, requiresAuth: true },
+  ];
+
   return (
     <nav className="bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo / Brand */}
-          <div className="flex items-center gap-2">
-            <Wine className="h-6 w-6 text-red-600" />
+          <Link to="/" className="flex items-center gap-2">
+            <img
+              src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
+              alt="Logo Winerim"
+              className="h-7 w-7"
+            />
             <span className="font-bold text-xl text-gray-900">Winerim</span>
-          </div>
+          </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-1">
@@ -134,25 +154,26 @@ const AppNav = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      <div className="md:hidden border-t border-gray-200 px-2 pt-2 pb-3 space-y-1">
-        {navLinks.filter(link => !link.requiresAuth || user).map((link) => {
-          const Icon = link.icon;
-          return (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium ${
-                isActivePath(link.path)
-                  ? 'bg-red-50 text-red-700'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              <Icon className="h-4 w-4" />
-              {link.label}
-            </Link>
-          );
-        })}
+      <div className="md:hidden fixed inset-x-0 bottom-0 z-50 border-t border-red-100 bg-white/95 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_30px_-20px_rgba(127,29,29,0.45)] backdrop-blur">
+        <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
+          {mobileNavLinks.filter(link => !link.requiresAuth || user).map((link) => {
+            const Icon = link.icon;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-[11px] font-semibold leading-none transition-colors ${
+                  isActivePath(link.path)
+                    ? 'bg-red-50 text-red-800'
+                    : 'text-gray-600 hover:bg-red-50 hover:text-red-700'
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </nav>
   );
