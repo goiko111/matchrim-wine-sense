@@ -15,6 +15,8 @@ Checked on 2026-06-09.
 - App name: `Winerim`
 - Android application id: `wine.winerim.app`
 - iOS bundle id: `wine.winerim.app`
+- Privacy policy URL: `https://winerim.wine/privacy`
+- Terms URL: `https://winerim.wine/terms`
 - Android version: `versionName "1.0"`, `versionCode 1`
 - iOS version: managed in Xcode via `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`
 
@@ -102,11 +104,12 @@ Likely collected or processed data:
 
 Decisions to confirm:
 
-- Privacy policy URL for both stores.
+- Legal company name, fiscal address and privacy contact details for the public policy.
 - Whether uploaded menu images are stored permanently or processed transiently.
 - Whether restaurant demand signals are linked to the signed-in user.
 - Whether any analytics/tracking providers are enabled outside Supabase/API logs.
 - Whether app data is used for advertising, tracking or third-party marketing.
+- Age rating answers for wine-related content in Apple and Google questionnaires.
 
 ## Store screenshots
 

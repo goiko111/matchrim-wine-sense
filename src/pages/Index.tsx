@@ -894,14 +894,14 @@ const Index = () => {
                 <h4 className="font-semibold mb-4">Contacto</h4>
                 <ul className="space-y-2 text-gray-400">
                   <li><a href="mailto:hola@winerim.com" className="hover:text-white transition-colors">hola@winerim.com</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">LinkedIn</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Instagram</a></li>
+                  <li><button onClick={() => navigate('/privacy')} className="hover:text-white transition-colors">Privacidad</button></li>
+                  <li><button onClick={() => navigate('/terms')} className="hover:text-white transition-colors">Términos</button></li>
                 </ul>
               </div>
             </div>
             
             <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-              <p>&copy; 2024 Winerim. Todos los derechos reservados.</p>
+              <p>&copy; 2026 Winerim. Todos los derechos reservados.</p>
             </div>
           </div>
         </div>

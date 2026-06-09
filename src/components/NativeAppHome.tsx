@@ -201,6 +201,16 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
             </div>
           </div>
         </section>
+
+        <footer className="flex items-center justify-center gap-4 pb-2 text-xs text-slate-500">
+          <button type="button" onClick={() => navigate('/privacy')} className="hover:text-red-900">
+            Privacidad
+          </button>
+          <span className="text-slate-300">|</span>
+          <button type="button" onClick={() => navigate('/terms')} className="hover:text-red-900">
+            Términos
+          </button>
+        </footer>
       </main>
     </div>
   );
