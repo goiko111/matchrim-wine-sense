@@ -1,8 +1,30 @@
 apply plugin: 'com.android.application'
 
+def winerimUploadStoreFile = System.getenv("WINERIM_UPLOAD_STORE_FILE")
+def winerimUploadStorePassword = System.getenv("WINERIM_UPLOAD_STORE_PASSWORD")
+def winerimUploadKeyAlias = System.getenv("WINERIM_UPLOAD_KEY_ALIAS")
+def winerimUploadKeyPassword = System.getenv("WINERIM_UPLOAD_KEY_PASSWORD")
+def hasWinerimReleaseSigning = [
+    winerimUploadStoreFile,
+    winerimUploadStorePassword,
+    winerimUploadKeyAlias,
+    winerimUploadKeyPassword
+].every { value -> value != null && value.trim() }
+
 android {
     namespace "wine.winerim.app"
     compileSdk rootProject.ext.compileSdkVersion
+    if (hasWinerimReleaseSigning) {
+        signingConfigs {
+            release {
+                storeFile file(winerimUploadStoreFile)
+                storePassword winerimUploadStorePassword
+                keyAlias winerimUploadKeyAlias
+                keyPassword winerimUploadKeyPassword
+            }
+        }
+    }
+
     defaultConfig {
         applicationId "wine.winerim.app"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -18,6 +40,11 @@ android {
     }
     buildTypes {
         release {
+            if (hasWinerimReleaseSigning) {
+                signingConfig signingConfigs.release
+            } else {
+                logger.warn("Winerim release signing env vars missing; release APK/AAB will be unsigned.")
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
