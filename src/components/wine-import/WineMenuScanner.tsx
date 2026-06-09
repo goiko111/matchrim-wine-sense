@@ -1,9 +1,12 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles } from "lucide-react";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 
@@ -66,9 +69,13 @@ export const WineMenuScanner = ({
   restaurantSessionId,
   onScanComplete,
 }: WineMenuScannerProps = {}) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [scannedWines, setScannedWines] = useState<ScannedWine[]>([]);
+  const [savingWineKey, setSavingWineKey] = useState<string | null>(null);
+  const [savedWineKeys, setSavedWineKeys] = useState<Set<string>>(new Set());
   const [hasProfile, setHasProfile] = useState(false);
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
   const [convertingPdf, setConvertingPdf] = useState(false);
@@ -211,6 +218,7 @@ export const WineMenuScanner = ({
   const clearScan = () => {
     setPreview(null);
     setScannedWines([]);
+    setSavedWineKeys(new Set());
     setHasProfile(false);
     setFileType(null);
     setConvertingPdf(false);
@@ -227,6 +235,64 @@ export const WineMenuScanner = ({
     if (score >= 80) return <CheckCircle className="h-5 w-5 text-green-600" />;
     if (score >= 60) return <AlertCircle className="h-5 w-5 text-yellow-600" />;
     return <AlertCircle className="h-5 w-5 text-red-600" />;
+  };
+
+  const saveWineToWishlist = async (wine: ScannedWine, index: number) => {
+    if (!user) {
+      toast.error("Inicia sesión para guardar vinos");
+      navigate("/auth");
+      return;
+    }
+
+    const saveKey = `${wine.nombre}-${index}`;
+    setSavingWineKey(saveKey);
+
+    try {
+      const sensoryAttributes = wine.atributos
+        ? {
+            potencia: wine.atributos.potencia,
+            acidez: wine.atributos.acidez,
+            dulzura: wine.atributos.dulzura,
+            taninos: wine.atributos.taninos,
+            afrutado: wine.atributos.afrutado,
+          }
+        : null;
+
+      const { error } = await supabase
+        .from("user_wines")
+        .insert({
+          user_id: user.id,
+          name: wine.nombre,
+          producer: wine.productor || null,
+          vintage: wine.anada || null,
+          region: wine.region || null,
+          country: wine.pais || null,
+          grape_varieties: wine.uvas || null,
+          tasting_notes: wine.descripcion || wine.razon || null,
+          status: "wishlist",
+          matchrim_affinity: wine.compatibilidad || null,
+          sensory_attributes: sensoryAttributes as Json,
+          use_for_profile_training: false,
+          consumption_place: restaurantName || null,
+          consumption_place_type: restaurantName ? "restaurant" : null,
+          price: wine.precio || null,
+          place_details: {
+            source: "menu_scanner",
+            restaurant_session_id: restaurantSessionId || null,
+            matchrim_code: matchrimCode || null,
+          } as Json,
+        });
+
+      if (error) throw error;
+
+      setSavedWineKeys((currentKeys) => new Set(currentKeys).add(saveKey));
+      toast.success(`${wine.nombre} guardado en Quiero Probar`);
+    } catch (error) {
+      console.error("Error saving scanned wine:", error);
+      toast.error("No se pudo guardar el vino");
+    } finally {
+      setSavingWineKey(null);
+    }
   };
 
   return (
@@ -455,6 +521,22 @@ export const WineMenuScanner = ({
                       <p className="text-sm">{wine.razon}</p>
                     </div>
                   )}
+
+                  <Button
+                    onClick={() => saveWineToWishlist(wine, index)}
+                    disabled={savingWineKey === `${wine.nombre}-${index}` || savedWineKeys.has(`${wine.nombre}-${index}`)}
+                    variant="outline"
+                    className="mt-4 w-full gap-2"
+                  >
+                    {savedWineKeys.has(`${wine.nombre}-${index}`) ? (
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                    ) : savingWineKey === `${wine.nombre}-${index}` ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <BookmarkPlus className="h-4 w-4" />
+                    )}
+                    {savedWineKeys.has(`${wine.nombre}-${index}`) ? 'Guardado en Quiero Probar' : 'Guardar en Quiero Probar'}
+                  </Button>
                 </CardContent>
               </Card>
             ))}

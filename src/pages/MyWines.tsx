@@ -382,9 +382,18 @@ const MyWines = () => {
       
       const updateData: any = { rating, use_for_profile_training: true };
       
+      if (wine?.status === 'wishlist') {
+        updateData.status = 'tasted';
+        updateData.consumption_date = new Date().toISOString();
+      }
+
       // If rating from collection, optionally decrement quantity
       if (wine?.status === 'collection' && wine.quantity && wine.quantity > 0) {
         updateData.quantity = wine.quantity - 1;
+        if (wine.quantity === 1) {
+          updateData.status = 'tasted';
+          updateData.consumption_date = new Date().toISOString();
+        }
       }
 
       const { error } = await supabase
@@ -394,9 +403,11 @@ const MyWines = () => {
 
       if (error) throw error;
 
-      const message = wine?.status === 'collection' 
-        ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' (última botella)'}` 
-        : "Valoración guardada";
+      const message = wine?.status === 'collection'
+        ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' y movido a Ya Probados'}`
+        : wine?.status === 'wishlist'
+          ? 'Vino movido a Ya Probados y usado para afinar tu perfil'
+          : "Valoración guardada";
       
       toast.success(message);
 
@@ -798,8 +809,8 @@ const MyWines = () => {
                             </p>
                           )}
 
-                          {/* Rating Buttons - For tasted wines and collection wines */}
-                          {(statusFilter === 'tasted' || statusFilter === 'collection') && (
+                          {/* Rating Buttons - move wishlist wines to tasted and train the profile */}
+                          {(statusFilter === 'tasted' || statusFilter === 'collection' || statusFilter === 'wishlist') && (
                             <div className="flex gap-2 pt-2">
                               <Button
                                 variant={wine.rating === 'love' ? 'default' : 'outline'}
