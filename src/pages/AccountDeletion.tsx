@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { buildAuthRedirectPath } from '@/utils/navigation';
 import { toast } from 'sonner';
 
 type DeletionRequest = {
@@ -56,7 +57,7 @@ const AccountDeletion = () => {
 
   const submitDeletionRequest = async () => {
     if (!user?.email) {
-      navigate('/auth');
+      navigate(buildAuthRedirectPath('/account/delete'));
       return;
     }
 
@@ -123,7 +124,7 @@ const AccountDeletion = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button onClick={() => navigate('/auth')} className="bg-red-800 hover:bg-red-900">
+                <Button onClick={() => navigate(buildAuthRedirectPath('/account/delete'))} className="bg-red-800 hover:bg-red-900">
                   Iniciar sesion
                 </Button>
                 <p className="text-sm leading-6 text-muted-foreground">

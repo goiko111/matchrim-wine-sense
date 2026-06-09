@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +7,7 @@ import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, Bookmar
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
+import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 
@@ -71,6 +72,7 @@ export const WineMenuScanner = ({
 }: WineMenuScannerProps = {}) => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [scannedWines, setScannedWines] = useState<ScannedWine[]>([]);
@@ -240,7 +242,7 @@ export const WineMenuScanner = ({
   const saveWineToWishlist = async (wine: ScannedWine, index: number) => {
     if (!user) {
       toast.error("Inicia sesión para guardar vinos");
-      navigate("/auth");
+      navigate(buildAuthRedirectPath(`${location.pathname}${location.search}`));
       return;
     }
 

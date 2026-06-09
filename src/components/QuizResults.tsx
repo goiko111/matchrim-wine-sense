@@ -10,7 +10,7 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
-import { Wine, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, ArrowRight, MapPin, Loader2 } from 'lucide-react';
+import { Wine, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, ArrowRight, MapPin, Loader2, ScanLine } from 'lucide-react';
 import RegionMap from './RegionMap';
 import { supabase } from '@/integrations/supabase/client';
 import {
@@ -26,6 +26,7 @@ import GrapeCard from './GrapeCard';
 import RegionCard from './RegionCard';
 import { aggregateGrapes, aggregateRegions, filterWinesByGrape, filterWinesByRegion } from '@/utils/winerimDataAggregation';
 import MatchrimPassport from './MatchrimPassport';
+import { buildAuthRedirectPath } from '@/utils/navigation';
 
 interface WineStyle {
   id: string;
@@ -44,6 +45,7 @@ interface QuizResultsProps {
   recommendations: string[];
   onRestart: () => void;
   isLoggedIn: boolean;
+  returnTo?: string | null;
 }
 
 // Función para generar descripción emocional basada en el radar de atributos
@@ -88,7 +90,7 @@ const generateEmotionalDescription = (result: QuizResult): string => {
   return description;
 };
 
-const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart, isLoggedIn }) => {
+const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart, isLoggedIn, returnTo }) => {
   const navigate = useNavigate();
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
@@ -1158,7 +1160,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
               {/* CTA Button */}
               <div className="flex flex-col items-center gap-3">
                 <Button
-                  onClick={() => navigate('/auth')}
+                  onClick={() => navigate(buildAuthRedirectPath(returnTo || '/profile'))}
                   className="bg-white text-red-700 hover:bg-red-50 font-bold px-10 py-6 text-lg shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-105"
                 >
                   🚀 Registrarme gratis ahora
@@ -1173,6 +1175,15 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       </div>
 
       <div className="flex flex-col items-center gap-4">
+        {returnTo && (
+          <Button
+            onClick={() => navigate(returnTo)}
+            className="bg-amber-400 text-red-950 hover:bg-amber-300 flex items-center gap-2"
+          >
+            <ScanLine className="h-4 w-4" />
+            Usar mi código en el restaurante
+          </Button>
+        )}
         <Button
           onClick={onRestart}
           className="bg-red-700 hover:bg-red-800 text-white flex items-center gap-2"

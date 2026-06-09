@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,21 +8,24 @@ import BasicInfoStep from '@/components/registration/BasicInfoStep';
 import WinePreferencesStep from '@/components/registration/WinePreferencesStep';
 import FinalStep from '@/components/registration/FinalStep';
 import { useRegistrationData } from '@/hooks/useRegistrationData';
+import { getSafeRedirectPath } from '@/utils/navigation';
 
 const Registration = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const { registrationData, updateRegistrationData, saveRegistrationData, isSaving } = useRegistrationData();
+  const redirectPath = getSafeRedirectPath(searchParams.get('redirect'));
 
   const totalSteps = 3;
 
   // Redirect if already authenticated
   React.useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate(redirectPath, { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, navigate, redirectPath]);
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
@@ -39,7 +42,7 @@ const Registration = () => {
   const handleComplete = async () => {
     const success = await saveRegistrationData();
     if (success) {
-      navigate('/');
+      navigate(redirectPath);
     }
   };
 

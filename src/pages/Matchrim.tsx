@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import QuizIntro from '@/components/QuizIntro';
 import QuizQuestion from '@/components/QuizQuestion';
 import QuizResults from '@/components/QuizResults';
@@ -12,11 +12,14 @@ import { ArrowLeft, Wine } from 'lucide-react';
 import AppNav from '@/components/AppNav';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
+import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 
 const Matchrim = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { saveQuizResult, getQuizHistory, isSaving } = useQuizResults();
+  const returnTo = getSafeRedirectPath(searchParams.get('returnTo'), '');
   const [currentStep, setCurrentStep] = useState('intro'); // 'intro', 'quiz', 'results'
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [id: number]: string }>({});
@@ -99,7 +102,7 @@ const Matchrim = () => {
   };
 
   const handleBackToHome = () => {
-    navigate('/');
+    navigate(returnTo || '/');
   };
 
   const handleRestartQuiz = () => {
@@ -231,7 +234,7 @@ const Matchrim = () => {
       {/* Content */}
       <div className="container mx-auto px-4 pb-20">
         {currentStep === 'intro' && (
-          <QuizIntro onStart={handleStart} />
+          <QuizIntro onStart={handleStart} returnTo={returnTo} />
         )}
 
         {currentStep === 'quiz' && (
@@ -256,6 +259,7 @@ const Matchrim = () => {
             recommendations={recommendations}
             onRestart={handleRestartQuiz}
             isLoggedIn={!!user}
+            returnTo={returnTo}
           />
         )}
 
@@ -345,7 +349,7 @@ const Matchrim = () => {
                   {/* CTA Buttons */}
                   <div className="space-y-3 pt-4">
                     <Button
-                      onClick={() => navigate('/auth')}
+                      onClick={() => navigate(buildAuthRedirectPath(returnTo || '/profile'))}
                       className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-lg py-6 shadow-lg hover:shadow-xl transition-all duration-300 font-bold"
                     >
                       🚀 Crear cuenta gratis ahora
