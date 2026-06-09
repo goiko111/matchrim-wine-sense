@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home, BookOpen, ScanLine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -17,6 +18,7 @@ const AppNav = () => {
   const { isAdmin } = useIsAdmin();
   const location = useLocation();
   const navigate = useNavigate();
+  const isNative = Capacitor.isNativePlatform();
 
   React.useEffect(() => {
     document.body.classList.add('has-mobile-app-nav');
@@ -42,16 +44,24 @@ const AppNav = () => {
     { path: '/my-wines', label: 'Mis Vinos', icon: BookOpen, requiresAuth: true },
   ];
 
-  const mobileNavLinks = [
-    { path: '/', label: 'Inicio', icon: Home },
-    { path: '/matchrim', label: 'Test', icon: Wine },
-    { path: '/usar-matchrim', label: 'Código', icon: ScanLine },
-    { path: '/inteligencia-liquida', label: 'aiRIM', icon: Sparkles },
-    { path: '/my-wines', label: 'Vinos', icon: BookOpen, requiresAuth: true },
-  ];
+  const mobileNavLinks = isNative
+    ? [
+        { path: '/', label: 'Inicio', icon: Home },
+        { path: '/matchrim', label: 'Test', icon: Wine },
+        { path: '/usar-matchrim', label: 'Código', icon: ScanLine },
+        { path: '/profile', label: 'Perfil', icon: User, requiresAuth: true },
+        { path: '/my-wines', label: 'Vinos', icon: BookOpen, requiresAuth: true },
+      ]
+    : [
+        { path: '/', label: 'Inicio', icon: Home },
+        { path: '/matchrim', label: 'Test', icon: Wine },
+        { path: '/usar-matchrim', label: 'Código', icon: ScanLine },
+        { path: '/inteligencia-liquida', label: 'aiRIM', icon: Sparkles },
+        { path: '/my-wines', label: 'Vinos', icon: BookOpen, requiresAuth: true },
+      ];
 
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm">
+    <nav className="bg-white border-b border-gray-200 pt-[env(safe-area-inset-top)] shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo / Brand */}

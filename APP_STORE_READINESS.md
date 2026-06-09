@@ -8,19 +8,22 @@
 - Los assets nativos se generan desde `resources/icon.png` y `resources/splash.png`.
 - Android declara solo `INTERNET`; no se ha anadido permiso de camara para evitar una declaracion Play Store innecesaria.
 - iOS incluye textos de privacidad para camara y fototeca, alineados con el flujo de fotografiar o subir cartas de vino.
-- La navegacion movil logueada tiene barra inferior fija con Inicio, Test, Codigo, aiRIM y Vinos.
+- La navegacion web movil logueada tiene barra inferior fija con Inicio, Test, Codigo, aiRIM y Vinos.
 - La version nativa detecta Capacitor y usa una home de app, orientada a acciones directas, en lugar de la landing larga de la web.
+- En nativo, la barra inferior prioriza Inicio, Test, Codigo, Perfil y Vinos para que la experiencia se parezca a una app de consumo y no a la web empaquetada.
+- El flujo nativo inicial explica el uso esperado: crear codigo, filtrar carta Winerim y guardar/puntuar vinos para afinar el perfil.
 
 ## Validado localmente
 
 - `npx tsc --noEmit`: OK.
-- `npx eslint src/components/AppNav.tsx src/components/Header.tsx`: OK.
+- `npm run lint`: OK, con advertencias heredadas de `any`, algunos hooks y Fast Refresh.
 - `npm test`: OK.
-- `npm run build`: OK, con warnings de chunk grande y Browserslist antiguo.
+- `npm run build`: OK, con warnings de chunks bajo demanda grandes y Browserslist antiguo.
 - `npx cap sync android`: OK.
 - `npx cap copy ios`: OK.
 - `npx cap doctor`: OK para Android/iOS con Capacitor 7.4.4 instalado.
 - Playwright mobile smoke: home publica, home logueada simulada y `/usar-matchrim` logueada simulada renderizan sin overflow horizontal.
+- Playwright smoke despues del split de rutas: home web, scanner movil y home nativa iOS simulada renderizan correctamente.
 - La home nativa debe revisarse en simulador/dispositivo real despues de compilar con Xcode/Android Studio.
 
 ## Bloqueos de entorno para release
@@ -36,6 +39,6 @@
 - Ejecutar `./gradlew assembleRelease` o `bundleRelease` en Android y build/archive en Xcode.
 - Crear y guardar el keystore Android con proceso de custodia claro.
 - Completar los cuestionarios de privacidad: perfil sensorial, email/auth, vinos guardados, cartas subidas/escaneadas, restaurantes indicados por usuarios y procesamiento mediante Supabase/Edge Functions/API Winerim.
-- Resolver o acotar el lint global: actualmente falla por deuda heredada en admin/importadores/functions y algunos hooks.
-- Reducir bundle/chunks para mejorar arranque movil, especialmente `pdf.worker` y el bundle principal.
+- Reducir deuda de lint heredada: ahora no bloquea, pero conviene tipar los `any` y revisar dependencias de hooks antes de endurecer reglas.
+- Seguir reduciendo chunks bajo demanda para mejorar experiencia movil, especialmente `pdf.worker`, `WineMenuScanner` y `RegionMap`/Mapbox.
 - Preparar capturas reales de App Store/Google Play usando la home nativa, el flujo de codigo, el scanner y Mis Vinos.
