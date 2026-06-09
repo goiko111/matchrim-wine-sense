@@ -25,6 +25,8 @@ const WineSearch = lazy(() => import('@/pages/WineSearch'));
 const WineImport = lazy(() => import('@/pages/WineImport'));
 const MyWines = lazy(() => import('@/pages/MyWines'));
 const UseMatchrim = lazy(() => import('@/pages/UseMatchrim'));
+const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
+const Terms = lazy(() => import('@/pages/Terms'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 function PageFallback() {
@@ -74,6 +76,8 @@ function App() {
                 <Route path="/wine-search" element={<AdminOnly><WineSearch /></AdminOnly>} />
                 <Route path="/wine-import" element={<AdminOnly><WineImport /></AdminOnly>} />
                 <Route path="/my-wines" element={<MyWines />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<Terms />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

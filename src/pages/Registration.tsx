@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
@@ -118,6 +118,15 @@ const Registration = () => {
             {renderStep()}
           </CardContent>
         </Card>
+        <div className="mt-5 flex items-center justify-center gap-4 text-xs text-red-900">
+          <Link to="/privacy" className="hover:underline">
+            Privacidad
+          </Link>
+          <span className="text-red-300">|</span>
+          <Link to="/terms" className="hover:underline">
+            Términos
+          </Link>
+        </div>
       </div>
     </div>
   );

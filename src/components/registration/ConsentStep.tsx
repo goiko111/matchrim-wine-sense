@@ -31,7 +31,7 @@ const ConsentStep: React.FC<ConsentStepProps> = ({ data, onUpdate, onComplete, o
             onCheckedChange={(checked) => onUpdate({ termsAccepted: checked as boolean })}
           />
           <Label htmlFor="terms" className="text-sm leading-relaxed">
-            Acepto los <a href="#" className="text-red-700 hover:underline">términos y condiciones</a> de uso de la plataforma
+            Acepto los <a href="/terms" target="_blank" rel="noreferrer" className="text-red-700 hover:underline">términos y condiciones</a> de uso de la plataforma
           </Label>
         </div>
 
@@ -42,7 +42,7 @@ const ConsentStep: React.FC<ConsentStepProps> = ({ data, onUpdate, onComplete, o
             onCheckedChange={(checked) => onUpdate({ privacyAccepted: checked as boolean })}
           />
           <Label htmlFor="privacy" className="text-sm leading-relaxed">
-            Acepto la <a href="#" className="text-red-700 hover:underline">política de privacidad</a> y el tratamiento de mis datos personales
+            Acepto la <a href="/privacy" target="_blank" rel="noreferrer" className="text-red-700 hover:underline">política de privacidad</a> y el tratamiento de mis datos personales
           </Label>
         </div>
       </div>
