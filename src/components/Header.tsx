@@ -4,8 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, Brain, Upload, Sparkles, Palette } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { LogOut, User, Brain, Upload, Sparkles, Palette, ScanLine } from 'lucide-react';
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -42,9 +41,13 @@ const Header = () => {
     navigate('/wine-styles');
   };
 
+  const handleUseMatchrimClick = () => {
+    navigate('/usar-matchrim');
+  };
+
   return (
-    <header className="bg-white/80 backdrop-blur-sm border-b border-red-200 px-6 py-4">
-      <div className="max-w-6xl mx-auto flex items-center justify-between">
+    <header className="bg-white/90 backdrop-blur-sm border-b border-red-200 px-4 py-3 md:px-6">
+      <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
           <img 
             src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" 
@@ -54,36 +57,47 @@ const Header = () => {
           <h1 className="text-xl font-bold text-red-900">Winerim</h1>
         </div>
         
-        <div className="flex items-center gap-3">
+        <nav className="flex flex-wrap items-center justify-end gap-1 md:gap-2">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleMatchrimClick}
+            className="text-red-800 hover:bg-red-50"
+          >
+            <Sparkles className="h-4 w-4 md:mr-2" />
+            <span className="text-xs sm:hidden">Test</span>
+            <span className="hidden sm:inline">Matchrim</span>
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleUseMatchrimClick}
+            className="text-red-800 hover:bg-red-50"
+          >
+            <ScanLine className="h-4 w-4 md:mr-2" />
+            <span className="text-xs sm:text-sm">Código</span>
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleLiquidIntelligenceClick}
+            className="text-red-800 hover:bg-red-50"
+          >
+            <Brain className="h-4 w-4 md:mr-2" />
+            <span className="text-xs sm:text-sm">aiRIM</span>
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleWineStylesClick}
+            className="text-red-800 hover:bg-red-50"
+          >
+            <Palette className="h-4 w-4 md:mr-2" />
+            <span className="text-xs sm:text-sm">Estilos</span>
+          </Button>
+
           {user && (
             <>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleMatchrimClick}
-                className="text-red-700 hover:bg-red-50"
-              >
-                <Sparkles className="h-4 w-4 mr-2" />
-                Matchrim
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleLiquidIntelligenceClick}
-                className="text-red-700 hover:bg-red-50"
-              >
-                <Brain className="h-4 w-4 mr-2" />
-                aiRIM
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleWineStylesClick}
-                className="text-red-700 hover:bg-red-50"
-              >
-                <Palette className="h-4 w-4 mr-2" />
-                Estilos de Vino
-              </Button>
               {isAdmin && (
                 <Button
                   variant="ghost"
@@ -101,8 +115,8 @@ const Header = () => {
                 onClick={handleProfileClick}
                 className="text-red-700 hover:bg-red-50"
               >
-                <User className="h-4 w-4 mr-2" />
-                Mi Perfil
+                <User className="h-4 w-4 md:mr-2" />
+                <span className="hidden sm:inline">Mi Perfil</span>
               </Button>
             </>
           )}
@@ -128,36 +142,13 @@ const Header = () => {
             <Button 
               onClick={handleAuthClick}
               className="bg-red-700 hover:bg-red-800 text-white"
+              size="sm"
             >
               Iniciar Sesión
             </Button>
           )}
-        </div>
+        </nav>
       </div>
-      <nav className="hidden md:flex space-x-8">
-        <Link to="/" className="text-white hover:text-amber-200 transition-colors">
-          Inicio
-        </Link>
-        <Link to="/inteligencia-liquida" className="text-white hover:text-amber-200 transition-colors">
-          aiRIM
-        </Link>
-        <Link to="/wine-styles" className="text-white hover:text-amber-200 transition-colors">
-          Estilos de Vino
-        </Link>
-        {isAdmin && (
-          <>
-            <Link to="/import-csv" className="text-white hover:text-amber-200 transition-colors">
-              Importar CSV
-            </Link>
-            <Link to="/data-viewer" className="text-white hover:text-amber-200 transition-colors">
-              Ver Datos
-            </Link>
-            <Link to="/admin" className="text-white hover:text-amber-200 transition-colors">
-              Admin
-            </Link>
-          </>
-        )}
-      </nav>
     </header>
   );
 };
