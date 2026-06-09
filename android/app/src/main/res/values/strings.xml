@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Winerim</string>
+    <string name="title_activity_main">Winerim</string>
+    <string name="package_name">wine.winerim.app</string>
+    <string name="custom_url_scheme">wine.winerim.app</string>
+</resources>
