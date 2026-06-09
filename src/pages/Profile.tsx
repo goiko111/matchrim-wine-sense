@@ -93,7 +93,7 @@ const Profile = () => {
         return;
       }
 
-      setTrainingWines(data || []);
+      setTrainingWines((data || []) as TrainableWine[]);
     };
 
     loadTrainingWines();
