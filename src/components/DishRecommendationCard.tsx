@@ -57,7 +57,7 @@ const DishRecommendationCard: React.FC<DishRecommendationCardProps> = ({ respons
         }
         
         // Recomendación
-        let recoMatch = sectionText.match(/\*\*Recomendación:\*\*\s*([^\n]+)/i);
+        const recoMatch = sectionText.match(/\*\*Recomendación:\*\*\s*([^\n]+)/i);
         if (recoMatch) {
           dishInfo.recommendation = recoMatch[1].trim();
         } else if (dishInfo.name) {
