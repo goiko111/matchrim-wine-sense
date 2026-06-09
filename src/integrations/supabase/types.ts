@@ -14,42 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      account_deletion_requests: {
-        Row: {
-          completed_at: string | null
-          created_at: string
-          email: string
-          id: string
-          reason: string | null
-          requested_at: string
-          status: string
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          completed_at?: string | null
-          created_at?: string
-          email: string
-          id?: string
-          reason?: string | null
-          requested_at?: string
-          status?: string
-          updated_at?: string
-          user_id?: string | null
-        }
-        Update: {
-          completed_at?: string | null
-          created_at?: string
-          email?: string
-          id?: string
-          reason?: string | null
-          requested_at?: string
-          status?: string
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       classification_history: {
         Row: {
           acidez: number
