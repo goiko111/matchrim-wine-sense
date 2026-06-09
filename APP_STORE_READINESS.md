@@ -16,6 +16,7 @@
 - Android release puede firmarse con variables de entorno `WINERIM_UPLOAD_STORE_FILE`, `WINERIM_UPLOAD_STORE_PASSWORD`, `WINERIM_UPLOAD_KEY_ALIAS` y `WINERIM_UPLOAD_KEY_PASSWORD`.
 - El scanner de cartas carga PDF.js solo cuando el usuario sube un PDF; el chunk principal del scanner queda alrededor de 10 kB.
 - La app expone `/privacy` y `/terms`; la URL prevista para stores es `https://winerim.wine/privacy`.
+- La app permite iniciar eliminacion de cuenta desde `/account/delete`; la URL prevista para Google Play es `https://winerim.wine/account/delete`.
 
 ## Validado localmente
 
@@ -46,6 +47,7 @@
 - Exportar las variables de firma Android antes de `npm run android:bundle`.
 - Completar los cuestionarios de privacidad: perfil sensorial, email/auth, vinos guardados, cartas subidas/escaneadas, restaurantes indicados por usuarios y procesamiento mediante Supabase/Edge Functions/API Winerim.
 - Confirmar razon social, direccion fiscal, contacto legal, retencion exacta de cartas escaneadas y rating por contenido relacionado con vino/alcohol antes de subir a stores.
+- Definir responsable operativo y SLA para completar solicitudes en `account_deletion_requests`.
 - Reducir deuda de lint heredada: ahora no bloquea, pero conviene tipar los `any` y revisar dependencias de hooks antes de endurecer reglas.
 - Seguir reduciendo chunks bajo demanda para mejorar experiencia movil, especialmente `pdf.worker` y `RegionMap`/Mapbox.
 - Preparar capturas reales de App Store/Google Play usando la home nativa, el flujo de codigo, el scanner y Mis Vinos.

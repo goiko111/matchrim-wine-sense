@@ -121,6 +121,13 @@ const PrivacyPolicy = () => (
             </a>
             .
           </p>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            Tambien puedes iniciar una solicitud desde{' '}
+            <Link to="/account/delete" className="font-medium text-red-800 hover:underline">
+              eliminar cuenta
+            </Link>
+            .
+          </p>
         </div>
       </section>
     </main>

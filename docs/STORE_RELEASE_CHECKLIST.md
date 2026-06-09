@@ -17,6 +17,7 @@ Checked on 2026-06-09.
 - iOS bundle id: `wine.winerim.app`
 - Privacy policy URL: `https://winerim.wine/privacy`
 - Terms URL: `https://winerim.wine/terms`
+- Account deletion URL: `https://winerim.wine/account/delete`
 - Android version: `versionName "1.0"`, `versionCode 1`
 - iOS version: managed in Xcode via `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`
 
@@ -110,6 +111,7 @@ Decisions to confirm:
 - Whether any analytics/tracking providers are enabled outside Supabase/API logs.
 - Whether app data is used for advertising, tracking or third-party marketing.
 - Age rating answers for wine-related content in Apple and Google questionnaires.
+- Internal SLA and operational owner for completing `account_deletion_requests`.
 
 ## Store screenshots
 
@@ -142,6 +144,7 @@ Then perform manual smoke tests in Android Studio and Xcode:
 - App launches without remote Lovable dependency.
 - Home renders with safe areas on iPhone and Android devices.
 - Auth works.
+- Account deletion request can be initiated in app and from the web URL.
 - Matchrim test saves a profile.
 - Code flow reaches Winerim filtering.
 - Scanner route handles a non-Winerim restaurant.

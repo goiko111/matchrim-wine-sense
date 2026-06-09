@@ -27,6 +27,7 @@ const MyWines = lazy(() => import('@/pages/MyWines'));
 const UseMatchrim = lazy(() => import('@/pages/UseMatchrim'));
 const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
 const Terms = lazy(() => import('@/pages/Terms'));
+const AccountDeletion = lazy(() => import('@/pages/AccountDeletion'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 function PageFallback() {
@@ -78,6 +79,7 @@ function App() {
                 <Route path="/my-wines" element={<MyWines />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/terms" element={<Terms />} />
+                <Route path="/account/delete" element={<AccountDeletion />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
-import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home, BookOpen, ScanLine, FileText } from 'lucide-react';
+import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home, BookOpen, ScanLine, FileText, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
@@ -160,6 +160,12 @@ const AppNav = () => {
                     <Link to="/terms" className="flex items-center gap-2 cursor-pointer">
                       <FileText className="h-4 w-4" />
                       Términos
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/account/delete" className="flex items-center gap-2 cursor-pointer text-red-700">
+                      <Trash2 className="h-4 w-4" />
+                      Eliminar cuenta
                     </Link>
                   </DropdownMenuItem>
                   
