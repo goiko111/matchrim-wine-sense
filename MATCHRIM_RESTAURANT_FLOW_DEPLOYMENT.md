@@ -11,34 +11,37 @@ This release adds the restaurant usage loop for Matchrim/Winerim:
 - Restaurant usage is stored as demand data for the admin dashboard.
 - Rated wines in "Mis Vinos" can tune the active Matchrim profile over time.
 
-## Required Supabase Changes
+## Supabase Status
 
-Apply this migration:
+Production schema has been verified through Supabase REST:
 
-```bash
-supabase db push --project-ref cbjynrbvrhcmpaojmqdp
+```text
+GET /rest/v1/restaurant_matchrim_sessions?select=id&limit=1 -> 200 []
 ```
 
-Migration file:
+The restaurant demand table is present in production.
+
+Relevant migration files:
 
 ```text
 supabase/migrations/20260608110000_create_matchrim_restaurant_sessions.sql
+supabase/migrations/20260609024534_4871f375-d82f-4c00-bcc4-6ab705dc532b.sql
 ```
 
-It creates `public.restaurant_matchrim_sessions` with RLS policies for:
+Both migrations are idempotent and target `public.restaurant_matchrim_sessions`. The later Lovable-generated migration adds explicit grants while keeping the same RLS model:
 
 - Authenticated users inserting their own restaurant sessions.
 - Authenticated users reading their own sessions.
 - Authenticated users updating their own sessions after menu scan completion.
 - Admins reading all demand sessions through `private.has_role`.
 
-## Required Edge Function Deploys
+## Edge Function Status
 
-Deploy these updated functions:
+These functions have been deployed:
 
-```bash
-supabase functions deploy calculate-wine-affinity --project-ref cbjynrbvrhcmpaojmqdp --use-api
-supabase functions deploy scan-wine-menu --project-ref cbjynrbvrhcmpaojmqdp --use-api
+```text
+calculate-wine-affinity
+scan-wine-menu
 ```
 
 Both functions now:
@@ -66,6 +69,14 @@ For production, confirm:
 - `VITE_WINERIM_STORE_URL` points to the public Winerim wine/card experience.
 - Optionally set `VITE_WINERIM_APP_URL` if the code-share link should open a different Winerim host.
 
+Winerim API smoke test:
+
+```text
+GET https://app.winerim.com/api/v1/restaurant/00000000-0000-0000-0000-000000000001/wines/match?... -> 200
+```
+
+The real API returns `results`, numeric/string prices, optional `photo`, optional `section`, and grape arrays that may be nested. The frontend normalizes those fields before rendering.
+
 ## Manual QA
 
 Use this route shape:
@@ -92,6 +103,7 @@ npx tsc --noEmit
 npm test
 npm run build
 npx eslint src/services/winerimApi.ts src/utils/matchrimLearning.ts src/pages/UseMatchrim.tsx src/pages/Profile.tsx src/components/wine-import/WineMenuScanner.tsx supabase/functions/calculate-wine-affinity/index.ts supabase/functions/scan-wine-menu/index.ts
+npx eslint src/services/winerimApi.ts src/components/WineCard.tsx
 ```
 
 All passed locally. Full-repo lint still has pre-existing unrelated errors in older files.
