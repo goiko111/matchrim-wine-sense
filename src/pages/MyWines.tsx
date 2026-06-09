@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
-import { WineMenuScanner } from "@/components/wine-import/WineMenuScanner";
 import { WineSearchBar } from "@/components/wine-import/WineSearchBar";
 import { PurchaseInfoSelector } from "@/components/wine-import/PurchaseInfoSelector";
 import { LocationSelector } from "@/components/wine-import/LocationSelector";
@@ -48,6 +47,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+const WineMenuScanner = lazy(() => import("@/components/wine-import/WineMenuScanner"));
+
+const ScannerFallback = () => (
+  <div className="flex min-h-40 items-center justify-center rounded-lg border border-dashed bg-muted/40">
+    <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary" />
+    Preparando scanner...
+  </div>
+);
 
 interface UserWine {
   id: string;
@@ -507,7 +515,9 @@ const MyWines = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <WineMenuScanner />
+                  <Suspense fallback={<ScannerFallback />}>
+                    <WineMenuScanner />
+                  </Suspense>
                 </CardContent>
               </Card>
 

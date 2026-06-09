@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import AppNav from '@/components/AppNav';
 import Header from '@/components/Header';
 import MatchrimPassport from '@/components/MatchrimPassport';
 import WineCard from '@/components/WineCard';
-import { WineMenuScanner } from '@/components/wine-import/WineMenuScanner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,6 +23,8 @@ import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/wi
 import { AlertCircle, BookmarkPlus, ExternalLink, Loader2, MapPin, ScanLine, Sparkles, Wine } from 'lucide-react';
 import { toast } from 'sonner';
 
+const WineMenuScanner = lazy(() => import('@/components/wine-import/WineMenuScanner'));
+
 const parseProfileVector = (vector: string | null): MatchrimProfileLike | null => {
   if (!vector || !/^\d{5}$/.test(vector)) return null;
   const [potente, acidez, dulce, tanico, afrutado] = vector.split('').map(Number);
@@ -32,6 +33,13 @@ const parseProfileVector = (vector: string | null): MatchrimProfileLike | null =
 
 const getErrorMessage = (error: unknown, fallback: string) => (
   error instanceof Error ? error.message : fallback
+);
+
+const ScannerFallback = () => (
+  <div className="flex min-h-40 items-center justify-center rounded-lg border border-dashed bg-white/70">
+    <Loader2 className="mr-2 h-5 w-5 animate-spin text-red-800" />
+    Preparando scanner...
+  </div>
 );
 
 const UseMatchrim = () => {
@@ -441,11 +449,13 @@ const UseMatchrim = () => {
                       </Button>
                     </div>
                   ) : (
-                    <WineMenuScanner
-                      restaurantName={restaurantName}
-                      matchrimCode={matchrimCode}
-                      restaurantSessionId={restaurantSessionId}
-                    />
+                    <Suspense fallback={<ScannerFallback />}>
+                      <WineMenuScanner
+                        restaurantName={restaurantName}
+                        matchrimCode={matchrimCode}
+                        restaurantSessionId={restaurantSessionId}
+                      />
+                    </Suspense>
                   )}
                 </TabsContent>
               </Tabs>

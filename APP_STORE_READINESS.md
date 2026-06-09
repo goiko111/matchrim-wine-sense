@@ -14,6 +14,7 @@
 - El flujo nativo inicial explica el uso esperado: crear codigo, filtrar carta Winerim y guardar/puntuar vinos para afinar el perfil.
 - El checklist operativo de publicacion esta en `docs/STORE_RELEASE_CHECKLIST.md`.
 - Android release puede firmarse con variables de entorno `WINERIM_UPLOAD_STORE_FILE`, `WINERIM_UPLOAD_STORE_PASSWORD`, `WINERIM_UPLOAD_KEY_ALIAS` y `WINERIM_UPLOAD_KEY_PASSWORD`.
+- El scanner de cartas carga PDF.js solo cuando el usuario sube un PDF; el chunk principal del scanner queda alrededor de 10 kB.
 
 ## Validado localmente
 
@@ -44,5 +45,5 @@
 - Exportar las variables de firma Android antes de `npm run android:bundle`.
 - Completar los cuestionarios de privacidad: perfil sensorial, email/auth, vinos guardados, cartas subidas/escaneadas, restaurantes indicados por usuarios y procesamiento mediante Supabase/Edge Functions/API Winerim.
 - Reducir deuda de lint heredada: ahora no bloquea, pero conviene tipar los `any` y revisar dependencias de hooks antes de endurecer reglas.
-- Seguir reduciendo chunks bajo demanda para mejorar experiencia movil, especialmente `pdf.worker`, `WineMenuScanner` y `RegionMap`/Mapbox.
+- Seguir reduciendo chunks bajo demanda para mejorar experiencia movil, especialmente `pdf.worker` y `RegionMap`/Mapbox.
 - Preparar capturas reales de App Store/Google Play usando la home nativa, el flujo de codigo, el scanner y Mis Vinos.
