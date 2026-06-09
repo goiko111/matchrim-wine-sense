@@ -54,7 +54,7 @@ const normalizePrice = (rawWine: RawWinerimWine) => {
   if (price == null) return undefined;
   return [{
     price: Number(price),
-    currency: rawWine.currency || rawWine.moneda || '€',
+    currency: (rawWine.currency || rawWine.moneda || '€') as string | { name: string; symbol: string },
   }];
 };
 
