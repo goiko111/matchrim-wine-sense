@@ -111,7 +111,7 @@ Decisions to confirm:
 - Whether any analytics/tracking providers are enabled outside Supabase/API logs.
 - Whether app data is used for advertising, tracking or third-party marketing.
 - Age rating answers for wine-related content in Apple and Google questionnaires.
-- Internal SLA and operational owner for completing `account_deletion_requests`.
+- Internal SLA, operational owner and deletion procedure for completing `account_deletion_requests`.
 
 ## Store screenshots
 
@@ -145,6 +145,7 @@ Then perform manual smoke tests in Android Studio and Xcode:
 - Home renders with safe areas on iPhone and Android devices.
 - Auth works.
 - Account deletion request can be initiated in app and from the web URL.
+- Admin privacy queue can list deletion requests and update their status.
 - Matchrim test saves a profile.
 - Code flow reaches Winerim filtering.
 - Scanner route handles a non-Winerim restaurant.

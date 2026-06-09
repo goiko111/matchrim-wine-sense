@@ -10,6 +10,7 @@ import { AdminAnalytics } from "@/components/admin/AdminAnalytics";
 import { AdminData } from "@/components/admin/AdminData";
 import { AdminMetrics } from "@/components/admin/AdminMetrics";
 import { AdminRestaurantDemand } from "@/components/admin/AdminRestaurantDemand";
+import { AdminAccountDeletionRequests } from "@/components/admin/AdminAccountDeletionRequests";
 
 export default function Admin() {
   const { isAdmin, loading } = useIsAdmin();
@@ -52,13 +53,14 @@ export default function Admin() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 lg:w-auto lg:inline-grid">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="users">Usuarios</TabsTrigger>
-            <TabsTrigger value="analytics">Analíticas</TabsTrigger>
-            <TabsTrigger value="demand">Demanda</TabsTrigger>
-            <TabsTrigger value="metrics">Métricas</TabsTrigger>
-            <TabsTrigger value="data">Datos</TabsTrigger>
+          <TabsList className="grid h-auto w-full grid-cols-2 items-stretch gap-1 md:grid-cols-4 lg:w-auto lg:inline-grid lg:grid-cols-7">
+            <TabsTrigger value="dashboard" className="text-xs sm:text-sm">Dashboard</TabsTrigger>
+            <TabsTrigger value="users" className="text-xs sm:text-sm">Usuarios</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analíticas</TabsTrigger>
+            <TabsTrigger value="demand" className="text-xs sm:text-sm">Demanda</TabsTrigger>
+            <TabsTrigger value="privacy" className="text-xs sm:text-sm">Privacidad</TabsTrigger>
+            <TabsTrigger value="metrics" className="text-xs sm:text-sm">Métricas</TabsTrigger>
+            <TabsTrigger value="data" className="text-xs sm:text-sm">Datos</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard" className="space-y-6">
@@ -75,6 +77,10 @@ export default function Admin() {
 
           <TabsContent value="demand" className="space-y-6">
             <AdminRestaurantDemand />
+          </TabsContent>
+
+          <TabsContent value="privacy" className="space-y-6">
+            <AdminAccountDeletionRequests />
           </TabsContent>
 
           <TabsContent value="metrics" className="space-y-6">
