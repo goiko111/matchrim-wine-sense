@@ -298,51 +298,6 @@ export type Database = {
         }
         Relationships: []
       }
-      restaurant_matchrim_sessions: {
-        Row: {
-          created_at: string
-          id: string
-          is_winerim_restaurant: boolean
-          matchrim_code: string
-          matchrim_profile: Json
-          menu_scan_used: boolean
-          restaurant_address: string | null
-          restaurant_name: string
-          restaurant_place_id: string | null
-          source: string
-          user_id: string | null
-          wines_detected: number | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_winerim_restaurant?: boolean
-          matchrim_code: string
-          matchrim_profile?: Json
-          menu_scan_used?: boolean
-          restaurant_address?: string | null
-          restaurant_name: string
-          restaurant_place_id?: string | null
-          source?: string
-          user_id?: string | null
-          wines_detected?: number | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_winerim_restaurant?: boolean
-          matchrim_code?: string
-          matchrim_profile?: Json
-          menu_scan_used?: boolean
-          restaurant_address?: string | null
-          restaurant_name?: string
-          restaurant_place_id?: string | null
-          source?: string
-          user_id?: string | null
-          wines_detected?: number | null
-        }
-        Relationships: []
-      }
       user_roles: {
         Row: {
           created_at: string
