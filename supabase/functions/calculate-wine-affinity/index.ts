@@ -6,6 +6,118 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+type MatchrimProfile = {
+  potente: number;
+  acidez: number;
+  dulce: number;
+  tanico: number;
+  afrutado: number;
+};
+type Rating = 'love' | 'ok' | 'not_for_me' | null;
+type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', unknown>>;
+type RatedWine = {
+  rating: Rating;
+  sensory_attributes: SensoryAttributes | null;
+};
+
+const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+
+const normalizeSensoryValueTo5 = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return numeric > 5 ? clamp(numeric / 2, 0, 5) : clamp(numeric, 0, 5);
+};
+
+const profileToScale10 = (profile: MatchrimProfile) => ({
+  potencia: clamp(Math.round(profile.potente * 2), 1, 10),
+  acidez: clamp(Math.round(profile.acidez * 2), 1, 10),
+  dulzura: clamp(Math.round(profile.dulce * 2), 1, 10),
+  taninos: clamp(Math.round(profile.tanico * 2), 1, 10),
+  afrutado: clamp(Math.round(profile.afrutado * 2), 1, 10),
+});
+
+const ratingWeight = (rating: string | null) => {
+  if (rating === 'love') return 1;
+  if (rating === 'ok') return 0.25;
+  if (rating === 'not_for_me') return -0.8;
+  return 0;
+};
+
+const buildLearnedProfile = async (
+  supabaseClient: ReturnType<typeof createClient>,
+  userId: string,
+  baseProfile: MatchrimProfile
+): Promise<MatchrimProfile> => {
+  const { data: ratedWines, error } = await supabaseClient
+    .from('user_wines')
+    .select('rating, sensory_attributes')
+    .eq('user_id', userId)
+    .not('rating', 'is', null)
+    .not('sensory_attributes', 'is', null)
+    .limit(30);
+
+  if (error || !ratedWines?.length) {
+    if (error) console.error('Error loading rated wines for learned profile:', error);
+    return baseProfile;
+  }
+
+  const deltas = {
+    potente: 0,
+    acidez: 0,
+    dulce: 0,
+    tanico: 0,
+    afrutado: 0,
+  };
+  let totalWeight = 0;
+  let samples = 0;
+
+  (ratedWines as RatedWine[]).forEach((wine) => {
+    const weight = ratingWeight(wine.rating);
+    const attrs = wine.sensory_attributes;
+    if (!weight || !attrs) return;
+
+    const potencia = normalizeSensoryValueTo5(attrs.potencia);
+    const acidez = normalizeSensoryValueTo5(attrs.acidez);
+    const dulzura = normalizeSensoryValueTo5(attrs.dulzura);
+    const taninos = normalizeSensoryValueTo5(attrs.taninos);
+    const afrutado = normalizeSensoryValueTo5(attrs.afrutado);
+
+    if (potencia === null || acidez === null || dulzura === null || taninos === null || afrutado === null) return;
+
+    deltas.potente += (potencia - baseProfile.potente) * weight;
+    deltas.acidez += (acidez - baseProfile.acidez) * weight;
+    deltas.dulce += (dulzura - baseProfile.dulce) * weight;
+    deltas.tanico += (taninos - baseProfile.tanico) * weight;
+    deltas.afrutado += (afrutado - baseProfile.afrutado) * weight;
+    totalWeight += Math.abs(weight);
+    samples += 1;
+  });
+
+  if (!samples || totalWeight === 0) return baseProfile;
+
+  const blend = Math.min(0.75, 0.25 + samples * 0.05);
+  return {
+    potente: clamp(Math.round((baseProfile.potente + (deltas.potente / totalWeight) * blend) * 10) / 10, 0, 5),
+    acidez: clamp(Math.round((baseProfile.acidez + (deltas.acidez / totalWeight) * blend) * 10) / 10, 0, 5),
+    dulce: clamp(Math.round((baseProfile.dulce + (deltas.dulce / totalWeight) * blend) * 10) / 10, 0, 5),
+    tanico: clamp(Math.round((baseProfile.tanico + (deltas.tanico / totalWeight) * blend) * 10) / 10, 0, 5),
+    afrutado: clamp(Math.round((baseProfile.afrutado + (deltas.afrutado / totalWeight) * blend) * 10) / 10, 0, 5),
+  };
+};
+
+const calculateAffinityFromScale10 = (profile: ReturnType<typeof profileToScale10>, attrs: SensoryAttributes) => {
+  const distance = Math.sqrt(
+    Math.pow(profile.potencia - (Number(attrs.potencia) || 5), 2) +
+    Math.pow(profile.acidez - (Number(attrs.acidez) || 5), 2) +
+    Math.pow(profile.dulzura - (Number(attrs.dulzura) || 5), 2) +
+    Math.pow(profile.taninos - (Number(attrs.taninos) || 5), 2) +
+    Math.pow(profile.afrutado - (Number(attrs.afrutado) || 5), 2)
+  );
+
+  const maxDistance = Math.sqrt(5 * Math.pow(9, 2));
+  return Math.round(Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100)));
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -66,22 +178,13 @@ serve(async (req) => {
       throw new Error('Wine not found');
     }
 
+    const learnedProfile = await buildLearnedProfile(supabaseClient, user.id, profile);
+    const userProfile10 = profileToScale10(learnedProfile);
+
     // If wine already has sensory attributes, calculate affinity
     if (wine.sensory_attributes) {
       const attrs = wine.sensory_attributes;
-      
-      // Calculate Euclidean distance (lower is better)
-      const distance = Math.sqrt(
-        Math.pow(profile.potente - (attrs.potencia || 5), 2) +
-        Math.pow(profile.acidez - (attrs.acidez || 5), 2) +
-        Math.pow(profile.dulce - (attrs.dulzura || 5), 2) +
-        Math.pow(profile.tanico - (attrs.taninos || 5), 2) +
-        Math.pow(profile.afrutado - (attrs.afrutado || 5), 2)
-      );
-      
-      // Convert to affinity percentage (max distance ~22.4, min 0)
-      const maxDistance = Math.sqrt(5 * Math.pow(9, 2)); // ~20.1
-      const affinity = Math.round(Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100)));
+      const affinity = calculateAffinityFromScale10(userProfile10, attrs);
 
       // Update wine with affinity
       await supabaseClient
@@ -147,19 +250,9 @@ Responde SOLO con JSON:
     let content = data.choices?.[0]?.message?.content || '{}';
     content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     
-    const sensoryAttrs = JSON.parse(content);
+    const sensoryAttrs = JSON.parse(content) as SensoryAttributes;
 
-    // Calculate affinity
-    const distance = Math.sqrt(
-      Math.pow(profile.potente - sensoryAttrs.potencia, 2) +
-      Math.pow(profile.acidez - sensoryAttrs.acidez, 2) +
-      Math.pow(profile.dulce - sensoryAttrs.dulzura, 2) +
-      Math.pow(profile.tanico - sensoryAttrs.taninos, 2) +
-      Math.pow(profile.afrutado - sensoryAttrs.afrutado, 2)
-    );
-    
-    const maxDistance = Math.sqrt(5 * Math.pow(9, 2));
-    const affinity = Math.round(Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100)));
+    const affinity = calculateAffinityFromScale10(userProfile10, sensoryAttrs);
 
     // Update wine with sensory attributes and affinity
     await supabaseClient
@@ -175,10 +268,10 @@ Responde SOLO con JSON:
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error in calculate-wine-affinity:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Internal error' }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }

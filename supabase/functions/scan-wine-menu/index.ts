@@ -6,6 +6,105 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+type MatchrimProfile = {
+  potente: number;
+  acidez: number;
+  dulce: number;
+  tanico: number;
+  afrutado: number;
+};
+type Rating = 'love' | 'ok' | 'not_for_me' | null;
+type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', unknown>>;
+type RatedWine = {
+  rating: Rating;
+  sensory_attributes: SensoryAttributes | null;
+};
+
+const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+
+const normalizeSensoryValueTo5 = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return numeric > 5 ? clamp(numeric / 2, 0, 5) : clamp(numeric, 0, 5);
+};
+
+const ratingWeight = (rating: string | null) => {
+  if (rating === 'love') return 1;
+  if (rating === 'ok') return 0.25;
+  if (rating === 'not_for_me') return -0.8;
+  return 0;
+};
+
+const buildLearnedProfile = async (
+  supabaseClient: ReturnType<typeof createClient>,
+  userId: string,
+  baseProfile: MatchrimProfile
+): Promise<MatchrimProfile> => {
+  const { data: ratedWines, error } = await supabaseClient
+    .from('user_wines')
+    .select('rating, sensory_attributes')
+    .eq('user_id', userId)
+    .not('rating', 'is', null)
+    .not('sensory_attributes', 'is', null)
+    .limit(30);
+
+  if (error || !ratedWines?.length) {
+    if (error) console.error('Error loading rated wines for learned profile:', error);
+    return baseProfile;
+  }
+
+  const deltas = {
+    potente: 0,
+    acidez: 0,
+    dulce: 0,
+    tanico: 0,
+    afrutado: 0,
+  };
+  let totalWeight = 0;
+  let samples = 0;
+
+  (ratedWines as RatedWine[]).forEach((wine) => {
+    const weight = ratingWeight(wine.rating);
+    const attrs = wine.sensory_attributes;
+    if (!weight || !attrs) return;
+
+    const potencia = normalizeSensoryValueTo5(attrs.potencia);
+    const acidez = normalizeSensoryValueTo5(attrs.acidez);
+    const dulzura = normalizeSensoryValueTo5(attrs.dulzura);
+    const taninos = normalizeSensoryValueTo5(attrs.taninos);
+    const afrutado = normalizeSensoryValueTo5(attrs.afrutado);
+
+    if (potencia === null || acidez === null || dulzura === null || taninos === null || afrutado === null) return;
+
+    deltas.potente += (potencia - baseProfile.potente) * weight;
+    deltas.acidez += (acidez - baseProfile.acidez) * weight;
+    deltas.dulce += (dulzura - baseProfile.dulce) * weight;
+    deltas.tanico += (taninos - baseProfile.tanico) * weight;
+    deltas.afrutado += (afrutado - baseProfile.afrutado) * weight;
+    totalWeight += Math.abs(weight);
+    samples += 1;
+  });
+
+  if (!samples || totalWeight === 0) return baseProfile;
+
+  const blend = Math.min(0.75, 0.25 + samples * 0.05);
+  return {
+    potente: clamp(Math.round((baseProfile.potente + (deltas.potente / totalWeight) * blend) * 10) / 10, 0, 5),
+    acidez: clamp(Math.round((baseProfile.acidez + (deltas.acidez / totalWeight) * blend) * 10) / 10, 0, 5),
+    dulce: clamp(Math.round((baseProfile.dulce + (deltas.dulce / totalWeight) * blend) * 10) / 10, 0, 5),
+    tanico: clamp(Math.round((baseProfile.tanico + (deltas.tanico / totalWeight) * blend) * 10) / 10, 0, 5),
+    afrutado: clamp(Math.round((baseProfile.afrutado + (deltas.afrutado / totalWeight) * blend) * 10) / 10, 0, 5),
+  };
+};
+
+const profileToScale10 = (profile: MatchrimProfile) => ({
+  potencia: clamp(Math.round(profile.potente * 2), 1, 10),
+  acidez: clamp(Math.round(profile.acidez * 2), 1, 10),
+  dulzura: clamp(Math.round(profile.dulce * 2), 1, 10),
+  taninos: clamp(Math.round(profile.tanico * 2), 1, 10),
+  afrutado: clamp(Math.round(profile.afrutado * 2), 1, 10),
+});
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -79,16 +178,19 @@ Para cada vino proporciona:
 - uvas: Array con variedades principales
 - descripcion: Breve descripción (máximo 150 palabras) con aromas y notas de cata`;
 
+    const learnedProfile = profile ? await buildLearnedProfile(supabaseClient, user.id, profile) : null;
+    const profile10 = learnedProfile ? profileToScale10(learnedProfile) : null;
+
     // If user has profile, add compatibility calculation to the same prompt
-    if (profile) {
+    if (profile10) {
       prompt += `
 
 ADEMÁS, calcula la compatibilidad de cada vino con este perfil de usuario (escala 1-10):
-- Potencia: ${profile.potente}
-- Acidez: ${profile.acidez}
-- Dulzura: ${profile.dulce}
-- Taninos: ${profile.tanico}
-- Afrutado: ${profile.afrutado}
+- Potencia: ${profile10.potencia}
+- Acidez: ${profile10.acidez}
+- Dulzura: ${profile10.dulzura}
+- Taninos: ${profile10.taninos}
+- Afrutado: ${profile10.afrutado}
 
 Para cada vino, estima también:
 - atributos: objeto con potencia, acidez, dulzura, taninos, afrutado (valores 1-10)
@@ -126,7 +228,7 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
 
      // For PDFs, convert to image format that Gemini can process
     // Gemini doesn't support PDF data URLs directly, only images
-    let imageUrl = image;
+    const imageUrl = image;
     if (pdf) {
       console.log('PDF detected - user should upload as image instead');
       throw new Error('Por favor, convierte el PDF a imagen (captura de pantalla) antes de subirlo.');
@@ -267,13 +369,13 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
         }
     }
     
-    const winesData = result;
+    const winesData = result as { vinos?: unknown; wines?: unknown };
 
     // Normalizar clave: aceptar "wines" o "vinos"
     const vinos = Array.isArray(winesData.vinos)
       ? winesData.vinos
-      : Array.isArray((winesData as any).wines)
-        ? (winesData as any).wines
+      : Array.isArray(winesData.wines)
+        ? winesData.wines
         : [];
 
     console.log(`Extracted ${vinos.length} wines from menu with ${profile ? 'compatibility' : 'basic info'}`);

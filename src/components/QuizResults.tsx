@@ -10,9 +10,8 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
-import { Copy, Wine, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, ArrowRight, MapPin, Loader2 } from 'lucide-react';
+import { Wine, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, ArrowRight, MapPin, Loader2 } from 'lucide-react';
 import RegionMap from './RegionMap';
-import { toast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import {
   generateMatchrimName,
@@ -26,6 +25,7 @@ import WineCard from './WineCard';
 import GrapeCard from './GrapeCard';
 import RegionCard from './RegionCard';
 import { aggregateGrapes, aggregateRegions, filterWinesByGrape, filterWinesByRegion } from '@/utils/winerimDataAggregation';
+import MatchrimPassport from './MatchrimPassport';
 
 interface WineStyle {
   id: string;
@@ -102,10 +102,10 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const winesRef = React.useRef<HTMLDivElement>(null);
 
   // Map de refs para cada vino individual
-  const wineRefs = React.useRef<Map<number, HTMLDivElement>>(new Map());
+  const wineRefs = React.useRef<Map<string | number, HTMLDivElement>>(new Map());
 
   // Función para registrar refs de vinos
-  const setWineRef = (id: number, ref: HTMLDivElement | null) => {
+  const setWineRef = (id: string | number, ref: HTMLDivElement | null) => {
     if (ref) {
       wineRefs.current.set(id, ref);
     } else {
@@ -324,15 +324,6 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
 
     fetchStyleDetails();
   }, [wineStyles]);
-
-  // Función para copiar el perfil al portapapeles
-  const copyProfileToClipboard = () => {
-    navigator.clipboard.writeText(profileName);
-    toast({
-      title: "¡Perfil copiado!",
-      description: `Tu perfil ${profileName} está listo para usar en Winerim.`,
-    });
-  };
 
   // Extract country from wine recommendation string and return specific flag
   const getCountryFlag = (wineString: string): string => {
@@ -798,21 +789,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
         </div>
 
         <div className="border-b border-red-200 pb-6 mb-6">
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-red-800 mb-2">
-              🎉 Tu perfil sensorial es:
-            </h3>
-            <div className="inline-flex items-center gap-2 bg-red-50 px-4 py-2 rounded-lg">
-              <span className="text-xl font-semibold text-red-900">{profileName}</span>
-              <button
-                onClick={copyProfileToClipboard}
-                className="text-red-600 hover:text-red-800 transition-colors"
-                aria-label="Copiar perfil"
-              >
-                <Copy className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
+          <MatchrimPassport profile={result} />
         </div>
 
         <div className="mb-8">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home, BookOpen } from 'lucide-react';
+import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home, BookOpen, ScanLine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
@@ -28,6 +28,7 @@ const AppNav = () => {
   const navLinks = [
     { path: '/', label: 'Inicio', icon: Home },
     { path: '/matchrim', label: 'Matchrim', icon: Wine },
+    { path: '/usar-matchrim', label: 'Usar Código', icon: ScanLine },
     { path: '/inteligencia-liquida', label: 'Inteligencia Líquida', icon: Sparkles },
     { path: '/wine-styles', label: 'Estilos de Vino', icon: Wine },
     { path: '/my-wines', label: 'Mis Vinos', icon: BookOpen, requiresAuth: true },
