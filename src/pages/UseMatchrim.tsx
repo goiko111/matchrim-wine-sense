@@ -38,11 +38,13 @@ const UseMatchrim = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('mode') === 'scanner' ? 'scanner' : 'winerim';
   const [profile, setProfile] = useState<MatchrimProfileLike | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [restaurantName, setRestaurantName] = useState('');
   const [restaurantAddress, setRestaurantAddress] = useState('');
   const [restaurantCode, setRestaurantCode] = useState(searchParams.get('restaurant') || searchParams.get('r') || '');
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [restaurantSessionId, setRestaurantSessionId] = useState<string | null>(null);
   const [scannerReady, setScannerReady] = useState(false);
   const [savingSession, setSavingSession] = useState(false);
@@ -87,6 +89,10 @@ const UseMatchrim = () => {
 
     loadProfile();
   }, [user, searchParams]);
+
+  useEffect(() => {
+    setActiveTab(searchParams.get('mode') === 'scanner' ? 'scanner' : 'winerim');
+  }, [searchParams]);
 
   const matchrimCode = useMemo(
     () => profile ? (searchParams.get('code') || generateMatchrimCode(profile)) : '',
@@ -332,7 +338,7 @@ const UseMatchrim = () => {
                 </div>
               </div>
 
-              <Tabs defaultValue="winerim" className="space-y-5">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="winerim" className="gap-2">
                     <Sparkles className="h-4 w-4" />

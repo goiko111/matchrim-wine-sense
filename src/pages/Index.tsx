@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '../components/Header';
 import AppNav from '@/components/AppNav';
+import NativeAppHome from '@/components/NativeAppHome';
 import { 
   Wine, 
   Brain, 
@@ -138,6 +140,10 @@ const Index = () => {
       rating: 5
     }
   ];
+
+  if (Capacitor.isNativePlatform()) {
+    return <NativeAppHome hasQuizResults={hasQuizResults} />;
+  }
 
   return (
     <div className="min-h-screen">
