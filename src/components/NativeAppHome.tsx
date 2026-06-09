@@ -4,6 +4,7 @@ import {
   ChevronRight,
   GlassWater,
   LogIn,
+  MapPin,
   ScanLine,
   Sparkles,
   User,
@@ -49,12 +50,30 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
     },
   ];
 
+  const steps = [
+    {
+      title: 'Crea tu código',
+      detail: 'Un perfil sensorial con nombre de uva y carácter de vino.',
+      icon: User,
+    },
+    {
+      title: 'Filtra la carta',
+      detail: 'En restaurantes Winerim, tu código acota la carta al instante.',
+      icon: ScanLine,
+    },
+    {
+      title: 'Aprende contigo',
+      detail: 'Tus vinos guardados afinan el perfil según lo que puntúas.',
+      icon: Wine,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-stone-50 text-slate-950">
       {user ? (
         <AppNav />
       ) : (
-        <header className="sticky top-0 z-40 border-b border-red-100 bg-white/95 px-4 py-3 backdrop-blur">
+        <header className="sticky top-0 z-40 border-b border-red-100 bg-white/95 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] backdrop-blur">
           <div className="mx-auto flex max-w-md items-center justify-between">
             <button
               type="button"
@@ -90,7 +109,7 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
             Tu mesa, tu carta, tu vino.
           </h1>
           <p className="mt-3 text-sm leading-6 text-white/78">
-            Usa tu código sensorial para encontrar los vinos que encajan contigo en restaurantes con Winerim o en cartas escaneadas.
+            Usa tu código sensorial para encontrar los vinos que encajan contigo en restaurantes Winerim o en cartas escaneadas.
           </p>
 
           <div className="mt-6 rounded-md border border-white/15 bg-white/8 p-4">
@@ -114,6 +133,29 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
             <PrimaryIcon className="h-5 w-5" />
             {primaryAction.label}
           </Button>
+        </section>
+
+        <section className="grid gap-2">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.title}
+                className="flex min-h-16 items-center gap-3 rounded-lg border border-stone-200 bg-white px-4 shadow-sm"
+              >
+                <span className="flex h-9 w-9 items-center justify-center rounded-md bg-stone-100 text-red-900">
+                  <Icon className="h-4 w-4" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-amber-700">0{index + 1}</span>
+                    <h2 className="font-semibold text-slate-950">{step.title}</h2>
+                  </div>
+                  <p className="mt-0.5 text-sm leading-5 text-slate-500">{step.detail}</p>
+                </div>
+              </div>
+            );
+          })}
         </section>
 
         <section className="grid gap-3">
@@ -141,12 +183,21 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
 
         <section className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-4">
           <div className="flex gap-3">
-            <Sparkles className="mt-0.5 h-5 w-5 text-amber-700" />
+            <MapPin className="mt-0.5 h-5 w-5 text-amber-700" />
             <div>
               <h2 className="font-semibold text-amber-950">Restaurante sin Winerim</h2>
               <p className="mt-1 text-sm leading-6 text-amber-900">
-                Escanea la carta y Winerim guarda la señal de demanda para ese restaurante.
+                Indica dónde estás, escanea la carta y recibe una recomendación adaptada a tu perfil.
               </p>
+              <Button
+                onClick={() => navigate('/usar-matchrim?mode=scanner')}
+                variant="outline"
+                size="sm"
+                className="mt-3 gap-2 border-amber-300 bg-white text-amber-950 hover:bg-amber-100"
+              >
+                <ScanLine className="h-4 w-4" />
+                Escanear carta
+              </Button>
             </div>
           </div>
         </section>
