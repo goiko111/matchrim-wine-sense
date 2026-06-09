@@ -559,26 +559,26 @@ const MyWines = () => {
           {/* Collection Tab with Status Filters */}
           <TabsContent value="collection" className="space-y-6">
             <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as any)}>
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="collection" className="gap-2">
+              <TabsList className="grid h-auto w-full grid-cols-3">
+                <TabsTrigger value="collection" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
                   <Wine className="h-4 w-4" />
-                  <div className="flex flex-col items-start">
+                  <div className="flex min-w-0 flex-col items-start">
                     <span>Mi Bodega</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">Vinos que tengo</span>
+                    <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Vinos que tengo</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="wishlist" className="gap-2">
+                <TabsTrigger value="wishlist" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
                   <Heart className="h-4 w-4" />
-                  <div className="flex flex-col items-start">
+                  <div className="flex min-w-0 flex-col items-start">
                     <span>Quiero Probar</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">Lista de deseos</span>
+                    <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Lista de deseos</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="tasted" className="gap-2">
+                <TabsTrigger value="tasted" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
                   <Star className="h-4 w-4" />
-                  <div className="flex flex-col items-start">
+                  <div className="flex min-w-0 flex-col items-start">
                     <span>Ya Probados</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">Puntúa y entrena</span>
+                    <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Puntúa y entrena</span>
                   </div>
                 </TabsTrigger>
               </TabsList>
@@ -682,18 +682,58 @@ const MyWines = () => {
                 {/* Wine Collection Grid */}
                 {filteredWines.length === 0 ? (
                   <Card>
-                    <CardContent className="py-12 text-center">
-                      <Wine className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                      <p className="text-muted-foreground">
-                        {statusFilter === 'collection' && 'No tienes vinos en tu colección'}
-                        {statusFilter === 'wishlist' && 'No tienes vinos en tu lista de deseos'}
-                        {statusFilter === 'tasted' && 'Aún no has probado ningún vino'}
+                    <CardContent className="flex flex-col items-center px-5 py-12 text-center">
+                      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-red-50 text-red-900">
+                        {statusFilter === 'wishlist' ? (
+                          <Heart className="h-7 w-7" />
+                        ) : statusFilter === 'tasted' ? (
+                          <Star className="h-7 w-7" />
+                        ) : (
+                          <Wine className="h-7 w-7" />
+                        )}
+                      </div>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        {statusFilter === 'collection' && 'Tu bodega empieza con la primera botella'}
+                        {statusFilter === 'wishlist' && 'Guarda aquí los vinos que te recomienda Winerim'}
+                        {statusFilter === 'tasted' && 'Puntúa vinos para que Matchrim aprenda contigo'}
+                      </h3>
+                      <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+                        {statusFilter === 'collection' && 'Escanea una etiqueta, busca un vino o añádelo manualmente para recordar qué tienes en casa.'}
+                        {statusFilter === 'wishlist' && 'Cuando filtres una carta o escanees un restaurante sin Winerim, podrás guardar candidatos para probarlos después.'}
+                        {statusFilter === 'tasted' && 'Los vinos puntuados con atributos sensoriales afinan tu código y mejoran las recomendaciones futuras.'}
                       </p>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {statusFilter === 'collection' && 'Escanea una etiqueta o añade uno manualmente'}
-                        {statusFilter === 'wishlist' && 'Añade vinos que quieras probar en el futuro'}
-                        {statusFilter === 'tasted' && 'Puntúa los vinos que hayas probado para mejorar tus recomendaciones'}
-                      </p>
+                      <div className="mt-5 flex w-full max-w-sm flex-col gap-2 sm:flex-row sm:justify-center">
+                        {statusFilter === 'wishlist' ? (
+                          <Button onClick={() => navigate('/usar-matchrim')} className="gap-2 bg-red-800 hover:bg-red-900">
+                            <ScanLine className="h-4 w-4" />
+                            Usar mi código
+                          </Button>
+                        ) : statusFilter === 'tasted' ? (
+                          <Button onClick={() => setStatusFilter('wishlist')} className="gap-2 bg-red-800 hover:bg-red-900">
+                            <Heart className="h-4 w-4" />
+                            Ver Quiero Probar
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => {
+                              resetForm();
+                              setShowPurchaseDialog(true);
+                            }}
+                            className="gap-2 bg-red-800 hover:bg-red-900"
+                          >
+                            <Plus className="h-4 w-4" />
+                            Añadir vino
+                          </Button>
+                        )}
+                        <Button
+                          variant="outline"
+                          onClick={() => navigate('/usar-matchrim?mode=scanner')}
+                          className="gap-2"
+                        >
+                          <ScanLine className="h-4 w-4" />
+                          Escanear carta
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ) : (
@@ -815,7 +855,7 @@ const MyWines = () => {
                               <Button
                                 variant={wine.rating === 'love' ? 'default' : 'outline'}
                                 size="sm"
-                                className="flex-1"
+                                className="min-w-0 flex-1 text-xs sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'love')}
                               >
                                 <ThumbsUp className="h-3.5 w-3.5 mr-1" />
@@ -824,7 +864,7 @@ const MyWines = () => {
                               <Button
                                 variant={wine.rating === 'ok' ? 'default' : 'outline'}
                                 size="sm"
-                                className="flex-1"
+                                className="min-w-0 flex-1 text-xs sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'ok')}
                               >
                                 <Meh className="h-3.5 w-3.5 mr-1" />
@@ -833,7 +873,7 @@ const MyWines = () => {
                               <Button
                                 variant={wine.rating === 'not_for_me' ? 'default' : 'outline'}
                                 size="sm"
-                                className="flex-1"
+                                className="min-w-0 flex-1 text-xs sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'not_for_me')}
                               >
                                 <ThumbsDown className="h-3.5 w-3.5 mr-1" />

@@ -6,6 +6,9 @@ Checked on 2026-06-09.
 
 - Google Play target API level: https://support.google.com/googleplay/android-developer/answer/11926878
 - Android target SDK guide: https://developer.android.com/google/play/requirements/target-sdk
+- Google Play account deletion requirements: https://support.google.com/googleplay/android-developer/answer/13327111
+- Apple account deletion guidance: https://developer.apple.com/support/offering-account-deletion-in-your-app
+- Apple App Review Guidelines: https://developer.apple.com/app-store/review/guidelines/
 - Apple privacy manifest files: https://developer.apple.com/documentation/bundleresources/privacy-manifest-files
 - Apple required reason APIs: https://developer.apple.com/documentation/bundleresources/describing-use-of-required-reason-api
 - App Store privacy details: https://developer.apple.com/app-store/app-privacy-details/
@@ -19,7 +22,9 @@ Checked on 2026-06-09.
 - Terms URL: `https://winerim.wine/terms`
 - Account deletion URL: `https://winerim.wine/account/delete`
 - Android version: `versionName "1.0"`, `versionCode 1`
+- Android target SDK: API 35.
 - iOS version: managed in Xcode via `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`
+- Web/PWA manifest: `public/manifest.webmanifest`
 
 Confirm these ids before creating the apps in App Store Connect and Google Play Console. Changing them later means creating a different app listing.
 
@@ -142,6 +147,7 @@ npm run ios:copy
 Then perform manual smoke tests in Android Studio and Xcode:
 
 - App launches without remote Lovable dependency.
+- Production HTML does not load `cdn.gpteng.co` or other editor-only scripts.
 - Home renders with safe areas on iPhone and Android devices.
 - Auth works.
 - Account deletion request can be initiated in app and from the web URL.
