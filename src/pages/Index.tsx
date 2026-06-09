@@ -154,7 +154,7 @@ const Index = () => {
               <span className="text-sm font-semibold">Más de 10,000 perfiles creados</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-[1.1]">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-[1.1]">
               Tu <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">identidad vínica</span> en 60 segundos
             </h1>
             
