@@ -130,7 +130,7 @@ export function AdminMetrics() {
       let result;
       
       switch(queryKey) {
-        case 'userEngagement':
+        case 'userEngagement': {
           const { data: profiles } = await supabase.from('profiles').select('id, location');
           const { data: quizResults } = await supabase.from('quiz_results').select('user_id, potente, acidez, dulce');
           
@@ -171,8 +171,9 @@ export function AdminMetrics() {
             avg_dulce: stats.users_with_quiz.size > 0 ? (stats.dulce_sum / stats.users_with_quiz.size).toFixed(2) : 0
           })).sort((a, b) => b.total_users - a.total_users).slice(0, 20);
           break;
+        }
           
-        case 'quizProfiles':
+        case 'quizProfiles': {
           const { data: allQuizResults } = await supabase.from('quiz_results').select('*');
           
           const profileTypes = new Map();
@@ -214,6 +215,7 @@ export function AdminMetrics() {
             avg_afrutado: (stats.afrutado_sum / stats.total_users).toFixed(2)
           })).sort((a, b) => b.total_users - a.total_users);
           break;
+        }
           
         default:
           toast.info("Esta consulta requiere ejecución SQL directa");

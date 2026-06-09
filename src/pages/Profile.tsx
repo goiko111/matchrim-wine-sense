@@ -10,7 +10,6 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
 import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import RegionMap from '@/components/RegionMap';
 import AppNav from '@/components/AppNav';
 import MatchrimPassport from '@/components/MatchrimPassport';
 import {
@@ -21,6 +20,8 @@ import {
 } from '@/utils/profileUtils';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
+
+const RegionMap = React.lazy(() => import('@/components/RegionMap'));
 
 interface WineStyle {
   id: string;
@@ -534,10 +535,19 @@ const Profile = () => {
                               <p className="text-sm text-gray-700 leading-relaxed mb-4">{getRegionDescription(region)}</p>
 
                               {/* Mapa de la región */}
-                              <RegionMap
-                                region={region}
-                                coordinates={getRegionCoordinates(region)}
-                              />
+                              <React.Suspense
+                                fallback={
+                                  <div
+                                    className="w-full h-48 rounded-lg border border-amber-200 bg-gradient-to-br from-amber-100/70 to-red-100/70 animate-pulse"
+                                    aria-label="Cargando mapa de la región"
+                                  />
+                                }
+                              >
+                                <RegionMap
+                                  region={region}
+                                  coordinates={getRegionCoordinates(region)}
+                                />
+                              </React.Suspense>
 
                               {/* Indicador decorativo */}
                               <div className="mt-4 h-1 w-0 bg-gradient-to-r from-amber-500 to-red-600 group-hover:w-full transition-all duration-500 rounded-full"></div>
