@@ -21,7 +21,7 @@ import {
 } from '@/utils/matchrimPassport';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
-import { AlertCircle, BookmarkPlus, ExternalLink, Loader2, MapPin, ScanLine, Sparkles, Wine } from 'lucide-react';
+import { AlertCircle, BookmarkPlus, CheckCircle, ExternalLink, Loader2, MapPin, ScanLine, Sparkles, Wine } from 'lucide-react';
 import { toast } from 'sonner';
 
 const WineMenuScanner = lazy(() => import('@/components/wine-import/WineMenuScanner'));
@@ -67,6 +67,7 @@ const UseMatchrim = () => {
   const [winerimWines, setWinerimWines] = useState<WinerimWineWithMatch[]>([]);
   const [winerimError, setWinerimError] = useState<string | null>(null);
   const [savingWineId, setSavingWineId] = useState<string | number | null>(null);
+  const [savedWinerimWineKeys, setSavedWinerimWineKeys] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -143,6 +144,22 @@ const UseMatchrim = () => {
     setActiveTab(searchParams.get('mode') === 'scanner' ? 'scanner' : 'winerim');
   }, [searchParams]);
 
+  const handleActiveTabChange = (value: string) => {
+    setActiveTab(value);
+
+    const nextParams = new URLSearchParams(searchParams);
+    if (value === 'scanner') {
+      nextParams.set('mode', 'scanner');
+    } else {
+      nextParams.delete('mode');
+    }
+
+    navigate({
+      pathname: '/usar-matchrim',
+      search: nextParams.toString() ? `?${nextParams.toString()}` : '',
+    }, { replace: true });
+  };
+
   const matchrimCode = useMemo(
     () => profile ? (searchParams.get('code') || generateMatchrimCode(profile)) : '',
     [profile, searchParams]
@@ -198,6 +215,7 @@ const UseMatchrim = () => {
     setLoadingWinerimWines(true);
     setWinerimError(null);
     setWinerimWines([]);
+    setSavedWinerimWineKeys(new Set());
 
     try {
       await createRestaurantSession(true, false);
@@ -240,6 +258,9 @@ const UseMatchrim = () => {
       return;
     }
 
+    const wineKey = String(wine.id);
+    if (savedWinerimWineKeys.has(wineKey)) return;
+
     setSavingWineId(wine.id);
     try {
       const sensoryAttributes = wine.tastingAttributes
@@ -281,6 +302,7 @@ const UseMatchrim = () => {
         });
 
       if (error) throw error;
+      setSavedWinerimWineKeys((currentKeys) => new Set(currentKeys).add(wineKey));
       toast.success(`${wine.name} guardado en Quiero Probar`);
     } catch (error) {
       console.error('Error saving Winerim wine:', error);
@@ -385,7 +407,9 @@ const UseMatchrim = () => {
             <CardContent className="space-y-5">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="restaurant-name">Restaurante *</Label>
+                  <Label htmlFor="restaurant-name">
+                    Restaurante{activeTab === 'scanner' ? ' *' : ''}
+                  </Label>
                   <Input
                     id="restaurant-name"
                     value={restaurantName}
@@ -404,7 +428,7 @@ const UseMatchrim = () => {
                 </div>
               </div>
 
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
+              <Tabs value={activeTab} onValueChange={handleActiveTabChange} className="space-y-5">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="winerim" className="gap-2">
                     <Sparkles className="h-4 w-4" />
@@ -463,27 +487,34 @@ const UseMatchrim = () => {
                         </p>
                       </div>
                       <div className="space-y-4">
-                        {winerimWines.map((wine, index) => (
-                          <div key={`${wine.id}-${index}`} className="space-y-2">
-                            <WineCard
-                              wine={wine}
-                              index={index}
-                            />
-                            <Button
-                              onClick={() => saveWinerimWineToMyWines(wine)}
-                              disabled={savingWineId === wine.id}
-                              variant="outline"
-                              className="w-full gap-2 bg-white"
-                            >
-                              {savingWineId === wine.id ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (
-                                <BookmarkPlus className="h-4 w-4" />
-                              )}
-                              Guardar en Mis Vinos
-                            </Button>
-                          </div>
-                        ))}
+                        {winerimWines.map((wine, index) => {
+                          const wineKey = String(wine.id);
+                          const isSaved = savedWinerimWineKeys.has(wineKey);
+
+                          return (
+                            <div key={`${wine.id}-${index}`} className="space-y-2">
+                              <WineCard
+                                wine={wine}
+                                index={index}
+                              />
+                              <Button
+                                onClick={() => saveWinerimWineToMyWines(wine)}
+                                disabled={savingWineId === wine.id || isSaved}
+                                variant="outline"
+                                className="w-full gap-2 bg-white"
+                              >
+                                {isSaved ? (
+                                  <CheckCircle className="h-4 w-4 text-green-600" />
+                                ) : savingWineId === wine.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <BookmarkPlus className="h-4 w-4" />
+                                )}
+                                {isSaved ? 'Guardado en Quiero Probar' : 'Guardar en Quiero Probar'}
+                              </Button>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -499,11 +530,11 @@ const UseMatchrim = () => {
                       </p>
                       <Button
                         onClick={prepareScanner}
-                        disabled={savingSession || !user}
+                        disabled={savingSession}
                         className="mt-4 gap-2 bg-red-800 hover:bg-red-900"
                       >
                         {savingSession ? <Loader2 className="h-4 w-4 animate-spin" /> : <ScanLine className="h-4 w-4" />}
-                        Guardar restaurante y escanear
+                        {user ? 'Guardar restaurante y escanear' : 'Iniciar sesión para escanear'}
                       </Button>
                     </div>
                   ) : (

@@ -4,8 +4,11 @@
 
 - Capacitor usa `Winerim` como nombre de app y `wine.winerim.app` como bundle/package id provisional.
 - La app ya no carga la URL remota de Lovable desde Capacitor: empaqueta el build local de `dist`.
+- El HTML de produccion ya no carga el script externo de `cdn.gpteng.co`; el arranque usa assets locales y las APIs propias del producto.
+- La web publica incluye metadata de Winerim, `viewport-fit=cover`, theme color, icono Apple y `public/manifest.webmanifest` para coherencia PWA/preview/store.
 - Android e iOS estan generados en `android/` e `ios/`.
 - Los assets nativos se generan desde `resources/icon.png` y `resources/splash.png`.
+- Android compila con `compileSdkVersion = 35` y `targetSdkVersion = 35`, alineado con el requisito actual de Google Play para nuevas apps.
 - Android declara solo `INTERNET`; no se ha anadido permiso de camara para evitar una declaracion Play Store innecesaria.
 - iOS incluye textos de privacidad para camara y fototeca, alineados con el flujo de fotografiar o subir cartas de vino.
 - La navegacion web movil logueada tiene barra inferior fija con Inicio, Test, Codigo, aiRIM y Vinos.
@@ -52,3 +55,4 @@
 - Reducir deuda de lint heredada: ahora no bloquea, pero conviene tipar los `any` y revisar dependencias de hooks antes de endurecer reglas.
 - Seguir reduciendo chunks bajo demanda para mejorar experiencia movil, especialmente `pdf.worker` y `RegionMap`/Mapbox.
 - Preparar capturas reales de App Store/Google Play usando la home nativa, el flujo de codigo, el scanner y Mis Vinos.
+- Crear en App Store Connect / Play Console textos de ficha que no prometan compra de vino ni delivery: la propuesta debe ser perfil sensorial, filtrado de carta y demanda para restaurantes.

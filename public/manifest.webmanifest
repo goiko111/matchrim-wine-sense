@@ -1,0 +1,21 @@
+{
+  "name": "Winerim",
+  "short_name": "Winerim",
+  "description": "Crea tu código Matchrim, filtra cartas Winerim y guarda los vinos que mejor encajan contigo.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fafaf9",
+  "theme_color": "#7f1d1d",
+  "orientation": "portrait",
+  "categories": ["food", "lifestyle"],
+  "icons": [
+    {
+      "src": "/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png",
+      "sizes": "1200x1200",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
