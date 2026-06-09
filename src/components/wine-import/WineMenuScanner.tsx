@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,14 +6,30 @@ import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles } from "
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
-import * as pdfjsLib from 'pdfjs-dist';
 
-// Configure PDF.js worker - use bundled worker
-const setupPdfWorker = async () => {
-  const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.mjs');
-  pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(
-    new Blob([pdfjsWorker.default], { type: 'application/javascript' })
-  );
+type PdfJsLib = typeof import('pdfjs-dist');
+
+let pdfJsPromise: Promise<PdfJsLib> | null = null;
+let pdfWorkerUrl: string | null = null;
+
+const loadPdfJs = async () => {
+  if (!pdfJsPromise) {
+    pdfJsPromise = Promise.all([
+      import('pdfjs-dist'),
+      import('pdfjs-dist/build/pdf.worker.mjs'),
+    ]).then(([pdfjsLib, pdfjsWorker]) => {
+      if (!pdfWorkerUrl) {
+        pdfWorkerUrl = URL.createObjectURL(
+          new Blob([pdfjsWorker.default], { type: 'application/javascript' })
+        );
+      }
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+      return pdfjsLib;
+    });
+  }
+
+  return pdfJsPromise;
 };
 
 interface ScannedWine {
@@ -58,10 +74,6 @@ export const WineMenuScanner = ({
   const [convertingPdf, setConvertingPdf] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setupPdfWorker().catch(console.error);
-  }, []);
-
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -98,6 +110,7 @@ export const WineMenuScanner = ({
       toast.info("Convirtiendo PDF a imagen...");
       
       const arrayBuffer = await file.arrayBuffer();
+      const pdfjsLib = await loadPdfJs();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       
       // Renderizar la primera página
@@ -451,3 +464,5 @@ export const WineMenuScanner = ({
     </div>
   );
 };
+
+export default WineMenuScanner;
