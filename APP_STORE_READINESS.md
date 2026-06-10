@@ -11,9 +11,9 @@
 - Android compila con `compileSdkVersion = 35` y `targetSdkVersion = 35`, alineado con el requisito actual de Google Play para nuevas apps.
 - Android declara solo `INTERNET`; no se ha anadido permiso de camara para evitar una declaracion Play Store innecesaria.
 - iOS incluye textos de privacidad para camara y fototeca, alineados con el flujo de fotografiar o subir cartas de vino.
-- La navegacion web movil logueada tiene barra inferior fija con Inicio, Test, Codigo, aiRIM y Vinos.
+- La navegacion movil tiene barra inferior fija compartida entre pantallas clave, con Inicio, Test, Codigo y accesos a Vinos/Perfil o aiRIM segun entorno.
 - La version nativa detecta Capacitor y usa una home de app, orientada a acciones directas, en lugar de la landing larga de la web.
-- En nativo, la barra inferior prioriza Inicio, Test, Codigo, Perfil y Vinos para que la experiencia se parezca a una app de consumo y no a la web empaquetada.
+- En nativo, la barra inferior prioriza Inicio, Test, Codigo, Vinos y Perfil/Entrar para que la experiencia se parezca a una app de consumo y no a la web empaquetada.
 - El flujo nativo inicial explica el uso esperado: crear codigo, filtrar carta Winerim y guardar/puntuar vinos para afinar el perfil.
 - Los flujos que requieren cuenta o perfil conservan el contexto: desde un QR/restaurante, el usuario puede hacer login o crear Matchrim y volver al mismo uso de carta.
 - El checklist operativo de publicacion esta en `docs/STORE_RELEASE_CHECKLIST.md`.

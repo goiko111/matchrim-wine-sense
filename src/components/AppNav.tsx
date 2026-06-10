@@ -1,10 +1,9 @@
-import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Capacitor } from '@capacitor/core';
 import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home, BookOpen, ScanLine, FileText, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,15 +17,6 @@ const AppNav = () => {
   const { isAdmin } = useIsAdmin();
   const location = useLocation();
   const navigate = useNavigate();
-  const isNative = Capacitor.isNativePlatform();
-
-  React.useEffect(() => {
-    document.body.classList.add('has-mobile-app-nav');
-
-    return () => {
-      document.body.classList.remove('has-mobile-app-nav');
-    };
-  }, []);
 
   const handleSignOut = async () => {
     await signOut();
@@ -43,22 +33,6 @@ const AppNav = () => {
     { path: '/wine-styles', label: 'Estilos de Vino', icon: Wine },
     { path: '/my-wines', label: 'Mis Vinos', icon: BookOpen, requiresAuth: true },
   ];
-
-  const mobileNavLinks = isNative
-    ? [
-        { path: '/', label: 'Inicio', icon: Home },
-        { path: '/matchrim', label: 'Test', icon: Wine },
-        { path: '/usar-matchrim', label: 'Código', icon: ScanLine },
-        { path: '/profile', label: 'Perfil', icon: User, requiresAuth: true },
-        { path: '/my-wines', label: 'Vinos', icon: BookOpen, requiresAuth: true },
-      ]
-    : [
-        { path: '/', label: 'Inicio', icon: Home },
-        { path: '/matchrim', label: 'Test', icon: Wine },
-        { path: '/usar-matchrim', label: 'Código', icon: ScanLine },
-        { path: '/inteligencia-liquida', label: 'aiRIM', icon: Sparkles },
-        { path: '/my-wines', label: 'Vinos', icon: BookOpen, requiresAuth: true },
-      ];
 
   return (
     <nav className="bg-white border-b border-gray-200 pt-[env(safe-area-inset-top)] shadow-sm">
@@ -184,27 +158,7 @@ const AppNav = () => {
         </div>
       </div>
 
-      <div className="md:hidden fixed inset-x-0 bottom-0 z-50 border-t border-red-100 bg-white/95 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_30px_-20px_rgba(127,29,29,0.45)] backdrop-blur">
-        <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
-          {mobileNavLinks.filter(link => !link.requiresAuth || user).map((link) => {
-            const Icon = link.icon;
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-[11px] font-semibold leading-none transition-colors ${
-                  isActivePath(link.path)
-                    ? 'bg-red-50 text-red-800'
-                    : 'text-gray-600 hover:bg-red-50 hover:text-red-700'
-                }`}
-              >
-                <Icon className="h-5 w-5" />
-                <span>{link.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
+      <MobileBottomNav />
     </nav>
   );
 };
