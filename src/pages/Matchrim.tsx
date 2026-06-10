@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Wine } from 'lucide-react';
 import AppNav from '@/components/AppNav';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
@@ -216,6 +217,7 @@ const Matchrim = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-950">
       {user && <AppNav />}
+      {!user && <MobileBottomNav />}
 
       {/* Header with back button */}
       {!user && (

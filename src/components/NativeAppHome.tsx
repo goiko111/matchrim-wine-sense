@@ -14,6 +14,7 @@ import AppNav from '@/components/AppNav';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import MobileBottomNav from '@/components/MobileBottomNav';
 
 interface NativeAppHomeProps {
   hasQuizResults: boolean;
@@ -212,6 +213,7 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
           </button>
         </footer>
       </main>
+      {!user && <MobileBottomNav />}
     </div>
   );
 };
