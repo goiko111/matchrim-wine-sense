@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import MobileBottomNav from '@/components/MobileBottomNav';
+import { buildAuthRedirectPath } from '@/utils/navigation';
 
 interface NativeAppHomeProps {
   hasQuizResults: boolean;
@@ -47,7 +48,7 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
       label: 'Mis vinos',
       detail: user ? 'Guarda y puntúa' : 'Entra para guardar',
       icon: BookOpen,
-      action: () => navigate(user ? '/my-wines' : '/auth'),
+      action: () => navigate(user ? '/my-wines' : buildAuthRedirectPath('/my-wines')),
     },
   ];
 
@@ -89,7 +90,7 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
               <span className="text-xl font-bold text-red-950">Winerim</span>
             </button>
             <Button
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate(buildAuthRedirectPath('/'))}
               variant="outline"
               size="sm"
               className="gap-2 border-red-200 text-red-900"

@@ -16,6 +16,7 @@ const MobileBottomNav = () => {
   const { user } = useAuth();
   const location = useLocation();
   const isNative = Capacitor.isNativePlatform();
+  const currentPath = `${location.pathname}${location.search}`;
 
   useEffect(() => {
     document.body.classList.add('has-mobile-app-nav');
@@ -50,6 +51,12 @@ const MobileBottomNav = () => {
   const isActivePath = (path: string) =>
     location.pathname === path || (path !== '/' && location.pathname.startsWith(`${path}/`));
 
+  const getLinkTarget = (link: BottomNavLink) => {
+    if (!user && link.path === '/auth') return buildAuthRedirectPath(currentPath);
+    if (!user && link.requiresAuth) return buildAuthRedirectPath(link.path);
+    return link.path;
+  };
+
   return (
     <nav
       aria-label="Navegacion principal"
@@ -59,7 +66,7 @@ const MobileBottomNav = () => {
         {navLinks.map((link) => {
           const Icon = link.icon;
           const isActive = isActivePath(link.path);
-          const to = link.requiresAuth && !user ? buildAuthRedirectPath(link.path) : link.path;
+          const to = getLinkTarget(link);
 
           return (
             <Link

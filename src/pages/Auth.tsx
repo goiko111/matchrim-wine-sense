@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
-import { getSafeRedirectPath } from '@/utils/navigation';
+import { buildRegistrationRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const Auth = () => {
   };
 
   const handleRegisterRedirect = () => {
-    navigate(`/registration?redirect=${encodeURIComponent(redirectPath)}`);
+    navigate(buildRegistrationRedirectPath(redirectPath));
   };
 
   return (
