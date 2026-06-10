@@ -9,6 +9,29 @@ interface MatchrimProfileLike {
   afrutado: number;
 }
 
+const STYLE_PROFILE_KEYS: Array<keyof MatchrimProfileLike> = [
+  'potente',
+  'acidez',
+  'dulce',
+  'tanico',
+  'afrutado',
+];
+
+const normalizeStyleAttribute = (value: number) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return 0;
+  return Math.max(0, Math.min(5, Math.round(numeric)));
+};
+
+const normalizeProfileForStyleClassifier = (result: MatchrimProfileLike): MatchrimProfileLike =>
+  STYLE_PROFILE_KEYS.reduce(
+    (profile, key) => ({
+      ...profile,
+      [key]: normalizeStyleAttribute(result[key]),
+    }),
+    {} as MatchrimProfileLike
+  );
+
 // Función para generar un hash simple a partir de un string
 const simpleHash = (str: string): number => {
   let hash = 0;
@@ -75,7 +98,7 @@ export const generateMatchrimName = (result: MatchrimProfileLike): string => {
 };
 
 export const generateWineStyles = (result: MatchrimProfileLike): string[] => {
-  return suggestWineStylesForProfile(result, 3);
+  return suggestWineStylesForProfile(normalizeProfileForStyleClassifier(result), 3);
 };
 
 export const generateGrapeRecommendations = (result: MatchrimProfileLike): string[] => {

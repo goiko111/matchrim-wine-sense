@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { calculateLearnedMatchrimProfile } from '../src/utils/matchrimLearning';
+import { generateWineStyles } from '../src/utils/profileUtils';
 
 const baseProfile = {
   potente: 2,
@@ -27,6 +28,8 @@ assert.equal(lovedProfile.samples, 1);
 assert.ok(lovedProfile.confidence > 0);
 assert.ok(lovedProfile.profile.potente > baseProfile.potente);
 assert.ok(lovedProfile.profile.afrutado > baseProfile.afrutado);
+assert.doesNotThrow(() => generateWineStyles(lovedProfile.profile));
+assert.equal(generateWineStyles(lovedProfile.profile).length, 3);
 
 const rejectedProfile = calculateLearnedMatchrimProfile(baseProfile, [
   {
