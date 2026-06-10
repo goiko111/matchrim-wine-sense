@@ -82,6 +82,7 @@ export const WineMenuScanner = ({
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
   const [convertingPdf, setConvertingPdf] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -225,6 +226,7 @@ export const WineMenuScanner = ({
     setFileType(null);
     setConvertingPdf(false);
     if (fileInputRef.current) fileInputRef.current.value = '';
+    if (cameraInputRef.current) cameraInputRef.current.value = '';
   };
 
   const getCompatibilityColor = (score: number) => {
@@ -340,6 +342,15 @@ export const WineMenuScanner = ({
               className="hidden"
               disabled={loading}
             />
+            <input
+              ref={cameraInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleFileSelect}
+              className="hidden"
+              disabled={loading}
+            />
 
             {(preview || convertingPdf) && !loading ? (
               <div className="space-y-4">
@@ -394,17 +405,28 @@ export const WineMenuScanner = ({
                     Sube la carta de vinos
                   </p>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Imagen (JPG, PNG, WEBP) o PDF hasta 20MB
+                    Haz una foto clara o sube una imagen/PDF. En PDF analizamos la primera página.
                   </p>
                 </div>
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={loading}
-                  className="gap-2"
-                >
-                  <Upload className="h-4 w-4" />
-                  Seleccionar Archivo
-                </Button>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Button
+                    onClick={() => cameraInputRef.current?.click()}
+                    disabled={loading}
+                    className="gap-2"
+                  >
+                    <Camera className="h-4 w-4" />
+                    Hacer foto
+                  </Button>
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={loading}
+                    variant="outline"
+                    className="gap-2"
+                  >
+                    <Upload className="h-4 w-4" />
+                    Subir archivo
+                  </Button>
+                </div>
               </div>
             )}
           </div>
