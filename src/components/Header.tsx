@@ -1,14 +1,17 @@
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LogOut, User, Brain, Upload, Sparkles, Palette, ScanLine } from 'lucide-react';
 import MobileBottomNav from '@/components/MobileBottomNav';
+import { buildAuthRedirectPath } from '@/utils/navigation';
 
 const Header = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useIsAdmin();
+  const location = useLocation();
   const navigate = useNavigate();
+  const currentPath = `${location.pathname}${location.search}`;
 
   const handleSignOut = async () => {
     await signOut();
@@ -16,7 +19,7 @@ const Header = () => {
   };
 
   const handleAuthClick = () => {
-    navigate('/auth');
+    navigate(buildAuthRedirectPath(currentPath));
   };
 
   const handleProfileClick = () => {

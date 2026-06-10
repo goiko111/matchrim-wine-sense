@@ -8,3 +8,6 @@ export const getSafeRedirectPath = (value: string | null | undefined, fallback =
 
 export const buildAuthRedirectPath = (redirectPath: string) =>
   `/auth?redirect=${encodeURIComponent(getSafeRedirectPath(redirectPath))}`;
+
+export const buildRegistrationRedirectPath = (redirectPath: string) =>
+  `/registration?redirect=${encodeURIComponent(getSafeRedirectPath(redirectPath))}`;

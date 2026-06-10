@@ -36,6 +36,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import WineStylesGrid from '@/components/wine-styles/WineStylesGrid';
+import { buildAuthRedirectPath, buildRegistrationRedirectPath } from '@/utils/navigation';
 
 const restaurantRecommendationSchema = z.object({
   restaurantName: z.string().trim().min(1, "El nombre del restaurante es requerido").max(200, "Máximo 200 caracteres"),
@@ -710,7 +711,7 @@ const Index = () => {
               <Button 
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl px-12 py-4"
-                onClick={() => navigate('/registration')}
+                onClick={() => navigate('/matchrim')}
               >
                 Descubrir mi perfil
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -771,7 +772,7 @@ const Index = () => {
                     <Button 
                       size="lg"
                       className="bg-red-600 hover:bg-red-700"
-                      onClick={() => navigate('/auth')}
+                      onClick={() => navigate(buildAuthRedirectPath('/profile'))}
                     >
                       Iniciar Sesión
                     </Button>
@@ -779,7 +780,7 @@ const Index = () => {
                       variant="outline" 
                       size="lg"
                       className="border-red-600 text-red-600 hover:bg-red-50"
-                      onClick={() => navigate('/registration')}
+                      onClick={() => navigate(buildRegistrationRedirectPath('/profile'))}
                     >
                       Crear Cuenta
                     </Button>
@@ -805,7 +806,7 @@ const Index = () => {
               <Button 
                 size="lg" 
                 className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-16 py-6 text-xl rounded-full shadow-2xl transform hover:scale-105 transition-smooth"
-                onClick={() => navigate('/registration')}
+                onClick={() => navigate('/matchrim')}
               >
                 👉 Hacer el test
               </Button>
@@ -875,7 +876,7 @@ const Index = () => {
               <div>
                 <h4 className="font-semibold mb-4">Producto</h4>
                 <ul className="space-y-2 text-gray-400">
-                  <li><button onClick={() => navigate('/registration')} className="hover:text-white transition-colors">Test Matchrim</button></li>
+                  <li><button onClick={() => navigate('/matchrim')} className="hover:text-white transition-colors">Test Matchrim</button></li>
                   <li><button onClick={() => navigate('/wine-styles')} className="hover:text-white transition-colors">Estilos de Vino</button></li>
                   <li><button onClick={() => navigate('/inteligencia-liquida')} className="hover:text-white transition-colors">aiRIM</button></li>
                 </ul>
