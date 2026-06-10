@@ -31,6 +31,11 @@ export interface RegistrationData {
   privacyAccepted: boolean;
 }
 
+export interface RegistrationSaveResult {
+  success: boolean;
+  requiresEmailConfirmation?: boolean;
+}
+
 const initialData: RegistrationData = {
   firstName: '',
   lastName: '',
@@ -60,7 +65,7 @@ export const useRegistrationData = () => {
     setRegistrationData(prev => ({ ...prev, ...updates }));
   };
 
-  const saveRegistrationData = async (): Promise<boolean> => {
+  const saveRegistrationData = async (): Promise<RegistrationSaveResult> => {
     setIsSaving(true);
     
     try {
@@ -81,7 +86,7 @@ export const useRegistrationData = () => {
           description: signUpError.message,
           variant: "destructive"
         });
-        return false;
+        return { success: false };
       }
 
       console.log('User signup successful, waiting for session...');
@@ -99,7 +104,7 @@ export const useRegistrationData = () => {
           description: "Error al obtener la sesión de usuario",
           variant: "destructive"
         });
-        return false;
+        return { success: false };
       }
 
       if (!session?.user) {
@@ -108,7 +113,7 @@ export const useRegistrationData = () => {
           title: "¡Registro exitoso!",
           description: "Te hemos enviado un email de confirmación. Por favor revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.",
         });
-        return true;
+        return { success: true, requiresEmailConfirmation: true };
       }
 
       console.log('Session available, updating profile for user:', session.user.id);
@@ -171,7 +176,7 @@ export const useRegistrationData = () => {
         description: "Tu cuenta ha sido creada exitosamente. Si no estás autenticado automáticamente, revisa tu email para verificar tu cuenta."
       });
 
-      return true;
+      return { success: true };
     } catch (error: any) {
       console.error('Registration error:', error);
       toast({
@@ -179,7 +184,7 @@ export const useRegistrationData = () => {
         description: `Ocurrió un error inesperado: ${error.message || 'Error desconocido'}`,
         variant: "destructive"
       });
-      return false;
+      return { success: false };
     } finally {
       setIsSaving(false);
     }

@@ -8,13 +8,14 @@ import BasicInfoStep from '@/components/registration/BasicInfoStep';
 import WinePreferencesStep from '@/components/registration/WinePreferencesStep';
 import FinalStep from '@/components/registration/FinalStep';
 import { useRegistrationData } from '@/hooks/useRegistrationData';
-import { getSafeRedirectPath } from '@/utils/navigation';
+import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 
 const Registration = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
+  const [emailConfirmationAddress, setEmailConfirmationAddress] = useState('');
   const { registrationData, updateRegistrationData, saveRegistrationData, isSaving } = useRegistrationData();
   const redirectPath = getSafeRedirectPath(searchParams.get('redirect'));
 
@@ -40,8 +41,13 @@ const Registration = () => {
   };
 
   const handleComplete = async () => {
-    const success = await saveRegistrationData();
-    if (success) {
+    const result = await saveRegistrationData();
+    if (result.success && result.requiresEmailConfirmation) {
+      setEmailConfirmationAddress(registrationData.email);
+      return;
+    }
+
+    if (result.success) {
       navigate(redirectPath);
     }
   };
@@ -102,25 +108,54 @@ const Registration = () => {
           <p className="text-red-600">Descubre tu perfil de vino perfecto</p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-red-900">{getStepTitle()}</CardTitle>
-              <span className="text-sm text-red-600">
-                Paso {currentStep} de {totalSteps}
-              </span>
-            </div>
-            <div className="w-full bg-red-100 rounded-full h-2">
-              <div 
-                className="bg-red-700 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            {renderStep()}
-          </CardContent>
-        </Card>
+        {emailConfirmationAddress ? (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-center text-red-900">Revisa tu email</CardTitle>
+              <CardDescription className="text-center">
+                Hemos creado tu cuenta y enviado un enlace de confirmacion a {emailConfirmationAddress}.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 text-center">
+              <p className="text-sm leading-6 text-gray-600">
+                Abre el enlace desde tu bandeja de entrada o spam. Despues podras iniciar sesion y continuar hacia tu zona personal.
+              </p>
+              <Button
+                onClick={() => navigate(buildAuthRedirectPath(redirectPath))}
+                className="w-full bg-red-700 hover:bg-red-800"
+              >
+                Ir a iniciar sesion
+              </Button>
+              <Button
+                onClick={() => navigate('/')}
+                variant="outline"
+                className="w-full border-red-200 text-red-800 hover:bg-red-50"
+              >
+                Volver a Winerim
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-red-900">{getStepTitle()}</CardTitle>
+                <span className="text-sm text-red-600">
+                  Paso {currentStep} de {totalSteps}
+                </span>
+              </div>
+              <div className="w-full bg-red-100 rounded-full h-2">
+                <div
+                  className="bg-red-700 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              {renderStep()}
+            </CardContent>
+          </Card>
+        )}
         <div className="mt-5 flex items-center justify-center gap-4 text-xs text-red-900">
           <Link to="/privacy" className="hover:underline">
             Privacidad
