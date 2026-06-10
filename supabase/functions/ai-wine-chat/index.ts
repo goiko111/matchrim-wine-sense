@@ -64,11 +64,15 @@ justifica por qué puede funcionar en este caso concreto.`;
 
 const buildAiRimPrompt = (payload: AiRimPayload, profile: QuizResult | null) => {
   const profileBlock = buildProfileBlock(profile);
+  const appContext = payload.context?.trim()
+    ? `\nContexto adicional de Winerim:\n${payload.context.trim()}\n`
+    : "";
 
   switch (payload.functionType) {
     case "wine-for-dish":
       return `Quiero vino para este plato: "${payload.input1}".
 ${profileBlock}
+${appContext}
 
 Debes dar EXACTAMENTE 3 vinos diferentes. Usa este formato exacto:
 
@@ -93,6 +97,7 @@ Debes dar EXACTAMENTE 3 vinos diferentes. Usa este formato exacto:
     case "dish-for-wine":
       return `Tengo este vino: "${payload.input1}".
 ${profileBlock}
+${appContext}
 
 Debes dar EXACTAMENTE 3 platos diferentes. Usa este formato exacto:
 
@@ -117,6 +122,7 @@ Debes dar EXACTAMENTE 3 platos diferentes. Usa este formato exacto:
     case "pairing-check":
       return `Evalúa este maridaje: "${payload.input1}" con "${payload.input2 ?? ""}".
 ${profileBlock}
+${appContext}
 
 Usa este formato exacto:
 
@@ -153,6 +159,7 @@ Usa este formato exacto:
       const details = payload.eventDetails ?? {};
       return `Quiero vino para: "${payload.input1}".
 ${profileBlock}
+${appContext}
 
 Detalles del evento:
 - Número de personas: ${details.people ?? "No indicado"}

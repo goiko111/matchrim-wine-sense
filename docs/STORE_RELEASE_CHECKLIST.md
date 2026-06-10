@@ -1,6 +1,6 @@
 # Winerim Store Release Checklist
 
-Checked on 2026-06-09.
+Checked on 2026-06-10.
 
 ## Official references
 
@@ -27,6 +27,18 @@ Checked on 2026-06-09.
 - Web/PWA manifest: `public/manifest.webmanifest`
 
 Confirm these ids before creating the apps in App Store Connect and Google Play Console. Changing them later means creating a different app listing.
+
+## Native UX decision
+
+Winerim should keep one shared responsive product design for web, iOS and Android. The native builds should not become a separate visual product; they should use the same Matchrim, scanner, Winerim-filtered carta, Mis Vinos and profile-learning flows.
+
+Native-specific polish still needs device validation:
+
+- Bottom navigation must respect iOS/Android safe areas.
+- Camera, gallery and PDF upload must feel native enough on real devices.
+- Keyboard focus must not hide restaurant fields, filters or auth forms.
+- Store screenshots should come from real simulator/device flows, not desktop web crops.
+- If HTML file inputs feel weak on device, evaluate a native camera/photo plugin before store submission.
 
 ## Release machine prerequisites
 
@@ -128,6 +140,8 @@ Capture real simulator/device screenshots after release build validation:
 - Use code / Winerim menu filtering.
 - Scanner flow for restaurant without Winerim.
 - Mis vinos with saved/rated wines.
+- Learned profile before/after radar.
+- aiRIM with Matchrim-aware recommendation.
 
 Recommended first visual message: Winerim is a consumer app that turns a sensory profile code into better wine choices, and also creates visible demand for restaurants to adopt Winerim.
 
@@ -155,4 +169,8 @@ Then perform manual smoke tests in Android Studio and Xcode:
 - Matchrim test saves a profile.
 - Code flow reaches Winerim filtering.
 - Scanner route handles a non-Winerim restaurant.
+- Scanner camera, gallery and PDF upload work on real iOS and Android.
+- Winerim API results can be filtered by type, service/section, price and match.
 - Mis vinos can save and rate wines.
+- Mis vinos can exclude/include a rated wine from profile training.
+- aiRIM uses the deployed `ai-wine-chat` function and responds with profile-aware context.

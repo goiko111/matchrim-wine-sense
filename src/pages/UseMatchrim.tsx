@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -49,6 +50,37 @@ type LearnedProfileInfo = {
   samples: number;
 };
 
+type WinerimSortMode = 'match' | 'price-asc' | 'price-desc' | 'name';
+
+const getWinerimWinePrice = (wine: WinerimWineWithMatch) => {
+  const price = wine.prices?.[0]?.price;
+  return typeof price === 'number' && Number.isFinite(price) ? price : null;
+};
+
+const formatWinerimFacet = (value?: string | null) => value?.trim() || 'Sin clasificar';
+
+const parseNullableNumber = (value: string) => {
+  if (!value.trim()) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const getWinerimFitReason = (wine: WinerimWineWithMatch) => {
+  const grapes = wine.grapes?.slice(0, 3).join(', ');
+  const price = getWinerimWinePrice(wine);
+  const details = [
+    grapes ? `uvas: ${grapes}` : null,
+    wine.region ? `región: ${wine.region}` : null,
+    price ? `precio: ${price.toFixed(2)}€` : null,
+  ].filter(Boolean);
+
+  if (details.length === 0) {
+    return `Tiene un ${wine.matchPercentage}% de afinidad con tu perfil Matchrim.`;
+  }
+
+  return `Tiene un ${wine.matchPercentage}% de afinidad con tu perfil Matchrim (${details.join(' · ')}).`;
+};
+
 const UseMatchrim = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -69,6 +101,10 @@ const UseMatchrim = () => {
   const [winerimError, setWinerimError] = useState<string | null>(null);
   const [savingWineId, setSavingWineId] = useState<string | number | null>(null);
   const [savedWinerimWineKeys, setSavedWinerimWineKeys] = useState<Set<string>>(new Set());
+  const [winerimTypeFilter, setWinerimTypeFilter] = useState('all');
+  const [winerimSectionFilter, setWinerimSectionFilter] = useState('all');
+  const [winerimMaxPrice, setWinerimMaxPrice] = useState('');
+  const [winerimSortMode, setWinerimSortMode] = useState<WinerimSortMode>('match');
 
   const currentUseMatchrimPath = useMemo(() => {
     const queryString = searchParams.toString();
@@ -171,6 +207,41 @@ const UseMatchrim = () => {
     [profile, searchParams]
   );
 
+  const winerimTypeOptions = useMemo(
+    () => Array.from(new Set(winerimWines.map((wine) => formatWinerimFacet(wine.type)))).sort(),
+    [winerimWines]
+  );
+
+  const winerimSectionOptions = useMemo(
+    () => Array.from(new Set(winerimWines.map((wine) => formatWinerimFacet(wine.section)))).sort(),
+    [winerimWines]
+  );
+
+  const visibleWinerimWines = useMemo(() => {
+    const maxPrice = parseNullableNumber(winerimMaxPrice);
+
+    return [...winerimWines]
+      .filter((wine) => winerimTypeFilter === 'all' || formatWinerimFacet(wine.type) === winerimTypeFilter)
+      .filter((wine) => winerimSectionFilter === 'all' || formatWinerimFacet(wine.section) === winerimSectionFilter)
+      .filter((wine) => {
+        const price = getWinerimWinePrice(wine);
+        return maxPrice === null || price === null || price <= maxPrice;
+      })
+      .sort((a, b) => {
+        if (winerimSortMode === 'price-asc') {
+          return (getWinerimWinePrice(a) ?? Number.POSITIVE_INFINITY) - (getWinerimWinePrice(b) ?? Number.POSITIVE_INFINITY);
+        }
+        if (winerimSortMode === 'price-desc') {
+          return (getWinerimWinePrice(b) ?? Number.NEGATIVE_INFINITY) - (getWinerimWinePrice(a) ?? Number.NEGATIVE_INFINITY);
+        }
+        if (winerimSortMode === 'name') {
+          return a.name.localeCompare(b.name, 'es');
+        }
+
+        return b.matchPercentage - a.matchPercentage;
+      });
+  }, [winerimMaxPrice, winerimSectionFilter, winerimSortMode, winerimTypeFilter, winerimWines]);
+
   const createRestaurantSession = async (isWinerimRestaurant: boolean, requireRestaurantName = true) => {
     if (!profile) return null;
 
@@ -222,6 +293,10 @@ const UseMatchrim = () => {
     setWinerimError(null);
     setWinerimWines([]);
     setSavedWinerimWineKeys(new Set());
+    setWinerimTypeFilter('all');
+    setWinerimSectionFilter('all');
+    setWinerimMaxPrice('');
+    setWinerimSortMode('match');
 
     try {
       await createRestaurantSession(true, false);
@@ -282,6 +357,7 @@ const UseMatchrim = () => {
         source: 'winerim_api',
         winerim_wine_id: wine.id,
         restaurant_code: restaurantCode || null,
+        restaurant_session_id: restaurantSessionId || null,
         matchrim_code: matchrimCode,
       } as Json;
 
@@ -492,11 +568,76 @@ const UseMatchrim = () => {
                           Carta filtrada para {matchrimCode}
                         </h3>
                         <p className="mt-1 text-sm text-green-900">
-                          Winerim ha devuelto {winerimWines.length} vino{winerimWines.length !== 1 ? 's' : ''} ordenado{winerimWines.length !== 1 ? 's' : ''} por compatibilidad.
+                          Winerim ha devuelto {winerimWines.length} vino{winerimWines.length !== 1 ? 's' : ''}. Estás viendo {visibleWinerimWines.length} con los filtros actuales.
                         </p>
                       </div>
-                      <div className="space-y-4">
-                        {winerimWines.map((wine, index) => {
+
+                      <Card>
+                        <CardContent className="grid gap-3 p-4 md:grid-cols-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="winerim-sort">Orden</Label>
+                            <Select value={winerimSortMode} onValueChange={(value) => setWinerimSortMode(value as WinerimSortMode)}>
+                              <SelectTrigger id="winerim-sort">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="match">Mejor match</SelectItem>
+                                <SelectItem value="price-asc">Precio menor</SelectItem>
+                                <SelectItem value="price-desc">Precio mayor</SelectItem>
+                                <SelectItem value="name">Nombre</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="winerim-type">Tipo</Label>
+                            <Select value={winerimTypeFilter} onValueChange={setWinerimTypeFilter}>
+                              <SelectTrigger id="winerim-type">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="all">Todos</SelectItem>
+                                {winerimTypeOptions.map((type) => (
+                                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="winerim-section">Servicio</Label>
+                            <Select value={winerimSectionFilter} onValueChange={setWinerimSectionFilter}>
+                              <SelectTrigger id="winerim-section">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="all">Todos</SelectItem>
+                                {winerimSectionOptions.map((section) => (
+                                  <SelectItem key={section} value={section}>{section}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="winerim-max-price">Precio máximo</Label>
+                            <Input
+                              id="winerim-max-price"
+                              value={winerimMaxPrice}
+                              onChange={(event) => setWinerimMaxPrice(event.target.value)}
+                              inputMode="decimal"
+                              placeholder="Sin límite"
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {visibleWinerimWines.length === 0 ? (
+                        <Card>
+                          <CardContent className="p-8 text-center text-sm text-muted-foreground">
+                            Ningún vino encaja con esos filtros. Sube el precio máximo o cambia tipo/servicio.
+                          </CardContent>
+                        </Card>
+                      ) : (
+                        <div className="space-y-4">
+                        {visibleWinerimWines.map((wine, index) => {
                           const wineKey = String(wine.id);
                           const isSaved = savedWinerimWineKeys.has(wineKey);
 
@@ -506,6 +647,12 @@ const UseMatchrim = () => {
                                 wine={wine}
                                 index={index}
                               />
+                              <div className="rounded-lg border border-red-100 bg-red-50 p-3 text-sm text-red-950">
+                                <div className="flex gap-2">
+                                  <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-red-800" />
+                                  <p>{getWinerimFitReason(wine)}</p>
+                                </div>
+                              </div>
                               <Button
                                 onClick={() => saveWinerimWineToMyWines(wine)}
                                 disabled={savingWineId === wine.id || isSaved}
@@ -524,7 +671,8 @@ const UseMatchrim = () => {
                             </div>
                           );
                         })}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </TabsContent>

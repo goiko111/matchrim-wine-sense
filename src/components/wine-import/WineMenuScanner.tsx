@@ -1,15 +1,18 @@
-import { useState, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
-import { Progress } from "@/components/ui/progress";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
@@ -64,6 +67,16 @@ interface WineMenuScannerProps {
   onScanComplete?: (winesDetected: number) => void;
 }
 
+type ScannedWineSortMode = 'compatibility' | 'price-asc' | 'price-desc' | 'name';
+
+const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
+
+const parseNullableNumber = (value: string) => {
+  if (!value.trim()) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
 export const WineMenuScanner = ({
   restaurantName,
   matchrimCode,
@@ -81,8 +94,50 @@ export const WineMenuScanner = ({
   const [hasProfile, setHasProfile] = useState(false);
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
   const [convertingPdf, setConvertingPdf] = useState(false);
+  const [scanSortMode, setScanSortMode] = useState<ScannedWineSortMode>('compatibility');
+  const [scanTypeFilter, setScanTypeFilter] = useState('all');
+  const [scanMaxPrice, setScanMaxPrice] = useState('');
+  const [editingWineIndex, setEditingWineIndex] = useState<number | null>(null);
+  const [scanFeedback, setScanFeedback] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+
+  const scannedWineTypes = useMemo(
+    () => Array.from(new Set(scannedWines.map((wine) => formatWineType(wine.tipo)))).sort(),
+    [scannedWines]
+  );
+
+  const visibleScannedWines = useMemo(() => {
+    const maxPrice = parseNullableNumber(scanMaxPrice);
+
+    return scannedWines
+      .map((wine, index) => ({ wine, index }))
+      .filter(({ wine }) => scanTypeFilter === 'all' || formatWineType(wine.tipo) === scanTypeFilter)
+      .filter(({ wine }) => maxPrice === null || wine.precio === null || wine.precio === undefined || wine.precio <= maxPrice)
+      .sort((a, b) => {
+        if (scanSortMode === 'price-asc') {
+          return (a.wine.precio ?? Number.POSITIVE_INFINITY) - (b.wine.precio ?? Number.POSITIVE_INFINITY);
+        }
+        if (scanSortMode === 'price-desc') {
+          return (b.wine.precio ?? Number.NEGATIVE_INFINITY) - (a.wine.precio ?? Number.NEGATIVE_INFINITY);
+        }
+        if (scanSortMode === 'name') {
+          return a.wine.nombre.localeCompare(b.wine.nombre, 'es');
+        }
+
+        return (b.wine.compatibilidad ?? -1) - (a.wine.compatibilidad ?? -1);
+      });
+  }, [scanMaxPrice, scanSortMode, scanTypeFilter, scannedWines]);
+
+  const restaurantShareText = restaurantName
+    ? `Hola, he intentado usar mi código Winerim${matchrimCode ? ` ${matchrimCode}` : ''} en ${restaurantName}. Me gustaría poder filtrar vuestra carta con mi perfil de vino. Podéis verlo en https://winerim.wine`
+    : '';
+  const restaurantMailtoHref = restaurantShareText
+    ? `mailto:?subject=${encodeURIComponent('Clientes pidiendo Winerim')}&body=${encodeURIComponent(restaurantShareText)}`
+    : '';
+  const restaurantWhatsappHref = restaurantShareText
+    ? `https://wa.me/?text=${encodeURIComponent(restaurantShareText)}`
+    : '';
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -99,6 +154,7 @@ export const WineMenuScanner = ({
     // Activar loader inmediatamente
     setLoading(true);
     setScannedWines([]);
+    setScanFeedback(null);
     setFileType(isPDF ? 'pdf' : 'image');
 
     if (isPDF) {
@@ -169,6 +225,7 @@ export const WineMenuScanner = ({
     // Mantener el loader activo durante todo el proceso real
     setLoading(true);
     setScannedWines([]);
+    setScanFeedback(null);
 
     try {
       // Leer el archivo como base64 y esperar a que termine
@@ -207,11 +264,13 @@ export const WineMenuScanner = ({
 
         toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
       } else {
+        setScanFeedback("No he encontrado vinos claros en el documento. Prueba con una foto más cercana o con una sección más pequeña de la carta.");
         toast.info("No se encontraron vinos en el documento");
       }
     } catch (error) {
       console.error('Error processing file:', error);
       const message = error instanceof Error ? error.message : 'Error al procesar el documento';
+      setScanFeedback(`${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
       toast.error(message);
     } finally {
       setLoading(false);
@@ -225,8 +284,21 @@ export const WineMenuScanner = ({
     setHasProfile(false);
     setFileType(null);
     setConvertingPdf(false);
+    setScanSortMode('compatibility');
+    setScanTypeFilter('all');
+    setScanMaxPrice('');
+    setEditingWineIndex(null);
+    setScanFeedback(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     if (cameraInputRef.current) cameraInputRef.current.value = '';
+  };
+
+  const updateScannedWine = (index: number, updates: Partial<ScannedWine>) => {
+    setScannedWines((currentWines) =>
+      currentWines.map((wine, wineIndex) =>
+        wineIndex === index ? { ...wine, ...updates } : wine
+      )
+    );
   };
 
   const getCompatibilityColor = (score: number) => {
@@ -407,6 +479,12 @@ export const WineMenuScanner = ({
                   <p className="text-sm text-muted-foreground mb-4">
                     Haz una foto clara o sube una imagen/PDF. En PDF analizamos la primera página.
                   </p>
+                  <ul className="mx-auto mb-5 grid max-w-2xl gap-2 text-left text-xs text-muted-foreground sm:grid-cols-2">
+                    <li>• Luz suficiente y carta completa dentro del encuadre.</li>
+                    <li>• Evita reflejos, sombras fuertes y fotos inclinadas.</li>
+                    <li>• Si la carta es larga, escanea una sección cada vez.</li>
+                    <li>• Mantén visibles precios, añadas y productores.</li>
+                  </ul>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <Button
@@ -433,34 +511,245 @@ export const WineMenuScanner = ({
         </CardContent>
       </Card>
 
+      {scanFeedback && scannedWines.length === 0 && !loading && (
+        <Card className="border-amber-200 bg-amber-50">
+          <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="font-semibold text-amber-950">No ha salido un escaneo útil</p>
+              <p className="mt-1 text-sm text-amber-900">{scanFeedback}</p>
+            </div>
+            <Button
+              variant="outline"
+              className="gap-2 bg-white"
+              onClick={() => {
+                setScanFeedback(null);
+                setPreview(null);
+                cameraInputRef.current?.click();
+              }}
+            >
+              <Camera className="h-4 w-4" />
+              Reintentar foto
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Results Section */}
       {scannedWines.length > 0 && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-bold">
-              Vinos Detectados ({scannedWines.length})
-            </h3>
-            {!hasProfile && (
-              <Badge variant="outline" className="gap-1">
-                <AlertCircle className="h-3 w-3" />
-                Completa el quiz Matchrim para ver compatibilidades
-              </Badge>
-            )}
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <h3 className="text-2xl font-bold">
+                Vinos Detectados ({scannedWines.length})
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Revisa nombre, añada y precio antes de guardar. La carta puede tener errores de lectura.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {!hasProfile && (
+                <Badge variant="outline" className="gap-1">
+                  <AlertCircle className="h-3 w-3" />
+                  Completa el quiz Matchrim para ver compatibilidades
+                </Badge>
+              )}
+              {fileType === 'pdf' && (
+                <Badge variant="secondary">
+                  PDF: primera página
+                </Badge>
+              )}
+            </div>
           </div>
 
-          <div className="grid gap-4">
-            {scannedWines.map((wine, index) => (
+          <Card>
+            <CardContent className="grid gap-3 p-4 md:grid-cols-3">
+              <div className="space-y-2">
+                <Label htmlFor="scan-sort">Orden</Label>
+                <Select value={scanSortMode} onValueChange={(value) => setScanSortMode(value as ScannedWineSortMode)}>
+                  <SelectTrigger id="scan-sort">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="compatibility">Mejor match</SelectItem>
+                    <SelectItem value="price-asc">Precio menor</SelectItem>
+                    <SelectItem value="price-desc">Precio mayor</SelectItem>
+                    <SelectItem value="name">Nombre</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="scan-type">Tipo</Label>
+                <Select value={scanTypeFilter} onValueChange={setScanTypeFilter}>
+                  <SelectTrigger id="scan-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos los tipos</SelectItem>
+                    {scannedWineTypes.map((type) => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="scan-max-price">Precio máximo</Label>
+                <Input
+                  id="scan-max-price"
+                  value={scanMaxPrice}
+                  onChange={(event) => setScanMaxPrice(event.target.value)}
+                  inputMode="decimal"
+                  placeholder="Sin límite"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {restaurantName && (
+            <Card className="border-red-100 bg-red-50">
+              <CardContent className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="font-semibold text-red-950">Haz visible que quieres Winerim aquí</p>
+                  <p className="text-sm text-red-900/80">
+                    Tu escaneo ya queda como señal de demanda. También puedes enviárselo al restaurante en un toque.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Button asChild variant="outline" className="gap-2 bg-white">
+                    <a href={restaurantMailtoHref}>
+                      <Mail className="h-4 w-4" />
+                      Email
+                    </a>
+                  </Button>
+                  <Button asChild className="gap-2 bg-red-800 hover:bg-red-900">
+                    <a href={restaurantWhatsappHref} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="h-4 w-4" />
+                      WhatsApp
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {visibleScannedWines.length === 0 ? (
+            <Card>
+              <CardContent className="p-8 text-center text-sm text-muted-foreground">
+                No hay vinos que cumplan esos filtros. Prueba a subir el precio máximo o cambiar el tipo.
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid gap-4">
+              {visibleScannedWines.map(({ wine, index }) => {
+                const isEditing = editingWineIndex === index;
+
+                return (
               <Card key={index} className="overflow-hidden">
                 <CardContent className="p-6">
-                  <div className="flex gap-4">
+                  <div className="flex flex-col gap-4 lg:flex-row">
                     {/* Wine Info */}
                     <div className="flex-1 space-y-3">
-                      <div>
-                        <h4 className="text-lg font-semibold">{wine.nombre}</h4>
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                          <h4 className="text-lg font-semibold">{wine.nombre}</h4>
                         {wine.productor && (
                           <p className="text-sm text-muted-foreground">{wine.productor}</p>
                         )}
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="gap-2 self-start"
+                          onClick={() => setEditingWineIndex(isEditing ? null : index)}
+                        >
+                          <Edit3 className="h-4 w-4" />
+                          {isEditing ? 'Cerrar edición' : 'Editar'}
+                        </Button>
                       </div>
+
+                      {isEditing && (
+                        <div className="rounded-lg border bg-muted/30 p-4">
+                          <div className="grid gap-3 md:grid-cols-2">
+                            <div className="space-y-1.5 md:col-span-2">
+                              <Label htmlFor={`scan-name-${index}`}>Nombre</Label>
+                              <Input
+                                id={`scan-name-${index}`}
+                                value={wine.nombre}
+                                onChange={(event) => updateScannedWine(index, { nombre: event.target.value })}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label htmlFor={`scan-producer-${index}`}>Productor</Label>
+                              <Input
+                                id={`scan-producer-${index}`}
+                                value={wine.productor || ''}
+                                onChange={(event) => updateScannedWine(index, { productor: event.target.value || null })}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label htmlFor={`scan-vintage-${index}`}>Añada</Label>
+                              <Input
+                                id={`scan-vintage-${index}`}
+                                value={wine.anada?.toString() || ''}
+                                inputMode="numeric"
+                                onChange={(event) => updateScannedWine(index, { anada: parseNullableNumber(event.target.value) })}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label htmlFor={`scan-region-${index}`}>Región</Label>
+                              <Input
+                                id={`scan-region-${index}`}
+                                value={wine.region || ''}
+                                onChange={(event) => updateScannedWine(index, { region: event.target.value || null })}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label htmlFor={`scan-country-${index}`}>País</Label>
+                              <Input
+                                id={`scan-country-${index}`}
+                                value={wine.pais || ''}
+                                onChange={(event) => updateScannedWine(index, { pais: event.target.value || null })}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label htmlFor={`scan-type-${index}`}>Tipo</Label>
+                              <Input
+                                id={`scan-type-${index}`}
+                                value={wine.tipo}
+                                onChange={(event) => updateScannedWine(index, { tipo: event.target.value })}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label htmlFor={`scan-price-${index}`}>Precio</Label>
+                              <Input
+                                id={`scan-price-${index}`}
+                                value={wine.precio?.toString() || ''}
+                                inputMode="decimal"
+                                onChange={(event) => updateScannedWine(index, { precio: parseNullableNumber(event.target.value) })}
+                              />
+                            </div>
+                            <div className="space-y-1.5 md:col-span-2">
+                              <Label htmlFor={`scan-grapes-${index}`}>Uvas</Label>
+                              <Input
+                                id={`scan-grapes-${index}`}
+                                value={wine.uvas?.join(', ') || ''}
+                                onChange={(event) => updateScannedWine(index, {
+                                  uvas: event.target.value.split(',').map((grape) => grape.trim()).filter(Boolean),
+                                })}
+                              />
+                            </div>
+                            <div className="space-y-1.5 md:col-span-2">
+                              <Label htmlFor={`scan-description-${index}`}>Notas</Label>
+                              <Textarea
+                                id={`scan-description-${index}`}
+                                value={wine.descripcion || ''}
+                                onChange={(event) => updateScannedWine(index, { descripcion: event.target.value || null })}
+                                rows={3}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                       <div className="flex flex-wrap gap-2">
                         {wine.anada && (
@@ -563,8 +852,10 @@ export const WineMenuScanner = ({
                   </Button>
                 </CardContent>
               </Card>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </div>

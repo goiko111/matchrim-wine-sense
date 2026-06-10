@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
@@ -86,6 +87,7 @@ const Profile = () => {
         .from('user_wines')
         .select('rating, sensory_attributes')
         .eq('user_id', user.id)
+        .eq('use_for_profile_training', true)
         .not('rating', 'is', null)
         .not('sensory_attributes', 'is', null);
 
@@ -150,23 +152,40 @@ const Profile = () => {
     fetchStyleDetails();
   }, [currentProfile, wineStyles]);
 
-  const chartData = activeProfile ? [
-    { attribute: "Potente", value: activeProfile.potente },
-    { attribute: "Acidez", value: activeProfile.acidez },
-    { attribute: "Dulce", value: activeProfile.dulce },
-    { attribute: "Tánico", value: activeProfile.tanico },
-    { attribute: "Afrutado", value: activeProfile.afrutado },
+  const chartData = currentProfile && activeProfile ? [
+    { attribute: "Potente", baseValue: currentProfile.potente, activeValue: activeProfile.potente },
+    { attribute: "Acidez", baseValue: currentProfile.acidez, activeValue: activeProfile.acidez },
+    { attribute: "Dulce", baseValue: currentProfile.dulce, activeValue: activeProfile.dulce },
+    { attribute: "Tánico", baseValue: currentProfile.tanico, activeValue: activeProfile.tanico },
+    { attribute: "Afrutado", baseValue: currentProfile.afrutado, activeValue: activeProfile.afrutado },
   ] : [];
 
   const chartConfig = {
-    radar: {
-      label: "Radar",
+    baseValue: {
+      label: "Test base",
+      theme: {
+        light: "#a8a29e",
+        dark: "#a8a29e",
+      },
+    },
+    activeValue: {
+      label: "Perfil activo",
       theme: {
         light: "#be123c",
         dark: "#be123c",
       },
     },
   };
+
+  const hasLearnedProfile = Boolean(learnedProfile && learnedProfile.samples > 0);
+  const hasLearnedAdjustments = hasLearnedProfile && chartData.some((item) => item.baseValue !== item.activeValue);
+  const confidenceCopy = learnedProfile
+    ? learnedProfile.samples < 3
+      ? 'Señal temprana: útil para ajustar, todavía no definitiva.'
+      : learnedProfile.samples < 12
+        ? 'Personalización en progreso: cada valoración afina el mapa.'
+        : 'Personalización fuerte: tu historial ya pesa bastante en las recomendaciones.'
+    : '';
 
   const getCardConfig = (styleName: string) => {
     const configs: Record<string, StyleCardConfig> = {
@@ -394,6 +413,9 @@ const Profile = () => {
                           Tu código se está afinando con {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} puntuado{learnedProfile.samples !== 1 ? 's' : ''}.
                           El test sigue siendo la base, pero tus valoraciones ya ajustan el match.
                         </p>
+                        <p className="mt-2 text-xs font-medium text-amber-900">
+                          {confidenceCopy}
+                        </p>
                       </div>
                       <div className="min-w-[220px]">
                         <div className="mb-1 flex justify-between text-xs font-medium text-amber-900">
@@ -412,19 +434,43 @@ const Profile = () => {
                 <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2">
                   <span className="text-2xl">📊</span> Tu radar sensorial
                 </h3>
-                <div className="h-80 bg-white rounded-lg shadow-md flex items-center justify-center">
+                {hasLearnedProfile && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Badge variant="outline" className="border-stone-300 text-stone-700">
+                      Test base
+                    </Badge>
+                    <Badge className="bg-red-800 hover:bg-red-800">
+                      Perfil activo
+                    </Badge>
+                    {!hasLearnedAdjustments && (
+                      <Badge variant="secondary">
+                        Sin cambios visibles todavía
+                      </Badge>
+                    )}
+                  </div>
+                )}
+                <div className="mt-3 h-80 bg-white rounded-lg shadow-md flex items-center justify-center">
                   <ChartContainer config={chartConfig} className="w-full max-w-md aspect-square">
                     <RadarChart data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                       <PolarGrid stroke="#be123c33" />
                       <PolarAngleAxis dataKey="attribute" tick={{ fill: '#be123c', fontSize: 12 }} />
                       <PolarRadiusAxis domain={[1, 5]} stroke="#be123c" tick={{ fontSize: 10 }} />
                       <Radar
-                        name="Perfil"
-                        dataKey="value"
-                        stroke="#be123c"
-                        fill="#be123c"
-                        fillOpacity={0.6}
+                        name={hasLearnedProfile ? "Test base" : "Perfil"}
+                        dataKey="baseValue"
+                        stroke={hasLearnedProfile ? "#a8a29e" : "#be123c"}
+                        fill={hasLearnedProfile ? "#a8a29e" : "#be123c"}
+                        fillOpacity={hasLearnedProfile ? 0.18 : 0.6}
                       />
+                      {hasLearnedProfile && (
+                        <Radar
+                          name="Perfil activo"
+                          dataKey="activeValue"
+                          stroke="#be123c"
+                          fill="#be123c"
+                          fillOpacity={0.55}
+                        />
+                      )}
                       <ChartTooltip content={<ChartTooltipContent />} />
                     </RadarChart>
                   </ChartContainer>

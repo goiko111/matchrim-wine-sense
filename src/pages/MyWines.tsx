@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Switch } from "@/components/ui/switch";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
 import { WineSearchBar } from "@/components/wine-import/WineSearchBar";
 import { PurchaseInfoSelector } from "@/components/wine-import/PurchaseInfoSelector";
@@ -374,6 +375,40 @@ const MyWines = () => {
     } catch (error) {
       console.error("Error toggling favorite:", error);
       toast.error("Error al actualizar favorito");
+    }
+  };
+
+  const handleToggleProfileTraining = async (wineId: string, nextValue: boolean) => {
+    const wine = wines.find((item) => item.id === wineId);
+
+    if (!wine?.rating) {
+      toast.error("Puntúa el vino antes de usarlo para afinar tu perfil");
+      return;
+    }
+
+    if (!wine.sensory_attributes) {
+      toast.error("Este vino no tiene atributos sensoriales suficientes para entrenar el perfil");
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("user_wines")
+        .update({ use_for_profile_training: nextValue })
+        .eq("id", wineId);
+
+      if (error) throw error;
+
+      setWines((currentWines) =>
+        currentWines.map((item) =>
+          item.id === wineId ? { ...item, use_for_profile_training: nextValue } : item
+        )
+      );
+
+      toast.success(nextValue ? "Este vino volverá a afinar tu perfil" : "Este vino ya no entrena tu perfil");
+    } catch (error) {
+      console.error("Error toggling profile training:", error);
+      toast.error("No se pudo actualizar el entrenamiento del perfil");
     }
   };
 
@@ -848,6 +883,33 @@ const MyWines = () => {
                             <p className="text-sm text-muted-foreground italic line-clamp-2 border-l-2 border-primary pl-2">
                               {wine.personal_note}
                             </p>
+                          )}
+
+                          {wine.rating && (
+                            <div className="rounded-lg border bg-muted/30 p-3">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="min-w-0">
+                                  <div className="flex items-center gap-2 text-sm font-medium">
+                                    <Sparkles className="h-4 w-4 text-primary" />
+                                    Entrena mi perfil
+                                  </div>
+                                  <p className="mt-1 text-xs text-muted-foreground">
+                                    {wine.sensory_attributes
+                                      ? 'Puedes excluir esta valoración si fue una botella atípica.'
+                                      : 'Faltan atributos sensoriales para que esta valoración ajuste tu código.'}
+                                  </p>
+                                </div>
+                                {wine.sensory_attributes ? (
+                                  <Switch
+                                    checked={Boolean(wine.use_for_profile_training)}
+                                    onCheckedChange={(checked) => handleToggleProfileTraining(wine.id, checked)}
+                                    aria-label={`Usar ${wine.name} para entrenar perfil`}
+                                  />
+                                ) : (
+                                  <Badge variant="outline">Sin atributos</Badge>
+                                )}
+                              </div>
+                            </div>
                           )}
 
                           {/* Rating Buttons - move wishlist wines to tasted and train the profile */}

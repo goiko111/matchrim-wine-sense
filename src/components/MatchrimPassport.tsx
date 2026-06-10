@@ -34,6 +34,8 @@ const MatchrimPassport: React.FC<MatchrimPassportProps> = ({
   const shareUrl = buildMatchrimShareUrl(profile, code);
   const winerimUrl = buildWinerimCartaUrl(profile, code);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=12&data=${encodeURIComponent(shareUrl)}`;
+  const [codeGrape, ...codeCharacterParts] = code.split(' ');
+  const codeCharacter = codeCharacterParts.join(' ');
 
   const copyCode = async () => {
     await navigator.clipboard.writeText(code);
@@ -82,6 +84,11 @@ const MatchrimPassport: React.FC<MatchrimPassportProps> = ({
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
+              <p className="mt-2 max-w-2xl text-sm text-red-900">
+                Tu código une una uva que representa tu rasgo dominante
+                {codeGrape ? ` (${codeGrape})` : ''} con un carácter de vino
+                {codeCharacter ? ` (${codeCharacter})` : ''}. Así es fácil recordarlo y decirlo en mesa.
+              </p>
               {!compact && (
                 <p className="mt-3 max-w-2xl text-sm text-gray-700">
                   Usa este código en cualquier carta Winerim para ver primero los vinos que encajan con tu paladar.
