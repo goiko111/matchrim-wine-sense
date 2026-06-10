@@ -8,6 +8,8 @@ The core consumer promise works: a user can create/confirm an account, complete 
 
 The scanner promise also works at the AI/function level: a generated image of a restaurant wine list was sent to `scan-wine-menu`; the function returned 5 detected wines, Matchrim compatibility, sensory attributes and explanations in about 10 seconds.
 
+Implementation update: the first product-hardening sprint from this audit is now applied in code. It adds scanner guidance, scanner result filters, edit-before-save, retry guidance, restaurant share prompts, Winerim API result filters, compact fit reasons, profile-training toggles, before/after learned profile radar, aiRIM learned-profile context, aiRIM example chips, and a top-level error boundary.
+
 The main remaining production blocker is account deletion request creation until `20260610104500_fix_account_deletion_request_policies.sql` is applied to Supabase. Store/device QA is still not complete until the app runs on real Android/iOS devices or simulators.
 
 ## Coverage Matrix
@@ -47,19 +49,20 @@ The main remaining production blocker is account deletion request creation until
 ### Gaps / Improvements
 
 - Done: split scanner controls into `Hacer foto` and `Subir archivo`; the camera input uses `capture="environment"` and the upload input keeps image/PDF support.
-- P1: Add photo guidance before upload: good light, full page, avoid reflections, one section at a time, keep prices visible.
+- Done: added photo guidance before upload: good light, full page, avoid reflections, one section at a time, keep prices visible.
 - P1: Support multi-page PDFs or clearly state that only the first page is analyzed. Current UI converts only page 1.
-- P1: Add result confidence and edit-before-save. OCR/AI will occasionally misread price, vintage or producer; the user should be able to correct a card before saving.
-- P1: For restaurants without Winerim, show a stronger commercial loop: "X personas han intentado usar Winerim aquí" once enough demand exists.
+- Done: added edit-before-save for scanned wines, including name, producer, vintage, region, country, type, price, grapes and notes.
+- Partial: result confidence is expressed as review guidance and compatibility; per-field OCR confidence is still not available from the edge function.
+- Partial: restaurants without Winerim now get a user-facing email/WhatsApp prompt after scanning. Aggregate demand copy such as "X personas han intentado usar Winerim aquí" still needs a public-safe aggregation endpoint.
 - P2: Preserve the scanned image/session in storage for admin review only if privacy policy/retention is finalized. Otherwise keep no image, only extracted structured data.
-- P2: Add retry with smaller-section suggestion when the function returns truncated JSON or too many wines.
-- P2: Sort scanned wines by compatibility by default, with filters for type and price.
+- Done: added retry guidance with smaller-section suggestion when scanning returns no useful result or errors.
+- Done: scanned wines sort by compatibility by default, with filters for type and price.
 
 ## Product Improvements By Area
 
 ### Matchrim / Code
 
-- P1: Explain the code name better immediately after the quiz: "uva + carácter" makes the result more memorable and shareable.
+- Done: Matchrim Passport now explains the code as "uva + carácter" and names both parts when possible.
 - P1: Add "Use in restaurant now" as the dominant result CTA on mobile, above broader education.
 - P2: Add a share card image for the Matchrim code, suitable for WhatsApp/Instagram.
 - P2: Let users retake the test while keeping previous codes in history, with "current active code" clearly marked.
@@ -67,37 +70,37 @@ The main remaining production blocker is account deletion request creation until
 ### Winerim Restaurant Flow
 
 - P1: QR URLs should prefill restaurant id/name and land directly on the correct tab.
-- P1: When Winerim API returns wines, add filters for by-the-glass, bottle, price range and wine type.
-- P1: Add "why this wine fits me" compact explanation on each Winerim result, not only percentage.
-- P2: Track a conversion event when a user saves a wine from a restaurant. This is one of the strongest sales signals.
+- Done: Winerim API results now include sort, type, service/section and price filters.
+- Done: each Winerim result now includes a compact "why it fits me" explanation using match, grapes, region and price when available.
+- Partial: saved Winerim wines now keep restaurant/session metadata in `user_wines.place_details`. A dedicated aggregate conversion metric in the admin pipeline still needs a schema/API decision.
 
 ### Non-Winerim / Evangelization
 
-- P1: After scanning, show a restaurant-facing prompt: "Tell this restaurant you wanted Winerim here" with a shareable/emailable one-tap message.
+- Done: after scanning in a non-Winerim restaurant, users can email or WhatsApp a restaurant-facing Winerim demand message.
 - P1: Ask permission to remember the restaurant and aggregate demand. Make the value exchange explicit.
 - P2: Build an admin view that ranks non-Winerim restaurants by scanned menus, unique users and repeat demand.
 - P2: Let users add "I asked the waiter" / "They were interested" as a lightweight commercial signal.
 
 ### Mis Vinos
 
-- P1: Add edit-before-rating for scanned/API wines so users can correct attributes that will train their profile.
-- P1: Add a clearer "training impact" state: which wines are training the profile and whether rating them changed the code.
+- Partial: scanned wines can be edited before saving. Editing already saved API/scanned wines still needs a dedicated edit flow.
+- Done: `Ya Probados` now shows whether each rated wine trains the profile and lets users exclude/include eligible wines.
 - P2: Add notes: occasion, dish, people, photo, and "would order again".
 - P2: Add duplicate detection when saving the same Winerim wine from API/scanner/manual.
 - P2: Add export/delete controls for user data once privacy workflow is finalized.
 
 ### Profile Learning
 
-- P1: Show a before/after radar when ratings have modified the base Matchrim profile.
-- P1: Explain confidence: "1 wine = early signal, 12+ wines = strong personalization".
-- P2: Let users exclude a rating from training after saving.
+- Done: profile now overlays test base vs active learned radar when ratings exist.
+- Done: confidence copy now explains early/progress/strong personalization states.
+- Done: users can exclude a rating from profile training after saving, and Profile/Use Matchrim/aiRIM respect `use_for_profile_training`.
 - P2: Add "what to try next" recommendations based on weak/unknown profile areas.
 
 ### aiRIM
 
-- P1: Tie aiRIM answers to the user's Matchrim profile when authenticated.
+- Done: aiRIM now sends the active learned Matchrim context from the app, and the edge function includes app context in the function prompt.
 - P1: Add structured cards and save actions to aiRIM outputs, not only generated prose.
-- P2: Add examples/chips for common restaurant contexts: spicy food, tasting menu, seafood, dessert.
+- Done: aiRIM now has example chips for common dish, wine and pairing scenarios.
 - P2: Log response quality feedback: helpful / not helpful.
 
 ### Native App / Stores
@@ -118,7 +121,7 @@ The main remaining production blocker is account deletion request creation until
 ### Performance / Reliability
 
 - P1: Add automated E2E for scanner function with a fixed image fixture. Mock AI if needed for CI, run live AI in scheduled QA.
-- P1: Add error boundary to avoid blank pages if a component throws.
+- Done: added a top-level route-aware error boundary to avoid blank pages if a component throws.
 - P2: Reduce or lazy-load large chunks further: `pdf.worker`, `RegionMap`, Mapbox and admin bundles.
 - P2: Update Browserslist data regularly.
 
@@ -131,7 +134,7 @@ The main remaining production blocker is account deletion request creation until
 ## Next Recommended Sprint
 
 1. Apply the account deletion migration to Supabase and rerun deletion request plus admin privacy queue.
-2. Improve scanner UX: split camera/upload actions, add scan guidance, and clarify first-page PDF behavior.
-3. Add edit-before-save for scanned wines.
-4. Build the restaurant demand dashboard into a sales pipeline view.
-5. Run real Android/iOS device QA focused on camera/gallery upload and safe-area navigation.
+2. Apply/deploy updated `ai-wine-chat` edge function so aiRIM uses the new learned-profile app context in production.
+3. Run real Android/iOS device QA focused on camera/gallery upload, PDF upload, safe-area navigation and keyboard.
+4. Decide whether restaurant conversion metrics live in `restaurant_matchrim_sessions`, a new event table, or a derived admin query over `user_wines.place_details`.
+5. Build the restaurant demand dashboard into a sales pipeline view once the schema decision is made.
