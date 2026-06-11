@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,10 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const redirectPath = getSafeRedirectPath(searchParams.get('redirect'));
+
+  useEffect(() => {
+    document.title = 'Matchrim | Inicia sesión';
+  }, []);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -52,16 +56,31 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-4 relative">
-          <div className="absolute right-0 top-0">
-            <LanguageSwitcher />
-          </div>
+        <div className="flex items-center justify-between mb-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              if (window.history.length > 1) {
+                navigate(-1);
+              } else {
+                navigate('/');
+              }
+            }}
+            className="gap-1 text-red-900"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t('common.back')}
+          </Button>
+          <LanguageSwitcher />
+        </div>
+        <div className="text-center mb-4">
           <img
             src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
-            alt="Logo Winerim"
+            alt="Logo Matchrim"
             className="h-16 w-16 mx-auto mb-4"
           />
-          <h1 className="text-3xl font-bold text-red-900">Winerim</h1>
+          <h1 className="text-3xl font-bold text-red-900">Matchrim</h1>
           <p className="text-red-600">{t('auth.tagline')}</p>
         </div>
 

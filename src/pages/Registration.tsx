@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,15 +10,21 @@ import WinePreferencesStep from '@/components/registration/WinePreferencesStep';
 import FinalStep from '@/components/registration/FinalStep';
 import { useRegistrationData } from '@/hooks/useRegistrationData';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
+import { useI18n } from '@/i18n';
 
 const Registration = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const { t } = useI18n();
   const [currentStep, setCurrentStep] = useState(1);
   const [emailConfirmationAddress, setEmailConfirmationAddress] = useState('');
   const { registrationData, updateRegistrationData, saveRegistrationData, isSaving } = useRegistrationData();
   const redirectPath = getSafeRedirectPath(searchParams.get('redirect'));
+
+  React.useEffect(() => {
+    document.title = 'Matchrim | Registro';
+  }, []);
 
   const totalSteps = 3;
 
@@ -98,13 +105,30 @@ const Registration = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
+        <div className="flex items-center justify-between mb-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              if (window.history.length > 1) {
+                navigate(-1);
+              } else {
+                navigate('/');
+              }
+            }}
+            className="gap-1 text-red-900"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t('common.back')}
+          </Button>
+        </div>
         <div className="text-center mb-8">
           <img 
             src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" 
-            alt="Logo Winerim" 
+            alt="Logo Matchrim" 
             className="h-16 w-16 mx-auto mb-4"
           />
-          <h1 className="text-3xl font-bold text-red-900">Winerim</h1>
+          <h1 className="text-3xl font-bold text-red-900">Matchrim</h1>
           <p className="text-red-600">Descubre tu perfil de vino perfecto</p>
         </div>
 
@@ -131,7 +155,7 @@ const Registration = () => {
                 variant="outline"
                 className="w-full border-red-200 text-red-800 hover:bg-red-50"
               >
-                Volver a Winerim
+                Volver a Matchrim
               </Button>
             </CardContent>
           </Card>
