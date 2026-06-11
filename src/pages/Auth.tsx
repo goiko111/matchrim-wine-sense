@@ -8,11 +8,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { buildRegistrationRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
+import { useI18n } from '@/i18n';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const Auth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user, signIn } = useAuth();
+  const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const redirectPath = getSafeRedirectPath(searchParams.get('redirect'));
