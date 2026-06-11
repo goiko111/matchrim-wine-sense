@@ -84,10 +84,10 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
             >
               <img
                 src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
-                alt="Logo Winerim"
+                alt="Logo Matchrim"
                 className="h-8 w-8"
               />
-              <span className="text-xl font-bold text-red-950">Winerim</span>
+              <span className="text-xl font-bold text-red-950">Matchrim</span>
             </button>
             <Button
               onClick={() => navigate(buildAuthRedirectPath('/'))}
@@ -105,7 +105,7 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
       <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col gap-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5">
         <section className="rounded-lg bg-red-950 px-5 py-6 text-white shadow-elegant">
           <Badge className="mb-5 bg-white/12 text-white hover:bg-white/12">
-            Winerim App
+            Matchrim
           </Badge>
           <h1 className="text-3xl font-bold leading-tight">
             Tu mesa, tu carta, tu vino.
