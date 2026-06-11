@@ -4,6 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { BookOpen, Home, ScanLine, Sparkles, User, Wine, type LucideIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { buildAuthRedirectPath } from '@/utils/navigation';
+import { useI18n } from '@/i18n';
 
 type BottomNavLink = {
   path: string;
@@ -14,6 +15,7 @@ type BottomNavLink = {
 
 const MobileBottomNav = () => {
   const { user } = useAuth();
+  const { t } = useI18n();
   const location = useLocation();
   const isNative = Capacitor.isNativePlatform();
   const currentPath = `${location.pathname}${location.search}`;
@@ -27,23 +29,23 @@ const MobileBottomNav = () => {
   }, []);
 
   const commonLinks: BottomNavLink[] = [
-    { path: '/', label: 'Inicio', icon: Home },
-    { path: '/matchrim', label: 'Test', icon: Wine },
-    { path: '/usar-matchrim', label: 'Código', icon: ScanLine },
+    { path: '/', label: t('nav.home'), icon: Home },
+    { path: '/matchrim', label: t('nav.test'), icon: Wine },
+    { path: '/usar-matchrim', label: t('nav.code'), icon: ScanLine },
   ];
 
   const nativeLinks: BottomNavLink[] = [
     ...commonLinks,
-    { path: '/my-wines', label: 'Vinos', icon: BookOpen, requiresAuth: true },
+    { path: '/my-wines', label: t('nav.wines'), icon: BookOpen, requiresAuth: true },
     user
-      ? { path: '/profile', label: 'Perfil', icon: User, requiresAuth: true }
-      : { path: '/auth', label: 'Entrar', icon: User },
+      ? { path: '/profile', label: t('nav.profile'), icon: User, requiresAuth: true }
+      : { path: '/auth', label: t('nav.login'), icon: User },
   ];
 
   const webLinks: BottomNavLink[] = [
     ...commonLinks,
-    { path: '/inteligencia-liquida', label: 'aiRIM', icon: Sparkles },
-    { path: '/my-wines', label: 'Vinos', icon: BookOpen, requiresAuth: true },
+    { path: '/inteligencia-liquida', label: t('nav.ai'), icon: Sparkles },
+    { path: '/my-wines', label: t('nav.wines'), icon: BookOpen, requiresAuth: true },
   ];
 
   const navLinks = isNative || user ? nativeLinks : webLinks;
@@ -60,7 +62,7 @@ const MobileBottomNav = () => {
   return (
     <nav
       aria-label="Navegacion principal"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-red-100 bg-white/95 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_30px_-20px_rgba(127,29,29,0.45)] backdrop-blur md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-red-100 bg-white px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_30px_-20px_rgba(127,29,29,0.45)] md:hidden"
     >
       <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
         {navLinks.map((link) => {
