@@ -31,6 +31,8 @@ const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
 const Terms = lazy(() => import('@/pages/Terms'));
 const AccountDeletion = lazy(() => import('@/pages/AccountDeletion'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
+const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 
 function PageFallback() {
   return (
