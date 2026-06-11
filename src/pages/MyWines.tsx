@@ -672,7 +672,7 @@ const MyWines = () => {
                     <Button
                       onClick={() => {
                         resetForm();
-                        setShowPurchaseDialog(true);
+                        setShowAddDialog(true);
                       }}
                       variant="outline"
                       className="w-full gap-2"
@@ -956,7 +956,13 @@ const MyWines = () => {
 
         {/* Purchase Info Dialog */}
         <Dialog open={showPurchaseDialog} onOpenChange={setShowPurchaseDialog}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto sm:max-h-[85vh]">
+            <DialogHeader>
+              <DialogTitle>Información de compra o consumo</DialogTitle>
+              <DialogDescription>
+                Indica dónde, cuándo y a qué precio. Puedes saltar si no aplica.
+              </DialogDescription>
+            </DialogHeader>
             <PurchaseInfoSelector
               mode={statusFilter}
               onConfirm={handlePurchaseInfoConfirm}
