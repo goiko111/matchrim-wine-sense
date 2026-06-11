@@ -7,6 +7,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { AppErrorBoundary } from '@/components/AppErrorBoundary';
 import './App.css';
+import { I18nProvider } from '@/i18n';
 
 const queryClient = new QueryClient();
 
