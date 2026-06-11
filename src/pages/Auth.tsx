@@ -8,11 +8,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { buildRegistrationRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
+import { useI18n } from '@/i18n';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const Auth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user, signIn } = useAuth();
+  const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const redirectPath = getSafeRedirectPath(searchParams.get('redirect'));
@@ -49,47 +52,50 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <img 
-            src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" 
-            alt="Logo Winerim" 
+        <div className="text-center mb-4 relative">
+          <div className="absolute right-0 top-0">
+            <LanguageSwitcher />
+          </div>
+          <img
+            src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
+            alt="Logo Winerim"
             className="h-16 w-16 mx-auto mb-4"
           />
           <h1 className="text-3xl font-bold text-red-900">Winerim</h1>
-          <p className="text-red-600">Descubre tu perfil de vino perfecto</p>
+          <p className="text-red-600">{t('auth.tagline')}</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-center text-red-900">Bienvenido</CardTitle>
+            <CardTitle className="text-center text-red-900">{t('auth.title')}</CardTitle>
             <CardDescription className="text-center">
-              Inicia sesión o crea una cuenta para guardar tus resultados
+              {t('auth.subtitle')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
-                <TabsTrigger value="signup">Registrarse</TabsTrigger>
+                <TabsTrigger value="login">{t('auth.login')}</TabsTrigger>
+                <TabsTrigger value="signup">{t('auth.register')}</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div>
                     <Input
                       type="email"
-                      placeholder="Email"
+                      placeholder={t('auth.email')}
                       value={loginForm.email}
-                      onChange={(e) => setLoginForm({...loginForm, email: e.target.value})}
+                      onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
                       required
                     />
                   </div>
                   <div className="relative">
                     <Input
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Contraseña"
+                      placeholder={t('auth.password')}
                       value={loginForm.password}
-                      onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
+                      onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                       required
                       className="pr-10"
                     />
@@ -102,29 +108,34 @@ const Auth = () => {
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full bg-red-700 hover:bg-red-800"
                     disabled={isLoading}
                   >
-                    {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+                    {isLoading ? t('auth.signingIn') : t('auth.signIn')}
                   </Button>
+                  <div className="text-center">
+                    <Link to="/forgot-password" className="text-xs text-red-800 hover:underline">
+                      {t('auth.forgotPassword')}
+                    </Link>
+                  </div>
                 </form>
               </TabsContent>
-              
+
               <TabsContent value="signup">
                 <div className="space-y-4">
                   <p className="text-center text-sm text-gray-600">
-                    Crea tu cuenta y descubre tu perfil de vino personalizado
+                    {t('auth.signupHint')}
                   </p>
-                  <Button 
+                  <Button
                     onClick={handleRegisterRedirect}
                     className="w-full bg-red-700 hover:bg-red-800"
                   >
-                    Crear Cuenta Completa
+                    {t('auth.createAccount')}
                   </Button>
                   <p className="text-xs text-center text-gray-500">
-                    El registro incluye preferencias de vino, sabores y experiencias personalizadas
+                    {t('auth.signupNote')}
                   </p>
                 </div>
               </TabsContent>

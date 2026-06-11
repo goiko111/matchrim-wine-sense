@@ -7,6 +7,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { AppErrorBoundary } from '@/components/AppErrorBoundary';
 import './App.css';
+import { I18nProvider } from '@/i18n';
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,8 @@ const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
 const Terms = lazy(() => import('@/pages/Terms'));
 const AccountDeletion = lazy(() => import('@/pages/AccountDeletion'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
+const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 
 function PageFallback() {
   return (
@@ -64,6 +67,8 @@ function AppRoutes() {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/matchrim" element={<Matchrim />} />
@@ -94,11 +99,13 @@ function AppRoutes() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </AuthProvider>
+      <I18nProvider>
+        <AuthProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </AuthProvider>
+      </I18nProvider>
     </QueryClientProvider>
   );
 }
