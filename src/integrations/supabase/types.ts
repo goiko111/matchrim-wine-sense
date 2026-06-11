@@ -701,6 +701,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      matchrim_email_registered: {
+        Args: { email_input: string }
+        Returns: boolean
+      }
       winerim_calcular_encaje_v4_1: {
         Args: {
           acidez: number
