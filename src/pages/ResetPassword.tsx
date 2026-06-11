@@ -24,6 +24,10 @@ const ResetPassword = () => {
   const [hasRecoverySession, setHasRecoverySession] = useState<boolean | null>(null);
 
   useEffect(() => {
+    document.title = 'Matchrim | Nueva contraseña';
+  }, []);
+
+  useEffect(() => {
     let mounted = true;
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
