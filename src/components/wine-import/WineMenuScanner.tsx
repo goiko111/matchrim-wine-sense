@@ -299,7 +299,7 @@ export const WineMenuScanner = ({
       if (error) throw error;
 
       if (data?.vinos && data.vinos.length > 0) {
-        setScannedWines(data.vinos);
+        setScannedWines((data.vinos as ScannedWine[]).map(normalizeScannedWine));
         setHasProfile(!!data.has_profile);
         onScanComplete?.(data.vinos.length);
 
