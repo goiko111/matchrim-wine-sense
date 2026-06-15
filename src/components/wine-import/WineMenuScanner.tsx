@@ -13,6 +13,7 @@ import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
+import { normalizeSensoryAttributes, SENSORY_KEYS } from "@/utils/sensoryNormalize";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
