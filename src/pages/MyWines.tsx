@@ -228,7 +228,6 @@ const MyWines = () => {
       return;
     }
 
-    // Validate restaurant is selected
     if (data?.location_type === 'restaurant' && !data?.place_name) {
       toast.error("Debes seleccionar un restaurante");
       return;
@@ -236,14 +235,19 @@ const MyWines = () => {
 
     setSaving(true);
     try {
-      const wineData = {
+      const precomputedAffinity = extractedData?.matchrim_affinity ?? null;
+      const precomputedSensory = extractedData?.sensory_attributes ?? null;
+      const affinityReason = extractedData?.affinity_reason ?? null;
+      const fromLabelScanner = !!extractedData;
+
+      const wineData: any = {
         user_id: user.id,
         name: formData.name,
         producer: formData.producer || null,
         vintage: formData.vintage ? parseInt(formData.vintage) : null,
         region: formData.region || null,
         country: formData.country || null,
-        grape_varieties: formData.grape_varieties 
+        grape_varieties: formData.grape_varieties
           ? formData.grape_varieties.split(",").map(g => g.trim()).filter(Boolean)
           : null,
         alcohol_content: formData.alcohol_content ? parseFloat(formData.alcohol_content) : null,
@@ -257,7 +261,16 @@ const MyWines = () => {
         consumption_place_type: data?.location_type || null,
         consumption_date: data?.purchase_date || null,
         price: data?.price || null,
+        matchrim_affinity: precomputedAffinity,
+        sensory_attributes: precomputedSensory,
       };
+
+      if (fromLabelScanner) {
+        wineData.place_details = {
+          source: 'label_scanner',
+          ...(affinityReason ? { affinity_reason: affinityReason } : {}),
+        };
+      }
 
       const { data: insertedWine, error } = await supabase
         .from("user_wines")
@@ -267,8 +280,12 @@ const MyWines = () => {
 
       if (error) throw error;
 
-      // Calculate affinity in background
-      if (insertedWine && (statusFilter === 'collection' || statusFilter === 'tasted')) {
+      // Only recalc if we don't already have affinity
+      if (
+        insertedWine &&
+        !precomputedAffinity &&
+        (statusFilter === 'collection' || statusFilter === 'tasted')
+      ) {
         supabase.functions
           .invoke("calculate-wine-affinity", {
             body: { wine_id: insertedWine.id }
