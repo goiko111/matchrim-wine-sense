@@ -96,6 +96,9 @@ interface ExtractedWineData {
   alcohol: number | null;
   notas_cata: string | null;
   imagen_url?: string | null;
+  matchrim_affinity?: number | null;
+  sensory_attributes?: Record<string, number> | null;
+  affinity_reason?: string | null;
 }
 
 const MyWines = () => {
