@@ -213,7 +213,8 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
       "precio": 24.50,
       "tipo": "tinto",
       "uvas": ["Tempranillo", "Garnacha"],
-      "descripcion": "Breve descripción con aromas y notas"${profile ? `,
+      "descripcion": "Breve descripción con aromas y notas",
+      "posicion": { "x": 42, "y": 17 }${profile ? `,
       "atributos": {
         "potencia": 7,
         "acidez": 6,
