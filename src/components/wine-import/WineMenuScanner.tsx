@@ -458,11 +458,30 @@ export const WineMenuScanner = ({
               <div className="space-y-4">
                 <div className="relative inline-block">
                   {preview ? (
-                    <img
-                      src={preview}
-                      alt="Preview"
-                      className="max-h-60 mx-auto rounded-lg shadow-lg"
-                    />
+                    <div className="relative inline-block">
+                      <img
+                        src={preview}
+                        alt="Preview"
+                        className="max-h-[60vh] mx-auto rounded-lg shadow-lg"
+                      />
+                      {scannedWines.some((w) => w.posicion && typeof w.posicion.x === 'number' && typeof w.posicion.y === 'number') && (
+                        <div className="absolute inset-0 pointer-events-none">
+                          {scannedWines.map((w, i) =>
+                            w.posicion && typeof w.posicion.x === 'number' && typeof w.posicion.y === 'number' && w.compatibilidad != null ? (
+                              <div
+                                key={`pos-${i}`}
+                                className="absolute -translate-x-1/2 -translate-y-1/2"
+                                style={{ left: `${Math.max(0, Math.min(100, w.posicion.x))}%`, top: `${Math.max(0, Math.min(100, w.posicion.y))}%` }}
+                              >
+                                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold text-white shadow-lg ring-2 ring-white ${getCompatibilityColor(w.compatibilidad)}`}>
+                                  {w.compatibilidad}%
+                                </span>
+                              </div>
+                            ) : null
+                          )}
+                        </div>
+                      )}
+                    </div>
                   ) : convertingPdf ? (
                     <div className="max-h-60 mx-auto p-8 bg-muted rounded-lg flex flex-col items-center gap-4">
                       <Loader2 className="w-12 h-12 text-primary animate-spin" />
@@ -478,6 +497,11 @@ export const WineMenuScanner = ({
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
+                {scannedWines.length > 0 && !scannedWines.some((w) => w.posicion) && (
+                  <p className="text-xs text-muted-foreground">
+                    La IA no ubicó posiciones precisas en la foto; las compatibilidades aparecen en las tarjetas debajo.
+                  </p>
+                )}
               </div>
             ) : loading || convertingPdf ? (
               <div className="space-y-4">
