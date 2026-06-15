@@ -124,10 +124,11 @@ serve(async (req) => {
   }
 
   try {
-    const { wine_id } = await req.json();
-    
-    if (!wine_id) {
-      throw new Error('Wine ID is required');
+    const body = await req.json();
+    const { wine_id, wine: tempWine } = body || {};
+
+    if (!wine_id && !tempWine) {
+      throw new Error('Wine ID or temporary wine data is required');
     }
 
     const authHeader = req.headers.get('Authorization');
