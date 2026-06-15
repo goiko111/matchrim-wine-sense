@@ -13,6 +13,7 @@ import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
+import { normalizeSensoryAttributes, SENSORY_KEYS } from "@/utils/sensoryNormalize";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
@@ -58,17 +59,17 @@ interface ScannedWine {
   } | null;
   compatibilidad?: number | null;
   razon?: string | null;
-  posicion?: { x: number; y: number } | null;
+  posicion?: { x: number; y: number; width?: number; height?: number; confidence?: number } | null;
 }
 
 const computeWineSimilarity = (a: ScannedWine, b: ScannedWine): number => {
   let score = 0;
   if (a.atributos && b.atributos) {
-    const keys = ['potencia', 'acidez', 'dulzura', 'taninos', 'afrutado'] as const;
+    const keys = SENSORY_KEYS;
     const dist = Math.sqrt(
-      keys.reduce((acc, k) => acc + Math.pow((a.atributos![k] || 5) - (b.atributos![k] || 5), 2), 0)
+      keys.reduce((acc, k) => acc + Math.pow((a.atributos![k] || 3) - (b.atributos![k] || 3), 2), 0)
     );
-    const maxDist = Math.sqrt(5 * 81);
+    const maxDist = Math.sqrt(5 * Math.pow(4, 2));
     score += (1 - dist / maxDist) * 70;
   }
   const typeA = (a.tipo || '').toLowerCase().trim();
@@ -79,6 +80,30 @@ const computeWineSimilarity = (a: ScannedWine, b: ScannedWine): number => {
   const overlap = [...grapesA].filter((g) => grapesB.has(g)).length;
   if (overlap > 0) score += Math.min(10, overlap * 5);
   return score;
+};
+
+const normalizeScannedWine = (wine: ScannedWine): ScannedWine => {
+  const normalizedAttrs = normalizeSensoryAttributes(wine.atributos ?? null);
+  const atributos = normalizedAttrs && (['potencia','acidez','dulzura','taninos','afrutado'] as const).every(k => normalizedAttrs[k] != null)
+    ? {
+        potencia: normalizedAttrs.potencia!,
+        acidez: normalizedAttrs.acidez!,
+        dulzura: normalizedAttrs.dulzura!,
+        taninos: normalizedAttrs.taninos!,
+        afrutado: normalizedAttrs.afrutado!,
+      }
+    : null;
+
+  // Posicion: only keep if confidence >= 0.7 and x/y in 0-100
+  let posicion: ScannedWine['posicion'] = null;
+  const p = wine.posicion;
+  if (p && typeof p.x === 'number' && typeof p.y === 'number'
+      && p.x >= 0 && p.x <= 100 && p.y >= 0 && p.y <= 100
+      && (p.confidence == null || p.confidence >= 0.7)) {
+    posicion = p;
+  }
+
+  return { ...wine, atributos, posicion };
 };
 
 const buildAirimWineDescription = (wine: ScannedWine): string => {
@@ -274,7 +299,7 @@ export const WineMenuScanner = ({
       if (error) throw error;
 
       if (data?.vinos && data.vinos.length > 0) {
-        setScannedWines(data.vinos);
+        setScannedWines((data.vinos as ScannedWine[]).map(normalizeScannedWine));
         setHasProfile(!!data.has_profile);
         onScanComplete?.(data.vinos.length);
 
@@ -464,15 +489,16 @@ export const WineMenuScanner = ({
                         alt="Preview"
                         className="max-h-[60vh] mx-auto rounded-lg shadow-lg"
                       />
-                      {scannedWines.some((w) => w.posicion && typeof w.posicion.x === 'number' && typeof w.posicion.y === 'number') && (
+                      {scannedWines.some((w) => w.posicion) && (
                         <div className="absolute inset-0 pointer-events-none">
                           {scannedWines.map((w, i) =>
-                            w.posicion && typeof w.posicion.x === 'number' && typeof w.posicion.y === 'number' && w.compatibilidad != null ? (
+                            w.posicion && w.compatibilidad != null ? (
                               <div
                                 key={`pos-${i}`}
-                                className="absolute -translate-x-1/2 -translate-y-1/2"
+                                className="absolute flex items-center gap-1 -translate-y-1/2"
                                 style={{ left: `${Math.max(0, Math.min(100, w.posicion.x))}%`, top: `${Math.max(0, Math.min(100, w.posicion.y))}%` }}
                               >
+                                <span className="inline-block h-0 w-0 border-y-[6px] border-y-transparent border-r-[8px] border-r-white drop-shadow" aria-hidden />
                                 <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold text-white shadow-lg ring-2 ring-white ${getCompatibilityColor(w.compatibilidad)}`}>
                                   {w.compatibilidad}%
                                 </span>

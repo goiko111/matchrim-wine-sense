@@ -7,6 +7,7 @@ import { Loader2, Upload, Camera, X, BookmarkPlus, MessageSquare, Search, Sparkl
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { normalizeSensoryAttributes } from "@/utils/sensoryNormalize";
 
 interface ExtractedWineData {
   nombre: string;
@@ -131,7 +132,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
                 ? {
                     ...cur,
                     matchrim_affinity: aff.affinity,
-                    sensory_attributes: aff.sensory_attributes || null,
+                    sensory_attributes: normalizeSensoryAttributes(aff.sensory_attributes) ?? null,
                   }
                 : cur
             );
@@ -275,12 +276,16 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
                 <Progress value={identified.matchrim_affinity} className="h-2" />
                 {identified.sensory_attributes && (
                   <div className="grid grid-cols-5 gap-1 pt-1 text-xs">
-                    {(['potencia','acidez','dulzura','taninos','afrutado'] as const).map((k) => (
-                      <div key={k} className="text-center">
-                        <div className="font-medium">{Number(identified.sensory_attributes?.[k] ?? 0)}</div>
-                        <div className="text-muted-foreground capitalize">{k}</div>
-                      </div>
-                    ))}
+                    {(['potencia','acidez','dulzura','taninos','afrutado'] as const).map((k) => {
+                      const normalized = normalizeSensoryAttributes(identified.sensory_attributes ?? null);
+                      const v = normalized?.[k] ?? null;
+                      return (
+                        <div key={k} className="text-center">
+                          <div className="font-medium">{v ?? '—'}</div>
+                          <div className="text-muted-foreground capitalize">{k}</div>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>

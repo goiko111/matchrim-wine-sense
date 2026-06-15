@@ -18,6 +18,7 @@ import { LocationSelector } from "@/components/wine-import/LocationSelector";
 import { supabase } from "@/integrations/supabase/client";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
+import { normalizeSensoryAttributes } from "@/utils/sensoryNormalize";
 import {
   Wine,
   Plus,
@@ -236,7 +237,7 @@ const MyWines = () => {
     setSaving(true);
     try {
       const precomputedAffinity = extractedData?.matchrim_affinity ?? null;
-      const precomputedSensory = extractedData?.sensory_attributes ?? null;
+      const precomputedSensory = normalizeSensoryAttributes(extractedData?.sensory_attributes ?? null);
       const affinityReason = extractedData?.affinity_reason ?? null;
       const fromLabelScanner = !!extractedData;
 
