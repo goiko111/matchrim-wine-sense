@@ -237,7 +237,7 @@ const MyWines = () => {
     setSaving(true);
     try {
       const precomputedAffinity = extractedData?.matchrim_affinity ?? null;
-      const precomputedSensory = extractedData?.sensory_attributes ?? null;
+      const precomputedSensory = normalizeSensoryAttributes(extractedData?.sensory_attributes ?? null);
       const affinityReason = extractedData?.affinity_reason ?? null;
       const fromLabelScanner = !!extractedData;
 
