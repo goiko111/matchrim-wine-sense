@@ -58,7 +58,37 @@ interface ScannedWine {
   } | null;
   compatibilidad?: number | null;
   razon?: string | null;
+  posicion?: { x: number; y: number } | null;
 }
+
+const computeWineSimilarity = (a: ScannedWine, b: ScannedWine): number => {
+  let score = 0;
+  if (a.atributos && b.atributos) {
+    const keys = ['potencia', 'acidez', 'dulzura', 'taninos', 'afrutado'] as const;
+    const dist = Math.sqrt(
+      keys.reduce((acc, k) => acc + Math.pow((a.atributos![k] || 5) - (b.atributos![k] || 5), 2), 0)
+    );
+    const maxDist = Math.sqrt(5 * 81);
+    score += (1 - dist / maxDist) * 70;
+  }
+  const typeA = (a.tipo || '').toLowerCase().trim();
+  const typeB = (b.tipo || '').toLowerCase().trim();
+  if (typeA && typeA === typeB) score += 20;
+  const grapesA = new Set((a.uvas || []).map((g) => g.toLowerCase().trim()));
+  const grapesB = new Set((b.uvas || []).map((g) => g.toLowerCase().trim()));
+  const overlap = [...grapesA].filter((g) => grapesB.has(g)).length;
+  if (overlap > 0) score += Math.min(10, overlap * 5);
+  return score;
+};
+
+const buildAirimWineDescription = (wine: ScannedWine): string => {
+  const parts = [wine.nombre];
+  if (wine.productor) parts.push(wine.productor);
+  if (wine.anada) parts.push(String(wine.anada));
+  if (wine.region) parts.push(wine.region);
+  if (wine.uvas && wine.uvas.length) parts.push(wine.uvas.join(', '));
+  return parts.filter(Boolean).join(' · ');
+};
 
 interface WineMenuScannerProps {
   restaurantName?: string;
