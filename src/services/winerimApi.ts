@@ -83,16 +83,25 @@ const asRecord = (value: unknown): RawTastingAttributes | null => {
   return value as RawTastingAttributes;
 };
 
+const normalizeTo5 = (raw: unknown): number => {
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return 0;
+  let v = n;
+  if (v > 10) v = v / 20;
+  else if (v > 5) v = v / 2;
+  return Math.max(0, Math.min(5, Math.round(v)));
+};
+
 const normalizeTastingAttributes = (rawWine: RawWinerimWine) => {
   const attrs = asRecord(rawWine.tastingAttributes || rawWine.tasting_attributes || rawWine.atributos);
   if (!attrs) return null;
 
   return {
-    power: Number(attrs.power ?? attrs.potencia ?? 0),
-    acidity: Number(attrs.acidity ?? attrs.acidez ?? 0),
-    fruity: Number(attrs.fruity ?? attrs.afrutado ?? 0),
-    sweetness: Number(attrs.sweetness ?? attrs.dulzura ?? attrs.dulce ?? 0),
-    tannin: Number(attrs.tannin ?? attrs.taninos ?? attrs.tanico ?? 0),
+    power: normalizeTo5(attrs.power ?? attrs.potencia ?? 0),
+    acidity: normalizeTo5(attrs.acidity ?? attrs.acidez ?? 0),
+    fruity: normalizeTo5(attrs.fruity ?? attrs.afrutado ?? 0),
+    sweetness: normalizeTo5(attrs.sweetness ?? attrs.dulzura ?? attrs.dulce ?? 0),
+    tannin: normalizeTo5(attrs.tannin ?? attrs.taninos ?? attrs.tanico ?? 0),
   };
 };
 
