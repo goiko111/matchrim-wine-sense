@@ -176,7 +176,8 @@ Para cada vino proporciona:
 - precio: Precio (solo número)
 - tipo: tinto, blanco, rosado o espumoso
 - uvas: Array con variedades principales
-- descripcion: Breve descripción (máximo 150 palabras) con aromas y notas de cata`;
+- descripcion: Breve descripción (máximo 150 palabras) con aromas y notas de cata
+- posicion: opcional, objeto { "x": number, "y": number } con la posición aproximada del centro de la línea/bloque del vino dentro de la imagen, expresada como porcentajes 0-100 (x=horizontal desde la izquierda, y=vertical desde arriba). Si no puedes estimarla con confianza, omite el campo o pon null.`;
 
     const learnedProfile = profile ? await buildLearnedProfile(supabaseClient, user.id, profile) : null;
     const profile10 = learnedProfile ? profileToScale10(learnedProfile) : null;
@@ -212,7 +213,8 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
       "precio": 24.50,
       "tipo": "tinto",
       "uvas": ["Tempranillo", "Garnacha"],
-      "descripcion": "Breve descripción con aromas y notas"${profile ? `,
+      "descripcion": "Breve descripción con aromas y notas",
+      "posicion": { "x": 42, "y": 17 }${profile ? `,
       "atributos": {
         "potencia": 7,
         "acidez": 6,

@@ -17,6 +17,9 @@ import PairingAnalysisCard from './PairingAnalysisCard';
 interface MatchrimFunctionProps {
   functionType: 'wine-for-dish' | 'dish-for-wine' | 'pairing-check';
   onBack: () => void;
+  initialInput1?: string;
+  initialInput2?: string;
+  autoSubmit?: boolean;
 }
 
 type ExamplePrompt = {
@@ -25,10 +28,10 @@ type ExamplePrompt = {
   input2?: string;
 };
 
-const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBack }) => {
+const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBack, initialInput1, initialInput2, autoSubmit }) => {
   const { user } = useAuth();
-  const [input1, setInput1] = useState('');
-  const [input2, setInput2] = useState('');
+  const [input1, setInput1] = useState(initialInput1 || '');
+  const [input2, setInput2] = useState(initialInput2 || '');
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [profileContext, setProfileContext] = useState<string | null>(null);

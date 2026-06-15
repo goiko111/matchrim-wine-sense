@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle } from "lucide-react";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
@@ -58,7 +58,37 @@ interface ScannedWine {
   } | null;
   compatibilidad?: number | null;
   razon?: string | null;
+  posicion?: { x: number; y: number } | null;
 }
+
+const computeWineSimilarity = (a: ScannedWine, b: ScannedWine): number => {
+  let score = 0;
+  if (a.atributos && b.atributos) {
+    const keys = ['potencia', 'acidez', 'dulzura', 'taninos', 'afrutado'] as const;
+    const dist = Math.sqrt(
+      keys.reduce((acc, k) => acc + Math.pow((a.atributos![k] || 5) - (b.atributos![k] || 5), 2), 0)
+    );
+    const maxDist = Math.sqrt(5 * 81);
+    score += (1 - dist / maxDist) * 70;
+  }
+  const typeA = (a.tipo || '').toLowerCase().trim();
+  const typeB = (b.tipo || '').toLowerCase().trim();
+  if (typeA && typeA === typeB) score += 20;
+  const grapesA = new Set((a.uvas || []).map((g) => g.toLowerCase().trim()));
+  const grapesB = new Set((b.uvas || []).map((g) => g.toLowerCase().trim()));
+  const overlap = [...grapesA].filter((g) => grapesB.has(g)).length;
+  if (overlap > 0) score += Math.min(10, overlap * 5);
+  return score;
+};
+
+const buildAirimWineDescription = (wine: ScannedWine): string => {
+  const parts = [wine.nombre];
+  if (wine.productor) parts.push(wine.productor);
+  if (wine.anada) parts.push(String(wine.anada));
+  if (wine.region) parts.push(wine.region);
+  if (wine.uvas && wine.uvas.length) parts.push(wine.uvas.join(', '));
+  return parts.filter(Boolean).join(' · ');
+};
 
 interface WineMenuScannerProps {
   restaurantName?: string;
@@ -428,11 +458,30 @@ export const WineMenuScanner = ({
               <div className="space-y-4">
                 <div className="relative inline-block">
                   {preview ? (
-                    <img
-                      src={preview}
-                      alt="Preview"
-                      className="max-h-60 mx-auto rounded-lg shadow-lg"
-                    />
+                    <div className="relative inline-block">
+                      <img
+                        src={preview}
+                        alt="Preview"
+                        className="max-h-[60vh] mx-auto rounded-lg shadow-lg"
+                      />
+                      {scannedWines.some((w) => w.posicion && typeof w.posicion.x === 'number' && typeof w.posicion.y === 'number') && (
+                        <div className="absolute inset-0 pointer-events-none">
+                          {scannedWines.map((w, i) =>
+                            w.posicion && typeof w.posicion.x === 'number' && typeof w.posicion.y === 'number' && w.compatibilidad != null ? (
+                              <div
+                                key={`pos-${i}`}
+                                className="absolute -translate-x-1/2 -translate-y-1/2"
+                                style={{ left: `${Math.max(0, Math.min(100, w.posicion.x))}%`, top: `${Math.max(0, Math.min(100, w.posicion.y))}%` }}
+                              >
+                                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold text-white shadow-lg ring-2 ring-white ${getCompatibilityColor(w.compatibilidad)}`}>
+                                  {w.compatibilidad}%
+                                </span>
+                              </div>
+                            ) : null
+                          )}
+                        </div>
+                      )}
+                    </div>
                   ) : convertingPdf ? (
                     <div className="max-h-60 mx-auto p-8 bg-muted rounded-lg flex flex-col items-center gap-4">
                       <Loader2 className="w-12 h-12 text-primary animate-spin" />
@@ -448,6 +497,11 @@ export const WineMenuScanner = ({
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
+                {scannedWines.length > 0 && !scannedWines.some((w) => w.posicion) && (
+                  <p className="text-xs text-muted-foreground">
+                    La IA no ubicó posiciones precisas en la foto; las compatibilidades aparecen en las tarjetas debajo.
+                  </p>
+                )}
               </div>
             ) : loading || convertingPdf ? (
               <div className="space-y-4">
@@ -835,21 +889,73 @@ export const WineMenuScanner = ({
                     </div>
                   )}
 
-                  <Button
-                    onClick={() => saveWineToWishlist(wine, index)}
-                    disabled={savingWineKey === `${wine.nombre}-${index}` || savedWineKeys.has(`${wine.nombre}-${index}`)}
-                    variant="outline"
-                    className="mt-4 w-full gap-2"
-                  >
-                    {savedWineKeys.has(`${wine.nombre}-${index}`) ? (
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                    ) : savingWineKey === `${wine.nombre}-${index}` ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <BookmarkPlus className="h-4 w-4" />
-                    )}
-                    {savedWineKeys.has(`${wine.nombre}-${index}`) ? 'Guardado en Quiero Probar' : 'Guardar en Quiero Probar'}
-                  </Button>
+                  {(() => {
+                    const similar = scannedWines
+                      .map((other, otherIndex) => ({ other, otherIndex }))
+                      .filter(({ otherIndex }) => otherIndex !== index)
+                      .map(({ other, otherIndex }) => ({
+                        other,
+                        otherIndex,
+                        sim: computeWineSimilarity(wine, other),
+                        compat: other.compatibilidad ?? 0,
+                      }))
+                      .filter((x) => x.sim > 30)
+                      .sort((a, b) => (b.sim + b.compat * 0.3) - (a.sim + a.compat * 0.3))
+                      .slice(0, 2);
+                    if (similar.length === 0) return null;
+                    return (
+                      <div className="mt-4 rounded-lg border border-dashed bg-muted/40 p-3">
+                        <p className="text-xs font-semibold text-muted-foreground mb-2">
+                          Si te gusta este vino, prueba en esta carta:
+                        </p>
+                        <ul className="space-y-1 text-sm">
+                          {similar.map(({ other, otherIndex }) => (
+                            <li key={`sim-${index}-${otherIndex}`} className="flex items-center justify-between gap-2">
+                              <span className="truncate">
+                                <span className="font-medium">{other.nombre}</span>
+                                {other.productor ? <span className="text-muted-foreground"> · {other.productor}</span> : null}
+                              </span>
+                              {other.compatibilidad != null && (
+                                <Badge variant="outline" className="shrink-0">{other.compatibilidad}%</Badge>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })()}
+
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                    <Button
+                      onClick={() => saveWineToWishlist(wine, index)}
+                      disabled={savingWineKey === `${wine.nombre}-${index}` || savedWineKeys.has(`${wine.nombre}-${index}`)}
+                      variant="outline"
+                      className="w-full gap-2"
+                    >
+                      {savedWineKeys.has(`${wine.nombre}-${index}`) ? (
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                      ) : savingWineKey === `${wine.nombre}-${index}` ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <BookmarkPlus className="h-4 w-4" />
+                      )}
+                      {savedWineKeys.has(`${wine.nombre}-${index}`) ? 'Guardado' : 'Guardar en Quiero Probar'}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="w-full gap-2"
+                      onClick={() =>
+                        navigate(
+                          `/inteligencia-liquida?function=dish-for-wine&wine=${encodeURIComponent(buildAirimWineDescription(wine))}`
+                        )
+                      }
+                    >
+                      <MessageSquare className="h-4 w-4" />
+                      Preguntar a aiRIM
+                    </Button>
+                  </div>
+
                 </CardContent>
               </Card>
                 );
