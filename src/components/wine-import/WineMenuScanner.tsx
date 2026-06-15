@@ -889,21 +889,73 @@ export const WineMenuScanner = ({
                     </div>
                   )}
 
-                  <Button
-                    onClick={() => saveWineToWishlist(wine, index)}
-                    disabled={savingWineKey === `${wine.nombre}-${index}` || savedWineKeys.has(`${wine.nombre}-${index}`)}
-                    variant="outline"
-                    className="mt-4 w-full gap-2"
-                  >
-                    {savedWineKeys.has(`${wine.nombre}-${index}`) ? (
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                    ) : savingWineKey === `${wine.nombre}-${index}` ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <BookmarkPlus className="h-4 w-4" />
-                    )}
-                    {savedWineKeys.has(`${wine.nombre}-${index}`) ? 'Guardado en Quiero Probar' : 'Guardar en Quiero Probar'}
-                  </Button>
+                  {(() => {
+                    const similar = scannedWines
+                      .map((other, otherIndex) => ({ other, otherIndex }))
+                      .filter(({ otherIndex }) => otherIndex !== index)
+                      .map(({ other, otherIndex }) => ({
+                        other,
+                        otherIndex,
+                        sim: computeWineSimilarity(wine, other),
+                        compat: other.compatibilidad ?? 0,
+                      }))
+                      .filter((x) => x.sim > 30)
+                      .sort((a, b) => (b.sim + b.compat * 0.3) - (a.sim + a.compat * 0.3))
+                      .slice(0, 2);
+                    if (similar.length === 0) return null;
+                    return (
+                      <div className="mt-4 rounded-lg border border-dashed bg-muted/40 p-3">
+                        <p className="text-xs font-semibold text-muted-foreground mb-2">
+                          Si te gusta este vino, prueba en esta carta:
+                        </p>
+                        <ul className="space-y-1 text-sm">
+                          {similar.map(({ other, otherIndex }) => (
+                            <li key={`sim-${index}-${otherIndex}`} className="flex items-center justify-between gap-2">
+                              <span className="truncate">
+                                <span className="font-medium">{other.nombre}</span>
+                                {other.productor ? <span className="text-muted-foreground"> · {other.productor}</span> : null}
+                              </span>
+                              {other.compatibilidad != null && (
+                                <Badge variant="outline" className="shrink-0">{other.compatibilidad}%</Badge>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })()}
+
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                    <Button
+                      onClick={() => saveWineToWishlist(wine, index)}
+                      disabled={savingWineKey === `${wine.nombre}-${index}` || savedWineKeys.has(`${wine.nombre}-${index}`)}
+                      variant="outline"
+                      className="w-full gap-2"
+                    >
+                      {savedWineKeys.has(`${wine.nombre}-${index}`) ? (
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                      ) : savingWineKey === `${wine.nombre}-${index}` ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <BookmarkPlus className="h-4 w-4" />
+                      )}
+                      {savedWineKeys.has(`${wine.nombre}-${index}`) ? 'Guardado' : 'Guardar en Quiero Probar'}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="w-full gap-2"
+                      onClick={() =>
+                        navigate(
+                          `/inteligencia-liquida?function=dish-for-wine&wine=${encodeURIComponent(buildAirimWineDescription(wine))}`
+                        )
+                      }
+                    >
+                      <MessageSquare className="h-4 w-4" />
+                      Preguntar a aiRIM
+                    </Button>
+                  </div>
+
                 </CardContent>
               </Card>
                 );
