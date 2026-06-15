@@ -132,7 +132,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
                 ? {
                     ...cur,
                     matchrim_affinity: aff.affinity,
-                    sensory_attributes: aff.sensory_attributes || null,
+                    sensory_attributes: normalizeSensoryAttributes(aff.sensory_attributes) ?? null,
                   }
                 : cur
             );
