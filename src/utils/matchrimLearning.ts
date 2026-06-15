@@ -27,7 +27,10 @@ const clamp = (value: number, min = 0, max = 5) => Math.max(min, Math.min(max, v
 const normalizeSensoryValue = (value: unknown) => {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) return null;
-  return numeric > 5 ? clamp(numeric / 2) : clamp(numeric);
+  let v = numeric;
+  if (v > 10) v = v / 20; // legacy 0-100
+  else if (v > 5) v = v / 2; // legacy 0-10
+  return clamp(Math.round(v));
 };
 
 const ratingWeight = (rating: Rating) => {
