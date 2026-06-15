@@ -489,15 +489,16 @@ export const WineMenuScanner = ({
                         alt="Preview"
                         className="max-h-[60vh] mx-auto rounded-lg shadow-lg"
                       />
-                      {scannedWines.some((w) => w.posicion && typeof w.posicion.x === 'number' && typeof w.posicion.y === 'number') && (
+                      {scannedWines.some((w) => w.posicion) && (
                         <div className="absolute inset-0 pointer-events-none">
                           {scannedWines.map((w, i) =>
-                            w.posicion && typeof w.posicion.x === 'number' && typeof w.posicion.y === 'number' && w.compatibilidad != null ? (
+                            w.posicion && w.compatibilidad != null ? (
                               <div
                                 key={`pos-${i}`}
-                                className="absolute -translate-x-1/2 -translate-y-1/2"
+                                className="absolute flex items-center gap-1 -translate-y-1/2"
                                 style={{ left: `${Math.max(0, Math.min(100, w.posicion.x))}%`, top: `${Math.max(0, Math.min(100, w.posicion.y))}%` }}
                               >
+                                <span className="inline-block h-0 w-0 border-y-[6px] border-y-transparent border-r-[8px] border-r-white drop-shadow" aria-hidden />
                                 <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold text-white shadow-lg ring-2 ring-white ${getCompatibilityColor(w.compatibilidad)}`}>
                                   {w.compatibilidad}%
                                 </span>
