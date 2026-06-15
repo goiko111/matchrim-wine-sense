@@ -48,10 +48,3 @@ export const buildWinerimCartaUrl = (
   return `${baseUrl.replace(/\/$/, '')}/?${params.toString()}`;
 };
 
-export const getProfileScale10 = (profile: MatchrimProfileLike) => ({
-  potencia: clamp(Math.round(profile.potente * 2), 1, 10),
-  acidez: clamp(Math.round(profile.acidez * 2), 1, 10),
-  dulzura: clamp(Math.round(profile.dulce * 2), 1, 10),
-  taninos: clamp(Math.round(profile.tanico * 2), 1, 10),
-  afrutado: clamp(Math.round(profile.afrutado * 2), 1, 10),
-});
