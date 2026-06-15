@@ -18,6 +18,7 @@ import { LocationSelector } from "@/components/wine-import/LocationSelector";
 import { supabase } from "@/integrations/supabase/client";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
+import { normalizeSensoryAttributes } from "@/utils/sensoryNormalize";
 import {
   Wine,
   Plus,
