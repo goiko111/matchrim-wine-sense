@@ -59,17 +59,17 @@ interface ScannedWine {
   } | null;
   compatibilidad?: number | null;
   razon?: string | null;
-  posicion?: { x: number; y: number } | null;
+  posicion?: { x: number; y: number; width?: number; height?: number; confidence?: number } | null;
 }
 
 const computeWineSimilarity = (a: ScannedWine, b: ScannedWine): number => {
   let score = 0;
   if (a.atributos && b.atributos) {
-    const keys = ['potencia', 'acidez', 'dulzura', 'taninos', 'afrutado'] as const;
+    const keys = SENSORY_KEYS;
     const dist = Math.sqrt(
-      keys.reduce((acc, k) => acc + Math.pow((a.atributos![k] || 5) - (b.atributos![k] || 5), 2), 0)
+      keys.reduce((acc, k) => acc + Math.pow((a.atributos![k] || 3) - (b.atributos![k] || 3), 2), 0)
     );
-    const maxDist = Math.sqrt(5 * 81);
+    const maxDist = Math.sqrt(5 * Math.pow(4, 2));
     score += (1 - dist / maxDist) * 70;
   }
   const typeA = (a.tipo || '').toLowerCase().trim();
@@ -80,6 +80,30 @@ const computeWineSimilarity = (a: ScannedWine, b: ScannedWine): number => {
   const overlap = [...grapesA].filter((g) => grapesB.has(g)).length;
   if (overlap > 0) score += Math.min(10, overlap * 5);
   return score;
+};
+
+const normalizeScannedWine = (wine: ScannedWine): ScannedWine => {
+  const normalizedAttrs = normalizeSensoryAttributes(wine.atributos ?? null);
+  const atributos = normalizedAttrs && (['potencia','acidez','dulzura','taninos','afrutado'] as const).every(k => normalizedAttrs[k] != null)
+    ? {
+        potencia: normalizedAttrs.potencia!,
+        acidez: normalizedAttrs.acidez!,
+        dulzura: normalizedAttrs.dulzura!,
+        taninos: normalizedAttrs.taninos!,
+        afrutado: normalizedAttrs.afrutado!,
+      }
+    : null;
+
+  // Posicion: only keep if confidence >= 0.7 and x/y in 0-100
+  let posicion: ScannedWine['posicion'] = null;
+  const p = wine.posicion;
+  if (p && typeof p.x === 'number' && typeof p.y === 'number'
+      && p.x >= 0 && p.x <= 100 && p.y >= 0 && p.y <= 100
+      && (p.confidence == null || p.confidence >= 0.7)) {
+    posicion = p;
+  }
+
+  return { ...wine, atributos, posicion };
 };
 
 const buildAirimWineDescription = (wine: ScannedWine): string => {
