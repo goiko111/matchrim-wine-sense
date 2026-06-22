@@ -42,10 +42,10 @@ const AppNav = () => {
           <Link to="/" className="flex items-center gap-2">
             <img
               src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
-              alt="Logo Winerim"
+              alt="Logo Matchrim"
               className="h-7 w-7"
             />
-            <span className="font-bold text-xl text-gray-900">Winerim</span>
+            <span className="font-bold text-xl text-gray-900">Matchrim</span>
           </Link>
 
           {/* Navigation Links */}
