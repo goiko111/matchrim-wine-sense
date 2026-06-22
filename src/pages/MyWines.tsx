@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
 import { normalizeSensoryAttributes } from "@/utils/sensoryNormalize";
+import { trackAppEvent } from "@/lib/analytics";
 import {
   Wine,
   Plus,
@@ -303,6 +304,7 @@ const MyWines = () => {
       }
 
       toast.success("Vino añadido exitosamente");
+      trackAppEvent("wine_saved", { source: fromLabelScanner ? "label_scanner" : "manual", status: statusFilter });
       setShowPurchaseDialog(false);
       setShowAddDialog(false);
       resetForm();
@@ -355,6 +357,7 @@ const MyWines = () => {
       if (error) throw error;
 
       toast.success("¡Vino añadido!");
+      trackAppEvent("wine_saved", { source: "manual", status: statusFilter });
       setShowAddDialog(false);
       resetForm();
 
@@ -467,6 +470,11 @@ const MyWines = () => {
           : "Valoración guardada";
       
       toast.success(message);
+      trackAppEvent("wine_rating_added", { rating, status: wine?.status ?? null });
+      if (updateData.use_for_profile_training) {
+        trackAppEvent("profile_learning_updated", { wineId });
+      }
+
 
       supabase.functions
         .invoke("calculate-wine-affinity", {
