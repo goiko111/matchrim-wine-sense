@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
 import { normalizeSensoryAttributes, SENSORY_KEYS } from "@/utils/sensoryNormalize";
+import { trackAppEvent } from "@/lib/analytics";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
@@ -283,6 +284,7 @@ export const WineMenuScanner = ({
     setScanFeedback(null);
 
     try {
+      trackAppEvent("wine_menu_scan_started");
       // Leer el archivo como base64 y esperar a que termine
       const base64File = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
@@ -318,12 +320,14 @@ export const WineMenuScanner = ({
         }
 
         toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
+        trackAppEvent("wine_menu_scan_completed", { count: data.vinos.length });
       } else {
         setScanFeedback("No he encontrado vinos claros en el documento. Prueba con una foto más cercana o con una sección más pequeña de la carta.");
         toast.info("No se encontraron vinos en el documento");
       }
     } catch (error) {
       console.error('Error processing file:', error);
+      trackAppEvent("wine_menu_scan_failed", { error: String(error) });
       const message = error instanceof Error ? error.message : 'Error al procesar el documento';
       setScanFeedback(`${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
       toast.error(message);
@@ -418,6 +422,7 @@ export const WineMenuScanner = ({
 
       setSavedWineKeys((currentKeys) => new Set(currentKeys).add(saveKey));
       toast.success(`${wine.nombre} guardado en Quiero Probar`);
+      trackAppEvent("wine_saved", { source: "wine_menu_scanner" });
     } catch (error) {
       console.error("Error saving scanned wine:", error);
       toast.error("No se pudo guardar el vino");
