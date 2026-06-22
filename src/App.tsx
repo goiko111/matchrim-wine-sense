@@ -38,7 +38,7 @@ const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 function PageFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20">
-      <p className="text-muted-foreground">Cargando Winerim...</p>
+      <p className="text-muted-foreground">Cargando Matchrim...</p>
     </div>
   );
 }

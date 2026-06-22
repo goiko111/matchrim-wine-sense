@@ -55,10 +55,10 @@ const Header = () => {
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <img
                 src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
-                alt="Logo Winerim"
+                alt="Logo Matchrim"
                 className="h-8 w-8"
               />
-              <h1 className="text-xl font-bold text-red-900">Winerim</h1>
+              <h1 className="text-xl font-bold text-red-900">Matchrim</h1>
             </div>
             {!user && (
               <Button
