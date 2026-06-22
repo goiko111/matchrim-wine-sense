@@ -154,6 +154,29 @@ export function AdminAnalytics() {
         </CardContent>
       </Card>
 
+      <Card className="md:col-span-2">
+        <CardHeader>
+          <CardTitle>Eventos de producto (últimos 30 días)</CardTitle>
+          <CardDescription>
+            Escaneos completados, vinos guardados y consultas a aiRIM
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={eventTrendData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="scans" stroke="#7f1d1d" strokeWidth={2} />
+              <Line type="monotone" dataKey="saves" stroke="#16a34a" strokeWidth={2} />
+              <Line type="monotone" dataKey="airim" stroke="#2563eb" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Tipos de Vino Preferidos</CardTitle>
