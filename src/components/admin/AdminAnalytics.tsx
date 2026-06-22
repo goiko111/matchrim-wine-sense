@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, LineChart, Line } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const COLORS = ["#7f1d1d", "#991b1b", "#b91c1c", "#dc2626", "#ef4444", "#f87171"];
@@ -11,6 +11,9 @@ export function AdminAnalytics() {
   const [wineTypeData, setWineTypeData] = useState<any[]>([]);
   const [quizProfileData, setQuizProfileData] = useState<any[]>([]);
   const [priceRangeData, setPriceRangeData] = useState<any[]>([]);
+  const [eventTrendData, setEventTrendData] = useState<any[]>([]);
+
+
 
   useEffect(() => {
     fetchAnalytics();
