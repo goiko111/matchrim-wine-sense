@@ -31,7 +31,7 @@ const MobileBottomNav = () => {
   const commonLinks: BottomNavLink[] = [
     { path: '/', label: t('nav.home'), icon: Home },
     { path: '/matchrim', label: t('nav.test'), icon: Wine },
-    { path: '/usar-matchrim', label: t('nav.code'), icon: ScanLine },
+    { path: '/escanear', label: 'Escanear', icon: ScanLine },
   ];
 
   const nativeLinks: BottomNavLink[] = [

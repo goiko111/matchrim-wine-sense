@@ -50,6 +50,39 @@ export type Database = {
         }
         Relationships: []
       }
+      app_events: {
+        Row: {
+          app_version: string | null
+          created_at: string
+          event_name: string
+          id: string
+          metadata: Json
+          platform: string | null
+          route: string | null
+          user_id: string | null
+        }
+        Insert: {
+          app_version?: string | null
+          created_at?: string
+          event_name: string
+          id?: string
+          metadata?: Json
+          platform?: string | null
+          route?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          app_version?: string | null
+          created_at?: string
+          event_name?: string
+          id?: string
+          metadata?: Json
+          platform?: string | null
+          route?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       classification_history: {
         Row: {
           acidez: number

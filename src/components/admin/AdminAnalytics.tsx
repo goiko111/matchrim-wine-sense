@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, LineChart, Line } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const COLORS = ["#7f1d1d", "#991b1b", "#b91c1c", "#dc2626", "#ef4444", "#f87171"];
@@ -11,6 +11,9 @@ export function AdminAnalytics() {
   const [wineTypeData, setWineTypeData] = useState<any[]>([]);
   const [quizProfileData, setQuizProfileData] = useState<any[]>([]);
   const [priceRangeData, setPriceRangeData] = useState<any[]>([]);
+  const [eventTrendData, setEventTrendData] = useState<any[]>([]);
+
+
 
   useEffect(() => {
     fetchAnalytics();
@@ -77,6 +80,33 @@ export function AdminAnalytics() {
         ];
         setQuizProfileData(profileChartData);
       }
+
+      // Product analytics: events in the last 30 days
+      const since = new Date();
+      since.setDate(since.getDate() - 30);
+      const { data: events } = await supabase
+        .from("app_events")
+        .select("event_name, created_at")
+        .gte("created_at", since.toISOString())
+        .limit(5000);
+
+      if (events) {
+        const buckets: Record<string, Record<string, number>> = {};
+        events.forEach((ev: any) => {
+          const day = new Date(ev.created_at).toISOString().slice(0, 10);
+          if (!buckets[day]) buckets[day] = {};
+          buckets[day][ev.event_name] = (buckets[day][ev.event_name] || 0) + 1;
+        });
+        const trend = Object.entries(buckets)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([day, names]) => ({
+            day: day.slice(5),
+            scans: (names["wine_menu_scan_completed"] || 0) + (names["food_scan_completed"] || 0) + (names["wine_label_scan_completed"] || 0),
+            saves: names["wine_saved"] || 0,
+            airim: names["airim_question_completed"] || 0,
+          }));
+        setEventTrendData(trend);
+      }
     } catch (error) {
       console.error("Error fetching analytics:", error);
     } finally {
@@ -116,10 +146,33 @@ export function AdminAnalytics() {
             <BarChart data={quizProfileData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="caracteristica" />
-              <YAxis domain={[0, 10]} />
+              <YAxis domain={[0, 5]} ticks={[0,1,2,3,4,5]} />
               <Tooltip />
               <Bar dataKey="valor" fill="#7f1d1d" radius={[8, 8, 0, 0]} />
             </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      <Card className="md:col-span-2">
+        <CardHeader>
+          <CardTitle>Eventos de producto (últimos 30 días)</CardTitle>
+          <CardDescription>
+            Escaneos completados, vinos guardados y consultas a aiRIM
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={eventTrendData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="scans" stroke="#7f1d1d" strokeWidth={2} />
+              <Line type="monotone" dataKey="saves" stroke="#16a34a" strokeWidth={2} />
+              <Line type="monotone" dataKey="airim" stroke="#2563eb" strokeWidth={2} />
+            </LineChart>
           </ResponsiveContainer>
         </CardContent>
       </Card>

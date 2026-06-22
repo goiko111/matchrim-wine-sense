@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { normalizeSensoryAttributes } from "@/utils/sensoryNormalize";
+import { trackAppEvent } from "@/lib/analytics";
 
 interface ExtractedWineData {
   nombre: string;
@@ -67,6 +68,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
   };
 
   const processImage = async (file: File) => {
+    trackAppEvent("wine_label_scan_started");
     try {
       const base64Image = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
@@ -89,6 +91,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
 
       const wine: ExtractedWineData = data.wine;
       toast.success("✨ Etiqueta identificada");
+      trackAppEvent("wine_label_scan_completed", { name: wine.nombre });
 
       // Search bottle image (best-effort)
       try {
@@ -145,6 +148,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
       }
     } catch (error) {
       console.error('Error processing image:', error);
+      trackAppEvent("wine_label_scan_failed", { error: String(error) });
       toast.error("Error al procesar la imagen");
       setLoading(false);
     }
