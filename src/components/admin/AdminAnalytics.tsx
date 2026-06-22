@@ -80,6 +80,33 @@ export function AdminAnalytics() {
         ];
         setQuizProfileData(profileChartData);
       }
+
+      // Product analytics: events in the last 30 days
+      const since = new Date();
+      since.setDate(since.getDate() - 30);
+      const { data: events } = await supabase
+        .from("app_events")
+        .select("event_name, created_at")
+        .gte("created_at", since.toISOString())
+        .limit(5000);
+
+      if (events) {
+        const buckets: Record<string, Record<string, number>> = {};
+        events.forEach((ev: any) => {
+          const day = new Date(ev.created_at).toISOString().slice(0, 10);
+          if (!buckets[day]) buckets[day] = {};
+          buckets[day][ev.event_name] = (buckets[day][ev.event_name] || 0) + 1;
+        });
+        const trend = Object.entries(buckets)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([day, names]) => ({
+            day: day.slice(5),
+            scans: (names["wine_menu_scan_completed"] || 0) + (names["food_scan_completed"] || 0) + (names["wine_label_scan_completed"] || 0),
+            saves: names["wine_saved"] || 0,
+            airim: names["airim_question_completed"] || 0,
+          }));
+        setEventTrendData(trend);
+      }
     } catch (error) {
       console.error("Error fetching analytics:", error);
     } finally {
