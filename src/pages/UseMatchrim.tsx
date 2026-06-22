@@ -25,6 +25,7 @@ import { buildAuthRedirectPath } from '@/utils/navigation';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
 import { AlertCircle, BookmarkPlus, CheckCircle, ExternalLink, Loader2, MapPin, ScanLine, Sparkles, Wine } from 'lucide-react';
 import { toast } from 'sonner';
+import { trackAppEvent } from '@/lib/analytics';
 
 const WineMenuScanner = lazy(() => import('@/components/wine-import/WineMenuScanner'));
 
@@ -310,9 +311,11 @@ const UseMatchrim = () => {
         toast.info('La API de Winerim no devolvió vinos para este perfil');
       } else {
         toast.success(`${wines.length} vinos filtrados desde Winerim`);
+        trackAppEvent('winerim_wines_loaded', { count: wines.length });
       }
     } catch (error) {
       console.error('Error loading Winerim wines:', error);
+      trackAppEvent('winerim_wines_failed', { error: String(error) });
       setWinerimError(getErrorMessage(error, 'No se pudo cargar la carta Winerim'));
       toast.error('No se pudo cargar la carta Winerim');
     } finally {
