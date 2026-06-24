@@ -225,3 +225,141 @@ export const fetchWinesByAttributes = async (
 
   return results;
 };
+
+// ----------------------------------------------------------------------------
+// Matchrim recommendations endpoint (motor de afinidad: vinos/uvas/regiones ya
+// cocinados por el backend, sin "restaurante falso" ni agregación en cliente).
+// ----------------------------------------------------------------------------
+
+export type MatchrimRegime = 'versatil' | 'definido' | 'nicho';
+
+export interface MatchrimCategory {
+  name: string;
+  lift: number;
+  compat: number;
+  support: number;
+  score: number;
+}
+
+export interface MatchrimCategoryTier {
+  home: MatchrimCategory[];
+  detail: MatchrimCategory[];
+}
+
+export interface MatchrimWineTier {
+  home: WinerimWineWithMatch[];
+  detail: WinerimWineWithMatch[];
+}
+
+export interface MatchrimHeadline {
+  count: number;
+  kind: 'compatibles' | 'afines';
+  exploreMore: boolean;
+}
+
+export interface MatchrimTotals {
+  compatibleUniverse: number;
+  signal: number;
+  bandUsed: number;
+}
+
+export interface MatchrimRecommendations {
+  version: string;
+  metric: string;
+  profile: { power: number; acidity: number; sweetness: number; tannin: number; fruity: number };
+  regime: MatchrimRegime;
+  palateDefinitionScore: number;
+  headline: MatchrimHeadline;
+  totals: MatchrimTotals;
+  grapes: MatchrimCategoryTier;
+  regions: MatchrimCategoryTier;
+  styles: { home: MatchrimCategory[] };
+  wines: MatchrimWineTier;
+}
+
+const normalizeCategories = (value: unknown): MatchrimCategory[] => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((raw) => {
+      const record = asRecord(raw);
+      if (!record) return null;
+      const name = stringValue(record.name);
+      if (!name) return null;
+      return {
+        name,
+        lift: Number(record.lift) || 0,
+        compat: Number(record.compat) || 0,
+        support: Number(record.support) || 0,
+        score: Number(record.score) || 0,
+      };
+    })
+    .filter((category): category is MatchrimCategory => category !== null);
+};
+
+const normalizeWineTier = (value: unknown): MatchrimWineTier => {
+  const record = asRecord(value);
+  const home = record && Array.isArray(record.home) ? record.home : [];
+  const detail = record && Array.isArray(record.detail) ? record.detail : [];
+  return {
+    home: home.map((wine, index) => normalizeWinerimWine(wine as RawWinerimWine, index)),
+    detail: detail.map((wine, index) => normalizeWinerimWine(wine as RawWinerimWine, index)),
+  };
+};
+
+const normalizeCategoryTier = (value: unknown): MatchrimCategoryTier => {
+  const record = asRecord(value);
+  return {
+    home: normalizeCategories(record?.home),
+    detail: normalizeCategories(record?.detail),
+  };
+};
+
+/**
+ * Fetch cooked recommendations (regime + significant grapes/regions/styles +
+ * wines) for a sensory profile. Replaces fetchWinesByAttributes + client-side
+ * aggregation for the home discovery flow.
+ */
+export const fetchMatchrimRecommendations = async (
+  quizResult: QuizResult,
+  options: { signal?: AbortSignal } = {}
+): Promise<MatchrimRecommendations> => {
+  if (!WINERIM_API_URL) {
+    throw new Error('Winerim API not configured');
+  }
+
+  const params = new URLSearchParams({
+    power: quizResult.potente.toString(),
+    acidity: quizResult.acidez.toString(),
+    sweetness: quizResult.dulce.toString(),
+    tannin: quizResult.tanico.toString(),
+    fruity: quizResult.afrutado.toString(),
+  });
+
+  const url = `${WINERIM_API_URL.replace(/\/$/, '')}/api/v1/matchrim/recommendations?${params}`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    signal: options.signal,
+    headers: { Accept: 'application/json' },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Matchrim API error: ${response.status} ${response.statusText}`);
+  }
+
+  const data = (await response.json()) as Record<string, unknown>;
+
+  return {
+    version: String(data.version ?? '1'),
+    metric: String(data.metric ?? ''),
+    profile: data.profile as MatchrimRecommendations['profile'],
+    regime: (data.regime as MatchrimRegime) ?? 'versatil',
+    palateDefinitionScore: Number(data.palateDefinitionScore) || 0,
+    headline: data.headline as MatchrimHeadline,
+    totals: data.totals as MatchrimTotals,
+    grapes: normalizeCategoryTier(data.grapes),
+    regions: normalizeCategoryTier(data.regions),
+    styles: { home: normalizeCategories(asRecord(data.styles)?.home) },
+    wines: normalizeWineTier(data.wines),
+  };
+};

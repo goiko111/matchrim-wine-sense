@@ -20,11 +20,10 @@ import {
   generateRegionRecommendations
 } from '@/utils/profileUtils';
 import { cleanWineStyleName } from '@/utils/wineStyleUtils';
-import { fetchWinesByAttributes } from '@/services/winerimApi';
+import { fetchMatchrimRecommendations } from '@/services/winerimApi';
 import WineCard from './WineCard';
 import GrapeCard from './GrapeCard';
 import RegionCard from './RegionCard';
-import { aggregateGrapes, aggregateRegions, filterWinesByGrape, filterWinesByRegion } from '@/utils/winerimDataAggregation';
 import MatchrimPassport from './MatchrimPassport';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 
@@ -96,9 +95,9 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
   const [countryOverrides, setCountryOverrides] = useState<Record<string, string>>({});
 
-  // Estado para tracking de selección de uvas/regiones
-  const [selectedGrape, setSelectedGrape] = useState<string | null>(null);
-  const [selectedRegion, setSelectedRegion] = useState<{ region: string; country: string } | null>(null);
+  // Estado "ver más" de uvas/regiones (tier home → detail)
+  const [showAllGrapes, setShowAllGrapes] = useState(false);
+  const [showAllRegions, setShowAllRegions] = useState(false);
 
   // Ref para scroll a sección de vinos
   const winesRef = React.useRef<HTMLDivElement>(null);
@@ -115,9 +114,9 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     }
   };
 
-  const { data: winerimWines = [], isLoading: isLoadingWinerimWines, error: winerimError } = useQuery({
-    queryKey: ['winerim-wines', result.potente, result.acidez, result.dulce, result.tanico, result.afrutado],
-    queryFn: () => fetchWinesByAttributes(result),
+  const { data: reco, isLoading: isLoadingWinerimWines, error: winerimError } = useQuery({
+    queryKey: ['matchrim-reco', result.potente, result.acidez, result.dulce, result.tanico, result.afrutado],
+    queryFn: () => fetchMatchrimRecommendations(result),
     staleTime: Infinity,
     gcTime: Infinity,
     refetchOnMount: false,
@@ -149,27 +148,19 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const emotionalDescription = useMemo(() => generateEmotionalDescription(result), [result.potente, result.acidez, result.dulce, result.tanico, result.afrutado]);
   const wineStyles = useMemo(() => generateWineStyles(result), [result.potente, result.acidez, result.dulce, result.tanico, result.afrutado]);
 
-  // DEPRECATED: Usar datos de winerim-backend en lugar de generación local
-  // const recommendedGrapes = useMemo(() => generateGrapeRecommendations(result), [result.potente, result.acidez, result.dulce, result.tanico, result.afrutado]);
-  // const recommendedRegions = useMemo(() => generateRegionRecommendations(result), [result.potente, result.acidez, result.dulce, result.tanico, result.afrutado]);
+  // Datos cocinados por el backend (régimen + uvas/regiones/estilos significativos).
+  const regime = reco?.regime ?? null;
+  const isVersatil = regime === 'versatil';
+  const headline = reco?.headline ?? null;
+  const homeWines = reco?.wines.home ?? [];
 
-  // Agregar datos de winerim-backend
-  const aggregatedGrapes = useMemo(() => aggregateGrapes(winerimWines), [winerimWines]);
-  const aggregatedRegions = useMemo(() => aggregateRegions(winerimWines), [winerimWines]);
-
-  // NO filtrar vinos, solo mostrar todos (el resaltado se hace visualmente)
-  const displayedWines = winerimWines;
-
-  // Calcular cuántos vinos coinciden con la selección (para el mensaje)
-  const matchingWinesCount = useMemo(() => {
-    if (selectedGrape) {
-      return filterWinesByGrape(winerimWines, selectedGrape).length;
-    }
-    if (selectedRegion) {
-      return filterWinesByRegion(winerimWines, selectedRegion.region, selectedRegion.country).length;
-    }
-    return 0;
-  }, [winerimWines, selectedGrape, selectedRegion]);
+  // Uvas/regiones por afinidad (vacías en modo versátil); "ver más" → tier detalle.
+  const grapesHome = isVersatil ? [] : (reco?.grapes.home ?? []);
+  const grapesDetail = isVersatil ? [] : (reco?.grapes.detail ?? []);
+  const regionsHome = isVersatil ? [] : (reco?.regions.home ?? []);
+  const regionsDetail = isVersatil ? [] : (reco?.regions.detail ?? []);
+  const shownGrapes = showAllGrapes ? grapesDetail : grapesHome;
+  const shownRegions = showAllRegions ? regionsDetail : regionsHome;
 
   // Descripciones detalladas de uvas basadas en el perfil
   const getGrapeDescription = (grape: string): string => {
@@ -725,55 +716,6 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
 
   const sortedWineCountries = Object.keys(winesByCountry).sort();
 
-  // Funciones para handle click en tarjetas
-  const handleGrapeClick = (grapeName: string) => {
-    // Si ya está seleccionada, deseleccionar
-    if (selectedGrape === grapeName) {
-      setSelectedGrape(null);
-    } else {
-      // Seleccionar la nueva uva y deseleccionar región
-      setSelectedGrape(grapeName);
-      setSelectedRegion(null);
-      // Scroll suave al primer vino que coincide con la uva seleccionada
-      setTimeout(() => {
-        const firstMatchingWine = winerimWines.find(wine =>
-          wine.grapes?.some(g => g.trim() === grapeName)
-        );
-        if (firstMatchingWine) {
-          const element = wineRefs.current.get(firstMatchingWine.id);
-          element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-          // Fallback al inicio de la sección si no encuentra vino
-          winesRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
-    }
-  };
-
-  const handleRegionClick = (region: string, country: string) => {
-    // Si ya está seleccionada, deseleccionar
-    if (selectedRegion?.region === region && selectedRegion?.country === country) {
-      setSelectedRegion(null);
-    } else {
-      // Seleccionar la nueva región y deseleccionar uva
-      setSelectedRegion({ region, country });
-      setSelectedGrape(null);
-      // Scroll suave al primer vino que coincide con la región seleccionada
-      setTimeout(() => {
-        const firstMatchingWine = winerimWines.find(wine =>
-          wine.region === region && wine.country === country
-        );
-        if (firstMatchingWine) {
-          const element = wineRefs.current.get(firstMatchingWine.id);
-          element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-          // Fallback al inicio de la sección si no encuentra vino
-          winesRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
-    }
-  };
-
   return (
     <div className="flex flex-col max-w-4xl mx-auto p-6">
       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-md mb-8">
@@ -852,75 +794,116 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
           )}
         </div>
 
-        {/* Sección de Uvas desde datos de Winerim */}
-        <div className="mb-8">
-          <h3 className="text-2xl font-bold text-red-800 flex items-center gap-3 mb-6">
-            <span className="text-4xl">🍇</span>
-            <span>Uvas en vinos que coinciden contigo</span>
-          </h3>
-          <p className="text-gray-700 mb-6 text-lg">
-            Estas son las uvas más comunes en los vinos que coinciden con tu perfil:
-          </p>
+        {/* Modo versátil: paladar abierto, sin uvas/regiones características */}
+        {isVersatil && !isLoadingWinerimWines && (
+          <div className="mb-8 bg-gradient-to-br from-amber-50 to-red-50 border-2 border-amber-200 rounded-2xl p-6">
+            <h3 className="text-2xl font-bold text-red-800 flex items-center gap-3 mb-3">
+              <span className="text-4xl">🌈</span>
+              <span>Tienes un paladar abierto</span>
+            </h3>
+            <p className="text-gray-700 text-lg">
+              Tu perfil encaja con una variedad muy amplia de vinos, sin inclinarte por uvas
+              o regiones concretas. En lugar de encasillarte, te proponemos explorar por estilos
+              y descubrir una selección variada pensada para tu paladar.
+            </p>
+          </div>
+        )}
 
-          {isLoadingWinerimWines ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-red-600" />
-              <span className="ml-3 text-gray-600">Buscando uvas...</span>
-            </div>
-          ) : aggregatedGrapes.length === 0 ? (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
-              <p className="text-gray-600">No encontramos información de uvas en los vinos disponibles.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {aggregatedGrapes.map((grape, index) => (
-                <GrapeCard
-                  key={grape.name}
-                  grape={grape.name}
-                  count={grape.count}
-                  onClick={() => handleGrapeClick(grape.name)}
-                  isHighlighted={selectedGrape === grape.name}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Uvas afines a tu paladar (oculto en modo versátil) */}
+        {!isVersatil && (
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-red-800 flex items-center gap-3 mb-6">
+              <span className="text-4xl">🍇</span>
+              <span>Uvas afines a tu paladar</span>
+            </h3>
+            <p className="text-gray-700 mb-6 text-lg">
+              Uvas especialmente características de tu perfil (no las más abundantes, sino las que más te definen):
+            </p>
 
-        {/* Sección de Regiones desde datos de Winerim */}
-        <div className="mb-8">
-          <h3 className="text-2xl font-bold text-red-800 flex items-center gap-3 mb-6">
-            <span className="text-4xl">🌍</span>
-            <span>Regiones de los vinos que te recomendamos</span>
-          </h3>
-          <p className="text-gray-700 mb-6 text-lg">
-            Estas son las regiones más comunes en los vinos que coinciden con tu perfil:
-          </p>
+            {isLoadingWinerimWines ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-red-600" />
+                <span className="ml-3 text-gray-600">Buscando uvas...</span>
+              </div>
+            ) : shownGrapes.length === 0 ? (
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
+                <p className="text-gray-600">No encontramos uvas especialmente afines a tu perfil.</p>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {shownGrapes.map((grape) => (
+                    <GrapeCard
+                      key={grape.name}
+                      grape={grape.name}
+                      affinity={grape.compat}
+                      support={grape.support}
+                    />
+                  ))}
+                </div>
+                {grapesDetail.length > grapesHome.length && (
+                  <div className="text-center mt-4">
+                    <Button
+                      variant="outline"
+                      className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                      onClick={() => setShowAllGrapes((v) => !v)}
+                    >
+                      {showAllGrapes ? 'Ver menos' : `Ver más uvas (${grapesDetail.length})`}
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
-          {isLoadingWinerimWines ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-red-600" />
-              <span className="ml-3 text-gray-600">Buscando regiones...</span>
-            </div>
-          ) : aggregatedRegions.length === 0 ? (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
-              <p className="text-gray-600">No encontramos información de regiones en los vinos disponibles.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {aggregatedRegions.map((region, index) => (
-                <RegionCard
-                  key={`${region.region}-${region.country}`}
-                  region={region.region}
-                  country={region.country}
-                  count={region.count}
-                  avgMatch={region.avgMatchPercentage}
-                  onClick={() => handleRegionClick(region.region, region.country)}
-                  isHighlighted={selectedRegion?.region === region.region && selectedRegion?.country === region.country}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Regiones afines a tu paladar (oculto en modo versátil) */}
+        {!isVersatil && (
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-red-800 flex items-center gap-3 mb-6">
+              <span className="text-4xl">🌍</span>
+              <span>Regiones afines a tu paladar</span>
+            </h3>
+            <p className="text-gray-700 mb-6 text-lg">
+              Regiones cuyos vinos sintonizan especialmente con tu perfil:
+            </p>
+
+            {isLoadingWinerimWines ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-red-600" />
+                <span className="ml-3 text-gray-600">Buscando regiones...</span>
+              </div>
+            ) : shownRegions.length === 0 ? (
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
+                <p className="text-gray-600">No encontramos regiones especialmente afines a tu perfil.</p>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {shownRegions.map((region) => (
+                    <RegionCard
+                      key={region.name}
+                      region={region.name}
+                      affinity={region.compat}
+                      support={region.support}
+                    />
+                  ))}
+                </div>
+                {regionsDetail.length > regionsHome.length && (
+                  <div className="text-center mt-4">
+                    <Button
+                      variant="outline"
+                      className="border-green-300 text-green-700 hover:bg-green-50"
+                      onClick={() => setShowAllRegions((v) => !v)}
+                    >
+                      {showAllRegions ? 'Ver menos' : `Ver más regiones (${regionsDetail.length})`}
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
         <div className="mb-8">
           <h3 className="text-xl font-semibold text-red-800 flex items-center">
@@ -961,10 +944,10 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
               <p className="text-red-700 mb-2">Error al cargar vinos de Winerim</p>
               <p className="text-sm text-gray-600">Por favor, inténtalo de nuevo más tarde</p>
             </div>
-          ) : winerimWines.length === 0 ? (
+          ) : homeWines.length === 0 ? (
             <div className="text-center py-8 bg-red-50 rounded-lg">
               <p className="text-gray-700">
-                No se encontraron vinos con estos atributos exactos en nuestra base de datos.
+                No encontramos vinos para tu perfil en este momento.
               </p>
               <p className="text-sm text-gray-600 mt-2">
                 Prueba a explorar otros estilos de vino que podrían gustarte.
@@ -973,30 +956,25 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
           ) : (
             <div className="space-y-4">
               <p className="text-sm text-gray-600 mb-4">
-                {selectedGrape || selectedRegion ? (
+                {headline?.kind === 'afines' ? (
                   <>
-                    <span className="font-semibold text-red-700">{matchingWinesCount}</span> vino{matchingWinesCount !== 1 ? 's' : ''}
-                    {selectedGrape && <> contiene{matchingWinesCount !== 1 ? 'n' : ''} la uva <span className="font-semibold text-purple-700">{selectedGrape}</span></>}
-                    {selectedRegion && <> {matchingWinesCount !== 1 ? 'son' : 'es'} de <span className="font-semibold text-green-700">{selectedRegion.region}, {selectedRegion.country}</span></>}
-                    {' '}(resaltado{matchingWinesCount !== 1 ? 's' : ''} abajo)
+                    Hemos seleccionado <span className="font-semibold text-red-700">{homeWines.length}</span> vinos especialmente afines a tu perfil
+                    {headline?.exploreMore && (
+                      <> — y hay <span className="font-semibold text-red-700">{headline.count.toLocaleString('es-ES')}</span> más para explorar</>
+                    )}.
                   </>
                 ) : (
                   <>
-                    Encontramos <span className="font-semibold text-red-700">{winerimWines.length}</span> vino{winerimWines.length !== 1 ? 's' : ''} que coinciden exactamente con tus preferencias sensoriales.
+                    Encajas con <span className="font-semibold text-red-700">{(headline?.count ?? homeWines.length).toLocaleString('es-ES')}</span> vinos compatibles. Esta es una selección variada para ti:
                   </>
                 )}
               </p>
               <div className="grid grid-cols-1 gap-4">
-                {displayedWines.map((wine, index) => (
+                {homeWines.map((wine, index) => (
                   <WineCard
                     key={wine.id}
                     wine={wine}
                     index={index}
-                    isHighlighted={
-                      (selectedGrape && wine.grapes?.some(g => g.trim() === selectedGrape)) ||
-                      (selectedRegion && wine.region === selectedRegion.region && wine.country === selectedRegion.country) ||
-                      false
-                    }
                     setWineRef={setWineRef}
                   />
                 ))}
