@@ -91,8 +91,6 @@ const generateEmotionalDescription = (result: QuizResult): string => {
 
 const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart, isLoggedIn, returnTo }) => {
   const navigate = useNavigate();
-  const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
-  const [isLoadingStyles, setIsLoadingStyles] = useState(true);
   const [countryOverrides, setCountryOverrides] = useState<Record<string, string>>({});
 
   // Estado "ver más" de uvas/regiones (tier home → detail)
@@ -146,13 +144,13 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   // Generar datos personalizados usando las funciones consistentes
   const profileName = useMemo(() => generateMatchrimName(result), [result.potente, result.acidez, result.dulce, result.tanico, result.afrutado]);
   const emotionalDescription = useMemo(() => generateEmotionalDescription(result), [result.potente, result.acidez, result.dulce, result.tanico, result.afrutado]);
-  const wineStyles = useMemo(() => generateWineStyles(result), [result.potente, result.acidez, result.dulce, result.tanico, result.afrutado]);
 
   // Datos cocinados por el backend (régimen + uvas/regiones/estilos significativos).
   const regime = reco?.regime ?? null;
   const isVersatil = regime === 'versatil';
   const headline = reco?.headline ?? null;
   const homeWines = reco?.wines.home ?? [];
+  const styles = reco?.styles.home ?? [];
 
   // Uvas/regiones por afinidad (vacías en modo versátil); "ver más" → tier detalle.
   const grapesHome = isVersatil ? [] : (reco?.grapes.home ?? []);
@@ -280,43 +278,6 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
       .replace(/-+/g, '-')
       .trim();
   };
-
-  // Fetch wine style details from database
-  useEffect(() => {
-    const fetchStyleDetails = async () => {
-      if (wineStyles.length === 0) {
-        setIsLoadingStyles(false);
-        return;
-      }
-
-      try {
-        // Fetch all wine styles from database
-        const { data, error } = await supabase
-          .from('wine_styles')
-          .select('*');
-
-        if (error) throw error;
-
-        // Filter styles that match wineStyles array after cleaning names
-        const matchedStyles = data?.filter(style =>
-          wineStyles.includes(cleanWineStyleName(style.name))
-        ) ?? [];
-
-        // Ordenar según el orden de wineStyles
-        const ordered = wineStyles
-          .map(styleName => matchedStyles.find(s => cleanWineStyleName(s.name) === styleName))
-          .filter(Boolean) as WineStyle[];
-
-        setStyleDetails(ordered);
-      } catch (error) {
-        console.error('Error fetching wine styles:', error);
-      } finally {
-        setIsLoadingStyles(false);
-      }
-    };
-
-    fetchStyleDetails();
-  }, [wineStyles]);
 
   // Extract country from wine recommendation string and return specific flag
   const getCountryFlag = (wineString: string): string => {
@@ -748,48 +709,38 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
             <span className="text-2xl">🍷</span> Estilos que encajan contigo
           </h3>
 
-          {isLoadingStyles ? (
+          {isLoadingWinerimWines ? (
             <div className="flex justify-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-900"></div>
             </div>
+          ) : styles.length === 0 ? (
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
+              <p className="text-gray-600">No encontramos estilos especialmente afines a tu perfil.</p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-              {styleDetails.map((style) => {
-                const cleanedName = cleanWineStyleName(style.name);
-                const config = getCardConfig(cleanedName);
-                const IconComponent = config.icon;
-
-                return (
-                  <Card
-                    key={style.id}
-                    className={`${config.bg} ${config.border} border-2 hover:border-red-300 hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer transform hover:scale-105 hover:shadow-red-100/50 group relative`}
-                    onClick={() => navigate(`/wine-styles/${generateSlug(style.name)}`)}
-                  >
-                    <CardContent className="p-6 relative">
-                      <div className="flex flex-col items-center text-center">
-                        <div className={`w-16 h-16 ${config.iconBg} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md group-hover:shadow-lg`}>
-                          <IconComponent className={`w-8 h-8 ${config.iconColor}`} />
-                        </div>
-
-                        <h3 className="font-bold text-lg mb-3 text-gray-900 group-hover:text-red-700 transition-colors">
-                          {cleanedName}
-                        </h3>
-
-                        <p className="text-sm text-gray-700 leading-relaxed text-justify mb-4">
-                          {style.description || 'Descripción no disponible'}
-                        </p>
-
-                        <div className="flex items-center justify-center text-red-600 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <span>Ver detalles</span>
-                          <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
-                        </div>
+              {styles.map((style) => (
+                <Card
+                  key={style.name}
+                  className="bg-red-50 border-red-100 border-2 rounded-2xl overflow-hidden"
+                >
+                  <CardContent className="p-6">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-16 h-16 bg-red-400 rounded-full flex items-center justify-center mb-4 shadow-md">
+                        <Wine className="w-8 h-8 text-white" />
                       </div>
 
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+                      <h3 className="font-bold text-lg mb-2 text-gray-900 capitalize">
+                        {style.name}
+                      </h3>
+
+                      <p className="text-xs text-gray-500">
+                        afinidad {Math.round(style.compat * 100)}% · {style.support.toLocaleString('es-ES')} {style.support === 1 ? 'vino' : 'vinos'}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           )}
         </div>
