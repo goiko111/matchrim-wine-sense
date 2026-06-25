@@ -183,15 +183,15 @@ export const fetchWinesByAttributes = async (
 ): Promise<WinerimWineWithMatch[]> => {
   const restaurantUuid = options.restaurantUuid?.trim() || WINERIM_RESTAURANT_UUID;
 
-  if (!WINERIM_API_URL || !restaurantUuid) {
-    throw new Error('Winerim API not configured');
+  if (!restaurantUuid) {
+    throw new Error('Winerim restaurant UUID not configured');
   }
 
-  console.log('🔍 [Winerim] Buscando vinos con backend matching');
+  console.log('🔍 [Winerim] Buscando vinos vía edge function winerim-wines');
   console.log('📊 [Winerim] Perfil del usuario:', quizResult);
 
-  // Map Spanish attribute names to English for API
   const params = new URLSearchParams({
+    restaurantUuid,
     userPower: quizResult.potente.toString(),
     userAcidity: quizResult.acidez.toString(),
     userFruity: quizResult.afrutado.toString(),
@@ -203,22 +203,18 @@ export const fetchWinesByAttributes = async (
     params.set('matchrimCode', options.matchrimCode.trim());
   }
 
-  const url = `${WINERIM_API_URL.replace(/\/$/, '')}/api/v1/restaurant/${restaurantUuid}/wines/match?${params}`;
+  const { data, error } = await supabase.functions.invoke<WineMatchingResponse>(
+    `winerim-wines?${params.toString()}`,
+    { method: 'GET' }
+  );
 
-  const response = await fetch(url, {
-    method: 'GET',
-    signal: options.signal,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Winerim API error: ${response.status} ${response.statusText}`);
+  if (error) {
+    throw new Error(`Winerim proxy error: ${error.message}`);
+  }
+  if (!data) {
+    throw new Error('Winerim proxy returned empty response');
   }
 
-  const data: WineMatchingResponse = await response.json();
   const results = extractWineResults(data).map(normalizeWinerimWine);
 
   console.log(`✅ [Winerim] Encontrados ${data.count ?? results.length} vinos (nivel de búsqueda: ${data.searchLevel ?? 'n/a'}/31)`);
