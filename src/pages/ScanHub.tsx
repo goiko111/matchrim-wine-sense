@@ -27,13 +27,26 @@ const Fallback = () => (
   </div>
 );
 
+const PATH_TO_OPTION: Record<string, Option> = {
+  "/escanear/etiqueta": "label",
+  "/escanear/carta-vinos": "wine-menu",
+  "/escanear/menu-comida": "food-menu",
+  "/escanear/plato": "dish",
+};
+
 export default function ScanHub() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState<Option | null>(null);
+  const location = useLocation();
+  const initial = PATH_TO_OPTION[location.pathname] ?? null;
+  const [selected, setSelected] = useState<Option | null>(initial);
 
   useEffect(() => {
     trackAppEvent("scan_hub_opened");
   }, []);
+
+  useEffect(() => {
+    setSelected(PATH_TO_OPTION[location.pathname] ?? null);
+  }, [location.pathname]);
 
   const choose = (opt: Option) => {
     trackAppEvent("scan_option_selected", { option: opt });
