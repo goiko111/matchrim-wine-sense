@@ -75,6 +75,10 @@ function AppRoutes() {
             <Route path="/matchrim" element={<Matchrim />} />
             <Route path="/usar-matchrim" element={<UseMatchrim />} />
             <Route path="/escanear" element={<ScanHub />} />
+            <Route path="/escanear/etiqueta" element={<ScanHub />} />
+            <Route path="/escanear/carta-vinos" element={<ScanHub />} />
+            <Route path="/escanear/menu-comida" element={<ScanHub />} />
+            <Route path="/escanear/plato" element={<ScanHub />} />
             <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
             <Route path="/liquid-intelligence" element={<Navigate to="/inteligencia-liquida" replace />} />
             <Route path="/import-csv" element={<AdminOnly><ImportCSV /></AdminOnly>} />
