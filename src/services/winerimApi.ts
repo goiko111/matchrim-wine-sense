@@ -319,10 +319,6 @@ export const fetchMatchrimRecommendations = async (
   quizResult: QuizResult,
   options: { signal?: AbortSignal } = {}
 ): Promise<MatchrimRecommendations> => {
-  if (!WINERIM_API_URL) {
-    throw new Error('Winerim API not configured');
-  }
-
   const params = new URLSearchParams({
     power: quizResult.potente.toString(),
     acidity: quizResult.acidez.toString(),
@@ -331,19 +327,19 @@ export const fetchMatchrimRecommendations = async (
     fruity: quizResult.afrutado.toString(),
   });
 
-  const url = `${WINERIM_API_URL.replace(/\/$/, '')}/api/v1/matchrim/recommendations?${params}`;
+  const { data: rawData, error } = await supabase.functions.invoke<Record<string, unknown>>(
+    `matchrim-recommendations?${params.toString()}`,
+    { method: 'GET' }
+  );
 
-  const response = await fetch(url, {
-    method: 'GET',
-    signal: options.signal,
-    headers: { Accept: 'application/json' },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Matchrim API error: ${response.status} ${response.statusText}`);
+  if (error) {
+    throw new Error(`Matchrim proxy error: ${error.message}`);
+  }
+  if (!rawData) {
+    throw new Error('Matchrim proxy returned empty response');
   }
 
-  const data = (await response.json()) as Record<string, unknown>;
+  const data = rawData;
 
   return {
     version: String(data.version ?? '1'),
