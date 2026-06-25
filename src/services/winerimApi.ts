@@ -1,6 +1,6 @@
 import { QuizResult } from '@/data/quizData';
+import { supabase } from '@/integrations/supabase/client';
 
-const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL;
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 
 export interface WinerimWine {
