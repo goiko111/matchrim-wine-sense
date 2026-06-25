@@ -109,16 +109,17 @@ const buildLearnedProfile = async (
   };
 };
 
-// Distance in 1-5 space. Max single-axis delta = 4, 5 axes -> max distance sqrt(5*16).
+// Afinidad `manhattan-v1`: MISMA métrica que el backend (GET /api/v1/matchrim/recommendations,
+// `rel = max(0, 1 - manhattan/maxDist)`), para que el % de "Mis Vinos" sea coherente con el de
+// la home. En espacio 1-5 el delta máximo por eje es 4 y son 5 ejes -> maxDist = 20.
 const calculateAffinityFromScale5 = (profile: MatchrimProfile, attrs: SensoryAttributes) => {
-  const distance = Math.sqrt(
-    Math.pow(profile.potente - (attrs.potencia ?? 3), 2) +
-    Math.pow(profile.acidez - (attrs.acidez ?? 3), 2) +
-    Math.pow(profile.dulce - (attrs.dulzura ?? 3), 2) +
-    Math.pow(profile.tanico - (attrs.taninos ?? 3), 2) +
-    Math.pow(profile.afrutado - (attrs.afrutado ?? 3), 2)
-  );
-  const maxDistance = Math.sqrt(5 * Math.pow(4, 2));
+  const distance =
+    Math.abs(profile.potente - (attrs.potencia ?? 3)) +
+    Math.abs(profile.acidez - (attrs.acidez ?? 3)) +
+    Math.abs(profile.dulce - (attrs.dulzura ?? 3)) +
+    Math.abs(profile.tanico - (attrs.taninos ?? 3)) +
+    Math.abs(profile.afrutado - (attrs.afrutado ?? 3));
+  const maxDistance = 20;
   return Math.round(Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100)));
 };
 
