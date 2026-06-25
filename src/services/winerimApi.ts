@@ -1,6 +1,6 @@
 import { QuizResult } from '@/data/quizData';
+import { supabase } from '@/integrations/supabase/client';
 
-const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL;
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 
 export interface WinerimWine {
@@ -183,15 +183,15 @@ export const fetchWinesByAttributes = async (
 ): Promise<WinerimWineWithMatch[]> => {
   const restaurantUuid = options.restaurantUuid?.trim() || WINERIM_RESTAURANT_UUID;
 
-  if (!WINERIM_API_URL || !restaurantUuid) {
-    throw new Error('Winerim API not configured');
+  if (!restaurantUuid) {
+    throw new Error('Winerim restaurant UUID not configured');
   }
 
-  console.log('🔍 [Winerim] Buscando vinos con backend matching');
+  console.log('🔍 [Winerim] Buscando vinos vía edge function winerim-wines');
   console.log('📊 [Winerim] Perfil del usuario:', quizResult);
 
-  // Map Spanish attribute names to English for API
   const params = new URLSearchParams({
+    restaurantUuid,
     userPower: quizResult.potente.toString(),
     userAcidity: quizResult.acidez.toString(),
     userFruity: quizResult.afrutado.toString(),
@@ -203,22 +203,18 @@ export const fetchWinesByAttributes = async (
     params.set('matchrimCode', options.matchrimCode.trim());
   }
 
-  const url = `${WINERIM_API_URL.replace(/\/$/, '')}/api/v1/restaurant/${restaurantUuid}/wines/match?${params}`;
+  const { data, error } = await supabase.functions.invoke<WineMatchingResponse>(
+    `winerim-wines?${params.toString()}`,
+    { method: 'GET' }
+  );
 
-  const response = await fetch(url, {
-    method: 'GET',
-    signal: options.signal,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Winerim API error: ${response.status} ${response.statusText}`);
+  if (error) {
+    throw new Error(`Winerim proxy error: ${error.message}`);
+  }
+  if (!data) {
+    throw new Error('Winerim proxy returned empty response');
   }
 
-  const data: WineMatchingResponse = await response.json();
   const results = extractWineResults(data).map(normalizeWinerimWine);
 
   console.log(`✅ [Winerim] Encontrados ${data.count ?? results.length} vinos (nivel de búsqueda: ${data.searchLevel ?? 'n/a'}/31)`);
@@ -323,10 +319,6 @@ export const fetchMatchrimRecommendations = async (
   quizResult: QuizResult,
   options: { signal?: AbortSignal } = {}
 ): Promise<MatchrimRecommendations> => {
-  if (!WINERIM_API_URL) {
-    throw new Error('Winerim API not configured');
-  }
-
   const params = new URLSearchParams({
     power: quizResult.potente.toString(),
     acidity: quizResult.acidez.toString(),
@@ -335,19 +327,19 @@ export const fetchMatchrimRecommendations = async (
     fruity: quizResult.afrutado.toString(),
   });
 
-  const url = `${WINERIM_API_URL.replace(/\/$/, '')}/api/v1/matchrim/recommendations?${params}`;
+  const { data: rawData, error } = await supabase.functions.invoke<Record<string, unknown>>(
+    `matchrim-recommendations?${params.toString()}`,
+    { method: 'GET' }
+  );
 
-  const response = await fetch(url, {
-    method: 'GET',
-    signal: options.signal,
-    headers: { Accept: 'application/json' },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Matchrim API error: ${response.status} ${response.statusText}`);
+  if (error) {
+    throw new Error(`Matchrim proxy error: ${error.message}`);
+  }
+  if (!rawData) {
+    throw new Error('Matchrim proxy returned empty response');
   }
 
-  const data = (await response.json()) as Record<string, unknown>;
+  const data = rawData;
 
   return {
     version: String(data.version ?? '1'),
