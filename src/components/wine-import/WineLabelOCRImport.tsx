@@ -47,6 +47,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
   const [affinityLoading, setAffinityLoading] = useState(false);
   const [needsProfile, setNeedsProfile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
