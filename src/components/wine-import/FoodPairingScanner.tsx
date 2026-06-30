@@ -55,12 +55,14 @@ export const FoodPairingScanner = ({ mode, restaurantName }: Props) => {
   const [stage, setStage] = useState(0);
   const [result, setResult] = useState<ScanResult | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
 
   const reset = () => {
     setPreview(null);
     setResult(null);
     setStage(0);
     if (fileRef.current) fileRef.current.value = "";
+    if (cameraRef.current) cameraRef.current.value = "";
   };
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
