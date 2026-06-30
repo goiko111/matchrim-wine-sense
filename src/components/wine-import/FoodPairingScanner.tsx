@@ -90,14 +90,15 @@ export const FoodPairingScanner = ({ mode, restaurantName }: Props) => {
     }, 1800);
 
     try {
+      const matchrimProfile = readMatchrimLocalProfile();
       const { data, error } = await supabase.functions.invoke("scan-food-pairing", {
-        body: { image: dataUrl, mode, restaurantName: restaurantName ?? null },
+        body: { image: dataUrl, mode, restaurantName: restaurantName ?? null, matchrimProfile },
       });
       clearInterval(interval);
       if (error) throw error;
       if (!data || data.error) throw new Error(data?.error ?? "scan-failed");
       setResult(data as ScanResult);
-      trackAppEvent("food_scan_completed", { mode, dishes: (data.dishes ?? []).length });
+      trackAppEvent("food_scan_completed", { mode, dishes: (data.dishes ?? []).length, scan_version: data?.scan_version });
     } catch (err) {
       clearInterval(interval);
       console.error(err);
