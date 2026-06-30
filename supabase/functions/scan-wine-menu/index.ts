@@ -140,13 +140,29 @@ const normalizePosicion = (raw: unknown): { x: number; y: number; width: number;
   };
 };
 
+const FUNCTION_VERSION = 'scan-wine-menu-2026-06-30-anonymous-profile-v2';
+
+const normalizeClientProfile = (raw: unknown): MatchrimProfile | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  const r = raw as Record<string, unknown>;
+  const keys: (keyof MatchrimProfile)[] = ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'];
+  const out: Partial<MatchrimProfile> = {};
+  for (const k of keys) {
+    const v = normalizeSensoryValueTo5(r[k]);
+    if (v == null) return null;
+    out[k] = v;
+  }
+  return out as MatchrimProfile;
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { image, pdf } = await req.json();
+    const body = await req.json();
+    const { image, pdf, matchrimProfile } = body ?? {};
 
     if (!image && !pdf) {
       throw new Error('No image or PDF provided');
@@ -159,34 +175,39 @@ serve(async (req) => {
 
     console.log('Processing file type:', pdf ? 'PDF' : 'Image');
 
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      throw new Error('No authorization header');
-    }
-
+    const authHeader = req.headers.get('Authorization') ?? '';
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
       { global: { headers: { Authorization: authHeader } } }
     );
 
-    const token = authHeader.replace('Bearer', '').trim();
-    const { data: { user } } = await supabaseClient.auth.getUser(token);
-    if (!user) {
-      throw new Error('User not authenticated');
+    let userId: string | null = null;
+    let authProfile: MatchrimProfile | null = null;
+    if (authHeader) {
+      try {
+        const token = authHeader.replace('Bearer', '').trim();
+        const { data: { user } } = await supabaseClient.auth.getUser(token);
+        if (user) {
+          userId = user.id;
+          const { data: prof } = await supabaseClient
+            .from('quiz_results')
+            .select('potente, acidez, dulce, tanico, afrutado')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (prof) authProfile = prof as MatchrimProfile;
+        }
+      } catch (e) {
+        console.log('Anonymous request (no valid auth user):', (e as Error).message);
+      }
     }
 
-    const { data: profile, error: profileError } = await supabaseClient
-      .from('quiz_results')
-      .select('potente, acidez, dulce, tanico, afrutado')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
+    const clientProfile = normalizeClientProfile(matchrimProfile);
+    const profile: MatchrimProfile | null = authProfile ?? clientProfile;
+    const profileSource: 'auth' | 'client' | 'none' = authProfile ? 'auth' : clientProfile ? 'client' : 'none';
 
-    if (profileError && profileError.code !== 'PGRST116') {
-      console.error('Error fetching profile:', profileError);
-    }
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
