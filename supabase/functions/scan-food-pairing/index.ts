@@ -295,13 +295,15 @@ REGLAS ESTRICTAS:
         summary: parsed?.summary ? String(parsed.summary) : "",
         dishes,
         has_profile: Boolean(learnedProfile),
+        profile_source: profileSource,
+        scan_version: FUNCTION_VERSION,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {
     console.error("scan-food-pairing error:", err);
     const message = err instanceof Error ? err.message : "unknown";
-    return new Response(JSON.stringify({ error: message }), {
+    return new Response(JSON.stringify({ error: message, dishes: [], scan_version: FUNCTION_VERSION }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
