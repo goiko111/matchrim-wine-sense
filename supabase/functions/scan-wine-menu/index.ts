@@ -400,7 +400,12 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
 
     console.log(`Extracted ${vinos.length} wines from menu`);
 
-    return new Response(JSON.stringify({ vinos, has_profile: !!profile }), {
+    return new Response(JSON.stringify({
+      vinos,
+      has_profile: Boolean(profile),
+      profile_source: profileSource,
+      scan_version: FUNCTION_VERSION,
+    }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
@@ -408,7 +413,7 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
     console.error('Error in scan-wine-menu:', error);
     const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
     return new Response(
-      JSON.stringify({ error: errorMessage, vinos: [] }),
+      JSON.stringify({ error: errorMessage, vinos: [], scan_version: FUNCTION_VERSION }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -416,3 +421,4 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
     );
   }
 });
+
