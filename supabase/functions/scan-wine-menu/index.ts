@@ -230,7 +230,10 @@ Para cada vino proporciona:
 - descripcion: Breve descripción (máximo 150 palabras) con aromas y notas de cata
 - posicion: opcional. Objeto { "x": number 0-100, "y": number 0-100, "width": number 0-100, "height": number 0-100, "confidence": number 0-1 } donde (x,y) es el punto de anclaje EXACTO justo al lado del nombre del vino dentro de la imagen, expresado como porcentaje del ancho/alto de la imagen. width/height describen el bounding box del bloque del vino. confidence es tu certeza de que la posición es exacta. Si NO puedes ver el bloque con claridad o tu confidence sería < 0.7, devuelve posicion: null. NUNCA inventes columnas, posiciones aproximadas ni distribuyas vinos uniformemente.`;
 
-    const learnedProfile = profile ? await buildLearnedProfile(supabaseClient, user.id, profile) : null;
+    const learnedProfile = profile
+      ? (userId ? await buildLearnedProfile(supabaseClient, userId, profile) : profile)
+      : null;
+
 
     if (learnedProfile) {
       prompt += `
