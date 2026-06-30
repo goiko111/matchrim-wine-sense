@@ -65,13 +65,61 @@ export const FoodPairingScanner = ({ mode, restaurantName }: Props) => {
     if (cameraRef.current) cameraRef.current.value = "";
   };
 
+  const convertPdfFirstPageToImage = async (file: File): Promise<File> => {
+    const [pdfjsLib, pdfjsWorker] = await Promise.all([
+      import('pdfjs-dist'),
+      import('pdfjs-dist/build/pdf.worker.mjs'),
+    ]);
+    const workerUrl = URL.createObjectURL(
+      new Blob([(pdfjsWorker as { default: string }).default], { type: 'application/javascript' })
+    );
+    pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl;
+    const buf = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+    const page = await pdf.getPage(1);
+    const viewport = page.getViewport({ scale: 2 });
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d')!;
+    await page.render({ canvasContext: ctx, viewport, canvas }).promise;
+    const blob = await new Promise<Blob>((res) =>
+      canvas.toBlob((b) => res(b!), 'image/jpeg', 0.95)
+    );
+    return new File([blob], 'pdf-page.jpg', { type: 'image/jpeg' });
+  };
+
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
+    const original = e.target.files?.[0];
+    if (!original) return;
+    const isPdf = original.type === 'application/pdf';
+    if (!original.type.startsWith("image/") && !isPdf) {
       toast.error("Selecciona una imagen válida");
       return;
     }
+    if (isPdf && mode !== "menu") {
+      toast.error("En modo plato solo se admiten imágenes");
+      return;
+    }
+
+    setLoading(true);
+    setStage(0);
+    setResult(null);
+    trackAppEvent("food_scan_started", { mode });
+
+    let file = original;
+    try {
+      if (isPdf) {
+        toast.info("Convirtiendo PDF a imagen...");
+        file = await convertPdfFirstPageToImage(original);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("No se pudo leer el PDF");
+      setLoading(false);
+      return;
+    }
+
     const dataUrl = await new Promise<string>((res, rej) => {
       const r = new FileReader();
       r.onload = () => res(r.result as string);
@@ -79,10 +127,6 @@ export const FoodPairingScanner = ({ mode, restaurantName }: Props) => {
       r.readAsDataURL(file);
     });
     setPreview(dataUrl);
-    setLoading(true);
-    setStage(0);
-    setResult(null);
-    trackAppEvent("food_scan_started", { mode });
 
     // animated stage indicator
     const interval = setInterval(() => {
