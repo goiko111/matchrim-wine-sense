@@ -149,7 +149,8 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { image, mode, restaurantName } = await req.json();
+    const body = await req.json();
+    const { image, mode, restaurantName, matchrimProfile } = body ?? {};
     if (!image || !image.startsWith("data:")) throw new Error("image debe ser data URL");
     if (mode !== "menu" && mode !== "dish") throw new Error("mode debe ser 'menu' o 'dish'");
 
@@ -163,27 +164,48 @@ serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } },
     );
 
-    let baseProfile: MatchrimProfile | null = null;
+    let authProfile: MatchrimProfile | null = null;
     let userId: string | null = null;
     if (authHeader) {
-      const token = authHeader.replace("Bearer", "").trim();
-      const { data: { user } } = await supabaseClient.auth.getUser(token);
-      if (user) {
-        userId = user.id;
-        const { data: prof } = await supabaseClient
-          .from("quiz_results")
-          .select("potente, acidez, dulce, tanico, afrutado")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .maybeSingle();
-        if (prof) baseProfile = prof as MatchrimProfile;
+      try {
+        const token = authHeader.replace("Bearer", "").trim();
+        const { data: { user } } = await supabaseClient.auth.getUser(token);
+        if (user) {
+          userId = user.id;
+          const { data: prof } = await supabaseClient
+            .from("quiz_results")
+            .select("potente, acidez, dulce, tanico, afrutado")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (prof) authProfile = prof as MatchrimProfile;
+        }
+      } catch (e) {
+        console.log("Anonymous request:", (e as Error).message);
       }
     }
 
-    const learnedProfile = baseProfile && userId
+    const normalizeClientProfile = (raw: unknown): MatchrimProfile | null => {
+      if (!raw || typeof raw !== "object") return null;
+      const r = raw as Record<string, unknown>;
+      const keys: (keyof MatchrimProfile)[] = ["potente", "acidez", "dulce", "tanico", "afrutado"];
+      const out: Partial<MatchrimProfile> = {};
+      for (const k of keys) {
+        const v = normalizeSensoryValueTo5(r[k]);
+        if (v == null) return null;
+        out[k] = v;
+      }
+      return out as MatchrimProfile;
+    };
+    const clientProfile = normalizeClientProfile(matchrimProfile);
+    const baseProfile: MatchrimProfile | null = authProfile ?? clientProfile;
+    const profileSource: "auth" | "client" | "none" = authProfile ? "auth" : clientProfile ? "client" : "none";
+
+    const learnedProfile = baseProfile && userId && authProfile
       ? await buildLearnedProfile(supabaseClient, userId, baseProfile)
       : baseProfile;
+
 
     const profileText = learnedProfile
       ? `Perfil Matchrim del usuario (escala 1-5): potencia=${learnedProfile.potente}, acidez=${learnedProfile.acidez}, dulzura=${learnedProfile.dulce}, taninos=${learnedProfile.tanico}, afrutado=${learnedProfile.afrutado}.`
