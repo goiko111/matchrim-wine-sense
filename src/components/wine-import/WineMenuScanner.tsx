@@ -15,6 +15,7 @@ import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
 import { normalizeSensoryAttributes, SENSORY_KEYS } from "@/utils/sensoryNormalize";
 import { trackAppEvent } from "@/lib/analytics";
+import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
@@ -293,12 +294,14 @@ export const WineMenuScanner = ({
         reader.readAsDataURL(file);
       });
 
-      // Invocar la función de escaneo
+      // Invocar la función de escaneo (incluye perfil Matchrim local si existe)
+      const matchrimProfile = readMatchrimLocalProfile();
       const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
-        body: { image: base64File }
+        body: { image: base64File, matchrimProfile }
       });
 
       if (error) throw error;
+      if (data?.error) throw new Error(data.error);
 
       if (data?.vinos && data.vinos.length > 0) {
         setScannedWines((data.vinos as ScannedWine[]).map(normalizeScannedWine));
@@ -320,7 +323,7 @@ export const WineMenuScanner = ({
         }
 
         toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
-        trackAppEvent("wine_menu_scan_completed", { count: data.vinos.length });
+        trackAppEvent("wine_menu_scan_completed", { count: data.vinos.length, scan_version: data?.scan_version });
       } else {
         setScanFeedback("No he encontrado vinos claros en el documento. Prueba con una foto más cercana o con una sección más pequeña de la carta.");
         toast.info("No se encontraron vinos en el documento");
@@ -328,13 +331,14 @@ export const WineMenuScanner = ({
     } catch (error) {
       console.error('Error processing file:', error);
       trackAppEvent("wine_menu_scan_failed", { error: String(error) });
-      const message = error instanceof Error ? error.message : 'Error al procesar el documento';
-      setScanFeedback(`${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
-      toast.error(message);
+      const friendly = "No he podido analizar esta carta ahora. Reintenta en unos segundos o prueba con una foto más cercana";
+      setScanFeedback(friendly);
+      toast.error(friendly);
     } finally {
       setLoading(false);
     }
   };
+
 
   const clearScan = () => {
     setPreview(null);
