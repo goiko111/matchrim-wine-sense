@@ -193,7 +193,7 @@ export const FoodPairingScanner = ({ mode, restaurantName }: Props) => {
       <input
         ref={fileRef}
         type="file"
-        accept="image/*"
+        accept={mode === "menu" ? "image/*,application/pdf" : "image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"}
         onChange={handleFile}
         className="hidden"
         disabled={loading}
