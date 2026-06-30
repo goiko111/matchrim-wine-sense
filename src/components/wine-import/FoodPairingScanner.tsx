@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Upload, Camera, X, Sparkles, BookmarkPlus, MessageSquare, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { trackAppEvent } from "@/lib/analytics";
