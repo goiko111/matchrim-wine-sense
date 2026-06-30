@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, Upload, Camera, X, BookmarkPlus, MessageSquare, Search, Sparkles } from "lucide-react";
+import { Loader2, Upload, Camera, X, BookmarkPlus, MessageSquare, Search, Sparkles, FolderOpen } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
@@ -47,6 +47,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
   const [affinityLoading, setAffinityLoading] = useState(false);
   const [needsProfile, setNeedsProfile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -159,6 +160,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
     setIdentified(null);
     setNeedsProfile(false);
     if (fileInputRef.current) fileInputRef.current.value = '';
+    if (cameraInputRef.current) cameraInputRef.current.value = '';
   };
 
   const affinityColor = (s: number) =>
@@ -173,10 +175,18 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
 
       <div className="border-2 border-dashed border-primary/20 rounded-lg p-6 text-center bg-card">
         <input
-          ref={fileInputRef}
+          ref={cameraInputRef}
           type="file"
           accept="image/*"
           capture="environment"
+          onChange={handleFileSelect}
+          className="hidden"
+          disabled={loading}
+        />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"
           onChange={handleFileSelect}
           className="hidden"
           disabled={loading}
@@ -206,19 +216,16 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
               <p className="text-lg font-semibold text-foreground mb-2">Fotografía la etiqueta del vino</p>
               <p className="text-sm text-muted-foreground mb-4">JPG, PNG, WEBP hasta 20MB</p>
             </div>
-            <Button onClick={() => fileInputRef.current?.click()} disabled={loading} className="gap-2">
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Procesando...
-                </>
-              ) : (
-                <>
-                  <Upload className="h-4 w-4" />
-                  Seleccionar Imagen
-                </>
-              )}
-            </Button>
+            <div className="grid gap-3 sm:grid-cols-2 max-w-md mx-auto">
+              <Button onClick={() => cameraInputRef.current?.click()} disabled={loading} className="gap-2">
+                <Camera className="h-4 w-4" />
+                Hacer foto
+              </Button>
+              <Button onClick={() => fileInputRef.current?.click()} disabled={loading} variant="outline" className="gap-2">
+                <FolderOpen className="h-4 w-4" />
+                Subir archivo
+              </Button>
+            </div>
           </div>
         )}
       </div>
