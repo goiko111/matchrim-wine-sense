@@ -175,10 +175,18 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
 
       <div className="border-2 border-dashed border-primary/20 rounded-lg p-6 text-center bg-card">
         <input
-          ref={fileInputRef}
+          ref={cameraInputRef}
           type="file"
           accept="image/*"
           capture="environment"
+          onChange={handleFileSelect}
+          className="hidden"
+          disabled={loading}
+        />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"
           onChange={handleFileSelect}
           className="hidden"
           disabled={loading}
@@ -208,19 +216,16 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
               <p className="text-lg font-semibold text-foreground mb-2">Fotografía la etiqueta del vino</p>
               <p className="text-sm text-muted-foreground mb-4">JPG, PNG, WEBP hasta 20MB</p>
             </div>
-            <Button onClick={() => fileInputRef.current?.click()} disabled={loading} className="gap-2">
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Procesando...
-                </>
-              ) : (
-                <>
-                  <Upload className="h-4 w-4" />
-                  Seleccionar Imagen
-                </>
-              )}
-            </Button>
+            <div className="grid gap-3 sm:grid-cols-2 max-w-md mx-auto">
+              <Button onClick={() => cameraInputRef.current?.click()} disabled={loading} className="gap-2">
+                <Camera className="h-4 w-4" />
+                Hacer foto
+              </Button>
+              <Button onClick={() => fileInputRef.current?.click()} disabled={loading} variant="outline" className="gap-2">
+                <FolderOpen className="h-4 w-4" />
+                Subir archivo
+              </Button>
+            </div>
           </div>
         )}
       </div>
