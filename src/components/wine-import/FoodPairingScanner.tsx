@@ -149,6 +149,14 @@ export const FoodPairingScanner = ({ mode, restaurantName }: Props) => {
       <input
         ref={fileRef}
         type="file"
+        accept="image/*,application/pdf"
+        onChange={handleFile}
+        className="hidden"
+        disabled={loading}
+      />
+      <input
+        ref={cameraRef}
+        type="file"
         accept="image/*"
         capture="environment"
         onChange={handleFile}
@@ -167,11 +175,17 @@ export const FoodPairingScanner = ({ mode, restaurantName }: Props) => {
               ? "Detectaremos hasta 8 platos y sugeriremos vinos para cada uno."
               : "Identificaremos el plato y sugeriremos 2 vinos a medida."}
           </p>
-          <Button onClick={() => fileRef.current?.click()} className="gap-2">
-            <Upload className="h-4 w-4" /> Seleccionar imagen
-          </Button>
+          <div className="grid gap-3 sm:grid-cols-2 max-w-md mx-auto">
+            <Button onClick={() => cameraRef.current?.click()} className="gap-2" disabled={loading}>
+              <Camera className="h-4 w-4" /> Hacer foto
+            </Button>
+            <Button onClick={() => fileRef.current?.click()} variant="outline" className="gap-2" disabled={loading}>
+              <Upload className="h-4 w-4" /> Subir archivo
+            </Button>
+          </div>
         </div>
       )}
+
 
       {preview && (
         <div className="relative inline-block">
