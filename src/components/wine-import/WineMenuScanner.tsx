@@ -15,6 +15,7 @@ import { buildAuthRedirectPath } from "@/utils/navigation";
 import { toast } from "sonner";
 import { normalizeSensoryAttributes, SENSORY_KEYS } from "@/utils/sensoryNormalize";
 import { trackAppEvent } from "@/lib/analytics";
+import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
