@@ -160,6 +160,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
     setIdentified(null);
     setNeedsProfile(false);
     if (fileInputRef.current) fileInputRef.current.value = '';
+    if (cameraInputRef.current) cameraInputRef.current.value = '';
   };
 
   const affinityColor = (s: number) =>
