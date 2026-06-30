@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, Upload, Camera, X, BookmarkPlus, MessageSquare, Search, Sparkles } from "lucide-react";
+import { Loader2, Upload, Camera, X, BookmarkPlus, MessageSquare, Search, Sparkles, FolderOpen } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
