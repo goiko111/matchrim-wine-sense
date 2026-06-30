@@ -6,6 +6,8 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const FUNCTION_VERSION = 'scan-food-pairing-2026-06-30-client-profile-v1';
+
 type MatchrimProfile = {
   potente: number;
   acidez: number;
