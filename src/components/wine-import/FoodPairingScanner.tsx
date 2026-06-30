@@ -149,7 +149,7 @@ export const FoodPairingScanner = ({ mode, restaurantName }: Props) => {
       <input
         ref={fileRef}
         type="file"
-        accept="image/*,application/pdf"
+        accept="image/*"
         onChange={handleFile}
         className="hidden"
         disabled={loading}
