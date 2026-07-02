@@ -1,5 +1,5 @@
-import { lazy, Suspense, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,15 +11,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
-import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
 import { WineSearchBar } from "@/components/wine-import/WineSearchBar";
 import { PurchaseInfoSelector } from "@/components/wine-import/PurchaseInfoSelector";
-import { LocationSelector } from "@/components/wine-import/LocationSelector";
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 import { buildAuthRedirectPath } from "@/utils/navigation";
-import { toast } from "sonner";
-import { normalizeSensoryAttributes } from "@/utils/sensoryNormalize";
 import { trackAppEvent } from "@/lib/analytics";
+import { toast } from "sonner";
 import {
   Wine,
   Plus,
@@ -36,8 +34,9 @@ import {
   Meh,
   Filter,
   Star,
-  Edit3,
   Sparkles,
+  CheckCircle,
+  AlertCircle,
 } from "lucide-react";
 import {
   Dialog,
@@ -52,15 +51,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const WineMenuScanner = lazy(() => import("@/components/wine-import/WineMenuScanner"));
-
-const ScannerFallback = () => (
-  <div className="flex min-h-40 items-center justify-center rounded-lg border border-dashed bg-muted/40">
-    <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary" />
-    Preparando scanner...
-  </div>
-);
 
 interface UserWine {
   id: string;
@@ -88,6 +78,17 @@ interface UserWine {
   price: number | null;
 }
 
+interface LearningWine {
+  id: string;
+  name: string;
+  rating: 'love' | 'ok' | 'not_for_me' | null;
+  sensory_attributes: any;
+  use_for_profile_training: boolean;
+  grape_varieties: string[] | null;
+  status: 'collection' | 'wishlist' | 'tasted';
+  created_at: string;
+}
+
 interface ExtractedWineData {
   nombre: string;
   productor: string | null;
@@ -99,14 +100,91 @@ interface ExtractedWineData {
   notas_cata: string | null;
   imagen_url?: string | null;
   matchrim_affinity?: number | null;
-  sensory_attributes?: Record<string, number> | null;
+  sensory_attributes?: {
+    potencia?: number;
+    acidez?: number;
+    dulzura?: number;
+    taninos?: number;
+    afrutado?: number;
+  } | null;
   affinity_reason?: string | null;
+  is_favorite?: boolean;
 }
 
+interface WineSuggestion {
+  id?: string;
+  name: string;
+  producer: string | null;
+  vintage?: number | null;
+  region: string | null;
+  country?: string | null;
+  grape_varieties: string[] | null;
+  alcohol_content?: number | null;
+  tasting_notes?: string | null;
+  tipo?: string | null;
+  estilo?: string | null;
+}
+
+type ManualWineLookupStatus = 'idle' | 'loading' | 'done' | 'error';
+type WineStatus = 'collection' | 'wishlist' | 'tasted';
+type WineSection = WineStatus | 'favorites' | 'rejected';
+
+const validWineSections: WineSection[] = ['collection', 'wishlist', 'tasted', 'favorites', 'rejected'];
+
+const sectionFromRoute = (section?: string): WineSection => {
+  if (section === 'no-repetir' || section === 'rejected') return 'rejected';
+  return validWineSections.includes(section as WineSection) ? section as WineSection : 'collection';
+};
+
+const routeForWineSection = (section: WineSection) => {
+  if (section === 'collection') return '/my-wines';
+  if (section === 'rejected') return '/my-wines/no-repetir';
+  return `/my-wines/${section}`;
+};
+
+const normalizeAttributeTo5 = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
+  return Math.max(1, Math.min(5, Math.round(scaled)));
+};
+
+const normalizeSensoryAttributesTo5 = (attributes: unknown) => {
+  if (!attributes || typeof attributes !== 'object' || Array.isArray(attributes)) return null;
+  const attrs = attributes as Record<string, unknown>;
+  const normalized = {
+    potencia: normalizeAttributeTo5(attrs.potencia),
+    acidez: normalizeAttributeTo5(attrs.acidez),
+    dulzura: normalizeAttributeTo5(attrs.dulzura),
+    taninos: normalizeAttributeTo5(attrs.taninos),
+    afrutado: normalizeAttributeTo5(attrs.afrutado),
+  };
+
+  if (Object.values(normalized).some((value) => value === null)) return null;
+  return normalized;
+};
+
+const normalizeAffinity = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return Math.max(0, Math.min(100, Math.round(numeric)));
+};
+
+const normalizeUserWine = (wine: UserWine): UserWine => ({
+  ...wine,
+  matchrim_affinity: normalizeAffinity(wine.matchrim_affinity),
+  sensory_attributes: normalizeSensoryAttributesTo5(wine.sensory_attributes),
+});
+
 const MyWines = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { section } = useParams<{ section?: string }>();
+  const isAddWineRoute = location.pathname === '/my-wines/add';
+  const initialSection = sectionFromRoute(section);
   const [wines, setWines] = useState<UserWine[]>([]);
+  const [learningWines, setLearningWines] = useState<LearningWine[]>([]);
   const [filteredWines, setFilteredWines] = useState<UserWine[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -116,7 +194,11 @@ const MyWines = () => {
   const [extractedImageUrl, setExtractedImageUrl] = useState<string | null>(null);
   const [selectedWine, setSelectedWine] = useState<UserWine | null>(null);
   const [filterType, setFilterType] = useState<'all' | 'favorites' | 'high_affinity'>('all');
-  const [statusFilter, setStatusFilter] = useState<'collection' | 'wishlist' | 'tasted'>('collection');
+  const [statusFilter, setStatusFilter] = useState<WineSection>(initialSection);
+  const [manualWineSuggestions, setManualWineSuggestions] = useState<WineSuggestion[]>([]);
+  const [manualWineLookupStatus, setManualWineLookupStatus] = useState<ManualWineLookupStatus>('idle');
+  const [manualWineNameConfirmed, setManualWineNameConfirmed] = useState(false);
+  const [manualWineSelectedFromResults, setManualWineSelectedFromResults] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -134,17 +216,105 @@ const MyWines = () => {
 
   const [purchaseData, setPurchaseData] = useState<any>(null);
 
+  const navigateToWineSection = (nextSection: WineSection) => {
+    navigate(routeForWineSection(nextSection));
+  };
+
+  const closeAddDialog = () => {
+    setShowAddDialog(false);
+    resetForm();
+    if (isAddWineRoute) navigate('/my-wines');
+  };
+
+  const manualWineName = formData.name.trim();
+  const manualWineLookupNeedsConfirmation =
+    showAddDialog &&
+    manualWineName.length >= 3 &&
+    (manualWineLookupStatus === 'done' || manualWineLookupStatus === 'error') &&
+    manualWineSuggestions.length === 0 &&
+    !manualWineNameConfirmed &&
+    !manualWineSelectedFromResults;
+  const manualWineLookupPending = showAddDialog && manualWineName.length >= 3 && manualWineLookupStatus === 'loading';
+  const canContinueManualWine =
+    manualWineName.length >= 2 &&
+    !manualWineLookupPending &&
+    !manualWineLookupNeedsConfirmation;
+  const purchaseDialogMode: WineStatus = statusFilter === 'favorites' || statusFilter === 'rejected'
+    ? 'wishlist'
+    : statusFilter;
+
   useEffect(() => {
-    if (!user) {
-      navigate(buildAuthRedirectPath("/my-wines"));
+    if (isAddWineRoute) return;
+    if (section && !validWineSections.includes(section as WineSection) && section !== 'no-repetir') {
+      navigate('/my-wines', { replace: true });
       return;
     }
-    loadWines();
-  }, [user, navigate, statusFilter]);
+
+    const nextSection = sectionFromRoute(section);
+    setStatusFilter((current) => current === nextSection ? current : nextSection);
+  }, [isAddWineRoute, section, navigate]);
+
+	  useEffect(() => {
+	    if (authLoading) return;
+
+	    if (!user) {
+	      navigate(buildAuthRedirectPath("/my-wines"));
+	      return;
+	    }
+	    loadWines();
+	  }, [authLoading, user, navigate, statusFilter]);
+
+	  useEffect(() => {
+	    if (authLoading || !user) return;
+	    loadLearningWines();
+	  }, [authLoading, user]);
 
   useEffect(() => {
     applyFilters();
   }, [wines, filterType]);
+
+  useEffect(() => {
+    if (!showAddDialog) {
+      setManualWineSuggestions([]);
+      setManualWineLookupStatus('idle');
+      return;
+    }
+
+    const query = formData.name.trim();
+
+    if (query.length < 3) {
+      setManualWineSuggestions([]);
+      setManualWineLookupStatus('idle');
+      return;
+    }
+
+    let cancelled = false;
+    setManualWineLookupStatus('loading');
+
+    const timeout = window.setTimeout(async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('search-wines', {
+          body: { query, limit: 6 },
+        });
+
+        if (cancelled) return;
+        if (error) throw error;
+
+        setManualWineSuggestions((data?.wines || []).filter((wine: WineSuggestion) => wine?.name));
+        setManualWineLookupStatus('done');
+      } catch (error) {
+        if (cancelled) return;
+        console.error('Error validating manual wine name:', error);
+        setManualWineSuggestions([]);
+        setManualWineLookupStatus('error');
+      }
+    }, 450);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeout);
+    };
+  }, [formData.name, showAddDialog]);
 
   const applyFilters = () => {
     let filtered = [...wines];
@@ -164,12 +334,16 @@ const MyWines = () => {
     setFilteredWines(filtered);
   };
 
-  const loadWines = async () => {
-    try {
-      let query = supabase.from("user_wines").select("*");
+	  const loadWines = async () => {
+	    try {
+	      let query = supabase.from("user_wines").select("*").eq("user_id", user!.id);
       
       // Filter based on status
-      if (statusFilter === 'collection') {
+      if (statusFilter === 'favorites') {
+        query = query.eq("is_favorite", true);
+      } else if (statusFilter === 'rejected') {
+        query = query.eq("rating", "not_for_me");
+      } else if (statusFilter === 'collection') {
         query = query.eq("status", "collection");
       } else if (statusFilter === 'wishlist') {
         query = query.eq("status", "wishlist");
@@ -181,17 +355,39 @@ const MyWines = () => {
       const { data, error } = await query.order("created_at", { ascending: false });
 
       if (error) throw error;
-      setWines((data as any) || []);
+      setWines(((data as UserWine[]) || []).map(normalizeUserWine));
     } catch (error) {
       console.error("Error loading wines:", error);
       toast.error("Error al cargar tus vinos");
     } finally {
-      setLoading(false);
-    }
-  };
+	      setLoading(false);
+	    }
+	  };
 
-  const handleExtractComplete = (wine: ExtractedWineData) => {
-    setExtractedData(wine);
+	  const loadLearningWines = async () => {
+	    if (!user) return;
+
+	    try {
+	      const { data, error } = await supabase
+	        .from("user_wines")
+	        .select("id, name, rating, sensory_attributes, use_for_profile_training, grape_varieties, status, created_at")
+	        .eq("user_id", user.id)
+	        .not("rating", "is", null)
+	        .order("created_at", { ascending: false });
+
+	      if (error) throw error;
+	      setLearningWines(((data as LearningWine[]) || []).map((wine) => ({
+	        ...wine,
+	        sensory_attributes: normalizeSensoryAttributesTo5(wine.sensory_attributes),
+	      })));
+	    } catch (error) {
+	      console.error("Error loading learning wines:", error);
+	    }
+	  };
+
+	  const handleExtractComplete = (wine: ExtractedWineData) => {
+	    if (wine.is_favorite) navigateToWineSection('favorites');
+	    setExtractedData(wine);
     setExtractedImageUrl(wine.imagen_url || null);
     setFormData({
       name: wine.nombre || "",
@@ -205,7 +401,9 @@ const MyWines = () => {
       personal_note: "",
       quantity: "1",
     });
-    setShowPurchaseDialog(true);
+    setManualWineNameConfirmed(true);
+    setManualWineSelectedFromResults(true);
+    setShowAddDialog(true);
   };
 
   const handleSearchWineSelect = (wine: any) => {
@@ -224,12 +422,54 @@ const MyWines = () => {
     setShowPurchaseDialog(true);
   };
 
+  const updateManualWineName = (value: string) => {
+    setFormData((current) => ({ ...current, name: value }));
+    setManualWineNameConfirmed(false);
+    setManualWineSelectedFromResults(false);
+  };
+
+  const handleManualSuggestionSelect = (wine: WineSuggestion) => {
+    setFormData((current) => ({
+      ...current,
+      name: wine.name || current.name,
+      producer: wine.producer || "",
+      vintage: wine.vintage?.toString() || "",
+      region: wine.region || "",
+      country: wine.country || "",
+      grape_varieties: wine.grape_varieties?.join(", ") || "",
+      alcohol_content: wine.alcohol_content != null ? String(wine.alcohol_content) : current.alcohol_content,
+      tasting_notes: wine.tasting_notes || current.tasting_notes,
+    }));
+    setManualWineNameConfirmed(true);
+    setManualWineSelectedFromResults(true);
+    setManualWineSuggestions([]);
+    setManualWineLookupStatus('done');
+  };
+
+  const startManualWineSave = (targetStatus: WineStatus) => {
+    if (!canContinueManualWine) {
+      if (manualWineLookupPending) {
+        toast.info("Espera un momento: estoy verificando el nombre del vino");
+      } else if (manualWineLookupNeedsConfirmation) {
+        toast.error("Confirma que has revisado el nombre del vino antes de continuar");
+      } else {
+        toast.error("Escribe el nombre del vino");
+      }
+      return;
+    }
+
+    setStatusFilter(targetStatus);
+    setShowPurchaseDialog(true);
+    setShowAddDialog(false);
+  };
+
   const handlePurchaseInfoConfirm = async (data: any) => {
     if (!formData.name || !user) {
       toast.error("El nombre del vino es obligatorio");
       return;
     }
 
+    // Validate restaurant is selected
     if (data?.location_type === 'restaurant' && !data?.place_name) {
       toast.error("Debes seleccionar un restaurante");
       return;
@@ -237,12 +477,16 @@ const MyWines = () => {
 
     setSaving(true);
     try {
-      const precomputedAffinity = extractedData?.matchrim_affinity ?? null;
-      const precomputedSensory = normalizeSensoryAttributes(extractedData?.sensory_attributes ?? null);
-      const affinityReason = extractedData?.affinity_reason ?? null;
-      const fromLabelScanner = !!extractedData;
-
-      const wineData: any = {
+      const saveStatus: WineStatus = statusFilter === 'favorites' || statusFilter === 'rejected'
+        ? 'wishlist'
+        : statusFilter;
+      const sensoryAttributes = normalizeSensoryAttributesTo5(extractedData?.sensory_attributes || null);
+      const manualSource = manualWineSelectedFromResults
+        ? 'manual_search_result'
+        : manualWineNameConfirmed
+          ? 'manual_user_verified'
+          : 'manual';
+      const wineData = {
         user_id: user.id,
         name: formData.name,
         producer: formData.producer || null,
@@ -256,23 +500,26 @@ const MyWines = () => {
         tasting_notes: formData.tasting_notes || null,
         personal_note: formData.personal_note || null,
         image_url: extractedImageUrl || null,
-        status: statusFilter,
-        quantity: statusFilter === 'collection' ? parseInt(formData.quantity) || 1 : null,
-        use_for_profile_training: statusFilter === 'tasted',
+        matchrim_affinity: normalizeAffinity(extractedData?.matchrim_affinity) ?? null,
+        sensory_attributes: sensoryAttributes as Json,
+        status: saveStatus,
+        quantity: saveStatus === 'collection' ? parseInt(formData.quantity) || 1 : null,
+        is_favorite: statusFilter === 'favorites' ? true : undefined,
+        use_for_profile_training: saveStatus === 'tasted',
         consumption_place: data?.place_name || null,
         consumption_place_type: data?.location_type || null,
         consumption_date: data?.purchase_date || null,
         price: data?.price || null,
-        matchrim_affinity: precomputedAffinity,
-        sensory_attributes: precomputedSensory,
+        place_details: extractedData
+          ? ({
+              source: "label_scanner",
+              affinity_reason: extractedData.affinity_reason || null,
+            } as Json)
+          : ({
+              source: manualSource,
+              name_verified_by_user: manualWineNameConfirmed,
+            } as Json),
       };
-
-      if (fromLabelScanner) {
-        wineData.place_details = {
-          source: 'label_scanner',
-          ...(affinityReason ? { affinity_reason: affinityReason } : {}),
-        };
-      }
 
       const { data: insertedWine, error } = await supabase
         .from("user_wines")
@@ -282,21 +529,26 @@ const MyWines = () => {
 
       if (error) throw error;
 
-      // Only recalc if we don't already have affinity
-      if (
-        insertedWine &&
-        !precomputedAffinity &&
-        (statusFilter === 'collection' || statusFilter === 'tasted')
-      ) {
+      // Calculate affinity in background
+      if (insertedWine && (saveStatus === 'collection' || saveStatus === 'tasted') && !extractedData?.matchrim_affinity) {
         supabase.functions
           .invoke("calculate-wine-affinity", {
             body: { wine_id: insertedWine.id }
           })
           .then(({ data: affinityData }) => {
-            if (affinityData?.affinity) {
+            const affinity = normalizeAffinity(affinityData?.affinity);
+            const sensoryAttributes = normalizeSensoryAttributesTo5(affinityData?.sensory_attributes || null);
+
+            if (affinity !== null) {
               setWines((prev) =>
                 prev.map((w) =>
-                  w.id === insertedWine.id ? { ...w, matchrim_affinity: affinityData.affinity } : w
+                  w.id === insertedWine.id
+                    ? {
+                        ...w,
+                        matchrim_affinity: affinity,
+                        sensory_attributes: sensoryAttributes || w.sensory_attributes,
+                      }
+                    : w
                 )
               );
             }
@@ -304,12 +556,22 @@ const MyWines = () => {
       }
 
       toast.success("Vino añadido exitosamente");
-      trackAppEvent("wine_saved", { source: fromLabelScanner ? "label_scanner" : "manual", status: statusFilter });
+      trackAppEvent("wine_saved", {
+        userId: user.id,
+        metadata: {
+          source: extractedData ? "label_scanner" : "manual",
+          status: saveStatus,
+          wine_name: formData.name,
+          has_affinity: Boolean(extractedData?.matchrim_affinity),
+        },
+      });
       setShowPurchaseDialog(false);
-      setShowAddDialog(false);
-      resetForm();
-      loadWines();
-    } catch (error) {
+	      setShowAddDialog(false);
+	      resetForm();
+	      loadWines();
+	      loadLearningWines();
+      if (isAddWineRoute) navigateToWineSection(saveStatus);
+	    } catch (error) {
       console.error("Error saving wine:", error);
       toast.error("Error al guardar el vino");
     } finally {
@@ -325,6 +587,9 @@ const MyWines = () => {
 
     setSaving(true);
     try {
+      const saveStatus: WineStatus = statusFilter === 'favorites' || statusFilter === 'rejected'
+        ? 'wishlist'
+        : statusFilter;
       const wineData: any = {
         user_id: user!.id,
         name: formData.name,
@@ -339,10 +604,11 @@ const MyWines = () => {
         tasting_notes: formData.tasting_notes || null,
         personal_note: formData.personal_note || null,
         consumption_date: new Date().toISOString(),
-        status: statusFilter,
-        quantity: statusFilter === 'collection' ? (formData.quantity ? parseInt(formData.quantity) : 1) : null,
+        status: saveStatus,
+        quantity: saveStatus === 'collection' ? (formData.quantity ? parseInt(formData.quantity) : 1) : null,
+        is_favorite: statusFilter === 'favorites' ? true : undefined,
         image_url: extractedImageUrl || null,
-        use_for_profile_training: statusFilter === 'tasted',
+        use_for_profile_training: saveStatus === 'tasted',
       };
 
       if (purchaseData) {
@@ -357,12 +623,20 @@ const MyWines = () => {
       if (error) throw error;
 
       toast.success("¡Vino añadido!");
-      trackAppEvent("wine_saved", { source: "manual", status: statusFilter });
+      trackAppEvent("wine_saved", {
+        userId: user!.id,
+        metadata: {
+          source: "manual",
+          status: saveStatus,
+          wine_name: formData.name,
+        },
+      });
       setShowAddDialog(false);
       resetForm();
+      if (isAddWineRoute) navigateToWineSection(saveStatus);
 
       // Calculate affinity in background for collection and tasted wines
-      if (newWine && (statusFilter === 'collection' || statusFilter === 'tasted')) {
+      if (newWine && (saveStatus === 'collection' || saveStatus === 'tasted')) {
         toast.info("Calculando afinidad Matchrim...");
         const { data: affinityData, error: affinityError } = await supabase.functions.invoke('calculate-wine-affinity', {
           body: { wine_id: newWine.id }
@@ -376,8 +650,9 @@ const MyWines = () => {
         }
       }
 
-      loadWines();
-    } catch (error) {
+	      loadWines();
+	      loadLearningWines();
+	    } catch (error) {
       console.error("Error saving wine:", error);
       toast.error("Error al guardar el vino");
     } finally {
@@ -390,11 +665,12 @@ const MyWines = () => {
       const { error } = await supabase
         .from("user_wines")
         .update({ is_favorite: !currentFavorite })
-        .eq("id", wineId);
+        .eq("id", wineId)
+        .eq("user_id", user!.id);
 
       if (error) throw error;
 
-      toast.success(currentFavorite ? "Eliminado de favoritos" : "Añadido a favoritos");
+      toast.success(currentFavorite ? "Eliminado de Favoritos" : "Añadido a Mis vinos > Favoritos");
       loadWines();
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -410,7 +686,7 @@ const MyWines = () => {
       return;
     }
 
-    if (!wine.sensory_attributes) {
+    if (!normalizeSensoryAttributesTo5(wine.sensory_attributes)) {
       toast.error("Este vino no tiene atributos sensoriales suficientes para entrenar el perfil");
       return;
     }
@@ -419,7 +695,8 @@ const MyWines = () => {
       const { error } = await supabase
         .from("user_wines")
         .update({ use_for_profile_training: nextValue })
-        .eq("id", wineId);
+        .eq("id", wineId)
+        .eq("user_id", user!.id);
 
       if (error) throw error;
 
@@ -429,8 +706,9 @@ const MyWines = () => {
         )
       );
 
-      toast.success(nextValue ? "Este vino volverá a afinar tu perfil" : "Este vino ya no entrena tu perfil");
-    } catch (error) {
+	      toast.success(nextValue ? "Este vino volverá a afinar tu perfil" : "Este vino ya no entrena tu perfil");
+	      loadLearningWines();
+	    } catch (error) {
       console.error("Error toggling profile training:", error);
       toast.error("No se pudo actualizar el entrenamiento del perfil");
     }
@@ -459,7 +737,8 @@ const MyWines = () => {
       const { error } = await supabase
         .from("user_wines")
         .update(updateData)
-        .eq("id", wineId);
+        .eq("id", wineId)
+        .eq("user_id", user!.id);
 
       if (error) throw error;
 
@@ -470,11 +749,28 @@ const MyWines = () => {
           : "Valoración guardada";
       
       toast.success(message);
-      trackAppEvent("wine_rating_added", { rating, status: wine?.status ?? null });
-      if (updateData.use_for_profile_training) {
-        trackAppEvent("profile_learning_updated", { wineId });
+      trackAppEvent("wine_rating_added", {
+        userId: user!.id,
+        metadata: {
+          wine_id: wineId,
+          rating,
+          previous_status: wine?.status || null,
+          has_sensory_attributes: Boolean(wine?.sensory_attributes),
+        },
+      });
+      if (wine?.sensory_attributes) {
+        trackAppEvent("profile_learning_updated", {
+          userId: user!.id,
+          metadata: {
+            wine_id: wineId,
+            rating,
+          },
+        });
       }
 
+      if (updateData.status === 'tasted') {
+        navigateToWineSection(rating === 'not_for_me' ? 'rejected' : 'tasted');
+      }
 
       supabase.functions
         .invoke("calculate-wine-affinity", {
@@ -486,8 +782,9 @@ const MyWines = () => {
           }
         });
 
-      loadWines();
-    } catch (error) {
+	      loadWines();
+	      loadLearningWines();
+	    } catch (error) {
       console.error("Error rating wine:", error);
       toast.error("Error al guardar valoración");
     }
@@ -497,13 +794,14 @@ const MyWines = () => {
     if (!confirm("¿Estás seguro de eliminar este vino?")) return;
 
     try {
-      const { error } = await supabase.from("user_wines").delete().eq("id", id);
+      const { error } = await supabase.from("user_wines").delete().eq("id", id).eq("user_id", user!.id);
 
       if (error) throw error;
 
-      toast.success("Vino eliminado");
-      loadWines();
-    } catch (error) {
+	      toast.success("Vino eliminado");
+	      loadWines();
+	      loadLearningWines();
+	    } catch (error) {
       console.error("Error deleting wine:", error);
       toast.error("Error al eliminar el vino");
     }
@@ -525,7 +823,17 @@ const MyWines = () => {
     setExtractedData(null);
     setExtractedImageUrl(null);
     setPurchaseData(null);
+    setManualWineSuggestions([]);
+    setManualWineLookupStatus('idle');
+    setManualWineNameConfirmed(false);
+    setManualWineSelectedFromResults(false);
   };
+
+  useEffect(() => {
+    if (!isAddWineRoute || showAddDialog || showPurchaseDialog) return;
+    resetForm();
+    setShowAddDialog(true);
+  }, [isAddWineRoute, showAddDialog, showPurchaseDialog]);
 
   const getAffinityColor = (score: number) => {
     if (score >= 80) return "text-green-600";
@@ -533,21 +841,110 @@ const MyWines = () => {
     return "text-red-600";
   };
 
-  const getRatingIcon = (rating: string | null) => {
-    switch (rating) {
-      case 'love': return <ThumbsUp className="h-4 w-4 text-green-600" />;
-      case 'not_for_me': return <ThumbsDown className="h-4 w-4 text-red-600" />;
-      case 'ok': return <Meh className="h-4 w-4 text-yellow-600" />;
-      default: return null;
-    }
-  };
+	  const getRatingIcon = (rating: string | null) => {
+	    switch (rating) {
+	      case 'love': return <ThumbsUp className="h-4 w-4 text-green-600" />;
+	      case 'not_for_me': return <ThumbsDown className="h-4 w-4 text-red-600" />;
+	      case 'ok': return <Meh className="h-4 w-4 text-yellow-600" />;
+	      default: return null;
+	    }
+	  };
 
-  const trainingReadyCount = wines.filter(
-    (wine) => wine.rating && wine.use_for_profile_training && wine.sensory_attributes
-  ).length;
-  const ratedCount = wines.filter((wine) => wine.rating).length;
+	  const buildWinePrompt = (wine: UserWine) => [
+	    wine.name,
+	    wine.producer,
+	    wine.vintage,
+	    wine.region,
+	    wine.country,
+	    wine.grape_varieties?.join(', '),
+	  ].filter(Boolean).join(' · ');
 
-  if (!user) return null;
+	  const askAiRimAboutWine = (wine: UserWine, intent: 'fit' | 'similar') => {
+	    const winePrompt = encodeURIComponent(buildWinePrompt(wine));
+	    const functionName = intent === 'similar' ? 'similar-wine' : 'wine-fit';
+	    navigate(`/inteligencia-liquida?function=${functionName}&wine=${winePrompt}`);
+	  };
+
+	  const learningStats = useMemo(() => {
+	    const keys = ['potencia', 'acidez', 'dulzura', 'taninos', 'afrutado'] as const;
+	    type SensoryKey = typeof keys[number];
+	    type TrainableWine = { wine: LearningWine; attrs: Record<SensoryKey, number> };
+
+	    const rated = learningWines.filter((wine) => wine.rating);
+	    const trainable = rated
+	      .map((wine) => {
+	        const attrs = normalizeSensoryAttributesTo5(wine.sensory_attributes);
+	        return wine.use_for_profile_training && attrs
+	          ? { wine, attrs: attrs as Record<SensoryKey, number> }
+	          : null;
+	      })
+	      .filter((item): item is TrainableWine => Boolean(item));
+	    const loved = rated.filter((wine) => wine.rating === 'love');
+	    const rejected = rated.filter((wine) => wine.rating === 'not_for_me');
+
+	    const grapeCounts = new Map<string, number>();
+	    loved.forEach((wine) => {
+	      wine.grape_varieties?.forEach((grape) => {
+	        const key = grape.trim();
+	        if (!key) return;
+	        grapeCounts.set(key, (grapeCounts.get(key) ?? 0) + 1);
+	      });
+	    });
+
+	    const topGrapes = Array.from(grapeCounts.entries())
+	      .sort((a, b) => b[1] - a[1])
+	      .slice(0, 3)
+	      .map(([grape]) => grape);
+
+	    const totals = keys.reduce((acc, key) => ({ ...acc, [key]: 0 }), {} as Record<SensoryKey, number>);
+	    trainable.forEach(({ attrs }) => {
+	      keys.forEach((key) => {
+	        totals[key] += attrs[key];
+	      });
+	    });
+
+	    const dominant = trainable.length
+	      ? keys
+	          .map((key) => ({
+	            key,
+	            label: key === 'dulzura' ? 'dulzor' : key,
+	            value: Math.round((totals[key] / trainable.length) * 10) / 10,
+	          }))
+	          .sort((a, b) => b.value - a.value)
+	          .slice(0, 2)
+	      : [];
+
+	    const nextStep = trainable.length === 0
+	      ? 'Puntúa un vino con atributos para que Matchrim empiece a aprender.'
+	      : trainable.length < 3
+	        ? 'Puntúa al menos 3 vinos más para que el patrón deje de depender de una sola botella.'
+	        : 'Sigue puntuando vinos de cartas reales: ahí es donde tu código mejora más.';
+
+	    return {
+	      ratedCount: rated.length,
+	      trainingCount: trainable.length,
+	      lovedCount: loved.length,
+	      rejectedCount: rejected.length,
+	      confidence: Math.min(100, Math.round((trainable.length / 12) * 100)),
+	      topGrapes,
+	      dominant,
+	      nextStep,
+	    };
+	  }, [learningWines]);
+
+	  const trainingReadyCount = learningStats.trainingCount;
+	  const ratedCount = learningStats.ratedCount;
+
+	  if (authLoading || !user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
+        <AppNav />
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -567,64 +964,148 @@ const MyWines = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">Mis Vinos</h1>
-          <p className="text-muted-foreground">Tu colección personal de vinos</p>
+          <p className="text-muted-foreground">
+            Tu bodega, tus pendientes y las señales que hacen que Matchrim aprenda.
+          </p>
         </div>
 
-        <Tabs defaultValue="scanner" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="scanner" className="gap-2">
-              <ScanLine className="h-4 w-4" />
-              Scanner
-            </TabsTrigger>
-            <TabsTrigger value="collection" className="gap-2">
-              <Wine className="h-4 w-4" />
-              Colección
-            </TabsTrigger>
-          </TabsList>
+        <div className="space-y-6">
+          <Card className="border-red-100 bg-white">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Plus className="h-5 w-5 text-red-900" />
+                Añadir o encontrar vinos
+              </CardTitle>
+              <CardDescription>
+                Elige una acción. Favoritos es una vista transversal: un vino puede seguir en Bodega, Quiero Probar o Ya Probados y aparecer también en Favoritos.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-3 md:grid-cols-4">
+              <Button
+                type="button"
+                variant="outline"
+                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                onClick={() => navigate('/escanear/etiqueta')}
+              >
+                <ScanLine className="h-5 w-5 shrink-0 text-red-900" />
+                <span>
+                  <span className="block font-semibold">Escanear etiqueta</span>
+                  <span className="block text-xs font-normal text-muted-foreground">Identificar y guardar</span>
+                </span>
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                onClick={() => navigate('/escanear/carta-vinos')}
+              >
+                <Search className="h-5 w-5 shrink-0 text-red-900" />
+                <span>
+                  <span className="block font-semibold">Escanear carta</span>
+                  <span className="block text-xs font-normal text-muted-foreground">Encontrar candidatos</span>
+                </span>
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                onClick={() => navigate('/my-wines/add')}
+              >
+                <Plus className="h-5 w-5 shrink-0 text-red-900" />
+                  <span>
+                    <span className="block font-semibold">Añadir manualmente</span>
+                    <span className="block text-xs font-normal text-muted-foreground">Buscar, validar o completar</span>
+                  </span>
+                </Button>
+              <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
+                <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
+                  <Search className="h-4 w-4 text-red-900" />
+                  Buscar catálogo
+                </div>
+                <WineSearchBar onSelectWine={handleSearchWineSelect} />
+              </div>
+            </CardContent>
+          </Card>
 
-          {/* Scanner Tab */}
-          <TabsContent value="scanner" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Wine Menu Scanner */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <ScanLine className="h-5 w-5" />
-                    Scanner de Cartas
-                  </CardTitle>
-                  <CardDescription>
-                    Escanea cartas de restaurante y descubre compatibilidades
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Suspense fallback={<ScannerFallback />}>
-                    <WineMenuScanner />
-                  </Suspense>
-                </CardContent>
-              </Card>
+		            <Card className="overflow-hidden border-red-100 bg-white">
+	              <CardHeader className="border-b bg-red-950 text-white">
+	                <CardTitle className="flex items-center gap-2">
+	                  <Sparkles className="h-5 w-5" />
+	                  Así aprende tu Matchrim
+	                </CardTitle>
+	                <CardDescription className="text-white/75">
+	                  Tus valoraciones afinan el perfil: “me encanta” acerca el código a ese vino, “no va” lo aleja y “correcto” pesa menos.
+	                </CardDescription>
+	              </CardHeader>
+	              <CardContent className="grid gap-3 p-4 md:grid-cols-4">
+	                <div className="rounded-lg border bg-muted/30 p-4">
+	                  <p className="text-xs font-semibold uppercase text-muted-foreground">Señales útiles</p>
+	                  <div className="mt-2 flex items-end gap-2">
+	                    <span className="text-3xl font-bold">{learningStats.trainingCount}</span>
+	                    <span className="pb-1 text-sm text-muted-foreground">entrenando</span>
+	                  </div>
+	                  <p className="mt-2 text-xs text-muted-foreground">
+	                    {learningStats.ratedCount} vino{learningStats.ratedCount !== 1 ? 's' : ''} puntuado{learningStats.ratedCount !== 1 ? 's' : ''}.
+	                  </p>
+	                </div>
 
-              {/* Wine Label OCR */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Wine className="h-5 w-5" />
-                    Scanner de Etiquetas
-                  </CardTitle>
-                  <CardDescription>
-                    Fotografía etiquetas para extraer información
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <WineLabelOCRImport onExtractComplete={handleExtractComplete} />
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+	                <div className="rounded-lg border bg-muted/30 p-4">
+	                  <p className="text-xs font-semibold uppercase text-muted-foreground">Preferencias claras</p>
+	                  <div className="mt-2 flex flex-wrap gap-1.5">
+	                    {learningStats.topGrapes.length > 0 ? (
+	                      learningStats.topGrapes.map((grape) => (
+	                        <Badge key={grape} variant="outline">{grape}</Badge>
+	                      ))
+	                    ) : (
+	                      <span className="text-sm text-muted-foreground">Aún sin uvas dominantes</span>
+	                    )}
+	                  </div>
+	                  <p className="mt-2 text-xs text-muted-foreground">
+	                    {learningStats.lovedCount} “me encanta” y {learningStats.rejectedCount} “no va”.
+	                  </p>
+	                </div>
 
-          {/* Collection Tab with Status Filters */}
-          <TabsContent value="collection" className="space-y-6">
-            <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as any)}>
-              <TabsList className="grid h-auto w-full grid-cols-3">
+	                <div className="rounded-lg border bg-muted/30 p-4">
+	                  <p className="text-xs font-semibold uppercase text-muted-foreground">Perfil que aparece</p>
+	                  <div className="mt-2 space-y-1">
+	                    {learningStats.dominant.length > 0 ? (
+	                      learningStats.dominant.map((item) => (
+	                        <div key={item.key} className="flex items-center justify-between gap-2 text-sm">
+	                          <span className="capitalize text-muted-foreground">{item.label}</span>
+	                          <span className="font-semibold">{item.value}/5</span>
+	                        </div>
+	                      ))
+	                    ) : (
+	                      <p className="text-sm text-muted-foreground">Necesito vinos con atributos 1-5.</p>
+	                    )}
+	                  </div>
+	                  <Progress value={learningStats.confidence} className="mt-3 h-2" />
+	                </div>
+
+	                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+	                  <p className="text-xs font-semibold uppercase text-amber-900">Siguiente paso</p>
+	                  <p className="mt-2 text-sm leading-5 text-amber-950">{learningStats.nextStep}</p>
+	                  <Button
+	                    variant="outline"
+	                    size="sm"
+	                    className="mt-3 gap-2 border-amber-300 bg-white text-amber-950"
+	                    onClick={() => navigateToWineSection('wishlist')}
+	                  >
+	                    <Heart className="h-4 w-4" />
+	                    Puntuar pendientes
+	                  </Button>
+	                </div>
+	              </CardContent>
+	            </Card>
+
+	            <Tabs
+	              value={statusFilter}
+	              onValueChange={(v) => {
+                navigateToWineSection(v as WineSection);
+                setFilterType('all');
+              }}
+            >
+              <TabsList className="grid h-auto w-full grid-cols-2 sm:grid-cols-5">
                 <TabsTrigger value="collection" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
                   <Wine className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
@@ -644,6 +1125,20 @@ const MyWines = () => {
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Ya Probados</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Puntúa y entrena</span>
+                  </div>
+                </TabsTrigger>
+                <TabsTrigger value="favorites" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                  <Heart className="h-4 w-4 fill-current" />
+                  <div className="flex min-w-0 flex-col items-start">
+                    <span>Favoritos</span>
+                    <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Tus marcados</span>
+                  </div>
+                </TabsTrigger>
+                <TabsTrigger value="rejected" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                  <ThumbsDown className="h-4 w-4" />
+                  <div className="flex min-w-0 flex-col items-start">
+                    <span>No repetir</span>
+                    <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Señal negativa</span>
                   </div>
                 </TabsTrigger>
               </TabsList>
@@ -685,33 +1180,6 @@ const MyWines = () => {
                   </Card>
                 )}
 
-                {/* Search and Add */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Search className="h-5 w-5" />
-                      Buscar y Añadir Vino
-                    </CardTitle>
-                    <CardDescription>
-                      Busca en nuestra base de datos o añade manualmente
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <WineSearchBar onSelectWine={handleSearchWineSelect} />
-                    <Button
-                      onClick={() => {
-                        resetForm();
-                        setShowAddDialog(true);
-                      }}
-                      variant="outline"
-                      className="w-full gap-2"
-                    >
-                      <Plus className="h-4 w-4" />
-                      Añadir Manualmente
-                    </Button>
-                  </CardContent>
-                </Card>
-
                 {/* Filters */}
                 <div className="flex items-center gap-2">
                   <DropdownMenu>
@@ -725,10 +1193,6 @@ const MyWines = () => {
                       <DropdownMenuItem onClick={() => setFilterType('all')}>
                         Todos ({wines.length})
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setFilterType('favorites')}>
-                        <Heart className="h-4 w-4 mr-2" />
-                        Favoritos ({wines.filter(w => w.is_favorite).length})
-                      </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => setFilterType('high_affinity')}>
                         <Star className="h-4 w-4 mr-2" />
                         Alta Afinidad ({wines.filter(w => w.matchrim_affinity && w.matchrim_affinity >= 70).length})
@@ -738,7 +1202,6 @@ const MyWines = () => {
 
                   {filterType !== 'all' && (
                     <Badge variant="secondary">
-                      {filterType === 'favorites' && '❤️ Favoritos'}
                       {filterType === 'high_affinity' && '⭐ Alta Afinidad'}
                     </Badge>
                   )}
@@ -749,10 +1212,12 @@ const MyWines = () => {
                   <Card>
                     <CardContent className="flex flex-col items-center px-5 py-12 text-center">
                       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-red-50 text-red-900">
-                        {statusFilter === 'wishlist' ? (
+                        {statusFilter === 'wishlist' || statusFilter === 'favorites' ? (
                           <Heart className="h-7 w-7" />
                         ) : statusFilter === 'tasted' ? (
                           <Star className="h-7 w-7" />
+                        ) : statusFilter === 'rejected' ? (
+                          <ThumbsDown className="h-7 w-7" />
                         ) : (
                           <Wine className="h-7 w-7" />
                         )}
@@ -761,29 +1226,40 @@ const MyWines = () => {
                         {statusFilter === 'collection' && 'Tu bodega empieza con la primera botella'}
                         {statusFilter === 'wishlist' && 'Guarda aquí los vinos que te recomienda Winerim'}
                         {statusFilter === 'tasted' && 'Puntúa vinos para que Matchrim aprenda contigo'}
+                        {statusFilter === 'favorites' && 'Tus favoritos aparecerán aquí'}
+                        {statusFilter === 'rejected' && 'Aquí van los vinos que no quieres repetir'}
                       </h3>
                       <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
                         {statusFilter === 'collection' && 'Escanea una etiqueta, busca un vino o añádelo manualmente para recordar qué tienes en casa.'}
                         {statusFilter === 'wishlist' && 'Cuando filtres una carta o escanees un restaurante sin Winerim, podrás guardar candidatos para probarlos después.'}
                         {statusFilter === 'tasted' && 'Los vinos puntuados con atributos sensoriales afinan tu código y mejoran las recomendaciones futuras.'}
+                        {statusFilter === 'favorites' && 'Toca el corazón de cualquier vino en Bodega, Quiero Probar o Ya Probados para verlo en esta sección.'}
+                        {statusFilter === 'rejected' && 'Cuando marques “No va”, Matchrim aprende qué estilos, uvas o estructuras alejar de tus recomendaciones.'}
                       </p>
                       <div className="mt-5 flex w-full max-w-sm flex-col gap-2 sm:flex-row sm:justify-center">
                         {statusFilter === 'wishlist' ? (
-                          <Button onClick={() => navigate('/usar-matchrim')} className="gap-2 bg-red-800 hover:bg-red-900">
+                          <Button onClick={() => navigate('/escanear/carta-vinos')} className="gap-2 bg-red-800 hover:bg-red-900">
                             <ScanLine className="h-4 w-4" />
                             Usar mi código
                           </Button>
-                        ) : statusFilter === 'tasted' ? (
-                          <Button onClick={() => setStatusFilter('wishlist')} className="gap-2 bg-red-800 hover:bg-red-900">
+                        ) : statusFilter === 'favorites' ? (
+                          <Button onClick={() => navigateToWineSection('wishlist')} className="gap-2 bg-red-800 hover:bg-red-900">
                             <Heart className="h-4 w-4" />
                             Ver Quiero Probar
                           </Button>
+                        ) : statusFilter === 'tasted' ? (
+                          <Button onClick={() => navigateToWineSection('wishlist')} className="gap-2 bg-red-800 hover:bg-red-900">
+                            <Heart className="h-4 w-4" />
+                            Ver Quiero Probar
+                          </Button>
+                        ) : statusFilter === 'rejected' ? (
+                          <Button onClick={() => navigateToWineSection('tasted')} className="gap-2 bg-red-800 hover:bg-red-900">
+                            <Star className="h-4 w-4" />
+                            Ver Ya Probados
+                          </Button>
                         ) : (
                           <Button
-                            onClick={() => {
-                              resetForm();
-                              setShowPurchaseDialog(true);
-                            }}
+                            onClick={() => navigate('/my-wines/add')}
                             className="gap-2 bg-red-800 hover:bg-red-900"
                           >
                             <Plus className="h-4 w-4" />
@@ -792,7 +1268,7 @@ const MyWines = () => {
                         )}
                         <Button
                           variant="outline"
-                          onClick={() => navigate('/usar-matchrim?mode=scanner')}
+                          onClick={() => navigate('/escanear/carta-vinos')}
                           className="gap-2"
                         >
                           <ScanLine className="h-4 w-4" />
@@ -852,7 +1328,7 @@ const MyWines = () => {
                         </CardHeader>
                         <CardContent className="space-y-3">
                           {/* Quantity for collection items */}
-                          {statusFilter === 'collection' && wine.quantity !== null && (
+                          {wine.status === 'collection' && wine.quantity !== null && (
                             <div className="flex items-center justify-between text-sm">
                               <span className="text-muted-foreground">Stock en bodega</span>
                               <Badge variant={wine.quantity > 0 ? 'default' : 'secondary'}>
@@ -876,6 +1352,18 @@ const MyWines = () => {
 
                           {/* Wine Details */}
                           <div className="flex flex-wrap gap-1.5 text-sm">
+                            {statusFilter === 'favorites' && (
+                              <Badge className="bg-red-50 text-red-900 hover:bg-red-50">
+                                {wine.status === 'collection' && 'Mi Bodega'}
+                                {wine.status === 'wishlist' && 'Quiero Probar'}
+                                {wine.status === 'tasted' && 'Ya Probado'}
+                              </Badge>
+                            )}
+                            {statusFilter === 'rejected' && (
+                              <Badge className="bg-red-50 text-red-900 hover:bg-red-50">
+                                No repetir
+                              </Badge>
+                            )}
                             {wine.vintage && <Badge variant="outline">{wine.vintage}</Badge>}
                             {wine.region && <Badge variant="outline">{wine.region}</Badge>}
                             {wine.country && <Badge variant="outline">{wine.country}</Badge>}
@@ -908,14 +1396,37 @@ const MyWines = () => {
                           )}
 
                           {/* Personal Note */}
-                          {wine.personal_note && (
-                            <p className="text-sm text-muted-foreground italic line-clamp-2 border-l-2 border-primary pl-2">
-                              {wine.personal_note}
-                            </p>
-                          )}
+	                          {wine.personal_note && (
+	                            <p className="text-sm text-muted-foreground italic line-clamp-2 border-l-2 border-primary pl-2">
+	                              {wine.personal_note}
+	                            </p>
+	                          )}
 
-                          {wine.rating && (
-                            <div className="rounded-lg border bg-muted/30 p-3">
+	                          <div className="grid gap-2 pt-2 sm:grid-cols-2">
+	                            <Button
+	                              type="button"
+	                              variant="outline"
+	                              size="sm"
+	                              className="gap-2"
+	                              onClick={() => askAiRimAboutWine(wine, 'fit')}
+	                            >
+	                              <Sparkles className="h-4 w-4" />
+	                              ¿Por qué encaja?
+	                            </Button>
+	                            <Button
+	                              type="button"
+	                              variant="outline"
+	                              size="sm"
+	                              className="gap-2"
+	                              onClick={() => askAiRimAboutWine(wine, 'similar')}
+	                            >
+	                              <ScanLine className="h-4 w-4" />
+	                              Buscar parecido
+	                            </Button>
+	                          </div>
+
+	                          {wine.rating && (
+	                            <div className="rounded-lg border bg-muted/30 p-3">
                               <div className="flex items-center justify-between gap-3">
                                 <div className="min-w-0">
                                   <div className="flex items-center gap-2 text-sm font-medium">
@@ -942,7 +1453,7 @@ const MyWines = () => {
                           )}
 
                           {/* Rating Buttons - move wishlist wines to tasted and train the profile */}
-                          {(statusFilter === 'tasted' || statusFilter === 'collection' || statusFilter === 'wishlist') && (
+                          {(wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
                             <div className="flex gap-2 pt-2">
                               <Button
                                 variant={wine.rating === 'love' ? 'default' : 'outline'}
@@ -980,23 +1491,23 @@ const MyWines = () => {
                 )}
               </div>
             </Tabs>
-          </TabsContent>
-        </Tabs>
+        </div>
 
         {/* Purchase Info Dialog */}
         <Dialog open={showPurchaseDialog} onOpenChange={setShowPurchaseDialog}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto sm:max-h-[85vh]">
-            <DialogHeader>
-              <DialogTitle>Información de compra o consumo</DialogTitle>
+          <DialogContent className="h-[100dvh] max-h-[100dvh] w-screen max-w-none overflow-y-auto rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg">
+            <DialogHeader className="sr-only">
+              <DialogTitle>Detalles del vino</DialogTitle>
               <DialogDescription>
-                Indica dónde, cuándo y a qué precio. Puedes saltar si no aplica.
+                Completa dónde encontraste, compraste o tomaste este vino.
               </DialogDescription>
             </DialogHeader>
             <PurchaseInfoSelector
-              mode={statusFilter}
+              mode={purchaseDialogMode}
               onConfirm={handlePurchaseInfoConfirm}
               onCancel={() => {
                 setShowPurchaseDialog(false);
+                if (isAddWineRoute) navigate('/my-wines');
                 resetForm();
               }}
             />
@@ -1005,10 +1516,13 @@ const MyWines = () => {
 
         {/* Add/Edit Wine Dialog */}
         <Dialog open={showAddDialog} onOpenChange={(open) => {
-          setShowAddDialog(open);
-          if (!open) resetForm();
+          if (open) {
+            setShowAddDialog(true);
+            return;
+          }
+          closeAddDialog();
         }}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="h-[100dvh] max-h-[100dvh] w-screen max-w-none overflow-y-auto rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg">
             <DialogHeader>
               <DialogTitle>
                 {extractedData ? "Verificar y Guardar Vino" : "Añadir Vino"}
@@ -1027,9 +1541,89 @@ const MyWines = () => {
                   <Input
                     id="name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => updateManualWineName(e.target.value)}
                     placeholder="Ej: Viña Albali Reserva"
                   />
+                  {manualWineName.length >= 3 && (
+                    <div className="mt-2 rounded-lg border bg-muted/20 p-3">
+                      {manualWineLookupStatus === 'loading' ? (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Buscando coincidencias...
+                        </div>
+                      ) : manualWineSelectedFromResults ? (
+                        <div className="flex items-center gap-2 text-sm text-green-700">
+                          <CheckCircle className="h-4 w-4" />
+                          Validado desde resultados
+                        </div>
+                      ) : manualWineSuggestions.length > 0 ? (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-sm font-medium">
+                            <Search className="h-4 w-4 text-primary" />
+                            Coincidencias encontradas
+                          </div>
+                          <div className="grid gap-2">
+                            {manualWineSuggestions.map((wine, index) => (
+                              <button
+                                key={`${wine.name}-${wine.producer || 'producer'}-${index}`}
+                                type="button"
+                                onClick={() => handleManualSuggestionSelect(wine)}
+                                className="rounded-md border bg-background p-3 text-left transition-colors hover:bg-accent"
+                              >
+                                <div className="flex items-start justify-between gap-3">
+                                  <div className="min-w-0">
+                                    <p className="truncate text-sm font-semibold">{wine.name}</p>
+                                    {wine.producer && (
+                                      <p className="truncate text-xs text-muted-foreground">{wine.producer}</p>
+                                    )}
+                                    <div className="mt-1 flex flex-wrap gap-1">
+                                      {wine.vintage && <Badge variant="outline">{wine.vintage}</Badge>}
+                                      {wine.region && <Badge variant="outline">{wine.region}</Badge>}
+                                      {wine.tipo && <Badge variant="secondary">{wine.tipo}</Badge>}
+                                    </div>
+                                  </div>
+                                  <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ) : manualWineLookupStatus === 'done' || manualWineLookupStatus === 'error' ? (
+                        <div className="space-y-3">
+                          <div className="flex items-start gap-2 text-sm">
+                            {manualWineNameConfirmed ? (
+                              <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+                            ) : (
+                              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+                            )}
+                            <div>
+                              <p className="font-medium">
+                                {manualWineLookupStatus === 'error'
+                                  ? 'No he podido verificarlo ahora'
+                                  : 'No encuentro coincidencias claras'}
+                              </p>
+                              <p className="text-muted-foreground">
+                                Revisa nombre, bodega y añada. Si el vino está bien escrito, confírmalo para guardarlo manualmente.
+                              </p>
+                            </div>
+                          </div>
+                          <Button
+                            type="button"
+                            variant={manualWineNameConfirmed ? "secondary" : "outline"}
+                            size="sm"
+                            className="gap-2"
+                            onClick={() => {
+                              setManualWineNameConfirmed(true);
+                              setManualWineSelectedFromResults(false);
+                            }}
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                            {manualWineNameConfirmed ? 'Nombre confirmado' : 'He revisado el nombre'}
+                          </Button>
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -1121,7 +1715,7 @@ const MyWines = () => {
                 </div>
 
                 {/* Quantity field only for collection */}
-                {statusFilter === 'collection' && (
+                {purchaseDialogMode === 'collection' && (
                   <div>
                     <Label htmlFor="quantity">Cantidad en Bodega</Label>
                     <Input
@@ -1140,10 +1734,9 @@ const MyWines = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => {
-                    setShowAddDialog(false);
-                    resetForm();
-                  }}
+	                  onClick={() => {
+	                    closeAddDialog();
+	                  }}
                   disabled={saving}
                 >
                   Cancelar
@@ -1154,35 +1747,23 @@ const MyWines = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => {
-                      setStatusFilter('collection');
-                      setShowPurchaseDialog(true);
-                      setShowAddDialog(false);
-                    }}
-                    disabled={saving}
+                    onClick={() => startManualWineSave('collection')}
+                    disabled={saving || !canContinueManualWine}
                   >
                     Mi Bodega
                   </Button>
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => {
-                      setStatusFilter('wishlist');
-                      setShowPurchaseDialog(true);
-                      setShowAddDialog(false);
-                    }}
-                    disabled={saving}
+                    onClick={() => startManualWineSave('wishlist')}
+                    disabled={saving || !canContinueManualWine}
                   >
                     Quiero Probar
                   </Button>
                   <Button
                     type="button"
-                    onClick={() => {
-                      setStatusFilter('tasted');
-                      setShowPurchaseDialog(true);
-                      setShowAddDialog(false);
-                    }}
-                    disabled={saving}
+                    onClick={() => startManualWineSave('tasted')}
+                    disabled={saving || !canContinueManualWine}
                   >
                     Ya Probado
                   </Button>

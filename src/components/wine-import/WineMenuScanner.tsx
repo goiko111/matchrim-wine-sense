@@ -7,15 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, MessageSquare } from "lucide-react";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
-import { toast } from "sonner";
-import { normalizeSensoryAttributes, SENSORY_KEYS } from "@/utils/sensoryNormalize";
 import { trackAppEvent } from "@/lib/analytics";
-import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
+import { toast } from "sonner";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
@@ -61,72 +59,39 @@ interface ScannedWine {
   } | null;
   compatibilidad?: number | null;
   razon?: string | null;
-  posicion?: { x: number; y: number; width?: number; height?: number; confidence?: number } | null;
+  posicion?: {
+    x?: number | null;
+    y?: number | null;
+    width?: number | null;
+    height?: number | null;
+    confidence?: number | null;
+    confianza?: number | null;
+  } | null;
 }
-
-const computeWineSimilarity = (a: ScannedWine, b: ScannedWine): number => {
-  let score = 0;
-  if (a.atributos && b.atributos) {
-    const keys = SENSORY_KEYS;
-    const dist = Math.sqrt(
-      keys.reduce((acc, k) => acc + Math.pow((a.atributos![k] || 3) - (b.atributos![k] || 3), 2), 0)
-    );
-    const maxDist = Math.sqrt(5 * Math.pow(4, 2));
-    score += (1 - dist / maxDist) * 70;
-  }
-  const typeA = (a.tipo || '').toLowerCase().trim();
-  const typeB = (b.tipo || '').toLowerCase().trim();
-  if (typeA && typeA === typeB) score += 20;
-  const grapesA = new Set((a.uvas || []).map((g) => g.toLowerCase().trim()));
-  const grapesB = new Set((b.uvas || []).map((g) => g.toLowerCase().trim()));
-  const overlap = [...grapesA].filter((g) => grapesB.has(g)).length;
-  if (overlap > 0) score += Math.min(10, overlap * 5);
-  return score;
-};
-
-const normalizeScannedWine = (wine: ScannedWine): ScannedWine => {
-  const normalizedAttrs = normalizeSensoryAttributes(wine.atributos ?? null);
-  const atributos = normalizedAttrs && (['potencia','acidez','dulzura','taninos','afrutado'] as const).every(k => normalizedAttrs[k] != null)
-    ? {
-        potencia: normalizedAttrs.potencia!,
-        acidez: normalizedAttrs.acidez!,
-        dulzura: normalizedAttrs.dulzura!,
-        taninos: normalizedAttrs.taninos!,
-        afrutado: normalizedAttrs.afrutado!,
-      }
-    : null;
-
-  // Posicion: only keep if confidence >= 0.7 and x/y in 0-100
-  let posicion: ScannedWine['posicion'] = null;
-  const p = wine.posicion;
-  if (p && typeof p.x === 'number' && typeof p.y === 'number'
-      && p.x >= 0 && p.x <= 100 && p.y >= 0 && p.y <= 100
-      && (p.confidence == null || p.confidence >= 0.7)) {
-    posicion = p;
-  }
-
-  return { ...wine, atributos, posicion };
-};
-
-const buildAirimWineDescription = (wine: ScannedWine): string => {
-  const parts = [wine.nombre];
-  if (wine.productor) parts.push(wine.productor);
-  if (wine.anada) parts.push(String(wine.anada));
-  if (wine.region) parts.push(wine.region);
-  if (wine.uvas && wine.uvas.length) parts.push(wine.uvas.join(', '));
-  return parts.filter(Boolean).join(' · ');
-};
 
 interface WineMenuScannerProps {
   restaurantName?: string;
   matchrimCode?: string;
   restaurantSessionId?: string | null;
+  pairingDishName?: string | null;
+  similarWineName?: string | null;
   onScanComplete?: (winesDetected: number) => void;
+}
+
+interface MatchrimProfilePayload {
+  potente: number;
+  acidez: number;
+  dulce: number;
+  tanico: number;
+  afrutado: number;
 }
 
 type ScannedWineSortMode = 'compatibility' | 'price-asc' | 'price-desc' | 'name';
 
 const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
+const formatPrice = (price?: number | null) => typeof price === 'number' && Number.isFinite(price)
+  ? `${price.toFixed(2)}€`
+  : null;
 
 const parseNullableNumber = (value: string) => {
   if (!value.trim()) return null;
@@ -134,10 +99,150 @@ const parseNullableNumber = (value: string) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+const normalizePercentage = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return Math.max(0, Math.min(100, numeric));
+};
+
+const normalizeAttributeTo5 = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
+  return Math.max(1, Math.min(5, Math.round(scaled)));
+};
+
+const normalizeAttributesTo5 = (attributes: ScannedWine['atributos']) => {
+  if (!attributes) return null;
+
+  const normalized = {
+    potencia: normalizeAttributeTo5(attributes.potencia),
+    acidez: normalizeAttributeTo5(attributes.acidez),
+    dulzura: normalizeAttributeTo5(attributes.dulzura),
+    taninos: normalizeAttributeTo5(attributes.taninos),
+    afrutado: normalizeAttributeTo5(attributes.afrutado),
+  };
+
+  if (Object.values(normalized).some((value) => value === null)) return null;
+  return normalized as NonNullable<ScannedWine['atributos']>;
+};
+
+const normalizeCompatibility = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return Math.max(0, Math.min(100, Math.round(numeric)));
+};
+
+const normalizeProfileValue = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return Math.max(1, Math.min(5, Math.round(numeric)));
+};
+
+const readStoredMatchrimProfile = (): MatchrimProfilePayload | null => {
+  try {
+    const rawProfile = localStorage.getItem('matchrim_quiz_result');
+    if (!rawProfile) return null;
+
+    const parsed = JSON.parse(rawProfile) as Partial<Record<keyof MatchrimProfilePayload, unknown>>;
+    const potente = normalizeProfileValue(parsed.potente);
+    const acidez = normalizeProfileValue(parsed.acidez);
+    const dulce = normalizeProfileValue(parsed.dulce);
+    const tanico = normalizeProfileValue(parsed.tanico);
+    const afrutado = normalizeProfileValue(parsed.afrutado);
+
+    if (potente === null || acidez === null || dulce === null || tanico === null || afrutado === null) {
+      return null;
+    }
+
+    return { potente, acidez, dulce, tanico, afrutado };
+  } catch (error) {
+    console.warn('Could not read stored Matchrim profile for wine menu scan:', error);
+    return null;
+  }
+};
+
+const normalizePositionConfidence = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return numeric > 1 ? Math.max(0, Math.min(1, numeric / 100)) : Math.max(0, Math.min(1, numeric));
+};
+
+const normalizeScannedWine = (wine: ScannedWine): ScannedWine => {
+  const x = normalizePercentage(wine.posicion?.x);
+  const y = normalizePercentage(wine.posicion?.y);
+  const confidence = normalizePositionConfidence(wine.posicion?.confidence ?? wine.posicion?.confianza);
+
+  return {
+    ...wine,
+    atributos: normalizeAttributesTo5(wine.atributos),
+    compatibilidad: normalizeCompatibility(wine.compatibilidad),
+    posicion: x !== null && y !== null && confidence !== null && confidence >= 0.7
+      ? {
+          x,
+          y,
+          width: normalizePercentage(wine.posicion?.width),
+          height: normalizePercentage(wine.posicion?.height),
+          confidence,
+        }
+      : null,
+  };
+};
+
+const getWinePosition = (wine: ScannedWine) => {
+  const x = normalizePercentage(wine.posicion?.x);
+  const y = normalizePercentage(wine.posicion?.y);
+  const width = normalizePercentage(wine.posicion?.width);
+  const confidence = normalizePositionConfidence(wine.posicion?.confidence ?? wine.posicion?.confianza);
+
+  if (x === null || y === null || confidence === null || confidence < 0.7) return null;
+  const anchorX = width !== null ? Math.min(92, x + width + 2) : x;
+  return { x: Math.max(8, Math.min(92, anchorX)), y: Math.max(4, Math.min(96, y)) };
+};
+
+const calculateWineSimilarity = (source: ScannedWine, candidate: ScannedWine) => {
+  let score = 0;
+  let signals = 0;
+
+  if (source.atributos && candidate.atributos) {
+    const distance = Math.sqrt(
+      Math.pow(source.atributos.potencia - candidate.atributos.potencia, 2) +
+      Math.pow(source.atributos.acidez - candidate.atributos.acidez, 2) +
+      Math.pow(source.atributos.dulzura - candidate.atributos.dulzura, 2) +
+      Math.pow(source.atributos.taninos - candidate.atributos.taninos, 2) +
+      Math.pow(source.atributos.afrutado - candidate.atributos.afrutado, 2)
+    );
+    const maxDistance = Math.sqrt(5 * Math.pow(4, 2));
+    score += Math.max(0, 100 - (distance / maxDistance) * 100) * 0.7;
+    signals += 0.7;
+  }
+
+  const sourceType = formatWineType(source.tipo).toLowerCase();
+  const candidateType = formatWineType(candidate.tipo).toLowerCase();
+  if (sourceType && candidateType) {
+    score += (sourceType === candidateType ? 100 : 35) * 0.15;
+    signals += 0.15;
+  }
+
+  const sourceGrapes = new Set((source.uvas || []).map((grape) => grape.toLowerCase()));
+  const candidateGrapes = new Set((candidate.uvas || []).map((grape) => grape.toLowerCase()));
+  if (sourceGrapes.size && candidateGrapes.size) {
+    const overlap = Array.from(sourceGrapes).filter((grape) => candidateGrapes.has(grape)).length;
+    const union = new Set([...sourceGrapes, ...candidateGrapes]).size;
+    score += ((overlap / union) * 100) * 0.15;
+    signals += 0.15;
+  }
+
+  if (signals === 0) return 0;
+  return Math.round(score / signals);
+};
+
 export const WineMenuScanner = ({
   restaurantName,
   matchrimCode,
   restaurantSessionId,
+  pairingDishName,
+  similarWineName,
   onScanComplete,
 }: WineMenuScannerProps = {}) => {
   const { user } = useAuth();
@@ -155,14 +260,49 @@ export const WineMenuScanner = ({
   const [scanTypeFilter, setScanTypeFilter] = useState('all');
   const [scanMaxPrice, setScanMaxPrice] = useState('');
   const [editingWineIndex, setEditingWineIndex] = useState<number | null>(null);
+  const [highlightedWineIndex, setHighlightedWineIndex] = useState<number | null>(null);
   const [scanFeedback, setScanFeedback] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const wineCardRefs = useRef(new Map<number, HTMLDivElement | null>());
 
   const scannedWineTypes = useMemo(
     () => Array.from(new Set(scannedWines.map((wine) => formatWineType(wine.tipo)))).sort(),
     [scannedWines]
   );
+
+  const menuDecision = useMemo(() => {
+    if (scannedWines.length === 0) return null;
+
+    const scored = scannedWines
+      .filter((wine) => typeof wine.compatibilidad === 'number')
+      .map((wine, index) => ({ wine, index, score: wine.compatibilidad as number }))
+      .sort((a, b) => b.score - a.score);
+
+    const best = scored[0] ?? null;
+    const secondaries = scored.slice(1, 3);
+    const safeAlternative = scored[1] ?? null;
+    const value = scored
+      .filter(({ wine, score }) => typeof wine.precio === 'number' && wine.precio > 0 && score >= 60)
+      .sort((a, b) => (b.score / Math.max(b.wine.precio ?? 1, 1)) - (a.score / Math.max(a.wine.precio ?? 1, 1)))[0] ?? null;
+    const adventurous = scored.find(({ score }, index) => index > 0 && score >= 60 && score < 75) ?? scored[2] ?? null;
+    const caution = [...scored].reverse().find(({ score }) => score < 60) ?? null;
+    const anchored = scannedWines.filter((wine) => getWinePosition(wine) && wine.compatibilidad != null).length;
+    const highMatches = scored.filter(({ score }) => score >= 80).length;
+    const mediumMatches = scored.filter(({ score }) => score >= 60 && score < 80).length;
+
+    return {
+      best,
+      secondaries,
+      safeAlternative,
+      value,
+      adventurous,
+      caution,
+      anchored,
+      highMatches,
+      mediumMatches,
+    };
+  }, [scannedWines]);
 
   const visibleScannedWines = useMemo(() => {
     const maxPrice = parseNullableNumber(scanMaxPrice);
@@ -186,6 +326,8 @@ export const WineMenuScanner = ({
       });
   }, [scanMaxPrice, scanSortMode, scanTypeFilter, scannedWines]);
 
+  const dishContext = pairingDishName?.trim() || '';
+  const similarWineContext = similarWineName?.trim() || '';
   const restaurantShareText = restaurantName
     ? `Hola, he intentado usar mi código Winerim${matchrimCode ? ` ${matchrimCode}` : ''} en ${restaurantName}. Me gustaría poder filtrar vuestra carta con mi perfil de vino. Podéis verlo en https://winerim.wine`
     : '';
@@ -195,6 +337,41 @@ export const WineMenuScanner = ({
   const restaurantWhatsappHref = restaurantShareText
     ? `https://wa.me/?text=${encodeURIComponent(restaurantShareText)}`
     : '';
+
+  const getSimilarWines = (sourceWine: ScannedWine, sourceIndex: number) =>
+    scannedWines
+      .map((candidate, candidateIndex) => ({
+        wine: candidate,
+        index: candidateIndex,
+        score: candidateIndex === sourceIndex ? 0 : calculateWineSimilarity(sourceWine, candidate),
+      }))
+      .filter((candidate) => candidate.index !== sourceIndex && candidate.score >= 50)
+      .sort((a, b) => {
+        const compatibilityDelta = (b.wine.compatibilidad ?? 0) - (a.wine.compatibilidad ?? 0);
+        if (compatibilityDelta !== 0) return compatibilityDelta;
+        return b.score - a.score;
+      })
+      .slice(0, 2);
+
+  const focusWine = (index: number) => {
+    setHighlightedWineIndex(index);
+    window.setTimeout(() => {
+      wineCardRefs.current.get(index)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  };
+
+  const openAiRimForWine = (wine: ScannedWine) => {
+    const wineDescription = [
+      wine.nombre,
+      wine.productor,
+      wine.anada,
+      wine.region,
+      wine.pais,
+      wine.uvas?.join(', '),
+    ].filter(Boolean).join(' · ');
+
+    navigate(`/inteligencia-liquida?function=wine-fit&wine=${encodeURIComponent(wineDescription)}`);
+  };
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -213,6 +390,16 @@ export const WineMenuScanner = ({
     setScannedWines([]);
     setScanFeedback(null);
     setFileType(isPDF ? 'pdf' : 'image');
+    trackAppEvent("wine_menu_scan_started", {
+      userId: user?.id,
+      metadata: {
+        file_type: isPDF ? "pdf" : "image",
+        restaurant_name: restaurantName || null,
+        has_matchrim_code: Boolean(matchrimCode),
+        pairing_dish_name: pairingDishName || null,
+        similar_wine_name: similarWineName || null,
+      },
+    });
 
     if (isPDF) {
       setConvertingPdf(true);
@@ -285,7 +472,6 @@ export const WineMenuScanner = ({
     setScanFeedback(null);
 
     try {
-      trackAppEvent("wine_menu_scan_started");
       // Leer el archivo como base64 y esperar a que termine
       const base64File = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
@@ -294,26 +480,40 @@ export const WineMenuScanner = ({
         reader.readAsDataURL(file);
       });
 
-      // Invocar la función de escaneo (incluye perfil Matchrim local si existe)
-      const matchrimProfile = readMatchrimLocalProfile();
+      // Invocar la función de escaneo
       const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
-        body: { image: base64File, matchrimProfile }
+        body: {
+          image: base64File,
+          matchrimProfile: readStoredMatchrimProfile(),
+          pairingDishName: pairingDishName || null,
+          similarWineName: similarWineName || null,
+        }
       });
 
       if (error) throw error;
-      if (data?.error) throw new Error(data.error);
 
       if (data?.vinos && data.vinos.length > 0) {
-        setScannedWines((data.vinos as ScannedWine[]).map(normalizeScannedWine));
+        const normalizedWines = (data.vinos as ScannedWine[]).map(normalizeScannedWine);
+        setScannedWines(normalizedWines);
         setHasProfile(!!data.has_profile);
-        onScanComplete?.(data.vinos.length);
+        onScanComplete?.(normalizedWines.length);
+        trackAppEvent("wine_menu_scan_completed", {
+          userId: user?.id,
+          metadata: {
+            wines_detected: normalizedWines.length,
+            has_profile: Boolean(data.has_profile),
+            restaurant_name: restaurantName || null,
+            pairing_dish_name: pairingDishName || null,
+            similar_wine_name: similarWineName || null,
+          },
+        });
 
         if (restaurantSessionId) {
           const { error: sessionError } = await supabase
             .from('restaurant_matchrim_sessions')
             .update({
               menu_scan_used: true,
-              wines_detected: data.vinos.length,
+              wines_detected: normalizedWines.length,
             })
             .eq('id', restaurantSessionId);
 
@@ -322,23 +522,34 @@ export const WineMenuScanner = ({
           }
         }
 
-        toast.success(`✨ ${data.vinos.length} vinos detectados en la carta`);
-        trackAppEvent("wine_menu_scan_completed", { count: data.vinos.length, scan_version: data?.scan_version });
+        toast.success(`✨ ${normalizedWines.length} vinos detectados en la carta`);
       } else {
         setScanFeedback("No he encontrado vinos claros en el documento. Prueba con una foto más cercana o con una sección más pequeña de la carta.");
         toast.info("No se encontraron vinos en el documento");
       }
     } catch (error) {
       console.error('Error processing file:', error);
-      trackAppEvent("wine_menu_scan_failed", { error: String(error) });
-      const friendly = "No he podido analizar esta carta ahora. Reintenta en unos segundos o prueba con una foto más cercana";
-      setScanFeedback(friendly);
-      toast.error(friendly);
+      const rawMessage = error instanceof Error ? error.message : 'Error al procesar el documento';
+      const message = /scanline|scanlines/i.test(rawMessage)
+        ? 'No he podido leer esta imagen correctamente. Repite la foto con más luz o sube la carta desde archivo'
+        : /non-2xx|FunctionsHttpError|User not authenticated|auth/i.test(rawMessage)
+          ? 'No he podido analizar esta carta ahora. Reintenta en unos segundos o prueba con una foto más cercana'
+        : rawMessage;
+      trackAppEvent("wine_menu_scan_failed", {
+        userId: user?.id,
+        metadata: {
+          error: message,
+          restaurant_name: restaurantName || null,
+          pairing_dish_name: pairingDishName || null,
+          similar_wine_name: similarWineName || null,
+        },
+      });
+      setScanFeedback(`${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
   };
-
 
   const clearScan = () => {
     setPreview(null);
@@ -351,6 +562,7 @@ export const WineMenuScanner = ({
     setScanTypeFilter('all');
     setScanMaxPrice('');
     setEditingWineIndex(null);
+    setHighlightedWineIndex(null);
     setScanFeedback(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     if (cameraInputRef.current) cameraInputRef.current.value = '';
@@ -376,26 +588,54 @@ export const WineMenuScanner = ({
     return <AlertCircle className="h-5 w-5 text-red-600" />;
   };
 
-  const saveWineToWishlist = async (wine: ScannedWine, index: number) => {
+  const getWineDecision = (score?: number | null) => {
+    if (typeof score !== 'number') {
+      return {
+        label: "Sin encaje",
+        description: "Falta perfil o datos suficientes para ordenar este vino.",
+        className: "border-stone-200 bg-stone-50 text-stone-700",
+      };
+    }
+    if (score >= 85) {
+      return {
+        label: "Pediría",
+        description: "Prioridad alta para tu perfil Matchrim.",
+        className: "border-green-200 bg-green-50 text-green-900",
+      };
+    }
+    if (score >= 70) {
+      return {
+        label: "Buen candidato",
+        description: "Encaja bien, revisa precio y estilo antes de elegir.",
+        className: "border-amber-200 bg-amber-50 text-amber-950",
+      };
+    }
+    if (score >= 55) {
+      return {
+        label: "Con matices",
+        description: "Puede gustarte si quieres algo menos evidente.",
+        className: "border-orange-200 bg-orange-50 text-orange-950",
+      };
+    }
+    return {
+      label: "No priorizaría",
+      description: "No parece la mejor opción de esta carta para ti.",
+      className: "border-red-200 bg-red-50 text-red-950",
+    };
+  };
+
+  const saveScannedWine = async (wine: ScannedWine, index: number, status: 'wishlist' | 'tasted', favorite = false) => {
     if (!user) {
       toast.error("Inicia sesión para guardar vinos");
       navigate(buildAuthRedirectPath(`${location.pathname}${location.search}`));
       return;
     }
 
-    const saveKey = `${wine.nombre}-${index}`;
+    const saveKey = `${favorite ? 'favorite' : status}-${wine.nombre}-${index}`;
     setSavingWineKey(saveKey);
 
     try {
-      const sensoryAttributes = wine.atributos
-        ? {
-            potencia: wine.atributos.potencia,
-            acidez: wine.atributos.acidez,
-            dulzura: wine.atributos.dulzura,
-            taninos: wine.atributos.taninos,
-            afrutado: wine.atributos.afrutado,
-          }
-        : null;
+      const sensoryAttributes = normalizeAttributesTo5(wine.atributos);
 
       const { error } = await supabase
         .from("user_wines")
@@ -408,10 +648,11 @@ export const WineMenuScanner = ({
           country: wine.pais || null,
           grape_varieties: wine.uvas || null,
           tasting_notes: wine.descripcion || wine.razon || null,
-          status: "wishlist",
+          status,
+          is_favorite: favorite,
           matchrim_affinity: wine.compatibilidad || null,
           sensory_attributes: sensoryAttributes as Json,
-          use_for_profile_training: false,
+          use_for_profile_training: status === 'tasted' && Boolean(sensoryAttributes),
           consumption_place: restaurantName || null,
           consumption_place_type: restaurantName ? "restaurant" : null,
           price: wine.precio || null,
@@ -419,14 +660,31 @@ export const WineMenuScanner = ({
             source: "menu_scanner",
             restaurant_session_id: restaurantSessionId || null,
             matchrim_code: matchrimCode || null,
+            pairing_dish_name: pairingDishName || null,
+            similar_wine_name: similarWineName || null,
           } as Json,
         });
 
       if (error) throw error;
 
       setSavedWineKeys((currentKeys) => new Set(currentKeys).add(saveKey));
-      toast.success(`${wine.nombre} guardado en Quiero Probar`);
-      trackAppEvent("wine_saved", { source: "wine_menu_scanner" });
+      trackAppEvent("wine_saved", {
+        userId: user.id,
+        metadata: {
+          source: "menu_scanner",
+          status,
+          wine_name: wine.nombre,
+          match: wine.compatibilidad || null,
+          restaurant_name: restaurantName || null,
+        },
+      });
+      toast.success(
+        favorite
+          ? `${wine.nombre} guardado en Quiero Probar y Favoritos`
+          : status === 'wishlist'
+          ? `${wine.nombre} guardado en Quiero Probar`
+          : `${wine.nombre} guardado en Ya Probados. Puntúalo para afinar tu Matchrim`
+      );
     } catch (error) {
       console.error("Error saving scanned wine:", error);
       toast.error("No se pudo guardar el vino");
@@ -435,41 +693,57 @@ export const WineMenuScanner = ({
     }
   };
 
+  const saveWineToWishlist = (wine: ScannedWine, index: number) => saveScannedWine(wine, index, 'wishlist');
+  const saveWineAsTasted = (wine: ScannedWine, index: number) => saveScannedWine(wine, index, 'tasted');
+  const saveWineAsFavorite = (wine: ScannedWine, index: number) => saveScannedWine(wine, index, 'wishlist', true);
+
   return (
     <div className="space-y-6">
       {(restaurantName || matchrimCode) && (
-        <div className="rounded-lg border border-red-100 bg-red-50 p-4">
+        <div className="rounded-md border border-stone-800 bg-stone-950 p-4 text-white shadow-sm">
           <div className="flex flex-wrap items-center gap-2 text-sm">
             {restaurantName && (
-              <span className="font-medium text-red-950">
+              <span className="font-medium">
                 Restaurante: {restaurantName}
               </span>
             )}
             {matchrimCode && (
-              <Badge variant="outline" className="border-red-300 text-red-800">
+              <Badge variant="outline" className="border-white/20 bg-white/10 text-white">
                 Código {matchrimCode}
               </Badge>
             )}
           </div>
-          <p className="mt-2 text-sm text-red-900/80">
-            Esta carta se analizará contra tu perfil Matchrim para ordenar las mejores opciones.
+          <p className="mt-2 text-sm text-white/70">
+            {dishContext
+              ? `Esta carta se analizará contra tu perfil Matchrim y el plato: ${dishContext}.`
+              : similarWineContext
+                ? `Esta carta se analizará para encontrar vinos parecidos a ${similarWineContext} que también encajen contigo.`
+                : 'Esta carta se analizará contra tu perfil Matchrim para ordenar las mejores opciones.'}
           </p>
         </div>
       )}
 
       {/* Scanner Section */}
-      <Card>
+      <Card className="overflow-hidden border-stone-200 shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            Scanner de Cartas de Vinos
+            {dishContext
+              ? 'Scanner de carta para tu plato'
+              : similarWineContext
+                ? 'Scanner de carta para buscar parecidos'
+                : 'Scanner de carta'}
           </CardTitle>
           <CardDescription>
-            Escanea una carta de restaurante y descubre qué vinos se ajustan a tus gustos
+            {dishContext
+              ? `Sube la carta de vinos y te diré qué botella pediría para ${dishContext}.`
+              : similarWineContext
+                ? `Sube la carta de vinos y buscaré alternativas parecidas a ${similarWineContext}.`
+                : 'Sube una carta y ordeno sus vinos por encaje con tu Matchrim.'}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="border-2 border-dashed border-primary/20 rounded-lg p-8 text-center bg-card">
+          <div className="rounded-md border border-stone-800 bg-stone-950 p-4 text-center text-white">
             <input
               ref={fileInputRef}
               type="file"
@@ -488,112 +762,134 @@ export const WineMenuScanner = ({
               disabled={loading}
             />
 
-            {(preview || convertingPdf) && !loading ? (
-              <div className="space-y-4">
-                <div className="relative inline-block">
-                  {preview ? (
-                    <div className="relative inline-block">
-                      <img
-                        src={preview}
-                        alt="Preview"
-                        className="max-h-[60vh] mx-auto rounded-lg shadow-lg"
-                      />
-                      {scannedWines.some((w) => w.posicion) && (
-                        <div className="absolute inset-0 pointer-events-none">
-                          {scannedWines.map((w, i) =>
-                            w.posicion && w.compatibilidad != null ? (
-                              <div
-                                key={`pos-${i}`}
-                                className="absolute flex items-center gap-1 -translate-y-1/2"
-                                style={{ left: `${Math.max(0, Math.min(100, w.posicion.x))}%`, top: `${Math.max(0, Math.min(100, w.posicion.y))}%` }}
-                              >
-                                <span className="inline-block h-0 w-0 border-y-[6px] border-y-transparent border-r-[8px] border-r-white drop-shadow" aria-hidden />
-                                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold text-white shadow-lg ring-2 ring-white ${getCompatibilityColor(w.compatibilidad)}`}>
-                                  {w.compatibilidad}%
-                                </span>
-                              </div>
-                            ) : null
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ) : convertingPdf ? (
-                    <div className="max-h-60 mx-auto p-8 bg-muted rounded-lg flex flex-col items-center gap-4">
-                      <Loader2 className="w-12 h-12 text-primary animate-spin" />
-                      <p className="text-sm text-muted-foreground">Convirtiendo PDF a imagen...</p>
+	            {(preview || convertingPdf) && !loading ? (
+	              <div className="space-y-4">
+	                <div className="relative inline-block max-w-full">
+	                  {preview ? (
+		                    <div className="relative inline-block max-w-full overflow-hidden rounded-md bg-black shadow-2xl ring-1 ring-white/10">
+	                      <img
+	                        src={preview}
+	                        alt="Preview"
+		                        className="max-h-[68vh] max-w-full object-contain opacity-95"
+	                      />
+	                      {scannedWines.map((wine, index) => {
+	                        const position = getWinePosition(wine);
+	                        if (!position || wine.compatibilidad === null || wine.compatibilidad === undefined) return null;
+
+	                        return (
+	                          <button
+	                            key={`${wine.nombre}-${index}-pin`}
+	                            type="button"
+		                            className={`absolute z-10 -translate-y-1/2 rounded-full px-2.5 py-1 text-[11px] font-bold shadow-lg ring-1 ring-white/70 transition ${
+		                              highlightedWineIndex === index
+		                                ? 'bg-amber-400 text-stone-950'
+		                                : 'bg-stone-950/92 text-white hover:bg-red-900'
+		                            }`}
+	                            style={{ left: `${position.x}%`, top: `${position.y}%` }}
+	                            title={`${wine.nombre}: ${wine.compatibilidad}% de encaje`}
+		                            onClick={() => focusWine(index)}
+		                          >
+		                            <span className="absolute right-full top-1/2 h-px w-4 -translate-y-1/2 bg-current" />
+	                            {wine.compatibilidad}%
+	                          </button>
+	                        );
+	                      })}
+	                    </div>
+	                  ) : convertingPdf ? (
+		                    <div className="mx-auto flex max-h-60 flex-col items-center gap-4 rounded-md bg-white/8 p-8">
+		                      <Loader2 className="h-12 w-12 animate-spin text-amber-400" />
+		                      <p className="text-sm text-white/70">Convirtiendo PDF a imagen...</p>
                     </div>
                   ) : null}
-                  <Button
-                    onClick={clearScan}
-                    variant="destructive"
+	                  <Button
+	                    onClick={clearScan}
+	                    variant="destructive"
                     size="icon"
-                    className="absolute top-2 right-2"
+                    className="absolute right-2 top-2 h-11 w-11 rounded-md bg-red-700 hover:bg-red-800"
                   >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                {scannedWines.length > 0 && !scannedWines.some((w) => w.posicion) && (
-                  <p className="text-xs text-muted-foreground">
-                    La IA no ubicó posiciones precisas en la foto; las compatibilidades aparecen en las tarjetas debajo.
-                  </p>
-                )}
-              </div>
+	                    <X className="h-4 w-4" />
+	                  </Button>
+	                </div>
+	                {preview && scannedWines.length > 0 && (
+		                  <div className="mx-auto max-w-2xl rounded-md border border-white/10 bg-white/8 p-3 text-left text-xs text-white/72">
+	                    {scannedWines.some((wine) => getWinePosition(wine)) ? (
+	                      <p>
+		                        Toca una burbuja para saltar a la ficha detectada. Solo muestro posiciones con anclaje fiable.
+	                      </p>
+	                    ) : (
+	                      <p>
+		                        Esta lectura no devolvió posiciones fiables sobre la carta; mantengo el ranking completo debajo.
+	                      </p>
+	                    )}
+	                  </div>
+	                )}
+	              </div>
             ) : loading || convertingPdf ? (
               <div className="space-y-4">
-                <Loader2 className="w-12 h-12 mx-auto text-primary animate-spin" />
+	                <Loader2 className="mx-auto h-12 w-12 animate-spin text-amber-400" />
                 <div>
                   <p className="text-lg font-semibold mb-2">
                     {convertingPdf ? 'Convirtiendo PDF a imagen...' : 'Analizando carta de vinos...'}
                   </p>
-                  <p className="text-sm text-muted-foreground mb-3">
+	                  <p className="mb-3 text-sm text-white/65">
                     {convertingPdf 
                       ? 'Renderizando primera página del PDF' 
                       : 'Extrayendo vinos y calculando compatibilidad'}
                   </p>
-                  <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
-                    <div className="h-full bg-primary animate-pulse" style={{ width: '70%' }} />
+	                  <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+	                    <div className="h-full bg-amber-400 animate-pulse" style={{ width: '70%' }} />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">
+	                  <p className="mt-2 text-xs text-white/50">
                     Esto puede tardar 30-60 segundos dependiendo del tamaño de la carta
                   </p>
                 </div>
               </div>
             ) : (
-              <div className="space-y-4">
-                <Camera className="w-16 h-16 mx-auto text-primary/40" />
+              <div className="space-y-3">
+	                <Camera className="mx-auto h-10 w-10 text-white/35" />
                 <div>
-                  <p className="text-lg font-semibold text-foreground mb-2">
+	                  <p className="mb-2 text-lg font-semibold text-white">
                     Sube la carta de vinos
                   </p>
-                  <p className="text-sm text-muted-foreground mb-4">
+	                  <p className="mb-3 text-sm text-white/65">
                     Haz una foto clara o sube una imagen/PDF. En PDF analizamos la primera página.
                   </p>
-                  <ul className="mx-auto mb-5 grid max-w-2xl gap-2 text-left text-xs text-muted-foreground sm:grid-cols-2">
-                    <li>• Luz suficiente y carta completa dentro del encuadre.</li>
-                    <li>• Evita reflejos, sombras fuertes y fotos inclinadas.</li>
-                    <li>• Si la carta es larga, escanea una sección cada vez.</li>
-                    <li>• Mantén visibles precios, añadas y productores.</li>
-                  </ul>
+                  {dishContext && (
+                    <p className="mx-auto mb-3 max-w-2xl rounded-md border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm text-amber-100">
+                      Buscaré la mejor botella de esta carta para {dishContext}, equilibrando maridaje y tu Matchrim.
+                    </p>
+                  )}
+                  {similarWineContext && (
+                    <p className="mx-auto mb-3 max-w-2xl rounded-md border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm text-amber-100">
+                      Buscaré vinos parecidos a {similarWineContext} dentro de esta carta, priorizando los que encajen con tu Matchrim.
+                    </p>
+                  )}
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <Button
                     onClick={() => cameraInputRef.current?.click()}
                     disabled={loading}
-                    className="gap-2"
+	                    className="gap-2 bg-amber-400 text-stone-950 hover:bg-amber-300"
                   >
                     <Camera className="h-4 w-4" />
                     Hacer foto
                   </Button>
-                  <Button
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={loading}
-                    variant="outline"
-                    className="gap-2"
-                  >
-                    <Upload className="h-4 w-4" />
-                    Subir archivo
-                  </Button>
+	                  <Button
+	                    onClick={() => fileInputRef.current?.click()}
+	                    disabled={loading}
+	                    variant="outline"
+		                    className="gap-2 border-white/20 bg-white/10 text-white hover:bg-white/15"
+	                  >
+	                    <Upload className="h-4 w-4" />
+	                    Subir archivo
+	                  </Button>
                 </div>
+	                <ul className="mx-auto grid max-w-2xl gap-1.5 text-left text-xs text-white/55 sm:grid-cols-2">
+                    <li>• Carta completa y con luz suficiente.</li>
+                    <li>• Evita reflejos, sombras y fotos inclinadas.</li>
+                    <li>• Si la carta es larga, escanea una sección.</li>
+                    <li>• Mantén visibles precios, añadas y productores.</li>
+                  </ul>
               </div>
             )}
           </div>
@@ -647,11 +943,176 @@ export const WineMenuScanner = ({
                   PDF: primera página
                 </Badge>
               )}
-            </div>
-          </div>
+	            </div>
+	          </div>
 
-          <Card>
-            <CardContent className="grid gap-3 p-4 md:grid-cols-3">
+	          {menuDecision && (
+	            <Card className="overflow-hidden border-red-100 bg-white shadow-sm">
+	              <CardHeader className="border-b bg-red-950 text-white">
+	                <CardTitle className="flex items-center gap-2 text-xl">
+	                  <Target className="h-5 w-5" />
+	                  {dishContext
+	                    ? `Decisión para ${dishContext}`
+	                    : similarWineContext
+	                      ? `Parecidos a ${similarWineContext}`
+	                      : 'Decisión Matchrim'}
+	                </CardTitle>
+	                <CardDescription className="text-white/75">
+	                  {dishContext || similarWineContext
+	                    ? 'Ordeno esta carta para resolver esta decisión concreta, no para venderte una botella.'
+	                    : 'No te vendo vino: ordeno esta carta para que aciertes con tu perfil.'}
+	                </CardDescription>
+	              </CardHeader>
+		              <CardContent className="grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-5">
+	                <div className="rounded-md border border-green-100 bg-green-50 p-4">
+	                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-green-900">
+	                    <Trophy className="h-4 w-4" />
+	                    Pediría primero
+	                  </div>
+	                  {menuDecision.best ? (() => {
+	                    const best = menuDecision.best;
+	                    return (
+	                      <button
+	                        type="button"
+	                        className="w-full space-y-2 text-left"
+	                        onClick={() => focusWine(best.index)}
+	                      >
+	                        <div className="flex items-start justify-between gap-3">
+	                          <div className="min-w-0">
+	                            <p className="font-semibold leading-tight text-green-950">{best.wine.nombre}</p>
+	                            {best.wine.productor && (
+	                              <p className="mt-1 truncate text-sm text-green-900/70">{best.wine.productor}</p>
+	                            )}
+	                          </div>
+	                          <Badge className="bg-green-700 hover:bg-green-700">{best.score}%</Badge>
+	                        </div>
+	                        {best.wine.razon && (
+	                          <p className="text-sm leading-5 text-green-900">{best.wine.razon}</p>
+	                        )}
+	                      </button>
+	                    );
+	                  })() : (
+	                    <p className="text-sm text-green-900">Completa tu test para que pueda elegir por encaje.</p>
+	                  )}
+	                </div>
+
+		                <div className="rounded-md border border-amber-100 bg-amber-50 p-4">
+		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-amber-950">
+		                    <Sparkles className="h-4 w-4" />
+		                    Alternativa más segura
+		                  </div>
+		                  {menuDecision.safeAlternative ? (() => {
+		                    const safe = menuDecision.safeAlternative;
+		                    return (
+		                      <button
+		                        type="button"
+		                        className="flex w-full items-center justify-between gap-3 rounded-md border border-amber-200 bg-white px-3 py-2 text-left"
+		                        onClick={() => focusWine(safe.index)}
+		                      >
+		                        <span className="min-w-0">
+		                          <span className="block truncate text-sm font-semibold text-amber-950">{safe.wine.nombre}</span>
+		                          <span className="block truncate text-xs text-amber-900/70">
+		                            {[formatPrice(safe.wine.precio), formatWineType(safe.wine.tipo)].filter(Boolean).join(' · ')}
+		                          </span>
+		                        </span>
+		                        <Badge variant="outline" className="shrink-0 border-amber-300 text-amber-950">{safe.score}%</Badge>
+		                      </button>
+		                    );
+		                  })() : (
+		                    <p className="text-sm text-amber-900">No hay suficientes alternativas con encaje calculado.</p>
+		                  )}
+		                </div>
+
+		                <div className="rounded-md border border-stone-200 bg-stone-50 p-4">
+		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-stone-950">
+		                    <Target className="h-4 w-4" />
+		                    Mejor calidad/precio para ti
+		                  </div>
+		                  {menuDecision.value ? (() => {
+		                    const value = menuDecision.value;
+		                    return (
+		                      <button
+		                        type="button"
+		                        className="w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
+		                        onClick={() => focusWine(value.index)}
+		                      >
+		                        <span className="block font-semibold leading-tight">{value.wine.nombre}</span>
+		                        <span className="mt-1 block text-xs text-stone-500">
+		                          {[formatPrice(value.wine.precio), `${value.score}%`].filter(Boolean).join(' · ')}
+		                        </span>
+		                      </button>
+		                    );
+		                  })() : (
+		                    <p className="text-sm text-stone-600">No hay precio fiable suficiente para decidir por valor.</p>
+		                  )}
+		                </div>
+
+		                <div className="rounded-md border border-orange-100 bg-orange-50 p-4">
+		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-orange-950">
+		                    <AlertCircle className="h-4 w-4" />
+		                    Más arriesgado
+		                  </div>
+		                  {menuDecision.adventurous ? (() => {
+		                    const adventurous = menuDecision.adventurous;
+		                    return (
+		                      <button
+		                        type="button"
+		                        className="w-full rounded-md border border-orange-200 bg-white p-3 text-left"
+		                        onClick={() => focusWine(adventurous.index)}
+		                      >
+		                        <span className="block text-sm font-semibold leading-tight text-orange-950">{adventurous.wine.nombre}</span>
+		                        <span className="mt-1 block text-xs text-orange-900/70">
+		                          {adventurous.score}% · puede sacarte de tu zona segura
+		                        </span>
+		                      </button>
+		                    );
+		                  })() : (
+		                    <p className="text-sm text-orange-900">No veo una opción claramente más atrevida.</p>
+		                  )}
+		                </div>
+
+		                <div className="rounded-md border border-red-100 bg-red-50 p-4">
+		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-red-950">
+		                    <CircleSlash className="h-4 w-4" />
+		                    No lo pediría para ti
+		                  </div>
+	                  {menuDecision.caution ? (() => {
+	                    const caution = menuDecision.caution;
+	                    return (
+	                      <button
+	                        type="button"
+	                        className="w-full space-y-2 text-left"
+	                        onClick={() => focusWine(caution.index)}
+	                      >
+	                        <div className="flex items-start justify-between gap-3">
+	                          <div className="min-w-0">
+	                            <p className="font-semibold leading-tight text-red-950">{caution.wine.nombre}</p>
+	                            <p className="mt-1 text-sm text-red-900/75">
+	                              Puede ser buena botella, pero no parece tu mejor elección en esta carta.
+	                            </p>
+	                          </div>
+	                          <Badge variant="outline" className="border-red-300 text-red-900">{caution.score}%</Badge>
+	                        </div>
+	                      </button>
+	                    );
+	                  })() : (
+	                    <p className="text-sm text-red-900">
+	                      No veo descartes claros. {menuDecision.highMatches} opciones superan el 80% y {menuDecision.mediumMatches} quedan en zona correcta.
+	                    </p>
+	                  )}
+		                </div>
+
+		                <div className="rounded-md border bg-muted/30 px-4 py-3 text-sm text-muted-foreground md:col-span-2 xl:col-span-5">
+	                  {menuDecision.anchored > 0
+	                    ? `${menuDecision.anchored} porcentaje${menuDecision.anchored !== 1 ? 's' : ''} se han anclado a posiciones fiables de la foto. Si no veo una posición clara, prefiero mostrar el dato abajo antes que inventarlo sobre la carta.`
+	                    : 'La IA no ha devuelto posiciones fiables para esta foto. Por eso muestro la decisión en tarjetas y evito colocar porcentajes aproximados sobre vinos equivocados.'}
+	                </div>
+	              </CardContent>
+	            </Card>
+	          )}
+
+	          <div className="rounded-md border border-stone-200 bg-white p-3 shadow-sm">
+	            <div className="grid gap-3 sm:grid-cols-3">
               <div className="space-y-2">
                 <Label htmlFor="scan-sort">Orden</Label>
                 <Select value={scanSortMode} onValueChange={(value) => setScanSortMode(value as ScannedWineSortMode)}>
@@ -690,35 +1151,8 @@ export const WineMenuScanner = ({
                   placeholder="Sin límite"
                 />
               </div>
-            </CardContent>
-          </Card>
-
-          {restaurantName && (
-            <Card className="border-red-100 bg-red-50">
-              <CardContent className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p className="font-semibold text-red-950">Haz visible que quieres Winerim aquí</p>
-                  <p className="text-sm text-red-900/80">
-                    Tu escaneo ya queda como señal de demanda. También puedes enviárselo al restaurante en un toque.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <Button asChild variant="outline" className="gap-2 bg-white">
-                    <a href={restaurantMailtoHref}>
-                      <Mail className="h-4 w-4" />
-                      Email
-                    </a>
-                  </Button>
-                  <Button asChild className="gap-2 bg-red-800 hover:bg-red-900">
-                    <a href={restaurantWhatsappHref} target="_blank" rel="noopener noreferrer">
-                      <MessageCircle className="h-4 w-4" />
-                      WhatsApp
-                    </a>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+            </div>
+          </div>
 
           {visibleScannedWines.length === 0 ? (
             <Card>
@@ -728,22 +1162,55 @@ export const WineMenuScanner = ({
             </Card>
           ) : (
             <div className="grid gap-4">
-              {visibleScannedWines.map(({ wine, index }) => {
-                const isEditing = editingWineIndex === index;
+			              {visibleScannedWines.map(({ wine, index }) => {
+			                const isEditing = editingWineIndex === index;
+			                const similarWines = getSimilarWines(wine, index);
+			                  const wishlistSaveKey = `wishlist-${wine.nombre}-${index}`;
+			                  const tastedSaveKey = `tasted-${wine.nombre}-${index}`;
+			                  const favoriteSaveKey = `favorite-${wine.nombre}-${index}`;
+			                  const wineDecision = getWineDecision(wine.compatibilidad);
 
-                return (
-              <Card key={index} className="overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="flex flex-col gap-4 lg:flex-row">
-                    {/* Wine Info */}
-                    <div className="flex-1 space-y-3">
-                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                        <div>
-                          <h4 className="text-lg font-semibold">{wine.nombre}</h4>
-                        {wine.productor && (
-                          <p className="text-sm text-muted-foreground">{wine.productor}</p>
+			                return (
+			              <Card
+		                key={index}
+		                ref={(node) => {
+		                  wineCardRefs.current.set(index, node);
+		                }}
+		                className={`overflow-hidden transition ${
+		                  highlightedWineIndex === index ? 'ring-2 ring-red-700 ring-offset-2' : ''
+		                }`}
+	              >
+	                <CardContent className="p-0">
+                    <div className="border-b bg-gradient-to-r from-red-950 to-stone-950 px-5 py-4 text-white">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+	                          <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Ficha de carta</p>
+	                          <h4 className="mt-1 text-xl font-bold leading-tight">{wine.nombre}</h4>
+	                          {wine.productor && (
+	                            <p className="mt-1 truncate text-sm text-white/68">{wine.productor}</p>
+	                          )}
+	                          <Badge variant="outline" className="mt-3 border-white/15 bg-white/10 text-white">
+	                            {wineDecision.label}
+	                          </Badge>
+	                        </div>
+	                        {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
+                          <div className="shrink-0 rounded-md bg-white px-3 py-2 text-center text-red-950">
+                            <div className="text-2xl font-bold leading-none">{wine.compatibilidad}%</div>
+                            <div className="mt-1 text-[10px] font-semibold uppercase text-red-900/70">Encaje</div>
+                          </div>
                         )}
-                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6">
+	                  <div className="flex flex-col gap-4 lg:flex-row">
+	                    {/* Wine Info */}
+	                    <div className="flex-1 space-y-3">
+	                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+	                        <div className="min-w-0">
+                            <p className="text-sm font-medium text-muted-foreground">
+                              {[wine.region, wine.pais, wine.anada].filter(Boolean).join(' · ') || 'Origen por confirmar'}
+                            </p>
+	                        </div>
                         <Button
                           type="button"
                           variant="ghost"
@@ -865,140 +1332,201 @@ export const WineMenuScanner = ({
                         </div>
                       )}
 
-                      {wine.descripcion && (
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {wine.descripcion}
-                        </p>
-                      )}
+	                      {wine.descripcion && (
+	                        <p className="text-sm text-muted-foreground leading-relaxed">
+	                          {wine.descripcion}
+	                        </p>
+	                      )}
 
-                      {wine.atributos && (
-                        <div className="pt-2 border-t">
-                          <p className="text-xs font-medium mb-2 text-muted-foreground">Perfil sensorial</p>
-                          <div className="grid grid-cols-5 gap-2 text-xs">
-                            <div className="text-center">
-                              <div className="font-medium">{wine.atributos.potencia}</div>
-                              <div className="text-muted-foreground">Potencia</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="font-medium">{wine.atributos.acidez}</div>
-                              <div className="text-muted-foreground">Acidez</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="font-medium">{wine.atributos.dulzura}</div>
-                              <div className="text-muted-foreground">Dulzura</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="font-medium">{wine.atributos.taninos}</div>
-                              <div className="text-muted-foreground">Taninos</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="font-medium">{wine.atributos.afrutado}</div>
-                              <div className="text-muted-foreground">Afrutado</div>
-                            </div>
-                          </div>
+	                      <div className={`rounded-lg border p-3 text-sm leading-6 ${wineDecision.className}`}>
+	                        <p className="font-semibold">{wineDecision.label}</p>
+	                        <p className="mt-1">{wineDecision.description}</p>
+	                      </div>
+
+	                      {wine.atributos && (
+		                        <div className="rounded-lg border bg-stone-50 p-3">
+		                          <p className="text-xs font-medium mb-2 text-muted-foreground">Perfil sensorial</p>
+		                          <div className="grid grid-cols-5 gap-2 text-xs">
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.potencia}/5</div>
+		                              <div className="text-muted-foreground">Potencia</div>
+		                            </div>
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.acidez}/5</div>
+		                              <div className="text-muted-foreground">Acidez</div>
+		                            </div>
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.dulzura}/5</div>
+		                              <div className="text-muted-foreground">Dulzura</div>
+		                            </div>
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.taninos}/5</div>
+		                              <div className="text-muted-foreground">Taninos</div>
+		                            </div>
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.afrutado}/5</div>
+		                              <div className="text-muted-foreground">Afrutado</div>
+		                            </div>
+	                          </div>
                         </div>
                       )}
                     </div>
 
-                    {/* Compatibility Score */}
-                    {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
-                      <div className="flex flex-col items-center justify-center gap-2 min-w-[120px] border-l pl-4">
-                        {getCompatibilityIcon(wine.compatibilidad)}
-                        <div className="text-center">
-                          <div className="text-3xl font-bold">
-                            {wine.compatibilidad}%
+	                    {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
+	                      <div className="flex flex-col justify-center gap-3 rounded-lg border bg-muted/20 p-4 lg:min-w-[170px]">
+                          <div className="flex items-center gap-2">
+                            {getCompatibilityIcon(wine.compatibilidad)}
+                            <span className="text-sm font-semibold">Encaje conmigo</span>
                           </div>
-                          <div className="text-xs text-muted-foreground">
-                            Compatibilidad
+                          <div>
+                            <div className="text-3xl font-bold">{wine.compatibilidad}%</div>
+                            <div className={`mt-2 h-2 w-full rounded-full ${getCompatibilityColor(wine.compatibilidad)}`} />
                           </div>
-                        </div>
-                        <div className={`h-2 w-full rounded-full ${getCompatibilityColor(wine.compatibilidad)}`} />
-                      </div>
-                    )}
-                  </div>
+                          <p className="text-xs leading-5 text-muted-foreground">
+                            Calculado contra tu perfil Matchrim, no contra popularidad general.
+                          </p>
+	                      </div>
+	                    )}
+	                  </div>
 
-                  {/* Compatibility Reason */}
-                  {wine.razon && (
-                    <div className="mt-4 p-3 bg-muted rounded-lg">
-                      <p className="text-sm">{wine.razon}</p>
+	                  {/* Compatibility Reason */}
+		                  {wine.razon && (
+		                    <div className="mt-4 rounded-lg border border-red-100 bg-red-50/70 p-3">
+		                      <p className="mb-1 text-sm font-semibold text-red-950">Por qué encaja</p>
+		                      <p className="text-sm leading-6 text-red-950/85">{wine.razon}</p>
+		                    </div>
+		                  )}
+
+	                  {similarWines.length > 0 && (
+	                    <div className="mt-4 rounded-lg border border-red-100 bg-red-50/70 p-3">
+	                      <p className="text-sm font-semibold text-red-950">Si este te gusta, mira también en esta carta</p>
+	                      <div className="mt-2 grid gap-2 sm:grid-cols-2">
+	                        {similarWines.map(({ wine: similarWine, index: similarIndex, score }) => (
+	                          <button
+	                            key={`${similarWine.nombre}-${similarIndex}-similar`}
+	                            type="button"
+	                            className="rounded-md border bg-white p-3 text-left text-sm shadow-sm transition hover:border-red-300 hover:bg-red-50"
+		                            onClick={() => focusWine(similarIndex)}
+	                          >
+	                            <div className="flex items-start justify-between gap-2">
+	                              <span className="font-medium text-red-950">{similarWine.nombre}</span>
+	                              {similarWine.compatibilidad !== null && similarWine.compatibilidad !== undefined && (
+	                                <Badge className="shrink-0 bg-red-800 hover:bg-red-800">
+	                                  {similarWine.compatibilidad}%
+	                                </Badge>
+	                              )}
+	                            </div>
+	                            <p className="mt-1 text-xs text-muted-foreground">
+	                              Parecido {score}%{similarWine.tipo ? ` · ${formatWineType(similarWine.tipo)}` : ''}
+	                            </p>
+	                          </button>
+	                        ))}
+	                      </div>
+	                    </div>
+		          )}
+
+			                  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+		                    <Button
+		                      onClick={() => saveWineToWishlist(wine, index)}
+		                      disabled={savingWineKey === wishlistSaveKey || savedWineKeys.has(wishlistSaveKey)}
+		                      variant="outline"
+		                      className="gap-2"
+		                    >
+		                      {savedWineKeys.has(wishlistSaveKey) ? (
+		                        <CheckCircle className="h-4 w-4 text-green-600" />
+		                      ) : savingWineKey === wishlistSaveKey ? (
+		                        <Loader2 className="h-4 w-4 animate-spin" />
+		                      ) : (
+		                        <BookmarkPlus className="h-4 w-4" />
+		                      )}
+		                      {savedWineKeys.has(wishlistSaveKey) ? 'Guardado' : 'Quiero Probar'}
+		                    </Button>
+			                    <Button
+			                      onClick={() => saveWineAsTasted(wine, index)}
+			                      disabled={savingWineKey === tastedSaveKey || savedWineKeys.has(tastedSaveKey)}
+			                      variant="outline"
+		                      className="gap-2"
+		                    >
+		                      {savedWineKeys.has(tastedSaveKey) ? (
+		                        <CheckCircle className="h-4 w-4 text-green-600" />
+		                      ) : savingWineKey === tastedSaveKey ? (
+		                        <Loader2 className="h-4 w-4 animate-spin" />
+		                      ) : (
+		                        <CheckCircle className="h-4 w-4" />
+		                      )}
+			                      {savedWineKeys.has(tastedSaveKey) ? 'Guardado' : 'Lo he probado'}
+			                    </Button>
+			                    <Button
+			                      onClick={() => saveWineAsFavorite(wine, index)}
+			                      disabled={savingWineKey === favoriteSaveKey || savedWineKeys.has(favoriteSaveKey)}
+			                      variant="outline"
+			                      className="gap-2"
+			                    >
+			                      {savedWineKeys.has(favoriteSaveKey) ? (
+			                        <CheckCircle className="h-4 w-4 text-green-600" />
+			                      ) : savingWineKey === favoriteSaveKey ? (
+			                        <Loader2 className="h-4 w-4 animate-spin" />
+				                      ) : (
+				                        <Heart className="h-4 w-4" />
+				                      )}
+				                      {savedWineKeys.has(favoriteSaveKey) ? 'Favorito' : 'Añadir favorito'}
+				                    </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="gap-2"
+                          onClick={() => focusWine(similarWines[0]?.index ?? index)}
+                          disabled={similarWines.length === 0}
+                        >
+	                          <ScanLine className="h-4 w-4" />
+	                          Ver parecidos
+	                        </Button>
+		                    <Button
+		                      type="button"
+		                      variant="outline"
+	                      className="gap-2"
+	                      onClick={() => openAiRimForWine(wine)}
+	                    >
+	                      <Sparkles className="h-4 w-4" />
+		                      ¿Por qué encaja?
+		                    </Button>
+		                  </div>
                     </div>
-                  )}
-
-                  {(() => {
-                    const similar = scannedWines
-                      .map((other, otherIndex) => ({ other, otherIndex }))
-                      .filter(({ otherIndex }) => otherIndex !== index)
-                      .map(({ other, otherIndex }) => ({
-                        other,
-                        otherIndex,
-                        sim: computeWineSimilarity(wine, other),
-                        compat: other.compatibilidad ?? 0,
-                      }))
-                      .filter((x) => x.sim > 30)
-                      .sort((a, b) => (b.sim + b.compat * 0.3) - (a.sim + a.compat * 0.3))
-                      .slice(0, 2);
-                    if (similar.length === 0) return null;
-                    return (
-                      <div className="mt-4 rounded-lg border border-dashed bg-muted/40 p-3">
-                        <p className="text-xs font-semibold text-muted-foreground mb-2">
-                          Si te gusta este vino, prueba en esta carta:
-                        </p>
-                        <ul className="space-y-1 text-sm">
-                          {similar.map(({ other, otherIndex }) => (
-                            <li key={`sim-${index}-${otherIndex}`} className="flex items-center justify-between gap-2">
-                              <span className="truncate">
-                                <span className="font-medium">{other.nombre}</span>
-                                {other.productor ? <span className="text-muted-foreground"> · {other.productor}</span> : null}
-                              </span>
-                              {other.compatibilidad != null && (
-                                <Badge variant="outline" className="shrink-0">{other.compatibilidad}%</Badge>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  })()}
-
-                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                    <Button
-                      onClick={() => saveWineToWishlist(wine, index)}
-                      disabled={savingWineKey === `${wine.nombre}-${index}` || savedWineKeys.has(`${wine.nombre}-${index}`)}
-                      variant="outline"
-                      className="w-full gap-2"
-                    >
-                      {savedWineKeys.has(`${wine.nombre}-${index}`) ? (
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                      ) : savingWineKey === `${wine.nombre}-${index}` ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <BookmarkPlus className="h-4 w-4" />
-                      )}
-                      {savedWineKeys.has(`${wine.nombre}-${index}`) ? 'Guardado' : 'Guardar en Quiero Probar'}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      className="w-full gap-2"
-                      onClick={() =>
-                        navigate(
-                          `/inteligencia-liquida?function=dish-for-wine&wine=${encodeURIComponent(buildAirimWineDescription(wine))}`
-                        )
-                      }
-                    >
-                      <MessageSquare className="h-4 w-4" />
-                      Preguntar a aiRIM
-                    </Button>
-                  </div>
-
-                </CardContent>
+		                </CardContent>
               </Card>
                 );
               })}
-            </div>
-          )}
-        </div>
-      )}
+	            </div>
+		          )}
+
+		          {restaurantName && (
+	            <div className="rounded-md border border-red-100 bg-red-50/80 p-4">
+	              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+	                <div>
+	                  <p className="font-semibold text-red-950">Este restaurante todavía no usa Winerim</p>
+	                  <p className="text-sm text-red-900/75">
+	                    El escaneo queda como señal de demanda. También puedes enviárselo al restaurante.
+	                  </p>
+	                </div>
+	                <div className="grid grid-cols-2 gap-2 sm:flex">
+	                  <Button asChild variant="outline" size="sm" className="gap-2 bg-white">
+	                    <a href={restaurantMailtoHref}>
+	                      <Mail className="h-4 w-4" />
+	                      Email
+	                    </a>
+	                  </Button>
+	                  <Button asChild size="sm" className="gap-2 bg-red-800 hover:bg-red-900">
+	                    <a href={restaurantWhatsappHref} target="_blank" rel="noopener noreferrer">
+	                      <MessageCircle className="h-4 w-4" />
+	                      WhatsApp
+	                    </a>
+	                  </Button>
+	                </div>
+	              </div>
+	            </div>
+	          )}
+	        </div>
+	      )}
     </div>
   );
 };
