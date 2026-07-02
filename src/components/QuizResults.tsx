@@ -93,6 +93,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   // Estado para tracking de selección de uvas/regiones
   const [selectedGrape, setSelectedGrape] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<{ region: string; country: string } | null>(null);
+  const [visibleWineCount, setVisibleWineCount] = useState(8);
 
   // Ref para scroll a sección de vinos
   const winesRef = React.useRef<HTMLDivElement>(null);
@@ -157,19 +158,37 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   const isGlobalWinerimCatalog = !!winerimMeta?.isGlobalRecommendations;
   const primaryWinerimStyle = winerimWines.find((wine) => wine.styleName)?.styleName || wineStyles[0];
 
-  // NO filtrar vinos, solo mostrar todos (el resaltado se hace visualmente)
-  const displayedWines = winerimWines;
+  const filteredWinerimWines = useMemo(() => {
+    if (selectedGrape) {
+      return filterWinesByGrape(winerimWines, selectedGrape);
+    }
+
+    if (selectedRegion) {
+      return filterWinesByRegion(winerimWines, selectedRegion.region, selectedRegion.country);
+    }
+
+    return winerimWines;
+  }, [winerimWines, selectedGrape, selectedRegion]);
+
+  const displayedWines = useMemo(
+    () => filteredWinerimWines.slice(0, visibleWineCount),
+    [filteredWinerimWines, visibleWineCount]
+  );
+
+  useEffect(() => {
+    setVisibleWineCount(8);
+  }, [selectedGrape, selectedRegion, result.potente, result.acidez, result.dulce, result.tanico, result.afrutado]);
 
   // Calcular cuántos vinos coinciden con la selección (para el mensaje)
   const matchingWinesCount = useMemo(() => {
     if (selectedGrape) {
-      return filterWinesByGrape(winerimWines, selectedGrape).length;
+      return filteredWinerimWines.length;
     }
     if (selectedRegion) {
-      return filterWinesByRegion(winerimWines, selectedRegion.region, selectedRegion.country).length;
+      return filteredWinerimWines.length;
     }
     return 0;
-  }, [winerimWines, selectedGrape, selectedRegion]);
+  }, [filteredWinerimWines, selectedGrape, selectedRegion]);
 
   // Descripciones detalladas de uvas basadas en el perfil
   const getGrapeDescription = (grape: string): string => {
@@ -1020,12 +1039,16 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                     <span className="font-semibold text-red-700">{matchingWinesCount}</span> vino{matchingWinesCount !== 1 ? 's' : ''}
                     {selectedGrape && <> contiene{matchingWinesCount !== 1 ? 'n' : ''} la uva <span className="font-semibold text-purple-700">{selectedGrape}</span></>}
                     {selectedRegion && <> {matchingWinesCount !== 1 ? 'son' : 'es'} de <span className="font-semibold text-green-700">{selectedRegion.region}, {selectedRegion.country}</span></>}
-                    {' '}(resaltado{matchingWinesCount !== 1 ? 's' : ''} abajo)
+                    {matchingWinesCount > 0 && (
+                      <>
+                        {' '}Mostrando {Math.min(visibleWineCount, matchingWinesCount)} ahora.
+                      </>
+                    )}
                   </>
                 ) : (
                   <>
                     Encajas con <span className="font-semibold text-red-700">{formattedTotalCompatibleWines}</span> vino{totalCompatibleWines !== 1 ? 's' : ''} compatible{totalCompatibleWines !== 1 ? 's' : ''} en Winerim.
-                    {' '}Te mostramos una selección priorizada de <span className="font-semibold text-red-700">{winerimWines.length}</span> ficha{winerimWines.length !== 1 ? 's' : ''} para empezar.
+                    {' '}Te mostramos primero <span className="font-semibold text-red-700">{Math.min(visibleWineCount, winerimWines.length)}</span> ficha{Math.min(visibleWineCount, winerimWines.length) !== 1 ? 's' : ''} priorizada{Math.min(visibleWineCount, winerimWines.length) !== 1 ? 's' : ''}; puedes abrir más si quieres comparar.
                     {isGlobalWinerimCatalog && primaryWinerimStyle && (
                       <> Tu estilo principal ahora mismo es <span className="font-semibold text-red-700">{primaryWinerimStyle}</span>.</>
                     )}
@@ -1050,6 +1073,31 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
                   />
                 ))}
               </div>
+              {filteredWinerimWines.length > displayedWines.length && (
+                <div className="pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full border-red-200 text-red-800 hover:bg-red-50"
+                    onClick={() => setVisibleWineCount((count) => count + 8)}
+                  >
+                    Ver 8 vinos más ({filteredWinerimWines.length - displayedWines.length} pendientes)
+                  </Button>
+                </div>
+              )}
+              {(selectedGrape || selectedRegion) && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full text-gray-600 hover:text-red-800"
+                  onClick={() => {
+                    setSelectedGrape(null);
+                    setSelectedRegion(null);
+                  }}
+                >
+                  Limpiar filtro y volver a la selección principal
+                </Button>
+              )}
             </div>
           )}
         </div>
