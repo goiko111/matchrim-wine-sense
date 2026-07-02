@@ -489,17 +489,29 @@ export const WineMenuScanner = ({
         reader.readAsDataURL(file);
       });
 
-      // Invocar la función de escaneo
-      const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
-        body: {
-          image: base64File,
-          matchrimProfile: readStoredMatchrimProfile(),
-          pairingDishName: pairingDishName || null,
-          similarWineName: similarWineName || null,
-        }
-      });
+      const invokeScan = async (attempt = 1) => {
+        const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
+          body: {
+            image: base64File,
+            matchrimProfile: readStoredMatchrimProfile(),
+            pairingDishName: pairingDishName || null,
+            similarWineName: similarWineName || null,
+          }
+        });
 
-      if (error) throw error;
+        if (!error) return data;
+
+        const rawMessage = error instanceof Error ? error.message : String(error);
+        const isTransient = /non-2xx|FunctionsHttpError|fetch|network|timeout/i.test(rawMessage);
+        if (attempt < 2 && isTransient) {
+          await new Promise((resolve) => window.setTimeout(resolve, 1200));
+          return invokeScan(attempt + 1);
+        }
+
+        throw error;
+      };
+
+      const data = await invokeScan();
 
       if (data?.vinos && data.vinos.length > 0) {
         const normalizedWines = (data.vinos as ScannedWine[]).map(normalizeScannedWine);
