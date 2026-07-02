@@ -380,6 +380,7 @@ const MyWines = () => {
   };
 
 	  const loadWines = async () => {
+	    setLoading(true);
 	    try {
 	      let query = supabase.from("user_wines").select("*").eq("user_id", user!.id);
       

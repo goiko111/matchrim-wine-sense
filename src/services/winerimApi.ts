@@ -1,7 +1,12 @@
 import { QuizResult } from '@/data/quizData';
 import { supabase } from '@/integrations/supabase/client';
+import { clasificarVino, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
+const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
+const WINERIM_DIRECT_FALLBACK_ENABLED = import.meta.env.VITE_WINERIM_DIRECT_FALLBACK === 'true';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 export interface WinerimWine {
   id: string | number;
@@ -31,6 +36,18 @@ export interface WinerimWine {
 
 export interface WinerimWineWithMatch extends WinerimWine {
   matchPercentage: number;
+  matchSource?: 'winerim-api' | 'style-range';
+  styleName?: PublicWineStyle;
+}
+
+export interface WinerimWineResultsMeta {
+  totalCount: number;
+  displayedCount: number;
+  directCount: number;
+  styleRangeCount: number;
+  searchLevel?: number;
+  primaryStyle?: PublicWineStyle;
+  isGlobalRecommendations: boolean;
 }
 
 type RawWinerimWine = Record<string, unknown>;
@@ -38,10 +55,15 @@ type RawTastingAttributes = Record<string, unknown>;
 
 export interface WineMatchingResponse {
   results?: RawWinerimWine[];
-  wines?: RawWinerimWine[];
+  wines?: RawWinerimWine[] | { home?: RawWinerimWine[]; detail?: RawWinerimWine[] };
   data?: RawWinerimWine[] | { results?: RawWinerimWine[]; wines?: RawWinerimWine[] };
   count?: number;
+  total?: number;
+  totalCount?: number;
+  total_count?: number;
   searchLevel?: number;
+  page?: number;
+  limit?: number;
 }
 
 export interface FetchWinerimWinesOptions {
@@ -49,6 +71,20 @@ export interface FetchWinerimWinesOptions {
   matchrimCode?: string;
   signal?: AbortSignal;
 }
+
+type WinerimRequestPayload = {
+  endpoint: 'match' | 'wines';
+  restaurantUuid: string;
+  matchrimCode?: string;
+  profile?: QuizResult;
+  page?: number;
+  limit?: number;
+};
+
+const winerimWineResultsMeta = new WeakMap<WinerimWineWithMatch[], WinerimWineResultsMeta>();
+
+export const getWinerimWineResultsMeta = (wines: WinerimWineWithMatch[]) =>
+  winerimWineResultsMeta.get(wines) || null;
 
 const normalizePrice = (rawWine: RawWinerimWine) => {
   if (Array.isArray(rawWine.prices)) {
@@ -83,26 +119,27 @@ const asRecord = (value: unknown): RawTastingAttributes | null => {
   return value as RawTastingAttributes;
 };
 
-const normalizeTo5 = (raw: unknown): number => {
-  const n = Number(raw);
-  if (!Number.isFinite(n)) return 0;
-  let v = n;
-  if (v > 10) v = v / 20;
-  else if (v > 5) v = v / 2;
-  return Math.max(0, Math.min(5, Math.round(v)));
+const normalizeAttributeTo5 = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
+  return Math.max(1, Math.min(5, Math.round(scaled)));
 };
 
 const normalizeTastingAttributes = (rawWine: RawWinerimWine) => {
   const attrs = asRecord(rawWine.tastingAttributes || rawWine.tasting_attributes || rawWine.atributos);
   if (!attrs) return null;
 
-  return {
-    power: normalizeTo5(attrs.power ?? attrs.potencia ?? 0),
-    acidity: normalizeTo5(attrs.acidity ?? attrs.acidez ?? 0),
-    fruity: normalizeTo5(attrs.fruity ?? attrs.afrutado ?? 0),
-    sweetness: normalizeTo5(attrs.sweetness ?? attrs.dulzura ?? attrs.dulce ?? 0),
-    tannin: normalizeTo5(attrs.tannin ?? attrs.taninos ?? attrs.tanico ?? 0),
+  const normalized = {
+    power: normalizeAttributeTo5(attrs.power ?? attrs.potencia),
+    acidity: normalizeAttributeTo5(attrs.acidity ?? attrs.acidez),
+    fruity: normalizeAttributeTo5(attrs.fruity ?? attrs.afrutado),
+    sweetness: normalizeAttributeTo5(attrs.sweetness ?? attrs.dulzura ?? attrs.dulce),
+    tannin: normalizeAttributeTo5(attrs.tannin ?? attrs.taninos ?? attrs.tanico),
   };
+
+  if (Object.values(normalized).some((value) => value === null)) return null;
+  return normalized as NonNullable<WinerimWine['tastingAttributes']>;
 };
 
 const normalizeWineId = (rawWine: RawWinerimWine, index: number) => {
@@ -166,10 +203,231 @@ const normalizeWinerimWine = (rawWine: RawWinerimWine, index: number): WinerimWi
 const extractWineResults = (data: WineMatchingResponse): RawWinerimWine[] => {
   if (Array.isArray(data.results)) return data.results;
   if (Array.isArray(data.wines)) return data.wines;
+  if (data.wines && !Array.isArray(data.wines)) {
+    if (Array.isArray(data.wines.detail)) return data.wines.detail;
+    if (Array.isArray(data.wines.home)) return data.wines.home;
+  }
   if (Array.isArray(data.data)) return data.data;
   if (data.data && Array.isArray(data.data.results)) return data.data.results;
   if (data.data && Array.isArray(data.data.wines)) return data.data.wines;
   return [];
+};
+
+const extractTotalCount = (data: WineMatchingResponse, fallback: number) => {
+  const rawCount = data.count ?? data.totalCount ?? data.total_count ?? data.total;
+  const numeric = Number(rawCount);
+  return Number.isFinite(numeric) ? Math.max(0, Math.round(numeric)) : fallback;
+};
+
+const calculateProfileMatchPercentage = (quizResult: QuizResult, wine: WinerimWineWithMatch) => {
+  const attrs = wine.tastingAttributes;
+  if (!attrs) return wine.matchPercentage || 0;
+
+  const weightedScore =
+    Math.max(0, 1 - Math.abs(quizResult.potente - attrs.power) / 5) * 0.25 +
+    Math.max(0, 1 - Math.abs(quizResult.acidez - attrs.acidity) / 5) * 0.20 +
+    Math.max(0, 1 - Math.abs(quizResult.dulce - attrs.sweetness) / 5) * 0.20 +
+    Math.max(0, 1 - Math.abs(quizResult.tanico - attrs.tannin) / 5) * 0.20 +
+    Math.max(0, 1 - Math.abs(quizResult.afrutado - attrs.fruity) / 5) * 0.15;
+
+  return Math.max(0, Math.min(100, Math.round(weightedScore * 100)));
+};
+
+const classifyWineByV41Style = (wine: WinerimWineWithMatch): PublicWineStyle | null => {
+  const attrs = wine.tastingAttributes;
+  if (!attrs || !wine.type) return null;
+
+  try {
+    const classification = clasificarVino(
+      attrs.power,
+      attrs.acidity,
+      attrs.sweetness,
+      attrs.tannin,
+      attrs.fruity,
+      wine.type,
+    );
+
+    return classification.estiloFinal === 'Sin encaje por tipo' ? null : classification.estiloFinal;
+  } catch (error) {
+    return null;
+  }
+};
+
+const mergeUniqueWines = (wines: WinerimWineWithMatch[]) => {
+  const byId = new Map<string | number, WinerimWineWithMatch>();
+
+  wines.forEach((wine) => {
+    const previous = byId.get(wine.id);
+    if (!previous) {
+      byId.set(wine.id, wine);
+      return;
+    }
+
+    byId.set(wine.id, {
+      ...previous,
+      ...wine,
+      matchPercentage: Math.max(previous.matchPercentage, wine.matchPercentage),
+      matchSource: previous.matchSource === 'winerim-api' ? previous.matchSource : wine.matchSource,
+      styleName: previous.styleName || wine.styleName,
+    });
+  });
+
+  return Array.from(byId.values()).sort((a, b) =>
+    b.matchPercentage - a.matchPercentage ||
+    String(a.name).localeCompare(String(b.name), 'es')
+  );
+};
+
+const fetchRestaurantWinesPage = async (
+  restaurantUuid: string,
+  page: number,
+  limit: number,
+  signal?: AbortSignal,
+) => {
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+
+  return invokeWinerimEndpoint({
+    endpoint: 'wines',
+    restaurantUuid,
+    page,
+    limit,
+  }, signal);
+};
+
+const buildDirectWinerimUrl = (payload: WinerimRequestPayload) => {
+  const params = new URLSearchParams();
+  const endpoint = payload.endpoint === 'wines' ? 'wines' : 'match';
+
+  if (endpoint === 'match') {
+    const profile = payload.profile;
+    if (!profile) throw new Error('Complete Matchrim profile is required');
+
+    params.set('userPower', String(profile.potente));
+    params.set('userAcidity', String(profile.acidez));
+    params.set('userFruity', String(profile.afrutado));
+    params.set('userSweetness', String(profile.dulce));
+    params.set('userTannin', String(profile.tanico));
+
+    if (payload.matchrimCode?.trim()) {
+      params.set('matchrimCode', payload.matchrimCode.trim());
+    }
+  } else {
+    params.set('page', String(Math.max(1, Math.round(payload.page || 1))));
+    params.set('limit', String(Math.min(250, Math.max(1, Math.round(payload.limit || 100)))));
+  }
+
+  const path = endpoint === 'match' ? 'wines/match' : 'wines';
+  const baseUrl = WINERIM_API_URL.replace(/\/$/, '');
+  return `${baseUrl}/api/v1/restaurant/${encodeURIComponent(payload.restaurantUuid)}/${path}?${params}`;
+};
+
+const fetchDirectWinerimEndpoint = async (
+  payload: WinerimRequestPayload,
+  signal?: AbortSignal,
+): Promise<WineMatchingResponse> => {
+  const response = await fetch(buildDirectWinerimUrl(payload), {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+    signal,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => '');
+    throw new Error(`Winerim API responded ${response.status}${errorText ? `: ${errorText}` : ''}`);
+  }
+
+  return response.json() as Promise<WineMatchingResponse>;
+};
+
+const invokeWinerimEndpoint = async (
+  payload: WinerimRequestPayload,
+  signal?: AbortSignal,
+): Promise<WineMatchingResponse> => {
+  try {
+    const { data, error } = await supabase.functions.invoke('winerim-wines', { body: payload });
+    if (error) throw error;
+    return (data || {}) as WineMatchingResponse;
+  } catch (error) {
+    if (WINERIM_DIRECT_FALLBACK_ENABLED) {
+      console.warn('⚠️ [Winerim] Edge Function no disponible; usando API directa:', error);
+      return fetchDirectWinerimEndpoint(payload, signal);
+    }
+
+    console.warn('⚠️ [Winerim] Edge Function no disponible:', error);
+    throw new Error('No se pudo conectar con Winerim. Falta desplegar la función winerim-wines en Supabase.');
+  }
+};
+
+const isFallbackRestaurantUuid = (restaurantUuid: string) =>
+  restaurantUuid === '00000000-0000-0000-0000-000000000001';
+
+const invokeMatchrimRecommendations = async (
+  profile: QuizResult,
+  signal?: AbortSignal,
+): Promise<WineMatchingResponse> => {
+  if (!SUPABASE_URL) throw new Error('Supabase URL not configured');
+
+  const params = new URLSearchParams({
+    power: String(profile.potente),
+    acidity: String(profile.acidez),
+    sweetness: String(profile.dulce),
+    tannin: String(profile.tanico),
+    fruity: String(profile.afrutado),
+  });
+
+  const response = await fetch(`${SUPABASE_URL.replace(/\/$/, '')}/functions/v1/matchrim-recommendations?${params}`, {
+    method: 'GET',
+    signal,
+    headers: {
+      Accept: 'application/json',
+      ...(SUPABASE_PUBLISHABLE_KEY
+        ? {
+            apikey: SUPABASE_PUBLISHABLE_KEY,
+            Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+          }
+        : {}),
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => '');
+    throw new Error(`Matchrim recommendations proxy responded ${response.status}${errorText ? `: ${errorText}` : ''}`);
+  }
+
+  return response.json() as Promise<WineMatchingResponse>;
+};
+
+const fetchStyleRangeWines = async (
+  quizResult: QuizResult,
+  restaurantUuid: string,
+  primaryStyle: PublicWineStyle,
+  signal?: AbortSignal,
+) => {
+  const pageSize = 200;
+  const maxPages = 1;
+  const targetStyleMatches = 40;
+  const styleMatches: WinerimWineWithMatch[] = [];
+
+  for (let page = 1; page <= maxPages && styleMatches.length < targetStyleMatches; page += 1) {
+    const data = await fetchRestaurantWinesPage(restaurantUuid, page, pageSize, signal);
+    const pageWines = extractWineResults(data).map(normalizeWinerimWine);
+
+    pageWines.forEach((wine) => {
+      const styleName = classifyWineByV41Style(wine);
+      if (styleName !== primaryStyle) return;
+
+      styleMatches.push({
+        ...wine,
+        matchPercentage: calculateProfileMatchPercentage(quizResult, wine),
+        matchSource: 'style-range',
+        styleName,
+      });
+    });
+
+    if (pageWines.length < pageSize) break;
+  }
+
+  return styleMatches;
 };
 
 /**
@@ -182,176 +440,65 @@ export const fetchWinesByAttributes = async (
   options: FetchWinerimWinesOptions = {}
 ): Promise<WinerimWineWithMatch[]> => {
   const restaurantUuid = options.restaurantUuid?.trim() || WINERIM_RESTAURANT_UUID;
+  const useGlobalRecommendations = !options.restaurantUuid?.trim() || isFallbackRestaurantUuid(restaurantUuid);
 
-  if (!restaurantUuid) {
-    throw new Error('Winerim restaurant UUID not configured');
+  if (!restaurantUuid && !useGlobalRecommendations) {
+    throw new Error('Winerim API not configured');
   }
 
-  console.log('🔍 [Winerim] Buscando vinos vía edge function winerim-wines');
+  console.log('🔍 [Winerim] Buscando vinos con backend matching');
   console.log('📊 [Winerim] Perfil del usuario:', quizResult);
 
-  const params = new URLSearchParams({
-    restaurantUuid,
-    userPower: quizResult.potente.toString(),
-    userAcidity: quizResult.acidez.toString(),
-    userFruity: quizResult.afrutado.toString(),
-    userSweetness: quizResult.dulce.toString(),
-    userTannin: quizResult.tanico.toString(),
+  if (options.signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+
+  const responseData = useGlobalRecommendations
+    ? await invokeMatchrimRecommendations(quizResult, options.signal)
+    : await invokeWinerimEndpoint({
+        endpoint: 'match',
+        restaurantUuid,
+        matchrimCode: options.matchrimCode,
+        profile: quizResult,
+      }, options.signal);
+  const directResults = extractWineResults(responseData)
+    .map(normalizeWinerimWine)
+    .map((wine) => ({
+      ...wine,
+      matchSource: 'winerim-api' as const,
+      styleName: classifyWineByV41Style(wine) || undefined,
+    }));
+
+  const [primaryStyle] = suggestWineStylesForProfile({
+    potente: quizResult.potente,
+    acidez: quizResult.acidez,
+    dulce: quizResult.dulce,
+    tanico: quizResult.tanico,
+    afrutado: quizResult.afrutado,
+  }, 1);
+
+  let styleRangeResults: WinerimWineWithMatch[] = [];
+
+  if (!useGlobalRecommendations) {
+    try {
+      styleRangeResults = await fetchStyleRangeWines(quizResult, restaurantUuid, primaryStyle, options.signal);
+    } catch (error) {
+      console.warn('⚠️ [Winerim] No se pudo ampliar por rango de estilo:', error);
+    }
+  }
+
+  const results = mergeUniqueWines([...directResults, ...styleRangeResults]);
+  const totalCount = extractTotalCount(responseData, directResults.length);
+
+  winerimWineResultsMeta.set(results, {
+    totalCount,
+    displayedCount: results.length,
+    directCount: directResults.length,
+    styleRangeCount: styleRangeResults.length,
+    searchLevel: responseData.searchLevel,
+    primaryStyle,
+    isGlobalRecommendations: useGlobalRecommendations,
   });
 
-  if (options.matchrimCode?.trim()) {
-    params.set('matchrimCode', options.matchrimCode.trim());
-  }
-
-  const { data, error } = await supabase.functions.invoke<WineMatchingResponse>(
-    `winerim-wines?${params.toString()}`,
-    { method: 'GET' }
-  );
-
-  if (error) {
-    throw new Error(`Winerim proxy error: ${error.message}`);
-  }
-  if (!data) {
-    throw new Error('Winerim proxy returned empty response');
-  }
-
-  const results = extractWineResults(data).map(normalizeWinerimWine);
-
-  console.log(`✅ [Winerim] Encontrados ${data.count ?? results.length} vinos (nivel de búsqueda: ${data.searchLevel ?? 'n/a'}/31)`);
+  console.log(`✅ [Winerim] Encontrados ${totalCount} compatibles totales; mostrando ${results.length} (${directResults.length} directos, ${styleRangeResults.length} del rango ${primaryStyle})`);
 
   return results;
-};
-
-// ----------------------------------------------------------------------------
-// Matchrim recommendations endpoint (motor de afinidad: vinos/uvas/regiones ya
-// cocinados por el backend, sin "restaurante falso" ni agregación en cliente).
-// ----------------------------------------------------------------------------
-
-export type MatchrimRegime = 'versatil' | 'definido' | 'nicho';
-
-export interface MatchrimCategory {
-  name: string;
-  lift: number;
-  compat: number;
-  support: number;
-  score: number;
-}
-
-export interface MatchrimCategoryTier {
-  home: MatchrimCategory[];
-  detail: MatchrimCategory[];
-}
-
-export interface MatchrimWineTier {
-  home: WinerimWineWithMatch[];
-  detail: WinerimWineWithMatch[];
-}
-
-export interface MatchrimHeadline {
-  count: number;
-  kind: 'compatibles' | 'afines';
-  exploreMore: boolean;
-}
-
-export interface MatchrimTotals {
-  compatibleUniverse: number;
-  signal: number;
-  bandUsed: number;
-}
-
-export interface MatchrimRecommendations {
-  version: string;
-  metric: string;
-  profile: { power: number; acidity: number; sweetness: number; tannin: number; fruity: number };
-  regime: MatchrimRegime;
-  palateDefinitionScore: number;
-  headline: MatchrimHeadline;
-  totals: MatchrimTotals;
-  grapes: MatchrimCategoryTier;
-  regions: MatchrimCategoryTier;
-  styles: { home: MatchrimCategory[] };
-  wines: MatchrimWineTier;
-}
-
-const normalizeCategories = (value: unknown): MatchrimCategory[] => {
-  if (!Array.isArray(value)) return [];
-  return value
-    .map((raw) => {
-      const record = asRecord(raw);
-      if (!record) return null;
-      const name = stringValue(record.name);
-      if (!name) return null;
-      return {
-        name,
-        lift: Number(record.lift) || 0,
-        compat: Number(record.compat) || 0,
-        support: Number(record.support) || 0,
-        score: Number(record.score) || 0,
-      };
-    })
-    .filter((category): category is MatchrimCategory => category !== null);
-};
-
-const normalizeWineTier = (value: unknown): MatchrimWineTier => {
-  const record = asRecord(value);
-  const home = record && Array.isArray(record.home) ? record.home : [];
-  const detail = record && Array.isArray(record.detail) ? record.detail : [];
-  return {
-    home: home.map((wine, index) => normalizeWinerimWine(wine as RawWinerimWine, index)),
-    detail: detail.map((wine, index) => normalizeWinerimWine(wine as RawWinerimWine, index)),
-  };
-};
-
-const normalizeCategoryTier = (value: unknown): MatchrimCategoryTier => {
-  const record = asRecord(value);
-  return {
-    home: normalizeCategories(record?.home),
-    detail: normalizeCategories(record?.detail),
-  };
-};
-
-/**
- * Fetch cooked recommendations (regime + significant grapes/regions/styles +
- * wines) for a sensory profile. Replaces fetchWinesByAttributes + client-side
- * aggregation for the home discovery flow.
- */
-export const fetchMatchrimRecommendations = async (
-  quizResult: QuizResult,
-  options: { signal?: AbortSignal } = {}
-): Promise<MatchrimRecommendations> => {
-  const params = new URLSearchParams({
-    power: quizResult.potente.toString(),
-    acidity: quizResult.acidez.toString(),
-    sweetness: quizResult.dulce.toString(),
-    tannin: quizResult.tanico.toString(),
-    fruity: quizResult.afrutado.toString(),
-  });
-
-  const { data: rawData, error } = await supabase.functions.invoke<Record<string, unknown>>(
-    `matchrim-recommendations?${params.toString()}`,
-    { method: 'GET' }
-  );
-
-  if (error) {
-    throw new Error(`Matchrim proxy error: ${error.message}`);
-  }
-  if (!rawData) {
-    throw new Error('Matchrim proxy returned empty response');
-  }
-
-  const data = rawData;
-
-  return {
-    version: String(data.version ?? '1'),
-    metric: String(data.metric ?? ''),
-    profile: data.profile as MatchrimRecommendations['profile'],
-    regime: (data.regime as MatchrimRegime) ?? 'versatil',
-    palateDefinitionScore: Number(data.palateDefinitionScore) || 0,
-    headline: data.headline as MatchrimHeadline,
-    totals: data.totals as MatchrimTotals,
-    grapes: normalizeCategoryTier(data.grapes),
-    regions: normalizeCategoryTier(data.regions),
-    styles: { home: normalizeCategories(asRecord(data.styles)?.home) },
-    wines: normalizeWineTier(data.wines),
-  };
 };

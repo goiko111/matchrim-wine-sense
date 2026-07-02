@@ -985,7 +985,7 @@ export const WineMenuScanner = ({
 	                </CardDescription>
 	              </CardHeader>
 		              <CardContent className="grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-5">
-	                <div className="rounded-md border border-green-100 bg-green-50 p-4">
+	                <div className="min-w-0 rounded-md border border-green-100 bg-green-50 p-4">
 	                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-green-900">
 	                    <Trophy className="h-4 w-4" />
 	                    Pediría primero
@@ -996,12 +996,12 @@ export const WineMenuScanner = ({
 		                      <button
 		                        type="button"
 		                        aria-label={`Ver detalle de ${best.wine.nombre}, ${best.score}% de encaje`}
-		                        className="w-full space-y-2 text-left"
+		                        className="min-w-0 w-full space-y-2 text-left"
 		                        onClick={() => focusWine(best.index)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
-	                            <p className="font-semibold leading-tight text-green-950">{best.wine.nombre}</p>
+	                            <p className="break-words font-semibold leading-tight text-green-950">{best.wine.nombre}</p>
 	                            {best.wine.productor && (
 	                              <p className="mt-1 truncate text-sm text-green-900/70">{best.wine.productor}</p>
 	                            )}
@@ -1009,7 +1009,7 @@ export const WineMenuScanner = ({
 	                          <Badge className="bg-green-700 hover:bg-green-700">{best.score}%</Badge>
 	                        </div>
 	                        {best.wine.razon && (
-	                          <p className="text-sm leading-5 text-green-900">{best.wine.razon}</p>
+	                          <p className="break-words text-sm leading-5 text-green-900">{best.wine.razon}</p>
 	                        )}
 	                      </button>
 	                    );
@@ -1018,7 +1018,7 @@ export const WineMenuScanner = ({
 	                  )}
 	                </div>
 
-		                <div className="rounded-md border border-amber-100 bg-amber-50 p-4">
+		                <div className="min-w-0 rounded-md border border-amber-100 bg-amber-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-amber-950">
 		                    <Sparkles className="h-4 w-4" />
 		                    Alternativa más segura
@@ -1029,12 +1029,12 @@ export const WineMenuScanner = ({
 		                      <button
 		                        type="button"
 		                        aria-label={`Ver detalle de ${safe.wine.nombre}, ${safe.score}% de encaje`}
-		                        className="flex w-full items-center justify-between gap-3 rounded-md border border-amber-200 bg-white px-3 py-2 text-left"
+		                        className="flex min-w-0 w-full items-center justify-between gap-3 rounded-md border border-amber-200 bg-white px-3 py-2 text-left"
 		                        onClick={() => focusWine(safe.index)}
 		                      >
 		                        <span className="min-w-0">
-		                          <span className="block truncate text-sm font-semibold text-amber-950">{safe.wine.nombre}</span>
-		                          <span className="block truncate text-xs text-amber-900/70">
+		                          <span className="block break-words text-sm font-semibold leading-tight text-amber-950">{safe.wine.nombre}</span>
+		                          <span className="mt-1 block break-words text-xs leading-5 text-amber-900/70">
 		                            {[formatPrice(safe.wine.precio), formatWineType(safe.wine.tipo)].filter(Boolean).join(' · ')}
 		                          </span>
 		                        </span>
@@ -1046,7 +1046,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="rounded-md border border-stone-200 bg-stone-50 p-4">
+		                <div className="min-w-0 rounded-md border border-stone-200 bg-stone-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-stone-950">
 		                    <Target className="h-4 w-4" />
 		                    Mejor calidad/precio para ti
@@ -1057,10 +1057,10 @@ export const WineMenuScanner = ({
 		                      <button
 		                        type="button"
 		                        aria-label={`Ver detalle de ${value.wine.nombre}, ${value.score}% de encaje`}
-		                        className="w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
+		                        className="min-w-0 w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
 		                        onClick={() => focusWine(value.index)}
 		                      >
-		                        <span className="block font-semibold leading-tight">{value.wine.nombre}</span>
+		                        <span className="block break-words font-semibold leading-tight">{value.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-stone-500">
 		                          {[formatPrice(value.wine.precio), `${value.score}%`].filter(Boolean).join(' · ')}
 		                        </span>
@@ -1071,7 +1071,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="rounded-md border border-orange-100 bg-orange-50 p-4">
+		                <div className="min-w-0 rounded-md border border-orange-100 bg-orange-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-orange-950">
 		                    <AlertCircle className="h-4 w-4" />
 		                    Más arriesgado
@@ -1082,10 +1082,10 @@ export const WineMenuScanner = ({
 		                      <button
 		                        type="button"
 		                        aria-label={`Ver detalle de ${adventurous.wine.nombre}, ${adventurous.score}% de encaje`}
-		                        className="w-full rounded-md border border-orange-200 bg-white p-3 text-left"
+		                        className="min-w-0 w-full rounded-md border border-orange-200 bg-white p-3 text-left"
 		                        onClick={() => focusWine(adventurous.index)}
 		                      >
-		                        <span className="block text-sm font-semibold leading-tight text-orange-950">{adventurous.wine.nombre}</span>
+		                        <span className="block break-words text-sm font-semibold leading-tight text-orange-950">{adventurous.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-orange-900/70">
 		                          {adventurous.score}% · puede sacarte de tu zona segura
 		                        </span>
@@ -1096,7 +1096,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="rounded-md border border-red-100 bg-red-50 p-4">
+		                <div className="min-w-0 rounded-md border border-red-100 bg-red-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-red-950">
 		                    <CircleSlash className="h-4 w-4" />
 		                    No lo pediría para ti
@@ -1107,12 +1107,12 @@ export const WineMenuScanner = ({
 	                      <button
 	                        type="button"
 	                        aria-label={`Ver detalle de ${caution.wine.nombre}, ${caution.score}% de encaje`}
-	                        className="w-full space-y-2 text-left"
+	                        className="min-w-0 w-full space-y-2 text-left"
 	                        onClick={() => focusWine(caution.index)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
-	                            <p className="font-semibold leading-tight text-red-950">{caution.wine.nombre}</p>
+	                            <p className="break-words font-semibold leading-tight text-red-950">{caution.wine.nombre}</p>
 	                            <p className="mt-1 text-sm text-red-900/75">
 	                              Puede ser buena botella, pero no parece tu mejor elección en esta carta.
 	                            </p>
