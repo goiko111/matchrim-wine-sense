@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -67,6 +67,15 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
   const [affinityMessage, setAffinityMessage] = useState<string | null>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!extractedWine || loading) return;
+
+    window.setTimeout(() => {
+      resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  }, [extractedWine, loading]);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -322,7 +331,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
               <img
                 src={preview}
                 alt="Preview"
-                className="max-h-80 mx-auto rounded-lg shadow-lg"
+                className={`${extractedWine && !loading ? "max-h-36" : "max-h-80"} mx-auto rounded-lg shadow-lg`}
               />
               {!loading && (
                 <Button
@@ -380,7 +389,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
         )}
       </div>
       {extractedWine && !loading && (
-        <div className="overflow-hidden rounded-lg border bg-card shadow-sm">
+        <div ref={resultRef} className="scroll-mt-24 overflow-hidden rounded-lg border bg-card shadow-sm">
           <div className="border-b bg-stone-950 px-4 py-4 text-white">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">

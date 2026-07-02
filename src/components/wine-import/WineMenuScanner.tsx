@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -264,6 +264,7 @@ export const WineMenuScanner = ({
   const [scanFeedback, setScanFeedback] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const wineCardRefs = useRef(new Map<number, HTMLDivElement | null>());
 
   const scannedWineTypes = useMemo(
@@ -325,6 +326,14 @@ export const WineMenuScanner = ({
         return (b.wine.compatibilidad ?? -1) - (a.wine.compatibilidad ?? -1);
       });
   }, [scanMaxPrice, scanSortMode, scanTypeFilter, scannedWines]);
+
+  useEffect(() => {
+    if (loading || scannedWines.length === 0) return;
+
+    window.setTimeout(() => {
+      resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+  }, [loading, scannedWines.length]);
 
   const dishContext = pairingDishName?.trim() || '';
   const similarWineContext = similarWineName?.trim() || '';
@@ -770,7 +779,7 @@ export const WineMenuScanner = ({
 	                      <img
 	                        src={preview}
 	                        alt="Preview"
-		                        className="max-h-[68vh] max-w-full object-contain opacity-95"
+		                        className={`${scannedWines.length > 0 ? 'max-h-48' : 'max-h-[68vh]'} max-w-full object-contain opacity-95`}
 	                      />
 	                      {scannedWines.map((wine, index) => {
 	                        const position = getWinePosition(wine);
@@ -921,7 +930,7 @@ export const WineMenuScanner = ({
 
       {/* Results Section */}
       {scannedWines.length > 0 && (
-        <div className="space-y-4">
+        <div ref={resultsRef} className="scroll-mt-24 space-y-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <h3 className="text-2xl font-bold">
@@ -972,10 +981,11 @@ export const WineMenuScanner = ({
 	                  {menuDecision.best ? (() => {
 	                    const best = menuDecision.best;
 	                    return (
-	                      <button
-	                        type="button"
-	                        className="w-full space-y-2 text-left"
-	                        onClick={() => focusWine(best.index)}
+		                      <button
+		                        type="button"
+		                        aria-label={`Ver detalle de ${best.wine.nombre}, ${best.score}% de encaje`}
+		                        className="w-full space-y-2 text-left"
+		                        onClick={() => focusWine(best.index)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
@@ -1006,6 +1016,7 @@ export const WineMenuScanner = ({
 		                    return (
 		                      <button
 		                        type="button"
+		                        aria-label={`Ver detalle de ${safe.wine.nombre}, ${safe.score}% de encaje`}
 		                        className="flex w-full items-center justify-between gap-3 rounded-md border border-amber-200 bg-white px-3 py-2 text-left"
 		                        onClick={() => focusWine(safe.index)}
 		                      >
@@ -1033,6 +1044,7 @@ export const WineMenuScanner = ({
 		                    return (
 		                      <button
 		                        type="button"
+		                        aria-label={`Ver detalle de ${value.wine.nombre}, ${value.score}% de encaje`}
 		                        className="w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
 		                        onClick={() => focusWine(value.index)}
 		                      >
@@ -1057,6 +1069,7 @@ export const WineMenuScanner = ({
 		                    return (
 		                      <button
 		                        type="button"
+		                        aria-label={`Ver detalle de ${adventurous.wine.nombre}, ${adventurous.score}% de encaje`}
 		                        className="w-full rounded-md border border-orange-200 bg-white p-3 text-left"
 		                        onClick={() => focusWine(adventurous.index)}
 		                      >
@@ -1081,6 +1094,7 @@ export const WineMenuScanner = ({
 	                    return (
 	                      <button
 	                        type="button"
+	                        aria-label={`Ver detalle de ${caution.wine.nombre}, ${caution.score}% de encaje`}
 	                        className="w-full space-y-2 text-left"
 	                        onClick={() => focusWine(caution.index)}
 	                      >

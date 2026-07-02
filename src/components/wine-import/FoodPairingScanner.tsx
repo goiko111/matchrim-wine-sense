@@ -133,6 +133,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<FoodScanMode>(initialMode);
   const [loading, setLoading] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
@@ -160,6 +161,14 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
 
     return () => window.clearInterval(timer);
   }, [loading, mode]);
+
+  useEffect(() => {
+    if (!result || loading) return;
+
+    window.setTimeout(() => {
+      resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  }, [result, loading]);
 
   const selectMode = (nextMode: FoodScanMode) => {
     setMode(nextMode);
@@ -390,7 +399,11 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
         {preview ? (
           <div className="space-y-4">
             <div className="relative overflow-hidden rounded-lg bg-stone-950">
-              <img src={preview} alt="Vista previa" className="max-h-[58vh] w-full object-contain opacity-95" />
+              <img
+                src={preview}
+                alt="Vista previa"
+                className={`${result && !loading ? "max-h-44" : "max-h-[58vh]"} w-full object-contain opacity-95`}
+              />
               {!loading && (
                 <Button
                   type="button"
@@ -451,7 +464,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
       </div>
 
       {result && (
-        <div className="space-y-4">
+        <div ref={resultRef} className="scroll-mt-24 space-y-4">
           <div className="rounded-lg border border-stone-200 bg-white p-4">
             <div className="flex items-start gap-3">
               <Sparkles className="mt-0.5 h-5 w-5 text-red-900" />
