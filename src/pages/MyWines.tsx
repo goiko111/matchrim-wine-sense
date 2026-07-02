@@ -128,8 +128,23 @@ interface WineSuggestion {
 type ManualWineLookupStatus = 'idle' | 'loading' | 'done' | 'error';
 type WineStatus = 'collection' | 'wishlist' | 'tasted';
 type WineSection = WineStatus | 'favorites' | 'rejected';
+type SectionCounts = Record<WineSection, number>;
+
+interface WineSectionCountRow {
+  id: string;
+  status: WineStatus | null;
+  rating: 'love' | 'ok' | 'not_for_me' | null;
+  is_favorite: boolean | null;
+}
 
 const validWineSections: WineSection[] = ['collection', 'wishlist', 'tasted', 'favorites', 'rejected'];
+const emptySectionCounts: SectionCounts = {
+  collection: 0,
+  wishlist: 0,
+  tasted: 0,
+  favorites: 0,
+  rejected: 0,
+};
 
 const sectionFromRoute = (section?: string): WineSection => {
   if (section === 'no-repetir' || section === 'rejected') return 'rejected';
@@ -199,6 +214,7 @@ const MyWines = () => {
   const [manualWineLookupStatus, setManualWineLookupStatus] = useState<ManualWineLookupStatus>('idle');
   const [manualWineNameConfirmed, setManualWineNameConfirmed] = useState(false);
   const [manualWineSelectedFromResults, setManualWineSelectedFromResults] = useState(false);
+  const [sectionCounts, setSectionCounts] = useState<SectionCounts>(emptySectionCounts);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -270,6 +286,11 @@ const MyWines = () => {
 	  }, [authLoading, user]);
 
   useEffect(() => {
+    if (isAddWineRoute) return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [isAddWineRoute, statusFilter]);
+
+  useEffect(() => {
     applyFilters();
   }, [wines, filterType]);
 
@@ -334,6 +355,30 @@ const MyWines = () => {
     setFilteredWines(filtered);
   };
 
+  const loadSectionCounts = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from("user_wines")
+        .select("id, status, rating, is_favorite")
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+
+      const rows = ((data as WineSectionCountRow[]) || []);
+      setSectionCounts({
+        collection: rows.filter((wine) => wine.status === 'collection').length,
+        wishlist: rows.filter((wine) => wine.status === 'wishlist').length,
+        tasted: rows.filter((wine) => Boolean(wine.rating)).length,
+        favorites: rows.filter((wine) => Boolean(wine.is_favorite)).length,
+        rejected: rows.filter((wine) => wine.rating === 'not_for_me').length,
+      });
+    } catch (error) {
+      console.error("Error loading wine section counts:", error);
+    }
+  };
+
 	  const loadWines = async () => {
 	    try {
 	      let query = supabase.from("user_wines").select("*").eq("user_id", user!.id);
@@ -356,6 +401,7 @@ const MyWines = () => {
 
       if (error) throw error;
       setWines(((data as UserWine[]) || []).map(normalizeUserWine));
+      void loadSectionCounts();
     } catch (error) {
       console.error("Error loading wines:", error);
       toast.error("Error al cargar tus vinos");
@@ -934,6 +980,93 @@ const MyWines = () => {
 
 	  const trainingReadyCount = learningStats.trainingCount;
 	  const ratedCount = learningStats.ratedCount;
+  const activeSectionCopy = {
+    collection: {
+      title: 'Mi Bodega',
+      kicker: 'Vinos que tienes ahora',
+      detail: 'Aquí viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, pasan a Ya Probados.',
+      action: 'Añadir vino',
+      icon: Wine,
+      onAction: () => navigate('/my-wines/add'),
+    },
+    wishlist: {
+      title: 'Quiero Probar',
+      kicker: 'Candidatos para pedir o comprar',
+      detail: 'Aquí van los vinos que te interesan desde cartas, etiquetas o búsquedas. Cuando los puntúas, pasan a Ya Probados.',
+      action: 'Escanear carta',
+      icon: Heart,
+      onAction: () => navigate('/escanear/carta-vinos'),
+    },
+    tasted: {
+      title: 'Ya Probados',
+      kicker: 'Historial que enseña a Matchrim',
+      detail: 'Cada valoración aporta señal. Los vinos con atributos 1-5 pueden afinar tu código y hacer mejores recomendaciones.',
+      action: 'Puntuar pendientes',
+      icon: Star,
+      onAction: () => navigateToWineSection('wishlist'),
+    },
+    favorites: {
+      title: 'Favoritos',
+      kicker: 'Marca transversal',
+      detail: 'Favorito no mueve el vino: solo lo destaca. El vino sigue en Mi Bodega, Quiero Probar o Ya Probados y también aparece aquí.',
+      action: 'Ver Quiero Probar',
+      icon: Heart,
+      onAction: () => navigateToWineSection('wishlist'),
+    },
+    rejected: {
+      title: 'No repetir',
+      kicker: 'Señales negativas',
+      detail: 'Los vinos marcados como “No va” ayudan a alejar estilos, uvas y estructuras que no te compensan.',
+      action: 'Ver Ya Probados',
+      icon: ThumbsDown,
+      onAction: () => navigateToWineSection('tasted'),
+    },
+  } satisfies Record<WineSection, {
+    title: string;
+    kicker: string;
+    detail: string;
+    action: string;
+    icon: typeof Wine;
+    onAction: () => void;
+  }>;
+  const ActiveSectionIcon = activeSectionCopy[statusFilter].icon;
+  const sectionCards = [
+    {
+      section: 'collection' as const,
+      label: 'Mi Bodega',
+      helper: 'Tengo',
+      icon: Wine,
+      count: sectionCounts.collection,
+    },
+    {
+      section: 'wishlist' as const,
+      label: 'Quiero Probar',
+      helper: 'Pendientes',
+      icon: Heart,
+      count: sectionCounts.wishlist,
+    },
+    {
+      section: 'tasted' as const,
+      label: 'Ya Probados',
+      helper: 'Valorados',
+      icon: Star,
+      count: sectionCounts.tasted,
+    },
+    {
+      section: 'favorites' as const,
+      label: 'Favoritos',
+      helper: 'Marcados',
+      icon: Heart,
+      count: sectionCounts.favorites,
+    },
+    {
+      section: 'rejected' as const,
+      label: 'No repetir',
+      helper: 'Evitar',
+      icon: ThumbsDown,
+      count: sectionCounts.rejected,
+    },
+  ];
 
 	  if (authLoading || !user) {
     return (
@@ -1023,6 +1156,90 @@ const MyWines = () => {
                   Buscar catálogo
                 </div>
                 <WineSearchBar onSelectWine={handleSearchWineSelect} />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-red-100 bg-white">
+            <CardContent className="p-4 sm:p-5">
+              <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr]">
+                <div className="rounded-lg border border-red-100 bg-red-50/70 p-4 sm:p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-white text-red-900 shadow-sm">
+                      <ActiveSectionIcon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold uppercase text-red-900/70">
+                        {activeSectionCopy[statusFilter].kicker}
+                      </p>
+                      <h2 className="mt-1 text-2xl font-bold leading-tight text-red-950">
+                        {activeSectionCopy[statusFilter].title}
+                      </h2>
+                      <p className="mt-2 max-w-2xl text-sm leading-6 text-red-950/75">
+                        {activeSectionCopy[statusFilter].detail}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                    <Button
+                      type="button"
+                      className="matchrim-pressable gap-2 bg-red-800 hover:bg-red-900"
+                      onClick={activeSectionCopy[statusFilter].onAction}
+                    >
+                      <ActiveSectionIcon className="h-4 w-4" />
+                      {activeSectionCopy[statusFilter].action}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="matchrim-pressable gap-2 bg-white"
+                      onClick={() => navigate('/escanear')}
+                    >
+                      <ScanLine className="h-4 w-4" />
+                      Escanear algo
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="grid gap-2 sm:grid-cols-5 lg:grid-cols-1">
+                  {sectionCards.map((item) => {
+                    const SectionIcon = item.icon;
+                    const isActive = item.section === statusFilter;
+
+                    return (
+                      <button
+                        key={item.section}
+                        type="button"
+                        onClick={() => navigateToWineSection(item.section)}
+                        className={`matchrim-pressable flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors ${
+                          isActive
+                            ? 'border-red-900 bg-red-950 text-white shadow-sm'
+                            : 'border-stone-200 bg-white text-foreground hover:border-red-200 hover:bg-red-50/50'
+                        }`}
+                      >
+                        <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${
+                          isActive ? 'bg-white/15 text-white' : 'bg-red-50 text-red-900'
+                        }`}>
+                          <SectionIcon className="h-4 w-4" />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-semibold">{item.label}</span>
+                          <span className={`block truncate text-xs ${
+                            isActive ? 'text-white/70' : 'text-muted-foreground'
+                          }`}>
+                            {item.helper}
+                          </span>
+                        </span>
+                        <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                          isActive ? 'bg-white text-red-950' : 'bg-stone-100 text-stone-700'
+                        }`}>
+                          {item.count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </CardContent>
           </Card>
