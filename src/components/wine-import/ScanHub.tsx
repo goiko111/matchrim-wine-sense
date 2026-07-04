@@ -1,13 +1,20 @@
-import { lazy, Suspense, useEffect, useState } from "react";
-import { ArrowRight, BookOpen, Camera, ChefHat, Loader2, ScanLine, Wine } from "lucide-react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, BookOpen, Camera, ChefHat, ExternalLink, History, Loader2, ScanLine, Wine } from "lucide-react";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
 import FoodPairingScanner from "@/components/wine-import/FoodPairingScanner";
 import { useAuth } from "@/contexts/AuthContext";
 import { trackAppEvent } from "@/lib/analytics";
+import {
+  SCAN_HISTORY_UPDATED_EVENT,
+  getScanHistory,
+  type ScanHistoryItem,
+} from "@/utils/scanHistory";
 
 const WineMenuScanner = lazy(() => import("@/components/wine-import/WineMenuScanner"));
 
 export type ScanMode = "label" | "wine-menu" | "food-menu" | "dish";
+
 
 interface ScanHubProps {
   onExtractComplete: Parameters<typeof WineLabelOCRImport>[0]["onExtractComplete"];
