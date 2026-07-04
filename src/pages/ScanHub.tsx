@@ -94,8 +94,9 @@ export default function ScanHub() {
                 <WineLabelOCRImport onExtractComplete={() => navigate("/my-wines")} />
               )}
               {selected === "wine-menu" && <WineMenuScanner />}
-              {selected === "food-menu" && <FoodPairingScanner mode="menu" />}
-              {selected === "dish" && <FoodPairingScanner mode="dish" />}
+              {selected === "food-menu" && <FoodPairingScanner initialMode="menu" />}
+              {selected === "dish" && <FoodPairingScanner initialMode="dish" />}
+
             </Suspense>
           </div>
         )}
