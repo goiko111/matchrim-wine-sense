@@ -289,6 +289,9 @@ export const ScanHub = ({
 
       {renderSelectedScanner()}
 
+      <RecentScansSection />
+
+
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
         Cada escaneo ayuda a entender demanda real: qué carta consulta el usuario, qué guarda y qué acaba valorando.
       </div>
