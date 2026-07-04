@@ -64,6 +64,93 @@ export const scanOptions = [
   },
 ];
 
+const scanTypeLabels: Record<ScanHistoryItem["type"], string> = {
+  label: "Etiqueta",
+  "wine-menu": "Carta de vinos",
+  "food-menu": "Menú de comida",
+  dish: "Plato",
+};
+
+const formatScanTime = (timestamp: number) => {
+  const diffMs = Date.now() - timestamp;
+  const minutes = Math.round(diffMs / 60000);
+  if (minutes < 1) return "ahora";
+  if (minutes < 60) return `hace ${minutes} min`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `hace ${hours} h`;
+  const days = Math.round(hours / 24);
+  return `hace ${days} d`;
+};
+
+const RecentScansSection = () => {
+  const navigate = useNavigate();
+  const [items, setItems] = useState<ScanHistoryItem[]>(() => getScanHistory());
+
+  const refresh = useCallback(() => setItems(getScanHistory()), []);
+
+  useEffect(() => {
+    refresh();
+    if (typeof window === "undefined") return;
+    const handler = () => refresh();
+    window.addEventListener(SCAN_HISTORY_UPDATED_EVENT, handler);
+    window.addEventListener("storage", handler);
+    return () => {
+      window.removeEventListener(SCAN_HISTORY_UPDATED_EVENT, handler);
+      window.removeEventListener("storage", handler);
+    };
+  }, [refresh]);
+
+  if (!items.length) return null;
+
+  return (
+    <div className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+      <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-950">
+        <History className="h-4 w-4 text-red-900" />
+        Últimos escaneos
+      </div>
+      <ul className="space-y-2">
+        {items.slice(0, 5).map((item) => (
+          <li
+            key={item.id}
+            className="flex items-stretch gap-2 rounded-md border border-stone-100 bg-stone-50/60"
+          >
+            <button
+              type="button"
+              onClick={() => navigate(item.route)}
+              className="matchrim-pressable flex min-w-0 flex-1 items-start gap-3 px-3 py-2 text-left"
+            >
+              <span className="mt-0.5 shrink-0 rounded-md bg-red-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-900">
+                {scanTypeLabels[item.type]}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold text-slate-950">{item.title}</span>
+                {item.subtitle && (
+                  <span className="mt-0.5 block truncate text-xs text-slate-500">{item.subtitle}</span>
+                )}
+                <span className="mt-1 block text-[11px] text-slate-400">{formatScanTime(item.createdAt)}</span>
+              </span>
+            </button>
+            {item.externalUrl && (
+              <a
+                href={item.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(event) => event.stopPropagation()}
+                className="matchrim-pressable inline-flex shrink-0 items-center gap-1.5 self-center rounded-md border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-900 hover:bg-red-50"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                <span>{item.actionLabel || "Ver ficha"}</span>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+
+
 export const ScanHub = ({
   onExtractComplete,
   initialMode = "label",
