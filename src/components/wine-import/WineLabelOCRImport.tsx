@@ -154,7 +154,87 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
           : detectedWine;
 
         setExtractedWine(wineWithAffinity);
+        setWinerimMatch(null);
+
+        const affinityPct =
+          typeof wineWithAffinity.matchrim_affinity === "number"
+            ? `${wineWithAffinity.matchrim_affinity}% de encaje`
+            : null;
+        const initialSubtitle = [
+          wineWithAffinity.productor,
+          wineWithAffinity.region,
+          wineWithAffinity.pais,
+          affinityPct,
+        ]
+          .filter(Boolean)
+          .join(" · ");
+
+        const historyItem = recordScanHistory({
+          type: "label",
+          title: wineWithAffinity.nombre,
+          subtitle: initialSubtitle || null,
+          route: "/escanear/etiqueta",
+          payload: {
+            wine: {
+              nombre: wineWithAffinity.nombre,
+              productor: wineWithAffinity.productor,
+              anada: wineWithAffinity.anada,
+              region: wineWithAffinity.region,
+              pais: wineWithAffinity.pais,
+              matchrim_affinity: wineWithAffinity.matchrim_affinity ?? null,
+            },
+          },
+        });
+
+        // Fire-and-forget: lookup the wine in the Winerim Library and, if found,
+        // attach the ficha URL to the scan history entry + local card state.
+        (async () => {
+          try {
+            const match = await findWinerimWineForLabel({
+              name: wineWithAffinity.nombre,
+              producer: wineWithAffinity.productor,
+              vintage: wineWithAffinity.anada,
+              region: wineWithAffinity.region,
+              country: wineWithAffinity.pais,
+            });
+            if (!match) return;
+
+            setWinerimMatch(match);
+
+            if (historyItem) {
+              const officialName = match.wine.name || wineWithAffinity.nombre;
+              const subtitleParts = [
+                match.wine.winery || wineWithAffinity.productor,
+                match.wine.region || wineWithAffinity.region,
+                match.wine.country || wineWithAffinity.pais,
+                affinityPct,
+                "Ficha Winerim",
+              ].filter(Boolean);
+
+              const url = buildWinerimWineUrl(match.wine);
+              updateScanHistoryItem(historyItem.id, {
+                title: officialName,
+                subtitle: subtitleParts.join(" · "),
+                externalUrl: url,
+                actionLabel: "Ver ficha",
+                payload: {
+                  winerim: {
+                    id: match.wine.id,
+                    slugname: match.wine.slugname ?? null,
+                    url,
+                    confidence: match.confidence,
+                    restaurantUuid: match.restaurantUuid ?? null,
+                  },
+                },
+              });
+            }
+          } catch (lookupError) {
+            console.warn("[label-scan] Winerim lookup failed:", lookupError);
+          }
+        })();
+
         trackAppEvent("wine_label_scan_completed", {
+
           userId: user?.id,
           metadata: {
             wine_name: wineWithAffinity.nombre,
