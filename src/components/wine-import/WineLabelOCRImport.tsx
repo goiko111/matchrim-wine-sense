@@ -2,12 +2,15 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, Camera, X, CheckCircle, AlertCircle, BookmarkPlus, ScanLine, Sparkles, FolderOpen, Heart } from "lucide-react";
+import { Loader2, Camera, X, CheckCircle, AlertCircle, BookmarkPlus, ScanLine, Sparkles, FolderOpen, Heart, ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
+import { recordScanHistory, updateScanHistoryItem } from "@/utils/scanHistory";
+import { buildWinerimWineUrl, findWinerimWineForLabel, type WinerimLabelLookupResult } from "@/services/winerimApi";
+
 
 interface ExtractedWineData {
   nombre: string;
