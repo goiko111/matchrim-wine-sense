@@ -2,12 +2,15 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, Camera, X, CheckCircle, AlertCircle, BookmarkPlus, ScanLine, Sparkles, FolderOpen, Heart } from "lucide-react";
+import { Loader2, Camera, X, CheckCircle, AlertCircle, BookmarkPlus, ScanLine, Sparkles, FolderOpen, Heart, ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
+import { recordScanHistory, updateScanHistoryItem } from "@/utils/scanHistory";
+import { buildWinerimWineUrl, findWinerimWineForLabel, type WinerimLabelLookupResult } from "@/services/winerimApi";
+
 
 interface ExtractedWineData {
   nombre: string;
@@ -65,9 +68,11 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
   const [preview, setPreview] = useState<string | null>(null);
   const [extractedWine, setExtractedWine] = useState<ExtractedWineData | null>(null);
   const [affinityMessage, setAffinityMessage] = useState<string | null>(null);
+  const [winerimMatch, setWinerimMatch] = useState<WinerimLabelLookupResult | null>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     if (!extractedWine || loading) return;
@@ -149,7 +154,87 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
           : detectedWine;
 
         setExtractedWine(wineWithAffinity);
+        setWinerimMatch(null);
+
+        const affinityPct =
+          typeof wineWithAffinity.matchrim_affinity === "number"
+            ? `${wineWithAffinity.matchrim_affinity}% de encaje`
+            : null;
+        const initialSubtitle = [
+          wineWithAffinity.productor,
+          wineWithAffinity.region,
+          wineWithAffinity.pais,
+          affinityPct,
+        ]
+          .filter(Boolean)
+          .join(" · ");
+
+        const historyItem = recordScanHistory({
+          type: "label",
+          title: wineWithAffinity.nombre,
+          subtitle: initialSubtitle || null,
+          route: "/escanear/etiqueta",
+          payload: {
+            wine: {
+              nombre: wineWithAffinity.nombre,
+              productor: wineWithAffinity.productor,
+              anada: wineWithAffinity.anada,
+              region: wineWithAffinity.region,
+              pais: wineWithAffinity.pais,
+              matchrim_affinity: wineWithAffinity.matchrim_affinity ?? null,
+            },
+          },
+        });
+
+        // Fire-and-forget: lookup the wine in the Winerim Library and, if found,
+        // attach the ficha URL to the scan history entry + local card state.
+        (async () => {
+          try {
+            const match = await findWinerimWineForLabel({
+              name: wineWithAffinity.nombre,
+              producer: wineWithAffinity.productor,
+              vintage: wineWithAffinity.anada,
+              region: wineWithAffinity.region,
+              country: wineWithAffinity.pais,
+            });
+            if (!match) return;
+
+            setWinerimMatch(match);
+
+            if (historyItem) {
+              const officialName = match.wine.name || wineWithAffinity.nombre;
+              const subtitleParts = [
+                match.wine.winery || wineWithAffinity.productor,
+                match.wine.region || wineWithAffinity.region,
+                match.wine.country || wineWithAffinity.pais,
+                affinityPct,
+                "Ficha Winerim",
+              ].filter(Boolean);
+
+              const url = buildWinerimWineUrl(match.wine);
+              updateScanHistoryItem(historyItem.id, {
+                title: officialName,
+                subtitle: subtitleParts.join(" · "),
+                externalUrl: url,
+                actionLabel: "Ver ficha",
+                payload: {
+                  winerim: {
+                    id: match.wine.id,
+                    slugname: match.wine.slugname ?? null,
+                    url,
+                    confidence: match.confidence,
+                    restaurantUuid: match.restaurantUuid ?? null,
+                  },
+                },
+              });
+            }
+          } catch (lookupError) {
+            console.warn("[label-scan] Winerim lookup failed:", lookupError);
+          }
+        })();
+
         trackAppEvent("wine_label_scan_completed", {
+
           userId: user?.id,
           metadata: {
             wine_name: wineWithAffinity.nombre,
@@ -282,9 +367,13 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
     setPreview(null);
     setExtractedWine(null);
     setAffinityMessage(null);
+    setWinerimMatch(null);
     if (cameraInputRef.current) cameraInputRef.current.value = '';
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
+
+  const winerimFichaUrl = winerimMatch ? buildWinerimWineUrl(winerimMatch.wine) : null;
+
 
   const affinityDecision = typeof extractedWine?.matchrim_affinity === 'number'
     ? getAffinityDecision(extractedWine.matchrim_affinity)
@@ -495,10 +584,21 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
                 <Sparkles className="h-4 w-4" />
                 Preguntar a aiRIM
               </Button>
+              {winerimFichaUrl && (
+                <Button
+                  variant="outline"
+                  className="matchrim-pressable gap-2 md:col-span-2 border-red-200 text-red-900 hover:bg-red-50"
+                  onClick={() => window.open(winerimFichaUrl, '_blank', 'noopener,noreferrer')}
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Ver ficha en Winerim
+                </Button>
+              )}
             </div>
           </div>
         </div>
       )}
+
       {loading && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center">
           <div className="flex items-center gap-3 text-primary">

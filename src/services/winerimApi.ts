@@ -502,3 +502,192 @@ export const fetchWinesByAttributes = async (
 
   return results;
 };
+
+// ---------------------------------------------------------------------------
+// Winerim Library helpers (public ficha URLs + label lookup)
+// ---------------------------------------------------------------------------
+
+const WINERIM_STORE_URL =
+  import.meta.env.VITE_WINERIM_STORE_URL ||
+  import.meta.env.VITE_WINERIM_APP_URL ||
+  'https://winerim.wine';
+
+export const generateWinerimSlug = (name: string, vintage?: number | string | null): string => {
+  const base = (name || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .split(/\s+/)
+    .map((word) => (word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : ''))
+    .join('-')
+    .replace(/[^a-zA-Z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .trim();
+
+  return vintage ? `${base}_${vintage}` : base;
+};
+
+/**
+ * Build a public URL to the wine's Winerim Library ficha
+ * (e.g. https://web.winerim.com/the-library/wines/<id>/<slug>).
+ */
+export const buildWinerimWineUrl = (wine: Pick<WinerimWine, 'id' | 'name' | 'slugname' | 'vintage'>): string => {
+  const slug = wine.slugname || generateWinerimSlug(wine.name, wine.vintage);
+  const base = WINERIM_STORE_URL.replace(/\/$/, '');
+  return `${base}/the-library/wines/${wine.id}/${slug}`;
+};
+
+// ---------------------------------------------------------------------------
+// Label → Winerim Library lookup
+// ---------------------------------------------------------------------------
+
+export interface WinerimLabelLookupInput {
+  name: string;
+  producer?: string | null;
+  vintage?: number | string | null;
+  region?: string | null;
+  country?: string | null;
+}
+
+export interface WinerimLabelLookupResult {
+  wine: WinerimWine;
+  confidence: number;
+  restaurantUuid?: string | null;
+}
+
+const normalizeForMatch = (value: unknown): string =>
+  typeof value === 'string'
+    ? value
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim()
+    : '';
+
+const tokenSet = (value: string): Set<string> =>
+  new Set(value.split(' ').filter((token) => token.length >= 2));
+
+const jaccard = (a: Set<string>, b: Set<string>): number => {
+  if (!a.size || !b.size) return 0;
+  let inter = 0;
+  a.forEach((token) => {
+    if (b.has(token)) inter += 1;
+  });
+  const union = a.size + b.size - inter;
+  return union === 0 ? 0 : inter / union;
+};
+
+interface RawSearchWine {
+  id?: string | number;
+  name?: string;
+  producer?: string | null;
+  region?: string | null;
+  country?: string | null;
+  vintage?: number | string | null;
+  slugname?: string | null;
+  slug?: string | null;
+  photo?: string | null;
+  image_url?: string | null;
+  grape_varieties?: string[] | null;
+  tipo?: string | null;
+}
+
+const scoreCandidate = (input: WinerimLabelLookupInput, candidate: RawSearchWine): number => {
+  const nameScore = jaccard(
+    tokenSet(normalizeForMatch(input.name)),
+    tokenSet(normalizeForMatch(candidate.name)),
+  );
+  if (nameScore === 0) return 0;
+
+  const producerScore = input.producer && candidate.producer
+    ? jaccard(tokenSet(normalizeForMatch(input.producer)), tokenSet(normalizeForMatch(candidate.producer)))
+    : 0;
+
+  const regionScore = input.region && candidate.region
+    ? jaccard(tokenSet(normalizeForMatch(input.region)), tokenSet(normalizeForMatch(candidate.region)))
+    : 0;
+
+  let vintageBoost = 0;
+  if (input.vintage && candidate.vintage) {
+    const a = String(input.vintage).replace(/\D/g, '');
+    const b = String(candidate.vintage).replace(/\D/g, '');
+    if (a && b && a === b) vintageBoost = 0.1;
+  }
+
+  // Weighted blend: name dominates, producer/region reinforce, vintage as tiebreaker.
+  const blended = nameScore * 0.6 + producerScore * 0.3 + regionScore * 0.1 + vintageBoost;
+  return Math.max(0, Math.min(1, blended));
+};
+
+/**
+ * Search the Winerim wines catalog for a match to a scanned label.
+ * Returns the best candidate above a minimum confidence threshold, or null.
+ */
+export const findWinerimWineForLabel = async (
+  input: WinerimLabelLookupInput,
+): Promise<WinerimLabelLookupResult | null> => {
+  const trimmedName = (input.name || '').trim();
+  if (trimmedName.length < 2) return null;
+
+  const query = [trimmedName, input.producer].filter(Boolean).join(' ').slice(0, 120);
+
+  try {
+    const { data, error } = await supabase.functions.invoke('search-wines', {
+      body: { query, limit: 20 },
+    });
+    if (error) throw error;
+
+    const candidates: RawSearchWine[] = Array.isArray((data as { wines?: RawSearchWine[] })?.wines)
+      ? (data as { wines: RawSearchWine[] }).wines
+      : [];
+
+    if (!candidates.length) return null;
+
+    let best: { candidate: RawSearchWine; score: number } | null = null;
+    for (const candidate of candidates) {
+      if (!candidate?.id || !candidate?.name) continue;
+      const score = scoreCandidate(input, candidate);
+      if (!best || score > best.score) {
+        best = { candidate, score };
+      }
+    }
+
+    if (!best || best.score < 0.45) return null;
+
+    const wine: WinerimWine = {
+      id: best.candidate.id!,
+      name: best.candidate.name!,
+      slugname: best.candidate.slugname || best.candidate.slug || undefined,
+      winery: best.candidate.producer || undefined,
+      region: best.candidate.region || undefined,
+      country: best.candidate.country || undefined,
+      vintage: best.candidate.vintage ?? undefined,
+      photo: best.candidate.photo || best.candidate.image_url || undefined,
+      type: best.candidate.tipo || undefined,
+      grapes: Array.isArray(best.candidate.grape_varieties) ? best.candidate.grape_varieties : undefined,
+    };
+
+    return {
+      wine,
+      confidence: Math.round(best.score * 100) / 100,
+      restaurantUuid: null,
+    };
+  } catch (error) {
+    console.warn('[Winerim] findWinerimWineForLabel failed:', error);
+    return null;
+  }
+};
+
+/**
+ * Convenience wrapper used by scanners: look up a wine and, if found, also
+ * return its Winerim Library URL ready to open in a new tab.
+ */
+export const lookupOfficialWinerimWine = async (
+  input: WinerimLabelLookupInput,
+): Promise<(WinerimLabelLookupResult & { url: string }) | null> => {
+  const result = await findWinerimWineForLabel(input);
+  if (!result) return null;
+  return { ...result, url: buildWinerimWineUrl(result.wine) };
+};
+
