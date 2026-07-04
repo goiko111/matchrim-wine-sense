@@ -584,10 +584,21 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
                 <Sparkles className="h-4 w-4" />
                 Preguntar a aiRIM
               </Button>
+              {winerimFichaUrl && (
+                <Button
+                  variant="outline"
+                  className="matchrim-pressable gap-2 md:col-span-2 border-red-200 text-red-900 hover:bg-red-50"
+                  onClick={() => window.open(winerimFichaUrl, '_blank', 'noopener,noreferrer')}
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Ver ficha en Winerim
+                </Button>
+              )}
             </div>
           </div>
         </div>
       )}
+
       {loading && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center">
           <div className="flex items-center gap-3 text-primary">
