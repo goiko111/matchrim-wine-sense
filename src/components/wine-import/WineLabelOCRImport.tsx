@@ -367,9 +367,13 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
     setPreview(null);
     setExtractedWine(null);
     setAffinityMessage(null);
+    setWinerimMatch(null);
     if (cameraInputRef.current) cameraInputRef.current.value = '';
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
+
+  const winerimFichaUrl = winerimMatch ? buildWinerimWineUrl(winerimMatch.wine) : null;
+
 
   const affinityDecision = typeof extractedWine?.matchrim_affinity === 'number'
     ? getAffinityDecision(extractedWine.matchrim_affinity)
