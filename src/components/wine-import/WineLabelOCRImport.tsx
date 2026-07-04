@@ -68,9 +68,11 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
   const [preview, setPreview] = useState<string | null>(null);
   const [extractedWine, setExtractedWine] = useState<ExtractedWineData | null>(null);
   const [affinityMessage, setAffinityMessage] = useState<string | null>(null);
+  const [winerimMatch, setWinerimMatch] = useState<WinerimLabelLookupResult | null>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     if (!extractedWine || loading) return;
