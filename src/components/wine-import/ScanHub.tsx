@@ -247,6 +247,8 @@ export const ScanHub = ({
           </p>
         </div>
         {renderOptions()}
+        <RecentScansSection />
+
       </div>
     );
   }
