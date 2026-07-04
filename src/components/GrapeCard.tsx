@@ -3,13 +3,19 @@ import React from 'react';
 interface GrapeCardProps {
   grape: string;
   /** Afinidad media (0-1) de los vinos de esta uva con el perfil. */
-  affinity: number;
+  affinity?: number;
   /** Nº de vinos del universo afín que contienen esta uva. */
-  support: number;
+  support?: number;
+  /** Compat: número de vinos usado por QuizResults (equivalente a support). */
+  count?: number;
+  onClick?: () => void;
+  isHighlighted?: boolean;
 }
 
-const GrapeCard: React.FC<GrapeCardProps> = ({ grape, affinity, support }) => {
-  const affinityPct = Math.round(affinity * 100);
+const GrapeCard: React.FC<GrapeCardProps> = ({ grape, affinity, support, count, onClick, isHighlighted }) => {
+  const effectiveSupport = support ?? count ?? 0;
+  const affinityPct = typeof affinity === 'number' ? Math.round(affinity * 100) : null;
+
 
   return (
     <div className="w-full text-left p-4 rounded-lg border-2 border-purple-200 bg-white">
