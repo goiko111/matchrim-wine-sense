@@ -6,6 +6,7 @@ import {
   LogIn,
   MapPin,
   ScanLine,
+  ShoppingBag,
   Sparkles,
   User,
   Wine,
