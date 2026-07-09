@@ -1,8 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, BookOpen, Camera, ChefHat, ExternalLink, History, Loader2, ScanLine, Wine } from "lucide-react";
+import { ArrowRight, BookOpen, Camera, ChefHat, ExternalLink, History, Loader2, ScanLine, ShoppingBag, Wine } from "lucide-react";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
 import FoodPairingScanner from "@/components/wine-import/FoodPairingScanner";
+import WineShopLinkAdvisor from "@/components/wine-import/WineShopLinkAdvisor";
 import { useAuth } from "@/contexts/AuthContext";
 import { trackAppEvent } from "@/lib/analytics";
 import {
