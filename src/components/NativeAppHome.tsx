@@ -46,6 +46,12 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
       action: () => navigate('/usar-matchrim?mode=scanner'),
     },
     {
+      label: 'Encontrar vino',
+      detail: 'Presupuesto, ocasión o región nueva',
+      icon: ShoppingBag,
+      action: () => navigate('/escanear/encontrar-vino'),
+    },
+    {
       label: 'Mis vinos',
       detail: user ? 'Guarda y puntúa' : 'Entra para guardar',
       icon: BookOpen,
