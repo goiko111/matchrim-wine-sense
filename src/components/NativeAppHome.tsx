@@ -6,6 +6,7 @@ import {
   LogIn,
   MapPin,
   ScanLine,
+  ShoppingBag,
   Sparkles,
   User,
   Wine,
@@ -43,6 +44,12 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
       detail: 'Carta sin Winerim',
       icon: GlassWater,
       action: () => navigate('/usar-matchrim?mode=scanner'),
+    },
+    {
+      label: 'Encontrar vino',
+      detail: 'Presupuesto, ocasión o región nueva',
+      icon: ShoppingBag,
+      action: () => navigate('/escanear/encontrar-vino'),
     },
     {
       label: 'Mis vinos',

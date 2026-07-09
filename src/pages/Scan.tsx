@@ -11,12 +11,13 @@ import { useEffect } from "react";
 import { Navigate, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
-const scanModes = new Set<ScanMode>(["label", "wine-menu", "food-menu", "dish"]);
+const scanModes = new Set<ScanMode>(["label", "wine-menu", "food-menu", "dish", "shop-link"]);
 const scanModePaths: Record<ScanMode, string> = {
   label: "etiqueta",
   "wine-menu": "carta-vinos",
   "food-menu": "menu-comida",
   dish: "plato",
+  "shop-link": "encontrar-vino",
 };
 const scanPathAliases: Record<string, ScanMode> = {
   label: "label",
@@ -29,6 +30,15 @@ const scanPathAliases: Record<string, ScanMode> = {
   "menu-comida": "food-menu",
   dish: "dish",
   plato: "dish",
+  "shop-link": "shop-link",
+  "encontrar-vino": "shop-link",
+  "enlace-tienda": "shop-link",
+  enlace: "shop-link",
+  tienda: "shop-link",
+  compra: "shop-link",
+  encontrar: "shop-link",
+  "buscar-vino": "shop-link",
+  "comprar-vino": "shop-link",
 };
 
 const Scan = () => {

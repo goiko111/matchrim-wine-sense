@@ -1,8 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, BookOpen, Camera, ChefHat, ExternalLink, History, Loader2, ScanLine, Wine } from "lucide-react";
+import { ArrowRight, BookOpen, Camera, ChefHat, ExternalLink, History, Loader2, ScanLine, ShoppingBag, Wine } from "lucide-react";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
 import FoodPairingScanner from "@/components/wine-import/FoodPairingScanner";
+import WineShopLinkAdvisor from "@/components/wine-import/WineShopLinkAdvisor";
 import { useAuth } from "@/contexts/AuthContext";
 import { trackAppEvent } from "@/lib/analytics";
 import {
@@ -13,7 +14,7 @@ import {
 
 const WineMenuScanner = lazy(() => import("@/components/wine-import/WineMenuScanner"));
 
-export type ScanMode = "label" | "wine-menu" | "food-menu" | "dish";
+export type ScanMode = "label" | "wine-menu" | "food-menu" | "dish" | "shop-link";
 
 
 interface ScanHubProps {
@@ -62,13 +63,21 @@ export const scanOptions = [
     description: "Haz una foto y encuentra el vino que le va.",
     accepts: "Hacer foto · Subir archivo",
   },
+  {
+    id: "shop-link" as const,
+    icon: ShoppingBag,
+    title: "Encontrar vino",
+    description: "Dime presupuesto, ocasión o tienda y te digo qué buscaría.",
+    accepts: "Pregunta abierta · Enlace opcional",
+  },
 ];
 
-const scanTypeLabels: Record<ScanHistoryItem["type"], string> = {
+const scanTypeLabels: Record<ScanMode, string> = {
   label: "Etiqueta",
   "wine-menu": "Carta de vinos",
   "food-menu": "Menú de comida",
   dish: "Plato",
+  "shop-link": "Encontrar vino",
 };
 
 const formatScanTime = (timestamp: number) => {
@@ -235,6 +244,8 @@ export const ScanHub = ({
       {activeMode === "food-menu" && <FoodPairingScanner initialMode="menu" lockMode={variant === "selected"} />}
 
       {activeMode === "dish" && <FoodPairingScanner initialMode="dish" lockMode={variant === "selected"} />}
+
+      {activeMode === "shop-link" && <WineShopLinkAdvisor />}
     </>
   );
 
@@ -243,7 +254,7 @@ export const ScanHub = ({
       <div className="space-y-4">
         <div className="rounded-full border border-red-100 bg-red-50/70 px-3 py-2">
           <p className="text-sm leading-5 text-red-900/85">
-            <span className="font-semibold text-red-950">En restaurante:</span> carta primero. <span className="font-semibold text-red-950">Con botella:</span> etiqueta.
+            <span className="font-semibold text-red-950">En restaurante:</span> carta primero. <span className="font-semibold text-red-950">Con botella:</span> etiqueta. <span className="font-semibold text-red-950">Comprando:</span> pregunta abierta o enlace.
           </p>
         </div>
         {renderOptions()}
