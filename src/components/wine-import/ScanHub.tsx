@@ -14,7 +14,7 @@ import {
 
 const WineMenuScanner = lazy(() => import("@/components/wine-import/WineMenuScanner"));
 
-export type ScanMode = "label" | "wine-menu" | "food-menu" | "dish";
+export type ScanMode = "label" | "wine-menu" | "food-menu" | "dish" | "shop-link";
 
 
 interface ScanHubProps {
