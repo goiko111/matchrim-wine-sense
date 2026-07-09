@@ -63,13 +63,21 @@ export const scanOptions = [
     description: "Haz una foto y encuentra el vino que le va.",
     accepts: "Hacer foto · Subir archivo",
   },
+  {
+    id: "shop-link" as const,
+    icon: ShoppingBag,
+    title: "Encontrar vino",
+    description: "Dime presupuesto, ocasión o tienda y te digo qué buscaría.",
+    accepts: "Pregunta abierta · Enlace opcional",
+  },
 ];
 
-const scanTypeLabels: Record<ScanHistoryItem["type"], string> = {
+const scanTypeLabels: Record<ScanMode, string> = {
   label: "Etiqueta",
   "wine-menu": "Carta de vinos",
   "food-menu": "Menú de comida",
   dish: "Plato",
+  "shop-link": "Encontrar vino",
 };
 
 const formatScanTime = (timestamp: number) => {
