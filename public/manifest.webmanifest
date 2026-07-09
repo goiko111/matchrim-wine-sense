@@ -1,6 +1,6 @@
 {
-  "name": "Winerim",
-  "short_name": "Winerim",
+  "name": "Matchrim",
+  "short_name": "Matchrim",
   "description": "Crea tu código Matchrim, filtra cartas Winerim y guarda los vinos que mejor encajan contigo.",
   "lang": "es",
   "start_url": "/",
