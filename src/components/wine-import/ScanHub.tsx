@@ -244,6 +244,8 @@ export const ScanHub = ({
       {activeMode === "food-menu" && <FoodPairingScanner initialMode="menu" lockMode={variant === "selected"} />}
 
       {activeMode === "dish" && <FoodPairingScanner initialMode="dish" lockMode={variant === "selected"} />}
+
+      {activeMode === "shop-link" && <WineShopLinkAdvisor />}
     </>
   );
 
