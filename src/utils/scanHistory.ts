@@ -4,7 +4,7 @@
  * (e.g. Winerim Library match on a label scan).
  */
 
-export type ScanHistoryType = "label" | "wine-menu" | "food-menu" | "dish";
+export type ScanHistoryType = "label" | "wine-menu" | "food-menu" | "dish" | "shop-link";
 
 export interface ScanHistoryItem {
   id: string;
