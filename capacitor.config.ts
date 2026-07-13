@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'wine.winerim.app',
-  appName: 'Winerim',
+  appId: 'wine.matchrim.app',
+  appName: 'Matchrim',
   webDir: 'dist'
 };
 
