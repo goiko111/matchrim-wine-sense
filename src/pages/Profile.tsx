@@ -50,6 +50,43 @@ type StyleRangeKey = 'P' | 'A' | 'D' | 'T' | 'Af';
 const MAX_PROFILE_FACET_CARDS = 6;
 const MAX_PROFILE_WINE_CARDS = 3;
 
+const clampProfileValue = (value: unknown, fallback = 3) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.max(1, Math.min(5, numeric));
+};
+
+const normalizeProfileForDisplay = <T extends MatchrimProfileLike>(profile: T): T => ({
+  ...profile,
+  potente: Math.round(clampProfileValue(profile.potente) * 10) / 10,
+  acidez: Math.round(clampProfileValue(profile.acidez) * 10) / 10,
+  dulce: Math.round(clampProfileValue(profile.dulce) * 10) / 10,
+  tanico: Math.round(clampProfileValue(profile.tanico) * 10) / 10,
+  afrutado: Math.round(clampProfileValue(profile.afrutado) * 10) / 10,
+});
+
+const normalizeProfileForClassifier = (profile: MatchrimProfileLike): MatchrimProfileLike => ({
+  potente: Math.round(clampProfileValue(profile.potente)),
+  acidez: Math.round(clampProfileValue(profile.acidez)),
+  dulce: Math.round(clampProfileValue(profile.dulce)),
+  tanico: Math.round(clampProfileValue(profile.tanico)),
+  afrutado: Math.round(clampProfileValue(profile.afrutado)),
+});
+
+const getSafeProfileStyles = (profile: MatchrimProfileLike | null): string[] => {
+  if (!profile) return [];
+
+  try {
+    const classifierProfile = normalizeProfileForClassifier(profile);
+    const generatedStyles = generateWineStyles(classifierProfile);
+    const suggestedStyles = suggestWineStylesForProfile(classifierProfile, 3);
+    return Array.from(new Set([...generatedStyles, ...suggestedStyles])).slice(0, 3);
+  } catch (error) {
+    console.error('Error generating safe profile styles:', error);
+    return [];
+  }
+};
+
 const normalizeWineIdentityText = (value?: string | number | null) =>
   String(value ?? '')
     .normalize('NFD')
@@ -311,27 +348,58 @@ const Profile = () => {
   const activeProfile = learnedProfile && learnedProfile.samples > 0
     ? learnedProfile.profile
     : currentProfile;
+  const activeDisplayProfile = useMemo(
+    () => activeProfile ? normalizeProfileForDisplay(activeProfile) : null,
+    [activeProfile]
+  );
+  const activeClassifierProfile = useMemo(
+    () => activeProfile ? normalizeProfileForClassifier(activeProfile) : null,
+    [activeProfile]
+  );
+  const currentDisplayProfile = useMemo(
+    () => currentProfile ? normalizeProfileForDisplay(currentProfile) : null,
+    [currentProfile]
+  );
 
   // Generate profile data
-  const profileName = activeProfile ? generateMatchrimName(activeProfile) : "";
-  const wineStyles = useMemo(() => {
-    if (!activeProfile) return [];
-    const generatedStyles = generateWineStyles(activeProfile);
-    const suggestedStyles = suggestWineStylesForProfile(activeProfile, 3);
-    return Array.from(new Set([...generatedStyles, ...suggestedStyles])).slice(0, 3);
-  }, [activeProfile]);
-  const recommendedGrapes = activeProfile ? generateGrapeRecommendations(activeProfile) : [];
-  const recommendedRegions = activeProfile ? generateRegionRecommendations(activeProfile) : [];
+  const profileName = activeClassifierProfile ? generateMatchrimName(activeClassifierProfile) : "";
+  const wineStyles = useMemo(
+    () => getSafeProfileStyles(activeClassifierProfile),
+    [activeClassifierProfile]
+  );
+  const recommendedGrapes = activeDisplayProfile ? generateGrapeRecommendations(activeDisplayProfile) : [];
+  const recommendedRegions = activeDisplayProfile ? generateRegionRecommendations(activeDisplayProfile) : [];
   const winerimGrapeRecommendations = useMemo(
-    () => aggregateGrapes(profileWinerimWines),
+    () => {
+      try {
+        return aggregateGrapes(profileWinerimWines);
+      } catch (error) {
+        console.error('Error aggregating Winerim grapes:', error);
+        return [];
+      }
+    },
     [profileWinerimWines]
   );
   const winerimRegionRecommendations = useMemo(
-    () => aggregateRegions(profileWinerimWines),
+    () => {
+      try {
+        return aggregateRegions(profileWinerimWines);
+      } catch (error) {
+        console.error('Error aggregating Winerim regions:', error);
+        return [];
+      }
+    },
     [profileWinerimWines]
   );
   const nextWinerimWines = useMemo(
-    () => profileWinerimWines.filter((wine) => !wineHasAlreadyBeenSaved(wine, savedWineKeys)),
+    () => profileWinerimWines.filter((wine) => {
+      try {
+        return !wineHasAlreadyBeenSaved(wine, savedWineKeys);
+      } catch (error) {
+        console.error('Error checking saved Winerim wine:', error, wine);
+        return true;
+      }
+    }),
     [profileWinerimWines, savedWineKeys]
   );
 
@@ -398,7 +466,7 @@ const Profile = () => {
   }, [currentProfile, wineStyles]);
 
   useEffect(() => {
-    if (!activeProfile) {
+    if (!activeClassifierProfile) {
       setProfileWinerimWines([]);
       setProfileWinerimError(null);
       return;
@@ -409,7 +477,7 @@ const Profile = () => {
       setLoadingProfileWinerimWines(true);
       setProfileWinerimError(null);
 
-      fetchWinesByAttributes(activeProfile)
+      fetchWinesByAttributes(activeClassifierProfile)
         .then((wines) => {
           if (!cancelled) {
             setProfileWinerimWines(wines);
@@ -437,14 +505,14 @@ const Profile = () => {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [activeProfile, profileWinerimRetryKey]);
+  }, [activeClassifierProfile, profileWinerimRetryKey]);
 
-  const chartData = currentProfile && activeProfile ? [
-    { attribute: "Potente", baseValue: currentProfile.potente, activeValue: activeProfile.potente },
-    { attribute: "Acidez", baseValue: currentProfile.acidez, activeValue: activeProfile.acidez },
-    { attribute: "Dulce", baseValue: currentProfile.dulce, activeValue: activeProfile.dulce },
-    { attribute: "Tánico", baseValue: currentProfile.tanico, activeValue: activeProfile.tanico },
-    { attribute: "Afrutado", baseValue: currentProfile.afrutado, activeValue: activeProfile.afrutado },
+  const chartData = currentDisplayProfile && activeDisplayProfile ? [
+    { attribute: "Potente", baseValue: currentDisplayProfile.potente, activeValue: activeDisplayProfile.potente },
+    { attribute: "Acidez", baseValue: currentDisplayProfile.acidez, activeValue: activeDisplayProfile.acidez },
+    { attribute: "Dulce", baseValue: currentDisplayProfile.dulce, activeValue: activeDisplayProfile.dulce },
+    { attribute: "Tánico", baseValue: currentDisplayProfile.tanico, activeValue: activeDisplayProfile.tanico },
+    { attribute: "Afrutado", baseValue: currentDisplayProfile.afrutado, activeValue: activeDisplayProfile.afrutado },
   ] : [];
 
   const hasLearnedProfile = Boolean(learnedProfile && learnedProfile.samples > 0);
@@ -711,7 +779,7 @@ const Profile = () => {
         <TabsContent value="profile">
           {currentProfile ? (
             <div className="space-y-8">
-              <MatchrimPassport profile={activeProfile} />
+              {activeClassifierProfile && <MatchrimPassport profile={activeClassifierProfile} />}
 
               {learnedProfile && learnedProfile.samples > 0 && (
                 <Card className="border-amber-200 bg-amber-50/70">
@@ -862,7 +930,7 @@ const Profile = () => {
                                 </p>
                               </div>
                             </div>
-                            <StyleRangePreview styleName={cleanedName} profile={activeProfile} />
+                            <StyleRangePreview styleName={cleanedName} profile={activeDisplayProfile} />
                             {style.name === 'Vino de Terruño' && (
                               <p className="mt-4 rounded-xl border border-stone-200 bg-white/75 p-3 text-sm leading-relaxed text-stone-700">
                                 Terruño no significa “más potente” siempre: aquí pesa mucho la estructura,
@@ -1063,7 +1131,7 @@ const Profile = () => {
                     </p>
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {nextWinerimWines.slice(0, MAX_PROFILE_WINE_CARDS).map((wine, index) => (
-                      <WineCard key={wine.id} wine={wine} index={index} profile={activeProfile} />
+                      <WineCard key={wine.id} wine={wine} index={index} profile={activeDisplayProfile} />
                     ))}
                     </div>
                   </>
