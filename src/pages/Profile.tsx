@@ -7,12 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
-import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin, type LucideIcon } from 'lucide-react';
+import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin, Loader2, ArrowRight, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AppNav from '@/components/AppNav';
 import MatchrimPassport from '@/components/MatchrimPassport';
+import WineCard from '@/components/WineCard';
 import {
   generateMatchrimName,
   generateWineStyles,
@@ -22,8 +21,156 @@ import {
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
+import { aggregateGrapes, aggregateRegions } from '@/utils/winerimDataAggregation';
+import { STYLE_RANGES, WINE_STYLE_CATALOG, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
 
 const RegionMap = React.lazy(() => import('@/components/RegionMap'));
+
+const STYLE_DESCRIPTIONS: Record<PublicWineStyle, string> = {
+  'Tinto Versátil': 'Tinto equilibrado y adaptable, ideal para moverse por cartas amplias sin perder seguridad.',
+  'Tinto de Estructura': 'Tinto con cuerpo, tanino y presencia, pensado para platos intensos y largas sobremesas.',
+  'Tinto Goloso': 'Tinto frutal, amable y envolvente, con sensación jugosa y accesible.',
+  'Tinto Ligero': 'Tinto fresco, ágil y fácil de beber, perfecto cuando buscas poca pesadez.',
+  'Blanco Goloso': 'Blanco con fruta, volumen y una sensación más redonda en boca.',
+  'Blanco Vital': 'Blanco vibrante, fresco y directo, con la acidez como protagonista.',
+  'Blanco de Carácter': 'Blanco seco con nervio y más profundidad, pensado para quien busca tensión y matiz.',
+  'Brut Elegante': 'Espumoso seco, fino y gastronómico, con acidez marcada y burbuja seria.',
+  'Burbuja Fresca': 'Espumoso alegre y frutal, fresco pero más amable.',
+  'Rosado Ligero': 'Rosado fresco, delicado y frutal, pensado para beber sin complicaciones.',
+  'Rosado Gastronómico': 'Rosado con más presencia y versatilidad en mesa.',
+  'Dulce Ligero': 'Dulce equilibrado y fresco, con azúcar sin perder agilidad.',
+  'Dulce Intenso': 'Dulce potente y envolvente, para postres, quesos o momentos de mucha intensidad.',
+  'Oxidativo/Maduro': 'Perfil maduro, complejo u oxidativo, con notas profundas y menos fruta primaria.',
+  Experimental: 'Vinos singulares o difíciles de encajar en categorías clásicas.',
+  'Vino de Terruño': 'Perfil marcado por origen, estructura y carácter de suelo o elaboración.',
+};
+
+type StyleRangeKey = 'P' | 'A' | 'D' | 'T' | 'Af';
+const MAX_PROFILE_FACET_CARDS = 6;
+const MAX_PROFILE_WINE_CARDS = 3;
+
+const normalizeWineIdentityText = (value?: string | number | null) =>
+  String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+
+const buildSavedWineKeys = (wine: {
+  name?: string | null;
+  producer?: string | null;
+  vintage?: string | number | null;
+  place_details?: unknown;
+}) => {
+  const keys = new Set<string>();
+  const name = normalizeWineIdentityText(wine.name);
+  const producer = normalizeWineIdentityText(wine.producer);
+  const vintage = normalizeWineIdentityText(wine.vintage);
+
+  if (name) keys.add(`name:${name}`);
+  if (name || producer || vintage) keys.add(`full:${name}|${producer}|${vintage}`);
+
+  const details = wine.place_details;
+  if (details && typeof details === 'object' && !Array.isArray(details)) {
+    const record = details as Record<string, unknown>;
+    const winerimId = normalizeWineIdentityText(record.winerim_wine_id as string | number | null);
+    if (winerimId) keys.add(`winerim:${winerimId}`);
+  }
+
+  return keys;
+};
+
+const wineHasAlreadyBeenSaved = (wine: WinerimWineWithMatch, savedWineKeys: Set<string>) => {
+  const keys = buildSavedWineKeys({
+    name: wine.name,
+    producer: wine.winery || wine.subname || null,
+    vintage: wine.vintage ?? null,
+  });
+
+  keys.add(`winerim:${normalizeWineIdentityText(wine.id)}`);
+
+  return Array.from(keys).some((key) => savedWineKeys.has(key));
+};
+
+const STYLE_ATTRIBUTE_UI: Array<{
+  key: StyleRangeKey;
+  profileKey: keyof Pick<MatchrimProfileLike, 'potente' | 'acidez' | 'dulce' | 'tanico' | 'afrutado'>;
+  short: string;
+  label: string;
+}> = [
+  { key: 'P', profileKey: 'potente', short: 'Pot.', label: 'Potencia' },
+  { key: 'A', profileKey: 'acidez', short: 'Ac.', label: 'Acidez' },
+  { key: 'D', profileKey: 'dulce', short: 'Dul.', label: 'Dulzor' },
+  { key: 'T', profileKey: 'tanico', short: 'Tan.', label: 'Tanino' },
+  { key: 'Af', profileKey: 'afrutado', short: 'Frut.', label: 'Fruta' },
+];
+
+const toDisplayRange = (range: readonly [number, number]): [number, number] => [
+  Math.max(1, range[0]),
+  Math.max(1, range[1]),
+];
+
+const formatRange = (range: readonly [number, number]) => {
+  const [min, max] = toDisplayRange(range);
+  return min === max ? `${min}` : `${min}-${max}`;
+};
+
+const StyleRangePreview = ({
+  styleName,
+  profile,
+}: {
+  styleName: string;
+  profile: MatchrimProfileLike | null;
+}) => {
+  const ranges = STYLE_RANGES[styleName as PublicWineStyle];
+
+  if (!ranges) return null;
+
+  return (
+    <div className="mt-4 space-y-3">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-xs font-bold uppercase tracking-wide text-stone-500">
+          Rango Winerim
+        </span>
+        <span className="text-xs font-semibold text-stone-500">Escala 1-5</span>
+      </div>
+      <div className="space-y-2">
+        {STYLE_ATTRIBUTE_UI.map((attribute) => {
+          const rawRange = ranges[attribute.key];
+          const [min, max] = toDisplayRange(rawRange);
+          const value = profile ? Number(profile[attribute.profileKey]) : null;
+          const valueIsInside = value !== null && Number.isFinite(value) && value >= min && value <= max;
+          const left = ((min - 1) / 5) * 100;
+          const width = ((max - min + 1) / 5) * 100;
+
+          return (
+            <div key={attribute.key} className="grid grid-cols-[3.25rem_1fr_2.5rem] items-center gap-2">
+              <span className="text-xs font-semibold text-stone-700">{attribute.short}</span>
+              <div className="relative h-2 rounded-full bg-stone-200">
+                <span
+                  className="absolute top-0 h-2 rounded-full bg-red-800"
+                  style={{ left: `${left}%`, width: `${width}%` }}
+                />
+                {value !== null && Number.isFinite(value) && (
+                  <span
+                    className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border-2 border-white shadow ${
+                      valueIsInside ? 'bg-red-900' : 'bg-amber-500'
+                    }`}
+                    style={{ left: `calc(${((Math.min(Math.max(value, 1), 5) - 1) / 4) * 100}% - 0.5rem)` }}
+                    aria-label={`${attribute.label}: tu valor ${value}`}
+                  />
+                )}
+              </div>
+              <span className="text-right text-xs font-bold text-stone-800">{formatRange(rawRange)}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 interface WineStyle {
   id: string;
@@ -51,33 +198,86 @@ interface StyleCardConfig {
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { getQuizHistory } = useQuizResults();
   const [quizHistory, setQuizHistory] = useState<ProfileHistoryItem[]>([]);
   const [currentProfile, setCurrentProfile] = useState<ProfileHistoryItem | null>(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
   const [trainingWines, setTrainingWines] = useState<TrainableWine[]>([]);
+  const [savedWineKeys, setSavedWineKeys] = useState<Set<string>>(new Set());
+  const [profileWinerimWines, setProfileWinerimWines] = useState<WinerimWineWithMatch[]>([]);
+  const [loadingProfileWinerimWines, setLoadingProfileWinerimWines] = useState(false);
+  const [profileWinerimError, setProfileWinerimError] = useState<string | null>(null);
+  const [profileWinerimRetryKey, setProfileWinerimRetryKey] = useState(0);
+  const [expandedRegionMap, setExpandedRegionMap] = useState<string | null>(null);
 
   useEffect(() => {
+    if (authLoading) return;
+
     if (!user) {
       navigate(buildAuthRedirectPath('/profile'));
       return;
     }
 
-    // Only load if we don't already have quiz history
-    if (quizHistory.length === 0) {
-      const loadQuizHistory = async () => {
-        const history = await getQuizHistory();
-        setQuizHistory(history as ProfileHistoryItem[]);
-        if (history.length > 0) {
-          setCurrentProfile(history[0] as ProfileHistoryItem);
-        }
-      };
+    let cancelled = false;
 
-      loadQuizHistory();
+    const loadQuizHistory = async () => {
+      setIsLoadingProfile(true);
+      try {
+        const history = await getQuizHistory();
+        if (cancelled) return;
+
+        setQuizHistory(history as ProfileHistoryItem[]);
+        setCurrentProfile(history.length > 0 ? history[0] as ProfileHistoryItem : null);
+      } finally {
+        if (!cancelled) setIsLoadingProfile(false);
+      }
+    };
+
+    loadQuizHistory();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authLoading, user, navigate, getQuizHistory]);
+
+  useEffect(() => {
+    if (!user) {
+      setSavedWineKeys(new Set());
+      return;
     }
-  }, [user, navigate, getQuizHistory, quizHistory.length]);
+
+    let cancelled = false;
+
+    const loadSavedWineKeys = async () => {
+      const { data, error } = await supabase
+        .from('user_wines')
+        .select('name, producer, vintage, place_details')
+        .eq('user_id', user.id);
+
+      if (cancelled) return;
+
+      if (error) {
+        console.error('Error loading saved wine identities:', error);
+        setSavedWineKeys(new Set());
+        return;
+      }
+
+      const keys = new Set<string>();
+      (data || []).forEach((wine) => {
+        buildSavedWineKeys(wine).forEach((key) => keys.add(key));
+      });
+      setSavedWineKeys(keys);
+    };
+
+    loadSavedWineKeys();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
 
   useEffect(() => {
     if (!user || !currentProfile) return;
@@ -85,9 +285,9 @@ const Profile = () => {
     const loadTrainingWines = async () => {
       const { data, error } = await supabase
         .from('user_wines')
-        .select('rating, sensory_attributes')
+        .select('rating, sensory_attributes, use_for_profile_training')
         .eq('user_id', user.id)
-        .eq('use_for_profile_training', true)
+        .or('use_for_profile_training.is.null,use_for_profile_training.eq.true')
         .not('rating', 'is', null)
         .not('sensory_attributes', 'is', null);
 
@@ -114,12 +314,26 @@ const Profile = () => {
 
   // Generate profile data
   const profileName = activeProfile ? generateMatchrimName(activeProfile) : "";
-  const wineStyles = useMemo(() =>
-    activeProfile ? generateWineStyles(activeProfile) : [],
-    [activeProfile]
-  );
+  const wineStyles = useMemo(() => {
+    if (!activeProfile) return [];
+    const generatedStyles = generateWineStyles(activeProfile);
+    const suggestedStyles = suggestWineStylesForProfile(activeProfile, 3);
+    return Array.from(new Set([...generatedStyles, ...suggestedStyles])).slice(0, 3);
+  }, [activeProfile]);
   const recommendedGrapes = activeProfile ? generateGrapeRecommendations(activeProfile) : [];
   const recommendedRegions = activeProfile ? generateRegionRecommendations(activeProfile) : [];
+  const winerimGrapeRecommendations = useMemo(
+    () => aggregateGrapes(profileWinerimWines),
+    [profileWinerimWines]
+  );
+  const winerimRegionRecommendations = useMemo(
+    () => aggregateRegions(profileWinerimWines),
+    [profileWinerimWines]
+  );
+  const nextWinerimWines = useMemo(
+    () => profileWinerimWines.filter((wine) => !wineHasAlreadyBeenSaved(wine, savedWineKeys)),
+    [profileWinerimWines, savedWineKeys]
+  );
 
   // Fetch wine style details from database
   useEffect(() => {
@@ -137,13 +351,44 @@ const Profile = () => {
 
         if (error) throw error;
 
-        const ordered = wineStyles
-          .map(styleName => data?.find(s => s.name === styleName))
-          .filter(Boolean) as WineStyle[];
+        const ordered = wineStyles.map((styleName) => {
+          const remoteStyle = data?.find((s) => s.name === styleName);
+          if (remoteStyle) return remoteStyle as WineStyle;
+
+          const publicStyle = styleName as PublicWineStyle;
+          const catalogItem = WINE_STYLE_CATALOG.find((item) => item.estilo === publicStyle);
+          const ranges = STYLE_RANGES[publicStyle];
+
+          return {
+            id: `local-${catalogItem?.id ?? styleName}`,
+            name: styleName,
+            description: STYLE_DESCRIPTIONS[publicStyle] ?? 'Estilo de vino que se adapta a tu perfil sensorial.',
+            potente: ranges ? Math.round((ranges.P[0] + ranges.P[1]) / 2) : 0,
+            acidez: ranges ? Math.round((ranges.A[0] + ranges.A[1]) / 2) : 0,
+            dulce: ranges ? Math.round((ranges.D[0] + ranges.D[1]) / 2) : 0,
+            tanico: ranges ? Math.round((ranges.T[0] + ranges.T[1]) / 2) : 0,
+            afrutado: ranges ? Math.round((ranges.Af[0] + ranges.Af[1]) / 2) : 0,
+          } satisfies WineStyle;
+        });
 
         setStyleDetails(ordered);
       } catch (error) {
         console.error('Error fetching wine styles:', error);
+        setStyleDetails(wineStyles.map((styleName) => {
+          const publicStyle = styleName as PublicWineStyle;
+          const ranges = STYLE_RANGES[publicStyle];
+
+          return {
+            id: `local-${styleName}`,
+            name: styleName,
+            description: STYLE_DESCRIPTIONS[publicStyle] ?? 'Estilo de vino que se adapta a tu perfil sensorial.',
+            potente: ranges ? Math.round((ranges.P[0] + ranges.P[1]) / 2) : 0,
+            acidez: ranges ? Math.round((ranges.A[0] + ranges.A[1]) / 2) : 0,
+            dulce: ranges ? Math.round((ranges.D[0] + ranges.D[1]) / 2) : 0,
+            tanico: ranges ? Math.round((ranges.T[0] + ranges.T[1]) / 2) : 0,
+            afrutado: ranges ? Math.round((ranges.Af[0] + ranges.Af[1]) / 2) : 0,
+          } satisfies WineStyle;
+        }));
       } finally {
         setIsLoadingStyles(false);
       }
@@ -152,6 +397,48 @@ const Profile = () => {
     fetchStyleDetails();
   }, [currentProfile, wineStyles]);
 
+  useEffect(() => {
+    if (!activeProfile) {
+      setProfileWinerimWines([]);
+      setProfileWinerimError(null);
+      return;
+    }
+
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      setLoadingProfileWinerimWines(true);
+      setProfileWinerimError(null);
+
+      fetchWinesByAttributes(activeProfile)
+        .then((wines) => {
+          if (!cancelled) {
+            setProfileWinerimWines(wines);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching Winerim profile wines:', error);
+          if (!cancelled) {
+            setProfileWinerimWines([]);
+            setProfileWinerimError(
+              error instanceof Error
+                ? `No se pudieron cargar los vinos Winerim para tu perfil: ${error.message}`
+                : 'No se pudieron cargar los vinos Winerim para tu perfil.'
+            );
+          }
+        })
+        .finally(() => {
+          if (!cancelled) {
+            setLoadingProfileWinerimWines(false);
+          }
+        });
+    }, 350);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [activeProfile, profileWinerimRetryKey]);
+
   const chartData = currentProfile && activeProfile ? [
     { attribute: "Potente", baseValue: currentProfile.potente, activeValue: activeProfile.potente },
     { attribute: "Acidez", baseValue: currentProfile.acidez, activeValue: activeProfile.acidez },
@@ -159,23 +446,6 @@ const Profile = () => {
     { attribute: "Tánico", baseValue: currentProfile.tanico, activeValue: activeProfile.tanico },
     { attribute: "Afrutado", baseValue: currentProfile.afrutado, activeValue: activeProfile.afrutado },
   ] : [];
-
-  const chartConfig = {
-    baseValue: {
-      label: "Test base",
-      theme: {
-        light: "#a8a29e",
-        dark: "#a8a29e",
-      },
-    },
-    activeValue: {
-      label: "Perfil activo",
-      theme: {
-        light: "#be123c",
-        dark: "#be123c",
-      },
-    },
-  };
 
   const hasLearnedProfile = Boolean(learnedProfile && learnedProfile.samples > 0);
   const hasLearnedAdjustments = hasLearnedProfile && chartData.some((item) => item.baseValue !== item.activeValue);
@@ -372,6 +642,46 @@ const Profile = () => {
     return '🌍';
   };
 
+  if (authLoading || isLoadingProfile) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <AppNav />
+        <div className="container mx-auto max-w-6xl px-4 py-8">
+          <div className="mb-8">
+            <div className="h-9 w-44 animate-pulse rounded-md bg-stone-200" />
+            <div className="mt-3 h-5 w-full max-w-md animate-pulse rounded-md bg-stone-100" />
+          </div>
+          <div className="space-y-5">
+            <Card className="border-red-100 bg-white">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-red-50 text-red-900">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  </div>
+                  <div>
+                    <h1 className="font-semibold text-slate-950">Cargando tu perfil Matchrim</h1>
+                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                      Estoy recuperando tu test, aprendizaje y recomendaciones Winerim.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <div className="grid gap-4 md:grid-cols-3">
+              {[0, 1, 2].map((item) => (
+                <div key={item} className="rounded-lg border border-stone-200 bg-white p-5 shadow-sm">
+                  <div className="h-5 w-2/3 animate-pulse rounded-md bg-stone-200" />
+                  <div className="mt-4 h-2 w-full animate-pulse rounded-full bg-stone-100" />
+                  <div className="mt-3 h-2 w-4/5 animate-pulse rounded-full bg-stone-100" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <AppNav />
@@ -429,10 +739,10 @@ const Profile = () => {
                 </Card>
               )}
 
-              {/* Radar Chart */}
+              {/* Perfil sensorial */}
               <div className="mb-8">
                 <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2">
-                  <span className="text-2xl">📊</span> Tu radar sensorial
+                  <span className="text-2xl">📊</span> Tu perfil sensorial
                 </h3>
                 {hasLearnedProfile && (
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -449,61 +759,116 @@ const Profile = () => {
                     )}
                   </div>
                 )}
-                <div className="mt-3 h-80 bg-white rounded-lg shadow-md flex items-center justify-center">
-                  <ChartContainer config={chartConfig} className="w-full max-w-md aspect-square">
-                    <RadarChart data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                      <PolarGrid stroke="#be123c33" />
-                      <PolarAngleAxis dataKey="attribute" tick={{ fill: '#be123c', fontSize: 12 }} />
-                      <PolarRadiusAxis domain={[1, 5]} stroke="#be123c" tick={{ fontSize: 10 }} />
-                      <Radar
-                        name={hasLearnedProfile ? "Test base" : "Perfil"}
-                        dataKey="baseValue"
-                        stroke={hasLearnedProfile ? "#a8a29e" : "#be123c"}
-                        fill={hasLearnedProfile ? "#a8a29e" : "#be123c"}
-                        fillOpacity={hasLearnedProfile ? 0.18 : 0.6}
-                      />
-                      {hasLearnedProfile && (
-                        <Radar
-                          name="Perfil activo"
-                          dataKey="activeValue"
-                          stroke="#be123c"
-                          fill="#be123c"
-                          fillOpacity={0.55}
-                        />
-                      )}
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                    </RadarChart>
-                  </ChartContainer>
+                <div className="mt-3 rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+                  <div className="space-y-4">
+                    {chartData.map((item) => {
+                      const activeValue = Math.max(1, Math.min(5, Number(item.activeValue) || 1));
+                      const baseValue = Math.max(1, Math.min(5, Number(item.baseValue) || 1));
+                      const activeWidth = `${(activeValue / 5) * 100}%`;
+                      const baseWidth = `${(baseValue / 5) * 100}%`;
+
+                      return (
+                        <div key={item.attribute} className="space-y-2">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-sm font-semibold text-slate-800">{item.attribute}</span>
+                            {hasLearnedProfile && item.baseValue !== item.activeValue && (
+                              <span className="text-xs font-medium text-amber-700">ajustado por tus vinos</span>
+                            )}
+                          </div>
+                          <div className="relative h-3 overflow-hidden rounded-full bg-stone-100">
+                            {hasLearnedProfile && (
+                              <span
+                                className="absolute inset-y-0 left-0 rounded-full bg-stone-300"
+                                style={{ width: baseWidth }}
+                                aria-hidden="true"
+                              />
+                            )}
+                            <span
+                              className="absolute inset-y-0 left-0 rounded-full bg-red-900"
+                              style={{ width: activeWidth }}
+                              aria-label={`${item.attribute}: perfil activo ${activeValue} de 5`}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
               {/* Wine Styles Section */}
               {styleDetails.length > 0 && (
                 <div>
-                  <h3 className="text-2xl font-bold text-red-900 mb-6 flex items-center gap-2">
-                    <Wine className="w-6 h-6" />
-                    Tus estilos de vino
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {styleDetails.map((style) => {
+                  <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                      <h3 className="flex items-center gap-2 text-2xl font-bold text-red-950">
+                        <Wine className="h-6 w-6" />
+                        Tus estilos Winerim
+                      </h3>
+                      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
+                        Estos estilos son la traducción Winerim de tu perfil activo. El principal es tu zona
+                        de comodidad; los cercanos sirven para descubrir vinos nuevos con riesgo controlado.
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="w-fit border-red-200 bg-red-50 px-3 py-1 text-red-800">
+                      {styleDetails.length} estilo{styleDetails.length !== 1 ? 's' : ''} compatible{styleDetails.length !== 1 ? 's' : ''}
+                    </Badge>
+                  </div>
+
+                  <div className="mb-4 rounded-2xl border border-red-100 bg-red-50/70 p-4">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-sm leading-6 text-red-950">
+                        <span className="font-bold">Cómo leerlo:</span> las barras muestran el rango Winerim del estilo en escala 1-5.
+                        Tu punto encima de la barra indica si el estilo entra en tu territorio.
+                      </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="shrink-0 border-red-200 bg-white text-red-900 hover:bg-red-50"
+                        onClick={() => navigate('/wine-styles')}
+                      >
+                        Ver catálogo de estilos
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                    {styleDetails.map((style, index) => {
                       const config = getCardConfig(style.name);
                       const IconComponent = config.icon;
+                      const cleanedName = style.name as PublicWineStyle;
 
                       return (
-                        <Card key={style.id} className={`${config.bg} ${config.border} border-2 hover:shadow-lg transition-shadow cursor-pointer`}
+                        <Card key={style.id} className={`${config.bg} ${config.border} border hover:shadow-lg transition-shadow cursor-pointer`}
                           onClick={() => navigate(`/wine-styles/${generateSlug(style.name)}`)}>
-                          <CardContent className="pt-6">
-                            <div className="flex items-start gap-4 mb-4">
-                              <div className={`${config.iconBg} rounded-lg p-3 flex-shrink-0`}>
+                          <CardContent className="p-5">
+                            <div className="mb-4 flex items-start gap-4">
+                              <div className={`${config.iconBg} rounded-xl p-3 flex-shrink-0 shadow-sm`}>
                                 <IconComponent className={`w-6 h-6 ${config.iconColor}`} />
                               </div>
-                              <div className="flex-1">
-                                <h4 className="font-bold text-gray-900 text-lg mb-2">{style.name}</h4>
-                                <p className="text-sm text-gray-700 leading-relaxed">
+                              <div className="min-w-0 flex-1">
+                                <div className="mb-2 flex flex-wrap items-center gap-2">
+                                  <h4 className="text-lg font-bold text-stone-950">{style.name}</h4>
+                                  <Badge
+                                    variant={index === 0 ? 'default' : 'outline'}
+                                    className={index === 0 ? 'bg-red-800 hover:bg-red-800' : 'border-stone-300 text-stone-600'}
+                                  >
+                                    {index === 0 ? 'Principal' : 'Cercano'}
+                                  </Badge>
+                                </div>
+                                <p className="text-sm leading-relaxed text-stone-700">
                                   {style.description || 'Estilo de vino que se adapta a tu perfil sensorial.'}
                                 </p>
                               </div>
                             </div>
+                            <StyleRangePreview styleName={cleanedName} profile={activeProfile} />
+                            {style.name === 'Vino de Terruño' && (
+                              <p className="mt-4 rounded-xl border border-stone-200 bg-white/75 p-3 text-sm leading-relaxed text-stone-700">
+                                Terruño no significa “más potente” siempre: aquí pesa mucho la estructura,
+                                el origen y el tanino alto. Por eso puede aparecer tanto con tintos como con blancos serios.
+                              </p>
+                            )}
                           </CardContent>
                         </Card>
                       );
@@ -513,24 +878,33 @@ const Profile = () => {
               )}
 
               {/* Recommended Grapes */}
-              {recommendedGrapes.length > 0 && (
+              {(winerimGrapeRecommendations.length > 0 || recommendedGrapes.length > 0) && (
                 <div>
                   <h3 className="text-2xl font-bold text-red-900 mb-6 flex items-center gap-2">
                     <Grape className="w-6 h-6" />
                     Uvas recomendadas para ti
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {recommendedGrapes.map((grape, index) => (
-                      <Card key={index} className="bg-purple-50 border-purple-200 hover:shadow-md transition-shadow">
+                    {(winerimGrapeRecommendations.length > 0
+                      ? winerimGrapeRecommendations.map((grape) => ({
+                          name: grape.name,
+                          helper: `${grape.count} vino${grape.count !== 1 ? 's' : ''} Winerim compatible${grape.count !== 1 ? 's' : ''} con tu perfil.`,
+                        }))
+                      : recommendedGrapes.map((grape) => ({
+                          name: grape,
+                          helper: getGrapeDescription(grape),
+                        }))
+                    ).slice(0, MAX_PROFILE_FACET_CARDS).map((grape, index) => (
+                      <Card key={`${grape.name}-${index}`} className="bg-purple-50 border-purple-200 hover:shadow-md transition-shadow">
                         <CardContent className="pt-6">
                           <div className="flex items-start gap-3">
                             <div className="bg-purple-200 rounded-full p-2 flex-shrink-0">
                               <Grape className="w-5 h-5 text-purple-700" />
                             </div>
                             <div>
-                              <h4 className="font-bold text-purple-900 mb-2">{grape}</h4>
+                              <h4 className="font-bold text-purple-900 mb-2">{grape.name}</h4>
                               <p className="text-sm text-gray-700 leading-relaxed">
-                                {getGrapeDescription(grape)}
+                                {grape.helper}
                               </p>
                             </div>
                           </div>
@@ -538,6 +912,40 @@ const Profile = () => {
                       </Card>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {winerimRegionRecommendations.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-bold text-red-900 mb-6 flex items-center gap-2">
+                    <MapPin className="w-6 h-6" />
+                    Regiones Winerim que coinciden contigo
+                  </h3>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {winerimRegionRecommendations.slice(0, MAX_PROFILE_FACET_CARDS).map((region) => (
+                      <Card key={`${region.region}-${region.country}`} className="border-amber-200 bg-amber-50">
+                        <CardContent className="pt-6">
+                          <div className="flex items-start gap-3">
+                            <div className="rounded-full bg-amber-200 p-2">
+                              <MapPin className="h-5 w-5 text-amber-800" />
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-amber-950">{region.region}</h4>
+                              <p className="text-sm text-amber-900">{region.country}</p>
+                              <p className="mt-2 text-sm text-gray-700">
+                                {region.count} vino{region.count !== 1 ? 's' : ''} compatible{region.count !== 1 ? 's' : ''}; afinidad media {region.avgMatchPercentage}%.
+                              </p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                  {winerimRegionRecommendations.length > MAX_PROFILE_FACET_CARDS && (
+                    <p className="mt-3 text-sm text-stone-500">
+                      Mostrando las {MAX_PROFILE_FACET_CARDS} regiones con más señal para tu perfil.
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -564,40 +972,53 @@ const Profile = () => {
                         {regions.map((region, index) => (
                           <div
                             key={index}
-                            className="group relative bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 p-6 rounded-2xl border-2 border-amber-200 hover:border-amber-400 hover:shadow-xl transition-all duration-300 overflow-hidden"
+                            className="rounded-lg border border-amber-200 bg-amber-50 p-5 shadow-sm"
                           >
-                            {/* Efecto de brillo */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                            {/* Contenido */}
-                            <div className="relative z-10">
+                            <div>
                               <div className="flex items-center gap-3 mb-3">
-                                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                  <MapPin className="w-6 h-6 text-white" />
+                                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-amber-200 text-amber-900">
+                                  <MapPin className="w-6 h-6" />
                                 </div>
-                                <h5 className="font-bold text-lg text-gray-900 group-hover:text-red-700 transition-colors flex-1">
+                                <h5 className="font-bold text-lg text-gray-900 flex-1">
                                   {region.split('(')[0].trim()}
                                 </h5>
                               </div>
                               <p className="text-sm text-gray-700 leading-relaxed mb-4">{getRegionDescription(region)}</p>
 
-                              {/* Mapa de la región */}
-                              <React.Suspense
-                                fallback={
-                                  <div
-                                    className="w-full h-48 rounded-lg border border-amber-200 bg-gradient-to-br from-amber-100/70 to-red-100/70 animate-pulse"
-                                    aria-label="Cargando mapa de la región"
-                                  />
-                                }
-                              >
-                                <RegionMap
-                                  region={region}
-                                  coordinates={getRegionCoordinates(region)}
-                                />
-                              </React.Suspense>
-
-                              {/* Indicador decorativo */}
-                              <div className="mt-4 h-1 w-0 bg-gradient-to-r from-amber-500 to-red-600 group-hover:w-full transition-all duration-500 rounded-full"></div>
+                              {expandedRegionMap === region ? (
+                                <div className="space-y-3">
+                                  <React.Suspense
+                                    fallback={
+                                      <div
+                                        className="w-full h-48 rounded-lg border border-amber-200 bg-amber-100/70 animate-pulse"
+                                        aria-label="Cargando mapa de la región"
+                                      />
+                                    }
+                                  >
+                                    <RegionMap
+                                      region={region}
+                                      coordinates={getRegionCoordinates(region)}
+                                    />
+                                  </React.Suspense>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="matchrim-pressable w-full bg-white"
+                                    onClick={() => setExpandedRegionMap(null)}
+                                  >
+                                    Ocultar mapa
+                                  </Button>
+                                </div>
+                              ) : (
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  className="matchrim-pressable w-full bg-white"
+                                  onClick={() => setExpandedRegionMap(region)}
+                                >
+                                  Ver mapa de la región
+                                </Button>
+                              )}
                             </div>
                           </div>
                         ))}
@@ -608,6 +1029,60 @@ const Profile = () => {
               )}
 
               {/* Tip Section */}
+              <div>
+                <h3 className="mb-6 flex items-center gap-2 text-2xl font-bold text-red-900">
+                  <Wine className="h-6 w-6" />
+                  Vinos Winerim que deberías probar
+                </h3>
+                {loadingProfileWinerimWines ? (
+                  <Card>
+                    <CardContent className="flex items-center justify-center py-8 text-gray-600">
+                      Cargando vinos Winerim...
+                    </CardContent>
+                  </Card>
+                ) : profileWinerimError ? (
+                  <Card className="border-amber-200 bg-amber-50">
+                    <CardContent className="py-6 text-sm text-amber-900">
+                      <p>{profileWinerimError}</p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="mt-4 bg-white"
+                        disabled={loadingProfileWinerimWines}
+                        onClick={() => setProfileWinerimRetryKey((value) => value + 1)}
+                      >
+                        {loadingProfileWinerimWines ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                        Reintentar carga
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : nextWinerimWines.length > 0 ? (
+                  <>
+                    <p className="mb-4 max-w-2xl text-sm leading-6 text-stone-600">
+                      Estos salen de Winerim para tu perfil y no aparecen ya en Mis Vinos. Son candidatos para guardar en Quiero Probar.
+                    </p>
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    {nextWinerimWines.slice(0, MAX_PROFILE_WINE_CARDS).map((wine, index) => (
+                      <WineCard key={wine.id} wine={wine} index={index} profile={activeProfile} />
+                    ))}
+                    </div>
+                  </>
+                ) : profileWinerimWines.length > 0 ? (
+                  <Card className="border-green-200 bg-green-50">
+                    <CardContent className="py-6 text-sm leading-6 text-green-950">
+                      Winerim sí ha devuelto vinos para tu perfil, pero todos los primeros candidatos ya están en Mis Vinos.
+                      Escanea una carta o usa Encontrar vino para descubrir opciones nuevas.
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardContent className="py-6 text-sm text-gray-600">
+                      Todavia no hay vinos Winerim disponibles para este perfil.
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+
               <div className="bg-red-50 p-5 rounded-lg border border-red-200">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-1">
