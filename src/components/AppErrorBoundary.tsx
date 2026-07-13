@@ -11,28 +11,46 @@ interface AppErrorBoundaryProps {
 interface AppErrorBoundaryState {
   hasError: boolean;
   message: string | null;
+  isRecoverableAssetError: boolean;
 }
+
+const recoverableAssetErrorPattern =
+  /Failed to fetch dynamically imported module|Unable to preload CSS|Loading chunk|Importing a module script failed|dynamically imported module/i;
+
+const isRecoverableAssetError = (message: string) => recoverableAssetErrorPattern.test(message);
 
 export class AppErrorBoundary extends Component<AppErrorBoundaryProps, AppErrorBoundaryState> {
   state: AppErrorBoundaryState = {
     hasError: false,
     message: null,
+    isRecoverableAssetError: false,
   };
 
   static getDerivedStateFromError(error: Error): AppErrorBoundaryState {
+    const message = error.message || 'Error inesperado';
     return {
       hasError: true,
-      message: error.message || 'Error inesperado',
+      message,
+      isRecoverableAssetError: isRecoverableAssetError(message),
     };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('App render error:', error, errorInfo);
+
+    const message = error.message || '';
+    if (!isRecoverableAssetError(message)) return;
+
+    const reloadKey = `matchrim:asset-reload:${this.props.resetKey || window.location.pathname}`;
+    if (window.sessionStorage.getItem(reloadKey)) return;
+
+    window.sessionStorage.setItem(reloadKey, '1');
+    window.location.reload();
   }
 
   componentDidUpdate(prevProps: AppErrorBoundaryProps) {
     if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
-      this.setState({ hasError: false, message: null });
+      this.setState({ hasError: false, message: null, isRecoverableAssetError: false });
     }
   }
 
@@ -50,7 +68,9 @@ export class AppErrorBoundary extends Component<AppErrorBoundaryProps, AppErrorB
             </div>
             <CardTitle>No se ha podido cargar esta pantalla</CardTitle>
             <CardDescription>
-              Winerim sigue funcionando, pero esta vista ha tenido un error puntual.
+              {this.state.isRecoverableAssetError
+                ? 'Hemos actualizado la app y esta pantalla necesita recargarse.'
+                : 'Winerim sigue funcionando, pero esta vista ha tenido un error puntual.'}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -62,7 +82,7 @@ export class AppErrorBoundary extends Component<AppErrorBoundaryProps, AppErrorB
             <div className="grid gap-2 sm:grid-cols-2">
               <Button className="gap-2 bg-red-800 hover:bg-red-900" onClick={() => window.location.reload()}>
                 <RefreshCw className="h-4 w-4" />
-                Reintentar
+                {this.state.isRecoverableAssetError ? 'Actualizar app' : 'Reintentar'}
               </Button>
               <Button variant="outline" className="gap-2" onClick={() => window.location.assign('/')}>
                 <Home className="h-4 w-4" />
