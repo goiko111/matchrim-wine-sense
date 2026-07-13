@@ -88,6 +88,7 @@ const UseMatchrim = () => {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('mode') === 'scanner' ? 'scanner' : 'winerim';
   const [profile, setProfile] = useState<MatchrimProfileLike | null>(null);
+  const [codeProfile, setCodeProfile] = useState<MatchrimProfileLike | null>(null);
   const [learnedProfileInfo, setLearnedProfileInfo] = useState<LearnedProfileInfo | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [restaurantName, setRestaurantName] = useState('');
@@ -120,6 +121,7 @@ const UseMatchrim = () => {
       const sharedProfile = parseProfileVector(searchParams.get('v'));
       if (sharedProfile) {
         setProfile(sharedProfile);
+        setCodeProfile(sharedProfile);
         setLoadingProfile(false);
         return;
       }
@@ -139,9 +141,12 @@ const UseMatchrim = () => {
 
         if (!data) {
           setProfile(null);
+          setCodeProfile(null);
           setLoadingProfile(false);
           return;
         }
+
+        setCodeProfile(data);
 
         const { data: trainingWines, error: trainingError } = await supabase
           .from('user_wines')
@@ -176,7 +181,9 @@ const UseMatchrim = () => {
       }
 
       const savedResult = localStorage.getItem('matchrim_quiz_result');
-      setProfile(savedResult ? JSON.parse(savedResult) : null);
+      const localProfile = savedResult ? JSON.parse(savedResult) : null;
+      setProfile(localProfile);
+      setCodeProfile(localProfile);
       setLoadingProfile(false);
     };
 
@@ -204,8 +211,8 @@ const UseMatchrim = () => {
   };
 
   const matchrimCode = useMemo(
-    () => profile ? (searchParams.get('code') || generateMatchrimCode(profile)) : '',
-    [profile, searchParams]
+    () => codeProfile ? (searchParams.get('code') || generateMatchrimCode(codeProfile)) : '',
+    [codeProfile, searchParams]
   );
 
   const winerimTypeOptions = useMemo(
@@ -453,7 +460,7 @@ const UseMatchrim = () => {
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-6">
             <MatchrimPassport
-              profile={profile}
+              profile={codeProfile || profile}
               codeOverride={matchrimCode}
               compact
               showUseAction={false}
@@ -465,7 +472,7 @@ const UseMatchrim = () => {
                 <Sparkles className="h-4 w-4" />
                 <AlertTitle>Perfil afinado con tus vinos</AlertTitle>
                 <AlertDescription>
-                  Este código ya incorpora {learnedProfileInfo.samples} vino{learnedProfileInfo.samples !== 1 ? 's' : ''} puntuado{learnedProfileInfo.samples !== 1 ? 's' : ''}.
+                  Tu código se mantiene estable. Las recomendaciones ya incorporan {learnedProfileInfo.samples} vino{learnedProfileInfo.samples !== 1 ? 's' : ''} puntuado{learnedProfileInfo.samples !== 1 ? 's' : ''}.
                   Confianza del ajuste: {learnedProfileInfo.confidence}%.
                 </AlertDescription>
               </Alert>

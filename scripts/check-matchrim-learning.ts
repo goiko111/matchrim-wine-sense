@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { calculateLearnedMatchrimProfile } from '../src/utils/matchrimLearning';
+import { generateMatchrimCode } from '../src/utils/matchrimPassport';
 import { generateWineStyles } from '../src/utils/profileUtils';
 
 const baseProfile = {
@@ -30,6 +31,15 @@ assert.ok(lovedProfile.profile.potente > baseProfile.potente);
 assert.ok(lovedProfile.profile.afrutado > baseProfile.afrutado);
 assert.doesNotThrow(() => generateWineStyles(lovedProfile.profile));
 assert.equal(generateWineStyles(lovedProfile.profile).length, 3);
+
+const stablePublicCode = generateMatchrimCode(baseProfile);
+const learnedProfileCode = generateMatchrimCode(lovedProfile.profile);
+assert.notEqual(
+  learnedProfileCode,
+  stablePublicCode,
+  'This fixture must prove that learned profiles can rename the public code if used directly.'
+);
+assert.equal(generateMatchrimCode(baseProfile), stablePublicCode);
 
 const rejectedProfile = calculateLearnedMatchrimProfile(baseProfile, [
   {

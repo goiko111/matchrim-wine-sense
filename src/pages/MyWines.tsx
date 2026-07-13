@@ -965,7 +965,7 @@ const MyWines = () => {
 	      ? 'Puntúa un vino con atributos para que Matchrim empiece a aprender.'
 	      : trainable.length < 3
 	        ? 'Puntúa al menos 3 vinos más para que el patrón deje de depender de una sola botella.'
-	        : 'Sigue puntuando vinos de cartas reales: ahí es donde tu código mejora más.';
+	        : 'Sigue puntuando vinos de cartas reales: ahí es donde tus recomendaciones mejoran más.';
 
 	    return {
 	      ratedCount: rated.length,
@@ -1001,7 +1001,7 @@ const MyWines = () => {
     tasted: {
       title: 'Ya Probados',
       kicker: 'Historial que enseña a Matchrim',
-      detail: 'Cada valoración aporta señal. Los vinos con atributos 1-5 pueden afinar tu código y hacer mejores recomendaciones.',
+      detail: 'Cada valoración aporta señal. Los vinos con atributos 1-5 afinan tus recomendaciones sin cambiar tu código público.',
       action: 'Puntuar pendientes',
       icon: Star,
       onAction: () => navigateToWineSection('wishlist'),
@@ -1252,7 +1252,7 @@ const MyWines = () => {
 	                  Así aprende tu Matchrim
 	                </CardTitle>
 	                <CardDescription className="text-white/75">
-	                  Tus valoraciones afinan el perfil: “me encanta” acerca el código a ese vino, “no va” lo aleja y “correcto” pesa menos.
+	                  Tus valoraciones afinan el perfil: “me encanta” acerca tus recomendaciones a ese vino, “no va” las aleja y “correcto” pesa menos.
 	                </CardDescription>
 	              </CardHeader>
 	              <CardContent className="grid gap-3 p-4 md:grid-cols-4">
@@ -1371,10 +1371,10 @@ const MyWines = () => {
                       </CardTitle>
                       <CardDescription className="text-green-900">
                         {trainingReadyCount > 0
-                          ? `${trainingReadyCount} vino${trainingReadyCount !== 1 ? 's' : ''} con atributos está${trainingReadyCount !== 1 ? 'n' : ''} afinando tu código Matchrim.`
+                          ? `${trainingReadyCount} vino${trainingReadyCount !== 1 ? 's' : ''} con atributos está${trainingReadyCount !== 1 ? 'n' : ''} afinando tus recomendaciones Matchrim.`
                           : ratedCount > 0
                             ? 'Tienes vinos puntuados, pero todavía faltan atributos sensoriales para entrenar el perfil.'
-                            : 'Puntúa vinos guardados desde cartas Winerim para que tu código se vuelva más preciso.'}
+                            : 'Puntúa vinos guardados desde cartas Winerim para que tus recomendaciones sean más precisas.'}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -1450,7 +1450,7 @@ const MyWines = () => {
                       <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
                         {statusFilter === 'collection' && 'Escanea una etiqueta, busca un vino o añádelo manualmente para recordar qué tienes en casa.'}
                         {statusFilter === 'wishlist' && 'Cuando filtres una carta o escanees un restaurante sin Winerim, podrás guardar candidatos para probarlos después.'}
-                        {statusFilter === 'tasted' && 'Los vinos puntuados con atributos sensoriales afinan tu código y mejoran las recomendaciones futuras.'}
+                        {statusFilter === 'tasted' && 'Los vinos puntuados con atributos sensoriales afinan tus recomendaciones futuras sin cambiar tu código público.'}
                         {statusFilter === 'favorites' && 'Toca el corazón de cualquier vino en Bodega, Quiero Probar o Ya Probados para verlo en esta sección.'}
                         {statusFilter === 'rejected' && 'Cuando marques “No va”, Matchrim aprende qué estilos, uvas o estructuras alejar de tus recomendaciones.'}
                       </p>

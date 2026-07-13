@@ -360,9 +360,13 @@ const Profile = () => {
     () => currentProfile ? normalizeProfileForDisplay(currentProfile) : null,
     [currentProfile]
   );
+  const passportProfile = useMemo(
+    () => currentProfile ? normalizeProfileForClassifier(currentProfile) : null,
+    [currentProfile]
+  );
 
   // Generate profile data
-  const profileName = activeClassifierProfile ? generateMatchrimName(activeClassifierProfile) : "";
+  const profileName = passportProfile ? generateMatchrimName(passportProfile) : "";
   const wineStyles = useMemo(
     () => getSafeProfileStyles(activeClassifierProfile),
     [activeClassifierProfile]
@@ -779,7 +783,7 @@ const Profile = () => {
         <TabsContent value="profile">
           {currentProfile ? (
             <div className="space-y-8">
-              {activeClassifierProfile && <MatchrimPassport profile={activeClassifierProfile} />}
+              {passportProfile && <MatchrimPassport profile={passportProfile} />}
 
               {learnedProfile && learnedProfile.samples > 0 && (
                 <Card className="border-amber-200 bg-amber-50/70">
@@ -788,8 +792,8 @@ const Profile = () => {
                       <div>
                         <h3 className="font-bold text-amber-950">Perfil aprendido activo</h3>
                         <p className="text-sm text-amber-900">
-                          Tu código se está afinando con {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} puntuado{learnedProfile.samples !== 1 ? 's' : ''}.
-                          El test sigue siendo la base, pero tus valoraciones ya ajustan el match.
+                          Tus recomendaciones se están afinando con {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} puntuado{learnedProfile.samples !== 1 ? 's' : ''}.
+                          Tu código público se mantiene estable; tus valoraciones ajustan el match.
                         </p>
                         <p className="mt-2 text-xs font-medium text-amber-900">
                           {confidenceCopy}
