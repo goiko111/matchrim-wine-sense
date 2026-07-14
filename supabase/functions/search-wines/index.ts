@@ -16,6 +16,42 @@ type SearchWine = {
   estilo?: string | null;
 };
 
+const normalizeSearchText = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+
+const addSearchVariant = (variants: Set<string>, value: string) => {
+  const cleaned = value.replace(/\s+/g, ' ').trim();
+  if (cleaned.length >= 2) variants.add(cleaned);
+};
+
+const buildSearchVariants = (query: string) => {
+  const normalized = normalizeSearchText(query);
+  const variants = new Set<string>();
+
+  addSearchVariant(variants, query);
+  addSearchVariant(variants, normalized);
+  addSearchVariant(variants, normalized.replace(/\s*\/\s*/g, '/'));
+  addSearchVariant(variants, normalized.replace(/[^a-z0-9]+/g, ' '));
+
+  const compact = normalized.replace(/[^a-z0-9]/g, '');
+  addSearchVariant(variants, compact);
+
+  // Short acronym wines are often written interchangeably as BC/DC, BC DC or BCDC.
+  if (/^[a-z]{4}$/.test(compact)) {
+    addSearchVariant(variants, `${compact.slice(0, 2)}/${compact.slice(2)}`);
+    addSearchVariant(variants, `${compact.slice(0, 2)} ${compact.slice(2)}`);
+  }
+
+  return Array.from(variants).slice(0, 8);
+};
+
+const escapePostgrestOrValue = (value: string) =>
+  value.replace(/,/g, '\\,');
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -36,13 +72,23 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const sanitizedQuery = query.replace(/,/g, '\\,');
+    const searchVariants = buildSearchVariants(query);
+    const searchFilters = searchVariants
+      .flatMap((variant) => {
+        const sanitizedVariant = escapePostgrestOrValue(variant);
+        return [
+          `name.ilike.%${sanitizedVariant}%`,
+          `producer.ilike.%${sanitizedVariant}%`,
+          `region.ilike.%${sanitizedVariant}%`,
+        ];
+      })
+      .join(',');
 
     // Search in local database first
     const { data: wines, error } = await supabaseClient
       .from('wines')
       .select('*')
-      .or(`name.ilike.%${sanitizedQuery}%,producer.ilike.%${sanitizedQuery}%,region.ilike.%${sanitizedQuery}%`)
+      .or(searchFilters)
       .limit(limit);
 
     if (error) {
@@ -60,10 +106,15 @@ serve(async (req) => {
         console.log('Searching external sources for wines...');
         
         const remainingSlots = Math.max(5, limit - allWines.length);
+        const aliases = searchVariants
+          .filter((variant) => variant.toLowerCase() !== query.trim().toLowerCase())
+          .slice(0, 5);
         const searchPrompt = `Busca vinos REALES que coincidan con la búsqueda: "${query}"
+${aliases.length ? `\nTambién prueba estas formas equivalentes del nombre: ${aliases.map((alias) => `"${alias}"`).join(', ')}\n` : ''}
 
 INSTRUCCIONES CRÍTICAS:
 - SOLO vinos que existan realmente en el mercado
+- Interpreta nombres con barras, espacios o siglas compactas como equivalentes cuando proceda (por ejemplo BC/DC, BC DC y BCDC)
 - Da prioridad a vinos icónicos y reconocidos de la bodega/región mencionada
 - Si buscas "Muga", incluye OBLIGATORIAMENTE: Muga Reserva, Muga Crianza, Prado Enea, Torre Muga
 - Si buscas una bodega, incluye su gama completa de vinos principales
