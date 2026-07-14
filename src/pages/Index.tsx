@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -37,6 +37,8 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import WineStylesGrid from '@/components/wine-styles/WineStylesGrid';
 import { buildAuthRedirectPath, buildRegistrationRedirectPath } from '@/utils/navigation';
+import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
 
 const restaurantRecommendationSchema = z.object({
   restaurantName: z.string().trim().min(1, "El nombre del restaurante es requerido").max(200, "Máximo 200 caracteres"),
@@ -49,9 +51,11 @@ type RestaurantRecommendationForm = z.infer<typeof restaurantRecommendationSchem
 
 const Index = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { toast } = useToast();
-  const [hasQuizResults, setHasQuizResults] = useState(false);
+  const [homeProfile, setHomeProfile] = useState<MatchrimProfileLike | null>(() => readMatchrimLocalProfile());
+  const [hasQuizResults, setHasQuizResults] = useState(() => Boolean(readMatchrimLocalProfile()));
+  const [loadingHomeProfile, setLoadingHomeProfile] = useState(() => !readMatchrimLocalProfile());
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -66,19 +70,73 @@ const Index = () => {
   });
 
   useEffect(() => {
+    let cancelled = false;
+
     const checkQuizResults = async () => {
-      if (user) {
-        const { supabase } = await import('@/integrations/supabase/client');
-        const { data } = await supabase
-          .from('quiz_results')
-          .select('id')
-          .eq('user_id', user.id)
-          .maybeSingle();
-        setHasQuizResults(!!data);
+      const localProfile = readMatchrimLocalProfile();
+
+      if (localProfile) {
+        setHomeProfile(localProfile);
+        setHasQuizResults(true);
+        setLoadingHomeProfile(false);
       }
+
+      if (authLoading) {
+        setLoadingHomeProfile(!localProfile);
+        return;
+      }
+
+      if (!user) {
+        setHomeProfile(localProfile);
+        setHasQuizResults(Boolean(localProfile));
+        setLoadingHomeProfile(false);
+        return;
+      }
+
+      if (!localProfile) {
+        setLoadingHomeProfile(true);
+      }
+
+      const { data, error } = await supabase
+        .from('quiz_results')
+        .select('potente, acidez, dulce, tanico, afrutado')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (cancelled) return;
+
+      if (error) {
+        console.error('Error checking Matchrim code for home:', error);
+      }
+
+      if (data) {
+        setHomeProfile(data);
+        setHasQuizResults(true);
+        try {
+          localStorage.setItem('matchrim_quiz_result', JSON.stringify(data));
+        } catch {
+          // Local cache is a speed optimization; failing to write it should not block the home screen.
+        }
+      } else {
+        setHomeProfile(localProfile);
+        setHasQuizResults(Boolean(localProfile));
+      }
+
+      setLoadingHomeProfile(false);
     };
+
     checkQuizResults();
-  }, [user]);
+    return () => {
+      cancelled = true;
+    };
+  }, [authLoading, user]);
+
+  const homeMatchrimCode = useMemo(
+    () => homeProfile ? generateMatchrimCode(homeProfile) : '',
+    [homeProfile]
+  );
 
   const handleDiscoverProfile = () => {
     if (user && hasQuizResults) {
@@ -143,7 +201,13 @@ const Index = () => {
   ];
 
   if (Capacitor.isNativePlatform()) {
-    return <NativeAppHome hasQuizResults={hasQuizResults} />;
+    return (
+      <NativeAppHome
+        hasQuizResults={hasQuizResults}
+        matchrimCode={homeMatchrimCode}
+        loadingCode={loadingHomeProfile}
+      />
+    );
   }
 
   return (

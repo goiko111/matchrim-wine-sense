@@ -20,13 +20,16 @@ import { buildAuthRedirectPath } from '@/utils/navigation';
 
 interface NativeAppHomeProps {
   hasQuizResults: boolean;
+  matchrimCode?: string;
+  loadingCode?: boolean;
 }
 
-const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
+const NativeAppHome = ({ hasQuizResults, matchrimCode = '', loadingCode = false }: NativeAppHomeProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const hasCode = hasQuizResults && Boolean(matchrimCode);
 
-  const primaryAction = user && hasQuizResults
+  const primaryAction = hasQuizResults
     ? { label: 'Usar mi código', path: '/usar-matchrim', icon: ScanLine }
     : { label: 'Crear mi Matchrim', path: '/matchrim', icon: Sparkles };
 
@@ -35,7 +38,7 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
   const quickActions = [
     {
       label: 'Código',
-      detail: 'Filtra una carta Winerim',
+      detail: hasCode ? matchrimCode : 'Filtra una carta Winerim',
       icon: ScanLine,
       action: () => navigate('/usar-matchrim'),
     },
@@ -124,10 +127,23 @@ const NativeAppHome = ({ hasQuizResults }: NativeAppHomeProps) => {
           <div className="mt-6 rounded-md border border-white/15 bg-white/8 p-4">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-wide text-white/55">Estado Matchrim</p>
-                <p className="mt-1 text-lg font-semibold">
-                  {hasQuizResults ? 'Código listo' : 'Código pendiente'}
+                <p className="text-xs uppercase tracking-wide text-white/55">
+                  {hasCode ? 'Mi código' : 'Estado Matchrim'}
                 </p>
+                <p className="mt-1 min-h-7 text-lg font-semibold">
+                  {hasCode
+                    ? matchrimCode
+                    : loadingCode
+                      ? 'Cargando código...'
+                      : hasQuizResults
+                        ? 'Código listo'
+                        : 'Código pendiente'}
+                </p>
+                {hasCode && (
+                  <p className="mt-1 text-xs leading-5 text-white/60">
+                    Estable aunque tus recomendaciones aprendan de tus vinos.
+                  </p>
+                )}
               </div>
               <div className="flex h-12 w-12 items-center justify-center rounded-md bg-white text-red-950">
                 {hasQuizResults ? <Wine className="h-6 w-6" /> : <User className="h-6 w-6" />}

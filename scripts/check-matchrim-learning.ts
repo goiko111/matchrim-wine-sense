@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import { calculateLearnedMatchrimProfile } from '../src/utils/matchrimLearning';
 import { generateMatchrimCode } from '../src/utils/matchrimPassport';
-import { generateWineStyles } from '../src/utils/profileUtils';
+import { generateMatchrimName, generateWineStyles } from '../src/utils/profileUtils';
 
 const baseProfile = {
   potente: 2,
@@ -33,7 +33,9 @@ assert.doesNotThrow(() => generateWineStyles(lovedProfile.profile));
 assert.equal(generateWineStyles(lovedProfile.profile).length, 3);
 
 const stablePublicCode = generateMatchrimCode(baseProfile);
+assert.equal(stablePublicCode, generateMatchrimName(baseProfile));
 const learnedProfileCode = generateMatchrimCode(lovedProfile.profile);
+assert.equal(learnedProfileCode, generateMatchrimName(lovedProfile.profile));
 assert.notEqual(
   learnedProfileCode,
   stablePublicCode,

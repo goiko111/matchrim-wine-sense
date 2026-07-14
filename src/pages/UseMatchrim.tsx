@@ -21,6 +21,7 @@ import {
   type MatchrimProfileLike,
 } from '@/utils/matchrimPassport';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
 import { AlertCircle, BookmarkPlus, CheckCircle, ExternalLink, Loader2, MapPin, ScanLine, Sparkles, Wine } from 'lucide-react';
@@ -114,8 +115,9 @@ const UseMatchrim = () => {
   }, [searchParams]);
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadProfile = async () => {
-      setLoadingProfile(true);
       setLearnedProfileInfo(null);
 
       const sharedProfile = parseProfileVector(searchParams.get('v'));
@@ -124,6 +126,15 @@ const UseMatchrim = () => {
         setCodeProfile(sharedProfile);
         setLoadingProfile(false);
         return;
+      }
+
+      const localProfile = readMatchrimLocalProfile();
+      if (localProfile) {
+        setProfile(localProfile);
+        setCodeProfile(localProfile);
+        setLoadingProfile(false);
+      } else {
+        setLoadingProfile(true);
       }
 
       if (user) {
@@ -139,14 +150,25 @@ const UseMatchrim = () => {
           console.error('Error loading Matchrim profile:', error);
         }
 
+        if (cancelled) return;
+
         if (!data) {
-          setProfile(null);
-          setCodeProfile(null);
+          if (!localProfile) {
+            setProfile(null);
+            setCodeProfile(null);
+          }
           setLoadingProfile(false);
           return;
         }
 
         setCodeProfile(data);
+        setProfile(data);
+        setLoadingProfile(false);
+        try {
+          localStorage.setItem('matchrim_quiz_result', JSON.stringify(data));
+        } catch {
+          // Local cache only accelerates future screens.
+        }
 
         const { data: trainingWines, error: trainingError } = await supabase
           .from('user_wines')
@@ -156,11 +178,12 @@ const UseMatchrim = () => {
           .not('rating', 'is', null)
           .not('sensory_attributes', 'is', null);
 
+        if (cancelled) return;
+
         if (trainingError) {
           console.error('Error loading Matchrim training wines:', trainingError);
           setProfile(data);
           setLearnedProfileInfo(null);
-          setLoadingProfile(false);
           return;
         }
 
@@ -176,18 +199,20 @@ const UseMatchrim = () => {
           setLearnedProfileInfo(null);
         }
 
-        setLoadingProfile(false);
         return;
       }
 
-      const savedResult = localStorage.getItem('matchrim_quiz_result');
-      const localProfile = savedResult ? JSON.parse(savedResult) : null;
-      setProfile(localProfile);
-      setCodeProfile(localProfile);
+      if (!localProfile) {
+        setProfile(null);
+        setCodeProfile(null);
+      }
       setLoadingProfile(false);
     };
 
     loadProfile();
+    return () => {
+      cancelled = true;
+    };
   }, [user, searchParams]);
 
   useEffect(() => {
