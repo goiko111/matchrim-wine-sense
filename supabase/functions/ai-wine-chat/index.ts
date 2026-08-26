@@ -253,8 +253,7 @@ const logAiRimQuery = (
       had_profile: hadProfile,
       model: "google/gemini-2.5-pro",
     })
-    .then(() => {})
-    .catch((err) => console.error("Error logging aiRIM query:", err));
+    .then(() => {}, (err: unknown) => console.error("Error logging aiRIM query:", err));
 };
 
 const callLovableGateway = async (messages: Array<{ role: string; content: string }>, stream: boolean) => {
