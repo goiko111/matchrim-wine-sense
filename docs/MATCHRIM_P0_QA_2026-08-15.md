@@ -2,6 +2,8 @@
 
 Fecha: 2026-08-15
 
+Actualizacion final 2026-08-26: este documento conserva la evidencia fisica del build 57. El bloqueo de backend ya fue resuelto; el cierre vigente esta en `docs/MATCHRIM_P0_REMEDIATION_2026-08-26.md` y Matchrim 1.0 (58) fue subido correctamente a TestFlight.
+
 Repositorio operativo: `/Users/GOIKO/Documents/Playground/matchrim-publish-20260713`
 
 Dispositivo: iPhone 16 Pro Max `Goiko`, iOS 26.6, UDID `00008140-000A3D8A01E8801C`
@@ -10,9 +12,9 @@ Aplicacion: Matchrim 1.0, build 57 de desarrollo (build previo instalado: 56)
 
 ## Veredicto
 
-El cliente P0, el contrato de vision por regiones y las vistas de resultados estan implementados y verificados. El recorrido fisico real llega desde seleccion de la foto hasta la llamada al backend, conserva la imagen al fallar y ofrece un reintento accionable.
+Este veredicto describe el baseline del 15 de agosto. El cliente P0, el contrato de vision por regiones y las vistas de resultados estaban implementados y verificados. El recorrido fisico real llegaba desde seleccion de la foto hasta la llamada al backend, conservaba la imagen al fallar y ofrecia un reintento accionable.
 
-No se aprueba aun el E2E de reconocimiento real ni el paso a TestFlight: la cuenta disponible recibe `403 / You do not have permission to perform this action` al listar o desplegar Edge Functions en el proyecto Supabase `cbjynrbvrhcmpaojmqdp`. Las funciones nuevas no estan desplegadas y no se ha sustituido su resultado por una simulacion en el iPhone.
+El NO-GO de aquel dia queda superado: el canal integrado de Lovable desplego las tres funciones exactas, el E2E real paso 5/5 materiales y App Store Connect acepto el build 58 para procesamiento. La cuenta directa de Supabase sigue sin permisos de gestion sobre `cbjynrbvrhcmpaojmqdp`, pero ya no bloquea el servicio desplegado.
 
 ## Expected / actual
 
@@ -67,7 +69,9 @@ No se aprueba aun el E2E de reconocimiento real ni el paso a TestFlight: la cuen
 5. La prueba offline fisica no se hizo para no cambiar Wi-Fi/datos del usuario.
 6. El video disponible documenta el fallo de paisaje que condujo a la correccion. La comprobacion final en paisaje queda documentada con captura y resultado XCUITest.
 
-## Puerta de TestFlight
+## Puerta de TestFlight historica
+
+Los pasos siguientes eran la puerta abierta el 15 de agosto. Despliegue, E2E de cinco materiales, archive y subida quedaron completados el 26 de agosto; solo permanecen las limitaciones explicitadas en el informe final.
 
 1. Conceder permiso de despliegue de Edge Functions en `cbjynrbvrhcmpaojmqdp`.
 2. Desplegar las tres funciones y verificar secretos/modelo, limites, logs y privacidad de imagenes.

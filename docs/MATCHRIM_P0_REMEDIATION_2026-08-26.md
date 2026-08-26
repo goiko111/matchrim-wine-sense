@@ -2,24 +2,63 @@
 
 Fecha: 26 de agosto de 2026.
 
-Estado: implementacion local completada, QA determinista y visual movil superadas, E2E real parcial. **NO-GO para deploy y TestFlight**.
+Estado final: **P0 E2E aprobado y build 1.0 (58) subido a TestFlight**. El bloqueo de despliegue descrito debajo queda conservado como baseline historico.
 
-## Entorno seguro
+## Cierre final
+
+- Fuente operativa recuperada: `/Users/GOIKO/2matchrim-p0-remediation-20260826`, rama `codex/2matchrim-p0-remediation-20260826`. El path declarado de iCloud seguia `dataless` y no se modifico.
+- Commits de producto: `bc24db5`, `b20d6bc` y `eadef40`. `supabase/functions/search-wines/index.ts` coincide con `9343a1e` y no se modifico.
+- El `403` directo de Supabase se acoto a permisos de la cuenta/CLI. El canal integrado y autorizado de Lovable desplego las tres funciones exactas por 2 creditos, sin exponer secretos.
+- Edge Functions activas: `detect-wine-regions` (`matchrim-region-detector-v3`), `analyze-wine-region` (`matchrim-region-analysis-v2`) y `scan-wine-menu` (`scan-wine-menu-2026-08-26-grounded-v3`). Sus fuentes desplegadas tienen el mismo hash Git que las de esta rama.
+- E2E real sin interceptar APIs: 5/5 materiales PASS. Las cuatro cartas suman 55 matches sobre 56 referencias esperadas: precision 100%, recall 98,2%. La vitrina produjo 30 regiones, 30 analizadas y 27 afinidades individuales.
+- QA final: `npm test`, TypeScript, ESLint sin errores, build web, Playwright 14/14, build Debug de simulador, archive Release con SDK iOS 26 y validacion de App Store Connect.
+- TestFlight: Matchrim 1.0 (58), `wine.matchrim.app`, upload aceptado a las 13:30 CEST del 26-08-2026 y en procesamiento. Apple solo aviso que el deployment target 14.0 debera subir a 15.0 en primavera de 2027.
+
+## Expected / actual real
+
+| Material | Expected | Actual | Precision | Recall | Afinidades | Latencia | Estado |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `IMG_7605 2.jpg` vitrina | >=12 regiones y >=6 candidatos | 30 regiones, 30 analizadas, 27 candidatos | Sin ground truth completo | Sin ground truth completo | 27 | 59,17 s | PASS con cobertura parcial |
+| `IMG_7547 2.HEIC` carta | 16 vinos | 16 matches | 100% | 100% | 16 | 36,35 s | PASS |
+| `IMG_7548 2.HEIC` carta | 8 vinos | 8 matches | 100% | 100% | 8 | 20,10 s | PASS |
+| `IMG_7552 2.HEIC` pizarra | 13 vinos; excluir vermut/cerveza | 13 matches; no vinos espurios | 100% | 100% | 13 | 31,67 s | PASS |
+| `IMG_7553 2.HEIC` pizarra | 19 vinos | 18 matches; falta `L'Arnaude` pequeno | 100% | 94,7% | 18 | 43,87 s | PASS de umbral, limitacion abierta |
+
+El E2E registro un HTTP 500 transitorio en una region de la vitrina. El reintento recupero la region, no quedaron fallos finales y no hubo errores de consola no gestionados. La identidad de las 27 botellas de vitrina sigue requiriendo etiquetado manual por referencia antes de usar ese conjunto como benchmark de precision top-1/top-3.
+
+## Evidencia final
+
+- `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-real-e2e-v6/real-e2e-report.json`
+- `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-real-e2e-v6/`
+- `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-p0-remediation/ui-qa-results.json`
+- `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-p0-remediation/ios-build-58-launch.png`
+- `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-p0-remediation/ios-build-58-privacy-gate.png`
+- `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-p0-remediation/ios-build-58-dynamic-type.png`
+- `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-p0-remediation/ios-build-58-landscape.png`
+
+## Limitaciones restantes
+
+1. El iPhone `Goiko` figuraba `unavailable`; el build 58 se valido en iPhone 16 Pro Simulator iOS 26.0. El build 57 conserva la evidencia fisica previa.
+2. VoiceOver queda validado a nivel semantico/roles y tamanos tactiles, no mediante un recorrido hablado automatizado completo en build 58.
+3. La carta `IMG_7553` conserva una omision de texto muy pequeno y la vitrina no tiene ground truth exhaustivo de identidad.
+4. El deployment target 14.0 no bloquea esta subida, pero debe elevarse a iOS 15 antes de primavera de 2027.
+
+## Entorno seguro de partida
 
 - Carril: `/Users/GOIKO/2matchrim-p0-remediation-20260826`
 - Rama: `codex/2matchrim-p0-remediation-20260826`
-- Base recuperada: `52d21f2` (`Bump iOS build to 56`)
+- Base final reconciliada: `9343a1e` (`Improve wine search acronym aliases`)
 - El repositorio operativo de iCloud no se modifico: sus fuentes y objetos Git seguian `dataless` por un error de File Provider.
 - Se reconstruyeron sobre la base los cambios historicos de multietiqueta, carta y comparador desde el historial local de Codex. No se sobreescribio el cambio ajeno conocido de `search-wines`.
-- No se desplegaron Edge Functions, no se firmo un archive y no se subio ningun build.
+- Al iniciar esta remediacion no se habian desplegado Edge Functions, firmado un archive ni subido un build. El estado final queda documentado arriba.
 
-## Remediacion implementada
+## Remediacion implementada antes del cierre
 
 ### Safe areas y privacidad
 
 - Variables CSS unificadas para `env(safe-area-inset-*)` y safe insets reales de UIKit.
 - `MatchrimBridgeViewController` sincroniza top/bottom safe area y Dynamic Type con la WebView.
-- El CTA del aviso queda sticky por encima del nav inferior; una asercion compara su borde inferior con el borde superior del nav.
+- El CTA del aviso usa flujo compacto en movil y queda completamente por encima del nav inferior; una asercion compara ambos bordes.
 - Gate previo a cualquier `input[type=file]`: foto seleccionada solamente, envio de imagen/recortes, proveedores de IA, no subir personas/datos sensibles y persistencia por defecto.
 - Purpose strings de camara/fotos y politica actualizados para etiquetas, botellas, expositores, cartas, pizarras y platos.
 - La politica declara Matchrim/Winerim, Lovable AI Gateway y Google Gemini. No inventa una retencion: deja esa cifra como requisito legal previo a release externo.
@@ -29,7 +68,7 @@ Estado: implementacion local completada, QA determinista y visual movil superada
 - Pipeline por regiones: quality gate, detector, deduplicacion de cajas, crop por region, analisis por region, candidatos, agrupacion de referencias y ranking.
 - Overlay numerico; candidato, duda, evidencia y acciones viven en drawer. Deteccion, identidad y afinidad se muestran por separado.
 - Contrato `coverage`: `reported_complete`, `partial` o `unknown`, objetos detectados/estimados y notas. Un fixture nunca declara cobertura completa.
-- La funcion `detect-wine-regions` solicita y normaliza cobertura; no se ha desplegado.
+- La funcion `detect-wine-regions` solicitaba y normalizaba cobertura; en esta pasada previa aun no se habia desplegado.
 
 ### Afinidad y confianza
 
@@ -40,7 +79,7 @@ Estado: implementacion local completada, QA determinista y visual movil superada
 - La identidad de carta se calibra por posicion, productor, region/precio y evidencia textual. Sin `texto_fuente`, no puede entrar en banda alta.
 - La funcion de carta solicita `texto_fuente` y `dudas`; productor, region y estilo se marcan como posibles inferencias cuando el backend actual no los entrega.
 
-## QA ejecutada
+## QA previa al cierre
 
 ### Automatizada
 
@@ -89,9 +128,9 @@ Evidencia local:
 - `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-p0-remediation/native/multilabel-dynamic-type.png`
 - `/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-real-e2e/real-e2e-report.json`
 
-## Bloqueos y gate exacto
+## Gate historico ya resuelto
 
-TestFlight/deploy permanece **NO-GO** hasta cumplir todos:
+Este era el gate de partida. Los puntos operativos de despliegue, E2E, build y autorizacion quedaron resueltos en el cierre final; las limitaciones no resueltas se enumeran arriba.
 
 1. Materializar la fuente de verdad operativa y revisar el diff contra este carril sin sobrescribir trabajo ajeno.
 2. Desplegar `detect-wine-regions` y `analyze-wine-region` solo en staging, verificar CORS/OPTIONS, secretos, timeouts y logs.
@@ -112,4 +151,5 @@ npm run build
 npm run dev -- --host 127.0.0.1 --port 4173
 PYTHONPATH=/tmp/matchrim-playwright-runtime python3 scripts/qa-multi-wine-ui.py
 MATCHRIM_E2E_TIMEOUT_MS=45000 PYTHONPATH=/tmp/matchrim-playwright-runtime python3 scripts/qa-matchrim-real-e2e.py
+DEVELOPER_DIR=/Applications/Xcode-26.0.1.app/Contents/Developer xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -destination 'generic/platform=iOS' archive
 ```
