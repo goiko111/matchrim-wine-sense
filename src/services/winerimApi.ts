@@ -160,7 +160,7 @@ const normalizePrice = (rawWine: RawWinerimWine) => {
           label: priceKind.label,
         };
       })
-      .filter((price): price is NonNullable<WinerimWine['prices']>[number] => price !== null);
+      .filter((price): price is Exclude<typeof price, null> => price !== null);
 
     return prices.length > 0 ? prices : undefined;
   }
