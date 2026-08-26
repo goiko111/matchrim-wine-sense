@@ -13,6 +13,7 @@ import {
 import { buildMatchrimQaFixturePayload } from '../src/utils/matchrimQaFixtures';
 import { buildDetailedAffinityExplanation } from '../src/utils/wineAffinityExplanation';
 import { buildWineComparisonDecision } from '../src/utils/wineComparison';
+import { isWineMenuItem } from '../src/utils/wineMenuGrounding';
 import {
   calibrateInferredAffinity,
   calibrateMenuIdentityConfidence,
@@ -203,5 +204,10 @@ const qaMenu = buildMatchrimQaFixturePayload('scan-wine-menu', {
 });
 assert.equal((qaMenu.payload as { vinos: unknown[] }).vinos.length, 5);
 assert.equal((qaMenu.payload as { vinos: Array<{ nombre: string }> }).vinos[0].nombre, 'Txakoli G22');
+
+assert.equal(isWineMenuItem({ nombre: 'Vermouth Ataman', tipo: 'aperitivo', seccion: 'Vermouth' }), false);
+assert.equal(isWineMenuItem({ nombre: 'Cerveza artesanal', tipo: 'cerveza', seccion: 'Cervezas' }), false);
+assert.equal(isWineMenuItem({ nombre: 'Fino Ynocente', tipo: 'generoso', seccion: 'Generosos' }), true);
+assert.equal(isWineMenuItem({ nombre: 'Pedro Ximenez Don PX', tipo: 'dulce', seccion: 'Dulces' }), true);
 
 console.log('multi-wine scan checks: ok');

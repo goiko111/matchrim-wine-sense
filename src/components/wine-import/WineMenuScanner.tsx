@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { prepareImageForAnalysis } from "@/utils/imageAnalysis";
 import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
+import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import {
   calibrateInferredAffinity,
   calibrateMenuIdentityConfidence,
@@ -80,6 +81,7 @@ interface ScannedWine {
   razon?: string | null;
   texto_fuente?: string | null;
   dudas?: string[] | null;
+  campos_inferidos?: string[] | null;
   confidence?: number | null;
   servicio?: 'copa' | 'botella' | 'ambos' | null;
   seccion?: string | null;
@@ -110,6 +112,12 @@ interface WineMenuScannerProps {
 interface WineMenuScanResponse {
   vinos?: ScannedWine[];
   has_profile?: boolean;
+  coverage?: {
+    status?: 'reported_complete' | 'partial' | 'unknown';
+    extracted_wines?: number;
+    estimated_visible_wines?: number | null;
+    notes?: string[];
+  };
 }
 
 interface MatchrimProfilePayload {
@@ -162,7 +170,6 @@ const normalizeAttributesTo5 = (attributes: ScannedWine['atributos']) => {
 };
 
 const normalizeCompatibility = calibrateInferredAffinity;
-
 const normalizeProfileValue = (value: unknown) => {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) return null;
@@ -576,7 +583,16 @@ export const WineMenuScanner = ({
 
       if (data?.vinos && data.vinos.length > 0) {
 	      setScanPhase('ranking');
-        const normalizedWines = (data.vinos as ScannedWine[]).map(normalizeScannedWine);
+	        const normalizedWines = (data.vinos as ScannedWine[]).filter(isWineMenuItem).map(normalizeScannedWine);
+	        if (data.coverage?.status === 'partial') {
+	          const expected = data.coverage.estimated_visible_wines;
+	          setMenuQualityWarnings((warnings) => [
+	            ...warnings,
+	            expected && expected > normalizedWines.length
+	              ? `Cobertura parcial: ${normalizedWines.length} de aproximadamente ${expected} lineas legibles.`
+	              : 'Cobertura parcial: revisa la imagen y vuelve a escanear la seccion que falte.',
+	          ]);
+	        }
         setScannedWines(normalizedWines);
         setHasProfile(!!data.has_profile);
         onScanComplete?.(normalizedWines.length);
@@ -1790,6 +1806,9 @@ export const WineMenuScanner = ({
 	                  )}
 	                  {selectedPinWine.dudas && selectedPinWine.dudas.length > 0 && (
 	                    <p className="mt-1"><span className="font-semibold text-slate-900">Dudas:</span> {selectedPinWine.dudas.join(', ')}</p>
+	                  )}
+	                  {selectedPinWine.campos_inferidos && selectedPinWine.campos_inferidos.length > 0 && (
+	                    <p className="mt-1"><span className="font-semibold text-slate-900">Datos inferidos:</span> {selectedPinWine.campos_inferidos.join(', ')}</p>
 	                  )}
 	                </div>
 	                <AffinityExplanation

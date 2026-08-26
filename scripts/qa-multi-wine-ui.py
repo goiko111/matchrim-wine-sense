@@ -257,6 +257,14 @@ def run_privacy_safe_area_qa(browser, results, console_errors):
     assert continue_button.is_disabled()
     page.get_by_role("checkbox").check()
     assert continue_button.is_enabled()
+    acknowledgement = page.get_by_role("checkbox").locator("xpath=ancestor::label")
+    acknowledgement_box = acknowledgement.bounding_box()
+    button_box = continue_button.bounding_box()
+    if acknowledgement_box["y"] + acknowledgement_box["height"] > button_box["y"]:
+        raise AssertionError(
+            f"privacy CTA overlaps acknowledgement: acknowledgement={acknowledgement_box}, button={button_box}"
+        )
+    continue_button.evaluate("element => element.scrollIntoView({ block: 'center' })")
     button_box = continue_button.bounding_box()
     nav_box = page.get_by_role("navigation", name="Navegacion principal").bounding_box()
     if button_box["y"] + button_box["height"] > nav_box["y"]:
@@ -267,8 +275,8 @@ def run_privacy_safe_area_qa(browser, results, console_errors):
     dimensions = assert_no_horizontal_overflow(page, "privacy gate mobile")
     results.append({
         "case": "privacidad_y_safe_area",
-        "expected": "sin acceso a fotos antes del consentimiento y contenido por debajo de 59 px de safe area",
-        "actual": f"PASS gate_y={gate_top:.1f} cta_bottom={button_box['y'] + button_box['height']:.1f} nav_top={nav_box['y']:.1f} {dimensions}",
+        "expected": "sin acceso a fotos antes del consentimiento, sin solapes y por debajo de 59 px de safe area",
+        "actual": f"PASS gate_y={gate_top:.1f} acknowledgement_bottom={acknowledgement_box['y'] + acknowledgement_box['height']:.1f} cta_top={button_box['y']:.1f} cta_bottom={button_box['y'] + button_box['height']:.1f} nav_top={nav_box['y']:.1f} {dimensions}",
     })
     context.close()
 

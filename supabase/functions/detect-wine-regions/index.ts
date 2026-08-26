@@ -6,6 +6,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+const DETECTOR_VERSION = 'matchrim-region-detector-v3';
 
 const parseJsonObject = (raw: string) => {
   const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -53,6 +54,35 @@ const normalizeRegion = (value: unknown, index: number) => {
   };
 };
 
+type NormalizedRegion = NonNullable<ReturnType<typeof normalizeRegion>>;
+
+const intersectionOverUnion = (left: NormalizedRegion, right: NormalizedRegion) => {
+  const leftRight = left.box.x + left.box.width;
+  const leftBottom = left.box.y + left.box.height;
+  const rightRight = right.box.x + right.box.width;
+  const rightBottom = right.box.y + right.box.height;
+  const overlapWidth = Math.max(0, Math.min(leftRight, rightRight) - Math.max(left.box.x, right.box.x));
+  const overlapHeight = Math.max(0, Math.min(leftBottom, rightBottom) - Math.max(left.box.y, right.box.y));
+  const intersection = overlapWidth * overlapHeight;
+  if (!intersection) return 0;
+  const union = left.box.width * left.box.height + right.box.width * right.box.height - intersection;
+  return union > 0 ? intersection / union : 0;
+};
+
+const deduplicateRegions = (regions: NormalizedRegion[]) => {
+  const kept: NormalizedRegion[] = [];
+  [...regions]
+    .sort((left, right) => right.confidence - left.confidence)
+    .forEach((region) => {
+      if (!kept.some((candidate) => intersectionOverUnion(region, candidate) >= 0.72)) {
+        kept.push(region);
+      }
+    });
+  return kept
+    .sort((left, right) => left.box.y - right.box.y || left.box.x - right.box.x)
+    .map((region, index) => ({ ...region, id: `region-${index + 1}` }));
+};
+
 serve(async (request) => {
   if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
@@ -69,13 +99,15 @@ serve(async (request) => {
 Localiza TODAS las botellas o etiquetas de vino que podrian analizarse de forma independiente en esta foto. La foto puede contener una sola etiqueta, varias botellas alineadas, un expositor con oclusiones o reflejos, o elementos que no son vino.
 
 Reglas:
-- Devuelve entre 1 y 30 regiones reales. No uses una caja unica para toda la foto si hay varias botellas.
+- Devuelve entre 1 y 30 regiones reales. Haz una segunda pasada visual de izquierda a derecha y de arriba abajo antes de responder. No uses una caja unica para toda la foto si hay varias botellas.
 - Cada botella fisica visible debe tener su propia caja, incluso cuando varias sean la misma referencia.
 - La caja debe cubrir la etiqueta y suficiente cuerpo/cuello para distinguir la botella, sin incluir botellas vecinas si es evitable.
 - Incluye botellas parcialmente ocultas cuando haya evidencia suficiente.
 - No inventes regiones para huecos, reflejos, copas, latas, estantes o texto de una carta.
 - Las coordenadas son porcentajes 0-100 respecto a la imagen completa, con origen arriba a la izquierda.
 - confidence expresa confianza de deteccion, no confianza en la identidad.
+- Si hay mas de 30 objetos, selecciona las 30 etiquetas o botellas con mayor legibilidad y marca coverage.status como partial. estimated_visible_objects debe estimar todos los objetos, no solo los devueltos.
+- reported_complete solo es valido si la segunda pasada no encuentra ninguna botella adicional fuera de regions.
 
 Responde SOLO JSON:
 {
@@ -126,15 +158,19 @@ Responde SOLO JSON:
     const data = await response.json();
     const parsed = parseJsonObject(data.choices?.[0]?.message?.content || '{}');
     const rawRegions = Array.isArray(parsed.regions) ? parsed.regions : [];
-    const regions = rawRegions.map(normalizeRegion).filter(Boolean);
+    const normalizedRegions = rawRegions.map(normalizeRegion).filter((region): region is NormalizedRegion => Boolean(region));
+    const regions = deduplicateRegions(normalizedRegions).slice(0, 30);
     const rawCoverage = parsed.coverage && typeof parsed.coverage === 'object' && !Array.isArray(parsed.coverage)
       ? parsed.coverage as Record<string, unknown>
       : {};
-    const coverageStatus = rawCoverage.status === 'reported_complete' || rawCoverage.status === 'partial'
+    let coverageStatus = rawCoverage.status === 'reported_complete' || rawCoverage.status === 'partial'
       ? rawCoverage.status
       : 'unknown';
     const estimatedVisibleObjects = Number(rawCoverage.estimated_visible_objects);
     const coverageConfidence = Number(rawCoverage.confidence);
+    if (Number.isFinite(estimatedVisibleObjects) && estimatedVisibleObjects > regions.length) {
+      coverageStatus = 'partial';
+    }
 
     return new Response(JSON.stringify({
       image_kind: typeof parsed.image_kind === 'string' ? parsed.image_kind : 'unknown',
@@ -151,7 +187,7 @@ Responde SOLO JSON:
           : [],
       },
       notes: Array.isArray(parsed.notes) ? parsed.notes.filter((note) => typeof note === 'string').slice(0, 5) : [],
-      detector_version: 'matchrim-region-detector-v2',
+      detector_version: DETECTOR_VERSION,
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('detect-wine-regions failed:', error);
@@ -165,7 +201,7 @@ Responde SOLO JSON:
         confidence: null,
         notes: ['La deteccion no termino.'],
       },
-      detector_version: 'matchrim-region-detector-v2',
+      detector_version: DETECTOR_VERSION,
     }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 });

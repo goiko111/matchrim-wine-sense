@@ -74,7 +74,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
 
       <Button
         type="button"
-        className="sticky bottom-[calc(5rem+var(--matchrim-safe-bottom))] z-10 mt-4 min-h-12 w-full shadow-sm"
+        className="mt-4 min-h-12 w-full"
         disabled={!checked}
         onClick={continueToScanner}
       >

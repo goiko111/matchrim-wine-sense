@@ -6,6 +6,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+const ANALYSIS_VERSION = 'matchrim-region-analysis-v2';
 
 const parseJsonObject = (raw: string) => {
   const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -19,7 +20,7 @@ const stringArray = (value: unknown) => Array.isArray(value)
   ? value.filter((item) => typeof item === 'string' && item.trim()).slice(0, 8)
   : [];
 
-const normalizeCandidate = (value: unknown) => {
+const normalizeCandidate = (value: unknown, visibleText: string[]) => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const raw = value as Record<string, unknown>;
   const name = typeof raw.name === 'string' ? raw.name.trim() : '';
@@ -33,6 +34,21 @@ const normalizeCandidate = (value: unknown) => {
     const numeric = Number(sensory?.[key]);
     return Number.isFinite(numeric) ? clamp(Math.round(numeric), 1, 5) : null;
   };
+  const evidence = stringArray(raw.evidence);
+  const uncertaintyReasons = stringArray(raw.uncertainty_reasons);
+  const inferredFields = stringArray(raw.inferred_fields);
+  const identitySignals = [raw.producer, raw.vintage, raw.region, raw.country]
+    .filter((signal) => typeof signal === 'number' || (typeof signal === 'string' && signal.trim())).length;
+  let confidence = clamp(Number(raw.confidence) || 0.35, 0, 1);
+  if (visibleText.length === 0) confidence = Math.min(confidence, 0.4);
+  if (evidence.length === 0) confidence = Math.min(confidence, 0.52);
+  else if (evidence.length < 2) confidence = Math.min(confidence, 0.69);
+  if (identitySignals === 0) confidence = Math.min(confidence, 0.62);
+  if (uncertaintyReasons.length > 0) confidence = Math.min(confidence, 0.78);
+  if (inferredFields.some((field) => ['name', 'nombre', 'producer', 'productor'].includes(field.toLowerCase()))) {
+    confidence = Math.min(confidence, 0.55);
+  }
+
   return {
     name,
     producer: typeof raw.producer === 'string' && raw.producer.trim() ? raw.producer.trim() : null,
@@ -41,11 +57,11 @@ const normalizeCandidate = (value: unknown) => {
     country: typeof raw.country === 'string' && raw.country.trim() ? raw.country.trim() : null,
     grapes: stringArray(raw.grapes),
     alcohol: Number.isFinite(alcohol) ? alcohol : null,
-    confidence: clamp(Number(raw.confidence) || 0.35, 0, 1),
+    confidence: Math.round(confidence * 100) / 100,
     source: 'label',
-    evidence: stringArray(raw.evidence),
-    uncertainty_reasons: stringArray(raw.uncertainty_reasons),
-    inferred_fields: stringArray(raw.inferred_fields),
+    evidence,
+    uncertainty_reasons: uncertaintyReasons,
+    inferred_fields: inferredFields,
     sensory_attributes: sensory ? {
       potencia: normalizeSensory('potencia'),
       acidez: normalizeSensory('acidez'),
@@ -78,6 +94,7 @@ Reglas:
 - confidence es la confianza en la identidad completa, no solo en una palabra visible.
 - Un candidato por encima de 0.72 requiere nombre claramente visible y al menos otra senal coherente (productor, anada, region o diseno distintivo).
 - Los candidatos alternativos deben explicar la ambiguedad.
+- evidence debe citar al menos dos fragmentos visuales independientes para cualquier confidence >= 0.72. No cuentes conocimiento general como evidencia visual.
 - sensory_attributes es una inferencia 1-5. Usa null cuando la identidad o el estilo no permitan estimarlo.
 - inferred_fields enumera cualquier campo no leido literalmente en la imagen.
 
@@ -138,20 +155,25 @@ Responde SOLO JSON:
 
     const data = await response.json();
     const parsed = parseJsonObject(data.choices?.[0]?.message?.content || '{}');
+    const visibleText = stringArray(parsed.visible_text);
     const rawCandidates = Array.isArray(parsed.candidates) ? parsed.candidates : [];
-    const candidates = rawCandidates.map(normalizeCandidate).filter(Boolean).slice(0, 3);
+    const candidates = rawCandidates
+      .map((candidate) => normalizeCandidate(candidate, visibleText))
+      .filter(Boolean)
+      .sort((left, right) => (right?.confidence ?? 0) - (left?.confidence ?? 0))
+      .slice(0, 3);
 
     return new Response(JSON.stringify({
-      visible_text: stringArray(parsed.visible_text),
+      visible_text: visibleText,
       candidates,
-      analysis_version: 'matchrim-region-analysis-v1',
+      analysis_version: ANALYSIS_VERSION,
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('analyze-wine-region failed:', error);
     return new Response(JSON.stringify({
       error: error instanceof Error ? error.message : 'Error desconocido',
       candidates: [],
-      analysis_version: 'matchrim-region-analysis-v1',
+      analysis_version: ANALYSIS_VERSION,
     }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 });
