@@ -179,12 +179,15 @@ def compare_wine_names(expected_names, actual_names):
 
 def wait_for_terminal_state(page, mode):
     success_markers = (("Lote listo para revisar",) if mode == "etiqueta" else ("Lista de la carta",))
+    abstention_markers = (("Analisis incompleto",) if mode == "etiqueta" else ("No ha salido un escaneo",))
     failure_markers = ("No se pudo", "No hay conexion", "Error al", "Vuelve a intentarlo", "No hemos podido")
     deadline = time.monotonic() + TIMEOUT_MS / 1000
     while time.monotonic() < deadline:
         text = page.locator("body").inner_text()
         if any(marker in text for marker in success_markers):
             return "completed", text
+        if any(marker in text for marker in abstention_markers):
+            return "abstained", text
         if any(marker in text for marker in failure_markers):
             return "blocked", text
         page.wait_for_timeout(500)
@@ -197,10 +200,17 @@ def compact_backend_observation(api_calls):
     menu = next((call for call in reversed(api_calls) if call["function"] == "scan-wine-menu"), None)
     if menu:
         payload = menu.get("payload") or {}
+        wines = payload.get("vinos", []) if isinstance(payload.get("vinos"), list) else []
         return {
             "function": "scan-wine-menu", "http_status": menu["status"],
             "version": payload.get("scan_version"), "coverage": payload.get("coverage"),
-            "names": [wine.get("nombre") for wine in payload.get("vinos", []) if wine.get("nombre")],
+            "names": [wine.get("nombre") for wine in wines if isinstance(wine, dict) and wine.get("nombre")],
+            "items": [{
+                "name": wine.get("nombre"),
+                "confidence": wine.get("confidence"),
+                "doubts": wine.get("dudas") if isinstance(wine.get("dudas"), list) else [],
+                "source_text": wine.get("texto_fuente"),
+            } for wine in wines if isinstance(wine, dict) and wine.get("nombre")],
         }
     detector_payload = detector.get("payload", {}) if detector else {}
     detected_region_ids = [
@@ -298,6 +308,7 @@ def run_fixture(browser, fixture, file_path):
     latency_ms = round((time.monotonic() - started) * 1000)
     backend = compact_backend_observation(api_calls)
 
+    expectation = fixture.get("expectation", "inherit")
     if fixture["mode"] == "etiqueta":
         result_count = page.locator('button[aria-label^="Region "]').count()
         anchored_pins = result_count
@@ -306,12 +317,23 @@ def run_fixture(browser, fixture, file_path):
         coverage = next((line.strip() for line in body_text.splitlines() if "Cobertura" in line), None)
         accuracy = None
         expected = fixture["expected_min_results"]
-        passed = (
-            terminal_state == "completed" and result_count >= expected
-            and backend.get("identified_candidates", 0) >= fixture["expected_min_identified"]
-            and individual_affinity_scores >= fixture["expected_min_identified"]
-            and not backend.get("final_failed_regions")
+        high_confidence_results = sum(
+            1 for region in backend.get("region_results", [])
+            if isinstance(region.get("confidence"), (int, float)) and region["confidence"] >= 0.72
         )
+        if expectation == "abstain":
+            passed = (
+                terminal_state == "completed" and result_count >= expected
+                and high_confidence_results <= fixture.get("max_high_confidence_results", 0)
+                and not backend.get("final_failed_regions")
+            )
+        else:
+            passed = (
+                terminal_state == "completed" and result_count >= expected
+                and backend.get("identified_candidates", 0) >= fixture["expected_min_identified"]
+                and individual_affinity_scores >= fixture["expected_min_identified"]
+                and not backend.get("final_failed_regions")
+            )
     else:
         result_count = page.locator('button[aria-label^="Abrir vino "]').count()
         anchored_pins = page.locator('button[aria-label^="Vino "]').count()
@@ -321,11 +343,21 @@ def run_fixture(browser, fixture, file_path):
             1 for value in page.locator('button[aria-label^="Abrir vino "]').all_inner_texts()
             if re.search(r"(?<!\d)\d{1,3}%(?!\d)", value)
         )
-        expected = len(fixture["expected_wines"])
-        passed = (
-            terminal_state == "completed" and accuracy["precision"] >= MIN_MENU_PRECISION
-            and accuracy["recall"] >= MIN_MENU_RECALL and anchored_pins > 0
+        high_confidence_results = sum(
+            1 for item in backend.get("items", [])
+            if isinstance(item.get("confidence"), (int, float)) and item["confidence"] >= 0.72
         )
+        expected = len(fixture["expected_wines"])
+        if expectation == "abstain":
+            passed = (
+                terminal_state in {"completed", "abstained"} and not accuracy["false_positives"]
+                and high_confidence_results <= fixture.get("max_high_confidence_results", 0)
+            )
+        else:
+            passed = (
+                terminal_state == "completed" and accuracy["precision"] >= MIN_MENU_PRECISION
+                and accuracy["recall"] >= MIN_MENU_RECALL and anchored_pins > 0
+            )
 
     has_overflow = page.evaluate("() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2")
     overflow_elements = page.evaluate("""() => Array.from(document.querySelectorAll('body *'))
@@ -353,8 +385,10 @@ def run_fixture(browser, fixture, file_path):
     result = {
         "fixture": fixture["id"], "source": str(fixture["source"]), "fixture_sha256": sha256(file_path),
         "mode": fixture["mode"], "expected_results": expected, "expected_rationale": fixture["rationale"],
+        "expectation": expectation,
         "terminal_state": terminal_state, "actual_results": result_count, "anchored_pins": anchored_pins,
         "individual_affinity_scores": individual_affinity_scores,
+        "high_confidence_results": high_confidence_results,
         "coverage": coverage, "accuracy": accuracy, "backend": backend, "latency_ms": latency_ms,
         "horizontal_overflow": has_overflow, "console_errors": console_errors,
         "overflow_elements": overflow_elements,

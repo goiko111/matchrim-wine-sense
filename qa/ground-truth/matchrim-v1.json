@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "dataset_id": "matchrim-ground-truth-v1",
+  "created_at": "2026-08-26",
+  "scene_count": 30,
+  "annotation_policy": {
+    "originals": "Human-reviewed expected identities from MATCHRIM_P0_QA_2026-08-15.md and the real E2E acceptance matrix.",
+    "variants": "Controlled full-frame transformations inherit only the source annotations. Model output is never used as ground truth.",
+    "limitations": [
+      "Five independent captures are available; the other 25 scenes are deterministic robustness variants, not new captures.",
+      "The fridge has human-reviewed count thresholds but no exhaustive per-bottle identity or bounding-box annotation.",
+      "Precision and recall are reported for menu identity. Fridge detection reports capped coverage and abstention separately."
+    ]
+  },
+  "variants": [
+    {
+      "id": "original",
+      "kind": "original",
+      "difficulty": "baseline",
+      "expectation": "inherit",
+      "transform": {}
+    },
+    {
+      "id": "low-light",
+      "kind": "controlled",
+      "difficulty": "low_light",
+      "expectation": "inherit",
+      "transform": { "brightness": 0.56, "contrast": 0.92 }
+    },
+    {
+      "id": "uneven-light",
+      "kind": "controlled",
+      "difficulty": "uneven_light",
+      "expectation": "inherit",
+      "transform": { "gradient_min": 0.58, "gradient_max": 1.12 }
+    },
+    {
+      "id": "perspective",
+      "kind": "controlled",
+      "difficulty": "perspective",
+      "expectation": "inherit",
+      "transform": { "inset_left": 0.06, "inset_right": 0.025 }
+    },
+    {
+      "id": "small-text",
+      "kind": "controlled",
+      "difficulty": "small_text",
+      "expectation": "inherit",
+      "transform": { "max_dimension": 900, "jpeg_quality": 84 }
+    },
+    {
+      "id": "illegible",
+      "kind": "controlled",
+      "difficulty": "illegible",
+      "expectation": "abstain",
+      "transform": { "max_dimension": 480, "blur_sigma": 3.2, "jpeg_quality": 76 }
+    }
+  ],
+  "sources": [
+    {
+      "id": "multibottle-fridge",
+      "path": "/Users/GOIKO/Downloads/IMG_7605 2.jpg",
+      "sha256": "778d4dcbbdb0c29127795f03d56afd87de9762326543a14e38be5b26d408e11f",
+      "mode": "etiqueta",
+      "capture_kind": "fridge_display",
+      "annotation_provenance": "Human count review; identities intentionally not treated as exhaustive ground truth.",
+      "ground_truth": {
+        "annotation_scope": "count_threshold",
+        "visible_bottles_estimate": 50,
+        "expected_min_regions": 12,
+        "expected_min_identified": 6,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "img-7547-2",
+      "path": "/Users/GOIKO/Downloads/IMG_7547 2.HEIC",
+      "sha256": "fc9524d652bb9ee2ed221bacabaef17315278a01639e03de6d5d58c885e312e2",
+      "mode": "carta-vinos",
+      "capture_kind": "dense_printed_menu",
+      "annotation_provenance": "Human-reviewed line identities from the P0 acceptance matrix.",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Laurent Perrier La Cuvee",
+          "Laurent Perrier Ultra Brut",
+          "Laurent Perrier Rose",
+          "Gaudensius blanco",
+          "Lugana Allegrini",
+          "Greco di Tufo Terredora di Paolo",
+          "Quater Vitis Firriato",
+          "Pouilly Fume Blanc Reverdy y Fils",
+          "Amarone",
+          "Barbaresco Marchesi di Barolo",
+          "Barolo Marchesi di Barolo",
+          "Dolcetto d'Alba Elio Grasso",
+          "Bricco dell'Uccellone Barbera",
+          "Nebbiolo Nino Negri",
+          "Costa di Rose",
+          "La Rosa"
+        ]
+      }
+    },
+    {
+      "id": "img-7548-2",
+      "path": "/Users/GOIKO/Downloads/IMG_7548 2.HEIC",
+      "sha256": "d8db5c9f4b6a6c8879abf3f721b428f5c4689ca08ee21f83735ceea0d0c50b47",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_menu",
+      "annotation_provenance": "Human-reviewed line identities from the P0 acceptance matrix.",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Laurent Perrier La Cuvee",
+          "Laurent Perrier Ultra Brut",
+          "Laurent Perrier Rose",
+          "Gaudensius Blanc de Noir",
+          "Costa di Rose Umberto Cesari",
+          "La Rosa Raventos i Blanc",
+          "Chateau Miraval Rose",
+          "Chateau d'Esclans Whispering Angel"
+        ]
+      }
+    },
+    {
+      "id": "img-7552-2",
+      "path": "/Users/GOIKO/Downloads/IMG_7552 2.HEIC",
+      "sha256": "40594c196daf6cb0b8e5a954b9a98cd7a51134114976a42e95cda981989ba15f",
+      "mode": "carta-vinos",
+      "capture_kind": "handwritten_board",
+      "annotation_provenance": "Human-reviewed wine-only identities; beer and vermouth are explicit negatives.",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "excluded_categories": ["beer", "vermouth"],
+        "expected_wines": [
+          "Joan Raventos Rose BN",
+          "Agusti Torello Kripta",
+          "Maxim Riesling Sekt Brut",
+          "Manzanilla Pasada Xixarito",
+          "Manzanilla Alegria",
+          "Fino Viejo Tradicion",
+          "Fino Ynocente",
+          "Amontillado Vina AB",
+          "Amontillado El Contrabandista",
+          "Bertola Palo Cortado",
+          "Oloroso Don Nuno",
+          "Moscatel Zumbral",
+          "Pedro Ximenez Don PX"
+        ]
+      }
+    },
+    {
+      "id": "img-7553-2",
+      "path": "/Users/GOIKO/Downloads/IMG_7553 2.HEIC",
+      "sha256": "0667f77f488bb19959bf2f40526aabbbfa71936044b04157afc0c4ef78aac60b",
+      "mode": "carta-vinos",
+      "capture_kind": "handwritten_board",
+      "annotation_provenance": "Human-reviewed line identities from the P0 acceptance matrix.",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Finca la Olma ecologico",
+          "Can Feixes",
+          "Forlong ecologico",
+          "Dereszla Tokaji Dry",
+          "Nat Cool Mosel",
+          "Mein Castes Brancas",
+          "Huerto de la Condesa",
+          "Percheron Chenin Blanc",
+          "Mayela 2023",
+          "Domaine de la Janasse",
+          "Huerto de la Condesa",
+          "Prieler Blaufrankisch",
+          "Diaz Bayo 4 Meses",
+          "Agricola de Cadalso",
+          "Casa Castillo",
+          "La Vina de Ayer",
+          "Nat Cool Zorzal",
+          "Lopez de Haro Rosado",
+          "L'Arnaude"
+        ]
+      }
+    }
+  ]
+}
