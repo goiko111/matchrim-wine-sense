@@ -154,13 +154,13 @@ const normalizePrice = (rawWine: RawWinerimWine) => {
 
         return {
           price: numericPrice,
-          currency: (priceRecord.currency || priceRecord.moneda || '€') as string | { name: string; symbol: string },
+          currency: priceRecord.currency || priceRecord.moneda || '€',
           kind: priceKind.kind,
           isKindInferred: priceKind.isKindInferred,
           label: priceKind.label,
         };
       })
-      .filter((price): price is Exclude<typeof price, null> => price !== null);
+      .filter((price): price is NonNullable<WinerimWine['prices']>[number] => price !== null);
 
     return prices.length > 0 ? prices : undefined;
   }

@@ -905,7 +905,7 @@ export const WineMenuScanner = ({
 		                        {scannedWines.map((wine, index) => {
 		                          const position = getWinePosition(wine);
 		                          if (!position) return null;
-		                          const width = Math.max(normalizePercentage(wine.posicion?.width) ?? 4, 4);
+		                          const width = Math.max(position.width ?? 4, 4);
 		                          const height = Math.max(wine.posicion?.height ?? 3, 3);
 
 		                          return (
