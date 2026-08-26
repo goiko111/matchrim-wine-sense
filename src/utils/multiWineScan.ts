@@ -291,7 +291,11 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
     if (region.status === 'discarded' || region.status === 'unrecognized') return;
     const candidate = getSelectedCandidate(region);
     if (!candidate) return;
-    const key = buildCanonicalWineKey(candidate);
+    const canGroup = region.status === 'recognized'
+      && candidate.confidence >= 0.72
+      && candidate.uncertaintyReasons.length === 0;
+    const canonicalKey = buildCanonicalWineKey(candidate);
+    const key = canGroup ? canonicalKey : `${canonicalKey}|region:${region.id}`;
     const current = groups.get(key);
     if (current) {
       current.regionIds.push(region.id);

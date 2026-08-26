@@ -65,6 +65,33 @@ export const normalizeWineAttributesForInsight = (attrs?: WineAttributeInput | n
     : normalized as Record<AttributeKey, number>;
 };
 
+export const calculateLocalMatchrimAffinity = (
+  profile: MatchrimProfileLike | null | undefined,
+  rawWineAttributes?: WineAttributeInput | null,
+) => {
+  if (!profile) return null;
+  const wineAttributes = normalizeWineAttributesForInsight(rawWineAttributes);
+  if (!wineAttributes) return null;
+  const profileValues = {
+    potente: clampAttribute(profile.potente),
+    acidez: clampAttribute(profile.acidez),
+    dulce: clampAttribute(profile.dulce),
+    tanico: clampAttribute(profile.tanico),
+    afrutado: clampAttribute(profile.afrutado),
+  };
+  if (Object.values(profileValues).some((value) => value === null)) return null;
+  const normalizedProfile = profileValues as Record<AttributeKey, number>;
+  const distance = Math.sqrt(
+    Math.pow(normalizedProfile.potente - wineAttributes.potente, 2)
+    + Math.pow(normalizedProfile.acidez - wineAttributes.acidez, 2)
+    + Math.pow(normalizedProfile.dulce - wineAttributes.dulce, 2)
+    + Math.pow(normalizedProfile.tanico - wineAttributes.tanico, 2)
+    + Math.pow(normalizedProfile.afrutado - wineAttributes.afrutado, 2)
+  );
+  const rawScore = Math.max(0, Math.min(100, (1 - distance / Math.sqrt(5 * Math.pow(4, 2))) * 100));
+  return Math.round(50 + (rawScore - 50) * 0.85);
+};
+
 const buildInsightText = (
   label: string,
   direction: AffinityAttributeInsight['direction'],

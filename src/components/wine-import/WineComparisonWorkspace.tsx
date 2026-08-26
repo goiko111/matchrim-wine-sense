@@ -58,6 +58,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
   const [serviceFormat, setServiceFormat] = useState<WineServiceFormat>('any');
   const hasPrices = wines.some((wine) => typeof wine.price === 'number');
   const hasServiceFormats = wines.some((wine) => wine.service);
+  const hasAffinities = wines.some((wine) => typeof wine.affinity === 'number' && Number.isFinite(wine.affinity));
 
   useEffect(() => {
     setSelectedIds((current) => {
@@ -66,6 +67,10 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
       return available.length >= 2 ? available : wines.slice(0, 3).map((wine) => wine.id);
     });
   }, [wines]);
+
+  useEffect(() => {
+    if (wines.length > 0 && !hasAffinities && priority === 'affinity') setPriority('certainty');
+  }, [hasAffinities, priority, wines.length]);
 
   const selectedWines = useMemo(
     () => selectedIds.flatMap((id) => {
@@ -81,6 +86,9 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     budget: numericBudget,
     serviceFormat: mode === 'service' ? serviceFormat : 'any',
   }), [mode, numericBudget, priority, selectedWines, serviceFormat]);
+  const decisionLabel = priority === 'certainty'
+    ? (mode === 'service' ? 'Identidad más segura para servir' : 'Identidad más segura')
+    : (mode === 'service' ? 'Elección para servir' : 'Elección para ti');
 
   const toggleWine = (wineId: string) => {
     selectionEditedRef.current = true;
@@ -155,7 +163,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               <Select value={priority} onValueChange={(value) => setPriority(value as WineDecisionPriority)}>
                 <SelectTrigger id="comparison-priority" className="mt-2 min-h-11"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="affinity">Mayor afinidad</SelectItem>
+                  <SelectItem value="affinity" disabled={!hasAffinities}>Mayor afinidad</SelectItem>
                   <SelectItem value="certainty">Identidad más segura</SelectItem>
                   <SelectItem value="value" disabled={!hasPrices}>Mejor valor</SelectItem>
                 </SelectContent>
@@ -193,7 +201,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 <div>
                   <div className="flex items-center gap-2 text-sm font-semibold text-red-950">
                     {priority === 'certainty' ? <ShieldCheck className="h-4 w-4" /> : <Scale className="h-4 w-4" />}
-                    {mode === 'service' ? 'Elección para servir' : 'Elección para ti'}
+                    {decisionLabel}
                   </div>
                   <p className="mt-1 text-lg font-semibold text-slate-950">{decision.primary.wine.name}</p>
                 </div>

@@ -46,8 +46,9 @@ FIXTURES = [
             "Quater Vitis Firriato", "Pouilly Fume Blanc Reverdy y Fils", "Amarone",
             "Barbaresco Marchesi di Barolo", "Barolo Marchesi di Barolo",
             "Dolcetto d'Alba Elio Grasso", "Bricco dell'Uccellone Barbera", "Nebbiolo Nino Negri",
+            "Costa di Rose", "La Rosa",
         ],
-        "rationale": "Catorce lineas de vino completas y legibles entre la pagina principal y el borde derecho.",
+        "rationale": "Dieciseis referencias legibles: diez lineas completas y seis identidades visibles en el borde derecho.",
     },
     {
         "id": "img_7548-2",
@@ -202,22 +203,53 @@ def compact_backend_observation(api_calls):
             "names": [wine.get("nombre") for wine in payload.get("vinos", []) if wine.get("nombre")],
         }
     detector_payload = detector.get("payload", {}) if detector else {}
+    detected_region_ids = [
+        region.get("id") for region in detector_payload.get("regions", []) if region.get("id")
+    ]
     candidate_names = []
     analyzer_versions = set()
+    analysis_by_region = {}
     for call in analyzers:
         payload = call.get("payload") or {}
         if payload.get("analysis_version"):
             analyzer_versions.add(payload["analysis_version"])
+        region_id = call.get("region_id") or f"unknown-{len(analysis_by_region) + 1}"
+        analysis_by_region.setdefault(region_id, []).append(call)
+    recovered_analysis_failures = 0
+    final_failed_regions = []
+    region_results = []
+    for region_id, calls in analysis_by_region.items():
+        successful = [call for call in calls if call["status"] == 200]
+        if successful and any(call["status"] != 200 for call in calls):
+            recovered_analysis_failures += 1
+        if not successful:
+            final_failed_regions.append(region_id)
+            continue
+        payload = successful[-1].get("payload") or {}
         candidates = payload.get("candidates") or []
         if candidates and candidates[0].get("name"):
             candidate_names.append(candidates[0]["name"])
+        region_results.append({
+            "region_id": region_id,
+            "attempts": len(calls),
+            "status_codes": [call["status"] for call in calls],
+            "candidate": candidates[0].get("name") if candidates else None,
+            "confidence": candidates[0].get("confidence") if candidates else None,
+        })
+    missing_region_ids = [region_id for region_id in detected_region_ids if region_id not in analysis_by_region]
+    final_failed_regions.extend(missing_region_ids)
     return {
         "function": "multi-wine-label",
         "detector_http_status": detector.get("status") if detector else None,
         "detector_version": detector_payload.get("detector_version"),
         "analysis_versions": sorted(analyzer_versions), "coverage": detector_payload.get("coverage"),
-        "detected_regions": len(detector_payload.get("regions") or []), "analyzed_regions": len(analyzers),
+        "detected_regions": len(detector_payload.get("regions") or []),
+        "analyzed_regions": len(analysis_by_region),
+        "analysis_attempts": len(analyzers),
+        "recovered_analysis_failures": recovered_analysis_failures,
+        "final_failed_regions": sorted(set(final_failed_regions)),
         "identified_candidates": len(candidate_names), "candidate_names": candidate_names,
+        "region_results": region_results,
     }
 
 
@@ -237,10 +269,19 @@ def run_fixture(browser, fixture, file_path):
             return
         function_name = path.split(marker, 1)[1].split("/", 1)[0]
         try:
+            request_payload = response.request.post_data_json or {}
+        except Exception:
+            request_payload = {}
+        try:
             payload = response.json()
         except Exception as error:
             payload = {"response_parse_error": str(error)}
-        api_calls.append({"function": function_name, "status": response.status, "payload": payload})
+        api_calls.append({
+            "function": function_name,
+            "status": response.status,
+            "region_id": request_payload.get("region_id"),
+            "payload": payload,
+        })
 
     page.on("response", capture_response)
     page.add_init_script("""
@@ -260,18 +301,26 @@ def run_fixture(browser, fixture, file_path):
     if fixture["mode"] == "etiqueta":
         result_count = page.locator('button[aria-label^="Region "]').count()
         anchored_pins = result_count
+        result_rows = page.locator('button[aria-label^="Abrir detalle de "]').all_inner_texts()
+        individual_affinity_scores = sum(1 for row in result_rows if re.search(r"(?<!\d)\d{1,3}%(?!\d)", row))
         coverage = next((line.strip() for line in body_text.splitlines() if "Cobertura" in line), None)
         accuracy = None
         expected = fixture["expected_min_results"]
         passed = (
             terminal_state == "completed" and result_count >= expected
             and backend.get("identified_candidates", 0) >= fixture["expected_min_identified"]
+            and individual_affinity_scores >= fixture["expected_min_identified"]
+            and not backend.get("final_failed_regions")
         )
     else:
         result_count = page.locator('button[aria-label^="Abrir vino "]').count()
         anchored_pins = page.locator('button[aria-label^="Vino "]').count()
         coverage = backend.get("coverage")
         accuracy = compare_wine_names(fixture["expected_wines"], backend.get("names", []))
+        individual_affinity_scores = sum(
+            1 for value in page.locator('button[aria-label^="Abrir vino "]').all_inner_texts()
+            if re.search(r"(?<!\d)\d{1,3}%(?!\d)", value)
+        )
         expected = len(fixture["expected_wines"])
         passed = (
             terminal_state == "completed" and accuracy["precision"] >= MIN_MENU_PRECISION
@@ -279,15 +328,37 @@ def run_fixture(browser, fixture, file_path):
         )
 
     has_overflow = page.evaluate("() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2")
+    overflow_elements = page.evaluate("""() => Array.from(document.querySelectorAll('body *'))
+      .filter((element) => element.scrollWidth > element.clientWidth + 2)
+      .slice(0, 12)
+      .map((element) => ({
+        tag: element.tagName,
+        className: typeof element.className === 'string' ? element.className.slice(0, 180) : '',
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        text: (element.textContent || '').trim().slice(0, 100),
+      }))""")
     screenshot = ARTIFACTS / f"{fixture['id']}-real-mobile.png"
     page.screenshot(path=str(screenshot), full_page=True)
-    passed = passed and not has_overflow and not console_errors
+    unhandled_console_errors = list(console_errors)
+    recovered_failures = backend.get("recovered_analysis_failures", 0)
+    for _ in range(recovered_failures):
+        recovered_index = next((
+            index for index, message in enumerate(unhandled_console_errors)
+            if "status of 500" in message
+        ), None)
+        if recovered_index is not None:
+            unhandled_console_errors.pop(recovered_index)
+    passed = passed and not has_overflow and not unhandled_console_errors
     result = {
         "fixture": fixture["id"], "source": str(fixture["source"]), "fixture_sha256": sha256(file_path),
         "mode": fixture["mode"], "expected_results": expected, "expected_rationale": fixture["rationale"],
         "terminal_state": terminal_state, "actual_results": result_count, "anchored_pins": anchored_pins,
+        "individual_affinity_scores": individual_affinity_scores,
         "coverage": coverage, "accuracy": accuracy, "backend": backend, "latency_ms": latency_ms,
         "horizontal_overflow": has_overflow, "console_errors": console_errors,
+        "overflow_elements": overflow_elements,
+        "unhandled_console_errors": unhandled_console_errors,
         "network_failures": network_failures, "screenshot": str(screenshot),
         "status": "PASS" if passed else "BLOCKED_OR_FAIL", "visible_excerpt": body_text[-1200:],
     }
@@ -303,7 +374,16 @@ def main():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
         for fixture, file_path in materialized:
-            results.append(run_fixture(browser, fixture, file_path))
+            print(f"RUN {fixture['id']}", flush=True)
+            result = run_fixture(browser, fixture, file_path)
+            results.append(result)
+            accuracy = result.get("accuracy") or {}
+            print(
+                f"DONE {fixture['id']} {result['status']} results={result['actual_results']} "
+                f"precision={accuracy.get('precision', '-')} recall={accuracy.get('recall', '-')} "
+                f"latency_ms={result['latency_ms']}",
+                flush=True,
+            )
         browser.close()
     report = {
         "base_url": BASE_URL, "interception": False, "production_guard": True,

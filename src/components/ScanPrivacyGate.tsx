@@ -36,7 +36,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
   };
 
   return (
-    <section className="border-y border-stone-200 bg-white py-6 sm:border sm:px-6" aria-labelledby="scan-privacy-title">
+    <section className="border-y border-stone-200 bg-white py-4 sm:border sm:px-6 sm:py-6" aria-labelledby="scan-privacy-title">
       <div className="flex items-start gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-800">
           <ShieldCheck className="h-5 w-5" />
@@ -49,22 +49,22 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
         </div>
       </div>
 
-      <div className="mt-5 divide-y divide-stone-100 border-y border-stone-200 text-sm">
-        <div className="flex gap-3 py-3">
+      <div className="mt-4 divide-y divide-stone-100 border-y border-stone-200 text-sm sm:mt-5">
+        <div className="flex gap-3 py-2 sm:py-3">
           <Camera className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
           <p className="leading-5 text-slate-700">Matchrim accede a la camara o a la foto que selecciones; no examina el resto de tu fototeca.</p>
         </div>
-        <div className="flex gap-3 py-3">
+        <div className="flex gap-3 py-2 sm:py-3">
           <BrainCircuit className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
           <p className="leading-5 text-slate-700">La imagen y sus recortes se envian a funciones de Matchrim y a proveedores de IA para detectar texto y vinos. No subas imagenes con personas o datos sensibles.</p>
         </div>
-        <div className="flex gap-3 py-3">
+        <div className="flex gap-3 py-2 sm:py-3">
           <Trash2 className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
           <p className="leading-5 text-slate-700">El original no se guarda en tu cuenta por defecto. Los resultados que confirmes si pueden guardarse en tu historial o lista de vinos.</p>
         </div>
       </div>
 
-      <label className="mt-5 flex min-h-11 cursor-pointer items-start gap-3 text-sm text-slate-700">
+      <label className="mt-4 flex min-h-11 cursor-pointer items-start gap-3 text-sm text-slate-700 sm:mt-5">
         <Checkbox checked={checked} onCheckedChange={(value) => setChecked(value === true)} aria-label="He leido el aviso de privacidad del escaner" />
         <span>
           He leido este aviso y la{' '}
@@ -74,7 +74,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
 
       <Button
         type="button"
-        className="mt-4 min-h-12 w-full"
+        className="mt-3 min-h-12 w-full sm:mt-4"
         disabled={!checked}
         onClick={continueToScanner}
       >

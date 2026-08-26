@@ -11,7 +11,10 @@ import {
   type ScanRegion,
 } from '../src/utils/multiWineScan';
 import { buildMatchrimQaFixturePayload } from '../src/utils/matchrimQaFixtures';
-import { buildDetailedAffinityExplanation } from '../src/utils/wineAffinityExplanation';
+import {
+  buildDetailedAffinityExplanation,
+  calculateLocalMatchrimAffinity,
+} from '../src/utils/wineAffinityExplanation';
 import { buildWineComparisonDecision } from '../src/utils/wineComparison';
 import { isWineMenuItem } from '../src/utils/wineMenuGrounding';
 import {
@@ -98,6 +101,15 @@ const grouped = groupDuplicateWines([
 assert.equal(grouped.length, 2);
 assert.equal(grouped[0].count, 2);
 assert.equal(grouped[0].candidate.affinity, 82);
+const uncertainDuplicate = {
+  ...makeRegion('r4', 4, 'Celler Aripta Brut', 82),
+  status: 'uncertain' as const,
+  candidates: [{ ...makeRegion('r4', 4, 'Celler Aripta Brut', 82).candidates[0], confidence: 0.55 }],
+};
+assert.equal(groupDuplicateWines([
+  makeRegion('r1', 1, 'Celler Aripta Brut', 82),
+  uncertainDuplicate,
+]).length, 2, 'uncertain identities must not be grouped as duplicate bottles');
 assert.deepEqual(summarizeScanRegions([
   makeRegion('r1', 1, 'A', 80),
   { ...makeRegion('r2', 2, 'B', 70), status: 'uncertain' },
@@ -127,6 +139,11 @@ assert.equal(explanation.dimensions.length, 7);
 assert.equal(explanation.confidenceLabel, 'media');
 assert.ok(explanation.missingData.includes('tu preferencia de madera/crianza'));
 assert.deepEqual(explanation.scoreRange, { min: 65, max: 90 });
+assert.equal(calculateLocalMatchrimAffinity(
+  { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 },
+  { potencia: 4, acidez: 3, dulzura: 1, taninos: 4, afrutado: 3 },
+), 93);
+assert.equal(calculateLocalMatchrimAffinity(null, { potencia: 4 }), null);
 assert.equal(calibrateInferredAffinity(100), 93);
 assert.equal(calibrateInferredAffinity(84), 79);
 assert.equal(calibrateMenuIdentityConfidence({

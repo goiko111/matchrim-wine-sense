@@ -36,6 +36,10 @@ import { cropImageRegion, prepareImageForAnalysis, type ImageQualityReport } fro
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import {
+  calculateLocalMatchrimAffinity,
+  readStoredMatchrimProfile,
+} from '@/utils/wineAffinityExplanation';
+import {
   determineRegionStatus,
   getSelectedCandidate,
   groupDuplicateWines,
@@ -156,7 +160,10 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
   const enrichCandidate = async (candidate: WineCandidate, signal: AbortSignal) => {
     let enriched = candidate;
-    const catalogMatch = isMatchrimFixtureQaEnabled
+    const canResolveCanonically = candidate.confidence >= 0.72
+      && candidate.evidence.length >= 2
+      && candidate.uncertaintyReasons.length === 0;
+    const catalogMatch = isMatchrimFixtureQaEnabled || !canResolveCanonically
       ? null
       : await findWinerimWineForLabel({
           name: candidate.name,
@@ -179,6 +186,21 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         confidence: Math.max(candidate.confidence, catalogMatch.confidence),
         source: 'catalog',
         evidence: [...candidate.evidence, 'Coincidencia en el catalogo Winerim'],
+      };
+    }
+
+    const localAffinity = calculateLocalMatchrimAffinity(
+      readStoredMatchrimProfile(),
+      enriched.sensoryAttributes,
+    );
+    if (localAffinity !== null) {
+      enriched = {
+        ...enriched,
+        affinity: localAffinity,
+        affinityConfidence: Math.round(Math.min(enriched.confidence, enriched.source === 'catalog' ? 0.9 : 0.58) * 100) / 100,
+        affinityReason: enriched.source === 'catalog'
+          ? 'Calculado localmente contra tu perfil con atributos del catalogo.'
+          : 'Calculado localmente contra tu perfil con atributos sensoriales inferidos; confirma la identidad para mejorar la precision.',
       };
     }
 
@@ -207,11 +229,21 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     updateRegion(region.id, (current) => ({ ...current, status: 'analyzing', error: null }));
     try {
       const cropDataUrl = await cropImageRegion(imageDataUrl, region.box);
-      const payload = await invokeEdgeFunction<Record<string, unknown>>(
-        'analyze-wine-region',
-        { image: cropDataUrl, region_id: region.id, qa_fixture_name: fixtureName ?? null },
-        signal,
-      );
+      const invokeAnalysis = async (attempt = 1): Promise<Record<string, unknown>> => {
+        try {
+          return await invokeEdgeFunction<Record<string, unknown>>(
+            'analyze-wine-region',
+            { image: cropDataUrl, region_id: region.id, qa_fixture_name: fixtureName ?? null },
+            signal,
+          );
+        } catch (error) {
+          if (error instanceof DOMException && error.name === 'AbortError') throw error;
+          if (attempt >= 3) throw error;
+          await new Promise((resolve) => window.setTimeout(resolve, attempt * 900));
+          return invokeAnalysis(attempt + 1);
+        }
+      };
+      const payload = await invokeAnalysis();
       let candidates = normalizeWineCandidates(payload, region.id);
       if (candidates[0]) {
         const first = await enrichCandidate(candidates[0], signal);
@@ -273,7 +305,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       setSelectedRegionId(null);
       setPhase('analyzing');
       let completed = 0;
-      const analyzed = await mapWithConcurrency(detected, 2, async (region) => {
+      const analyzed = await mapWithConcurrency(detected, 3, async (region) => {
         const result = await analyzeRegion(region, prepared.dataUrl, controller.signal, file.name);
         completed += 1;
         setAnalysisProgress(Math.round(completed / detected.length * 100));
@@ -683,7 +715,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                           score={selectedCandidate.affinity}
                           identificationConfidence={selectedCandidate.confidence}
                           attributes={selectedCandidate.sensoryAttributes}
-                          sensorySource={selectedCandidate.source === 'catalog' ? 'catalog' : selectedCandidate.source === 'label' ? 'label' : 'inference'}
+                          sensorySource={selectedCandidate.source === 'catalog' ? 'catalog' : 'inference'}
                         />
                       </>
                     )}
