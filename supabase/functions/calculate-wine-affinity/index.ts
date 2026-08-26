@@ -58,7 +58,7 @@ const ratingWeight = (rating: string | null) => {
 };
 
 const buildLearnedProfile = async (
-  supabaseClient: ReturnType<typeof createClient>,
+  supabaseClient: ReturnType<typeof createClient<any, 'public', any>>,
   userId: string,
   baseProfile: MatchrimProfile
 ): Promise<MatchrimProfile> => {
@@ -79,7 +79,7 @@ const buildLearnedProfile = async (
   let totalWeight = 0;
   let samples = 0;
 
-  (ratedWines as RatedWine[]).forEach((wine) => {
+  (ratedWines as unknown as RatedWine[]).forEach((wine) => {
     const weight = ratingWeight(wine.rating);
     const attrs = normalizeSensoryAttributes(wine.sensory_attributes);
     if (!weight || !attrs) return;

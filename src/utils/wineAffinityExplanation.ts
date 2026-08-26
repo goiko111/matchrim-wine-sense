@@ -278,7 +278,7 @@ export const buildDetailedAffinityExplanation = (
     { key: 'madera', label: 'madera/crianza', wineValue: rawWineAttributes?.wood ?? rawWineAttributes?.madera, profileValue: rawProfile.madera },
     { key: 'intensidad', label: 'intensidad/aromas', wineValue: rawWineAttributes?.intensity ?? rawWineAttributes?.intensidad, profileValue: rawProfile.intensidad },
   ];
-  const extraDimensions = extraDefinitions.flatMap((definition) => {
+  const extraDimensions = extraDefinitions.flatMap((definition): DetailedAffinityDimension[] => {
     const wineValue = clampAttribute(definition.wineValue);
     if (wineValue === null) return [];
     const profileValue = clampAttribute(definition.profileValue);

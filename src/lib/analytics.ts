@@ -21,7 +21,10 @@ export type AppEventName =
   | "airim_question_failed"
   | "winerim_wines_loaded"
   | "winerim_wines_failed"
-  | "shop_link_analyzed";
+  | "shop_link_analyzed"
+  | "multi_wine_label_scan_started"
+  | "multi_wine_label_scan_completed"
+  | "wine_menu_scan_quality_rejected";
 
 const APP_VERSION = "matchrim-2026-06-22";
 
