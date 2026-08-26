@@ -5,6 +5,7 @@ import {
   intersectionOverUnion,
   mapWithConcurrency,
   normalizeDetectedRegions,
+  normalizeRecognitionFallback,
   normalizeScanCoverage,
   normalizeWineCandidates,
   summarizeScanRegions,
@@ -22,6 +23,8 @@ import {
   calibrateMenuIdentityConfidence,
   getConfidenceBand,
 } from '../src/utils/scanConfidence';
+import { evaluateCandidateGrounding } from '../supabase/functions/analyze-wine-region/grounding';
+import { shouldRejectTextAnalysis } from '../src/utils/imageAnalysis';
 
 const regions = normalizeDetectedRegions({
   regions: [
@@ -75,6 +78,60 @@ assert.equal(candidates[0].confidence, 0.81);
 assert.equal(determineRegionStatus(candidates), 'recognized');
 assert.equal(determineRegionStatus([{ ...candidates[0], confidence: 0.6 }]), 'uncertain');
 assert.equal(determineRegionStatus([]), 'unrecognized');
+
+const unreadableFallback = normalizeRecognitionFallback({
+  fallback: {
+    code: 'insufficient_visible_text',
+    message: 'No hay texto legible suficiente para identificar este vino.',
+    suggested_actions: ['Acerca la camara.', 'Evita reflejos.'],
+  },
+});
+assert.equal(unreadableFallback?.code, 'insufficient_visible_text');
+assert.equal(unreadableFallback?.suggestedActions.length, 2);
+assert.equal(normalizeRecognitionFallback({ candidates: [] }), null);
+assert.equal(normalizeRecognitionFallback({
+  fallback: { code: 'new_server_code', suggested_actions: [] },
+})?.code, 'unknown');
+
+const groundedIdentity = evaluateCandidateGrounding({
+  name: 'Charles Heidsieck Brut Reserve',
+  producer: 'Charles Heidsieck',
+  vintage: null,
+  visibleText: ['CHARLES HEIDSIECK', 'BRUT RESERVE'],
+  evidence: ['CHARLES HEIDSIECK', 'BRUT RESERVE visible', 'known Champagne house'],
+});
+assert.deepEqual(groundedIdentity.identityMatches, ['charles', 'heidsieck']);
+assert.deepEqual(groundedIdentity.groundedEvidence, ['CHARLES HEIDSIECK', 'BRUT RESERVE visible']);
+
+const designOnlyGuess = evaluateCandidateGrounding({
+  name: 'Invented Estate Reserva',
+  producer: null,
+  vintage: null,
+  visibleText: ['BRUT RESERVE'],
+  evidence: ['Bottle shape suggests Invented Estate'],
+});
+assert.deepEqual(designOnlyGuess.identityMatches, []);
+assert.equal(designOnlyGuess.groundedEvidence.length, 0);
+assert.equal(shouldRejectTextAnalysis({
+  width: 480,
+  height: 360,
+  megapixels: 0.2,
+  brightness: 130,
+  contrast: 35,
+  sharpness: 8.5,
+  status: 'poor',
+  warnings: [],
+}), true);
+assert.equal(shouldRejectTextAnalysis({
+  width: 3024,
+  height: 4032,
+  megapixels: 12.2,
+  brightness: 42,
+  contrast: 18,
+  sharpness: 8.5,
+  status: 'warning',
+  warnings: [],
+}), false, 'high-resolution low-light captures must still reach OCR');
 
 const makeRegion = (id: string, index: number, name: string, affinity: number): ScanRegion => ({
   id,

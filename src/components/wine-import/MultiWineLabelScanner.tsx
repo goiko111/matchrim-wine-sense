@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, type FormEvent } from 'react';
 import {
   AlertTriangle,
   Camera,
@@ -32,7 +32,7 @@ import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
 import { trackAppEvent } from '@/lib/analytics';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
-import { cropImageRegion, prepareImageForAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
+import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import {
@@ -45,6 +45,7 @@ import {
   groupDuplicateWines,
   mapWithConcurrency,
   normalizeDetectedRegions,
+  normalizeRecognitionFallback,
   normalizeScanCoverage,
   normalizeWineCandidates,
   summarizeScanRegions,
@@ -226,7 +227,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const analyzeRegion = async (region: ScanRegion, imageDataUrl: string, signal: AbortSignal, fixtureName?: string) => {
-    updateRegion(region.id, (current) => ({ ...current, status: 'analyzing', error: null }));
+    updateRegion(region.id, (current) => ({ ...current, status: 'analyzing', error: null, fallback: null }));
     try {
       const cropDataUrl = await cropImageRegion(imageDataUrl, region.box);
       const invokeAnalysis = async (attempt = 1): Promise<Record<string, unknown>> => {
@@ -255,6 +256,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         candidates,
         selectedCandidateId: candidates[0]?.id ?? null,
         status: determineRegionStatus(candidates),
+        fallback: normalizeRecognitionFallback(payload),
         error: null,
       } satisfies ScanRegion;
     } catch (error) {
@@ -262,6 +264,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       return {
         ...region,
         status: 'unrecognized' as const,
+        fallback: null,
         error: error instanceof Error ? error.message : 'No se pudo analizar la region',
       };
     }
@@ -285,6 +288,11 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       if (controller.signal.aborted) return;
       setPreview(prepared.dataUrl);
       setQuality(prepared.quality);
+      if (shouldRejectTextAnalysis(prepared.quality)) {
+        setErrorMessage('La imagen es demasiado pequena y desenfocada para leer etiquetas. Acerca la camara y enfoca el nombre o la bodega.');
+        setPhase('error');
+        return;
+      }
 
       setPhase('detecting');
       const detection = await invokeEdgeFunction<Record<string, unknown>>(
@@ -412,6 +420,46 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         ? { ...candidate, ...patch, source: 'manual', confidence: 1, uncertaintyReasons: [] }
         : candidate),
     }));
+  };
+
+  const identifySelectedManually = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!selectedRegion) return;
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get('manual-wine-name') ?? '').trim();
+    const producer = String(formData.get('manual-wine-producer') ?? '').trim();
+    if (!name) {
+      toast.error('Escribe el nombre del vino');
+      return;
+    }
+    const manualCandidate: WineCandidate = {
+      id: `${selectedRegion.id}-candidate-manual`,
+      name,
+      producer: producer || null,
+      vintage: null,
+      region: null,
+      country: null,
+      grapes: [],
+      alcohol: null,
+      confidence: 1,
+      source: 'manual',
+      evidence: [],
+      uncertaintyReasons: [],
+      inferredFields: [],
+      sensoryAttributes: null,
+      affinity: null,
+      affinityConfidence: null,
+      affinityReason: null,
+    };
+    updateRegion(selectedRegion.id, (current) => ({
+      ...current,
+      status: 'recognized',
+      candidates: [manualCandidate],
+      selectedCandidateId: manualCandidate.id,
+      fallback: null,
+      error: null,
+    }));
+    toast.success('Identidad manual aplicada sin estimar afinidad');
   };
 
   const moveSelection = (direction: -1 | 1) => {
@@ -646,9 +694,35 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 )}
 
                 {selectedRegion.candidates.length === 0 ? (
-                  <div className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
-                    <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> Sin identidad fiable</div>
-                    <p className="mt-1">Vuelve a analizar este recorte o descarta el objeto. No se asignara un vino inventado.</p>
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
+                      <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> Sin identidad fiable</div>
+                      <p className="mt-1">{selectedRegion.fallback?.message ?? 'No hay evidencia visual suficiente para asignar un vino.'}</p>
+                      <p className="mt-1 font-medium">No se asignara una identidad ni una afinidad inventadas.</p>
+                      {selectedRegion.fallback?.suggestedActions.length ? (
+                        <ul className="mt-2 list-disc space-y-1 pl-5">
+                          {selectedRegion.fallback.suggestedActions.map((action) => <li key={action}>{action}</li>)}
+                        </ul>
+                      ) : null}
+                    </div>
+
+                    <form className="space-y-3 border-y border-stone-200 py-4" onSubmit={identifySelectedManually}>
+                      <div>
+                        <h4 className="text-sm font-semibold text-slate-950">Identificacion manual</h4>
+                        <p className="mt-1 text-xs text-slate-600">Confirma solo lo que conoces. La afinidad quedara pendiente hasta disponer de datos del vino.</p>
+                      </div>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <label className="text-sm font-medium text-slate-800">
+                          Vino
+                          <Input name="manual-wine-name" className="mt-1 min-h-11" autoComplete="off" required />
+                        </label>
+                        <label className="text-sm font-medium text-slate-800">
+                          Bodega (opcional)
+                          <Input name="manual-wine-producer" className="mt-1 min-h-11" autoComplete="off" />
+                        </label>
+                      </div>
+                      <Button type="submit" className="min-h-11 gap-2"><Check className="h-4 w-4" /> Aplicar identidad manual</Button>
+                    </form>
                   </div>
                 ) : (
                   <>
@@ -679,6 +753,11 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
                     {selectedCandidate && (
                       <>
+                        {selectedCandidate.source === 'manual' && (
+                          <div className="border-l-4 border-slate-500 bg-slate-50 px-3 py-2 text-sm text-slate-800">
+                            Identidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.
+                          </div>
+                        )}
                         <div className="grid gap-3 sm:grid-cols-2">
                           <label className="text-sm font-medium text-slate-800">
                             Vino

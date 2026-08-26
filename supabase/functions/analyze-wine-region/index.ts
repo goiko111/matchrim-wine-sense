@@ -1,4 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { evaluateCandidateGrounding, normalizeGroundingTokens } from './grounding.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -6,7 +7,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const ANALYSIS_VERSION = 'matchrim-region-analysis-v2';
+const ANALYSIS_VERSION = 'matchrim-region-analysis-v3-grounded';
 
 const parseJsonObject = (raw: string) => {
   const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -37,12 +38,22 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
   const evidence = stringArray(raw.evidence);
   const uncertaintyReasons = stringArray(raw.uncertainty_reasons);
   const inferredFields = stringArray(raw.inferred_fields);
+  const grounding = evaluateCandidateGrounding({
+    name,
+    producer: raw.producer,
+    vintage: raw.vintage,
+    visibleText,
+    evidence,
+  });
+  const { identityMatches, groundedEvidence } = grounding;
+  if (grounding.visibleTokenCount < 2 || identityMatches.length === 0) return null;
+
   const identitySignals = [raw.producer, raw.vintage, raw.region, raw.country]
     .filter((signal) => typeof signal === 'number' || (typeof signal === 'string' && signal.trim())).length;
   let confidence = clamp(Number(raw.confidence) || 0.35, 0, 1);
-  if (visibleText.length === 0) confidence = Math.min(confidence, 0.4);
-  if (evidence.length === 0) confidence = Math.min(confidence, 0.52);
-  else if (evidence.length < 2) confidence = Math.min(confidence, 0.69);
+  if (groundedEvidence.length === 0) confidence = Math.min(confidence, 0.4);
+  else if (groundedEvidence.length < 2) confidence = Math.min(confidence, 0.62);
+  if (identityMatches.length < 2) confidence = Math.min(confidence, 0.62);
   if (identitySignals === 0) confidence = Math.min(confidence, 0.62);
   if (uncertaintyReasons.length > 0) confidence = Math.min(confidence, 0.78);
   if (inferredFields.some((field) => ['name', 'nombre', 'producer', 'productor'].includes(field.toLowerCase()))) {
@@ -59,7 +70,7 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
     alcohol: Number.isFinite(alcohol) ? alcohol : null,
     confidence: Math.round(confidence * 100) / 100,
     source: 'label',
-    evidence,
+    evidence: groundedEvidence,
     uncertainty_reasons: uncertaintyReasons,
     inferred_fields: inferredFields,
     sensory_attributes: sensory ? {
@@ -89,12 +100,13 @@ serve(async (request) => {
 Objetivo: proponer hasta 3 identidades candidatas sin inventar. Transcribe primero las senales visibles y separa lo leido de lo inferido.
 
 Reglas:
-- Si no hay texto suficiente para identificar el vino, devuelve candidates vacio.
+- Si no hay texto suficiente para identificar el vino, devuelve candidates vacio. El color, la capsula o el diseno por si solos nunca bastan.
 - No afirmes haber consultado Internet ni fuentes externas.
 - confidence es la confianza en la identidad completa, no solo en una palabra visible.
 - Un candidato por encima de 0.72 requiere nombre claramente visible y al menos otra senal coherente (productor, anada, region o diseno distintivo).
 - Los candidatos alternativos deben explicar la ambiguedad.
-- evidence debe citar al menos dos fragmentos visuales independientes para cualquier confidence >= 0.72. No cuentes conocimiento general como evidencia visual.
+- evidence debe copiar fragmentos que tambien aparezcan literalmente en visible_text. Exige al menos dos fragmentos visuales independientes para cualquier confidence >= 0.72. No cuentes conocimiento general como evidencia visual.
+- El nombre o productor propuesto debe compartir palabras distintivas con visible_text. Si no las comparte, omite el candidato.
 - sensory_attributes es una inferencia 1-5. Usa null cuando la identidad o el estilo no permitan estimarlo.
 - inferred_fields enumera cualquier campo no leido literalmente en la imagen.
 
@@ -162,10 +174,30 @@ Responde SOLO JSON:
       .filter(Boolean)
       .sort((left, right) => (right?.confidence ?? 0) - (left?.confidence ?? 0))
       .slice(0, 3);
+    const recognitionStatus = candidates.length === 0
+      ? 'unreadable'
+      : (candidates[0]?.confidence ?? 0) >= 0.72 && (candidates[0]?.uncertainty_reasons.length ?? 0) === 0
+        ? 'identified'
+        : 'uncertain';
+    const fallback = candidates.length > 0 ? null : {
+      code: visibleText.length === 0 || normalizeGroundingTokens(visibleText).length < 2
+        ? 'insufficient_visible_text'
+        : 'ungrounded_identity',
+      message: visibleText.length === 0 || normalizeGroundingTokens(visibleText).length < 2
+        ? 'No hay texto legible suficiente para identificar este vino.'
+        : 'El texto visible no respalda con seguridad ninguna identidad.',
+      suggested_actions: [
+        'Acerca la camara a una sola etiqueta.',
+        'Evita reflejos y enfoca el nombre o la bodega.',
+        'Introduce la identidad manualmente si la conoces.',
+      ],
+    };
 
     return new Response(JSON.stringify({
       visible_text: visibleText,
       candidates,
+      recognition_status: recognitionStatus,
+      fallback,
       analysis_version: ANALYSIS_VERSION,
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (error) {

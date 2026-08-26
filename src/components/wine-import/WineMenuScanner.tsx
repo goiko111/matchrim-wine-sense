@@ -25,7 +25,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
-import { prepareImageForAnalysis } from "@/utils/imageAnalysis";
+import { prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
 import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
@@ -556,6 +556,18 @@ export const WineMenuScanner = ({
       setPreview(prepared.dataUrl);
       setMenuQualityWarnings(prepared.quality.warnings);
       if (controller.signal.aborted) return;
+      if (shouldRejectTextAnalysis(prepared.quality)) {
+        setScanFeedback('La imagen es demasiado pequena y desenfocada para leer la carta. Acerca la camara o fotografia una seccion con el texto enfocado.');
+        trackAppEvent('wine_menu_scan_quality_rejected', {
+          userId: user?.id,
+          metadata: {
+            width: prepared.quality.width,
+            height: prepared.quality.height,
+            sharpness: prepared.quality.sharpness,
+          },
+        });
+        return;
+      }
       setScanPhase('ocr');
 
       const invokeScan = async (attempt = 1) => {

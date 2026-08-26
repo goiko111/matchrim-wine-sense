@@ -19,6 +19,17 @@ export interface RegionQuality {
   legibility: 'good' | 'limited' | 'poor';
 }
 
+export type RegionRecognitionFallbackCode =
+  | 'insufficient_visible_text'
+  | 'ungrounded_identity'
+  | 'unknown';
+
+export interface RegionRecognitionFallback {
+  code: RegionRecognitionFallbackCode;
+  message: string;
+  suggestedActions: string[];
+}
+
 export interface WineCandidate {
   id: string;
   name: string;
@@ -59,6 +70,7 @@ export interface ScanRegion {
   duplicateCount: number;
   cropDataUrl?: string | null;
   error?: string | null;
+  fallback?: RegionRecognitionFallback | null;
 }
 
 export type ScanCoverageStatus = 'reported_complete' | 'partial' | 'unknown';
@@ -216,6 +228,25 @@ const numericValue = (value: unknown) => {
 const stringArray = (value: unknown) => Array.isArray(value)
   ? value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0).map((item) => item.trim())
   : [];
+
+export const normalizeRecognitionFallback = (payload: unknown): RegionRecognitionFallback | null => {
+  const root = asRecord(payload);
+  const raw = asRecord(root?.fallback);
+  if (!raw) return null;
+  const rawCode = textValue(raw.code);
+  const code: RegionRecognitionFallbackCode = rawCode === 'insufficient_visible_text' || rawCode === 'ungrounded_identity'
+    ? rawCode
+    : 'unknown';
+  const defaultMessage = code === 'insufficient_visible_text'
+    ? 'No hay texto legible suficiente para identificar este vino.'
+    : 'No hay evidencia visible suficiente para confirmar una identidad.';
+
+  return {
+    code,
+    message: textValue(raw.message) ?? defaultMessage,
+    suggestedActions: stringArray(raw.suggested_actions ?? raw.suggestedActions).slice(0, 4),
+  };
+};
 
 export const normalizeWineCandidates = (payload: unknown, regionId: string): WineCandidate[] => {
   const root = asRecord(payload);

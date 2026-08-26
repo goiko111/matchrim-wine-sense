@@ -6,6 +6,7 @@ export interface ImageQualityReport {
   megapixels: number;
   brightness: number | null;
   contrast: number | null;
+  sharpness: number | null;
   status: 'good' | 'warning' | 'poor';
   warnings: string[];
 }
@@ -42,7 +43,7 @@ const inspectPixels = (context: CanvasRenderingContext2D, width: number, height:
   sampleCanvas.width = sampleWidth;
   sampleCanvas.height = sampleHeight;
   const sampleContext = sampleCanvas.getContext('2d', { willReadFrequently: true });
-  if (!sampleContext) return { brightness: null, contrast: null };
+  if (!sampleContext) return { brightness: null, contrast: null, sharpness: null };
   sampleContext.drawImage(context.canvas, 0, 0, sampleWidth, sampleHeight);
   const pixels = sampleContext.getImageData(0, 0, sampleWidth, sampleHeight).data;
   const values: number[] = [];
@@ -51,8 +52,34 @@ const inspectPixels = (context: CanvasRenderingContext2D, width: number, height:
   }
   const brightness = values.reduce((sum, value) => sum + value, 0) / Math.max(values.length, 1);
   const variance = values.reduce((sum, value) => sum + Math.pow(value - brightness, 2), 0) / Math.max(values.length, 1);
-  return { brightness: Math.round(brightness), contrast: Math.round(Math.sqrt(variance)) };
+  let edgeEnergy = 0;
+  let edgeSamples = 0;
+  for (let y = 1; y < sampleHeight - 1; y += 1) {
+    for (let x = 1; x < sampleWidth - 1; x += 1) {
+      const index = y * sampleWidth + x;
+      const laplacian = Math.abs(
+        values[index] * 4
+        - values[index - 1]
+        - values[index + 1]
+        - values[index - sampleWidth]
+        - values[index + sampleWidth]
+      );
+      edgeEnergy += laplacian;
+      edgeSamples += 1;
+    }
+  }
+  return {
+    brightness: Math.round(brightness),
+    contrast: Math.round(Math.sqrt(variance)),
+    sharpness: edgeSamples ? Math.round((edgeEnergy / edgeSamples) * 10) / 10 : null,
+  };
 };
+
+export const shouldRejectTextAnalysis = (quality: ImageQualityReport) => (
+  Math.min(quality.width, quality.height) < 600
+  && quality.sharpness !== null
+  && quality.sharpness < 12
+);
 
 export const prepareImageForAnalysis = async (file: File, maxDimension = 2400): Promise<PreparedImage> => {
   const originalDataUrl = await fileToDataUrl(file);
@@ -69,13 +96,21 @@ export const prepareImageForAnalysis = async (file: File, maxDimension = 2400): 
   context.imageSmoothingQuality = 'high';
   context.drawImage(image, 0, 0, width, height);
 
-  const { brightness, contrast } = inspectPixels(context, width, height);
+  const { brightness, contrast, sharpness } = inspectPixels(context, width, height);
   const warnings: string[] = [];
   if (Math.min(image.naturalWidth, image.naturalHeight) < 700) warnings.push('Resolucion limitada para leer texto pequeno.');
   if (brightness !== null && brightness < 48) warnings.push('La foto esta oscura; algunas etiquetas pueden quedar dudosas.');
   if (brightness !== null && brightness > 225) warnings.push('Hay mucha luz; revisa reflejos y zonas quemadas.');
   if (contrast !== null && contrast < 22) warnings.push('El contraste es bajo; acerca la camara si el texto es pequeno.');
-  const status: ImageQualityReport['status'] = warnings.length >= 3 ? 'poor' : warnings.length ? 'warning' : 'good';
+  if (sharpness !== null && sharpness < 12) warnings.push('La imagen esta desenfocada para leer texto pequeno.');
+  const lowTextSignal = Math.min(image.naturalWidth, image.naturalHeight) < 600
+    && sharpness !== null
+    && sharpness < 12;
+  const status: ImageQualityReport['status'] = lowTextSignal || warnings.length >= 3
+    ? 'poor'
+    : warnings.length
+      ? 'warning'
+      : 'good';
 
   return {
     dataUrl: canvasToDataUrl(canvas),
@@ -87,6 +122,7 @@ export const prepareImageForAnalysis = async (file: File, maxDimension = 2400): 
       megapixels: Math.round((image.naturalWidth * image.naturalHeight / 1_000_000) * 10) / 10,
       brightness,
       contrast,
+      sharpness,
       status,
       warnings,
     },

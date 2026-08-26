@@ -102,7 +102,18 @@ def function_response(endpoint, request):
                 ]
             }
         if region_id == "region-5":
-            return {"candidates": []}
+            return {
+                "candidates": [],
+                "recognition_status": "unreadable",
+                "fallback": {
+                    "code": "insufficient_visible_text",
+                    "message": "No hay texto legible suficiente para identificar este vino.",
+                    "suggested_actions": [
+                        "Acerca la camara a una sola etiqueta.",
+                        "Evita reflejos y enfoca el nombre o la bodega.",
+                    ],
+                },
+            }
         return {"candidates": [candidate("Muga Reserva", "Bodegas Muga", 0.91, 88)]}
     if endpoint == "search-wines":
         return {"wines": []}
@@ -315,6 +326,26 @@ def run_label_qa(browser, results, console_errors):
     assert page.get_by_text("Datos y limites del calculo", exact=True).count() >= 1
     results.append({"case": "multietiqueta_detalle", "expected": "top candidatos, evidencia, duda y afinidad explicada en drawer", "actual": "PASS"})
     page.screenshot(path=str(ARTIFACTS / "multi-label-detail-mobile.png"), full_page=False)
+    page.get_by_role("button", name="Cerrar").click()
+    page.get_by_role("button", name="Region 5, Sin reconocer").click()
+    fallback_message = page.get_by_text("No hay texto legible suficiente", exact=False)
+    fallback_message.wait_for()
+    fallback_message.scroll_into_view_if_needed()
+    page.screenshot(path=str(ARTIFACTS / "multi-label-unreadable-fallback-mobile.png"), full_page=False)
+    page.get_by_label("Vino", exact=True).fill("Identidad confirmada")
+    page.get_by_label("Bodega (opcional)", exact=True).fill("Bodega de prueba")
+    page.get_by_role("button", name="Aplicar identidad manual").click()
+    page.get_by_text("Identidad introducida manualmente", exact=False).wait_for()
+    assert page.get_by_text("Afinidad pendiente de datos sensoriales verificables", exact=False).count() >= 1
+    page.screenshot(path=str(ARTIFACTS / "multi-label-manual-fallback-mobile.png"), full_page=False)
+    page.get_by_role("button", name="Cerrar").click()
+    confirm_labels = page.locator("button").filter(has_text="Confirmar").all_inner_texts()
+    assert any("Confirmar 4 referencias" in label for label in confirm_labels), confirm_labels
+    results.append({
+        "case": "multietiqueta_abstencion_y_correccion",
+        "expected": "motivo de abstencion, acciones, correccion manual y afinidad pendiente sin datos",
+        "actual": "PASS",
+    })
     context.close()
 
 
