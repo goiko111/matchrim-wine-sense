@@ -21,6 +21,21 @@ type RatedWine = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+const FUNCTION_VERSION = 'scan-wine-menu-2026-08-26-grounded-v3';
+
+const normalizeText = (value: unknown) => typeof value === 'string' ? value.trim() : '';
+const normalizeStringArray = (value: unknown) => Array.isArray(value)
+  ? value.filter((item) => typeof item === 'string' && item.trim()).map((item) => item.trim()).slice(0, 12)
+  : [];
+const nonWinePattern = /\b(vermut|vermouth|cerveza|beer|bier|sidra|cider|whisky|whiskey|ginebra|gin|vodka|ron|rum|cocktail|coctel|licor|destilado|destilados|spirits?)\b/i;
+const wineTypePattern = /\b(tinto|blanco|rosado|espumoso|generoso|dulce|fortificado|orange|natural|champagne|cava|sherry|jerez)\b/i;
+
+const isWineRecord = (wine: Record<string, unknown>) => {
+  const name = normalizeText(wine.nombre ?? wine.name);
+  if (!name || nonWinePattern.test(`${name} ${normalizeText(wine.tipo)}`)) return false;
+  const section = normalizeText(wine.seccion);
+  return !nonWinePattern.test(section) || wineTypePattern.test(normalizeText(wine.tipo));
+};
 
 // Sensory attrs always 1-5 integers. Normalize legacy 0-10 or 0-100 inputs.
 const normalizeSensoryValueTo5 = (value: unknown): number | null => {
@@ -117,7 +132,26 @@ const calculateCompatibilityScale5 = (profile: MatchrimProfile, attrs: SensoryAt
     Math.pow(profile.afrutado - (attrs.afrutado ?? 3), 2)
   );
   const maxDistance = Math.sqrt(5 * Math.pow(4, 2));
-  return Math.round(Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100)));
+  const rawScore = Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100));
+  return Math.round(50 + (rawScore - 50) * 0.85);
+};
+
+const calibrateMenuIdentityConfidence = (
+  rawValue: unknown,
+  wine: Record<string, unknown>,
+  position: { confidence: number } | null,
+) => {
+  const numeric = Number(rawValue);
+  if (!Number.isFinite(numeric)) return null;
+  const raw = clamp(numeric > 1 ? numeric / 100 : numeric, 0, 1);
+  let cap = 0.88;
+  if (typeof wine.texto_fuente !== 'string' || !wine.texto_fuente.trim()) cap = Math.min(cap, 0.82);
+  if (!position) cap = Math.min(cap, 0.78);
+  if (typeof wine.productor !== 'string' || !wine.productor.trim()) cap = Math.min(cap, 0.74);
+  const hasRegion = typeof wine.region === 'string' && Boolean(wine.region.trim());
+  const hasPrice = Number.isFinite(Number(wine.precio));
+  if (!hasRegion && !hasPrice) cap = Math.min(cap, 0.68);
+  return Math.round(Math.min(raw, cap) * 100) / 100;
 };
 
 const normalizePosicion = (raw: unknown): { x: number; y: number; width: number; height: number; confidence: number } | null => {
@@ -139,8 +173,6 @@ const normalizePosicion = (raw: unknown): { x: number; y: number; width: number;
     confidence: clamp(confidence, 0, 1),
   };
 };
-
-const FUNCTION_VERSION = 'scan-wine-menu-2026-06-30-anonymous-profile-v2';
 
 const normalizeClientProfile = (raw: unknown): MatchrimProfile | null => {
   if (!raw || typeof raw !== 'object') return null;
@@ -214,9 +246,18 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    let prompt = `Analiza esta carta de vinos y extrae un MÁXIMO de 15 vinos con sus características.
+    let prompt = `Analiza esta carta de vinos o pizarra y extrae un MÁXIMO de 30 vinos conservando su estructura visual.
 
-IMPORTANTE: Solo incluye hasta 15 vinos máximo. Si hay más, prioriza los más interesantes.
+IMPORTANTE:
+- No mezcles texto ni precios de columnas distintas.
+- Respeta secciones, orden de lectura y si el precio es por copa, botella o para llevar.
+- Si una linea no se puede asociar con seguridad, baja confidence o no la incluyas.
+- confidence mide solo la asociacion visual entre los campos de esa linea. No subas confidence por conocer el vino.
+- Usa confidence > 0.90 solo si nombre, productor y precio son inequivocos y visibles en la misma linea.
+- Endereza mentalmente la perspectiva, pero devuelve las posiciones respecto a la imagen original.
+- Incluye TODAS las lineas de vino completas y legibles, hasta 30. Haz una segunda pasada por cada seccion y por el borde inferior antes de responder. Si hay mas de 30, prioriza lineas completas y legibles, no supuesta importancia.
+- Excluye cerveza, vermut/vermouth, sidra, destilados, cocteles, encabezados y cualquier producto que no sea vino. Espumosos, generosos y vinos dulces si cuentan como vino.
+- No completes productor, region, pais, uvas o anada por conocimiento general sin declararlo en campos_inferidos. Si no puede leerse ni inferirse con suficiente base, usa null.
 
 Para cada vino proporciona:
 - nombre: Nombre del vino
@@ -225,7 +266,14 @@ Para cada vino proporciona:
 - region: Región vinícola
 - pais: País
 - precio: Precio (solo número)
-- tipo: tinto, blanco, rosado o espumoso
+- precios: objeto { "copa": number|null, "botella": number|null, "llevar": number|null }
+- servicio: "copa", "botella", "ambos" o null
+- seccion: encabezado visible al que pertenece el vino
+- confidence: confianza 0-1 en que nombre, productor y precio pertenecen a la misma linea
+- texto_fuente: transcripcion literal breve de la linea que sustenta el resultado
+- dudas: array de campos o asociaciones que no se leen con seguridad
+- campos_inferidos: array de campos no leidos literalmente en la imagen
+- tipo: tinto, blanco, rosado, espumoso, generoso o dulce
 - uvas: Array con variedades principales
 - descripcion: Breve descripción (máximo 150 palabras) con aromas y notas de cata
 - posicion: opcional. Objeto { "x": number 0-100, "y": number 0-100, "width": number 0-100, "height": number 0-100, "confidence": number 0-1 } donde (x,y) es el punto de anclaje EXACTO justo al lado del nombre del vino dentro de la imagen, expresado como porcentaje del ancho/alto de la imagen. width/height describen el bounding box del bloque del vino. confidence es tu certeza de que la posición es exacta. Si NO puedes ver el bloque con claridad o tu confidence sería < 0.7, devuelve posicion: null. NUNCA inventes columnas, posiciones aproximadas ni distribuyas vinos uniformemente.`;
@@ -253,7 +301,7 @@ Para cada vino, estima también:
 
     prompt += `
 
-RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
+RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
 {
   "vinos": [
     {
@@ -263,6 +311,13 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
       "region": "Rioja",
       "pais": "España",
       "precio": 24.50,
+      "precios": { "copa": 4.50, "botella": 24.50, "llevar": null },
+      "servicio": "ambos",
+      "seccion": "Tintos",
+      "confidence": 0.91,
+      "texto_fuente": "Viña Pomal Reserva 2018 · Bodegas Bilbaínas · 24,50",
+      "dudas": [],
+      "campos_inferidos": ["uvas"],
       "tipo": "tinto",
       "uvas": ["Tempranillo", "Garnacha"],
       "descripcion": "Breve descripción con aromas y notas",
@@ -277,7 +332,12 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
       "compatibilidad": 85,
       "razon": "Breve explicación"` : ''}
     }
-  ]
+  ],
+  "coverage": {
+    "status": "reported_complete|partial|unknown",
+    "estimated_visible_wines": 1,
+    "notes": []
+  }
 }`;
 
     const imageUrl = image;
@@ -330,7 +390,7 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
       content = content.substring(firstBrace, lastBrace + 1);
     }
 
-    let result: { vinos?: unknown; wines?: unknown };
+    let result: { vinos?: unknown; wines?: unknown; coverage?: unknown };
     try {
       result = JSON.parse(content);
     } catch (parseError) {
@@ -378,7 +438,7 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
         ? result.wines
         : [];
 
-    const vinos = (rawVinos as Array<Record<string, unknown>>).map((w) => {
+    const vinos = (rawVinos as Array<Record<string, unknown>>).filter(isWineRecord).map((w) => {
       const out: Record<string, unknown> = { ...w };
       const atributos = normalizeSensoryAttributes(w.atributos as Record<string, unknown> | null | undefined);
       out.atributos = atributos;
@@ -394,16 +454,56 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
         out.compatibilidad = null;
       }
 
-      out.posicion = normalizePosicion(w.posicion);
+      const position = normalizePosicion(w.posicion);
+      out.posicion = position;
+      out.confidence = calibrateMenuIdentityConfidence(w.confidence, w, position);
+      out.nombre = normalizeText(w.nombre ?? w.name);
+      out.productor = normalizeText(w.productor) || null;
+      out.region = normalizeText(w.region) || null;
+      out.pais = normalizeText(w.pais) || null;
+      out.texto_fuente = normalizeText(w.texto_fuente) || null;
+      out.dudas = normalizeStringArray(w.dudas);
+      out.campos_inferidos = normalizeStringArray(w.campos_inferidos);
+      out.servicio = w.servicio === 'copa' || w.servicio === 'botella' || w.servicio === 'ambos' ? w.servicio : null;
+      out.seccion = typeof w.seccion === 'string' ? w.seccion.trim() || null : null;
+      if (w.precios && typeof w.precios === 'object' && !Array.isArray(w.precios)) {
+        const rawPrices = w.precios as Record<string, unknown>;
+        const normalizePrice = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : null;
+        out.precios = {
+          copa: normalizePrice(rawPrices.copa),
+          botella: normalizePrice(rawPrices.botella),
+          llevar: normalizePrice(rawPrices.llevar),
+        };
+      } else {
+        out.precios = null;
+      }
       return out;
     });
 
-    console.log(`Extracted ${vinos.length} wines from menu`);
+    const rawCoverage = result.coverage && typeof result.coverage === 'object' && !Array.isArray(result.coverage)
+      ? result.coverage as Record<string, unknown>
+      : {};
+    const estimatedVisibleWines = Number(rawCoverage.estimated_visible_wines);
+    let coverageStatus = rawCoverage.status === 'reported_complete' || rawCoverage.status === 'partial'
+      ? rawCoverage.status
+      : 'unknown';
+    if (Number.isFinite(estimatedVisibleWines) && estimatedVisibleWines > vinos.length) coverageStatus = 'partial';
+    const coverage = {
+      status: coverageStatus,
+      extracted_wines: vinos.length,
+      estimated_visible_wines: Number.isFinite(estimatedVisibleWines) && estimatedVisibleWines >= vinos.length
+        ? Math.round(estimatedVisibleWines)
+        : null,
+      notes: normalizeStringArray(rawCoverage.notes).slice(0, 5),
+    };
+
+    console.log(`Extracted ${vinos.length} wines from menu (${coverage.status})`);
 
     return new Response(JSON.stringify({
       vinos,
       has_profile: Boolean(profile),
       profile_source: profileSource,
+      coverage,
       scan_version: FUNCTION_VERSION,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -421,4 +521,3 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
     );
   }
 });
-
