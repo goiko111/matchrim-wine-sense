@@ -4,6 +4,8 @@ Fecha: 26 de agosto de 2026.
 
 Estado final: **P0 E2E aprobado y build 1.0 (58) subido a TestFlight**. El bloqueo de despliegue descrito debajo queda conservado como baseline historico.
 
+Seguimiento grounded 2026-08-26: la remediacion de abstencion, el dataset reproducible de 30 escenas y el gate del siguiente build estan documentados en `docs/MATCHRIM_GROUNDED_BENCHMARK_2026-08-26.md`. El build 58 permanece como ultimo TestFlight; estos cambios requieren un build 59 tras cerrar los gates alli enumerados.
+
 ## Cierre final
 
 - Fuente operativa recuperada: `/Users/GOIKO/2matchrim-p0-remediation-20260826`, rama `codex/2matchrim-p0-remediation-20260826`. El path declarado de iCloud seguia `dataless` y no se modifico.

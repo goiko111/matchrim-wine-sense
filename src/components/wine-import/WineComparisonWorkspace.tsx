@@ -102,7 +102,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
   if (wines.length < 2) return null;
 
   return (
-    <section className="border-y border-stone-200 py-5" aria-labelledby="wine-comparison-title">
+    <section className="min-w-0 border-y border-stone-200 py-5" aria-labelledby="wine-comparison-title">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h3 id="wine-comparison-title" className="text-lg font-semibold text-slate-950">Comparar 2–5 vinos</h3>
@@ -111,21 +111,21 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
         <span className="text-xs font-medium text-slate-500">{selectedIds.length}/5 seleccionados</span>
       </div>
 
-      <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-4 grid min-w-0 gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {wines.map((wine) => {
           const selected = selectedIds.includes(wine.id);
           const disabled = !selected && selectedIds.length >= 5;
           return (
             <label
               key={wine.id}
-              className={`flex min-h-14 items-center gap-3 border px-3 py-2 ${selected ? 'border-red-800 bg-red-50' : 'border-stone-200 bg-white'} ${disabled ? 'opacity-50' : ''}`}
+              className={`flex min-h-14 min-w-0 max-w-full items-center gap-3 overflow-hidden border px-3 py-2 ${selected ? 'border-red-800 bg-red-50' : 'border-stone-200 bg-white'} ${disabled ? 'opacity-50' : ''}`}
             >
               <Checkbox checked={selected} disabled={disabled} onCheckedChange={() => toggleWine(wine.id)} aria-label={`Comparar ${wine.name}`} />
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-semibold text-slate-950">{wine.name}</span>
                 <span className="block truncate text-xs text-slate-500">{wine.producer || wine.region || 'Identidad parcial'}</span>
               </span>
-              {wine.affinity != null && <span className="text-sm font-bold text-red-900">{Math.round(wine.affinity)}%</span>}
+              {wine.affinity != null && <span className="shrink-0 text-sm font-bold text-red-900">{Math.round(wine.affinity)}%</span>}
             </label>
           );
         })}

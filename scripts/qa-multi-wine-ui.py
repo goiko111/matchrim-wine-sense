@@ -98,7 +98,7 @@ def function_response(endpoint, request):
         if region_id == "region-3":
             return {
                 "candidates": [
-                    candidate("Pazo de Senorans", "Pazo de Senorans", 0.86, 83, vintage=2023),
+                    candidate("Baron Saint George Grand Vin de Bordeaux", "Chateau Saint George", 0.86, 83, vintage=2023),
                 ]
             }
         if region_id == "region-5":
@@ -293,7 +293,7 @@ def run_privacy_safe_area_qa(browser, results, console_errors):
 
 
 def run_label_qa(browser, results, console_errors):
-    context = browser.new_context(viewport={"width": 430, "height": 932}, device_scale_factor=2)
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
     page = context.new_page()
     install_routes(page, console_errors)
     page.goto(f"{BASE_URL}/escanear/etiqueta")
@@ -303,7 +303,7 @@ def run_label_qa(browser, results, console_errors):
     page.get_by_role("button", name="Region 5, Sin reconocer").wait_for()
     assert page.get_by_text("Muga Reserva", exact=True).count() >= 1
     assert page.get_by_text("Marques de Riscal Reserva", exact=True).count() >= 1
-    assert page.get_by_text("Pazo de Senorans", exact=True).count() >= 1
+    assert page.get_by_text("Baron Saint George Grand Vin de Bordeaux", exact=True).count() >= 1
     assert page.get_by_text("2 botellas", exact=False).count() >= 1
     assert page.get_by_role("button", name="Confirmar 3 referencias").count() == 1
     comparison = page.locator('section[aria-labelledby="wine-comparison-title"]')
@@ -315,7 +315,7 @@ def run_label_qa(browser, results, console_errors):
     assert comparison.get_by_text("Elección para servir", exact=True).count() == 1
     results.append({"case": "multietiqueta_resumen", "expected": "5 regiones, 3 referencias, duplicado agrupado, duda y objeto sin reconocer", "actual": "PASS"})
     results.append({"case": "multietiqueta_comparacion", "expected": "compara referencias y cambia entre decisión personal y servicio sin inventar un score", "actual": "PASS"})
-    results.append({"case": "multietiqueta_overflow_movil", "expected": "sin desbordamiento horizontal a 430x932", "actual": f"PASS {assert_no_horizontal_overflow(page, 'label mobile')}"})
+    results.append({"case": "multietiqueta_overflow_movil", "expected": "sin desbordamiento horizontal a 393x852 con nombres largos", "actual": f"PASS {assert_no_horizontal_overflow(page, 'label mobile')}"})
     page.screenshot(path=str(ARTIFACTS / "multi-label-summary-mobile.png"), full_page=True)
 
     page.get_by_role("button", name="Region 2, Dudoso").click()

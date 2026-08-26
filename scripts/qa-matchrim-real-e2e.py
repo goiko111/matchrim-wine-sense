@@ -237,6 +237,7 @@ def compact_backend_observation(api_calls):
             continue
         payload = successful[-1].get("payload") or {}
         candidates = payload.get("candidates") or []
+        fallback = payload.get("fallback") if isinstance(payload.get("fallback"), dict) else None
         if candidates and candidates[0].get("name"):
             candidate_names.append(candidates[0]["name"])
         region_results.append({
@@ -245,6 +246,8 @@ def compact_backend_observation(api_calls):
             "status_codes": [call["status"] for call in calls],
             "candidate": candidates[0].get("name") if candidates else None,
             "confidence": candidates[0].get("confidence") if candidates else None,
+            "recognition_status": payload.get("recognition_status"),
+            "fallback_code": fallback.get("code") if fallback else None,
         })
     missing_region_ids = [region_id for region_id in detected_region_ids if region_id not in analysis_by_region]
     final_failed_regions.extend(missing_region_ids)
