@@ -154,7 +154,7 @@ const normalizePrice = (rawWine: RawWinerimWine) => {
 
         return {
           price: numericPrice,
-          currency: priceRecord.currency || priceRecord.moneda || '€',
+          currency: (priceRecord.currency || priceRecord.moneda || '€') as string | { name: string; symbol: string },
           kind: priceKind.kind,
           isKindInferred: priceKind.isKindInferred,
           label: priceKind.label,
