@@ -1,5 +1,6 @@
 import AppNav from "@/components/AppNav";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import { ScanPrivacyGate } from "@/components/ScanPrivacyGate";
 import { ScanHub, scanOptions, type ScanMode } from "@/components/wine-import/ScanHub";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -41,6 +42,22 @@ const scanPathAliases: Record<string, ScanMode> = {
   "comprar-vino": "shop-link",
 };
 
+interface ScanExtractedWine {
+  nombre: string;
+  productor?: string | null;
+  anada?: number | null;
+  region?: string | null;
+  pais?: string | null;
+  uvas?: string[] | null;
+  alcohol?: number | null;
+  notas_cata?: string | null;
+  affinity_reason?: string | null;
+  imagen_url?: string | null;
+  matchrim_affinity?: number | null;
+  sensory_attributes?: Json | null;
+  is_favorite?: boolean;
+}
+
 const Scan = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -61,7 +78,11 @@ const Scan = () => {
     navigate(`/escanear/${scanModePaths[requestedMode as ScanMode]}`, { replace: true });
   }, [modeParam, navigate, requestedMode]);
 
-  const handleExtractComplete = async (wine: any) => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location.pathname]);
+
+  const handleExtractComplete = async (wine: ScanExtractedWine) => {
     if (!user) {
       navigate(buildAuthRedirectPath(`${location.pathname}${location.search}`));
       return;
@@ -118,21 +139,21 @@ const Scan = () => {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 pb-[calc(8rem+var(--matchrim-safe-bottom))]">
+    <div className={`min-h-screen bg-stone-50 pb-[calc(8rem+var(--matchrim-safe-bottom))] ${user ? "" : "pt-[var(--matchrim-safe-top)]"}`}>
       {user && <AppNav />}
-      <main className="mx-auto max-w-3xl px-4 py-6">
+      <main className="scan-page-main mx-auto max-w-3xl px-4 py-6">
         {activeMode && activeOption ? (
           <>
             <button
               type="button"
               onClick={() => navigate("/escanear")}
-              className="mb-5 inline-flex items-center gap-2 rounded-md border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-red-200 hover:text-red-900"
+              className="scan-page-back mb-5 inline-flex items-center gap-2 rounded-md border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-red-200 hover:text-red-900"
             >
               <ArrowLeft className="h-4 w-4" />
               Otras opciones
             </button>
 
-            <div className="mb-6 flex items-start gap-3">
+            <div className="scan-page-heading mb-6 flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-red-50 text-red-900">
                 {ActiveScanIcon && <ActiveScanIcon className="h-5 w-5" />}
               </div>
@@ -153,13 +174,15 @@ const Scan = () => {
               </div>
             )}
 
-            <ScanHub
-              onExtractComplete={handleExtractComplete}
-              mode={activeMode}
-              variant="selected"
-              pairingDishName={pairingDishName}
-              similarWineName={similarWineName}
-            />
+            <ScanPrivacyGate>
+              <ScanHub
+                onExtractComplete={handleExtractComplete}
+                mode={activeMode}
+                variant="selected"
+                pairingDishName={pairingDishName}
+                similarWineName={similarWineName}
+              />
+            </ScanPrivacyGate>
           </>
         ) : (
           <>

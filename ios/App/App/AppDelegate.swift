@@ -1,6 +1,57 @@
 import UIKit
 import Capacitor
 
+class MatchrimBridgeViewController: CAPBridgeViewController {
+    override func capacitorDidLoad() {
+        super.capacitorDidLoad()
+        applyPreferredContentSize()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(matchrimContentSizeCategoryDidChange),
+            name: UIContentSizeCategory.didChangeNotification,
+            object: nil
+        )
+    }
+
+    @objc private func matchrimContentSizeCategoryDidChange() {
+        applyPreferredContentSize()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        applyPreferredContentSize()
+        for delay in [0.5, 1.5, 3.0] {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+                self?.applyPreferredContentSize()
+            }
+        }
+    }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        applyPreferredContentSize()
+    }
+
+    private func applyPreferredContentSize() {
+        let standardTraits = UITraitCollection(preferredContentSizeCategory: .large)
+        let standardSize = UIFont.preferredFont(forTextStyle: .body, compatibleWith: standardTraits).pointSize
+        let preferredSize = UIFont.preferredFont(forTextStyle: .body).pointSize
+        let scale = min(max(preferredSize / standardSize, 0.94), 1.35)
+        let percentage = Int((scale * 100).rounded())
+        let usesAccessibilityLayout = scale >= 1.2 ? "true" : "false"
+        let safeTop = Int(view.safeAreaInsets.top.rounded(.up))
+        let safeBottom = Int(view.safeAreaInsets.bottom.rounded(.up))
+
+        webView?.pageZoom = 1
+        webView?.evaluateJavaScript(
+            "document.documentElement.style.webkitTextSizeAdjust = '\(percentage)%';" +
+            "document.documentElement.classList.toggle('matchrim-accessibility-text', \(usesAccessibilityLayout));" +
+            "document.documentElement.style.setProperty('--matchrim-native-safe-top', '\(safeTop)px');" +
+            "document.documentElement.style.setProperty('--matchrim-native-safe-bottom', '\(safeBottom)px');"
+        )
+    }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

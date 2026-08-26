@@ -10,6 +10,7 @@ export default tseslint.config(
       "dist",
       "build",
       "**/build/**",
+      "qa-artifacts",
       "android/app/src/main/assets/public",
       "ios/App/App/public",
       "android/.gradle",

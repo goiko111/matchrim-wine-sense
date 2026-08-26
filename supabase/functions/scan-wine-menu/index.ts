@@ -117,7 +117,26 @@ const calculateCompatibilityScale5 = (profile: MatchrimProfile, attrs: SensoryAt
     Math.pow(profile.afrutado - (attrs.afrutado ?? 3), 2)
   );
   const maxDistance = Math.sqrt(5 * Math.pow(4, 2));
-  return Math.round(Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100)));
+  const rawScore = Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100));
+  return Math.round(50 + (rawScore - 50) * 0.85);
+};
+
+const calibrateMenuIdentityConfidence = (
+  rawValue: unknown,
+  wine: Record<string, unknown>,
+  position: { confidence: number } | null,
+) => {
+  const numeric = Number(rawValue);
+  if (!Number.isFinite(numeric)) return null;
+  const raw = clamp(numeric > 1 ? numeric / 100 : numeric, 0, 1);
+  let cap = 0.88;
+  if (typeof wine.texto_fuente !== 'string' || !wine.texto_fuente.trim()) cap = Math.min(cap, 0.82);
+  if (!position) cap = Math.min(cap, 0.78);
+  if (typeof wine.productor !== 'string' || !wine.productor.trim()) cap = Math.min(cap, 0.74);
+  const hasRegion = typeof wine.region === 'string' && Boolean(wine.region.trim());
+  const hasPrice = Number.isFinite(Number(wine.precio));
+  if (!hasRegion && !hasPrice) cap = Math.min(cap, 0.68);
+  return Math.round(Math.min(raw, cap) * 100) / 100;
 };
 
 const normalizePosicion = (raw: unknown): { x: number; y: number; width: number; height: number; confidence: number } | null => {
@@ -214,9 +233,16 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    let prompt = `Analiza esta carta de vinos y extrae un MÁXIMO de 15 vinos con sus características.
+    let prompt = `Analiza esta carta de vinos o pizarra y extrae un MÁXIMO de 30 vinos conservando su estructura visual.
 
-IMPORTANTE: Solo incluye hasta 15 vinos máximo. Si hay más, prioriza los más interesantes.
+IMPORTANTE:
+- No mezcles texto ni precios de columnas distintas.
+- Respeta secciones, orden de lectura y si el precio es por copa, botella o para llevar.
+- Si una linea no se puede asociar con seguridad, baja confidence o no la incluyas.
+- confidence mide solo la asociacion visual entre los campos de esa linea. No subas confidence por conocer el vino.
+- Usa confidence > 0.90 solo si nombre, productor y precio son inequivocos y visibles en la misma linea.
+- Endereza mentalmente la perspectiva, pero devuelve las posiciones respecto a la imagen original.
+- Incluye hasta 30 vinos. Si hay mas, prioriza lineas completas y legibles, no supuesta importancia.
 
 Para cada vino proporciona:
 - nombre: Nombre del vino
@@ -225,6 +251,12 @@ Para cada vino proporciona:
 - region: Región vinícola
 - pais: País
 - precio: Precio (solo número)
+- precios: objeto { "copa": number|null, "botella": number|null, "llevar": number|null }
+- servicio: "copa", "botella", "ambos" o null
+- seccion: encabezado visible al que pertenece el vino
+- confidence: confianza 0-1 en que nombre, productor y precio pertenecen a la misma linea
+- texto_fuente: transcripcion literal breve de la linea que sustenta el resultado
+- dudas: array de campos o asociaciones que no se leen con seguridad
 - tipo: tinto, blanco, rosado o espumoso
 - uvas: Array con variedades principales
 - descripcion: Breve descripción (máximo 150 palabras) con aromas y notas de cata
@@ -253,7 +285,7 @@ Para cada vino, estima también:
 
     prompt += `
 
-RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
+RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
 {
   "vinos": [
     {
@@ -263,6 +295,10 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
       "region": "Rioja",
       "pais": "España",
       "precio": 24.50,
+      "precios": { "copa": 4.50, "botella": 24.50, "llevar": null },
+      "servicio": "ambos",
+      "seccion": "Tintos",
+      "confidence": 0.91,
       "tipo": "tinto",
       "uvas": ["Tempranillo", "Garnacha"],
       "descripcion": "Breve descripción con aromas y notas",
@@ -394,7 +430,22 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
         out.compatibilidad = null;
       }
 
-      out.posicion = normalizePosicion(w.posicion);
+      const position = normalizePosicion(w.posicion);
+      out.posicion = position;
+      out.confidence = calibrateMenuIdentityConfidence(w.confidence, w, position);
+      out.servicio = w.servicio === 'copa' || w.servicio === 'botella' || w.servicio === 'ambos' ? w.servicio : null;
+      out.seccion = typeof w.seccion === 'string' ? w.seccion.trim() || null : null;
+      if (w.precios && typeof w.precios === 'object' && !Array.isArray(w.precios)) {
+        const rawPrices = w.precios as Record<string, unknown>;
+        const normalizePrice = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : null;
+        out.precios = {
+          copa: normalizePrice(rawPrices.copa),
+          botella: normalizePrice(rawPrices.botella),
+          llevar: normalizePrice(rawPrices.llevar),
+        };
+      } else {
+        out.precios = null;
+      }
       return out;
     });
 
@@ -421,4 +472,3 @@ RECUERDA: Máximo 15 vinos. Responde SOLO con JSON válido sin markdown:
     );
   }
 });
-

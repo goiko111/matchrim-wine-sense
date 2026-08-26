@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, BookOpen, Camera, ChefHat, ExternalLink, History, Loader2, ScanLine, ShoppingBag, Wine } from "lucide-react";
+import { MultiWineLabelScanner } from "@/components/wine-import/MultiWineLabelScanner";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
 import FoodPairingScanner from "@/components/wine-import/FoodPairingScanner";
 import WineShopLinkAdvisor from "@/components/wine-import/WineShopLinkAdvisor";
@@ -46,7 +47,7 @@ export const scanOptions = [
     id: "label" as const,
     icon: Wine,
     title: "Etiqueta de vino",
-    description: "Identifica una botella, calcula encaje y guárdala.",
+    description: "Identifica una etiqueta o varias botellas sin mezclarlas.",
     accepts: "Hacer foto · Subir archivo",
   },
   {
@@ -230,7 +231,7 @@ export const ScanHub = ({
 
   const renderSelectedScanner = () => (
     <>
-      {activeMode === "label" && <WineLabelOCRImport onExtractComplete={onExtractComplete} />}
+      {activeMode === "label" && <MultiWineLabelScanner onExtractComplete={onExtractComplete} />}
 
       {activeMode === "wine-menu" && (
         <Suspense fallback={<ScannerFallback />}>

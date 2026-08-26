@@ -9,7 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "tsx scripts/check-winerim-classifier.ts && tsx scripts/check-matchrim-learning.ts",
+    "test": "tsx scripts/check-winerim-classifier.ts && tsx scripts/check-matchrim-learning.ts && tsx scripts/check-multi-wine-scan.ts",
     "cap:sync": "npm run build && npx cap sync",
     "android:bundle": "npm run build && npx cap sync android && cd android && ./gradlew bundleRelease",
     "android:apk": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease",

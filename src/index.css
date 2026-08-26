@@ -1,6 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  --matchrim-native-safe-top: 0px;
+  --matchrim-native-safe-bottom: 0px;
+  --matchrim-safe-top: max(env(safe-area-inset-top, 0px), var(--matchrim-native-safe-top));
+  --matchrim-safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--matchrim-native-safe-bottom));
+  min-height: 100%;
+  background: hsl(var(--background));
+}
+
+body,
+#root,
+.App {
+  min-height: 100dvh;
+}
+
+body {
+  margin: 0;
+}
+
+.matchrim-accessibility-text .affinity-dimension-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 0.75rem;
+  row-gap: 0.5rem;
+}
+
+.matchrim-accessibility-text .affinity-dimension-detail {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.matchrim-accessibility-text .affinity-dimension-feedback {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .scan-page-main {
+    padding-top: 0.75rem;
+    padding-bottom: 2rem;
+  }
+
+  .scan-page-back {
+    margin-bottom: 0.5rem;
+  }
+
+  .scan-page-heading {
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .scan-page-heading h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .scan-page-heading p {
+    margin-top: 0;
+    line-height: 1.25rem;
+  }
+
+  .scan-upload-empty {
+    padding: 1rem;
+  }
+
+  .scan-upload-empty-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .scan-upload-empty h2 {
+    margin-top: 0.5rem;
+  }
+
+  .scan-upload-empty p {
+    margin-top: 0.25rem;
+    line-height: 1.25rem;
+  }
+
+  .scan-upload-actions {
+    margin-top: 0.75rem;
+  }
+}
  
 @layer base {
 :root {
