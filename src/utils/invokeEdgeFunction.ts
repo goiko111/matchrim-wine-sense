@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { EdgeFunctionError, parseRetryAfterMs } from '@/utils/edgeFunctionResilience';
 import { ensureMatchrimQaProfile, isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
@@ -33,7 +34,11 @@ export const invokeEdgeFunction = async <ResponseBody>(
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
     const message = typeof payload?.error === 'string' ? payload.error : `Error ${response.status}`;
-    throw new Error(message);
+    throw new EdgeFunctionError(message, {
+      status: response.status,
+      errorCode: response.headers.get('sb-error-code'),
+      retryAfterMs: parseRetryAfterMs(response.headers.get('retry-after')),
+    });
   }
   return payload as ResponseBody;
 };

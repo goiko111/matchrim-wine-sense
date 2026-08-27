@@ -2,12 +2,14 @@ import assert from 'node:assert/strict';
 import {
   determineRegionStatus,
   groupDuplicateWines,
+  getRegionAnalysisConcurrency,
   intersectionOverUnion,
   mapWithConcurrency,
   normalizeDetectedRegions,
   normalizeRecognitionFallback,
   normalizeScanCoverage,
   normalizeWineCandidates,
+  prioritizeRegionsForAnalysis,
   summarizeScanRegions,
   type ScanRegion,
 } from '../src/utils/multiWineScan';
@@ -25,6 +27,13 @@ import {
 } from '../src/utils/scanConfidence';
 import { evaluateCandidateGrounding } from '../supabase/functions/analyze-wine-region/grounding';
 import { shouldRejectTextAnalysis } from '../src/utils/imageAnalysis';
+import {
+  EdgeFunctionError,
+  edgeFunctionRetryDelay,
+  invokeWithEdgeFunctionRetry,
+  isRetryableEdgeFunctionError,
+  waitForAbortableDelay,
+} from '../src/utils/edgeFunctionResilience';
 
 const regions = normalizeDetectedRegions({
   regions: [
@@ -184,6 +193,52 @@ const mapped = await mapWithConcurrency([1, 2, 3, 4, 5], 2, async (value) => {
 });
 assert.deepEqual(mapped, [2, 4, 6, 8, 10]);
 assert.equal(maxActive, 2);
+
+assert.equal(getRegionAnalysisConcurrency(0), 0);
+assert.equal(getRegionAnalysisConcurrency(5), 3);
+assert.equal(getRegionAnalysisConcurrency(12), 4);
+assert.equal(getRegionAnalysisConcurrency(30), 5);
+assert.equal(getRegionAnalysisConcurrency(30, { effectiveType: '3g' }), 3);
+assert.equal(getRegionAnalysisConcurrency(30, { effectiveType: '2g' }), 2);
+assert.equal(getRegionAnalysisConcurrency(30, { saveData: true }), 2);
+
+const priorityRegions = prioritizeRegionsForAnalysis([
+  { ...makeRegion('poor', 1, 'A', 80), quality: { glare: 'low', occlusion: 'low', legibility: 'poor' } },
+  { ...makeRegion('good-low', 2, 'B', 80), detectionConfidence: 0.7, quality: { glare: 'low', occlusion: 'low', legibility: 'good' } },
+  { ...makeRegion('good-high', 3, 'C', 80), detectionConfidence: 0.9, quality: { glare: 'low', occlusion: 'low', legibility: 'good' } },
+]);
+assert.deepEqual(priorityRegions.map((region) => region.id), ['good-high', 'good-low', 'poor']);
+
+const badRequest = new EdgeFunctionError('bad request', { status: 400, errorCode: null, retryAfterMs: null });
+const serverFailure = new EdgeFunctionError('server failure', { status: 503, errorCode: 'EDGE_FUNCTION_ERROR', retryAfterMs: null });
+const rateLimit = new EdgeFunctionError('slow down', { status: 429, errorCode: null, retryAfterMs: 2_000 });
+assert.equal(isRetryableEdgeFunctionError(badRequest), false);
+assert.equal(isRetryableEdgeFunctionError(serverFailure), true);
+assert.equal(isRetryableEdgeFunctionError(rateLimit), true);
+assert.equal(edgeFunctionRetryDelay(serverFailure, 1), 600);
+assert.equal(edgeFunctionRetryDelay(serverFailure, 3), 2_400);
+assert.equal(edgeFunctionRetryDelay(rateLimit, 1), 2_000);
+
+const delayController = new AbortController();
+const abortedDelay = waitForAbortableDelay(10_000, delayController.signal);
+delayController.abort();
+await assert.rejects(abortedDelay, (error: unknown) => error instanceof DOMException && error.name === 'AbortError');
+
+let retryAttempts = 0;
+const retryResult = await invokeWithEdgeFunctionRetry(async () => {
+  retryAttempts += 1;
+  if (retryAttempts === 1) throw new TypeError('fetch failed');
+  return 'recovered';
+}, new AbortController().signal, { maxAttempts: 2 });
+assert.equal(retryResult, 'recovered');
+assert.equal(retryAttempts, 2);
+
+let nonRetryableAttempts = 0;
+await assert.rejects(invokeWithEdgeFunctionRetry(async () => {
+  nonRetryableAttempts += 1;
+  throw badRequest;
+}, new AbortController().signal));
+assert.equal(nonRetryableAttempts, 1);
 
 const explanation = buildDetailedAffinityExplanation(
   { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 },

@@ -374,3 +374,35 @@ export const mapWithConcurrency = async <Input, Output>(
   await Promise.all(Array.from({ length: Math.min(Math.max(1, concurrency), inputs.length) }, worker));
   return results;
 };
+
+export interface NetworkConcurrencyHints {
+  effectiveType?: string | null;
+  saveData?: boolean;
+}
+
+export const getRegionAnalysisConcurrency = (
+  regionCount: number,
+  network: NetworkConcurrencyHints | null = null,
+) => {
+  if (regionCount <= 1) return Math.max(0, regionCount);
+  let concurrency = regionCount >= 20 ? 5 : regionCount >= 8 ? 4 : 3;
+  const effectiveType = network?.effectiveType?.toLowerCase();
+  if (network?.saveData || effectiveType === 'slow-2g' || effectiveType === '2g') {
+    concurrency = Math.min(concurrency, 2);
+  } else if (effectiveType === '3g') {
+    concurrency = Math.min(concurrency, 3);
+  }
+  return Math.min(regionCount, concurrency);
+};
+
+const legibilityPriority: Record<RegionQuality['legibility'], number> = {
+  good: 3,
+  limited: 2,
+  poor: 1,
+};
+
+export const prioritizeRegionsForAnalysis = (regions: ScanRegion[]) => [...regions].sort((left, right) => (
+  legibilityPriority[right.quality.legibility] - legibilityPriority[left.quality.legibility]
+  || right.detectionConfidence - left.detectionConfidence
+  || left.index - right.index
+));

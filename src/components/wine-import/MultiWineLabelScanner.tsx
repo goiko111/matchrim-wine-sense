@@ -32,6 +32,10 @@ import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
 import { trackAppEvent } from '@/lib/analytics';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
+import {
+  EdgeFunctionError,
+  invokeWithEdgeFunctionRetry,
+} from '@/utils/edgeFunctionResilience';
 import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
@@ -43,11 +47,13 @@ import {
   determineRegionStatus,
   getSelectedCandidate,
   groupDuplicateWines,
+  getRegionAnalysisConcurrency,
   mapWithConcurrency,
   normalizeDetectedRegions,
   normalizeRecognitionFallback,
   normalizeScanCoverage,
   normalizeWineCandidates,
+  prioritizeRegionsForAnalysis,
   summarizeScanRegions,
   type ScanRegion,
   type ScanCoverage,
@@ -72,6 +78,15 @@ interface MultiWineLabelScannerProps {
 }
 
 type ScanPhase = 'idle' | 'quality' | 'detecting' | 'analyzing' | 'ready' | 'cancelled' | 'error';
+
+interface ScanPerformance {
+  qualityMs: number;
+  detectionMs: number;
+  analysisMs: number;
+  totalMs: number;
+  concurrency: number;
+  retries: number;
+}
 
 const PHASE_LABELS: Record<ScanPhase, string> = {
   idle: 'Lista para escanear',
@@ -118,6 +133,12 @@ const userFacingScanError = (error: unknown) => {
   if (/load failed|failed to fetch|network|404|not found/i.test(message)) {
     return 'No se pudo conectar con el servicio de deteccion. La foto sigue lista para reintentar.';
   }
+  if (error instanceof EdgeFunctionError && error.status === 429) {
+    return 'El servicio esta recibiendo demasiadas solicitudes. Conservamos la foto para reintentarlo en unos segundos.';
+  }
+  if (error instanceof EdgeFunctionError && error.status >= 500) {
+    return 'El servicio no pudo terminar la lectura. Conservamos la foto para que puedas reintentar.';
+  }
   return message || 'No se pudo completar el analisis. La foto sigue lista para reintentar.';
 };
 
@@ -130,6 +151,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
   const [phase, setPhase] = useState<ScanPhase>('idle');
   const [analysisProgress, setAnalysisProgress] = useState(0);
+  const [analysisConcurrency, setAnalysisConcurrency] = useState(0);
+  const [scanMetrics, setScanMetrics] = useState<ScanPerformance | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -226,25 +249,30 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     }
   };
 
-  const analyzeRegion = async (region: ScanRegion, imageDataUrl: string, signal: AbortSignal, fixtureName?: string) => {
+  const analyzeRegion = async (
+    region: ScanRegion,
+    imageDataUrl: string,
+    signal: AbortSignal,
+    fixtureName?: string,
+    onRetry?: () => void,
+  ) => {
     updateRegion(region.id, (current) => ({ ...current, status: 'analyzing', error: null, fallback: null }));
     try {
       const cropDataUrl = await cropImageRegion(imageDataUrl, region.box);
-      const invokeAnalysis = async (attempt = 1): Promise<Record<string, unknown>> => {
-        try {
-          return await invokeEdgeFunction<Record<string, unknown>>(
+      const payload = await invokeWithEdgeFunctionRetry(
+        () => invokeEdgeFunction<Record<string, unknown>>(
             'analyze-wine-region',
             { image: cropDataUrl, region_id: region.id, qa_fixture_name: fixtureName ?? null },
             signal,
-          );
-        } catch (error) {
-          if (error instanceof DOMException && error.name === 'AbortError') throw error;
-          if (attempt >= 3) throw error;
-          await new Promise((resolve) => window.setTimeout(resolve, attempt * 900));
-          return invokeAnalysis(attempt + 1);
-        }
-      };
-      const payload = await invokeAnalysis();
+          ),
+        signal,
+        {
+          maxAttempts: 3,
+          onRetry: () => {
+            onRetry?.();
+          },
+        },
+      );
       let candidates = normalizeWineCandidates(payload, region.id);
       if (candidates[0]) {
         const first = await enrichCandidate(candidates[0], signal);
@@ -271,6 +299,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const startScan = async (file: File) => {
+    const scanStartedAt = globalThis.performance.now();
     lastFileRef.current = file;
     abortRef.current?.abort();
     const controller = new AbortController();
@@ -281,10 +310,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     setSelectedRegionId(null);
     setErrorMessage(null);
     setAnalysisProgress(0);
+    setAnalysisConcurrency(0);
+    setScanMetrics(null);
+    let retries = 0;
 
     try {
       setPhase('quality');
       const prepared = await prepareImageForAnalysis(file);
+      const qualityFinishedAt = globalThis.performance.now();
       if (controller.signal.aborted) return;
       setPreview(prepared.dataUrl);
       setQuality(prepared.quality);
@@ -295,11 +328,21 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       }
 
       setPhase('detecting');
-      const detection = await invokeEdgeFunction<Record<string, unknown>>(
-        'detect-wine-regions',
-        { image: prepared.dataUrl, qa_fixture_name: file.name },
+      const detection = await invokeWithEdgeFunctionRetry(
+        () => invokeEdgeFunction<Record<string, unknown>>(
+          'detect-wine-regions',
+          { image: prepared.dataUrl, qa_fixture_name: file.name },
+          controller.signal,
+        ),
         controller.signal,
+        {
+          maxAttempts: 2,
+          onRetry: () => {
+            retries += 1;
+          },
+        },
       );
+      const detectionFinishedAt = globalThis.performance.now();
       const detected = normalizeDetectedRegions(detection);
       setCoverage(normalizeScanCoverage(detection, detected.length));
       if (detected.length === 0) {
@@ -313,15 +356,34 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       setSelectedRegionId(null);
       setPhase('analyzing');
       let completed = 0;
-      const analyzed = await mapWithConcurrency(detected, 3, async (region) => {
-        const result = await analyzeRegion(region, prepared.dataUrl, controller.signal, file.name);
+      const connection = (navigator as Navigator & {
+        connection?: { effectiveType?: string; saveData?: boolean };
+      }).connection ?? null;
+      const concurrency = getRegionAnalysisConcurrency(detected.length, connection);
+      const prioritizedRegions = prioritizeRegionsForAnalysis(detected);
+      setAnalysisConcurrency(concurrency);
+      const analyzedByPriority = await mapWithConcurrency(prioritizedRegions, concurrency, async (region) => {
+        const result = await analyzeRegion(region, prepared.dataUrl, controller.signal, file.name, () => {
+          retries += 1;
+        });
         completed += 1;
         setAnalysisProgress(Math.round(completed / detected.length * 100));
         updateRegion(region.id, () => result);
         return result;
       });
       if (controller.signal.aborted) return;
+      const analyzed = [...analyzedByPriority].sort((left, right) => left.index - right.index);
+      const analysisFinishedAt = globalThis.performance.now();
       setRegions(analyzed);
+      const scanPerformance = {
+        qualityMs: Math.round(qualityFinishedAt - scanStartedAt),
+        detectionMs: Math.round(detectionFinishedAt - qualityFinishedAt),
+        analysisMs: Math.round(analysisFinishedAt - detectionFinishedAt),
+        totalMs: Math.round(analysisFinishedAt - scanStartedAt),
+        concurrency,
+        retries,
+      };
+      setScanMetrics(scanPerformance);
       setPhase('ready');
       trackAppEvent('multi_wine_label_scan_completed', {
         userId: user?.id,
@@ -329,6 +391,12 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           regions: analyzed.length,
           recognized: summarizeScanRegions(analyzed).recognized,
           uncertain: summarizeScanRegions(analyzed).uncertain,
+          quality_ms: scanPerformance.qualityMs,
+          detection_ms: scanPerformance.detectionMs,
+          analysis_ms: scanPerformance.analysisMs,
+          total_ms: scanPerformance.totalMs,
+          concurrency: scanPerformance.concurrency,
+          retries: scanPerformance.retries,
         },
       });
     } catch (error) {
@@ -370,6 +438,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     setSelectedRegionId(null);
     setErrorMessage(null);
     setAnalysisProgress(0);
+    setAnalysisConcurrency(0);
+    setScanMetrics(null);
     setConfirmed(false);
     lastFileRef.current = null;
     setPhase('idle');
@@ -534,10 +604,21 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         <>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-sm font-semibold text-slate-950">{PHASE_LABELS[phase]}</div>
+              <div className="text-sm font-semibold text-slate-950" aria-live="polite">{PHASE_LABELS[phase]}</div>
               <div className="mt-1 text-xs text-slate-500">
                 {quality ? `${quality.megapixels} MP · brillo ${quality.brightness ?? '-'} · contraste ${quality.contrast ?? '-'}` : 'Preparando imagen'}
               </div>
+              {phase === 'analyzing' && regions.length > 0 && (
+                <div className="mt-1 text-xs text-slate-600" role="status">
+                  {regions.length - summary.pending} de {regions.length} regiones · {analysisConcurrency} en paralelo
+                </div>
+              )}
+              {phase === 'ready' && scanMetrics && (
+                <div className="mt-1 text-xs text-slate-600" data-testid="scan-performance-summary">
+                  {regions.length} regiones en {(scanMetrics.totalMs / 1000).toFixed(1)} s
+                  {scanMetrics.retries > 0 ? ` · ${scanMetrics.retries} reintento${scanMetrics.retries === 1 ? '' : 's'}` : ''}
+                </div>
+              )}
             </div>
             <div className="flex gap-2">
               {loading && (

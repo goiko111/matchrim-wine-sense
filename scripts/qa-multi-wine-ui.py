@@ -210,14 +210,23 @@ def function_response(endpoint, request):
     return {}
 
 
-def install_routes(page, console_errors, *, accept_privacy=True):
+def install_routes(page, console_errors, *, accept_privacy=True, response_handler=None):
     def handle_function(route: Route):
         endpoint = urlparse(route.request.url).path.rstrip("/").split("/")[-1]
+        response = response_handler(endpoint, route.request) if response_handler else function_response(endpoint, route.request)
+        if isinstance(response, tuple):
+            status, body, extra_headers = response
+        else:
+            status, body, extra_headers = 200, response, {}
         route.fulfill(
-            status=200,
+            status=status,
             content_type="application/json",
-            headers={"Access-Control-Allow-Origin": "*"},
-            body=json.dumps(function_response(endpoint, route.request)),
+            headers={
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Expose-Headers": "Retry-After, sb-error-code",
+                **extra_headers,
+            },
+            body=json.dumps(body),
         )
 
     if EMBEDDED_FIXTURES:
@@ -300,6 +309,9 @@ def run_label_qa(browser, results, console_errors):
     page.wait_for_load_state("networkidle")
     page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
     page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
+    performance_summary = page.get_by_test_id("scan-performance-summary")
+    performance_summary.wait_for()
+    assert "5 regiones en" in performance_summary.inner_text()
     page.get_by_role("button", name="Region 5, Sin reconocer").wait_for()
     assert page.get_by_text("Muga Reserva", exact=True).count() >= 1
     assert page.get_by_text("Marques de Riscal Reserva", exact=True).count() >= 1
@@ -315,6 +327,7 @@ def run_label_qa(browser, results, console_errors):
     assert comparison.get_by_text("Elección para servir", exact=True).count() == 1
     results.append({"case": "multietiqueta_resumen", "expected": "5 regiones, 3 referencias, duplicado agrupado, duda y objeto sin reconocer", "actual": "PASS"})
     results.append({"case": "multietiqueta_comparacion", "expected": "compara referencias y cambia entre decisión personal y servicio sin inventar un score", "actual": "PASS"})
+    results.append({"case": "multietiqueta_metricas", "expected": "resumen visible de regiones y tiempo total tras terminar", "actual": f"PASS {performance_summary.inner_text()}"})
     results.append({"case": "multietiqueta_overflow_movil", "expected": "sin desbordamiento horizontal a 393x852 con nombres largos", "actual": f"PASS {assert_no_horizontal_overflow(page, 'label mobile')}"})
     page.screenshot(path=str(ARTIFACTS / "multi-label-summary-mobile.png"), full_page=True)
 
@@ -345,6 +358,83 @@ def run_label_qa(browser, results, console_errors):
         "case": "multietiqueta_abstencion_y_correccion",
         "expected": "motivo de abstencion, acciones, correccion manual y afinidad pendiente sin datos",
         "actual": "PASS",
+    })
+    context.close()
+
+
+def run_retry_policy_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+    attempts = {}
+    expected_console_errors = []
+
+    def retry_handler(endpoint, request):
+        if endpoint == "detect-wine-regions":
+            attempts["detector"] = attempts.get("detector", 0) + 1
+            if attempts["detector"] == 1:
+                return 503, {"error": "Detector transitorio de QA"}, {"sb-error-code": "EDGE_FUNCTION_ERROR"}
+            return function_response(endpoint, request)
+        if endpoint != "analyze-wine-region":
+            return function_response(endpoint, request)
+        region_id = (request.post_data_json or {}).get("region_id")
+        attempts[region_id] = attempts.get(region_id, 0) + 1
+        if region_id == "region-1" and attempts[region_id] == 1:
+            return 503, {"error": "Fallo transitorio de QA"}, {"sb-error-code": "EDGE_FUNCTION_ERROR"}
+        if region_id == "region-2":
+            return 400, {"error": "Recorte no valido"}, {}
+        return function_response(endpoint, request)
+
+    install_routes(page, expected_console_errors, response_handler=retry_handler)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
+    page.get_by_text("en paralelo", exact=False).wait_for(timeout=30_000)
+    page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
+    summary = page.get_by_test_id("scan-performance-summary").inner_text()
+    assert attempts.get("detector") == 2, attempts
+    assert attempts.get("region-1") == 2, attempts
+    assert attempts.get("region-2") == 1, attempts
+    assert "2 reintentos" in summary, summary
+    assert all("Failed to load resource" in message for message in expected_console_errors), expected_console_errors
+    assert_no_horizontal_overflow(page, "retry policy mobile")
+    page.screenshot(path=str(ARTIFACTS / "multi-label-retry-policy-mobile.png"), full_page=True)
+    results.append({
+        "case": "multietiqueta_retry_selectivo",
+        "expected": "503 de detector/region se reintenta una vez, 400 no se repite y el lote termina",
+        "actual": f"PASS attempts={attempts} summary={summary}",
+    })
+    context.close()
+
+
+def run_retry_cancellation_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+    attempts = {}
+    expected_console_errors = []
+
+    def cancellation_handler(endpoint, request):
+        if endpoint != "analyze-wine-region":
+            return function_response(endpoint, request)
+        region_id = (request.post_data_json or {}).get("region_id")
+        attempts[region_id] = attempts.get(region_id, 0) + 1
+        if region_id == "region-1":
+            return 503, {"error": "Espera antes de reintentar"}, {"Retry-After": "10"}
+        return function_response(endpoint, request)
+
+    install_routes(page, expected_console_errors, response_handler=cancellation_handler)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
+    page.get_by_text("en paralelo", exact=False).wait_for(timeout=30_000)
+    page.get_by_role("button", name="Cancelar").click()
+    page.get_by_text("Analisis cancelado", exact=True).wait_for(timeout=5_000)
+    page.wait_for_timeout(900)
+    assert attempts.get("region-1") == 1, attempts
+    assert all("Failed to load resource" in message for message in expected_console_errors), expected_console_errors
+    results.append({
+        "case": "multietiqueta_cancelacion_backoff",
+        "expected": "cancelar durante Retry-After evita una segunda llamada",
+        "actual": f"PASS attempts={attempts}",
     })
     context.close()
 
@@ -458,6 +548,8 @@ def main():
         browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
         run_privacy_safe_area_qa(browser, results, console_errors)
         run_label_qa(browser, results, console_errors)
+        run_retry_policy_qa(browser, results, console_errors)
+        run_retry_cancellation_qa(browser, results, console_errors)
         run_menu_qa(browser, results, console_errors)
         run_menu_fixture_matrix(browser, results, console_errors)
         if EMBEDDED_FIXTURES:

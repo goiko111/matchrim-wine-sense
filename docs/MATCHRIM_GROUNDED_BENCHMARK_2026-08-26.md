@@ -4,6 +4,8 @@ Fecha: 26 de agosto de 2026.
 
 Estado: **implementacion interna completada; NO-GO temporal para un nuevo TestFlight**. La funcion de analisis por region esta desplegada, el cliente y el build de simulador pasan QA, pero el siguiente binario debe ser build 59 y solo debe subirse tras cerrar los gates externos y de dataset descritos abajo.
 
+Seguimiento 2026-08-27: la concurrencia adaptativa, retry selectivo y QA de rendimiento estan cerrados en `docs/MATCHRIM_PERFORMANCE_RESILIENCE_2026-08-27.md`. El gate restante baja de 15% a 13%; TestFlight sigue cerrado.
+
 ## Versiones y alcance
 
 - Rama operativa: `codex/2matchrim-p0-remediation-20260826`.
@@ -136,10 +138,10 @@ Metricas agregadas: pass rate `100%`, recall medio de recuento capado `96,67%`, 
 
 ## Gate exacto para build 59
 
-Trabajo interno restante estimado: **15%**.
+Trabajo interno restante estimado: **13%**.
 
 1. `8%`: anotar al menos 25 capturas independientes adicionales y cajas/identidad exhaustivas de la vitrina; medir precision, recall e IoU de deteccion y precision top-1/top-3.
 2. `4%`: ejecutar el build actual en iPhone fisico con camara, galeria, orientacion, Dynamic Type, VoiceOver hablado, red lenta/offline, cancelacion y memoria.
-3. `3%`: bajar la latencia multibotella, ejecutar soak de errores 500/reintentos y fijar un presupuesto aceptado.
+3. `1%`: reducir la vitrina de 30 regiones desde el presupuesto provisional `<=60 s` hacia `<=35 s` mediante batching u orquestacion server-side. El cliente adaptativo y el soak de retry ya estan cerrados.
 
 Solo despues de esos tres gates corresponde incrementar a build 59, archivar, validar y pedir autorizacion explicita para TestFlight. El build no debe depender de mocks y no debe presentar como fiable una identidad que no este respaldada por texto visible o catalogo.
