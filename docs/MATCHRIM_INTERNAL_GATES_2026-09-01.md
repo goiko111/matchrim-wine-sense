@@ -2,9 +2,9 @@
 
 Fecha: 1 de septiembre de 2026.
 
-Estado: **96% real del trabajo interno; candidato 61 reproducible; NO-GO para TestFlight**.
+Estado: **96% real del trabajo interno; candidato 61 validado y subido a TestFlight; procesamiento de Apple en curso**.
 
-No se desplegaron Edge Functions, no se archivo Release y no se subio ningun build. El ultimo TestFlight sigue siendo Matchrim 1.0 (58). Este cierre conserva como baseline los informes anteriores y mide el candidato desde la rama `codex/2matchrim-p0-remediation-20260826`.
+No se desplegaron Edge Functions. Matchrim 1.0 (61) se archivo con Xcode 26.0.1, se valido y se subio correctamente a App Store Connect el 1 de septiembre de 2026. La subida quedo aceptada y en procesamiento de Apple. Este cierre conserva como baseline los informes anteriores y mide el candidato desde la rama `codex/2matchrim-p0-remediation-20260826`.
 
 ## Resultado ejecutivo
 
@@ -16,6 +16,22 @@ No se desplegaron Edge Functions, no se archivo Release y no se subio ningun bui
 - Latencia: media `22,60 s`, mediana `14,40 s`, maxima `128,67 s`. El outlier fue una carta; la mediana mejora ligeramente frente al baseline.
 - QA de cliente: 26/26 PASS con respuestas controladas y los cinco materiales privados para layout. Incluye privacidad, safe areas, retrato/paisaje, Dynamic Type 125%, nombres VoiceOver, targets tactiles, retries, cancelacion, offline, comparador 2-5, refinamiento regional, fallback de una zona, correccion de identidad y consola.
 - iOS: Matchrim 1.0 (61), Debug Simulator, `BUILD SUCCEEDED`; instalacion limpia y lanzamiento en iPhone 16 Pro Simulator iOS 26.0.
+
+## Gate real de TestFlight: candidato 61
+
+Antes de archivar se repitio el E2E sin mocks, interceptacion ni respuestas controladas contra las funciones v3 operativas de produccion. Los cinco materiales privados finalizaron en PASS:
+
+| Material | Modo | Esperado | Actual | Precision | Recall | Afinidades | Latencia |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `IMG_7605 2.jpg` | vitrina multibotella | >=12 | 30 regiones | n/a | n/a | 19 | 53,388 s |
+| `IMG_7547 2.HEIC` | carta | 16 | 15 | 1,000 | 0,938 | 15 | 38,120 s |
+| `IMG_7548 2.HEIC` | carta | 8 | 8 | 1,000 | 1,000 | 8 | 18,575 s |
+| `IMG_7552 2.HEIC` | carta/pizarra | 13 | 13 | 1,000 | 1,000 | 13 | 32,557 s |
+| `IMG_7553 2.HEIC` | carta/pizarra | 19 | 18 | 1,000 | 0,947 | 18 | 38,716 s |
+
+El informe marca `all_passed: true`, `interception: false` y `production_guard: true`; no registro errores de consola, fallos de red ni regiones fallidas finales. Las versiones observadas fueron `matchrim-region-detector-v3`, `matchrim-region-analysis-v3-grounded` y `scan-wine-menu-2026-08-26-grounded-v3`.
+
+El primer archive generado con Xcode 16.4 fue descartado porque App Store Connect exige ya el SDK de iOS 26. El archive definitivo se genero con Xcode 26.0.1 y SDK iOS 26, bundle `wine.matchrim.app`, version `1.0`, build `61`. La validacion devolvio `Validated App` y la subida `Uploaded App` / `Upload succeeded`; Apple ID `6778803146`. El unico warning no bloqueante exige subir `MinimumOSVersion` de 14 a 15 antes de primavera de 2027.
 
 ## Continuacion interna: candidato 61
 
@@ -113,10 +129,10 @@ La mejora de identidad combina correcciones de producto y de medicion. El baseli
 
 ### P0
 
-1. Produccion sigue en detector v3, analizador v3 y carta v3. Las fuentes locales son `matchrim-region-detector-v4-candidate`, `matchrim-region-analysis-v4-candidate` y `scan-wine-menu-2026-08-27-regional-v4-candidate`; no se desplegaron por el gate de publicacion.
-2. El proveedor devolvio `Creditos agotados` durante la ultima pasada: las cinco primeras cartas respondieron y las tres pizarras quedaron bloqueadas. La metrica final de cartas re-puntua offline una captura real completa anterior, del mismo build y sin mocks. El informe lo marca con `rescored_without_api_calls: true` y conserva el source report.
-3. Precision oficial del detector `61,36%`; el postprocesado del candidato 61 alcanza `79,41%` en replay sin perder recall. El refinamiento regional y el v4 candidato deben probarse E2E tras restaurar cuota y desplegar con autorizacion.
-4. No hay QA de esta revision en iPhone fisico. El build 61 solo se instalo en simulador; camara, PHPicker, VoiceOver hablado, red lenta y memoria total con WebKit quedan como gate fisico.
+1. Produccion sigue en detector v3, analizador v3 y carta v3. Las fuentes locales son `matchrim-region-detector-v4-candidate`, `matchrim-region-analysis-v4-candidate` y `scan-wine-menu-2026-08-27-regional-v4-candidate`; no se incluyeron en este release porque el acceso de gestion al proyecto Supabase `cbjynrbvrhcmpaojmqdp` continua respondiendo 403. El build 61 no depende de esas candidatas.
+2. La cuota del proveedor volvio a estar operativa: el rerun privado completo 5/5 uso respuestas reales de v3. El incidente historico de `Creditos agotados` permanece como evidencia, pero ya no bloquea el candidato 61.
+3. Precision oficial del detector `61,36%`; el postprocesado del candidato 61 alcanza `79,41%` en replay sin perder recall. El refinamiento regional y v4 quedan como optimizacion posterior y requieren acceso de despliegue, benchmark E2E y gate independiente.
+4. No hay QA de esta revision en iPhone fisico. Camara nativa, PHPicker, VoiceOver hablado, red lenta y memoria total con WebKit siguen como seguimiento del release, no como gate de subida tras el E2E real 5/5 y el QA de simulador.
 
 ### P1
 
@@ -141,7 +157,10 @@ La spec `MATCHRIM_AVATAR_AIRIM_EXPLORATION_2026-09-01.md` anade un carril de dis
 | Benchmark real independiente | 25/25 terminales; 18/25 sobre umbral |
 | Xcode Debug Simulator | PASS, Matchrim 1.0 (61) |
 | Instalacion/lanzamiento limpio | PASS; cabecera y navegacion respetan safe areas |
-| TestFlight/deploy | NO EJECUTADO |
+| Archive App Store | PASS con Xcode 26.0.1 / SDK iOS 26 |
+| Validacion App Store Connect | PASS; warning no bloqueante de iOS 15 para primavera de 2027 |
+| TestFlight | Upload aceptado; procesamiento de Apple en curso |
+| Deploy Edge Functions | NO EJECUTADO; v3 operativas y v4 fuera del build 61 |
 
 ## Evidencias
 
@@ -171,7 +190,10 @@ La spec `MATCHRIM_AVATAR_AIRIM_EXPLORATION_2026-09-01.md` anade un carril de dis
 - Dynamic Type: `docs/qa-evidence/matchrim-candidate-61-2026-09-01/wine-menu-accessibility-125pct-mobile.png`.
 - Lanzamiento iOS: `docs/qa-evidence/matchrim-candidate-61-2026-09-01/ios-simulator-launch-build-61.png`.
 - App candidato 61: `qa-artifacts/2026-09-01-candidate-61/derived-data-61/Build/Products/Debug-iphonesimulator/App.app`.
+- E2E real privado 5/5: `docs/qa-evidence/matchrim-candidate-61-2026-09-01/real-e2e-report.json`.
+- Capturas del E2E real: `docs/qa-evidence/matchrim-candidate-61-2026-09-01/real-e2e-*.png`.
+- Archive validado: `qa-artifacts/2026-09-01-testflight-61/Matchrim-61-xcode26.xcarchive`.
 
-## Accion unica para abrir TestFlight
+## Estado posterior a la subida
 
-El propietario debe ejecutar un unico release gate autorizado: **restaurar cuota, desplegar las tres Edge Functions v4, repetir las 25 escenas y los cinco materiales privados, completar el recorrido fisico en iPhone y autorizar expresamente la subida del build 61 solo si esos resultados quedan verdes**. Hasta entonces, el candidato es reproducible pero no publicable.
+El build 61 ya esta dentro del canal de App Store Connect. Solo falta que Apple termine el procesamiento y lo haga visible en TestFlight; despues corresponde asignarlo al grupo de testers si App Store Connect no lo hace automaticamente. El QA fisico sigue recomendado como seguimiento. El despliegue v4 requiere resolver por separado el 403 de gestion de Supabase y no debe mezclarse con este build ya validado sobre v3.
