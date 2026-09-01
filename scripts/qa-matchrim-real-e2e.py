@@ -128,10 +128,13 @@ def materialize_fixture(fixture):
 def normalize_name(value):
     decomposed = unicodedata.normalize("NFKD", str(value or ""))
     ascii_value = "".join(char for char in decomposed if not unicodedata.combining(char))
-    return " ".join(re.sub(r"[^a-z0-9]+", " ", ascii_value.lower()).split())
+    normalized = re.sub(r"[^a-z0-9]+", " ", ascii_value.lower())
+    normalized = re.sub(r"([a-z])(\d)", r"\1 \2", normalized)
+    normalized = re.sub(r"(\d)([a-z])", r"\1 \2", normalized)
+    return " ".join(normalized.split())
 
 
-def name_similarity(expected, actual):
+def single_name_similarity(expected, actual):
     left = normalize_name(expected)
     right = normalize_name(actual)
     if not left or not right:
@@ -144,6 +147,38 @@ def name_similarity(expected, actual):
     right_tokens = set(right.split())
     token_overlap = len(left_tokens & right_tokens) / max(1, min(len(left_tokens), len(right_tokens)))
     return max(SequenceMatcher(None, left, right).ratio(), token_overlap)
+
+
+def name_similarity(expected, actual):
+    expected_aliases = str(expected or "").split(" || ")
+    actual_aliases = str(actual or "").split(" || ")
+    return max(
+        single_name_similarity(expected_alias, actual_alias)
+        for expected_alias in expected_aliases
+        for actual_alias in actual_aliases
+    )
+
+
+def menu_row_identity(row):
+    lines = [line.strip() for line in str(row or "").splitlines() if line.strip()]
+    if lines and lines[0].isdigit():
+        lines = lines[1:]
+    if not lines:
+        return ""
+    name = lines[0]
+    aliases = [name]
+    if len(lines) > 1:
+        detail_prefix = lines[1].split("·", 1)[0].strip()
+        normalized_prefix = normalize_name(detail_prefix)
+        service_tokens = {"copa", "botella", "ambos"}
+        if (
+            normalized_prefix
+            and normalized_prefix not in service_tokens
+            and not re.search(r"[%€$]", detail_prefix)
+            and not normalized_prefix.startswith("identidad ")
+        ):
+            aliases.append(f"{detail_prefix} {name}")
+    return " || ".join(aliases)
 
 
 def compare_wine_names(expected_names, actual_names):
@@ -177,6 +212,62 @@ def compare_wine_names(expected_names, actual_names):
     }
 
 
+def compare_detection_boxes(expected_boxes, actual_boxes, threshold=0.3):
+    def normalized(box):
+        if not isinstance(box, dict):
+            return None
+        values = [box.get(key) for key in ("x", "y", "width", "height")]
+        if not all(isinstance(value, (int, float)) for value in values):
+            return None
+        divisor = 100 if max(values) > 1.01 else 1
+        return tuple(value / divisor for value in values)
+
+    def iou(left, right):
+        left_x, left_y, left_width, left_height = left
+        right_x, right_y, right_width, right_height = right
+        overlap_width = max(0, min(left_x + left_width, right_x + right_width) - max(left_x, right_x))
+        overlap_height = max(0, min(left_y + left_height, right_y + right_height) - max(left_y, right_y))
+        intersection = overlap_width * overlap_height
+        union = left_width * left_height + right_width * right_height - intersection
+        return intersection / union if union > 0 else 0
+
+    expected = [tuple(box) for box in expected_boxes]
+    actual = [box for value in actual_boxes if (box := normalized(value)) is not None]
+    pairs = sorted(
+        (
+            (iou(expected_box, actual_box), expected_index, actual_index)
+            for expected_index, expected_box in enumerate(expected)
+            for actual_index, actual_box in enumerate(actual)
+        ),
+        reverse=True,
+    )
+    matched_expected = set()
+    matched_actual = set()
+    matches = []
+    for score, expected_index, actual_index in pairs:
+        if score < threshold:
+            break
+        if expected_index in matched_expected or actual_index in matched_actual:
+            continue
+        matched_expected.add(expected_index)
+        matched_actual.add(actual_index)
+        matches.append({
+            "expected_index": expected_index,
+            "actual_index": actual_index,
+            "iou": round(score, 3),
+        })
+    return {
+        "expected_count": len(expected),
+        "actual_count": len(actual),
+        "matched_count": len(matches),
+        "precision": round(len(matches) / len(actual), 3) if actual else 0.0,
+        "recall": round(len(matches) / len(expected), 3) if expected else 0.0,
+        "mean_iou": round(sum(match["iou"] for match in matches) / len(matches), 3) if matches else 0.0,
+        "threshold": threshold,
+        "matches": matches,
+    }
+
+
 def wait_for_terminal_state(page, mode):
     success_markers = (("Lote listo para revisar",) if mode == "etiqueta" else ("Lista de la carta",))
     abstention_markers = (("Analisis incompleto",) if mode == "etiqueta" else ("No ha salido un escaneo",))
@@ -194,25 +285,137 @@ def wait_for_terminal_state(page, mode):
     return "timeout", page.locator("body").inner_text()
 
 
+def map_menu_position(position, scan_region):
+    if not isinstance(position, dict) or not isinstance(scan_region, dict):
+        return position if isinstance(position, dict) else None
+    box = scan_region.get("box") if isinstance(scan_region.get("box"), dict) else scan_region
+    values = [position.get("x"), position.get("y"), box.get("x"), box.get("y"), box.get("width"), box.get("height")]
+    if not all(isinstance(value, (int, float)) for value in values):
+        return position
+    mapped = dict(position)
+    mapped["x"] = box["x"] + position["x"] * box["width"] / 100
+    mapped["y"] = box["y"] + position["y"] * box["height"] / 100
+    if isinstance(position.get("width"), (int, float)):
+        mapped["width"] = position["width"] * box["width"] / 100
+    if isinstance(position.get("height"), (int, float)):
+        mapped["height"] = position["height"] * box["height"] / 100
+    return mapped
+
+
+def menu_identity(item):
+    return " ".join(str(value) for value in (
+        item.get("producer"), item.get("name"), item.get("vintage"), item.get("section")
+    ) if value not in (None, ""))
+
+
+def is_duplicate_menu_item(left, right):
+    if name_similarity(menu_identity(left), menu_identity(right)) < 0.72:
+        return False
+    left_source = normalize_name(left.get("source_text"))
+    right_source = normalize_name(right.get("source_text"))
+    same_source = bool(
+        left_source and right_source and (
+            left_source == right_source
+            or (min(len(left_source), len(right_source)) >= 14 and (left_source in right_source or right_source in left_source))
+        )
+    )
+    left_position = left.get("position") if isinstance(left.get("position"), dict) else None
+    right_position = right.get("position") if isinstance(right.get("position"), dict) else None
+    same_position = bool(
+        left_position and right_position
+        and all(isinstance(position.get(axis), (int, float)) for position in (left_position, right_position) for axis in ("x", "y"))
+        and abs(left_position["x"] - right_position["x"]) <= 7
+        and abs(left_position["y"] - right_position["y"]) <= 7
+    )
+    return same_source or same_position
+
+
+def merge_menu_items(items):
+    merged = []
+    for item in items:
+        duplicate_index = next((
+            index for index, existing in enumerate(merged) if is_duplicate_menu_item(existing, item)
+        ), None)
+        if duplicate_index is None:
+            merged.append(item)
+            continue
+        existing = merged[duplicate_index]
+        preferred, fallback = (item, existing) if (item.get("confidence") or 0) > (existing.get("confidence") or 0) else (existing, item)
+        merged[duplicate_index] = {
+            **fallback,
+            **preferred,
+            "producer": preferred.get("producer") or fallback.get("producer"),
+            "vintage": preferred.get("vintage") or fallback.get("vintage"),
+            "section": preferred.get("section") or fallback.get("section"),
+            "source_text": preferred.get("source_text") or fallback.get("source_text"),
+            "position": preferred.get("position") or fallback.get("position"),
+        }
+    return merged
+
+
 def compact_backend_observation(api_calls):
     detector = next((call for call in reversed(api_calls) if call["function"] == "detect-wine-regions"), None)
     analyzers = [call for call in api_calls if call["function"] == "analyze-wine-region"]
-    menu = next((call for call in reversed(api_calls) if call["function"] == "scan-wine-menu"), None)
-    if menu:
-        payload = menu.get("payload") or {}
-        wines = payload.get("vinos", []) if isinstance(payload.get("vinos"), list) else []
+    menus = [call for call in api_calls if call["function"] == "scan-wine-menu"]
+    if menus:
+        full_menu = next((
+            menu for menu in menus
+            if (menu.get("request_payload") or {}).get("scan_region", {}).get("id") == "full"
+        ), None)
+        if (
+            full_menu
+            and isinstance((full_menu.get("payload") or {}).get("coverage"), dict)
+            and (full_menu.get("payload") or {})["coverage"].get("status") == "reported_complete"
+            and (full_menu.get("payload") or {}).get("vinos")
+        ):
+            menus = [full_menu]
+        elif any((menu.get("request_payload") or {}).get("scan_region", {}).get("id") != "full" for menu in menus):
+            menus = [
+                menu for menu in menus
+                if (menu.get("request_payload") or {}).get("scan_region", {}).get("id") != "full"
+            ]
+        all_items = []
+        coverages = []
+        versions = []
+        for menu in menus:
+            payload = menu.get("payload") or {}
+            wines = payload.get("vinos", []) if isinstance(payload.get("vinos"), list) else []
+            request_payload = menu.get("request_payload") or {}
+            scan_region = request_payload.get("scan_region")
+            if isinstance(payload.get("coverage"), dict):
+                coverages.append(payload["coverage"])
+            if payload.get("scan_version"):
+                versions.append(payload["scan_version"])
+            for wine in wines:
+                if not isinstance(wine, dict) or not wine.get("nombre"):
+                    continue
+                all_items.append({
+                    "name": wine.get("nombre"),
+                    "producer": wine.get("productor"),
+                    "vintage": wine.get("anada"),
+                    "section": wine.get("seccion"),
+                    "confidence": wine.get("confidence"),
+                    "doubts": wine.get("dudas") if isinstance(wine.get("dudas"), list) else [],
+                    "source_text": wine.get("texto_fuente"),
+                    "position": map_menu_position(wine.get("posicion"), scan_region),
+                })
+        items = merge_menu_items(all_items)
+        coverage_statuses = [coverage.get("status", "unknown") for coverage in coverages]
+        coverage_status = "partial" if "partial" in coverage_statuses else (
+            "reported_complete" if coverage_statuses and all(status == "reported_complete" for status in coverage_statuses) else "unknown"
+        )
         return {
-            "function": "scan-wine-menu", "http_status": menu["status"],
-            "version": payload.get("scan_version"), "coverage": payload.get("coverage"),
-            "names": [wine.get("nombre") for wine in wines if isinstance(wine, dict) and wine.get("nombre")],
-            "items": [{
-                "name": wine.get("nombre"),
-                "confidence": wine.get("confidence"),
-                "doubts": wine.get("dudas") if isinstance(wine.get("dudas"), list) else [],
-                "source_text": wine.get("texto_fuente"),
-            } for wine in wines if isinstance(wine, dict) and wine.get("nombre")],
+            "function": "scan-wine-menu", "http_status": max(menu["status"] for menu in menus),
+            "call_count": len(menus), "versions": sorted(set(versions)),
+            "coverage": {"status": coverage_status, "extracted_wines": len(items)},
+            "names": [menu_identity(item) for item in items],
+            "items": items,
         }
     detector_payload = detector.get("payload", {}) if detector else {}
+    detected_boxes = [
+        region.get("box") for region in detector_payload.get("regions", [])
+        if isinstance(region, dict) and isinstance(region.get("box"), dict)
+    ]
     detected_region_ids = [
         region.get("id") for region in detector_payload.get("regions", []) if region.get("id")
     ]
@@ -255,6 +458,7 @@ def compact_backend_observation(api_calls):
         "function": "multi-wine-label",
         "detector_http_status": detector.get("status") if detector else None,
         "detector_version": detector_payload.get("detector_version"),
+        "detected_boxes": detected_boxes,
         "analysis_versions": sorted(analyzer_versions), "coverage": detector_payload.get("coverage"),
         "detected_regions": len(detector_payload.get("regions") or []),
         "analyzed_regions": len(analysis_by_region),
@@ -293,6 +497,7 @@ def run_fixture(browser, fixture, file_path):
             "function": function_name,
             "status": response.status,
             "region_id": request_payload.get("region_id"),
+            "request_payload": request_payload,
             "payload": payload,
         })
 
@@ -310,6 +515,7 @@ def run_fixture(browser, fixture, file_path):
     terminal_state, body_text = wait_for_terminal_state(page, fixture["mode"])
     latency_ms = round((time.monotonic() - started) * 1000)
     backend = compact_backend_observation(api_calls)
+    canonical_accuracy = None
 
     expectation = fixture.get("expectation", "inherit")
     if fixture["mode"] == "etiqueta":
@@ -318,7 +524,15 @@ def run_fixture(browser, fixture, file_path):
         result_rows = page.locator('button[aria-label^="Abrir detalle de "]').all_inner_texts()
         individual_affinity_scores = sum(1 for row in result_rows if re.search(r"(?<!\d)\d{1,3}%(?!\d)", row))
         coverage = next((line.strip() for line in body_text.splitlines() if "Cobertura" in line), None)
-        accuracy = None
+        expected_names = fixture.get("expected_wines", [])
+        displayed_names = [
+            next((line.strip() for line in row.splitlines()[1:] if line.strip()), row.strip())
+            for row in result_rows
+        ]
+        accuracy = compare_wine_names(expected_names, displayed_names) if expected_names else None
+        detection_accuracy = compare_detection_boxes(
+            fixture.get("expected_boxes", []), backend.get("detected_boxes", [])
+        ) if fixture.get("expected_boxes") else None
         expected = fixture["expected_min_results"]
         high_confidence_results = sum(
             1 for region in backend.get("region_results", [])
@@ -330,18 +544,37 @@ def run_fixture(browser, fixture, file_path):
                 and high_confidence_results <= fixture.get("max_high_confidence_results", 0)
                 and not backend.get("final_failed_regions")
             )
+        elif expectation == "grounded_or_abstain":
+            passed = (
+                terminal_state in {"completed", "abstained"} and result_count >= expected
+                and high_confidence_results <= fixture.get("max_high_confidence_results", 0)
+                and not backend.get("final_failed_regions")
+            )
         else:
+            expected_affinity_results = len(expected_names) if expected_names else fixture["expected_min_identified"]
             passed = (
                 terminal_state == "completed" and result_count >= expected
                 and backend.get("identified_candidates", 0) >= fixture["expected_min_identified"]
-                and individual_affinity_scores >= fixture["expected_min_identified"]
+                and individual_affinity_scores >= expected_affinity_results
                 and not backend.get("final_failed_regions")
             )
+            if accuracy:
+                passed = (
+                    passed
+                    and accuracy["recall"] >= fixture.get("identity_min_recall", 0.8)
+                    and accuracy["precision"] >= fixture.get("identity_min_precision", 0.7)
+                )
     else:
-        result_count = page.locator('button[aria-label^="Abrir vino "]').count()
+        result_buttons = page.locator('button[aria-label^="Abrir vino "]')
+        result_rows = result_buttons.all_inner_texts()
+        displayed_names = [menu_row_identity(row) for row in result_rows]
+        result_count = len(result_rows)
         anchored_pins = page.locator('button[aria-label^="Vino "]').count()
         coverage = backend.get("coverage")
-        accuracy = compare_wine_names(fixture["expected_wines"], backend.get("names", []))
+        backend_identities = [menu_identity(item) for item in backend.get("items", [])]
+        accuracy = compare_wine_names(fixture["expected_wines"], displayed_names)
+        canonical_accuracy = compare_wine_names(fixture["expected_wines"], backend_identities)
+        detection_accuracy = None
         individual_affinity_scores = sum(
             1 for value in page.locator('button[aria-label^="Abrir vino "]').all_inner_texts()
             if re.search(r"(?<!\d)\d{1,3}%(?!\d)", value)
@@ -356,6 +589,12 @@ def run_fixture(browser, fixture, file_path):
                 terminal_state in {"completed", "abstained"} and not accuracy["false_positives"]
                 and high_confidence_results <= fixture.get("max_high_confidence_results", 0)
             )
+        elif expectation == "grounded_or_abstain":
+            grounded_high_confidence = all(
+                item.get("source_text") for item in backend.get("items", [])
+                if isinstance(item.get("confidence"), (int, float)) and item["confidence"] >= 0.72
+            )
+            passed = terminal_state in {"completed", "abstained"} and grounded_high_confidence
         else:
             passed = (
                 terminal_state == "completed" and accuracy["precision"] >= MIN_MENU_PRECISION
@@ -392,7 +631,10 @@ def run_fixture(browser, fixture, file_path):
         "terminal_state": terminal_state, "actual_results": result_count, "anchored_pins": anchored_pins,
         "individual_affinity_scores": individual_affinity_scores,
         "high_confidence_results": high_confidence_results,
-        "coverage": coverage, "accuracy": accuracy, "backend": backend, "latency_ms": latency_ms,
+        "coverage": coverage, "accuracy": accuracy, "canonical_accuracy": canonical_accuracy,
+        "displayed_names": displayed_names,
+        "backend": backend, "latency_ms": latency_ms,
+        "detection_accuracy": detection_accuracy,
         "horizontal_overflow": has_overflow, "console_errors": console_errors,
         "overflow_elements": overflow_elements,
         "unhandled_console_errors": unhandled_console_errors,

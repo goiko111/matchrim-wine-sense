@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const ANALYSIS_VERSION = 'matchrim-region-analysis-v3-grounded';
+const ANALYSIS_VERSION = 'matchrim-region-analysis-v4-candidate';
 
 const parseJsonObject = (raw: string) => {
   const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -107,6 +107,8 @@ Reglas:
 - Los candidatos alternativos deben explicar la ambiguedad.
 - evidence debe copiar fragmentos que tambien aparezcan literalmente en visible_text. Exige al menos dos fragmentos visuales independientes para cualquier confidence >= 0.72. No cuentes conocimiento general como evidencia visual.
 - El nombre o productor propuesto debe compartir palabras distintivas con visible_text. Si no las comparte, omite el candidato.
+- name debe ser la marca o referencia principal del vino. No uses como name una certificacion, categoria generica o texto secundario como "vino ecologico", "reserva", "rioja" o una variedad cuando tambien sea legible una marca principal.
+- Si el recorte contiene cuello, etiqueta principal y sello de una misma botella, combina sus senales en una sola identidad. No propongas cada panel como un vino diferente.
 - sensory_attributes es una inferencia 1-5. Usa null cuando la identidad o el estilo no permitan estimarlo.
 - inferred_fields enumera cualquier campo no leido literalmente en la imagen.
 

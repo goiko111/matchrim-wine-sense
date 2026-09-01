@@ -25,7 +25,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
-import { prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
+import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
 import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
@@ -34,6 +34,14 @@ import {
   calibrateMenuIdentityConfidence,
   getConfidenceBand,
 } from "@/utils/scanConfidence";
+import {
+  buildMenuScanTiles,
+  getFullMenuScanTile,
+  resolveMenuTileResults,
+  type MenuScanResponse as WineMenuScanResponse,
+  type MenuScanTile,
+  type MenuScanWine as ScannedWine,
+} from "@/utils/wineMenuScan";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
@@ -60,46 +68,6 @@ const loadPdfJs = async () => {
   return pdfJsPromise;
 };
 
-interface ScannedWine {
-  nombre: string;
-  productor: string | null;
-  anada: number | null;
-  region: string | null;
-  pais: string | null;
-  precio: number | null;
-  tipo: string;
-  descripcion: string | null;
-  uvas?: string[];
-  atributos?: {
-    potencia: number;
-    acidez: number;
-    dulzura: number;
-    taninos: number;
-    afrutado: number;
-  } | null;
-  compatibilidad?: number | null;
-  razon?: string | null;
-  texto_fuente?: string | null;
-  dudas?: string[] | null;
-  campos_inferidos?: string[] | null;
-  confidence?: number | null;
-  servicio?: 'copa' | 'botella' | 'ambos' | null;
-  seccion?: string | null;
-  precios?: {
-    copa?: number | null;
-    botella?: number | null;
-    llevar?: number | null;
-  } | null;
-  posicion?: {
-    x?: number | null;
-    y?: number | null;
-    width?: number | null;
-    height?: number | null;
-    confidence?: number | null;
-    confianza?: number | null;
-  } | null;
-}
-
 interface WineMenuScannerProps {
   restaurantName?: string;
   matchrimCode?: string;
@@ -107,17 +75,6 @@ interface WineMenuScannerProps {
   pairingDishName?: string | null;
   similarWineName?: string | null;
   onScanComplete?: (winesDetected: number) => void;
-}
-
-interface WineMenuScanResponse {
-  vinos?: ScannedWine[];
-  has_profile?: boolean;
-  coverage?: {
-    status?: 'reported_complete' | 'partial' | 'unknown';
-    extracted_wines?: number;
-    estimated_visible_wines?: number | null;
-    notes?: string[];
-  };
 }
 
 interface MatchrimProfilePayload {
@@ -570,11 +527,12 @@ export const WineMenuScanner = ({
       }
       setScanPhase('ocr');
 
-      const invokeScan = async (attempt = 1) => {
+      const invokeScan = async (tile: MenuScanTile, tileImage: string, attempt = 1): Promise<WineMenuScanResponse> => {
 	        try {
 	          return await invokeEdgeFunction<WineMenuScanResponse>('scan-wine-menu', {
-	            image: base64File,
-	            qa_fixture_name: file.name,
+	            image: tileImage,
+	            qa_fixture_name: `${file.name}:${tile.id}`,
+	            scan_region: tile,
 	            matchrimProfile: readStoredMatchrimProfile(),
 	            pairingDishName: pairingDishName || null,
 	            similarWineName: similarWineName || null,
@@ -585,13 +543,41 @@ export const WineMenuScanner = ({
 	          const isTransient = /non-2xx|fetch|network|timeout|error 5\d\d/i.test(rawMessage);
 	          if (attempt < 2 && isTransient) {
 	            await new Promise((resolve) => window.setTimeout(resolve, 1200));
-	            return invokeScan(attempt + 1);
+	            return invokeScan(tile, tileImage, attempt + 1);
 	          }
 	          throw error;
 	        }
       };
 
-      const data = await invokeScan();
+      const scanTiles = isMatchrimFixtureQaEnabled
+        ? [getFullMenuScanTile()]
+        : [getFullMenuScanTile(), ...buildMenuScanTiles(prepared.width, prepared.height)];
+      const tileImages = await Promise.all(scanTiles.map(async (tile) => ({
+        tile,
+        image: tile.id === 'full' ? base64File : await cropImageRegion(base64File, tile.box, 0, 1800),
+      })));
+      const settledTiles = await Promise.allSettled(tileImages.map(async ({ tile, image }) => ({
+        tile,
+        response: await invokeScan(tile, image),
+      })));
+      if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
+      const successfulTiles = settledTiles.flatMap((result) => result.status === 'fulfilled' ? [result.value] : []);
+      if (successfulTiles.length === 0) {
+        const firstFailure = settledTiles.find((result) => result.status === 'rejected');
+        throw firstFailure?.status === 'rejected' ? firstFailure.reason : new Error('No se pudo analizar la carta');
+      }
+      const failedTileCount = settledTiles.length - successfulTiles.length;
+      const data = resolveMenuTileResults(successfulTiles);
+      if (failedTileCount > 0) {
+        data.coverage = {
+          ...data.coverage,
+          status: 'partial',
+          notes: [
+            ...(data.coverage?.notes ?? []),
+            `${failedTileCount} de ${settledTiles.length} regiones no terminaron; vuelve a analizar esa zona.`,
+          ],
+        };
+      }
 
       if (data?.vinos && data.vinos.length > 0) {
 	      setScanPhase('ranking');
@@ -912,7 +898,7 @@ export const WineMenuScanner = ({
 		                            <button
 		                              key={`${wine.nombre}-${index}-pin`}
 		                              type="button"
-			                              className={`absolute z-10 min-h-8 min-w-8 border-2 bg-transparent transition ${
+			                              className={`absolute z-10 min-h-11 min-w-11 border-2 bg-transparent transition ${
 			                                highlightedWineIndex === index
 			                                  ? 'border-amber-400 ring-2 ring-black/70'
 			                                  : 'border-white/85 hover:border-amber-300'
@@ -936,11 +922,11 @@ export const WineMenuScanner = ({
 		                    </div>
 		                    {scannedWines.length > 0 && (
 		                      <div className="absolute bottom-2 right-2 z-20 flex gap-1 rounded-md bg-stone-950/90 p-1 shadow">
-		                        <Button type="button" size="icon" variant="ghost" className="h-10 w-10 text-white hover:bg-white/15 hover:text-white" onClick={() => setImageZoom((zoom) => Math.max(1, zoom - 0.5))} disabled={imageZoom <= 1} aria-label="Alejar carta">
+		                        <Button type="button" size="icon" variant="ghost" className="h-11 w-11 text-white hover:bg-white/15 hover:text-white" onClick={() => setImageZoom((zoom) => Math.max(1, zoom - 0.5))} disabled={imageZoom <= 1} aria-label="Alejar carta">
 		                          <ZoomOut className="h-4 w-4" />
 		                        </Button>
 		                        <span className="flex min-w-10 items-center justify-center text-xs font-semibold text-white">{Math.round(imageZoom * 100)}%</span>
-		                        <Button type="button" size="icon" variant="ghost" className="h-10 w-10 text-white hover:bg-white/15 hover:text-white" onClick={() => setImageZoom((zoom) => Math.min(3, zoom + 0.5))} disabled={imageZoom >= 3} aria-label="Acercar carta">
+		                        <Button type="button" size="icon" variant="ghost" className="h-11 w-11 text-white hover:bg-white/15 hover:text-white" onClick={() => setImageZoom((zoom) => Math.min(3, zoom + 0.5))} disabled={imageZoom >= 3} aria-label="Acercar carta">
 		                          <ZoomIn className="h-4 w-4" />
 		                        </Button>
 			                      </div>
@@ -955,8 +941,9 @@ export const WineMenuScanner = ({
 	                  <Button
 	                    onClick={clearScan}
 	                    variant="destructive"
-                    size="icon"
+	                    size="icon"
                     className="absolute right-2 top-2 h-11 w-11 rounded-md bg-red-700 hover:bg-red-800"
+	                    aria-label="Quitar carta"
                   >
 	                    <X className="h-4 w-4" />
 	                  </Button>
@@ -1799,7 +1786,7 @@ export const WineMenuScanner = ({
 	                    </DrawerDescription>
 	                  </div>
 	                  <DrawerClose asChild>
-	                    <Button type="button" variant="ghost" size="icon" className="h-11 w-11 shrink-0"><X className="h-4 w-4" /></Button>
+	                    <Button type="button" variant="ghost" size="icon" className="h-11 w-11 shrink-0" aria-label="Cerrar detalle"><X className="h-4 w-4" /></Button>
 	                  </DrawerClose>
 	                </div>
 	              </DrawerHeader>

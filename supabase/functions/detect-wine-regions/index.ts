@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const DETECTOR_VERSION = 'matchrim-region-detector-v3';
+const DETECTOR_VERSION = 'matchrim-region-detector-v4-candidate';
 
 const parseJsonObject = (raw: string) => {
   const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -101,6 +101,7 @@ Localiza TODAS las botellas o etiquetas de vino que podrian analizarse de forma 
 Reglas:
 - Devuelve entre 1 y 30 regiones reales. Haz una segunda pasada visual de izquierda a derecha y de arriba abajo antes de responder. No uses una caja unica para toda la foto si hay varias botellas.
 - Cada botella fisica visible debe tener su propia caja, incluso cuando varias sean la misma referencia.
+- Si la imagen es un primer plano de UNA etiqueta o botella, devuelve una sola caja que abarque sus paneles visibles. No dividas la etiqueta principal, la contraetiqueta, el cuello o un sello de la misma botella en regiones separadas.
 - La caja debe cubrir la etiqueta y suficiente cuerpo/cuello para distinguir la botella, sin incluir botellas vecinas si es evitable.
 - Incluye botellas parcialmente ocultas cuando haya evidencia suficiente.
 - No inventes regiones para huecos, reflejos, copas, latas, estantes o texto de una carta.

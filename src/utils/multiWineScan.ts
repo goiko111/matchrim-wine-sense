@@ -309,6 +309,29 @@ export const buildCanonicalWineKey = (candidate: WineCandidate) => [
   candidate.vintage ?? 'nv',
 ].join('|');
 
+const identityTokens = (value: string | null | undefined) => new Set(normalizeIdentity(value).split(' ').filter(Boolean));
+const producerStopWords = new Set(['bodega', 'bodegas', 'winery', 'wine', 'wines', 'sa']);
+
+export const areLikelyDuplicateWines = (left: WineCandidate, right: WineCandidate) => {
+  if (left.vintage && right.vintage && left.vintage !== right.vintage) return false;
+  const leftName = identityTokens(left.name);
+  const rightName = identityTokens(right.name);
+  const leftProducer = new Set([...identityTokens(left.producer)].filter((token) => !producerStopWords.has(token)));
+  const rightProducer = new Set([...identityTokens(right.producer)].filter((token) => !producerStopWords.has(token)));
+  const sharedProducer = [...leftProducer].filter((token) => rightProducer.has(token));
+  if (leftProducer.size && rightProducer.size && sharedProducer.length < Math.min(leftProducer.size, rightProducer.size)) {
+    return false;
+  }
+  if ([...leftName].every((token) => rightName.has(token)) && leftName.size === rightName.size) return true;
+
+  const sharedName = [...leftName].filter((token) => rightName.has(token));
+  if (sharedName.length < Math.min(leftName.size, rightName.size)) return false;
+  const producerTokens = new Set([...leftProducer, ...rightProducer]);
+  const extraTokens = [...new Set([...leftName, ...rightName])]
+    .filter((token) => !leftName.has(token) || !rightName.has(token));
+  return extraTokens.length > 0 && extraTokens.every((token) => /^\d{4}$/.test(token) || producerTokens.has(token));
+};
+
 export interface DuplicateWineGroup {
   key: string;
   regionIds: string[];
@@ -317,7 +340,7 @@ export interface DuplicateWineGroup {
 }
 
 export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[] => {
-  const groups = new Map<string, DuplicateWineGroup>();
+  const groups: DuplicateWineGroup[] = [];
   regions.forEach((region) => {
     if (region.status === 'discarded' || region.status === 'unrecognized') return;
     const candidate = getSelectedCandidate(region);
@@ -326,17 +349,21 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
       && candidate.confidence >= 0.72
       && candidate.uncertaintyReasons.length === 0;
     const canonicalKey = buildCanonicalWineKey(candidate);
-    const key = canGroup ? canonicalKey : `${canonicalKey}|region:${region.id}`;
-    const current = groups.get(key);
+    const current = canGroup ? groups.find((group) => areLikelyDuplicateWines(group.candidate, candidate)) : null;
     if (current) {
       current.regionIds.push(region.id);
       current.count += 1;
       if (candidate.confidence > current.candidate.confidence) current.candidate = candidate;
     } else {
-      groups.set(key, { key, regionIds: [region.id], count: 1, candidate });
+      groups.push({
+        key: canGroup ? canonicalKey : `${canonicalKey}|region:${region.id}`,
+        regionIds: [region.id],
+        count: 1,
+        candidate,
+      });
     }
   });
-  return Array.from(groups.values()).sort((a, b) => {
+  return groups.sort((a, b) => {
     const affinityDelta = (b.candidate.affinity ?? -1) - (a.candidate.affinity ?? -1);
     return affinityDelta || b.candidate.confidence - a.candidate.confidence;
   });

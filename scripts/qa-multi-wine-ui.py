@@ -22,7 +22,7 @@ MENU_SOURCE_FIXTURES = [
     Path("/Users/GOIKO/Downloads/IMG_7553 2.HEIC"),
 ]
 MENU_FIXTURES = [ARTIFACTS / "fixtures" / f"{source.stem}.jpg" for source in MENU_SOURCE_FIXTURES]
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+CHROME = os.environ.get("MATCHRIM_QA_CHROME")
 
 
 def materialize_fixtures():
@@ -120,6 +120,13 @@ def function_response(endpoint, request):
     if endpoint == "scan-wine-menu":
         return {
             "has_profile": True,
+            "scan_version": "scan-wine-menu-ui-fixture-v1",
+            "coverage": {
+                "status": "reported_complete",
+                "extracted_wines": 5,
+                "estimated_visible_wines": 5,
+                "notes": [],
+            },
             "vinos": [
                 {
                     "nombre": "Finca Dofi",
@@ -297,6 +304,36 @@ def run_privacy_safe_area_qa(browser, results, console_errors):
         "case": "privacidad_y_safe_area",
         "expected": "sin acceso a fotos antes del consentimiento, sin solapes y por debajo de 59 px de safe area",
         "actual": f"PASS gate_y={gate_top:.1f} acknowledgement_bottom={acknowledgement_box['y'] + acknowledgement_box['height']:.1f} cta_flow_top={initial_button_box['y']:.1f} visible_cta_bottom={button_box['y'] + button_box['height']:.1f} nav_top={nav_box['y']:.1f} {dimensions}",
+    })
+    context.close()
+
+
+def run_privacy_landscape_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 932, "height": 430}, device_scale_factor=2)
+    page = context.new_page()
+    install_routes(page, console_errors, accept_privacy=False)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("""() => {
+      document.documentElement.style.setProperty('--matchrim-native-safe-top', '0px');
+      document.documentElement.style.setProperty('--matchrim-native-safe-bottom', '21px');
+    }""")
+    page.get_by_role("heading", name="Antes de analizar una imagen").wait_for()
+    page.get_by_role("checkbox").check()
+    continue_button = page.get_by_role("button", name="Entiendo y continuar")
+    continue_button.scroll_into_view_if_needed()
+    button_box = continue_button.bounding_box()
+    nav = page.get_by_role("navigation", name="Navegacion principal")
+    nav_box = nav.bounding_box() if nav.count() else None
+    safe_bottom_boundary = nav_box["y"] if nav_box else 430 - 21
+    if button_box["y"] < 0 or button_box["y"] + button_box["height"] > safe_bottom_boundary:
+        raise AssertionError(f"landscape privacy CTA inaccessible: button={button_box}, boundary={safe_bottom_boundary}")
+    dimensions = assert_no_horizontal_overflow(page, "privacy gate landscape")
+    page.screenshot(path=str(ARTIFACTS / "privacy-safe-area-landscape.png"), full_page=False)
+    results.append({
+        "case": "privacidad_paisaje",
+        "expected": "consentimiento desplazable y CTA visible sobre la navegacion a 932x430",
+        "actual": f"PASS cta_bottom={button_box['y'] + button_box['height']:.1f} boundary={safe_bottom_boundary:.1f} {dimensions}",
     })
     context.close()
 
@@ -514,6 +551,63 @@ def run_menu_fixture_matrix(browser, results, console_errors):
         context.close()
 
 
+def run_accessibility_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+    install_routes(page, console_errors)
+    page.goto(f"{BASE_URL}/escanear/carta-vinos")
+    page.wait_for_load_state("networkidle")
+    page.add_style_tag(content="html { font-size: 20px !important; }")
+    page.locator('input[type="file"]').nth(0).set_input_files(str(MENU_FIXTURES[0]))
+    page.get_by_text("Lista de la carta", exact=True).wait_for(timeout=30_000)
+
+    critical_targets = [
+        page.get_by_role("button", name="Vino 1: Finca Dofi", exact=True),
+        page.get_by_role("button", name="Alejar carta"),
+        page.get_by_role("button", name="Acercar carta"),
+        page.get_by_role("button", name="Quitar carta"),
+    ]
+    target_sizes = []
+    for target in critical_targets:
+        box = target.bounding_box()
+        if box is None or box["width"] < 44 or box["height"] < 44:
+            raise AssertionError(f"touch target below 44px: {box}")
+        target_sizes.append({"width": round(box["width"]), "height": round(box["height"])})
+
+    unnamed_buttons = page.locator("button").evaluate_all("""elements => elements
+      .filter((element) => !(
+        (element.getAttribute('aria-label') || '').trim()
+        || (element.getAttribute('title') || '').trim()
+        || (element.textContent || '').trim()
+      ))
+      .map((element) => element.outerHTML.slice(0, 240))""")
+    if unnamed_buttons:
+        raise AssertionError(f"buttons without an accessible name: {unnamed_buttons}")
+
+    page.get_by_role("button", name="Abrir vino 1: Finca Dofi").click()
+    detail = page.get_by_role("dialog")
+    detail.get_by_text("Afinidad estimada", exact=True).wait_for()
+    assert detail.get_by_role("button", name="Cerrar detalle").count() == 1
+    dimensions = assert_no_horizontal_overflow(page, "menu dynamic type 125%")
+    page.screenshot(path=str(ARTIFACTS / "wine-menu-accessibility-125pct-mobile.png"), full_page=False)
+    results.append({
+        "case": "carta_touch_targets",
+        "expected": "pins, zoom y cierre con zonas tactiles de al menos 44x44 px",
+        "actual": f"PASS {target_sizes}",
+    })
+    results.append({
+        "case": "carta_voiceover_basico",
+        "expected": "botones con nombre accesible, dialogo identificado y cierre nombrado",
+        "actual": "PASS",
+    })
+    results.append({
+        "case": "carta_dynamic_type_125",
+        "expected": "texto al 125% sin desbordamiento horizontal ni controles inaccesibles",
+        "actual": f"PASS {dimensions}",
+    })
+    context.close()
+
+
 def run_offline_qa(browser, results):
     context = browser.new_context(viewport={"width": 430, "height": 932}, device_scale_factor=1)
     page = context.new_page()
@@ -545,13 +639,18 @@ def main():
     results = []
     console_errors = []
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
+        launch_options = {"headless": True}
+        if CHROME:
+            launch_options["executable_path"] = CHROME
+        browser = playwright.chromium.launch(**launch_options)
         run_privacy_safe_area_qa(browser, results, console_errors)
+        run_privacy_landscape_qa(browser, results, console_errors)
         run_label_qa(browser, results, console_errors)
         run_retry_policy_qa(browser, results, console_errors)
         run_retry_cancellation_qa(browser, results, console_errors)
         run_menu_qa(browser, results, console_errors)
         run_menu_fixture_matrix(browser, results, console_errors)
+        run_accessibility_qa(browser, results, console_errors)
         if EMBEDDED_FIXTURES:
             results.append({
                 "case": "frontera_qa_embebida",

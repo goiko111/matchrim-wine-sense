@@ -21,7 +21,7 @@ type RatedWine = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const FUNCTION_VERSION = 'scan-wine-menu-2026-08-26-grounded-v3';
+const FUNCTION_VERSION = 'scan-wine-menu-2026-08-27-regional-v4-candidate';
 
 const normalizeText = (value: unknown) => typeof value === 'string' ? value.trim() : '';
 const normalizeStringArray = (value: unknown) => Array.isArray(value)
@@ -148,6 +148,12 @@ const calibrateMenuIdentityConfidence = (
   if (typeof wine.texto_fuente !== 'string' || !wine.texto_fuente.trim()) cap = Math.min(cap, 0.82);
   if (!position) cap = Math.min(cap, 0.78);
   if (typeof wine.productor !== 'string' || !wine.productor.trim()) cap = Math.min(cap, 0.74);
+  const doubts = normalizeStringArray(wine.dudas);
+  const inferredFields = normalizeStringArray(wine.campos_inferidos).map((field) => field.toLowerCase());
+  const visibleName = normalizeText(wine.nombre ?? wine.name);
+  if (doubts.some((field) => /nombre|productor|linea|columna|asociacion/i.test(field))) cap = Math.min(cap, 0.62);
+  if (/^(do|ditto|idem|same)$/i.test(visibleName)) cap = Math.min(cap, 0.4);
+  if (inferredFields.some((field) => ['nombre', 'name', 'productor', 'producer'].includes(field))) cap = Math.min(cap, 0.55);
   const hasRegion = typeof wine.region === 'string' && Boolean(wine.region.trim());
   const hasPrice = Number.isFinite(Number(wine.precio));
   if (!hasRegion && !hasPrice) cap = Math.min(cap, 0.68);
@@ -251,6 +257,9 @@ serve(async (req) => {
 IMPORTANTE:
 - No mezcles texto ni precios de columnas distintas.
 - Respeta secciones, orden de lectura y si el precio es por copa, botella o para llevar.
+- Une productor, anada y nombre cuando aparezcan apilados en lineas contiguas dentro del mismo bloque y compartan un unico precio. No conviertas una marca y su variedad inmediatamente inferior en dos vinos si forman una sola referencia.
+- En cartas historicas, "Do", "idem" o comillas pueden heredar la identidad de la linea anterior solo cuando la alineacion visual lo demuestra. Conserva el nuevo formato/precio, incluye la herencia en campos_inferidos y baja confidence si la asociacion no es inequivoca.
+- Conserva como filas distintas dos apariciones de la misma referencia cuando tengan diferente tamano, servicio o precio. No las dedupliques dentro de esta respuesta.
 - Si una linea no se puede asociar con seguridad, baja confidence o no la incluyas.
 - confidence mide solo la asociacion visual entre los campos de esa linea. No subas confidence por conocer el vino.
 - Usa confidence > 0.90 solo si nombre, productor y precio son inequivocos y visibles en la misma linea.

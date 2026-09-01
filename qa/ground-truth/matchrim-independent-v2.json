@@ -1,0 +1,565 @@
+{
+  "schema_version": 2,
+  "dataset_id": "matchrim-independent-v2",
+  "created_at": "2026-08-27",
+  "source_count": 25,
+  "selection_policy": {
+    "independence": "Twenty-five distinct Wikimedia Commons files, none derived from the five private Matchrim acceptance captures.",
+    "annotation": "Human review of visible bottle geometry and text; model output is never used as ground truth.",
+    "coverage": [
+      "single_label",
+      "multi_bottle",
+      "printed_wine_list",
+      "handwritten_board",
+      "glare",
+      "perspective",
+      "small_text",
+      "dense_scene"
+    ],
+    "license_source": "Wikimedia Commons imageinfo metadata fetched and locked during materialization."
+  },
+  "sources": [
+    {
+      "id": "commons-116618810",
+      "page_id": 116618810,
+      "source_sha256": "ba6b4de1049a10ceae1d97a17775b0e5f191c8abf1eb376ed6b42cad0991b4d7",
+      "license": "CC BY-SA 4.0",
+      "author": "Pacopac",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["El Miracle nº 01"],
+        "expected_boxes": [[0.20, 0.03, 0.60, 0.94]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-128502713",
+      "page_id": 128502713,
+      "source_sha256": "e9fd7452bf9daff0c7d72aee32de9b113a9eecb75f1998fdc51d93d6bddb0a01",
+      "license": "CC BY 2.0",
+      "author": "Dominic Lockyer",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Bioca Mencia"],
+        "expected_boxes": [[0.28, 0.03, 0.44, 0.94]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-128503275",
+      "page_id": 128503275,
+      "source_sha256": "cfae4e610020bd94ef6cf474837ed4b17755d4fc09587840edfcc255201320b9",
+      "license": "CC BY 2.0",
+      "author": "Dominic Lockyer",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Tres Picos"],
+        "expected_boxes": [[0.27, 0.03, 0.46, 0.94]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-128610681",
+      "page_id": 128610681,
+      "source_sha256": "3cb759b8d9051b482b9e64f5a498cc2536a17b54f7df178784f7492f30a9fa2d",
+      "license": "CC BY-SA 2.0",
+      "author": "alljengi",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "reflection",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Gran Tehyda"],
+        "expected_boxes": [[0.27, 0.02, 0.48, 0.96]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-128610856",
+      "page_id": 128610856,
+      "source_sha256": "4aa1a535e0e2c6ea5fa2c01b801084875abb3982b14d819ec6c45f6b9a5eb372",
+      "license": "CC BY-SA 2.0",
+      "author": "Magnus Reuterdahl",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_closeup",
+      "difficulty": "perspective",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Adernats Essencia"],
+        "expected_boxes": [[0.00, 0.00, 1.00, 1.00]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152675154",
+      "page_id": 152675154,
+      "source_sha256": "cc3b8873b0503d4766d0622b8012331a2fde546b54bfe6a7e5742361580cf820",
+      "license": "CC BY 2.0",
+      "author": "Jameson Fink",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_closeup",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Castano Monastrell"],
+        "expected_boxes": [[0.12, 0.00, 0.76, 1.00]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152676516",
+      "page_id": 152676516,
+      "source_sha256": "1994ef109deb6ea6ac7d8eab1131bef17e1e6c760bd5c4e970c01b629d893801",
+      "license": "CC BY-SA 2.0",
+      "author": "Magnus Reuterdahl",
+      "mode": "etiqueta",
+      "capture_kind": "two_labels_closeup",
+      "difficulty": "crop",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["750"],
+        "expected_boxes": [[0.00, 0.00, 0.46, 1.00], [0.42, 0.00, 0.58, 1.00]],
+        "visible_bottles_estimate": 2,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152684780",
+      "page_id": 152684780,
+      "source_sha256": "222ddc4af893c284d7b251dcae71e9b051e65456e5861376d8430269f0c41792",
+      "license": "CC BY-SA 2.0",
+      "author": "Tnarik Innael",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "low_light",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Arzuaga Crianza"],
+        "expected_boxes": [[0.24, 0.03, 0.52, 0.94]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152687522",
+      "page_id": 152687522,
+      "source_sha256": "3d6bdeec03dc59bb9822aa2ffbee9c8690f44c36624e2b4ae2affbe01bca4e9f",
+      "license": "CC BY 2.0",
+      "author": "Nigab Pressbilder",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_product",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Beronia"],
+        "expected_boxes": [[0.28, 0.02, 0.44, 0.96]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152733274",
+      "page_id": 152733274,
+      "source_sha256": "098eb8381f0978073d9da748e0f1f147336f7b95cd6641d845ceded7a3016053",
+      "license": "CC BY-SA 2.0",
+      "author": "Bernadette Farriol",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_closeup",
+      "difficulty": "partial_bottle",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Lalama"],
+        "expected_boxes": [[0.07, 0.02, 0.86, 0.96]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-26358451",
+      "page_id": 26358451,
+      "source_sha256": "4094fac1d7c662b86504a65fe0a2c50827646c6328be1e3d82804bcf457c2c12",
+      "license": "CC BY-SA 2.0",
+      "author": "Michal Osmenda",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_product",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Faustino I Gran Reserva"],
+        "expected_boxes": [[0.28, 0.02, 0.44, 0.96]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-32980703",
+      "page_id": 32980703,
+      "source_sha256": "47da9272616a9144b9599d9a7bd97823addb0b9f02b8ce8b6656aaf74cbc3c35",
+      "license": "CC BY-SA 3.0",
+      "author": "Agne27",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_table",
+      "difficulty": "clutter",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Vina Gravonia"],
+        "expected_boxes": [[0.42, 0.03, 0.46, 0.94]],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-114960137",
+      "page_id": 114960137,
+      "source_sha256": "dd0746550c3b3fc8b3a495c358701d1b5481e298864d071cd0a4159bd52070a7",
+      "license": "CC BY-SA 4.0",
+      "author": "Christian Gebhardt",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_duplicate",
+      "difficulty": "overlap",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Moscatel Dulce"],
+        "expected_boxes": [
+          [0.00, 0.01, 0.15, 0.98], [0.07, 0.01, 0.18, 0.98], [0.19, 0.01, 0.18, 0.98],
+          [0.32, 0.01, 0.18, 0.98], [0.45, 0.01, 0.18, 0.98], [0.58, 0.01, 0.18, 0.98],
+          [0.71, 0.01, 0.18, 0.98], [0.84, 0.01, 0.16, 0.98]
+        ],
+        "visible_bottles_estimate": 8,
+        "expected_min_regions": 6,
+        "expected_min_identified": 4,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-9941064",
+      "page_id": 9941064,
+      "source_sha256": "4db9d92a0dea2443767d6dae084eea0b9262926df0bf59263f33c8b9e46918bb",
+      "license": "CC BY-SA 3.0",
+      "author": "Cloudragams",
+      "mode": "etiqueta",
+      "capture_kind": "two_bottles",
+      "difficulty": "reflection",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": ["Cloudy Bay Sauvignon Blanc"],
+        "expected_boxes": [[0.00, 0.15, 0.53, 0.83], [0.47, 0.12, 0.53, 0.86]],
+        "visible_bottles_estimate": 2,
+        "expected_min_regions": 2,
+        "expected_min_identified": 2,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-69528109",
+      "page_id": 69528109,
+      "source_sha256": "a93c926869f5554a83a6bcb2a3f26ac33ec788e5b96a1226b918a61114b41254",
+      "license": "CC BY-SA 4.0",
+      "author": "Matti Blume",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_drawer",
+      "difficulty": "orientation_and_occlusion",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "count_threshold",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 10,
+        "expected_min_regions": 6,
+        "expected_min_identified": 0,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 4
+      }
+    },
+    {
+      "id": "commons-9865219",
+      "page_id": 9865219,
+      "source_sha256": "934a21d88f6b3800c6fbf4c1a53f535a99bca3edc3042f8fcf094cdb8d35adf4",
+      "license": "CC BY-SA 3.0",
+      "author": "Marcus Wong",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_shelf",
+      "difficulty": "reflection_and_occlusion",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Passion Pop Lemon Lime", "Passion Pop Mixed Berry", "Passion Pop Original",
+          "Somerton Brut Reserve", "Golden Gate Spumante", "Verdi Spumante"
+        ],
+        "expected_boxes": [
+          [0.02, 0.05, 0.18, 0.77], [0.14, 0.04, 0.18, 0.78], [0.27, 0.04, 0.18, 0.78],
+          [0.42, 0.03, 0.18, 0.80], [0.57, 0.04, 0.18, 0.79], [0.72, 0.04, 0.18, 0.79]
+        ],
+        "visible_bottles_estimate": 6,
+        "expected_min_regions": 5,
+        "expected_min_identified": 3,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-50584361",
+      "page_id": 50584361,
+      "source_sha256": "75e8311f464534a1d0761f29102f72a17d2fb709afc09505f96b64f7fa4386e5",
+      "license": "CC BY 2.0",
+      "author": "ricardo",
+      "mode": "etiqueta",
+      "capture_kind": "dense_wine_shelf",
+      "difficulty": "dense_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "count_threshold",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 70,
+        "expected_min_regions": 12,
+        "expected_min_identified": 0,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 8
+      }
+    },
+    {
+      "id": "commons-118365446",
+      "page_id": 118365446,
+      "source_sha256": "e573596e9eac59c2aa8c9dcd030fa17e2c82fe8dc09a2eca0c8ebf8f304c3f23",
+      "license": "CC BY 4.0",
+      "author": "Sarah Stierch",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "glare_and_perspective",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Sauvignon Blanc", "Pinot Grigio", "Dry Riesling", "William Loyd Reserve",
+          "Merlot", "1900", "Malbec", "Syrah", "Cabernet Sauvignon", "X-Press",
+          "Petite Sirah", "Three Sons", "Single Barrel Reserve", "Pink Ribbon Rose",
+          "Seyval Blanc", "Forget Me Not", "Amore", "Gewurztraminer", "Marechal Foch",
+          "Connelly Hoo", "Pink Ribbon Rose"
+        ]
+      }
+    },
+    {
+      "id": "commons-131235304",
+      "page_id": 131235304,
+      "source_sha256": "edb24d3752487c82fe431c06b4e144fb26781937d64881b13289f9a14ad781ab",
+      "license": "CC BY 4.0",
+      "author": "Sarah Stierch",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "crumpled_small_text",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Luca Paretti Proseco", "JP Chenet France", "Retsina Kousatari",
+          "Viognier Avantis Winery", "Moschofilero Bosinakis Winery",
+          "Sauvignon Blanc Wine Art Estate Techni", "Chardonnay Landmark Vineyard",
+          "Riesling Wooden Valley Winery", "Merlot Avantis Winery", "Pinot Noir Ballard Lane",
+          "Cabernet Sauvignon Amethystos", "Limnio Domo Caius Ruby Keane", "Cabernet Franc Amethystos Cava",
+          "Zinfandel Plough Vineyards", "Naoussa Found Estate", "Cas San Porio Canvas Chateau"
+        ]
+      }
+    },
+    {
+      "id": "commons-37013918",
+      "page_id": 37013918,
+      "source_sha256": "1549beed4980aaba71ab08cad472798b178fef8ef677c415fe30eb1f9c8e13b0",
+      "license": "CC BY-SA 2.0",
+      "author": "Alpha",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "angled_two_columns",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Prelude a Grand Puy Ducasse", "Chateau Smith Haut Lafitte", "Oxford Landing",
+          "Arlequin Barossa", "Deakin Estate", "Wolf Blass Yellow Label", "Arlequin Barossa",
+          "Tyrrell's Lost Block", "Ironstone Sierra", "Zonin Chianti", "Villa Antinori Peppoli",
+          "Bodegas Lan Crianza", "M Chapoutier La Bernardine Chateauneuf du Pape",
+          "Chateau de la Grille Chinon", "La Roche Saint Vincent Saumur Champigny",
+          "Joseph Drouhin Cote de Beaune villages", "Joseph Drouhin Cote de Nuits village",
+          "Chateau Haut Selve", "Les Remparts de Ferriere", "Chateau Lamarche Canon",
+          "Chateau de Valois", "Chateau Haut Saint Brice", "Citran Medoc",
+          "Saint Estephe Cru Bourgeois"
+        ]
+      }
+    },
+    {
+      "id": "commons-17259492",
+      "page_id": 17259492,
+      "source_sha256": "7f48345c9154563bb1a2296806ce480cea64ace5f5444072854129ba6523038e",
+      "license": "Public domain",
+      "author": "Daderot",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "aged_paper_and_mixed_menu",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Oliveira Madeira", "Old Reserve Madeira", "Bacchus Madeira", "Prince Albert Madeira",
+          "Lobo Pale Sherry", "Lobo Pale Sherry 1846", "Yriarto Pale Delicate Sherry",
+          "Harmony Pale Sherry", "London Dock Port", "Brazil Port", "Heidsick Champagne quarts",
+          "Heidsick Champagne pints", "Irroy Cabinet Wine Champagne",
+          "Irroy Cabinet Wine Champagne pints", "Longworth's Sparkling Catawba",
+          "Longworth's Sparkling Catawba pints", "Howard March and Co south side",
+          "Table Claret", "St Julien Claret", "St Emillion 1844 Claret", "Haut Talleur Claret",
+          "Ruddesheimer Hock"
+        ]
+      }
+    },
+    {
+      "id": "commons-155596646",
+      "page_id": 155596646,
+      "source_sha256": "ccb36f333032e52808fa80a05c48c941edc89f13efe800937d5f6f6b95d46567",
+      "license": "Public domain",
+      "author": "DPLA",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "dense_archival_scan",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Moet & Chandon Cuvee Dom Perignon", "Moet & Chandon Imperial Brut",
+          "Mumm Cordon Rouge Brut", "Mumm Cordon Rouge Brut", "Mumm Extra Dry",
+          "Piper Heidsieck Extra Dry", "Piper Heidsieck Brut", "Taittinger Comtes de Champagne",
+          "Taittinger Brut La Francaise", "Gold Seal Brut", "Gold Seal Extra Dry",
+          "Hanns Kornell Brut", "Hanns Kornell Sec", "Hanns Kornell Sehr Trocken",
+          "Korbel Brut", "Korbel Extra Dry", "Korbel Pink Rose", "Paul Masson Extra Dry",
+          "Schramsberg Blanc de Blancs", "Chanson",
+          "Chauvenet Red Cap", "Henri Marchant Cold Duck",
+          "Paul Masson", "Taylor"
+        ]
+      }
+    },
+    {
+      "id": "commons-113061301",
+      "page_id": 113061301,
+      "source_sha256": "a62520695e1b1f9c2e569d83c27bfcd333549b485b52de35b7e9d3fc0bd939e3",
+      "license": "CC BY-SA 2.0",
+      "author": "Gary J. Wood",
+      "mode": "carta-vinos",
+      "capture_kind": "handwritten_board",
+      "difficulty": "handwriting",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Waves", "Riesling", "Dunes", "Winter Harvest", "Waves",
+          "Cabernet Franc", "Baco Noir", "Foch Res", "Baco Noir Res"
+        ]
+      }
+    },
+    {
+      "id": "commons-151686648",
+      "page_id": 151686648,
+      "source_sha256": "50faf251b7da1f77d3c6c9d56ff3efba1a4d0f6d8e49cbaccddc9aee7ff2bf90",
+      "license": "CC0",
+      "author": "Sarah Stierch",
+      "mode": "carta-vinos",
+      "capture_kind": "handwritten_board",
+      "difficulty": "handwriting_and_prices",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Gundlach Bundschu Sauvignon Blanc 2023", "Tagline Wines Chardonnay 2021",
+          "Topophilia Wine Co Rose of Grenache 2023", "Vaughn Duffy Pinot Noir 2022",
+          "Mathis Wine Uber Red Blend 2020"
+        ]
+      }
+    },
+    {
+      "id": "commons-152561556",
+      "page_id": 152561556,
+      "source_sha256": "ced3e56f53cb45762e8b528c3c3f567bcd75809db902d27d873bf0f221ef4aea",
+      "license": "CC0",
+      "author": "Sarah Stierch",
+      "mode": "carta-vinos",
+      "capture_kind": "handwritten_board",
+      "difficulty": "dense_handwriting_and_uneven_light",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Bardos Marioni Synkro Pet Nat", "Bardos Marioni Serpent",
+          "Fres.Co Fume Blanc", "Marioni Sunfisher", "Marioni Chardonnay",
+          "Leisure Just Under There", "Fres.Co Primitivo Rose", "Marioni Rosa",
+          "Fres.Co Fire Fuego", "Leisure Ah Um", "Marioni Pinot",
+          "Marioni Primitivo", "Fres.Co Other Hand", "Leisure Fracaso", "Marioni Merlot"
+        ]
+      }
+    }
+  ]
+}

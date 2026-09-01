@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {
+  areLikelyDuplicateWines,
   determineRegionStatus,
   groupDuplicateWines,
   getRegionAnalysisConcurrency,
@@ -27,6 +28,13 @@ import {
 } from '../src/utils/scanConfidence';
 import { evaluateCandidateGrounding } from '../supabase/functions/analyze-wine-region/grounding';
 import { shouldRejectTextAnalysis } from '../src/utils/imageAnalysis';
+import {
+  buildMenuScanTiles,
+  mapMenuWineFromTile,
+  mergeMenuTileResults,
+  resolveMenuTileResults,
+  type MenuScanWine,
+} from '../src/utils/wineMenuScan';
 import {
   EdgeFunctionError,
   edgeFunctionRetryDelay,
@@ -142,6 +150,71 @@ assert.equal(shouldRejectTextAnalysis({
   warnings: [],
 }), false, 'high-resolution low-light captures must still reach OCR');
 
+const landscapeTiles = buildMenuScanTiles(1800, 1200);
+assert.deepEqual(landscapeTiles.map((tile) => tile.id), ['left', 'right']);
+assert.deepEqual(landscapeTiles.map((tile) => tile.box.width), [56, 56]);
+const portraitTiles = buildMenuScanTiles(1200, 1800);
+assert.deepEqual(portraitTiles.map((tile) => tile.id), ['top', 'bottom']);
+
+const menuWine = (name: string, x: number, y: number, source: string): MenuScanWine => ({
+  nombre: name,
+  productor: 'Bodega Test',
+  anada: 2021,
+  region: null,
+  pais: null,
+  precio: 20,
+  tipo: 'tinto',
+  descripcion: null,
+  texto_fuente: source,
+  confidence: 0.82,
+  posicion: { x, y, width: 20, height: 5, confidence: 0.9 },
+});
+const mappedRightWine = mapMenuWineFromTile(menuWine('Solape', 5, 20, 'Solape 2021 20'), landscapeTiles[1]);
+assert.equal(mappedRightWine.posicion?.x, 46.8);
+assert.equal(mappedRightWine.posicion?.width, 11.2);
+const mergedMenu = mergeMenuTileResults([
+  {
+    tile: landscapeTiles[0],
+    response: {
+      vinos: [menuWine('Solape', 84, 20, 'Solape 2021 20'), menuWine('Repetido', 20, 50, 'Repetido copa 8')],
+      has_profile: true,
+      coverage: { status: 'reported_complete', estimated_visible_wines: 2 },
+    },
+  },
+  {
+    tile: landscapeTiles[1],
+    response: {
+      vinos: [menuWine('Solape', 5, 20, 'Solape 2021 20'), menuWine('Repetido', 80, 50, 'Repetido botella 30')],
+      coverage: { status: 'reported_complete', estimated_visible_wines: 2 },
+    },
+  },
+]);
+assert.equal(mergedMenu.vinos?.length, 3, 'overlap duplicates merge, distinct rows of the same wine remain');
+assert.equal(mergedMenu.coverage?.status, 'reported_complete');
+assert.equal(mergedMenu.has_profile, true);
+const completeFullMenu = resolveMenuTileResults([
+  {
+    tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+    response: { vinos: [menuWine('Completo', 10, 10, 'Completo 20')], coverage: { status: 'reported_complete' } },
+  },
+  ...landscapeTiles.map((tile) => ({
+    tile,
+    response: { vinos: [menuWine(`Fragmento ${tile.id}`, 10, 10, tile.id)], coverage: { status: 'unknown' as const } },
+  })),
+]);
+assert.deepEqual(completeFullMenu.vinos?.map((wine) => wine.nombre), ['Completo']);
+const uncertainFullMenu = resolveMenuTileResults([
+  {
+    tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+    response: { vinos: [menuWine('Duplicado completo', 10, 10, 'Duplicado completo')], coverage: { status: 'unknown' } },
+  },
+  {
+    tile: landscapeTiles[0],
+    response: { vinos: [menuWine('Regional', 10, 10, 'Regional')], coverage: { status: 'reported_complete' } },
+  },
+]);
+assert.deepEqual(uncertainFullMenu.vinos?.map((wine) => wine.nombre), ['Regional']);
+
 const makeRegion = (id: string, index: number, name: string, affinity: number): ScanRegion => ({
   id,
   index,
@@ -176,6 +249,14 @@ assert.equal(groupDuplicateWines([
   makeRegion('r1', 1, 'Celler Aripta Brut', 82),
   uncertainDuplicate,
 ]).length, 2, 'uncertain identities must not be grouped as duplicate bottles');
+assert.equal(areLikelyDuplicateWines(
+  { ...candidates[0], name: 'Moscatel Dulce', producer: 'Bodega La Geria' },
+  { ...candidates[0], name: 'Moscatel Dulce La Geria', producer: 'La Geria' },
+), true, 'producer tokens appended to a product name should still group');
+assert.equal(areLikelyDuplicateWines(
+  { ...candidates[0], name: 'Passion Pop Original', producer: 'Passion Pop' },
+  { ...candidates[0], name: 'Passion Pop Mixed Berry', producer: 'Passion Pop' },
+), false, 'distinct product variants must remain separate');
 assert.deepEqual(summarizeScanRegions([
   makeRegion('r1', 1, 'A', 80),
   { ...makeRegion('r2', 2, 'B', 70), status: 'uncertain' },

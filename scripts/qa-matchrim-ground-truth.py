@@ -38,6 +38,10 @@ def build_fixture(scene: dict) -> dict:
             "expected_min_results": ground_truth["expected_min_regions"],
             "expected_min_identified": ground_truth["expected_min_identified"],
             "max_high_confidence_results": ground_truth["illegible_max_high_confidence_candidates"],
+            "expected_wines": ground_truth.get("expected_wines", []),
+            "expected_boxes": ground_truth.get("expected_boxes", []),
+            "identity_min_recall": ground_truth.get("identity_min_recall", 0.8),
+            "identity_min_precision": ground_truth.get("identity_min_precision", 0.7),
         })
     else:
         fixture.update({
@@ -50,7 +54,7 @@ def build_fixture(scene: dict) -> dict:
 def micro_identity_metrics(results: list[dict]) -> dict:
     annotated = [
         result for result in results
-        if result["mode"] == "carta-vinos" and result["expectation"] == "inherit"
+        if result.get("accuracy") and result["expectation"] in {"inherit", "identify"}
     ]
     matched = sum(result["accuracy"]["matched_count"] for result in annotated)
     actual = sum(result["accuracy"]["actual_count"] for result in annotated)
@@ -67,11 +71,30 @@ def micro_identity_metrics(results: list[dict]) -> dict:
     }
 
 
+def micro_detection_metrics(results: list[dict]) -> dict:
+    annotated = [result["detection_accuracy"] for result in results if result.get("detection_accuracy")]
+    matched = sum(result["matched_count"] for result in annotated)
+    actual = sum(result["actual_count"] for result in annotated)
+    expected = sum(result["expected_count"] for result in annotated)
+    weighted_iou = sum(result["mean_iou"] * result["matched_count"] for result in annotated)
+    return {
+        "scene_count": len(annotated),
+        "matched": matched,
+        "actual": actual,
+        "expected": expected,
+        "precision": round(matched / actual, 4) if actual else 0.0,
+        "recall": round(matched / expected, 4) if expected else 0.0,
+        "mean_iou": round(weighted_iou / matched, 4) if matched else 0.0,
+        "iou_threshold": 0.3,
+    }
+
+
 def summarize(results: list[dict]) -> dict:
     def pass_rate(items: list[dict]) -> Optional[float]:
         return round(sum(item["status"] == "PASS" for item in items) / len(items), 4) if items else None
 
     identity = micro_identity_metrics(results)
+    detection = micro_detection_metrics(results)
     originals = [result for result in results if result["variant_kind"] == "original"]
     controlled = [result for result in results if result["variant_kind"] == "controlled"]
     abstention = [result for result in results if result["expectation"] == "abstain"]
@@ -102,6 +125,7 @@ def summarize(results: list[dict]) -> dict:
             "recovered_transient_analysis_failures": recovered_transient_failures,
         },
         "identity_micro": identity,
+        "detection_micro": detection,
         "abstention": {
             "scene_count": len(abstention),
             "passed": sum(result["status"] == "PASS" for result in abstention),
@@ -112,8 +136,12 @@ def summarize(results: list[dict]) -> dict:
         },
         "fridge_detection": {
             "scene_count": len(label_results),
-            "precision": None,
-            "precision_note": "Unavailable until exhaustive per-bottle boxes are human-annotated.",
+            "precision": detection["precision"] if detection["scene_count"] else None,
+            "precision_note": (
+                "IoU-backed precision from human boxes. Count-only dense scenes are excluded."
+                if detection["scene_count"] else
+                "Unavailable until exhaustive per-bottle boxes are human-annotated."
+            ),
             "mean_capped_count_recall": round(statistics.mean(capped_detection_recall), 4) if capped_detection_recall else None,
             "mean_absolute_count_recall": round(statistics.mean(absolute_detection_recall), 4) if absolute_detection_recall else None,
         },
@@ -130,11 +158,14 @@ def main() -> None:
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     parser.add_argument("--artifacts", type=Path, default=DEFAULT_ARTIFACTS)
     parser.add_argument("--scene-pattern", default="")
+    parser.add_argument("--mode", choices=("etiqueta", "carta-vinos"), default="")
     parser.add_argument("--max-scenes", type=int, default=0)
     args = parser.parse_args()
 
     dataset = json.loads(args.dataset.read_text())
     scenes = [scene for scene in dataset["scenes"] if args.scene_pattern in scene["id"]]
+    if args.mode:
+        scenes = [scene for scene in scenes if scene["mode"] == args.mode]
     if args.max_scenes > 0:
         scenes = scenes[:args.max_scenes]
     if not scenes:
