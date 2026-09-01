@@ -62,7 +62,7 @@ export const AffinityExplanation = ({
 
   if (!explanation) {
     return (
-      <div className="rounded-md border border-stone-200 bg-stone-50 p-3 text-sm text-stone-600">
+      <div className="matchrim-soft-surface rounded-lg p-3 text-sm text-stone-600">
         <div className="flex items-center gap-2 font-medium text-stone-800">
           <CircleHelp className="h-4 w-4" />
           Afinidad sin desglose suficiente
@@ -83,30 +83,30 @@ export const AffinityExplanation = ({
   };
 
   return (
-    <div className="space-y-4 rounded-md border border-stone-200 bg-white p-4">
+    <div className="matchrim-surface space-y-4 rounded-lg p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <h4 className="font-semibold text-slate-950">Por que encaja</h4>
-          <p className="mt-1 text-sm leading-5 text-slate-600">{explanation.whyItMayFit}</p>
+          <p className="mt-1 text-sm leading-5 matchrim-muted">{explanation.whyItMayFit}</p>
         </div>
-        <div className="text-right text-xs text-slate-500">
+        <div className="rounded-md bg-red-950 px-3 py-2 text-right text-xs text-white">
           {explanation.score !== null && (
             <div className="mb-1">
-              <span className="text-xl font-bold text-red-900">≈{explanation.score}%</span>
-              <span className="ml-1">afinidad estimada</span>
+              <span className="text-xl font-bold text-white">≈{explanation.score}%</span>
+              <span className="ml-1 text-white/65">afinidad</span>
             </div>
           )}
-          {explanation.scoreRange && <div>Rango orientativo {explanation.scoreRange.min}-{explanation.scoreRange.max}%</div>}
+          {explanation.scoreRange && <div className="text-white/65">Rango {explanation.scoreRange.min}-{explanation.scoreRange.max}%</div>}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 border-y border-stone-200 py-3 text-center text-xs text-slate-500">
+      <div className="matchrim-data-rail grid grid-cols-2 gap-3 rounded-lg px-2 py-3 text-center text-xs text-slate-500">
         <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.identificationConfidence * 100)}%</span>Señal de identidad</div>
         <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.confidence * 100)}%</span>Respaldo de la explicacion ({explanation.confidenceLabel})</div>
       </div>
 
       {explanation.identificationConfidence < 0.72 && (
-        <div role="note" className="border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-950">
+        <div role="note" className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-950">
           Identidad sin confirmar. La afinidad describe el candidato visible, no demuestra que la botella sea esa referencia; confirma o corrige antes de decidir.
         </div>
       )}
@@ -140,7 +140,7 @@ export const AffinityExplanation = ({
                 type="button"
                 size="icon"
                 variant={feedback[dimension.key] === 'hit' ? 'default' : 'ghost'}
-                className="h-11 w-11"
+                className="matchrim-pressable h-11 w-11"
                 aria-label={`La lectura de ${dimension.label} acerto`}
                 onClick={() => storeFeedback(dimension.key, 'hit')}
               >
@@ -150,7 +150,7 @@ export const AffinityExplanation = ({
                 type="button"
                 size="icon"
                 variant={feedback[dimension.key] === 'miss' ? 'destructive' : 'ghost'}
-                className="h-11 w-11"
+                className="matchrim-pressable h-11 w-11"
                 aria-label={`La lectura de ${dimension.label} no acerto`}
                 onClick={() => storeFeedback(dimension.key, 'miss')}
               >

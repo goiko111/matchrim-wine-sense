@@ -104,11 +104,11 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
   if (wines.length < 2) return null;
 
   return (
-    <section className="min-w-0 border-y border-stone-200 py-5" aria-labelledby="wine-comparison-title">
+    <section className="matchrim-surface min-w-0 rounded-lg p-4" aria-labelledby="wine-comparison-title">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h3 id="wine-comparison-title" className="text-lg font-semibold text-slate-950">Comparar 2–5 vinos</h3>
-          <p className="mt-1 text-sm text-slate-600">Elige referencias y decide con datos visibles, no con otra cifra opaca.</p>
+          <p className="mt-1 text-sm matchrim-muted">Elige referencias y decide con afinidad, certeza, precio y formato por separado.</p>
         </div>
         <span className="text-xs font-medium text-slate-500">{selectedIds.length}/5 seleccionados</span>
       </div>
@@ -120,7 +120,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
           return (
             <label
               key={wine.id}
-              className={`flex min-h-14 min-w-0 max-w-full items-center gap-3 overflow-hidden border px-3 py-2 ${selected ? 'border-red-800 bg-red-50' : 'border-stone-200 bg-white'} ${disabled ? 'opacity-50' : ''}`}
+              className={`matchrim-pressable flex min-h-14 min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-md border px-3 py-2 ${selected ? 'border-red-800 bg-red-50' : 'border-stone-200 bg-white'} ${disabled ? 'opacity-50' : ''}`}
             >
               <Checkbox checked={selected} disabled={disabled} onCheckedChange={() => toggleWine(wine.id)} aria-label={`Comparar ${wine.name}`} />
               <span className="min-w-0 flex-1">
@@ -134,7 +134,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
       </div>
 
       {selectedWines.length < 2 ? (
-        <p className="mt-4 border-l-4 border-amber-400 bg-amber-50 px-3 py-2 text-sm text-amber-950">Selecciona al menos dos vinos para comparar.</p>
+        <p className="mt-4 rounded-md border-l-4 border-amber-400 bg-amber-50 px-3 py-2 text-sm text-amber-950">Selecciona al menos dos vinos para comparar.</p>
       ) : (
         <>
           <div className="mt-5 grid gap-4 lg:grid-cols-[auto_minmax(12rem,1fr)_minmax(10rem,0.7fr)]">
@@ -143,7 +143,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               <div className="inline-flex rounded-md border border-stone-200 bg-stone-100 p-1" role="group" aria-label="Modo de comparación">
                 <button
                   type="button"
-                  className={`flex min-h-11 items-center gap-2 rounded px-3 text-sm font-medium ${mode === 'personal' ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-600'}`}
+                  className={`matchrim-pressable flex min-h-11 items-center gap-2 rounded px-3 text-sm font-medium ${mode === 'personal' ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-600'}`}
                   onClick={() => setMode('personal')}
                   aria-pressed={mode === 'personal'}
                 >
@@ -151,7 +151,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 </button>
                 <button
                   type="button"
-                  className={`flex min-h-11 items-center gap-2 rounded px-3 text-sm font-medium ${mode === 'service' ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-600'}`}
+                  className={`matchrim-pressable flex min-h-11 items-center gap-2 rounded px-3 text-sm font-medium ${mode === 'service' ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-600'}`}
                   onClick={() => setMode('service')}
                   aria-pressed={mode === 'service'}
                 >
@@ -198,7 +198,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
           </div>
 
           {decision.primary && (
-            <div className={`mt-5 border-l-4 px-4 py-3 ${decision.actionability === 'ready' ? 'border-red-900 bg-stone-50' : 'border-amber-500 bg-amber-50'}`}>
+            <div className={`mt-5 rounded-lg border-l-4 px-4 py-3 ${decision.actionability === 'ready' ? 'border-red-900 bg-stone-50' : 'border-amber-500 bg-amber-50'}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className={`flex items-center gap-2 text-sm font-semibold ${decision.actionability === 'ready' ? 'text-red-950' : 'text-amber-950'}`}>
@@ -239,7 +239,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
             </table>
           </div>
 
-          <div className="mt-5 divide-y divide-stone-200 border-y border-stone-200 md:hidden">
+          <div className="matchrim-data-rail mt-5 divide-y divide-stone-200 rounded-lg md:hidden">
             {decision.ordered.map(({ wine, cautions }, index) => (
               <div key={wine.id} className="py-3">
                 <div className="flex items-start justify-between gap-3">

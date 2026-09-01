@@ -29,7 +29,7 @@ interface ScanHubProps {
 }
 
 const ScannerFallback = () => (
-  <div className="flex min-h-40 items-center justify-center rounded-lg border border-dashed bg-muted/40">
+  <div className="matchrim-soft-surface flex min-h-40 items-center justify-center rounded-lg border-dashed">
     <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary" />
     Preparando scanner...
   </div>
@@ -113,7 +113,7 @@ const RecentScansSection = () => {
   if (!items.length) return null;
 
   return (
-    <div className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+    <div className="matchrim-surface rounded-lg p-4">
       <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-950">
         <History className="h-4 w-4 text-red-900" />
         Últimos escaneos
@@ -122,14 +122,14 @@ const RecentScansSection = () => {
         {items.slice(0, 5).map((item) => (
           <li
             key={item.id}
-            className="flex items-stretch gap-2 rounded-md border border-stone-100 bg-stone-50/60"
+            className="flex items-stretch gap-2 rounded-md border border-stone-200 bg-stone-50/70"
           >
             <button
               type="button"
               onClick={() => navigate(item.route)}
-              className="matchrim-pressable flex min-w-0 flex-1 items-start gap-3 px-3 py-2 text-left"
+                className="matchrim-pressable flex min-w-0 flex-1 items-start gap-3 px-3 py-2 text-left"
             >
-              <span className="mt-0.5 shrink-0 rounded-md bg-red-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-900">
+              <span className="matchrim-status-pill mt-0.5 shrink-0 rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
                 {scanTypeLabels[item.type]}
               </span>
               <span className="min-w-0 flex-1">
@@ -192,7 +192,7 @@ export const ScanHub = ({
   };
 
   const renderOptions = (compact = false) => (
-    <div className={compact ? "grid gap-3 md:grid-cols-2" : "grid gap-3"}>
+    <div className={compact ? "grid gap-3 md:grid-cols-2" : "grid gap-3 md:grid-cols-2"}>
       {scanOptions.map((option) => {
         const Icon = option.icon;
         const isSelected = activeMode === option.id;
@@ -202,21 +202,23 @@ export const ScanHub = ({
             key={option.id}
             type="button"
             onClick={() => selectMode(option.id)}
-            className={`matchrim-pressable group flex min-h-[5.5rem] items-start gap-3 rounded-lg border p-3 text-left sm:gap-4 sm:p-4 ${
+            className={`matchrim-pressable group flex min-h-[6rem] items-start gap-3 rounded-lg border p-3 text-left sm:gap-4 sm:p-4 ${
               isSelected && variant === "legacy"
                 ? "border-red-900 bg-red-50 text-red-950 shadow-sm"
-                : "border-stone-200 bg-white text-slate-950 hover:border-red-200 hover:bg-red-50/50"
+                : option.id === "wine-menu"
+                  ? "border-red-900/20 bg-white text-slate-950 shadow-elegant hover:border-red-900/35"
+                  : "border-stone-200 bg-white text-slate-950 hover:border-stone-300"
             }`}
           >
             <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md sm:h-11 sm:w-11 ${
-              isSelected && variant === "legacy" ? "bg-red-900 text-white" : "bg-stone-100 text-red-900"
+              isSelected && variant === "legacy" || option.id === "wine-menu" ? "bg-red-950 text-white" : "matchrim-icon-tile"
             }`}>
               <Icon className="h-5 w-5" />
             </span>
             <span className="min-w-0 flex-1">
               <span className="block font-semibold">{option.title}</span>
               <span className="mt-1 block text-sm leading-5 text-slate-500">{option.description}</span>
-              <span className="mt-2 inline-flex rounded-full bg-stone-100 px-2 py-1 text-[11px] font-medium text-stone-600">
+              <span className="matchrim-status-pill mt-2 inline-flex rounded-md px-2 py-1 text-[11px] font-medium">
                 {option.accepts}
               </span>
             </span>
@@ -253,9 +255,10 @@ export const ScanHub = ({
   if (variant === "hub") {
     return (
       <div className="space-y-4">
-        <div className="rounded-full border border-red-100 bg-red-50/70 px-3 py-2">
-          <p className="text-sm leading-5 text-red-900/85">
-            <span className="font-semibold text-red-950">En restaurante:</span> carta primero. <span className="font-semibold text-red-950">Con botella:</span> etiqueta. <span className="font-semibold text-red-950">Comprando:</span> pregunta abierta o enlace.
+        <div className="matchrim-soft-surface rounded-lg p-4">
+          <p className="text-sm font-semibold text-slate-950">Elige el objeto real que tienes delante.</p>
+          <p className="mt-1 text-sm leading-5 matchrim-muted">
+            En restaurante empieza por carta. Con botellas visibles, usa etiqueta. Si compras online, pregunta por ocasión, presupuesto o enlace.
           </p>
         </div>
         {renderOptions()}
@@ -271,10 +274,10 @@ export const ScanHub = ({
 
   return (
     <div className="space-y-6">
-      <div className="overflow-hidden rounded-lg border border-red-100 bg-white shadow-sm">
-        <div className="border-b bg-red-950 p-4 text-white">
+      <div className="matchrim-surface overflow-hidden rounded-lg">
+        <div className="border-b border-white/10 matchrim-ink-panel p-4 text-white">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/12">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/12 text-amber-200">
               <Camera className="h-5 w-5" />
             </div>
             <div>

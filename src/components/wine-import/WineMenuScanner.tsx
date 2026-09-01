@@ -810,12 +810,12 @@ export const WineMenuScanner = ({
   return (
     <div className="space-y-6">
       {isMatchrimFixtureQaEnabled && (
-        <div role="status" className="border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+        <div role="status" className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-950">
           QA local: respuestas deterministas. Este build valida el flujo, no la precision del OCR.
         </div>
       )}
       {(restaurantName || matchrimCode) && (
-        <div className="rounded-md border border-stone-800 bg-stone-950 p-4 text-white shadow-sm">
+        <div className="matchrim-ink-panel rounded-lg p-4 text-white shadow-sm">
           <div className="flex flex-wrap items-center gap-2 text-sm">
             {restaurantName && (
               <span className="font-medium">
@@ -839,7 +839,7 @@ export const WineMenuScanner = ({
       )}
 
       {/* Scanner Section */}
-      <Card className="overflow-hidden border-stone-200 shadow-sm">
+      <Card className="matchrim-surface overflow-hidden rounded-lg border-stone-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
@@ -858,7 +858,7 @@ export const WineMenuScanner = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border border-stone-800 bg-stone-950 p-4 text-center text-white">
+          <div className="matchrim-scan-stage rounded-lg p-4 text-center text-white">
             <input
               ref={fileInputRef}
               type="file"
@@ -882,7 +882,7 @@ export const WineMenuScanner = ({
 	                <div className="relative inline-block max-w-full">
 		                  {preview ? (
 		                    <>
-			                    <div className="overflow-auto rounded-md bg-black shadow-2xl ring-1 ring-white/10" style={{ maxHeight: '68vh' }}>
+			                    <div className="overflow-auto rounded-lg bg-black shadow-2xl ring-1 ring-white/10" style={{ maxHeight: '68vh' }}>
 			                      <div className="relative origin-top-left" style={{ width: `${imageZoom * 100}%` }}>
 		                        <img
 		                          src={preview}
@@ -937,11 +937,11 @@ export const WineMenuScanner = ({
 		                      <p className="text-sm text-white/70">Convirtiendo PDF a imagen...</p>
                     </div>
                   ) : null}
-	                  <Button
+	                <Button
 	                    onClick={clearScan}
 	                    variant="destructive"
 	                    size="icon"
-                    className="absolute right-2 top-2 h-11 w-11 rounded-md bg-red-700 hover:bg-red-800"
+                    className="matchrim-pressable absolute right-2 top-2 h-11 w-11 rounded-md bg-red-700 hover:bg-red-800"
 	                    aria-label="Quitar carta"
                   >
 	                    <X className="h-4 w-4" />
@@ -1017,7 +1017,7 @@ export const WineMenuScanner = ({
                   <Button
                     onClick={() => cameraInputRef.current?.click()}
                     disabled={loading}
-	                    className="gap-2 bg-amber-400 text-stone-950 hover:bg-amber-300"
+	                    className="matchrim-pressable min-h-12 gap-2 bg-amber-400 text-stone-950 hover:bg-amber-300"
                   >
                     <Camera className="h-4 w-4" />
                     Hacer foto
@@ -1026,7 +1026,7 @@ export const WineMenuScanner = ({
 	                    onClick={() => fileInputRef.current?.click()}
 	                    disabled={loading}
 	                    variant="outline"
-		                    className="gap-2 border-white/20 bg-white/10 text-white hover:bg-white/15"
+		                    className="matchrim-pressable min-h-12 gap-2 border-white/20 bg-white/10 text-white hover:bg-white/15"
 	                  >
 	                    <Upload className="h-4 w-4" />
 	                    Subir archivo
@@ -1045,14 +1045,14 @@ export const WineMenuScanner = ({
 	      </Card>
 
 	      {menuQualityWarnings.length > 0 && (
-	        <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+	        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
 	          <div className="font-semibold">Avisos de calidad</div>
 	          <ul className="mt-1 space-y-1">{menuQualityWarnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>
 	        </div>
 	      )}
 
 	      {scanFeedback && scannedWines.length === 0 && !loading && (
-        <Card className="border-amber-200 bg-amber-50">
+        <Card className="rounded-lg border-amber-200 bg-amber-50">
           <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-semibold text-amber-950">No ha salido un escaneo útil</p>
@@ -1102,8 +1102,8 @@ export const WineMenuScanner = ({
 	          </div>
 
 	          {menuDecision && (
-	            <Card className="overflow-hidden border-red-100 bg-white shadow-sm">
-	              <CardHeader className="border-b bg-red-950 text-white">
+	            <Card className="matchrim-surface overflow-hidden rounded-lg border-red-100 bg-white">
+	              <CardHeader className="border-b border-white/10 matchrim-ink-panel text-white">
 	                <CardTitle className="flex items-center gap-2 text-xl">
 	                  <Target className="h-5 w-5" />
 	                  {dishContext
@@ -1119,8 +1119,8 @@ export const WineMenuScanner = ({
 	                </CardDescription>
 	              </CardHeader>
 		              <CardContent className="grid gap-3 p-4 md:grid-cols-2">
-	                <div className="min-w-0 rounded-md border border-green-100 bg-green-50 p-4">
-	                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-green-900">
+                <div className="min-w-0 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+	                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-emerald-900">
 	                    <Trophy className="h-4 w-4" />
 	                    Pediría primero
 	                  </div>
@@ -1135,20 +1135,20 @@ export const WineMenuScanner = ({
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
-	                            <p className="break-words font-semibold leading-tight text-green-950">{best.wine.nombre}</p>
+	                            <p className="break-words font-semibold leading-tight text-emerald-950">{best.wine.nombre}</p>
 	                            {best.wine.productor && (
-	                              <p className="mt-1 truncate text-sm text-green-900/70">{best.wine.productor}</p>
+	                              <p className="mt-1 truncate text-sm text-emerald-900/70">{best.wine.productor}</p>
 	                            )}
 	                          </div>
-	                          <Badge className="bg-green-700 hover:bg-green-700">{best.score}%</Badge>
+	                          <Badge className="bg-emerald-700 hover:bg-emerald-700">{best.score}%</Badge>
 	                        </div>
 	                        {best.wine.razon && (
-	                          <p className="break-words text-sm leading-5 text-green-900">{best.wine.razon}</p>
+	                          <p className="break-words text-sm leading-5 text-emerald-900">{best.wine.razon}</p>
 	                        )}
 	                      </button>
 	                    );
 	                  })() : (
-	                    <p className="text-sm text-green-900">Completa tu test para que pueda elegir por encaje.</p>
+	                    <p className="text-sm text-emerald-900">Completa tu test para que pueda elegir por encaje.</p>
 	                  )}
 	                </div>
 
@@ -1180,7 +1180,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="min-w-0 rounded-md border border-stone-200 bg-stone-50 p-4">
+		                <div className="min-w-0 rounded-lg border border-stone-200 bg-stone-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-stone-950">
 		                    <Target className="h-4 w-4" />
 		                    Mejor calidad/precio para ti
@@ -1191,7 +1191,7 @@ export const WineMenuScanner = ({
 		                      <button
 		                        type="button"
 		                        aria-label={`Ver detalle de ${value.wine.nombre}, ${value.score}% de encaje`}
-		                        className="min-w-0 w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
+		                        className="matchrim-pressable min-w-0 w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
 		                        onClick={() => focusWine(value.index)}
 		                      >
 		                        <span className="block break-words font-semibold leading-tight">{value.wine.nombre}</span>
@@ -1205,7 +1205,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="min-w-0 rounded-md border border-orange-100 bg-orange-50 p-4">
+		                <div className="min-w-0 rounded-lg border border-orange-100 bg-orange-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-orange-950">
 		                    <AlertCircle className="h-4 w-4" />
 		                    Más arriesgado
@@ -1216,7 +1216,7 @@ export const WineMenuScanner = ({
 		                      <button
 		                        type="button"
 		                        aria-label={`Ver detalle de ${adventurous.wine.nombre}, ${adventurous.score}% de encaje`}
-		                        className="min-w-0 w-full rounded-md border border-orange-200 bg-white p-3 text-left"
+		                        className="matchrim-pressable min-w-0 w-full rounded-md border border-orange-200 bg-white p-3 text-left"
 		                        onClick={() => focusWine(adventurous.index)}
 		                      >
 		                        <span className="block break-words text-sm font-semibold leading-tight text-orange-950">{adventurous.wine.nombre}</span>
@@ -1230,7 +1230,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="min-w-0 rounded-md border border-red-100 bg-red-50 p-4">
+		                <div className="min-w-0 rounded-lg border border-red-100 bg-red-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-red-950">
 		                    <CircleSlash className="h-4 w-4" />
 		                    No lo pediría para ti
@@ -1262,7 +1262,7 @@ export const WineMenuScanner = ({
 	                  )}
 		                </div>
 
-		                <div className="rounded-md border bg-muted/30 px-4 py-3 text-sm text-muted-foreground md:col-span-2">
+		                <div className="matchrim-soft-surface rounded-lg px-4 py-3 text-sm matchrim-muted md:col-span-2">
 	                  {menuDecision.anchored > 0
 		                    ? `${menuDecision.anchored} pin${menuDecision.anchored !== 1 ? 'es' : ''} se han anclado a posiciones fiables. La afinidad y el detalle permanecen en la lista para no tapar el texto.`
 		                    : 'La lectura no ha devuelto posiciones fiables para esta foto. Mantengo el ranking como lista y no invento marcadores sobre lineas dudosas.'}
@@ -1297,7 +1297,7 @@ export const WineMenuScanner = ({
                 }))}
               />
 
-		          <div className="rounded-md border border-stone-200 bg-white p-3 shadow-sm">
+		          <div className="matchrim-surface rounded-lg p-3">
 		            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-2">
                 <Label htmlFor="scan-sort">Orden</Label>
@@ -1386,7 +1386,7 @@ export const WineMenuScanner = ({
 		          </div>
 
 		          {visibleScannedWines.length > 0 && (
-		            <div className="border-y border-stone-200 bg-white">
+		            <div className="matchrim-surface overflow-hidden rounded-lg bg-white">
 		              <div className="flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2">
 		                <h3 className="font-semibold text-slate-950">Lista de la carta</h3>
 		                <span className="text-xs text-slate-500">{visibleScannedWines.length} resultados</span>
@@ -1397,13 +1397,13 @@ export const WineMenuScanner = ({
 		                    key={`${wine.nombre}-${index}-list-row`}
 		                    type="button"
 		                    aria-label={`Abrir vino ${index + 1}: ${wine.nombre}`}
-		                    className={`flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
+		                    className={`matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
 		                    onClick={() => {
 		                      setHighlightedWineIndex(index);
 		                      setSelectedPinIndex(index);
 		                    }}
 		                  >
-	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
+	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
 		                    <span className="min-w-0 flex-1">
 		                      <span className="block truncate font-semibold text-slate-950">{wine.nombre}</span>
 		                      <span className="block truncate text-xs text-slate-500">
@@ -1421,13 +1421,13 @@ export const WineMenuScanner = ({
 		          )}
 
 	          {visibleScannedWines.length === 0 ? (
-            <Card>
+            <Card className="rounded-lg">
               <CardContent className="p-8 text-center text-sm text-muted-foreground">
                 No hay vinos que cumplan esos filtros. Prueba a subir el precio máximo o cambiar el tipo.
               </CardContent>
             </Card>
 	          ) : (
-	            <details className="rounded-md border border-stone-200 bg-white">
+	            <details className="rounded-lg border border-stone-200 bg-white">
 	              <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-slate-900">Ver fichas completas y acciones</summary>
 	              <div className="grid gap-4 border-t border-stone-100 p-3">
 			              {visibleScannedWines.map(({ wine, index }) => {
@@ -1444,12 +1444,12 @@ export const WineMenuScanner = ({
 		                ref={(node) => {
 		                  wineCardRefs.current.set(index, node);
 		                }}
-		                className={`overflow-hidden transition ${
+		                className={`overflow-hidden rounded-lg transition ${
 		                  highlightedWineIndex === index ? 'ring-2 ring-red-700 ring-offset-2' : ''
 		                }`}
 	              >
 	                <CardContent className="p-0">
-                    <div className="border-b bg-gradient-to-r from-red-950 to-stone-950 px-5 py-4 text-white">
+                    <div className="border-b border-white/10 matchrim-ink-panel px-5 py-4 text-white">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
 	                          <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Ficha de carta</p>
@@ -1492,7 +1492,7 @@ export const WineMenuScanner = ({
                       </div>
 
                       {isEditing && (
-                        <div className="rounded-lg border bg-muted/30 p-4">
+                        <div className="matchrim-soft-surface rounded-lg p-4">
                           <div className="grid gap-3 md:grid-cols-2">
                             <div className="space-y-1.5 md:col-span-2">
                               <Label htmlFor={`scan-name-${index}`}>Nombre</Label>
@@ -1614,7 +1614,7 @@ export const WineMenuScanner = ({
 	                    </div>
 
 	                    {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
-	                      <div className="flex flex-col justify-center gap-3 rounded-lg border bg-muted/20 p-4 lg:min-w-[170px]">
+	                      <div className="matchrim-soft-surface flex flex-col justify-center gap-3 rounded-lg p-4 lg:min-w-[170px]">
                           <div className="flex items-center gap-2">
                             {getCompatibilityIcon(wine.compatibilidad)}
                             <span className="text-sm font-semibold">Encaje conmigo</span>
@@ -1648,7 +1648,7 @@ export const WineMenuScanner = ({
 	                          <button
 	                            key={`${similarWine.nombre}-${similarIndex}-similar`}
 	                            type="button"
-	                            className="rounded-md border bg-white p-3 text-left text-sm shadow-sm transition hover:border-red-300 hover:bg-red-50"
+	                            className="matchrim-pressable rounded-md border bg-white p-3 text-left text-sm shadow-sm hover:border-red-300 hover:bg-red-50"
 		                            onClick={() => focusWine(similarIndex)}
 	                          >
 	                            <div className="flex items-start justify-between gap-2">
@@ -1744,7 +1744,7 @@ export const WineMenuScanner = ({
 		          )}
 
 		          {restaurantName && (
-	            <div className="rounded-md border border-red-100 bg-red-50/80 p-4">
+	            <div className="rounded-lg border border-red-100 bg-red-50/80 p-4">
 	              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 	                <div>
 	                  <p className="font-semibold text-red-950">Este restaurante todavía no usa Winerim</p>
@@ -1773,10 +1773,10 @@ export const WineMenuScanner = ({
 	      )}
 
 	      <Drawer open={selectedPinIndex !== null} onOpenChange={(open) => !open && setSelectedPinIndex(null)}>
-	        <DrawerContent className="max-h-[88vh]">
+	        <DrawerContent className="max-h-[88vh] border-stone-200 bg-stone-50">
 	          {selectedPinWine && selectedPinIndex !== null && (
 	            <>
-	              <DrawerHeader className="border-b text-left">
+	              <DrawerHeader className="border-b border-stone-200 bg-white text-left">
 	                <div className="flex items-start justify-between gap-3">
 	                  <div className="min-w-0">
 	                    <DrawerTitle>{selectedPinIndex + 1}. {selectedPinWine.nombre}</DrawerTitle>
@@ -1790,13 +1790,13 @@ export const WineMenuScanner = ({
 	                </div>
 	              </DrawerHeader>
 	              <div className="overflow-y-auto p-4">
-	                <div className="mb-4 grid grid-cols-3 gap-3 border-y border-stone-200 py-3 text-center">
+	                <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
 	                  <div><div className="text-xl font-bold text-red-900">{selectedPinWine.compatibilidad == null ? '-' : `≈${selectedPinWine.compatibilidad}%`}</div><div className="text-xs text-slate-500">Afinidad estimada</div></div>
 	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>
 	                  <div><div className="truncate text-sm font-bold capitalize text-slate-900">{selectedPinWine.tipo || '-'}</div><div className="text-xs text-slate-500">Tipo</div></div>
 	                </div>
 	                {selectedPinWine.descripcion && <p className="mb-4 text-sm leading-6 text-slate-600">{selectedPinWine.descripcion}</p>}
-	                <div className="mb-4 rounded-md border border-stone-200 bg-stone-50 p-3 text-sm text-slate-600">
+	                <div className="matchrim-soft-surface mb-4 rounded-lg p-3 text-sm text-slate-600">
 	                  {selectedPinWine.texto_fuente ? (
 	                    <p><span className="font-semibold text-slate-900">Texto visible:</span> {selectedPinWine.texto_fuente}</p>
 	                  ) : (
@@ -1829,14 +1829,14 @@ export const WineMenuScanner = ({
 	                  sensorySource="inference"
 	                />
 	              </div>
-	              <DrawerFooter className="border-t">
+	              <DrawerFooter className="border-t border-stone-200 bg-white">
 	                <div className="grid grid-cols-2 gap-2">
-	                  <Button type="button" variant="outline" className="min-h-11" disabled={selectedPinIndex === 0} onClick={() => {
+	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex === 0} onClick={() => {
 	                    const next = Math.max(0, selectedPinIndex - 1);
 	                    setSelectedPinIndex(next);
 	                    setHighlightedWineIndex(next);
 	                  }}><ChevronLeft className="h-4 w-4" /> Anterior</Button>
-	                  <Button type="button" variant="outline" className="min-h-11" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={() => {
+	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={() => {
 	                    const next = Math.min(scannedWines.length - 1, selectedPinIndex + 1);
 	                    setSelectedPinIndex(next);
 	                    setHighlightedWineIndex(next);

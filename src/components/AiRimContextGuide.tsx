@@ -28,18 +28,18 @@ export const AiRimContextGuide = ({
 
   return (
     <section
-      className={`border p-3 ${toneClass}`}
+      className={`rounded-lg border p-4 ${toneClass}`}
       aria-labelledby={titleId}
       data-testid="airim-context-guide"
     >
       <div className="flex items-start gap-3">
-        <Avatar className="h-9 w-9 shrink-0 border border-current bg-white">
+        <Avatar className="h-10 w-10 shrink-0 rounded-md border border-current bg-white">
           <AvatarFallback className="bg-white text-red-900">
             <Sparkles className="h-4 w-4" aria-hidden="true" />
           </AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1">
-          <div className="text-[11px] font-semibold uppercase text-red-900">aiRIM - guia contextual</div>
+          <div className="text-[11px] font-semibold uppercase tracking-wide text-red-900">aiRIM · guía contextual</div>
           <h4 id={titleId} className="mt-1 text-sm font-semibold">{guidance.title}</h4>
           <p className="mt-1 text-sm leading-5">{guidance.summary}</p>
           <ul className="mt-2 space-y-1 text-xs opacity-80">
@@ -49,12 +49,12 @@ export const AiRimContextGuide = ({
           {(primaryAction || secondaryAction) && (
             <div className="mt-3 flex flex-wrap gap-2">
               {primaryAction && (
-                <Button type="button" size="sm" className="min-h-11" onClick={primaryAction.onClick}>
+              <Button type="button" size="sm" className="matchrim-pressable min-h-11 bg-red-950 hover:bg-red-900" onClick={primaryAction.onClick}>
                   {primaryAction.label}
                 </Button>
               )}
               {secondaryAction && (
-                <Button type="button" size="sm" variant="outline" className="min-h-11 bg-white" onClick={secondaryAction.onClick}>
+                <Button type="button" size="sm" variant="outline" className="matchrim-pressable min-h-11 bg-white" onClick={secondaryAction.onClick}>
                   {secondaryAction.label}
                 </Button>
               )}

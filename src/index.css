@@ -88,7 +88,7 @@ body {
  
 @layer base {
 :root {
-    --background: 0 0% 100%;
+    --background: 42 22% 96%;
     --foreground: 224 71.4% 4.1%;
 
     --card: 0 0% 100%;
@@ -97,10 +97,10 @@ body {
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
  
-    --primary: 343 96% 26%; /* Pantone #860024 - Winerim burgundy */
+    --primary: 344 76% 24%; /* Winerim burgundy, slightly calmer for UI */
     --primary-foreground: 210 20% 98%;
-    --primary-variant: 343 96% 35%; /* Lighter burgundy */
-    --primary-light: 343 30% 85%; /* Very light burgundy for backgrounds */
+    --primary-variant: 348 56% 32%;
+    --primary-light: 350 34% 89%;
  
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
@@ -108,7 +108,7 @@ body {
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
  
-    --accent: 45 93% 47%; /* Gold accent for CTAs */
+    --accent: 43 76% 52%;
     --accent-foreground: 220.9 39.3% 11%;
  
     --destructive: 0 84.2% 60.2%;
@@ -118,7 +118,7 @@ body {
     --input: 220 13% 91%;
     --ring: 343 96% 26%;
  
-    --radius: 1rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 224 71.4% 4.1%;
@@ -170,25 +170,118 @@ body {
   }
 }
 
-/* Winerim Design System */
+/* Matchrim Design System */
 .winerim-bg {
-  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-variant)));
+  background: linear-gradient(135deg, hsl(344 72% 18%), hsl(24 18% 12%));
 }
 
 .gradient-subtle {
-  background: linear-gradient(180deg, hsl(343 30% 98%), hsl(0 0% 100%));
+  background: linear-gradient(180deg, hsl(42 22% 97%), hsl(0 0% 100%));
 }
 
 .shadow-elegant {
-  box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.15);
+  box-shadow: 0 18px 50px -34px hsl(344 72% 18% / 0.55);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 40px hsl(var(--primary) / 0.1);
+  box-shadow: 0 20px 60px -40px hsl(43 76% 52% / 0.55);
 }
 
 .transition-smooth {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.matchrim-app-shell {
+  background:
+    linear-gradient(180deg, hsl(42 27% 96%) 0%, hsl(42 18% 93%) 48%, hsl(39 18% 90%) 100%);
+  color: hsl(224 71% 7%);
+}
+
+.matchrim-ink-panel {
+  background:
+    linear-gradient(140deg, hsl(344 74% 18%) 0%, hsl(20 15% 11%) 62%, hsl(153 18% 17%) 100%);
+  color: white;
+}
+
+.matchrim-surface {
+  border: 1px solid hsl(38 18% 82%);
+  background: hsl(0 0% 100% / 0.92);
+  box-shadow: 0 16px 44px -34px hsl(224 28% 12% / 0.55);
+}
+
+.matchrim-soft-surface {
+  border: 1px solid hsl(38 18% 84%);
+  background: hsl(40 24% 98% / 0.9);
+}
+
+.matchrim-hairline {
+  border-color: hsl(38 18% 82%);
+}
+
+.matchrim-muted {
+  color: hsl(219 18% 38%);
+}
+
+.matchrim-caption {
+  color: hsl(219 16% 46%);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.matchrim-pressable {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: 160ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.matchrim-pressable:active {
+  transform: scale(0.98);
+}
+
+.matchrim-icon-tile {
+  border: 1px solid hsl(38 18% 86%);
+  background: hsl(40 30% 97%);
+  color: hsl(344 76% 24%);
+}
+
+.matchrim-status-pill {
+  border: 1px solid hsl(38 20% 82%);
+  background: hsl(42 28% 96%);
+  color: hsl(219 24% 25%);
+}
+
+.matchrim-scan-stage {
+  border: 1px solid hsl(24 10% 17%);
+  background:
+    linear-gradient(180deg, hsl(24 12% 8%) 0%, hsl(30 10% 12%) 100%);
+  color: white;
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.08), 0 18px 48px -32px hsl(24 12% 8% / 0.75);
+}
+
+.matchrim-data-rail {
+  border-top: 1px solid hsl(38 18% 82%);
+  border-bottom: 1px solid hsl(38 18% 82%);
+  background: hsl(41 24% 96% / 0.72);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .matchrim-pressable:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transition-smooth,
+  .matchrim-pressable {
+    transition-duration: 0.01ms;
+  }
+
+  .matchrim-pressable:active,
+  .matchrim-pressable:hover {
+    transform: none;
+  }
 }
 
 /* Radar chart styles */

@@ -646,7 +646,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   return (
     <div className="space-y-5">
       {isMatchrimFixtureQaEnabled && (
-        <div role="status" className="border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+        <div role="status" className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-950">
           QA local: respuestas deterministas. Este build valida el flujo, no la precision del OCR.
         </div>
       )}
@@ -654,27 +654,29 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       <input ref={fileInputRef} type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif" onChange={handleFileSelect} className="hidden" />
 
       {!preview ? (
-        <div className="scan-upload-empty border-y border-stone-200 bg-white py-8 text-center sm:border sm:p-8">
-          <ScanLine className="scan-upload-empty-icon mx-auto h-11 w-11 text-red-900" />
-          <h2 className="mt-4 text-lg font-semibold text-slate-950">Una etiqueta o varias botellas</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
+        <div className="scan-upload-empty matchrim-surface rounded-lg px-4 py-8 text-center sm:p-8">
+          <span className="matchrim-icon-tile mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-red-950 text-white">
+            <ScanLine className="scan-upload-empty-icon h-6 w-6" />
+          </span>
+          <h2 className="mt-4 text-xl font-semibold text-slate-950">Una etiqueta o varias botellas</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-6 matchrim-muted">
             Cada botella se localiza y analiza por separado. Los resultados dudosos quedan marcados para revision.
           </p>
           <div className="scan-upload-actions mx-auto mt-5 grid max-w-md gap-2 sm:grid-cols-2">
-            <Button type="button" className="min-h-11 gap-2" onClick={() => cameraInputRef.current?.click()}>
+            <Button type="button" className="matchrim-pressable min-h-12 gap-2 bg-red-950 hover:bg-red-900" onClick={() => cameraInputRef.current?.click()}>
               <Camera className="h-4 w-4" /> Hacer foto
             </Button>
-            <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={() => fileInputRef.current?.click()}>
+            <Button type="button" variant="outline" className="matchrim-pressable min-h-12 gap-2 bg-white" onClick={() => fileInputRef.current?.click()}>
               <FolderOpen className="h-4 w-4" /> Elegir de galeria
             </Button>
           </div>
         </div>
       ) : (
         <>
-          <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="matchrim-surface flex flex-wrap items-center justify-between gap-3 rounded-lg p-4">
             <div>
               <div className="text-sm font-semibold text-slate-950" aria-live="polite">{PHASE_LABELS[phase]}</div>
-              <div className="mt-1 text-xs text-slate-500">
+              <div className="mt-1 text-xs matchrim-muted">
                 {quality ? `${quality.megapixels} MP · brillo ${quality.brightness ?? '-'} · contraste ${quality.contrast ?? '-'}` : 'Preparando imagen'}
               </div>
               {phase === 'analyzing' && regions.length > 0 && (
@@ -683,7 +685,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 </div>
               )}
               {phase === 'ready' && scanMetrics && (
-                <div className="mt-1 text-xs text-slate-600" data-testid="scan-performance-summary">
+                <div className="mt-1 text-xs matchrim-muted" data-testid="scan-performance-summary">
                   {regions.length} regiones en {(scanMetrics.totalMs / 1000).toFixed(1)} s
                   {scanMetrics.detectionRefined ? ' · deteccion refinada por zonas' : ''}
                   {scanMetrics.retries > 0 ? ` · ${scanMetrics.retries} reintento${scanMetrics.retries === 1 ? '' : 's'}` : ''}
@@ -692,17 +694,17 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
             </div>
             <div className="flex gap-2">
               {loading && (
-                <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={cancelScan}>
+                <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={cancelScan}>
                   <X className="h-4 w-4" /> Cancelar
                 </Button>
               )}
               {phase === 'error' && lastFileRef.current && (
-                <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={retryScan}>
+                <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={retryScan}>
                   <RefreshCw className="h-4 w-4" /> Reintentar
                 </Button>
               )}
               {!loading && (
-                <Button type="button" variant="outline" size="icon" className="h-11 w-11" onClick={resetScan} aria-label="Cerrar analisis">
+                <Button type="button" variant="outline" size="icon" className="matchrim-pressable h-11 w-11 bg-white" onClick={resetScan} aria-label="Cerrar analisis">
                   <X className="h-4 w-4" />
                 </Button>
               )}
@@ -712,18 +714,18 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           {(loading || phase === 'ready') && <Progress value={progress} className="h-2" />}
 
           {quality?.warnings.length ? (
-            <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
               <div className="flex items-center gap-2 font-semibold"><AlertTriangle className="h-4 w-4" /> Calidad con avisos</div>
               <ul className="mt-2 space-y-1">{quality.warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>
             </div>
           ) : null}
 
           {errorMessage && (
-            <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-900">{errorMessage}</div>
+            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900">{errorMessage}</div>
           )}
 
           <div
-            className="relative mx-auto overflow-hidden bg-black"
+            className="matchrim-scan-stage relative mx-auto overflow-hidden rounded-lg"
             style={{
               aspectRatio: quality?.width && quality?.height ? `${quality.width} / ${quality.height}` : undefined,
               width: '100%',
@@ -762,7 +764,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
           {regions.length > 0 && (
             <div className="space-y-4">
-              <div className="grid grid-cols-3 gap-2 border-y border-stone-200 py-3 text-center sm:grid-cols-5">
+              <div className="matchrim-data-rail grid grid-cols-3 gap-2 rounded-lg px-2 py-3 text-center sm:grid-cols-5">
                 <div><div className="text-xl font-bold text-emerald-700">{summary.recognized}</div><div className="text-xs text-slate-500">Reconocidos</div></div>
                 <div><div className="text-xl font-bold text-amber-700">{summary.uncertain}</div><div className="text-xs text-slate-500">Dudosos</div></div>
                 <div><div className="text-xl font-bold text-red-700">{summary.unrecognized}</div><div className="text-xs text-slate-500">Sin reconocer</div></div>
@@ -770,7 +772,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 <div className="hidden sm:block"><div className="text-xl font-bold text-slate-800">{regions.length}</div><div className="text-xs text-slate-500">Regiones</div></div>
               </div>
 
-              <div className={`border-l-4 px-3 py-3 text-sm ${coverage?.status === 'reported_complete' ? 'border-emerald-600 bg-emerald-50 text-emerald-950' : coverage?.status === 'partial' ? 'border-amber-500 bg-amber-50 text-amber-950' : 'border-slate-400 bg-slate-50 text-slate-800'}`}>
+              <div className={`rounded-lg border-l-4 px-3 py-3 text-sm ${coverage?.status === 'reported_complete' ? 'border-emerald-600 bg-emerald-50 text-emerald-950' : coverage?.status === 'partial' ? 'border-amber-500 bg-amber-50 text-amber-950' : 'border-slate-400 bg-slate-50 text-slate-800'}`}>
                 <div className="flex items-center gap-2 font-semibold">
                   <Eye className="h-4 w-4" />
                   {coverage?.status === 'reported_complete'
@@ -807,16 +809,16 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 }))}
               />
 
-              <div className="divide-y divide-stone-100 border-y border-stone-200">
+              <div className="matchrim-surface divide-y divide-stone-100 overflow-hidden rounded-lg">
                 {rankedGroups.map((group, index) => (
                   <button
                     key={group.key}
                     type="button"
-                    className="flex min-h-16 w-full items-center gap-3 px-2 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"
+                    className="matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"
                     onClick={() => setSelectedRegionId(group.regionIds[0])}
                     aria-label={`Abrir detalle de ${group.candidate.name}`}
                   >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-50 text-sm font-bold text-red-900">{index + 1}</span>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-950 text-sm font-bold text-white">{index + 1}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block font-semibold text-slate-950">{group.candidate.name}</span>
                       <span className="block text-xs leading-5 text-slate-500">
@@ -826,7 +828,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                     </span>
                     <span className="shrink-0 text-right">
                       <span className="block font-bold text-red-900">{group.candidate.affinity == null ? '-' : `${Math.round(group.candidate.affinity)}%`}</span>
-                      <span className="block text-[11px] text-slate-500">Afinidad estimada</span>
+                      <span className="block text-[11px] text-slate-500">Afinidad</span>
                     </span>
                   </button>
                 ))}
@@ -835,7 +837,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
               {phase === 'ready' && (
                 <Button
                   type="button"
-                  className="min-h-12 w-full gap-2"
+                  className="matchrim-pressable min-h-12 w-full gap-2 bg-red-950 hover:bg-red-900"
                   onClick={() => void confirmBatch()}
                   disabled={confirmed || confirmableGroups.length === 0}
                 >
@@ -849,10 +851,10 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       )}
 
       <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => !open && setSelectedRegionId(null)}>
-        <DrawerContent className="max-h-[calc(100dvh-var(--matchrim-safe-top))] pb-[var(--matchrim-safe-bottom)]">
+        <DrawerContent className="max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
             <div className="mx-auto flex w-full max-w-2xl min-h-0 flex-1 flex-col">
-              <DrawerHeader className="text-left">
+              <DrawerHeader className="border-b border-stone-200 bg-white text-left">
                 <DrawerTitle>Region {selectedRegion.index}: {statusLabel(selectedRegion)}</DrawerTitle>
                 <DrawerDescription>
                   Deteccion {Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.
@@ -861,7 +863,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
               <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4">
                 {selectedRegion.cropDataUrl && (
-                  <img src={selectedRegion.cropDataUrl} alt={`Recorte de la region ${selectedRegion.index}`} className="max-h-48 w-full bg-black object-contain" />
+                  <img src={selectedRegion.cropDataUrl} alt={`Recorte de la region ${selectedRegion.index}`} className="max-h-48 w-full rounded-lg bg-black object-contain" />
                 )}
 
                 {selectedRegion.candidates.length === 0 ? (
@@ -874,7 +876,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                       attributes={null}
                       primaryAction={{ label: 'Reanalizar region', onClick: () => void reanalyzeSelected() }}
                     />
-                    <div className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
+                      <div className="rounded-lg border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
                       <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> Sin identidad fiable</div>
                       <p className="mt-1">{selectedRegion.fallback?.message ?? 'No hay evidencia visual suficiente para asignar un vino.'}</p>
                       <p className="mt-1 font-medium">No se asignara una identidad ni una afinidad inventadas.</p>
@@ -885,7 +887,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                       ) : null}
                     </div>
 
-                    <form className="space-y-3 border-y border-stone-200 py-4" onSubmit={identifySelectedManually}>
+                    <form className="matchrim-surface space-y-3 rounded-lg p-4" onSubmit={identifySelectedManually}>
                       <div>
                         <h4 className="text-sm font-semibold text-slate-950">Identificacion manual</h4>
                         <p className="mt-1 text-xs text-slate-600">Confirma solo lo que conoces. La afinidad quedara pendiente hasta disponer de datos del vino.</p>
@@ -907,14 +909,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                   <>
                     <div>
                       <h4 className="text-sm font-semibold text-slate-950">Candidatos</h4>
-                      <div className="mt-2 divide-y divide-stone-100 border-y border-stone-200">
+                      <div className="matchrim-surface mt-2 divide-y divide-stone-100 overflow-hidden rounded-lg">
                         {selectedRegion.candidates.map((candidate, index) => {
                           const active = candidate.id === selectedCandidate?.id;
                           return (
                             <button
                               key={candidate.id}
                               type="button"
-                              className={`flex min-h-14 w-full items-center gap-3 px-2 py-2 text-left ${active ? 'bg-red-50' : 'bg-white'}`}
+                              className={`matchrim-pressable flex min-h-14 w-full items-center gap-3 px-3 py-2 text-left ${active ? 'bg-red-50' : 'bg-white'}`}
                               onClick={() => selectCandidate(candidate.id)}
                               aria-pressed={active}
                             >
@@ -933,7 +935,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                     {selectedCandidate && (
                       <>
                         {selectedCandidate.source === 'manual' && (
-                          <div className="border-l-4 border-slate-500 bg-slate-50 px-3 py-2 text-sm text-slate-800">
+                          <div className="rounded-lg border-l-4 border-slate-500 bg-slate-50 px-3 py-2 text-sm text-slate-800">
                             Identidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.
                           </div>
                         )}
@@ -948,14 +950,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                           </label>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-2 border-y border-stone-200 py-3 text-center text-xs text-slate-500">
+                        <div className="matchrim-data-rail grid grid-cols-3 gap-2 rounded-lg px-2 py-3 text-center text-xs text-slate-500">
                           <div><span className="block text-lg font-bold text-slate-900">{Math.round(selectedRegion.detectionConfidence * 100)}%</span>Deteccion</div>
                           <div><span className="block text-lg font-bold text-slate-900">{Math.round(selectedCandidate.confidence * 100)}%</span>Identidad</div>
                           <div><span className="block text-lg font-bold text-slate-900">{selectedCandidate.affinityConfidence == null ? '-' : `${Math.round(selectedCandidate.affinityConfidence * 100)}%`}</span>Respaldo afinidad</div>
                         </div>
 
                         {selectedCandidate.uncertaintyReasons.length > 0 && (
-                          <div className="border-l-4 border-amber-500 bg-amber-50 px-3 py-3 text-sm text-amber-950">
+                          <div className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-3 text-sm text-amber-950">
                             <div className="font-semibold">Duda:</div>
                             <p className="mt-1">{selectedCandidate.uncertaintyReasons.join(' ')}</p>
                           </div>
@@ -998,18 +1000,18 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 )}
               </div>
 
-              <DrawerFooter className="border-t border-stone-200">
+              <DrawerFooter className="border-t border-stone-200 bg-white">
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  <Button type="button" variant="outline" className="min-h-11 gap-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) <= 0} onClick={() => moveSelection(-1)}>
+                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" disabled={regions.findIndex((region) => region.id === selectedRegion.id) <= 0} onClick={() => moveSelection(-1)}>
                     <ChevronLeft className="h-4 w-4" /> Anterior
                   </Button>
-                  <Button type="button" variant="outline" className="min-h-11 gap-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
+                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
                     Siguiente <ChevronRight className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={() => void reanalyzeSelected()}>
+                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={() => void reanalyzeSelected()}>
                     <RefreshCw className="h-4 w-4" /> Reanalizar
                   </Button>
-                  <Button type="button" variant="outline" className="min-h-11 gap-2 text-red-800" onClick={discardSelected}>
+                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white text-red-800" onClick={discardSelected}>
                     <Trash2 className="h-4 w-4" /> Descartar
                   </Button>
                 </div>

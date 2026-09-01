@@ -36,20 +36,20 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
   };
 
   return (
-    <section className="border-y border-stone-200 bg-white py-4 sm:border sm:px-6 sm:py-6" aria-labelledby="scan-privacy-title">
+    <section className="matchrim-surface rounded-lg p-4 sm:p-6" aria-labelledby="scan-privacy-title">
       <div className="flex items-start gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-800">
           <ShieldCheck className="h-5 w-5" />
         </div>
         <div>
           <h2 id="scan-privacy-title" className="text-lg font-semibold text-slate-950">Antes de analizar una imagen</h2>
-          <p className="mt-1 text-sm leading-6 text-slate-600">
+          <p className="mt-1 text-sm leading-6 matchrim-muted">
             Elige solo fotos de etiquetas, botellas, cartas, pizarras, platos o expositores que quieras analizar.
           </p>
         </div>
       </div>
 
-      <div className="mt-4 divide-y divide-stone-100 border-y border-stone-200 text-sm sm:mt-5">
+      <div className="matchrim-data-rail mt-4 divide-y divide-stone-200 rounded-lg px-3 text-sm sm:mt-5">
         <div className="flex gap-3 py-2 sm:py-3">
           <Camera className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
           <p className="leading-5 text-slate-700">Matchrim accede a la camara o a la foto que selecciones; no examina el resto de tu fototeca.</p>
@@ -74,7 +74,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
 
       <Button
         type="button"
-        className="mt-3 min-h-12 w-full sm:mt-4"
+        className="matchrim-pressable mt-3 min-h-12 w-full bg-red-950 hover:bg-red-900 sm:mt-4"
         disabled={!checked}
         onClick={continueToScanner}
       >
