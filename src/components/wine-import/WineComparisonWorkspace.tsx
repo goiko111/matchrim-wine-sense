@@ -86,9 +86,11 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     budget: numericBudget,
     serviceFormat: mode === 'service' ? serviceFormat : 'any',
   }), [mode, numericBudget, priority, selectedWines, serviceFormat]);
-  const decisionLabel = priority === 'certainty'
-    ? (mode === 'service' ? 'Identidad más segura para servir' : 'Identidad más segura')
-    : (mode === 'service' ? 'Elección para servir' : 'Elección para ti');
+  const decisionLabel = decision.actionability === 'provisional'
+    ? 'Opcion provisional: confirma los datos'
+    : priority === 'certainty'
+      ? (mode === 'service' ? 'Identidad más segura para servir' : 'Identidad más segura')
+      : (mode === 'service' ? 'Elección para servir' : 'Elección para ti');
 
   const toggleWine = (wineId: string) => {
     selectionEditedRef.current = true;
@@ -196,10 +198,10 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
           </div>
 
           {decision.primary && (
-            <div className="mt-5 border-l-4 border-red-900 bg-stone-50 px-4 py-3">
+            <div className={`mt-5 border-l-4 px-4 py-3 ${decision.actionability === 'ready' ? 'border-red-900 bg-stone-50' : 'border-amber-500 bg-amber-50'}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <div className="flex items-center gap-2 text-sm font-semibold text-red-950">
+                  <div className={`flex items-center gap-2 text-sm font-semibold ${decision.actionability === 'ready' ? 'text-red-950' : 'text-amber-950'}`}>
                     {priority === 'certainty' ? <ShieldCheck className="h-4 w-4" /> : <Scale className="h-4 w-4" />}
                     {decisionLabel}
                   </div>
@@ -211,6 +213,9 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 {decision.primary.reasons.map((reason) => <li key={reason}>• {reason}</li>)}
                 {decision.primary.cautions.map((caution) => <li key={caution} className="text-amber-800">• {caution}</li>)}
               </ul>
+              {decision.actionability === 'provisional' && (
+                <p className="mt-2 text-sm font-medium text-amber-950">No uses este orden como recomendacion final hasta confirmar identidad, precio o formato pendiente.</p>
+              )}
             </div>
           )}
 

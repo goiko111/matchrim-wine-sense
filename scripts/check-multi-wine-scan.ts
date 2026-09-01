@@ -1,16 +1,22 @@
 import assert from 'node:assert/strict';
 import {
   areLikelyDuplicateWines,
+  areLikelySamePhysicalDetection,
+  buildWineDetectionTiles,
   determineRegionStatus,
+  getFullWineDetectionTile,
   groupDuplicateWines,
   getRegionAnalysisConcurrency,
   intersectionOverUnion,
   mapWithConcurrency,
+  mapDetectedRegionFromTile,
+  mergeWineDetectionTileResults,
   normalizeDetectedRegions,
   normalizeRecognitionFallback,
   normalizeScanCoverage,
   normalizeWineCandidates,
   prioritizeRegionsForAnalysis,
+  shouldRefineWineDetection,
   summarizeScanRegions,
   type ScanRegion,
 } from '../src/utils/multiWineScan';
@@ -57,6 +63,59 @@ assert.equal(regions[0].index, 1);
 assert.equal(regions[1].index, 2);
 assert.ok(intersectionOverUnion(regions[0].box, regions[0].box) === 1);
 assert.ok(intersectionOverUnion(regions[0].box, regions[1].box) === 0);
+assert.equal(areLikelySamePhysicalDetection(
+  { x: 10, y: 10, width: 14, height: 18 },
+  { x: 8, y: 8, width: 18, height: 72 },
+), true, 'a label fragment and its containing bottle should be one physical detection');
+
+const malformedDenseDetection = {
+  coverage: { status: 'partial', estimated_visible_objects: 70, confidence: 0.9 },
+  regions: [
+    { object_type: 'label', box: { x: 10, y: 98, width: 31, height: 2 }, confidence: 0.9 },
+    { object_type: 'label', box: { x: 98, y: 98, width: 2, height: 2 }, confidence: 0.9 },
+  ],
+};
+assert.equal(normalizeDetectedRegions(malformedDenseDetection).length, 0, 'edge slivers are not analyzable labels');
+assert.equal(shouldRefineWineDetection(malformedDenseDetection, []), true);
+
+const clutteredDetection = {
+  coverage: { status: 'reported_complete', estimated_visible_objects: 5 },
+  regions: [
+    { object_type: 'bottle', box: { x: 48, y: 0, width: 46, height: 98 }, confidence: 0.8 },
+    { object_type: 'label', box: { x: 50, y: 2, width: 14, height: 19 }, confidence: 0.7 },
+    { object_type: 'label', box: { x: 54, y: 3, width: 14, height: 19 }, confidence: 0.65 },
+  ],
+};
+const normalizedClutter = normalizeDetectedRegions(clutteredDetection);
+assert.equal(normalizedClutter.length, 1, 'nested fragments should collapse into their bottle');
+assert.equal(shouldRefineWineDetection(clutteredDetection, normalizedClutter), true);
+
+const detectionTiles = buildWineDetectionTiles(1800, 1200);
+assert.deepEqual(detectionTiles.map((tile) => tile.id), ['left', 'right']);
+assert.equal(getFullWineDetectionTile().id, 'full');
+const mappedDetection = mapDetectedRegionFromTile({
+  ...regions[0],
+  box: { x: 10, y: 20, width: 20, height: 50 },
+}, detectionTiles[1]);
+assert.deepEqual(mappedDetection.box, { x: 49.6, y: 20, width: 11.2, height: 50 });
+const mergedDetection = mergeWineDetectionTileResults([
+  {
+    tile: detectionTiles[0],
+    payload: {
+      coverage: { status: 'reported_complete', estimated_visible_objects: 1, confidence: 0.9 },
+      regions: [{ object_type: 'bottle', box: { x: 80, y: 10, width: 18, height: 70 }, confidence: 0.8 }],
+    },
+  },
+  {
+    tile: detectionTiles[1],
+    payload: {
+      coverage: { status: 'reported_complete', estimated_visible_objects: 1, confidence: 0.88 },
+      regions: [{ object_type: 'bottle', box: { x: 2, y: 10, width: 18, height: 70 }, confidence: 0.82 }],
+    },
+  },
+]);
+assert.equal(mergedDetection.regions.length, 1, 'overlap tiles should not duplicate the same bottle');
+assert.equal(mergedDetection.coverage.status, 'reported_complete');
 
 const coverage = normalizeScanCoverage({
   coverage: {
@@ -218,6 +277,7 @@ assert.deepEqual(uncertainFullMenu.vinos?.map((wine) => wine.nombre), ['Regional
 const makeRegion = (id: string, index: number, name: string, affinity: number): ScanRegion => ({
   id,
   index,
+  objectType: 'bottle',
   box: { x: index * 10, y: 10, width: 8, height: 40 },
   detectionConfidence: 0.9,
   quality: { glare: 'low', occlusion: 'low', legibility: 'good' },
@@ -332,6 +392,12 @@ assert.equal(explanation.dimensions.length, 7);
 assert.equal(explanation.confidenceLabel, 'media');
 assert.ok(explanation.missingData.includes('tu preferencia de madera/crianza'));
 assert.deepEqual(explanation.scoreRange, { min: 65, max: 90 });
+const uncertainExplanation = buildDetailedAffinityExplanation(
+  { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 },
+  { potencia: 4, acidez: 4, dulzura: 1, taninos: 2, afrutado: 3 },
+  { score: 76, identificationConfidence: 0.55, sensorySource: 'inference' },
+);
+assert.ok(uncertainExplanation?.missingData.includes('identidad del vino confirmada'));
 assert.equal(calculateLocalMatchrimAffinity(
   { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 },
   { potencia: 4, acidez: 3, dulzura: 1, taninos: 4, afrutado: 3 },
@@ -377,7 +443,8 @@ const personalDecision = buildWineComparisonDecision(comparisonWines, {
   budget: null,
   serviceFormat: 'any',
 });
-assert.equal(personalDecision.primary?.wine.id, 'a');
+assert.equal(personalDecision.primary?.wine.id, 'b', 'confirmed identity should outrank a doubtful higher affinity');
+assert.equal(personalDecision.actionability, 'ready');
 
 const serviceDecision = buildWineComparisonDecision(comparisonWines, {
   mode: 'service',
@@ -388,6 +455,7 @@ const serviceDecision = buildWineComparisonDecision(comparisonWines, {
 assert.equal(serviceDecision.primary?.wine.id, 'b');
 assert.equal(serviceDecision.ordered.at(-1)?.wine.id, 'a');
 assert.ok(serviceDecision.ordered.at(-1)?.cautions.some((caution) => caution.includes('presupuesto')));
+assert.equal(serviceDecision.actionability, 'ready');
 
 const valueDecision = buildWineComparisonDecision(comparisonWines, {
   mode: 'personal',
@@ -396,6 +464,18 @@ const valueDecision = buildWineComparisonDecision(comparisonWines, {
   serviceFormat: 'any',
 });
 assert.equal(valueDecision.primary?.wine.id, 'c');
+assert.equal(valueDecision.actionability, 'ready');
+
+const provisionalDecision = buildWineComparisonDecision([
+  comparisonWines[0],
+  { ...comparisonWines[2], confidence: 0.55 },
+], {
+  mode: 'personal',
+  priority: 'affinity',
+  budget: null,
+  serviceFormat: 'any',
+});
+assert.equal(provisionalDecision.actionability, 'provisional');
 
 const qaDetection = buildMatchrimQaFixturePayload('detect-wine-regions', {
   qa_fixture_name: 'IMG_7605 2.jpg',

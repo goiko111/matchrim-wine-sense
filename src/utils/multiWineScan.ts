@@ -61,6 +61,7 @@ export interface WineCandidate {
 export interface ScanRegion {
   id: string;
   index: number;
+  objectType: 'bottle' | 'label' | null;
   box: NormalizedBox;
   detectionConfidence: number;
   quality: RegionQuality;
@@ -131,6 +132,48 @@ export const intersectionOverUnion = (a: NormalizedBox, b: NormalizedBox) => {
   return union > 0 ? intersection / union : 0;
 };
 
+export const intersectionOverSmallerArea = (a: NormalizedBox, b: NormalizedBox) => {
+  const left = Math.max(a.x, b.x);
+  const top = Math.max(a.y, b.y);
+  const right = Math.min(a.x + a.width, b.x + b.width);
+  const bottom = Math.min(a.y + a.height, b.y + b.height);
+  const intersection = Math.max(0, right - left) * Math.max(0, bottom - top);
+  const smallerArea = Math.min(a.width * a.height, b.width * b.height);
+  return smallerArea > 0 ? intersection / smallerArea : 0;
+};
+
+const overlapRatio = (startA: number, sizeA: number, startB: number, sizeB: number) => {
+  const overlap = Math.max(0, Math.min(startA + sizeA, startB + sizeB) - Math.max(startA, startB));
+  return overlap / Math.min(sizeA, sizeB);
+};
+
+const isEdgeSliver = (box: NormalizedBox) => (
+  Math.min(box.width, box.height) <= 2.25
+  && (box.x + box.width >= 99.5 || box.y + box.height >= 99.5)
+);
+
+export const areLikelySamePhysicalDetection = (left: NormalizedBox, right: NormalizedBox) => {
+  if (intersectionOverUnion(left, right) >= 0.72) return true;
+
+  const leftArea = left.width * left.height;
+  const rightArea = right.width * right.height;
+  const areaRatio = Math.max(leftArea, rightArea) / Math.min(leftArea, rightArea);
+  if (areaRatio >= 1.3 && intersectionOverSmallerArea(left, right) >= 0.84) return true;
+
+  const horizontalOverlap = overlapRatio(left.x, left.width, right.x, right.width);
+  const verticalOverlap = overlapRatio(left.y, left.height, right.y, right.height);
+  const horizontalCenterDistance = Math.abs(
+    left.x + left.width / 2 - (right.x + right.width / 2),
+  );
+  const narrowWidth = Math.min(left.width, right.width);
+
+  // Models sometimes split a neck or label from the taller box of the same bottle.
+  return areaRatio >= 1.8
+    && horizontalOverlap >= 0.7
+    && verticalOverlap >= 0.25
+    && horizontalCenterDistance <= Math.max(3, narrowWidth * 0.4);
+};
+
 const normalizeQualityLevel = (
   value: unknown,
   allowed: readonly string[],
@@ -151,7 +194,7 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
   const normalized = rawRegions.flatMap((value, sourceIndex) => {
     const raw = asRecord(value);
     const box = normalizeBox(raw?.box ?? raw?.bbox ?? raw?.bounding_box ?? raw);
-    if (!raw || !box) return [];
+    if (!raw || !box || isEdgeSliver(box)) return [];
 
     const qualityRaw = asRecord(raw.quality) ?? {};
     const quality: RegionQuality = {
@@ -163,6 +206,7 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
     return [{
       id: typeof raw.id === 'string' && raw.id.trim() ? raw.id : `region-${sourceIndex + 1}`,
       index: sourceIndex + 1,
+      objectType: raw.object_type === 'label' ? 'label' : raw.object_type === 'bottle' ? 'bottle' : null,
       box,
       detectionConfidence: normalizeConfidence(raw.confidence ?? raw.detection_confidence, 0.5),
       quality,
@@ -178,13 +222,160 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
   [...normalized]
     .sort((a, b) => b.detectionConfidence - a.detectionConfidence)
     .forEach((region) => {
-      const duplicate = deduplicated.some((kept) => intersectionOverUnion(kept.box, region.box) >= 0.72);
-      if (!duplicate) deduplicated.push(region);
+      const duplicateIndex = deduplicated.findIndex((kept) => areLikelySamePhysicalDetection(kept.box, region.box));
+      if (duplicateIndex === -1) {
+        deduplicated.push(region);
+        return;
+      }
+
+      const kept = deduplicated[duplicateIndex];
+      const keptArea = kept.box.width * kept.box.height;
+      const regionArea = region.box.width * region.box.height;
+      const keptLegibility = legibilityPriority[kept.quality.legibility];
+      const regionLegibility = legibilityPriority[region.quality.legibility];
+      if (
+        region.detectionConfidence > kept.detectionConfidence
+        || (region.detectionConfidence === kept.detectionConfidence && regionLegibility > keptLegibility)
+        || (
+          region.detectionConfidence === kept.detectionConfidence
+          && regionLegibility === keptLegibility
+          && regionArea > keptArea
+        )
+      ) {
+        deduplicated[duplicateIndex] = region;
+      }
     });
 
   return deduplicated
     .sort((a, b) => (a.box.y - b.box.y) || (a.box.x - b.box.x))
     .map((region, index) => ({ ...region, index: index + 1, id: `region-${index + 1}` }));
+};
+
+export interface WineDetectionTile {
+  id: 'full' | 'left' | 'right' | 'top' | 'bottom';
+  box: NormalizedBox;
+}
+
+export interface WineDetectionTileResult {
+  tile: WineDetectionTile;
+  payload: unknown;
+}
+
+export interface ResolvedWineDetection {
+  regions: ScanRegion[];
+  coverage: ScanCoverage;
+  refined: boolean;
+}
+
+const fullDetectionTile: WineDetectionTile = {
+  id: 'full',
+  box: { x: 0, y: 0, width: 100, height: 100 },
+};
+
+export const getFullWineDetectionTile = (): WineDetectionTile => ({
+  ...fullDetectionTile,
+  box: { ...fullDetectionTile.box },
+});
+
+export const buildWineDetectionTiles = (width: number, height: number): WineDetectionTile[] => {
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+    return [getFullWineDetectionTile()];
+  }
+  return width >= height
+    ? [
+        { id: 'left', box: { x: 0, y: 0, width: 56, height: 100 } },
+        { id: 'right', box: { x: 44, y: 0, width: 56, height: 100 } },
+      ]
+    : [
+        { id: 'top', box: { x: 0, y: 0, width: 100, height: 56 } },
+        { id: 'bottom', box: { x: 0, y: 44, width: 100, height: 56 } },
+      ];
+};
+
+export const mapDetectedRegionFromTile = (
+  region: ScanRegion,
+  tile: WineDetectionTile,
+): ScanRegion => ({
+  ...region,
+  box: {
+    x: tile.box.x + region.box.x * tile.box.width / 100,
+    y: tile.box.y + region.box.y * tile.box.height / 100,
+    width: region.box.width * tile.box.width / 100,
+    height: region.box.height * tile.box.height / 100,
+  },
+});
+
+export const shouldRefineWineDetection = (payload: unknown, regions: ScanRegion[]) => {
+  const coverage = normalizeScanCoverage(payload, regions.length);
+  if (coverage.status === 'partial') return true;
+  if (
+    coverage.estimatedVisibleObjects !== null
+    && coverage.estimatedVisibleObjects > regions.length + 1
+  ) return true;
+
+  const root = asRecord(payload);
+  const rawRegions = Array.isArray(root?.regions)
+    ? root.regions
+    : Array.isArray(root?.objects)
+      ? root.objects
+      : [];
+  const rawBoxes = rawRegions.flatMap((value) => {
+    const raw = asRecord(value);
+    const box = normalizeBox(raw?.box ?? raw?.bbox ?? raw?.bounding_box ?? raw);
+    return box ? [box] : [];
+  });
+  const shortFragments = rawBoxes.filter((box) => box.height <= 25 && box.width <= 25);
+  const tallRegions = rawBoxes.filter((box) => box.height >= 45);
+
+  return rawBoxes.length >= regions.length + 2
+    || (shortFragments.length >= 2 && tallRegions.length >= 1)
+    || rawBoxes.some(isEdgeSliver);
+};
+
+export const mergeWineDetectionTileResults = (
+  results: WineDetectionTileResult[],
+): ResolvedWineDetection => {
+  const mapped = results.flatMap(({ tile, payload }) => (
+    normalizeDetectedRegions(payload).map((region) => mapDetectedRegionFromTile(region, tile))
+  ));
+  const regions = normalizeDetectedRegions({
+    regions: mapped.map((region) => ({
+      object_type: region.objectType,
+      box: region.box,
+      confidence: region.detectionConfidence,
+      quality: region.quality,
+    })),
+  }).slice(0, 30);
+  const tileCoverage = results.map(({ payload }) => normalizeScanCoverage(payload, normalizeDetectedRegions(payload).length));
+  const statuses = tileCoverage.map((item) => item.status);
+  const status: ScanCoverageStatus = statuses.every((item) => item === 'reported_complete')
+    ? 'reported_complete'
+    : statuses.includes('partial')
+      ? 'partial'
+      : 'unknown';
+  const estimates = tileCoverage.flatMap((item) => item.estimatedVisibleObjects === null ? [] : [item.estimatedVisibleObjects]);
+  const notes = Array.from(new Set([
+    'Deteccion refinada por zonas solapadas para reducir objetos mezclados.',
+    ...tileCoverage.flatMap((item) => item.notes),
+  ])).slice(0, 5);
+
+  return {
+    regions,
+    coverage: {
+      status,
+      detectedObjects: regions.length,
+      estimatedVisibleObjects: status === 'reported_complete'
+        ? regions.length
+        : estimates.length
+          ? Math.max(regions.length, ...estimates)
+          : null,
+      confidence: tileCoverage.every((item) => item.confidence !== null)
+        ? Math.min(...tileCoverage.map((item) => item.confidence as number))
+        : null,
+      notes,
+    },
+    refined: true,
+  };
 };
 
 export const normalizeScanCoverage = (

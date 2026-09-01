@@ -344,7 +344,8 @@ export const buildDetailedAffinityExplanation = (
     ...(extraDimensions.some((dimension) => dimension.key === 'intensidad') ? [] : ['intensidad aromatica medida']),
     ...(extraDimensions.some((dimension) => dimension.key === 'madera' && dimension.profileValue === null) ? ['tu preferencia de madera/crianza'] : []),
     ...(extraDimensions.some((dimension) => dimension.key === 'intensidad' && dimension.profileValue === null) ? ['tu preferencia de intensidad aromatica'] : []),
-    'estilo canonico verificado',
+    ...(sensorySource === 'catalog' ? [] : ['estilo canonico verificado']),
+    ...(identification < 0.72 ? ['identidad del vino confirmada'] : []),
     ...(options.extraMissingData ?? []),
   ]));
 

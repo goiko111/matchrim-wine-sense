@@ -374,7 +374,10 @@ def run_label_qa(browser, results, console_errors):
     assert page.get_by_text("Por que encaja", exact=True).count() >= 1
     assert page.get_by_text("Lo que podria no encajar", exact=True).count() >= 1
     assert page.get_by_text("Datos y limites del calculo", exact=True).count() >= 1
-    results.append({"case": "multietiqueta_detalle", "expected": "top candidatos, evidencia, duda y afinidad explicada en drawer", "actual": "PASS"})
+    identity_warning = page.get_by_text("Identidad sin confirmar", exact=False)
+    assert identity_warning.count() >= 1
+    results.append({"case": "multietiqueta_detalle", "expected": "top candidatos, evidencia, duda, gate de identidad y afinidad explicada en drawer", "actual": "PASS"})
+    identity_warning.scroll_into_view_if_needed()
     page.screenshot(path=str(ARTIFACTS / "multi-label-detail-mobile.png"), full_page=False)
     page.get_by_role("button", name="Cerrar").click()
     page.get_by_role("button", name="Region 5, Sin reconocer").click()
@@ -395,6 +398,159 @@ def run_label_qa(browser, results, console_errors):
         "case": "multietiqueta_abstencion_y_correccion",
         "expected": "motivo de abstencion, acciones, correccion manual y afinidad pendiente sin datos",
         "actual": "PASS",
+    })
+    context.close()
+
+
+def run_regional_detection_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+    detector_tiles = []
+
+    def regional_handler(endpoint, request):
+        payload = request.post_data_json or {}
+        if endpoint == "detect-wine-regions":
+            tile = payload.get("detection_tile", "full")
+            detector_tiles.append(tile)
+            if tile == "full":
+                return {
+                    "coverage": {
+                        "status": "partial",
+                        "estimated_visible_objects": 70,
+                        "confidence": 0.9,
+                        "notes": ["Respuesta completa contradictoria de QA."],
+                    },
+                    "regions": [
+                        {"box": {"x": 10, "y": 98, "width": 31, "height": 2}, "confidence": 0.9},
+                        {"box": {"x": 98, "y": 98, "width": 2, "height": 2}, "confidence": 0.9},
+                    ],
+                }
+            x = 10 if tile in ("left", "top") else 60
+            return {
+                "coverage": {
+                    "status": "reported_complete",
+                    "estimated_visible_objects": 1,
+                    "confidence": 0.88,
+                    "notes": [],
+                },
+                "regions": [{
+                    "object_type": "bottle",
+                    "box": {"x": x, "y": 12, "width": 18, "height": 72},
+                    "confidence": 0.86,
+                    "quality": {"glare": "low", "occlusion": "low", "legibility": "good"},
+                }],
+            }
+        if endpoint == "analyze-wine-region":
+            region_id = payload.get("region_id", "region-1")
+            index = int(region_id.rsplit("-", 1)[-1])
+            return {"candidates": [candidate(f"Botella regional {index}", f"Bodega regional {index}", 0.86, 82 - index)]}
+        return function_response(endpoint, request)
+
+    install_routes(page, console_errors, response_handler=regional_handler)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
+    page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
+    summary = page.get_by_test_id("scan-performance-summary").inner_text()
+    assert detector_tiles == ["full", "left", "right"], detector_tiles
+    assert "2 regiones" in summary, summary
+    assert "deteccion refinada por zonas" in summary, summary
+    assert page.get_by_role("button", name="Region 1, Reconocido").count() == 1
+    assert page.get_by_role("button", name="Region 2, Reconocido").count() == 1
+    dimensions = assert_no_horizontal_overflow(page, "regional detection mobile")
+    page.screenshot(path=str(ARTIFACTS / "multi-label-regional-detection-mobile.png"), full_page=True)
+    results.append({
+        "case": "multietiqueta_refinamiento_regional",
+        "expected": "respuesta completa invalida dispara full+2 zonas, descarta franjas y conserva dos botellas",
+        "actual": f"PASS tiles={detector_tiles} summary={summary} {dimensions}",
+    })
+    context.close()
+
+
+def run_regional_detection_fallback_qa(browser, results):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+    attempts = {}
+    expected_console_errors = []
+
+    def fallback_handler(endpoint, request):
+        payload = request.post_data_json or {}
+        if endpoint == "detect-wine-regions":
+            tile = payload.get("detection_tile", "full")
+            attempts[tile] = attempts.get(tile, 0) + 1
+            if tile == "right":
+                return 503, {"error": "Zona derecha no disponible"}, {"sb-error-code": "EDGE_FUNCTION_ERROR"}
+            return {
+                "coverage": {
+                    "status": "partial" if tile == "full" else "reported_complete",
+                    "estimated_visible_objects": 2 if tile == "full" else 1,
+                    "confidence": 0.8,
+                    "notes": [],
+                },
+                "regions": [{
+                    "object_type": "bottle",
+                    "box": {"x": 12, "y": 10, "width": 18, "height": 74},
+                    "confidence": 0.84,
+                    "quality": {"glare": "low", "occlusion": "low", "legibility": "good"},
+                }],
+            }
+        if endpoint == "analyze-wine-region":
+            return {"candidates": [candidate("Botella full conservada", "Bodega full", 0.84, 79)]}
+        return function_response(endpoint, request)
+
+    install_routes(page, expected_console_errors, response_handler=fallback_handler)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
+    page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
+    summary = page.get_by_test_id("scan-performance-summary").inner_text()
+    assert attempts == {"full": 1, "left": 1, "right": 2}, attempts
+    assert "1 regiones" in summary, summary
+    assert "deteccion refinada por zonas" not in summary, summary
+    assert page.get_by_text("Botella full conservada", exact=True).count() >= 1
+    assert all("Failed to load resource" in message for message in expected_console_errors), expected_console_errors
+    results.append({
+        "case": "multietiqueta_fallback_regional",
+        "expected": "si una zona falla tras retry se conserva la deteccion completa utilizable",
+        "actual": f"PASS attempts={attempts} summary={summary}",
+    })
+    context.close()
+
+
+def run_provisional_decision_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+
+    def provisional_handler(endpoint, request):
+        if endpoint != "analyze-wine-region":
+            return function_response(endpoint, request)
+        region_id = (request.post_data_json or {}).get("region_id", "region-1")
+        index = int(region_id.rsplit("-", 1)[-1])
+        return {
+            "candidates": [candidate(
+                f"Candidato provisional {index}",
+                f"Bodega dudosa {index}",
+                0.55,
+                90 - index,
+                uncertainty=["Texto parcial; confirma la identidad"],
+            )]
+        }
+
+    install_routes(page, console_errors, response_handler=provisional_handler)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
+    page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
+    comparison = page.locator('section[aria-labelledby="wine-comparison-title"]')
+    comparison.get_by_text("Opcion provisional: confirma los datos", exact=True).wait_for()
+    assert comparison.get_by_text("Elección para ti", exact=True).count() == 0
+    assert comparison.get_by_text("No uses este orden como recomendacion final", exact=False).count() == 1
+    dimensions = assert_no_horizontal_overflow(page, "provisional decision mobile")
+    page.screenshot(path=str(ARTIFACTS / "multi-label-provisional-decision-mobile.png"), full_page=True)
+    results.append({
+        "case": "multietiqueta_decision_provisional",
+        "expected": "ninguna identidad dudosa se presenta como eleccion final",
+        "actual": f"PASS {dimensions}",
     })
     context.close()
 
@@ -646,6 +802,9 @@ def main():
         run_privacy_safe_area_qa(browser, results, console_errors)
         run_privacy_landscape_qa(browser, results, console_errors)
         run_label_qa(browser, results, console_errors)
+        run_regional_detection_qa(browser, results, console_errors)
+        run_regional_detection_fallback_qa(browser, results)
+        run_provisional_decision_qa(browser, results, console_errors)
         run_retry_policy_qa(browser, results, console_errors)
         run_retry_cancellation_qa(browser, results, console_errors)
         run_menu_qa(browser, results, console_errors)

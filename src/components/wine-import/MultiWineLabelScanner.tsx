@@ -44,16 +44,20 @@ import {
   readStoredMatchrimProfile,
 } from '@/utils/wineAffinityExplanation';
 import {
+  buildWineDetectionTiles,
   determineRegionStatus,
+  getFullWineDetectionTile,
   getSelectedCandidate,
   groupDuplicateWines,
   getRegionAnalysisConcurrency,
   mapWithConcurrency,
+  mergeWineDetectionTileResults,
   normalizeDetectedRegions,
   normalizeRecognitionFallback,
   normalizeScanCoverage,
   normalizeWineCandidates,
   prioritizeRegionsForAnalysis,
+  shouldRefineWineDetection,
   summarizeScanRegions,
   type ScanRegion,
   type ScanCoverage,
@@ -85,6 +89,8 @@ interface ScanPerformance {
   analysisMs: number;
   totalMs: number;
   concurrency: number;
+  detectionCalls: number;
+  detectionRefined: boolean;
   retries: number;
 }
 
@@ -313,6 +319,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     setAnalysisConcurrency(0);
     setScanMetrics(null);
     let retries = 0;
+    let detectionCalls = 0;
+    let detectionRefined = false;
 
     try {
       setPhase('quality');
@@ -328,23 +336,63 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       }
 
       setPhase('detecting');
-      const detection = await invokeWithEdgeFunctionRetry(
-        () => invokeEdgeFunction<Record<string, unknown>>(
-          'detect-wine-regions',
-          { image: prepared.dataUrl, qa_fixture_name: file.name },
+      const detectImage = async (image: string, tileId: string) => {
+        detectionCalls += 1;
+        return invokeWithEdgeFunctionRetry(
+          () => invokeEdgeFunction<Record<string, unknown>>(
+            'detect-wine-regions',
+            { image, qa_fixture_name: file.name, detection_tile: tileId },
+            controller.signal,
+          ),
           controller.signal,
-        ),
-        controller.signal,
-        {
-          maxAttempts: 2,
-          onRetry: () => {
-            retries += 1;
+          {
+            maxAttempts: 2,
+            onRetry: () => {
+              retries += 1;
+            },
           },
-        },
-      );
+        );
+      };
+      const fullTile = getFullWineDetectionTile();
+      const detection = await detectImage(prepared.dataUrl, fullTile.id);
+      let detected = normalizeDetectedRegions(detection);
+      let resolvedCoverage = normalizeScanCoverage(detection, detected.length);
+
+      if (
+        !isMatchrimFixtureQaEnabled
+        && shouldRefineWineDetection(detection, detected)
+      ) {
+        const regionalResults = await mapWithConcurrency(
+          buildWineDetectionTiles(prepared.width, prepared.height),
+          2,
+          async (tile) => {
+            try {
+              return {
+                tile,
+                payload: await detectImage(
+                  await cropImageRegion(prepared.dataUrl, tile.box, 0, 2400),
+                  tile.id,
+                ),
+              };
+            } catch (error) {
+              if (error instanceof DOMException && error.name === 'AbortError') throw error;
+              console.warn(`[multi-label] Regional detector ${tile.id} unavailable; keeping full detection.`, error);
+              return null;
+            }
+          },
+        );
+        const completedRegionalResults = regionalResults.filter((result): result is NonNullable<typeof result> => result !== null);
+        if (completedRegionalResults.length === regionalResults.length) {
+          const refined = mergeWineDetectionTileResults(completedRegionalResults);
+          if (refined.regions.length > 0) {
+            detected = refined.regions;
+            resolvedCoverage = refined.coverage;
+            detectionRefined = true;
+          }
+        }
+      }
       const detectionFinishedAt = globalThis.performance.now();
-      const detected = normalizeDetectedRegions(detection);
-      setCoverage(normalizeScanCoverage(detection, detected.length));
+      setCoverage(resolvedCoverage);
       if (detected.length === 0) {
         setRegions([]);
         setErrorMessage('No he localizado botellas analizables. Acerca la camara o evita reflejos fuertes.');
@@ -381,6 +429,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         analysisMs: Math.round(analysisFinishedAt - detectionFinishedAt),
         totalMs: Math.round(analysisFinishedAt - scanStartedAt),
         concurrency,
+        detectionCalls,
+        detectionRefined,
         retries,
       };
       setScanMetrics(scanPerformance);
@@ -396,6 +446,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           analysis_ms: scanPerformance.analysisMs,
           total_ms: scanPerformance.totalMs,
           concurrency: scanPerformance.concurrency,
+          detection_calls: scanPerformance.detectionCalls,
+          detection_refined: scanPerformance.detectionRefined,
           retries: scanPerformance.retries,
         },
       });
@@ -616,6 +668,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
               {phase === 'ready' && scanMetrics && (
                 <div className="mt-1 text-xs text-slate-600" data-testid="scan-performance-summary">
                   {regions.length} regiones en {(scanMetrics.totalMs / 1000).toFixed(1)} s
+                  {scanMetrics.detectionRefined ? ' · deteccion refinada por zonas' : ''}
                   {scanMetrics.retries > 0 ? ` · ${scanMetrics.retries} reintento${scanMetrics.retries === 1 ? '' : 's'}` : ''}
                 </div>
               )}

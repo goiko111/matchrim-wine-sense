@@ -39,6 +39,7 @@ export interface WineComparisonAssessment {
 export interface WineComparisonDecision {
   primary: WineComparisonAssessment | null;
   ordered: WineComparisonAssessment[];
+  actionability: 'ready' | 'provisional';
 }
 
 const finiteNumber = (value: number | null | undefined) => (
@@ -113,6 +114,12 @@ const compareNullableDescending = (left: number | null, right: number | null) =>
   return right - left;
 };
 
+const identityReadiness = (assessment: WineComparisonAssessment) => {
+  const confidence = normalizedConfidence(assessment.wine.confidence);
+  if (confidence === null) return 2;
+  return confidence >= 0.72 ? 0 : 1;
+};
+
 const compareByPriority = (
   left: WineComparisonAssessment,
   right: WineComparisonAssessment,
@@ -155,9 +162,26 @@ export const buildWineComparisonDecision = (
     .map((wine) => buildAssessment(wine, context))
     .sort((left, right) => (
       statusOrder[left.constraintStatus] - statusOrder[right.constraintStatus]
+      || identityReadiness(left) - identityReadiness(right)
       || compareByPriority(left, right, context.priority)
       || left.wine.name.localeCompare(right.wine.name, 'es')
     ));
+  const primary = ordered[0] ?? null;
+  const primaryConfidence = normalizedConfidence(primary?.wine.confidence);
+  const priorityDataReady = !primary
+    ? false
+    : context.priority === 'value'
+      ? finiteNumber(primary.wine.affinity) !== null && finiteNumber(primary.wine.price) !== null
+      : context.priority === 'affinity'
+        ? finiteNumber(primary.wine.affinity) !== null
+        : primaryConfidence !== null;
+  const actionability = primary
+    && primary.constraintStatus === 'confirmed'
+    && primaryConfidence !== null
+    && primaryConfidence >= 0.72
+    && priorityDataReady
+    ? 'ready'
+    : 'provisional';
 
-  return { primary: ordered[0] ?? null, ordered };
+  return { primary, ordered, actionability };
 };

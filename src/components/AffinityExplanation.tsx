@@ -86,6 +86,12 @@ export const AffinityExplanation = ({
         <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.confidence * 100)}%</span>Respaldo de la explicacion ({explanation.confidenceLabel})</div>
       </div>
 
+      {explanation.identificationConfidence < 0.72 && (
+        <div role="note" className="border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-950">
+          Identidad sin confirmar. La afinidad describe el candidato visible, no demuestra que la botella sea esa referencia; confirma o corrige antes de decidir.
+        </div>
+      )}
+
       <div className="space-y-3">
         {explanation.dimensions.map((dimension) => (
           <div key={dimension.key} className="affinity-dimension-row grid grid-cols-[5.5rem_1fr_auto] items-center gap-3">

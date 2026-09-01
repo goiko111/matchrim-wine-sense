@@ -1,8 +1,8 @@
-# Matchrim: cierre de gates internos del candidato 59
+# Matchrim: cierre de gates internos de los candidatos 59-60
 
 Fecha: 1 de septiembre de 2026.
 
-Estado: **92% real del P0; candidato interno reproducible; NO-GO para TestFlight**.
+Estado: **94% real del P0; candidato interno 60 reproducible; NO-GO para TestFlight**.
 
 No se desplegaron Edge Functions, no se archivo Release y no se subio ningun build. El ultimo TestFlight sigue siendo Matchrim 1.0 (58). Este cierre conserva como baseline los informes anteriores y mide el candidato desde la rama `codex/2matchrim-p0-remediation-20260826`.
 
@@ -14,8 +14,21 @@ No se desplegaron Edge Functions, no se archivo Release y no se subio ningun bui
 - Cartas/pizarras: precision visible `92,81%`, recall `94,85%`. Canonicidad del contrato (productor, nombre, anada y seccion): `90,32%` precision y `82,35%` recall.
 - Deteccion con cajas humanas en 15 escenas: precision `61,36%`, recall `93,10%`, IoU medio `0,6922`. El recall es alto, pero la sobre-deteccion sigue siendo el P0 principal.
 - Latencia: media `22,60 s`, mediana `14,40 s`, maxima `128,67 s`. El outlier fue una carta; la mediana mejora ligeramente frente al baseline.
-- QA de cliente: 22/22 PASS con respuestas controladas y los cinco materiales privados para layout. Incluye privacidad, safe areas, retrato/paisaje, Dynamic Type 125%, nombres VoiceOver, targets tactiles, retries, cancelacion, offline, comparador 2-5 y consola.
-- iOS: Matchrim 1.0 (59), Debug Simulator, SDK 18.5, `CODE_SIGNING_ALLOWED=NO`, `BUILD SUCCEEDED`; instalacion limpia y lanzamiento en iPhone 16 Pro Simulator iOS 26.0.
+- QA de cliente: 25/25 PASS con respuestas controladas y los cinco materiales privados para layout. Incluye privacidad, safe areas, retrato/paisaje, Dynamic Type 125%, nombres VoiceOver, targets tactiles, retries, cancelacion, offline, comparador 2-5, refinamiento regional, fallback de una zona y consola.
+- iOS: Matchrim 1.0 (60), Debug Simulator, SDK 18.5, `CODE_SIGNING_ALLOWED=NO`, `BUILD SUCCEEDED`; instalacion limpia y lanzamiento en iPhone 16 Pro Simulator iOS 26.0.
+
+## Continuacion interna: candidato 60
+
+No se regenero el dataset ni se llamo al proveedor. Se reprodujeron las cajas ya capturadas del informe agregado y se completo el siguiente bloque interno:
+
+- Deteccion multietiqueta adaptativa: la foto completa sigue siendo la via normal; una respuesta parcial o geometricamente contradictoria activa dos crops solapados de 56%, remapea sus coordenadas y fusiona cajas antes del OCR.
+- Las franjas de 2% pegadas al borde se rechazan como regiones no analizables. Cuello, etiqueta y caja de botella anidados se consolidan por IoU, contencion y alineacion geometrica.
+- Replay de las 15 escenas con cajas humanas: precision efectiva del cliente `61,36% -> 71,05%`, recall estable `93,10%`, 6 cajas espurias menos (`44 -> 38`). Es una medicion offline del postprocesado; no sustituye el rerun E2E con proveedor.
+- El comparador prioriza identidad confirmada antes que una afinidad mayor pero dudosa. Si todas las identidades son dudosas muestra `Opcion provisional` y prohibe presentarla como recomendacion final.
+- La explicacion de afinidad separa con un aviso visible la identidad del candidato y el score sensorial; una identidad inferior a `72%` pasa a datos faltantes y ensancha el rango orientativo.
+- QA Playwright ampliado a 25/25: full + dos zonas, descarte de franjas, fallback si una zona falla, dos cajas independientes, decision provisional, detalle de afinidad, 393 px sin overflow y consola limpia.
+
+La ground truth conserva una contradiccion de alcance que no se maquillo: `commons-32980703` esta anotada como una botella aunque se ven dos principales y botellas de fondo; `commons-9865219` anota seis frontales aunque existen objetos parcialmente visibles detras. Las metricas oficiales se conservan sin editar y el replay se informa por separado.
 
 ## Antes / despues
 
@@ -90,8 +103,8 @@ La mejora de identidad combina correcciones de producto y de medicion. El baseli
 
 1. Produccion sigue en detector v3, analizador v3 y carta v3. Las fuentes locales son `matchrim-region-detector-v4-candidate`, `matchrim-region-analysis-v4-candidate` y `scan-wine-menu-2026-08-27-regional-v4-candidate`; no se desplegaron por el gate de publicacion.
 2. El proveedor devolvio `Creditos agotados` durante la ultima pasada: las cinco primeras cartas respondieron y las tres pizarras quedaron bloqueadas. La metrica final de cartas re-puntua offline una captura real completa anterior, del mismo build y sin mocks. El informe lo marca con `rescored_without_api_calls: true` y conserva el source report.
-3. Precision del detector `61,36%`: escenas densas producen demasiadas regiones/falsos positivos. El v4 candidato pretende reducirlos, pero debe probarse tras deploy autorizado.
-4. No hay QA de esta revision en iPhone fisico. El build 59 solo se instalo en simulador; camara, PHPicker, VoiceOver hablado, red lenta y memoria total con WebKit quedan como gate fisico.
+3. Precision oficial del detector `61,36%`; el postprocesado del candidato 60 alcanza `71,05%` en replay sin perder recall. El refinamiento regional y el v4 candidato deben probarse E2E tras restaurar cuota y desplegar con autorizacion.
+4. No hay QA de esta revision en iPhone fisico. El build 60 solo se instalo en simulador; camara, PHPicker, VoiceOver hablado, red lenta y memoria total con WebKit quedan como gate fisico.
 
 ### P1
 
@@ -107,9 +120,10 @@ La mejora de identidad combina correcciones de producto y de medicion. El baseli
 | `npx tsc --noEmit` | PASS |
 | `npm run lint` | PASS, 0 errores y 107 warnings historicos |
 | `npm run build` | PASS; aviso existente de chunks >500 kB |
-| QA UI Playwright | PASS 22/22, consola limpia |
+| QA UI Playwright | PASS 25/25, consola limpia |
+| Replay de normalizacion | PASS; precision 61,36% -> 71,05%, recall 93,10% estable |
 | Benchmark real independiente | 25/25 terminales; 18/25 sobre umbral |
-| Xcode Debug Simulator | PASS, Matchrim 1.0 (59) |
+| Xcode Debug Simulator | PASS, Matchrim 1.0 (60) |
 | Instalacion/lanzamiento limpio | PASS; error de plugins corregido |
 | TestFlight/deploy | NO EJECUTADO |
 
@@ -126,7 +140,14 @@ La mejora de identidad combina correcciones de producto y de medicion. El baseli
 - Privacidad paisaje: `docs/qa-evidence/matchrim-candidate-59-2026-09-01/privacy-safe-area-landscape.png`.
 - Simulador: `docs/qa-evidence/matchrim-candidate-59-2026-09-01/simulator-build-59-home.png`, `simulator-build-59-privacy-portrait.png` y `simulator-build-59-privacy-landscape.png`.
 - App candidato: `qa-artifacts/2026-09-01-candidate/derived-data-59/Build/Products/Debug-iphonesimulator/App.app`.
+- Replay candidato 60: `npm run qa:detection:replay` sobre `qa-artifacts/matchrim-independent-v2/e2e-final-25-2026-09-01/ground-truth-e2e-report.json`.
+- UI 25/25: `docs/qa-evidence/matchrim-candidate-60-2026-09-01/ui-qa-results.json`.
+- Refinamiento regional: `docs/qa-evidence/matchrim-candidate-60-2026-09-01/multi-label-regional-detection-mobile.png`.
+- Decision provisional: `docs/qa-evidence/matchrim-candidate-60-2026-09-01/multi-label-provisional-decision-mobile.png`.
+- Afinidad con identidad dudosa: `docs/qa-evidence/matchrim-candidate-60-2026-09-01/multi-label-detail-mobile.png`.
+- Lanzamiento iOS: `docs/qa-evidence/matchrim-candidate-60-2026-09-01/ios-simulator-launch-build-60.png`.
+- App candidato 60: `qa-artifacts/build-60-workspace-derived/Build/Products/Debug-iphonesimulator/App.app`.
 
 ## Accion unica para abrir TestFlight
 
-El propietario debe ejecutar un unico release gate autorizado: **restaurar cuota, desplegar las tres Edge Functions v4, repetir las 25 escenas y el recorrido fisico en iPhone, y autorizar expresamente la subida del build 59 solo si esos resultados quedan verdes**. Hasta entonces, el candidato es reproducible pero no publicable.
+El propietario debe ejecutar un unico release gate autorizado: **restaurar cuota, desplegar las tres Edge Functions v4, repetir las 25 escenas y los cinco materiales privados, completar el recorrido fisico en iPhone y autorizar expresamente la subida del build 60 solo si esos resultados quedan verdes**. Hasta entonces, el candidato es reproducible pero no publicable.
