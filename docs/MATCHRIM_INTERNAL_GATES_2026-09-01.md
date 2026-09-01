@@ -112,6 +112,10 @@ La mejora de identidad combina correcciones de producto y de medicion. El baseli
 2. Mejorar herencia de productor/anada/seccion en menus historicos y apilar campos sin confundir descripciones con nombres.
 3. Perfilar memoria de proceso nativo + WebKit durante 25 escenas. El `.app` Debug pesa 12 MB y `dist` 8,2 MB; no se declara un pico de memoria sin instrumento fiable.
 
+### Exploracion aditiva: avatar/aiRIM
+
+La spec `MATCHRIM_AVATAR_AIRIM_EXPLORATION_2026-09-01.md` anade un carril de discovery sin sustituir ningun P0/P1 anterior. Recomienda validar primero una guia `aiRIM` contextual, textual y estatica dentro de Matchrim; voz, animacion, memoria transversal y la identidad compartida `AIRim` quedan condicionadas a utilidad, confianza, accesibilidad, coste y consentimiento. No hay implementacion ni cambio de produccion asociado.
+
 ## Gates ejecutados
 
 | Gate | Resultado |
