@@ -52,23 +52,23 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
       <div className="mt-4 divide-y divide-stone-100 border-y border-stone-200 text-sm sm:mt-5">
         <div className="flex gap-3 py-2 sm:py-3">
           <Camera className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
-          <p className="leading-5 text-slate-700">Matchrim accede a la camara o a la foto que selecciones; no examina el resto de tu fototeca.</p>
+          <p className="leading-5 text-slate-700">Matchrim accede a la cámara o a la foto que selecciones; no examina el resto de tu fototeca.</p>
         </div>
         <div className="flex gap-3 py-2 sm:py-3">
           <BrainCircuit className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
-          <p className="leading-5 text-slate-700">La imagen y sus recortes se envian a funciones de Matchrim y a proveedores de IA para detectar texto y vinos. No subas imagenes con personas o datos sensibles.</p>
+          <p className="leading-5 text-slate-700">La imagen y sus recortes se envían a funciones de Matchrim y a proveedores de IA para detectar texto y vinos. No subas imágenes con personas o datos sensibles.</p>
         </div>
         <div className="flex gap-3 py-2 sm:py-3">
           <Trash2 className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
-          <p className="leading-5 text-slate-700">El original no se guarda en tu cuenta por defecto. Los resultados que confirmes si pueden guardarse en tu historial o lista de vinos.</p>
+          <p className="leading-5 text-slate-700">El original no se guarda en tu cuenta por defecto. Los resultados que confirmes sí pueden guardarse en tu historial o lista de vinos.</p>
         </div>
       </div>
 
       <label className="mt-4 flex min-h-11 cursor-pointer items-start gap-3 text-sm text-slate-700 sm:mt-5">
-        <Checkbox checked={checked} onCheckedChange={(value) => setChecked(value === true)} aria-label="He leido el aviso de privacidad del escaner" />
+        <Checkbox checked={checked} onCheckedChange={(value) => setChecked(value === true)} aria-label="He leído el aviso de privacidad del escáner" />
         <span>
-          He leido este aviso y la{' '}
-          <Link to="/privacy" className="font-semibold text-red-800 underline underline-offset-2">politica de privacidad</Link>.
+          He leído este aviso y la{' '}
+          <Link to="/privacy" className="font-semibold text-red-800 underline underline-offset-2">política de privacidad</Link>.
         </span>
       </label>
 

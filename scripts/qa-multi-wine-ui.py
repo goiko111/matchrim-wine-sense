@@ -10,9 +10,10 @@ from playwright.sync_api import Route, sync_playwright
 
 BASE_URL = os.environ.get("MATCHRIM_QA_URL", "http://127.0.0.1:4173")
 EMBEDDED_FIXTURES = os.environ.get("MATCHRIM_QA_EMBEDDED_FIXTURES") == "true"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = Path(os.environ.get(
     "MATCHRIM_QA_ARTIFACTS",
-    "/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-p0-remediation",
+    REPOSITORY_ROOT / "qa-artifacts" / "2026-09-01-build61-hotfix",
 ))
 LABEL_FIXTURE = Path("/Users/GOIKO/Downloads/IMG_7605 2.jpg")
 MENU_SOURCE_FIXTURES = [
@@ -160,7 +161,7 @@ def function_response(endpoint, request):
                     "compatibilidad": 84,
                     "razon": "Acidez viva y perfil frutal con buena afinidad.",
                     "atributos": {"potencia": 2, "acidez": 5, "dulzura": 1, "taninos": 1, "afrutado": 4},
-                    "posicion": {"x": 52, "y": 36, "width": 38, "height": 5, "confidence": 0.86},
+                    "posicion": {"x": 52, "y": 64, "width": 38, "height": 5, "confidence": 0.86},
                 },
                 {
                     "nombre": "La Montesa",
@@ -274,6 +275,9 @@ def run_privacy_safe_area_qa(browser, results, console_errors):
       document.documentElement.style.setProperty('--matchrim-native-safe-top', '59px');
       document.documentElement.style.setProperty('--matchrim-native-safe-bottom', '34px');
     }""")
+    guard_box = page.locator(".matchrim-safe-area-top-guard").bounding_box()
+    if guard_box is None or guard_box["height"] < 59:
+        raise AssertionError(f"safe-area guard does not cover the simulated Dynamic Island: {guard_box}")
     gate = page.get_by_role("heading", name="Antes de analizar una imagen")
     gate.wait_for()
     assert page.locator('input[type="file"]').count() == 0
@@ -300,10 +304,17 @@ def run_privacy_safe_area_qa(browser, results, console_errors):
     continue_button.click()
     page.locator('input[type="file"]').first.wait_for(state="attached")
     dimensions = assert_no_horizontal_overflow(page, "privacy gate mobile")
+    nav_link_sizes = page.get_by_role("navigation", name="Navegacion principal").locator("a").evaluate_all("""elements =>
+      elements.map((element) => {
+        const box = element.getBoundingClientRect();
+        return { name: element.getAttribute('aria-label'), width: box.width, height: box.height };
+      })""")
+    if any(item["width"] < 44 or item["height"] < 44 or not item["name"] for item in nav_link_sizes):
+        raise AssertionError(f"bottom navigation target below 44px or unnamed: {nav_link_sizes}")
     results.append({
         "case": "privacidad_y_safe_area",
         "expected": "sin acceso a fotos antes del consentimiento, sin solapes y por debajo de 59 px de safe area",
-        "actual": f"PASS gate_y={gate_top:.1f} acknowledgement_bottom={acknowledgement_box['y'] + acknowledgement_box['height']:.1f} cta_flow_top={initial_button_box['y']:.1f} visible_cta_bottom={button_box['y'] + button_box['height']:.1f} nav_top={nav_box['y']:.1f} {dimensions}",
+        "actual": f"PASS guard={guard_box['height']:.1f}px gate_y={gate_top:.1f} acknowledgement_bottom={acknowledgement_box['y'] + acknowledgement_box['height']:.1f} cta_flow_top={initial_button_box['y']:.1f} visible_cta_bottom={button_box['y'] + button_box['height']:.1f} nav_top={nav_box['y']:.1f} nav_links={nav_link_sizes} {dimensions}",
     })
     context.close()
 
@@ -349,7 +360,7 @@ def run_label_qa(browser, results, console_errors):
     performance_summary = page.get_by_test_id("scan-performance-summary")
     performance_summary.wait_for()
     assert "5 regiones en" in performance_summary.inner_text()
-    page.get_by_role("button", name="Region 5, Sin reconocer").wait_for()
+    page.get_by_role("button", name="Región 5, Sin reconocer").wait_for()
     assert page.get_by_text("Muga Reserva", exact=True).count() >= 1
     assert page.get_by_text("Marques de Riscal Reserva", exact=True).count() >= 1
     assert page.get_by_text("Baron Saint George Grand Vin de Bordeaux", exact=True).count() >= 1
@@ -374,16 +385,16 @@ def run_label_qa(browser, results, console_errors):
     results.append({"case": "multietiqueta_overflow_movil", "expected": "sin desbordamiento horizontal a 393x852 con nombres largos", "actual": f"PASS {assert_no_horizontal_overflow(page, 'label mobile')}"})
     page.screenshot(path=str(ARTIFACTS / "multi-label-summary-mobile.png"), full_page=True)
 
-    page.get_by_role("button", name="Region 2, Dudoso").click()
+    page.get_by_role("button", name="Región 2, Dudoso").click()
     page.get_by_text("Candidatos", exact=True).wait_for()
     assert page.get_by_text("Duda:").count() >= 1
     guide = page.get_by_test_id("airim-context-guide")
     guide.get_by_text("Confirma antes de elegir", exact=True).wait_for()
-    assert page.get_by_text("Por que encaja", exact=True).count() >= 1
-    assert page.get_by_text("Lo que podria no encajar", exact=True).count() >= 1
+    assert page.get_by_text("Por qué encaja", exact=True).count() >= 1
+    assert page.get_by_text("Lo que podría no encajar", exact=True).count() >= 1
     assert page.get_by_text("Coincidencias principales", exact=True).count() >= 1
     assert page.get_by_text("Fricciones", exact=True).count() >= 1
-    assert page.get_by_text("Datos y limites del calculo", exact=True).count() >= 1
+    assert page.get_by_text("Datos y límites del cálculo", exact=True).count() >= 1
     identity_warning = page.get_by_text("Identidad sin confirmar", exact=False)
     assert identity_warning.count() >= 1
     results.append({"case": "multietiqueta_detalle", "expected": "top candidatos, evidencia, duda, gate de identidad y afinidad explicada en drawer", "actual": "PASS"})
@@ -392,11 +403,11 @@ def run_label_qa(browser, results, console_errors):
     identity_warning.scroll_into_view_if_needed()
     page.screenshot(path=str(ARTIFACTS / "multi-label-detail-mobile.png"), full_page=False)
     guide.get_by_role("button", name="Confirmar este candidato").click()
-    page.get_by_text("Region 2: Reconocido", exact=True).wait_for()
+    page.get_by_text("Región 2: Reconocido", exact=True).wait_for()
     page.get_by_role("button", name="Cerrar").click()
     confirmed_candidate_labels = page.locator("button").filter(has_text="Confirmar").all_inner_texts()
     assert any("Confirmar 3 referencias" in label for label in confirmed_candidate_labels), confirmed_candidate_labels
-    page.get_by_role("button", name="Region 5, Sin reconocer").click()
+    page.get_by_role("button", name="Región 5, Sin reconocer").click()
     page.get_by_test_id("airim-context-guide").get_by_text("Primero, una identidad verificable", exact=True).wait_for()
     fallback_message = page.get_by_text("No hay texto legible suficiente", exact=False)
     fallback_message.wait_for()
@@ -427,12 +438,12 @@ def run_identity_correction_qa(browser, results, console_errors):
     page.wait_for_load_state("networkidle")
     page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
     page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
-    page.get_by_role("button", name="Region 1, Reconocido").click()
+    page.get_by_role("button", name="Región 1, Reconocido").click()
     page.get_by_label("Vino", exact=True).fill("Identidad corregida")
     page.get_by_text("Afinidad sin desglose suficiente", exact=True).wait_for()
     guide = page.get_by_test_id("airim-context-guide")
     guide.get_by_text("Identidad lista; afinidad pendiente", exact=True).wait_for()
-    assert guide.get_by_text("Esta guia explica datos existentes", exact=False).count() == 1
+    assert guide.get_by_text("Esta guía explica datos existentes", exact=False).count() == 1
     guide.scroll_into_view_if_needed()
     page.screenshot(path=str(ARTIFACTS / "multi-label-identity-correction-mobile.png"), full_page=False)
     results.append({
@@ -495,9 +506,9 @@ def run_regional_detection_qa(browser, results, console_errors):
     summary = page.get_by_test_id("scan-performance-summary").inner_text()
     assert detector_tiles == ["full", "left", "right"], detector_tiles
     assert "2 regiones" in summary, summary
-    assert "deteccion refinada por zonas" in summary, summary
-    assert page.get_by_role("button", name="Region 1, Reconocido").count() == 1
-    assert page.get_by_role("button", name="Region 2, Reconocido").count() == 1
+    assert "detección refinada por zonas" in summary, summary
+    assert page.get_by_role("button", name="Región 1, Reconocido").count() == 1
+    assert page.get_by_role("button", name="Región 2, Reconocido").count() == 1
     dimensions = assert_no_horizontal_overflow(page, "regional detection mobile")
     page.screenshot(path=str(ARTIFACTS / "multi-label-regional-detection-mobile.png"), full_page=True)
     results.append({
@@ -547,7 +558,7 @@ def run_regional_detection_fallback_qa(browser, results):
     summary = page.get_by_test_id("scan-performance-summary").inner_text()
     assert attempts == {"full": 1, "left": 1, "right": 2}, attempts
     assert "1 regiones" in summary, summary
-    assert "deteccion refinada por zonas" not in summary, summary
+    assert "detección refinada por zonas" not in summary, summary
     assert page.get_by_text("Botella full conservada", exact=True).count() >= 1
     assert all("Failed to load resource" in message for message in expected_console_errors), expected_console_errors
     results.append({
@@ -661,7 +672,7 @@ def run_retry_cancellation_qa(browser, results, console_errors):
     page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
     page.get_by_text("en paralelo", exact=False).wait_for(timeout=30_000)
     page.get_by_role("button", name="Cancelar").click()
-    page.get_by_text("Analisis cancelado", exact=True).wait_for(timeout=5_000)
+    page.get_by_text("Análisis cancelado", exact=True).wait_for(timeout=5_000)
     page.wait_for_timeout(900)
     assert attempts.get("region-1") == 1, attempts
     assert all("Failed to load resource" in message for message in expected_console_errors), expected_console_errors
@@ -686,6 +697,11 @@ def run_menu_qa(browser, results, console_errors):
     if any(not text.strip().isdigit() for text in overlay_text):
         raise AssertionError(f"Overlay contains non-numeric labels: {overlay_text}")
     assert page.get_by_text("5 resultados", exact=True).count() == 1
+    assert page.get_by_role("button", name="Grupo de 2 vinos", exact=False).count() == 1
+    page.locator('button[aria-label^="Ver detalle de Finca Dofi,"]').first.click()
+    decision_drawer = page.get_by_role("dialog")
+    decision_drawer.get_by_text("1. Finca Dofi", exact=True).wait_for()
+    decision_drawer.get_by_role("button", name="Cerrar detalle").click()
     comparison = page.locator('section[aria-labelledby="wine-comparison-title"]')
     comparison.get_by_text("Comparar 2–5 vinos", exact=True).wait_for()
     comparison.get_by_label("Presupuesto máximo").fill("40")
@@ -720,11 +736,27 @@ def run_menu_qa(browser, results, console_errors):
     menu_guide = detail_drawer.get_by_test_id("airim-context-guide")
     menu_guide.get_by_text("Por que puede encajar", exact=True).wait_for()
     assert detail_drawer.get_by_text("≈79%", exact=True).count() >= 1
-    assert detail_drawer.get_by_text("Por que encaja", exact=True).count() >= 1
+    assert detail_drawer.get_by_text("Por qué encaja", exact=True).count() >= 1
     results.append({"case": "carta_interaccion", "expected": "zoom, filtro por precio y drawer detallado", "actual": "PASS"})
     menu_guide.scroll_into_view_if_needed()
     page.screenshot(path=str(ARTIFACTS / "wine-menu-airim-guide-desktop.png"), full_page=False)
     page.screenshot(path=str(ARTIFACTS / "wine-menu-detail-desktop.png"), full_page=False)
+    detail_drawer.get_by_role("button", name="Cerrar detalle").click()
+    page.get_by_text("Ver fichas completas y acciones", exact=True).click()
+    visible_full_cards = page.get_by_text("Ficha de carta", exact=True).evaluate_all(
+        "elements => elements.filter((element) => element.getClientRects().length > 0).length"
+    )
+    assert visible_full_cards == 0, visible_full_cards
+    page.locator('button[aria-controls^="wine-actions-"]').first.click()
+    visible_full_cards = page.get_by_text("Ficha de carta", exact=True).evaluate_all(
+        "elements => elements.filter((element) => element.getClientRects().length > 0).length"
+    )
+    assert visible_full_cards == 1, visible_full_cards
+    results.append({
+        "case": "carta_fichas_progresivas",
+        "expected": "la accion global no expande todas las fichas; cada vino se abre de forma independiente",
+        "actual": "PASS una ficha visible tras abrirla expresamente",
+    })
     context.close()
 
 
@@ -818,7 +850,7 @@ def run_offline_qa(browser, results):
     page.unroute("**/functions/v1/**")
     context.set_offline(True)
     page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
-    page.get_by_text("No hay conexion", exact=False).wait_for(timeout=30_000)
+    page.get_by_text("No hay conexión", exact=False).wait_for(timeout=30_000)
     assert page.get_by_role("button", name="Reintentar").count() == 1
     assert page.get_by_alt_text("Foto analizada con regiones numeradas").count() == 1
     results.append({

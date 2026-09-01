@@ -21,6 +21,15 @@ body {
   margin: 0;
 }
 
+.matchrim-safe-area-top-guard {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  height: var(--matchrim-safe-top);
+  background: hsl(var(--background));
+  pointer-events: none;
+}
+
 .matchrim-accessibility-text .affinity-dimension-row {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;

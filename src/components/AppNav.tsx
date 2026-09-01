@@ -35,7 +35,7 @@ const AppNav = () => {
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-200 pt-[env(safe-area-inset-top)] shadow-sm">
+    <nav className="bg-white border-b border-gray-200 pt-[var(--matchrim-safe-top)] shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo / Brand */}

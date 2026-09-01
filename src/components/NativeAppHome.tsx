@@ -85,7 +85,7 @@ const NativeAppHome = ({ hasQuizResults, matchrimCode = '', loadingCode = false 
       {user ? (
         <AppNav />
       ) : (
-        <header className="sticky top-0 z-40 border-b border-red-100 bg-white/95 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] backdrop-blur">
+        <header className="sticky top-0 z-40 border-b border-red-100 bg-white/95 px-4 pb-3 pt-[calc(0.75rem+var(--matchrim-safe-top))] backdrop-blur">
           <div className="mx-auto flex max-w-md items-center justify-between">
             <button
               type="button"
@@ -112,7 +112,7 @@ const NativeAppHome = ({ hasQuizResults, matchrimCode = '', loadingCode = false 
         </header>
       )}
 
-      <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col gap-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5">
+      <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col gap-5 px-4 pb-[calc(1.5rem+var(--matchrim-safe-bottom))] pt-5">
         <section className="rounded-lg bg-red-950 px-5 py-6 text-white shadow-elegant">
           <Badge className="mb-5 bg-white/12 text-white hover:bg-white/12">
             Matchrim

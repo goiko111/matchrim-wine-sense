@@ -64,6 +64,7 @@ function AppRoutes() {
   return (
     <AppErrorBoundary resetKey={resetKey}>
       <div className="App">
+        <div className="matchrim-safe-area-top-guard" aria-hidden="true" />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />

@@ -62,7 +62,7 @@ const MobileBottomNav = () => {
   return (
     <nav
       aria-label="Navegacion principal"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-red-100 bg-white px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_30px_-20px_rgba(127,29,29,0.45)] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-red-100 bg-white px-2 pb-[calc(0.5rem+var(--matchrim-safe-bottom))] pt-2 shadow-[0_-12px_30px_-20px_rgba(127,29,29,0.45)] md:hidden"
     >
       <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
         {navLinks.map((link) => {
@@ -74,6 +74,7 @@ const MobileBottomNav = () => {
             <Link
               key={`${link.path}-${link.label}`}
               to={to}
+              aria-label={link.label}
               aria-current={isActive ? 'page' : undefined}
               title={link.label}
               className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-[11px] font-semibold leading-none transition-colors ${
@@ -82,8 +83,8 @@ const MobileBottomNav = () => {
                   : 'text-gray-600 hover:bg-red-50 hover:text-red-700'
               }`}
             >
-              <Icon className="h-5 w-5" />
-              <span>{link.label}</span>
+              <Icon className="h-5 w-5" aria-hidden="true" />
+              <span aria-hidden="true">{link.label}</span>
             </Link>
           );
         })}

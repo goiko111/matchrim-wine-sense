@@ -39,7 +39,7 @@ export const AiRimContextGuide = ({
           </AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1">
-          <div className="text-[11px] font-semibold uppercase text-red-900">aiRIM - guia contextual</div>
+          <div className="text-[11px] font-semibold uppercase text-red-900">aiRIM - guía contextual</div>
           <h4 id={titleId} className="mt-1 text-sm font-semibold">{guidance.title}</h4>
           <p className="mt-1 text-sm leading-5">{guidance.summary}</p>
           <ul className="mt-2 space-y-1 text-xs opacity-80">
@@ -60,7 +60,7 @@ export const AiRimContextGuide = ({
               )}
             </div>
           )}
-          <p className="mt-2 text-[11px] opacity-70">Esta guia explica datos existentes; no cambia la identidad ni el calculo.</p>
+          <p className="mt-2 text-[11px] opacity-70">Esta guía explica datos existentes; no cambia la identidad ni el cálculo.</p>
         </div>
       </div>
     </section>
