@@ -17,6 +17,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { AffinityExplanation } from "@/components/AffinityExplanation";
+import { AiRimContextGuide } from "@/components/AiRimContextGuide";
 import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
 import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -888,29 +889,27 @@ export const WineMenuScanner = ({
 		                          alt="Carta con vinos marcados mediante numeros"
 			                          className="block h-auto w-full object-contain opacity-95"
 		                        />
-		                        {scannedWines.map((wine, index) => {
-		                          const position = getWinePosition(wine);
-		                          if (!position) return null;
-		                          const width = Math.max(position.width ?? 4, 4);
-		                          const height = Math.max(wine.posicion?.height ?? 3, 3);
+			                        {scannedWines.map((wine, index) => {
+			                          const position = getWinePosition(wine);
+			                          if (!position) return null;
 
-		                          return (
-		                            <button
-		                              key={`${wine.nombre}-${index}-pin`}
-		                              type="button"
-			                              className={`absolute z-10 min-h-11 min-w-11 border-2 bg-transparent transition ${
-			                                highlightedWineIndex === index
-			                                  ? 'border-amber-400 ring-2 ring-black/70'
-			                                  : 'border-white/85 hover:border-amber-300'
-			                              }`}
-		                              style={{ left: `${position.x}%`, top: `${position.y}%`, width: `${width}%`, height: `${height}%` }}
+			                          return (
+			                            <button
+			                              key={`${wine.nombre}-${index}-pin`}
+			                              type="button"
+				                              className={`absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center bg-transparent transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+				                                highlightedWineIndex === index
+				                                  ? 'ring-2 ring-black/70'
+				                                  : ''
+				                              }`}
+			                              style={{ left: `${position.x}%`, top: `${position.y}%` }}
 		                              aria-label={`Vino ${index + 1}: ${wine.nombre}`}
 			                              onClick={() => {
 			                                setHighlightedWineIndex(index);
 			                                setSelectedPinIndex(index);
 			                              }}
 			                            >
-			                              <span className={`absolute -left-1 -top-1 flex h-7 min-w-7 items-center justify-center rounded-full px-1 text-[11px] font-bold shadow ring-1 ring-white ${
+				                              <span className={`flex h-7 min-w-7 items-center justify-center rounded-full px-1 text-[11px] font-bold shadow ring-1 ring-white ${
 			                                highlightedWineIndex === index ? 'bg-amber-400 text-stone-950' : 'bg-stone-950 text-white'
 			                              }`}>
 		                                {index + 1}
@@ -1806,11 +1805,23 @@ export const WineMenuScanner = ({
 	                  {selectedPinWine.dudas && selectedPinWine.dudas.length > 0 && (
 	                    <p className="mt-1"><span className="font-semibold text-slate-900">Dudas:</span> {selectedPinWine.dudas.join(', ')}</p>
 	                  )}
-	                  {selectedPinWine.campos_inferidos && selectedPinWine.campos_inferidos.length > 0 && (
-	                    <p className="mt-1"><span className="font-semibold text-slate-900">Datos inferidos:</span> {selectedPinWine.campos_inferidos.join(', ')}</p>
-	                  )}
-	                </div>
-	                <AffinityExplanation
+			                  {selectedPinWine.campos_inferidos && selectedPinWine.campos_inferidos.length > 0 && (
+			                    <p className="mt-1"><span className="font-semibold text-slate-900">Datos inferidos:</span> {selectedPinWine.campos_inferidos.join(', ')}</p>
+			                  )}
+			                </div>
+			                <div className="mb-4">
+			                  <AiRimContextGuide
+			                    context="menu"
+			                    name={selectedPinWine.nombre}
+			                    identityConfidence={selectedPinWine.confidence}
+			                    affinity={selectedPinWine.compatibilidad}
+			                    attributes={selectedPinWine.atributos}
+			                    sensorySource="inference"
+			                    uncertaintyReasons={selectedPinWine.dudas}
+			                    hasAlternatives={scannedWines.length > 1}
+			                  />
+			                </div>
+			                <AffinityExplanation
 	                  wineKey={`${selectedPinWine.nombre}-${selectedPinWine.productor ?? ''}-${selectedPinWine.anada ?? 'nv'}`}
 	                  score={selectedPinWine.compatibilidad}
 	                  identificationConfidence={selectedPinWine.confidence}

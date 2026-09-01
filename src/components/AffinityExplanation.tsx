@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Check, CircleHelp, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,6 +26,21 @@ const SOURCE_LABELS: Record<AffinityDataSource, string> = {
 
 type FeedbackValue = 'hit' | 'miss';
 
+const readStoredFeedback = (wineKey: string): Record<string, FeedbackValue> => {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = window.localStorage.getItem(`matchrim.affinity_feedback.${wineKey}`);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    return Object.fromEntries(
+      Object.entries(parsed).filter((entry): entry is [string, FeedbackValue] => entry[1] === 'hit' || entry[1] === 'miss'),
+    );
+  } catch (error) {
+    console.warn('[affinity] Could not read stored feedback:', error);
+    return {};
+  }
+};
+
 export const AffinityExplanation = ({
   wineKey,
   score,
@@ -34,12 +49,16 @@ export const AffinityExplanation = ({
   sensorySource = 'inference',
   compact = false,
 }: AffinityExplanationProps) => {
-  const [feedback, setFeedback] = useState<Record<string, FeedbackValue>>({});
+  const [feedback, setFeedback] = useState<Record<string, FeedbackValue>>(() => readStoredFeedback(wineKey));
   const explanation = useMemo(() => buildDetailedAffinityExplanation(
     readStoredMatchrimProfile(),
     attributes,
     { score, identificationConfidence, sensorySource },
   ), [attributes, identificationConfidence, score, sensorySource]);
+
+  useEffect(() => {
+    setFeedback(readStoredFeedback(wineKey));
+  }, [wineKey]);
 
   if (!explanation) {
     return (
@@ -97,7 +116,14 @@ export const AffinityExplanation = ({
           <div key={dimension.key} className="affinity-dimension-row grid grid-cols-[5.5rem_1fr_auto] items-center gap-3">
             <div className="affinity-dimension-label text-sm font-medium capitalize text-slate-800">{dimension.label}</div>
             <div className="affinity-dimension-detail min-w-0">
-              <div className="h-2 overflow-hidden rounded-full bg-stone-100" aria-label={dimension.alignment === null ? `${dimension.label}: preferencia aun no aprendida` : `${dimension.label}: ${dimension.alignment}%`}>
+              <div
+                className="h-2 overflow-hidden rounded-full bg-stone-100"
+                role="meter"
+                aria-label={dimension.alignment === null ? `${dimension.label}: preferencia aun no aprendida` : `${dimension.label}: ${dimension.alignment}%`}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={dimension.alignment ?? undefined}
+              >
                 <div
                   className={dimension.alignment === null ? 'h-full bg-slate-400' : dimension.tone === 'positive' ? 'h-full bg-emerald-600' : dimension.tone === 'neutral' ? 'h-full bg-amber-500' : 'h-full bg-red-700'}
                   style={{ width: `${dimension.alignment ?? Math.round(dimension.wineValue / 5 * 100)}%` }}
@@ -145,6 +171,27 @@ export const AffinityExplanation = ({
           <p className="mt-1 capitalize text-slate-600">{explanation.adventure}</p>
         </div>
       </div>
+
+      {!compact && (explanation.primaryMatches.length > 0 || explanation.frictions.length > 0) && (
+        <div className="grid gap-3 border-t border-stone-200 pt-3 text-sm sm:grid-cols-2">
+          <div>
+            <div className="font-semibold text-slate-900">Coincidencias principales</div>
+            {explanation.primaryMatches.length > 0 ? (
+              <ul className="mt-1 space-y-1 text-slate-600">
+                {explanation.primaryMatches.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            ) : <p className="mt-1 text-slate-600">Sin una coincidencia dominante.</p>}
+          </div>
+          <div>
+            <div className="font-semibold text-slate-900">Fricciones</div>
+            {explanation.frictions.length > 0 ? (
+              <ul className="mt-1 space-y-1 text-slate-600">
+                {explanation.frictions.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            ) : <p className="mt-1 text-slate-600">Sin una friccion fuerte en los datos disponibles.</p>}
+          </div>
+        </div>
+      )}
 
       {!compact && (
         <details className="text-sm">

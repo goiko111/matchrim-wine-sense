@@ -159,6 +159,7 @@ export const areLikelySamePhysicalDetection = (left: NormalizedBox, right: Norma
   const rightArea = right.width * right.height;
   const areaRatio = Math.max(leftArea, rightArea) / Math.min(leftArea, rightArea);
   if (areaRatio >= 1.3 && intersectionOverSmallerArea(left, right) >= 0.84) return true;
+  if (areaRatio >= 4 && intersectionOverSmallerArea(left, right) >= 0.6) return true;
 
   const horizontalOverlap = overlapRatio(left.x, left.width, right.x, right.width);
   const verticalOverlap = overlapRatio(left.y, left.height, right.y, right.height);
@@ -167,11 +168,17 @@ export const areLikelySamePhysicalDetection = (left: NormalizedBox, right: Norma
   );
   const narrowWidth = Math.min(left.width, right.width);
 
-  // Models sometimes split a neck or label from the taller box of the same bottle.
-  return areaRatio >= 1.8
+  // Models sometimes split a neck, label or shelf tag from the taller bottle box.
+  if (areaRatio >= 1.8
     && horizontalOverlap >= 0.7
     && verticalOverlap >= 0.25
-    && horizontalCenterDistance <= Math.max(3, narrowWidth * 0.4);
+    && horizontalCenterDistance <= Math.max(3, narrowWidth * 0.4)) return true;
+
+  return areaRatio >= 2.2
+    && horizontalOverlap >= 0.5
+    && verticalOverlap > 0
+    && verticalOverlap < 0.25
+    && horizontalCenterDistance <= Math.max(3, narrowWidth * 0.55);
 };
 
 const normalizeQualityLevel = (
@@ -215,7 +222,7 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
       selectedCandidateId: null,
       duplicateCount: 1,
       error: null,
-    }];
+    } satisfies ScanRegion];
   });
 
   const deduplicated: ScanRegion[] = [];
@@ -559,6 +566,39 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
     return affinityDelta || b.candidate.confidence - a.candidate.confidence;
   });
 };
+
+export const getConfirmableWineGroups = (regions: ScanRegion[]) => (
+  groupDuplicateWines(regions.filter((region) => region.status === 'recognized'))
+);
+
+export const confirmWineCandidateIdentity = (candidate: WineCandidate): WineCandidate => ({
+  ...candidate,
+  confidence: 1,
+  evidence: Array.from(new Set([...candidate.evidence, 'Identidad confirmada manualmente por el usuario'])),
+  uncertaintyReasons: [],
+});
+
+export const correctWineCandidateIdentity = (
+  candidate: WineCandidate,
+  patch: Pick<Partial<WineCandidate>, 'name' | 'producer'>,
+): WineCandidate => ({
+  ...candidate,
+  ...patch,
+  vintage: null,
+  region: null,
+  country: null,
+  grapes: [],
+  alcohol: null,
+  confidence: 1,
+  source: 'manual',
+  evidence: ['Identidad corregida manualmente por el usuario'],
+  uncertaintyReasons: [],
+  inferredFields: [],
+  sensoryAttributes: null,
+  affinity: null,
+  affinityConfidence: null,
+  affinityReason: null,
+});
 
 export const summarizeScanRegions = (regions: ScanRegion[]) => ({
   recognized: regions.filter((region) => region.status === 'recognized').length,

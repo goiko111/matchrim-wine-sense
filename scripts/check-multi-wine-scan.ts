@@ -3,7 +3,10 @@ import {
   areLikelyDuplicateWines,
   areLikelySamePhysicalDetection,
   buildWineDetectionTiles,
+  confirmWineCandidateIdentity,
+  correctWineCandidateIdentity,
   determineRegionStatus,
+  getConfirmableWineGroups,
   getFullWineDetectionTile,
   groupDuplicateWines,
   getRegionAnalysisConcurrency,
@@ -20,6 +23,7 @@ import {
   summarizeScanRegions,
   type ScanRegion,
 } from '../src/utils/multiWineScan';
+import { buildAiRimContextGuidance } from '../src/utils/aiRimContextGuide';
 import { buildMatchrimQaFixturePayload } from '../src/utils/matchrimQaFixtures';
 import {
   buildDetailedAffinityExplanation,
@@ -67,6 +71,18 @@ assert.equal(areLikelySamePhysicalDetection(
   { x: 10, y: 10, width: 14, height: 18 },
   { x: 8, y: 8, width: 18, height: 72 },
 ), true, 'a label fragment and its containing bottle should be one physical detection');
+assert.equal(areLikelySamePhysicalDetection(
+  { x: 48, y: 0, width: 46, height: 98 },
+  { x: 86, y: 42, width: 13, height: 55 },
+), true, 'a narrow fragment mostly inside a much larger bottle should collapse');
+assert.equal(areLikelySamePhysicalDetection(
+  { x: 35, y: 1, width: 12, height: 21 },
+  { x: 30, y: 18, width: 12, height: 65 },
+), true, 'a short shelf or neck fragment touching a taller bottle should collapse');
+assert.equal(areLikelySamePhysicalDetection(
+  { x: 10, y: 11, width: 13, height: 72 },
+  { x: 20, y: 15, width: 13, height: 69 },
+), false, 'adjacent bottles in a dense shelf must remain independent');
 
 const malformedDenseDetection = {
   coverage: { status: 'partial', estimated_visible_objects: 70, confidence: 0.9 },
@@ -309,6 +325,18 @@ assert.equal(groupDuplicateWines([
   makeRegion('r1', 1, 'Celler Aripta Brut', 82),
   uncertainDuplicate,
 ]).length, 2, 'uncertain identities must not be grouped as duplicate bottles');
+assert.equal(getConfirmableWineGroups([
+  makeRegion('r1', 1, 'Celler Aripta Brut', 82),
+  uncertainDuplicate,
+]).length, 1, 'uncertain identities must not enter batch confirmation');
+const manuallyConfirmed = confirmWineCandidateIdentity(uncertainDuplicate.candidates[0]);
+assert.equal(manuallyConfirmed.confidence, 1);
+assert.equal(manuallyConfirmed.affinity, 82, 'explicit confirmation keeps the candidate sensory result');
+assert.equal(manuallyConfirmed.uncertaintyReasons.length, 0);
+const manuallyCorrected = correctWineCandidateIdentity(candidates[0], { name: 'Corrected identity' });
+assert.equal(manuallyCorrected.source, 'manual');
+assert.equal(manuallyCorrected.affinity, null, 'identity correction invalidates the previous wine affinity');
+assert.equal(manuallyCorrected.sensoryAttributes, null);
 assert.equal(areLikelyDuplicateWines(
   { ...candidates[0], name: 'Moscatel Dulce', producer: 'Bodega La Geria' },
   { ...candidates[0], name: 'Moscatel Dulce La Geria', producer: 'La Geria' },
@@ -398,6 +426,27 @@ const uncertainExplanation = buildDetailedAffinityExplanation(
   { score: 76, identificationConfidence: 0.55, sensorySource: 'inference' },
 );
 assert.ok(uncertainExplanation?.missingData.includes('identidad del vino confirmada'));
+const uncertainGuidance = buildAiRimContextGuidance({
+  context: 'label',
+  name: 'Candidato dudoso',
+  identityConfidence: 0.55,
+  affinity: 82,
+  uncertaintyReasons: ['Reflejo sobre la marca'],
+  hasAlternatives: true,
+}, { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 });
+assert.equal(uncertainGuidance.tone, 'caution');
+assert.match(uncertainGuidance.summary, /candidato, no una identidad cerrada/i);
+const groundedGuidance = buildAiRimContextGuidance({
+  context: 'comparison',
+  name: 'Vino confirmado',
+  identityConfidence: 0.9,
+  affinity: 84,
+  attributes: { potencia: 4, acidez: 3, dulzura: 1, taninos: 4, afrutado: 3 },
+  sensorySource: 'catalog',
+  hasAlternatives: true,
+}, { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 });
+assert.equal(groundedGuidance.tone, 'positive');
+assert.match(groundedGuidance.nextStep, /opcion mas segura/i);
 assert.equal(calculateLocalMatchrimAffinity(
   { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 },
   { potencia: 4, acidez: 3, dulzura: 1, taninos: 4, afrutado: 3 },

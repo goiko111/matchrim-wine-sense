@@ -93,6 +93,17 @@ const textFromUnknown = (value: unknown) => (
   typeof value === 'string' || typeof value === 'number' ? String(value) : ''
 );
 
+const normalizeCurrency = (value: unknown): NonNullable<WinerimWine['prices']>[number]['currency'] => {
+  if (typeof value === 'string' && value.trim()) return value;
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const record = value as Record<string, unknown>;
+    if (typeof record.name === 'string' && typeof record.symbol === 'string') {
+      return { name: record.name, symbol: record.symbol };
+    }
+  }
+  return '€';
+};
+
 const inferPriceKind = (raw: RawWinerimWine, numericPrice: number) => {
   const label = [
     raw.label,
@@ -144,23 +155,22 @@ const inferPriceKind = (raw: RawWinerimWine, numericPrice: number) => {
 const normalizePrice = (rawWine: RawWinerimWine) => {
   if (Array.isArray(rawWine.prices)) {
     const prices = rawWine.prices
-      .map((rawPrice) => {
+      .flatMap<NonNullable<WinerimWine['prices']>[number]>((rawPrice) => {
         const priceRecord = asRecord(rawPrice);
-        if (!priceRecord) return null;
+        if (!priceRecord) return [];
 
         const numericPrice = Number(priceRecord.price ?? priceRecord.precio);
-        if (!Number.isFinite(numericPrice)) return null;
+        if (!Number.isFinite(numericPrice)) return [];
         const priceKind = inferPriceKind({ ...rawWine, ...priceRecord }, numericPrice);
 
-        return {
+        return [{
           price: numericPrice,
-          currency: priceRecord.currency || priceRecord.moneda || '€',
+          currency: normalizeCurrency(priceRecord.currency ?? priceRecord.moneda),
           kind: priceKind.kind,
           isKindInferred: priceKind.isKindInferred,
           label: priceKind.label,
-        };
-      })
-      .filter((price): price is NonNullable<WinerimWine['prices']>[number] => price !== null);
+        }];
+      });
 
     return prices.length > 0 ? prices : undefined;
   }
@@ -173,7 +183,7 @@ const normalizePrice = (rawWine: RawWinerimWine) => {
 
   return [{
     price: numericPrice,
-    currency: (rawWine.currency || rawWine.moneda || '€') as string | { name: string; symbol: string },
+    currency: normalizeCurrency(rawWine.currency ?? rawWine.moneda),
     kind: priceKind.kind,
     isKindInferred: priceKind.isKindInferred,
     label: priceKind.label,

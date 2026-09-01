@@ -1,0 +1,132 @@
+[
+  {
+    "case": "privacidad_y_safe_area",
+    "expected": "sin acceso a fotos antes del consentimiento, sin solapes y por debajo de 59 px de safe area",
+    "actual": "PASS gate_y=271.5 acknowledgement_bottom=683.5 cta_flow_top=695.5 visible_cta_bottom=572.5 nav_top=779.0 {'scrollWidth': 393, 'clientWidth': 393}"
+  },
+  {
+    "case": "privacidad_paisaje",
+    "expected": "consentimiento desplazable y CTA visible sobre la navegacion a 932x430",
+    "actual": "PASS cta_bottom=239.0 boundary=409.0 {'scrollWidth': 932, 'clientWidth': 932}"
+  },
+  {
+    "case": "multietiqueta_resumen",
+    "expected": "5 regiones, 3 referencias, duplicado agrupado, duda y objeto sin reconocer",
+    "actual": "PASS"
+  },
+  {
+    "case": "multietiqueta_comparacion",
+    "expected": "compara referencias y cambia entre decisi\u00f3n personal y servicio sin inventar un score",
+    "actual": "PASS"
+  },
+  {
+    "case": "multietiqueta_metricas",
+    "expected": "resumen visible de regiones y tiempo total tras terminar",
+    "actual": "PASS 5 regiones en 0.1 s"
+  },
+  {
+    "case": "multietiqueta_overflow_movil",
+    "expected": "sin desbordamiento horizontal a 393x852 con nombres largos",
+    "actual": "PASS {'scrollWidth': 393, 'clientWidth': 393}"
+  },
+  {
+    "case": "multietiqueta_detalle",
+    "expected": "top candidatos, evidencia, duda, gate de identidad y afinidad explicada en drawer",
+    "actual": "PASS"
+  },
+  {
+    "case": "multietiqueta_abstencion_y_correccion",
+    "expected": "motivo de abstencion, acciones, correccion manual y afinidad pendiente sin datos",
+    "actual": "PASS"
+  },
+  {
+    "case": "multietiqueta_correccion_invalida_afinidad",
+    "expected": "corregir la identidad elimina afinidad y ficha sensorial heredadas del vino anterior",
+    "actual": "PASS"
+  },
+  {
+    "case": "multietiqueta_refinamiento_regional",
+    "expected": "respuesta completa invalida dispara full+2 zonas, descarta franjas y conserva dos botellas",
+    "actual": "PASS tiles=['full', 'left', 'right'] summary=2 regiones en 0.1 s \u00b7 deteccion refinada por zonas {'scrollWidth': 393, 'clientWidth': 393}"
+  },
+  {
+    "case": "multietiqueta_fallback_regional",
+    "expected": "si una zona falla tras retry se conserva la deteccion completa utilizable",
+    "actual": "PASS attempts={'full': 1, 'left': 1, 'right': 2} summary=1 regiones en 0.7 s \u00b7 1 reintento"
+  },
+  {
+    "case": "multietiqueta_decision_provisional",
+    "expected": "ninguna identidad dudosa se presenta como eleccion final",
+    "actual": "PASS {'scrollWidth': 393, 'clientWidth': 393}"
+  },
+  {
+    "case": "multietiqueta_retry_selectivo",
+    "expected": "503 de detector/region se reintenta una vez, 400 no se repite y el lote termina",
+    "actual": "PASS attempts={'detector': 2, 'region-2': 1, 'region-1': 2, 'region-3': 1, 'region-4': 1, 'region-5': 1} summary=5 regiones en 1.3 s \u00b7 2 reintentos"
+  },
+  {
+    "case": "multietiqueta_cancelacion_backoff",
+    "expected": "cancelar durante Retry-After evita una segunda llamada",
+    "actual": "PASS attempts={'region-2': 1, 'region-1': 1, 'region-3': 1, 'region-4': 1, 'region-5': 1}"
+  },
+  {
+    "case": "carta_vista_dual",
+    "expected": "imagen con pines numericos y lista sincronizada sin texto superpuesto",
+    "actual": "PASS"
+  },
+  {
+    "case": "carta_comparacion_servicio",
+    "expected": "comparaci\u00f3n completa de 2 a 5 con presupuesto y formato por copa verificables",
+    "actual": "PASS"
+  },
+  {
+    "case": "carta_overflow_escritorio",
+    "expected": "sin desbordamiento horizontal a 1440x1000",
+    "actual": "PASS {'scrollWidth': 1440, 'clientWidth': 1440}"
+  },
+  {
+    "case": "carta_interaccion",
+    "expected": "zoom, filtro por precio y drawer detallado",
+    "actual": "PASS"
+  },
+  {
+    "case": "fixture_IMG_7548 2",
+    "expected": "decodifica, normaliza y presenta resultados a 430x932",
+    "actual": "PASS {'scrollWidth': 430, 'clientWidth': 430}"
+  },
+  {
+    "case": "fixture_IMG_7552 2",
+    "expected": "decodifica, normaliza y presenta resultados a 932x430",
+    "actual": "PASS {'scrollWidth': 932, 'clientWidth': 932}"
+  },
+  {
+    "case": "fixture_IMG_7553 2",
+    "expected": "decodifica, normaliza y presenta resultados a 430x932",
+    "actual": "PASS {'scrollWidth': 430, 'clientWidth': 430}"
+  },
+  {
+    "case": "carta_touch_targets",
+    "expected": "pins, zoom y cierre con zonas tactiles de al menos 44x44 px",
+    "actual": "PASS [{'width': 55, 'height': 55}, {'width': 55, 'height': 55}, {'width': 55, 'height': 55}, {'width': 55, 'height': 55}]"
+  },
+  {
+    "case": "carta_voiceover_basico",
+    "expected": "botones con nombre accesible, dialogo identificado y cierre nombrado",
+    "actual": "PASS"
+  },
+  {
+    "case": "carta_dynamic_type_125",
+    "expected": "texto al 125% sin desbordamiento horizontal ni controles inaccesibles",
+    "actual": "PASS {'scrollWidth': 393, 'clientWidth': 393}"
+  },
+  {
+    "case": "multietiqueta_sin_red",
+    "expected": "mensaje accionable, foto conservada y reintento disponible",
+    "actual": "PASS"
+  },
+  {
+    "case": "consola",
+    "expected": "sin errores de consola",
+    "actual": "PASS"
+  }
+]

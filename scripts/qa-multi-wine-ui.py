@@ -354,7 +354,13 @@ def run_label_qa(browser, results, console_errors):
     assert page.get_by_text("Marques de Riscal Reserva", exact=True).count() >= 1
     assert page.get_by_text("Baron Saint George Grand Vin de Bordeaux", exact=True).count() >= 1
     assert page.get_by_text("2 botellas", exact=False).count() >= 1
-    assert page.get_by_role("button", name="Confirmar 3 referencias").count() == 1
+    assert page.get_by_role("button", name="Confirmar 2 referencias").count() == 1
+    first_pin_box = page.get_by_test_id("region-pin-1").bounding_box()
+    first_outline = page.get_by_test_id("region-outline-1")
+    first_outline_box = first_outline.bounding_box()
+    assert first_pin_box["width"] >= 44 and first_pin_box["height"] >= 44, first_pin_box
+    assert first_outline.evaluate("element => getComputedStyle(element).pointerEvents") == "none"
+    assert first_outline_box["width"] > 0 and first_outline_box["height"] > 0, first_outline_box
     comparison = page.locator('section[aria-labelledby="wine-comparison-title"]')
     comparison.get_by_text("Comparar 2–5 vinos", exact=True).wait_for()
     selected_count = comparison.locator("span", has_text="/5 seleccionados").first.inner_text()
@@ -371,16 +377,27 @@ def run_label_qa(browser, results, console_errors):
     page.get_by_role("button", name="Region 2, Dudoso").click()
     page.get_by_text("Candidatos", exact=True).wait_for()
     assert page.get_by_text("Duda:").count() >= 1
+    guide = page.get_by_test_id("airim-context-guide")
+    guide.get_by_text("Confirma antes de elegir", exact=True).wait_for()
     assert page.get_by_text("Por que encaja", exact=True).count() >= 1
     assert page.get_by_text("Lo que podria no encajar", exact=True).count() >= 1
+    assert page.get_by_text("Coincidencias principales", exact=True).count() >= 1
+    assert page.get_by_text("Fricciones", exact=True).count() >= 1
     assert page.get_by_text("Datos y limites del calculo", exact=True).count() >= 1
     identity_warning = page.get_by_text("Identidad sin confirmar", exact=False)
     assert identity_warning.count() >= 1
     results.append({"case": "multietiqueta_detalle", "expected": "top candidatos, evidencia, duda, gate de identidad y afinidad explicada en drawer", "actual": "PASS"})
+    guide.scroll_into_view_if_needed()
+    page.screenshot(path=str(ARTIFACTS / "multi-label-airim-guide-mobile.png"), full_page=False)
     identity_warning.scroll_into_view_if_needed()
     page.screenshot(path=str(ARTIFACTS / "multi-label-detail-mobile.png"), full_page=False)
+    guide.get_by_role("button", name="Confirmar este candidato").click()
+    page.get_by_text("Region 2: Reconocido", exact=True).wait_for()
     page.get_by_role("button", name="Cerrar").click()
+    confirmed_candidate_labels = page.locator("button").filter(has_text="Confirmar").all_inner_texts()
+    assert any("Confirmar 3 referencias" in label for label in confirmed_candidate_labels), confirmed_candidate_labels
     page.get_by_role("button", name="Region 5, Sin reconocer").click()
+    page.get_by_test_id("airim-context-guide").get_by_text("Primero, una identidad verificable", exact=True).wait_for()
     fallback_message = page.get_by_text("No hay texto legible suficiente", exact=False)
     fallback_message.wait_for()
     fallback_message.scroll_into_view_if_needed()
@@ -397,6 +414,30 @@ def run_label_qa(browser, results, console_errors):
     results.append({
         "case": "multietiqueta_abstencion_y_correccion",
         "expected": "motivo de abstencion, acciones, correccion manual y afinidad pendiente sin datos",
+        "actual": "PASS",
+    })
+    context.close()
+
+
+def run_identity_correction_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+    install_routes(page, console_errors)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
+    page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
+    page.get_by_role("button", name="Region 1, Reconocido").click()
+    page.get_by_label("Vino", exact=True).fill("Identidad corregida")
+    page.get_by_text("Afinidad sin desglose suficiente", exact=True).wait_for()
+    guide = page.get_by_test_id("airim-context-guide")
+    guide.get_by_text("Identidad lista; afinidad pendiente", exact=True).wait_for()
+    assert guide.get_by_text("Esta guia explica datos existentes", exact=False).count() == 1
+    guide.scroll_into_view_if_needed()
+    page.screenshot(path=str(ARTIFACTS / "multi-label-identity-correction-mobile.png"), full_page=False)
+    results.append({
+        "case": "multietiqueta_correccion_invalida_afinidad",
+        "expected": "corregir la identidad elimina afinidad y ficha sensorial heredadas del vino anterior",
         "actual": "PASS",
     })
     context.close()
@@ -676,9 +717,13 @@ def run_menu_qa(browser, results, console_errors):
     page.get_by_role("button", name="Abrir vino 2: Pazo de Senorans").click()
     detail_drawer = page.get_by_role("dialog")
     detail_drawer.get_by_text("Afinidad estimada", exact=True).wait_for()
+    menu_guide = detail_drawer.get_by_test_id("airim-context-guide")
+    menu_guide.get_by_text("Por que puede encajar", exact=True).wait_for()
     assert detail_drawer.get_by_text("≈79%", exact=True).count() >= 1
     assert detail_drawer.get_by_text("Por que encaja", exact=True).count() >= 1
     results.append({"case": "carta_interaccion", "expected": "zoom, filtro por precio y drawer detallado", "actual": "PASS"})
+    menu_guide.scroll_into_view_if_needed()
+    page.screenshot(path=str(ARTIFACTS / "wine-menu-airim-guide-desktop.png"), full_page=False)
     page.screenshot(path=str(ARTIFACTS / "wine-menu-detail-desktop.png"), full_page=False)
     context.close()
 
@@ -802,6 +847,7 @@ def main():
         run_privacy_safe_area_qa(browser, results, console_errors)
         run_privacy_landscape_qa(browser, results, console_errors)
         run_label_qa(browser, results, console_errors)
+        run_identity_correction_qa(browser, results, console_errors)
         run_regional_detection_qa(browser, results, console_errors)
         run_regional_detection_fallback_qa(browser, results)
         run_provisional_decision_qa(browser, results, console_errors)

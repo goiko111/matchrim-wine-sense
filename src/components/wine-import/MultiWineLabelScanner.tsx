@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AffinityExplanation } from '@/components/AffinityExplanation';
+import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { Button } from '@/components/ui/button';
 import {
@@ -45,7 +46,10 @@ import {
 } from '@/utils/wineAffinityExplanation';
 import {
   buildWineDetectionTiles,
+  confirmWineCandidateIdentity,
+  correctWineCandidateIdentity,
   determineRegionStatus,
+  getConfirmableWineGroups,
   getFullWineDetectionTile,
   getSelectedCandidate,
   groupDuplicateWines,
@@ -170,6 +174,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   const selectedCandidate = selectedRegion ? getSelectedCandidate(selectedRegion) : null;
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
   const duplicateGroups = useMemo(() => groupDuplicateWines(regions), [regions]);
+  const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions), [regions]);
   const rankedGroups = useMemo(() => [...duplicateGroups].sort((a, b) => (
     (b.candidate.affinity ?? -1) - (a.candidate.affinity ?? -1)
   )), [duplicateGroups]);
@@ -528,18 +533,30 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       return {
         ...current,
         selectedCandidateId: candidateId,
-        status: candidate && candidate.confidence >= 0.72 ? 'recognized' : 'uncertain',
+        status: candidate ? determineRegionStatus([candidate]) : 'unrecognized',
       };
     });
   };
 
-  const editCandidate = (patch: Partial<WineCandidate>) => {
+  const confirmSelectedCandidate = () => {
     if (!selectedRegion || !selectedCandidate) return;
     updateRegion(selectedRegion.id, (current) => ({
       ...current,
       status: 'recognized',
       candidates: current.candidates.map((candidate) => candidate.id === selectedCandidate.id
-        ? { ...candidate, ...patch, source: 'manual', confidence: 1, uncertaintyReasons: [] }
+        ? confirmWineCandidateIdentity(candidate)
+        : candidate),
+    }));
+    toast.success('Identidad confirmada por el usuario');
+  };
+
+  const editCandidate = (patch: Pick<Partial<WineCandidate>, 'name' | 'producer'>) => {
+    if (!selectedRegion || !selectedCandidate) return;
+    updateRegion(selectedRegion.id, (current) => ({
+      ...current,
+      status: 'recognized',
+      candidates: current.candidates.map((candidate) => candidate.id === selectedCandidate.id
+        ? correctWineCandidateIdentity(candidate, patch)
         : candidate),
     }));
   };
@@ -592,7 +609,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const confirmBatch = async () => {
-    const groups = groupDuplicateWines(regions).filter((group) => group.candidate.name);
+    const groups = getConfirmableWineGroups(regions).filter((group) => group.candidate.name);
     if (!groups.length) {
       toast.error('No hay referencias confirmables en este lote');
       return;
@@ -705,21 +722,41 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
             <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-900">{errorMessage}</div>
           )}
 
-          <div className="relative overflow-hidden bg-black">
-            <img src={preview} alt="Foto analizada con regiones numeradas" className="block max-h-[68vh] w-full object-contain" />
+          <div
+            className="relative mx-auto overflow-hidden bg-black"
+            style={{
+              aspectRatio: quality?.width && quality?.height ? `${quality.width} / ${quality.height}` : undefined,
+              width: '100%',
+              maxWidth: quality?.width && quality?.height
+                ? `min(100%, ${68 * quality.width / quality.height}vh)`
+                : '100%',
+            }}
+          >
+            <img src={preview} alt="Foto analizada con regiones numeradas" className="absolute inset-0 block h-full w-full object-contain" />
             {regions.filter((region) => region.status !== 'discarded').map((region) => (
-              <button
-                key={region.id}
-                type="button"
-                className={`absolute min-h-11 min-w-11 border-2 transition ${selectedRegionId === region.id ? 'ring-2 ring-white ring-offset-1 ring-offset-black' : ''} ${statusClass(region)}`}
-                style={{ left: `${region.box.x}%`, top: `${region.box.y}%`, width: `${region.box.width}%`, height: `${region.box.height}%`, backgroundColor: 'transparent' }}
-                onClick={() => setSelectedRegionId(region.id)}
-                aria-label={`Region ${region.index}, ${statusLabel(region)}`}
-              >
-                <span className={`absolute -left-1 -top-1 flex h-7 min-w-7 items-center justify-center rounded-full px-1 text-xs font-bold shadow ${statusClass(region)}`}>
-                  {region.status === 'analyzing' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : region.index}
-                </span>
-              </button>
+              <div key={region.id}>
+                <div
+                  className={`pointer-events-none absolute border-2 transition ${selectedRegionId === region.id ? 'ring-2 ring-white ring-offset-1 ring-offset-black' : ''} ${statusClass(region)}`}
+                  style={{ left: `${region.box.x}%`, top: `${region.box.y}%`, width: `${region.box.width}%`, height: `${region.box.height}%`, backgroundColor: 'transparent' }}
+                  data-testid={`region-outline-${region.index}`}
+                  aria-hidden="true"
+                />
+                <button
+                  type="button"
+                  className="absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  style={{
+                    left: `${Math.max(5, Math.min(95, region.box.x + Math.min(5, region.box.width / 2)))}%`,
+                    top: `${Math.max(5, Math.min(95, region.box.y + Math.min(5, region.box.height / 2)))}%`,
+                  }}
+                  onClick={() => setSelectedRegionId(region.id)}
+                  aria-label={`Region ${region.index}, ${statusLabel(region)}`}
+                  data-testid={`region-pin-${region.index}`}
+                >
+                  <span className={`flex h-7 min-w-7 items-center justify-center rounded-full border px-1 text-xs font-bold shadow ${statusClass(region)}`}>
+                    {region.status === 'analyzing' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : region.index}
+                  </span>
+                </button>
+              </div>
             ))}
           </div>
 
@@ -800,10 +837,10 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                   type="button"
                   className="min-h-12 w-full gap-2"
                   onClick={() => void confirmBatch()}
-                  disabled={confirmed || rankedGroups.length === 0}
+                  disabled={confirmed || confirmableGroups.length === 0}
                 >
                   <Check className="h-4 w-4" />
-                  {confirmed ? 'Lote confirmado' : `Confirmar ${rankedGroups.length} referencia${rankedGroups.length === 1 ? '' : 's'}`}
+                  {confirmed ? 'Lote confirmado' : `Confirmar ${confirmableGroups.length} referencia${confirmableGroups.length === 1 ? '' : 's'}`}
                 </Button>
               )}
             </div>
@@ -829,6 +866,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
                 {selectedRegion.candidates.length === 0 ? (
                   <div className="space-y-4">
+                    <AiRimContextGuide
+                      context="label"
+                      name={null}
+                      identityConfidence={0}
+                      affinity={null}
+                      attributes={null}
+                      primaryAction={{ label: 'Reanalizar region', onClick: () => void reanalyzeSelected() }}
+                    />
                     <div className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
                       <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> Sin identidad fiable</div>
                       <p className="mt-1">{selectedRegion.fallback?.message ?? 'No hay evidencia visual suficiente para asignar un vino.'}</p>
@@ -915,6 +960,23 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                             <p className="mt-1">{selectedCandidate.uncertaintyReasons.join(' ')}</p>
                           </div>
                         )}
+
+                        <AiRimContextGuide
+                          context="label"
+                          name={selectedCandidate.name}
+                          identityConfidence={selectedCandidate.confidence}
+                          affinity={selectedCandidate.affinity}
+                          attributes={selectedCandidate.sensoryAttributes}
+                          sensorySource={selectedCandidate.source === 'catalog' ? 'catalog' : 'inference'}
+                          uncertaintyReasons={selectedCandidate.uncertaintyReasons}
+                          hasAlternatives={selectedRegion.candidates.length > 1 || duplicateGroups.length > 1}
+                          primaryAction={selectedRegion.status === 'uncertain'
+                            ? { label: 'Confirmar este candidato', onClick: confirmSelectedCandidate }
+                            : null}
+                          secondaryAction={selectedRegion.status === 'uncertain'
+                            ? { label: 'Reanalizar region', onClick: () => void reanalyzeSelected() }
+                            : null}
+                        />
 
                         {selectedCandidate.evidence.length > 0 && (
                           <div className="text-sm">
