@@ -2,5 +2,5 @@
   "appId": "wine.matchrim.app",
   "appName": "Matchrim",
   "webDir": "dist",
-  "bundledWebRuntime": false
+  "packageClassList": []
 }
