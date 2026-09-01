@@ -1,0 +1,2633 @@
+{
+  "dataset_id": "matchrim-ground-truth-v1",
+  "interception": false,
+  "production_guard": true,
+  "selected_scene_count": 5,
+  "summary": {
+    "scene_count": 5,
+    "all_passed": false,
+    "pass_rate": 0.8,
+    "original_pass_rate": 0.8,
+    "controlled_variant_pass_rate": null,
+    "operational": {
+      "terminal_completion_rate": 1.0,
+      "console_error_scene_count": 0,
+      "recovered_transient_analysis_failures": 0
+    },
+    "identity_micro": {
+      "scene_count": 4,
+      "matched": 49,
+      "actual": 49,
+      "expected": 56,
+      "precision": 1.0,
+      "recall": 0.875,
+      "false_positives": 0,
+      "missed": 7
+    },
+    "detection_micro": {
+      "scene_count": 0,
+      "matched": 0,
+      "actual": 0,
+      "expected": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "mean_iou": 0.0,
+      "iou_threshold": 0.3
+    },
+    "abstention": {
+      "scene_count": 0,
+      "passed": 0,
+      "high_confidence_results": 0,
+      "false_positive_names": 0
+    },
+    "fridge_detection": {
+      "scene_count": 1,
+      "precision": null,
+      "precision_note": "Unavailable until exhaustive per-bottle boxes are human-annotated.",
+      "mean_capped_count_recall": 1.0,
+      "mean_absolute_count_recall": 0.6
+    },
+    "latency_ms": {
+      "mean": 35235,
+      "median": 32526,
+      "max": 53497
+    }
+  },
+  "results": [
+    {
+      "fixture": "multibottle-fridge--original",
+      "source": "/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/matchrim-ground-truth-v1/scenes/multibottle-fridge--original.jpg",
+      "fixture_sha256": "56f2033251b17bee0fc5162a526051269254bf7d4a218f3c0f3ee915925d47cc",
+      "mode": "etiqueta",
+      "expected_results": 12,
+      "expected_rationale": "fridge_display / baseline / Human count review; identities intentionally not treated as exhaustive ground truth.",
+      "expectation": "inherit",
+      "terminal_state": "completed",
+      "actual_results": 30,
+      "anchored_pins": 10,
+      "individual_affinity_scores": 21,
+      "high_confidence_results": 7,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": null,
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Barbera d'Asti",
+        "EAU de PROVENCE",
+        "Sayanus",
+        "Soto Chalero Joven",
+        "Brut Grande R\u00e9serve",
+        "Brut Classic",
+        "Kripta",
+        "Andr\u00e9 Clouet Grande R\u00e9serve",
+        "Pazo Gil Albari\u00f1o",
+        "Champagne Deutz",
+        "Champagne Haton R\u00e9serve",
+        "Kripta Gran Reserva Brut Nature",
+        "Champagne Haton",
+        "Champagne G. Haton Blanc de Blancs",
+        "Brut Grande R\u00e9serve",
+        "Lulu Un Improbable Blanco",
+        "Merum Priorati D.O.Q. Priorat Blanc Alantaria",
+        "Cuv\u00e9e Bayanus Aripta",
+        "Merla Cantabria Oranza",
+        "Charles Elsie",
+        "Lulu - Les Deuillers"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v3",
+        "detected_boxes": [
+          {
+            "x": 89.92,
+            "y": 9.56,
+            "width": 9.75,
+            "height": 31.06
+          },
+          {
+            "x": 10.33,
+            "y": 9.94,
+            "width": 10.5,
+            "height": 31.06
+          },
+          {
+            "x": 50.83,
+            "y": 10.75,
+            "width": 10.25,
+            "height": 31.06
+          },
+          {
+            "x": 62.33,
+            "y": 10.88,
+            "width": 8,
+            "height": 30.56
+          },
+          {
+            "x": 29.25,
+            "y": 11.25,
+            "width": 9.17,
+            "height": 30.69
+          },
+          {
+            "x": 40,
+            "y": 11.25,
+            "width": 10.17,
+            "height": 31
+          },
+          {
+            "x": 20.83,
+            "y": 12.06,
+            "width": 8.75,
+            "height": 29.56
+          },
+          {
+            "x": 37.58,
+            "y": 41,
+            "width": 7.5,
+            "height": 28.63
+          },
+          {
+            "x": 53.67,
+            "y": 41.56,
+            "width": 7.08,
+            "height": 28.56
+          },
+          {
+            "x": 29.17,
+            "y": 41.69,
+            "width": 7.83,
+            "height": 28.88
+          },
+          {
+            "x": 62,
+            "y": 41.69,
+            "width": 7.67,
+            "height": 28.5
+          },
+          {
+            "x": 89.25,
+            "y": 42.06,
+            "width": 8.08,
+            "height": 28.81
+          },
+          {
+            "x": 20.92,
+            "y": 42.13,
+            "width": 7.75,
+            "height": 28.75
+          },
+          {
+            "x": 45.42,
+            "y": 42.19,
+            "width": 7.67,
+            "height": 28.31
+          },
+          {
+            "x": 69.83,
+            "y": 42.38,
+            "width": 7.08,
+            "height": 28.19
+          },
+          {
+            "x": 78.42,
+            "y": 42.56,
+            "width": 7.5,
+            "height": 28.69
+          },
+          {
+            "x": 64.67,
+            "y": 70.06,
+            "width": 9,
+            "height": 28.69
+          },
+          {
+            "x": 56,
+            "y": 70.81,
+            "width": 8.67,
+            "height": 27.81
+          },
+          {
+            "x": 38,
+            "y": 71,
+            "width": 9,
+            "height": 27.81
+          },
+          {
+            "x": 47.17,
+            "y": 71.19,
+            "width": 8.67,
+            "height": 27.81
+          },
+          {
+            "x": 29.58,
+            "y": 71.38,
+            "width": 8.58,
+            "height": 27.56
+          },
+          {
+            "x": 82.08,
+            "y": 71.44,
+            "width": 7.75,
+            "height": 27.56
+          },
+          {
+            "x": 89,
+            "y": 71.44,
+            "width": 8.5,
+            "height": 27.56
+          },
+          {
+            "x": 73.67,
+            "y": 71.69,
+            "width": 8.17,
+            "height": 27.06
+          },
+          {
+            "x": 19.33,
+            "y": 72.06,
+            "width": 9.67,
+            "height": 26.69
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v3-grounded"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 25,
+          "estimated_visible_objects": 25,
+          "confidence": 0.95,
+          "notes": []
+        },
+        "detected_regions": 25,
+        "analyzed_regions": 30,
+        "analysis_attempts": 30,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 21,
+        "candidate_names": [
+          "Champagne Haton",
+          "Champagne Deutz",
+          "Cuv\u00e9e Bayanus Aripta",
+          "Kripta Gran Reserva Brut Nature",
+          "Champagne G. Haton Blanc de Blancs",
+          "Sayanus",
+          "Champagne Haton R\u00e9serve",
+          "Charles Elsie",
+          "Brut Grande R\u00e9serve",
+          "Kripta",
+          "Brut Grande R\u00e9serve",
+          "Merla Cantabria Oranza",
+          "EAU de PROVENCE",
+          "Barbera d'Asti",
+          "Merum Priorati D.O.Q. Priorat Blanc Alantaria",
+          "Soto Chalero Joven",
+          "Brut Classic",
+          "Lulu - Les Deuillers",
+          "Andr\u00e9 Clouet Grande R\u00e9serve",
+          "Pazo Gil Albari\u00f1o",
+          "Lulu Un Improbable Blanco"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-8",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Champagne Haton",
+            "confidence": 0.85,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-2",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Champagne Deutz",
+            "confidence": 0.95,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-9",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Cuv\u00e9e Bayanus Aripta",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-7",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Kripta Gran Reserva Brut Nature",
+            "confidence": 0.85,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-6",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Champagne G. Haton Blanc de Blancs",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-3",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Sayanus",
+            "confidence": 0.85,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-4",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Champagne Haton R\u00e9serve",
+            "confidence": 0.85,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Charles Elsie",
+            "confidence": 0.5,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-5",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity"
+          },
+          {
+            "region_id": "region-13",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity"
+          },
+          {
+            "region_id": "region-10",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Brut Grande R\u00e9serve",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-14",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Kripta",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-11",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Brut Grande R\u00e9serve",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-26",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity"
+          },
+          {
+            "region_id": "region-28",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Merla Cantabria Oranza",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-30",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "EAU de PROVENCE",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-27",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Barbera d'Asti",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-29",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Merum Priorati D.O.Q. Priorat Blanc Alantaria",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-19",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Soto Chalero Joven",
+            "confidence": 0.85,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-12",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Brut Classic",
+            "confidence": 0.85,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-20",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Lulu - Les Deuillers",
+            "confidence": 0.5,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-15",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Andr\u00e9 Clouet Grande R\u00e9serve",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-24",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Pazo Gil Albari\u00f1o",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-22",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text"
+          },
+          {
+            "region_id": "region-18",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text"
+          },
+          {
+            "region_id": "region-23",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity"
+          },
+          {
+            "region_id": "region-16",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text"
+          },
+          {
+            "region_id": "region-21",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity"
+          },
+          {
+            "region_id": "region-17",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity"
+          },
+          {
+            "region_id": "region-25",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Lulu Un Improbable Blanco",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null
+          }
+        ]
+      },
+      "latency_ms": 53497,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-sm font-semibold text-slate-950",
+          "clientWidth": 263,
+          "scrollWidth": 300,
+          "text": "Merum Priorati D.O.Q. Priorat Blanc Alantaria"
+        }
+      ],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "screenshot": "/Users/GOIKO/2matchrim-build61-hotfix-qa-20260901/qa-artifacts/2026-09-01-build62-backend-gate/run-1/multibottle-fridge--original-real-mobile.png",
+      "status": "PASS",
+      "visible_excerpt": "\u00e9 Clouet \u00b7 Champagne\n73%\nAfinidad estimada\n6\nBrut Classic\nChampagne Deutz \u00b7 Champagne\n71%\nAfinidad estimada\n7\nKripta\nAgust\u00ed Torell\u00f3 Mata \u00b7 Pened\u00e8s\n71%\nAfinidad estimada\n8\nAndr\u00e9 Clouet Grande R\u00e9serve\nAndr\u00e9 Clouet \u00b7 Champagne\n71%\nAfinidad estimada\n9\nPazo Gil Albari\u00f1o\nPazo Gil \u00b7 R\u00edas Baixas\n71%\nAfinidad estimada\n10\nChampagne Deutz\nChampagne Deutz \u00b7 Champagne\n69%\nAfinidad estimada\n11\nChampagne Haton R\u00e9serve\nHaton \u00b7 Champagne\n69%\nAfinidad estimada\n12\nKripta Gran Reserva Brut Nature\nCodorn\u00edu \u00b7 Cava\n69%\nAfinidad estimada\n13\nChampagne Haton\nChampagne Haton \u00b7 Champagne\n69%\nAfinidad estimada\n14\nChampagne G. Haton Blanc de Blancs\nG. Haton \u00b7 Champagne\n69%\nAfinidad estimada\n15\nBrut Grande R\u00e9serve\nAndr\u00e9 Clouet \u00b7 Champagne\n69%\nAfinidad estimada\n16\nLulu Un Improbable Blanco\nIdentidad parcial\n67%\nAfinidad estimada\n17\nMerum Priorati D.O.Q. Priorat Blanc Alantaria\nMerum Priorati \u00b7 Priorat\n67%\nAfinidad estimada\n18\nCuv\u00e9e Bayanus Aripta\nIdentidad parcial\n40%\nAfinidad estimada\n19\nMerla Cantabria Oranza\nRioja\n40%\nAfinidad estimada\n20\nCharles Elsie\nIdentidad parcial\n40%\nAfinidad estimada\n21\nLulu - Les Deuillers\nIdentidad parcial\n40%\nAfinidad estimada\nConfirmar 7 referencias\nInicio\nTest\nEscanear\naiRIM\nVinos",
+      "source_id": "multibottle-fridge",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "count_threshold",
+        "visible_bottles_estimate": 50,
+        "expected_min_regions": 12,
+        "expected_min_identified": 6,
+        "detector_cap": 30,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "56f2033251b17bee0fc5162a526051269254bf7d4a218f3c0f3ee915925d47cc"
+    },
+    {
+      "fixture": "img-7547-2--original",
+      "source": "/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/matchrim-ground-truth-v1/scenes/img-7547-2--original.jpg",
+      "fixture_sha256": "e85bb5c6775d673db872c6be6cd1e5e0877d652586f62e796f9bc932409fdffd",
+      "mode": "carta-vinos",
+      "expected_results": 16,
+      "expected_rationale": "dense_printed_menu / baseline / Human-reviewed line identities from the P0 acceptance matrix.",
+      "expectation": "inherit",
+      "terminal_state": "completed",
+      "actual_results": 9,
+      "anchored_pins": 3,
+      "individual_affinity_scores": 9,
+      "high_confidence_results": 8,
+      "coverage": {
+        "status": "reported_complete",
+        "extracted_wines": 8
+      },
+      "accuracy": {
+        "expected_count": 16,
+        "actual_count": 9,
+        "matched_count": 9,
+        "precision": 1.0,
+        "recall": 0.562,
+        "matches": [
+          {
+            "expected": "Nebbiolo Nino Negri",
+            "actual": "Nebbiolo || Nino Negri Nebbiolo",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Dolcetto d'Alba Elio Grasso",
+            "actual": "Dolcetto d'Alba || Elio Grasso Dolcetto d'Alba",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Barolo Marchesi di Barolo",
+            "actual": "Barbaresco Marchesi di Barolo || Marchesi di Barolo Barbaresco Marchesi di Barolo",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Amarone",
+            "actual": "Amarone || Valpolicella Amarone",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Pouilly Fume Blanc Reverdy y Fils",
+            "actual": "Pouilly Fum\u00e9 Blanc || Reverdy y Fils Pouilly Fum\u00e9 Blanc",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Quater Vitis Firriato",
+            "actual": "Quater Vitis || Firriato Quater Vitis",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Greco di Tufo Terredora di Paolo",
+            "actual": "Greco di tufo Terredora di Paolo || Terredora di Paolo Greco di tufo Terredora di Paolo",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Lugana Allegrini",
+            "actual": "Lugana || Allegrini Lugana",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Bricco dell'Uccellone Barbera",
+            "actual": "Bricco dell'Uccellone || Braida Bricco dell'Uccellone",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": [
+          "Laurent Perrier La Cuvee",
+          "Laurent Perrier Ultra Brut",
+          "Laurent Perrier Rose",
+          "Gaudensius blanco",
+          "Barbaresco Marchesi di Barolo",
+          "Costa di Rose",
+          "La Rosa"
+        ]
+      },
+      "canonical_accuracy": {
+        "expected_count": 16,
+        "actual_count": 8,
+        "matched_count": 8,
+        "precision": 1.0,
+        "recall": 0.5,
+        "matches": [
+          {
+            "expected": "Nebbiolo Nino Negri",
+            "actual": "Nino Negri Nebbiolo Premium Red / Tinto",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Dolcetto d'Alba Elio Grasso",
+            "actual": "Elio Grasso Dolcetto d'Alba Premium Red / Tinto",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Barolo Marchesi di Barolo",
+            "actual": "Marchesi di Barolo Barbaresco Marchesi di Barolo Premium Red / Tinto",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Pouilly Fume Blanc Reverdy y Fils",
+            "actual": "Reverdy y Fils Pouilly Fum\u00e9 Blanc Premium White / Blanco",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Quater Vitis Firriato",
+            "actual": "Firriato Quater Vitis Premium White / Blanco",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Lugana Allegrini",
+            "actual": "Allegrini Lugana Premium White / Blanco",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Greco di Tufo Terredora di Paolo",
+            "actual": "Terredora di Paolo Greco di tufo Terredora di Paolo Premium White / Blanco",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Bricco dell'Uccellone Barbera",
+            "actual": "Braida Bricco dell'Uccellone Premium Red / Tinto",
+            "similarity": 0.75
+          }
+        ],
+        "false_positives": [],
+        "missed": [
+          "Laurent Perrier La Cuvee",
+          "Laurent Perrier Ultra Brut",
+          "Laurent Perrier Rose",
+          "Gaudensius blanco",
+          "Amarone",
+          "Barbaresco Marchesi di Barolo",
+          "Costa di Rose",
+          "La Rosa"
+        ]
+      },
+      "displayed_names": [
+        "Bricco dell'Uccellone || Braida Bricco dell'Uccellone",
+        "Nebbiolo || Nino Negri Nebbiolo",
+        "Barbaresco Marchesi di Barolo || Marchesi di Barolo Barbaresco Marchesi di Barolo",
+        "Dolcetto d'Alba || Elio Grasso Dolcetto d'Alba",
+        "Amarone || Valpolicella Amarone",
+        "Greco di tufo Terredora di Paolo || Terredora di Paolo Greco di tufo Terredora di Paolo",
+        "Quater Vitis || Firriato Quater Vitis",
+        "Pouilly Fum\u00e9 Blanc || Reverdy y Fils Pouilly Fum\u00e9 Blanc",
+        "Lugana || Allegrini Lugana"
+      ],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 1,
+        "versions": [
+          "scan-wine-menu-2026-08-26-grounded-v3"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "extracted_wines": 8
+        },
+        "names": [
+          "Allegrini Lugana Premium White / Blanco",
+          "Terredora di Paolo Greco di tufo Terredora di Paolo Premium White / Blanco",
+          "Firriato Quater Vitis Premium White / Blanco",
+          "Reverdy y Fils Pouilly Fum\u00e9 Blanc Premium White / Blanco",
+          "Marchesi di Barolo Barbaresco Marchesi di Barolo Premium Red / Tinto",
+          "Elio Grasso Dolcetto d'Alba Premium Red / Tinto",
+          "Braida Bricco dell'Uccellone Premium Red / Tinto",
+          "Nino Negri Nebbiolo Premium Red / Tinto"
+        ],
+        "items": [
+          {
+            "name": "Lugana",
+            "producer": "Allegrini",
+            "vintage": null,
+            "section": "Premium White / Blanco",
+            "price": 12,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Lugana Allegrini 12",
+            "position": {
+              "x": 30.5,
+              "y": 38.6,
+              "width": 17.0,
+              "height": 1.2,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Greco di tufo Terredora di Paolo",
+            "producer": "Terredora di Paolo",
+            "vintage": null,
+            "section": "Premium White / Blanco",
+            "price": 12,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Greco di tufo Terredora di Paolo 12",
+            "position": {
+              "x": 30.5,
+              "y": 41.0,
+              "width": 27.0,
+              "height": 1.2,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Quater Vitis",
+            "producer": "Firriato",
+            "vintage": null,
+            "section": "Premium White / Blanco",
+            "price": 13,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Quater vitis Firriato 13",
+            "position": {
+              "x": 30.5,
+              "y": 43.4,
+              "width": 20.0,
+              "height": 1.2,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Pouilly Fum\u00e9 Blanc",
+            "producer": "Reverdy y Fils",
+            "vintage": null,
+            "section": "Premium White / Blanco",
+            "price": 13,
+            "confidence": 0.88,
+            "doubts": [
+              "nombre"
+            ],
+            "source_text": "Poully fume blanc Reverdy y fils 13",
+            "position": {
+              "x": 30.5,
+              "y": 45.8,
+              "width": 29.0,
+              "height": 1.2,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "section": "Premium Red / Tinto",
+            "price": 25,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Barbaresco Marchesi di Barolo 25",
+            "position": {
+              "x": 20.8,
+              "y": 60.1,
+              "width": 26.0,
+              "height": 1.2,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Dolcetto d'Alba",
+            "producer": "Elio Grasso",
+            "vintage": null,
+            "section": "Premium Red / Tinto",
+            "price": 13,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Dolcetto d'alba Elio Grasso 13",
+            "position": {
+              "x": 20.8,
+              "y": 65.0,
+              "width": 25.0,
+              "height": 1.2,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Bricco dell'Uccellone",
+            "producer": "Braida",
+            "vintage": null,
+            "section": "Premium Red / Tinto",
+            "price": 35,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Bricco dell'uccellone Barbera 35",
+            "position": {
+              "x": 20.8,
+              "y": 67.5,
+              "width": 27.0,
+              "height": 1.2,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Nebbiolo",
+            "producer": "Nino Negri",
+            "vintage": null,
+            "section": "Premium Red / Tinto",
+            "price": 15,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Nebbiolo Nino Negri 15",
+            "position": {
+              "x": 20.8,
+              "y": 70.0,
+              "width": 20.0,
+              "height": 1.2,
+              "confidence": 0.9
+            }
+          }
+        ]
+      },
+      "latency_ms": 28037,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 292,
+          "text": "Braida \u00b7 Nizza Monferrato, Piamonte \u00b7 copa \u00b7 35.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 274,
+          "text": "Nino Negri \u00b7 Valtellina, Lombard\u00eda \u00b7 copa \u00b7 15.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate font-semibold text-slate-950",
+          "clientWidth": 209,
+          "scrollWidth": 231,
+          "text": "Barbaresco Marchesi di Barolo"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 327,
+          "text": "Marchesi di Barolo \u00b7 Barbaresco, Piamonte \u00b7 copa \u00b7 25.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 307,
+          "text": "Elio Grasso \u00b7 Dolcetto d'Alba, Piamonte \u00b7 copa \u00b7 13.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate font-semibold text-slate-950",
+          "clientWidth": 209,
+          "scrollWidth": 240,
+          "text": "Greco di tufo Terredora di Paolo"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 276,
+          "text": "Terredora di Paolo \u00b7 Greco di Tufo \u00b7 copa \u00b7 12.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 282,
+          "text": "Reverdy y Fils \u00b7 Pouilly Fum\u00e9, Loira \u00b7 copa \u00b7 13.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-sm font-semibold text-slate-950",
+          "clientWidth": 223,
+          "scrollWidth": 230,
+          "text": "2. Greco di tufo Terredora di Paolo"
+        }
+      ],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "screenshot": "/Users/GOIKO/2matchrim-build61-hotfix-qa-20260901/qa-artifacts/2026-09-01-build62-backend-gate/run-1/img-7547-2--original-real-mobile.png",
+      "status": "BLOCKED_OR_FAIL",
+      "visible_excerpt": "3.00 \u20ac \u00b7 Copa\n\nCuerpo 3/5\nAcidez 4/5\nTanino 1/5\nDulzor 1/5\nFruta 4/5\n3Lugana\n62%\n\n12.00 \u20ac \u00b7 Copa\n\nCuerpo 2/5\nAcidez 4/5\nTanino 1/5\nDulzor 1/5\nFruta 3/5\nOrden\nMejor match\nTipo\nTodos los tipos\nRegi\u00f3n\nTodas las regiones\nServicio\nCopa o botella\nAfinidad m\u00ednima\nCualquier afinidad\nSe\u00f1al de identidad\nCualquier confianza\nPrecio m\u00e1ximo\nLista de la carta\n9 resultados\n8\nBricco dell'Uccellone\nBraida \u00b7 Nizza Monferrato, Piamonte \u00b7 copa \u00b7 35.00\u20ac\n\u224887%\nIdentidad alta\n9\nNebbiolo\nNino Negri \u00b7 Valtellina, Lombard\u00eda \u00b7 copa \u00b7 15.00\u20ac\n\u224878%\nIdentidad alta\n6\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo \u00b7 Barbaresco, Piamonte \u00b7 copa \u00b7 25.00\u20ac\n\u224875%\nIdentidad alta\n7\nDolcetto d'Alba\nElio Grasso \u00b7 Dolcetto d'Alba, Piamonte \u00b7 copa \u00b7 13.00\u20ac\n\u224875%\nIdentidad alta\n5\nAmarone\nValpolicella \u00b7 copa \u00b7 18.00\u20ac\n\u224870%\nIdentidad media\n2\nGreco di tufo Terredora di Paolo\nTerredora di Paolo \u00b7 Greco di Tufo \u00b7 copa \u00b7 12.00\u20ac\n\u224868%\nIdentidad alta\n3\nQuater Vitis\nFirriato \u00b7 Sicilia \u00b7 copa \u00b7 13.00\u20ac\n\u224868%\nIdentidad alta\n4\nPouilly Fum\u00e9 Blanc\nReverdy y Fils \u00b7 Pouilly Fum\u00e9, Loira \u00b7 copa \u00b7 13.00\u20ac\n\u224866%\nIdentidad alta\n1\nLugana\nAllegrini \u00b7 Lugana \u00b7 copa \u00b7 12.00\u20ac\n\u224862%\nIdentidad alta\nVer fichas completas y acciones\nInicio\nTest\nEscanear\naiRIM\nVinos",
+      "source_id": "img-7547-2",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Laurent Perrier La Cuvee",
+          "Laurent Perrier Ultra Brut",
+          "Laurent Perrier Rose",
+          "Gaudensius blanco",
+          "Lugana Allegrini",
+          "Greco di Tufo Terredora di Paolo",
+          "Quater Vitis Firriato",
+          "Pouilly Fume Blanc Reverdy y Fils",
+          "Amarone",
+          "Barbaresco Marchesi di Barolo",
+          "Barolo Marchesi di Barolo",
+          "Dolcetto d'Alba Elio Grasso",
+          "Bricco dell'Uccellone Barbera",
+          "Nebbiolo Nino Negri",
+          "Costa di Rose",
+          "La Rosa"
+        ]
+      },
+      "scene_sha256": "e85bb5c6775d673db872c6be6cd1e5e0877d652586f62e796f9bc932409fdffd"
+    },
+    {
+      "fixture": "img-7548-2--original",
+      "source": "/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/matchrim-ground-truth-v1/scenes/img-7548-2--original.jpg",
+      "fixture_sha256": "7439b526e3530dff469810d210666520f4589941c249ecf89e22b1875309fe73",
+      "mode": "carta-vinos",
+      "expected_results": 8,
+      "expected_rationale": "printed_menu / baseline / Human-reviewed line identities from the P0 acceptance matrix.",
+      "expectation": "inherit",
+      "terminal_state": "completed",
+      "actual_results": 8,
+      "anchored_pins": 5,
+      "individual_affinity_scores": 8,
+      "high_confidence_results": 6,
+      "coverage": {
+        "status": "reported_complete",
+        "extracted_wines": 6
+      },
+      "accuracy": {
+        "expected_count": 8,
+        "actual_count": 8,
+        "matched_count": 8,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Chateau Miraval Rose",
+            "actual": "Chateau miraval rose || Chateau Miraval Chateau miraval rose",
+            "similarity": 1.0
+          },
+          {
+            "expected": "La Rosa Raventos i Blanc",
+            "actual": "La Rosa Raventos i blanc || Raventos i blanc La Rosa Raventos i blanc",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Costa di Rose Umberto Cesari",
+            "actual": "Costa di rose. Umberto Cesari || Umberto Cesari Costa di rose. Umberto Cesari",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Gaudensius Blanc de Noir",
+            "actual": "Gaudensius blanc de noir || Sicily/Italy Gaudensius blanc de noir",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Laurent Perrier Rose",
+            "actual": "Laurent Perrier rose || Laurent Perrier Laurent Perrier rose",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Laurent Perrier Ultra Brut",
+            "actual": "Laurent Perriere Ultra brut || Laurent Perrier Laurent Perriere Ultra brut",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Laurent Perrier La Cuvee",
+            "actual": "Laurent Perrier La Cuvee || Laurent Perrier Laurent Perrier La Cuvee",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Chateau d'Esclans Whispering Angel",
+            "actual": "Chateau d esclans whispering angels || Chateau d'Esclans Chateau d esclans whispering angels",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": {
+        "expected_count": 8,
+        "actual_count": 6,
+        "matched_count": 6,
+        "precision": 1.0,
+        "recall": 0.75,
+        "matches": [
+          {
+            "expected": "Chateau Miraval Rose",
+            "actual": "Chateau Miraval Chateau miraval rose Ros\u00e9 wine",
+            "similarity": 0.96
+          },
+          {
+            "expected": "La Rosa Raventos i Blanc",
+            "actual": "Raventos i blanc La Rosa Raventos i blanc Ros\u00e9 wine",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Costa di Rose Umberto Cesari",
+            "actual": "Umberto Cesari Costa di rose. Umberto Cesari Ros\u00e9 wine",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Gaudensius Blanc de Noir",
+            "actual": "Gaudensius blanc de noir Espumosos/Champagne & Bubbles",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Laurent Perrier Rose",
+            "actual": "Laurent Perrier Laurent Perrier rose Espumosos/Champagne & Bubbles",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Laurent Perrier La Cuvee",
+            "actual": "Laurent Perrier Laurent Perrier La Cuvee Espumosos/Champagne & Bubbles",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": [
+          "Laurent Perrier Ultra Brut",
+          "Chateau d'Esclans Whispering Angel"
+        ]
+      },
+      "displayed_names": [
+        "Gaudensius blanc de noir || Sicily/Italy Gaudensius blanc de noir",
+        "Costa di rose. Umberto Cesari || Umberto Cesari Costa di rose. Umberto Cesari",
+        "La Rosa Raventos i blanc || Raventos i blanc La Rosa Raventos i blanc",
+        "Chateau miraval rose || Chateau Miraval Chateau miraval rose",
+        "Chateau d esclans whispering angels || Chateau d'Esclans Chateau d esclans whispering angels",
+        "Laurent Perrier La Cuvee || Laurent Perrier Laurent Perrier La Cuvee",
+        "Laurent Perrier rose || Laurent Perrier Laurent Perrier rose",
+        "Laurent Perriere Ultra brut || Laurent Perrier Laurent Perriere Ultra brut"
+      ],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 1,
+        "versions": [
+          "scan-wine-menu-2026-08-26-grounded-v3"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "extracted_wines": 6
+        },
+        "names": [
+          "Laurent Perrier Laurent Perrier La Cuvee Espumosos/Champagne & Bubbles",
+          "Laurent Perrier Laurent Perrier rose Espumosos/Champagne & Bubbles",
+          "Gaudensius blanc de noir Espumosos/Champagne & Bubbles",
+          "Umberto Cesari Costa di rose. Umberto Cesari Ros\u00e9 wine",
+          "Raventos i blanc La Rosa Raventos i blanc Ros\u00e9 wine",
+          "Chateau Miraval Chateau miraval rose Ros\u00e9 wine"
+        ],
+        "items": [
+          {
+            "name": "Laurent Perrier La Cuvee",
+            "producer": "Laurent Perrier",
+            "vintage": null,
+            "section": "Espumosos/Champagne & Bubbles",
+            "price": 90,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Laurent Perrier La Cuvee\nZona/zone: Champagne\nUva/grapes: Chardonnay, Pinot noir, Pinot meunier\nCrianza/aging: 4 anos sobre lias/4 years on yeasts\n90\n72",
+            "position": {
+              "x": 24.3,
+              "y": 10.9,
+              "width": 64.1,
+              "height": 5.4,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Laurent Perrier rose",
+            "producer": "Laurent Perrier",
+            "vintage": null,
+            "section": "Espumosos/Champagne & Bubbles",
+            "price": 155,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Laurent Perrier rose\nZona/zone: Champagne\nUva/grapes: Pinot noir\nCrianza/aging: 5 anos sobre lias/5 years on yeasts\n155\n124",
+            "position": {
+              "x": 24.3,
+              "y": 24.1,
+              "width": 64.1,
+              "height": 5.4,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Gaudensius blanc de noir",
+            "producer": null,
+            "vintage": null,
+            "section": "Espumosos/Champagne & Bubbles",
+            "price": 55,
+            "confidence": 0.74,
+            "doubts": [
+              "productor"
+            ],
+            "source_text": "Gaudensius blanc de noir\nZona/zone: Sicily/Italy\nUva/grapes: Nerello Mascalese\nCrianza/aging: 3 anos sobre lias/3 years on yeasts\n55\n44",
+            "position": {
+              "x": 24.3,
+              "y": 30.7,
+              "width": 64.1,
+              "height": 5.4,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Costa di rose. Umberto Cesari",
+            "producer": "Umberto Cesari",
+            "vintage": null,
+            "section": "Ros\u00e9 wine",
+            "price": 40,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Costa di rose. Umberto Cesari\nZona/zone: Emilia Romagna\nUva/grapes: Sangiovese\nCrianza/aging: 6 meses sobre lias final/6 months on the yeasts\n40\n32",
+            "position": {
+              "x": 24.3,
+              "y": 42.1,
+              "width": 64.1,
+              "height": 5.4,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "La Rosa Raventos i blanc",
+            "producer": "Raventos i blanc",
+            "vintage": null,
+            "section": "Ros\u00e9 wine",
+            "price": 33,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "La Rosa Raventos i blanc\nZona/zone: Conca del riu anoia\nUva/grapes: Sumoll, Parellada, Xarel\n33\n26",
+            "position": {
+              "x": 24.4,
+              "y": 52.8,
+              "width": 64.1,
+              "height": 4.1,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Chateau miraval rose",
+            "producer": "Chateau Miraval",
+            "vintage": null,
+            "section": "Ros\u00e9 wine",
+            "price": 55,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Chateau miraval rose\nZona/zone: Cotes de provence\nUva/grapes: Cinsault,Grenache, Sirah, Rolle\n55\n44",
+            "position": {
+              "x": 24.3,
+              "y": 62.4,
+              "width": 64.1,
+              "height": 4.1,
+              "confidence": 0.9
+            }
+          }
+        ]
+      },
+      "latency_ms": 23055,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [
+        {
+          "tag": "SPAN",
+          "className": "block truncate font-semibold text-slate-950",
+          "clientWidth": 209,
+          "scrollWidth": 228,
+          "text": "Costa di rose. Umberto Cesari"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 288,
+          "text": "Umberto Cesari \u00b7 Emilia Romagna \u00b7 botella \u00b7 40.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 310,
+          "text": "Raventos i blanc \u00b7 Conca del riu anoia \u00b7 botella \u00b7 33.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 306,
+          "text": "Chateau Miraval \u00b7 Cotes de provence \u00b7 botella \u00b7 55.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate font-semibold text-slate-950",
+          "clientWidth": 209,
+          "scrollWidth": 281,
+          "text": "Chateau d esclans whispering angels"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 321,
+          "text": "Chateau d'Esclans \u00b7 Cotes de Provence \u00b7 botella \u00b7 52.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 262,
+          "text": "Laurent Perrier \u00b7 Champagne \u00b7 botella \u00b7 90.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 267,
+          "text": "Laurent Perrier \u00b7 Champagne \u00b7 botella \u00b7 155.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 267,
+          "text": "Laurent Perrier \u00b7 Champagne \u00b7 botella \u00b7 130.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-sm font-semibold text-slate-950",
+          "clientWidth": 223,
+          "scrollWidth": 267,
+          "text": "8. Chateau d esclans whispering angels"
+        }
+      ],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "screenshot": "/Users/GOIKO/2matchrim-build61-hotfix-qa-20260901/qa-artifacts/2026-09-01-build62-backend-gate/run-1/img-7548-2--original-real-mobile.png",
+      "status": "PASS",
+      "visible_excerpt": "4/5\nTanino 1/5\nDulzor 1/5\nFruta 5/5\n3Laurent Perriere Ultra brut\n64%\n\n130.00 \u20ac \u00b7 Botella\n\nCuerpo 3/5\nAcidez 5/5\nTanino 1/5\nDulzor 1/5\nFruta 3/5\nOrden\nMejor match\nTipo\nTodos los tipos\nRegi\u00f3n\nTodas las regiones\nServicio\nCopa o botella\nAfinidad m\u00ednima\nCualquier afinidad\nSe\u00f1al de identidad\nCualquier confianza\nPrecio m\u00e1ximo\nLista de la carta\n8 resultados\n4\nGaudensius blanc de noir\nSicily/Italy \u00b7 botella \u00b7 55.00\u20ac\n\u224875%\nIdentidad media\n5\nCosta di rose. Umberto Cesari\nUmberto Cesari \u00b7 Emilia Romagna \u00b7 botella \u00b7 40.00\u20ac\n\u224875%\nIdentidad alta\n6\nLa Rosa Raventos i blanc\nRaventos i blanc \u00b7 Conca del riu anoia \u00b7 botella \u00b7 33.00\u20ac\n\u224875%\nIdentidad alta\n7\nChateau miraval rose\nChateau Miraval \u00b7 Cotes de provence \u00b7 botella \u00b7 55.00\u20ac\n\u224875%\nIdentidad alta\n8\nChateau d esclans whispering angels\nChateau d'Esclans \u00b7 Cotes de Provence \u00b7 botella \u00b7 52.00\u20ac\n\u224875%\nIdentidad alta\n1\nLaurent Perrier La Cuvee\nLaurent Perrier \u00b7 Champagne \u00b7 botella \u00b7 90.00\u20ac\n\u224868%\nIdentidad alta\n3\nLaurent Perrier rose\nLaurent Perrier \u00b7 Champagne \u00b7 botella \u00b7 155.00\u20ac\n\u224866%\nIdentidad alta\n2\nLaurent Perriere Ultra brut\nLaurent Perrier \u00b7 Champagne \u00b7 botella \u00b7 130.00\u20ac\n\u224864%\nIdentidad alta\nVer fichas completas y acciones\nInicio\nTest\nEscanear\naiRIM\nVinos",
+      "source_id": "img-7548-2",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Laurent Perrier La Cuvee",
+          "Laurent Perrier Ultra Brut",
+          "Laurent Perrier Rose",
+          "Gaudensius Blanc de Noir",
+          "Costa di Rose Umberto Cesari",
+          "La Rosa Raventos i Blanc",
+          "Chateau Miraval Rose",
+          "Chateau d'Esclans Whispering Angel"
+        ]
+      },
+      "scene_sha256": "7439b526e3530dff469810d210666520f4589941c249ecf89e22b1875309fe73"
+    },
+    {
+      "fixture": "img-7552-2--original",
+      "source": "/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/matchrim-ground-truth-v1/scenes/img-7552-2--original.jpg",
+      "fixture_sha256": "d98244ff9e6363ba7500fbef521d6be234ed4f515d674babcaa1ef3608e6bfdb",
+      "mode": "carta-vinos",
+      "expected_results": 13,
+      "expected_rationale": "handwritten_board / baseline / Human-reviewed wine-only identities; beer and vermouth are explicit negatives.",
+      "expectation": "inherit",
+      "terminal_state": "completed",
+      "actual_results": 13,
+      "anchored_pins": 4,
+      "individual_affinity_scores": 13,
+      "high_confidence_results": 13,
+      "coverage": {
+        "status": "partial",
+        "extracted_wines": 13
+      },
+      "accuracy": {
+        "expected_count": 13,
+        "actual_count": 13,
+        "matched_count": 13,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Pedro Ximenez Don PX",
+            "actual": "Pedro Ximenez, Don Px || Toro Albal\u00e1 Pedro Ximenez, Don Px",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Moscatel Zumbral",
+            "actual": "Moscatel Zumbral || Dimobe Moscatel Zumbral",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Oloroso Don Nuno",
+            "actual": "Oloroso Don Nu\u00f1o || Lustau Oloroso Don Nu\u00f1o",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Bertola Palo Cortado",
+            "actual": "Bertola, Palo Cortado || Diez M\u00e9rito Bertola, Palo Cortado",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Amontillado El Contrabandista",
+            "actual": "Amontillado El Contrabandista || Valdespino Amontillado El Contrabandista",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Amontillado Vina AB",
+            "actual": "Amontillado Vi\u00f1a AB || Gonzalez Byass Amontillado Vi\u00f1a AB",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Fino Ynocente",
+            "actual": "Fino Ynocente || Valdespino Fino Ynocente",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Fino Viejo Tradicion",
+            "actual": "Fino Viejo, Tradici\u00f3n || Tradici\u00f3n Fino Viejo, Tradici\u00f3n",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Manzanilla Alegria",
+            "actual": "Manzanilla Alegria || Williams & Humbert Manzanilla Alegria",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Manzanilla Pasada Xixarito",
+            "actual": "Manzanilla Pasada Xixarito || Bodegas Baron Manzanilla Pasada Xixarito",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Maxim Riesling Sekt Brut",
+            "actual": "Maxim Riesling Sekt Brut || Mosela Maxim Riesling Sekt Brut",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Agusti Torello Kripta",
+            "actual": "Agust\u00ed Torell\u00f3, Kripta || Cava Agust\u00ed Torell\u00f3, Kripta",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Joan Raventos Rose BN",
+            "actual": "Joan Ravent\u00f3s Ros\u00e9 BN || Cava Joan Ravent\u00f3s Ros\u00e9 BN",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": {
+        "expected_count": 13,
+        "actual_count": 13,
+        "matched_count": 13,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Pedro Ximenez Don PX",
+            "actual": "Toro Albal\u00e1 Pedro Ximenez, Don Px Dulce",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Moscatel Zumbral",
+            "actual": "Dimobe Moscatel Zumbral DULCES",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Oloroso Don Nuno",
+            "actual": "Lustau Oloroso Don Nu\u00f1o GENEROSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Bertola Palo Cortado",
+            "actual": "Diez M\u00e9rito Bertola, Palo Cortado GENEROSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Amontillado El Contrabandista",
+            "actual": "Valdespino Amontillado El Contrabandista GENEROSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Amontillado Vina AB",
+            "actual": "Gonzalez Byass Amontillado Vi\u00f1a AB GENEROSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Fino Ynocente",
+            "actual": "Valdespino Fino Ynocente GENEROSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Fino Viejo Tradicion",
+            "actual": "Tradici\u00f3n Fino Viejo, Tradici\u00f3n GENEROSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Manzanilla Alegria",
+            "actual": "Williams & Humbert Manzanilla Alegria GENEROSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Manzanilla Pasada Xixarito",
+            "actual": "Bodegas Baron Manzanilla Pasada Xixarito GENEROSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Maxim Riesling Sekt Brut",
+            "actual": "Maxim Riesling Sekt Brut ESPUMOSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Agusti Torello Kripta",
+            "actual": "Cava Agust\u00ed Torell\u00f3, Kripta ESPUMOSOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Joan Raventos Rose BN",
+            "actual": "Cava Joan Ravent\u00f3s Ros\u00e9 BN ESPUMOSOS",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "displayed_names": [
+        "Agust\u00ed Torell\u00f3, Kripta || Cava Agust\u00ed Torell\u00f3, Kripta",
+        "Maxim Riesling Sekt Brut || Mosela Maxim Riesling Sekt Brut",
+        "Joan Ravent\u00f3s Ros\u00e9 BN || Cava Joan Ravent\u00f3s Ros\u00e9 BN",
+        "Bertola, Palo Cortado || Diez M\u00e9rito Bertola, Palo Cortado",
+        "Oloroso Don Nu\u00f1o || Lustau Oloroso Don Nu\u00f1o",
+        "Manzanilla Pasada Xixarito || Bodegas Baron Manzanilla Pasada Xixarito",
+        "Fino Ynocente || Valdespino Fino Ynocente",
+        "Amontillado Vi\u00f1a AB || Gonzalez Byass Amontillado Vi\u00f1a AB",
+        "Amontillado El Contrabandista || Valdespino Amontillado El Contrabandista",
+        "Manzanilla Alegria || Williams & Humbert Manzanilla Alegria",
+        "Fino Viejo, Tradici\u00f3n || Tradici\u00f3n Fino Viejo, Tradici\u00f3n",
+        "Moscatel Zumbral || Dimobe Moscatel Zumbral",
+        "Pedro Ximenez, Don Px || Toro Albal\u00e1 Pedro Ximenez, Don Px"
+      ],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 2,
+        "versions": [
+          "scan-wine-menu-2026-08-26-grounded-v3"
+        ],
+        "coverage": {
+          "status": "partial",
+          "extracted_wines": 13
+        },
+        "names": [
+          "Toro Albal\u00e1 Pedro Ximenez, Don Px Dulce",
+          "Cava Joan Ravent\u00f3s Ros\u00e9 BN ESPUMOSOS",
+          "Cava Agust\u00ed Torell\u00f3, Kripta ESPUMOSOS",
+          "Maxim Riesling Sekt Brut ESPUMOSOS",
+          "Bodegas Baron Manzanilla Pasada Xixarito GENEROSOS",
+          "Williams & Humbert Manzanilla Alegria GENEROSOS",
+          "Tradici\u00f3n Fino Viejo, Tradici\u00f3n GENEROSOS",
+          "Valdespino Fino Ynocente GENEROSOS",
+          "Gonzalez Byass Amontillado Vi\u00f1a AB GENEROSOS",
+          "Valdespino Amontillado El Contrabandista GENEROSOS",
+          "Diez M\u00e9rito Bertola, Palo Cortado GENEROSOS",
+          "Lustau Oloroso Don Nu\u00f1o GENEROSOS",
+          "Dimobe Moscatel Zumbral DULCES"
+        ],
+        "items": [
+          {
+            "name": "Pedro Ximenez, Don Px",
+            "producer": "Toro Albal\u00e1",
+            "vintage": null,
+            "section": "Dulce",
+            "price": 45,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Pedro Ximenez, Don Px, Toro Albal\u00e1 (Dulce) 7,00 45,00",
+            "position": {
+              "x": 20.35,
+              "y": 52.3328,
+              "width": 64.91,
+              "height": 1.1816,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Joan Ravent\u00f3s Ros\u00e9 BN",
+            "producer": "Cava",
+            "vintage": null,
+            "section": "ESPUMOSOS",
+            "price": 23,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Joan Ravent\u00f3s Ros\u00e9 BN, Cava 4,00 23,00",
+            "position": {
+              "x": 26.6,
+              "y": 17.08,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Agust\u00ed Torell\u00f3, Kripta",
+            "producer": "Cava",
+            "vintage": null,
+            "section": "ESPUMOSOS",
+            "price": 29,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Agust\u00ed Torell\u00f3, Kripta, Cava 5,00 29,00",
+            "position": {
+              "x": 26.6,
+              "y": 18.872000000000003,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Maxim Riesling Sekt Brut",
+            "producer": null,
+            "vintage": null,
+            "section": "ESPUMOSOS",
+            "price": 38,
+            "confidence": 0.74,
+            "doubts": [
+              "productor"
+            ],
+            "source_text": "Maxim Riesling Sekt Brut , Mosela, Alemania 6,50 38,00",
+            "position": {
+              "x": 26.6,
+              "y": 20.664,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Manzanilla Pasada Xixarito",
+            "producer": "Bodegas Baron",
+            "vintage": null,
+            "section": "GENEROSOS",
+            "price": 29,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Manzanilla Pasada Xixarito, Bodegas Baron 4,50 29,00",
+            "position": {
+              "x": 26.6,
+              "y": 24.976,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Manzanilla Alegria",
+            "producer": "Williams & Humbert",
+            "vintage": null,
+            "section": "GENEROSOS",
+            "price": 22,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Manzanilla Alegria, Williams & Humbert 3,50 22,00",
+            "position": {
+              "x": 26.6,
+              "y": 26.712000000000003,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Fino Viejo, Tradici\u00f3n",
+            "producer": "Tradici\u00f3n",
+            "vintage": null,
+            "section": "GENEROSOS",
+            "price": 40,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Fino Viejo, Tradici\u00f3n 6,50 40,00",
+            "position": {
+              "x": 26.6,
+              "y": 28.447999999999997,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Fino Ynocente",
+            "producer": "Valdespino",
+            "vintage": null,
+            "section": "GENEROSOS",
+            "price": 22,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Fino Ynocente, Valdespino 3,50 22,00",
+            "position": {
+              "x": 26.6,
+              "y": 30.24,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Amontillado Vi\u00f1a AB",
+            "producer": "Gonzalez Byass",
+            "vintage": null,
+            "section": "GENEROSOS",
+            "price": 38,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Amontillado Vi\u00f1a AB, Gonzalez Byass 5,00 38,00",
+            "position": {
+              "x": 26.6,
+              "y": 31.976,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Amontillado El Contrabandista",
+            "producer": "Valdespino",
+            "vintage": null,
+            "section": "GENEROSOS",
+            "price": 25,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Amontillado El Contrabandista, Valdespino 4,00 25,00",
+            "position": {
+              "x": 26.6,
+              "y": 33.768,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Bertola, Palo Cortado",
+            "producer": "Diez M\u00e9rito",
+            "vintage": null,
+            "section": "GENEROSOS",
+            "price": 38,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Bertola, Palo Cortado, Diez M\u00e9rito 5,50 38.00",
+            "position": {
+              "x": 26.6,
+              "y": 35.56,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Oloroso Don Nu\u00f1o",
+            "producer": "Lustau",
+            "vintage": null,
+            "section": "GENEROSOS",
+            "price": 40,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Oloroso Don Nu\u00f1o, Lustau 6,00 40,00",
+            "position": {
+              "x": 26.6,
+              "y": 37.29599999999999,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Moscatel Zumbral",
+            "producer": "Dimobe",
+            "vintage": null,
+            "section": "DULCES",
+            "price": 25,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Moscatel Zumbral, Dimobe (Dulce) 4,00 25,00",
+            "position": {
+              "x": 26.6,
+              "y": 40.768,
+              "width": 64.6,
+              "height": 1.2320000000000002,
+              "confidence": 0.9
+            }
+          }
+        ]
+      },
+      "latency_ms": 32526,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 284,
+          "text": "Diez M\u00e9rito \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 38.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 258,
+          "text": "Lustau \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 40.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 305,
+          "text": "Bodegas Baron \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 29.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 281,
+          "text": "Valdespino \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 22.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 309,
+          "text": "Gonzalez Byass \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 38.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate font-semibold text-slate-950",
+          "clientWidth": 209,
+          "scrollWidth": 230,
+          "text": "Amontillado El Contrabandista"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 281,
+          "text": "Valdespino \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 25.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 331,
+          "text": "Williams & Humbert \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 22.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 272,
+          "text": "Tradici\u00f3n \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 40.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 264,
+          "text": "Toro Albal\u00e1 \u00b7 Montilla-Moriles \u00b7 ambos \u00b7 45.00\u20ac"
+        }
+      ],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "screenshot": "/Users/GOIKO/2matchrim-build61-hotfix-qa-20260901/qa-artifacts/2026-09-01-build62-backend-gate/run-1/img-7552-2--original-real-mobile.png",
+      "status": "PASS",
+      "visible_excerpt": "\u00ed Torell\u00f3, Kripta\nCava \u00b7 Pened\u00e8s \u00b7 ambos \u00b7 29.00\u20ac\n\u224866%\nIdentidad alta\n3\nMaxim Riesling Sekt Brut\nMosela \u00b7 ambos \u00b7 38.00\u20ac\n\u224866%\nIdentidad media\n1\nJoan Ravent\u00f3s Ros\u00e9 BN\nCava \u00b7 Pened\u00e8s \u00b7 ambos \u00b7 23.00\u20ac\n\u224864%\nIdentidad alta\n10\nBertola, Palo Cortado\nDiez M\u00e9rito \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 38.00\u20ac\n\u224864%\nIdentidad alta\n11\nOloroso Don Nu\u00f1o\nLustau \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 40.00\u20ac\n\u224864%\nIdentidad alta\n4\nManzanilla Pasada Xixarito\nBodegas Baron \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 29.00\u20ac\n\u224862%\nIdentidad alta\n7\nFino Ynocente\nValdespino \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 22.00\u20ac\n\u224862%\nIdentidad alta\n8\nAmontillado Vi\u00f1a AB\nGonzalez Byass \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 38.00\u20ac\n\u224862%\nIdentidad alta\n9\nAmontillado El Contrabandista\nValdespino \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 25.00\u20ac\n\u224862%\nIdentidad alta\n5\nManzanilla Alegria\nWilliams & Humbert \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 22.00\u20ac\n\u224860%\nIdentidad alta\n6\nFino Viejo, Tradici\u00f3n\nTradici\u00f3n \u00b7 Jerez-X\u00e9r\u00e8s-Sherry \u00b7 ambos \u00b7 40.00\u20ac\n\u224860%\nIdentidad alta\n12\nMoscatel Zumbral\nDimobe \u00b7 M\u00e1laga \u00b7 ambos \u00b7 25.00\u20ac\n\u224855%\nIdentidad alta\n13\nPedro Ximenez, Don Px\nToro Albal\u00e1 \u00b7 Montilla-Moriles \u00b7 ambos \u00b7 45.00\u20ac\n\u224845%\nIdentidad alta\nVer fichas completas y acciones\nInicio\nTest\nEscanear\naiRIM\nVinos",
+      "source_id": "img-7552-2",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "excluded_categories": [
+          "beer",
+          "vermouth"
+        ],
+        "expected_wines": [
+          "Joan Raventos Rose BN",
+          "Agusti Torello Kripta",
+          "Maxim Riesling Sekt Brut",
+          "Manzanilla Pasada Xixarito",
+          "Manzanilla Alegria",
+          "Fino Viejo Tradicion",
+          "Fino Ynocente",
+          "Amontillado Vina AB",
+          "Amontillado El Contrabandista",
+          "Bertola Palo Cortado",
+          "Oloroso Don Nuno",
+          "Moscatel Zumbral",
+          "Pedro Ximenez Don PX"
+        ]
+      },
+      "scene_sha256": "d98244ff9e6363ba7500fbef521d6be234ed4f515d674babcaa1ef3608e6bfdb"
+    },
+    {
+      "fixture": "img-7553-2--original",
+      "source": "/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/matchrim-ground-truth-v1/scenes/img-7553-2--original.jpg",
+      "fixture_sha256": "5a83cd1106e525470b3080f59a2735da20f50355f21c413a3d6cac8948eb7bc0",
+      "mode": "carta-vinos",
+      "expected_results": 19,
+      "expected_rationale": "handwritten_board / baseline / Human-reviewed line identities from the P0 acceptance matrix.",
+      "expectation": "inherit",
+      "terminal_state": "completed",
+      "actual_results": 19,
+      "anchored_pins": 5,
+      "individual_affinity_scores": 19,
+      "high_confidence_results": 19,
+      "coverage": {
+        "status": "unknown",
+        "extracted_wines": 19
+      },
+      "accuracy": {
+        "expected_count": 19,
+        "actual_count": 19,
+        "matched_count": 19,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "L'Arnaude",
+            "actual": "L'Arnaude || Provenza L'Arnaude",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Lopez de Haro Rosado",
+            "actual": "L\u00f3pez de Haro Rosado || Bodega Classica (Hacienda L\u00f3pez de Haro) L\u00f3pez de Haro Rosado",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Nat Cool Zorzal",
+            "actual": "Nat Cool Zorzal || Zorzal Nat Cool Zorzal",
+            "similarity": 1.0
+          },
+          {
+            "expected": "La Vina de Ayer",
+            "actual": "La Vi\u00f1a de Ayer || Madrid La Vi\u00f1a de Ayer",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Casa Castillo",
+            "actual": "Casa Castillo || Jumilla Casa Castillo",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Agricola de Cadalso",
+            "actual": "Agr\u00edcola de Cadalso || Madrid Agr\u00edcola de Cadalso",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Diaz Bayo 4 Meses",
+            "actual": "Diaz Bayo 4 Meses || Ribera del Duero Diaz Bayo 4 Meses",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Huerto de la Condesa",
+            "actual": "Huerto de la Condesa || M\u00e1laga Huerto de la Condesa",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Domaine de la Janasse",
+            "actual": "Domaine de la Janasse || C\u00f4tes du Rh\u00f4ne Domaine de la Janasse",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Mayela 2023",
+            "actual": "Mayela || Rioja Mayela",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Huerto de la Condesa",
+            "actual": "Huerto de la Condesa || M\u00e1laga Huerto de la Condesa",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Mein Castes Brancas",
+            "actual": "Me\u00edn Castes Brancas || Ribeiro Me\u00edn Castes Brancas",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Nat Cool Mosel",
+            "actual": "Nat Cool Mosel || Mosel Nat Cool Mosel",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Dereszla Tokaji Dry",
+            "actual": "Dereszla Tokaji Dry",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Forlong ecologico",
+            "actual": "Forlong ecol\u00f3gico || Jerez Forlong ecol\u00f3gico",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Can Feixes",
+            "actual": "Can Feixes || Pened\u00e9s Can Feixes",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Finca la Olma ecologico",
+            "actual": "Finca la Olma ecol\u00f3gico || Rueda Finca la Olma ecol\u00f3gico",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Prieler Blaufrankisch",
+            "actual": "Prieler || Burgenland Prieler",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Percheron Chenin Blanc",
+            "actual": "Percheron",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": {
+        "expected_count": 19,
+        "actual_count": 19,
+        "matched_count": 18,
+        "precision": 0.947,
+        "recall": 0.947,
+        "matches": [
+          {
+            "expected": "L'Arnaude",
+            "actual": "L'Arnaude ROSADOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Lopez de Haro Rosado",
+            "actual": "Bodega Classica (Hacienda L\u00f3pez de Haro) L\u00f3pez de Haro Rosado ROSADOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Nat Cool Zorzal",
+            "actual": "Zorzal Nat Cool Zorzal TINTOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "La Vina de Ayer",
+            "actual": "La Vi\u00f1a de Ayer TINTOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Casa Castillo",
+            "actual": "Casa Castillo TINTOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Agricola de Cadalso",
+            "actual": "Agr\u00edcola de Cadalso TINTOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Diaz Bayo 4 Meses",
+            "actual": "Diaz Bayo 4 Meses TINTOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Huerto de la Condesa",
+            "actual": "Huerto de la Condesa TINTOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Domaine de la Janasse",
+            "actual": "Domaine de la Janasse TINTOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Mayela 2023",
+            "actual": "Mayela 2023 TINTOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Huerto de la Condesa",
+            "actual": "Huerto de la Condesa BLANCOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Mein Castes Brancas",
+            "actual": "Me\u00edn Castes Brancas BLANCOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Nat Cool Mosel",
+            "actual": "Nat Cool Mosel BLANCOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Dereszla Tokaji Dry",
+            "actual": "Dereszla Tokaji Dry BLANCOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Forlong ecologico",
+            "actual": "Forlong ecol\u00f3gico BLANCOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Can Feixes",
+            "actual": "Can Feixes BLANCOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Finca la Olma ecologico",
+            "actual": "Finca la Olma ecol\u00f3gico BLANCOS",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Percheron Chenin Blanc",
+            "actual": "Percheron BLANCOS",
+            "similarity": 0.769
+          }
+        ],
+        "false_positives": [
+          "Prieler TINTOS"
+        ],
+        "missed": [
+          "Prieler Blaufrankisch"
+        ]
+      },
+      "displayed_names": [
+        "Domaine de la Janasse || C\u00f4tes du Rh\u00f4ne Domaine de la Janasse",
+        "Huerto de la Condesa || M\u00e1laga Huerto de la Condesa",
+        "Prieler || Burgenland Prieler",
+        "Agr\u00edcola de Cadalso || Madrid Agr\u00edcola de Cadalso",
+        "La Vi\u00f1a de Ayer || Madrid La Vi\u00f1a de Ayer",
+        "Mayela || Rioja Mayela",
+        "Diaz Bayo 4 Meses || Ribera del Duero Diaz Bayo 4 Meses",
+        "Casa Castillo || Jumilla Casa Castillo",
+        "Nat Cool Zorzal || Zorzal Nat Cool Zorzal",
+        "Dereszla Tokaji Dry",
+        "Me\u00edn Castes Brancas || Ribeiro Me\u00edn Castes Brancas",
+        "Percheron",
+        "L\u00f3pez de Haro Rosado || Bodega Classica (Hacienda L\u00f3pez de Haro) L\u00f3pez de Haro Rosado",
+        "Nat Cool Mosel || Mosel Nat Cool Mosel",
+        "Huerto de la Condesa || M\u00e1laga Huerto de la Condesa",
+        "Finca la Olma ecol\u00f3gico || Rueda Finca la Olma ecol\u00f3gico",
+        "Can Feixes || Pened\u00e9s Can Feixes",
+        "Forlong ecol\u00f3gico || Jerez Forlong ecol\u00f3gico",
+        "L'Arnaude || Provenza L'Arnaude"
+      ],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 2,
+        "versions": [
+          "scan-wine-menu-2026-08-26-grounded-v3"
+        ],
+        "coverage": {
+          "status": "unknown",
+          "extracted_wines": 19
+        },
+        "names": [
+          "Casa Castillo TINTOS",
+          "La Vi\u00f1a de Ayer TINTOS",
+          "Zorzal Nat Cool Zorzal TINTOS",
+          "Bodega Classica (Hacienda L\u00f3pez de Haro) L\u00f3pez de Haro Rosado ROSADOS",
+          "L'Arnaude ROSADOS",
+          "Finca la Olma ecol\u00f3gico BLANCOS",
+          "Can Feixes BLANCOS",
+          "Forlong ecol\u00f3gico BLANCOS",
+          "Dereszla Tokaji Dry BLANCOS",
+          "Nat Cool Mosel BLANCOS",
+          "Me\u00edn Castes Brancas BLANCOS",
+          "Huerto de la Condesa BLANCOS",
+          "Percheron BLANCOS",
+          "Mayela 2023 TINTOS",
+          "Domaine de la Janasse TINTOS",
+          "Huerto de la Condesa TINTOS",
+          "Prieler TINTOS",
+          "Diaz Bayo 4 Meses TINTOS",
+          "Agr\u00edcola de Cadalso TINTOS"
+        ],
+        "items": [
+          {
+            "name": "Casa Castillo",
+            "producer": null,
+            "vintage": null,
+            "section": "TINTOS",
+            "price": null,
+            "confidence": 0.74,
+            "doubts": [
+              "productor"
+            ],
+            "source_text": "Casa Castillo, monastrell, Jumilla 4,00 23,00",
+            "position": {
+              "x": 20.3,
+              "y": 52.176,
+              "width": 64.0,
+              "height": 1.12,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "La Vi\u00f1a de Ayer",
+            "producer": null,
+            "vintage": null,
+            "section": "TINTOS",
+            "price": null,
+            "confidence": 0.74,
+            "doubts": [
+              "productor"
+            ],
+            "source_text": "La Vi\u00f1a de Ayer, garnacha, Madrid 4,00 23,00",
+            "position": {
+              "x": 20.3,
+              "y": 53.464,
+              "width": 64.0,
+              "height": 1.12,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Nat Cool Zorzal",
+            "producer": "Zorzal",
+            "vintage": null,
+            "section": "TINTOS",
+            "price": null,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Nat Cool Zorzal, garnacha Navarra 5,50 45 (11)",
+            "position": {
+              "x": 20.3,
+              "y": 54.808,
+              "width": 64.0,
+              "height": 1.12,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "L\u00f3pez de Haro Rosado",
+            "producer": "Bodega Classica (Hacienda L\u00f3pez de Haro)",
+            "vintage": null,
+            "section": "ROSADOS",
+            "price": null,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "L\u00f3pez de Haro Rosado, garnacha/tempranillo, Rioja 3,00 17,00",
+            "position": {
+              "x": 20.3,
+              "y": 57.608,
+              "width": 64.0,
+              "height": 1.12,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "L'Arnaude",
+            "producer": null,
+            "vintage": null,
+            "section": "ROSADOS",
+            "price": null,
+            "confidence": 0.74,
+            "doubts": [
+              "productor"
+            ],
+            "source_text": "L'Arnaude, Cinsault Grenache, Provenza, Francia 4,00 23,00",
+            "position": {
+              "x": 20.3,
+              "y": 58.896,
+              "width": 64.0,
+              "height": 1.12,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Finca la Olma ecol\u00f3gico",
+            "producer": null,
+            "vintage": null,
+            "section": "BLANCOS",
+            "price": 17,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Finca la Olma ecol\u00f3gico, verdejo, Rueda 3,00 17,00",
+            "position": {
+              "x": 26.6,
+              "y": 17.192,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Can Feixes",
+            "producer": null,
+            "vintage": null,
+            "section": "BLANCOS",
+            "price": 23,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Can Feixes, macabeu, perellada, Pened\u00e9s 4,00 23,00",
+            "position": {
+              "x": 26.6,
+              "y": 18.647999999999996,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Forlong ecol\u00f3gico",
+            "producer": null,
+            "vintage": null,
+            "section": "BLANCOS",
+            "price": 26,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Forlong ecol\u00f3gico, palomino fino, Jerez 4,50 26,00",
+            "position": {
+              "x": 26.6,
+              "y": 20.048,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Dereszla Tokaji Dry",
+            "producer": null,
+            "vintage": null,
+            "section": "BLANCOS",
+            "price": 23,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Dereszla Tokaji Dry, tokaji, Hungr\u00eda 4,00 23,00",
+            "position": {
+              "x": 26.6,
+              "y": 21.447999999999997,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Nat Cool Mosel",
+            "producer": null,
+            "vintage": null,
+            "section": "BLANCOS",
+            "price": 35,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Nat Cool Mosel, riesling, Mosel 4,50 35,00",
+            "position": {
+              "x": 26.6,
+              "y": 22.848,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Me\u00edn Castes Brancas",
+            "producer": null,
+            "vintage": null,
+            "section": "BLANCOS",
+            "price": 35,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Me\u00edn Castes Brancas, Godello, Albari\u00f1o, Ribeiro 6,00 35,00",
+            "position": {
+              "x": 26.6,
+              "y": 24.247999999999998,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Huerto de la Condesa",
+            "producer": null,
+            "vintage": null,
+            "section": "BLANCOS",
+            "price": 35,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Huerto de la Condesa, viogner, moscatel, M\u00e1laga 6,00 35,00",
+            "position": {
+              "x": 26.6,
+              "y": 25.647999999999996,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Percheron",
+            "producer": null,
+            "vintage": null,
+            "section": "BLANCOS",
+            "price": 29,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Percheron chenin blanc, viogner, South Africa 4,50 29,00",
+            "position": {
+              "x": 26.6,
+              "y": 27.048,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Mayela",
+            "producer": null,
+            "vintage": 2023,
+            "section": "TINTOS",
+            "price": 17,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Mayela 2023, tempranillo, Rioja 3,00 17,00",
+            "position": {
+              "x": 26.6,
+              "y": 30.24,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Domaine de la Janasse",
+            "producer": null,
+            "vintage": null,
+            "section": "TINTOS",
+            "price": 29,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Domaine de la Janasse, garnacha C\u00f4tes du Rh\u00f4ne 5,00 29,00",
+            "position": {
+              "x": 26.6,
+              "y": 31.64,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Huerto de la Condesa",
+            "producer": null,
+            "vintage": null,
+            "section": "TINTOS",
+            "price": 35,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Huerto de la Condesa, garnacha, syrah M\u00e1laga 6,00 35,00",
+            "position": {
+              "x": 26.6,
+              "y": 33.04,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Prieler",
+            "producer": null,
+            "vintage": null,
+            "section": "TINTOS",
+            "price": 35,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Prieler, Blaufr\u00e4nkisch, Oggau Ried, Austria 6,00 35,00",
+            "position": {
+              "x": 26.6,
+              "y": 34.44,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Diaz Bayo 4 Meses",
+            "producer": null,
+            "vintage": null,
+            "section": "TINTOS",
+            "price": 20,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Diaz Bayo 4 Meses, tempranillo, Ribera del Duero 3,50 20,00",
+            "position": {
+              "x": 26.6,
+              "y": 35.84,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          },
+          {
+            "name": "Agr\u00edcola de Cadalso",
+            "producer": null,
+            "vintage": null,
+            "section": "TINTOS",
+            "price": 23,
+            "confidence": 0.74,
+            "doubts": [],
+            "source_text": "Agr\u00edcola de Cadalso, garnacha, Madrid 4,00 23,00",
+            "position": {
+              "x": 26.6,
+              "y": 37.24,
+              "width": 64.1,
+              "height": 0.672,
+              "confidence": 0.9
+            }
+          }
+        ]
+      },
+      "latency_ms": 39059,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 209,
+          "scrollWidth": 378,
+          "text": "Bodega Classica (Hacienda L\u00f3pez de Haro) \u00b7 Rioja \u00b7 ambos \u00b7 17.00\u20ac"
+        },
+        {
+          "tag": "SPAN",
+          "className": "block truncate text-xs text-slate-500",
+          "clientWidth": 223,
+          "scrollWidth": 245,
+          "text": "Bodega Classica (Hacienda L\u00f3pez de Haro)"
+        }
+      ],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "screenshot": "/Users/GOIKO/2matchrim-build61-hotfix-qa-20260901/qa-artifacts/2026-09-01-build62-backend-gate/run-1/img-7553-2--original-real-mobile.png",
+      "status": "PASS",
+      "visible_excerpt": "\n\u224878%\nIdentidad media\n12\nPrieler\nBurgenland \u00b7 ambos \u00b7 35.00\u20ac\n\u224878%\nIdentidad media\n14\nAgr\u00edcola de Cadalso\nMadrid \u00b7 ambos \u00b7 23.00\u20ac\n\u224878%\nIdentidad media\n16\nLa Vi\u00f1a de Ayer\nMadrid \u00b7 ambos \u00b7 23.00\u20ac\n\u224878%\nIdentidad media\n9\nMayela\nRioja \u00b7 ambos \u00b7 17.00\u20ac\n\u224875%\nIdentidad media\n13\nDiaz Bayo 4 Meses\nRibera del Duero \u00b7 ambos \u00b7 20.00\u20ac\n\u224875%\nIdentidad media\n15\nCasa Castillo\nJumilla \u00b7 ambos \u00b7 23.00\u20ac\n\u224875%\nIdentidad media\n17\nNat Cool Zorzal\nZorzal \u00b7 Navarra \u00b7 ambos \u00b7 45.00\u20ac\n\u224875%\nIdentidad alta\n4\nDereszla Tokaji Dry\nambos \u00b7 23.00\u20ac\n\u224868%\nIdentidad media\n6\nMe\u00edn Castes Brancas\nRibeiro \u00b7 ambos \u00b7 35.00\u20ac\n\u224868%\nIdentidad media\n8\nPercheron\nambos \u00b7 29.00\u20ac\n\u224868%\nIdentidad media\n18\nL\u00f3pez de Haro Rosado\nBodega Classica (Hacienda L\u00f3pez de Haro) \u00b7 Rioja \u00b7 ambos \u00b7 17.00\u20ac\n\u224868%\nIdentidad alta\n5\nNat Cool Mosel\nMosel \u00b7 ambos \u00b7 35.00\u20ac\n\u224866%\nIdentidad media\n7\nHuerto de la Condesa\nM\u00e1laga \u00b7 ambos \u00b7 35.00\u20ac\n\u224866%\nIdentidad media\n1\nFinca la Olma ecol\u00f3gico\nRueda \u00b7 ambos \u00b7 17.00\u20ac\n\u224864%\nIdentidad media\n2\nCan Feixes\nPened\u00e9s \u00b7 ambos \u00b7 23.00\u20ac\n\u224864%\nIdentidad media\n3\nForlong ecol\u00f3gico\nJerez \u00b7 ambos \u00b7 26.00\u20ac\n\u224864%\nIdentidad media\n19\nL'Arnaude\nProvenza \u00b7 ambos\n\u224862%\nIdentidad media\nVer fichas completas y acciones\nInicio\nTest\nEscanear\naiRIM\nVinos",
+      "source_id": "img-7553-2",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Finca la Olma ecologico",
+          "Can Feixes",
+          "Forlong ecologico",
+          "Dereszla Tokaji Dry",
+          "Nat Cool Mosel",
+          "Mein Castes Brancas",
+          "Huerto de la Condesa",
+          "Percheron Chenin Blanc",
+          "Mayela 2023",
+          "Domaine de la Janasse",
+          "Huerto de la Condesa",
+          "Prieler Blaufrankisch",
+          "Diaz Bayo 4 Meses",
+          "Agricola de Cadalso",
+          "Casa Castillo",
+          "La Vina de Ayer",
+          "Nat Cool Zorzal",
+          "Lopez de Haro Rosado",
+          "L'Arnaude"
+        ]
+      },
+      "scene_sha256": "5a83cd1106e525470b3080f59a2735da20f50355f21c413a3d6cac8948eb7bc0"
+    }
+  ]
+}

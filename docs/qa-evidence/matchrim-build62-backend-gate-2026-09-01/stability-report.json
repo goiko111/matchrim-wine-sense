@@ -1,0 +1,572 @@
+{
+  "baseline": "/Users/GOIKO/2matchrim-build61-hotfix-qa-20260901/docs/qa-evidence/matchrim-candidate-61-2026-09-01/real-e2e-report.json",
+  "candidate": "/Users/GOIKO/2matchrim-build61-hotfix-qa-20260901/qa-artifacts/2026-09-01-build62-backend-gate/run-1/ground-truth-e2e-report.json",
+  "decision": "NO_GO",
+  "thresholds": {
+    "candidate_pass_rate": 1.0,
+    "candidate_identity_precision": 0.9,
+    "candidate_identity_recall": 0.9,
+    "menu_stability_precision": 0.9,
+    "menu_stability_recall": 0.85,
+    "max_menu_result_count_drift": 2,
+    "fridge_min_regions": 12,
+    "fridge_min_high_confidence": 6,
+    "console_error_scenes": 0
+  },
+  "checks": {
+    "all_fixtures_have_baseline": true,
+    "candidate_pass_rate": false,
+    "candidate_identity_precision": true,
+    "candidate_identity_recall": false,
+    "menu_stability_precision": true,
+    "menu_stability_recall": true,
+    "max_menu_result_count_drift": false,
+    "fridge_regions": true,
+    "fridge_high_confidence": true,
+    "console_errors": true,
+    "backend_versions_stable": true
+  },
+  "candidate_summary": {
+    "scene_count": 5,
+    "all_passed": false,
+    "pass_rate": 0.8,
+    "original_pass_rate": 0.8,
+    "controlled_variant_pass_rate": null,
+    "operational": {
+      "terminal_completion_rate": 1.0,
+      "console_error_scene_count": 0,
+      "recovered_transient_analysis_failures": 0
+    },
+    "identity_micro": {
+      "scene_count": 4,
+      "matched": 49,
+      "actual": 49,
+      "expected": 56,
+      "precision": 1.0,
+      "recall": 0.875,
+      "false_positives": 0,
+      "missed": 7
+    },
+    "detection_micro": {
+      "scene_count": 0,
+      "matched": 0,
+      "actual": 0,
+      "expected": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "mean_iou": 0.0,
+      "iou_threshold": 0.3
+    },
+    "abstention": {
+      "scene_count": 0,
+      "passed": 0,
+      "high_confidence_results": 0,
+      "false_positive_names": 0
+    },
+    "fridge_detection": {
+      "scene_count": 1,
+      "precision": null,
+      "precision_note": "Unavailable until exhaustive per-bottle boxes are human-annotated.",
+      "mean_capped_count_recall": 1.0,
+      "mean_absolute_count_recall": 0.6
+    },
+    "latency_ms": {
+      "mean": 35235,
+      "median": 32526,
+      "max": 53497
+    }
+  },
+  "menu_identity_stability": {
+    "matched": 48,
+    "actual": 49,
+    "expected": 54,
+    "precision": 0.9796,
+    "recall": 0.8889,
+    "max_result_count_drift": 6
+  },
+  "missing_baselines": [],
+  "comparisons": [
+    {
+      "fixture": "multibottle-fridge--original",
+      "mode": "etiqueta",
+      "baseline_status": "PASS",
+      "candidate_status": "PASS",
+      "baseline_results": 30,
+      "candidate_results": 30,
+      "result_count_delta": 0,
+      "baseline_high_confidence": 10,
+      "candidate_high_confidence": 7,
+      "identity_stability": {
+        "expected_count": 19,
+        "actual_count": 21,
+        "matched_count": 8,
+        "precision": 0.381,
+        "recall": 0.421,
+        "matches": [
+          {
+            "expected": "SAYANUS",
+            "actual": "Sayanus",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Brut Réserve",
+            "actual": "Brut Grande Réserve",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Champagne Haton",
+            "actual": "Champagne G. Haton Blanc de Blancs",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Brut Réserve",
+            "actual": "Brut Grande Réserve",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Kripta Txakoli Gourmet",
+            "actual": "Kripta",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Brut Classic",
+            "actual": "Brut Classic",
+            "similarity": 1.0
+          },
+          {
+            "expected": "André Clouet Grande Réserve Brut Grand Cru",
+            "actual": "André Clouet Grande Réserve",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Sierra Cantabria Crianza",
+            "actual": "Merla Cantabria Oranza",
+            "similarity": 0.826
+          }
+        ],
+        "false_positives": [
+          "Barbera d'Asti",
+          "EAU de PROVENCE",
+          "Soto Chalero Joven",
+          "Pazo Gil Albariño",
+          "Champagne Deutz",
+          "Champagne Haton Réserve",
+          "Kripta Gran Reserva Brut Nature",
+          "Champagne Haton",
+          "Lulu Un Improbable Blanco",
+          "Merum Priorati D.O.Q. Priorat Blanc Alantaria",
+          "Cuvée Bayanus Aripta",
+          "Charles Elsie",
+          "Lulu - Les Deuillers"
+        ],
+        "missed": [
+          "Barbaresco",
+          "Rosso",
+          "Brut Grande Réserve",
+          "Lulu Les Combelles Blanc",
+          "Brut Grand Cru",
+          "Haton Blanc de Blancs",
+          "Meroux Organza",
+          "Les Interludes Blanc",
+          "Marsala",
+          "Scripta",
+          "Sierra Cantabria Remojo"
+        ]
+      },
+      "baseline_latency_ms": 53388,
+      "candidate_latency_ms": 53497,
+      "latency_delta_ms": 109,
+      "latency_ratio": 1.002,
+      "baseline_backend_versions": [
+        "matchrim-region-analysis-v3-grounded",
+        "matchrim-region-detector-v3"
+      ],
+      "candidate_backend_versions": [
+        "matchrim-region-analysis-v3-grounded",
+        "matchrim-region-detector-v3"
+      ],
+      "backend_versions_stable": true
+    },
+    {
+      "fixture": "img-7547-2--original",
+      "mode": "carta-vinos",
+      "baseline_status": "PASS",
+      "candidate_status": "BLOCKED_OR_FAIL",
+      "baseline_results": 15,
+      "candidate_results": 9,
+      "result_count_delta": -6,
+      "baseline_high_confidence": 8,
+      "candidate_high_confidence": 8,
+      "identity_stability": {
+        "expected_count": 15,
+        "actual_count": 9,
+        "matched_count": 9,
+        "precision": 1.0,
+        "recall": 0.6,
+        "matches": [
+          {
+            "expected": "Lugana Allegrini || Allegrini Lugana Allegrini",
+            "actual": "Lugana || Allegrini Lugana",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Pouilly fume blanc Reverdy y fils || Reverdy & Fils Pouilly fume blanc Reverdy y fils",
+            "actual": "Pouilly Fumé Blanc || Reverdy y Fils Pouilly Fumé Blanc",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Quater vitis Firriato || Firriato Quater vitis Firriato",
+            "actual": "Quater Vitis || Firriato Quater Vitis",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Greco di tufo Terredora di Paolo || Terredora di Paolo Greco di tufo Terredora di Paolo",
+            "actual": "Greco di tufo Terredora di Paolo || Terredora di Paolo Greco di tufo Terredora di Paolo",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Amarone || Veneto Amarone",
+            "actual": "Amarone || Valpolicella Amarone",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Dolcetto d'alba Elio Grasso || Elio Grasso Dolcetto d'alba Elio Grasso",
+            "actual": "Dolcetto d'Alba || Elio Grasso Dolcetto d'Alba",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Barbaresco Marchesi di Barolo || Marchesi di Barolo Barbaresco Marchesi di Barolo",
+            "actual": "Barbaresco Marchesi di Barolo || Marchesi di Barolo Barbaresco Marchesi di Barolo",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Nebbiolo Nino Negri || Nino Negri Nebbiolo Nino Negri",
+            "actual": "Nebbiolo || Nino Negri Nebbiolo",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Bricco dell'uccellone Barbera || Piamonte Bricco dell'uccellone Barbera",
+            "actual": "Bricco dell'Uccellone || Braida Bricco dell'Uccellone",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": [
+          "La Rosa || La Rosa La Rosa",
+          "Laurent Perrier ros || Laurent Perrier Laurent Perrier ros",
+          "Laurent Perrier La Cuvee || Laurent Perrier Laurent Perrier La Cuvee",
+          "Gaudensius blanco || Firriato Gaudensius blanco",
+          "Laurent Perriere Ultra || Laurent Perrier Laurent Perriere Ultra",
+          "Costa di rose || Firriato Costa di rose"
+        ]
+      },
+      "baseline_latency_ms": 38120,
+      "candidate_latency_ms": 28037,
+      "latency_delta_ms": -10083,
+      "latency_ratio": 0.735,
+      "baseline_backend_versions": [
+        "scan-wine-menu-2026-08-26-grounded-v3"
+      ],
+      "candidate_backend_versions": [
+        "scan-wine-menu-2026-08-26-grounded-v3"
+      ],
+      "backend_versions_stable": true
+    },
+    {
+      "fixture": "img-7548-2--original",
+      "mode": "carta-vinos",
+      "baseline_status": "PASS",
+      "candidate_status": "PASS",
+      "baseline_results": 8,
+      "candidate_results": 8,
+      "result_count_delta": 0,
+      "baseline_high_confidence": 7,
+      "candidate_high_confidence": 6,
+      "identity_stability": {
+        "expected_count": 8,
+        "actual_count": 8,
+        "matched_count": 8,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Laurent Perriere Ultra brut || Laurent Perrier Laurent Perriere Ultra brut",
+            "actual": "Laurent Perriere Ultra brut || Laurent Perrier Laurent Perriere Ultra brut",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Gaudensius blanc de noir || Sicilia Gaudensius blanc de noir",
+            "actual": "Gaudensius blanc de noir || Sicily/Italy Gaudensius blanc de noir",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Laurent Perrier La Cuvee || Laurent Perrier Laurent Perrier La Cuvee",
+            "actual": "Laurent Perrier La Cuvee || Laurent Perrier Laurent Perrier La Cuvee",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Laurent Perrier rose || Laurent Perrier Laurent Perrier rose",
+            "actual": "Laurent Perrier rose || Laurent Perrier Laurent Perrier rose",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Chateau d esclans whispering angels || Château d'Esclans Chateau d esclans whispering angels",
+            "actual": "Chateau d esclans whispering angels || Chateau d'Esclans Chateau d esclans whispering angels",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Chateau miraval rose || Château Miraval Chateau miraval rose",
+            "actual": "Chateau miraval rose || Chateau Miraval Chateau miraval rose",
+            "similarity": 1.0
+          },
+          {
+            "expected": "La Rosa Raventos i blanc || La Rosa Raventós i Blanc La Rosa Raventos i blanc",
+            "actual": "La Rosa Raventos i blanc || Raventos i blanc La Rosa Raventos i blanc",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Costa di rose. || Umberto Cesari Costa di rose.",
+            "actual": "Costa di rose. Umberto Cesari || Umberto Cesari Costa di rose. Umberto Cesari",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "baseline_latency_ms": 18575,
+      "candidate_latency_ms": 23055,
+      "latency_delta_ms": 4480,
+      "latency_ratio": 1.241,
+      "baseline_backend_versions": [
+        "scan-wine-menu-2026-08-26-grounded-v3"
+      ],
+      "candidate_backend_versions": [
+        "scan-wine-menu-2026-08-26-grounded-v3"
+      ],
+      "backend_versions_stable": true
+    },
+    {
+      "fixture": "img-7552-2--original",
+      "mode": "carta-vinos",
+      "baseline_status": "PASS",
+      "candidate_status": "PASS",
+      "baseline_results": 13,
+      "candidate_results": 13,
+      "result_count_delta": 0,
+      "baseline_high_confidence": 13,
+      "candidate_high_confidence": 13,
+      "identity_stability": {
+        "expected_count": 13,
+        "actual_count": 13,
+        "matched_count": 13,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Pedro Ximenez, Don Px || Toro Albalá Pedro Ximenez, Don Px",
+            "actual": "Pedro Ximenez, Don Px || Toro Albalá Pedro Ximenez, Don Px",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Moscatel Zumbral || Dimobe Moscatel Zumbral",
+            "actual": "Moscatel Zumbral || Dimobe Moscatel Zumbral",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Amontillado Viña AB || González Byass Amontillado Viña AB",
+            "actual": "Amontillado Viña AB || Gonzalez Byass Amontillado Viña AB",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Manzanilla Alegría || Williams & Humbert Manzanilla Alegría",
+            "actual": "Manzanilla Alegria || Williams & Humbert Manzanilla Alegria",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Manzanilla Pasada Xixarito || Bodegas Barón Manzanilla Pasada Xixarito",
+            "actual": "Manzanilla Pasada Xixarito || Bodegas Baron Manzanilla Pasada Xixarito",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Oloroso Don Nuño || Lustau Oloroso Don Nuño",
+            "actual": "Oloroso Don Nuño || Lustau Oloroso Don Nuño",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Amontillado El Contrabandista || Valdespino Amontillado El Contrabandista",
+            "actual": "Amontillado El Contrabandista || Valdespino Amontillado El Contrabandista",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Fino Viejo, Tradición || Bodegas Tradición Fino Viejo, Tradición",
+            "actual": "Fino Viejo, Tradición || Tradición Fino Viejo, Tradición",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Bertola, Palo Cortado || Diez Mérito Bertola, Palo Cortado",
+            "actual": "Bertola, Palo Cortado || Diez Mérito Bertola, Palo Cortado",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Maxim Riesling Sekt Brut || Mosela Maxim Riesling Sekt Brut",
+            "actual": "Maxim Riesling Sekt Brut || Mosela Maxim Riesling Sekt Brut",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Agustí Torelló, Kripta || Cava Agustí Torelló, Kripta",
+            "actual": "Agustí Torelló, Kripta || Cava Agustí Torelló, Kripta",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Joan Raventós Rosé BN || Cava Joan Raventós Rosé BN",
+            "actual": "Joan Raventós Rosé BN || Cava Joan Raventós Rosé BN",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Fino Inocente || Valdespino Fino Inocente",
+            "actual": "Fino Ynocente || Valdespino Fino Ynocente",
+            "similarity": 0.958
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "baseline_latency_ms": 32557,
+      "candidate_latency_ms": 32526,
+      "latency_delta_ms": -31,
+      "latency_ratio": 0.999,
+      "baseline_backend_versions": [
+        "scan-wine-menu-2026-08-26-grounded-v3"
+      ],
+      "candidate_backend_versions": [
+        "scan-wine-menu-2026-08-26-grounded-v3"
+      ],
+      "backend_versions_stable": true
+    },
+    {
+      "fixture": "img-7553-2--original",
+      "mode": "carta-vinos",
+      "baseline_status": "PASS",
+      "candidate_status": "PASS",
+      "baseline_results": 18,
+      "candidate_results": 19,
+      "result_count_delta": 1,
+      "baseline_high_confidence": 18,
+      "candidate_high_confidence": 19,
+      "identity_stability": {
+        "expected_count": 18,
+        "actual_count": 19,
+        "matched_count": 18,
+        "precision": 0.947,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Forlong ecológico || Jerez Forlong ecológico",
+            "actual": "Forlong ecológico || Jerez Forlong ecológico",
+            "similarity": 1.0
+          },
+          {
+            "expected": "López de Haro Rosado || Bodegas López de Haro López de Haro Rosado",
+            "actual": "López de Haro Rosado || Bodega Classica (Hacienda López de Haro) López de Haro Rosado",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Huerto de la Condesa || Málaga Huerto de la Condesa",
+            "actual": "Huerto de la Condesa || Málaga Huerto de la Condesa",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Dereszla Tokaji Dry || Dereszla Dereszla Tokaji Dry",
+            "actual": "Dereszla Tokaji Dry",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Can Feixes || Penedés Can Feixes",
+            "actual": "Can Feixes || Penedés Can Feixes",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Finca la Olma ecológico || Rueda Finca la Olma ecológico",
+            "actual": "Finca la Olma ecológico || Rueda Finca la Olma ecológico",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Nat Cool Mosel || Mosel Nat Cool Mosel",
+            "actual": "Nat Cool Mosel || Mosel Nat Cool Mosel",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Meín Castes Brancas || Viña Meín Meín Castes Brancas",
+            "actual": "Meín Castes Brancas || Ribeiro Meín Castes Brancas",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Casa Castillo || Casa Castillo Casa Castillo",
+            "actual": "Casa Castillo || Jumilla Casa Castillo",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Prieler || Prieler Prieler",
+            "actual": "Prieler || Burgenland Prieler",
+            "similarity": 1.0
+          },
+          {
+            "expected": "L'Arnaude || Provenza L'Arnaude",
+            "actual": "L'Arnaude || Provenza L'Arnaude",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Agrícola de Cadalso || Agrícola de Cadalso Agrícola de Cadalso",
+            "actual": "Agrícola de Cadalso || Madrid Agrícola de Cadalso",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Diaz Bayo 4 Meses || Ribera del Duero Diaz Bayo 4 Meses",
+            "actual": "Diaz Bayo 4 Meses || Ribera del Duero Diaz Bayo 4 Meses",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Domaine de la Janasse || Domaine de la Janasse Domaine de la Janasse",
+            "actual": "Domaine de la Janasse || Côtes du Rhône Domaine de la Janasse",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Mayela || Rioja Mayela",
+            "actual": "Mayela || Rioja Mayela",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Nat Cool Zorzal || Navarra Nat Cool Zorzal",
+            "actual": "Nat Cool Zorzal || Zorzal Nat Cool Zorzal",
+            "similarity": 1.0
+          },
+          {
+            "expected": "La Viña de Ayer || La Viña de Ayer La Viña de Ayer",
+            "actual": "La Viña de Ayer || Madrid La Viña de Ayer",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Percheron chenin blanc",
+            "actual": "Percheron",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [
+          "Huerto de la Condesa || Málaga Huerto de la Condesa"
+        ],
+        "missed": []
+      },
+      "baseline_latency_ms": 38716,
+      "candidate_latency_ms": 39059,
+      "latency_delta_ms": 343,
+      "latency_ratio": 1.009,
+      "baseline_backend_versions": [
+        "scan-wine-menu-2026-08-26-grounded-v3"
+      ],
+      "candidate_backend_versions": [
+        "scan-wine-menu-2026-08-26-grounded-v3"
+      ],
+      "backend_versions_stable": true
+    }
+  ]
+}

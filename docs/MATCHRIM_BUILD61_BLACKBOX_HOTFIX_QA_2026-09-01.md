@@ -106,3 +106,7 @@ Las capturas con imagenes aportadas por el usuario permanecen ignoradas por Git 
 4. Solo entonces subir a TestFlight con autorizacion explicita. Este hotfix no ha subido ningun build.
 
 Progreso real: cliente y QA interna 100%; gate de release completo 92%. El 8% restante es reconocimiento real denso, rerun fisico del candidato firmado y autorizacion final de subida.
+
+## Actualizacion del gate build 62
+
+El rerun interno sobre las cinco escenas se ejecuto el 2026-09-01 y termino `4/5 PASS`. La carta `IMG_7547 2` bajo de 15 a 9 resultados, con recall `0.562`; el recall micro de cartas quedo en `0.875`. La decision es `NO-GO` para build 62 y TestFlight hasta certificar las funciones v4 en staging. Resultado completo: `docs/MATCHRIM_BUILD62_BACKEND_GATE_2026-09-01.md`.

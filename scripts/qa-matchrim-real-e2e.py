@@ -17,7 +17,7 @@ from playwright.sync_api import sync_playwright
 BASE_URL = os.environ.get("MATCHRIM_E2E_URL", "http://127.0.0.1:4173").rstrip("/")
 ARTIFACTS = Path(os.environ.get(
     "MATCHRIM_E2E_ARTIFACTS",
-    "/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/2026-08-26-real-e2e",
+    Path(__file__).resolve().parents[1] / "qa-artifacts" / "matchrim-real-e2e",
 ))
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 TIMEOUT_MS = int(os.environ.get("MATCHRIM_E2E_TIMEOUT_MS", "180000"))
@@ -327,7 +327,40 @@ def is_duplicate_menu_item(left, right):
         and abs(left_position["x"] - right_position["x"]) <= 7
         and abs(left_position["y"] - right_position["y"]) <= 7
     )
-    return same_source or same_position
+    left_name = normalize_name(left.get("name"))
+    right_name = normalize_name(right.get("name"))
+    left_producer = normalize_name(left.get("producer"))
+    right_producer = normalize_name(right.get("producer"))
+    same_name = left_name == right_name and len(left_name) >= 5
+    missing_producer = not left_producer or not right_producer
+    conflicting_vintage = bool(
+        left.get("vintage") and right.get("vintage") and left.get("vintage") != right.get("vintage")
+    )
+    left_price = left.get("price")
+    right_price = right.get("price")
+    conflicting_price = bool(
+        isinstance(left_price, (int, float))
+        and isinstance(right_price, (int, float))
+        and abs(left_price - right_price) > 0.5
+    )
+    generic_source = any(source in {left_name, right_name} for source in (left_source, right_source) if source)
+    nearby_partial_identity = bool(
+        same_name
+        and missing_producer
+        and generic_source
+        and not conflicting_vintage
+        and not conflicting_price
+        and left_position
+        and right_position
+        and all(
+            isinstance(position.get(axis), (int, float))
+            for position in (left_position, right_position)
+            for axis in ("x", "y")
+        )
+        and abs(left_position["x"] - right_position["x"]) <= 15
+        and abs(left_position["y"] - right_position["y"]) <= 10
+    )
+    return same_source or same_position or nearby_partial_identity
 
 
 def merge_menu_items(items):
@@ -394,6 +427,7 @@ def compact_backend_observation(api_calls):
                     "producer": wine.get("productor"),
                     "vintage": wine.get("anada"),
                     "section": wine.get("seccion"),
+                    "price": wine.get("precio"),
                     "confidence": wine.get("confidence"),
                     "doubts": wine.get("dudas") if isinstance(wine.get("dudas"), list) else [],
                     "source_text": wine.get("texto_fuente"),
@@ -519,8 +553,8 @@ def run_fixture(browser, fixture, file_path):
 
     expectation = fixture.get("expectation", "inherit")
     if fixture["mode"] == "etiqueta":
-        result_count = page.locator('button[aria-label^="Region "]').count()
-        anchored_pins = result_count
+        result_count = page.locator('[data-testid^="region-outline-"]').count()
+        anchored_pins = page.locator('[data-testid^="region-pin-"]').count()
         result_rows = page.locator('button[aria-label^="Abrir detalle de "]').all_inner_texts()
         individual_affinity_scores = sum(1 for row in result_rows if re.search(r"(?<!\d)\d{1,3}%(?!\d)", row))
         coverage = next((line.strip() for line in body_text.splitlines() if "Cobertura" in line), None)
@@ -569,7 +603,9 @@ def run_fixture(browser, fixture, file_path):
         result_rows = result_buttons.all_inner_texts()
         displayed_names = [menu_row_identity(row) for row in result_rows]
         result_count = len(result_rows)
-        anchored_pins = page.locator('button[aria-label^="Vino "]').count()
+        anchored_pins = page.locator(
+            'button[aria-label^="Vino "], button[aria-label^="Grupo de "]'
+        ).count()
         coverage = backend.get("coverage")
         backend_identities = [menu_identity(item) for item in backend.get("items", [])]
         accuracy = compare_wine_names(fixture["expected_wines"], displayed_names)
