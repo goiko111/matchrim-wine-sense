@@ -52,6 +52,7 @@ import {
   isRetryableEdgeFunctionError,
   waitForAbortableDelay,
 } from '../src/utils/edgeFunctionResilience';
+import { clusterOverlayPins } from '../src/utils/overlayPins';
 
 const regions = normalizeDetectedRegions({
   regions: [
@@ -267,6 +268,25 @@ const mergedMenu = mergeMenuTileResults([
 assert.equal(mergedMenu.vinos?.length, 3, 'overlap duplicates merge, distinct rows of the same wine remain');
 assert.equal(mergedMenu.coverage?.status, 'reported_complete');
 assert.equal(mergedMenu.has_profile, true);
+const partialMenuDuplicate = mergeMenuTileResults([{
+  tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+  response: {
+    vinos: [
+      { ...menuWine('PINOT NIOR', 70, 42, 'PINOT NIOR'), productor: null, precio: null },
+      { ...menuWine('PINOT NIOR', 82, 47, 'PINOT NIOR BALLARD LANE 32'), productor: 'Ballard Lane', precio: 32 },
+    ],
+  },
+}]);
+assert.equal(partialMenuDuplicate.vinos?.length, 1, 'a nearby partial row must merge into its richer canonical row');
+assert.equal(partialMenuDuplicate.vinos?.[0].productor, 'Ballard Lane');
+
+const clusteredPins = clusterOverlayPins([
+  { key: '10', order: 10, x: 70, y: 42, value: 'partial' },
+  { key: '11', order: 11, x: 82, y: 47, value: 'canonical' },
+  { key: '12', order: 12, x: 20, y: 80, value: 'separate' },
+]);
+assert.deepEqual(clusteredPins.map((cluster) => cluster.items.length), [2, 1]);
+assert.equal(clusterOverlayPins(clusteredPins[0].items, { zoom: 2 }).length, 2, 'zoom must separate nearby pins');
 const completeFullMenu = resolveMenuTileResults([
   {
     tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },

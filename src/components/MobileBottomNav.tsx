@@ -61,7 +61,7 @@ const MobileBottomNav = () => {
 
   return (
     <nav
-      aria-label="Navegacion principal"
+      aria-label="Navegación principal"
       className="fixed inset-x-0 bottom-0 z-50 border-t matchrim-hairline bg-white px-2 pb-[calc(0.5rem+var(--matchrim-safe-bottom))] pt-2 shadow-[0_-16px_42px_-30px_rgba(35,24,18,0.65)] md:hidden"
     >
       <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
@@ -74,6 +74,7 @@ const MobileBottomNav = () => {
             <Link
               key={`${link.path}-${link.label}`}
               to={to}
+              aria-label={link.label}
               aria-current={isActive ? 'page' : undefined}
               title={link.label}
               className={`matchrim-pressable flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-[11px] font-semibold leading-none ${
@@ -82,8 +83,8 @@ const MobileBottomNav = () => {
                   : 'text-slate-600 hover:bg-stone-100 hover:text-red-900'
               }`}
             >
-              <Icon className="h-5 w-5" />
-              <span>{link.label}</span>
+              <Icon className="h-5 w-5" aria-hidden="true" />
+              <span aria-hidden="true">{link.label}</span>
             </Link>
           );
         })}

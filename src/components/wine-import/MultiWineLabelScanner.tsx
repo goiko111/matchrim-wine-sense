@@ -40,6 +40,7 @@ import {
 import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
+import { clusterOverlayPins } from '@/utils/overlayPins';
 import {
   calculateLocalMatchrimAffinity,
   readStoredMatchrimProfile,
@@ -102,10 +103,10 @@ const PHASE_LABELS: Record<ScanPhase, string> = {
   idle: 'Lista para escanear',
   quality: 'Comprobando imagen',
   detecting: 'Localizando botellas y etiquetas',
-  analyzing: 'Leyendo cada region por separado',
+  analyzing: 'Leyendo cada región por separado',
   ready: 'Lote listo para revisar',
-  cancelled: 'Analisis cancelado',
-  error: 'Analisis incompleto',
+  cancelled: 'Análisis cancelado',
+  error: 'Análisis incompleto',
 };
 
 const statusLabel = (region: ScanRegion) => {
@@ -137,11 +138,11 @@ const candidateToAffinityWine = (candidate: WineCandidate) => ({
 
 const userFacingScanError = (error: unknown) => {
   if (typeof navigator !== 'undefined' && !navigator.onLine) {
-    return 'No hay conexion. Conservamos la foto para que puedas reintentar cuando vuelva la red.';
+    return 'No hay conexión. Conservamos la foto para que puedas reintentar cuando vuelva la red.';
   }
   const message = error instanceof Error ? error.message : '';
   if (/load failed|failed to fetch|network|404|not found/i.test(message)) {
-    return 'No se pudo conectar con el servicio de deteccion. La foto sigue lista para reintentar.';
+    return 'No se pudo conectar con el servicio de detección. La foto sigue lista para reintentar.';
   }
   if (error instanceof EdgeFunctionError && error.status === 429) {
     return 'El servicio esta recibiendo demasiadas solicitudes. Conservamos la foto para reintentarlo en unos segundos.';
@@ -149,7 +150,7 @@ const userFacingScanError = (error: unknown) => {
   if (error instanceof EdgeFunctionError && error.status >= 500) {
     return 'El servicio no pudo terminar la lectura. Conservamos la foto para que puedas reintentar.';
   }
-  return message || 'No se pudo completar el analisis. La foto sigue lista para reintentar.';
+  return message || 'No se pudo completar el análisis. La foto sigue lista para reintentar.';
 };
 
 export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScannerProps) => {
@@ -175,6 +176,17 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
   const duplicateGroups = useMemo(() => groupDuplicateWines(regions), [regions]);
   const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions), [regions]);
+  const regionPinClusters = useMemo(() => clusterOverlayPins(
+    regions
+      .filter((region) => region.status !== 'discarded')
+      .map((region) => ({
+        key: region.id,
+        order: region.index,
+        x: Math.max(5, Math.min(95, region.box.x + Math.min(5, region.box.width / 2))),
+        y: Math.max(5, Math.min(95, region.box.y + Math.min(5, region.box.height / 2))),
+        value: region,
+      })),
+  ), [regions]);
   const rankedGroups = useMemo(() => [...duplicateGroups].sort((a, b) => (
     (b.candidate.affinity ?? -1) - (a.candidate.affinity ?? -1)
   )), [duplicateGroups]);
@@ -220,7 +232,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         grapes: catalogMatch.wine.grapes?.length ? catalogMatch.wine.grapes : candidate.grapes,
         confidence: Math.max(candidate.confidence, catalogMatch.confidence),
         source: 'catalog',
-        evidence: [...candidate.evidence, 'Coincidencia en el catalogo Winerim'],
+        evidence: [...candidate.evidence, 'Coincidencia en el catálogo Winerim'],
       };
     }
 
@@ -234,8 +246,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         affinity: localAffinity,
         affinityConfidence: Math.round(Math.min(enriched.confidence, enriched.source === 'catalog' ? 0.9 : 0.58) * 100) / 100,
         affinityReason: enriched.source === 'catalog'
-          ? 'Calculado localmente contra tu perfil con atributos del catalogo.'
-          : 'Calculado localmente contra tu perfil con atributos sensoriales inferidos; confirma la identidad para mejorar la precision.',
+          ? 'Calculado localmente contra tu perfil con atributos del catálogo.'
+          : 'Calculado localmente contra tu perfil con atributos sensoriales inferidos; confirma la identidad para mejorar la precisión.',
       };
     }
 
@@ -304,7 +316,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         ...region,
         status: 'unrecognized' as const,
         fallback: null,
-        error: error instanceof Error ? error.message : 'No se pudo analizar la region',
+        error: error instanceof Error ? error.message : 'No se pudo analizar la región',
       };
     }
   };
@@ -335,7 +347,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       setPreview(prepared.dataUrl);
       setQuality(prepared.quality);
       if (shouldRejectTextAnalysis(prepared.quality)) {
-        setErrorMessage('La imagen es demasiado pequena y desenfocada para leer etiquetas. Acerca la camara y enfoca el nombre o la bodega.');
+        setErrorMessage('La imagen es demasiado pequeña y desenfocada para leer etiquetas. Acerca la cámara y enfoca el nombre o la bodega.');
         setPhase('error');
         return;
       }
@@ -400,7 +412,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       setCoverage(resolvedCoverage);
       if (detected.length === 0) {
         setRegions([]);
-        setErrorMessage('No he localizado botellas analizables. Acerca la camara o evita reflejos fuertes.');
+        setErrorMessage('No he localizado botellas analizables. Acerca la cámara o evita reflejos fuertes.');
         setPhase('error');
         return;
       }
@@ -647,7 +659,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     <div className="space-y-5">
       {isMatchrimFixtureQaEnabled && (
         <div role="status" className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-950">
-          QA local: respuestas deterministas. Este build valida el flujo, no la precision del OCR.
+          QA local: respuestas deterministas. Este build valida el flujo, no la precisión del OCR.
         </div>
       )}
       <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileSelect} className="hidden" />
@@ -667,7 +679,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
               <Camera className="h-4 w-4" /> Hacer foto
             </Button>
             <Button type="button" variant="outline" className="matchrim-pressable min-h-12 gap-2 bg-white" onClick={() => fileInputRef.current?.click()}>
-              <FolderOpen className="h-4 w-4" /> Elegir de galeria
+              <FolderOpen className="h-4 w-4" /> Elegir de galería
             </Button>
           </div>
         </div>
@@ -687,7 +699,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
               {phase === 'ready' && scanMetrics && (
                 <div className="mt-1 text-xs matchrim-muted" data-testid="scan-performance-summary">
                   {regions.length} regiones en {(scanMetrics.totalMs / 1000).toFixed(1)} s
-                  {scanMetrics.detectionRefined ? ' · deteccion refinada por zonas' : ''}
+                  {scanMetrics.detectionRefined ? ' · detección refinada por zonas' : ''}
                   {scanMetrics.retries > 0 ? ` · ${scanMetrics.retries} reintento${scanMetrics.retries === 1 ? '' : 's'}` : ''}
                 </div>
               )}
@@ -704,7 +716,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 </Button>
               )}
               {!loading && (
-                <Button type="button" variant="outline" size="icon" className="matchrim-pressable h-11 w-11 bg-white" onClick={resetScan} aria-label="Cerrar analisis">
+                <Button type="button" variant="outline" size="icon" className="matchrim-pressable h-11 w-11 bg-white" onClick={resetScan} aria-label="Cerrar análisis">
                   <X className="h-4 w-4" />
                 </Button>
               )}
@@ -736,30 +748,36 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           >
             <img src={preview} alt="Foto analizada con regiones numeradas" className="absolute inset-0 block h-full w-full object-contain" />
             {regions.filter((region) => region.status !== 'discarded').map((region) => (
-              <div key={region.id}>
                 <div
+                  key={region.id}
                   className={`pointer-events-none absolute border-2 transition ${selectedRegionId === region.id ? 'ring-2 ring-white ring-offset-1 ring-offset-black' : ''} ${statusClass(region)}`}
                   style={{ left: `${region.box.x}%`, top: `${region.box.y}%`, width: `${region.box.width}%`, height: `${region.box.height}%`, backgroundColor: 'transparent' }}
                   data-testid={`region-outline-${region.index}`}
                   aria-hidden="true"
                 />
+			))}
+            {regionPinClusters.map((cluster) => {
+              const first = cluster.items[0].value;
+              const clustered = cluster.items.length > 1;
+              const active = cluster.items.some((item) => item.value.id === selectedRegionId);
+              const labels = cluster.items.map((item) => `${item.value.index} ${statusLabel(item.value)}`).join(', ');
+
+              return (
                 <button
+                  key={cluster.key}
                   type="button"
-                  className="absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                  style={{
-                    left: `${Math.max(5, Math.min(95, region.box.x + Math.min(5, region.box.width / 2)))}%`,
-                    top: `${Math.max(5, Math.min(95, region.box.y + Math.min(5, region.box.height / 2)))}%`,
-                  }}
-                  onClick={() => setSelectedRegionId(region.id)}
-                  aria-label={`Region ${region.index}, ${statusLabel(region)}`}
-                  data-testid={`region-pin-${region.index}`}
+                  className={`absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${active ? 'ring-2 ring-white/80' : ''}`}
+                  style={{ left: `${cluster.x}%`, top: `${cluster.y}%` }}
+                  onClick={() => setSelectedRegionId(first.id)}
+                  aria-label={clustered ? `Grupo de ${cluster.items.length} regiones: ${labels}` : `Región ${first.index}, ${statusLabel(first)}`}
+                  data-testid={clustered ? `region-pin-cluster-${first.index}` : `region-pin-${first.index}`}
                 >
-                  <span className={`flex h-7 min-w-7 items-center justify-center rounded-full border px-1 text-xs font-bold shadow ${statusClass(region)}`}>
-                    {region.status === 'analyzing' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : region.index}
-                  </span>
-                </button>
-              </div>
-            ))}
+				  <span className={`flex h-7 min-w-7 items-center justify-center rounded-full border px-1 text-xs font-bold shadow ${statusClass(first)}`}>
+					{clustered ? `+${cluster.items.length}` : first.status === 'analyzing' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : first.index}
+				  </span>
+				</button>
+              );
+            })}
           </div>
 
           {regions.length > 0 && (
@@ -784,7 +802,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 <p className="mt-1 leading-5">
                   {coverage?.estimatedVisibleObjects
                     ? `${coverage.detectedObjects} de unas ${coverage.estimatedVisibleObjects} botellas visibles detectadas.`
-                    : `${regions.length} regiones revisadas. No sabemos cuantas botellas visibles quedaron fuera.`}
+                    : `${regions.length} regiones revisadas. No sabemos cuántas botellas visibles quedaron fuera.`}
                 </p>
                 {coverage?.notes.length ? <p className="mt-1 text-xs opacity-80">{coverage.notes.join(' ')}</p> : null}
               </div>
@@ -855,15 +873,15 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           {selectedRegion && (
             <div className="mx-auto flex w-full max-w-2xl min-h-0 flex-1 flex-col">
               <DrawerHeader className="border-b border-stone-200 bg-white text-left">
-                <DrawerTitle>Region {selectedRegion.index}: {statusLabel(selectedRegion)}</DrawerTitle>
+                <DrawerTitle>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</DrawerTitle>
                 <DrawerDescription>
-                  Deteccion {Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.
+                  Detección {Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.
                 </DrawerDescription>
               </DrawerHeader>
 
               <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4">
                 {selectedRegion.cropDataUrl && (
-                  <img src={selectedRegion.cropDataUrl} alt={`Recorte de la region ${selectedRegion.index}`} className="max-h-48 w-full rounded-lg bg-black object-contain" />
+                  <img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} className="max-h-48 w-full rounded-lg bg-black object-contain" />
                 )}
 
                 {selectedRegion.candidates.length === 0 ? (
@@ -874,7 +892,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                       identityConfidence={0}
                       affinity={null}
                       attributes={null}
-                      primaryAction={{ label: 'Reanalizar region', onClick: () => void reanalyzeSelected() }}
+                      primaryAction={{ label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }}
                     />
                       <div className="rounded-lg border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
                       <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> Sin identidad fiable</div>
@@ -951,7 +969,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                         </div>
 
                         <div className="matchrim-data-rail grid grid-cols-3 gap-2 rounded-lg px-2 py-3 text-center text-xs text-slate-500">
-                          <div><span className="block text-lg font-bold text-slate-900">{Math.round(selectedRegion.detectionConfidence * 100)}%</span>Deteccion</div>
+                          <div><span className="block text-lg font-bold text-slate-900">{Math.round(selectedRegion.detectionConfidence * 100)}%</span>Detección</div>
                           <div><span className="block text-lg font-bold text-slate-900">{Math.round(selectedCandidate.confidence * 100)}%</span>Identidad</div>
                           <div><span className="block text-lg font-bold text-slate-900">{selectedCandidate.affinityConfidence == null ? '-' : `${Math.round(selectedCandidate.affinityConfidence * 100)}%`}</span>Respaldo afinidad</div>
                         </div>
@@ -976,7 +994,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                             ? { label: 'Confirmar este candidato', onClick: confirmSelectedCandidate }
                             : null}
                           secondaryAction={selectedRegion.status === 'uncertain'
-                            ? { label: 'Reanalizar region', onClick: () => void reanalyzeSelected() }
+                            ? { label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }
                             : null}
                         />
 

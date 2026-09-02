@@ -19,7 +19,7 @@ interface AffinityExplanationProps {
 
 const SOURCE_LABELS: Record<AffinityDataSource, string> = {
   label: 'dato visible',
-  catalog: 'ficha de catalogo',
+  catalog: 'ficha de catálogo',
   inference: 'inferencia sensorial',
   preference: 'preferencia aprendida',
 };
@@ -67,7 +67,7 @@ export const AffinityExplanation = ({
           <CircleHelp className="h-4 w-4" />
           Afinidad sin desglose suficiente
         </div>
-        <p className="mt-1 leading-5">Falta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precision aparente.</p>
+        <p className="mt-1 leading-5">Falta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.</p>
       </div>
     );
   }
@@ -86,7 +86,7 @@ export const AffinityExplanation = ({
     <div className="matchrim-surface space-y-4 rounded-lg p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h4 className="font-semibold text-slate-950">Por que encaja</h4>
+          <h4 className="font-semibold text-slate-950">Por qué encaja</h4>
           <p className="mt-1 text-sm leading-5 matchrim-muted">{explanation.whyItMayFit}</p>
         </div>
         <div className="rounded-md bg-red-950 px-3 py-2 text-right text-xs text-white">
@@ -102,7 +102,7 @@ export const AffinityExplanation = ({
 
       <div className="matchrim-data-rail grid grid-cols-2 gap-3 rounded-lg px-2 py-3 text-center text-xs text-slate-500">
         <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.identificationConfidence * 100)}%</span>Señal de identidad</div>
-        <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.confidence * 100)}%</span>Respaldo de la explicacion ({explanation.confidenceLabel})</div>
+        <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.confidence * 100)}%</span>Respaldo de la explicación ({explanation.confidenceLabel})</div>
       </div>
 
       {explanation.identificationConfidence < 0.72 && (
@@ -119,7 +119,7 @@ export const AffinityExplanation = ({
               <div
                 className="h-2 overflow-hidden rounded-full bg-stone-100"
                 role="meter"
-                aria-label={dimension.alignment === null ? `${dimension.label}: preferencia aun no aprendida` : `${dimension.label}: ${dimension.alignment}%`}
+                aria-label={dimension.alignment === null ? `${dimension.label}: preferencia aún no aprendida` : `${dimension.label}: ${dimension.alignment}%`}
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-valuenow={dimension.alignment ?? undefined}
@@ -131,7 +131,7 @@ export const AffinityExplanation = ({
               </div>
               {!compact && (
                 <div className="mt-1 text-[11px] text-slate-500">
-                  {dimension.profileValue === null ? 'Tu perfil sin dato' : `Tu perfil ${dimension.profileValue.toFixed(1)}`} · vino {dimension.wineValue.toFixed(1)} · peso maximo {Math.round(dimension.weight * 100)}% · {SOURCE_LABELS[dimension.source]}
+                  {dimension.profileValue === null ? 'Tu perfil sin dato' : `Tu perfil ${dimension.profileValue.toFixed(1)}`} · vino {dimension.wineValue.toFixed(1)} · peso máximo {Math.round(dimension.weight * 100)}% · {SOURCE_LABELS[dimension.source]}
                 </div>
               )}
             </div>
@@ -141,7 +141,7 @@ export const AffinityExplanation = ({
                 size="icon"
                 variant={feedback[dimension.key] === 'hit' ? 'default' : 'ghost'}
                 className="matchrim-pressable h-11 w-11"
-                aria-label={`La lectura de ${dimension.label} acerto`}
+                aria-label={`La lectura de ${dimension.label} acertó`}
                 onClick={() => storeFeedback(dimension.key, 'hit')}
               >
                 {feedback[dimension.key] === 'hit' ? <Check className="h-4 w-4" /> : <ThumbsUp className="h-4 w-4" />}
@@ -151,7 +151,7 @@ export const AffinityExplanation = ({
                 size="icon"
                 variant={feedback[dimension.key] === 'miss' ? 'destructive' : 'ghost'}
                 className="matchrim-pressable h-11 w-11"
-                aria-label={`La lectura de ${dimension.label} no acerto`}
+                aria-label={`La lectura de ${dimension.label} no acertó`}
                 onClick={() => storeFeedback(dimension.key, 'miss')}
               >
                 <ThumbsDown className="h-4 w-4" />
@@ -163,7 +163,7 @@ export const AffinityExplanation = ({
 
       <div className="grid gap-3 text-sm sm:grid-cols-2">
         <div>
-          <div className="font-semibold text-slate-900">Lo que podria no encajar</div>
+          <div className="font-semibold text-slate-900">Lo que podría no encajar</div>
           <p className="mt-1 leading-5 text-slate-600">{explanation.whatMayNotFit}</p>
         </div>
         <div>
@@ -188,18 +188,18 @@ export const AffinityExplanation = ({
               <ul className="mt-1 space-y-1 text-slate-600">
                 {explanation.frictions.map((item) => <li key={item}>{item}</li>)}
               </ul>
-            ) : <p className="mt-1 text-slate-600">Sin una friccion fuerte en los datos disponibles.</p>}
+            ) : <p className="mt-1 text-slate-600">Sin una fricción fuerte en los datos disponibles.</p>}
           </div>
         </div>
       )}
 
       {!compact && (
         <details className="text-sm">
-          <summary className="cursor-pointer font-medium text-slate-800">Datos y limites del calculo</summary>
+          <summary className="cursor-pointer font-medium text-slate-800">Datos y límites del cálculo</summary>
           <div className="mt-2 space-y-2 text-slate-600">
             <p>Origen: {explanation.sources.map((source) => SOURCE_LABELS[source]).join(' + ')}.</p>
-            <p>Falta: {explanation.missingData.join(', ')}. Con esos datos el orden podria cambiar.</p>
-            <p>La identidad, la ficha sensorial y tu preferencia son evidencias distintas. El rango se ensancha cuando falta alguna; no representa una probabilidad estadistica.</p>
+            <p>Falta: {explanation.missingData.join(', ')}. Con esos datos el orden podría cambiar.</p>
+            <p>La identidad, la ficha sensorial y tu preferencia son evidencias distintas. El rango se ensancha cuando falta alguna; no representa una probabilidad estadística.</p>
           </div>
         </details>
       )}

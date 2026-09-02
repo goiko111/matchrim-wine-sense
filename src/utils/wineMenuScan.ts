@@ -154,7 +154,34 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
     && Math.abs(leftAnchor.x - rightAnchor.x) <= 7
     && Math.abs(leftAnchor.y - rightAnchor.y) <= 7);
 
-  return sameSource || samePosition;
+  const sameName = normalizeText(left.nombre) === normalizeText(right.nombre)
+    && normalizeText(left.nombre).length >= 5;
+  const leftProducer = normalizeText(left.productor);
+  const rightProducer = normalizeText(right.productor);
+  const missingProducer = !leftProducer || !rightProducer;
+  const conflictingVintage = Boolean(left.anada && right.anada && left.anada !== right.anada);
+  const conflictingPrice = Boolean(
+    typeof left.precio === 'number'
+    && typeof right.precio === 'number'
+    && Math.abs(left.precio - right.precio) > 0.5
+  );
+  const genericSource = [leftSource, rightSource].some((source) => (
+    source === normalizeText(left.nombre)
+    || source === normalizeText(right.nombre)
+  ));
+  const nearbyPartialIdentity = Boolean(
+    sameName
+    && missingProducer
+    && genericSource
+    && !conflictingVintage
+    && !conflictingPrice
+    && leftAnchor
+    && rightAnchor
+    && Math.abs(leftAnchor.x - rightAnchor.x) <= 15
+    && Math.abs(leftAnchor.y - rightAnchor.y) <= 10
+  );
+
+  return sameSource || samePosition || nearbyPartialIdentity;
 };
 
 const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {

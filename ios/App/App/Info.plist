@@ -25,9 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Matchrim usa la camara cuando decides fotografiar etiquetas, botellas, expositores, cartas, pizarras, menus o platos para analizarlos y recomendarte opciones.</string>
+	<string>Matchrim usa la cámara cuando decides fotografiar etiquetas, botellas, expositores, cartas, pizarras, menús o platos para analizarlos y recomendarte opciones.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Matchrim accede unicamente a las fotos que eliges para analizar etiquetas, botellas, expositores, cartas, pizarras, menus o platos. No examina el resto de tu fototeca.</string>
+	<string>Matchrim accede únicamente a las fotos que eliges para analizar etiquetas, botellas, expositores, cartas, pizarras, menús o platos. No examina el resto de tu fototeca.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

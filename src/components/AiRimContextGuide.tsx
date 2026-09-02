@@ -60,7 +60,7 @@ export const AiRimContextGuide = ({
               )}
             </div>
           )}
-          <p className="mt-2 text-[11px] opacity-70">Esta guia explica datos existentes; no cambia la identidad ni el calculo.</p>
+          <p className="mt-2 text-[11px] opacity-70">Esta guía explica datos existentes; no cambia la identidad ni el cálculo.</p>
         </div>
       </div>
     </section>

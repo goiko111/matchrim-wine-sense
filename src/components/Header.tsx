@@ -49,7 +49,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-white/90 backdrop-blur-sm border-b border-red-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] md:px-6">
+      <header className="bg-white/90 backdrop-blur-sm border-b border-red-200 px-4 pb-3 pt-[calc(0.75rem+var(--matchrim-safe-top))] md:px-6">
         <div className="max-w-6xl mx-auto flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
