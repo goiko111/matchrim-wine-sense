@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
-import { BookOpen, Home, ScanLine, Sparkles, User, Wine, type LucideIcon } from 'lucide-react';
+import { Compass, Home, ScanLine, UserRound, Wine, type LucideIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import { useI18n } from '@/i18n';
@@ -11,6 +11,7 @@ type BottomNavLink = {
   label: string;
   icon: LucideIcon;
   requiresAuth?: boolean;
+  activePaths?: string[];
 };
 
 const MobileBottomNav = () => {
@@ -18,43 +19,38 @@ const MobileBottomNav = () => {
   const { t } = useI18n();
   const location = useLocation();
   const isNative = Capacitor.isNativePlatform();
-  const currentPath = `${location.pathname}${location.search}`;
 
   useEffect(() => {
-    document.body.classList.add('has-mobile-app-nav');
+    const bodyClass = isNative ? 'has-native-app-nav' : 'has-mobile-app-nav';
+    document.body.classList.add(bodyClass);
 
     return () => {
-      document.body.classList.remove('has-mobile-app-nav');
+      document.body.classList.remove(bodyClass);
     };
-  }, []);
+  }, [isNative]);
 
-  const commonLinks: BottomNavLink[] = [
+  const navLinks: BottomNavLink[] = [
     { path: '/', label: t('nav.home'), icon: Home },
-    { path: '/matchrim', label: t('nav.test'), icon: Wine },
+    { path: '/wine-styles', label: 'Descubrir', icon: Compass, activePaths: ['/wine-styles', '/wines/'] },
     { path: '/escanear', label: 'Escanear', icon: ScanLine },
+    { path: '/my-wines', label: 'Bodega', icon: Wine, requiresAuth: true },
+    {
+      path: '/profile',
+      label: 'Perfil',
+      icon: UserRound,
+      requiresAuth: true,
+      activePaths: ['/profile', '/matchrim', '/auth', '/registration'],
+    },
   ];
 
-  const nativeLinks: BottomNavLink[] = [
-    ...commonLinks,
-    { path: '/my-wines', label: t('nav.wines'), icon: BookOpen, requiresAuth: true },
-    user
-      ? { path: '/profile', label: t('nav.profile'), icon: User, requiresAuth: true }
-      : { path: '/auth', label: t('nav.login'), icon: User },
-  ];
-
-  const webLinks: BottomNavLink[] = [
-    ...commonLinks,
-    { path: '/inteligencia-liquida', label: t('nav.ai'), icon: Sparkles },
-    { path: '/my-wines', label: t('nav.wines'), icon: BookOpen, requiresAuth: true },
-  ];
-
-  const navLinks = isNative || user ? nativeLinks : webLinks;
-
-  const isActivePath = (path: string) =>
-    location.pathname === path || (path !== '/' && location.pathname.startsWith(`${path}/`));
+  const isActivePath = (link: BottomNavLink) => {
+    const paths = [link.path, ...(link.activePaths || [])];
+    return paths.some((path) => (
+      location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
+    ));
+  };
 
   const getLinkTarget = (link: BottomNavLink) => {
-    if (!user && link.path === '/auth') return buildAuthRedirectPath(currentPath);
     if (!user && link.requiresAuth) return buildAuthRedirectPath(link.path);
     return link.path;
   };
@@ -62,13 +58,14 @@ const MobileBottomNav = () => {
   return (
     <nav
       aria-label="Navegación principal"
-      className="fixed inset-x-0 bottom-0 z-50 border-t matchrim-hairline bg-white px-2 pb-[calc(0.5rem+var(--matchrim-safe-bottom))] pt-2 shadow-[0_-16px_42px_-30px_rgba(35,24,18,0.65)] md:hidden"
+      className={`matchrim-tab-bar fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/90 bg-white/95 px-2 pb-[calc(0.35rem+var(--matchrim-safe-bottom))] pt-1.5 backdrop-blur-xl ${isNative ? '' : 'md:hidden'}`}
     >
-      <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
+      <div className="mx-auto grid h-16 max-w-md grid-cols-5 gap-1">
         {navLinks.map((link) => {
           const Icon = link.icon;
-          const isActive = isActivePath(link.path);
+          const isActive = isActivePath(link);
           const to = getLinkTarget(link);
+          const isScan = link.path === '/escanear';
 
           return (
             <Link
@@ -77,14 +74,25 @@ const MobileBottomNav = () => {
               aria-label={link.label}
               aria-current={isActive ? 'page' : undefined}
               title={link.label}
-              className={`matchrim-pressable flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-[11px] font-semibold leading-none ${
-                isActive
-                  ? 'bg-red-950 text-white'
-                  : 'text-slate-600 hover:bg-stone-100 hover:text-red-900'
+              className={`matchrim-pressable relative flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-[10px] font-semibold leading-none ${
+                isScan
+                  ? 'text-red-950'
+                  : isActive
+                    ? 'text-red-900'
+                    : 'text-slate-500 hover:text-slate-900'
               }`}
             >
-              <Icon className="h-5 w-5" aria-hidden="true" />
+              {isScan ? (
+                <span className={`flex h-11 w-11 items-center justify-center rounded-full shadow-[0_8px_22px_-10px_rgba(72,6,25,0.9)] ${
+                  isActive ? 'bg-red-900 text-white' : 'bg-slate-950 text-white'
+                }`}>
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+              ) : (
+                <Icon className="h-[1.35rem] w-[1.35rem]" strokeWidth={isActive ? 2.3 : 1.9} aria-hidden="true" />
+              )}
               <span aria-hidden="true">{link.label}</span>
+              {isActive && !isScan && <span className="absolute top-0 h-0.5 w-5 rounded-full bg-red-800" aria-hidden="true" />}
             </Link>
           );
         })}

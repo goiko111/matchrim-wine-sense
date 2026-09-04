@@ -1,27 +1,30 @@
+import { useEffect, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowRight,
-  BookOpen,
+  ArrowUpRight,
   Camera,
-  CheckCircle2,
   ChevronRight,
-  Compass,
-  GlassWater,
-  ListChecks,
-  LogIn,
+  FileText,
+  History,
+  Layers3,
+  MessageCircle,
   ScanLine,
-  ShieldCheck,
-  SlidersHorizontal,
   Sparkles,
-  User,
+  UserRound,
+  Wine,
 } from 'lucide-react';
 import AppNav from '@/components/AppNav';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import heroWine from '@/assets/hero-tinto-versatil.jpg';
+import {
+  SCAN_HISTORY_UPDATED_EVENT,
+  getScanHistory,
+  type ScanHistoryItem,
+} from '@/utils/scanHistory';
 
 interface NativeAppHomeProps {
   hasQuizResults: boolean;
@@ -29,256 +32,216 @@ interface NativeAppHomeProps {
   loadingCode?: boolean;
 }
 
-const decisionTiles = [
-  {
-    label: 'Escanear carta',
-    detail: 'Ordena una carta, pizarra o PDF por afinidad, precio y confianza.',
-    path: '/escanear/carta-vinos',
-    icon: ScanLine,
-    primary: true,
-  },
-  {
-    label: 'Escanear etiquetas',
-    detail: 'Detecta varias botellas sin fusionarlas en una sola ficha.',
-    path: '/escanear/etiqueta',
-    icon: Camera,
-  },
-  {
-    label: 'Comparar 2–5',
-    detail: 'Escanea un lote y decide entre opciones seguras, valor y aventura.',
-    path: '/escanear/carta-vinos',
-    icon: SlidersHorizontal,
-  },
-  {
-    label: 'Mis vinos',
-    detail: 'Guarda, puntúa y mejora tu perfil solo con datos consentidos.',
-    path: '/my-wines',
-    icon: BookOpen,
-    requiresAuth: true,
-  },
-];
+const scanTypeLabels: Record<ScanHistoryItem['type'], string> = {
+  label: 'Etiquetas',
+  'wine-menu': 'Carta',
+  'food-menu': 'Menú',
+  dish: 'Plato',
+  'shop-link': 'Búsqueda',
+};
 
-const trustSignals = [
-  { label: 'Mesa completa', value: '2-N', icon: ListChecks },
-  { label: 'Comparador', value: '2-5', icon: SlidersHorizontal },
-  { label: 'Confianza visible', value: 'OCR', icon: ShieldCheck },
-];
-
-const aiRimNotes = [
-  'Explica por qué un vino encaja sin cambiar el cálculo.',
-  'Marca inferencias, datos visibles y preferencias aprendidas por separado.',
-  'Se abstiene cuando la identidad no tiene respaldo suficiente.',
-];
+const formatScanTime = (timestamp: number) => {
+  const minutes = Math.max(0, Math.round((Date.now() - timestamp) / 60000));
+  if (minutes < 1) return 'Ahora';
+  if (minutes < 60) return `Hace ${minutes} min`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `Hace ${hours} h`;
+  return `Hace ${Math.round(hours / 24)} d`;
+};
 
 const NativeAppHome = ({ hasQuizResults, matchrimCode = '', loadingCode = false }: NativeAppHomeProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const isNative = Capacitor.isNativePlatform();
   const hasCode = hasQuizResults && Boolean(matchrimCode);
-  const primaryAction = hasQuizResults
-    ? { label: 'Usar mi Matchrim', path: '/escanear/carta-vinos', icon: ScanLine }
-    : { label: 'Crear mi Matchrim', path: '/matchrim', icon: Sparkles };
-  const PrimaryIcon = primaryAction.icon;
+  const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory().slice(0, 3));
 
-  const getTileTarget = (path: string, requiresAuth?: boolean) => (
-    !user && requiresAuth ? buildAuthRedirectPath(path) : path
-  );
+  useEffect(() => {
+    const refresh = () => setRecentScans(getScanHistory().slice(0, 3));
+    window.addEventListener(SCAN_HISTORY_UPDATED_EVENT, refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener(SCAN_HISTORY_UPDATED_EVENT, refresh);
+      window.removeEventListener('storage', refresh);
+    };
+  }, []);
+
+  const openProfile = () => {
+    navigate(user ? '/profile' : buildAuthRedirectPath('/profile'));
+  };
 
   return (
     <div className="matchrim-app-shell min-h-screen text-slate-950">
-      {user ? (
-        <AppNav />
-      ) : (
-        <header className="sticky top-0 z-40 border-b matchrim-hairline bg-white/95 px-4 pb-3 pt-[calc(0.75rem+var(--matchrim-safe-top))] backdrop-blur">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={() => navigate('/')}
-              className="matchrim-pressable flex min-h-11 items-center gap-3 text-left"
-            >
-              <img
-                src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
-                alt="Logo Matchrim"
-                className="h-8 w-8"
-              />
-              <span className="text-lg font-bold text-slate-950">Matchrim</span>
+      {!isNative && (user ? <AppNav /> : (
+        <header className="border-b border-slate-200 bg-white px-4 py-3">
+          <div className="mx-auto flex max-w-6xl items-center justify-between">
+            <button type="button" onClick={() => navigate('/')} className="matchrim-pressable flex min-h-11 items-center gap-3">
+              <img src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" alt="Logo Matchrim" className="h-8 w-8" />
+              <span className="text-lg font-bold">Matchrim</span>
             </button>
-            <Button
-              onClick={() => navigate(buildAuthRedirectPath('/'))}
-              variant="outline"
-              size="sm"
-              className="matchrim-pressable min-h-11 gap-2 border-stone-300 bg-white text-slate-800"
-            >
-              <LogIn className="h-4 w-4" />
-              Entrar
-            </Button>
+            <Button variant="outline" onClick={() => navigate(buildAuthRedirectPath('/'))}>Entrar</Button>
           </div>
         </header>
-      )}
+      ))}
 
-      <main className="mx-auto grid w-full max-w-6xl gap-6 px-4 pb-[calc(7rem+var(--matchrim-safe-bottom))] pt-5 sm:px-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(22rem,0.95fr)] lg:gap-8 lg:pb-12 lg:pt-8">
-        <section className="matchrim-ink-panel overflow-hidden rounded-lg shadow-elegant">
-          <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_17rem] lg:grid-cols-1 xl:grid-cols-[minmax(0,1fr)_18rem]">
-            <div className="flex flex-col justify-between gap-4 p-4 sm:gap-8 sm:p-7">
-              <div>
-                <Badge className="mb-4 border-white/15 bg-white/10 text-white hover:bg-white/10 sm:mb-5">
-                  Decisión en mesa
-                </Badge>
-                <h1 className="max-w-2xl text-[1.72rem] font-bold leading-tight tracking-normal text-white sm:text-5xl">
-                  Elige vino desde la escena real, no desde una ficha suelta.
-                </h1>
-                <p className="mt-3 max-w-xl text-sm leading-5 text-white/76 sm:mt-4 sm:text-base sm:leading-7">
-                  Escanea una carta, una mesa o varias botellas. Matchrim separa identidad, confianza y afinidad para que puedas decidir o corregir sin perder contexto.
-                </p>
-              </div>
+      <main className="matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(7.5rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
+        <div className="flex min-h-12 items-center justify-between gap-3">
+          <button type="button" onClick={() => navigate('/')} className="matchrim-pressable flex items-center gap-2.5 text-left" aria-label="Inicio de Matchrim">
+            <img src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" alt="" className="h-8 w-8" />
+            <span className="text-lg font-bold text-slate-950">Matchrim</span>
+          </button>
+          <button
+            type="button"
+            onClick={openProfile}
+            className="matchrim-pressable flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm"
+            aria-label={user ? 'Abrir perfil' : 'Entrar en Matchrim'}
+          >
+            <UserRound className="h-5 w-5" />
+          </button>
+        </div>
 
-              <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
-                <div className="rounded-md border border-white/12 bg-white/8 p-3 sm:p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-white/55">
-                    {hasCode ? 'Mi código Matchrim' : 'Estado Matchrim'}
-                  </p>
-                  <p className="mt-1 min-h-7 break-words text-xl font-semibold leading-tight sm:min-h-8 sm:text-2xl">
-                    {hasCode
-                      ? matchrimCode
-                      : loadingCode
-                        ? 'Cargando código...'
-                        : hasQuizResults
-                          ? 'Código listo'
-                          : 'Perfil pendiente'}
-                  </p>
-                  <p className="mt-2 text-sm leading-5 text-white/62">
-                    {hasCode
-                      ? 'Tu perfil es estable; las recomendaciones aprenden solo de lo que guardas y confirmas.'
-                      : 'Crea el perfil una vez y úsalo después en cartas, etiquetas y comparaciones.'}
-                  </p>
-                </div>
-                <Button
-                  onClick={() => navigate(primaryAction.path)}
-                  className="matchrim-pressable min-h-12 gap-2 bg-amber-400 px-5 font-semibold text-slate-950 hover:bg-amber-300"
-                >
-                  <PrimaryIcon className="h-5 w-5" />
-                  {primaryAction.label}
-                </Button>
-              </div>
-            </div>
+        <section className="mt-6" aria-labelledby="home-decision-title">
+          <p className="text-sm font-semibold text-red-800">Tu vino, con contexto</p>
+          <h1 id="home-decision-title" className="mt-1 text-[2rem] font-bold leading-[1.08] text-slate-950">
+            ¿Qué quieres elegir?
+          </h1>
+          <p className="mt-2 max-w-xl text-[15px] leading-6 text-slate-600">
+            Haz una foto. Matchrim identifica, compara y explica qué encaja contigo.
+          </p>
 
-            <div className="relative hidden min-h-44 overflow-hidden border-t border-white/10 sm:block sm:min-h-64 md:border-l md:border-t-0 lg:border-l-0 lg:border-t xl:border-l xl:border-t-0">
-              <img
-                src={heroWine}
-                alt="Botella y copa de vino en una mesa"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/22 to-transparent" />
-              <div className="absolute inset-x-3 bottom-3 rounded-md border border-white/12 bg-black/42 p-3 text-white backdrop-blur sm:inset-x-4 sm:bottom-4">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs uppercase tracking-wide text-white/55">Ranking vivo</p>
-                    <p className="mt-1 font-semibold">3 opciones listas para comparar</p>
-                  </div>
-                  <span className="rounded-md bg-emerald-400 px-2 py-1 text-sm font-bold text-emerald-950">92%</span>
-                </div>
-                <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
-                  {trustSignals.map((signal) => {
-                    const Icon = signal.icon;
-                    return (
-                      <div key={signal.label} className="rounded-md bg-white/10 px-2 py-2">
-                        <Icon className="mx-auto h-4 w-4 text-amber-200" />
-                        <span className="mt-1 block font-semibold">{signal.value}</span>
-                        <span className="block text-white/55">{signal.label}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => navigate('/escanear/etiqueta')}
+              className="matchrim-pressable relative flex min-h-[10.5rem] flex-col justify-between overflow-hidden rounded-lg bg-slate-950 p-3 text-left text-white shadow-sm"
+            >
+              <img src={heroWine} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
+              <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-slate-950">
+                <Camera className="h-[1.1rem] w-[1.1rem]" />
+              </span>
+              <span className="relative z-10 mt-4 block">
+                <span className="block text-lg font-bold">Botellas</span>
+                <span className="mt-0.5 block text-xs leading-4 text-white/78">Una etiqueta o toda la mesa</span>
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/escanear/carta-vinos')}
+              className="matchrim-pressable relative flex min-h-[10.5rem] flex-col justify-between overflow-hidden rounded-lg bg-emerald-950 p-3 text-left text-white shadow-sm"
+            >
+              <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-950">
+                <FileText className="h-[1.1rem] w-[1.1rem]" />
+              </span>
+              <span className="relative z-10 mt-4 block">
+                <span className="block text-lg font-bold">Carta</span>
+                <span className="mt-0.5 block text-xs leading-4 text-white/76">Impresa, pizarra o PDF</span>
+              </span>
+              <ScanLine className="absolute right-3 top-3 h-16 w-16 text-white/8" strokeWidth={1.25} aria-hidden="true" />
+            </button>
           </div>
         </section>
 
-        <section aria-label="Acciones principales" className="grid content-start gap-4">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            {decisionTiles.map((tile) => {
-              const Icon = tile.icon;
-              return (
-                <button
-                  key={tile.label}
-                  type="button"
-                  onClick={() => navigate(getTileTarget(tile.path, tile.requiresAuth))}
-                  className={`matchrim-pressable matchrim-surface flex min-h-24 items-center gap-4 rounded-lg px-4 py-4 text-left ${
-                    tile.primary ? 'ring-1 ring-red-900/12' : ''
-                  }`}
-                >
-                  <span className={`matchrim-icon-tile flex h-12 w-12 shrink-0 items-center justify-center rounded-md ${
-                    tile.primary ? 'bg-red-950 text-white' : ''
-                  }`}>
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-semibold text-slate-950">{tile.label}</span>
-                    <span className="mt-1 block text-sm leading-5 matchrim-muted">{tile.detail}</span>
-                  </span>
-                  <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
-                </button>
-              );
-            })}
-          </div>
+        <section className="mt-6 border-y border-slate-200" aria-label="Comparación rápida">
+          <button
+            type="button"
+            onClick={() => navigate('/escanear/etiqueta')}
+            className="matchrim-pressable flex min-h-[4.75rem] w-full items-center gap-3 py-3 text-left"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-amber-100 text-amber-950">
+              <Layers3 className="h-5 w-5" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-semibold text-slate-950">Comparar 2-5 vinos</span>
+              <span className="mt-0.5 block text-sm text-slate-500">Afinidad, confianza y mejor valor</span>
+            </span>
+            <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
+          </button>
+        </section>
 
-          <div className="matchrim-soft-surface rounded-lg p-4">
-            <div className="flex items-start gap-3">
-              <span className="matchrim-icon-tile flex h-11 w-11 shrink-0 items-center justify-center rounded-md">
-                <Sparkles className="h-5 w-5" />
-              </span>
-              <div className="min-w-0">
-                <h2 className="font-semibold text-slate-950">aiRIM contextual</h2>
-                <div className="mt-2 grid gap-2">
-                  {aiRimNotes.map((note) => (
-                    <div key={note} className="flex gap-2 text-sm leading-5 matchrim-muted">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" />
-                      <span>{note}</span>
-                    </div>
-                  ))}
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="matchrim-pressable mt-4 min-h-11 gap-2 bg-white"
-                  onClick={() => navigate('/inteligencia-liquida')}
-                >
-                  <Sparkles className="h-4 w-4" />
-                  Abrir aiRIM
-                </Button>
-              </div>
+        <section className="mt-7" aria-labelledby="profile-summary-title">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-slate-500">Afinidad personal</p>
+              <h2 id="profile-summary-title" className="mt-0.5 text-xl font-bold text-slate-950">
+                {hasCode ? 'Tu Matchrim está listo' : 'Hazlo realmente tuyo'}
+              </h2>
             </div>
+            {hasCode && <span className="rounded-md bg-red-50 px-2 py-1 text-xs font-bold text-red-900">{matchrimCode}</span>}
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            <button
-              type="button"
-              onClick={() => navigate('/usar-matchrim')}
-              className="matchrim-pressable matchrim-soft-surface flex min-h-20 items-center gap-3 rounded-lg p-4 text-left"
-            >
-              <GlassWater className="h-5 w-5 shrink-0 text-red-900" />
-              <span className="min-w-0 flex-1">
-                <span className="block font-semibold text-slate-950">Restaurante con Winerim</span>
-                <span className="mt-1 block text-sm matchrim-muted">Filtra la carta con tu código.</span>
-              </span>
-              <ArrowRight className="h-4 w-4 text-slate-400" />
-            </button>
+          <div className="mt-3 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="min-w-0">
+              <p className="text-sm leading-5 text-slate-600">
+                {hasCode
+                  ? 'Tus puntuaciones explican coincidencias, fricciones y cuánto estás explorando.'
+                  : loadingCode
+                    ? 'Estamos recuperando tu perfil sensorial.'
+                    : 'Crea tu perfil sensorial para ordenar cada escaneo por afinidad.'}
+              </p>
+            </div>
             <button
               type="button"
               onClick={() => navigate(hasQuizResults ? '/profile' : '/matchrim')}
-              className="matchrim-pressable matchrim-soft-surface flex min-h-20 items-center gap-3 rounded-lg p-4 text-left"
+              className="matchrim-pressable flex h-11 w-11 items-center justify-center rounded-full bg-red-900 text-white"
+              aria-label={hasQuizResults ? 'Ver mi perfil Matchrim' : 'Crear mi perfil Matchrim'}
             >
-              {hasQuizResults ? <Compass className="h-5 w-5 shrink-0 text-red-900" /> : <User className="h-5 w-5 shrink-0 text-red-900" />}
-              <span className="min-w-0 flex-1">
-                <span className="block font-semibold text-slate-950">{hasQuizResults ? 'Revisar perfil' : 'Crear perfil'}</span>
-                <span className="mt-1 block text-sm matchrim-muted">{hasQuizResults ? 'Radar, aprendizaje y datos guardados.' : 'Un minuto antes del primer escaneo.'}</span>
-              </span>
-              <ArrowRight className="h-4 w-4 text-slate-400" />
+              {hasQuizResults ? <ArrowUpRight className="h-5 w-5" /> : <Sparkles className="h-5 w-5" />}
             </button>
           </div>
         </section>
+
+        <section className="mt-7" aria-label="Acciones de sommelier">
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => navigate('/inteligencia-liquida')}
+              className="matchrim-pressable flex min-h-[4.5rem] items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 text-left shadow-sm"
+            >
+              <MessageCircle className="h-5 w-5 shrink-0 text-red-800" />
+              <span className="text-sm font-semibold leading-5 text-slate-900">Preguntar a aiRIM</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate(user ? '/my-wines' : buildAuthRedirectPath('/my-wines'))}
+              className="matchrim-pressable flex min-h-[4.5rem] items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 text-left shadow-sm"
+            >
+              <Wine className="h-5 w-5 shrink-0 text-emerald-800" />
+              <span className="text-sm font-semibold leading-5 text-slate-900">Abrir mi bodega</span>
+            </button>
+          </div>
+        </section>
+
+        {recentScans.length > 0 && (
+          <section className="mt-8" aria-labelledby="recent-scans-title">
+            <div className="flex items-center gap-2">
+              <History className="h-4 w-4 text-slate-500" />
+              <h2 id="recent-scans-title" className="text-base font-bold text-slate-950">Últimos escaneos</h2>
+            </div>
+            <div className="mt-2 divide-y divide-slate-200 border-y border-slate-200">
+              {recentScans.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => navigate(item.route)}
+                  className="matchrim-pressable flex min-h-16 w-full items-center gap-3 py-3 text-left"
+                >
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-semibold text-slate-950">{item.title}</span>
+                    <span className="mt-0.5 block truncate text-xs text-slate-500">
+                      {scanTypeLabels[item.type]} · {formatScanTime(item.createdAt)}
+                    </span>
+                  </span>
+                  <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
       </main>
 
-      {!user && <MobileBottomNav />}
+      {(isNative || !user) && <MobileBottomNav />}
     </div>
   );
 };

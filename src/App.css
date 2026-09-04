@@ -12,3 +12,7 @@
     padding-bottom: calc(4.75rem + var(--matchrim-safe-bottom));
   }
 }
+
+body.has-native-app-nav .App {
+  padding-bottom: calc(4.75rem + var(--matchrim-safe-bottom));
+}

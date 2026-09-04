@@ -1,5 +1,6 @@
 import AppNav from "@/components/AppNav";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import { Capacitor } from "@capacitor/core";
 import { ScanPrivacyGate } from "@/components/ScanPrivacyGate";
 import { ScanHub, scanOptions, type ScanMode } from "@/components/wine-import/ScanHub";
 import { useAuth } from "@/contexts/AuthContext";
@@ -7,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { trackAppEvent } from "@/lib/analytics";
 import { buildAuthRedirectPath } from "@/utils/navigation";
-import { ArrowLeft, Camera, FileText, ScanLine, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ScanLine } from "lucide-react";
 import { useEffect } from "react";
 import { Navigate, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -60,6 +61,7 @@ interface ScanExtractedWine {
 
 const Scan = () => {
   const { user } = useAuth();
+  const isNative = Capacitor.isNativePlatform();
   const navigate = useNavigate();
   const location = useLocation();
   const { mode: modeParam } = useParams<{ mode?: string }>();
@@ -139,40 +141,29 @@ const Scan = () => {
   }
 
   return (
-    <div className={`matchrim-app-shell min-h-screen pb-[calc(8rem+var(--matchrim-safe-bottom))] ${user ? "" : "pt-[var(--matchrim-safe-top)]"}`}>
-      {user && <AppNav />}
-      <main className="scan-page-main mx-auto max-w-5xl px-4 py-6 sm:px-6">
+    <div className="matchrim-app-shell min-h-screen pb-[calc(8rem+var(--matchrim-safe-bottom))]">
+      {user && !isNative && <AppNav />}
+      <main className="scan-page-main matchrim-native-safe-x mx-auto max-w-5xl pb-6 pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
         {activeMode && activeOption ? (
           <>
-            <button
-              type="button"
-              onClick={() => navigate("/escanear")}
-              className="scan-page-back matchrim-pressable mb-5 inline-flex min-h-11 items-center gap-2 rounded-md border matchrim-hairline bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:text-red-900"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Otras opciones
-            </button>
-
-            <div className="scan-page-heading mb-6 flex flex-col gap-4 rounded-lg matchrim-surface p-4 sm:flex-row sm:items-start">
-              <div className="matchrim-icon-tile flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-red-950 text-white">
-                {ActiveScanIcon && <ActiveScanIcon className="h-5 w-5" />}
-              </div>
-              <div className="min-w-0 flex-1">
-                <h1 className="text-3xl font-bold leading-tight text-slate-950">{activeOption.title}</h1>
-                <p className="mt-1 max-w-2xl text-sm leading-6 matchrim-muted">{activeOption.description}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="matchrim-status-pill inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-semibold">
-                    <Camera className="h-3.5 w-3.5" />
-                    Cámara
-                  </span>
-                  <span className="matchrim-status-pill inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-semibold">
-                    <FileText className="h-3.5 w-3.5" />
-                    Archivo/PDF cuando aplica
-                  </span>
-                  <span className="matchrim-status-pill inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-semibold">
-                    <ShieldCheck className="h-3.5 w-3.5" />
-                    Confianza visible
-                  </span>
+            <div className="scan-page-heading mb-6">
+              <div className="flex items-start gap-3">
+                <button
+                  type="button"
+                  onClick={() => navigate("/escanear")}
+                  className="scan-page-back matchrim-pressable flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm"
+                  aria-label="Volver a tipos de escaneo"
+                  title="Volver"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                </button>
+                <div className="min-w-0 flex-1 pt-0.5">
+                  <div className="flex items-center gap-2 text-red-800">
+                    {ActiveScanIcon && <ActiveScanIcon className="h-4 w-4" />}
+                    <span className="text-sm font-semibold">Escáner Matchrim</span>
+                  </div>
+                  <h1 className="mt-1 text-[1.75rem] font-bold leading-tight text-slate-950">{activeOption.title}</h1>
+                  <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">{activeOption.description}</p>
                 </div>
               </div>
             </div>
@@ -200,23 +191,15 @@ const Scan = () => {
           </>
         ) : (
           <>
-            <div className="mb-6 rounded-lg matchrim-ink-panel p-5 shadow-elegant sm:p-6">
-              <div className="flex items-start gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-white/10 text-amber-200">
-                <ScanLine className="h-5 w-5" />
+            <div className="mb-6">
+              <div className="flex items-center gap-2 text-red-800">
+                <ScanLine className="h-4 w-4" />
+                <span className="text-sm font-semibold">Cámara y galería</span>
               </div>
-              <div>
-                <h1 className="text-4xl font-bold leading-tight text-white">Escanear</h1>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-white/72">
-                  Escanea lo que tienes delante. Matchrim lo convierte en una decisión, no en una lista más.
-                </p>
-              </div>
-              </div>
-              <div className="mt-5 grid gap-2 text-sm text-white/76 sm:grid-cols-3">
-                <div className="rounded-md border border-white/12 bg-white/8 px-3 py-2">Carta completa</div>
-                <div className="rounded-md border border-white/12 bg-white/8 px-3 py-2">Varias etiquetas</div>
-                <div className="rounded-md border border-white/12 bg-white/8 px-3 py-2">aiRIM contextual</div>
-              </div>
+              <h1 className="mt-1 text-[2rem] font-bold leading-tight text-slate-950">Escanear</h1>
+              <p className="mt-2 max-w-2xl text-[15px] leading-6 text-slate-600">
+                Elige lo que tienes delante. Cada vino se identifica y puntúa por separado.
+              </p>
             </div>
 
             <ScanHub

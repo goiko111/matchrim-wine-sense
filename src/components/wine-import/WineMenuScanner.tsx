@@ -852,26 +852,11 @@ export const WineMenuScanner = ({
       )}
 
       {/* Scanner Section */}
-      <Card className="matchrim-surface overflow-hidden rounded-lg border-stone-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
-            {dishContext
-              ? 'Scanner de carta para tu plato'
-              : similarWineContext
-                ? 'Scanner de carta para buscar parecidos'
-                : 'Scanner de carta'}
-          </CardTitle>
-          <CardDescription>
-            {dishContext
-              ? `Sube la carta de vinos y te diré qué botella pediría para ${dishContext}.`
-              : similarWineContext
-                ? `Sube la carta de vinos y buscaré alternativas parecidas a ${similarWineContext}.`
-                : 'Sube una carta y ordeno sus vinos por encaje con tu Matchrim.'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="matchrim-scan-stage rounded-lg p-4 text-center text-white">
+      <section aria-labelledby="wine-menu-upload-title">
+          <div className={preview || loading || convertingPdf
+            ? "matchrim-scan-stage rounded-lg p-4 text-center text-white"
+            : "rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5"}
+          >
             <input
               ref={fileInputRef}
               type="file"
@@ -1006,31 +991,35 @@ export const WineMenuScanner = ({
                 </div>
               </div>
             ) : (
-              <div className="space-y-3">
-	                <Camera className="mx-auto h-10 w-10 text-white/35" />
-                <div>
-	                  <p className="mb-2 text-lg font-semibold text-white">
-                    Sube la carta de vinos
-                  </p>
-	                  <p className="mb-3 text-sm text-white/65">
-                    Haz una foto clara o sube una imagen/PDF. En PDF analizamos la primera página.
-                  </p>
+              <div className="text-left">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-900">
+                    <Camera className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0">
+	                  <h2 id="wine-menu-upload-title" className="text-lg font-bold text-slate-950">
+                      Fotografía la carta
+	                  </h2>
+	                  <p className="mt-1 text-sm leading-5 text-slate-600">
+                      También puedes elegir una imagen o PDF. Matchrim conserva secciones, precios y añadas.
+	                  </p>
+                  </div>
+                </div>
                   {dishContext && (
-                    <p className="mx-auto mb-3 max-w-2xl rounded-md border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm text-amber-100">
+                    <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
                       Buscaré la mejor botella de esta carta para {dishContext}, equilibrando maridaje y tu Matchrim.
                     </p>
                   )}
                   {similarWineContext && (
-                    <p className="mx-auto mb-3 max-w-2xl rounded-md border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm text-amber-100">
+                    <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
                       Buscaré vinos parecidos a {similarWineContext} dentro de esta carta, priorizando los que encajen con tu Matchrim.
                     </p>
                   )}
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Button
                     onClick={() => cameraInputRef.current?.click()}
                     disabled={loading}
-	                    className="matchrim-pressable min-h-12 gap-2 bg-amber-400 text-stone-950 hover:bg-amber-300"
+		                    className="matchrim-pressable min-h-12 gap-2 bg-red-900 text-white hover:bg-red-800"
                   >
                     <Camera className="h-4 w-4" />
                     Hacer foto
@@ -1039,23 +1028,16 @@ export const WineMenuScanner = ({
 	                    onClick={() => fileInputRef.current?.click()}
 	                    disabled={loading}
 	                    variant="outline"
-		                    className="matchrim-pressable min-h-12 gap-2 border-white/20 bg-white/10 text-white hover:bg-white/15"
+		                    className="matchrim-pressable min-h-12 gap-2 border-slate-300 bg-white text-slate-950 hover:bg-slate-50"
 	                  >
 	                    <Upload className="h-4 w-4" />
 	                    Subir archivo
 	                  </Button>
                 </div>
-	                <ul className="mx-auto grid max-w-2xl gap-1.5 text-left text-xs text-white/55 sm:grid-cols-2">
-                    <li>• Carta completa y con luz suficiente.</li>
-                    <li>• Evita reflejos, sombras y fotos inclinadas.</li>
-                    <li>• Si la carta es larga, escanea una sección.</li>
-                    <li>• Mantén visibles precios, añadas y productores.</li>
-                  </ul>
               </div>
             )}
           </div>
-        </CardContent>
-	      </Card>
+	      </section>
 
 	      {menuQualityWarnings.length > 0 && (
 	        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">

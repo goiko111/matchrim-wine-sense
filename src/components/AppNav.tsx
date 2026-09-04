@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import { Wine, User, LogOut, Database, Upload, Shield, Sparkles, Home, BookOpen, ScanLine, FileText, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -17,6 +18,7 @@ const AppNav = () => {
   const { isAdmin } = useIsAdmin();
   const location = useLocation();
   const navigate = useNavigate();
+  const isNative = Capacitor.isNativePlatform();
 
   const handleSignOut = async () => {
     await signOut();
@@ -33,6 +35,8 @@ const AppNav = () => {
     { path: '/wine-styles', label: 'Estilos de Vino', icon: Wine },
     { path: '/my-wines', label: 'Mis Vinos', icon: BookOpen, requiresAuth: true },
   ];
+
+  if (isNative) return <MobileBottomNav />;
 
   return (
     <nav className="border-b matchrim-hairline bg-white/95 pt-[var(--matchrim-safe-top)] shadow-sm backdrop-blur">

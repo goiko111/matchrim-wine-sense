@@ -38,7 +38,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
   return (
     <section className="matchrim-surface rounded-lg p-4 sm:p-6" aria-labelledby="scan-privacy-title">
       <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-800">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-800">
           <ShieldCheck className="h-5 w-5" />
         </div>
         <div>
@@ -49,7 +49,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
         </div>
       </div>
 
-      <div className="matchrim-data-rail mt-4 divide-y divide-stone-200 rounded-lg px-3 text-sm sm:mt-5">
+      <div className="matchrim-data-rail mt-4 divide-y divide-slate-200 px-1 text-sm sm:mt-5">
         <div className="flex gap-3 py-2 sm:py-3">
           <Camera className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
           <p className="leading-5 text-slate-700">Matchrim accede a la cámara o a la foto que selecciones; no examina el resto de tu fototeca.</p>
@@ -74,7 +74,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
 
       <Button
         type="button"
-        className="matchrim-pressable mt-3 min-h-12 w-full bg-red-950 hover:bg-red-900 sm:mt-4"
+        className="matchrim-pressable mt-3 min-h-12 w-full bg-red-900 hover:bg-red-800 sm:mt-4"
         disabled={!checked}
         onClick={continueToScanner}
       >

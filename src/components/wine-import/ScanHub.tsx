@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, BookOpen, Camera, ChefHat, ExternalLink, History, Loader2, ScanLine, ShoppingBag, Wine } from "lucide-react";
+import { ArrowRight, BookOpen, Camera, ChefHat, ChevronRight, ExternalLink, History, Loader2, ScanLine, ShoppingBag, Wine } from "lucide-react";
 import { MultiWineLabelScanner } from "@/components/wine-import/MultiWineLabelScanner";
 import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
 import FoodPairingScanner from "@/components/wine-import/FoodPairingScanner";
@@ -113,16 +113,16 @@ const RecentScansSection = () => {
   if (!items.length) return null;
 
   return (
-    <div className="matchrim-surface rounded-lg p-4">
+    <section>
       <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-950">
         <History className="h-4 w-4 text-red-900" />
         Últimos escaneos
       </div>
-      <ul className="space-y-2">
+      <ul className="divide-y divide-slate-200 border-y border-slate-200">
         {items.slice(0, 5).map((item) => (
           <li
             key={item.id}
-            className="flex items-stretch gap-2 rounded-md border border-stone-200 bg-stone-50/70"
+            className="flex items-stretch gap-2"
           >
             <button
               type="button"
@@ -146,7 +146,7 @@ const RecentScansSection = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(event) => event.stopPropagation()}
-                className="matchrim-pressable inline-flex shrink-0 items-center gap-1.5 self-center rounded-md border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-900 hover:bg-red-50"
+                className="matchrim-pressable inline-flex shrink-0 items-center gap-1.5 self-center rounded-md px-3 py-2 text-xs font-semibold text-red-900 hover:bg-red-50"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
                 <span>{item.actionLabel || "Ver ficha"}</span>
@@ -155,7 +155,7 @@ const RecentScansSection = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 
@@ -253,17 +253,70 @@ export const ScanHub = ({
   );
 
   if (variant === "hub") {
-    return (
-      <div className="space-y-4">
-        <div className="matchrim-soft-surface rounded-lg p-4">
-          <p className="text-sm font-semibold text-slate-950">Elige el objeto real que tienes delante.</p>
-          <p className="mt-1 text-sm leading-5 matchrim-muted">
-            En restaurante empieza por carta. Con botellas visibles, usa etiqueta. Si compras online, pregunta por ocasión, presupuesto o enlace.
-          </p>
-        </div>
-        {renderOptions()}
-        <RecentScansSection />
+    const primaryOptions = scanOptions.slice(0, 2);
+    const secondaryOptions = scanOptions.slice(2);
 
+    return (
+      <div className="space-y-7">
+        <div className="grid gap-3 sm:grid-cols-2">
+          {primaryOptions.map((option) => {
+            const Icon = option.icon;
+            const isMenu = option.id === "wine-menu";
+            return (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => selectMode(option.id)}
+                className={`matchrim-pressable flex min-h-[7.5rem] items-start gap-4 rounded-lg p-4 text-left shadow-sm ${
+                  isMenu
+                    ? "bg-emerald-950 text-white"
+                    : "border border-slate-200 bg-white text-slate-950"
+                }`}
+              >
+                <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${
+                  isMenu ? "bg-emerald-50 text-emerald-950" : "bg-red-50 text-red-900"
+                }`}>
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1 pt-0.5">
+                  <span className="block text-lg font-bold">{option.title}</span>
+                  <span className={`mt-1 block text-sm leading-5 ${isMenu ? "text-white/72" : "text-slate-500"}`}>
+                    {option.description}
+                  </span>
+                </span>
+                <ChevronRight className={`mt-1 h-5 w-5 shrink-0 ${isMenu ? "text-white/45" : "text-slate-400"}`} />
+              </button>
+            );
+          })}
+        </div>
+
+        <section aria-labelledby="more-scan-options-title">
+          <h2 id="more-scan-options-title" className="text-sm font-bold text-slate-950">También puedes</h2>
+          <div className="mt-2 divide-y divide-slate-200 border-y border-slate-200">
+            {secondaryOptions.map((option) => {
+              const Icon = option.icon;
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => selectMode(option.id)}
+                  className="matchrim-pressable flex min-h-[4.75rem] w-full items-center gap-3 py-3 text-left"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-700">
+                    <Icon className="h-[1.1rem] w-[1.1rem]" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-semibold text-slate-950">{option.title}</span>
+                    <span className="mt-0.5 block truncate text-xs text-slate-500">{option.description}</span>
+                  </span>
+                  <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <RecentScansSection />
       </div>
     );
   }

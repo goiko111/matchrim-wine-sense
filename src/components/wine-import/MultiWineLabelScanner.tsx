@@ -666,19 +666,23 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       <input ref={fileInputRef} type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif" onChange={handleFileSelect} className="hidden" />
 
       {!preview ? (
-        <div className="scan-upload-empty matchrim-surface rounded-lg px-4 py-8 text-center sm:p-8">
-          <span className="matchrim-icon-tile mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-red-950 text-white">
-            <ScanLine className="scan-upload-empty-icon h-6 w-6" />
-          </span>
-          <h2 className="mt-4 text-xl font-semibold text-slate-950">Una etiqueta o varias botellas</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 matchrim-muted">
-            Cada botella se localiza y analiza por separado. Los resultados dudosos quedan marcados para revision.
-          </p>
-          <div className="scan-upload-actions mx-auto mt-5 grid max-w-md gap-2 sm:grid-cols-2">
-            <Button type="button" className="matchrim-pressable min-h-12 gap-2 bg-red-950 hover:bg-red-900" onClick={() => cameraInputRef.current?.click()}>
+        <div className="scan-upload-empty matchrim-surface rounded-lg p-4 sm:p-6">
+          <div className="flex items-start gap-3 text-left">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-900">
+              <ScanLine className="scan-upload-empty-icon h-5 w-5" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg font-bold text-slate-950">Fotografía las botellas</h2>
+              <p className="mt-1 max-w-md text-sm leading-5 text-slate-600">
+                Puede haber una o varias. Revisarás cada identidad antes de confirmar.
+              </p>
+            </div>
+          </div>
+          <div className="scan-upload-actions mt-5 grid gap-2 sm:grid-cols-2">
+            <Button type="button" className="matchrim-pressable min-h-12 gap-2 bg-red-900 hover:bg-red-800" onClick={() => cameraInputRef.current?.click()}>
               <Camera className="h-4 w-4" /> Hacer foto
             </Button>
-            <Button type="button" variant="outline" className="matchrim-pressable min-h-12 gap-2 bg-white" onClick={() => fileInputRef.current?.click()}>
+            <Button type="button" variant="outline" className="matchrim-pressable min-h-12 gap-2 border-slate-300 bg-white" onClick={() => fileInputRef.current?.click()}>
               <FolderOpen className="h-4 w-4" /> Elegir de galería
             </Button>
           </div>

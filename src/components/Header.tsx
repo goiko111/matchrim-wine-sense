@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Capacitor } from '@capacitor/core';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,6 +12,7 @@ const Header = () => {
   const { isAdmin } = useIsAdmin();
   const location = useLocation();
   const navigate = useNavigate();
+  const isNative = Capacitor.isNativePlatform();
   const currentPath = `${location.pathname}${location.search}`;
 
   const handleSignOut = async () => {
@@ -46,6 +48,8 @@ const Header = () => {
   const handleUseMatchrimClick = () => {
     navigate('/usar-matchrim');
   };
+
+  if (isNative) return <MobileBottomNav />;
 
   return (
     <>
