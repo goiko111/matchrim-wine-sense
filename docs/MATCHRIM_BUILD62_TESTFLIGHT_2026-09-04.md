@@ -29,8 +29,10 @@ errores.
 | Instalacion y lanzamiento en simulador iOS 26 | PASS |
 | Build Debug firmado para iPhone | PASS |
 | Instalacion y lanzamiento en iPhone 16 Pro Max | PASS |
-| Archive Release | PASS con Xcode 16.4 / SDK iOS 18.5 |
-| Validacion y subida App Store Connect | BLOQUEADO: Apple exige Xcode 26 |
+| Archive Release | PASS con Xcode 26.0.1 (17A400) / SDK iOS 26.0 |
+| Firma y validacion local del archive | PASS: `codesign --verify --deep --strict` |
+| Subida App Store Connect | PASS: `Upload succeeded` |
+| Estado TestFlight | `1.0 (62) - Procesando`, confirmado en App Store Connect |
 
 Identidad verificada del artefacto: `wine.matchrim.app`, version `1.0`, build
 `62`. La captura de simulador confirma safe area, home y barra inferior sin
@@ -43,20 +45,25 @@ Logs y artefactos locales reproducibles:
 - `qa-artifacts/2026-09-04-build62/xcodebuild-simulator.log`;
 - `qa-artifacts/2026-09-04-build62/xcodebuild-device.log`;
 - `qa-artifacts/2026-09-04-build62/xcodebuild-archive-xcode16.log`;
-- `qa-artifacts/2026-09-04-build62/Matchrim-62-xcode16.xcarchive`.
+- `qa-artifacts/2026-09-04-build62/Matchrim-62-xcode16.xcarchive`;
+- `qa-artifacts/2026-09-04-build62/Matchrim-62-xcode26.xcarchive`;
+- `qa-artifacts/2026-09-04-build62/ExportOptions-AppStore.plist`.
 
-## Gate de subida
+## Resultado de la subida
 
-El reinicio elimino la instalacion local de Xcode 26.0.1. El App Store ofrece
-Xcode 26.6, pero esa version requiere macOS 26.2 y este Mac usa macOS 15.7.7.
-Xcode 16.4 puede compilar, firmar, instalar y archivar el candidato, pero su
-SDK iOS 18.5 ya no es aceptado por App Store Connect.
+Se instalo Xcode 26.0.1 Apple silicon (17A400) en
+`/Applications/Xcode-26.0.1.app`. El archive se regenero con el SDK iOS 26.0,
+conservando la identidad `wine.matchrim.app`, la version `1.0` y el build `62`.
+La exportacion App Store Connect uso firma automatica del equipo configurado,
+mantuvo el numero de build y completo la carga correctamente el 2026-09-04.
 
-La unica accion externa pendiente es completar el inicio de sesion ya preparado
-en Apple Developer y descargar Xcode 26.0.1, compatible con este macOS. Despues
-hay que repetir el archive con SDK iOS 26, validar, exportar y subir el mismo
-build 62. No se necesita ningun cambio adicional de codigo.
+App Store Connect confirmo posteriormente `1.0 (62) - Procesando` en TestFlight.
+Apple emitio un unico aviso no bloqueante: el deployment target actual es iOS
+14.0 y, a partir de primavera de 2027, las nuevas entregas deberan usar iOS 15.0
+o posterior. Se registra como mantenimiento futuro; no afecta a este beta.
 
 El beta 62 queda autorizado por el usuario sobre el backend real v3 actual. La
 certificacion v4 continua separada y bloqueada por la ausencia de
-`LOVABLE_API_KEY` en staging; no se presenta como resuelta por esta subida.
+`LOVABLE_API_KEY` en staging; no se presenta como resuelta por esta subida. La
+web publica permanece en el flujo anterior restaurado y no fue modificada por
+esta entrega movil.
