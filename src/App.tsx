@@ -64,7 +64,6 @@ function AppRoutes() {
   return (
     <AppErrorBoundary resetKey={resetKey}>
       <div className="App">
-        <div className="matchrim-safe-area-top-guard" aria-hidden="true" />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -88,7 +87,6 @@ function AppRoutes() {
             <Route path="/wine-search" element={<AdminOnly><WineSearch /></AdminOnly>} />
             <Route path="/wine-import" element={<AdminOnly><WineImport /></AdminOnly>} />
             <Route path="/my-wines" element={<MyWines />} />
-            <Route path="/my-wines/:section" element={<MyWines />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/account/delete" element={<AccountDeletion />} />

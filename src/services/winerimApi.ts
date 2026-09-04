@@ -31,9 +31,6 @@ export interface WinerimWine {
   prices?: Array<{
     price: number;
     currency: string | { name: string; symbol: string };
-    kind: 'glass' | 'bottle' | 'unknown';
-    isKindInferred?: boolean;
-    label?: string;
   }>;
 }
 
@@ -89,104 +86,31 @@ const winerimWineResultsMeta = new WeakMap<WinerimWineWithMatch[], WinerimWineRe
 export const getWinerimWineResultsMeta = (wines: WinerimWineWithMatch[]) =>
   winerimWineResultsMeta.get(wines) || null;
 
-const textFromUnknown = (value: unknown) => (
-  typeof value === 'string' || typeof value === 'number' ? String(value) : ''
-);
-
-const normalizeCurrency = (value: unknown): NonNullable<WinerimWine['prices']>[number]['currency'] => {
-  if (typeof value === 'string' && value.trim()) return value;
-  if (value && typeof value === 'object' && !Array.isArray(value)) {
-    const record = value as Record<string, unknown>;
-    if (typeof record.name === 'string' && typeof record.symbol === 'string') {
-      return { name: record.name, symbol: record.symbol };
-    }
-  }
-  return '€';
-};
-
-const inferPriceKind = (raw: RawWinerimWine, numericPrice: number) => {
-  const label = [
-    raw.label,
-    raw.name,
-    raw.title,
-    raw.tipo,
-    raw.type,
-    raw.kind,
-    raw.price_type,
-    raw.priceType,
-    raw.tipo_precio,
-    raw.formato_precio,
-    raw.format,
-    raw.formato,
-    raw.unit,
-    raw.unidad,
-    raw.description,
-    raw.descripcion,
-  ].map(textFromUnknown).find((text) => text.trim().length > 0);
-
-  const sourceText = [
-    label,
-    raw.presentation,
-    raw.presentacion,
-    raw.size,
-    raw.volume,
-    raw.volumen,
-  ].map(textFromUnknown).join(' ').toLowerCase();
-
-  if (/\b(copa|glass|by glass|wineglass)\b/.test(sourceText)) {
-    return { kind: 'glass' as const, isKindInferred: false, label };
-  }
-
-  if (/\b(botella|bottle|magnum|750|75cl|0\.75|75 cl)\b/.test(sourceText)) {
-    return { kind: 'bottle' as const, isKindInferred: false, label };
-  }
-
-  if (numericPrice > 0) {
-    return {
-      kind: numericPrice <= 14 ? ('glass' as const) : ('bottle' as const),
-      isKindInferred: true,
-      label,
-    };
-  }
-
-  return { kind: 'unknown' as const, isKindInferred: false, label };
-};
-
 const normalizePrice = (rawWine: RawWinerimWine) => {
   if (Array.isArray(rawWine.prices)) {
     const prices = rawWine.prices
-      .flatMap<NonNullable<WinerimWine['prices']>[number]>((rawPrice) => {
+      .map((rawPrice) => {
         const priceRecord = asRecord(rawPrice);
-        if (!priceRecord) return [];
+        if (!priceRecord) return null;
 
         const numericPrice = Number(priceRecord.price ?? priceRecord.precio);
-        if (!Number.isFinite(numericPrice)) return [];
-        const priceKind = inferPriceKind({ ...rawWine, ...priceRecord }, numericPrice);
+        if (!Number.isFinite(numericPrice)) return null;
 
-        return [{
+        return {
           price: numericPrice,
-          currency: normalizeCurrency(priceRecord.currency ?? priceRecord.moneda),
-          kind: priceKind.kind,
-          isKindInferred: priceKind.isKindInferred,
-          label: priceKind.label,
-        }];
-      });
+          currency: priceRecord.currency || priceRecord.moneda || '€',
+        };
+      })
+      .filter((price): price is NonNullable<WinerimWine['prices']>[number] => price !== null);
 
     return prices.length > 0 ? prices : undefined;
   }
 
   const price = rawWine.price ?? rawWine.precio;
   if (price == null) return undefined;
-  const numericPrice = Number(price);
-  if (!Number.isFinite(numericPrice)) return undefined;
-  const priceKind = inferPriceKind(rawWine, numericPrice);
-
   return [{
-    price: numericPrice,
-    currency: normalizeCurrency(rawWine.currency ?? rawWine.moneda),
-    kind: priceKind.kind,
-    isKindInferred: priceKind.isKindInferred,
-    label: priceKind.label,
+    price: Number(price),
+    currency: (rawWine.currency || rawWine.moneda || '€') as string | { name: string; symbol: string },
   }];
 };
 
@@ -766,3 +690,4 @@ export const lookupOfficialWinerimWine = async (
   if (!result) return null;
   return { ...result, url: buildWinerimWineUrl(result.wine) };
 };
+

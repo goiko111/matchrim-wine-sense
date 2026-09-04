@@ -7,43 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
-import { AffinityExplanation } from "@/components/AffinityExplanation";
-import { AiRimContextGuide } from "@/components/AiRimContextGuide";
-import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
-import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
-import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
-import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
-import { isWineMenuItem } from "@/utils/wineMenuGrounding";
-import { clusterOverlayPins } from "@/utils/overlayPins";
-import {
-  calibrateInferredAffinity,
-  calibrateMenuIdentityConfidence,
-  getConfidenceBand,
-} from "@/utils/scanConfidence";
-import {
-  buildMenuScanTiles,
-  getFullMenuScanTile,
-  resolveMenuTileResults,
-  type MenuScanResponse as WineMenuScanResponse,
-  type MenuScanTile,
-  type MenuScanWine as ScannedWine,
-} from "@/utils/wineMenuScan";
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
@@ -69,6 +39,35 @@ const loadPdfJs = async () => {
 
   return pdfJsPromise;
 };
+
+interface ScannedWine {
+  nombre: string;
+  productor: string | null;
+  anada: number | null;
+  region: string | null;
+  pais: string | null;
+  precio: number | null;
+  tipo: string;
+  descripcion: string | null;
+  uvas?: string[];
+  atributos?: {
+    potencia: number;
+    acidez: number;
+    dulzura: number;
+    taninos: number;
+    afrutado: number;
+  } | null;
+  compatibilidad?: number | null;
+  razon?: string | null;
+  posicion?: {
+    x?: number | null;
+    y?: number | null;
+    width?: number | null;
+    height?: number | null;
+    confidence?: number | null;
+    confianza?: number | null;
+  } | null;
+}
 
 interface WineMenuScannerProps {
   restaurantName?: string;
@@ -128,7 +127,12 @@ const normalizeAttributesTo5 = (attributes: ScannedWine['atributos']) => {
   return normalized as NonNullable<ScannedWine['atributos']>;
 };
 
-const normalizeCompatibility = calibrateInferredAffinity;
+const normalizeCompatibility = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return Math.max(0, Math.min(100, Math.round(numeric)));
+};
+
 const normalizeProfileValue = (value: unknown) => {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) return null;
@@ -167,29 +171,19 @@ const normalizePositionConfidence = (value: unknown) => {
 const normalizeScannedWine = (wine: ScannedWine): ScannedWine => {
   const x = normalizePercentage(wine.posicion?.x);
   const y = normalizePercentage(wine.posicion?.y);
-  const positionConfidence = normalizePositionConfidence(wine.posicion?.confidence ?? wine.posicion?.confianza);
-  const hasReliablePosition = x !== null && y !== null && positionConfidence !== null && positionConfidence >= 0.7;
-  const confidence = calibrateMenuIdentityConfidence({
-    rawConfidence: wine.confidence ?? positionConfidence,
-    hasReliablePosition,
-    hasTextEvidence: Boolean(wine.texto_fuente?.trim()),
-    hasProducer: Boolean(wine.productor?.trim()),
-    hasRegion: Boolean(wine.region?.trim()),
-    hasPrice: typeof wine.precio === 'number' && Number.isFinite(wine.precio),
-  });
+  const confidence = normalizePositionConfidence(wine.posicion?.confidence ?? wine.posicion?.confianza);
 
   return {
     ...wine,
     atributos: normalizeAttributesTo5(wine.atributos),
     compatibilidad: normalizeCompatibility(wine.compatibilidad),
-    confidence,
-    posicion: hasReliablePosition
+    posicion: x !== null && y !== null && confidence !== null && confidence >= 0.7
       ? {
           x,
           y,
           width: normalizePercentage(wine.posicion?.width),
           height: normalizePercentage(wine.posicion?.height),
-          confidence: positionConfidence,
+          confidence,
         }
       : null,
   };
@@ -264,46 +258,19 @@ export const WineMenuScanner = ({
   const [convertingPdf, setConvertingPdf] = useState(false);
   const [scanSortMode, setScanSortMode] = useState<ScannedWineSortMode>('compatibility');
   const [scanTypeFilter, setScanTypeFilter] = useState('all');
-  const [scanRegionFilter, setScanRegionFilter] = useState('all');
-  const [scanServiceFilter, setScanServiceFilter] = useState('all');
-  const [scanMinScore, setScanMinScore] = useState('all');
-  const [scanMinConfidence, setScanMinConfidence] = useState('all');
   const [scanMaxPrice, setScanMaxPrice] = useState('');
   const [editingWineIndex, setEditingWineIndex] = useState<number | null>(null);
-  const [expandedWineActionsIndex, setExpandedWineActionsIndex] = useState<number | null>(null);
   const [highlightedWineIndex, setHighlightedWineIndex] = useState<number | null>(null);
   const [scanFeedback, setScanFeedback] = useState<string | null>(null);
-  const [menuQualityWarnings, setMenuQualityWarnings] = useState<string[]>([]);
-  const [scanPhase, setScanPhase] = useState<'quality' | 'ocr' | 'ranking'>('quality');
-  const [imageZoom, setImageZoom] = useState(1);
-  const [selectedPinIndex, setSelectedPinIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-  const scanAbortRef = useRef<AbortController | null>(null);
+  const wineCardRefs = useRef(new Map<number, HTMLDivElement | null>());
 
   const scannedWineTypes = useMemo(
     () => Array.from(new Set(scannedWines.map((wine) => formatWineType(wine.tipo)))).sort(),
     [scannedWines]
   );
-  const scannedWineRegions = useMemo(
-    () => Array.from(new Set(scannedWines.map((wine) => wine.region?.trim()).filter((region): region is string => Boolean(region)))).sort(),
-    [scannedWines]
-  );
-  const selectedPinWine = selectedPinIndex === null ? null : scannedWines[selectedPinIndex] ?? null;
-  const menuPinClusters = useMemo(() => clusterOverlayPins(
-    scannedWines.flatMap((wine, index) => {
-      const position = getWinePosition(wine);
-      return position ? [{
-        key: `wine-${index}`,
-        order: index,
-        x: position.x,
-        y: position.y,
-        value: { wine, index },
-      }] : [];
-    }),
-    { zoom: imageZoom },
-  ), [imageZoom, scannedWines]);
 
   const menuDecision = useMemo(() => {
     if (scannedWines.length === 0) return null;
@@ -344,10 +311,6 @@ export const WineMenuScanner = ({
     return scannedWines
       .map((wine, index) => ({ wine, index }))
       .filter(({ wine }) => scanTypeFilter === 'all' || formatWineType(wine.tipo) === scanTypeFilter)
-      .filter(({ wine }) => scanRegionFilter === 'all' || wine.region === scanRegionFilter)
-      .filter(({ wine }) => scanServiceFilter === 'all' || wine.servicio === scanServiceFilter || wine.servicio === 'ambos')
-      .filter(({ wine }) => scanMinScore === 'all' || (wine.compatibilidad ?? -1) >= Number(scanMinScore))
-      .filter(({ wine }) => scanMinConfidence === 'all' || (wine.confidence ?? 0) >= Number(scanMinConfidence))
       .filter(({ wine }) => maxPrice === null || wine.precio === null || wine.precio === undefined || wine.precio <= maxPrice)
       .sort((a, b) => {
         if (scanSortMode === 'price-asc') {
@@ -362,7 +325,7 @@ export const WineMenuScanner = ({
 
         return (b.wine.compatibilidad ?? -1) - (a.wine.compatibilidad ?? -1);
       });
-  }, [scanMaxPrice, scanMinConfidence, scanMinScore, scanRegionFilter, scanServiceFilter, scanSortMode, scanTypeFilter, scannedWines]);
+  }, [scanMaxPrice, scanSortMode, scanTypeFilter, scannedWines]);
 
   useEffect(() => {
     if (loading || scannedWines.length === 0) return;
@@ -399,9 +362,11 @@ export const WineMenuScanner = ({
       })
       .slice(0, 2);
 
-  const openWineDetail = (index: number) => {
+  const focusWine = (index: number) => {
     setHighlightedWineIndex(index);
-    setSelectedPinIndex(index);
+    window.setTimeout(() => {
+      wineCardRefs.current.get(index)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
   };
 
   const openAiRimForWine = (wine: ScannedWine) => {
@@ -514,96 +479,42 @@ export const WineMenuScanner = ({
     setLoading(true);
     setScannedWines([]);
     setScanFeedback(null);
-    setMenuQualityWarnings([]);
-    scanAbortRef.current?.abort();
-    const controller = new AbortController();
-    scanAbortRef.current = controller;
 
     try {
-      setScanPhase('quality');
-      const prepared = await prepareImageForAnalysis(file);
-      const base64File = prepared.dataUrl;
-      setPreview(prepared.dataUrl);
-      setMenuQualityWarnings(prepared.quality.warnings);
-      if (controller.signal.aborted) return;
-      if (shouldRejectTextAnalysis(prepared.quality)) {
-        setScanFeedback('La imagen es demasiado pequeña y desenfocada para leer la carta. Acerca la cámara o fotografía una sección con el texto enfocado.');
-        trackAppEvent('wine_menu_scan_quality_rejected', {
-          userId: user?.id,
-          metadata: {
-            width: prepared.quality.width,
-            height: prepared.quality.height,
-            sharpness: prepared.quality.sharpness,
-          },
-        });
-        return;
-      }
-      setScanPhase('ocr');
+      // Leer el archivo como base64 y esperar a que termine
+      const base64File = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
 
-      const invokeScan = async (tile: MenuScanTile, tileImage: string, attempt = 1): Promise<WineMenuScanResponse> => {
-	        try {
-	          return await invokeEdgeFunction<WineMenuScanResponse>('scan-wine-menu', {
-	            image: tileImage,
-	            qa_fixture_name: `${file.name}:${tile.id}`,
-	            scan_region: tile,
-	            matchrimProfile: readStoredMatchrimProfile(),
-	            pairingDishName: pairingDishName || null,
-	            similarWineName: similarWineName || null,
-	          }, controller.signal);
-	        } catch (error) {
-	          if (error instanceof DOMException && error.name === 'AbortError') throw error;
-	          const rawMessage = error instanceof Error ? error.message : String(error);
-	          const isTransient = /non-2xx|fetch|network|timeout|error 5\d\d/i.test(rawMessage);
-	          if (attempt < 2 && isTransient) {
-	            await new Promise((resolve) => window.setTimeout(resolve, 1200));
-	            return invokeScan(tile, tileImage, attempt + 1);
-	          }
-	          throw error;
-	        }
+      const invokeScan = async (attempt = 1) => {
+        const { data, error } = await supabase.functions.invoke('scan-wine-menu', {
+          body: {
+            image: base64File,
+            matchrimProfile: readStoredMatchrimProfile(),
+            pairingDishName: pairingDishName || null,
+            similarWineName: similarWineName || null,
+          }
+        });
+
+        if (!error) return data;
+
+        const rawMessage = error instanceof Error ? error.message : String(error);
+        const isTransient = /non-2xx|FunctionsHttpError|fetch|network|timeout/i.test(rawMessage);
+        if (attempt < 2 && isTransient) {
+          await new Promise((resolve) => window.setTimeout(resolve, 1200));
+          return invokeScan(attempt + 1);
+        }
+
+        throw error;
       };
 
-      const scanTiles = isMatchrimFixtureQaEnabled
-        ? [getFullMenuScanTile()]
-        : [getFullMenuScanTile(), ...buildMenuScanTiles(prepared.width, prepared.height)];
-      const tileImages = await Promise.all(scanTiles.map(async (tile) => ({
-        tile,
-        image: tile.id === 'full' ? base64File : await cropImageRegion(base64File, tile.box, 0, 1800),
-      })));
-      const settledTiles = await Promise.allSettled(tileImages.map(async ({ tile, image }) => ({
-        tile,
-        response: await invokeScan(tile, image),
-      })));
-      if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
-      const successfulTiles = settledTiles.flatMap((result) => result.status === 'fulfilled' ? [result.value] : []);
-      if (successfulTiles.length === 0) {
-        const firstFailure = settledTiles.find((result) => result.status === 'rejected');
-        throw firstFailure?.status === 'rejected' ? firstFailure.reason : new Error('No se pudo analizar la carta');
-      }
-      const failedTileCount = settledTiles.length - successfulTiles.length;
-      const data = resolveMenuTileResults(successfulTiles);
-      if (failedTileCount > 0) {
-        data.coverage = {
-          ...data.coverage,
-          status: 'partial',
-          notes: [
-            ...(data.coverage?.notes ?? []),
-            `${failedTileCount} de ${settledTiles.length} regiones no terminaron; vuelve a analizar esa zona.`,
-          ],
-        };
-      }
+      const data = await invokeScan();
 
       if (data?.vinos && data.vinos.length > 0) {
-	      setScanPhase('ranking');
-	        const normalizedWines = (data.vinos as ScannedWine[]).filter(isWineMenuItem).map(normalizeScannedWine);
-	        if (data.coverage?.status === 'partial') {
-	          const expected = data.coverage.estimated_visible_wines;
-	          setMenuQualityWarnings((warnings) => [
-	            ...warnings,
-	            expected && expected > normalizedWines.length
-              ? `Cobertura parcial: ${normalizedWines.length} de aproximadamente ${expected} líneas legibles.`
-              : 'Cobertura parcial: revisa la imagen y vuelve a escanear la sección que falte.',
-	          ]);
-	        }
+        const normalizedWines = (data.vinos as ScannedWine[]).map(normalizeScannedWine);
         setScannedWines(normalizedWines);
         setHasProfile(!!data.has_profile);
         onScanComplete?.(normalizedWines.length);
@@ -638,10 +549,6 @@ export const WineMenuScanner = ({
         toast.info("No se encontraron vinos en el documento");
       }
     } catch (error) {
-	    if (error instanceof DOMException && error.name === 'AbortError') {
-      setScanFeedback('Análisis cancelado. Puedes reintentarlo con la misma imagen o elegir otra.');
-	      return;
-	    }
       console.error('Error processing file:', error);
       const rawMessage = error instanceof Error ? error.message : 'Error al procesar el documento';
       const message = /scanline|scanlines/i.test(rawMessage)
@@ -666,7 +573,6 @@ export const WineMenuScanner = ({
   };
 
   const clearScan = () => {
-    scanAbortRef.current?.abort();
     setPreview(null);
     setScannedWines([]);
     setSavedWineKeys(new Set());
@@ -675,18 +581,10 @@ export const WineMenuScanner = ({
     setConvertingPdf(false);
     setScanSortMode('compatibility');
     setScanTypeFilter('all');
-    setScanRegionFilter('all');
-    setScanServiceFilter('all');
-    setScanMinScore('all');
-    setScanMinConfidence('all');
     setScanMaxPrice('');
     setEditingWineIndex(null);
-    setExpandedWineActionsIndex(null);
     setHighlightedWineIndex(null);
     setScanFeedback(null);
-    setMenuQualityWarnings([]);
-    setImageZoom(1);
-    setSelectedPinIndex(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     if (cameraInputRef.current) cameraInputRef.current.value = '';
   };
@@ -822,13 +720,8 @@ export const WineMenuScanner = ({
 
   return (
     <div className="space-y-6">
-      {isMatchrimFixtureQaEnabled && (
-        <div role="status" className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-950">
-          QA local: respuestas deterministas. Este build valida el flujo, no la precisión del OCR.
-        </div>
-      )}
       {(restaurantName || matchrimCode) && (
-        <div className="matchrim-ink-panel rounded-lg p-4 text-white shadow-sm">
+        <div className="rounded-md border border-stone-800 bg-stone-950 p-4 text-white shadow-sm">
           <div className="flex flex-wrap items-center gap-2 text-sm">
             {restaurantName && (
               <span className="font-medium">
@@ -852,7 +745,7 @@ export const WineMenuScanner = ({
       )}
 
       {/* Scanner Section */}
-      <Card className="matchrim-surface overflow-hidden rounded-lg border-stone-200">
+      <Card className="overflow-hidden border-stone-200 shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
@@ -871,7 +764,7 @@ export const WineMenuScanner = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="matchrim-scan-stage rounded-lg p-4 text-center text-white">
+          <div className="rounded-md border border-stone-800 bg-stone-950 p-4 text-center text-white">
             <input
               ref={fileInputRef}
               type="file"
@@ -893,69 +786,47 @@ export const WineMenuScanner = ({
 	            {(preview || convertingPdf) && !loading ? (
 	              <div className="space-y-4">
 	                <div className="relative inline-block max-w-full">
-		                  {preview ? (
-		                    <>
-			                    <div className="overflow-auto rounded-lg bg-black shadow-2xl ring-1 ring-white/10" style={{ maxHeight: '68vh' }}>
-			                      <div className="relative origin-top-left" style={{ width: `${imageZoom * 100}%` }}>
-		                        <img
-		                          src={preview}
-		                          alt="Carta con vinos marcados mediante numeros"
-			                          className="block h-auto w-full object-contain opacity-95"
-		                        />
-			                        {menuPinClusters.map((cluster) => {
-			                          const first = cluster.items[0].value;
-			                          const clustered = cluster.items.length > 1;
-			                          const active = cluster.items.some((item) => item.value.index === highlightedWineIndex);
-			                          const names = cluster.items.map((item) => item.value.wine.nombre).join(', ');
+	                  {preview ? (
+		                    <div className="relative inline-block max-w-full overflow-hidden rounded-md bg-black shadow-2xl ring-1 ring-white/10">
+	                      <img
+	                        src={preview}
+	                        alt="Preview"
+		                        className={`${scannedWines.length > 0 ? 'max-h-48' : 'max-h-[68vh]'} max-w-full object-contain opacity-95`}
+	                      />
+	                      {scannedWines.map((wine, index) => {
+	                        const position = getWinePosition(wine);
+	                        if (!position || wine.compatibilidad === null || wine.compatibilidad === undefined) return null;
 
-			                          return (
-			                            <button
-			                              key={cluster.key}
-			                              type="button"
-			                              className={`absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center bg-transparent transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-			                                active ? 'ring-2 ring-black/70' : ''
-			                              }`}
-			                              style={{ left: `${cluster.x}%`, top: `${cluster.y}%` }}
-			                              aria-label={clustered
-			                                ? `Grupo de ${cluster.items.length} vinos: ${names}`
-			                                : `Vino ${first.index + 1}: ${first.wine.nombre}`}
-			                              data-testid={clustered ? `wine-pin-cluster-${first.index + 1}` : `wine-pin-${first.index + 1}`}
-			                              onClick={() => openWineDetail(first.index)}
-			                            >
-			                              <span className={`flex h-7 min-w-7 items-center justify-center rounded-full px-1 text-[11px] font-bold shadow ring-1 ring-white ${
-			                                active ? 'bg-amber-400 text-stone-950' : 'bg-stone-950 text-white'
-			                              }`}>
-			                                {clustered ? `+${cluster.items.length}` : first.index + 1}
-			                              </span>
-			                            </button>
-			                          );
-			                        })}
-		                      </div>
-		                    </div>
-		                    {scannedWines.length > 0 && (
-		                      <div className="absolute bottom-2 right-2 z-20 flex gap-1 rounded-md bg-stone-950/90 p-1 shadow">
-		                        <Button type="button" size="icon" variant="ghost" className="h-11 w-11 text-white hover:bg-white/15 hover:text-white" onClick={() => setImageZoom((zoom) => Math.max(1, zoom - 0.5))} disabled={imageZoom <= 1} aria-label="Alejar carta">
-		                          <ZoomOut className="h-4 w-4" />
-		                        </Button>
-		                        <span className="flex min-w-10 items-center justify-center text-xs font-semibold text-white">{Math.round(imageZoom * 100)}%</span>
-		                        <Button type="button" size="icon" variant="ghost" className="h-11 w-11 text-white hover:bg-white/15 hover:text-white" onClick={() => setImageZoom((zoom) => Math.min(3, zoom + 0.5))} disabled={imageZoom >= 3} aria-label="Acercar carta">
-		                          <ZoomIn className="h-4 w-4" />
-		                        </Button>
-			                      </div>
-			                    )}
-		                    </>
+	                        return (
+	                          <button
+	                            key={`${wine.nombre}-${index}-pin`}
+	                            type="button"
+		                            className={`absolute z-10 -translate-y-1/2 rounded-full px-2.5 py-1 text-[11px] font-bold shadow-lg ring-1 ring-white/70 transition ${
+		                              highlightedWineIndex === index
+		                                ? 'bg-amber-400 text-stone-950'
+		                                : 'bg-stone-950/92 text-white hover:bg-red-900'
+		                            }`}
+	                            style={{ left: `${position.x}%`, top: `${position.y}%` }}
+	                            title={`${wine.nombre}: ${wine.compatibilidad}% de encaje`}
+		                            onClick={() => focusWine(index)}
+		                          >
+		                            <span className="absolute right-full top-1/2 h-px w-4 -translate-y-1/2 bg-current" />
+	                            {wine.compatibilidad}%
+	                          </button>
+	                        );
+	                      })}
+	                    </div>
 	                  ) : convertingPdf ? (
 		                    <div className="mx-auto flex max-h-60 flex-col items-center gap-4 rounded-md bg-white/8 p-8">
 		                      <Loader2 className="h-12 w-12 animate-spin text-amber-400" />
 		                      <p className="text-sm text-white/70">Convirtiendo PDF a imagen...</p>
                     </div>
                   ) : null}
-	                <Button
+	                  <Button
 	                    onClick={clearScan}
 	                    variant="destructive"
-	                    size="icon"
-                    className="matchrim-pressable absolute right-2 top-2 h-11 w-11 rounded-md bg-red-700 hover:bg-red-800"
-	                    aria-label="Quitar carta"
+                    size="icon"
+                    className="absolute right-2 top-2 h-11 w-11 rounded-md bg-red-700 hover:bg-red-800"
                   >
 	                    <X className="h-4 w-4" />
 	                  </Button>
@@ -964,7 +835,7 @@ export const WineMenuScanner = ({
 		                  <div className="mx-auto max-w-2xl rounded-md border border-white/10 bg-white/8 p-3 text-left text-xs text-white/72">
 	                    {scannedWines.some((wine) => getWinePosition(wine)) ? (
 	                      <p>
-			                        Toca un numero para revisar ese vino. Los detalles se abren fuera de la imagen y no tapan la carta.
+		                        Toca una burbuja para saltar a la ficha detectada. Solo muestro posiciones con anclaje fiable.
 	                      </p>
 	                    ) : (
 	                      <p>
@@ -978,31 +849,20 @@ export const WineMenuScanner = ({
               <div className="space-y-4">
 	                <Loader2 className="mx-auto h-12 w-12 animate-spin text-amber-400" />
                 <div>
-	                  <p className="text-lg font-semibold mb-2">
-	                    {convertingPdf
-	                      ? 'Convirtiendo PDF a imagen...'
-	                      : scanPhase === 'quality'
-	                        ? 'Comprobando calidad y perspectiva...'
-	                        : scanPhase === 'ranking'
-	                          ? 'Ordenando resultados...'
-                          : 'Leyendo secciones, líneas y precios...'}
-	                  </p>
+                  <p className="text-lg font-semibold mb-2">
+                    {convertingPdf ? 'Convirtiendo PDF a imagen...' : 'Analizando carta de vinos...'}
+                  </p>
 	                  <p className="mb-3 text-sm text-white/65">
                     {convertingPdf 
                       ? 'Renderizando primera página del PDF' 
-	                      : 'El texto se mantiene fuera de la imagen para no tapar la carta'}
+                      : 'Extrayendo vinos y calculando compatibilidad'}
                   </p>
 	                  <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
 	                    <div className="h-full bg-amber-400 animate-pulse" style={{ width: '70%' }} />
                   </div>
 	                  <p className="mt-2 text-xs text-white/50">
-	                    Esto puede tardar 30-60 segundos dependiendo del tamaño de la carta
-	                  </p>
-	                  {!convertingPdf && (
-	                    <Button type="button" variant="outline" className="mt-4 min-h-11 border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white" onClick={() => scanAbortRef.current?.abort()}>
-                      <X className="mr-2 h-4 w-4" /> Cancelar análisis
-	                    </Button>
-	                  )}
+                    Esto puede tardar 30-60 segundos dependiendo del tamaño de la carta
+                  </p>
                 </div>
               </div>
             ) : (
@@ -1030,7 +890,7 @@ export const WineMenuScanner = ({
                   <Button
                     onClick={() => cameraInputRef.current?.click()}
                     disabled={loading}
-	                    className="matchrim-pressable min-h-12 gap-2 bg-amber-400 text-stone-950 hover:bg-amber-300"
+	                    className="gap-2 bg-amber-400 text-stone-950 hover:bg-amber-300"
                   >
                     <Camera className="h-4 w-4" />
                     Hacer foto
@@ -1039,7 +899,7 @@ export const WineMenuScanner = ({
 	                    onClick={() => fileInputRef.current?.click()}
 	                    disabled={loading}
 	                    variant="outline"
-		                    className="matchrim-pressable min-h-12 gap-2 border-white/20 bg-white/10 text-white hover:bg-white/15"
+		                    className="gap-2 border-white/20 bg-white/10 text-white hover:bg-white/15"
 	                  >
 	                    <Upload className="h-4 w-4" />
 	                    Subir archivo
@@ -1055,17 +915,10 @@ export const WineMenuScanner = ({
             )}
           </div>
         </CardContent>
-	      </Card>
+      </Card>
 
-	      {menuQualityWarnings.length > 0 && (
-	        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
-	          <div className="font-semibold">Avisos de calidad</div>
-	          <ul className="mt-1 space-y-1">{menuQualityWarnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>
-	        </div>
-	      )}
-
-	      {scanFeedback && scannedWines.length === 0 && !loading && (
-        <Card className="rounded-lg border-amber-200 bg-amber-50">
+      {scanFeedback && scannedWines.length === 0 && !loading && (
+        <Card className="border-amber-200 bg-amber-50">
           <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-semibold text-amber-950">No ha salido un escaneo útil</p>
@@ -1115,8 +968,8 @@ export const WineMenuScanner = ({
 	          </div>
 
 	          {menuDecision && (
-	            <Card className="matchrim-surface overflow-hidden rounded-lg border-red-100 bg-white">
-	              <CardHeader className="border-b border-white/10 matchrim-ink-panel text-white">
+	            <Card className="overflow-hidden border-red-100 bg-white shadow-sm">
+	              <CardHeader className="border-b bg-red-950 text-white">
 	                <CardTitle className="flex items-center gap-2 text-xl">
 	                  <Target className="h-5 w-5" />
 	                  {dishContext
@@ -1131,9 +984,9 @@ export const WineMenuScanner = ({
 	                    : 'No te vendo vino: ordeno esta carta para que aciertes con tu perfil.'}
 	                </CardDescription>
 	              </CardHeader>
-		              <CardContent className="grid gap-3 p-4 md:grid-cols-2">
-                <div className="min-w-0 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-	                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-emerald-900">
+		              <CardContent className="grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-5">
+	                <div className="min-w-0 rounded-md border border-green-100 bg-green-50 p-4">
+	                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-green-900">
 	                    <Trophy className="h-4 w-4" />
 	                    Pediría primero
 	                  </div>
@@ -1144,24 +997,24 @@ export const WineMenuScanner = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${best.wine.nombre}, ${best.score}% de encaje`}
 		                        className="min-w-0 w-full space-y-2 text-left"
-		                        onClick={() => openWineDetail(best.index)}
+		                        onClick={() => focusWine(best.index)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
-	                            <p className="break-words font-semibold leading-tight text-emerald-950">{best.wine.nombre}</p>
+	                            <p className="break-words font-semibold leading-tight text-green-950">{best.wine.nombre}</p>
 	                            {best.wine.productor && (
-	                              <p className="mt-1 truncate text-sm text-emerald-900/70">{best.wine.productor}</p>
+	                              <p className="mt-1 truncate text-sm text-green-900/70">{best.wine.productor}</p>
 	                            )}
 	                          </div>
-	                          <Badge className="bg-emerald-700 hover:bg-emerald-700">{best.score}%</Badge>
+	                          <Badge className="bg-green-700 hover:bg-green-700">{best.score}%</Badge>
 	                        </div>
 	                        {best.wine.razon && (
-	                          <p className="break-words text-sm leading-5 text-emerald-900">{best.wine.razon}</p>
+	                          <p className="break-words text-sm leading-5 text-green-900">{best.wine.razon}</p>
 	                        )}
 	                      </button>
 	                    );
 	                  })() : (
-	                    <p className="text-sm text-emerald-900">Completa tu test para que pueda elegir por encaje.</p>
+	                    <p className="text-sm text-green-900">Completa tu test para que pueda elegir por encaje.</p>
 	                  )}
 	                </div>
 
@@ -1177,7 +1030,7 @@ export const WineMenuScanner = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${safe.wine.nombre}, ${safe.score}% de encaje`}
 		                        className="flex min-w-0 w-full items-center justify-between gap-3 rounded-md border border-amber-200 bg-white px-3 py-2 text-left"
-		                        onClick={() => openWineDetail(safe.index)}
+		                        onClick={() => focusWine(safe.index)}
 		                      >
 		                        <span className="min-w-0">
 		                          <span className="block break-words text-sm font-semibold leading-tight text-amber-950">{safe.wine.nombre}</span>
@@ -1193,7 +1046,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="min-w-0 rounded-lg border border-stone-200 bg-stone-50 p-4">
+		                <div className="min-w-0 rounded-md border border-stone-200 bg-stone-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-stone-950">
 		                    <Target className="h-4 w-4" />
 		                    Mejor calidad/precio para ti
@@ -1204,8 +1057,8 @@ export const WineMenuScanner = ({
 		                      <button
 		                        type="button"
 		                        aria-label={`Ver detalle de ${value.wine.nombre}, ${value.score}% de encaje`}
-		                        className="matchrim-pressable min-w-0 w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
-		                        onClick={() => openWineDetail(value.index)}
+		                        className="min-w-0 w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
+		                        onClick={() => focusWine(value.index)}
 		                      >
 		                        <span className="block break-words font-semibold leading-tight">{value.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-stone-500">
@@ -1218,7 +1071,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="min-w-0 rounded-lg border border-orange-100 bg-orange-50 p-4">
+		                <div className="min-w-0 rounded-md border border-orange-100 bg-orange-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-orange-950">
 		                    <AlertCircle className="h-4 w-4" />
 		                    Más arriesgado
@@ -1229,8 +1082,8 @@ export const WineMenuScanner = ({
 		                      <button
 		                        type="button"
 		                        aria-label={`Ver detalle de ${adventurous.wine.nombre}, ${adventurous.score}% de encaje`}
-		                        className="matchrim-pressable min-w-0 w-full rounded-md border border-orange-200 bg-white p-3 text-left"
-		                        onClick={() => openWineDetail(adventurous.index)}
+		                        className="min-w-0 w-full rounded-md border border-orange-200 bg-white p-3 text-left"
+		                        onClick={() => focusWine(adventurous.index)}
 		                      >
 		                        <span className="block break-words text-sm font-semibold leading-tight text-orange-950">{adventurous.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-orange-900/70">
@@ -1243,7 +1096,7 @@ export const WineMenuScanner = ({
 		                  )}
 		                </div>
 
-		                <div className="min-w-0 rounded-lg border border-red-100 bg-red-50 p-4">
+		                <div className="min-w-0 rounded-md border border-red-100 bg-red-50 p-4">
 		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-red-950">
 		                    <CircleSlash className="h-4 w-4" />
 		                    No lo pediría para ti
@@ -1255,7 +1108,7 @@ export const WineMenuScanner = ({
 	                        type="button"
 	                        aria-label={`Ver detalle de ${caution.wine.nombre}, ${caution.score}% de encaje`}
 	                        className="min-w-0 w-full space-y-2 text-left"
-	                        onClick={() => openWineDetail(caution.index)}
+	                        onClick={() => focusWine(caution.index)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
@@ -1275,43 +1128,17 @@ export const WineMenuScanner = ({
 	                  )}
 		                </div>
 
-		                <div className="matchrim-soft-surface rounded-lg px-4 py-3 text-sm matchrim-muted md:col-span-2">
+		                <div className="rounded-md border bg-muted/30 px-4 py-3 text-sm text-muted-foreground md:col-span-2 xl:col-span-5">
 	                  {menuDecision.anchored > 0
-		                    ? `${menuDecision.anchored} pin${menuDecision.anchored !== 1 ? 'es' : ''} se han anclado a posiciones fiables. La afinidad y el detalle permanecen en la lista para no tapar el texto.`
-                    : 'La lectura no ha devuelto posiciones fiables para esta foto. Mantengo el ranking como lista y no invento marcadores sobre líneas dudosas.'}
+	                    ? `${menuDecision.anchored} porcentaje${menuDecision.anchored !== 1 ? 's' : ''} se han anclado a posiciones fiables de la foto. Si no veo una posición clara, prefiero mostrar el dato abajo antes que inventarlo sobre la carta.`
+	                    : 'La IA no ha devuelto posiciones fiables para esta foto. Por eso muestro la decisión en tarjetas y evito colocar porcentajes aproximados sobre vinos equivocados.'}
 	                </div>
 	              </CardContent>
 	            </Card>
-		          )}
+	          )}
 
-              <WineComparisonWorkspace
-                wines={scannedWines.map((wine, index) => ({
-                  id: `${index}-${wine.nombre}-${wine.productor ?? ''}`,
-                  name: wine.nombre,
-                  producer: wine.productor,
-                  region: wine.region,
-                  affinity: wine.compatibilidad,
-                  confidence: wine.confidence,
-                  price: wine.precio,
-                  service: wine.servicio === 'copa'
-                    ? 'glass'
-                    : wine.servicio === 'botella'
-                      ? 'bottle'
-                      : wine.servicio === 'ambos'
-                        ? 'both'
-                        : null,
-                  attributes: wine.atributos ? {
-                    body: wine.atributos.potencia,
-                    acidity: wine.atributos.acidez,
-                    sweetness: wine.atributos.dulzura,
-                    tannin: wine.atributos.taninos,
-                    fruit: wine.atributos.afrutado,
-                  } : null,
-                }))}
-              />
-
-		          <div className="matchrim-surface rounded-lg p-3">
-		            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+	          <div className="rounded-md border border-stone-200 bg-white p-3 shadow-sm">
+	            <div className="grid gap-3 sm:grid-cols-3">
               <div className="space-y-2">
                 <Label htmlFor="scan-sort">Orden</Label>
                 <Select value={scanSortMode} onValueChange={(value) => setScanSortMode(value as ScannedWineSortMode)}>
@@ -1326,8 +1153,8 @@ export const WineMenuScanner = ({
                   </SelectContent>
                 </Select>
               </div>
-	              <div className="space-y-2">
-	                <Label htmlFor="scan-type">Tipo</Label>
+              <div className="space-y-2">
+                <Label htmlFor="scan-type">Tipo</Label>
                 <Select value={scanTypeFilter} onValueChange={setScanTypeFilter}>
                   <SelectTrigger id="scan-type">
                     <SelectValue />
@@ -1338,54 +1165,9 @@ export const WineMenuScanner = ({
                       <SelectItem key={type} value={type}>{type}</SelectItem>
                     ))}
                   </SelectContent>
-	                </Select>
-	              </div>
-	              <div className="space-y-2">
-                <Label htmlFor="scan-region-filter">Región</Label>
-	                <Select value={scanRegionFilter} onValueChange={setScanRegionFilter}>
-	                  <SelectTrigger id="scan-region-filter"><SelectValue /></SelectTrigger>
-	                  <SelectContent>
-	                    <SelectItem value="all">Todas las regiones</SelectItem>
-	                    {scannedWineRegions.map((region) => <SelectItem key={region} value={region}>{region}</SelectItem>)}
-	                  </SelectContent>
-	                </Select>
-	              </div>
-	              <div className="space-y-2">
-	                <Label htmlFor="scan-service">Servicio</Label>
-	                <Select value={scanServiceFilter} onValueChange={setScanServiceFilter}>
-	                  <SelectTrigger id="scan-service"><SelectValue /></SelectTrigger>
-	                  <SelectContent>
-	                    <SelectItem value="all">Copa o botella</SelectItem>
-	                    <SelectItem value="copa">Por copa</SelectItem>
-	                    <SelectItem value="botella">Por botella</SelectItem>
-	                  </SelectContent>
-	                </Select>
-	              </div>
-	              <div className="space-y-2">
-                <Label htmlFor="scan-min-score">Afinidad mínima</Label>
-	                <Select value={scanMinScore} onValueChange={setScanMinScore}>
-	                  <SelectTrigger id="scan-min-score"><SelectValue /></SelectTrigger>
-	                  <SelectContent>
-	                    <SelectItem value="all">Cualquier afinidad</SelectItem>
-	                    <SelectItem value="60">60% o mas</SelectItem>
-	                    <SelectItem value="75">75% o mas</SelectItem>
-	                    <SelectItem value="85">85% o mas</SelectItem>
-	                  </SelectContent>
-	                </Select>
-	              </div>
-	              <div className="space-y-2">
-	                <Label htmlFor="scan-min-confidence">Señal de identidad</Label>
-	                <Select value={scanMinConfidence} onValueChange={setScanMinConfidence}>
-	                  <SelectTrigger id="scan-min-confidence"><SelectValue /></SelectTrigger>
-	                  <SelectContent>
-	                    <SelectItem value="all">Cualquier confianza</SelectItem>
-	                    <SelectItem value="0.5">50% o mas</SelectItem>
-	                    <SelectItem value="0.7">70% o mas</SelectItem>
-	                    <SelectItem value="0.85">85% o mas</SelectItem>
-	                  </SelectContent>
-	                </Select>
-	              </div>
-	              <div className="space-y-2">
+                </Select>
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="scan-max-price">Precio máximo</Label>
                 <Input
                   id="scan-max-price"
@@ -1396,53 +1178,16 @@ export const WineMenuScanner = ({
                 />
               </div>
             </div>
-		          </div>
+          </div>
 
-		          {visibleScannedWines.length > 0 && (
-		            <div className="matchrim-surface overflow-hidden rounded-lg bg-white">
-		              <div className="flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2">
-		                <h3 className="font-semibold text-slate-950">Lista de la carta</h3>
-		                <span className="text-xs text-slate-500">{visibleScannedWines.length} resultados</span>
-		              </div>
-		              <div className="divide-y divide-stone-100">
-	                        {visibleScannedWines.map(({ wine, index }) => (
-		                  <button
-		                    key={`${wine.nombre}-${index}-list-row`}
-		                    type="button"
-		                    aria-label={`Abrir vino ${index + 1}: ${wine.nombre}`}
-		                    className={`matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
-		                    onClick={() => {
-		                      setHighlightedWineIndex(index);
-		                      setSelectedPinIndex(index);
-		                    }}
-		                  >
-	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
-		                    <span className="min-w-0 flex-1">
-		                      <span className="block truncate font-semibold text-slate-950">{wine.nombre}</span>
-		                      <span className="block truncate text-xs text-slate-500">
-		                        {[wine.productor, wine.region, wine.servicio, formatPrice(wine.precio)].filter(Boolean).join(' · ') || 'Datos por revisar'}
-		                      </span>
-		                    </span>
-		                    <span className="shrink-0 text-right">
-		                      {typeof wine.compatibilidad === 'number' && <span className="block text-lg font-bold text-red-900">≈{wine.compatibilidad}%</span>}
-		                      <span className="block text-[11px] text-slate-500">Identidad {getConfidenceBand(wine.confidence)}</span>
-		                    </span>
-		                  </button>
-		                ))}
-		              </div>
-		            </div>
-		          )}
-
-	          {visibleScannedWines.length === 0 ? (
-            <Card className="rounded-lg">
+          {visibleScannedWines.length === 0 ? (
+            <Card>
               <CardContent className="p-8 text-center text-sm text-muted-foreground">
                 No hay vinos que cumplan esos filtros. Prueba a subir el precio máximo o cambiar el tipo.
               </CardContent>
             </Card>
-	          ) : (
-	            <details className="rounded-lg border border-stone-200 bg-white">
-	              <summary className="flex min-h-12 cursor-pointer items-center px-4 py-3 text-sm font-semibold text-slate-900">Ver fichas completas y acciones</summary>
-	              <div className="divide-y divide-stone-100 border-t border-stone-100">
+          ) : (
+            <div className="grid gap-4">
 			              {visibleScannedWines.map(({ wine, index }) => {
 			                const isEditing = editingWineIndex === index;
 			                const similarWines = getSimilarWines(wine, index);
@@ -1452,29 +1197,17 @@ export const WineMenuScanner = ({
 			                  const wineDecision = getWineDecision(wine.compatibilidad);
 
 			                return (
-			                  <div key={`${wine.nombre}-${index}-actions`}>
-			                    <button
-			                      type="button"
-			                      className="flex min-h-14 w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-stone-50"
-			                      aria-expanded={expandedWineActionsIndex === index}
-			                      aria-controls={`wine-actions-${index}`}
-			                      onClick={() => setExpandedWineActionsIndex((current) => current === index ? null : index)}
-			                    >
-			                      <span className="min-w-0">
-			                        <span className="block truncate text-sm font-semibold text-slate-950">{index + 1}. {wine.nombre}</span>
-			                        <span className="block truncate text-xs text-slate-500">{wine.productor || 'Identidad parcial'}</span>
-			                      </span>
-			                      <span className="shrink-0 text-xs font-medium text-red-900">Editar y guardar</span>
-			                    </button>
-			                    {expandedWineActionsIndex === index && (
-			                    <div id={`wine-actions-${index}`} className="bg-stone-50 p-3">
 			              <Card
-		                className={`overflow-hidden rounded-lg transition ${
+		                key={index}
+		                ref={(node) => {
+		                  wineCardRefs.current.set(index, node);
+		                }}
+		                className={`overflow-hidden transition ${
 		                  highlightedWineIndex === index ? 'ring-2 ring-red-700 ring-offset-2' : ''
 		                }`}
 	              >
 	                <CardContent className="p-0">
-                    <div className="border-b border-white/10 matchrim-ink-panel px-5 py-4 text-white">
+                    <div className="border-b bg-gradient-to-r from-red-950 to-stone-950 px-5 py-4 text-white">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
 	                          <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Ficha de carta</p>
@@ -1488,10 +1221,10 @@ export const WineMenuScanner = ({
 	                        </div>
 	                        {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
                           <div className="shrink-0 rounded-md bg-white px-3 py-2 text-center text-red-950">
-                            <div className="text-2xl font-bold leading-none">≈{wine.compatibilidad}%</div>
-	                            <div className="mt-1 text-[10px] font-semibold uppercase text-red-900/70">Encaje</div>
-	                          </div>
-	                        )}
+                            <div className="text-2xl font-bold leading-none">{wine.compatibilidad}%</div>
+                            <div className="mt-1 text-[10px] font-semibold uppercase text-red-900/70">Encaje</div>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="p-6">
@@ -1517,7 +1250,7 @@ export const WineMenuScanner = ({
                       </div>
 
                       {isEditing && (
-                        <div className="matchrim-soft-surface rounded-lg p-4">
+                        <div className="rounded-lg border bg-muted/30 p-4">
                           <div className="grid gap-3 md:grid-cols-2">
                             <div className="space-y-1.5 md:col-span-2">
                               <Label htmlFor={`scan-name-${index}`}>Nombre</Label>
@@ -1597,8 +1330,8 @@ export const WineMenuScanner = ({
                               />
                             </div>
                           </div>
-	                        </div>
-	                      )}
+                        </div>
+                      )}
 
                       <div className="flex flex-wrap gap-2">
                         {wine.anada && (
@@ -1636,16 +1369,43 @@ export const WineMenuScanner = ({
 	                        <p className="mt-1">{wineDecision.description}</p>
 	                      </div>
 
-	                    </div>
+	                      {wine.atributos && (
+		                        <div className="rounded-lg border bg-stone-50 p-3">
+		                          <p className="text-xs font-medium mb-2 text-muted-foreground">Perfil sensorial</p>
+		                          <div className="grid grid-cols-5 gap-2 text-xs">
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.potencia}/5</div>
+		                              <div className="text-muted-foreground">Potencia</div>
+		                            </div>
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.acidez}/5</div>
+		                              <div className="text-muted-foreground">Acidez</div>
+		                            </div>
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.dulzura}/5</div>
+		                              <div className="text-muted-foreground">Dulzura</div>
+		                            </div>
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.taninos}/5</div>
+		                              <div className="text-muted-foreground">Taninos</div>
+		                            </div>
+		                            <div className="text-center">
+		                              <div className="text-base font-bold">{wine.atributos.afrutado}/5</div>
+		                              <div className="text-muted-foreground">Afrutado</div>
+		                            </div>
+	                          </div>
+                        </div>
+                      )}
+                    </div>
 
 	                    {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
-	                      <div className="matchrim-soft-surface flex flex-col justify-center gap-3 rounded-lg p-4 lg:min-w-[170px]">
+	                      <div className="flex flex-col justify-center gap-3 rounded-lg border bg-muted/20 p-4 lg:min-w-[170px]">
                           <div className="flex items-center gap-2">
                             {getCompatibilityIcon(wine.compatibilidad)}
                             <span className="text-sm font-semibold">Encaje conmigo</span>
                           </div>
                           <div>
-                            <div className="text-3xl font-bold">≈{wine.compatibilidad}%</div>
+                            <div className="text-3xl font-bold">{wine.compatibilidad}%</div>
                             <div className={`mt-2 h-2 w-full rounded-full ${getCompatibilityColor(wine.compatibilidad)}`} />
                           </div>
                           <p className="text-xs leading-5 text-muted-foreground">
@@ -1655,15 +1415,13 @@ export const WineMenuScanner = ({
 	                    )}
 	                  </div>
 
-		                  <div className="mt-4">
-		                    <AffinityExplanation
-		                      wineKey={`${wine.nombre}-${wine.productor ?? ''}-${wine.anada ?? 'nv'}`}
-		                      score={wine.compatibilidad}
-		                      identificationConfidence={wine.confidence}
-		                      attributes={wine.atributos}
-		                      sensorySource="inference"
-		                    />
-		                  </div>
+	                  {/* Compatibility Reason */}
+		                  {wine.razon && (
+		                    <div className="mt-4 rounded-lg border border-red-100 bg-red-50/70 p-3">
+		                      <p className="mb-1 text-sm font-semibold text-red-950">Por qué encaja</p>
+		                      <p className="text-sm leading-6 text-red-950/85">{wine.razon}</p>
+		                    </div>
+		                  )}
 
 	                  {similarWines.length > 0 && (
 	                    <div className="mt-4 rounded-lg border border-red-100 bg-red-50/70 p-3">
@@ -1673,14 +1431,14 @@ export const WineMenuScanner = ({
 	                          <button
 	                            key={`${similarWine.nombre}-${similarIndex}-similar`}
 	                            type="button"
-	                            className="matchrim-pressable rounded-md border bg-white p-3 text-left text-sm shadow-sm hover:border-red-300 hover:bg-red-50"
-		                            onClick={() => openWineDetail(similarIndex)}
+	                            className="rounded-md border bg-white p-3 text-left text-sm shadow-sm transition hover:border-red-300 hover:bg-red-50"
+		                            onClick={() => focusWine(similarIndex)}
 	                          >
 	                            <div className="flex items-start justify-between gap-2">
 	                              <span className="font-medium text-red-950">{similarWine.nombre}</span>
 	                              {similarWine.compatibilidad !== null && similarWine.compatibilidad !== undefined && (
 	                                <Badge className="shrink-0 bg-red-800 hover:bg-red-800">
-	                                  ≈{similarWine.compatibilidad}%
+	                                  {similarWine.compatibilidad}%
 	                                </Badge>
 	                              )}
 	                            </div>
@@ -1743,7 +1501,7 @@ export const WineMenuScanner = ({
                           type="button"
                           variant="outline"
                           className="gap-2"
-                          onClick={() => openWineDetail(similarWines[0]?.index ?? index)}
+                          onClick={() => focusWine(similarWines[0]?.index ?? index)}
                           disabled={similarWines.length === 0}
                         >
 	                          <ScanLine className="h-4 w-4" />
@@ -1761,18 +1519,14 @@ export const WineMenuScanner = ({
 		                  </div>
                     </div>
 		                </CardContent>
-			              </Card>
-			                    </div>
-			                    )}
-			                  </div>
+              </Card>
                 );
-	              })}
-		              </div>
-		            </details>
+              })}
+	            </div>
 		          )}
 
 		          {restaurantName && (
-	            <div className="rounded-lg border border-red-100 bg-red-50/80 p-4">
+	            <div className="rounded-md border border-red-100 bg-red-50/80 p-4">
 	              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 	                <div>
 	                  <p className="font-semibold text-red-950">Este restaurante todavía no usa Winerim</p>
@@ -1799,82 +1553,6 @@ export const WineMenuScanner = ({
 	          )}
 	        </div>
 	      )}
-
-	      <Drawer open={selectedPinIndex !== null} onOpenChange={(open) => !open && setSelectedPinIndex(null)}>
-	        <DrawerContent className="max-h-[88vh] border-stone-200 bg-stone-50">
-	          {selectedPinWine && selectedPinIndex !== null && (
-	            <>
-	              <DrawerHeader className="border-b border-stone-200 bg-white text-left">
-	                <div className="flex items-start justify-between gap-3">
-	                  <div className="min-w-0">
-	                    <DrawerTitle>{selectedPinIndex + 1}. {selectedPinWine.nombre}</DrawerTitle>
-	                    <DrawerDescription className="mt-1">
-	                      {[selectedPinWine.productor, selectedPinWine.region, formatPrice(selectedPinWine.precio)].filter(Boolean).join(' · ') || 'Datos por revisar'}
-	                    </DrawerDescription>
-	                  </div>
-	                  <DrawerClose asChild>
-	                    <Button type="button" variant="ghost" size="icon" className="h-11 w-11 shrink-0" aria-label="Cerrar detalle"><X className="h-4 w-4" /></Button>
-	                  </DrawerClose>
-	                </div>
-	              </DrawerHeader>
-	              <div className="overflow-y-auto p-4">
-	                <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
-	                  <div><div className="text-xl font-bold text-red-900">{selectedPinWine.compatibilidad == null ? '-' : `≈${selectedPinWine.compatibilidad}%`}</div><div className="text-xs text-slate-500">Afinidad estimada</div></div>
-	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>
-	                  <div><div className="truncate text-sm font-bold capitalize text-slate-900">{selectedPinWine.tipo || '-'}</div><div className="text-xs text-slate-500">Tipo</div></div>
-	                </div>
-	                {selectedPinWine.descripcion && <p className="mb-4 text-sm leading-6 text-slate-600">{selectedPinWine.descripcion}</p>}
-	                <div className="matchrim-soft-surface mb-4 rounded-lg p-3 text-sm text-slate-600">
-	                  {selectedPinWine.texto_fuente ? (
-	                    <p><span className="font-semibold text-slate-900">Texto visible:</span> {selectedPinWine.texto_fuente}</p>
-	                  ) : (
-                    <p>No hay una transcripción enlazada a esta fila. Productor, región y estilo pueden ser inferencias y requieren confirmación.</p>
-	                  )}
-	                  {selectedPinWine.dudas && selectedPinWine.dudas.length > 0 && (
-	                    <p className="mt-1"><span className="font-semibold text-slate-900">Dudas:</span> {selectedPinWine.dudas.join(', ')}</p>
-	                  )}
-			                  {selectedPinWine.campos_inferidos && selectedPinWine.campos_inferidos.length > 0 && (
-			                    <p className="mt-1"><span className="font-semibold text-slate-900">Datos inferidos:</span> {selectedPinWine.campos_inferidos.join(', ')}</p>
-			                  )}
-			                </div>
-			                <div className="mb-4">
-			                  <AiRimContextGuide
-			                    context="menu"
-			                    name={selectedPinWine.nombre}
-			                    identityConfidence={selectedPinWine.confidence}
-			                    affinity={selectedPinWine.compatibilidad}
-			                    attributes={selectedPinWine.atributos}
-			                    sensorySource="inference"
-			                    uncertaintyReasons={selectedPinWine.dudas}
-			                    hasAlternatives={scannedWines.length > 1}
-			                  />
-			                </div>
-			                <AffinityExplanation
-	                  wineKey={`${selectedPinWine.nombre}-${selectedPinWine.productor ?? ''}-${selectedPinWine.anada ?? 'nv'}`}
-	                  score={selectedPinWine.compatibilidad}
-	                  identificationConfidence={selectedPinWine.confidence}
-	                  attributes={selectedPinWine.atributos}
-	                  sensorySource="inference"
-	                />
-	              </div>
-	              <DrawerFooter className="border-t border-stone-200 bg-white">
-	                <div className="grid grid-cols-2 gap-2">
-	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex === 0} onClick={() => {
-	                    const next = Math.max(0, selectedPinIndex - 1);
-	                    setSelectedPinIndex(next);
-	                    setHighlightedWineIndex(next);
-	                  }}><ChevronLeft className="h-4 w-4" /> Anterior</Button>
-	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={() => {
-	                    const next = Math.min(scannedWines.length - 1, selectedPinIndex + 1);
-	                    setSelectedPinIndex(next);
-	                    setHighlightedWineIndex(next);
-	                  }}>Siguiente <ChevronRight className="h-4 w-4" /></Button>
-	                </div>
-	              </DrawerFooter>
-	            </>
-	          )}
-	        </DrawerContent>
-	      </Drawer>
     </div>
   );
 };

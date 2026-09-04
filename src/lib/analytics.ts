@@ -9,10 +9,6 @@ export type AppEventName =
   | "wine_label_scan_started"
   | "wine_label_scan_completed"
   | "wine_label_scan_failed"
-  | "multi_wine_label_scan_started"
-  | "multi_wine_label_scan_completed"
-  | "multi_wine_label_scan_failed"
-  | "wine_menu_scan_quality_rejected"
   | "food_scan_started"
   | "food_scan_completed"
   | "food_scan_failed"
@@ -24,8 +20,7 @@ export type AppEventName =
   | "airim_question_completed"
   | "airim_question_failed"
   | "winerim_wines_loaded"
-  | "winerim_wines_failed"
-  | "shop_link_analyzed";
+  | "winerim_wines_failed";
 
 const APP_VERSION = "matchrim-2026-06-22";
 

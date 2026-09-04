@@ -77,15 +77,15 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
         (trainingWines || []) as TrainableWine[]
       );
       const activeProfile = learned.samples > 0 ? learned.profile : (baseProfile as MatchrimProfileLike);
-      const code = generateMatchrimCode(baseProfile as MatchrimProfileLike);
+      const code = generateMatchrimCode(activeProfile);
 
       if (!cancelled) {
         setProfileContext(
           [
-            `Código Matchrim estable del usuario: ${code}.`,
+            `Perfil Matchrim activo del usuario: ${code}.`,
             `Escala 0-5: potencia ${activeProfile.potente}, acidez ${activeProfile.acidez}, dulzura ${activeProfile.dulce}, taninos ${activeProfile.tanico}, afrutado ${activeProfile.afrutado}.`,
             learned.samples > 0
-              ? `Las recomendaciones incluyen aprendizaje de ${learned.samples} vino${learned.samples !== 1 ? 's' : ''} puntuado${learned.samples !== 1 ? 's' : ''}; confianza ${learned.confidence}%.`
+              ? `Este perfil incluye aprendizaje de ${learned.samples} vino${learned.samples !== 1 ? 's' : ''} puntuado${learned.samples !== 1 ? 's' : ''}; confianza ${learned.confidence}%.`
               : 'Este perfil todavía procede solo del test Matchrim base.',
           ].join('\n')
         );

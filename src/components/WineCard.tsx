@@ -2,23 +2,41 @@ import React from 'react';
 import { Wine, TrendingUp, ExternalLink } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { buildWinerimWineUrl, WinerimWineWithMatch } from '@/services/winerimApi';
+import { WinerimWineWithMatch } from '@/services/winerimApi';
 import { formatWineType, formatCountryName } from '@/utils/wineFormatters';
-import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
-import { buildAffinityInsights } from '@/utils/wineAffinityExplanation';
-import { getWinerimPriceDisplay } from '@/utils/winerimPrice';
 
 interface WineCardProps {
   wine: WinerimWineWithMatch;
   index: number;
   isHighlighted?: boolean;
   setWineRef?: (id: string | number, ref: HTMLDivElement | null) => void;
-  profile?: MatchrimProfileLike | null;
 }
 
-const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false, setWineRef, profile }) => {
+const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false, setWineRef }) => {
+  const formatCurrency = (currency: string | { name: string; symbol: string }): string => {
+    if (typeof currency === 'string') {
+      return currency;
+    }
+    return currency.symbol || currency.name || '';
+  };
+
+  const generateSlug = (wineName: string, vintage?: number | string) => {
+    const nameSlug = wineName
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join('-')
+      .replace(/[^a-zA-Z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .trim();
+
+    return vintage ? `${nameSlug}_${vintage}` : nameSlug;
+  };
+
   const openInWinerim = () => {
-    window.open(buildWinerimWineUrl(wine), '_blank', 'noopener,noreferrer');
+    const slug = wine.slugname || generateSlug(wine.name, wine.vintage);
+    const storeBaseUrl = import.meta.env.VITE_WINERIM_STORE_URL || import.meta.env.VITE_WINERIM_APP_URL || 'https://winerim.wine';
+    const winerimUrl = `${storeBaseUrl.replace(/\/$/, '')}/matchrim/store/${wine.id}/${slug}`;
+    window.open(winerimUrl, '_blank', 'noopener,noreferrer');
   };
 
   const getMatchInfo = (percentage: number) => {
@@ -58,18 +76,6 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
   };
 
   const matchInfo = getMatchInfo(wine.matchPercentage);
-  const affinityInsights = buildAffinityInsights(profile, wine.tastingAttributes);
-  const tastingBars = wine.tastingAttributes
-    ? [
-        { label: 'Potencia', value: wine.tastingAttributes.power, color: 'bg-red-900' },
-        { label: 'Acidez', value: wine.tastingAttributes.acidity, color: 'bg-amber-500' },
-        { label: 'Fruta', value: wine.tastingAttributes.fruity, color: 'bg-purple-700' },
-        { label: 'Dulzor', value: wine.tastingAttributes.sweetness, color: 'bg-rose-400' },
-        { label: 'Tanino', value: wine.tastingAttributes.tannin, color: 'bg-stone-800' },
-      ]
-    : [];
-  const normalizeBarWidth = (value: number) => `${Math.max(0, Math.min(100, (Number(value) / 5) * 100))}%`;
-  const priceDisplay = getWinerimPriceDisplay(wine);
 
   return (
     <div
@@ -82,7 +88,7 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
       style={{ animationDelay: `${index * 100}ms` }}
     >
       {/* Wine Header */}
-      <div className="bg-red-950 px-6 py-4">
+      <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0">
             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden">
@@ -113,7 +119,7 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
       </div>
 
       {/* Compatibility Bar */}
-      <div className={`px-6 py-4 ${matchInfo.bgColor} border-b ${matchInfo.borderColor}`}>
+      <div className={`px-6 py-4 ${matchInfo.bgColor} border-b-2 ${matchInfo.borderColor}`}>
         <div className="flex items-center gap-3 mb-2">
           <TrendingUp className={`h-5 w-5 ${matchInfo.textColor}`} />
           <span className={`text-sm font-semibold ${matchInfo.textColor} uppercase tracking-wide`}>
@@ -129,22 +135,6 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
         <p className={`text-sm ${matchInfo.textColor} mt-2 font-medium`}>
           {wine.matchPercentage}% compatible con tu perfil sensorial
         </p>
-        {affinityInsights && (
-          <div className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
-            {affinityInsights.positiveText && (
-              <div className="rounded-md border border-green-100 bg-white/75 p-3 text-green-900">
-                <span className="font-semibold">Suma porque </span>
-                {affinityInsights.positiveText} están cerca de tu gusto.
-              </div>
-            )}
-            {affinityInsights.negativeText && (
-              <div className="rounded-md border border-amber-100 bg-white/75 p-3 text-amber-950">
-                <span className="font-semibold">No es perfecto porque </span>
-                {affinityInsights.negativeText}
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       {/* Wine Details */}
@@ -201,48 +191,42 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
           </div>
         )}
 
-        {priceDisplay && (
-          <div className="mt-4 flex items-start gap-3 rounded-lg border border-emerald-100 bg-gradient-to-r from-emerald-50 to-teal-50 p-4">
+        {wine.prices && wine.prices.length > 0 && (
+          <div className="mt-4 flex items-center gap-3 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border-l-4 border-emerald-400">
             <div className="text-2xl flex-shrink-0 w-8 text-center">💰</div>
             <div className="flex-1 text-left">
-              <div className="mb-2 flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
-                  Precio Winerim
-                </span>
-                <span className="rounded-full bg-white px-2 py-0.5 text-xs font-bold text-emerald-900 ring-1 ring-emerald-200">
-                  {priceDisplay.kindLabel}
-                </span>
+              <div className="text-xs font-semibold text-emerald-600 uppercase tracking-wide mb-1">Precio</div>
+              <div className="text-gray-800 font-bold text-lg">
+                {wine.prices[0].price} {formatCurrency(wine.prices[0].currency)}
               </div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Restaurante</p>
-                  <p className="text-lg font-bold text-gray-900">{priceDisplay.restaurantPrice}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Tienda online est.</p>
-                  <p className="text-lg font-bold text-gray-900">{priceDisplay.onlineEstimate}</p>
-                </div>
-              </div>
-              <p className="mt-2 text-xs leading-5 text-emerald-900">{priceDisplay.helper}</p>
             </div>
           </div>
         )}
 
-        {tastingBars.length > 0 && (
-          <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4">
-            <div className="mb-3 text-left text-xs font-semibold uppercase tracking-wide text-stone-500">Perfil sensorial del vino</div>
-            <div className="grid gap-2">
-              {tastingBars.map((attribute) => (
-                <div key={attribute.label} className="grid grid-cols-[5.25rem_1fr] items-center gap-3">
-                  <span className="text-xs font-semibold text-stone-600">{attribute.label}</span>
-                  <div className="h-2 overflow-hidden rounded-full bg-stone-200" aria-label={`${attribute.label}: ${attribute.value} de 5`}>
-                    <div
-                      className={`h-full rounded-full ${attribute.color}`}
-                      style={{ width: normalizeBarWidth(attribute.value) }}
-                    />
-                  </div>
-                </div>
-              ))}
+        {wine.tastingAttributes && (
+          <div className="mt-4 p-4 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg border-l-4 border-indigo-400">
+            <div className="text-xs font-semibold text-indigo-600 uppercase tracking-wide mb-3 text-left">Atributos de Cata</div>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Potencia:</span>
+                <span className="font-semibold text-gray-800">{wine.tastingAttributes.power}/5</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Acidez:</span>
+                <span className="font-semibold text-gray-800">{wine.tastingAttributes.acidity}/5</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Afrutado:</span>
+                <span className="font-semibold text-gray-800">{wine.tastingAttributes.fruity}/5</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Dulzor:</span>
+                <span className="font-semibold text-gray-800">{wine.tastingAttributes.sweetness}/5</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Taninos:</span>
+                <span className="font-semibold text-gray-800">{wine.tastingAttributes.tannin}/5</span>
+              </div>
             </div>
           </div>
         )}

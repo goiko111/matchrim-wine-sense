@@ -21,7 +21,6 @@ import {
   type MatchrimProfileLike,
 } from '@/utils/matchrimPassport';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
-import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
 import { AlertCircle, BookmarkPlus, CheckCircle, ExternalLink, Loader2, MapPin, ScanLine, Sparkles, Wine } from 'lucide-react';
@@ -89,7 +88,6 @@ const UseMatchrim = () => {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('mode') === 'scanner' ? 'scanner' : 'winerim';
   const [profile, setProfile] = useState<MatchrimProfileLike | null>(null);
-  const [codeProfile, setCodeProfile] = useState<MatchrimProfileLike | null>(null);
   const [learnedProfileInfo, setLearnedProfileInfo] = useState<LearnedProfileInfo | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [restaurantName, setRestaurantName] = useState('');
@@ -115,26 +113,15 @@ const UseMatchrim = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    let cancelled = false;
-
     const loadProfile = async () => {
+      setLoadingProfile(true);
       setLearnedProfileInfo(null);
 
       const sharedProfile = parseProfileVector(searchParams.get('v'));
       if (sharedProfile) {
         setProfile(sharedProfile);
-        setCodeProfile(sharedProfile);
         setLoadingProfile(false);
         return;
-      }
-
-      const localProfile = readMatchrimLocalProfile();
-      if (localProfile) {
-        setProfile(localProfile);
-        setCodeProfile(localProfile);
-        setLoadingProfile(false);
-      } else {
-        setLoadingProfile(true);
       }
 
       if (user) {
@@ -150,24 +137,10 @@ const UseMatchrim = () => {
           console.error('Error loading Matchrim profile:', error);
         }
 
-        if (cancelled) return;
-
         if (!data) {
-          if (!localProfile) {
-            setProfile(null);
-            setCodeProfile(null);
-          }
+          setProfile(null);
           setLoadingProfile(false);
           return;
-        }
-
-        setCodeProfile(data);
-        setProfile(data);
-        setLoadingProfile(false);
-        try {
-          localStorage.setItem('matchrim_quiz_result', JSON.stringify(data));
-        } catch {
-          // Local cache only accelerates future screens.
         }
 
         const { data: trainingWines, error: trainingError } = await supabase
@@ -178,12 +151,11 @@ const UseMatchrim = () => {
           .not('rating', 'is', null)
           .not('sensory_attributes', 'is', null);
 
-        if (cancelled) return;
-
         if (trainingError) {
           console.error('Error loading Matchrim training wines:', trainingError);
           setProfile(data);
           setLearnedProfileInfo(null);
+          setLoadingProfile(false);
           return;
         }
 
@@ -199,20 +171,16 @@ const UseMatchrim = () => {
           setLearnedProfileInfo(null);
         }
 
+        setLoadingProfile(false);
         return;
       }
 
-      if (!localProfile) {
-        setProfile(null);
-        setCodeProfile(null);
-      }
+      const savedResult = localStorage.getItem('matchrim_quiz_result');
+      setProfile(savedResult ? JSON.parse(savedResult) : null);
       setLoadingProfile(false);
     };
 
     loadProfile();
-    return () => {
-      cancelled = true;
-    };
   }, [user, searchParams]);
 
   useEffect(() => {
@@ -236,8 +204,8 @@ const UseMatchrim = () => {
   };
 
   const matchrimCode = useMemo(
-    () => codeProfile ? (searchParams.get('code') || generateMatchrimCode(codeProfile)) : '',
-    [codeProfile, searchParams]
+    () => profile ? (searchParams.get('code') || generateMatchrimCode(profile)) : '',
+    [profile, searchParams]
   );
 
   const winerimTypeOptions = useMemo(
@@ -485,7 +453,7 @@ const UseMatchrim = () => {
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-6">
             <MatchrimPassport
-              profile={codeProfile || profile}
+              profile={profile}
               codeOverride={matchrimCode}
               compact
               showUseAction={false}
@@ -497,7 +465,7 @@ const UseMatchrim = () => {
                 <Sparkles className="h-4 w-4" />
                 <AlertTitle>Perfil afinado con tus vinos</AlertTitle>
                 <AlertDescription>
-                  Tu código se mantiene estable. Las recomendaciones ya incorporan {learnedProfileInfo.samples} vino{learnedProfileInfo.samples !== 1 ? 's' : ''} puntuado{learnedProfileInfo.samples !== 1 ? 's' : ''}.
+                  Este código ya incorpora {learnedProfileInfo.samples} vino{learnedProfileInfo.samples !== 1 ? 's' : ''} puntuado{learnedProfileInfo.samples !== 1 ? 's' : ''}.
                   Confianza del ajuste: {learnedProfileInfo.confidence}%.
                 </AlertDescription>
               </Alert>
