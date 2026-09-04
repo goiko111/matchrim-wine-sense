@@ -32,7 +32,8 @@ errores.
 | Archive Release | PASS con Xcode 26.0.1 (17A400) / SDK iOS 26.0 |
 | Firma y validacion local del archive | PASS: `codesign --verify --deep --strict` |
 | Subida App Store Connect | PASS: `Upload succeeded` |
-| Estado TestFlight | `1.0 (62) - Procesando`, confirmado en App Store Connect |
+| Estado TestFlight | `1.0 (62) - Lista para enviar`, procesamiento completado |
+| Distribucion interna | Grupo `Testers Matchrim`, 1 tester con acceso |
 
 Identidad verificada del artefacto: `wine.matchrim.app`, version `1.0`, build
 `62`. La captura de simulador confirma safe area, home y barra inferior sin
@@ -57,10 +58,12 @@ conservando la identidad `wine.matchrim.app`, la version `1.0` y el build `62`.
 La exportacion App Store Connect uso firma automatica del equipo configurado,
 mantuvo el numero de build y completo la carga correctamente el 2026-09-04.
 
-App Store Connect confirmo posteriormente `1.0 (62) - Procesando` en TestFlight.
-Apple emitio un unico aviso no bloqueante: el deployment target actual es iOS
-14.0 y, a partir de primavera de 2027, las nuevas entregas deberan usar iOS 15.0
-o posterior. Se registra como mantenimiento futuro; no afecta a este beta.
+App Store Connect completo posteriormente el procesamiento y confirmo `1.0
+(62) - Lista para enviar` en TestFlight. La compilacion quedo asignada al grupo
+interno `Testers Matchrim`; todos sus miembros tienen acceso. Apple emitio un
+unico aviso no bloqueante: el deployment target actual es iOS 14.0 y, a partir
+de primavera de 2027, las nuevas entregas deberan usar iOS 15.0 o posterior. Se
+registra como mantenimiento futuro; no afecta a este beta.
 
 El beta 62 queda autorizado por el usuario sobre el backend real v3 actual. La
 certificacion v4 continua separada y bloqueada por la ausencia de
