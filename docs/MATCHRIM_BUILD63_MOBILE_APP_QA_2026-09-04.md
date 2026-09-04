@@ -45,6 +45,11 @@ documentado para el build 62.
 | Shell nativa | PASS: 430x932 y 932x430, sin menu superior, sin overflow y una barra inferior |
 | Dynamic Type XXL en simulador | PASS tras corregir solapamiento de la tarjeta Carta |
 | Xcode 26.0.1 / simulador iOS 26 | PASS, instalacion y lanzamiento del build 63 |
+| Archive Release | PASS |
+| Firma del archive | PASS: `codesign --verify --deep --strict` |
+| Carga App Store Connect | PASS: `Upload succeeded` |
+| Estado TestFlight | `1.0 (63) - Lista para enviar` |
+| Distribucion interna | Grupo `Testers Matchrim`, 1 tester con acceso |
 
 El reporte estructurado esta en
 `docs/qa-evidence/matchrim-build63-mobile-2026-09-04/ui-qa-results.json`.
@@ -67,8 +72,12 @@ Los logs reproducibles quedan en
 
 ## Gate de distribucion
 
-Identidad esperada: `wine.matchrim.app`, version `1.0`, build `63`. El archive
-de App Store y la subida a TestFlight solo se realizan despues de validar
-firma, version y contenido final del artefacto. El backend real v3 autorizado
-para el build 62 no cambia en este candidato; la certificacion v4 sigue siendo
-un carril separado.
+Identidad validada: `wine.matchrim.app`, version `1.0`, build `63`. El archive
+se genero con Xcode 26.0.1, se valido localmente y App Store Connect completo
+su procesamiento el 2026-09-04. El build esta `Lista para enviar` y asignado al
+grupo interno `Testers Matchrim`.
+
+Apple emitio el aviso no bloqueante ya conocido: el deployment target actual
+es iOS 14.0 y, a partir de primavera de 2027, las nuevas entregas deberan usar
+iOS 15.0 o posterior. El backend real v3 autorizado para el build 62 no cambia
+en este candidato; la certificacion v4 sigue siendo un carril separado.
