@@ -2,6 +2,10 @@
 
 Fecha: 2026-09-02
 
+Actualizacion de ejecucion: el estado posterior a este baseline, incluida la
+publicacion web del candidato integrado, queda registrado en
+`docs/MATCHRIM_RELEASE_EXECUTION_2026-09-04.md`.
+
 Rama de integración: `codex/matchrim-release-integration-20260902`
 
 Fuentes integradas:
