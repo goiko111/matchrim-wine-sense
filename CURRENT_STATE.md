@@ -10,6 +10,7 @@ Updated: 2026-09-28
 - Dependencies and CocoaPods now resolve from this repository rather than an older checkout.
 - No web or Supabase production deployment was performed.
 - App Store Connect accepted the TestFlight upload at 10:38 CEST (`Upload succeeded`); Apple processing was still in progress at the last verified state.
+- A readback was attempted again on 2026-09-28. App Store Connect redirected to `authResult=FAILED` before exposing the app list, so processing/tester availability remains unverified rather than assumed complete.
 
 ## Product delivered
 
@@ -69,6 +70,25 @@ The first run exposed unsupported recommendation-confidence percentages such as 
 
 Runtime preflight returned HTTP 200 for `detect-wine-regions`, `analyze-wine-region`, `scan-wine-menu`, `ai-wine-chat` and `matchrim-recommendations`. The recommendation runtime returned 12 home and 30 detail candidates. Supabase management access still returns 403, so deployed function versions were not changed or falsely certified.
 
+## Canonical recognition gate
+
+The real-backend matrix is now separated from controlled UI fixtures in
+`docs/MATCHRIM_RECOGNITION_MATRIX_2026-09-28.md`.
+
+| Category | Precision | Recall | State |
+| --- | ---: | ---: | --- |
+| Single label, 11 independent scenes | 0.7692 | 0.9091 | FAIL precision |
+| Multi-label, 6 independent scenes (4 identity-evaluable) | 0.5714 | 0.8889 | FAIL; two scenes are count/grounding only |
+| Supplied printed wine lists, 2 scenes | 1.0000 | 0.7083 | FAIL recall |
+| Supplied dense boards, 2 scenes | 1.0000 | 1.0000 | PASS limited |
+| Real photographed food menu, 1 scene | 1.0000 grounded results | 0.2407 | FAIL recall/segmentation |
+
+The food-menu runtime returned HTTP 200 in `22.907 s`, with 13 of 54 visible dish
+names covered in eight result cards and no ungrounded card. One result incorrectly
+merged six desserts. The deployed runtime identifies itself as
+`scan-food-pairing-2026-06-30-client-profile-v1`. No account or production write was
+used.
+
 ## Evidence
 
 - `qa-artifacts/2026-09-28-learning-airim/native-simulator-home.png`
@@ -81,6 +101,8 @@ Runtime preflight returned HTTP 200 for `detect-wine-regions`, `analyze-wine-reg
 - `qa-artifacts/2026-09-28-build64-testflight/Matchrim-64-final.xcarchive`
 - `qa-artifacts/2026-09-28-build64-testflight/xcodebuild-archive-final.log`
 - `qa-artifacts/2026-09-28-build64-testflight/xcodebuild-upload.log`
+- `docs/MATCHRIM_RECOGNITION_MATRIX_2026-09-28.md`
+- `docs/qa-evidence/matchrim-build64-recognition-2026-09-28/food-menu-real-backend.json`
 
 The simulator provides the reproducible visual gate. The physical-device gate covers signing, final installation, launch and a live process. Camera/gallery permissions and capture remain covered by the simulator/UI automation matrix; a human pass on the physical camera remains recommended while Apple processes the beta.
 

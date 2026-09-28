@@ -1,0 +1,440 @@
+{
+  "dataset_id": "matchrim-food-menu-real-v1",
+  "scene_id": "commons-restaurant-menu-2026-08-25",
+  "evaluated_at": "2026-09-28T09:17:43Z",
+  "provider_run_at": "2026-09-28T09:17:17Z",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Restaurant_Menu_25.08.2026.jpg",
+  "license": "CC0 1.0",
+  "interception": false,
+  "production_write": false,
+  "runtime": "real_supabase_edge_function",
+  "http_status": 200,
+  "latency_ms": 22907,
+  "image_sha256": "9980c5e6b9d5e52f1783e2f26d1a97e22c0c2e1556e9e72919dd26fc34ece9a9",
+  "expected_count": 54,
+  "actual_count": 8,
+  "grounded_actual_count": 8,
+  "matched_count": 13,
+  "precision": 1.0,
+  "recall": 0.2407,
+  "matched_expected": [
+    "Gunun Corbasi",
+    "Zeytinyagli Yaprak Sarma",
+    "Icli Kofte",
+    "Peynirli El Acmasi",
+    "Kiymali Su Boregi",
+    "Mas Fasulye",
+    "Magnolya",
+    "Mozaik Pasta",
+    "Kabak Tatlisi",
+    "Sutlac",
+    "Pannacotta",
+    "Supangle",
+    "Cevizli Ev Baklavasi"
+  ],
+  "missed": [
+    "Sebze Bakliyat Menusu",
+    "Tavuklu Menu",
+    "Kiymali Menu",
+    "Kusbasili Menu",
+    "Lahana Sarmasi",
+    "Kuru Patlican Biber Dolmasi",
+    "Ev Mantisi",
+    "Biberli Ekmek",
+    "Gul Boregi Cesitleri",
+    "Ispanakli Peynirli Patatesli",
+    "Ispanakli El Acmasi",
+    "Peynirli Su Boregi",
+    "Bugday",
+    "Mercimek",
+    "Rus",
+    "Sehriye",
+    "Pancar",
+    "Patates",
+    "Hatay Kisiri",
+    "Elmali Kurabiye",
+    "Islak Kurabiye",
+    "Atom Kurabiye",
+    "Kavala Kurabiyesi",
+    "Hatay Kombesi",
+    "Acibadem Kurabiye",
+    "Hatay Tas Kadayif",
+    "Donut",
+    "Kek Cesitleri",
+    "Tiramisu",
+    "Islak Kek",
+    "Trilece",
+    "Ayva Tatlisi",
+    "Aglayan Pasta",
+    "Kibris Tatlisi",
+    "Revani",
+    "Sambali Tatlisi",
+    "Kadayifli Muhallebi",
+    "Kumlu Pasta",
+    "Armut Tatlisi",
+    "Boton Kek",
+    "Cheesecake"
+  ],
+  "false_positives": [],
+  "merged_result_count": 1,
+  "merged_results": [
+    {
+      "actual": "Magnolya/Mozaik Pasta/Kabak Tatlısı/Sütlaç/Pannacotta/Supangle",
+      "matched_expected": [
+        "Magnolya",
+        "Mozaik Pasta",
+        "Kabak Tatlisi",
+        "Sutlac",
+        "Pannacotta",
+        "Supangle"
+      ]
+    }
+  ],
+  "actual_dishes": [
+    "Günün Çorbası - Tam",
+    "Zeytinyağlı Yaprak Sarma (10 Adet)",
+    "İçli Köfte (Kızartılmış)",
+    "Kıymalı Su Böreği (2 Adet)",
+    "Peynirli El Açması",
+    "Maş Fasulye (Salata)",
+    "Magnolya/Mozaik Pasta/Kabak Tatlısı/Sütlaç/Pannacotta/Supangle",
+    "Cevizli Ev Baklavası (4 Dilim)"
+  ],
+  "scan_version": "scan-food-pairing-2026-06-30-client-profile-v1",
+  "profile_source": "client",
+  "contract_limit": 8,
+  "certified": false,
+  "response": {
+    "mode": "menu",
+    "summary": "El menú presenta una rica variedad de la cocina de Hatay, con fuertes influencias mediterráneas y de Oriente Medio. Se observan muchos platos a base de carne, rellenos, panes y dulces, lo que sugiere sabores intensos, aromáticos y texturas diversas. El perfil del usuario es equilibrado, con una ligera preferencia por sabores menos dulces y potencia y taninos medios, lo cual se alinea bien con la versatilidad de la cocina turca. Se priorizan platos que ofrecen complejidad sin ser excesivamente pesados, y se buscan maridajes que complementen las especias y las hierbas típicas.",
+    "dishes": [
+      {
+        "nombre": "Günün Çorbası - Tam",
+        "categoria": "entrante",
+        "match": 85,
+        "razon": "Una sopa robusta es un excelente comienzo, y su perfil equilibrado permite un maridaje flexible, preparando el paladar sin saturarlo. La naturaleza de la sopa de Hatay suele ser sabrosa y con cuerpo.",
+        "recomendaciones": [
+          {
+            "nombre": "Narince",
+            "tipo": "Blanco",
+            "uvas": [
+              "Narince"
+            ],
+            "match": 90,
+            "razon": "Un blanco turco con buena acidez y notas cítricas/minerales que refresca y complementa la riqueza de la sopa sin dominarla. Su estructura media es perfecta para el usuario.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            }
+          },
+          {
+            "nombre": "Doluca Antik Beyaz",
+            "tipo": "Blanco",
+            "uvas": [
+              "Emir",
+              "Narince"
+            ],
+            "match": 88,
+            "razon": "Un blend que ofrece frescura, acidez equilibrada y una ligera complejidad aromática, ideal para realzar los matices de una sopa casera sin ser invasivo.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            }
+          }
+        ]
+      },
+      {
+        "nombre": "Zeytinyağlı Yaprak Sarma (10 Adet)",
+        "categoria": "entrante",
+        "match": 90,
+        "razon": "Este plato vegetariano a base de arroz y hierbas, cocinado en aceite de oliva, es aromático, ligeramente ácido y ofrece una textura interesante. Su frescura y complejidad herbal se adaptan muy bien al perfil afrutado y con acidez media del usuario.",
+        "recomendaciones": [
+          {
+            "nombre": "Öküzgözü Rosé",
+            "tipo": "Rosado",
+            "uvas": [
+              "Öküzgözü"
+            ],
+            "match": 92,
+            "razon": "Un rosado vibrante de Turquía, con buena acidez, notas de frutos rojos y un toque especiado que armoniza con las hierbas y el toque cítrico del sarma. Es refrescante y de potencia media.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4
+            }
+          },
+          {
+            "nombre": "Sauvignon Blanc",
+            "tipo": "Blanco",
+            "uvas": [
+              "Sauvignon Blanc"
+            ],
+            "match": 89,
+            "razon": "Sus notas herbáceas, cítricas y buena acidez se alinean perfectamente con los sabores del dolma de hojas de parra, creando un maridaje refrescante y equilibrado.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            }
+          }
+        ]
+      },
+      {
+        "nombre": "İçli Köfte (Kızartılmış)",
+        "categoria": "entrante",
+        "match": 88,
+        "razon": "Las içli köfte fritas ofrecen una combinación de carne especiada y trigo bulgur, con una textura crujiente por fuera y jugosa por dentro. Su sabor intenso y especiado requiere un vino con cuerpo y estructura para complementarlo.",
+        "recomendaciones": [
+          {
+            "nombre": "Kalecik Karası",
+            "tipo": "Tinto",
+            "uvas": [
+              "Kalecik Karası"
+            ],
+            "match": 91,
+            "razon": "Un tinto turco de cuerpo medio, con buena acidez y taninos suaves, y notas de cereza y especias que complementan la carne y el bulgur sin abrumar. Su frescura limpia el paladar.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 2,
+              "afrutado": 4
+            }
+          },
+          {
+            "nombre": "Pinot Noir",
+            "tipo": "Tinto",
+            "uvas": [
+              "Pinot Noir"
+            ],
+            "match": 87,
+            "razon": "Un Pinot Noir ligero a medio, con su delicada fruta roja, notas terrosas y acidez, puede equilibrar la riqueza de las içli köfte sin competir con sus especias.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 2,
+              "afrutado": 3
+            }
+          }
+        ]
+      },
+      {
+        "nombre": "Kıymalı Su Böreği (2 Adet)",
+        "categoria": "principal",
+        "match": 85,
+        "razon": "Un plato contundente de pasta filo con carne picada, horneado hasta dorar. Rico, sabroso y con una textura jugosa, ideal para un perfil que busca algo sustancioso pero no excesivamente potente.",
+        "recomendaciones": [
+          {
+            "nombre": "Boğazkere-Öküzgözü Blend",
+            "tipo": "Tinto",
+            "uvas": [
+              "Boğazkere",
+              "Öküzgözü"
+            ],
+            "match": 90,
+            "razon": "Un blend turco que combina la estructura de Boğazkere con la fruta de Öküzgözü. Ofrece taninos suaves, buena acidez y un perfil de frutos negros y especias que marida muy bien con la carne del börek.",
+            "atributos": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 3,
+              "afrutado": 4
+            }
+          },
+          {
+            "nombre": "Merlot",
+            "tipo": "Tinto",
+            "uvas": [
+              "Merlot"
+            ],
+            "match": 88,
+            "razon": "Un Merlot de cuerpo medio, con sus taninos suaves, notas de ciruela y un toque especiado, complementaría la riqueza de la carne sin ser demasiado dominante, manteniendo la armonía con la masa hojaldrada.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 2,
+              "dulzura": 2,
+              "taninos": 3,
+              "afrutado": 4
+            }
+          }
+        ]
+      },
+      {
+        "nombre": "Peynirli El Açması",
+        "categoria": "principal",
+        "match": 89,
+        "razon": "Este tipo de börek relleno de queso es cremoso, salado y tiene una capa crujiente. Es un plato reconfortante que puede maridar bien con vinos frescos y con buena acidez que corten la grasa del queso.",
+        "recomendaciones": [
+          {
+            "nombre": "Emir",
+            "tipo": "Blanco",
+            "uvas": [
+              "Emir"
+            ],
+            "match": 92,
+            "razon": "Un vino blanco turco de alta acidez, notas cítricas y minerales, ideal para limpiar el paladar de la riqueza del queso y el hojaldre. Su frescura potencia los sabores salados.",
+            "atributos": {
+              "potencia": 2,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 2
+            }
+          },
+          {
+            "nombre": "Grüner Veltliner",
+            "tipo": "Blanco",
+            "uvas": [
+              "Grüner Veltliner"
+            ],
+            "match": 89,
+            "razon": "Con su acidez vibrante, notas de pimienta blanca y cítricos, este blanco es un excelente contrapunto para platos de queso, ofreciendo un contraste refrescante que realza el sabor del börek.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            }
+          }
+        ]
+      },
+      {
+        "nombre": "Maş Fasulye (Salata)",
+        "categoria": "ensalada",
+        "match": 80,
+        "razon": "Una ensalada de frijol mungo suele ser fresca, ligeramente terrosa y con un toque de acidez. Es un acompañamiento ligero que encaja con un perfil equilibrado que busca frescura.",
+        "recomendaciones": [
+          {
+            "nombre": "Yapıncak",
+            "tipo": "Blanco",
+            "uvas": [
+              "Yapıncak"
+            ],
+            "match": 88,
+            "razon": "Un blanco turco con buena acidez, notas de hierbas y un perfil ligero, ideal para ensaladas frescas. No opaca los sabores, sino que los realza con su vivacidad.",
+            "atributos": {
+              "potencia": 2,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 2
+            }
+          },
+          {
+            "nombre": "Verdejo",
+            "tipo": "Blanco",
+            "uvas": [
+              "Verdejo"
+            ],
+            "match": 85,
+            "razon": "Con sus notas herbáceas, toques amargos y buena acidez, el Verdejo es un compañero excelente para ensaladas con legumbres y vegetales verdes, aportando complejidad sin pesadez.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            }
+          }
+        ]
+      },
+      {
+        "nombre": "Magnolya/Mozaik Pasta/Kabak Tatlısı/Sütlaç/Pannacotta/Supangle",
+        "categoria": "postre",
+        "match": 75,
+        "razon": "Esta selección de postres lácteos y de calabaza ofrece una gama de texturas cremosas y dulzura moderada, más allá de los postres muy azucarados como baklava. Son opciones más ligeras que se alinean con la preferencia de menor dulzura del usuario, aunque siguen siendo postres.",
+        "recomendaciones": [
+          {
+            "nombre": "Vino de postre ligero (late harvest)",
+            "tipo": "Blanco dulce",
+            "uvas": [
+              "Muscat",
+              "Riesling"
+            ],
+            "match": 80,
+            "razon": "Un vino de postre con dulzura equilibrada y buena acidez que puede complementar la cremosidad de la Magnolya o Sütlaç sin ser empalagoso. El perfil de Moscatel o Riesling con su frescura es ideal.",
+            "atributos": {
+              "potencia": 3,
+              "acidez": 3,
+              "dulzura": 4,
+              "taninos": 1,
+              "afrutado": 4
+            }
+          },
+          {
+            "nombre": "Prosecco Extra Dry",
+            "tipo": "Espumoso",
+            "uvas": [
+              "Glera"
+            ],
+            "match": 78,
+            "razon": "La burbuja y la ligera dulzura de un Prosecco Extra Dry pueden limpiar el paladar y ofrecer un contraste refrescante con la riqueza de los postres cremosos. Es una opción divertida y menos formal.",
+            "atributos": {
+              "potencia": 2,
+              "acidez": 3,
+              "dulzura": 3,
+              "taninos": 1,
+              "afrutado": 3
+            }
+          }
+        ]
+      },
+      {
+        "nombre": "Cevizli Ev Baklavası (4 Dilim)",
+        "categoria": "postre",
+        "match": 65,
+        "razon": "Aunque el perfil del usuario tiende a una menor dulzura, la baklava es un clásico ineludible. Elegir una porción moderada puede permitir disfrutar de este postre icónico, rico en nueces y sirope, como una indulgencia puntual.",
+        "recomendaciones": [
+          {
+            "nombre": "Tokaji Aszú (3 Puttonyos)",
+            "tipo": "Blanco dulce",
+            "uvas": [
+              "Furmint",
+              "Hárslevelű"
+            ],
+            "match": 70,
+            "razon": "La acidez brillante de un Tokaji Aszú corta la riqueza de la baklava, mientras que su dulzura y complejidad aromática (miel, frutos secos) complementan el sirope y las nueces. Es un maridaje clásico para postres muy dulces.",
+            "atributos": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 5,
+              "taninos": 1,
+              "afrutado": 4
+            }
+          },
+          {
+            "nombre": "Moscato d'Asti",
+            "tipo": "Espumoso dulce",
+            "uvas": [
+              "Moscato Bianco"
+            ],
+            "match": 68,
+            "razon": "Un Moscato d'Asti ligero, afrutado y con un dulce moderado ofrece una experiencia refrescante con baja graduación alcohólica que puede equilibrar la intensidad de la baklava sin abrumar. Sus burbujas limpian el paladar.",
+            "atributos": {
+              "potencia": 2,
+              "acidez": 3,
+              "dulzura": 4,
+              "taninos": 1,
+              "afrutado": 4
+            }
+          }
+        ]
+      }
+    ],
+    "has_profile": true,
+    "profile_source": "client",
+    "scan_version": "scan-food-pairing-2026-06-30-client-profile-v1"
+  }
+}
