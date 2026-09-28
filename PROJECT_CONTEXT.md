@@ -19,8 +19,13 @@ Cellar administration and Winerim backoffice work remain outside this product. T
 - React/Vite client packaged with Capacitor for iOS.
 - Supabase Auth, database and Edge Functions.
 - User learning is derived only from the authenticated user's quiz profile and explicit ratings in `user_wines`.
-- Recommendations exclude already saved wines and display learning confidence and sample count.
+- Recommendations exclude already saved wines and display learning confidence and sample count. Identity comparison uses name plus producer and, when both sides provide it, vintage; saving one vintage does not hide another.
+- Saved-wine state is bound to the active account before recommendations run, preventing a session switch from briefly reusing another user's cellar state.
 - aiRIM is a decision surface over the same profile, scan, comparison and recommendation capabilities. It is not a decorative avatar and does not claim memory when no authenticated evidence exists.
+
+## QA data boundary
+
+Persona and navigation regressions use deterministic local fixtures and intercepted network responses. They never create production users or write ratings, saved wines or scan results. Real authenticated behavior remains a separate staging/physical-device gate.
 
 ## Historical baseline
 

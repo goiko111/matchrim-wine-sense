@@ -37,3 +37,11 @@ It grounded all eight result cards but covered only 13/54 visible dish names and
 six desserts, so food-menu recognition is not certified. Single-label and multi-label
 independent metrics also remain below the 0.90 precision gate. No backend deploy or
 build 65 is justified until those defects are corrected and rerun in staging.
+
+## 2026-09-28: saved recommendations never recycle silently
+
+If every returned recommendation is already in Bodega, Inicio shows an exhausted state and links to Bodega instead of reintroducing saved wines. Identity requires the same normalized name, rejects conflicting producers and rejects conflicting vintages when both are known. Missing producer or vintage remains a conservative wildcard; one explicitly different vintage stays eligible.
+
+## 2026-09-28: personalization state belongs to one active account
+
+Recommendation calculation waits until loaded saved-wine state identifies the current user, or the explicit anonymous scope. A session transition cannot calculate against the previous account's cellar. Reproducible QA uses synthetic in-memory personas and intercepted responses only; authenticated staging, TestFlight processing and physical-camera validation stay separate external gates.

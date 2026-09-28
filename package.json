@@ -15,6 +15,7 @@
     "qa:ground-truth:e2e": "python3 scripts/qa-matchrim-ground-truth.py",
     "qa:ground-truth:independent:build": "python3 scripts/build-matchrim-independent-ground-truth.py",
     "qa:detection:replay": "tsx scripts/replay-matchrim-detection-normalization.ts",
+    "qa:personalization": "tsx scripts/check-matchrim-personas.ts && node scripts/qa-matchrim-personalization-gates.cjs",
     "cap:sync": "npm run build && npx cap sync",
     "android:bundle": "npm run build && npx cap sync android && cd android && ./gradlew bundleRelease",
     "android:apk": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease",

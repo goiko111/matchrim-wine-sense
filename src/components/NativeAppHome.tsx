@@ -42,6 +42,7 @@ interface NativeAppHomeProps {
   recommendations?: WinerimWineWithMatch[];
   loadingRecommendations?: boolean;
   recommendationsUnavailable?: boolean;
+  recommendationsExhausted?: boolean;
 }
 
 const scanTypeLabels: Record<ScanHistoryItem['type'], string> = {
@@ -69,6 +70,7 @@ const NativeAppHome = ({
   recommendations = [],
   loadingRecommendations = false,
   recommendationsUnavailable = false,
+  recommendationsExhausted = false,
 }: NativeAppHomeProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -291,7 +293,11 @@ const NativeAppHome = ({
             ) : (
               <button
                 type="button"
-                onClick={() => navigate('/usar-matchrim')}
+                onClick={() => navigate(
+                  recommendationsExhausted
+                    ? (user ? '/my-wines' : buildAuthRedirectPath('/my-wines'))
+                    : '/usar-matchrim',
+                )}
                 className="matchrim-pressable mt-3 flex min-h-20 w-full items-center gap-3 border-y border-slate-200 py-3 text-left"
               >
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-700">
@@ -300,6 +306,8 @@ const NativeAppHome = ({
                 <span className="min-w-0 flex-1 text-sm leading-5 text-slate-600">
                   {recommendationsUnavailable
                     ? 'No pude actualizar el catálogo. Puedes reintentarlo desde tus recomendaciones.'
+                    : recommendationsExhausted
+                      ? 'Ya tienes guardadas las recomendaciones disponibles. Revísalas en tu bodega mientras ampliamos opciones.'
                     : 'Explora vinos compatibles con tu perfil Matchrim.'}
                 </span>
                 <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />

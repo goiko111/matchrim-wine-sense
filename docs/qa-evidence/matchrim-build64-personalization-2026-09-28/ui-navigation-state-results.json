@@ -1,0 +1,26 @@
+{
+  "fixtureScope": "synthetic intercepted QA only; no real accounts or production writes",
+  "allPassed": true,
+  "cases": [
+    {
+      "case": "home_scan_airim_separation",
+      "actual": "PASS: three distinct routes, active tabs and explicit photo boundary"
+    },
+    {
+      "case": "recommendations_empty",
+      "actual": "PASS: empty catalog stays distinct from service failure"
+    },
+    {
+      "case": "recommendations_error",
+      "actual": "PASS: recoverable service message shown without empty-state ambiguity"
+    },
+    {
+      "case": "airim_error_preserves_question",
+      "actual": "PASS: sent question remains visible and is restored for retry"
+    }
+  ],
+  "expectedConsoleErrors": [
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "Error loading personalized home recommendations: Error: Matchrim recommendations proxy responded 503: {\"error\":\"synthetic QA outage\"}\n    at V (http://127.0.0.1:4173/assets/winerimApi-DR23zSs6.js:1:6023)\n    at async q (http://127.0.0.1:4173/assets/winerimApi-DR23zSs6.js:1:6765)"
+  ]
+}

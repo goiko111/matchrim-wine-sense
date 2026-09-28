@@ -11,12 +11,14 @@ Updated: 2026-09-28
 - No web or Supabase production deployment was performed.
 - App Store Connect accepted the TestFlight upload at 10:38 CEST (`Upload succeeded`); Apple processing was still in progress at the last verified state.
 - A readback was attempted again on 2026-09-28. App Store Connect redirected to `authResult=FAILED` before exposing the app list, so processing/tester availability remains unverified rather than assumed complete.
+- The saved-wine and state-consistency fixes described below are a local post-upload delta. They are not part of the already uploaded build 64 and no replacement binary was uploaded in this pass.
 
 ## Product delivered
 
 - Native bottom navigation: Inicio, aiRIM, Escanear, Bodega and Perfil.
 - Inicio and Escanear are separate surfaces.
-- Inicio shows three Winerim recommendations personalized with the learned profile and excludes wines already saved by the user.
+- Inicio shows up to three Winerim recommendations personalized with the learned profile. The local delta now excludes every saved identity without falling back to already saved wines, preserves a different vintage, and waits for cellar state owned by the active account.
+- When all returned candidates are already saved, Inicio explains that state and opens Bodega; an empty catalog and a service failure retain distinct messages.
 - aiRIM is prominent from Inicio and the persistent navigation, exposes its memory state and supports direct or guided decision flows.
 - Bodega `wine-fit` and `similar-wine` intents now open a traceable contextual question instead of a broken route.
 - Existing multi-label, menu/board, comparison and explainable-affinity work is preserved.
@@ -25,13 +27,13 @@ Updated: 2026-09-28
 
 The QA personas are deterministic in-memory fixtures. They do not create accounts or write production data.
 
-| Persona | Before learning | After learning | Score | Samples | Confidence |
-| --- | --- | --- | ---: | ---: | ---: |
-| explorador-atlantico | blanco-redondo | rias-baixas-atlantico | 83 | 7 | 58 |
-| clasico-estructurado | blanco-redondo | rioja-reserva-clasico | 81 | 3 | 25 |
-| principiante-frutal | blanco-redondo | tinto-frutal-ligero | 85 | 3 | 25 |
+| Persona | Before learning | After learning | Score | Samples | Confidence | Next after saving top |
+| --- | --- | --- | ---: | ---: | ---: | --- |
+| explorador-atlantico | blanco-redondo | rias-baixas-atlantico | 83 | 7 | 58 | tinto-frutal-ligero |
+| clasico-estructurado | blanco-redondo | rioja-reserva-clasico | 81 | 3 | 25 | blanco-redondo |
+| principiante-frutal | blanco-redondo | tinto-frutal-ligero | 85 | 3 | 25 | blanco-redondo |
 
-All three profiles persist their own learned order after serialization, and the isolation assertion prevents one persona from inheriting another's recommendation order. Database RLS independently restricts `quiz_results` and `user_wines` by `auth.uid() = user_id`.
+All three profiles persist their own learned order and saved-wine exclusion after serialization. Assertions prevent one persona from inheriting another's order, verify that a saved 2020 does not hide 2021, and require a fully saved candidate set to return an explicit exhausted state. Database RLS independently restricts `quiz_results` and `user_wines` by `auth.uid() = user_id`.
 
 ## Real aiRIM response audit
 
@@ -54,6 +56,7 @@ The first run exposed unsupported recommendation-confidence percentages such as 
 | ESLint | PASS with 107 existing warnings and 0 errors |
 | Production web build | PASS, 3,598 modules |
 | Home and aiRIM Playwright | PASS 8/8 |
+| Focused personalization/navigation Playwright | PASS 4/4: route separation, empty state, error state, aiRIM retry |
 | Multi-label/menu mobile Playwright | PASS 27/27 |
 | Portrait, landscape, Dynamic Type 125% | PASS |
 | Basic accessible names and 44 px targets | PASS |
@@ -65,6 +68,8 @@ The first run exposed unsupported recommendation-confidence percentages such as 
 | Release archive identity and signature | PASS: `wine.matchrim.app`, 1.0 (64), exact web-bundle hash |
 | App Store Connect upload | PASS: `Uploaded App` / `Upload succeeded` |
 | TestFlight processing | In progress; browser session unavailable for the later readback |
+
+The focused local rerun also passed TypeScript, targeted ESLint and a production Vite build (3,600 modules). Its synthetic 503s are expected error-state fixtures, not observed service incidents.
 
 ## Backend observation
 
@@ -103,6 +108,8 @@ used.
 - `qa-artifacts/2026-09-28-build64-testflight/xcodebuild-upload.log`
 - `docs/MATCHRIM_RECOGNITION_MATRIX_2026-09-28.md`
 - `docs/qa-evidence/matchrim-build64-recognition-2026-09-28/food-menu-real-backend.json`
+- `docs/qa-evidence/matchrim-build64-personalization-2026-09-28/persona-simulation.json`
+- `docs/qa-evidence/matchrim-build64-personalization-2026-09-28/ui-navigation-state-results.json`
 
 The simulator provides the reproducible visual gate. The physical-device gate covers signing, final installation, launch and a live process. Camera/gallery permissions and capture remain covered by the simulator/UI automation matrix; a human pass on the physical camera remains recommended while Apple processes the beta.
 

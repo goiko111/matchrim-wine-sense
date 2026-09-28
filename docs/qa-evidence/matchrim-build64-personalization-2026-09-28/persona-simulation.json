@@ -1,0 +1,41 @@
+{
+  "fixtureScope": "synthetic QA only; no production users, ratings or saved wines were read or written",
+  "allPassed": true,
+  "personas": [
+    {
+      "persona": "explorador-atlantico",
+      "before": "blanco-redondo",
+      "after": "rias-baixas-atlantico",
+      "afterScore": 83,
+      "samples": 7,
+      "confidence": 58,
+      "savedWine": "rias-baixas-atlantico",
+      "nextAfterSaved": "tinto-frutal-ligero"
+    },
+    {
+      "persona": "clasico-estructurado",
+      "before": "blanco-redondo",
+      "after": "rioja-reserva-clasico",
+      "afterScore": 81,
+      "samples": 3,
+      "confidence": 25,
+      "savedWine": "rioja-reserva-clasico",
+      "nextAfterSaved": "blanco-redondo"
+    },
+    {
+      "persona": "principiante-frutal",
+      "before": "blanco-redondo",
+      "after": "tinto-frutal-ligero",
+      "afterScore": 85,
+      "samples": 3,
+      "confidence": 25,
+      "savedWine": "tinto-frutal-ligero",
+      "nextAfterSaved": "blanco-redondo"
+    }
+  ],
+  "identityChecks": {
+    "differentVintageRemainsEligible": true,
+    "fullySavedCatalogReturnsEmpty": true,
+    "exhaustedStateVisible": true
+  }
+}
