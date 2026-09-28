@@ -318,69 +318,75 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 to-red-100 px-4 py-6">
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
-        <Button
-          variant="ghost"
-          size="sm"
+    <main className="matchrim-native-safe-x mx-auto min-h-screen w-full max-w-2xl pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
           onClick={onBack}
-          className="text-red-700 hover:bg-red-100"
+          className="matchrim-pressable flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm"
+          aria-label="Volver a aiRIM"
         >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-            <IconComponent className="h-4 w-4 text-red-800" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-red-900">{config.title}</h1>
-          </div>
+          <ArrowLeft className="h-5 w-5" />
+        </button>
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-900">
+          <IconComponent className="h-5 w-5" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-red-800">aiRIM</p>
+          <h1 className="text-xl font-bold leading-tight text-slate-950">{config.title}</h1>
         </div>
       </div>
 
-      {/* Input Form */}
-      <div className="max-w-md mx-auto space-y-4 mb-6">
+      <section className="mt-7 space-y-4" aria-label="Datos para la recomendación">
         {profileContext && (
-          <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-white/80 p-3 text-sm text-red-900">
-            <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-red-700" />
-            <p>Responderé ajustando el maridaje a tu Matchrim activo.</p>
+          <div className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-700 shadow-sm">
+            <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-red-800" />
+            <p>Usaré tu perfil Matchrim activo y señalaré cualquier dato que falte.</p>
           </div>
         )}
 
-        <div className="flex flex-wrap gap-2">
+        <div>
+          <p className="mb-2 text-xs font-semibold uppercase text-slate-500">Prueba con</p>
+          <div className="flex flex-wrap gap-2">
           {config.examples.map((example) => (
             <Button
               key={example.label}
               type="button"
               variant="outline"
               size="sm"
-              className="border-red-200 bg-white text-red-800 hover:bg-red-50"
+              className="matchrim-pressable min-h-10 border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
               onClick={() => applyExample(example)}
               disabled={isLoading}
             >
               {example.label}
             </Button>
           ))}
+          </div>
         </div>
 
-        <div>
+        <div className="space-y-2">
+          <label htmlFor="airim-guided-input-1" className="text-sm font-semibold text-slate-800">
+            {functionType === 'wine-for-dish' ? 'Plato' : functionType === 'dish-for-wine' ? 'Vino' : 'Vino'}
+          </label>
           <Input
+            id="airim-guided-input-1"
             value={input1}
             onChange={(e) => setInput1(e.target.value)}
             placeholder={config.placeholder1}
-            className="w-full p-4 text-base border-red-200 focus:border-red-500"
+            className="h-14 w-full rounded-lg border-slate-200 bg-white px-4 text-base shadow-sm focus-visible:ring-red-800"
             disabled={isLoading}
           />
         </div>
 
         {config.showSecondInput && (
-          <div>
+          <div className="space-y-2">
+            <label htmlFor="airim-guided-input-2" className="text-sm font-semibold text-slate-800">Plato</label>
             <Input
+              id="airim-guided-input-2"
               value={input2}
               onChange={(e) => setInput2(e.target.value)}
               placeholder={config.placeholder2}
-              className="w-full p-4 text-base border-red-200 focus:border-red-500"
+              className="h-14 w-full rounded-lg border-slate-200 bg-white px-4 text-base shadow-sm focus-visible:ring-red-800"
               disabled={isLoading}
             />
           </div>
@@ -390,7 +396,7 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           <Button
             onClick={handleSubmit}
             disabled={isLoading || !input1.trim() || (config.showSecondInput && !input2.trim())}
-            className="flex-1 py-3 bg-red-900 hover:bg-red-800 text-white"
+            className="matchrim-pressable min-h-12 flex-1 bg-red-900 text-white hover:bg-red-950"
           >
             {isLoading ? (
               <>
@@ -408,17 +414,16 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
             <Button
               onClick={handleClear}
               variant="outline"
-              className="border-red-200 text-red-700 hover:bg-red-50"
+              className="matchrim-pressable min-h-12 border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
             >
               Nuevo
             </Button>
           )}
         </div>
-      </div>
+      </section>
 
-      {/* Result */}
       {result && (
-        <div className="max-w-md mx-auto space-y-4">
+        <section className="mt-7 space-y-4" aria-label="Recomendación de aiRIM">
           {functionType === 'pairing-check' ? (
             <PairingAnalysisCard response={result} />
           ) : functionType === 'dish-for-wine' ? (
@@ -426,20 +431,19 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           ) : (
             <WineRecommendationCard response={result} functionType={functionType} />
           )}
-        </div>
+        </section>
       )}
 
-      {/* Loading state */}
       {isLoading && !result && (
-        <div className="max-w-md mx-auto">
-          <div className="p-8 text-center bg-white rounded-lg border border-red-200 shadow-sm">
-            <Loader className="h-8 w-8 animate-spin mx-auto mb-4 text-red-700" />
-            <p className="text-red-600 font-medium">Winerim está analizando...</p>
-            <p className="text-red-500 text-sm mt-2">Un momento, por favor</p>
+        <section className="mt-7" aria-live="polite">
+          <div className="rounded-lg border border-slate-200 bg-white p-8 text-center shadow-sm">
+            <Loader className="mx-auto mb-4 h-8 w-8 animate-spin text-red-800" />
+            <p className="font-medium text-slate-900">aiRIM está contrastando la decisión...</p>
+            <p className="mt-2 text-sm text-slate-500">Perfil, plato y contexto disponible</p>
           </div>
-        </div>
+        </section>
       )}
-    </div>
+    </main>
   );
 };
 

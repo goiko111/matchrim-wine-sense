@@ -14,6 +14,27 @@ export interface LearnedMatchrimProfile {
   samples: number;
 }
 
+export interface MatchrimRecommendationCandidate {
+  id: string;
+  name: string;
+  producer?: string | null;
+  sensory_attributes: SensoryAttributes;
+}
+
+export interface MatchrimRecommendationAudit {
+  id: string;
+  name: string;
+  producer?: string | null;
+  beforeScore: number;
+  afterScore: number;
+  delta: number;
+}
+
+export interface MatchrimLearningAudit {
+  learned: LearnedMatchrimProfile;
+  recommendations: MatchrimRecommendationAudit[];
+}
+
 const ATTRS = [
   ['potente', 'potencia'],
   ['acidez', 'acidez'],
@@ -31,6 +52,33 @@ const normalizeSensoryValue = (value: unknown) => {
   if (v > 10) v = v / 20; // legacy 0-100
   else if (v > 5) v = v / 2; // legacy 0-10
   return clamp(Math.round(v));
+};
+
+const scoreProfileAgainstSensory = (
+  profile: MatchrimProfileLike,
+  sensory: SensoryAttributes,
+) => {
+  const weights: Record<keyof MatchrimProfileLike, number> = {
+    potente: 0.25,
+    acidez: 0.2,
+    dulce: 0.2,
+    tanico: 0.2,
+    afrutado: 0.15,
+  };
+
+  let weightedScore = 0;
+  let availableWeight = 0;
+
+  ATTRS.forEach(([profileKey, sensoryKey]) => {
+    const value = normalizeSensoryValue(sensory[sensoryKey]);
+    if (value === null) return;
+    const match = Math.max(0, 1 - Math.abs(profile[profileKey] - value) / 4);
+    weightedScore += match * weights[profileKey];
+    availableWeight += weights[profileKey];
+  });
+
+  if (!availableWeight) return null;
+  return Math.round((weightedScore / availableWeight) * 100);
 };
 
 const ratingWeight = (rating: Rating) => {
@@ -91,4 +139,31 @@ export const calculateLearnedMatchrimProfile = (
     confidence,
     samples,
   };
+};
+
+export const auditMatchrimLearning = (
+  baseProfile: MatchrimProfileLike,
+  wines: TrainableWine[],
+  candidates: MatchrimRecommendationCandidate[],
+): MatchrimLearningAudit => {
+  const learned = calculateLearnedMatchrimProfile(baseProfile, wines);
+
+  const recommendations = candidates
+    .flatMap((candidate) => {
+      const beforeScore = scoreProfileAgainstSensory(baseProfile, candidate.sensory_attributes);
+      const afterScore = scoreProfileAgainstSensory(learned.profile, candidate.sensory_attributes);
+      if (beforeScore === null || afterScore === null) return [];
+
+      return [{
+        id: candidate.id,
+        name: candidate.name,
+        producer: candidate.producer,
+        beforeScore,
+        afterScore,
+        delta: afterScore - beforeScore,
+      }];
+    })
+    .sort((a, b) => b.afterScore - a.afterScore || b.delta - a.delta || a.name.localeCompare(b.name));
+
+  return { learned, recommendations };
 };

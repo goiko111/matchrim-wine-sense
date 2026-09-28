@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
-import { Compass, Home, ScanLine, UserRound, Wine, type LucideIcon } from 'lucide-react';
+import { BrainCircuit, Home, ScanLine, UserRound, Wine, type LucideIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import { useI18n } from '@/i18n';
@@ -31,7 +31,7 @@ const MobileBottomNav = () => {
 
   const navLinks: BottomNavLink[] = [
     { path: '/', label: t('nav.home'), icon: Home },
-    { path: '/wine-styles', label: 'Descubrir', icon: Compass, activePaths: ['/wine-styles', '/wines/'] },
+    { path: '/inteligencia-liquida', label: 'aiRIM', icon: BrainCircuit },
     { path: '/escanear', label: 'Escanear', icon: ScanLine },
     { path: '/my-wines', label: 'Bodega', icon: Wine, requiresAuth: true },
     {

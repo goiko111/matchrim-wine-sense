@@ -3,12 +3,14 @@ import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowUpRight,
+  BrainCircuit,
   Camera,
   ChevronRight,
+  Compass,
   FileText,
   History,
   Layers3,
-  MessageCircle,
+  LoaderCircle,
   ScanLine,
   Sparkles,
   UserRound,
@@ -25,11 +27,21 @@ import {
   getScanHistory,
   type ScanHistoryItem,
 } from '@/utils/scanHistory';
+import { buildWinerimWineUrl, type WinerimWineWithMatch } from '@/services/winerimApi';
+
+type HomeLearningInfo = {
+  samples: number;
+  confidence: number;
+};
 
 interface NativeAppHomeProps {
   hasQuizResults: boolean;
   matchrimCode?: string;
   loadingCode?: boolean;
+  learningInfo?: HomeLearningInfo | null;
+  recommendations?: WinerimWineWithMatch[];
+  loadingRecommendations?: boolean;
+  recommendationsUnavailable?: boolean;
 }
 
 const scanTypeLabels: Record<ScanHistoryItem['type'], string> = {
@@ -49,7 +61,15 @@ const formatScanTime = (timestamp: number) => {
   return `Hace ${Math.round(hours / 24)} d`;
 };
 
-const NativeAppHome = ({ hasQuizResults, matchrimCode = '', loadingCode = false }: NativeAppHomeProps) => {
+const NativeAppHome = ({
+  hasQuizResults,
+  matchrimCode = '',
+  loadingCode = false,
+  learningInfo = null,
+  recommendations = [],
+  loadingRecommendations = false,
+  recommendationsUnavailable = false,
+}: NativeAppHomeProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
@@ -160,6 +180,29 @@ const NativeAppHome = ({ hasQuizResults, matchrimCode = '', loadingCode = false 
           </button>
         </section>
 
+        <section className="mt-7" aria-labelledby="airim-home-title">
+          <button
+            type="button"
+            onClick={() => navigate('/inteligencia-liquida')}
+            className="matchrim-pressable flex w-full items-center gap-4 rounded-lg bg-red-950 p-4 text-left text-white shadow-sm"
+          >
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-white/12 text-red-50">
+              <BrainCircuit className="h-6 w-6" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span id="airim-home-title" className="block text-base font-bold">Pregunta a aiRIM</span>
+              <span className="mt-0.5 block text-sm leading-5 text-red-100/85">
+                {learningInfo
+                  ? `Tiene en cuenta tu perfil y ${learningInfo.samples} valoraciones.`
+                  : hasCode
+                    ? 'Usa tu perfil para maridajes y decisiones concretas.'
+                    : 'Te orienta y te dice qué dato falta para personalizar.'}
+              </span>
+            </span>
+            <ChevronRight className="h-5 w-5 shrink-0 text-red-100" />
+          </button>
+        </section>
+
         <section className="mt-7" aria-labelledby="profile-summary-title">
           <div className="flex items-end justify-between gap-3">
             <div>
@@ -175,7 +218,9 @@ const NativeAppHome = ({ hasQuizResults, matchrimCode = '', loadingCode = false 
             <div className="min-w-0">
               <p className="text-sm leading-5 text-slate-600">
                 {hasCode
-                  ? 'Tus puntuaciones explican coincidencias, fricciones y cuánto estás explorando.'
+                  ? learningInfo
+                    ? `${learningInfo.samples} valoraciones afinan el orden. Confianza de aprendizaje: ${learningInfo.confidence}%.`
+                    : 'Tu test ordena afinidades; todavía no hay valoraciones suficientes para aprender.'
                   : loadingCode
                     ? 'Estamos recuperando tu perfil sensorial.'
                     : 'Crea tu perfil sensorial para ordenar cada escaneo por afinidad.'}
@@ -192,15 +237,86 @@ const NativeAppHome = ({ hasQuizResults, matchrimCode = '', loadingCode = false 
           </div>
         </section>
 
+        {hasCode && (
+          <section className="mt-8" aria-labelledby="home-recommendations-title">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <p className="text-sm font-medium text-slate-500">Según tu gusto activo</p>
+                <h2 id="home-recommendations-title" className="mt-0.5 text-xl font-bold text-slate-950">Para ti ahora</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate('/usar-matchrim')}
+                className="matchrim-pressable min-h-11 px-1 text-sm font-semibold text-red-900"
+              >
+                Ver todos
+              </button>
+            </div>
+
+            {loadingRecommendations ? (
+              <div className="mt-3 flex min-h-24 items-center gap-3 border-y border-slate-200 py-4 text-sm text-slate-600" role="status">
+                <LoaderCircle className="h-5 w-5 animate-spin text-red-800" />
+                Ajustando recomendaciones...
+              </div>
+            ) : recommendations.length > 0 ? (
+              <div className="mt-3 divide-y divide-slate-200 border-y border-slate-200">
+                {recommendations.map((wine) => (
+                  <button
+                    key={String(wine.id)}
+                    type="button"
+                    onClick={() => window.open(buildWinerimWineUrl(wine), '_blank', 'noopener,noreferrer')}
+                    className="matchrim-pressable flex min-h-[5.25rem] w-full items-center gap-3 py-3 text-left"
+                    aria-label={`Abrir ficha de ${wine.name}`}
+                  >
+                    <span className="flex h-14 w-11 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
+                      {wine.photo ? (
+                        <img src={wine.photo} alt="" className="h-full w-full object-contain p-1" loading="lazy" />
+                      ) : (
+                        <Wine className="h-5 w-5 text-slate-400" />
+                      )}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-semibold text-slate-950">{wine.name}</span>
+                      <span className="mt-0.5 block truncate text-xs text-slate-500">
+                        {[wine.winery, wine.region].filter(Boolean).join(' · ') || 'Ficha Winerim'}
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-right">
+                      <span className="block text-lg font-bold text-red-900">{wine.matchPercentage}%</span>
+                      <span className="block text-[10px] font-medium text-slate-500">afinidad</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => navigate('/usar-matchrim')}
+                className="matchrim-pressable mt-3 flex min-h-20 w-full items-center gap-3 border-y border-slate-200 py-3 text-left"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-700">
+                  <Compass className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1 text-sm leading-5 text-slate-600">
+                  {recommendationsUnavailable
+                    ? 'No pude actualizar el catálogo. Puedes reintentarlo desde tus recomendaciones.'
+                    : 'Explora vinos compatibles con tu perfil Matchrim.'}
+                </span>
+                <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
+              </button>
+            )}
+          </section>
+        )}
+
         <section className="mt-7" aria-label="Acciones de sommelier">
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={() => navigate('/inteligencia-liquida')}
+              onClick={() => navigate('/wine-styles')}
               className="matchrim-pressable flex min-h-[4.5rem] items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 text-left shadow-sm"
             >
-              <MessageCircle className="h-5 w-5 shrink-0 text-red-800" />
-              <span className="text-sm font-semibold leading-5 text-slate-900">Preguntar a aiRIM</span>
+              <Compass className="h-5 w-5 shrink-0 text-red-800" />
+              <span className="text-sm font-semibold leading-5 text-slate-900">Descubrir estilos</span>
             </button>
             <button
               type="button"
