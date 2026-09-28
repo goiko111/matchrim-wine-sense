@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 
 type ConversationMessage = {
   id: string;
@@ -75,7 +76,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
         learned.samples > 0
           ? `Aprendizaje basado en ${learned.samples} valoraciones explícitas; confianza ${learned.confidence}%.`
           : 'Sin aprendizaje por valoraciones todavía; usa únicamente el test base.',
-        'Distingue dato observado, inferencia y recomendación. No inventes identidad, precio, disponibilidad ni añada.',
+        AIRIM_EVIDENCE_GUARDRAILS,
       ].join('\n'));
     };
 
@@ -112,6 +113,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
           context: [
             'aiRIM dentro de Matchrim. Responde con una recomendación accionable, breve y trazable.',
             profileContext,
+            AIRIM_EVIDENCE_GUARDRAILS,
           ].filter(Boolean).join('\n'),
         },
       });

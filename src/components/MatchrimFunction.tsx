@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { streamAiRimResponse } from '@/lib/aiRimStream';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 import WineRecommendationCard from './WineRecommendationCard';
 import DishRecommendationCard from './DishRecommendationCard';
 import PairingScoreCard from './PairingScoreCard';
@@ -294,7 +295,7 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           functionType,
           input1: input1.trim(),
           input2: input2.trim() || null,
-          context: ['aiRIM - Sistema de maridajes', profileContext].filter(Boolean).join('\n'),
+          context: ['aiRIM - Sistema de maridajes', profileContext, AIRIM_EVIDENCE_GUARDRAILS].filter(Boolean).join('\n'),
         },
         setResult,
       );

@@ -1,10 +1,10 @@
 # Matchrim next steps
 
-## Required before TestFlight
+## TestFlight processing
 
-1. On the installed iPhone build 64, complete one hands-on portrait and landscape pass: Inicio, aiRIM direct question, camera permission, gallery permission, one multi-bottle image, one printed menu or board, correction, comparison and reopen after force quit.
-2. Confirm that build 64 may be distributed.
-3. Archive from `ios/App/App.xcworkspace`, validate the archive and upload build 64 without changing the web deployment or Supabase functions.
+1. Wait for Apple to finish processing Matchrim 1.0 (64); the upload is already accepted.
+2. Confirm that build 64 appears as `Lista para enviar` and remains assigned to the internal `Testers Matchrim` group. Browser authentication is the only current readback blocker.
+3. On the already installed physical build, perform one human camera/gallery pass with a multi-bottle image and one menu or board while Apple processes the beta.
 
 ## Backend follow-up
 

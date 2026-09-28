@@ -16,6 +16,14 @@ aiRIM shows whether it has no memory, only a base profile, or a profile reinforc
 
 Only the authenticated user's quiz profile and saved ratings influence the learned profile. Synthetic personas validate the transformation without creating production accounts or contaminating real data.
 
-## 2026-09-28: no release without the distribution gate
+## 2026-09-28: distribution required an explicit gate
 
-Local installation is allowed for QA. Production, App Store and TestFlight remain blocked until the user authorizes distribution after the physical camera/gallery acceptance pass. Supabase functions remain unchanged while management access returns 403.
+Local installation was allowed for QA while App Store and TestFlight remained blocked. The user subsequently authorized completion with `Hazlo`; the signed build and real aiRIM audit were green before upload. Supabase functions remain unchanged while management access returns 403.
+
+## 2026-09-28: recommendation confidence must be qualitative unless calculated
+
+The real aiRIM persona audit exposed invented recommendation-confidence percentages. Build 64 adds shared evidence guardrails: qualitative recommendation confidence with reasons, explicit data/inference/preference separation, no unsupported price or availability claims, and a named missing-data effect. The calculated learning-confidence percentage remains visible because it comes from the deterministic profile learner.
+
+## 2026-09-28: build 64 distribution authorized
+
+After the user authorized completion, the final grounded archive was signed and uploaded to App Store Connect. The web and Supabase functions were not deployed. `Upload succeeded` is recorded separately from Apple's later processing and tester availability.

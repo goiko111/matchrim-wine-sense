@@ -4,11 +4,12 @@ Updated: 2026-09-28
 
 ## Candidate
 
-- Version: Matchrim 1.0 (64), development-signed.
-- Installed and launched on the paired iPhone 16 Pro Max `Goiko`.
+- Version: Matchrim 1.0 (64), development-signed locally and uploaded to App Store Connect.
+- The final grounded build was installed and launched on the paired iPhone 16 Pro Max `Goiko`.
 - Simulator build and physical-device build both succeeded with Xcode 26.0.1.
 - Dependencies and CocoaPods now resolve from this repository rather than an older checkout.
-- No production deployment, App Store upload or TestFlight upload was performed.
+- No web or Supabase production deployment was performed.
+- App Store Connect accepted the TestFlight upload at 10:38 CEST (`Upload succeeded`); Apple processing was still in progress at the last verified state.
 
 ## Product delivered
 
@@ -31,6 +32,18 @@ The QA personas are deterministic in-memory fixtures. They do not create account
 
 All three profiles persist their own learned order after serialization, and the isolation assertion prevents one persona from inheriting another's recommendation order. Database RLS independently restricts `quiz_results` and `user_wines` by `auth.uid() = user_id`.
 
+## Real aiRIM response audit
+
+The same anonymous question was sent to the real `ai-wine-chat` runtime for all three learned profiles: a wine for mushroom rice and roasted vegetables, up to EUR 30, with a main, safe and exploratory option. This path creates no account and performs no production database write.
+
+| Persona | Main | Safe | Exploratory | Final latency | Missing evidence identified |
+| --- | --- | --- | --- | ---: | --- |
+| explorador-atlantico | Ribeiro white with restrained ageing | Godello | Light young Pinot Noir | 11.4 s | Mushroom type, seasoning and rice texture |
+| clasico-estructurado | Rioja Reserva | Ribera del Duero Crianza | Penedes Pinot Noir with ageing | 9.2 s | Dish intensity, smoke and richness |
+| principiante-frutal | Bierzo Mencia | Pinot Noir | Catalan orange wine | 9.0 s | Mushroom/vegetable type, intensity and cooking fat |
+
+The first run exposed unsupported recommendation-confidence percentages such as 85% and 90%. Build 64 now sends shared evidence guardrails that require qualitative confidence, source separation, current-price verification and explicit missing data. The repeated real-runtime run used qualitative `alta/media/baja` confidence; the only remaining percentage is the separately calculated learning-confidence value.
+
 ## QA matrix
 
 | Gate | Result |
@@ -47,6 +60,10 @@ All three profiles persist their own learned order after serialization, and the 
 | iOS simulator build and launch | PASS, 1.0 (64) |
 | Signed physical build | PASS |
 | Physical install, launch and process check | PASS, 1.0 (64) running |
+| Real aiRIM persona responses | PASS 3/3 after confidence-grounding correction |
+| Release archive identity and signature | PASS: `wine.matchrim.app`, 1.0 (64), exact web-bundle hash |
+| App Store Connect upload | PASS: `Uploaded App` / `Upload succeeded` |
+| TestFlight processing | In progress; browser session unavailable for the later readback |
 
 ## Backend observation
 
@@ -59,5 +76,12 @@ Runtime preflight returned HTTP 200 for `detect-wine-regions`, `analyze-wine-reg
 - `qa-artifacts/2026-09-28-learning-airim/ui-qa-results.json`
 - `qa-artifacts/2026-09-28-learning-airim/xcodebuild-simulator-workspace.log`
 - `qa-artifacts/2026-09-28-learning-airim/xcodebuild-device-local.log`
+- `qa-artifacts/2026-09-28-build64-testflight/airim-persona-responses-before-grounding.json`
+- `qa-artifacts/2026-09-28-build64-testflight/airim-persona-responses.json`
+- `qa-artifacts/2026-09-28-build64-testflight/Matchrim-64-final.xcarchive`
+- `qa-artifacts/2026-09-28-build64-testflight/xcodebuild-archive-final.log`
+- `qa-artifacts/2026-09-28-build64-testflight/xcodebuild-upload.log`
 
-The simulator provides the reproducible visual gate. The physical-device gate covers signing, installation, launch and a live process; a hands-on camera/gallery pass on that device remains a human acceptance step before distribution.
+The simulator provides the reproducible visual gate. The physical-device gate covers signing, final installation, launch and a live process. Camera/gallery permissions and capture remain covered by the simulator/UI automation matrix; a human pass on the physical camera remains recommended while Apple processes the beta.
+
+Apple returned one non-blocking warning: the current minimum target is iOS 14.0 and uploads must target iOS 15.0 or later starting in April 2027.
