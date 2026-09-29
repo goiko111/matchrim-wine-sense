@@ -1,6 +1,6 @@
 # Matchrim current state
 
-Updated: 2026-09-28
+Updated: 2026-09-29
 
 ## Candidate
 
@@ -12,6 +12,7 @@ Updated: 2026-09-28
 - App Store Connect accepted the TestFlight upload at 10:38 CEST (`Upload succeeded`); Apple processing was still in progress at the last verified state.
 - A readback was attempted again on 2026-09-28. App Store Connect redirected to `authResult=FAILED` before exposing the app list, so processing/tester availability remains unverified rather than assumed complete.
 - The saved-wine and state-consistency fixes described below are a local post-upload delta. They are not part of the already uploaded build 64 and no replacement binary was uploaded in this pass.
+- A detached rebuild proves that the archived build 64 web bundle is exactly source commit `1a54cda` (comparable tree SHA-256 `d6b9e4a5...027b`). Commits `8e546a2`, `182dd32` and the 2026-09-29 QA fixes are not in TestFlight.
 
 ## Product delivered
 
@@ -71,6 +72,15 @@ The first run exposed unsupported recommendation-confidence percentages such as 
 
 The focused local rerun also passed TypeScript, targeted ESLint and a production Vite build (3,600 modules). Its synthetic 503s are expected error-state fixtures, not observed service incidents.
 
+## Integral QA first lot
+
+- 34/34 declared routes render locally at 430x932 with zero overflow, console errors or page errors after fixes. Authenticated routes only certify their anonymous guards.
+- Ten deterministic personas cover cold state and 1/5/20 ratings. Seven sensory personas converge after 20; budget and occasion correctly do not mutate taste without ratings.
+- A weak preference reversal exposes a P1: confidence remains 100% while a collateral tinto, not the intended Atlantic white, ranks first. A sustained reversal converges.
+- 1,000 local virtual model sessions remain isolated with p50 `0.0060 ms`, p95 `0.0127 ms`, p99 `0.0285 ms` and zero algorithm errors. This is not a staging/load result.
+- Local fixes collapse duplicate recommendations, reject invalid wine UUIDs before Supabase, localize the 404 and restore Matchrim branding in account deletion.
+- Storage-level duplicate prevention, authenticated longitudinal E2E, staging load and physical iPhone camera/accessibility remain open.
+
 ## Backend observation
 
 Runtime preflight returned HTTP 200 for `detect-wine-regions`, `analyze-wine-region`, `scan-wine-menu`, `ai-wine-chat` and `matchrim-recommendations`. The recommendation runtime returned 12 home and 30 detail candidates. Supabase management access still returns 403, so deployed function versions were not changed or falsely certified.
@@ -110,6 +120,10 @@ used.
 - `docs/qa-evidence/matchrim-build64-recognition-2026-09-28/food-menu-real-backend.json`
 - `docs/qa-evidence/matchrim-build64-personalization-2026-09-28/persona-simulation.json`
 - `docs/qa-evidence/matchrim-build64-personalization-2026-09-28/ui-navigation-state-results.json`
+- `docs/MATCHRIM_INTEGRAL_QA_2026-09-29.md`
+- `docs/qa-evidence/matchrim-integral-qa-2026-09-29/build64-parity.json`
+- `docs/qa-evidence/matchrim-integral-qa-2026-09-29/persona-longitudinal.json`
+- `docs/qa-evidence/matchrim-integral-qa-2026-09-29/routes/route-inventory.json`
 
 The simulator provides the reproducible visual gate. The physical-device gate covers signing, final installation, launch and a live process. Camera/gallery permissions and capture remain covered by the simulator/UI automation matrix; a human pass on the physical camera remains recommended while Apple processes the beta.
 

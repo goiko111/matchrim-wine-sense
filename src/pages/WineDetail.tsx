@@ -32,6 +32,8 @@ interface WineDetail {
   created_at: string;
 }
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 const WineDetail = () => {
   const { user } = useAuth();
   const { id, slug } = useParams();
@@ -40,17 +42,21 @@ const WineDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
-      fetchWineDetail();
+    if (!id || !UUID_PATTERN.test(id)) {
+      setWine(null);
+      setIsLoading(false);
+      return;
     }
+
+    void fetchWineDetail(id);
   }, [id]);
 
-  const fetchWineDetail = async () => {
+  const fetchWineDetail = async (wineId: string) => {
     try {
       const { data, error } = await supabase
         .from('wines')
         .select('*')
-        .eq('id', id)
+        .eq('id', wineId)
         .single();
 
       if (error) throw error;
@@ -146,9 +152,9 @@ const WineDetail = () => {
           <div className="container mx-auto px-4 py-8">
             <div className="text-center">
               <h1 className="text-2xl font-bold text-gray-900 mb-4">Vino no encontrado</h1>
-              <Button onClick={() => navigate('/data-viewer')} className="bg-primary hover:bg-primary/90">
+              <Button onClick={() => navigate('/wine-styles')} className="bg-primary hover:bg-primary/90">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Volver a la lista
+                Volver a descubrir
               </Button>
             </div>
           </div>
@@ -168,11 +174,11 @@ const WineDetail = () => {
           <div className="flex items-center gap-4 mb-8">
             <Button 
               variant="outline" 
-              onClick={() => navigate('/data-viewer')}
+              onClick={() => navigate('/wine-styles')}
               className="flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
-              Volver
+              Volver a descubrir
             </Button>
             <Button 
               variant="outline" 

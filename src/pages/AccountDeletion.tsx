@@ -62,7 +62,7 @@ const AccountDeletion = () => {
     }
 
     if (!isConfirmed) {
-      toast.error('Confirma que quieres iniciar la eliminacion de tu cuenta');
+      toast.error('Confirma que quieres iniciar la eliminación de tu cuenta');
       return;
     }
 
@@ -81,14 +81,14 @@ const AccountDeletion = () => {
 
     if (error) {
       console.error('Error creating account deletion request:', error);
-      toast.error('No se pudo crear la solicitud de eliminacion');
+      toast.error('No se pudo crear la solicitud de eliminación');
       return;
     }
 
     setExistingRequest(data);
     setReason('');
     setIsConfirmed(false);
-    toast.success('Solicitud de eliminacion creada');
+    toast.success('Solicitud de eliminación creada');
   };
 
   return (
@@ -99,7 +99,7 @@ const AccountDeletion = () => {
         <Button asChild variant="ghost" className="mb-6 gap-2 text-red-900">
           <Link to="/">
             <ArrowLeft className="h-4 w-4" />
-            Volver a Winerim
+            Volver a Matchrim
           </Link>
         </Button>
 
@@ -109,7 +109,7 @@ const AccountDeletion = () => {
           </div>
           <h1 className="text-3xl font-bold">Eliminar cuenta</h1>
           <p className="mt-4 text-sm leading-6 text-white/80">
-            Desde aqui puedes iniciar la eliminacion de tu cuenta Winerim y los datos personales
+            Desde aquí puedes iniciar la eliminación de tu cuenta Matchrim y los datos personales
             asociados a la app.
           </p>
         </section>
@@ -118,21 +118,21 @@ const AccountDeletion = () => {
           {!user ? (
             <Card>
               <CardHeader>
-                <CardTitle>Inicia sesion para solicitar la eliminacion</CardTitle>
+                <CardTitle>Inicia sesión para solicitar la eliminación</CardTitle>
                 <CardDescription>
                   Para proteger tu cuenta, necesitamos verificar tu identidad antes de crear la solicitud.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Button onClick={() => navigate(buildAuthRedirectPath('/account/delete'))} className="bg-red-800 hover:bg-red-900">
-                  Iniciar sesion
+                  Iniciar sesión
                 </Button>
                 <p className="text-sm leading-6 text-muted-foreground">
                   Tambien puedes escribir desde el email de tu cuenta a{' '}
                   <a href="mailto:hola@winerim.com" className="font-medium text-red-800 hover:underline">
                     hola@winerim.com
                   </a>
-                  {' '}indicando que quieres eliminar tu cuenta Winerim.
+                  {' '}indicando que quieres eliminar tu cuenta Matchrim.
                 </p>
               </CardContent>
             </Card>
@@ -155,10 +155,10 @@ const AccountDeletion = () => {
               ) : (
                 <Card>
                   <CardHeader>
-                    <CardTitle>Solicitar eliminacion de cuenta</CardTitle>
+                    <CardTitle>Solicitar eliminación de cuenta</CardTitle>
                     <CardDescription>
                       Crearemos una solicitud vinculada a {user.email}. Revisaremos y eliminaremos los
-                      datos asociados segun la politica de privacidad y las obligaciones legales aplicables.
+                      datos asociados según la política de privacidad y las obligaciones legales aplicables.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-5">
@@ -166,7 +166,7 @@ const AccountDeletion = () => {
                       <AlertTriangle className="h-4 w-4 text-amber-700" />
                       <AlertTitle>Antes de continuar</AlertTitle>
                       <AlertDescription>
-                        La eliminacion puede borrar tu perfil Matchrim, vinos guardados, puntuaciones,
+                        La eliminación puede borrar tu perfil Matchrim, vinos guardados, puntuaciones,
                         historial de restaurantes y datos de cuenta. Algunos registros tecnicos o legales
                         pueden conservarse durante el tiempo necesario.
                       </AlertDescription>
@@ -190,7 +190,7 @@ const AccountDeletion = () => {
                         className="mt-1"
                       />
                       <span>
-                        Entiendo que estoy iniciando la eliminacion de mi cuenta Winerim y los datos
+                        Entiendo que estoy iniciando la eliminación de mi cuenta Matchrim y los datos
                         personales asociados a la app.
                       </span>
                     </label>
@@ -201,7 +201,7 @@ const AccountDeletion = () => {
                       className="w-full gap-2 bg-red-800 hover:bg-red-900"
                     >
                       {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                      Solicitar eliminacion
+                      Solicitar eliminación
                     </Button>
                   </CardContent>
                 </Card>
@@ -217,7 +217,7 @@ const AccountDeletion = () => {
               <p className="text-sm leading-6 text-muted-foreground">
                 Puedes consultar que datos tratamos en la{' '}
                 <Link to="/privacy" className="font-medium text-red-800 hover:underline">
-                  politica de privacidad
+                  política de privacidad
                 </Link>
                 .
               </p>

@@ -27,6 +27,8 @@ Cellar administration and Winerim backoffice work remain outside this product. T
 
 Persona and navigation regressions use deterministic local fixtures and intercepted network responses. They never create production users or write ratings, saved wines or scan results. Real authenticated behavior remains a separate staging/physical-device gate.
 
+Integral QA is tracked in `docs/MATCHRIM_INTEGRAL_QA_2026-09-29.md`. A local cohort may model 1,000 isolated users, but it must never be described as 1,000 human users or as backend load. Load, synthetic account creation and destructive privacy flows require an authorized isolated tenant.
+
 ## Historical baseline
 
 Build 63 introduced the native mobile navigation and remained the rollback point. Its report is `docs/MATCHRIM_BUILD63_MOBILE_APP_QA_2026-09-04.md`.

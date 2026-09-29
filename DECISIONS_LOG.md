@@ -45,3 +45,15 @@ If every returned recommendation is already in Bodega, Inicio shows an exhausted
 ## 2026-09-28: personalization state belongs to one active account
 
 Recommendation calculation waits until loaded saved-wine state identifies the current user, or the explicit anonymous scope. A session transition cannot calculate against the previous account's cellar. Reproducible QA uses synthetic in-memory personas and intercepted responses only; authenticated staging, TestFlight processing and physical-camera validation stay separate external gates.
+
+## 2026-09-29: integral QA precedes further distribution
+
+No new TestFlight build is used as evidence of product correctness. The release gate now requires route/state coverage, ten authenticated longitudinal personas, real recognition thresholds, physical camera/accessibility evidence and authorized staging load. Local fixtures, real backend calls and physical tests are reported separately.
+
+## 2026-09-29: build 64 is pinned to source commit 1a54cda
+
+A clean detached rebuild of `1a54cda` matches every Vite file in the signed build 64 archive; Capacitor adds only `cordova.js` and `cordova_plugins.js`. The comparable tree hash is `d6b9e4a5bcbc3b6f566fa50fa45c4f35c6f4fc06c742cebc0718d0ca9e027b`. Later QA and personalization commits are not represented in TestFlight.
+
+## 2026-09-29: synthetic scale claims stay narrow
+
+The 1,000-user local cohort proves only deterministic in-process model isolation and speed. It is not backend concurrency, cost evidence or human validation. No mass production load or synthetic account creation is permitted without an isolated tenant, owned identities and explicit rate/cost approval.

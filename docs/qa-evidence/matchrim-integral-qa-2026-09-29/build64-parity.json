@@ -1,0 +1,28 @@
+{
+  "verifiedAt": "2026-09-29",
+  "archive": "qa-artifacts/2026-09-28-build64-testflight/Matchrim-64-final.xcarchive",
+  "bundleId": "wine.matchrim.app",
+  "version": "1.0",
+  "build": "64",
+  "archiveCreatedAt": "2026-09-28T08:36:57Z",
+  "uploadAcceptedAt": "2026-09-28T08:38:13Z",
+  "uploadState": "Uploaded with warnings",
+  "testflightProcessing": "unverified because App Store Connect readback returned authResult=FAILED",
+  "sourceCommit": "1a54cda",
+  "sourceCommitVerification": {
+    "method": "detached clean worktree build compared recursively with archived App.app/public",
+    "result": "all Vite output files identical; archive only adds cordova.js and cordova_plugins.js",
+    "comparableTreeSha256": "d6b9e4a5bcbc3b6f566fa50fa45c4f35c6f4f4fc06c742cebc0718d0ca9e027b"
+  },
+  "notInBuild64": [
+    "8e546a2: real recognition matrix and food-menu evidence",
+    "182dd32: strict saved-wine exclusion, vintage-aware identity and account-owner isolation",
+    "2026-09-29 working-tree fixes: canonical recommendation deduplication, invalid wine-id guard, Spanish 404 and Matchrim deletion branding"
+  ],
+  "supabaseManagement": {
+    "projectRef": "cbjynrbvrhcmpaojmqdp",
+    "cliVersion": "2.105.0",
+    "functionsList": "403 insufficient privileges",
+    "qaAccountDecision": "no accounts created without an isolated authorized tenant"
+  }
+}

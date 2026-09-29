@@ -1,5 +1,15 @@
 # Matchrim next steps
 
+## Integral QA release gate
+
+- Do not upload another TestFlight build as a substitute for QA. Use `docs/MATCHRIM_INTEGRAL_QA_2026-09-29.md` as the executable coverage and exit matrix.
+- P0: correct recognition in an authorized staging backend until every supported category reaches precision and recall `>=0.90`, including food-menu coverage and segmentation.
+- P0: complete a physical iPhone journey with camera/gallery, real multi-label, wine list, board and food menu plus VoiceOver/Dynamic Type evidence.
+- P1: provision an isolated tenant and synthetic mailbox domain, then run all ten authenticated personas through Bodega CRUD, restart and account switching.
+- P1: add canonical storage-level upsert/uniqueness so the same wine cannot be inserted twice while different vintages remain independent.
+- P1: calibrate confidence for diversity, contradiction and recency, then rerun the weak/sustained preference reversal.
+- P1: run the staged 10→50→200→1,000 virtual-user load plan only with rate and cost approval.
+
 ## TestFlight processing
 
 1. Restore the App Store Connect browser session; the latest readback redirected to `authResult=FAILED`.

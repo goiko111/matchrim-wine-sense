@@ -42,9 +42,12 @@ export const selectUnseenWineRecommendations = <T extends WineIdentityLike>(
   savedWines: WineIdentityLike[],
   limit = 3,
 ): UnseenRecommendationSelection<T> => {
-  const unseen = candidates.filter((candidate) => (
-    !savedWines.some((savedWine) => isSameWineIdentity(candidate, savedWine))
-  ));
+  const unseen = candidates.reduce<T[]>((selection, candidate) => {
+    const isSaved = savedWines.some((savedWine) => isSameWineIdentity(candidate, savedWine));
+    const isDuplicate = selection.some((selected) => isSameWineIdentity(candidate, selected));
+    if (!isSaved && !isDuplicate) selection.push(candidate);
+    return selection;
+  }, []);
 
   return {
     recommendations: unseen.slice(0, Math.max(0, limit)),
