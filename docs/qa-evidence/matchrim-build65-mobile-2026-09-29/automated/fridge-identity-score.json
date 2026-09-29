@@ -1,0 +1,22 @@
+{
+  "fixture": "multibottle-fridge",
+  "fixture_sha256": "778d4dcbbdb0c29127795f03d56afd87de9762326543a14e38be5b26d408e11f",
+  "status": "not_computable",
+  "reason": "The legacy report does not map every analysis region to the final merged client box and crop fingerprint. Its 29 detector boxes came from the last detector tile while the client analyzed 30 merged regions.",
+  "mapping_status": "invalidated_by_trace_audit",
+  "diagnostics": {
+    "legacy_detected_boxes": 29,
+    "analyzed_regions": 30,
+    "regions_with_request_box_and_crop": 0,
+    "detector_version": "matchrim-region-detector-v3",
+    "analysis_versions": [
+      "matchrim-region-analysis-v3-grounded"
+    ]
+  },
+  "metrics": {
+    "top1_identity_precision": null,
+    "top1_identity_recall": null,
+    "top1_identity_f1": null
+  },
+  "next_gate": "Run the instrumented client against isolated staging, reconcile final boxes to the manual bottle slots, then set mapping_status to validated."
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "case": "multietiqueta_recuperacion_compuesta",
+    "expected": "corregir invalida afinidad heredada, descartar elimina la region y reanalizar sustituye la identidad",
+    "actual": "PASS attempts={'region-2': 1, 'region-1': 2, 'region-3': 1, 'region-4': 1, 'region-5': 1}"
+  },
+  {
+    "case": "consola",
+    "expected": "sin errores de consola",
+    "actual": "PASS"
+  }
+]

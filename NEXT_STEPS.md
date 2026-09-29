@@ -2,13 +2,15 @@
 
 ## Immediate release follow-up
 
-1. Wait for App Store Connect to finish processing Matchrim `1.0 (65)`.
-2. Confirm the build appears in TestFlight and assign it to the internal `Testers Matchrim` group if Apple did not preserve the assignment.
-3. On the physical iPhone, run one human pass for first launch, camera/photo permissions, one multi-bottle image, one menu and VoiceOver.
+1. Keep Matchrim `1.0 (65)` unexpanded in TestFlight while the cabinet identity gate is red.
+2. In isolated staging, use the new trace to capture final merged box, crop hash and result for every region. The old 29/30 mismatch is already explained as a runner-observability defect.
+3. Reconcile traced regions to the manual bottle slots, mark the mapping validated, then rerun `scripts/score-matchrim-fridge-identity.py`. Do not accept invented precision/recall when the trace is incomplete.
+4. Once App Store Connect authentication is available, verify processing read-only. Do not assign testers until the identity gate is accepted.
+5. After the backend gate, run the physical-iPhone pass for first launch, camera/photo permissions, one multi-bottle image, one menu and VoiceOver.
 
 ## P1
 
-- Annotate the cabinet fixture bottle by bottle so multi-label identity gains a real precision/recall gate, not only detection and grounding.
+- After valid spatial reconciliation, improve cabinet OCR/canonical matching and calibrate confidence against the versioned bottle-level annotation.
 - Run authenticated staging accounts for the three behavioral personas and verify Bodega CRUD, restart and account switching.
 - Apply `20260929040430_matchrim_user_wines_canonical_identity.sql` only in isolated staging after its duplicate preflight passes.
 - Run the `10 -> 50 -> 200 -> 1,000` staging load ramp only with a non-production project, preprovisioned users and cost approval.

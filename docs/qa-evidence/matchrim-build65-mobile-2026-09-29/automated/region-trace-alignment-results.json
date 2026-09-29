@@ -1,0 +1,12 @@
+[
+  {
+    "case": "multietiqueta_traza_region_crop_resultado",
+    "expected": "tres cajas desordenadas se normalizan y cada region conserva caja, crop unico y resultado espacial",
+    "actual": "PASS traces=[{'region_id': 'region-1', 'region_index': 1, 'region_box': {'x': 8, 'y': 12, 'width': 18, 'height': 72}, 'crop_sha256': 'b2d1b5b730df50cb26bc33b99b3ac2f734fffb8698e4c908686f3c8bebb9f84c'}, {'region_id': 'region-2', 'region_index': 2, 'region_box': {'x': 37, 'y': 12, 'width': 18, 'height': 72}, 'crop_sha256': 'ffac16d18f0a29b2e108a72963bdb143202be3005ce9bc56de6952951264bf5f'}, {'region_id': 'region-3', 'region_index': 3, 'region_box': {'x': 66, 'y': 12, 'width': 18, 'height': 72}, 'crop_sha256': 'e77f0c9b7704cec5254d7ad04f07c0acee91e2a380f22b56e7b8376478250e56'}]"
+  },
+  {
+    "case": "consola",
+    "expected": "sin errores de consola",
+    "actual": "PASS"
+  }
+]

@@ -28,7 +28,7 @@ Tanda final unica: `real-five-release-gate-approved`. No hubo interceptacion ni 
 
 | Material | Resultado | Precision | Recall | Latencia | Observacion |
 | --- | ---: | ---: | ---: | ---: | --- |
-| Expositor multibotella | 30 regiones | n/a | n/a | 54.9 s | PASS de deteccion, grounding y score individual; sin ground truth canonico botella a botella |
+| Expositor multibotella | 30 analisis | n/a | n/a | 54.9 s | Flujo/UI completado; el runner antiguo no guardo la caja/crop final por region |
 | `IMG_7547 2.HEIC` | 15/16 | 1.000 | 0.938 | 39.4 s | Falta Barolo; cero falsos positivos |
 | `IMG_7548 2.HEIC` | 8/8 | 1.000 | 1.000 | 23.9 s | Cero falsos positivos |
 | `IMG_7552 2.HEIC` | 13/13 | 1.000 | 1.000 | 35.3 s | Cero falsos positivos |
@@ -76,7 +76,9 @@ Los perfiles son fixtures aislados y no escriben produccion.
 
 ## Residual
 
-- Apple debe terminar de procesar el build para que aparezca en TestFlight.
-- El expositor aun no certifica precision canonica por botella; requiere anotacion independiente.
+- El upload fue aceptado, pero el estado actual de procesamiento no pudo releerse porque no habia una sesion web autenticada disponible.
+- La medicion por botella queda bloqueada hasta repetir en staging con caja final, region y huella de crop; el 0/0 provisional fue retirado por emparejar cajas de una sola tile con regiones fusionadas.
 - Sigue abierto el QA humano final en iPhone para camara fisica, permisos y VoiceOver real.
 - La cuota/permiso de gestion de Supabase sigue separado; no fue necesario desplegar funciones para este build.
+
+Actualizacion posterior al upload: `docs/MATCHRIM_FRIDGE_IDENTITY_BENCHMARK_2026-09-29.md` documenta el defecto de trazado, las regresiones locales y el gate bloqueado de identidad. El upload correcto no se interpreta como aprobacion funcional del reconocimiento del expositor.

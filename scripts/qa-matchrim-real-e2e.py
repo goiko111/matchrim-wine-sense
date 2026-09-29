@@ -13,6 +13,8 @@ from urllib.parse import urlparse
 
 from playwright.sync_api import sync_playwright
 
+from matchrim_e2e_trace import compact_label_backend_observation
+
 
 BASE_URL = os.environ.get("MATCHRIM_E2E_URL", "http://127.0.0.1:4173").rstrip("/")
 ARTIFACTS = Path(os.environ.get(
@@ -407,8 +409,6 @@ def merge_menu_items(items):
 
 
 def compact_backend_observation(api_calls):
-    detector = next((call for call in reversed(api_calls) if call["function"] == "detect-wine-regions"), None)
-    analyzers = [call for call in api_calls if call["function"] == "analyze-wine-region"]
     menu_calls = [call for call in api_calls if call["function"] == "scan-wine-menu"]
     menus = list(menu_calls)
     if menus:
@@ -472,63 +472,7 @@ def compact_backend_observation(api_calls):
             "names": [menu_identity(item) for item in items],
             "items": items,
         }
-    detector_payload = detector.get("payload", {}) if detector else {}
-    detected_boxes = [
-        region.get("box") for region in detector_payload.get("regions", [])
-        if isinstance(region, dict) and isinstance(region.get("box"), dict)
-    ]
-    detected_region_ids = [
-        region.get("id") for region in detector_payload.get("regions", []) if region.get("id")
-    ]
-    candidate_names = []
-    analyzer_versions = set()
-    analysis_by_region = {}
-    for call in analyzers:
-        payload = call.get("payload") or {}
-        if payload.get("analysis_version"):
-            analyzer_versions.add(payload["analysis_version"])
-        region_id = call.get("region_id") or f"unknown-{len(analysis_by_region) + 1}"
-        analysis_by_region.setdefault(region_id, []).append(call)
-    recovered_analysis_failures = 0
-    final_failed_regions = []
-    region_results = []
-    for region_id, calls in analysis_by_region.items():
-        successful = [call for call in calls if call["status"] == 200]
-        if successful and any(call["status"] != 200 for call in calls):
-            recovered_analysis_failures += 1
-        if not successful:
-            final_failed_regions.append(region_id)
-            continue
-        payload = successful[-1].get("payload") or {}
-        candidates = payload.get("candidates") or []
-        fallback = payload.get("fallback") if isinstance(payload.get("fallback"), dict) else None
-        if candidates and candidates[0].get("name"):
-            candidate_names.append(candidates[0]["name"])
-        region_results.append({
-            "region_id": region_id,
-            "attempts": len(calls),
-            "status_codes": [call["status"] for call in calls],
-            "candidate": candidates[0].get("name") if candidates else None,
-            "confidence": candidates[0].get("confidence") if candidates else None,
-            "recognition_status": payload.get("recognition_status"),
-            "fallback_code": fallback.get("code") if fallback else None,
-        })
-    missing_region_ids = [region_id for region_id in detected_region_ids if region_id not in analysis_by_region]
-    final_failed_regions.extend(missing_region_ids)
-    return {
-        "function": "multi-wine-label",
-        "detector_http_status": detector.get("status") if detector else None,
-        "detector_version": detector_payload.get("detector_version"),
-        "detected_boxes": detected_boxes,
-        "analysis_versions": sorted(analyzer_versions), "coverage": detector_payload.get("coverage"),
-        "detected_regions": len(detector_payload.get("regions") or []),
-        "analyzed_regions": len(analysis_by_region),
-        "analysis_attempts": len(analyzers),
-        "recovered_analysis_failures": recovered_analysis_failures,
-        "final_failed_regions": sorted(set(final_failed_regions)),
-        "identified_candidates": len(candidate_names), "candidate_names": candidate_names,
-        "region_results": region_results,
-    }
+    return compact_label_backend_observation(api_calls)
 
 
 def run_fixture(browser, fixture, file_path):
@@ -554,11 +498,18 @@ def run_fixture(browser, fixture, file_path):
             payload = response.json()
         except Exception as error:
             payload = {"response_parse_error": str(error)}
+        request_image = request_payload.get("image")
+        trace_request_payload = {
+            key: value for key, value in request_payload.items() if key != "image"
+        }
+        if isinstance(request_image, str):
+            trace_request_payload["image_sha256"] = hashlib.sha256(request_image.encode("utf-8")).hexdigest()
+            trace_request_payload["image_bytes"] = len(request_image)
         api_calls.append({
             "function": function_name,
             "status": response.status,
             "region_id": request_payload.get("region_id"),
-            "request_payload": request_payload,
+            "request_payload": trace_request_payload,
             "payload": payload,
         })
 

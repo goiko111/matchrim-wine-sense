@@ -1,4 +1,5 @@
 import json
+import hashlib
 import os
 import subprocess
 import sys
@@ -24,6 +25,7 @@ MENU_SOURCE_FIXTURES = [
 ]
 MENU_FIXTURES = [ARTIFACTS / "fixtures" / f"{source.stem}.jpg" for source in MENU_SOURCE_FIXTURES]
 CHROME = os.environ.get("MATCHRIM_QA_CHROME")
+QA_ONLY = os.environ.get("MATCHRIM_QA_ONLY")
 
 
 def materialize_fixtures():
@@ -459,6 +461,123 @@ def run_identity_correction_qa(browser, results, console_errors):
     context.close()
 
 
+def run_identity_recovery_actions_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+    attempts = {}
+
+    def recovery_handler(endpoint, request):
+        if endpoint != "analyze-wine-region":
+            return function_response(endpoint, request)
+        region_id = (request.post_data_json or {}).get("region_id")
+        attempts[region_id] = attempts.get(region_id, 0) + 1
+        if region_id == "region-1" and attempts[region_id] == 2:
+            return {"candidates": [candidate("Identidad reanalizada", "Bodega verificada", 0.93, 86)]}
+        return function_response(endpoint, request)
+
+    install_routes(page, console_errors, response_handler=recovery_handler)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
+    page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
+
+    page.get_by_role("button", name="Región 1, Reconocido").click()
+    page.get_by_label("Vino", exact=True).fill("Identidad corregida local")
+    page.get_by_text("Afinidad sin desglose suficiente", exact=True).wait_for()
+    page.get_by_role("button", name="Cerrar").click()
+
+    page.get_by_role("button", name="Región 2, Dudoso").click()
+    page.get_by_role("button", name="Descartar", exact=True).click()
+    page.get_by_test_id("region-outline-2").wait_for(state="detached")
+    assert page.get_by_role("button", name="Región 2, Dudoso").count() == 0
+
+    page.get_by_role("button", name="Región 1, Reconocido").click()
+    page.get_by_role("button", name="Reanalizar", exact=True).click()
+    detail = page.get_by_role("dialog")
+    detail.get_by_text("Identidad reanalizada", exact=True).first.wait_for(timeout=30_000)
+    assert attempts.get("region-1") == 2, attempts
+    assert page.get_by_text("Identidad corregida local", exact=True).count() == 0
+    assert page.get_by_text("Bodega verificada", exact=True).count() >= 1
+    assert_no_horizontal_overflow(page, "identity recovery actions mobile")
+    page.screenshot(path=str(ARTIFACTS / "multi-label-identity-recovery-actions-mobile.png"), full_page=False)
+    results.append({
+        "case": "multietiqueta_recuperacion_compuesta",
+        "expected": "corregir invalida afinidad heredada, descartar elimina la region y reanalizar sustituye la identidad",
+        "actual": f"PASS attempts={attempts}",
+    })
+    context.close()
+
+
+def run_region_trace_alignment_qa(browser, results, console_errors):
+    context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
+    page = context.new_page()
+    traces = []
+
+    def trace_handler(endpoint, request):
+        payload = request.post_data_json or {}
+        if endpoint == "detect-wine-regions":
+            return {
+                "coverage": {"status": "reported_complete", "estimated_visible_objects": 3},
+                "regions": [
+                    {"box": {"x": 66, "y": 12, "width": 18, "height": 72}, "confidence": 0.88},
+                    {"box": {"x": 8, "y": 12, "width": 18, "height": 72}, "confidence": 0.91},
+                    {"box": {"x": 37, "y": 12, "width": 18, "height": 72}, "confidence": 0.89},
+                ],
+            }
+        if endpoint != "analyze-wine-region":
+            return function_response(endpoint, request)
+
+        region_id = payload.get("region_id")
+        region_index = payload.get("region_index")
+        region_box = payload.get("region_box") or {}
+        crop = payload.get("image") or ""
+        traces.append({
+            "region_id": region_id,
+            "region_index": region_index,
+            "region_box": region_box,
+            "crop_sha256": hashlib.sha256(crop.encode("utf-8")).hexdigest(),
+        })
+        x = region_box.get("x")
+        if not isinstance(x, (int, float)):
+            return 400, {"error": "region_box ausente"}, {}
+        if x < 25:
+            name = "Botella izquierda"
+        elif x < 55:
+            name = "Botella central"
+        else:
+            name = "Botella derecha"
+        return {"candidates": [candidate(name, "Bodega trazada", 0.9, 80)]}
+
+    install_routes(page, console_errors, response_handler=trace_handler)
+    page.goto(f"{BASE_URL}/escanear/etiqueta")
+    page.wait_for_load_state("networkidle")
+    page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
+    page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
+
+    by_region = {trace["region_id"]: trace for trace in traces}
+    assert list(sorted(by_region)) == ["region-1", "region-2", "region-3"], by_region
+    assert by_region["region-1"]["region_index"] == 1
+    assert by_region["region-1"]["region_box"]["x"] == 8
+    assert by_region["region-2"]["region_index"] == 2
+    assert by_region["region-2"]["region_box"]["x"] == 37
+    assert by_region["region-3"]["region_index"] == 3
+    assert by_region["region-3"]["region_box"]["x"] == 66
+    assert len({trace["crop_sha256"] for trace in traces}) == 3, traces
+
+    assert page.get_by_role("button", name="Abrir detalle de Botella izquierda", exact=False).count() == 1
+    assert page.get_by_role("button", name="Abrir detalle de Botella central", exact=False).count() == 1
+    assert page.get_by_role("button", name="Abrir detalle de Botella derecha", exact=False).count() == 1
+    assert page.get_by_test_id("region-outline-4").count() == 0
+    assert_no_horizontal_overflow(page, "region trace alignment mobile")
+    page.screenshot(path=str(ARTIFACTS / "multi-label-region-trace-alignment-mobile.png"), full_page=True)
+    results.append({
+        "case": "multietiqueta_traza_region_crop_resultado",
+        "expected": "tres cajas desordenadas se normalizan y cada region conserva caja, crop unico y resultado espacial",
+        "actual": f"PASS traces={traces}",
+    })
+    context.close()
+
+
 def run_regional_detection_qa(browser, results, console_errors):
     context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=2)
     page = context.new_page()
@@ -886,26 +1005,33 @@ def main():
         if CHROME:
             launch_options["executable_path"] = CHROME
         browser = playwright.chromium.launch(**launch_options)
-        run_privacy_safe_area_qa(browser, results, console_errors)
-        run_privacy_landscape_qa(browser, results, console_errors)
-        run_label_qa(browser, results, console_errors)
-        run_identity_correction_qa(browser, results, console_errors)
-        run_regional_detection_qa(browser, results, console_errors)
-        run_regional_detection_fallback_qa(browser, results)
-        run_provisional_decision_qa(browser, results, console_errors)
-        run_retry_policy_qa(browser, results, console_errors)
-        run_retry_cancellation_qa(browser, results, console_errors)
-        run_menu_qa(browser, results, console_errors)
-        run_menu_fixture_matrix(browser, results, console_errors)
-        run_accessibility_qa(browser, results, console_errors)
-        if EMBEDDED_FIXTURES:
-            results.append({
-                "case": "frontera_qa_embebida",
-                "expected": "flujo completo sin llamadas a Edge Functions",
-                "actual": "PASS",
-            })
+        if QA_ONLY == "identity-recovery-actions":
+            run_identity_recovery_actions_qa(browser, results, console_errors)
+        elif QA_ONLY == "region-trace-alignment":
+            run_region_trace_alignment_qa(browser, results, console_errors)
         else:
-            run_offline_qa(browser, results)
+            run_privacy_safe_area_qa(browser, results, console_errors)
+            run_privacy_landscape_qa(browser, results, console_errors)
+            run_label_qa(browser, results, console_errors)
+            run_identity_correction_qa(browser, results, console_errors)
+            run_identity_recovery_actions_qa(browser, results, console_errors)
+            run_region_trace_alignment_qa(browser, results, console_errors)
+            run_regional_detection_qa(browser, results, console_errors)
+            run_regional_detection_fallback_qa(browser, results)
+            run_provisional_decision_qa(browser, results, console_errors)
+            run_retry_policy_qa(browser, results, console_errors)
+            run_retry_cancellation_qa(browser, results, console_errors)
+            run_menu_qa(browser, results, console_errors)
+            run_menu_fixture_matrix(browser, results, console_errors)
+            run_accessibility_qa(browser, results, console_errors)
+            if EMBEDDED_FIXTURES:
+                results.append({
+                    "case": "frontera_qa_embebida",
+                    "expected": "flujo completo sin llamadas a Edge Functions",
+                    "actual": "PASS",
+                })
+            else:
+                run_offline_qa(browser, results)
         browser.close()
 
     ignored = [message for message in console_errors if "favicon" not in message.lower()]

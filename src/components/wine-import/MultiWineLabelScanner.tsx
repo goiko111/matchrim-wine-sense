@@ -284,8 +284,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       const cropDataUrl = await cropImageRegion(imageDataUrl, region.box);
       const payload = await invokeWithEdgeFunctionRetry(
         () => invokeEdgeFunction<Record<string, unknown>>(
-            'analyze-wine-region',
-            { image: cropDataUrl, region_id: region.id, qa_fixture_name: fixtureName ?? null },
+          'analyze-wine-region',
+            {
+              image: cropDataUrl,
+              region_id: region.id,
+              region_index: region.index,
+              region_box: region.box,
+              qa_fixture_name: fixtureName ?? null,
+            },
             signal,
           ),
         signal,

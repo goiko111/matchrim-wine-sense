@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "mapping_status": "invalidated_by_trace_audit",
+  "fixture": {
+    "id": "multibottle-fridge",
+    "file_name": "IMG_7605 2.jpg",
+    "sha256": "778d4dcbbdb0c29127795f03d56afd87de9762326543a14e38be5b26d408e11f",
+    "width": 1320,
+    "height": 1239
+  },
+  "annotation_scope": "Provisional manual review of the authorized build-65 run. The legacy runner recorded boxes from only the last detector tile, not the final merged client regions, so region_id and box mappings below are retained for audit but are not score eligible.",
+  "protocol": {
+    "complete": "Producer and cuvee/product are legible enough to define accepted top-1 aliases.",
+    "partial": "Some useful label text is visible, but the full canonical identity cannot be verified from the fixture alone.",
+    "unreadable": "The crop does not contain enough stable label evidence for a canonical identity.",
+    "unmapped": "The UI reported an analysis result without a stable detector box in the captured backend trace.",
+    "identity_metrics": "Do not calculate identity precision or recall until a traced staging run records region_id, final merged region_box and crop fingerprint for every analysis request, followed by manual spatial reconciliation."
+  },
+  "annotations": [
+    {
+      "region_id": "region-1",
+      "shelf": "top",
+      "position": "left-1",
+      "box_pct": {"x": 12.96, "y": 9.53, "width": 8.01, "height": 34.61},
+      "verifiability": "partial",
+      "visible_text": ["HATON"],
+      "expected_identity": null,
+      "notes": "Producer family is visible, but the cuvee line is not stable enough to score."
+    },
+    {
+      "region_id": "region-2",
+      "shelf": "top",
+      "position": "right-2",
+      "box_pct": {"x": 62.73, "y": 10.19, "width": 7.64, "height": 34.04},
+      "verifiability": "complete",
+      "visible_text": ["DEUTZ", "BRUT CLASSIC"],
+      "expected_identity": {"canonical": "Deutz Brut Classic", "accepted_top1": ["Deutz Brut Classic", "Brut Classic"]},
+      "notes": "Black Deutz label and cuvee are readable."
+    },
+    {
+      "region_id": "region-3",
+      "shelf": "top",
+      "position": "left-edge",
+      "box_pct": {"x": 45.7, "y": 10.55, "width": 8.35, "height": 33.54},
+      "verifiability": "partial",
+      "visible_text": ["CHARL..."],
+      "expected_identity": null,
+      "notes": "Only a producer fragment is visible at the cabinet divider."
+    },
+    {
+      "region_id": "region-4",
+      "shelf": "top",
+      "position": "left-3",
+      "box_pct": {"x": 28.59, "y": 10.98, "width": 7.9, "height": 32.84},
+      "verifiability": "complete",
+      "visible_text": ["ANDRE CLOUET", "ROSE No 3"],
+      "expected_identity": {"canonical": "Andre Clouet Brut Rose No. 3", "accepted_top1": ["Andre Clouet Brut Rose No 3", "Andre Clouet Rose No 3", "Andre Clouet Brut Rose"]},
+      "notes": "Orange foil and ornate rose label are visible."
+    },
+    {
+      "region_id": "region-5",
+      "shelf": "top",
+      "position": "left-4",
+      "box_pct": {"x": 37.19, "y": 10.98, "width": 8.42, "height": 33.27},
+      "verifiability": "complete",
+      "visible_text": ["ANDRE CLOUET", "ROSE No 3"],
+      "expected_identity": {"canonical": "Andre Clouet Brut Rose No. 3", "accepted_top1": ["Andre Clouet Brut Rose No 3", "Andre Clouet Rose No 3", "Andre Clouet Brut Rose"]},
+      "notes": "Second bottle of the same visible reference; scored bottle by bottle."
+    },
+    {
+      "region_id": "region-6",
+      "shelf": "top",
+      "position": "left-2",
+      "box_pct": {"x": 20.31, "y": 14.54, "width": 8.16, "height": 29.47},
+      "verifiability": "complete",
+      "visible_text": ["CELLER KRIPTA", "TREPAT"],
+      "expected_identity": {"canonical": "Celler Kripta Trepat", "accepted_top1": ["Celler Kripta Trepat", "Kripta Trepat", "Trepat"]},
+      "notes": "Producer and Trepat line are visible on the front label."
+    },
+    {
+      "region_id": "region-7",
+      "shelf": "top",
+      "position": "right-1",
+      "box_pct": {"x": 54.38, "y": 14.61, "width": 7.37, "height": 29.4},
+      "verifiability": "complete",
+      "visible_text": ["HATON", "BLANC DE BLANCS"],
+      "expected_identity": {"canonical": "Jean-Noel Haton Blanc de Blancs", "accepted_top1": ["Jean Noel Haton Blanc de Blancs", "Haton Blanc de Blancs", "Blanc de Blancs"]},
+      "notes": "White Haton label and cuvee line are readable."
+    },
+    {
+      "region_id": "region-8",
+      "shelf": "middle",
+      "position": "left-1",
+      "box_pct": {"x": 20.73, "y": 44.9, "width": 6.83, "height": 26.68},
+      "verifiability": "partial",
+      "visible_text": ["illustrated label"],
+      "expected_identity": null,
+      "notes": "Artwork is visible but the identity text is not reproducibly legible."
+    },
+    {
+      "region_id": "region-9",
+      "shelf": "middle",
+      "position": "left-3",
+      "box_pct": {"x": 34.84, "y": 44.9, "width": 6.9, "height": 27.04},
+      "verifiability": "partial",
+      "visible_text": ["small pale label"],
+      "expected_identity": null,
+      "notes": "The label is present but too small and reflective for a canonical identity."
+    },
+    {
+      "region_id": "region-10",
+      "shelf": "middle",
+      "position": "left-4",
+      "box_pct": {"x": 42.19, "y": 44.9, "width": 6.83, "height": 27.04},
+      "verifiability": "complete",
+      "visible_text": ["PAZO CILLEIRO", "ALBARINO"],
+      "expected_identity": {"canonical": "Pazo Cilleiro Albarino", "accepted_top1": ["Pazo Cilleiro Albarino", "Pazo Cilleiro"]},
+      "notes": "Front white label is readable enough at producer/product level."
+    },
+    {
+      "region_id": "region-11",
+      "shelf": "middle",
+      "position": "right-1",
+      "box_pct": {"x": 49.3, "y": 44.9, "width": 6.83, "height": 27.04},
+      "verifiability": "partial",
+      "visible_text": ["LULU", "cat illustration"],
+      "expected_identity": null,
+      "notes": "Brand token is visible, but the complete wine identity is not."
+    },
+    {
+      "region_id": "region-12",
+      "shelf": "middle",
+      "position": "left-2",
+      "box_pct": {"x": 27.27, "y": 45.39, "width": 6.9, "height": 26.47},
+      "verifiability": "unreadable",
+      "visible_text": [],
+      "expected_identity": null,
+      "notes": "Dark overlapping bottles; no stable front-label text."
+    },
+    {
+      "region_id": "region-13",
+      "shelf": "middle",
+      "position": "right-2",
+      "box_pct": {"x": 56.56, "y": 45.46, "width": 6.9, "height": 26.47},
+      "verifiability": "complete",
+      "visible_text": ["EAU DE PROVENCE"],
+      "expected_identity": {"canonical": "Eau de Provence Rose", "accepted_top1": ["Eau de Provence Rose", "Eau de Provence"]},
+      "notes": "Product name is clearly visible."
+    },
+    {
+      "region_id": "region-14",
+      "shelf": "middle",
+      "position": "right-3",
+      "box_pct": {"x": 64.06, "y": 45.69, "width": 6.9, "height": 26.33},
+      "verifiability": "complete",
+      "visible_text": ["SIERRA CANTABRIA", "ROSADO"],
+      "expected_identity": {"canonical": "Sierra Cantabria Rosado", "accepted_top1": ["Sierra Cantabria Rosado", "Sierra Cantabria Rose"]},
+      "notes": "Producer and rosado line are readable."
+    },
+    {
+      "region_id": "region-15",
+      "shelf": "middle",
+      "position": "right-5",
+      "box_pct": {"x": 79.14, "y": 46.05, "width": 6.9, "height": 26.13},
+      "verifiability": "complete",
+      "visible_text": ["SIERRA CANTABRIA", "ORGANZA"],
+      "expected_identity": {"canonical": "Sierra Cantabria Organza", "accepted_top1": ["Sierra Cantabria Organza", "Organza"]},
+      "notes": "Producer and Organza line are visible on the white label."
+    },
+    {
+      "region_id": "region-16",
+      "shelf": "middle",
+      "position": "right-4",
+      "box_pct": {"x": 71.64, "y": 46.12, "width": 6.7, "height": 26.06},
+      "verifiability": "partial",
+      "visible_text": ["illustrated rose label"],
+      "expected_identity": null,
+      "notes": "Distinctive illustration, but the written identity is not legible."
+    },
+    {
+      "region_id": "region-17",
+      "shelf": "middle",
+      "position": "right-6",
+      "box_pct": {"x": 86.8, "y": 46.12, "width": 6.83, "height": 26.13},
+      "verifiability": "partial",
+      "visible_text": ["01"],
+      "expected_identity": null,
+      "notes": "A numeric token is visible; producer and product are not."
+    },
+    {
+      "region_id": "region-18",
+      "shelf": "middle",
+      "position": "right-edge",
+      "box_pct": {"x": 94.38, "y": 46.26, "width": 5.62, "height": 25.86},
+      "verifiability": "unreadable",
+      "visible_text": [],
+      "expected_identity": null,
+      "notes": "Bottle is clipped by the right cabinet edge."
+    },
+    {
+      "region_id": "region-19",
+      "shelf": "bottom",
+      "position": "right-4",
+      "box_pct": {"x": 77.27, "y": 77.61, "width": 7.03, "height": 18.91},
+      "verifiability": "partial",
+      "visible_text": ["ROSA"],
+      "expected_identity": null,
+      "notes": "Product token is visible, but no verifiable producer/canonical reference."
+    },
+    {
+      "region_id": "region-20",
+      "shelf": "bottom",
+      "position": "right-1",
+      "box_pct": {"x": 55.0, "y": 77.75, "width": 7.03, "height": 18.84},
+      "verifiability": "partial",
+      "visible_text": ["SANTENAY"],
+      "expected_identity": null,
+      "notes": "Appellation is readable; producer and cuvee are not."
+    },
+    {
+      "region_id": "region-21",
+      "shelf": "bottom",
+      "position": "right-5",
+      "box_pct": {"x": 84.84, "y": 77.82, "width": 7.03, "height": 18.77},
+      "verifiability": "unreadable",
+      "visible_text": [],
+      "expected_identity": null,
+      "notes": "Only a narrow side label is visible."
+    },
+    {
+      "region_id": "region-22",
+      "shelf": "bottom",
+      "position": "right-edge",
+      "box_pct": {"x": 92.27, "y": 77.88, "width": 7.03, "height": 18.7},
+      "verifiability": "partial",
+      "visible_text": ["LES..."],
+      "expected_identity": null,
+      "notes": "The bottle is clipped; only the beginning of one line is visible."
+    },
+    {
+      "region_id": "region-23",
+      "shelf": "bottom",
+      "position": "divider",
+      "box_pct": {"x": 47.73, "y": 77.95, "width": 7.03, "height": 18.64},
+      "verifiability": "unreadable",
+      "visible_text": [],
+      "expected_identity": null,
+      "notes": "Cabinet divider and overlapping bottle bodies obscure the label."
+    },
+    {
+      "region_id": "region-24",
+      "shelf": "bottom",
+      "position": "right-2",
+      "box_pct": {"x": 62.42, "y": 77.95, "width": 7.03, "height": 18.64},
+      "verifiability": "unreadable",
+      "visible_text": [],
+      "expected_identity": null,
+      "notes": "Back label only."
+    },
+    {
+      "region_id": "region-25",
+      "shelf": "bottom",
+      "position": "right-3",
+      "box_pct": {"x": 70.0, "y": 77.95, "width": 7.03, "height": 18.64},
+      "verifiability": "partial",
+      "visible_text": ["FINO"],
+      "expected_identity": null,
+      "notes": "Wine style is visible, but the canonical producer/reference is not."
+    },
+    {
+      "region_id": "region-26",
+      "shelf": "bottom",
+      "position": "left-4",
+      "box_pct": {"x": 40.55, "y": 78.02, "width": 7.03, "height": 18.43},
+      "verifiability": "unreadable",
+      "visible_text": [],
+      "expected_identity": null,
+      "notes": "Pale label is washed out and partly occluded."
+    },
+    {
+      "region_id": "region-27",
+      "shelf": "bottom",
+      "position": "left-3",
+      "box_pct": {"x": 33.05, "y": 78.16, "width": 7.03, "height": 18.57},
+      "verifiability": "complete",
+      "visible_text": ["EL CLARO"],
+      "expected_identity": {"canonical": "El Claro", "accepted_top1": ["El Claro"]},
+      "notes": "The product name is readable inside the yellow circle."
+    },
+    {
+      "region_id": "region-28",
+      "shelf": "bottom",
+      "position": "left-2",
+      "box_pct": {"x": 25.7, "y": 78.43, "width": 7.03, "height": 18.29},
+      "verifiability": "partial",
+      "visible_text": ["ZURA"],
+      "expected_identity": null,
+      "notes": "One large token is visible; the complete canonical reference is not verified."
+    },
+    {
+      "region_id": "region-29",
+      "shelf": "bottom",
+      "position": "left-1",
+      "box_pct": {"x": 18.75, "y": 79.28, "width": 6.77, "height": 17.58},
+      "verifiability": "complete",
+      "visible_text": ["LADOUYS"],
+      "expected_identity": {"canonical": "Chateau Lilian Ladouys", "accepted_top1": ["Chateau Lilian Ladouys", "Lilian Ladouys", "Chateau Ladouys"]},
+      "notes": "The orange Chateau Lilian Ladouys label is readable."
+    },
+    {
+      "region_id": "region-30",
+      "shelf": "unknown",
+      "position": "unmapped-ui-analysis",
+      "box_pct": null,
+      "verifiability": "unmapped",
+      "visible_text": [],
+      "expected_identity": null,
+      "notes": "The UI trace contains region-30, while the detector trace contains 29 stable boxes. Excluded until the client/backend cardinality mismatch is reproduced."
+    }
+  ]
+}
