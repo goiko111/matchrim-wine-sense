@@ -38,6 +38,11 @@ def materialize_fixtures():
                 capture_output=True,
                 text=True,
             )
+        if target.stat().st_size < 100_000:
+            raise RuntimeError(
+                f"Invalid converted fixture {target}: {target.stat().st_size} bytes. "
+                "Run the HEIC conversion outside the restricted sandbox."
+            )
 
 
 def candidate(name, producer, confidence, affinity, *, uncertainty=None, vintage=2020):
@@ -691,7 +696,12 @@ def run_menu_qa(browser, results, console_errors):
     page.goto(f"{BASE_URL}/escanear/carta-vinos")
     page.wait_for_load_state("networkidle")
     page.locator('input[type="file"]').nth(0).set_input_files(str(MENU_FIXTURES[0]))
-    page.get_by_text("Lista de la carta", exact=True).wait_for(timeout=30_000)
+    try:
+        page.get_by_text("Lista de la carta", exact=True).wait_for(timeout=30_000)
+    except Exception as error:
+        page.screenshot(path=str(ARTIFACTS / "wine-menu-timeout-diagnostic.png"), full_page=True)
+        visible_text = page.locator("body").inner_text(timeout=5_000)
+        raise AssertionError(f"Wine menu did not reach the result view. Visible text: {visible_text[-4_000:]}") from error
     assert page.get_by_role("button", name="Vino 1: Finca Dofi", exact=True).count() == 1
     overlay_text = page.locator('button[aria-label^="Vino "]').all_inner_texts()
     if any(not text.strip().isdigit() for text in overlay_text):

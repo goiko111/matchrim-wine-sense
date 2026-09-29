@@ -4,7 +4,10 @@ Updated: 2026-09-29
 
 ## Candidate
 
-- Version: Matchrim 1.0 (64), development-signed locally and uploaded to App Store Connect.
+- Latest uploaded version: Matchrim 1.0 (64), development-signed locally and uploaded to App Store Connect.
+- Local candidate: Matchrim 1.0 (65), built and archived with Xcode 26.0.1. It has not been exported or uploaded.
+- Build 65 passed the current 27/27 mobile UI suite plus manual simulator journeys for a real multi-bottle image, a real printed wine menu and a public handwritten board. The complete five-image production benchmark remains authorization-gated and recognition metrics remain below P0 in several categories.
+- The Lovable/web line remains pinned to `08e12fb`; no web or production deployment was performed for build 65.
 - The final grounded build was installed and launched on the paired iPhone 16 Pro Max `Goiko`.
 - Simulator build and physical-device build both succeeded with Xcode 26.0.1.
 - Dependencies and CocoaPods now resolve from this repository rather than an older checkout.
@@ -14,6 +17,7 @@ Updated: 2026-09-29
 - The saved-wine and state-consistency fixes described below are a local post-upload delta. They are not part of the already uploaded build 64 and no replacement binary was uploaded in this pass.
 - A detached rebuild proves that the archived build 64 web bundle is exactly source commit `1a54cda` (comparable tree SHA-256 `d6b9e4a5...027b`). Commits `8e546a2`, `182dd32` and the 2026-09-29 QA fixes are not in TestFlight.
 - The current local candidate extends checkpoint `859241d` with recognition post-processing, a complete food-menu contract, calibrated learning confidence, a staged Bodega uniqueness migration and a guarded staging-load harness. None of this delta is deployed or in build 64.
+- Build 65 evidence and the exact TestFlight gate are recorded in `docs/MATCHRIM_BUILD65_CANDIDATE_2026-09-29.md`.
 
 ## Product delivered
 
