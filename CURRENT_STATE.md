@@ -27,6 +27,7 @@ Updated: 2026-09-29
 | Four printed wine-list precision | 1.000 in every final case |
 | Four printed wine-list recall | 0.938 / 1.000 / 1.000 / 0.969 |
 | Multi-bottle cabinet transport/UI | PASS: 30 analyses and per-region recovery controls |
+| Local final-box/crop/result alignment contract | PASS 3/3; scorer rejects shifted boxes, duplicate crops and extra regions |
 | Multi-bottle cabinet canonical identity | BLOCKED: legacy report lacks final box/crop mapping; prior 0/0 withdrawn |
 | Multi-label/menu visual suite | PASS 27/27 certified + focused recovery regression PASS |
 | TypeScript, unit/contracts, production build | PASS |
@@ -43,6 +44,8 @@ Runtime versions observed: `matchrim-region-detector-v3`, `matchrim-region-analy
 - `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/real-five-release-summary.json`
 - `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/ui-qa-results.json`
 - `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/fridge-identity-score.json`
+- `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/fridge-trace-contract-report.json`
+- `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/fridge-trace-contract-score.json`
 
 Private screenshots, raw OCR payloads, hashes and source-image paths remain local and uncommitted.
 
@@ -51,5 +54,6 @@ Private screenshots, raw OCR payloads, hashes and source-image paths remain loca
 - Apple processing/readback; no authenticated browser session was available for the read-only check.
 - Build 65 should not be assigned more widely until cabinet identity is measured with the corrected trace in isolated staging.
 - Human physical-iPhone pass for camera, photo permission and VoiceOver.
-- Traced staging reconciliation of final box/crop/result, then OCR/canonical resolution and confidence calibration for cabinet scenes.
+- Isolated staging has the three required functions active at version 1, but lacks `LOVABLE_API_KEY`; no fixture was sent to a known failing path.
+- After that secret is configured: traced staging reconciliation of final box/crop/result, then OCR/canonical resolution and confidence calibration for cabinet scenes.
 - iOS deployment target must move from 14 to 15 before April 2027.

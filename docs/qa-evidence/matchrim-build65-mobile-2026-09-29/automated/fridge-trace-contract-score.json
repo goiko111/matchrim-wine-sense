@@ -1,0 +1,64 @@
+{
+  "fixture": "multibottle-fridge-trace-contract",
+  "fixture_sha256": "778d4dcbbdb0c29127795f03d56afd87de9762326543a14e38be5b26d408e11f",
+  "detector_version": "local-trace-detector-v1",
+  "analysis_versions": [
+    "local-trace-analysis-v1"
+  ],
+  "status": "computed",
+  "metric_policy": "Local alignment-contract metric only. Vision responses are mocked; this does not measure real OCR or canonical wine recognition.",
+  "counts": {
+    "annotations": 3,
+    "scoreable_complete_identities": 3,
+    "true_positives": 3,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "non_scoreable_suggestions": 0,
+    "verifiability": {
+      "complete": 3
+    }
+  },
+  "metrics": {
+    "top1_identity_precision": 1.0,
+    "top1_identity_recall": 1.0,
+    "top1_identity_f1": 1.0
+  },
+  "rows": [
+    {
+      "region_id": "region-1",
+      "shelf": "contract",
+      "position": "left",
+      "verifiability": "complete",
+      "expected": "Botella izquierda",
+      "actual": "Botella izquierda",
+      "actual_confidence": 0.9,
+      "actual_status": "identified",
+      "fallback_code": null,
+      "outcome": "correct"
+    },
+    {
+      "region_id": "region-2",
+      "shelf": "contract",
+      "position": "center",
+      "verifiability": "complete",
+      "expected": "Botella central",
+      "actual": "Botella central",
+      "actual_confidence": 0.9,
+      "actual_status": "identified",
+      "fallback_code": null,
+      "outcome": "correct"
+    },
+    {
+      "region_id": "region-3",
+      "shelf": "contract",
+      "position": "right",
+      "verifiability": "complete",
+      "expected": "Botella derecha",
+      "actual": "Botella derecha",
+      "actual_confidence": 0.9,
+      "actual_status": "identified",
+      "fallback_code": null,
+      "outcome": "correct"
+    }
+  ]
+}

@@ -36,12 +36,42 @@ def find_fixture(report, fixture_id):
     raise ValueError(f"Fixture {fixture_id!r} is missing from {report.get('base_url', 'report')}")
 
 
+def boxes_match(expected, actual, tolerance=0.01):
+    if not isinstance(expected, dict) or not isinstance(actual, dict):
+        return False
+    return all(
+        isinstance(expected.get(key), (int, float))
+        and isinstance(actual.get(key), (int, float))
+        and abs(expected[key] - actual[key]) <= tolerance
+        for key in ("x", "y", "width", "height")
+    )
+
+
 def score(ground_truth, report):
     fixture_id = ground_truth["fixture"]["id"]
     fixture_result = find_fixture(report, fixture_id)
+    expected_fixture_sha = ground_truth["fixture"]["sha256"]
+    actual_fixture_sha = fixture_result.get("fixture_sha256")
+    if actual_fixture_sha != expected_fixture_sha:
+        return {
+            "fixture": fixture_id,
+            "fixture_sha256": expected_fixture_sha,
+            "status": "not_computable",
+            "reason": "The traced fixture fingerprint does not match the validated ground truth.",
+            "fixture_mismatch": {
+                "expected_sha256": expected_fixture_sha,
+                "actual_sha256": actual_fixture_sha,
+            },
+            "metrics": {
+                "top1_identity_precision": None,
+                "top1_identity_recall": None,
+                "top1_identity_f1": None,
+            },
+        }
+    region_results = fixture_result.get("backend", {}).get("region_results", [])
     actual_by_region = {
         item["region_id"]: item
-        for item in fixture_result.get("backend", {}).get("region_results", [])
+        for item in region_results
     }
     traced_regions = [
         item for item in actual_by_region.values()
@@ -50,7 +80,7 @@ def score(ground_truth, report):
     if ground_truth.get("mapping_status") != "validated" or len(traced_regions) != len(actual_by_region):
         return {
             "fixture": fixture_id,
-            "fixture_sha256": ground_truth["fixture"]["sha256"],
+            "fixture_sha256": expected_fixture_sha,
             "status": "not_computable",
             "reason": (
                 "The legacy report does not map every analysis region to the final merged client box and crop fingerprint. "
@@ -73,6 +103,62 @@ def score(ground_truth, report):
                 "Run the instrumented client against isolated staging, reconcile final boxes to the manual bottle slots, "
                 "then set mapping_status to validated."
             ),
+        }
+    expected_region_ids = {annotation["region_id"] for annotation in ground_truth["annotations"]}
+    actual_region_ids = set(actual_by_region)
+    duplicate_region_ids = sorted({
+        item["region_id"]
+        for item in region_results
+        if sum(row.get("region_id") == item["region_id"] for row in region_results) > 1
+    })
+    duplicate_crop_hashes = sorted({
+        item["crop_sha256"]
+        for item in region_results
+        if item.get("crop_sha256")
+        and sum(row.get("crop_sha256") == item["crop_sha256"] for row in region_results) > 1
+    })
+    if expected_region_ids != actual_region_ids or duplicate_region_ids or duplicate_crop_hashes:
+        return {
+            "fixture": fixture_id,
+            "fixture_sha256": expected_fixture_sha,
+            "status": "not_computable",
+            "reason": "The traced region set is not a one-to-one match with the validated ground truth.",
+            "trace_mismatches": {
+                "missing_region_ids": sorted(expected_region_ids - actual_region_ids),
+                "unexpected_region_ids": sorted(actual_region_ids - expected_region_ids),
+                "duplicate_region_ids": duplicate_region_ids,
+                "duplicate_crop_hashes": duplicate_crop_hashes,
+            },
+            "metrics": {
+                "top1_identity_precision": None,
+                "top1_identity_recall": None,
+                "top1_identity_f1": None,
+            },
+        }
+    spatial_mismatches = [
+        {
+            "region_id": annotation["region_id"],
+            "expected_box": annotation.get("box_pct"),
+            "actual_box": actual_by_region.get(annotation["region_id"], {}).get("request_box"),
+        }
+        for annotation in ground_truth["annotations"]
+        if not boxes_match(
+            annotation.get("box_pct"),
+            actual_by_region.get(annotation["region_id"], {}).get("request_box"),
+        )
+    ]
+    if spatial_mismatches:
+        return {
+            "fixture": fixture_id,
+            "fixture_sha256": expected_fixture_sha,
+            "status": "not_computable",
+            "reason": "Final region boxes do not match the validated spatial mapping.",
+            "spatial_mismatches": spatial_mismatches,
+            "metrics": {
+                "top1_identity_precision": None,
+                "top1_identity_recall": None,
+                "top1_identity_f1": None,
+            },
         }
 
     rows = []
@@ -133,9 +219,10 @@ def score(ground_truth, report):
 
     return {
         "fixture": fixture_id,
-        "fixture_sha256": ground_truth["fixture"]["sha256"],
+        "fixture_sha256": expected_fixture_sha,
         "detector_version": fixture_result.get("backend", {}).get("detector_version"),
         "analysis_versions": fixture_result.get("backend", {}).get("analysis_versions", []),
+        "status": "computed",
         "metric_policy": ground_truth["protocol"]["identity_metrics"],
         "counts": {
             "annotations": len(ground_truth["annotations"]),

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "mapping_status": "validated",
+  "fixture": {
+    "id": "multibottle-fridge-trace-contract",
+    "file_name": "IMG_7605 2.jpg",
+    "sha256": "778d4dcbbdb0c29127795f03d56afd87de9762326543a14e38be5b26d408e11f"
+  },
+  "protocol": {
+    "identity_metrics": "Local alignment-contract metric only. Vision responses are mocked; this does not measure real OCR or canonical wine recognition."
+  },
+  "annotations": [
+    {
+      "region_id": "region-1",
+      "shelf": "contract",
+      "position": "left",
+      "box_pct": {"x": 8, "y": 12, "width": 18, "height": 72},
+      "verifiability": "complete",
+      "expected_identity": {"canonical": "Botella izquierda", "accepted_top1": ["Botella izquierda"]}
+    },
+    {
+      "region_id": "region-2",
+      "shelf": "contract",
+      "position": "center",
+      "box_pct": {"x": 37, "y": 12, "width": 18, "height": 72},
+      "verifiability": "complete",
+      "expected_identity": {"canonical": "Botella central", "accepted_top1": ["Botella central"]}
+    },
+    {
+      "region_id": "region-3",
+      "shelf": "contract",
+      "position": "right",
+      "box_pct": {"x": 66, "y": 12, "width": 18, "height": 72},
+      "verifiability": "complete",
+      "expected_identity": {"canonical": "Botella derecha", "accepted_top1": ["Botella derecha"]}
+    }
+  ]
+}

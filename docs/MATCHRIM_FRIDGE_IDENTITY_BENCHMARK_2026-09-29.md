@@ -6,7 +6,7 @@ Date: 2026-09-29
 
 The build-65 client completed the multi-bottle flow, but the authorized production report cannot support bottle-level identity precision/recall. The apparent `29 detector boxes / 30 analyses` mismatch came from the QA runner recording only the last detector-tile response while the client merged all successful tile responses before analysis.
 
-The earlier provisional `0.000 / 0.000` result is withdrawn. It compared candidate results with the wrong spatial box set. Current cabinet identity metrics are **not computable** until an isolated staging run records the final merged box and crop fingerprint for every `region_id`.
+The earlier provisional `0.000 / 0.000` result is withdrawn. It compared candidate results with the wrong spatial box set. Real cabinet identity metrics are **not computable** until an isolated staging run records the final merged box and crop fingerprint for every `region_id`.
 
 No production function, web deployment, tester group or TestFlight distribution setting was changed.
 
@@ -59,6 +59,20 @@ Result: PASS. The client sorts regions spatially, creates three different crops 
 
 The pure runner contract also proves that a last detector tile containing 2 boxes can correctly produce 3 final traced regions after merge. This prevents the old 29/30 reporting error.
 
+The contract now emits a complete machine-readable report from the real cabinet image with mocked detector/analyzer responses. The scorer validates the source-image fingerprint, a one-to-one region set, exact final boxes and unique crop fingerprints before computing. Its local contract result is precision/recall/F1 `1.000 / 1.000 / 1.000` over 3/3 synthetic identities. These values measure trace alignment only; they are not OCR, canonical identity or provider-quality metrics.
+
+Negative scorer regressions are also PASS: a different source-image hash, shifted box, duplicated crop hash or unexpected region makes the result `not_computable`.
+
+## Isolated staging readback
+
+Read-only Supabase CLI checks on 2026-09-29 confirmed project `qpbmqvfnunkylvtvnyyx` has these functions active at version 1:
+
+- `detect-wine-regions`;
+- `analyze-wine-region`;
+- `scan-wine-menu`.
+
+The same readback confirmed `LOVABLE_API_KEY` is absent. Both region functions explicitly require that secret, so no fixture was sent: a request could only exercise the known 500 path and would not measure vision. No secret, function, database row or deployment was changed.
+
 ## Recovery regression
 
 Case `multietiqueta_recuperacion_compuesta` remains PASS on a 393x852 viewport:
@@ -88,12 +102,16 @@ The trace-only changes pass TypeScript and do not modify menu recognition, dedup
 - Refusal result: `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/fridge-identity-score.json`.
 - Trace UI result: `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/region-trace-alignment-results.json`.
 - Trace UI screenshot: `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/multi-label-region-trace-alignment-mobile.png`.
+- Local trace ground truth: `qa/ground-truth/matchrim-fridge-trace-contract-v1.json`.
+- Local trace report: `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/fridge-trace-contract-report.json`.
+- Local trace score: `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/fridge-trace-contract-score.json`.
 - Recovery result and screenshot remain in the same evidence directory.
 
 ## Reproduce locally
 
 ```bash
 python3 scripts/check-matchrim-e2e-trace.py
+python3 scripts/check-matchrim-fridge-scorer.py
 npm run typecheck
 ```
 
@@ -106,7 +124,7 @@ The focused Playwright modes are `MATCHRIM_QA_ONLY=region-trace-alignment` and `
 3. **H3, still open:** dense-scene crops are too broad, reflective or occluded, causing the vision provider to combine neighboring label text.
 4. **H4, still open:** confidence calibration accepts named candidates without enough crop-local evidence.
 
-Next action: run the instrumented build against an isolated staging backend, store only final boxes/crop hashes/results, manually reconcile them to bottle slots, then compute identity precision/recall. Only after that should a staged backend candidate be considered. Production, TestFlight and tester assignment remain untouched.
+Next action: configure `LOVABLE_API_KEY` in isolated staging, then run the instrumented build there, store only final boxes/crop hashes/results, manually reconcile them to bottle slots and compute real identity precision/recall. Only after that should a staged backend candidate be considered. Production, TestFlight and tester assignment remain untouched.
 
 ## App Store Connect readback
 

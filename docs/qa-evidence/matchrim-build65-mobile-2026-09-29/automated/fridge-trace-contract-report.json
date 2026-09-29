@@ -1,0 +1,82 @@
+{
+  "qualification": "local crop-alignment contract on the real cabinet image; detector and analysis responses are mocked",
+  "results": [
+    {
+      "fixture": "multibottle-fridge-trace-contract",
+      "fixture_sha256": "778d4dcbbdb0c29127795f03d56afd87de9762326543a14e38be5b26d408e11f",
+      "backend": {
+        "detector_version": "local-trace-detector-v1",
+        "analysis_versions": [
+          "local-trace-analysis-v1"
+        ],
+        "detected_boxes": [
+          {
+            "x": 8,
+            "y": 12,
+            "width": 18,
+            "height": 72
+          },
+          {
+            "x": 37,
+            "y": 12,
+            "width": 18,
+            "height": 72
+          },
+          {
+            "x": 66,
+            "y": 12,
+            "width": 18,
+            "height": 72
+          }
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "request_index": 1,
+            "request_box": {
+              "x": 8,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_sha256": "b2d1b5b730df50cb26bc33b99b3ac2f734fffb8698e4c908686f3c8bebb9f84c",
+            "candidate": "Botella izquierda",
+            "confidence": 0.9,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-2",
+            "request_index": 2,
+            "request_box": {
+              "x": 37,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_sha256": "ffac16d18f0a29b2e108a72963bdb143202be3005ce9bc56de6952951264bf5f",
+            "candidate": "Botella central",
+            "confidence": 0.9,
+            "recognition_status": "identified",
+            "fallback_code": null
+          },
+          {
+            "region_id": "region-3",
+            "request_index": 3,
+            "request_box": {
+              "x": 66,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_sha256": "e77f0c9b7704cec5254d7ad04f07c0acee91e2a380f22b56e7b8376478250e56",
+            "candidate": "Botella derecha",
+            "confidence": 0.9,
+            "recognition_status": "identified",
+            "fallback_code": null
+          }
+        ]
+      }
+    }
+  ]
+}

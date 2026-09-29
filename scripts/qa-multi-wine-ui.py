@@ -26,6 +26,7 @@ MENU_SOURCE_FIXTURES = [
 MENU_FIXTURES = [ARTIFACTS / "fixtures" / f"{source.stem}.jpg" for source in MENU_SOURCE_FIXTURES]
 CHROME = os.environ.get("MATCHRIM_QA_CHROME")
 QA_ONLY = os.environ.get("MATCHRIM_QA_ONLY")
+TRACE_REPORT = os.environ.get("MATCHRIM_QA_TRACE_REPORT")
 
 
 def materialize_fixtures():
@@ -546,6 +547,7 @@ def run_region_trace_alignment_qa(browser, results, console_errors):
             name = "Botella central"
         else:
             name = "Botella derecha"
+        traces[-1]["candidate"] = name
         return {"candidates": [candidate(name, "Bodega trazada", 0.9, 80)]}
 
     install_routes(page, console_errors, response_handler=trace_handler)
@@ -575,6 +577,31 @@ def run_region_trace_alignment_qa(browser, results, console_errors):
         "expected": "tres cajas desordenadas se normalizan y cada region conserva caja, crop unico y resultado espacial",
         "actual": f"PASS traces={traces}",
     })
+    if TRACE_REPORT:
+        report_path = Path(TRACE_REPORT)
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(json.dumps({
+            "qualification": "local crop-alignment contract on the real cabinet image; detector and analysis responses are mocked",
+            "results": [{
+                "fixture": "multibottle-fridge-trace-contract",
+                "fixture_sha256": hashlib.sha256(LABEL_FIXTURE.read_bytes()).hexdigest(),
+                "backend": {
+                    "detector_version": "local-trace-detector-v1",
+                    "analysis_versions": ["local-trace-analysis-v1"],
+                    "detected_boxes": [trace["region_box"] for trace in sorted(traces, key=lambda item: item["region_index"])],
+                    "region_results": [{
+                        "region_id": trace["region_id"],
+                        "request_index": trace["region_index"],
+                        "request_box": trace["region_box"],
+                        "crop_sha256": trace["crop_sha256"],
+                        "candidate": trace["candidate"],
+                        "confidence": 0.9,
+                        "recognition_status": "identified",
+                        "fallback_code": None,
+                    } for trace in traces],
+                },
+            }],
+        }, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
     context.close()
 
 
