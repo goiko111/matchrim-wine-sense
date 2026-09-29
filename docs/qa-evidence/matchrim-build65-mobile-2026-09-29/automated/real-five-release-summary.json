@@ -1,0 +1,74 @@
+{
+  "build": "1.0 (65)",
+  "date": "2026-09-29",
+  "interception": false,
+  "productionBackend": true,
+  "allPassed": true,
+  "thresholds": {
+    "menuPrecision": 0.9,
+    "menuRecall": 0.85
+  },
+  "runtimeVersions": [
+    "matchrim-region-detector-v3",
+    "matchrim-region-analysis-v3-grounded",
+    "scan-wine-menu-2026-08-26-grounded-v3"
+  ],
+  "results": [
+    {
+      "fixture": "multibottle-fridge",
+      "status": "PASS",
+      "regions": 30,
+      "latencyMs": 54911,
+      "identityMetricScope": "not canonically annotated"
+    },
+    {
+      "fixture": "img_7547-2",
+      "status": "PASS",
+      "expected": 16,
+      "actual": 15,
+      "matched": 15,
+      "precision": 1.0,
+      "recall": 0.938,
+      "latencyMs": 39377
+    },
+    {
+      "fixture": "img_7548-2",
+      "status": "PASS",
+      "expected": 8,
+      "actual": 8,
+      "matched": 8,
+      "precision": 1.0,
+      "recall": 1.0,
+      "latencyMs": 23884
+    },
+    {
+      "fixture": "img_7552-2",
+      "status": "PASS",
+      "expected": 13,
+      "actual": 13,
+      "matched": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "latencyMs": 35304
+    },
+    {
+      "fixture": "img_7553-2",
+      "status": "PASS",
+      "expected": 32,
+      "actual": 31,
+      "matched": 31,
+      "precision": 1.0,
+      "recall": 0.969,
+      "latencyMs": 65084
+    }
+  ],
+  "visualQa": {
+    "passed": 27,
+    "total": 27,
+    "unhandledConsoleErrors": 0
+  },
+  "testflight": {
+    "upload": "succeeded",
+    "processing": true
+  }
+}

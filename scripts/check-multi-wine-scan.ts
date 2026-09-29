@@ -40,6 +40,7 @@ import { evaluateCandidateGrounding } from '../supabase/functions/analyze-wine-r
 import { shouldRejectTextAnalysis } from '../src/utils/imageAnalysis';
 import {
   buildMenuScanTiles,
+  getRightFocusMenuScanTile,
   mapMenuWineFromTile,
   mergeMenuTileResults,
   resolveMenuTileResults,
@@ -241,6 +242,7 @@ assert.equal(shouldRejectTextAnalysis({
 const landscapeTiles = buildMenuScanTiles(1800, 1200);
 assert.deepEqual(landscapeTiles.map((tile) => tile.id), ['left', 'right']);
 assert.deepEqual(landscapeTiles.map((tile) => tile.box.width), [56, 56]);
+assert.deepEqual(getRightFocusMenuScanTile().box, { x: 64, y: 0, width: 36, height: 100 });
 const portraitTiles = buildMenuScanTiles(1200, 1800);
 assert.deepEqual(portraitTiles.map((tile) => tile.id), ['top', 'bottom']);
 
@@ -264,7 +266,7 @@ const mergedMenu = mergeMenuTileResults([
   {
     tile: landscapeTiles[0],
     response: {
-      vinos: [menuWine('Solape', 84, 20, 'Solape 2021 20'), menuWine('Repetido', 20, 50, 'Repetido copa 8')],
+      vinos: [menuWine('Solape', 84, 20, 'Solape 2021 20'), { ...menuWine('Repetido', 20, 50, 'Repetido copa 8'), precio: 8, servicio: 'copa' }],
       has_profile: true,
       coverage: { status: 'reported_complete', estimated_visible_wines: 2 },
     },
@@ -272,7 +274,7 @@ const mergedMenu = mergeMenuTileResults([
   {
     tile: landscapeTiles[1],
     response: {
-      vinos: [menuWine('Solape', 5, 20, 'Solape 2021 20'), menuWine('Repetido', 80, 50, 'Repetido botella 30')],
+      vinos: [menuWine('Solape', 5, 20, 'Solape 2021 20'), { ...menuWine('Repetido', 80, 50, 'Repetido botella 30'), precio: 30, servicio: 'botella' }],
       coverage: { status: 'reported_complete', estimated_visible_wines: 2 },
     },
   },
@@ -291,6 +293,43 @@ const partialMenuDuplicate = mergeMenuTileResults([{
 }]);
 assert.equal(partialMenuDuplicate.vinos?.length, 1, 'a nearby partial row must merge into its richer canonical row');
 assert.equal(partialMenuDuplicate.vinos?.[0].productor, 'Ballard Lane');
+
+const noisyOcrDuplicate = mergeMenuTileResults([{
+  tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+  response: {
+    vinos: [
+      { ...menuWine('Costa di Rose', 70, 42, 'Costa di Rose Umberto Cesari'), productor: 'Umberto Cesari', seccion: 'ROSADOS' },
+      { ...menuWine('Costa di ros', 12, 72, 'Costa di ros'), productor: null, seccion: 'ROSADOS' },
+    ],
+  },
+}]);
+assert.equal(noisyOcrDuplicate.vinos?.length, 1, 'strong OCR truncations of the same identity must merge');
+
+const focusGrounding = mergeMenuTileResults([{
+  tile: getRightFocusMenuScanTile(),
+  response: {
+    vinos: [
+      { ...menuWine('Chambolle Musigny', 50, 50, 'Chambolle Musigny 35'), confidence: 0.7 },
+      { ...menuWine('Fino Ynocente', 50, 60, 'Fino Ynocente, Valdespino 29'), confidence: 0.84 },
+    ],
+  },
+}]);
+assert.deepEqual(
+  focusGrounding.vinos?.map((wine) => wine.nombre),
+  ['Fino Ynocente'],
+  'an uncorroborated focus crop must abstain below the identity-confidence gate',
+);
+
+const sameNameDifferentSection = mergeMenuTileResults([{
+  tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+  response: {
+    vinos: [
+      { ...menuWine('Huerto de la Condesa', 22, 22, 'Huerto de la Condesa, viognier, moscatel'), seccion: 'BLANCOS' },
+      { ...menuWine('Huerto de la Condesa', 22, 27, 'Huerto de la Condesa, garnacha, syrah'), seccion: 'TINTOS' },
+    ],
+  },
+}]);
+assert.equal(sameNameDifferentSection.vinos?.length, 2, 'same name in different sections must remain two menu rows');
 
 const clusteredPins = clusterOverlayPins([
   { key: '10', order: 10, x: 70, y: 42, value: 'partial' },
@@ -320,7 +359,63 @@ const uncertainFullMenu = resolveMenuTileResults([
     response: { vinos: [menuWine('Regional', 10, 10, 'Regional')], coverage: { status: 'reported_complete' } },
   },
 ]);
-assert.deepEqual(uncertainFullMenu.vinos?.map((wine) => wine.nombre), ['Regional']);
+assert.deepEqual(uncertainFullMenu.vinos?.map((wine) => wine.nombre), ['Duplicado completo', 'Regional']);
+
+const overlappingPartialSources = resolveMenuTileResults([
+  {
+    tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+    response: {
+      vinos: [
+        { ...menuWine('Chateau Miraval Rose', 20, 30, 'Chateau Miraval Rose 55 44'), precio: 55, seccion: 'France' },
+        { ...menuWine('Whispering Angels', 20, 40, 'Whispering Angels 52 41'), precio: 52, seccion: 'France' },
+      ],
+      coverage: { status: 'partial' },
+    },
+  },
+  {
+    tile: { id: 'bottom', box: { x: 0, y: 44, width: 100, height: 56 } },
+    response: {
+      vinos: [
+        { ...menuWine('Chateau Miraval Rose', 20, 30, 'Chateau Miraval Rose 55 44'), precio: 55, seccion: 'Rosados' },
+        { ...menuWine("Chateau d'Esclans Whispering Angels", 20, 40, "Chateau d'Esclans Whispering Angels 52 41"), precio: 52, seccion: 'France' },
+      ],
+      coverage: { status: 'reported_complete' },
+    },
+  },
+]);
+assert.deepEqual(
+  overlappingPartialSources.vinos?.map((wine) => wine.nombre),
+  ['Chateau Miraval Rose', 'Whispering Angels'],
+  'substantially overlapping full and regional scans must not duplicate the same menu rows',
+);
+
+const undercountedCompleteSource = resolveMenuTileResults([
+  {
+    tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+    response: {
+      vinos: [menuWine('Uno', 20, 20, 'Uno'), menuWine('Dos', 20, 30, 'Dos')],
+      coverage: { status: 'reported_complete', extracted_wines: 2 },
+    },
+  },
+  {
+    tile: { id: 'top', box: { x: 0, y: 0, width: 100, height: 56 } },
+    response: {
+      vinos: [
+        menuWine('Uno', 20, 20, 'Uno'),
+        menuWine('Dos', 20, 30, 'Dos'),
+        menuWine('Tres', 20, 40, 'Tres'),
+        menuWine('Cuatro', 20, 50, 'Cuatro'),
+        menuWine('Cinco', 20, 60, 'Cinco'),
+      ],
+      coverage: { status: 'partial', extracted_wines: 5 },
+    },
+  },
+]);
+assert.deepEqual(
+  undercountedCompleteSource.vinos?.map((wine) => wine.nombre),
+  ['Uno', 'Dos', 'Tres', 'Cuatro', 'Cinco'],
+  'a reported-complete full scan must not override materially broader regional evidence',
+);
 
 const makeRegion = (id: string, index: number, name: string, affinity: number): ScanRegion => ({
   id,
@@ -578,6 +673,9 @@ assert.equal((qaMenu.payload as { vinos: Array<{ nombre: string }> }).vinos[0].n
 
 assert.equal(isWineMenuItem({ nombre: 'Vermouth Ataman', tipo: 'aperitivo', seccion: 'Vermouth' }), false);
 assert.equal(isWineMenuItem({ nombre: 'Cerveza artesanal', tipo: 'cerveza', seccion: 'Cervezas' }), false);
+assert.equal(isWineMenuItem({ nombre: 'Chateau', tipo: 'tinto', seccion: 'Tintos' }), false);
+assert.equal(isWineMenuItem({ nombre: 'Chat', tipo: 'tinto', seccion: 'Tintos' }), false);
+assert.equal(isWineMenuItem({ nombre: 'Cha', tipo: 'tinto', seccion: 'Tintos' }), false);
 assert.equal(isWineMenuItem({ nombre: 'Fino Ynocente', tipo: 'generoso', seccion: 'Generosos' }), true);
 assert.equal(isWineMenuItem({ nombre: 'Pedro Ximenez Don PX', tipo: 'dulce', seccion: 'Dulces' }), true);
 

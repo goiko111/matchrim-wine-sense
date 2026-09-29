@@ -55,7 +55,7 @@ export interface MenuScanResponse {
 }
 
 export interface MenuScanTile {
-  id: 'full' | 'left' | 'right' | 'top' | 'bottom';
+  id: 'full' | 'left' | 'right' | 'right-focus' | 'top' | 'bottom';
   box: NormalizedBox;
 }
 
@@ -70,6 +70,10 @@ const fullTile: MenuScanTile = {
 };
 
 export const getFullMenuScanTile = () => ({ ...fullTile, box: { ...fullTile.box } });
+export const getRightFocusMenuScanTile = (): MenuScanTile => ({
+  id: 'right-focus',
+  box: { x: 64, y: 0, width: 36, height: 100 },
+});
 
 export const buildMenuScanTiles = (width: number, height: number): MenuScanTile[] => {
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
@@ -135,12 +139,25 @@ const positionAnchor = (wine: MenuScanWine) => {
   return { x: x + width / 2, y: y + height / 2 };
 };
 
+const commonPrefixRatio = (left: string, right: string) => {
+  const maxComparableLength = Math.min(left.length, right.length);
+  let commonLength = 0;
+  while (commonLength < maxComparableLength && left[commonLength] === right[commonLength]) commonLength += 1;
+  return commonLength / Math.max(1, maxComparableLength);
+};
+
 const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
+  const normalizedLeftName = normalizeText(left.nombre);
+  const normalizedRightName = normalizeText(right.nombre);
+  const sameName = normalizedLeftName === normalizedRightName
+    && normalizedLeftName.length >= 5;
+  const strongOcrName = Math.min(normalizedLeftName.length, normalizedRightName.length) >= 8
+    && normalizedLeftName !== normalizedRightName
+    && commonPrefixRatio(normalizedLeftName, normalizedRightName) >= 0.9;
   const identityOverlap = tokenOverlap(
     `${left.productor ?? ''} ${left.nombre}`,
     `${right.productor ?? ''} ${right.nombre}`,
   );
-  if (identityOverlap < 0.72) return false;
 
   const leftSource = normalizeText(left.texto_fuente);
   const rightSource = normalizeText(right.texto_fuente);
@@ -151,11 +168,21 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
   const leftAnchor = positionAnchor(left);
   const rightAnchor = positionAnchor(right);
   const samePosition = Boolean(leftAnchor && rightAnchor
-    && Math.abs(leftAnchor.x - rightAnchor.x) <= 7
-    && Math.abs(leftAnchor.y - rightAnchor.y) <= 7);
+    && Math.abs(leftAnchor.x - rightAnchor.x) <= 4
+    && Math.abs(leftAnchor.y - rightAnchor.y) <= 3);
 
-  const sameName = normalizeText(left.nombre) === normalizeText(right.nombre)
-    && normalizeText(left.nombre).length >= 5;
+  if (identityOverlap < 0.72 && !sameName && !strongOcrName) return false;
+
+  const nearName = Math.min(normalizedLeftName.length, normalizedRightName.length) >= 8
+    && (
+      normalizedLeftName.includes(normalizedRightName)
+      || normalizedRightName.includes(normalizedLeftName)
+      || commonPrefixRatio(normalizedLeftName, normalizedRightName) >= 0.86
+    );
+  const strongNearName = strongOcrName && nearName;
+  const leftSection = normalizeText(left.seccion);
+  const rightSection = normalizeText(right.seccion);
+  const conflictingSection = Boolean(leftSection && rightSection && leftSection !== rightSection);
   const leftProducer = normalizeText(left.productor);
   const rightProducer = normalizeText(right.productor);
   const missingProducer = !leftProducer || !rightProducer;
@@ -170,7 +197,7 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
     || source === normalizeText(right.nombre)
   ));
   const nearbyPartialIdentity = Boolean(
-    sameName
+    (sameName || nearName)
     && missingProducer
     && genericSource
     && !conflictingVintage
@@ -181,7 +208,27 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
     && Math.abs(leftAnchor.y - rightAnchor.y) <= 10
   );
 
-  return sameSource || samePosition || nearbyPartialIdentity;
+  const sameProducer = Boolean(
+    leftProducer && rightProducer && leftProducer === rightProducer
+  );
+  const plausiblySamePosition = !leftAnchor || !rightAnchor || (
+    Math.abs(leftAnchor.x - rightAnchor.x) <= 25
+    && Math.abs(leftAnchor.y - rightAnchor.y) <= 15
+  );
+  const sameCanonicalRow = Boolean(
+    (sameName || nearName)
+    && !conflictingVintage
+    && (
+      strongNearName
+      || ((!conflictingSection || samePosition) && !conflictingPrice && (
+        sameName
+        || (sameProducer && plausiblySamePosition)
+        || (missingProducer && plausiblySamePosition)
+      ))
+    )
+  );
+
+  return sameSource || samePosition || nearbyPartialIdentity || sameCanonicalRow;
 };
 
 const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
@@ -195,6 +242,15 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
     region: preferred.region || fallback.region,
     pais: preferred.pais || fallback.pais,
     precio: preferred.precio ?? fallback.precio,
+    precios: {
+      ...(fallback.precios ?? {}),
+      ...(preferred.precios ?? {}),
+    },
+    servicio: preferred.servicio === fallback.servicio
+      ? preferred.servicio
+      : preferred.servicio && fallback.servicio
+        ? 'ambos'
+        : preferred.servicio || fallback.servicio,
     texto_fuente: preferred.texto_fuente || fallback.texto_fuente,
     posicion: preferred.posicion || fallback.posicion,
     dudas: Array.from(new Set([...(left.dudas ?? []), ...(right.dudas ?? [])])),
@@ -207,6 +263,10 @@ export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanRespons
   results.forEach(({ tile, response }) => {
     (response.vinos ?? []).map((wine) => mapMenuWineFromTile(wine, tile)).forEach((wine) => {
       const duplicateIndex = wines.findIndex((existing) => isOverlapDuplicate(existing, wine));
+      const isUncorroboratedFocusGuess = tile.id === 'right-focus'
+        && duplicateIndex === -1
+        && (wine.confidence ?? 0) < 0.72;
+      if (isUncorroboratedFocusGuess) return;
       if (duplicateIndex === -1) wines.push(wine);
       else wines[duplicateIndex] = richerWine(wines[duplicateIndex], wine);
     });
@@ -238,13 +298,32 @@ export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanRespons
 
 export const resolveMenuTileResults = (results: MenuTileResult[]): MenuScanResponse => {
   const fullResult = results.find((result) => result.tile.id === 'full');
-  if (
-    fullResult
-    && fullResult.response.coverage?.status === 'reported_complete'
-    && (fullResult.response.vinos?.length ?? 0) > 0
-  ) {
-    return mergeMenuTileResults([fullResult]);
+  const focusResults = results.filter((result) => result.tile.id === 'right-focus');
+  const regionalResults = results.filter((result) => result.tile.id !== 'full' && result.tile.id !== 'right-focus');
+  if (!fullResult || regionalResults.length === 0) {
+    return mergeMenuTileResults([...regionalResults, ...focusResults].length
+      ? [...regionalResults, ...focusResults]
+      : results);
   }
-  const regionalResults = results.filter((result) => result.tile.id !== 'full');
-  return mergeMenuTileResults(regionalResults.length ? regionalResults : results);
+
+  const fullWines = mergeMenuTileResults([fullResult]).vinos ?? [];
+  const regionalWines = mergeMenuTileResults(regionalResults).vinos ?? [];
+  const overlappingRegionalRows = regionalWines.filter((regionalWine) => (
+    fullWines.some((fullWine) => isOverlapDuplicate(fullWine, regionalWine))
+  )).length;
+  const overlapRatio = overlappingRegionalRows / Math.max(1, Math.min(fullWines.length, regionalWines.length));
+
+  // A partial full-page scan and its tiles often repeat the same rows with slightly
+  // different OCR or prices. Prefer one base when they substantially agree, then
+  // add the narrow focus crop only for genuinely complementary content.
+  const substantiallySameDocument = overlapRatio >= 0.6;
+  const regionalMateriallyBroader = substantiallySameDocument
+    && regionalWines.length >= fullWines.length + 3;
+  const baseResults = fullResult.response.coverage?.status === 'reported_complete'
+    ? (regionalMateriallyBroader ? regionalResults : [fullResult])
+    : substantiallySameDocument
+      ? (regionalMateriallyBroader ? regionalResults : [fullResult])
+      : [fullResult, ...regionalResults];
+
+  return mergeMenuTileResults([...baseResults, ...focusResults]);
 };

@@ -39,6 +39,7 @@ import {
 import {
   buildMenuScanTiles,
   getFullMenuScanTile,
+  getRightFocusMenuScanTile,
   resolveMenuTileResults,
   type MenuScanResponse as WineMenuScanResponse,
   type MenuScanTile,
@@ -579,15 +580,28 @@ export const WineMenuScanner = ({
         const firstFailure = settledTiles.find((result) => result.status === 'rejected');
         throw firstFailure?.status === 'rejected' ? firstFailure.reason : new Error('No se pudo analizar la carta');
       }
-      const failedTileCount = settledTiles.length - successfulTiles.length;
-      const data = resolveMenuTileResults(successfulTiles);
+      let failedTileCount = settledTiles.length - successfulTiles.length;
+      let attemptedTileCount = settledTiles.length;
+      let data = resolveMenuTileResults(successfulTiles);
+      if (!isMatchrimFixtureQaEnabled && data.coverage?.status !== 'reported_complete') {
+        const focusTile = getRightFocusMenuScanTile();
+        attemptedTileCount += 1;
+        try {
+          const focusImage = await cropImageRegion(base64File, focusTile.box, 0, 1800);
+          successfulTiles.push({ tile: focusTile, response: await invokeScan(focusTile, focusImage) });
+          data = resolveMenuTileResults(successfulTiles);
+        } catch (error) {
+          if (error instanceof DOMException && error.name === 'AbortError') throw error;
+          failedTileCount += 1;
+        }
+      }
       if (failedTileCount > 0) {
         data.coverage = {
           ...data.coverage,
           status: 'partial',
           notes: [
             ...(data.coverage?.notes ?? []),
-            `${failedTileCount} de ${settledTiles.length} regiones no terminaron; vuelve a analizar esa zona.`,
+            `${failedTileCount} de ${attemptedTileCount} regiones no terminaron; vuelve a analizar esa zona.`,
           ],
         };
       }
@@ -1400,7 +1414,9 @@ export const WineMenuScanner = ({
 		                  >
 	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
 		                    <span className="min-w-0 flex-1">
-		                      <span className="block truncate font-semibold text-slate-950">{wine.nombre}</span>
+	                      <span className="block truncate font-semibold text-slate-950">
+                            {wine.nombre}{wine.anada ? ` ${wine.anada}` : ''}
+                          </span>
 		                      <span className="block truncate text-xs text-slate-500">
 		                        {[wine.productor, wine.region, wine.servicio, formatPrice(wine.precio)].filter(Boolean).join(' · ') || 'Datos por revisar'}
 		                      </span>

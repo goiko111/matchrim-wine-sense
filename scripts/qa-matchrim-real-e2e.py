@@ -23,6 +23,9 @@ CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 TIMEOUT_MS = int(os.environ.get("MATCHRIM_E2E_TIMEOUT_MS", "180000"))
 MIN_MENU_PRECISION = float(os.environ.get("MATCHRIM_MIN_MENU_PRECISION", "0.90"))
 MIN_MENU_RECALL = float(os.environ.get("MATCHRIM_MIN_MENU_RECALL", "0.85"))
+SELECTED_FIXTURE_IDS = {
+    value.strip() for value in os.environ.get("MATCHRIM_E2E_FIXTURE_IDS", "").split(",") if value.strip()
+}
 
 FIXTURES = [
     {
@@ -83,8 +86,15 @@ FIXTURES = [
             "Mayela 2023", "Domaine de la Janasse", "Huerto de la Condesa", "Prieler Blaufrankisch",
             "Diaz Bayo 4 Meses", "Agricola de Cadalso", "Casa Castillo", "La Vina de Ayer",
             "Nat Cool Zorzal", "Lopez de Haro Rosado", "L'Arnaude",
+            "Joan Raventos Rose BN", "Agusti Torello Kripta", "Maxim Riesling Sekt Brut",
+            "Manzanilla Pasada Xixarito", "Manzanilla Alegria", "Fino Viejo Tradicion",
+            "Fino Ynocente", "Amontillado Vina AB", "Amontillado El Contrabandista",
+            "Bertola Palo Cortado", "Oloroso Don Nuno", "Moscatel Zumbral", "Pedro Ximenez Don PX",
         ],
-        "rationale": "Diecinueve lineas completas: ocho blancos, nueve tintos y dos rosados.",
+        "rationale": (
+            "Treinta y dos referencias legibles: diecinueve en la pagina izquierda y trece vinos "
+            "de espumosos, generosos y dulces visibles en la pagina derecha; vermut y cervezas se excluyen."
+        ),
     },
 ]
 
@@ -145,8 +155,18 @@ def single_name_similarity(expected, actual):
         return 0.96
     left_tokens = set(left.split())
     right_tokens = set(right.split())
-    token_overlap = len(left_tokens & right_tokens) / max(1, min(len(left_tokens), len(right_tokens)))
-    return max(SequenceMatcher(None, left, right).ratio(), token_overlap)
+    token_overlap = len(left_tokens & right_tokens) / max(1, len(left_tokens | right_tokens))
+    left_parts = left.split()
+    right_parts = right.split()
+    shorter, longer = (left_parts, right_parts) if len(left_parts) <= len(right_parts) else (right_parts, left_parts)
+    window_similarity = max(
+        (
+            SequenceMatcher(None, " ".join(shorter), " ".join(longer[index:index + len(shorter)])).ratio()
+            for index in range(len(longer) - len(shorter) + 1)
+        ),
+        default=0.0,
+    )
+    return max(SequenceMatcher(None, left, right).ratio(), token_overlap, window_similarity)
 
 
 def name_similarity(expected, actual):
@@ -186,7 +206,7 @@ def compare_wine_names(expected_names, actual_names):
     for expected_index, expected in enumerate(expected_names):
         for actual_index, actual in enumerate(actual_names):
             score = name_similarity(expected, actual)
-            if score >= 0.68:
+            if score >= 0.78:
                 candidate_pairs.append((score, expected_index, actual_index))
     matched_expected = set()
     matched_actual = set()
@@ -389,7 +409,8 @@ def merge_menu_items(items):
 def compact_backend_observation(api_calls):
     detector = next((call for call in reversed(api_calls) if call["function"] == "detect-wine-regions"), None)
     analyzers = [call for call in api_calls if call["function"] == "analyze-wine-region"]
-    menus = [call for call in api_calls if call["function"] == "scan-wine-menu"]
+    menu_calls = [call for call in api_calls if call["function"] == "scan-wine-menu"]
+    menus = list(menu_calls)
     if menus:
         full_menu = next((
             menu for menu in menus
@@ -441,6 +462,12 @@ def compact_backend_observation(api_calls):
         return {
             "function": "scan-wine-menu", "http_status": max(menu["status"] for menu in menus),
             "call_count": len(menus), "versions": sorted(set(versions)),
+            "attempted_call_count": len(menu_calls),
+            "recovered_menu_failures": (
+                sum(1 for menu in menu_calls if menu["status"] != 200)
+                if any(menu["status"] == 200 for menu in menu_calls)
+                else 0
+            ),
             "coverage": {"status": coverage_status, "extracted_wines": len(items)},
             "names": [menu_identity(item) for item in items],
             "items": items,
@@ -651,7 +678,10 @@ def run_fixture(browser, fixture, file_path):
     screenshot = ARTIFACTS / f"{fixture['id']}-real-mobile.png"
     page.screenshot(path=str(screenshot), full_page=True)
     unhandled_console_errors = list(console_errors)
-    recovered_failures = backend.get("recovered_analysis_failures", 0)
+    recovered_failures = (
+        backend.get("recovered_analysis_failures", 0)
+        + backend.get("recovered_menu_failures", 0)
+    )
     for _ in range(recovered_failures):
         recovered_index = next((
             index for index, message in enumerate(unhandled_console_errors)
@@ -675,6 +705,16 @@ def run_fixture(browser, fixture, file_path):
         "overflow_elements": overflow_elements,
         "unhandled_console_errors": unhandled_console_errors,
         "network_failures": network_failures, "screenshot": str(screenshot),
+        "api_call_summaries": [{
+            "function": call.get("function"),
+            "status": call.get("status"),
+            "tile": (call.get("request_payload") or {}).get("scan_region", {}).get("id"),
+            "coverage": (call.get("payload") or {}).get("coverage"),
+            "wine_names": [
+                wine.get("nombre") for wine in (call.get("payload") or {}).get("vinos", [])
+                if isinstance(wine, dict) and wine.get("nombre")
+            ],
+        } for call in api_calls],
         "status": "PASS" if passed else "BLOCKED_OR_FAIL", "visible_excerpt": body_text[-1200:],
     }
     context.close()
@@ -684,7 +724,14 @@ def run_fixture(browser, fixture, file_path):
 def main():
     refuse_production_url()
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
-    materialized = [(fixture, materialize_fixture(fixture)) for fixture in FIXTURES]
+    selected_fixtures = [
+        fixture for fixture in FIXTURES
+        if not SELECTED_FIXTURE_IDS or fixture["id"] in SELECTED_FIXTURE_IDS
+    ]
+    missing_ids = SELECTED_FIXTURE_IDS - {fixture["id"] for fixture in selected_fixtures}
+    if missing_ids:
+        raise ValueError(f"Unknown fixture ids: {sorted(missing_ids)}")
+    materialized = [(fixture, materialize_fixture(fixture)) for fixture in selected_fixtures]
     results = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
