@@ -160,6 +160,7 @@ export const areLikelySamePhysicalDetection = (left: NormalizedBox, right: Norma
   const areaRatio = Math.max(leftArea, rightArea) / Math.min(leftArea, rightArea);
   if (areaRatio >= 1.3 && intersectionOverSmallerArea(left, right) >= 0.84) return true;
   if (areaRatio >= 4 && intersectionOverSmallerArea(left, right) >= 0.6) return true;
+  if (areaRatio >= 8 && intersectionOverSmallerArea(left, right) >= 0.5) return true;
 
   const horizontalOverlap = overlapRatio(left.x, left.width, right.x, right.width);
   const verticalOverlap = overlapRatio(left.y, left.height, right.y, right.height);
@@ -173,6 +174,18 @@ export const areLikelySamePhysicalDetection = (left: NormalizedBox, right: Norma
     && horizontalOverlap >= 0.7
     && verticalOverlap >= 0.25
     && horizontalCenterDistance <= Math.max(3, narrowWidth * 0.4)) return true;
+
+  const verticalGap = Math.max(
+    0,
+    Math.max(left.y, right.y) - Math.min(left.y + left.height, right.y + right.height),
+  );
+  if (verticalOverlap === 0
+    && verticalGap <= 6
+    && Math.min(left.height, right.height) <= 30
+    && Math.max(left.height, right.height) >= 45
+    && areaRatio >= 1.5
+    && horizontalOverlap >= 0.75
+    && horizontalCenterDistance <= Math.max(4, narrowWidth * 0.2)) return true;
 
   return areaRatio >= 2.2
     && horizontalOverlap >= 0.5

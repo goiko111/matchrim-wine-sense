@@ -21,6 +21,12 @@ const normalizedProducer = (wine: WineIdentityLike) => (
   normalizeIdentityPart(wine.producer ?? wine.winery)
 );
 
+export const buildCanonicalWineIdentity = (wine: WineIdentityLike) => [
+  normalizeIdentityPart(wine.name).replace(/\s+/g, ''),
+  normalizedProducer(wine).replace(/\s+/g, ''),
+  normalizeIdentityPart(wine.vintage).replace(/\s+/g, ''),
+].join('|');
+
 export const isSameWineIdentity = (left: WineIdentityLike, right: WineIdentityLike) => {
   const leftName = normalizeIdentityPart(left.name);
   const rightName = normalizeIdentityPart(right.name);

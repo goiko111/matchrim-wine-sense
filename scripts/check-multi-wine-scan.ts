@@ -84,6 +84,18 @@ assert.equal(areLikelySamePhysicalDetection(
   { x: 10, y: 11, width: 13, height: 72 },
   { x: 20, y: 15, width: 13, height: 69 },
 ), false, 'adjacent bottles in a dense shelf must remain independent');
+assert.equal(areLikelySamePhysicalDetection(
+  { x: 10.3, y: 7.41, width: 77.29, height: 55.45 },
+  { x: 12.01, y: 67.22, width: 64.67, height: 26.68 },
+), true, 'a detached lower label fragment aligned with a large bottle should collapse');
+assert.equal(areLikelySamePhysicalDetection(
+  { x: 48, y: 0, width: 46, height: 98 },
+  { x: 43, y: 42, width: 11, height: 19 },
+), true, 'a tiny label mostly contained by a much larger bottle should collapse');
+assert.equal(areLikelySamePhysicalDetection(
+  { x: 10, y: 0, width: 25, height: 42 },
+  { x: 10, y: 48, width: 25, height: 42 },
+), false, 'similarly sized bottles stacked in one column must remain independent');
 
 const malformedDenseDetection = {
   coverage: { status: 'partial', estimated_visible_objects: 70, confidence: 0.9 },

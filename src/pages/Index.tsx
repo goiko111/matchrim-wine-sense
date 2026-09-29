@@ -80,7 +80,7 @@ const Index = () => {
           .maybeSingle(),
         supabase
           .from('user_wines')
-          .select('name, producer, vintage, rating, sensory_attributes, use_for_profile_training')
+          .select('name, producer, vintage, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
           .eq('user_id', user.id),
       ]);
 

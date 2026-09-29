@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
+import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from '../_shared/matchrim-learning.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,12 +14,7 @@ type MatchrimProfile = {
   tanico: number;
   afrutado: number;
 };
-type Rating = 'love' | 'ok' | 'not_for_me' | null;
 type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', number>>;
-type RatedWine = {
-  rating: Rating;
-  sensory_attributes: Record<string, unknown> | null;
-};
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 const FUNCTION_VERSION = 'scan-wine-menu-2026-08-27-regional-v4-candidate';
@@ -64,13 +60,6 @@ const normalizeSensoryAttributes = (
   return any ? out : null;
 };
 
-const ratingWeight = (rating: string | null) => {
-  if (rating === 'love') return 1;
-  if (rating === 'ok') return 0.25;
-  if (rating === 'not_for_me') return -0.8;
-  return 0;
-};
-
 const buildLearnedProfile = async (
   supabaseClient: ReturnType<typeof createClient>,
   userId: string,
@@ -78,7 +67,7 @@ const buildLearnedProfile = async (
 ): Promise<MatchrimProfile> => {
   const { data: ratedWines, error } = await supabaseClient
     .from('user_wines')
-    .select('rating, sensory_attributes')
+    .select('rating, sensory_attributes, created_at, updated_at')
     .eq('user_id', userId)
     .not('rating', 'is', null)
     .not('sensory_attributes', 'is', null)
@@ -89,38 +78,7 @@ const buildLearnedProfile = async (
     return baseProfile;
   }
 
-  const deltas = { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 };
-  let totalWeight = 0;
-  let samples = 0;
-
-  (ratedWines as RatedWine[]).forEach((wine) => {
-    const weight = ratingWeight(wine.rating);
-    const attrs = normalizeSensoryAttributes(wine.sensory_attributes);
-    if (!weight || !attrs) return;
-    if (
-      attrs.potencia == null || attrs.acidez == null ||
-      attrs.dulzura == null || attrs.taninos == null || attrs.afrutado == null
-    ) return;
-
-    deltas.potente += (attrs.potencia - baseProfile.potente) * weight;
-    deltas.acidez += (attrs.acidez - baseProfile.acidez) * weight;
-    deltas.dulce += (attrs.dulzura - baseProfile.dulce) * weight;
-    deltas.tanico += (attrs.taninos - baseProfile.tanico) * weight;
-    deltas.afrutado += (attrs.afrutado - baseProfile.afrutado) * weight;
-    totalWeight += Math.abs(weight);
-    samples += 1;
-  });
-
-  if (!samples || totalWeight === 0) return baseProfile;
-
-  const blend = Math.min(0.75, 0.25 + samples * 0.05);
-  return {
-    potente: clamp(Math.round((baseProfile.potente + (deltas.potente / totalWeight) * blend) * 10) / 10, 0, 5),
-    acidez: clamp(Math.round((baseProfile.acidez + (deltas.acidez / totalWeight) * blend) * 10) / 10, 0, 5),
-    dulce: clamp(Math.round((baseProfile.dulce + (deltas.dulce / totalWeight) * blend) * 10) / 10, 0, 5),
-    tanico: clamp(Math.round((baseProfile.tanico + (deltas.tanico / totalWeight) * blend) * 10) / 10, 0, 5),
-    afrutado: clamp(Math.round((baseProfile.afrutado + (deltas.afrutado / totalWeight) * blend) * 10) / 10, 0, 5),
-  };
+  return calculateEdgeLearnedProfile(baseProfile, ratedWines as MatchrimTrainingRow[]);
 };
 
 const calculateCompatibilityScale5 = (profile: MatchrimProfile, attrs: SensoryAttributes) => {

@@ -56,7 +56,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
           .maybeSingle(),
         supabase
           .from('user_wines')
-          .select('rating, sensory_attributes')
+          .select('rating, sensory_attributes, created_at, updated_at')
           .eq('user_id', user.id)
           .eq('use_for_profile_training', true)
           .not('rating', 'is', null)
@@ -74,7 +74,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
         `Código Matchrim estable: ${generateMatchrimCode(baseProfile as MatchrimProfileLike)}.`,
         `Perfil activo 0-5: potencia ${active.potente}, acidez ${active.acidez}, dulzura ${active.dulce}, taninos ${active.tanico}, fruta ${active.afrutado}.`,
         learned.samples > 0
-          ? `Aprendizaje basado en ${learned.samples} valoraciones explícitas; confianza ${learned.confidence}%.`
+          ? `Aprendizaje basado en ${learned.samples} valoraciones explícitas; confianza ${learned.confidence}%, coherencia ${learned.calibration.consistency}% y diversidad ${learned.calibration.diversity}%.${learned.calibration.conflicting ? ' Las señales se contradicen: dilo y no presentes la afinidad como estable.' : ''}`
           : 'Sin aprendizaje por valoraciones todavía; usa únicamente el test base.',
         AIRIM_EVIDENCE_GUARDRAILS,
       ].join('\n'));

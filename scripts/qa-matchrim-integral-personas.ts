@@ -61,9 +61,14 @@ const personas: Persona[] = [
 
 const candidate = (id: string | undefined) => catalog.find((wine) => wine.id === id);
 
-const signal = (wine: CatalogWine, rating: 'love' | 'not_for_me'): TrainableWine => ({
+const signal = (
+  wine: CatalogWine,
+  rating: 'love' | 'not_for_me',
+  updatedAt?: string,
+): TrainableWine => ({
   rating,
   sensory_attributes: wine.sensory_attributes,
+  updated_at: updatedAt,
 });
 
 const buildSignals = (persona: Persona, count: number) => {
@@ -120,14 +125,25 @@ const rows = personas.map((persona) => {
   if (persona.changesOpinion) {
     const oldTarget = candidate(persona.targetId)!;
     const newTarget = candidate(persona.antiId)!;
+    const staleDate = '2025-09-29T12:00:00.000Z';
+    const recentDate = '2026-09-29T12:00:00.000Z';
     const weakChangeRatings = [
-      ...Array.from({ length: 15 }, () => signal(oldTarget, 'not_for_me')),
-      ...Array.from({ length: 5 }, () => signal(newTarget, 'love')),
+      ...Array.from({ length: 15 }, () => signal(oldTarget, 'love', staleDate)),
+      ...Array.from({ length: 5 }, () => signal(newTarget, 'love', recentDate)),
     ];
     const weakChange = auditMatchrimLearning(persona.base, weakChangeRatings, catalog);
+    const weakTopThree = weakChange.recommendations.slice(0, 3).map((wine) => wine.id);
+    assert.ok(
+      weakTopThree.includes(newTarget.id),
+      'Five consistent recent ratings must move the changed preference into the top three',
+    );
+    assert.ok(
+      weakChange.learned.confidence < 90,
+      'A recent preference reversal must expose uncertainty rather than claim full confidence',
+    );
     const sustainedChangeRatings = [
-      ...Array.from({ length: 5 }, () => signal(oldTarget, 'not_for_me')),
-      ...Array.from({ length: 15 }, () => signal(newTarget, 'love')),
+      ...Array.from({ length: 5 }, () => signal(oldTarget, 'love', staleDate)),
+      ...Array.from({ length: 15 }, () => signal(newTarget, 'love', recentDate)),
     ];
     const sustainedChange = auditMatchrimLearning(persona.base, sustainedChangeRatings, catalog);
     assert.equal(sustainedChange.recommendations[0]?.id, newTarget.id, 'A sustained edited preference must converge on the new target');
@@ -135,6 +151,7 @@ const rows = personas.map((persona) => {
       weakChange: {
         currentRatingRows: weakChangeRatings.length,
         top: weakChange.recommendations[0]?.id || 'none',
+        topThree: weakTopThree,
         expectedTarget: newTarget.id,
         converged: weakChange.recommendations[0]?.id === newTarget.id,
         confidence: weakChange.learned.confidence,
@@ -244,8 +261,10 @@ const report = {
   modelLimits: {
     budgetIsPersistentTasteDimension: false,
     occasionIsPersistentTasteDimension: false,
-    confidenceMeasuresDiversity: false,
-    confidenceDefinition: 'min(100, rounded sample count / 12 * 100)',
+    confidenceMeasuresDiversity: true,
+    confidenceMeasuresContradiction: true,
+    recencyIsAppliedWhenTimestampsExist: true,
+    confidenceDefinition: 'sample coverage calibrated by directional consistency and sensory diversity; profile deltas use a 120-day recency decay with a 0.2 floor',
   },
   virtualCohort: {
     count: cohortLatencies.length,

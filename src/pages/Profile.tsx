@@ -322,7 +322,7 @@ const Profile = () => {
     const loadTrainingWines = async () => {
       const { data, error } = await supabase
         .from('user_wines')
-        .select('rating, sensory_attributes, use_for_profile_training')
+        .select('rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
         .eq('user_id', user.id)
         .or('use_for_profile_training.is.null,use_for_profile_training.eq.true')
         .not('rating', 'is', null)

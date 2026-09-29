@@ -6,12 +6,20 @@ type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'tan
 export interface TrainableWine {
   rating?: Rating;
   sensory_attributes?: SensoryAttributes | null;
+  updated_at?: string | null;
+  created_at?: string | null;
 }
 
 export interface LearnedMatchrimProfile {
   profile: MatchrimProfileLike;
   confidence: number;
   samples: number;
+  calibration: {
+    consistency: number;
+    diversity: number;
+    datedEvidence: number;
+    conflicting: boolean;
+  };
 }
 
 export interface MatchrimRecommendationCandidate {
@@ -88,6 +96,17 @@ const ratingWeight = (rating: Rating) => {
   return 0;
 };
 
+const evidenceTimestamp = (wine: TrainableWine) => {
+  const value = wine.updated_at || wine.created_at;
+  if (!value) return null;
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) ? timestamp : null;
+};
+
+const sensorySignature = (attrs: SensoryAttributes) => ATTRS
+  .map(([, sourceKey]) => normalizeSensoryValue(attrs[sourceKey]))
+  .join(':');
+
 export const calculateLearnedMatchrimProfile = (
   baseProfile: MatchrimProfileLike,
   wines: TrainableWine[]
@@ -99,33 +118,73 @@ export const calculateLearnedMatchrimProfile = (
     tanico: 0,
     afrutado: 0,
   };
-  let totalWeight = 0;
-  let samples = 0;
-
-  wines.forEach((wine) => {
+  const absoluteDeltas: Record<keyof MatchrimProfileLike, number> = {
+    potente: 0,
+    acidez: 0,
+    dulce: 0,
+    tanico: 0,
+    afrutado: 0,
+  };
+  const validWines = wines.filter((wine) => {
     const weight = ratingWeight(wine.rating ?? null);
     const attrs = wine.sensory_attributes;
-    if (!weight || !attrs) return;
+    return Boolean(weight && attrs && ATTRS.every(([, sourceKey]) => (
+      normalizeSensoryValue(attrs[sourceKey]) !== null
+    )));
+  });
+  const timestamps = validWines.map(evidenceTimestamp).filter((value): value is number => value !== null);
+  const newestTimestamp = timestamps.length ? Math.max(...timestamps) : null;
+  const signatures = new Set<string>();
+  let totalWeight = 0;
+  let samples = 0;
+  let datedSamples = 0;
 
-    const hasUsableAttrs = ATTRS.every(([, sourceKey]) => normalizeSensoryValue(attrs[sourceKey]) !== null);
-    if (!hasUsableAttrs) return;
+  validWines.forEach((wine) => {
+    const weight = ratingWeight(wine.rating ?? null);
+    const attrs = wine.sensory_attributes!;
+    const timestamp = evidenceTimestamp(wine);
+    const ageDays = timestamp !== null && newestTimestamp !== null
+      ? Math.max(0, (newestTimestamp - timestamp) / 86_400_000)
+      : 0;
+    const recencyWeight = timestamp === null ? 1 : 0.2 + 0.8 * Math.pow(0.5, ageDays / 120);
+    const effectiveWeight = weight * recencyWeight;
+    signatures.add(sensorySignature(attrs));
+    if (timestamp !== null) datedSamples += 1;
 
     ATTRS.forEach(([targetKey, sourceKey]) => {
       const sensoryValue = normalizeSensoryValue(attrs[sourceKey]);
       if (sensoryValue === null) return;
-      deltas[targetKey] += (sensoryValue - baseProfile[targetKey]) * weight;
+      const contribution = (sensoryValue - baseProfile[targetKey]) * effectiveWeight;
+      deltas[targetKey] += contribution;
+      absoluteDeltas[targetKey] += Math.abs(contribution);
     });
 
-    totalWeight += Math.abs(weight);
+    totalWeight += Math.abs(effectiveWeight);
     samples += 1;
   });
 
   if (!samples || totalWeight === 0) {
-    return { profile: baseProfile, confidence: 0, samples: 0 };
+    return {
+      profile: baseProfile,
+      confidence: 0,
+      samples: 0,
+      calibration: { consistency: 0, diversity: 0, datedEvidence: 0, conflicting: false },
+    };
   }
 
-  const confidence = Math.min(100, Math.round((samples / 12) * 100));
-  const blend = Math.min(0.75, 0.25 + samples * 0.05);
+  const totalAbsoluteDelta = Object.values(absoluteDeltas).reduce((sum, value) => sum + value, 0);
+  const consistencyRatio = totalAbsoluteDelta > 0
+    ? ATTRS.reduce((sum, [targetKey]) => sum + Math.abs(deltas[targetKey]), 0) / totalAbsoluteDelta
+    : 1;
+  const diversityRatio = Math.min(1, signatures.size / Math.min(samples, 6));
+  const sampleCoverage = Math.min(1, samples / 12);
+  const confidence = Math.round(
+    sampleCoverage
+      * (0.55 + 0.45 * consistencyRatio)
+      * (0.65 + 0.35 * diversityRatio)
+      * 100,
+  );
+  const blend = Math.min(0.9, 0.25 + samples * 0.05);
   const learnedProfile = { ...baseProfile };
 
   ATTRS.forEach(([targetKey]) => {
@@ -138,6 +197,12 @@ export const calculateLearnedMatchrimProfile = (
     profile: learnedProfile,
     confidence,
     samples,
+    calibration: {
+      consistency: Math.round(consistencyRatio * 100),
+      diversity: Math.round(diversityRatio * 100),
+      datedEvidence: Math.round((datedSamples / samples) * 100),
+      conflicting: samples >= 4 && consistencyRatio < 0.55,
+    },
   };
 };
 

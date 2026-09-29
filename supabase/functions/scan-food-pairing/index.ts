@@ -1,12 +1,14 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { MAX_MENU_DISHES, normalizeFoodScan } from "./contract.ts";
+import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from "../_shared/matchrim-learning.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const FUNCTION_VERSION = 'scan-food-pairing-2026-06-30-client-profile-v1';
+const FUNCTION_VERSION = 'scan-food-pairing-2026-09-29-complete-menu-candidate-v2';
 
 type MatchrimProfile = {
   potente: number;
@@ -15,8 +17,6 @@ type MatchrimProfile = {
   tanico: number;
   afrutado: number;
 };
-type Rating = "love" | "ok" | "not_for_me" | null;
-type SensoryAttributes = Partial<Record<"potencia" | "acidez" | "dulzura" | "taninos" | "afrutado", number>>;
 
 const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 
@@ -29,30 +29,6 @@ const normalizeSensoryValueTo5 = (value: unknown): number | null => {
   return clamp(Math.round(v), 1, 5);
 };
 
-const normalizeSensoryAttributes = (
-  attrs: Record<string, unknown> | null | undefined,
-): SensoryAttributes | null => {
-  if (!attrs || typeof attrs !== "object") return null;
-  const keys = ["potencia", "acidez", "dulzura", "taninos", "afrutado"] as const;
-  const out: SensoryAttributes = {};
-  let any = false;
-  for (const k of keys) {
-    const v = normalizeSensoryValueTo5((attrs as Record<string, unknown>)[k]);
-    if (v !== null) {
-      out[k] = v;
-      any = true;
-    }
-  }
-  return any ? out : null;
-};
-
-const ratingWeight = (rating: Rating) => {
-  if (rating === "love") return 1;
-  if (rating === "ok") return 0.25;
-  if (rating === "not_for_me") return -0.8;
-  return 0;
-};
-
 const buildLearnedProfile = async (
   // deno-lint-ignore no-explicit-any
   client: any,
@@ -61,7 +37,7 @@ const buildLearnedProfile = async (
 ): Promise<MatchrimProfile> => {
   const { data, error } = await client
     .from("user_wines")
-    .select("rating, sensory_attributes, use_for_profile_training")
+    .select("rating, sensory_attributes, use_for_profile_training, created_at, updated_at")
     .eq("user_id", userId)
     .eq("use_for_profile_training", true)
     .not("rating", "is", null)
@@ -69,30 +45,7 @@ const buildLearnedProfile = async (
     .limit(50);
   if (error || !data?.length) return baseProfile;
 
-  const deltas = { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 };
-  let totalWeight = 0;
-  let samples = 0;
-
-  // deno-lint-ignore no-explicit-any
-  data.forEach((wine: any) => {
-    const w = ratingWeight(wine.rating as Rating);
-    const a = normalizeSensoryAttributes(wine.sensory_attributes);
-    if (!w || !a) return;
-    if (a.potencia == null || a.acidez == null || a.dulzura == null || a.taninos == null || a.afrutado == null) return;
-    deltas.potente += (a.potencia - baseProfile.potente) * w;
-    deltas.acidez += (a.acidez - baseProfile.acidez) * w;
-    deltas.dulce += (a.dulzura - baseProfile.dulce) * w;
-    deltas.tanico += (a.taninos - baseProfile.tanico) * w;
-    deltas.afrutado += (a.afrutado - baseProfile.afrutado) * w;
-    totalWeight += Math.abs(w);
-    samples += 1;
-  });
-
-  if (!samples || !totalWeight) return baseProfile;
-  const blend = Math.min(0.75, 0.25 + samples * 0.05);
-  const r = (key: keyof MatchrimProfile) =>
-    clamp(Math.round((baseProfile[key] + (deltas[key] / totalWeight) * blend) * 10) / 10, 0, 5);
-  return { potente: r("potente"), acidez: r("acidez"), dulce: r("dulce"), tanico: r("tanico"), afrutado: r("afrutado") };
+  return calculateEdgeLearnedProfile(baseProfile, data as MatchrimTrainingRow[]);
 };
 
 const tryParseJson = (txt: string): unknown => {
@@ -105,44 +58,6 @@ const tryParseJson = (txt: string): unknown => {
     }
     return null;
   }
-};
-
-const clampMatch = (v: unknown): number => {
-  const n = Number(v);
-  if (!Number.isFinite(n)) return 0;
-  return clamp(Math.round(n), 0, 100);
-};
-
-const normalizeRecommendation = (raw: unknown) => {
-  if (!raw || typeof raw !== "object") return null;
-  const r = raw as Record<string, unknown>;
-  const nombre = String(r.nombre ?? "").trim();
-  if (!nombre) return null;
-  return {
-    nombre,
-    tipo: r.tipo ? String(r.tipo) : null,
-    uvas: Array.isArray(r.uvas) ? r.uvas.map(String) : [],
-    match: clampMatch(r.match),
-    razon: r.razon ? String(r.razon) : "",
-    atributos: normalizeSensoryAttributes(r.atributos as Record<string, unknown> | null) ?? null,
-  };
-};
-
-const normalizeDish = (raw: unknown) => {
-  if (!raw || typeof raw !== "object") return null;
-  const r = raw as Record<string, unknown>;
-  const nombre = String(r.nombre ?? "").trim();
-  if (!nombre) return null;
-  const recs = Array.isArray(r.recomendaciones)
-    ? r.recomendaciones.map(normalizeRecommendation).filter(Boolean).slice(0, 2)
-    : [];
-  return {
-    nombre,
-    categoria: r.categoria ? String(r.categoria) : null,
-    match: clampMatch(r.match),
-    razon: r.razon ? String(r.razon) : "",
-    recomendaciones: recs,
-  };
 };
 
 serve(async (req) => {
@@ -211,7 +126,7 @@ serve(async (req) => {
       ? `Perfil Matchrim del usuario (escala 1-5): potencia=${learnedProfile.potente}, acidez=${learnedProfile.acidez}, dulzura=${learnedProfile.dulce}, taninos=${learnedProfile.tanico}, afrutado=${learnedProfile.afrutado}.`
       : "El usuario no tiene perfil Matchrim. Usa recomendaciones de afinidad clásica.";
 
-    const maxDishes = mode === "menu" ? 8 : 1;
+    const maxDishes = mode === "menu" ? MAX_MENU_DISHES : 1;
     const restaurantHint = restaurantName ? `Restaurante: ${restaurantName}.` : "";
 
     const prompt = `Eres un sumiller experto. Analiza esta imagen de ${mode === "menu" ? "un menú de comida (lista de platos)" : "un plato de comida"}.
@@ -221,10 +136,19 @@ ${profileText}
 Responde EXCLUSIVAMENTE en JSON válido con esta forma:
 {
   "summary": "resumen breve de lo detectado",
+  "coverage": {
+    "estimated_visible_dishes": 0,
+    "unreadable_dishes": 0,
+    "truncated": false,
+    "notes": []
+  },
   "dishes": [
     {
       "nombre": "...",
       "categoria": "entrante|principal|postre|...",
+      "source_order": 1,
+      "source_text": "texto exacto leído en la carta",
+      "confidence": 0-100,
       "match": 0-100,
       "razon": "por qué este plato encaja con el usuario",
       "recomendaciones": [
@@ -237,7 +161,12 @@ Responde EXCLUSIVAMENTE en JSON válido con esta forma:
 REGLAS ESTRICTAS:
 - Atributos sensoriales SIEMPRE enteros del 1 al 5 (NUNCA 6,7,8,9,10).
 - match es 0-100.
-- Devuelve como mucho ${maxDishes} ${mode === "menu" ? "platos" : "plato"}.
+- ${mode === "menu"
+    ? `Cuenta primero todas las líneas de platos legibles y devuelve una fila por cada plato, en el orden y sección originales, hasta un máximo técnico de ${maxDishes}.`
+    : "Devuelve exactamente el plato visible cuando sea legible."}
+- NUNCA agrupes varios platos o postres en una misma fila. No uses barras, listas ni nombres compuestos para ahorrar espacio.
+- No inventes texto ilegible. Indica confidence bajo, aumenta unreadable_dishes y explica la duda en coverage.notes.
+- Marca coverage.truncated=true cuando estimated_visible_dishes sea mayor que el número de filas devueltas.
 - 2 recomendaciones de vino por plato.
 - No incluyas texto fuera del JSON.`;
 
@@ -258,6 +187,7 @@ REGLAS ESTRICTAS:
             ],
           },
         ],
+        max_tokens: 16384,
       }),
     });
 
@@ -282,18 +212,21 @@ REGLAS ESTRICTAS:
     const aiJson = await aiRes.json();
     const content = aiJson?.choices?.[0]?.message?.content ?? "";
     const parsed = tryParseJson(typeof content === "string" ? content : JSON.stringify(content)) as
-      | { summary?: string; dishes?: unknown[] }
+      | { summary?: string; coverage?: unknown; dishes?: unknown[] }
       | null;
 
-    const dishes = Array.isArray(parsed?.dishes)
-      ? parsed!.dishes!.map(normalizeDish).filter(Boolean).slice(0, maxDishes)
-      : [];
+    const normalized = normalizeFoodScan(
+      Array.isArray(parsed?.dishes) ? parsed!.dishes! : [],
+      parsed?.coverage,
+      mode,
+    );
 
     return new Response(
       JSON.stringify({
         mode,
         summary: parsed?.summary ? String(parsed.summary) : "",
-        dishes,
+        dishes: normalized.dishes,
+        coverage: normalized.coverage,
         has_profile: Boolean(learnedProfile),
         profile_source: profileSource,
         scan_version: FUNCTION_VERSION,

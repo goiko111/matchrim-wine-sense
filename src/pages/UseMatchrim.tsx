@@ -172,7 +172,7 @@ const UseMatchrim = () => {
 
         const { data: trainingWines, error: trainingError } = await supabase
           .from('user_wines')
-          .select('rating, sensory_attributes')
+          .select('rating, sensory_attributes, created_at, updated_at')
           .eq('user_id', user.id)
           .eq('use_for_profile_training', true)
           .not('rating', 'is', null)
