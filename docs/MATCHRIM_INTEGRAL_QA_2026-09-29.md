@@ -6,13 +6,13 @@ Updated: 2026-09-29
 
 Release gate: **NO-GO for another TestFlight build**. Build 64 is a valid signed and uploaded artifact, but integral product behavior is not certified. Real recognition remains below the P0 thresholds, authenticated longitudinal QA has no authorized isolated tenant, physical camera/gallery evidence is incomplete, and no staging load run has occurred.
 
-This first lot did not create accounts, contact third parties, mutate production or send load to Supabase. It delivered a full route inventory, ten longitudinal synthetic personas, 1,000 isolated local model sessions, exact build-64 parity and four safe local corrections.
+The current local lot did not create accounts, mutate production or send load to Supabase. It adds deterministic recognition replay, food-menu segmentation, calibrated learning confidence, an unapplied Bodega uniqueness migration, a production-guarded load harness and a fresh 27/27 visual rerun.
 
 ## Build 64 versus local
 
 | Surface | Build 64 TestFlight artifact | Local branch after build 64 |
 | --- | --- | --- |
-| Exact source | `1a54cda` | `182dd32` plus this QA lot |
+| Exact source | `1a54cda` | `859241d` plus this local remediation lot |
 | Proof | Clean detached rebuild matches every archived Vite file; comparable tree SHA-256 `d6b9e4a5...027b` | Git diff and reproducible local build |
 | aiRIM grounding | Included | Preserved |
 | Recognition evidence matrix | Not included as product code; produced later in `8e546a2` | Included as QA evidence |
@@ -20,6 +20,9 @@ This first lot did not create accounts, contact third parties, mutate production
 | Account-switch cellar isolation | Not included | Fixed in `182dd32` |
 | Canonical duplicate recommendation collapse | Not included | Fixed in this lot |
 | Invalid wine UUID guard, Spanish 404, deletion branding | Not included | Fixed in this lot |
+| Food-menu 60-row/coverage contract | Not included; deployed runtime caps at 8 | Implemented and replay-tested locally; not deployed |
+| Confidence diversity/conflict/recency | Not included | Implemented and persona-tested locally |
+| Bodega exact canonical uniqueness | Not included | Migration prepared; deliberately unapplied |
 | TestFlight availability | Upload accepted; processing/tester state not verified | Not uploaded |
 
 Evidence: `docs/qa-evidence/matchrim-integral-qa-2026-09-29/build64-parity.json`.
@@ -29,10 +32,10 @@ Evidence: `docs/qa-evidence/matchrim-integral-qa-2026-09-29/build64-parity.json`
 | Layer | Execution | Evidence | State |
 | --- | --- | --- | --- |
 | 1. Inventory and parity | Enumerate all routes, user jobs, guards, states and exact binary source | Route JSON, screenshots, archive comparison | First lot complete |
-| 2. Longitudinal personas | Ten personas at 0, 1, 5 and 20 ratings; save, opposite feedback, changed opinion, vintage and duplicate invariants | `persona-longitudinal.json` | Local model complete; authenticated E2E blocked |
+| 2. Longitudinal personas | Ten personas at 0, 1, 5 and 20 ratings; save, opposite feedback, changed opinion, vintage and duplicate invariants | `persona-longitudinal.json` | Local calibrated model complete; authenticated E2E blocked |
 | 3. Full journeys | Auth/recovery, quiz, Home, aiRIM, all scan modes, comparison, Bodega CRUD, profile, privacy, offline/restart/account switch | Per-step finding records with screenshots/logs | Anonymous shell partial; auth and physical pending |
-| 4. Real recognition/mobile | Keep fixtures separate from real backend; iPhone camera/gallery, portrait/landscape, Dynamic Type and VoiceOver | Existing matrix plus new device capture | Recognition P0 open; physical gate pending |
-| 5. 1,000 virtual users | Local algorithm cohort first; then authorized staging ramp 10→50→200→1,000 with rate/cost stops | Percentiles, errors, duplicates, isolation and cost | Local algorithm complete; staging load blocked |
+| 4. Real recognition/mobile | Keep fixtures separate from real backend; iPhone camera/gallery, portrait/landscape, Dynamic Type and VoiceOver | Matrix, local replay and current screenshots | 27/27 UI green; recognition P0 and physical gate open |
+| 5. 1,000 virtual users | Local algorithm cohort first; then authorized staging ramp 10→50→200→1,000 with rate/cost stops | Percentiles, errors, duplicates, isolation and cost | Local algorithm and dry-run harness complete; actual staging blocked |
 | 6. Product evaluation | Time to first value, comprehension, recurrence, false facts, privacy and useful aiRIM prominence | Moderated task rubric and analytics plan | Heuristic baseline started |
 
 ## Personas and longitudinal coverage
@@ -40,19 +43,19 @@ Evidence: `docs/qa-evidence/matchrim-integral-qa-2026-09-29/build64-parity.json`
 | Persona | Primary job | Cold top | Top after 20 | Confidence | Result |
 | --- | --- | --- | --- | ---: | --- |
 | Novato sin historial | Understand taste without jargon | Godello redondo | Godello redondo | 0 | Stable, but cold choice has no diversity rationale |
-| Blanco atlántico | Fresh, saline whites | Godello redondo | Albariño atlántico | 100 | Converges |
-| Tinto clásico | Structured familiar reds | Godello redondo | Rioja reserva | 100 | Converges |
-| Experto explorador | High acid/tannin exploration | Godello redondo | Nebbiolo estructurado | 100 | Converges |
-| Frutal suave | Fruit with low tannin | Godello redondo | Tinto frutal | 100 | Converges |
-| Dulce aromático | Sweet aromatic styles | Godello redondo | Moscatel dulce | 100 | Converges |
-| Baja acidez | Avoid tense profiles | Godello redondo | Blanco baja acidez | 100 | Converges |
+| Blanco atlántico | Fresh, saline whites | Godello redondo | Albariño atlántico | 74 | Converges without false certainty |
+| Tinto clásico | Structured familiar reds | Godello redondo | Rioja reserva | 77 | Converges |
+| Experto explorador | High acid/tannin exploration | Godello redondo | Nebbiolo estructurado | 77 | Converges |
+| Frutal suave | Fruit with low tannin | Godello redondo | Tinto frutal | 77 | Converges |
+| Dulce aromático | Sweet aromatic styles | Godello redondo | Moscatel dulce | 77 | Converges |
+| Baja acidez | Avoid tense profiles | Godello redondo | Blanco baja acidez | 70 | Converges |
 | Presupuesto estricto | Stay below EUR 15 | Godello redondo | Godello redondo | 0 | Budget is not a learned dimension |
 | Maridaje marisco | One-off pairing, not permanent taste | Godello redondo | Godello redondo | 0 | Occasion is contextual, not learned |
-| Cambio de opinión | Move from Rioja to Atlantic white | Godello redondo | Rioja reserva, then reversal | 100 | Weak reversal picks collateral tinto; sustained reversal converges |
+| Cambio de opinión | Move from Rioja to Atlantic white | Godello redondo | Rioja reserva, then reversal | 60/73 | Five recent ratings reach top three; sustained reversal leads |
 
 Verified invariants: saving without rating does not train; incomplete sensory attributes do not silently train; different vintages remain distinct; displayed canonical duplicates collapse; 1,000 serialized virtual sessions remain isolated.
 
-Important limitation: confidence reaches 100% from sample count alone after twelve valid ratings. It does not measure diversity, contradiction, recency or predictive accuracy.
+Confidence now combines sample coverage, directional consistency and sensory diversity. Timestamped evidence uses bounded recency weighting. It still does not claim predictive accuracy, and budget/occasion remain contextual rather than permanent sensory dimensions.
 
 ## Route coverage matrix
 
@@ -70,7 +73,7 @@ Legend: PASS means the specified local/anonymous state only. PARTIAL means meani
 | `/escanear` | Select capture type | Five modes visible, no overflow | PASS shell |
 | `/escanear/etiqueta` | Scan one or several bottles | 27/27 fixture UI; real multi-label precision `0.5714` | FAIL P0 |
 | `/escanear/carta-vinos` | Scan printed list/board/PDF | Dual layout fixture UI; real printed-list recall `0.7083` | FAIL P0 |
-| `/escanear/menu-comida` | Turn dishes into wine choices | Shell passes; real menu covers 13/54 dishes and merges six desserts | FAIL P0 |
+| `/escanear/menu-comida` | Turn dishes into wine choices | Local contract splits the six-dessert merge and removes the eight-row cap; recorded backend still covers only 13/54 | FAIL P0 pending deploy/rerun |
 | `/escanear/plato` | Recommend from a photographed dish | Shell passes; independent real-image benchmark incomplete | PARTIAL |
 | `/escanear/encontrar-vino` | Search by budget/occasion/store | Shell passes; factual price/availability and recurrence pending | PARTIAL |
 | `/inteligencia-liquida` | Ask aiRIM or use guided decisions | Anonymous real responses 3/3 grounded; authenticated memory and longitudinal consistency pending | PARTIAL |
@@ -95,7 +98,7 @@ Legend: PASS means the specified local/anonymous state only. PARTIAL means meani
 | `/wine-import` | Admin import | Anonymous/non-admin redirects Home | EXCLUDED/pass guard |
 | `*` | Recover from unknown URL | Spanish 404, no console error, Home recovery | PASS local |
 
-Automated result: 34/34 routes rendered, 0 horizontal overflow, 0 page errors and 0 console errors after local fixes. Bodega/Profile routes only certify the anonymous guard.
+Automated current result: 34/34 routes rendered, 0 horizontal overflow, 0 page errors and 0 console errors. The scan/mobile suite passed 27/27 including safe areas, landscape, Dynamic Type 125%, basic VoiceOver, offline, retry and cancellation. Bodega/Profile routes only certify the anonymous guard.
 
 ## Findings
 
@@ -105,29 +108,27 @@ Automated result: 34/34 routes rendered, 0 horizontal overflow, 0 page errors an
 - Steps: run independent single-label, multi-label, printed-list, board and food-menu scenes.
 - Expected: precision and recall at least `0.90` in every supported category; no merged menu rows.
 - Observed: single-label precision `0.7692`; multi-label precision `0.5714`; printed-list recall `0.7083`; food-menu recall `0.2407` with six desserts merged.
-- Evidence: `docs/MATCHRIM_RECOGNITION_MATRIX_2026-09-28.md`.
-- Likely cause/fix: deployed detection, segmentation and OCR contract; correct and deploy only in staging, then rerun independent images.
-- Retest: blocked by Supabase management 403; UI fixtures do not close this finding.
+- Local replay: current box normalization improves precision `0.6136→0.8438` with recall stable at `0.9310`; the food contract converts the old eight cards into 13 independent rows and zero merges. Recorded multi-label identity remains `0.5000/0.8889` in the 25-scene dataset.
+- Evidence: `docs/MATCHRIM_RECOGNITION_MATRIX_2026-09-28.md` and `recognition-replay-local.json`.
+- Retest: blocked by Supabase management 403; local source replay and UI fixtures do not certify a backend correction.
 
-### F-02 — P1: change-of-opinion confidence is misleading
+### F-02 — P1 local fix complete; authenticated validation pending
 
 - Persona/build: `cambio-de-opinion`, local model based on build-64 learner.
-- Steps: replace current evidence with 15 Rioja rejections plus five Atlantic-white likes.
-- Expected: new target should lead or uncertainty should drop.
-- Observed: tinto frutal leads while confidence remains 100%; a stronger 15-like/5-reject reversal converges.
+- Steps: compare stale prior preference with five recent Atlantic-white ratings, then sustained recent evidence.
+- Observed after fix: the new target reaches the top three at `60%`; sustained evidence ranks it first at `73%`. Four contradictory signals are explicitly conflicting and remain below `20%` confidence.
 - Evidence: `persona-longitudinal.json`.
-- Likely cause/fix: confidence uses sample count only and the signed average has no recency, contradiction or target-coherence calibration. Add evidence diversity/recency and expose conflicting preference state.
-- Retest: deterministic harness ready.
+- Implementation: confidence uses coverage, consistency and diversity; dated deltas use a 120-day decay with a `0.2` floor; aiRIM receives coherence/diversity and conflict state.
+- Retest: deterministic harness passes; authenticated persistence remains blocked.
 
-### F-03 — P1: duplicate wine rows remain possible in Bodega
+### F-03 — P1 migration prepared; staging application pending
 
 - Persona/build: returning authenticated user, build 64 and local.
 - Steps: save the same Winerim/scan reference again after restart or from another surface.
 - Expected: canonical reference updates or prompts for quantity/status.
-- Observed: direct inserts and no canonical uniqueness constraint permit duplicate rows; in-session Winerim guard only remembers IDs in memory.
-- Evidence: `src/pages/UseMatchrim.tsx`, `src/pages/Scan.tsx`, migrations.
-- Likely cause/fix: add a canonical identity column/index or transactional upsert in staging, preserving separate vintages. Local recommendation display deduplication is fixed but does not repair storage.
-- Retest: requires isolated authenticated tenant.
+- Local implementation: generated canonical name/producer/vintage identity, unique per-user index and deterministic client identity checks preserve separate vintages.
+- Safety: migration raises before indexing if existing canonical duplicates exist; it never chooses which notes, rating, status or quantity to discard.
+- Retest: migration and CRUD/duplicate rejection require isolated authenticated staging.
 
 ### F-04 — P1: budget and occasion are not learned preferences
 
@@ -153,9 +154,9 @@ Automated result: 34/34 routes rendered, 0 horizontal overflow, 0 page errors an
 
 ## Virtual cohort and load plan
 
-The local 1,000-user cohort measures only in-process learning plus ranking of eight candidates: p50 `0.0060 ms`, p95 `0.0127 ms`, p99 `0.0285 ms`, 0 errors and 1,000 isolated serialized states. It is neither staging load nor 1,000 humans.
+The local 1,000-user cohort measures only in-process learning plus ranking of eight candidates: p50 `0.0071 ms`, p95 `0.0190 ms`, p99 `0.0383 ms`, 0 errors and 1,000 isolated serialized states. It is neither staging load nor 1,000 humans.
 
-Authorized staging execution must ramp 10→50→200→1,000 virtual sessions, hold each stage five minutes, use synthetic addresses owned by the project, and stop on any account leak, write outside the QA tenant, error rate above 1%, p95 doubling for two stages, provider rate-limit response above 2% or forecast cost above the approved cap. Measure Auth, CRUD, recommendations, aiRIM and scan separately; do not send 1,000 concurrent vision/LLM requests as one burst.
+`scripts/load-matchrim-staging.ts` now encodes the 10→50→200→1,000 ramp in dry-run mode. Execution rejects the production URL/ref, requires preprovisioned user JWTs and does not invoke paid AI. The first staged workflow reads profile, inserts one unique QA wine, requires duplicate rejection, verifies owner visibility and deletes all run rows in `finally`; stop at error rate `>=1%`.
 
 ## Prioritized backlog
 
@@ -164,9 +165,9 @@ Authorized staging execution must ramp 10→50→200→1,000 virtual sessions, h
 | P0 | Recognition segmentation/OCR/matching in staging | Precision and recall `>=0.90` per category; food coverage `>=0.90`; zero merged rows |
 | P0 | Physical iPhone camera/gallery and accessibility journey | Real evidence for one/multi-label, carta, board and menu; no overlap; basic VoiceOver/Dynamic Type pass |
 | P1 | Isolated authenticated persona tenant | Ten personas complete auth, quiz, Bodega CRUD, restart and account switching with zero leakage |
-| P1 | Canonical Bodega upsert | Same identity cannot duplicate; different vintage remains independent; quantity/status correction works |
-| P1 | Confidence and preference reversal | Confidence reflects diversity/conflict; changed preference reaches top three after five consistent new ratings |
-| P1 | Staging 1,000-user harness | p50/p95/p99, error/rate/cost and isolation report under approved limits |
+| P1 | Canonical Bodega upsert | Local migration/contract ready; apply in staging, reconcile any preflight duplicates and prove CRUD |
+| P1 | Confidence and preference reversal | Local gate passes; prove timestamps/persistence with authenticated staging rows |
+| P1 | Staging 1,000-user harness | Dry-run ready; execute staged p50/p95/p99, error and isolation report under approved limits |
 | P2 | Mobile-web navigation/design consistency | Remove duplicate guest chrome without changing the preserved public desktop web; align Auth/legal visual language |
 | P2 | Bundle performance | Lazy-load map/PDF/admin chunks and define mobile startup budget |
 
@@ -180,4 +181,8 @@ No new TestFlight until: all P0 findings are closed; every consumer route has su
 - `docs/qa-evidence/matchrim-integral-qa-2026-09-29/persona-longitudinal.json`
 - `docs/qa-evidence/matchrim-integral-qa-2026-09-29/routes/route-inventory.json`
 - Representative route screenshots in `docs/qa-evidence/matchrim-integral-qa-2026-09-29/routes/`
+- `docs/qa-evidence/matchrim-integral-qa-2026-09-29/recognition-replay-local.json`
+- `docs/qa-evidence/matchrim-integral-qa-2026-09-29/staging-load-plan.json`
+- `docs/qa-evidence/matchrim-integral-qa-2026-09-29/ui-current/ui-qa-results.json`
+- `docs/qa-evidence/matchrim-integral-qa-2026-09-29/routes-current/route-inventory.json`
 - `docs/MATCHRIM_RECOGNITION_MATRIX_2026-09-28.md`

@@ -74,6 +74,22 @@ Evidencia:
 - `qa-artifacts/2026-09-28-learning-airim/home-airim-qa-results.json`
 - `qa-artifacts/2026-09-28-learning-airim/ui-qa-results.json`
 
+## Remediación local posterior, no desplegada
+
+El replay del 29 de septiembre aplica solo código determinista actual a respuestas
+reales ya grabadas; no repite llamadas al proveedor ni certifica producción.
+
+- Normalización de cajas: precisión `0,6136→0,8438`, recall estable `0,9310`
+  (`27/29` cajas emparejadas; `44→32` cajas devueltas).
+- Carta de comida: la fila con seis postres se separa en seis y queda en 13 filas,
+  sin merges. La cobertura sigue siendo `13/54` (`0,2407`) porque un replay no puede
+  recuperar los 41 platos que el runtime antiguo nunca devolvió.
+- El candidato elimina el límite de ocho platos, admite hasta 60, exige una fila por
+  plato y expone cobertura, ilegibles y truncado.
+- El QA móvil actual repite `27/27`; certifica layout y estados, no reconocimiento.
+
+Evidencia: `docs/qa-evidence/matchrim-integral-qa-2026-09-29/recognition-replay-local.json`.
+
 ## Estado de certificación
 
 - Cliente móvil y layout: **PASS**.

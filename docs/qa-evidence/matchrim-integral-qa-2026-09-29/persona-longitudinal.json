@@ -107,7 +107,7 @@
         {
           "savedOrRated": 5,
           "samples": 5,
-          "confidence": 42,
+          "confidence": 32,
           "top": "mencia-fresca",
           "topScore": 90,
           "profile": {
@@ -121,19 +121,19 @@
         {
           "savedOrRated": 20,
           "samples": 20,
-          "confidence": 100,
+          "confidence": 74,
           "top": "albarino-atlantico",
-          "topScore": 88,
+          "topScore": 92,
           "profile": {
-            "potente": 2.1,
-            "acidez": 4.2,
-            "dulce": 1.6,
-            "tanico": 1.5,
-            "afrutado": 3.6
+            "potente": 1.9,
+            "acidez": 4.4,
+            "dulce": 1.5,
+            "tanico": 1.2,
+            "afrutado": 3.7
           }
         }
       ],
-      "nextAfterSavingTop": "mencia-fresca",
+      "nextAfterSavingTop": "tinto-frutal",
       "reversal": null
     },
     {
@@ -172,7 +172,7 @@
         {
           "savedOrRated": 5,
           "samples": 5,
-          "confidence": 42,
+          "confidence": 33,
           "top": "rioja-reserva",
           "topScore": 86,
           "profile": {
@@ -186,15 +186,15 @@
         {
           "savedOrRated": 20,
           "samples": 20,
-          "confidence": 100,
+          "confidence": 77,
           "top": "rioja-reserva",
-          "topScore": 92,
+          "topScore": 94,
           "profile": {
-            "potente": 4.3,
+            "potente": 4.6,
             "acidez": 3,
-            "dulce": 0.9,
-            "tanico": 4.5,
-            "afrutado": 2.7
+            "dulce": 0.7,
+            "tanico": 4.8,
+            "afrutado": 2.6
           }
         }
       ],
@@ -237,7 +237,7 @@
         {
           "savedOrRated": 5,
           "samples": 5,
-          "confidence": 42,
+          "confidence": 33,
           "top": "rioja-reserva",
           "topScore": 79,
           "profile": {
@@ -251,15 +251,15 @@
         {
           "savedOrRated": 20,
           "samples": 20,
-          "confidence": 100,
+          "confidence": 77,
           "top": "nebbiolo-estructurado",
-          "topScore": 87,
+          "topScore": 92,
           "profile": {
-            "potente": 4.3,
-            "acidez": 4.2,
-            "dulce": 1.4,
-            "tanico": 4.5,
-            "afrutado": 2.1
+            "potente": 4.6,
+            "acidez": 4.4,
+            "dulce": 1.3,
+            "tanico": 4.8,
+            "afrutado": 1.9
           }
         }
       ],
@@ -302,7 +302,7 @@
         {
           "savedOrRated": 5,
           "samples": 5,
-          "confidence": 42,
+          "confidence": 33,
           "top": "godello-redondo",
           "topScore": 89,
           "profile": {
@@ -316,15 +316,15 @@
         {
           "savedOrRated": 20,
           "samples": 20,
-          "confidence": 100,
+          "confidence": 77,
           "top": "tinto-frutal",
-          "topScore": 92,
+          "topScore": 94,
           "profile": {
-            "potente": 2.1,
-            "acidez": 2.7,
+            "potente": 1.9,
+            "acidez": 2.6,
             "dulce": 2.2,
-            "tanico": 1.5,
-            "afrutado": 4.3
+            "tanico": 1.2,
+            "afrutado": 4.6
           }
         }
       ],
@@ -367,7 +367,7 @@
         {
           "savedOrRated": 5,
           "samples": 5,
-          "confidence": 42,
+          "confidence": 33,
           "top": "godello-redondo",
           "topScore": 84,
           "profile": {
@@ -381,15 +381,15 @@
         {
           "savedOrRated": 20,
           "samples": 20,
-          "confidence": 100,
+          "confidence": 77,
           "top": "moscatel-dulce",
-          "topScore": 88,
+          "topScore": 93,
           "profile": {
-            "potente": 2.1,
+            "potente": 1.9,
             "acidez": 3,
-            "dulce": 3.9,
-            "tanico": 1.5,
-            "afrutado": 4.2
+            "dulce": 4.3,
+            "tanico": 1.2,
+            "afrutado": 4.4
           }
         }
       ],
@@ -432,7 +432,7 @@
         {
           "savedOrRated": 5,
           "samples": 5,
-          "confidence": 42,
+          "confidence": 31,
           "top": "blanco-baja-acidez",
           "topScore": 83,
           "profile": {
@@ -446,15 +446,15 @@
         {
           "savedOrRated": 20,
           "samples": 20,
-          "confidence": 100,
+          "confidence": 70,
           "top": "blanco-baja-acidez",
-          "topScore": 88,
+          "topScore": 90,
           "profile": {
             "potente": 3.2,
-            "acidez": 1.5,
-            "dulce": 2.8,
-            "tanico": 2.1,
-            "afrutado": 3.4
+            "acidez": 1.2,
+            "dulce": 2.9,
+            "tanico": 2,
+            "afrutado": 3.5
           }
         }
       ],
@@ -627,7 +627,7 @@
         {
           "savedOrRated": 5,
           "samples": 5,
-          "confidence": 42,
+          "confidence": 32,
           "top": "rioja-reserva",
           "topScore": 83,
           "profile": {
@@ -641,14 +641,14 @@
         {
           "savedOrRated": 20,
           "samples": 20,
-          "confidence": 100,
+          "confidence": 74,
           "top": "rioja-reserva",
-          "topScore": 88,
+          "topScore": 91,
           "profile": {
-            "potente": 4.3,
-            "acidez": 2.7,
-            "dulce": 1.6,
-            "tanico": 4.5,
+            "potente": 4.6,
+            "acidez": 2.6,
+            "dulce": 1.5,
+            "tanico": 4.8,
             "afrutado": 2.8
           }
         }
@@ -657,23 +657,28 @@
       "reversal": {
         "weakChange": {
           "currentRatingRows": 20,
-          "top": "tinto-frutal",
+          "top": "mencia-fresca",
+          "topThree": [
+            "mencia-fresca",
+            "godello-redondo",
+            "albarino-atlantico"
+          ],
           "expectedTarget": "albarino-atlantico",
           "converged": false,
-          "confidence": 100
+          "confidence": 60
         },
         "sustainedChange": {
           "currentRatingRows": 20,
           "top": "albarino-atlantico",
           "expectedTarget": "albarino-atlantico",
           "converged": true,
-          "confidence": 100,
+          "confidence": 73,
           "profile": {
-            "potente": 2.1,
-            "acidez": 4.2,
-            "dulce": 1.6,
+            "potente": 2.3,
+            "acidez": 4.6,
+            "dulce": 1.1,
             "tanico": 1.5,
-            "afrutado": 3.6
+            "afrutado": 3.8
           }
         }
       }
@@ -689,15 +694,17 @@
   "modelLimits": {
     "budgetIsPersistentTasteDimension": false,
     "occasionIsPersistentTasteDimension": false,
-    "confidenceMeasuresDiversity": false,
-    "confidenceDefinition": "min(100, rounded sample count / 12 * 100)"
+    "confidenceMeasuresDiversity": true,
+    "confidenceMeasuresContradiction": true,
+    "recencyIsAppliedWhenTimestampsExist": true,
+    "confidenceDefinition": "sample coverage calibrated by directional consistency and sensory diversity; profile deltas use a 120-day recency decay with a 0.2 floor"
   },
   "virtualCohort": {
     "count": 1000,
     "operation": "in-process profile learning plus ranking of eight candidates",
-    "p50Ms": 0.006,
-    "p95Ms": 0.0127,
-    "p99Ms": 0.0285,
+    "p50Ms": 0.0071,
+    "p95Ms": 0.019,
+    "p99Ms": 0.0383,
     "errors": 0,
     "qualification": "algorithm benchmark only; not staging load or 1,000 human users"
   }

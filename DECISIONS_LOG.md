@@ -57,3 +57,15 @@ A clean detached rebuild of `1a54cda` matches every Vite file in the signed buil
 ## 2026-09-29: synthetic scale claims stay narrow
 
 The 1,000-user local cohort proves only deterministic in-process model isolation and speed. It is not backend concurrency, cost evidence or human validation. No mass production load or synthetic account creation is permitted without an isolated tenant, owned identities and explicit rate/cost approval.
+
+## 2026-09-29: confidence is evidence quality, not a row counter
+
+Learning confidence combines sample coverage, directional consistency and sensory diversity. Timestamps weight preference deltas toward recent explicit ratings. Repeated or contradictory rows cannot produce 100% confidence, and aiRIM receives the contradiction state so it can explain instability.
+
+## 2026-09-29: Bodega uniqueness must not destroy history
+
+The prepared canonical-identity migration enforces exact normalized name, producer and vintage per user, while the client can reconcile a temporarily unknown producer. Migration preflight aborts on existing duplicates rather than guessing how to merge notes, ratings, status or quantity. It remains unapplied until isolated staging exists.
+
+## 2026-09-29: local replay cannot certify a backend fix
+
+Food-menu row splitting and detection-box normalization may be replayed deterministically against recorded real responses. They are reported as local post-processing only. Recognition is certified only after candidate functions run on independent images in authorized staging and every category clears `0.90` precision and recall.

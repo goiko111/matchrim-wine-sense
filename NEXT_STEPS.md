@@ -6,9 +6,9 @@
 - P0: correct recognition in an authorized staging backend until every supported category reaches precision and recall `>=0.90`, including food-menu coverage and segmentation.
 - P0: complete a physical iPhone journey with camera/gallery, real multi-label, wine list, board and food menu plus VoiceOver/Dynamic Type evidence.
 - P1: provision an isolated tenant and synthetic mailbox domain, then run all ten authenticated personas through Bodega CRUD, restart and account switching.
-- P1: add canonical storage-level upsert/uniqueness so the same wine cannot be inserted twice while different vintages remain independent.
-- P1: calibrate confidence for diversity, contradiction and recency, then rerun the weak/sustained preference reversal.
-- P1: run the staged 10→50→200→1,000 virtual-user load plan only with rate and cost approval.
+- P1 local code complete: confidence now accounts for diversity, contradiction and recency; keep the authenticated staging rerun open.
+- P1 migration prepared: apply `20260929040430_matchrim_user_wines_canonical_identity.sql` only in isolated staging after its duplicate preflight passes. Do not merge user rows automatically.
+- P1 harness prepared: run `npm run qa:staging:load` first in dry-run, then the `10→50→200→1,000` ramp only with a non-production project ref, preprovisioned users and rate/cost approval.
 
 ## TestFlight processing
 
@@ -25,7 +25,8 @@ The current local personalization delta requires a new signed build only when th
 - With those accounts, verify account A to account B switching, saved-wine exclusion against actual `user_wines`, and the exhausted-catalog route to Bodega. The local fixture gate is green but deliberately does not claim authenticated E2E coverage.
 - Keep runtime vision v3 unchanged until the independent real-image benchmark clears the production precision gate.
 - Use `docs/MATCHRIM_RECOGNITION_MATRIX_2026-09-28.md` as the release baseline. Current P0 failures are single-label precision/recall, multi-label precision, `IMG_7547` recall and food-menu coverage/segmentation.
-- For food menus, remove the hard eight-item completeness ambiguity: preserve sections, return individually segmented dishes, expose truncation explicitly and rerun `python3 scripts/qa-matchrim-food-menu.py` until precision and recall both reach `0.90` on independent scenes.
+- Food-menu source correction is ready locally: 60-row limit, independent rows, dedupe and explicit coverage/truncation. Deploy the candidate to isolated staging, then rerun `python3 scripts/qa-matchrim-food-menu.py`; recorded real recall remains `0.2407` and is not closed by local replay.
+- Rerun the current multi-label detector/analyzer source on the 25-scene independent set. Local box normalization is `0.8438` precision / `0.9310` recall, while recorded multi-label identity remains `0.5000` / `0.8889`.
 - Do not create build 65 for these findings alone. The demonstrated defects require a staged backend/contract correction and a fresh real-image gate first.
 
 ## Internal gates now closed
@@ -34,6 +35,8 @@ The current local personalization delta requires a new signed build only when th
 - Saved-wine matching is producer-aware and vintage-aware, never recycles a fully saved result set, and cannot reuse cellar state across account ownership.
 - Inicio, Escanear and aiRIM are separate routes with explicit active navigation; aiRIM keeps a failed question available for retry.
 - Empty catalog and backend failure are distinct, recoverable states.
+- Confidence no longer reaches 100% from repeated or contradictory rows; five recent changed-preference signals reach the top three and sustained evidence reaches first.
+- Food-menu merged-row correction, Bodega canonical identity checks, load dry-run, 27/27 scan UI and 34/34 route smoke are reproducible locally.
 
 ## Non-blocking engineering debt
 

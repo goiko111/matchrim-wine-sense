@@ -13,6 +13,7 @@ Updated: 2026-09-29
 - A readback was attempted again on 2026-09-28. App Store Connect redirected to `authResult=FAILED` before exposing the app list, so processing/tester availability remains unverified rather than assumed complete.
 - The saved-wine and state-consistency fixes described below are a local post-upload delta. They are not part of the already uploaded build 64 and no replacement binary was uploaded in this pass.
 - A detached rebuild proves that the archived build 64 web bundle is exactly source commit `1a54cda` (comparable tree SHA-256 `d6b9e4a5...027b`). Commits `8e546a2`, `182dd32` and the 2026-09-29 QA fixes are not in TestFlight.
+- The current local candidate extends checkpoint `859241d` with recognition post-processing, a complete food-menu contract, calibrated learning confidence, a staged Bodega uniqueness migration and a guarded staging-load harness. None of this delta is deployed or in build 64.
 
 ## Product delivered
 
@@ -30,9 +31,9 @@ The QA personas are deterministic in-memory fixtures. They do not create account
 
 | Persona | Before learning | After learning | Score | Samples | Confidence | Next after saving top |
 | --- | --- | --- | ---: | ---: | ---: | --- |
-| explorador-atlantico | blanco-redondo | rias-baixas-atlantico | 83 | 7 | 58 | tinto-frutal-ligero |
+| explorador-atlantico | blanco-redondo | rias-baixas-atlantico | 83 | 7 | 43 | tinto-frutal-ligero |
 | clasico-estructurado | blanco-redondo | rioja-reserva-clasico | 81 | 3 | 25 | blanco-redondo |
-| principiante-frutal | blanco-redondo | tinto-frutal-ligero | 85 | 3 | 25 | blanco-redondo |
+| principiante-frutal | blanco-redondo | tinto-frutal-ligero | 85 | 3 | 22 | blanco-redondo |
 
 All three profiles persist their own learned order and saved-wine exclusion after serialization. Assertions prevent one persona from inheriting another's order, verify that a saved 2020 does not hide 2021, and require a fully saved candidate set to return an explicit exhausted state. Database RLS independently restricts `quiz_results` and `user_wines` by `auth.uid() = user_id`.
 
@@ -76,10 +77,19 @@ The focused local rerun also passed TypeScript, targeted ESLint and a production
 
 - 34/34 declared routes render locally at 430x932 with zero overflow, console errors or page errors after fixes. Authenticated routes only certify their anonymous guards.
 - Ten deterministic personas cover cold state and 1/5/20 ratings. Seven sensory personas converge after 20; budget and occasion correctly do not mutate taste without ratings.
-- A weak preference reversal exposes a P1: confidence remains 100% while a collateral tinto, not the intended Atlantic white, ranks first. A sustained reversal converges.
-- 1,000 local virtual model sessions remain isolated with p50 `0.0060 ms`, p95 `0.0127 ms`, p99 `0.0285 ms` and zero algorithm errors. This is not a staging/load result.
+- Confidence now uses sample coverage, directional consistency and sensory diversity; timestamped profile deltas use recency. Four contradictory signals remain below 20% confidence instead of accumulating false certainty.
+- Five consistent recent ratings move a changed preference into the top three at 60% confidence; sustained evidence makes it first at 73%.
+- 1,000 local virtual model sessions remain isolated with p50 `0.0071 ms`, p95 `0.0190 ms`, p99 `0.0383 ms` and zero algorithm errors. This is not a staging/load result.
 - Local fixes collapse duplicate recommendations, reject invalid wine UUIDs before Supabase, localize the 404 and restore Matchrim branding in account deletion.
-- Storage-level duplicate prevention, authenticated longitudinal E2E, staging load and physical iPhone camera/accessibility remain open.
+- A storage-level canonical identity migration is prepared but intentionally unapplied; it aborts rather than merge ambiguous existing duplicates. Authenticated longitudinal E2E, actual staging load and physical iPhone camera/accessibility remain open.
+
+## P0/P1 local remediation
+
+- Food-menu source no longer caps output at eight. The candidate contract allows 60 rows, requires one dish per row, returns coverage/truncation metadata, deduplicates exact rows and conservatively splits the recorded six-dessert merge. The old response becomes 13 structured rows, but its real recall remains `0.2407` until a candidate deploy and new provider run.
+- Independent detection-box replay improves precision from `0.6136` to `0.8438` while recall stays `0.9310`; fragment collapse is covered by regressions that preserve stacked bottles.
+- Recorded independent identity remains below gate for multi-label: precision `0.5000`, recall `0.8889` in four identity-evaluable scenes. Printed lists (`0.9182/0.9439`) and boards (`0.9655/0.9655`) clear the aggregate threshold in that dataset.
+- `scripts/load-matchrim-staging.ts` prepares the `10→50→200→1,000` ramp. Dry-run is the default; execution rejects production, requires preprovisioned staging users and never invokes paid AI.
+- Current visual rerun: multi-label/menu `27/27`, route inventory `34/34`, zero overflow and zero console/page errors.
 
 ## Backend observation
 

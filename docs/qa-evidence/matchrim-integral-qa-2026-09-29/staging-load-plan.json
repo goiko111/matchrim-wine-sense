@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-09-29T04:21:57.335Z",
+  "mode": "dry-run",
+  "target": "not-configured",
+  "projectRef": "not-configured",
+  "productionGuard": {
+    "productionUrlMatch": false,
+    "productionRefMatch": false,
+    "environmentSafe": false,
+    "executionPhraseRequired": "ISOLATED_STAGING_ONLY"
+  },
+  "stages": [
+    {
+      "users": 10,
+      "concurrency": 10
+    },
+    {
+      "users": 50,
+      "concurrency": 10
+    },
+    {
+      "users": 200,
+      "concurrency": 10
+    },
+    {
+      "users": 1000,
+      "concurrency": 10
+    }
+  ],
+  "workflow": [
+    "read latest quiz profile under the supplied user JWT",
+    "insert one uniquely named QA wine",
+    "attempt the same canonical identity again and require HTTP 409",
+    "verify the row is visible to its owner",
+    "delete the QA row in finally cleanup"
+  ],
+  "constraints": {
+    "createsAuthAccounts": false,
+    "usesExistingPreprovisionedUsersOnly": true,
+    "invokesPaidAi": false,
+    "logsTokens": false,
+    "acceptableErrorRate": "<1%"
+  },
+  "suppliedUsers": 0
+}
