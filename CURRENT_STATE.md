@@ -1,6 +1,6 @@
 # Matchrim current state
 
-Updated: 2026-09-29
+Updated: 2026-09-30
 
 ## Release
 
@@ -35,6 +35,18 @@ Updated: 2026-09-29
 | iOS simulator build and Release archive | PASS with Xcode 26.0.1 |
 | App Store Connect upload | PASS |
 
+## Physical iPhone QA (build 65)
+
+- Device: iPhone 16 Pro Max, iOS 26.6; the installed TestFlight binary is `1.0 (65)`.
+- Five cold launches passed (mean `2.374 s`, max `2.389 s`); the earlier isolated black screen did not reproduce.
+- Camera, Photo Library, background/foreground, portrait/landscape, native bottom navigation and read-only Bodega/Profile history passed.
+- Session and learned state persisted: one rated wine, `8%` learning confidence, two favorites and two sensory tests.
+- **P0 physical regression:** Bodega and Profile headings enter the status-bar/Dynamic-Island area (`y=30/31 pt`).
+- **P1 accessibility:** eight directly measured visible controls are below 44 pt. XCTest emitted 33 raw hit-region alerts including nested WebView elements; no Dynamic Type, clipping or missing-description alert.
+- **P2 copy:** Home displays `1 valoraciones`.
+- No production write, image upload, backend/web deployment or TestFlight change occurred.
+- Evidence: `docs/MATCHRIM_BUILD65_PHYSICAL_DEEP_QA_2026-09-30.md`.
+
 Runtime versions observed: `matchrim-region-detector-v3`, `matchrim-region-analysis-v3-grounded` and `scan-wine-menu-2026-08-26-grounded-v3`.
 
 ## Evidence
@@ -47,13 +59,14 @@ Runtime versions observed: `matchrim-region-detector-v3`, `matchrim-region-analy
 - `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/fridge-trace-contract-report.json`
 - `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/fridge-trace-contract-score.json`
 
-Private screenshots, raw OCR payloads, hashes and source-image paths remain local and uncommitted.
+Selected redacted physical-QA screenshots are versioned under `docs/qa-evidence/matchrim-build65-physical-2026-09-30/`. Raw/private screenshots, complete `.xcresult` bundles, OCR payloads, hashes and source-image paths remain local and uncommitted.
 
 ## Residual
 
 - Apple processing/readback; no authenticated browser session was available for the read-only check.
 - Build 65 should not be assigned more widely until cabinet identity is measured with the corrected trace in isolated staging.
-- Human physical-iPhone pass for camera, photo permission and VoiceOver.
+- Physical camera and Photo Library open/return are covered. Fresh permission allow/deny and spoken VoiceOver remain open because the existing user state was not reset.
+- Correct Bodega/Profile safe-area handling and the eight undersized controls before a wider TestFlight rollout.
 - Isolated staging has the three required functions active at version 1, but lacks `LOVABLE_API_KEY`; no fixture was sent to a known failing path.
 - After that secret is configured: traced staging reconciliation of final box/crop/result, then OCR/canonical resolution and confidence calibration for cabinet scenes.
 - iOS deployment target must move from 14 to 15 before April 2027.

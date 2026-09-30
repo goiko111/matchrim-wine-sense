@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-09-30T11:45:00+02:00",
+  "release": {
+    "name": "Matchrim",
+    "version": "1.0",
+    "build": 65,
+    "bundleId": "wine.matchrim.app",
+    "sourceHead": "9e5208f"
+  },
+  "device": {
+    "model": "iPhone 16 Pro Max",
+    "os": "iOS 26.6",
+    "osBuild": "23G71",
+    "connection": "wired",
+    "unlocked": true
+  },
+  "safety": {
+    "productionWrites": false,
+    "imagesUploaded": false,
+    "testflightChanged": false,
+    "backendChanged": false,
+    "webChanged": false
+  },
+  "checks": [
+    { "id": "installed-build", "surface": "physical", "status": "PASS", "actual": "1.0 (65) installed and launched" },
+    { "id": "cold-launch-5x", "surface": "physical", "status": "PASS", "actual": "5/5 rendered Home; mean 2.374 s; max 2.389 s" },
+    { "id": "primary-navigation", "surface": "physical", "status": "PASS", "actual": "Inicio, aiRIM, Escanear, Bodega and Perfil reachable" },
+    { "id": "background-restart-persistence", "surface": "physical", "status": "PASS", "actual": "aiRIM route, session and learned profile persisted" },
+    { "id": "camera-open-return", "surface": "physical", "status": "PASS", "actual": "Native camera opened and returned without losing scanner state" },
+    { "id": "photo-library-open-return", "surface": "physical", "status": "PASS", "actual": "System Photo Library opened with at least five public QA fixtures and returned safely" },
+    { "id": "scanner-rotation", "surface": "physical", "status": "PASS", "actual": "Source actions remained available in portrait and landscape" },
+    { "id": "wine-list-sources", "surface": "physical", "status": "PASS", "actual": "Camera and file source actions visible" },
+    { "id": "bodega-profile-history", "surface": "physical", "status": "PASS", "actual": "Read-only state, learning summary and two sensory tests rendered" },
+    { "id": "foreground-console", "surface": "physical", "status": "PASS", "actual": "No console output or unhandled error during 15 s foreground observation" },
+    { "id": "top-safe-area", "surface": "physical", "status": "FAIL", "actual": "Bodega H1 y=30 pt and Perfil H1 y=31 pt enter the status-bar/Dynamic-Island zone" },
+    { "id": "touch-targets", "surface": "physical", "status": "FAIL", "actual": "Eight directly measurable visible controls are below 44 pt on at least one axis" },
+    { "id": "singular-copy", "surface": "physical", "status": "FAIL", "actual": "Home displays '1 valoraciones'" },
+    { "id": "fresh-permission-prompts", "surface": "physical", "status": "NOT_RUN", "actual": "Permissions were already decided; state was not reset" },
+    { "id": "voiceover-spoken-order", "surface": "physical", "status": "NOT_RUN", "actual": "XCTest semantic audit ran; spoken rotor/focus order still needs a human pass" },
+    { "id": "save-rate-mutation", "surface": "physical", "status": "NOT_RUN", "actual": "Production account was kept read-only" }
+  ],
+  "coldLaunchSeconds": [2.385, 2.389, 2.366, 2.356, 2.373],
+  "safeAreaHeadingFrames": {
+    "Inicio": { "y": 171, "status": "PASS" },
+    "aiRIM": { "y": 158, "status": "PASS" },
+    "Bodega": { "y": 30, "status": "FAIL" },
+    "Perfil": { "y": 31, "status": "FAIL" }
+  },
+  "accessibility": {
+    "xctestRawHitRegionAlerts": 33,
+    "dynamicTypeAlerts": 0,
+    "textClippedAlerts": 0,
+    "descriptionAlerts": 0,
+    "directlyMeasuredSmallTargets": [
+      { "view": "Inicio", "label": "Inicio de Matchrim", "size": "124x32" },
+      { "view": "Bodega", "label": "Busca vino o bodega...", "size": "324x40" },
+      { "view": "Perfil", "label": "Perfil Sensorial", "size": "200x32" },
+      { "view": "Perfil", "label": "Historial", "size": "200x32" },
+      { "view": "Perfil", "label": "Copiar código Matchrim", "size": "41x40" },
+      { "view": "Perfil", "label": "Usar en restaurante", "size": "187x40" },
+      { "view": "Perfil", "label": "Compartir", "size": "126x40" },
+      { "view": "Perfil", "label": "Abrir Winerim", "size": "149x40" }
+    ]
+  },
+  "readOnlyAccountState": {
+    "passport": "Garnacha Fuego",
+    "ratedWines": 1,
+    "learningConfidencePercent": 8,
+    "favorites": 2,
+    "doNotRepeat": 0,
+    "sensoryTests": [
+      { "test": 2, "values": { "potencia": 5, "acidez": 4, "dulce": 4, "tanico": 5, "afrutado": 3 } },
+      { "test": 1, "values": { "potencia": 3, "acidez": 3, "dulce": 3, "tanico": 3, "afrutado": 3 } }
+    ]
+  }
+}
