@@ -1,6 +1,7 @@
 import { QuizResult } from '@/data/quizData';
 import { supabase } from '@/integrations/supabase/client';
 import { clasificarVino, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
+import { normalizeMatchrimProfileForClassifier } from '@/utils/matchrimPassport';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
@@ -515,6 +516,7 @@ export const fetchWinesByAttributes = async (
   quizResult: QuizResult,
   options: FetchWinerimWinesOptions = {}
 ): Promise<WinerimWineWithMatch[]> => {
+  const normalizedProfile = normalizeMatchrimProfileForClassifier(quizResult);
   const restaurantUuid = options.restaurantUuid?.trim() || WINERIM_RESTAURANT_UUID;
   const useGlobalRecommendations = !options.restaurantUuid?.trim() || isFallbackRestaurantUuid(restaurantUuid);
 
@@ -528,12 +530,12 @@ export const fetchWinesByAttributes = async (
   if (options.signal?.aborted) throw new DOMException('Aborted', 'AbortError');
 
   const responseData = useGlobalRecommendations
-    ? await invokeMatchrimRecommendations(quizResult, options.signal)
+    ? await invokeMatchrimRecommendations(normalizedProfile, options.signal)
     : await invokeWinerimEndpoint({
         endpoint: 'match',
         restaurantUuid,
         matchrimCode: options.matchrimCode,
-        profile: quizResult,
+        profile: normalizedProfile,
       }, options.signal);
   const directResults = extractWineResults(responseData)
     .map(normalizeWinerimWine)
@@ -544,18 +546,18 @@ export const fetchWinesByAttributes = async (
     }));
 
   const [primaryStyle] = suggestWineStylesForProfile({
-    potente: quizResult.potente,
-    acidez: quizResult.acidez,
-    dulce: quizResult.dulce,
-    tanico: quizResult.tanico,
-    afrutado: quizResult.afrutado,
+    potente: normalizedProfile.potente,
+    acidez: normalizedProfile.acidez,
+    dulce: normalizedProfile.dulce,
+    tanico: normalizedProfile.tanico,
+    afrutado: normalizedProfile.afrutado,
   }, 1);
 
   let styleRangeResults: WinerimWineWithMatch[] = [];
 
   if (!useGlobalRecommendations) {
     try {
-      styleRangeResults = await fetchStyleRangeWines(quizResult, restaurantUuid, primaryStyle, options.signal);
+      styleRangeResults = await fetchStyleRangeWines(normalizedProfile, restaurantUuid, primaryStyle, options.signal);
     } catch (error) {
       console.warn('⚠️ [Winerim] No se pudo ampliar por rango de estilo:', error);
     }

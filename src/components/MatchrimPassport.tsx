@@ -80,7 +80,7 @@ const MatchrimPassport: React.FC<MatchrimPassportProps> = ({
               </p>
               <div className="mt-2 flex flex-wrap items-center gap-3">
                 <h3 className="text-3xl font-bold text-red-950">{code}</h3>
-                <Button variant="outline" size="icon" onClick={copyCode} aria-label="Copiar código Matchrim">
+                <Button variant="outline" size="icon" onClick={copyCode} aria-label="Copiar código Matchrim" className="h-11 w-11">
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
@@ -122,16 +122,16 @@ const MatchrimPassport: React.FC<MatchrimPassportProps> = ({
 
             <div className="flex flex-wrap gap-2">
               {showUseAction && (
-                <Button onClick={() => navigate('/usar-matchrim')} className="gap-2 bg-red-800 hover:bg-red-900">
+                <Button onClick={() => navigate('/usar-matchrim')} className="min-h-11 gap-2 bg-red-800 hover:bg-red-900">
                   <ScanLine className="h-4 w-4" />
                   Usar en restaurante
                 </Button>
               )}
-              <Button variant="outline" onClick={sharePassport} className="gap-2">
+              <Button variant="outline" onClick={sharePassport} className="min-h-11 gap-2">
                 <Share2 className="h-4 w-4" />
                 Compartir
               </Button>
-              <Button variant="outline" onClick={() => window.open(winerimUrl, '_blank', 'noopener,noreferrer')} className="gap-2">
+              <Button variant="outline" onClick={() => window.open(winerimUrl, '_blank', 'noopener,noreferrer')} className="min-h-11 gap-2">
                 <ExternalLink className="h-4 w-4" />
                 Abrir Winerim
               </Button>

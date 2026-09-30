@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { calculateLearnedMatchrimProfile } from '../src/utils/matchrimLearning';
-import { generateMatchrimCode } from '../src/utils/matchrimPassport';
+import { generateMatchrimCode, normalizeMatchrimProfileForClassifier } from '../src/utils/matchrimPassport';
 import { generateMatchrimName, generateWineStyles } from '../src/utils/profileUtils';
 import { calculateEdgeLearnedProfile } from '../supabase/functions/_shared/matchrim-learning';
 
@@ -45,6 +45,16 @@ assert.notEqual(
   'This fixture must prove that learned profiles can rename the public code if used directly.'
 );
 assert.equal(generateMatchrimCode(baseProfile), stablePublicCode);
+
+assert.deepEqual(
+  normalizeMatchrimProfileForClassifier({ potente: 4.7, acidez: 3.2, dulce: -1, tanico: 5.8, afrutado: 2.5 }),
+  { potente: 5, acidez: 3, dulce: 0, tanico: 5, afrutado: 3 },
+  'Learned decimal profiles must be normalized before reaching the integer-only classifier',
+);
+assert.throws(
+  () => normalizeMatchrimProfileForClassifier({ ...baseProfile, potente: Number.NaN }),
+  /potente debe ser un número/,
+);
 
 const rejectedProfile = calculateLearnedMatchrimProfile(baseProfile, [
   {

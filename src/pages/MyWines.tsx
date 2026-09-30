@@ -1095,7 +1095,7 @@ const MyWines = () => {
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
       <AppNav />
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <main className="matchrim-native-page-top matchrim-native-page-x mx-auto max-w-7xl pb-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">Mis Vinos</h1>
           <p className="text-muted-foreground">
@@ -1990,7 +1990,7 @@ const MyWines = () => {
             </div>
           </DialogContent>
         </Dialog>
-      </div>
+      </main>
     </div>
   );
 };

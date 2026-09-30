@@ -5,6 +5,7 @@ Updated: 2026-09-30
 ## Release
 
 - Latest uploaded version: Matchrim `1.0 (65)`.
+- Latest local candidate: Matchrim `1.0 (66)`; Release archive succeeded at `/private/tmp/Matchrim-1.0-66-candidate-final.xcarchive`. It has not been uploaded.
 - App Store Connect accepted the upload and initially reported the package as processing. A later read-only check could not refresh that state because the available browser sessions returned `authResult=FAILED`.
 - Exact archive: `/private/tmp/Matchrim-1.0-65-final.xcarchive`.
 - Bundle/team: `wine.matchrim.app` / `8X3XTD6XYX`.
@@ -47,11 +48,22 @@ Updated: 2026-09-30
 - No production write, image upload, backend/web deployment or TestFlight change occurred.
 - Evidence: `docs/MATCHRIM_BUILD65_PHYSICAL_DEEP_QA_2026-09-30.md`.
 
+## Build 66 remediation candidate
+
+- Bodega and Profile now reserve the native top safe area through a shared page class.
+- The eight directly measured undersized controls now meet the `44 pt` minimum in compiled-layout QA.
+- Home renders `1 valoración afina`; learned decimal profiles are normalized before the integer-only Winerim classifier.
+- Compiled-layout QA passed `14/14` with zero console errors in portrait/landscape, preserved the prior web spacing and used no production traffic.
+- Native simulator smoke passed Home -> Scan -> Home, rotation and the `124x44 pt` Home target.
+- TypeScript, full contracts, production build, iOS simulator build and signed Release archive passed. ESLint remains at 0 errors and 105 inherited warnings.
+- Evidence: `docs/MATCHRIM_BUILD66_CANDIDATE_2026-09-30.md`.
+
 Runtime versions observed: `matchrim-region-detector-v3`, `matchrim-region-analysis-v3-grounded` and `scan-wine-menu-2026-08-26-grounded-v3`.
 
 ## Evidence
 
 - `docs/MATCHRIM_BUILD65_CANDIDATE_2026-09-29.md`
+- `docs/MATCHRIM_BUILD66_CANDIDATE_2026-09-30.md`
 - `docs/MATCHRIM_FRIDGE_IDENTITY_BENCHMARK_2026-09-29.md`
 - `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/real-five-release-summary.json`
 - `docs/qa-evidence/matchrim-build65-mobile-2026-09-29/automated/ui-qa-results.json`
@@ -66,7 +78,7 @@ Selected redacted physical-QA screenshots are versioned under `docs/qa-evidence/
 - Apple processing/readback; no authenticated browser session was available for the read-only check.
 - Build 65 should not be assigned more widely until cabinet identity is measured with the corrected trace in isolated staging.
 - Physical camera and Photo Library open/return are covered. Fresh permission allow/deny and spoken VoiceOver remain open because the existing user state was not reset.
-- Correct Bodega/Profile safe-area handling and the eight undersized controls before a wider TestFlight rollout.
+- Build 66 fixes the Bodega/Profile safe area and eight undersized controls in simulator/layout QA; physical-device confirmation of the candidate remains required before rollout.
 - Isolated staging has the three required functions active at version 1, but lacks `LOVABLE_API_KEY`; no fixture was sent to a known failing path.
 - After that secret is configured: traced staging reconciliation of final box/crop/result, then OCR/canonical resolution and confidence calibration for cabinet scenes.
 - iOS deployment target must move from 14 to 15 before April 2027.

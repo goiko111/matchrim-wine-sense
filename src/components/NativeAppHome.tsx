@@ -108,7 +108,7 @@ const NativeAppHome = ({
 
       <main className="matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(7.5rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
         <div className="flex min-h-12 items-center justify-between gap-3">
-          <button type="button" onClick={() => navigate('/')} className="matchrim-pressable flex items-center gap-2.5 text-left" aria-label="Inicio de Matchrim">
+          <button type="button" onClick={() => navigate('/')} className="matchrim-pressable flex min-h-11 items-center gap-2.5 text-left" aria-label="Inicio de Matchrim">
             <img src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" alt="" className="h-8 w-8" />
             <span className="text-lg font-bold text-slate-950">Matchrim</span>
           </button>
@@ -221,7 +221,7 @@ const NativeAppHome = ({
               <p className="text-sm leading-5 text-slate-600">
                 {hasCode
                   ? learningInfo
-                    ? `${learningInfo.samples} valoraciones afinan el orden. Confianza de aprendizaje: ${learningInfo.confidence}%.`
+                    ? `${learningInfo.samples} ${learningInfo.samples === 1 ? 'valoración afina' : 'valoraciones afinan'} el orden. Confianza de aprendizaje: ${learningInfo.confidence}%.`
                     : 'Tu test ordena afinidades; todavía no hay valoraciones suficientes para aprender.'
                   : loadingCode
                     ? 'Estamos recuperando tu perfil sensorial.'

@@ -9,6 +9,26 @@ export interface MatchrimProfileLike {
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 const encodeDigit = (value: number) => clamp(Math.round(value), 0, 5).toString();
 
+export const normalizeMatchrimProfileForClassifier = (
+  profile: MatchrimProfileLike,
+): MatchrimProfileLike => {
+  const normalize = (name: keyof MatchrimProfileLike) => {
+    const value = Number(profile[name]);
+    if (!Number.isFinite(value)) {
+      throw new Error(`${name} debe ser un número entre 0 y 5`);
+    }
+    return clamp(Math.round(value), 0, 5);
+  };
+
+  return {
+    potente: normalize('potente'),
+    acidez: normalize('acidez'),
+    dulce: normalize('dulce'),
+    tanico: normalize('tanico'),
+    afrutado: normalize('afrutado'),
+  };
+};
+
 const simpleHash = (str: string): number => {
   let hash = 0;
   for (let i = 0; i < str.length; i += 1) {

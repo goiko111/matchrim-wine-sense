@@ -1,0 +1,90 @@
+{
+  "release": "1.0 (66) candidate",
+  "surface": "compiled web assets with native safe-area variables and intercepted QA session",
+  "productionReads": false,
+  "productionWrites": false,
+  "allPassed": true,
+  "results": [
+    {
+      "case": "bodega_safe_top",
+      "y": 75,
+      "status": "PASS"
+    },
+    {
+      "case": "bodega_search_target",
+      "width": 314,
+      "height": 44,
+      "status": "PASS"
+    },
+    {
+      "case": "profile_safe_top",
+      "y": 75,
+      "status": "PASS"
+    },
+    {
+      "case": "profile_tab_target",
+      "width": 199,
+      "height": 44,
+      "status": "PASS"
+    },
+    {
+      "case": "history_tab_target",
+      "width": 199,
+      "height": 44,
+      "status": "PASS"
+    },
+    {
+      "case": "copy_code_target",
+      "width": 44,
+      "height": 44,
+      "status": "PASS"
+    },
+    {
+      "case": "restaurant_target",
+      "width": 186.5,
+      "height": 44,
+      "status": "PASS"
+    },
+    {
+      "case": "share_target",
+      "width": 124.6,
+      "height": 44,
+      "status": "PASS"
+    },
+    {
+      "case": "winerim_target",
+      "width": 148.8,
+      "height": 44,
+      "status": "PASS"
+    },
+    {
+      "case": "home_brand_target",
+      "width": 124.2,
+      "height": 44,
+      "status": "PASS"
+    },
+    {
+      "case": "home_singular_copy_source",
+      "rendered": true,
+      "status": "PASS"
+    },
+    {
+      "case": "profile_landscape_safe_top",
+      "y": 91,
+      "status": "PASS"
+    },
+    {
+      "case": "web_bodega_spacing_preserved",
+      "x": 16,
+      "y": 97,
+      "status": "PASS"
+    },
+    {
+      "case": "web_profile_spacing_preserved",
+      "x": 16,
+      "y": 97,
+      "status": "PASS"
+    }
+  ],
+  "consoleErrors": []
+}

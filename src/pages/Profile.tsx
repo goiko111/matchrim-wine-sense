@@ -718,7 +718,7 @@ const Profile = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         <AppNav />
-        <div className="container mx-auto max-w-6xl px-4 py-8">
+        <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8">
           <div className="mb-8">
             <div className="h-9 w-44 animate-pulse rounded-md bg-stone-200" />
             <div className="mt-3 h-5 w-full max-w-md animate-pulse rounded-md bg-stone-100" />
@@ -749,7 +749,7 @@ const Profile = () => {
               ))}
             </div>
           </div>
-        </div>
+        </main>
       </div>
     );
   }
@@ -757,7 +757,7 @@ const Profile = () => {
   return (
     <>
       <AppNav />
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-red-900 mb-2 flex items-center gap-2">
           <User className="w-8 h-8" />
@@ -769,12 +769,12 @@ const Profile = () => {
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-8">
-          <TabsTrigger value="profile" className="flex items-center gap-2">
+        <TabsList className="mb-8 grid h-auto min-h-11 w-full grid-cols-2 p-0">
+          <TabsTrigger value="profile" className="flex min-h-11 items-center gap-2">
             <Wine className="w-4 h-4" />
             Perfil Sensorial
           </TabsTrigger>
-          <TabsTrigger value="history" className="flex items-center gap-2">
+          <TabsTrigger value="history" className="flex min-h-11 items-center gap-2">
             <History className="w-4 h-4" />
             Historial
           </TabsTrigger>
@@ -1274,7 +1274,7 @@ const Profile = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+      </main>
     </>
   );
 };

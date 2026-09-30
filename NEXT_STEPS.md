@@ -6,9 +6,9 @@
 2. Owner action: configure `LOVABLE_API_KEY` for Edge Functions in isolated staging `qpbmqvfnunkylvtvnyyx`. The three required functions are already active at version 1; no deployment is required for this gate.
 3. Run the new trace in that staging to capture final merged box, crop hash and result for every region. Reconcile traced regions to manual bottle slots, mark the mapping validated, then rerun `scripts/score-matchrim-fridge-identity.py`. Do not accept invented precision/recall when the trace is incomplete.
 4. Once App Store Connect authentication is available, verify processing read-only. Do not assign testers until the identity gate is accepted.
-5. Fix the physical P0 found on build 65: apply the native safe-top padding to Bodega and Perfil using a shared page shell, then verify that both headings start below the Dynamic Island in portrait and landscape.
-6. Raise the eight measured controls to at least 44 pt and fix `1 valoraciones`.
-7. After the backend and client gates, use a disposable account/install for fresh permission allow/deny, save/rate/restart/account switch and spoken VoiceOver. Camera/Photo Library open-return, navigation, rotation and persistence already pass on the physical iPhone and should not be repeated unchanged.
+5. Build 66 contains the safe-area, 44 pt, singular-copy and learned-profile normalization fixes and passes simulator/layout QA. After the identity gate passes, install this candidate on the physical iPhone and verify only those corrected surfaces in portrait/landscape.
+6. With a disposable account/install, run fresh permission allow/deny, save/rate/restart/account switch and spoken VoiceOver. Camera/Photo Library open-return, navigation, rotation and persistence already pass on the physical iPhone and should not be repeated unchanged.
+7. Export and upload build 66 only after the identity and physical gates are green; the local archive is development-signed and has not been exported for App Store distribution.
 
 ## P1
 

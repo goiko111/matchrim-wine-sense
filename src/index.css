@@ -284,8 +284,35 @@ body {
   padding-right: calc(1rem + var(--matchrim-safe-right));
 }
 
+.matchrim-native-page-top {
+  padding-top: 2rem;
+}
+
+.matchrim-native-page-x {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+body.has-native-app-nav .matchrim-native-page-top {
+  padding-top: calc(1rem + var(--matchrim-safe-top));
+}
+
+body.has-native-app-nav .matchrim-native-page-x {
+  padding-left: calc(1rem + var(--matchrim-safe-left));
+  padding-right: calc(1rem + var(--matchrim-safe-right));
+}
+
 @media (min-width: 640px) {
   .matchrim-native-safe-x {
+    padding-left: calc(1.5rem + var(--matchrim-safe-left));
+    padding-right: calc(1.5rem + var(--matchrim-safe-right));
+  }
+
+  body.has-native-app-nav .matchrim-native-page-top {
+    padding-top: calc(2rem + var(--matchrim-safe-top));
+  }
+
+  body.has-native-app-nav .matchrim-native-page-x {
     padding-left: calc(1.5rem + var(--matchrim-safe-left));
     padding-right: calc(1.5rem + var(--matchrim-safe-right));
   }
