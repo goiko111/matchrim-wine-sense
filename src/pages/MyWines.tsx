@@ -76,6 +76,7 @@ interface UserWine {
   status: 'collection' | 'wishlist' | 'tasted';
   quantity: number | null;
   price: number | null;
+  place_details: Json | null;
 }
 
 interface LearningWine {
@@ -100,6 +101,9 @@ interface ExtractedWineData {
   notas_cata: string | null;
   imagen_url?: string | null;
   matchrim_affinity?: number | null;
+  raw_affinity?: number | null;
+  affinity_confidence?: number | null;
+  affinity_model?: string | null;
   sensory_attributes?: {
     potencia?: number;
     acidez?: number;
@@ -190,6 +194,19 @@ const normalizeUserWine = (wine: UserWine): UserWine => ({
   matchrim_affinity: normalizeAffinity(wine.matchrim_affinity),
   sensory_attributes: normalizeSensoryAttributesTo5(wine.sensory_attributes),
 });
+
+const getStoredAffinityTrace = (wine: UserWine) => {
+  if (!wine.place_details || typeof wine.place_details !== 'object' || Array.isArray(wine.place_details)) return null;
+  const details = wine.place_details as Record<string, Json | undefined>;
+  if (details.matchrim_affinity_model !== 'confidence-v1') return null;
+  const raw = Number(details.matchrim_affinity_raw);
+  const confidence = Number(details.matchrim_affinity_confidence);
+  if (!Number.isFinite(raw)) return null;
+  return {
+    raw: Math.round(raw),
+    confidence: Number.isFinite(confidence) ? Math.round(confidence) : null,
+  };
+};
 
 const MyWines = () => {
   const { user, loading: authLoading } = useAuth();
@@ -561,6 +578,9 @@ const MyWines = () => {
           ? ({
               source: "label_scanner",
               affinity_reason: extractedData.affinity_reason || null,
+              matchrim_affinity_raw: extractedData.raw_affinity ?? null,
+              matchrim_affinity_confidence: extractedData.affinity_confidence ?? null,
+              matchrim_affinity_model: extractedData.affinity_model ?? null,
             } as Json)
           : ({
               source: manualSource,
@@ -1565,6 +1585,15 @@ const MyWines = () => {
                                 </span>
                               </div>
                               <Progress value={wine.matchrim_affinity} className="h-2" />
+                              <span className="text-xs text-slate-500">Afinidad orientativa</span>
+                              {getStoredAffinityTrace(wine) && (
+                                <span className="block text-xs text-slate-500">
+                                  Score sensorial {getStoredAffinityTrace(wine)!.raw}%
+                                  {getStoredAffinityTrace(wine)!.confidence === null
+                                    ? ''
+                                    : ` · confianza del perfil ${getStoredAffinityTrace(wine)!.confidence}%`}
+                                </span>
+                              )}
                             </div>
                           )}
 

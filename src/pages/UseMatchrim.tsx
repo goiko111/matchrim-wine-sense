@@ -76,11 +76,13 @@ const getWinerimFitReason = (wine: WinerimWineWithMatch) => {
     price ? `precio: ${price.toFixed(2)}€` : null,
   ].filter(Boolean);
 
-  if (details.length === 0) {
-    return `Tiene un ${wine.matchPercentage}% de afinidad con tu perfil Matchrim.`;
-  }
+  const trace = wine.affinityModel === 'confidence-v1' && wine.rawMatchPercentage !== undefined
+    ? ` Afinidad orientativa ajustada desde un score sensorial de ${wine.rawMatchPercentage}% con ${wine.affinityConfidence ?? 0}% de confianza del perfil.`
+    : '';
 
-  return `Tiene un ${wine.matchPercentage}% de afinidad con tu perfil Matchrim (${details.join(' · ')}).`;
+  if (details.length === 0) return `Tiene un ${wine.matchPercentage}% de afinidad con tu perfil Matchrim.${trace}`;
+
+  return `Tiene un ${wine.matchPercentage}% de afinidad con tu perfil Matchrim (${details.join(' · ')}).${trace}`;
 };
 
 const UseMatchrim = () => {
@@ -336,6 +338,7 @@ const UseMatchrim = () => {
       const wines = await fetchWinesByAttributes(profile, {
         restaurantUuid: restaurantCode,
         matchrimCode,
+        affinityCalibrationConfidence: learnedProfileInfo?.confidence ?? 0,
       });
       setWinerimWines(wines);
 
@@ -394,6 +397,9 @@ const UseMatchrim = () => {
         restaurant_code: restaurantCode || null,
         restaurant_session_id: restaurantSessionId || null,
         matchrim_code: matchrimCode,
+        matchrim_affinity_raw: wine.rawMatchPercentage ?? wine.matchPercentage,
+        matchrim_affinity_confidence: wine.affinityConfidence ?? null,
+        matchrim_affinity_model: wine.affinityModel ?? 'raw-v1',
       } as Json;
 
       const firstPrice = wine.prices?.[0]?.price;

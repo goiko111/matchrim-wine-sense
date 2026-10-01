@@ -118,7 +118,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
     isFetching: isFetchingWinerimWines,
   } = useQuery({
     queryKey: ['winerim-wines', result.potente, result.acidez, result.dulce, result.tanico, result.afrutado],
-    queryFn: () => fetchWinesByAttributes(result),
+    queryFn: () => fetchWinesByAttributes(result, { affinityCalibrationConfidence: 0 }),
     staleTime: 5 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
     refetchOnMount: true,

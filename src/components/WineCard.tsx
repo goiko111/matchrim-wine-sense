@@ -127,8 +127,13 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
           />
         </div>
         <p className={`text-sm ${matchInfo.textColor} mt-2 font-medium`}>
-          {wine.matchPercentage}% compatible con tu perfil sensorial
+          {wine.matchPercentage}% de afinidad orientativa con tu perfil sensorial
         </p>
+        {wine.affinityModel === 'confidence-v1' && wine.rawMatchPercentage !== undefined && (
+          <p className="mt-1 text-xs text-slate-600">
+            Score sensorial {wine.rawMatchPercentage}%, ajustado con {wine.affinityConfidence ?? 0}% de confianza del perfil.
+          </p>
+        )}
         {affinityInsights && (
           <div className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
             {affinityInsights.positiveText && (

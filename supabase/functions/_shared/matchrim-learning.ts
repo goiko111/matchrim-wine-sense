@@ -13,6 +13,12 @@ export type MatchrimTrainingRow = {
   created_at?: string | null;
 };
 
+export type MatchrimEdgeLearningAudit = {
+  profile: MatchrimLearningProfile;
+  confidence: number;
+  samples: number;
+};
+
 const attributes = [
   ["potente", "potencia"],
   ["acidez", "acidez"],
@@ -44,10 +50,14 @@ const timestampFor = (row: MatchrimTrainingRow) => {
   return Number.isFinite(timestamp) ? timestamp : null;
 };
 
-export const calculateEdgeLearnedProfile = (
+const sensorySignature = (sensory: Record<string, unknown>) => attributes
+  .map(([, sensoryKey]) => normalizeSensoryValue(sensory[sensoryKey]))
+  .join(":");
+
+export const calculateEdgeLearnedProfileAudit = (
   baseProfile: MatchrimLearningProfile,
   rows: MatchrimTrainingRow[],
-): MatchrimLearningProfile => {
+): MatchrimEdgeLearningAudit => {
   const validRows = rows.filter((row) => {
     const sensory = row.sensory_attributes;
     return Boolean(
@@ -59,6 +69,8 @@ export const calculateEdgeLearnedProfile = (
   const timestamps = validRows.map(timestampFor).filter((value): value is number => value !== null);
   const newestTimestamp = timestamps.length ? Math.max(...timestamps) : null;
   const deltas: MatchrimLearningProfile = { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 };
+  const absoluteDeltas: MatchrimLearningProfile = { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 };
+  const signatures = new Set<string>();
   let totalWeight = 0;
 
   validRows.forEach((row) => {
@@ -68,14 +80,33 @@ export const calculateEdgeLearnedProfile = (
       : 0;
     const recencyWeight = timestamp === null ? 1 : 0.2 + 0.8 * Math.pow(0.5, ageDays / 120);
     const weight = ratingWeight(row.rating) * recencyWeight;
+    signatures.add(sensorySignature(row.sensory_attributes!));
     attributes.forEach(([profileKey, sensoryKey]) => {
       const sensoryValue = normalizeSensoryValue(row.sensory_attributes?.[sensoryKey]);
-      if (sensoryValue !== null) deltas[profileKey] += (sensoryValue - baseProfile[profileKey]) * weight;
+      if (sensoryValue !== null) {
+        const contribution = (sensoryValue - baseProfile[profileKey]) * weight;
+        deltas[profileKey] += contribution;
+        absoluteDeltas[profileKey] += Math.abs(contribution);
+      }
     });
     totalWeight += Math.abs(weight);
   });
 
-  if (!validRows.length || totalWeight === 0) return baseProfile;
+  if (!validRows.length || totalWeight === 0) {
+    return { profile: baseProfile, confidence: 0, samples: 0 };
+  }
+  const totalAbsoluteDelta = Object.values(absoluteDeltas).reduce((sum, value) => sum + value, 0);
+  const consistencyRatio = totalAbsoluteDelta > 0
+    ? attributes.reduce((sum, [profileKey]) => sum + Math.abs(deltas[profileKey]), 0) / totalAbsoluteDelta
+    : 1;
+  const diversityRatio = Math.min(1, signatures.size / Math.min(validRows.length, 6));
+  const sampleCoverage = Math.min(1, validRows.length / 12);
+  const confidence = Math.round(
+    sampleCoverage
+      * (0.55 + 0.45 * consistencyRatio)
+      * (0.65 + 0.35 * diversityRatio)
+      * 100,
+  );
   const blend = Math.min(0.9, 0.25 + validRows.length * 0.05);
   const result = { ...baseProfile };
   attributes.forEach(([profileKey]) => {
@@ -83,5 +114,10 @@ export const calculateEdgeLearnedProfile = (
       Math.round((baseProfile[profileKey] + (deltas[profileKey] / totalWeight) * blend) * 10) / 10,
     );
   });
-  return result;
+  return { profile: result, confidence, samples: validRows.length };
 };
+
+export const calculateEdgeLearnedProfile = (
+  baseProfile: MatchrimLearningProfile,
+  rows: MatchrimTrainingRow[],
+) => calculateEdgeLearnedProfileAudit(baseProfile, rows).profile;

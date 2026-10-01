@@ -1,4 +1,7 @@
 import type { MatchrimProfileLike } from './matchrimPassport';
+import { calibrateMatchrimAffinityScore } from './matchrimAffinityCalibration';
+
+export { calibrateMatchrimAffinityScore } from './matchrimAffinityCalibration';
 
 type Rating = 'love' | 'ok' | 'not_for_me' | null;
 type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', unknown>>;
@@ -96,16 +99,6 @@ export const scoreMatchrimProfileAgainstSensory = (
 
   if (!availableWeight) return null;
   return Math.round((weightedScore / availableWeight) * 100);
-};
-
-export const calibrateMatchrimAffinityScore = (
-  score: number,
-  learningConfidence: number,
-  prior = 72,
-) => {
-  const normalizedConfidence = clamp(learningConfidence, 0, 70) / 70;
-  const reliability = 0.62 + normalizedConfidence * 0.38;
-  return Math.round(prior + (score - prior) * reliability);
 };
 
 const ratingWeight = (rating: Rating) => {

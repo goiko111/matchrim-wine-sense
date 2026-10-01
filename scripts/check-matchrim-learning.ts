@@ -5,9 +5,17 @@ import {
   calibrateMatchrimAffinityScore,
   detectMatchrimPreferenceShift,
 } from '../src/utils/matchrimLearning';
+import { buildMatchrimAffinityCalibration } from '../src/utils/matchrimAffinityCalibration';
 import { generateMatchrimCode, normalizeMatchrimProfileForClassifier } from '../src/utils/matchrimPassport';
 import { generateMatchrimName, generateWineStyles } from '../src/utils/profileUtils';
-import { calculateEdgeLearnedProfile } from '../supabase/functions/_shared/matchrim-learning';
+import {
+  calibrateEdgeMatchrimAffinity,
+  mergeEdgeAffinityTrace,
+} from '../supabase/functions/_shared/matchrim-affinity';
+import {
+  calculateEdgeLearnedProfile,
+  calculateEdgeLearnedProfileAudit,
+} from '../supabase/functions/_shared/matchrim-learning';
 
 const baseProfile = {
   potente: 2,
@@ -111,7 +119,7 @@ assert.ok(contradictoryProfile.confidence < 20, 'Contradictory evidence must not
 const now = Date.parse('2026-09-29T12:00:00Z');
 const old = new Date(now - 365 * 86_400_000).toISOString();
 const recent = new Date(now).toISOString();
-const recencyProfile = calculateLearnedMatchrimProfile(baseProfile, [
+const recencyRows = [
   ...Array.from({ length: 6 }, () => ({
     rating: 'love' as const,
     updated_at: old,
@@ -122,26 +130,24 @@ const recencyProfile = calculateLearnedMatchrimProfile(baseProfile, [
     updated_at: recent,
     sensory_attributes: { potencia: 2, acidez: 5, dulzura: 1, taninos: 1, afrutado: 4 },
   })),
-]);
+] as const;
+const recencyProfile = calculateLearnedMatchrimProfile(baseProfile, [...recencyRows]);
 assert.equal(recencyProfile.calibration.datedEvidence, 100);
 assert.ok(recencyProfile.profile.acidez > 3, 'Recent evidence receives more weight than stale evidence');
 assert.ok(recencyProfile.confidence < 100, 'Repeated evidence with low diversity cannot reach 100% confidence');
 assert.deepEqual(
   calculateEdgeLearnedProfile(baseProfile, [
-    ...Array.from({ length: 6 }, () => ({
-      rating: 'love',
-      updated_at: old,
-      sensory_attributes: { potencia: 5, acidez: 3, dulzura: 1, taninos: 5, afrutado: 3 },
-    })),
-    ...Array.from({ length: 6 }, () => ({
-      rating: 'love',
-      updated_at: recent,
-      sensory_attributes: { potencia: 2, acidez: 5, dulzura: 1, taninos: 1, afrutado: 4 },
-    })),
+    ...recencyRows,
   ]),
   recencyProfile.profile,
   'Client and Edge Functions must derive the same active profile from the same rows',
 );
+const edgeRecencyAudit = calculateEdgeLearnedProfileAudit(baseProfile, [...recencyRows]);
+assert.deepEqual(edgeRecencyAudit, {
+  profile: recencyProfile.profile,
+  confidence: recencyProfile.confidence,
+  samples: recencyProfile.samples,
+});
 
 const oldStructured = Array.from({ length: 12 }, (_, index) => ({
   rating: 'love' as const,
@@ -178,5 +184,43 @@ assert.equal(
 assert.equal(calibrateMatchrimAffinityScore(92, 0), 84);
 assert.equal(calibrateMatchrimAffinityScore(92, 70), 92);
 assert.equal(calibrateMatchrimAffinityScore(40, 0), 52);
+for (const score of [0, 40, 72, 92, 100]) {
+  for (const confidence of [0, 12, 35, 70, 100]) {
+    const client = buildMatchrimAffinityCalibration(score, confidence);
+    assert.equal(
+      calibrateEdgeMatchrimAffinity(score, confidence),
+      client.affinity,
+      `Client and Edge affinity calibration must match for ${score}/${confidence}`,
+    );
+  }
+}
+for (const confidence of [0, 12, 35, 70, 100]) {
+  let previous = -1;
+  for (let score = 0; score <= 100; score += 1) {
+    const calibrated = calibrateMatchrimAffinityScore(score, confidence);
+    assert.ok(calibrated >= previous, 'Calibration must preserve raw score ordering');
+    previous = calibrated;
+  }
+}
+assert.deepEqual(buildMatchrimAffinityCalibration(Number.NaN, Number.NaN), {
+  affinity: 72,
+  rawAffinity: 72,
+  learningConfidence: 0,
+  model: 'confidence-v1',
+});
+assert.deepEqual(
+  mergeEdgeAffinityTrace(
+    { source: 'manual', name_verified_by_user: true },
+    { raw_affinity: 92, affinity_confidence: 35, affinity_model: 'confidence-v1' },
+  ),
+  {
+    source: 'manual',
+    name_verified_by_user: true,
+    matchrim_affinity_raw: 92,
+    matchrim_affinity_confidence: 35,
+    matchrim_affinity_model: 'confidence-v1',
+  },
+  'Persisting calibration trace must preserve unrelated place details',
+);
 
 console.log('Matchrim learning checks passed');

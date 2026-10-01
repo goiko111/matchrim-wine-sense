@@ -304,7 +304,9 @@ const NativeAppHome = ({
                     type="button"
                     onClick={() => window.open(buildWinerimWineUrl(wine), '_blank', 'noopener,noreferrer')}
                     className="matchrim-pressable flex min-h-[5.25rem] w-full items-center gap-3 py-3 text-left"
-                    aria-label={`Abrir ficha de ${wine.name}`}
+                    aria-label={wine.affinityModel === 'confidence-v1'
+                      ? `Abrir ficha de ${wine.name}. Afinidad orientativa ${wine.matchPercentage}%, score sensorial ${wine.rawMatchPercentage ?? wine.matchPercentage}%, confianza del perfil ${wine.affinityConfidence ?? 0}%`
+                      : `Abrir ficha de ${wine.name}`}
                   >
                     <span className="flex h-14 w-11 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
                       {wine.photo ? (
@@ -321,7 +323,9 @@ const NativeAppHome = ({
                     </span>
                     <span className="shrink-0 text-right">
                       <span className="block text-lg font-bold text-red-900">{wine.matchPercentage}%</span>
-                      <span className="block text-[10px] font-medium text-slate-500">afinidad</span>
+                      <span className="block text-[10px] font-medium text-slate-500">
+                        {wine.affinityModel === 'confidence-v1' ? 'orientativa' : 'afinidad'}
+                      </span>
                     </span>
                   </button>
                 ))}

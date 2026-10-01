@@ -97,7 +97,7 @@ const Index = () => {
       if (data) {
         const wines = (userWines || []) as HomeUserWine[];
         const trainingWines = wines.filter((wine) => (
-          wine.use_for_profile_training !== false && Boolean(wine.rating) && Boolean(wine.sensory_attributes)
+          wine.use_for_profile_training === true && Boolean(wine.rating) && Boolean(wine.sensory_attributes)
         ));
         const learned = calculateLearnedMatchrimProfile(data, trainingWines);
         setCodeProfile(data);
@@ -149,7 +149,10 @@ const Index = () => {
     setRecommendationsUnavailable(false);
     setRecommendationsExhausted(false);
 
-    fetchWinesByAttributes(activeProfile, { signal: controller.signal })
+    fetchWinesByAttributes(activeProfile, {
+      affinityCalibrationConfidence: learningInfo?.confidence ?? 0,
+      signal: controller.signal,
+    })
       .then((wines) => {
         if (controller.signal.aborted) return;
         const selection = selectUnseenWineRecommendations(wines, savedWines);
@@ -168,7 +171,7 @@ const Index = () => {
       });
 
     return () => controller.abort();
-  }, [activeProfile, loadingHomeProfile, savedWineOwnerId, savedWines, user?.id]);
+  }, [activeProfile, learningInfo?.confidence, loadingHomeProfile, savedWineOwnerId, savedWines, user?.id]);
 
   const homeMatchrimCode = useMemo(
     () => codeProfile ? generateMatchrimCode(codeProfile) : '',

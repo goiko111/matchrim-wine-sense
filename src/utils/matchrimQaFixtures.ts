@@ -267,7 +267,16 @@ export const buildMatchrimQaFixturePayload = (
   }
 
   if (functionName === 'calculate-wine-affinity') {
-    return { handled: true, payload: { affinity: 82 } };
+    return {
+      handled: true,
+      payload: {
+        affinity: 82,
+        raw_affinity: 86,
+        affinity_confidence: 41,
+        affinity_model: 'confidence-v1',
+        learning_samples: 7,
+      },
+    };
   }
 
   return { handled: false };

@@ -1,6 +1,7 @@
 import { QuizResult } from '@/data/quizData';
 import { supabase } from '@/integrations/supabase/client';
 import { clasificarVino, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
+import { buildMatchrimAffinityCalibration, MATCHRIM_AFFINITY_MODEL } from '@/utils/matchrimAffinityCalibration';
 import { normalizeMatchrimProfileForClassifier } from '@/utils/matchrimPassport';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
@@ -40,6 +41,9 @@ export interface WinerimWine {
 
 export interface WinerimWineWithMatch extends WinerimWine {
   matchPercentage: number;
+  rawMatchPercentage?: number;
+  affinityConfidence?: number;
+  affinityModel?: typeof MATCHRIM_AFFINITY_MODEL | 'raw-v1';
   matchSource?: 'winerim-api' | 'style-range';
   styleName?: PublicWineStyle;
 }
@@ -73,6 +77,7 @@ export interface WineMatchingResponse {
 export interface FetchWinerimWinesOptions {
   restaurantUuid?: string;
   matchrimCode?: string;
+  affinityCalibrationConfidence?: number | null;
   signal?: AbortSignal;
 }
 
@@ -563,7 +568,29 @@ export const fetchWinesByAttributes = async (
     }
   }
 
-  const results = mergeUniqueWines([...directResults, ...styleRangeResults]);
+  const mergedResults = mergeUniqueWines([...directResults, ...styleRangeResults]);
+  const results = mergedResults.map((wine) => {
+    const rawMatchPercentage = wine.matchPercentage;
+    if (options.affinityCalibrationConfidence === null || options.affinityCalibrationConfidence === undefined) {
+      return {
+        ...wine,
+        rawMatchPercentage,
+        affinityModel: 'raw-v1' as const,
+      };
+    }
+
+    const calibrated = buildMatchrimAffinityCalibration(
+      rawMatchPercentage,
+      options.affinityCalibrationConfidence,
+    );
+    return {
+      ...wine,
+      matchPercentage: calibrated.affinity,
+      rawMatchPercentage: calibrated.rawAffinity,
+      affinityConfidence: calibrated.learningConfidence,
+      affinityModel: calibrated.model,
+    };
+  });
   const totalCount = extractTotalCount(responseData, directResults.length);
 
   winerimWineResultsMeta.set(results, {

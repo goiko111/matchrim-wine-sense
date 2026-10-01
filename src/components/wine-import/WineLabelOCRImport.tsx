@@ -23,6 +23,9 @@ interface ExtractedWineData {
   notas_cata: string | null;
   imagen_url?: string | null;
   matchrim_affinity?: number | null;
+  raw_affinity?: number | null;
+  affinity_confidence?: number | null;
+  affinity_model?: string | null;
   sensory_attributes?: {
     potencia?: number;
     acidez?: number;
@@ -148,6 +151,9 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
           ? {
               ...detectedWine,
               matchrim_affinity: affinityResult.affinity,
+              raw_affinity: affinityResult.raw_affinity,
+              affinity_confidence: affinityResult.affinity_confidence,
+              affinity_model: affinityResult.affinity_model,
               sensory_attributes: affinityResult.sensory_attributes,
               affinity_reason: affinityResult.reason,
             }
@@ -293,8 +299,15 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
       if (typeof data?.affinity === 'number') {
         return {
           affinity: data.affinity as number,
+          raw_affinity: typeof data.raw_affinity === 'number' ? data.raw_affinity as number : null,
+          affinity_confidence: typeof data.affinity_confidence === 'number' ? data.affinity_confidence as number : null,
+          affinity_model: typeof data.affinity_model === 'string' ? data.affinity_model as string : null,
           sensory_attributes: normalizeSensoryAttributesTo5(data.sensory_attributes || null),
-          reason: buildAffinityReason(data.affinity as number),
+          reason: buildAffinityReason(
+            data.affinity as number,
+            typeof data.raw_affinity === 'number' ? data.raw_affinity as number : null,
+            typeof data.affinity_confidence === 'number' ? data.affinity_confidence as number : null,
+          ),
         };
       }
 
@@ -309,11 +322,14 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
     }
   };
 
-  const buildAffinityReason = (affinity: number) => {
-    if (affinity >= 85) return "Muy alineado con tu perfil Matchrim. Es candidato claro para probar.";
-    if (affinity >= 70) return "Buen encaje con tu perfil, aunque puede tener algún atributo más marcado.";
-    if (affinity >= 55) return "Encaje medio: puede gustarte si buscas salir un poco de tu zona habitual.";
-    return "Encaje bajo con tu perfil. Lo guardaría solo si buscas probar algo diferente.";
+  const buildAffinityReason = (affinity: number, rawAffinity: number | null, confidence: number | null) => {
+    const trace = rawAffinity === null
+      ? ''
+      : ` Score sensorial ${rawAffinity}%${confidence === null ? '' : `, ajustado con ${confidence}% de confianza del perfil`}.`;
+    if (affinity >= 85) return `Muy alineado con tu perfil Matchrim. Es candidato claro para probar.${trace}`;
+    if (affinity >= 70) return `Buen encaje con tu perfil, aunque puede tener algún atributo más marcado.${trace}`;
+    if (affinity >= 55) return `Encaje medio: puede gustarte si buscas salir un poco de tu zona habitual.${trace}`;
+    return `Encaje bajo con tu perfil. Lo guardaría solo si buscas probar algo diferente.${trace}`;
   };
 
   const getAffinityTone = (affinity: number) => {
@@ -494,7 +510,9 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
               {typeof extractedWine.matchrim_affinity === 'number' && (
                 <div className="shrink-0 rounded-md bg-white px-3 py-2 text-center text-red-950">
                   <div className="text-2xl font-bold leading-none">{extractedWine.matchrim_affinity}%</div>
-                  <div className="mt-1 text-[10px] font-semibold uppercase text-red-900/70">Encaje</div>
+                  <div className="mt-1 text-[10px] font-semibold uppercase text-red-900/70">
+                    {extractedWine.affinity_model === 'confidence-v1' ? 'Orientativa' : 'Encaje'}
+                  </div>
                 </div>
               )}
             </div>

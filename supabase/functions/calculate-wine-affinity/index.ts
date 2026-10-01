@@ -1,6 +1,15 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
-import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from '../_shared/matchrim-learning.ts';
+import {
+  calibrateEdgeMatchrimAffinity,
+  MATCHRIM_AFFINITY_MODEL,
+  mergeEdgeAffinityTrace,
+} from '../_shared/matchrim-affinity.ts';
+import {
+  calculateEdgeLearnedProfileAudit,
+  type MatchrimEdgeLearningAudit,
+  type MatchrimTrainingRow,
+} from '../_shared/matchrim-learning.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -50,21 +59,21 @@ const buildLearnedProfile = async (
   supabaseClient: ReturnType<typeof createClient>,
   userId: string,
   baseProfile: MatchrimProfile
-): Promise<MatchrimProfile> => {
+): Promise<MatchrimEdgeLearningAudit> => {
   const { data: ratedWines, error } = await supabaseClient
     .from('user_wines')
     .select('rating, sensory_attributes, created_at, updated_at')
     .eq('user_id', userId)
+    .eq('use_for_profile_training', true)
     .not('rating', 'is', null)
-    .not('sensory_attributes', 'is', null)
-    .limit(30);
+    .not('sensory_attributes', 'is', null);
 
   if (error || !ratedWines?.length) {
     if (error) console.error('Error loading rated wines for learned profile:', error);
-    return baseProfile;
+    return { profile: baseProfile, confidence: 0, samples: 0 };
   }
 
-  return calculateEdgeLearnedProfile(baseProfile, ratedWines as MatchrimTrainingRow[]);
+  return calculateEdgeLearnedProfileAudit(baseProfile, ratedWines as MatchrimTrainingRow[]);
 };
 
 // Afinidad `manhattan-v1`: MISMA métrica que el backend (GET /api/v1/matchrim/recommendations,
@@ -79,6 +88,20 @@ const calculateAffinityFromScale5 = (profile: MatchrimProfile, attrs: SensoryAtt
     Math.abs(profile.afrutado - (attrs.afrutado ?? 3));
   const maxDistance = 20;
   return Math.round(Math.max(0, Math.min(100, (1 - distance / maxDistance) * 100)));
+};
+
+const buildAffinityResult = (
+  learned: MatchrimEdgeLearningAudit,
+  attrs: SensoryAttributes,
+) => {
+  const rawAffinity = calculateAffinityFromScale5(learned.profile, attrs);
+  return {
+    affinity: calibrateEdgeMatchrimAffinity(rawAffinity, learned.confidence),
+    raw_affinity: rawAffinity,
+    affinity_confidence: learned.confidence,
+    affinity_model: MATCHRIM_AFFINITY_MODEL,
+    learning_samples: learned.samples,
+  };
 };
 
 serve(async (req) => {
@@ -192,9 +215,9 @@ Responde SOLO con JSON: {"potencia":4,"acidez":3,"dulzura":1,"taninos":4,"afruta
           vintage: tempWine.vintage ?? tempWine.anada,
         });
       }
-      const affinity = calculateAffinityFromScale5(learnedProfile, sensoryAttrs);
+      const affinityResult = buildAffinityResult(learnedProfile, sensoryAttrs);
       return new Response(
-        JSON.stringify({ affinity, sensory_attributes: sensoryAttrs, temporary: true }),
+        JSON.stringify({ ...affinityResult, sensory_attributes: sensoryAttrs, temporary: true }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -213,30 +236,35 @@ Responde SOLO con JSON: {"potencia":4,"acidez":3,"dulzura":1,"taninos":4,"afruta
 
     const existingAttrs = normalizeSensoryAttributes(wine.sensory_attributes);
     if (existingAttrs) {
-      const affinity = calculateAffinityFromScale5(learnedProfile, existingAttrs);
+      const affinityResult = buildAffinityResult(learnedProfile, existingAttrs);
       await supabaseClient
         .from('user_wines')
-        .update({ matchrim_affinity: affinity, sensory_attributes: existingAttrs })
+        .update({
+          matchrim_affinity: affinityResult.affinity,
+          sensory_attributes: existingAttrs,
+          place_details: mergeEdgeAffinityTrace(wine.place_details, affinityResult),
+        })
         .eq('id', wine_id);
       return new Response(
-        JSON.stringify({ affinity, sensory_attributes: existingAttrs }),
+        JSON.stringify({ ...affinityResult, sensory_attributes: existingAttrs }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     const sensoryAttrs = await estimateSensory(wine);
-    const affinity = calculateAffinityFromScale5(learnedProfile, sensoryAttrs);
+    const affinityResult = buildAffinityResult(learnedProfile, sensoryAttrs);
 
     await supabaseClient
       .from('user_wines')
       .update({
         sensory_attributes: sensoryAttrs,
-        matchrim_affinity: affinity,
+        matchrim_affinity: affinityResult.affinity,
+        place_details: mergeEdgeAffinityTrace(wine.place_details, affinityResult),
       })
       .eq('id', wine_id);
 
     return new Response(
-      JSON.stringify({ affinity, sensory_attributes: sensoryAttrs }),
+      JSON.stringify({ ...affinityResult, sensory_attributes: sensoryAttrs }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 

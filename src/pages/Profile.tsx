@@ -324,7 +324,7 @@ const Profile = () => {
         .from('user_wines')
         .select('rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
         .eq('user_id', user.id)
-        .or('use_for_profile_training.is.null,use_for_profile_training.eq.true')
+        .eq('use_for_profile_training', true)
         .not('rating', 'is', null)
         .not('sensory_attributes', 'is', null);
 
@@ -481,7 +481,9 @@ const Profile = () => {
       setLoadingProfileWinerimWines(true);
       setProfileWinerimError(null);
 
-      fetchWinesByAttributes(activeClassifierProfile)
+      fetchWinesByAttributes(activeClassifierProfile, {
+        affinityCalibrationConfidence: learnedProfile?.confidence ?? 0,
+      })
         .then((wines) => {
           if (!cancelled) {
             setProfileWinerimWines(wines);
@@ -509,7 +511,7 @@ const Profile = () => {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [activeClassifierProfile, profileWinerimRetryKey]);
+  }, [activeClassifierProfile, learnedProfile?.confidence, profileWinerimRetryKey]);
 
   const chartData = currentDisplayProfile && activeDisplayProfile ? [
     { attribute: "Potente", baseValue: currentDisplayProfile.potente, activeValue: activeDisplayProfile.potente },
