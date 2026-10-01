@@ -1,0 +1,592 @@
+{
+  "generatedAt": "2026-09-29",
+  "build": "local HEAD d809502 plus current QA working-tree fixes",
+  "scope": "anonymous local route inventory; no account creation and no production writes",
+  "totals": {
+    "routes": 34,
+    "rendered": 34,
+    "overflow": 0,
+    "pageErrors": 0,
+    "consoleErrors": 0
+  },
+  "routes": [
+    {
+      "route": "/",
+      "objective": "Inicio de decisión y acceso a escaneo, aiRIM y recomendaciones",
+      "surface": "consumer",
+      "capture": "home",
+      "finalPath": "/",
+      "headings": [
+        "¿Qué quieres elegir?",
+        "Hazlo realmente tuyo"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Matchrim Tu vino, con contexto ¿Qué quieres elegir? Haz una foto. Matchrim identifica, compara y explica qué encaja contigo. Botellas Una etiqueta o toda la mesa Carta Impresa, pizarra o PDF Comparar 2-5 ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/auth",
+      "objective": "Inicio de sesión y acceso a registro",
+      "surface": "auth",
+      "capture": "auth",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/forgot-password",
+      "objective": "Solicitar recuperación de contraseña",
+      "surface": "auth",
+      "finalPath": "/forgot-password",
+      "headings": [],
+      "bodyExcerpt": "Volver ES Recuperar contraseña Te enviaremos un enlace para crear una nueva contraseña. Enviar enlace",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/reset-password",
+      "objective": "Establecer contraseña desde sesión de recuperación",
+      "surface": "auth",
+      "finalPath": "/reset-password",
+      "headings": [],
+      "bodyExcerpt": "ES Establecer nueva contraseña Escribe tu nueva contraseña para acceder a tu cuenta. El enlace no es válido o ha caducado. Solicita uno nuevo. Volver a iniciar sesión",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/registration",
+      "objective": "Crear cuenta en tres pasos con consentimiento",
+      "surface": "auth",
+      "finalPath": "/registration",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver Matchrim Descubre tu perfil de vino perfecto Información Básica Paso 1 de 3 Nombre * Apellido * Email * Contraseña * Teléfono * 🇪🇸 España (+34) 🇪🇸 España (+34) 🇫🇷 France (+33) 🇵🇹 Portugal (+351) 🇮🇹 Itali",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/matchrim",
+      "objective": "Completar quiz sensorial y obtener perfil",
+      "surface": "consumer",
+      "capture": "quiz",
+      "finalPath": "/matchrim",
+      "headings": [
+        "Matchrim",
+        "¿Cómo funciona?"
+      ],
+      "bodyExcerpt": "Inicio aiRIM Escanear Bodega Perfil Volver al inicio Matchrim by Winerim Descubre tu perfil sensorial de vino ¿Cómo funciona? Responde algunas preguntas sobre tus gustos alimentarios para descubrir tu perfil sensorial y ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/usar-matchrim",
+      "objective": "Explorar recomendaciones y cartas con el perfil",
+      "surface": "consumer",
+      "finalPath": "/usar-matchrim",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Inicio aiRIM Escanear Bodega Perfil Necesitas tu Matchrim primero Haz el test para obtener tu código y poder filtrar cartas Winerim. Crear mi código Matchrim",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/escanear",
+      "objective": "Elegir modalidad de captura",
+      "surface": "scan",
+      "capture": "scan-hub",
+      "finalPath": "/escanear",
+      "headings": [
+        "Escanear",
+        "También puedes"
+      ],
+      "bodyExcerpt": "Cámara y galería Escanear Elige lo que tienes delante. Cada vino se identifica y puntúa por separado. Carta de vinos Sube la carta y te digo qué pediría primero. Etiqueta de vino Identifica una etiqueta o varias botellas",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/escanear/etiqueta",
+      "objective": "Escanear una o varias etiquetas/botellas",
+      "surface": "scan",
+      "finalPath": "/escanear/etiqueta",
+      "headings": [
+        "Etiqueta de vino",
+        "Antes de analizar una imagen"
+      ],
+      "bodyExcerpt": "Escáner Matchrim Etiqueta de vino Identifica una etiqueta o varias botellas sin mezclarlas. Antes de analizar una imagen Elige solo fotos de etiquetas, botellas, cartas, pizarras, platos o expositores que quieras analiza",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/escanear/carta-vinos",
+      "objective": "Escanear carta o pizarra de vinos y comparar",
+      "surface": "scan",
+      "capture": "scan-menu",
+      "finalPath": "/escanear/carta-vinos",
+      "headings": [
+        "Carta de vinos",
+        "Antes de analizar una imagen"
+      ],
+      "bodyExcerpt": "Escáner Matchrim Carta de vinos Sube la carta y te digo qué pediría primero. Antes de analizar una imagen Elige solo fotos de etiquetas, botellas, cartas, pizarras, platos o expositores que quieras analizar. Matchrim acc",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/escanear/menu-comida",
+      "objective": "Extraer platos y proponer vino",
+      "surface": "scan",
+      "finalPath": "/escanear/menu-comida",
+      "headings": [
+        "Menú de comida",
+        "Antes de analizar una imagen"
+      ],
+      "bodyExcerpt": "Escáner Matchrim Menú de comida Convierte platos del menú en ideas de vino. Antes de analizar una imagen Elige solo fotos de etiquetas, botellas, cartas, pizarras, platos o expositores que quieras analizar. Matchrim acce",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/escanear/plato",
+      "objective": "Fotografiar un plato para maridaje",
+      "surface": "scan",
+      "finalPath": "/escanear/plato",
+      "headings": [
+        "Plato",
+        "Antes de analizar una imagen"
+      ],
+      "bodyExcerpt": "Escáner Matchrim Plato Haz una foto y encuentra el vino que le va. Antes de analizar una imagen Elige solo fotos de etiquetas, botellas, cartas, pizarras, platos o expositores que quieras analizar. Matchrim accede a la c",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/escanear/encontrar-vino",
+      "objective": "Buscar por presupuesto, ocasión o tienda",
+      "surface": "scan",
+      "finalPath": "/escanear/encontrar-vino",
+      "headings": [
+        "Encontrar vino",
+        "Antes de analizar una imagen"
+      ],
+      "bodyExcerpt": "Escáner Matchrim Encontrar vino Dime presupuesto, ocasión o tienda y te digo qué buscaría. Antes de analizar una imagen Elige solo fotos de etiquetas, botellas, cartas, pizarras, platos o expositores que quieras analizar",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/inteligencia-liquida",
+      "objective": "Consultar aiRIM y abrir decisiones guiadas",
+      "surface": "airim",
+      "capture": "airim",
+      "finalPath": "/inteligencia-liquida",
+      "headings": [
+        "aiRIM",
+        "¿Qué necesitas decidir?",
+        "Decisiones frecuentes"
+      ],
+      "bodyExcerpt": "Tu copiloto de vino aiRIM ¿Qué necesitas decidir? Dame el vino, plato, ocasión o presupuesto. Separaré hechos, inferencias y preferencias. Pregunta para aiRIM Decisiones frecuentes Vino para un plato Con gusto y presupue",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/wine-styles",
+      "objective": "Descubrir estilos de vino",
+      "surface": "discovery",
+      "finalPath": "/wine-styles",
+      "headings": [
+        "Matchrim",
+        "Los Estilos Winerim",
+        "Descubre los 16 Estilos Visibles",
+        "Los Estilos de Vino",
+        "El Sistema Winerim"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Inicio aiRIM Escanear Bodega Perfil 16 Estilos Visibles Los Estilos Winerim Cada vino combina una personalidad sensorial y un tipo físico para que cada estilo sea preciso. 5 Atributos Potencia, Acidez, Du",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/wine-styles/tinto-versatil",
+      "objective": "Entender un estilo concreto",
+      "surface": "discovery",
+      "finalPath": "/wine-styles/tinto-versatil",
+      "headings": [
+        "Matchrim",
+        "El compañero perfecto para cada ocasión"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Inicio aiRIM Escanear Bodega Perfil Volver a Estilos TV Tinto Versátil El compañero perfecto para cada ocasión Como un buen amigo, siempre está ahí cuando lo necesitas, adaptándose a cada momento y celebr",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/wines/qa-route-probe",
+      "objective": "Consultar ficha canónica de vino",
+      "surface": "discovery",
+      "finalPath": "/wines/qa-route-probe",
+      "headings": [
+        "Matchrim",
+        "Vino no encontrado"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Inicio aiRIM Escanear Bodega Perfil Vino no encontrado Volver a descubrir",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/my-wines",
+      "objective": "Gestionar la colección personal",
+      "surface": "cellar",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/my-wines/collection",
+      "objective": "Gestionar botellas disponibles",
+      "surface": "cellar",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/my-wines/wishlist",
+      "objective": "Gestionar vinos pendientes",
+      "surface": "cellar",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/my-wines/tasted",
+      "objective": "Puntuar vinos probados y aprendizaje",
+      "surface": "cellar",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/my-wines/favorites",
+      "objective": "Consultar favoritos",
+      "surface": "cellar",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/my-wines/rejected",
+      "objective": "Consultar vinos rechazados",
+      "surface": "cellar",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/my-wines/add",
+      "objective": "Añadir vino manualmente",
+      "surface": "cellar",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/profile",
+      "objective": "Entender perfil, aprendizaje y recomendaciones",
+      "surface": "profile",
+      "finalPath": "/auth",
+      "headings": [
+        "Matchrim"
+      ],
+      "bodyExcerpt": "Volver ES Matchrim Descubre tu perfil de vino perfecto Bienvenido Inicia sesión o crea una cuenta para guardar tus resultados Iniciar Sesión Registrarse Iniciar Sesión ¿Olvidaste tu contraseña? Privacidad | Términos",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/privacy",
+      "objective": "Comprender tratamiento de datos e imágenes",
+      "surface": "legal",
+      "capture": "privacy",
+      "finalPath": "/privacy",
+      "headings": [
+        "Matchrim",
+        "Politica de privacidad",
+        "Responsable",
+        "Datos que tratamos",
+        "Para que usamos los datos"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Inicio aiRIM Escanear Bodega Perfil Volver a Matchrim ULTIMA ACTUALIZACION: 26 DE AGOSTO DE 2026 Politica de privacidad Esta politica explica como Matchrim, operado por Winerim, trata los datos necesarios",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/terms",
+      "objective": "Consultar términos de uso",
+      "surface": "legal",
+      "finalPath": "/terms",
+      "headings": [
+        "Matchrim",
+        "Terminos de uso",
+        "Uso de la app",
+        "Edad legal",
+        "Cuenta de usuario"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Inicio aiRIM Escanear Bodega Perfil Volver a Winerim ULTIMA ACTUALIZACION: 9 DE JUNIO DE 2026 Terminos de uso Estos terminos resumen las condiciones de uso de la app Winerim y de sus funciones para perfil",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/account/delete",
+      "objective": "Solicitar eliminación de cuenta y datos",
+      "surface": "legal",
+      "capture": "account-delete",
+      "finalPath": "/account/delete",
+      "headings": [
+        "Matchrim",
+        "Eliminar cuenta"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Inicio aiRIM Escanear Bodega Perfil Volver a Matchrim Eliminar cuenta Desde aquí puedes iniciar la eliminación de tu cuenta Matchrim y los datos personales asociados a la app. Inicia sesión para solicitar",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    },
+    {
+      "route": "/admin",
+      "objective": "Administración, fuera del producto consumidor",
+      "surface": "admin",
+      "finalPath": "/",
+      "headings": [
+        "¿Qué quieres elegir?",
+        "Hazlo realmente tuyo"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Matchrim Tu vino, con contexto ¿Qué quieres elegir? Haz una foto. Matchrim identifica, compara y explica qué encaja contigo. Botellas Una etiqueta o toda la mesa Carta Impresa, pizarra o PDF Comparar 2-5 ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/import-csv",
+      "objective": "Importación administrativa",
+      "surface": "admin",
+      "finalPath": "/",
+      "headings": [
+        "¿Qué quieres elegir?",
+        "Hazlo realmente tuyo"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Matchrim Tu vino, con contexto ¿Qué quieres elegir? Haz una foto. Matchrim identifica, compara y explica qué encaja contigo. Botellas Una etiqueta o toda la mesa Carta Impresa, pizarra o PDF Comparar 2-5 ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/data-viewer",
+      "objective": "Visor administrativo de datos",
+      "surface": "admin",
+      "finalPath": "/",
+      "headings": [
+        "¿Qué quieres elegir?",
+        "Hazlo realmente tuyo"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Matchrim Tu vino, con contexto ¿Qué quieres elegir? Haz una foto. Matchrim identifica, compara y explica qué encaja contigo. Botellas Una etiqueta o toda la mesa Carta Impresa, pizarra o PDF Comparar 2-5 ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/wine-search",
+      "objective": "Búsqueda administrativa",
+      "surface": "admin",
+      "finalPath": "/",
+      "headings": [
+        "¿Qué quieres elegir?",
+        "Hazlo realmente tuyo"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Matchrim Tu vino, con contexto ¿Qué quieres elegir? Haz una foto. Matchrim identifica, compara y explica qué encaja contigo. Botellas Una etiqueta o toda la mesa Carta Impresa, pizarra o PDF Comparar 2-5 ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/wine-import",
+      "objective": "Importación administrativa de vino",
+      "surface": "admin",
+      "finalPath": "/",
+      "headings": [
+        "¿Qué quieres elegir?",
+        "Hazlo realmente tuyo"
+      ],
+      "bodyExcerpt": "Matchrim Entrar Matchrim Tu vino, con contexto ¿Qué quieres elegir? Haz una foto. Matchrim identifica, compara y explica qué encaja contigo. Botellas Una etiqueta o toda la mesa Carta Impresa, pizarra o PDF Comparar 2-5 ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous route/guard smoke only; authenticated behavior not exercised"
+    },
+    {
+      "route": "/ruta-inexistente-qa",
+      "objective": "Recuperarse de una URL desconocida",
+      "surface": "error",
+      "finalPath": "/ruta-inexistente-qa",
+      "headings": [
+        "404"
+      ],
+      "bodyExcerpt": "404 Esta página no existe Volver a Inicio",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "navigationError": null,
+      "rendered": true,
+      "qualification": "anonymous local render smoke; no backend write"
+    }
+  ]
+}

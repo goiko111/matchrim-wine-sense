@@ -20,6 +20,7 @@ try {
 }
 
 const BASE_URL = process.env.MATCHRIM_QA_URL || 'http://127.0.0.1:4173';
+const EXPECTED_APP_MARKER = process.env.MATCHRIM_QA_EXPECTED_MARKER || '¿Qué quieres elegir?';
 const SYSTEM_CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const CHROME = process.env.MATCHRIM_QA_CHROME || (existsSync(SYSTEM_CHROME) ? SYSTEM_CHROME : undefined);
 const OUTPUT_DIR = path.resolve(
@@ -71,6 +72,21 @@ const main = async () => {
   const results = [];
 
   try {
+    const probeContext = await browser.newContext({ viewport: { width: 430, height: 932 } });
+    const probePage = await probeContext.newPage();
+    try {
+      await probePage.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded', timeout: 20_000 });
+      await probePage.waitForTimeout(500);
+      const probeText = await probePage.locator('body').innerText();
+      if (!probeText.includes(EXPECTED_APP_MARKER)) {
+        throw new Error(
+          `QA target mismatch at ${BASE_URL}: expected Matchrim marker "${EXPECTED_APP_MARKER}".`,
+        );
+      }
+    } finally {
+      await probeContext.close();
+    }
+
     for (const route of routes) {
       const context = await browser.newContext({ viewport: { width: 430, height: 932 } });
       const page = await context.newPage();
