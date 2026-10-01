@@ -1,4 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { runMatchrimAi } from '../_shared/matchrim-ai-provider.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -91,9 +92,6 @@ serve(async (request) => {
     const image = typeof body?.image === 'string' ? body.image : '';
     if (!image.startsWith('data:image/')) throw new Error('Falta una imagen valida');
 
-    const apiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!apiKey) throw new Error('LOVABLE_API_KEY no configurada');
-
     const prompt = `Actua solo como detector visual. No identifiques marcas ni nombres de vino.
 
 Localiza TODAS las botellas o etiquetas de vino que podrian analizarse de forma independiente en esta foto. La foto puede contener una sola etiqueta, varias botellas alineadas, un expositor con oclusiones o reflejos, o elementos que no son vino.
@@ -130,34 +128,8 @@ Responde SOLO JSON:
   "notes": ["motivo breve si faltan objetos o la imagen es dudosa"]
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: prompt },
-            { type: 'image_url', image_url: { url: image } },
-          ],
-        }],
-        max_tokens: 4096,
-      }),
-    });
-
-    if (!response.ok) {
-      const detail = await response.text();
-      console.error('Region detection API error:', response.status, detail);
-      if (response.status === 429) throw new Error('Demasiadas solicitudes. Espera un momento.');
-      throw new Error('No se pudieron localizar las botellas');
-    }
-
-    const data = await response.json();
-    const parsed = parseJsonObject(data.choices?.[0]?.message?.content || '{}');
+    const ai = await runMatchrimAi({ prompt, image, maxTokens: 4096 });
+    const parsed = parseJsonObject(ai.text);
     const rawRegions = Array.isArray(parsed.regions) ? parsed.regions : [];
     const normalizedRegions = rawRegions.map(normalizeRegion).filter((region): region is NormalizedRegion => Boolean(region));
     const regions = deduplicateRegions(normalizedRegions).slice(0, 30);
@@ -189,6 +161,8 @@ Responde SOLO JSON:
       },
       notes: Array.isArray(parsed.notes) ? parsed.notes.filter((note) => typeof note === 'string').slice(0, 5) : [],
       detector_version: DETECTOR_VERSION,
+      ai_provider: ai.provider,
+      ai_model: ai.model,
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('detect-wine-regions failed:', error);

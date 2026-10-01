@@ -75,6 +75,14 @@ export const getRightFocusMenuScanTile = (): MenuScanTile => ({
   box: { x: 64, y: 0, width: 36, height: 100 },
 });
 
+export const shouldRunRightFocusMenuScan = (
+  width: number,
+  height: number,
+  coverageStatus: 'reported_complete' | 'partial' | 'unknown' | undefined,
+  extractedWines: number,
+) => coverageStatus !== 'reported_complete'
+  || (height > width && extractedWines >= 8);
+
 export const buildMenuScanTiles = (width: number, height: number): MenuScanTile[] => {
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
     return [getFullMenuScanTile()];
@@ -263,9 +271,16 @@ export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanRespons
   results.forEach(({ tile, response }) => {
     (response.vinos ?? []).map((wine) => mapMenuWineFromTile(wine, tile)).forEach((wine) => {
       const duplicateIndex = wines.findIndex((existing) => isOverlapDuplicate(existing, wine));
+      const groundedFocusEvidence = Boolean(
+        normalizeText(wine.texto_fuente).length >= 5
+        && tokenOverlap(
+          wine.nombre,
+          wine.texto_fuente ?? '',
+        ) >= 0.6
+      );
       const isUncorroboratedFocusGuess = tile.id === 'right-focus'
         && duplicateIndex === -1
-        && (wine.confidence ?? 0) < 0.72;
+        && ((wine.confidence ?? 0) < 0.58 || !groundedFocusEvidence);
       if (isUncorroboratedFocusGuess) return;
       if (duplicateIndex === -1) wines.push(wine);
       else wines[duplicateIndex] = richerWine(wines[duplicateIndex], wine);

@@ -41,6 +41,7 @@ import {
   getFullMenuScanTile,
   getRightFocusMenuScanTile,
   resolveMenuTileResults,
+  shouldRunRightFocusMenuScan,
   type MenuScanResponse as WineMenuScanResponse,
   type MenuScanTile,
   type MenuScanWine as ScannedWine,
@@ -583,7 +584,12 @@ export const WineMenuScanner = ({
       let failedTileCount = settledTiles.length - successfulTiles.length;
       let attemptedTileCount = settledTiles.length;
       let data = resolveMenuTileResults(successfulTiles);
-      if (!isMatchrimFixtureQaEnabled && data.coverage?.status !== 'reported_complete') {
+      if (!isMatchrimFixtureQaEnabled && shouldRunRightFocusMenuScan(
+        prepared.width,
+        prepared.height,
+        data.coverage?.status,
+        data.vinos?.length ?? 0,
+      )) {
         const focusTile = getRightFocusMenuScanTile();
         attemptedTileCount += 1;
         try {

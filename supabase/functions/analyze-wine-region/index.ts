@@ -1,4 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { runMatchrimAi } from '../_shared/matchrim-ai-provider.ts';
 import { evaluateCandidateGrounding, normalizeGroundingTokens } from './grounding.ts';
 
 const corsHeaders = {
@@ -92,9 +93,6 @@ serve(async (request) => {
     const body = await request.json();
     const image = typeof body?.image === 'string' ? body.image : '';
     if (!image.startsWith('data:image/')) throw new Error('Falta el recorte de etiqueta');
-    const apiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!apiKey) throw new Error('LOVABLE_API_KEY no configurada');
-
     const prompt = `Analiza UN SOLO recorte de botella o etiqueta de vino. El recorte procede de un detector previo y puede estar parcialmente oculto, desenfocado o contener reflejos.
 
 Objetivo: proponer hasta 3 identidades candidatas sin inventar. Transcribe primero las senales visibles y separa lo leido de lo inferido.
@@ -141,34 +139,8 @@ Responde SOLO JSON:
   ]
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: prompt },
-            { type: 'image_url', image_url: { url: image } },
-          ],
-        }],
-        max_tokens: 3072,
-      }),
-    });
-
-    if (!response.ok) {
-      const detail = await response.text();
-      console.error('Region analysis API error:', response.status, detail);
-      if (response.status === 429) throw new Error('Demasiadas solicitudes. Espera un momento.');
-      throw new Error('No se pudo analizar esta region');
-    }
-
-    const data = await response.json();
-    const parsed = parseJsonObject(data.choices?.[0]?.message?.content || '{}');
+    const ai = await runMatchrimAi({ prompt, image, maxTokens: 3072 });
+    const parsed = parseJsonObject(ai.text);
     const visibleText = stringArray(parsed.visible_text);
     const rawCandidates = Array.isArray(parsed.candidates) ? parsed.candidates : [];
     const candidates = rawCandidates
@@ -201,6 +173,8 @@ Responde SOLO JSON:
       recognition_status: recognitionStatus,
       fallback,
       analysis_version: ANALYSIS_VERSION,
+      ai_provider: ai.provider,
+      ai_model: ai.model,
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('analyze-wine-region failed:', error);

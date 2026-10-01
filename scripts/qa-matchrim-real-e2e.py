@@ -416,13 +416,17 @@ def compact_backend_observation(api_calls):
             menu for menu in menus
             if (menu.get("request_payload") or {}).get("scan_region", {}).get("id") == "full"
         ), None)
+        focus_menus = [
+            menu for menu in menus
+            if (menu.get("request_payload") or {}).get("scan_region", {}).get("id") == "right-focus"
+        ]
         if (
             full_menu
             and isinstance((full_menu.get("payload") or {}).get("coverage"), dict)
             and (full_menu.get("payload") or {})["coverage"].get("status") == "reported_complete"
             and (full_menu.get("payload") or {}).get("vinos")
         ):
-            menus = [full_menu]
+            menus = [full_menu, *focus_menus]
         elif any((menu.get("request_payload") or {}).get("scan_region", {}).get("id") != "full" for menu in menus):
             menus = [
                 menu for menu in menus
@@ -431,6 +435,8 @@ def compact_backend_observation(api_calls):
         all_items = []
         coverages = []
         versions = []
+        providers = []
+        models = []
         for menu in menus:
             payload = menu.get("payload") or {}
             wines = payload.get("vinos", []) if isinstance(payload.get("vinos"), list) else []
@@ -440,6 +446,10 @@ def compact_backend_observation(api_calls):
                 coverages.append(payload["coverage"])
             if payload.get("scan_version"):
                 versions.append(payload["scan_version"])
+            if payload.get("ai_provider"):
+                providers.append(payload["ai_provider"])
+            if payload.get("ai_model"):
+                models.append(payload["ai_model"])
             for wine in wines:
                 if not isinstance(wine, dict) or not wine.get("nombre"):
                     continue
@@ -462,6 +472,7 @@ def compact_backend_observation(api_calls):
         return {
             "function": "scan-wine-menu", "http_status": max(menu["status"] for menu in menus),
             "call_count": len(menus), "versions": sorted(set(versions)),
+            "ai_providers": sorted(set(providers)), "ai_models": sorted(set(models)),
             "attempted_call_count": len(menu_calls),
             "recovered_menu_failures": (
                 sum(1 for menu in menu_calls if menu["status"] != 200)
@@ -478,6 +489,7 @@ def compact_backend_observation(api_calls):
 def run_fixture(browser, fixture, file_path):
     console_errors = []
     network_failures = []
+    http_errors = []
     api_calls = []
     context = browser.new_context(viewport={"width": 393, "height": 852}, device_scale_factor=3)
     page = context.new_page()
@@ -513,6 +525,16 @@ def run_fixture(browser, fixture, file_path):
             "payload": payload,
         })
 
+    def capture_http_error(response):
+        if response.status < 400:
+            return
+        http_errors.append({
+            "status": response.status,
+            "url": response.url.split("?", 1)[0],
+            "method": response.request.method,
+        })
+
+    page.on("response", capture_http_error)
     page.on("response", capture_response)
     page.add_init_script("""
       localStorage.setItem('matchrim_quiz_result', JSON.stringify({
@@ -655,7 +677,8 @@ def run_fixture(browser, fixture, file_path):
         "horizontal_overflow": has_overflow, "console_errors": console_errors,
         "overflow_elements": overflow_elements,
         "unhandled_console_errors": unhandled_console_errors,
-        "network_failures": network_failures, "screenshot": str(screenshot),
+        "network_failures": network_failures, "http_errors": http_errors,
+        "screenshot": str(screenshot),
         "api_call_summaries": [{
             "function": call.get("function"),
             "status": call.get("status"),
@@ -665,6 +688,8 @@ def run_fixture(browser, fixture, file_path):
                 wine.get("nombre") for wine in (call.get("payload") or {}).get("vinos", [])
                 if isinstance(wine, dict) and wine.get("nombre")
             ],
+            "ai_provider": (call.get("payload") or {}).get("ai_provider"),
+            "ai_model": (call.get("payload") or {}).get("ai_model"),
         } for call in api_calls],
         "status": "PASS" if passed else "BLOCKED_OR_FAIL", "visible_excerpt": body_text[-1200:],
     }

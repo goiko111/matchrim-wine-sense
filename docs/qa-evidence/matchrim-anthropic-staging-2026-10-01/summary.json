@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-01",
+  "environment": {
+    "project_ref": "qpbmqvfnunkylvtvnyyx",
+    "name": "winerim-middleware-staging",
+    "production_touched": false,
+    "interception_or_mocks": false
+  },
+  "provider": {
+    "name": "anthropic",
+    "model": "claude-sonnet-4-6",
+    "selection": "explicit MATCHRIM_AI_PROVIDER secret",
+    "credential_recorded": false
+  },
+  "deployed_functions": [
+    { "name": "detect-wine-regions", "version": 4, "source_sha256": "2e6e20289a10dceed64f8aa1955e9a5c9a574c907b597ce5bb99cd5f78ff7bef" },
+    { "name": "analyze-wine-region", "version": 4, "source_sha256": "f133e0db82d17b1bbb9753880b9d7713abb4da6a73a10bc4e03b4dd757daa0c1" },
+    { "name": "scan-wine-menu", "version": 4, "source_sha256": "adf3bb2845e5209247091f8d9ea4ab7711aef842122d099c7245b254178e1e3a" },
+    { "name": "calculate-wine-affinity", "version": 5, "source_sha256": "d999f2c1759c9acf84aa0ce1b1db302d16a2dfacd39440710f13366e7e5b50b1" }
+  ],
+  "provider_smoke": {
+    "http_status": 200,
+    "latency_ms": 47293,
+    "wines": 8,
+    "coverage": "reported_complete",
+    "scan_version": "scan-wine-menu-2026-08-27-regional-v4-candidate"
+  },
+  "menu_totals": {
+    "expected": 69,
+    "matched": 67,
+    "actual": 67,
+    "precision": 1.0,
+    "recall": 0.971
+  },
+  "scenes": [
+    {
+      "id": "multibottle-fridge",
+      "kind": "multi-bottle display",
+      "status": "pass_with_identity_ground_truth_pending",
+      "detected_regions": 30,
+      "identified_candidates": 23,
+      "individual_affinity_scores": 20,
+      "coverage": "partial",
+      "latency_ms": 93374
+    },
+    {
+      "id": "img_7547-2",
+      "kind": "printed wine menu with clipped second page",
+      "status": "pass",
+      "expected": 16,
+      "matched": 14,
+      "precision": 1.0,
+      "recall": 0.875,
+      "latency_ms": 105392,
+      "missed": ["Gaudensius blanco", "La Rosa"]
+    },
+    {
+      "id": "img_7548-2",
+      "kind": "printed wine menu",
+      "status": "pass",
+      "expected": 8,
+      "matched": 8,
+      "precision": 1.0,
+      "recall": 1.0,
+      "latency_ms": 49295
+    },
+    {
+      "id": "img_7552-2",
+      "kind": "printed wine menu with non-wine sections",
+      "status": "pass",
+      "expected": 13,
+      "matched": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "latency_ms": 73510
+    },
+    {
+      "id": "img_7553-2",
+      "kind": "dense two-page wine menu",
+      "status": "pass",
+      "expected": 32,
+      "matched": 32,
+      "precision": 1.0,
+      "recall": 1.0,
+      "latency_ms": 166220
+    }
+  ],
+  "visual_and_runtime": {
+    "viewport": "393x852 at 3x",
+    "horizontal_overflow": false,
+    "unhandled_console_errors": 0,
+    "network_failures": 0,
+    "http_errors": 0,
+    "affinity_present_per_menu_result": true,
+    "document_overlay": "numbered pins and synchronized list"
+  },
+  "local_private_evidence": [
+    "sentinel-clean/real-e2e-report.json",
+    "remaining-four/real-e2e-report.json",
+    "focus-fix-rerun/real-e2e-report.json"
+  ]
+}

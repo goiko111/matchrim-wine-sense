@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
+import { runMatchrimAi } from '../_shared/matchrim-ai-provider.ts';
 import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from '../_shared/matchrim-learning.ts';
 
 const corsHeaders = {
@@ -69,9 +70,9 @@ const buildLearnedProfile = async (
     .from('user_wines')
     .select('rating, sensory_attributes, created_at, updated_at')
     .eq('user_id', userId)
+    .eq('use_for_profile_training', true)
     .not('rating', 'is', null)
-    .not('sensory_attributes', 'is', null)
-    .limit(30);
+    .not('sensory_attributes', 'is', null);
 
   if (error || !ratedWines?.length) {
     if (error) console.error('Error loading rated wines for learned profile:', error);
@@ -172,10 +173,14 @@ serve(async (req) => {
     console.log('Processing file type:', pdf ? 'PDF' : 'Image');
 
     const authHeader = req.headers.get('Authorization') ?? '';
+    const databaseSchema = Deno.env.get('MATCHRIM_DB_SCHEMA')?.trim() || 'public';
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
+      {
+        db: { schema: databaseSchema },
+        global: { headers: { Authorization: authHeader } },
+      }
     );
 
     let userId: string | null = null;
@@ -204,11 +209,6 @@ serve(async (req) => {
     const profile: MatchrimProfile | null = authProfile ?? clientProfile;
     const profileSource: 'auth' | 'client' | 'none' = authProfile ? 'auth' : clientProfile ? 'client' : 'none';
 
-
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
 
     let prompt = `Analiza esta carta de vinos o pizarra y extrae un MÁXIMO de 30 vinos conservando su estructura visual.
 
@@ -312,37 +312,8 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       throw new Error('Por favor, convierte el PDF a imagen (captura de pantalla) antes de subirlo.');
     }
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: prompt },
-              { type: 'image_url', image_url: { url: imageUrl } },
-            ]
-          }
-        ],
-        max_tokens: 8192,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('AI API error:', response.status, errorText);
-      if (response.status === 429) throw new Error('Demasiadas solicitudes. Espera un momento e intenta de nuevo.');
-      if (response.status === 402) throw new Error('Créditos agotados. Añade créditos en Settings.');
-      throw new Error('Error al procesar la imagen.');
-    }
-
-    const data = await response.json();
-    let content = data.choices?.[0]?.message?.content || '{"vinos":[]}';
+    const ai = await runMatchrimAi({ prompt, image: imageUrl, maxTokens: 8192 });
+    let content = ai.text || '{"vinos":[]}';
 
     content = content
       .replace(/```json\s*/g, '')
@@ -472,6 +443,8 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       profile_source: profileSource,
       coverage,
       scan_version: FUNCTION_VERSION,
+      ai_provider: ai.provider,
+      ai_model: ai.model,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

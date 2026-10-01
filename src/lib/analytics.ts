@@ -28,6 +28,7 @@ export type AppEventName =
   | "shop_link_analyzed";
 
 const APP_VERSION = "matchrim-2026-06-22";
+const ANALYTICS_ENABLED = import.meta.env.VITE_APP_ANALYTICS_ENABLED !== "false";
 
 const detectPlatform = (): string => {
   if (typeof window === "undefined") return "ssr";
@@ -42,6 +43,7 @@ export const trackAppEvent = (
   eventName: AppEventName,
   metadata: Record<string, unknown> = {}
 ): void => {
+  if (!ANALYTICS_ENABLED) return;
   // fire-and-forget; never block UX
   try {
     const route = typeof window !== "undefined"

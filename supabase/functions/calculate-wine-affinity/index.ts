@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
+import { runMatchrimAi } from '../_shared/matchrim-ai-provider.ts';
 import {
   calibrateEdgeMatchrimAffinity,
   MATCHRIM_AFFINITY_MODEL,
@@ -158,8 +159,6 @@ serve(async (req) => {
 
     const learnedProfile = await buildLearnedProfile(supabaseClient, user.id, profile);
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-
     const estimateSensory = async (wineLike: {
       name?: string | null;
       producer?: string | null;
@@ -168,9 +167,6 @@ serve(async (req) => {
       grape_varieties?: string[] | null;
       vintage?: number | null;
     }): Promise<SensoryAttributes> => {
-      if (!LOVABLE_API_KEY) {
-        throw new Error('LOVABLE_API_KEY not configured');
-      }
       const prompt = `Eres un sommelier experto. Estima los atributos sensoriales de este vino en una escala ENTERA 1-5 (1=muy bajo, 5=muy alto). NO uses 0 ni valores mayores que 5.
 
 Vino: ${wineLike.name || 'Desconocido'}
@@ -184,21 +180,8 @@ Estima estos cinco atributos (enteros 1-5):
 - potencia, acidez, dulzura, taninos (3 para blancos sin taninos perceptibles), afrutado.
 Responde SOLO con JSON: {"potencia":4,"acidez":3,"dulzura":1,"taninos":4,"afrutado":3}`;
 
-      const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash',
-          messages: [{ role: 'user', content: prompt }],
-          max_tokens: 256,
-        }),
-      });
-      if (!response.ok) throw new Error('AI API error');
-      const data = await response.json();
-      let content = data.choices?.[0]?.message?.content || '{}';
+      const ai = await runMatchrimAi({ prompt, maxTokens: 256 });
+      let content = ai.text || '{}';
       content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
       const parsed = JSON.parse(content) as Record<string, unknown>;
       const normalized = normalizeSensoryAttributes(parsed);

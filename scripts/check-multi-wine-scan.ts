@@ -44,6 +44,7 @@ import {
   mapMenuWineFromTile,
   mergeMenuTileResults,
   resolveMenuTileResults,
+  shouldRunRightFocusMenuScan,
   type MenuScanWine,
 } from '../src/utils/wineMenuScan';
 import {
@@ -309,16 +310,20 @@ const focusGrounding = mergeMenuTileResults([{
   tile: getRightFocusMenuScanTile(),
   response: {
     vinos: [
-      { ...menuWine('Chambolle Musigny', 50, 50, 'Chambolle Musigny 35'), confidence: 0.7 },
+      { ...menuWine('Chambolle Musigny', 50, 50, ''), confidence: 0.7 },
+      { ...menuWine('Pedro Ximenez Don PX', 50, 55, 'Pedro Ximenez Don PX 23'), confidence: 0.62 },
       { ...menuWine('Fino Ynocente', 50, 60, 'Fino Ynocente, Valdespino 29'), confidence: 0.84 },
     ],
   },
 }]);
 assert.deepEqual(
   focusGrounding.vinos?.map((wine) => wine.nombre),
-  ['Fino Ynocente'],
-  'an uncorroborated focus crop must abstain below the identity-confidence gate',
+  ['Pedro Ximenez Don PX', 'Fino Ynocente'],
+  'a focus crop must retain grounded medium-confidence OCR and abstain without source evidence',
 );
+assert.equal(shouldRunRightFocusMenuScan(1200, 1800, 'reported_complete', 10), true);
+assert.equal(shouldRunRightFocusMenuScan(1800, 1200, 'reported_complete', 10), false);
+assert.equal(shouldRunRightFocusMenuScan(1800, 1200, 'partial', 3), true);
 
 const sameNameDifferentSection = mergeMenuTileResults([{
   tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
