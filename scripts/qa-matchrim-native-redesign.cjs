@@ -68,7 +68,7 @@ const main = async () => {
     await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
     const navigationLabels = await page.getByRole('navigation', { name: 'Navegación principal' })
       .locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('aria-label')));
-    if (navigationLabels.join('|') !== 'Inicio|Explora|Bodega|Perfil|Escanear') {
+    if (navigationLabels.join('|') !== 'Inicio|aiRIM|Bodega|Perfil|Escanear') {
       throw new Error(`Unexpected native navigation: ${navigationLabels.join('|')}`);
     }
     if (!await noHorizontalOverflow(page)) throw new Error('Home overflows horizontally');
@@ -108,6 +108,11 @@ const main = async () => {
       await page.locator('input[type="file"]').nth(0).setInputFiles(fixture);
       await page.getByText('Lista de la carta', { exact: true }).waitFor({ state: 'visible', timeout: 30_000 });
       if (!await noHorizontalOverflow(page)) throw new Error(`${path.basename(fixture)} overflows horizontally`);
+      const navBox = await page.getByRole('navigation', { name: 'Navegación principal' }).boundingBox();
+      const scanBox = await page.getByRole('link', { name: 'Escanear' }).boundingBox();
+      if (!navBox || !scanBox || scanBox.y < navBox.y || scanBox.y + scanBox.height > navBox.y + navBox.height + 1) {
+        throw new Error(`${path.basename(fixture)} clips the central scan tab`);
+      }
       const orientation = index % 2 === 0 ? 'portrait' : 'landscape';
       await page.screenshot({ path: path.join(OUTPUT_DIR, `${path.parse(fixture).name}-${orientation}.png`), fullPage: false });
       menuResults.push(`${path.basename(fixture)}:${orientation}`);

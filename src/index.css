@@ -98,6 +98,17 @@ body {
     min-height: 3rem;
   }
 
+  html.matchrim-native-platform .matchrim-native-tab-bar .matchrim-native-scan-tab {
+    top: 0.25rem;
+    min-height: 0;
+    gap: 0.125rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-scan-tab-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
   .scan-page-main {
     padding-top: 0.75rem;
     padding-bottom: 2rem;

@@ -1,0 +1,2905 @@
+{
+  "generatedAt": "2026-10-01",
+  "scope": {
+    "users": "25 deterministic isolated personas plus 1,000 local virtual model sessions",
+    "backend": "none; no Supabase, aiRIM, scan function or production traffic",
+    "data": "synthetic; no accounts, emails or real-user rows"
+  },
+  "personas": [
+    {
+      "id": "principiante-cero",
+      "job": "Entender su gusto sin historial ni vocabulario técnico",
+      "risk": "cold-start",
+      "scanScenario": "single-label",
+      "answers": {
+        "yes": 0,
+        "indifferent": 5,
+        "no": 15,
+        "liked": []
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 1
+      },
+      "learnedProfile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 1
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 1,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Garnacha Atlántico",
+      "passportMatchrimName": "Garnacha Atlántico",
+      "matchrimCode": "Riesling Miel",
+      "matchrimName": "Riesling Miel",
+      "styles": [
+        "Blanco Goloso",
+        "Oxidativo/Maduro",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 55,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 1
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 55,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 1
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 55,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 1
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 55,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 1
+          }
+        }
+      ],
+      "nextAfterSavingTop": "tinto-frutal",
+      "reversal": null
+    },
+    {
+      "id": "principiante-frutal",
+      "job": "Encontrar fruta directa con lenguaje sencillo",
+      "risk": "false-precision",
+      "scanScenario": "single-label",
+      "answers": {
+        "yes": 5,
+        "indifferent": 2,
+        "no": 13,
+        "liked": [
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los dátiles?",
+          "¿Te gusta la vainilla?",
+          "¿Te gusta el mango?",
+          "¿Te gustan los caramelos de limón?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 4,
+        "tanico": 0,
+        "afrutado": 4
+      },
+      "learnedProfile": {
+        "potente": 0.5,
+        "acidez": 1.7,
+        "dulce": 3.1,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 2,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "passportMatchrimCode": "Chardonnay Dorado",
+      "passportMatchrimName": "Chardonnay Dorado",
+      "matchrimCode": "Pinot Dorado",
+      "matchrimName": "Pinot Dorado",
+      "styles": [
+        "Blanco Goloso",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 71,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 4,
+            "tanico": 0,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "blanco-baja-acidez",
+          "topScore": 75,
+          "profile": {
+            "potente": 0.6,
+            "acidez": 1.6,
+            "dulce": 3.4,
+            "tanico": 0.3,
+            "afrutado": 4.3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 24,
+          "top": "blanco-baja-acidez",
+          "topScore": 72,
+          "profile": {
+            "potente": 0.4,
+            "acidez": 1.5,
+            "dulce": 3.4,
+            "tanico": 0,
+            "afrutado": 4.6
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 54,
+          "top": "tinto-frutal",
+          "topScore": 74,
+          "profile": {
+            "potente": 0.5,
+            "acidez": 1.7,
+            "dulce": 3.1,
+            "tanico": 0,
+            "afrutado": 5
+          }
+        }
+      ],
+      "nextAfterSavingTop": "blanco-baja-acidez",
+      "reversal": null
+    },
+    {
+      "id": "tinto-clasico",
+      "job": "Encontrar tintos estructurados y familiares",
+      "risk": "overweight-oak",
+      "scanScenario": "single-label",
+      "answers": {
+        "yes": 8,
+        "indifferent": 1,
+        "no": 11,
+        "liked": [
+          "¿Te gusta la cayena?",
+          "¿Te gustan las trufas?",
+          "¿Te gusta el olor a cuero?",
+          "¿Te gusta el queso azul?",
+          "¿Te gustan las berenjenas asadas?",
+          "¿Te gusta el café sin azúcar?",
+          "¿Te gustan las avellanas tostadas?",
+          "¿Te gusta el curry?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 4,
+        "acidez": 0,
+        "dulce": 1,
+        "tanico": 4,
+        "afrutado": 1
+      },
+      "learnedProfile": {
+        "potente": 5,
+        "acidez": 1.6,
+        "dulce": 0.2,
+        "tanico": 5,
+        "afrutado": 1.7
+      },
+      "passportProfile": {
+        "potente": 5,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 2
+      },
+      "passportMatchrimCode": "Monastrell Tierra",
+      "passportMatchrimName": "Monastrell Tierra",
+      "matchrimCode": "Garnacha Fuego",
+      "matchrimName": "Garnacha Fuego",
+      "styles": [
+        "Tinto de Estructura",
+        "Vino de Terruño",
+        "Tinto Versátil"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "rioja-reserva",
+          "topScore": 66,
+          "profile": {
+            "potente": 4,
+            "acidez": 0,
+            "dulce": 1,
+            "tanico": 4,
+            "afrutado": 1
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "rioja-reserva",
+          "topScore": 76,
+          "profile": {
+            "potente": 4.3,
+            "acidez": 0.9,
+            "dulce": 1,
+            "tanico": 4.3,
+            "afrutado": 1.6
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 29,
+          "top": "rioja-reserva",
+          "topScore": 79,
+          "profile": {
+            "potente": 4.6,
+            "acidez": 1,
+            "dulce": 0.7,
+            "tanico": 4.7,
+            "afrutado": 1.5
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 65,
+          "top": "rioja-reserva",
+          "topScore": 84,
+          "profile": {
+            "potente": 5,
+            "acidez": 1.6,
+            "dulce": 0.2,
+            "tanico": 5,
+            "afrutado": 1.7
+          }
+        }
+      ],
+      "nextAfterSavingTop": "nebbiolo-estructurado",
+      "reversal": null
+    },
+    {
+      "id": "blanco-atlantico",
+      "job": "Priorizar blancos frescos y salinos",
+      "risk": "acidity-explanation",
+      "scanScenario": "single-label",
+      "answers": {
+        "yes": 6,
+        "indifferent": 2,
+        "no": 12,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gustan los pepinillos en vinagre?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el marisco?",
+          "¿Te gustan los encurtidos?",
+          "¿Te gustan los caramelos de limón?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "learnedProfile": {
+        "potente": 0.5,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 3.7
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "passportMatchrimCode": "Godello Velo",
+      "passportMatchrimName": "Godello Velo",
+      "matchrimCode": "Albariño Primavera",
+      "matchrimName": "Albariño Primavera",
+      "styles": [
+        "Brut Elegante",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 79,
+          "profile": {
+            "potente": 0,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "albarino-atlantico",
+          "topScore": 85,
+          "profile": {
+            "potente": 0.6,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0.3,
+            "afrutado": 3.3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 24,
+          "top": "albarino-atlantico",
+          "topScore": 83,
+          "profile": {
+            "potente": 0.4,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 3.4
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 54,
+          "top": "albarino-atlantico",
+          "topScore": 85,
+          "profile": {
+            "potente": 0.5,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 3.7
+          }
+        }
+      ],
+      "nextAfterSavingTop": "mencia-fresca",
+      "reversal": null
+    },
+    {
+      "id": "dulce-aromatico",
+      "job": "Encontrar dulzor y expresión aromática",
+      "risk": "sweetness-vs-fruit",
+      "scanScenario": "single-label",
+      "answers": {
+        "yes": 7,
+        "indifferent": 1,
+        "no": 12,
+        "liked": [
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los dátiles?",
+          "¿Te gusta el anís estrellado?",
+          "¿Te gusta la vainilla?",
+          "¿Te gusta el café con leche y azúcar?",
+          "¿Te gusta el mango?",
+          "¿Te gustan los caramelos de limón?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 1,
+        "acidez": 1,
+        "dulce": 5,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "learnedProfile": {
+        "potente": 1,
+        "acidez": 2,
+        "dulce": 5,
+        "tanico": 0.2,
+        "afrutado": 4.9
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 2,
+        "dulce": 5,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "passportMatchrimCode": "Gewürztraminer Aroma",
+      "passportMatchrimName": "Gewürztraminer Aroma",
+      "matchrimCode": "Malvasía Jardín",
+      "matchrimName": "Malvasía Jardín",
+      "styles": [
+        "Dulce Ligero",
+        "Experimental",
+        "Blanco Goloso"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "moscatel-dulce",
+          "topScore": 80,
+          "profile": {
+            "potente": 1,
+            "acidez": 1,
+            "dulce": 5,
+            "tanico": 1,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "moscatel-dulce",
+          "topScore": 86,
+          "profile": {
+            "potente": 1.3,
+            "acidez": 1.6,
+            "dulce": 5,
+            "tanico": 1,
+            "afrutado": 4.3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 28,
+          "top": "moscatel-dulce",
+          "topScore": 85,
+          "profile": {
+            "potente": 1.1,
+            "acidez": 1.7,
+            "dulce": 5,
+            "tanico": 0.7,
+            "afrutado": 4.5
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 63,
+          "top": "moscatel-dulce",
+          "topScore": 84,
+          "profile": {
+            "potente": 1,
+            "acidez": 2,
+            "dulce": 5,
+            "tanico": 0.2,
+            "afrutado": 4.9
+          }
+        }
+      ],
+      "nextAfterSavingTop": "tinto-frutal",
+      "reversal": null
+    },
+    {
+      "id": "acidez-alta",
+      "job": "Buscar tensión, cítricos y final fresco",
+      "risk": "high-acidity-ranking",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 6,
+        "indifferent": 1,
+        "no": 13,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gustan los pepinillos en vinagre?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el marisco?",
+          "¿Te gustan los encurtidos?",
+          "¿Te gustan los caramelos de limón?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 2
+      },
+      "learnedProfile": {
+        "potente": 0.9,
+        "acidez": 5,
+        "dulce": 0.6,
+        "tanico": 0.5,
+        "afrutado": 3
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "passportMatchrimCode": "Riesling Jardín",
+      "passportMatchrimName": "Riesling Jardín",
+      "matchrimCode": "Godello Aroma",
+      "matchrimName": "Godello Aroma",
+      "styles": [
+        "Brut Elegante",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 75,
+          "profile": {
+            "potente": 0,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "albarino-atlantico",
+          "topScore": 83,
+          "profile": {
+            "potente": 0.6,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0.3,
+            "afrutado": 2.6
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 28,
+          "top": "albarino-atlantico",
+          "topScore": 82,
+          "profile": {
+            "potente": 0.6,
+            "acidez": 5,
+            "dulce": 0.8,
+            "tanico": 0.3,
+            "afrutado": 2.7
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 63,
+          "top": "albarino-atlantico",
+          "topScore": 85,
+          "profile": {
+            "potente": 0.9,
+            "acidez": 5,
+            "dulce": 0.6,
+            "tanico": 0.5,
+            "afrutado": 3
+          }
+        }
+      ],
+      "nextAfterSavingTop": "mencia-fresca",
+      "reversal": null
+    },
+    {
+      "id": "acidez-baja",
+      "job": "Evitar vinos tensos y muy ácidos",
+      "risk": "negative-factor",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 6,
+        "indifferent": 1,
+        "no": 13,
+        "liked": [
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los dátiles?",
+          "¿Te gustan las avellanas tostadas?",
+          "¿Te gusta la vainilla?",
+          "¿Te gusta el café con leche y azúcar?",
+          "¿Te gusta el mango?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 1,
+        "acidez": 0,
+        "dulce": 4,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "learnedProfile": {
+        "potente": 2.2,
+        "acidez": 0,
+        "dulce": 3.9,
+        "tanico": 1,
+        "afrutado": 3.5
+      },
+      "passportProfile": {
+        "potente": 2,
+        "acidez": 1,
+        "dulce": 4,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "passportMatchrimCode": "Gewürztraminer Aroma",
+      "passportMatchrimName": "Gewürztraminer Aroma",
+      "matchrimCode": "Malvasía Jardín",
+      "matchrimName": "Malvasía Jardín",
+      "styles": [
+        "Blanco Goloso",
+        "Dulce Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 74,
+          "profile": {
+            "potente": 1,
+            "acidez": 0,
+            "dulce": 4,
+            "tanico": 1,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "blanco-baja-acidez",
+          "topScore": 82,
+          "profile": {
+            "potente": 1.6,
+            "acidez": 0.3,
+            "dulce": 3.7,
+            "tanico": 1,
+            "afrutado": 3.3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 24,
+          "top": "blanco-baja-acidez",
+          "topScore": 81,
+          "profile": {
+            "potente": 1.8,
+            "acidez": 0,
+            "dulce": 3.8,
+            "tanico": 1,
+            "afrutado": 3.3
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 56,
+          "top": "blanco-baja-acidez",
+          "topScore": 84,
+          "profile": {
+            "potente": 2.2,
+            "acidez": 0,
+            "dulce": 3.9,
+            "tanico": 1,
+            "afrutado": 3.5
+          }
+        }
+      ],
+      "nextAfterSavingTop": "moscatel-dulce",
+      "reversal": null
+    },
+    {
+      "id": "tanino-alto",
+      "job": "Elegir estructura para carne y guarda prudente",
+      "risk": "unsupported-cellaring-claim",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 7,
+        "indifferent": 1,
+        "no": 12,
+        "liked": [
+          "¿Te gusta la cayena?",
+          "¿Te gustan las trufas?",
+          "¿Te gusta el olor a cuero?",
+          "¿Te gusta el queso azul?",
+          "¿Te gustan las berenjenas asadas?",
+          "¿Te gusta el café sin azúcar?",
+          "¿Te gusta el curry?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 4,
+        "acidez": 1,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 0
+      },
+      "learnedProfile": {
+        "potente": 5,
+        "acidez": 3.5,
+        "dulce": 0.3,
+        "tanico": 5,
+        "afrutado": 0.5
+      },
+      "passportProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Tempranillo Noble",
+      "passportMatchrimName": "Tempranillo Noble",
+      "matchrimCode": "Tempranillo Noble",
+      "matchrimName": "Tempranillo Noble",
+      "styles": [
+        "Tinto de Estructura",
+        "Vino de Terruño",
+        "Tinto Versátil"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "rioja-reserva",
+          "topScore": 63,
+          "profile": {
+            "potente": 4,
+            "acidez": 1,
+            "dulce": 0,
+            "tanico": 4,
+            "afrutado": 0
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "rioja-reserva",
+          "topScore": 76,
+          "profile": {
+            "potente": 4.3,
+            "acidez": 2.2,
+            "dulce": 0.3,
+            "tanico": 4.3,
+            "afrutado": 0.6
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 28,
+          "top": "rioja-reserva",
+          "topScore": 80,
+          "profile": {
+            "potente": 4.6,
+            "acidez": 2.5,
+            "dulce": 0.3,
+            "tanico": 4.7,
+            "afrutado": 0.4
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 64,
+          "top": "rioja-reserva",
+          "topScore": 85,
+          "profile": {
+            "potente": 5,
+            "acidez": 3.5,
+            "dulce": 0.3,
+            "tanico": 5,
+            "afrutado": 0.5
+          }
+        }
+      ],
+      "nextAfterSavingTop": "nebbiolo-estructurado",
+      "reversal": null
+    },
+    {
+      "id": "tanino-bajo",
+      "job": "Evitar sequedad y encontrar tacto amable",
+      "risk": "friction-visibility",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 4,
+        "indifferent": 2,
+        "no": 14,
+        "liked": [
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los dátiles?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el mango?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 0,
+        "afrutado": 4
+      },
+      "learnedProfile": {
+        "potente": 0.5,
+        "acidez": 1.7,
+        "dulce": 2.7,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 2,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "passportMatchrimCode": "Chardonnay Dorado",
+      "passportMatchrimName": "Chardonnay Dorado",
+      "matchrimCode": "Merlot Terciopelo",
+      "matchrimName": "Merlot Terciopelo",
+      "styles": [
+        "Blanco Goloso",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 76,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 3,
+            "tanico": 0,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "blanco-baja-acidez",
+          "topScore": 76,
+          "profile": {
+            "potente": 0.6,
+            "acidez": 1.6,
+            "dulce": 2.7,
+            "tanico": 0.3,
+            "afrutado": 4.3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 24,
+          "top": "blanco-baja-acidez",
+          "topScore": 73,
+          "profile": {
+            "potente": 0.4,
+            "acidez": 1.5,
+            "dulce": 2.8,
+            "tanico": 0,
+            "afrutado": 4.6
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 54,
+          "top": "tinto-frutal",
+          "topScore": 76,
+          "profile": {
+            "potente": 0.5,
+            "acidez": 1.7,
+            "dulce": 2.7,
+            "tanico": 0,
+            "afrutado": 5
+          }
+        }
+      ],
+      "nextAfterSavingTop": "blanco-baja-acidez",
+      "reversal": null
+    },
+    {
+      "id": "experto-explorador",
+      "job": "Aceptar tensión y estructura fuera de su zona habitual",
+      "risk": "adventure-label",
+      "scanScenario": "multi-bottle",
+      "answers": {
+        "yes": 11,
+        "indifferent": 0,
+        "no": 9,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gusta la cayena?",
+          "¿Te gustan las trufas?",
+          "¿Te gusta el olor a cuero?",
+          "¿Te gusta el queso azul?",
+          "¿Te gustan los pepinillos en vinagre?",
+          "¿Te gustan las berenjenas asadas?",
+          "¿Te gusta el anís estrellado?",
+          "¿Te gusta el café sin azúcar?",
+          "¿Te gustan los encurtidos?",
+          "¿Te gusta el curry?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 4,
+        "acidez": 3,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 1
+      },
+      "learnedProfile": {
+        "potente": 5,
+        "acidez": 4.4,
+        "dulce": 0.3,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Tempranillo Noble",
+      "passportMatchrimName": "Tempranillo Noble",
+      "matchrimCode": "Tempranillo Noble",
+      "matchrimName": "Tempranillo Noble",
+      "styles": [
+        "Tinto de Estructura",
+        "Vino de Terruño",
+        "Tinto Versátil"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "rioja-reserva",
+          "topScore": 76,
+          "profile": {
+            "potente": 4,
+            "acidez": 3,
+            "dulce": 0,
+            "tanico": 4,
+            "afrutado": 1
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "nebbiolo-estructurado",
+          "topScore": 79,
+          "profile": {
+            "potente": 4.3,
+            "acidez": 3.6,
+            "dulce": 0.3,
+            "tanico": 4.3,
+            "afrutado": 1.3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 29,
+          "top": "nebbiolo-estructurado",
+          "topScore": 83,
+          "profile": {
+            "potente": 4.6,
+            "acidez": 3.8,
+            "dulce": 0.3,
+            "tanico": 4.7,
+            "afrutado": 1.1
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 65,
+          "top": "nebbiolo-estructurado",
+          "topScore": 90,
+          "profile": {
+            "potente": 5,
+            "acidez": 4.4,
+            "dulce": 0.3,
+            "tanico": 5,
+            "afrutado": 1
+          }
+        }
+      ],
+      "nextAfterSavingTop": "rioja-reserva",
+      "reversal": null
+    },
+    {
+      "id": "conservador-familiar",
+      "job": "Elegir una referencia segura antes que una novedad",
+      "risk": "safe-vs-exploratory",
+      "scanScenario": "multi-bottle",
+      "answers": {
+        "yes": 5,
+        "indifferent": 2,
+        "no": 13,
+        "liked": [
+          "¿Te gustan las trufas?",
+          "¿Te gusta el olor a cuero?",
+          "¿Te gustan las berenjenas asadas?",
+          "¿Te gusta el café sin azúcar?",
+          "¿Te gustan las avellanas tostadas?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 3,
+        "acidez": 0,
+        "dulce": 0,
+        "tanico": 3,
+        "afrutado": 0
+      },
+      "learnedProfile": {
+        "potente": 4.6,
+        "acidez": 1.6,
+        "dulce": 0,
+        "tanico": 4.8,
+        "afrutado": 1.2
+      },
+      "passportProfile": {
+        "potente": 5,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Tempranillo Especia",
+      "passportMatchrimName": "Tempranillo Especia",
+      "matchrimCode": "Syrah Bravo",
+      "matchrimName": "Syrah Bravo",
+      "styles": [
+        "Tinto de Estructura",
+        "Vino de Terruño",
+        "Tinto Versátil"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 55,
+          "profile": {
+            "potente": 3,
+            "acidez": 0,
+            "dulce": 0,
+            "tanico": 3,
+            "afrutado": 0
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "rioja-reserva",
+          "topScore": 62,
+          "profile": {
+            "potente": 3.6,
+            "acidez": 0.9,
+            "dulce": 0.3,
+            "tanico": 3.6,
+            "afrutado": 0.9
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 27,
+          "top": "rioja-reserva",
+          "topScore": 65,
+          "profile": {
+            "potente": 3.9,
+            "acidez": 1,
+            "dulce": 0,
+            "tanico": 4,
+            "afrutado": 0.8
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 63,
+          "top": "rioja-reserva",
+          "topScore": 78,
+          "profile": {
+            "potente": 4.6,
+            "acidez": 1.6,
+            "dulce": 0,
+            "tanico": 4.8,
+            "afrutado": 1.2
+          }
+        }
+      ],
+      "nextAfterSavingTop": "nebbiolo-estructurado",
+      "reversal": null
+    },
+    {
+      "id": "presupuesto-estricto",
+      "job": "No superar 15 EUR sin fingir que precio es gusto",
+      "risk": "context-leak-into-profile",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 4,
+        "indifferent": 1,
+        "no": 15,
+        "liked": [
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los dátiles?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el mango?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 2,
+        "tanico": 0,
+        "afrutado": 4
+      },
+      "learnedProfile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 2,
+        "tanico": 0,
+        "afrutado": 4
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 1,
+        "dulce": 2,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "passportMatchrimCode": "Merlot Terciopelo",
+      "passportMatchrimName": "Merlot Terciopelo",
+      "matchrimCode": "Verdejo Miel",
+      "matchrimName": "Verdejo Miel",
+      "styles": [
+        "Blanco Goloso",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": "budget",
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 71,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 2,
+            "tanico": 0,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 71,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 2,
+            "tanico": 0,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 71,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 2,
+            "tanico": 0,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 71,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 2,
+            "tanico": 0,
+            "afrutado": 4
+          }
+        }
+      ],
+      "nextAfterSavingTop": "tinto-frutal",
+      "reversal": null
+    },
+    {
+      "id": "compra-premium",
+      "job": "Comparar botellas premium y añadas sin inventar valor",
+      "risk": "price-authority",
+      "scanScenario": "multi-bottle",
+      "answers": {
+        "yes": 8,
+        "indifferent": 2,
+        "no": 10,
+        "liked": [
+          "¿Te gusta la cayena?",
+          "¿Te gustan las trufas?",
+          "¿Te gusta el olor a cuero?",
+          "¿Te gusta el queso azul?",
+          "¿Te gustan las berenjenas asadas?",
+          "¿Te gusta el café sin azúcar?",
+          "¿Te gustan las avellanas tostadas?",
+          "¿Te gusta el curry?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 4,
+        "acidez": 1,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 0
+      },
+      "learnedProfile": {
+        "potente": 5,
+        "acidez": 3.5,
+        "dulce": 0.3,
+        "tanico": 5,
+        "afrutado": 0.5
+      },
+      "passportProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Tempranillo Noble",
+      "passportMatchrimName": "Tempranillo Noble",
+      "matchrimCode": "Tempranillo Noble",
+      "matchrimName": "Tempranillo Noble",
+      "styles": [
+        "Tinto de Estructura",
+        "Vino de Terruño",
+        "Tinto Versátil"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "rioja-reserva",
+          "topScore": 63,
+          "profile": {
+            "potente": 4,
+            "acidez": 1,
+            "dulce": 0,
+            "tanico": 4,
+            "afrutado": 0
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "rioja-reserva",
+          "topScore": 76,
+          "profile": {
+            "potente": 4.3,
+            "acidez": 2.2,
+            "dulce": 0.3,
+            "tanico": 4.3,
+            "afrutado": 0.6
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 28,
+          "top": "rioja-reserva",
+          "topScore": 80,
+          "profile": {
+            "potente": 4.6,
+            "acidez": 2.5,
+            "dulce": 0.3,
+            "tanico": 4.7,
+            "afrutado": 0.4
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 64,
+          "top": "rioja-reserva",
+          "topScore": 85,
+          "profile": {
+            "potente": 5,
+            "acidez": 3.5,
+            "dulce": 0.3,
+            "tanico": 5,
+            "afrutado": 0.5
+          }
+        }
+      ],
+      "nextAfterSavingTop": "nebbiolo-estructurado",
+      "reversal": null
+    },
+    {
+      "id": "restaurante-copa",
+      "job": "Elegir por copa manteniendo formato y precio",
+      "risk": "service-format-loss",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 4,
+        "indifferent": 2,
+        "no": 14,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el marisco?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "learnedProfile": {
+        "potente": 0,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "passportMatchrimCode": "Pinot Luz",
+      "passportMatchrimName": "Pinot Luz",
+      "matchrimCode": "Chardonnay Luz",
+      "matchrimName": "Chardonnay Luz",
+      "styles": [
+        "Blanco de Carácter",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": "occasion",
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 65,
+          "profile": {
+            "potente": 0,
+            "acidez": 2,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 65,
+          "profile": {
+            "potente": 0,
+            "acidez": 2,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 65,
+          "profile": {
+            "potente": 0,
+            "acidez": 2,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 65,
+          "profile": {
+            "potente": 0,
+            "acidez": 2,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 3
+          }
+        }
+      ],
+      "nextAfterSavingTop": "albarino-atlantico",
+      "reversal": null
+    },
+    {
+      "id": "maridaje-marisco",
+      "job": "Elegir para marisco sin convertir la ocasión en gusto permanente",
+      "risk": "occasion-leak-into-profile",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 5,
+        "indifferent": 1,
+        "no": 14,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gustan los pepinillos en vinagre?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el marisco?",
+          "¿Te gustan los encurtidos?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 4,
+        "dulce": 0,
+        "tanico": 0,
+        "afrutado": 1
+      },
+      "learnedProfile": {
+        "potente": 0,
+        "acidez": 4,
+        "dulce": 0,
+        "tanico": 0,
+        "afrutado": 1
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Sauvignon Solar",
+      "passportMatchrimName": "Sauvignon Solar",
+      "matchrimCode": "Albariño Primavera",
+      "matchrimName": "Albariño Primavera",
+      "styles": [
+        "Blanco Vital",
+        "Blanco de Carácter",
+        "Experimental"
+      ],
+      "unsupportedPreference": "occasion",
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 61,
+          "profile": {
+            "potente": 0,
+            "acidez": 4,
+            "dulce": 0,
+            "tanico": 0,
+            "afrutado": 1
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 61,
+          "profile": {
+            "potente": 0,
+            "acidez": 4,
+            "dulce": 0,
+            "tanico": 0,
+            "afrutado": 1
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 61,
+          "profile": {
+            "potente": 0,
+            "acidez": 4,
+            "dulce": 0,
+            "tanico": 0,
+            "afrutado": 1
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 61,
+          "profile": {
+            "potente": 0,
+            "acidez": 4,
+            "dulce": 0,
+            "tanico": 0,
+            "afrutado": 1
+          }
+        }
+      ],
+      "nextAfterSavingTop": "mencia-fresca",
+      "reversal": null
+    },
+    {
+      "id": "sumiller-tintos",
+      "job": "Revisar una carta de tintos con criterio profesional",
+      "risk": "dense-column-merge",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 8,
+        "indifferent": 1,
+        "no": 11,
+        "liked": [
+          "¿Te gusta la cayena?",
+          "¿Te gustan las trufas?",
+          "¿Te gusta el olor a cuero?",
+          "¿Te gusta el queso azul?",
+          "¿Te gustan las berenjenas asadas?",
+          "¿Te gusta el café sin azúcar?",
+          "¿Te gustan las avellanas tostadas?",
+          "¿Te gusta el curry?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 4,
+        "acidez": 1,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 0
+      },
+      "learnedProfile": {
+        "potente": 5,
+        "acidez": 2,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 1.2
+      },
+      "passportProfile": {
+        "potente": 5,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Tempranillo Especia",
+      "passportMatchrimName": "Tempranillo Especia",
+      "matchrimCode": "Garnacha Fuego",
+      "matchrimName": "Garnacha Fuego",
+      "styles": [
+        "Tinto de Estructura",
+        "Vino de Terruño",
+        "Tinto Versátil"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "rioja-reserva",
+          "topScore": 63,
+          "profile": {
+            "potente": 4,
+            "acidez": 1,
+            "dulce": 0,
+            "tanico": 4,
+            "afrutado": 0
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "rioja-reserva",
+          "topScore": 74,
+          "profile": {
+            "potente": 4.3,
+            "acidez": 1.6,
+            "dulce": 0.3,
+            "tanico": 4.3,
+            "afrutado": 0.9
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 27,
+          "top": "rioja-reserva",
+          "topScore": 76,
+          "profile": {
+            "potente": 4.6,
+            "acidez": 1.7,
+            "dulce": 0,
+            "tanico": 4.7,
+            "afrutado": 0.8
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 61,
+          "top": "rioja-reserva",
+          "topScore": 83,
+          "profile": {
+            "potente": 5,
+            "acidez": 2,
+            "dulce": 0,
+            "tanico": 5,
+            "afrutado": 1.2
+          }
+        }
+      ],
+      "nextAfterSavingTop": "nebbiolo-estructurado",
+      "reversal": null
+    },
+    {
+      "id": "sumiller-blancos",
+      "job": "Revisar blancos, regiones y añadas en una carta inclinada",
+      "risk": "canonical-field-split",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 6,
+        "indifferent": 1,
+        "no": 13,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gustan los pepinillos en vinagre?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el marisco?",
+          "¿Te gustan los encurtidos?",
+          "¿Te gustan los caramelos de limón?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 2
+      },
+      "learnedProfile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 2
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 2
+      },
+      "passportMatchrimCode": "Godello Aroma",
+      "passportMatchrimName": "Godello Aroma",
+      "matchrimCode": "Sauvignon Aroma",
+      "matchrimName": "Sauvignon Aroma",
+      "styles": [
+        "Blanco Vital",
+        "Blanco de Carácter",
+        "Experimental"
+      ],
+      "unsupportedPreference": "color",
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 75,
+          "profile": {
+            "potente": 0,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 75,
+          "profile": {
+            "potente": 0,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 75,
+          "profile": {
+            "potente": 0,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "albarino-atlantico",
+          "topScore": 75,
+          "profile": {
+            "potente": 0,
+            "acidez": 5,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        }
+      ],
+      "nextAfterSavingTop": "mencia-fresca",
+      "reversal": null
+    },
+    {
+      "id": "tienda-expositor",
+      "job": "Resolver varias botellas sin confundir regiones",
+      "risk": "box-result-alignment",
+      "scanScenario": "multi-bottle",
+      "answers": {
+        "yes": 6,
+        "indifferent": 2,
+        "no": 12,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los pepinillos en vinagre?",
+          "¿Te gustan los dátiles?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el mango?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 3,
+        "dulce": 2,
+        "tanico": 0,
+        "afrutado": 4
+      },
+      "learnedProfile": {
+        "potente": 1.8,
+        "acidez": 3.7,
+        "dulce": 0.7,
+        "tanico": 1.2,
+        "afrutado": 3.8
+      },
+      "passportProfile": {
+        "potente": 2,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "passportMatchrimCode": "Sauvignon Velo",
+      "passportMatchrimName": "Sauvignon Velo",
+      "matchrimCode": "Pinot Vibrante",
+      "matchrimName": "Pinot Vibrante",
+      "styles": [
+        "Brut Elegante",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 79,
+          "profile": {
+            "potente": 0,
+            "acidez": 3,
+            "dulce": 2,
+            "tanico": 0,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "tinto-frutal",
+          "topScore": 84,
+          "profile": {
+            "potente": 0.9,
+            "acidez": 3.3,
+            "dulce": 1.7,
+            "tanico": 0.6,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 31,
+          "top": "albarino-atlantico",
+          "topScore": 84,
+          "profile": {
+            "potente": 1.1,
+            "acidez": 3.4,
+            "dulce": 1.3,
+            "tanico": 0.8,
+            "afrutado": 3.9
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 70,
+          "top": "albarino-atlantico",
+          "topScore": 89,
+          "profile": {
+            "potente": 1.8,
+            "acidez": 3.7,
+            "dulce": 0.7,
+            "tanico": 1.2,
+            "afrutado": 3.8
+          }
+        }
+      ],
+      "nextAfterSavingTop": "mencia-fresca",
+      "reversal": null
+    },
+    {
+      "id": "coleccionista-duplicados",
+      "job": "Agrupar duplicados conservando añadas y recuento",
+      "risk": "canonical-deduplication",
+      "scanScenario": "multi-bottle",
+      "answers": {
+        "yes": 6,
+        "indifferent": 1,
+        "no": 13,
+        "liked": [
+          "¿Te gusta la cayena?",
+          "¿Te gustan las trufas?",
+          "¿Te gusta el olor a cuero?",
+          "¿Te gustan las berenjenas asadas?",
+          "¿Te gusta el café sin azúcar?",
+          "¿Te gustan las avellanas tostadas?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 3,
+        "acidez": 0,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 0
+      },
+      "learnedProfile": {
+        "potente": 4.4,
+        "acidez": 1.9,
+        "dulce": 0.1,
+        "tanico": 5,
+        "afrutado": 1.4
+      },
+      "passportProfile": {
+        "potente": 4,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Cabernet Intenso",
+      "passportMatchrimName": "Cabernet Intenso",
+      "matchrimCode": "Cabernet Intenso",
+      "matchrimName": "Cabernet Intenso",
+      "styles": [
+        "Tinto de Estructura",
+        "Vino de Terruño",
+        "Tinto Versátil"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "rioja-reserva",
+          "topScore": 51,
+          "profile": {
+            "potente": 3,
+            "acidez": 0,
+            "dulce": 0,
+            "tanico": 4,
+            "afrutado": 0
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "rioja-reserva",
+          "topScore": 66,
+          "profile": {
+            "potente": 3.6,
+            "acidez": 0.9,
+            "dulce": 0.3,
+            "tanico": 4.3,
+            "afrutado": 0.9
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 29,
+          "top": "rioja-reserva",
+          "topScore": 70,
+          "profile": {
+            "potente": 3.8,
+            "acidez": 1.2,
+            "dulce": 0.2,
+            "tanico": 4.7,
+            "afrutado": 0.9
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 65,
+          "top": "rioja-reserva",
+          "topScore": 80,
+          "profile": {
+            "potente": 4.4,
+            "acidez": 1.9,
+            "dulce": 0.1,
+            "tanico": 5,
+            "afrutado": 1.4
+          }
+        }
+      ],
+      "nextAfterSavingTop": "nebbiolo-estructurado",
+      "reversal": null
+    },
+    {
+      "id": "etiqueta-oculta",
+      "job": "Recibir incertidumbre útil cuando no se lee la etiqueta",
+      "risk": "identity-hallucination",
+      "scanScenario": "difficult-image",
+      "answers": {
+        "yes": 4,
+        "indifferent": 3,
+        "no": 13,
+        "liked": [
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gusta el anís estrellado?",
+          "¿Te gusta la vainilla?",
+          "¿Te gusta la hierbabuena?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 1,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "learnedProfile": {
+        "potente": 1,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "passportMatchrimCode": "Moscatel Primavera",
+      "passportMatchrimName": "Moscatel Primavera",
+      "matchrimCode": "Moscatel Primavera",
+      "matchrimName": "Moscatel Primavera",
+      "styles": [
+        "Blanco Goloso",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 84,
+          "profile": {
+            "potente": 1,
+            "acidez": 1,
+            "dulce": 3,
+            "tanico": 1,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 84,
+          "profile": {
+            "potente": 1,
+            "acidez": 1,
+            "dulce": 3,
+            "tanico": 1,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 84,
+          "profile": {
+            "potente": 1,
+            "acidez": 1,
+            "dulce": 3,
+            "tanico": 1,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 84,
+          "profile": {
+            "potente": 1,
+            "acidez": 1,
+            "dulce": 3,
+            "tanico": 1,
+            "afrutado": 3
+          }
+        }
+      ],
+      "nextAfterSavingTop": "tinto-frutal",
+      "reversal": null
+    },
+    {
+      "id": "pizarra-manuscrita",
+      "job": "Corregir OCR de escritura irregular sin perder estructura",
+      "risk": "handwriting-false-positive",
+      "scanScenario": "handwritten-board",
+      "answers": {
+        "yes": 5,
+        "indifferent": 2,
+        "no": 13,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los pepinillos en vinagre?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gustan los encurtidos?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 2
+      },
+      "learnedProfile": {
+        "potente": 0,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 2
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 2
+      },
+      "passportMatchrimCode": "Godello Velo",
+      "passportMatchrimName": "Godello Velo",
+      "matchrimCode": "Sauvignon Velo",
+      "matchrimName": "Sauvignon Velo",
+      "styles": [
+        "Blanco de Carácter",
+        "Oxidativo/Maduro",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 66,
+          "profile": {
+            "potente": 0,
+            "acidez": 3,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 66,
+          "profile": {
+            "potente": 0,
+            "acidez": 3,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 66,
+          "profile": {
+            "potente": 0,
+            "acidez": 3,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 66,
+          "profile": {
+            "potente": 0,
+            "acidez": 3,
+            "dulce": 1,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        }
+      ],
+      "nextAfterSavingTop": "albarino-atlantico",
+      "reversal": null
+    },
+    {
+      "id": "baja-vision",
+      "job": "Completar la decisión con texto ampliado",
+      "risk": "dynamic-type-overflow",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 4,
+        "indifferent": 2,
+        "no": 14,
+        "liked": [
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los dátiles?",
+          "¿Te gusta la vainilla?",
+          "¿Te gusta el mango?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 0,
+        "afrutado": 4
+      },
+      "learnedProfile": {
+        "potente": 0.5,
+        "acidez": 1.7,
+        "dulce": 2.7,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 2,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "passportMatchrimCode": "Chardonnay Dorado",
+      "passportMatchrimName": "Chardonnay Dorado",
+      "matchrimCode": "Merlot Terciopelo",
+      "matchrimName": "Merlot Terciopelo",
+      "styles": [
+        "Blanco Goloso",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 76,
+          "profile": {
+            "potente": 0,
+            "acidez": 1,
+            "dulce": 3,
+            "tanico": 0,
+            "afrutado": 4
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "blanco-baja-acidez",
+          "topScore": 76,
+          "profile": {
+            "potente": 0.6,
+            "acidez": 1.6,
+            "dulce": 2.7,
+            "tanico": 0.3,
+            "afrutado": 4.3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 24,
+          "top": "blanco-baja-acidez",
+          "topScore": 73,
+          "profile": {
+            "potente": 0.4,
+            "acidez": 1.5,
+            "dulce": 2.8,
+            "tanico": 0,
+            "afrutado": 4.6
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 54,
+          "top": "tinto-frutal",
+          "topScore": 76,
+          "profile": {
+            "potente": 0.5,
+            "acidez": 1.7,
+            "dulce": 2.7,
+            "tanico": 0,
+            "afrutado": 5
+          }
+        }
+      ],
+      "nextAfterSavingTop": "blanco-baja-acidez",
+      "reversal": null
+    },
+    {
+      "id": "voiceover",
+      "job": "Navegar pins, lista y explicación sin apoyo visual",
+      "risk": "accessible-name-order",
+      "scanScenario": "printed-list",
+      "answers": {
+        "yes": 4,
+        "indifferent": 2,
+        "no": 14,
+        "liked": [
+          "¿Te gusta la manzana verde?",
+          "¿Te gustan los pepinillos en vinagre?",
+          "¿Te gusta la hierbabuena?",
+          "¿Te gusta el marisco?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 3,
+        "dulce": 0,
+        "tanico": 0,
+        "afrutado": 2
+      },
+      "learnedProfile": {
+        "potente": 0.5,
+        "acidez": 4.4,
+        "dulce": 0.5,
+        "tanico": 0,
+        "afrutado": 3.2
+      },
+      "passportProfile": {
+        "potente": 1,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "passportMatchrimCode": "Sauvignon Aroma",
+      "passportMatchrimName": "Sauvignon Aroma",
+      "matchrimCode": "Riesling Jardín",
+      "matchrimName": "Riesling Jardín",
+      "styles": [
+        "Brut Elegante",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "tinto-frutal",
+          "topScore": 61,
+          "profile": {
+            "potente": 0,
+            "acidez": 3,
+            "dulce": 0,
+            "tanico": 0,
+            "afrutado": 2
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "albarino-atlantico",
+          "topScore": 72,
+          "profile": {
+            "potente": 0.6,
+            "acidez": 3.6,
+            "dulce": 0.3,
+            "tanico": 0.3,
+            "afrutado": 2.6
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 26,
+          "top": "albarino-atlantico",
+          "topScore": 71,
+          "profile": {
+            "potente": 0.4,
+            "acidez": 3.8,
+            "dulce": 0.3,
+            "tanico": 0,
+            "afrutado": 2.8
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 59,
+          "top": "albarino-atlantico",
+          "topScore": 77,
+          "profile": {
+            "potente": 0.5,
+            "acidez": 4.4,
+            "dulce": 0.5,
+            "tanico": 0,
+            "afrutado": 3.2
+          }
+        }
+      ],
+      "nextAfterSavingTop": "mencia-fresca",
+      "reversal": null
+    },
+    {
+      "id": "movilidad-reducida",
+      "job": "Usar controles sin gestos ni objetivos pequeños",
+      "risk": "touch-target",
+      "scanScenario": "multi-bottle",
+      "answers": {
+        "yes": 4,
+        "indifferent": 2,
+        "no": 14,
+        "liked": [
+          "¿Te gusta el pimiento rojo asado?",
+          "¿Te gustan los dátiles?",
+          "¿Te gustan las avellanas tostadas?",
+          "¿Te gusta el mango?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 0,
+        "acidez": 0,
+        "dulce": 3,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "learnedProfile": {
+        "potente": 1.8,
+        "acidez": 0,
+        "dulce": 3.4,
+        "tanico": 0.5,
+        "afrutado": 3.5
+      },
+      "passportProfile": {
+        "potente": 2,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "passportMatchrimCode": "Verdejo Miel",
+      "passportMatchrimName": "Verdejo Miel",
+      "matchrimCode": "Merlot Terciopelo",
+      "matchrimName": "Merlot Terciopelo",
+      "styles": [
+        "Blanco Goloso",
+        "Rosado Ligero",
+        "Experimental"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "blanco-baja-acidez",
+          "topScore": 68,
+          "profile": {
+            "potente": 0,
+            "acidez": 0,
+            "dulce": 3,
+            "tanico": 0,
+            "afrutado": 3
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "blanco-baja-acidez",
+          "topScore": 77,
+          "profile": {
+            "potente": 0.9,
+            "acidez": 0.3,
+            "dulce": 3,
+            "tanico": 0.3,
+            "afrutado": 3.3
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 26,
+          "top": "blanco-baja-acidez",
+          "topScore": 76,
+          "profile": {
+            "potente": 1.1,
+            "acidez": 0,
+            "dulce": 3.2,
+            "tanico": 0.3,
+            "afrutado": 3.3
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 61,
+          "top": "blanco-baja-acidez",
+          "topScore": 81,
+          "profile": {
+            "potente": 1.8,
+            "acidez": 0,
+            "dulce": 3.4,
+            "tanico": 0.5,
+            "afrutado": 3.5
+          }
+        }
+      ],
+      "nextAfterSavingTop": "tinto-frutal",
+      "reversal": null
+    },
+    {
+      "id": "cambio-de-opinion",
+      "job": "Dejar atrás tintos clásicos y pasar a blancos frescos",
+      "risk": "recency-reversal",
+      "scanScenario": "multi-bottle",
+      "answers": {
+        "yes": 6,
+        "indifferent": 2,
+        "no": 12,
+        "liked": [
+          "¿Te gusta la cayena?",
+          "¿Te gustan las trufas?",
+          "¿Te gusta el olor a cuero?",
+          "¿Te gusta el queso azul?",
+          "¿Te gustan las berenjenas asadas?",
+          "¿Te gusta el café sin azúcar?"
+        ]
+      },
+      "initialProfile": {
+        "potente": 3,
+        "acidez": 1,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 0
+      },
+      "learnedProfile": {
+        "potente": 4.6,
+        "acidez": 1.7,
+        "dulce": 0.5,
+        "tanico": 5,
+        "afrutado": 1.4
+      },
+      "passportProfile": {
+        "potente": 5,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Tempranillo Especia",
+      "passportMatchrimName": "Tempranillo Especia",
+      "matchrimCode": "Cabernet Intenso",
+      "matchrimName": "Cabernet Intenso",
+      "styles": [
+        "Tinto de Estructura",
+        "Vino de Terruño",
+        "Tinto Versátil"
+      ],
+      "unsupportedPreference": null,
+      "phases": [
+        {
+          "requestedPhase": 0,
+          "savedOrRated": 0,
+          "samples": 0,
+          "confidence": 0,
+          "top": "rioja-reserva",
+          "topScore": 56,
+          "profile": {
+            "potente": 3,
+            "acidez": 1,
+            "dulce": 0,
+            "tanico": 4,
+            "afrutado": 0
+          }
+        },
+        {
+          "requestedPhase": 1,
+          "savedOrRated": 1,
+          "samples": 1,
+          "confidence": 8,
+          "top": "rioja-reserva",
+          "topScore": 69,
+          "profile": {
+            "potente": 3.6,
+            "acidez": 1.6,
+            "dulce": 0.3,
+            "tanico": 4.3,
+            "afrutado": 0.9
+          }
+        },
+        {
+          "requestedPhase": 5,
+          "savedOrRated": 5,
+          "samples": 5,
+          "confidence": 28,
+          "top": "rioja-reserva",
+          "topScore": 73,
+          "profile": {
+            "potente": 3.9,
+            "acidez": 1.5,
+            "dulce": 0.3,
+            "tanico": 4.7,
+            "afrutado": 0.9
+          }
+        },
+        {
+          "requestedPhase": 20,
+          "savedOrRated": 20,
+          "samples": 20,
+          "confidence": 63,
+          "top": "rioja-reserva",
+          "topScore": 83,
+          "profile": {
+            "potente": 4.6,
+            "acidez": 1.7,
+            "dulce": 0.5,
+            "tanico": 5,
+            "afrutado": 1.4
+          }
+        }
+      ],
+      "nextAfterSavingTop": "nebbiolo-estructurado",
+      "reversal": {
+        "weakChange": {
+          "currentRatingRows": 20,
+          "top": "mencia-fresca",
+          "topFive": [
+            "mencia-fresca",
+            "godello-redondo",
+            "rioja-reserva",
+            "albarino-atlantico",
+            "nebbiolo-estructurado"
+          ],
+          "targetRank": 4,
+          "targetDelta": 33,
+          "expectedTarget": "albarino-atlantico",
+          "converged": false,
+          "confidence": 70
+        },
+        "sustainedChange": {
+          "currentRatingRows": 20,
+          "top": "albarino-atlantico",
+          "expectedTarget": "albarino-atlantico",
+          "converged": true,
+          "confidence": 75,
+          "profile": {
+            "potente": 2.3,
+            "acidez": 4.4,
+            "dulce": 0.9,
+            "tanico": 1.6,
+            "afrutado": 3.5
+          }
+        }
+      }
+    }
+  ],
+  "personaCount": 25,
+  "invariants": {
+    "saveWithoutRatingDoesNotLearn": true,
+    "partialSensoryDataDoesNotTrain": true,
+    "canonicalRecommendationDuplicatesCollapse": true,
+    "differentVintageRemainsEligible": true,
+    "virtualSessionsIsolated": true
+  },
+  "modelLimits": {
+    "budgetIsPersistentTasteDimension": false,
+    "occasionIsPersistentTasteDimension": false,
+    "colorIsPersistentTasteDimension": false,
+    "confidenceMeasuresDiversity": true,
+    "confidenceMeasuresContradiction": true,
+    "recencyIsAppliedWhenTimestampsExist": true,
+    "confidenceDefinition": "sample coverage calibrated by directional consistency and sensory diversity; profile deltas use a 120-day recency decay with a 0.2 floor"
+  },
+  "virtualCohort": {
+    "count": 1000,
+    "operation": "in-process profile learning plus ranking of eight candidates",
+    "p50Ms": 0.007,
+    "p95Ms": 0.0195,
+    "p99Ms": 0.0293,
+    "errors": 0,
+    "qualification": "algorithm benchmark only; not staging load or 1,000 human users"
+  }
+}

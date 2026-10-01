@@ -62,7 +62,7 @@ const normalizeSensoryValue = (value: unknown) => {
   return clamp(Math.round(v));
 };
 
-const scoreProfileAgainstSensory = (
+export const scoreMatchrimProfileAgainstSensory = (
   profile: MatchrimProfileLike,
   sensory: SensoryAttributes,
 ) => {
@@ -215,8 +215,8 @@ export const auditMatchrimLearning = (
 
   const recommendations = candidates
     .flatMap((candidate) => {
-      const beforeScore = scoreProfileAgainstSensory(baseProfile, candidate.sensory_attributes);
-      const afterScore = scoreProfileAgainstSensory(learned.profile, candidate.sensory_attributes);
+      const beforeScore = scoreMatchrimProfileAgainstSensory(baseProfile, candidate.sensory_attributes);
+      const afterScore = scoreMatchrimProfileAgainstSensory(learned.profile, candidate.sensory_attributes);
       if (beforeScore === null || afterScore === null) return [];
 
       return [{

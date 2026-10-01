@@ -1,0 +1,5438 @@
+{
+  "generatedAt": "2026-10-01",
+  "qualification": "Synthetic longitudinal model audit. It does not represent 10,000 human participants or prove real retention, satisfaction or commercial outcomes.",
+  "isolation": "Local deterministic execution only. No production accounts, photos, APIs, Supabase rows, provider calls or personal data are read or written.",
+  "config": {
+    "users": 10000,
+    "days": 365,
+    "seed": 10012026,
+    "catalogSize": 180,
+    "candidatePoolSize": 24,
+    "auditProfiles": 100
+  },
+  "totals": {
+    "users": 10000,
+    "days": 365,
+    "events": 421722,
+    "explicitRatings": 287675,
+    "meanEventsPerUser": 42.17,
+    "feedbackRate": 0.6821,
+    "loveRate": 0.6389,
+    "rejectionRate": 0.0406,
+    "driftingUsers": 1828,
+    "usersMeetingLearningCriterion": 8244,
+    "learningCriterionRate": 0.8244
+  },
+  "strategyMetrics": {
+    "popularity": {
+      "events": 421722,
+      "precisionAt5": 0.1954,
+      "recallAt5": 0.1954,
+      "ndcgAt5": 0.1935,
+      "hitRateAt1": 0.186,
+      "meanRegret": 27.5005,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3161,
+      "rejectedTopRate": 0.3659,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3667
+    },
+    "onboarding": {
+      "events": 421722,
+      "precisionAt5": 0.6551,
+      "recallAt5": 0.6551,
+      "ndcgAt5": 0.6853,
+      "hitRateAt1": 0.7769,
+      "meanRegret": 6.5734,
+      "affinityMae": 10.5598,
+      "calibrationError": 0.0522,
+      "correctTopRate": 0.8376,
+      "rejectedTopRate": 0.0206,
+      "falseConfidenceRate": 0.0171,
+      "meanTopAffinity": 88.9774,
+      "catalogCoverage": 1
+    },
+    "hybrid": {
+      "events": 421722,
+      "precisionAt5": 0.6681,
+      "recallAt5": 0.6681,
+      "ndcgAt5": 0.699,
+      "hitRateAt1": 0.793,
+      "meanRegret": 6.1399,
+      "affinityMae": 10.8955,
+      "calibrationError": 0.0615,
+      "correctTopRate": 0.8461,
+      "rejectedTopRate": 0.0172,
+      "falseConfidenceRate": 0.0153,
+      "meanTopAffinity": 90.7651,
+      "catalogCoverage": 1
+    },
+    "oracle": {
+      "events": 421722,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1262,
+      "correctTopRate": 0.9908,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.6935,
+      "catalogCoverage": 1
+    }
+  },
+  "profileLearning": [
+    {
+      "ratings": 0,
+      "usersObserved": 10000,
+      "meanProfileRmse": 0.6971,
+      "p50ProfileRmse": 0.6539,
+      "p90ProfileRmse": 1.109
+    },
+    {
+      "ratings": 1,
+      "usersObserved": 9998,
+      "meanProfileRmse": 0.6299,
+      "p50ProfileRmse": 0.5895,
+      "p90ProfileRmse": 1.0004
+    },
+    {
+      "ratings": 3,
+      "usersObserved": 9932,
+      "meanProfileRmse": 0.5993,
+      "p50ProfileRmse": 0.5568,
+      "p90ProfileRmse": 0.956
+    },
+    {
+      "ratings": 5,
+      "usersObserved": 9429,
+      "meanProfileRmse": 0.5758,
+      "p50ProfileRmse": 0.5289,
+      "p90ProfileRmse": 0.9217
+    },
+    {
+      "ratings": 10,
+      "usersObserved": 6899,
+      "meanProfileRmse": 0.5111,
+      "p50ProfileRmse": 0.4727,
+      "p90ProfileRmse": 0.7826
+    },
+    {
+      "ratings": 25,
+      "usersObserved": 4048,
+      "meanProfileRmse": 0.4823,
+      "p50ProfileRmse": 0.4452,
+      "p90ProfileRmse": 0.7231
+    },
+    {
+      "ratings": 50,
+      "usersObserved": 1695,
+      "meanProfileRmse": 0.4587,
+      "p50ProfileRmse": 0.4168,
+      "p90ProfileRmse": 0.6884
+    }
+  ],
+  "segments": [
+    {
+      "segment": "novice",
+      "strategy": "popularity",
+      "events": 43370,
+      "precisionAt5": 0.1968,
+      "recallAt5": 0.1968,
+      "ndcgAt5": 0.1953,
+      "hitRateAt1": 0.1894,
+      "meanRegret": 27.3867,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3132,
+      "rejectedTopRate": 0.3671,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3
+    },
+    {
+      "segment": "novice",
+      "strategy": "onboarding",
+      "events": 43370,
+      "precisionAt5": 0.5807,
+      "recallAt5": 0.5807,
+      "ndcgAt5": 0.6038,
+      "hitRateAt1": 0.6745,
+      "meanRegret": 9.3966,
+      "affinityMae": 11.5628,
+      "calibrationError": 0.0892,
+      "correctTopRate": 0.7717,
+      "rejectedTopRate": 0.0412,
+      "falseConfidenceRate": 0.0296,
+      "meanTopAffinity": 86.0929,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "novice",
+      "strategy": "hybrid",
+      "events": 43370,
+      "precisionAt5": 0.6019,
+      "recallAt5": 0.6019,
+      "ndcgAt5": 0.6265,
+      "hitRateAt1": 0.7015,
+      "meanRegret": 8.6714,
+      "affinityMae": 11.3943,
+      "calibrationError": 0.0866,
+      "correctTopRate": 0.7896,
+      "rejectedTopRate": 0.0345,
+      "falseConfidenceRate": 0.0261,
+      "meanTopAffinity": 87.6139,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "novice",
+      "strategy": "oracle",
+      "events": 43370,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.128,
+      "correctTopRate": 0.9906,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.52,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "casual",
+      "strategy": "popularity",
+      "events": 71573,
+      "precisionAt5": 0.1963,
+      "recallAt5": 0.1963,
+      "ndcgAt5": 0.1946,
+      "hitRateAt1": 0.1873,
+      "meanRegret": 27.409,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3157,
+      "rejectedTopRate": 0.3651,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3333
+    },
+    {
+      "segment": "casual",
+      "strategy": "onboarding",
+      "events": 71573,
+      "precisionAt5": 0.6109,
+      "recallAt5": 0.6109,
+      "ndcgAt5": 0.6375,
+      "hitRateAt1": 0.718,
+      "meanRegret": 8.1398,
+      "affinityMae": 11.2972,
+      "calibrationError": 0.0716,
+      "correctTopRate": 0.8037,
+      "rejectedTopRate": 0.0313,
+      "falseConfidenceRate": 0.0254,
+      "meanTopAffinity": 87.5323,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "casual",
+      "strategy": "hybrid",
+      "events": 71573,
+      "precisionAt5": 0.6379,
+      "recallAt5": 0.6379,
+      "ndcgAt5": 0.666,
+      "hitRateAt1": 0.7511,
+      "meanRegret": 7.2586,
+      "affinityMae": 11.1781,
+      "calibrationError": 0.0703,
+      "correctTopRate": 0.8239,
+      "rejectedTopRate": 0.0248,
+      "falseConfidenceRate": 0.0216,
+      "meanTopAffinity": 89.422,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "casual",
+      "strategy": "oracle",
+      "events": 71573,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1269,
+      "correctTopRate": 0.9905,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.6292,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "enthusiast",
+      "strategy": "popularity",
+      "events": 113600,
+      "precisionAt5": 0.1956,
+      "recallAt5": 0.1956,
+      "ndcgAt5": 0.1934,
+      "hitRateAt1": 0.1845,
+      "meanRegret": 27.5379,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3165,
+      "rejectedTopRate": 0.3654,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3389
+    },
+    {
+      "segment": "enthusiast",
+      "strategy": "onboarding",
+      "events": 113600,
+      "precisionAt5": 0.6566,
+      "recallAt5": 0.6566,
+      "ndcgAt5": 0.6873,
+      "hitRateAt1": 0.7809,
+      "meanRegret": 6.4827,
+      "affinityMae": 10.5221,
+      "calibrationError": 0.0472,
+      "correctTopRate": 0.8443,
+      "rejectedTopRate": 0.0192,
+      "falseConfidenceRate": 0.0167,
+      "meanTopAffinity": 89.1535,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "enthusiast",
+      "strategy": "hybrid",
+      "events": 113600,
+      "precisionAt5": 0.6753,
+      "recallAt5": 0.6753,
+      "ndcgAt5": 0.707,
+      "hitRateAt1": 0.8038,
+      "meanRegret": 5.8552,
+      "affinityMae": 10.7149,
+      "calibrationError": 0.0553,
+      "correctTopRate": 0.8554,
+      "rejectedTopRate": 0.0145,
+      "falseConfidenceRate": 0.0135,
+      "meanTopAffinity": 91.0701,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "enthusiast",
+      "strategy": "oracle",
+      "events": 113600,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1257,
+      "correctTopRate": 0.9904,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.7564,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "collector",
+      "strategy": "popularity",
+      "events": 73554,
+      "precisionAt5": 0.1928,
+      "recallAt5": 0.1928,
+      "ndcgAt5": 0.1907,
+      "hitRateAt1": 0.1828,
+      "meanRegret": 27.7521,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3098,
+      "rejectedTopRate": 0.3768,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3111
+    },
+    {
+      "segment": "collector",
+      "strategy": "onboarding",
+      "events": 73554,
+      "precisionAt5": 0.681,
+      "recallAt5": 0.681,
+      "ndcgAt5": 0.7136,
+      "hitRateAt1": 0.8117,
+      "meanRegret": 5.7107,
+      "affinityMae": 10.1567,
+      "calibrationError": 0.0416,
+      "correctTopRate": 0.8562,
+      "rejectedTopRate": 0.0129,
+      "falseConfidenceRate": 0.0112,
+      "meanTopAffinity": 89.7743,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "collector",
+      "strategy": "hybrid",
+      "events": 73554,
+      "precisionAt5": 0.6897,
+      "recallAt5": 0.6897,
+      "ndcgAt5": 0.7225,
+      "hitRateAt1": 0.8224,
+      "meanRegret": 5.4096,
+      "affinityMae": 10.6705,
+      "calibrationError": 0.0543,
+      "correctTopRate": 0.8613,
+      "rejectedTopRate": 0.0113,
+      "falseConfidenceRate": 0.0107,
+      "meanTopAffinity": 91.5637,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "collector",
+      "strategy": "oracle",
+      "events": 73554,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1261,
+      "correctTopRate": 0.9922,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.6563,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "sommelier",
+      "strategy": "popularity",
+      "events": 119625,
+      "precisionAt5": 0.1956,
+      "recallAt5": 0.1956,
+      "ndcgAt5": 0.194,
+      "hitRateAt1": 0.1875,
+      "meanRegret": 27.4062,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3208,
+      "rejectedTopRate": 0.3599,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3333
+    },
+    {
+      "segment": "sommelier",
+      "strategy": "onboarding",
+      "events": 119625,
+      "precisionAt5": 0.6911,
+      "recallAt5": 0.6911,
+      "ndcgAt5": 0.7241,
+      "hitRateAt1": 0.8242,
+      "meanRegret": 5.2293,
+      "affinityMae": 10.0386,
+      "calibrationError": 0.0385,
+      "correctTopRate": 0.8638,
+      "rejectedTopRate": 0.0128,
+      "falseConfidenceRate": 0.0116,
+      "meanTopAffinity": 90.2306,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "sommelier",
+      "strategy": "hybrid",
+      "events": 119625,
+      "precisionAt5": 0.6901,
+      "recallAt5": 0.6901,
+      "ndcgAt5": 0.723,
+      "hitRateAt1": 0.823,
+      "meanRegret": 5.272,
+      "affinityMae": 10.8555,
+      "calibrationError": 0.0575,
+      "correctTopRate": 0.8618,
+      "rejectedTopRate": 0.0126,
+      "falseConfidenceRate": 0.0123,
+      "meanTopAffinity": 91.9304,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "sommelier",
+      "strategy": "oracle",
+      "events": 119625,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1257,
+      "correctTopRate": 0.9905,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.758,
+      "catalogCoverage": 1
+    }
+  ],
+  "months": [
+    {
+      "month": 1,
+      "strategy": "popularity",
+      "events": 35915,
+      "precisionAt5": 0.1957,
+      "recallAt5": 0.1957,
+      "ndcgAt5": 0.194,
+      "hitRateAt1": 0.1876,
+      "meanRegret": 27.4273,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3251,
+      "rejectedTopRate": 0.3612,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3111
+    },
+    {
+      "month": 1,
+      "strategy": "onboarding",
+      "events": 35915,
+      "precisionAt5": 0.6641,
+      "recallAt5": 0.6641,
+      "ndcgAt5": 0.6956,
+      "hitRateAt1": 0.7922,
+      "meanRegret": 6.2298,
+      "affinityMae": 10.0599,
+      "calibrationError": 0.0334,
+      "correctTopRate": 0.8557,
+      "rejectedTopRate": 0.0163,
+      "falseConfidenceRate": 0.0133,
+      "meanTopAffinity": 88.9179,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 1,
+      "strategy": "hybrid",
+      "events": 35915,
+      "precisionAt5": 0.6685,
+      "recallAt5": 0.6685,
+      "ndcgAt5": 0.6997,
+      "hitRateAt1": 0.7945,
+      "meanRegret": 6.1614,
+      "affinityMae": 10.0803,
+      "calibrationError": 0.0375,
+      "correctTopRate": 0.8562,
+      "rejectedTopRate": 0.0155,
+      "falseConfidenceRate": 0.0127,
+      "meanTopAffinity": 89.3777,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 1,
+      "strategy": "oracle",
+      "events": 35915,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1227,
+      "correctTopRate": 0.9933,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.9656,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 2,
+      "strategy": "popularity",
+      "events": 34787,
+      "precisionAt5": 0.1932,
+      "recallAt5": 0.1932,
+      "ndcgAt5": 0.191,
+      "hitRateAt1": 0.1824,
+      "meanRegret": 27.7926,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3166,
+      "rejectedTopRate": 0.3678,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3167
+    },
+    {
+      "month": 2,
+      "strategy": "onboarding",
+      "events": 34787,
+      "precisionAt5": 0.6638,
+      "recallAt5": 0.6638,
+      "ndcgAt5": 0.6945,
+      "hitRateAt1": 0.7868,
+      "meanRegret": 6.3024,
+      "affinityMae": 10.1819,
+      "calibrationError": 0.0415,
+      "correctTopRate": 0.8486,
+      "rejectedTopRate": 0.0156,
+      "falseConfidenceRate": 0.0129,
+      "meanTopAffinity": 89.008,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 2,
+      "strategy": "hybrid",
+      "events": 34787,
+      "precisionAt5": 0.673,
+      "recallAt5": 0.673,
+      "ndcgAt5": 0.7033,
+      "hitRateAt1": 0.7946,
+      "meanRegret": 6.0988,
+      "affinityMae": 10.2769,
+      "calibrationError": 0.0484,
+      "correctTopRate": 0.8517,
+      "rejectedTopRate": 0.0137,
+      "falseConfidenceRate": 0.0119,
+      "meanTopAffinity": 90.004,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 2,
+      "strategy": "oracle",
+      "events": 34787,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1229,
+      "correctTopRate": 0.9929,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.9573,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 3,
+      "strategy": "popularity",
+      "events": 35827,
+      "precisionAt5": 0.1928,
+      "recallAt5": 0.1928,
+      "ndcgAt5": 0.1909,
+      "hitRateAt1": 0.1837,
+      "meanRegret": 27.7133,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3187,
+      "rejectedTopRate": 0.3621,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3056
+    },
+    {
+      "month": 3,
+      "strategy": "onboarding",
+      "events": 35827,
+      "precisionAt5": 0.6645,
+      "recallAt5": 0.6645,
+      "ndcgAt5": 0.6951,
+      "hitRateAt1": 0.7851,
+      "meanRegret": 6.2966,
+      "affinityMae": 10.0529,
+      "calibrationError": 0.0378,
+      "correctTopRate": 0.8516,
+      "rejectedTopRate": 0.0151,
+      "falseConfidenceRate": 0.0121,
+      "meanTopAffinity": 88.946,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 3,
+      "strategy": "hybrid",
+      "events": 35827,
+      "precisionAt5": 0.6735,
+      "recallAt5": 0.6735,
+      "ndcgAt5": 0.7041,
+      "hitRateAt1": 0.7956,
+      "meanRegret": 5.9853,
+      "affinityMae": 10.2627,
+      "calibrationError": 0.046,
+      "correctTopRate": 0.8576,
+      "rejectedTopRate": 0.0131,
+      "falseConfidenceRate": 0.0109,
+      "meanTopAffinity": 90.3545,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 3,
+      "strategy": "oracle",
+      "events": 35827,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.122,
+      "correctTopRate": 0.9926,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 88.0584,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 4,
+      "strategy": "popularity",
+      "events": 34425,
+      "precisionAt5": 0.1953,
+      "recallAt5": 0.1953,
+      "ndcgAt5": 0.1931,
+      "hitRateAt1": 0.1845,
+      "meanRegret": 27.5881,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3219,
+      "rejectedTopRate": 0.3594,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.2944
+    },
+    {
+      "month": 4,
+      "strategy": "onboarding",
+      "events": 34425,
+      "precisionAt5": 0.6648,
+      "recallAt5": 0.6648,
+      "ndcgAt5": 0.6956,
+      "hitRateAt1": 0.7892,
+      "meanRegret": 6.2362,
+      "affinityMae": 10.028,
+      "calibrationError": 0.035,
+      "correctTopRate": 0.855,
+      "rejectedTopRate": 0.0144,
+      "falseConfidenceRate": 0.0114,
+      "meanTopAffinity": 88.9902,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 4,
+      "strategy": "hybrid",
+      "events": 34425,
+      "precisionAt5": 0.6752,
+      "recallAt5": 0.6752,
+      "ndcgAt5": 0.7068,
+      "hitRateAt1": 0.8029,
+      "meanRegret": 5.8834,
+      "affinityMae": 10.2937,
+      "calibrationError": 0.0458,
+      "correctTopRate": 0.8605,
+      "rejectedTopRate": 0.0117,
+      "falseConfidenceRate": 0.0098,
+      "meanTopAffinity": 90.6248,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 4,
+      "strategy": "oracle",
+      "events": 34425,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.122,
+      "correctTopRate": 0.993,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 88.0424,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 5,
+      "strategy": "popularity",
+      "events": 35924,
+      "precisionAt5": 0.1947,
+      "recallAt5": 0.1947,
+      "ndcgAt5": 0.1925,
+      "hitRateAt1": 0.1828,
+      "meanRegret": 27.6233,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3212,
+      "rejectedTopRate": 0.3615,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3
+    },
+    {
+      "month": 5,
+      "strategy": "onboarding",
+      "events": 35924,
+      "precisionAt5": 0.663,
+      "recallAt5": 0.663,
+      "ndcgAt5": 0.6942,
+      "hitRateAt1": 0.7888,
+      "meanRegret": 6.2738,
+      "affinityMae": 10.0854,
+      "calibrationError": 0.0363,
+      "correctTopRate": 0.8534,
+      "rejectedTopRate": 0.0158,
+      "falseConfidenceRate": 0.0127,
+      "meanTopAffinity": 88.9757,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 5,
+      "strategy": "hybrid",
+      "events": 35924,
+      "precisionAt5": 0.6759,
+      "recallAt5": 0.6759,
+      "ndcgAt5": 0.7077,
+      "hitRateAt1": 0.8046,
+      "meanRegret": 5.8658,
+      "affinityMae": 10.4006,
+      "calibrationError": 0.0478,
+      "correctTopRate": 0.8599,
+      "rejectedTopRate": 0.0128,
+      "falseConfidenceRate": 0.0111,
+      "meanTopAffinity": 90.7642,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 5,
+      "strategy": "oracle",
+      "events": 35924,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1222,
+      "correctTopRate": 0.9943,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.9794,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 6,
+      "strategy": "popularity",
+      "events": 34517,
+      "precisionAt5": 0.1944,
+      "recallAt5": 0.1944,
+      "ndcgAt5": 0.1925,
+      "hitRateAt1": 0.1839,
+      "meanRegret": 27.6765,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3215,
+      "rejectedTopRate": 0.3625,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3167
+    },
+    {
+      "month": 6,
+      "strategy": "onboarding",
+      "events": 34517,
+      "precisionAt5": 0.6663,
+      "recallAt5": 0.6663,
+      "ndcgAt5": 0.697,
+      "hitRateAt1": 0.7909,
+      "meanRegret": 6.1953,
+      "affinityMae": 10.0017,
+      "calibrationError": 0.0341,
+      "correctTopRate": 0.8555,
+      "rejectedTopRate": 0.0164,
+      "falseConfidenceRate": 0.0125,
+      "meanTopAffinity": 88.9627,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 6,
+      "strategy": "hybrid",
+      "events": 34517,
+      "precisionAt5": 0.6788,
+      "recallAt5": 0.6788,
+      "ndcgAt5": 0.7109,
+      "hitRateAt1": 0.8087,
+      "meanRegret": 5.7144,
+      "affinityMae": 10.3127,
+      "calibrationError": 0.0443,
+      "correctTopRate": 0.8649,
+      "rejectedTopRate": 0.0125,
+      "falseConfidenceRate": 0.0107,
+      "meanTopAffinity": 90.9235,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 6,
+      "strategy": "oracle",
+      "events": 34517,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1222,
+      "correctTopRate": 0.9928,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 88.0309,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 7,
+      "strategy": "popularity",
+      "events": 34824,
+      "precisionAt5": 0.1985,
+      "recallAt5": 0.1985,
+      "ndcgAt5": 0.1961,
+      "hitRateAt1": 0.1865,
+      "meanRegret": 27.5093,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3219,
+      "rejectedTopRate": 0.3594,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3
+    },
+    {
+      "month": 7,
+      "strategy": "onboarding",
+      "events": 34824,
+      "precisionAt5": 0.6649,
+      "recallAt5": 0.6649,
+      "ndcgAt5": 0.6962,
+      "hitRateAt1": 0.791,
+      "meanRegret": 6.2606,
+      "affinityMae": 10.0104,
+      "calibrationError": 0.0368,
+      "correctTopRate": 0.8528,
+      "rejectedTopRate": 0.0158,
+      "falseConfidenceRate": 0.013,
+      "meanTopAffinity": 88.9672,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 7,
+      "strategy": "hybrid",
+      "events": 34824,
+      "precisionAt5": 0.68,
+      "recallAt5": 0.68,
+      "ndcgAt5": 0.7115,
+      "hitRateAt1": 0.8068,
+      "meanRegret": 5.7551,
+      "affinityMae": 10.4162,
+      "calibrationError": 0.0484,
+      "correctTopRate": 0.8618,
+      "rejectedTopRate": 0.0117,
+      "falseConfidenceRate": 0.0102,
+      "meanTopAffinity": 91.0162,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 7,
+      "strategy": "oracle",
+      "events": 34824,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1225,
+      "correctTopRate": 0.9937,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.9719,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 8,
+      "strategy": "popularity",
+      "events": 35698,
+      "precisionAt5": 0.1952,
+      "recallAt5": 0.1952,
+      "ndcgAt5": 0.1937,
+      "hitRateAt1": 0.1876,
+      "meanRegret": 27.474,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3174,
+      "rejectedTopRate": 0.3671,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.2944
+    },
+    {
+      "month": 8,
+      "strategy": "onboarding",
+      "events": 35698,
+      "precisionAt5": 0.6536,
+      "recallAt5": 0.6536,
+      "ndcgAt5": 0.6836,
+      "hitRateAt1": 0.7755,
+      "meanRegret": 6.6008,
+      "affinityMae": 10.5578,
+      "calibrationError": 0.0496,
+      "correctTopRate": 0.8406,
+      "rejectedTopRate": 0.0195,
+      "falseConfidenceRate": 0.0157,
+      "meanTopAffinity": 89.0182,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 8,
+      "strategy": "hybrid",
+      "events": 35698,
+      "precisionAt5": 0.6685,
+      "recallAt5": 0.6685,
+      "ndcgAt5": 0.6997,
+      "hitRateAt1": 0.7968,
+      "meanRegret": 6.0718,
+      "affinityMae": 10.9701,
+      "calibrationError": 0.0595,
+      "correctTopRate": 0.8519,
+      "rejectedTopRate": 0.0159,
+      "falseConfidenceRate": 0.0144,
+      "meanTopAffinity": 91.1415,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 8,
+      "strategy": "oracle",
+      "events": 35698,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.126,
+      "correctTopRate": 0.992,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.6752,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 9,
+      "strategy": "popularity",
+      "events": 34647,
+      "precisionAt5": 0.1966,
+      "recallAt5": 0.1966,
+      "ndcgAt5": 0.1949,
+      "hitRateAt1": 0.1881,
+      "meanRegret": 27.3524,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3108,
+      "rejectedTopRate": 0.3692,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3
+    },
+    {
+      "month": 9,
+      "strategy": "onboarding",
+      "events": 34647,
+      "precisionAt5": 0.6421,
+      "recallAt5": 0.6421,
+      "ndcgAt5": 0.6711,
+      "hitRateAt1": 0.7599,
+      "meanRegret": 7.0548,
+      "affinityMae": 11.2097,
+      "calibrationError": 0.0734,
+      "correctTopRate": 0.8165,
+      "rejectedTopRate": 0.0264,
+      "falseConfidenceRate": 0.0222,
+      "meanTopAffinity": 88.9956,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 9,
+      "strategy": "hybrid",
+      "events": 34647,
+      "precisionAt5": 0.6583,
+      "recallAt5": 0.6583,
+      "ndcgAt5": 0.6888,
+      "hitRateAt1": 0.782,
+      "meanRegret": 6.4617,
+      "affinityMae": 11.6539,
+      "calibrationError": 0.0829,
+      "correctTopRate": 0.829,
+      "rejectedTopRate": 0.0222,
+      "falseConfidenceRate": 0.0207,
+      "meanTopAffinity": 91.1928,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 9,
+      "strategy": "oracle",
+      "events": 34647,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1302,
+      "correctTopRate": 0.9886,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.3706,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 10,
+      "strategy": "popularity",
+      "events": 35725,
+      "precisionAt5": 0.1957,
+      "recallAt5": 0.1957,
+      "ndcgAt5": 0.1936,
+      "hitRateAt1": 0.1852,
+      "meanRegret": 27.4024,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3023,
+      "rejectedTopRate": 0.3765,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3056
+    },
+    {
+      "month": 10,
+      "strategy": "onboarding",
+      "events": 35725,
+      "precisionAt5": 0.6377,
+      "recallAt5": 0.6377,
+      "ndcgAt5": 0.6671,
+      "hitRateAt1": 0.7568,
+      "meanRegret": 7.0931,
+      "affinityMae": 11.4718,
+      "calibrationError": 0.0802,
+      "correctTopRate": 0.8099,
+      "rejectedTopRate": 0.0305,
+      "falseConfidenceRate": 0.0267,
+      "meanTopAffinity": 89.0153,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 10,
+      "strategy": "hybrid",
+      "events": 35725,
+      "precisionAt5": 0.6537,
+      "recallAt5": 0.6537,
+      "ndcgAt5": 0.6841,
+      "hitRateAt1": 0.7771,
+      "meanRegret": 6.571,
+      "affinityMae": 12.0502,
+      "calibrationError": 0.0926,
+      "correctTopRate": 0.8199,
+      "rejectedTopRate": 0.0265,
+      "falseConfidenceRate": 0.0248,
+      "meanTopAffinity": 91.2488,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 10,
+      "strategy": "oracle",
+      "events": 35725,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1342,
+      "correctTopRate": 0.9849,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.0874,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 11,
+      "strategy": "popularity",
+      "events": 34709,
+      "precisionAt5": 0.1961,
+      "recallAt5": 0.1961,
+      "ndcgAt5": 0.195,
+      "hitRateAt1": 0.1901,
+      "meanRegret": 27.23,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3063,
+      "rejectedTopRate": 0.3738,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.3056
+    },
+    {
+      "month": 11,
+      "strategy": "onboarding",
+      "events": 34709,
+      "precisionAt5": 0.6387,
+      "recallAt5": 0.6387,
+      "ndcgAt5": 0.6671,
+      "hitRateAt1": 0.7542,
+      "meanRegret": 7.1827,
+      "affinityMae": 11.5854,
+      "calibrationError": 0.0882,
+      "correctTopRate": 0.8016,
+      "rejectedTopRate": 0.0308,
+      "falseConfidenceRate": 0.0265,
+      "meanTopAffinity": 88.9705,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 11,
+      "strategy": "hybrid",
+      "events": 34709,
+      "precisionAt5": 0.6552,
+      "recallAt5": 0.6552,
+      "ndcgAt5": 0.6846,
+      "hitRateAt1": 0.7739,
+      "meanRegret": 6.6289,
+      "affinityMae": 12.1499,
+      "calibrationError": 0.0972,
+      "correctTopRate": 0.8156,
+      "rejectedTopRate": 0.0261,
+      "falseConfidenceRate": 0.0242,
+      "meanTopAffinity": 91.2724,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 11,
+      "strategy": "oracle",
+      "events": 34709,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1345,
+      "correctTopRate": 0.9854,
+      "rejectedTopRate": 0,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.0422,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 12,
+      "strategy": "popularity",
+      "events": 34724,
+      "precisionAt5": 0.1963,
+      "recallAt5": 0.1963,
+      "ndcgAt5": 0.1948,
+      "hitRateAt1": 0.1899,
+      "meanRegret": 27.2128,
+      "affinityMae": null,
+      "calibrationError": null,
+      "correctTopRate": 0.3092,
+      "rejectedTopRate": 0.3709,
+      "falseConfidenceRate": null,
+      "meanTopAffinity": null,
+      "catalogCoverage": 0.2889
+    },
+    {
+      "month": 12,
+      "strategy": "onboarding",
+      "events": 34724,
+      "precisionAt5": 0.6376,
+      "recallAt5": 0.6376,
+      "ndcgAt5": 0.6662,
+      "hitRateAt1": 0.7524,
+      "meanRegret": 7.1674,
+      "affinityMae": 11.4921,
+      "calibrationError": 0.081,
+      "correctTopRate": 0.8086,
+      "rejectedTopRate": 0.0309,
+      "falseConfidenceRate": 0.0263,
+      "meanTopAffinity": 88.9626,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 12,
+      "strategy": "hybrid",
+      "events": 34724,
+      "precisionAt5": 0.6568,
+      "recallAt5": 0.6568,
+      "ndcgAt5": 0.6869,
+      "hitRateAt1": 0.7788,
+      "meanRegret": 6.4814,
+      "affinityMae": 11.9049,
+      "calibrationError": 0.0888,
+      "correctTopRate": 0.8242,
+      "rejectedTopRate": 0.0249,
+      "falseConfidenceRate": 0.0228,
+      "meanTopAffinity": 91.2986,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 12,
+      "strategy": "oracle",
+      "events": 34724,
+      "precisionAt5": 1,
+      "recallAt5": 1,
+      "ndcgAt5": 1,
+      "hitRateAt1": 1,
+      "meanRegret": 0,
+      "affinityMae": 0,
+      "calibrationError": 0.1334,
+      "correctTopRate": 0.986,
+      "rejectedTopRate": 0.0001,
+      "falseConfidenceRate": 0,
+      "meanTopAffinity": 87.1307,
+      "catalogCoverage": 1
+    }
+  ],
+  "performance": {
+    "modelEvaluationP50Ms": 0.02379,
+    "modelEvaluationP95Ms": 0.069,
+    "modelEvaluationP99Ms": 0.08879,
+    "wallClockSeconds": 34.497,
+    "qualification": "In-process algorithm time, not backend load or mobile latency."
+  },
+  "conclusions": {
+    "hybridNdcgUpliftVsPopularity": 0.5055,
+    "hybridNdcgUpliftVsOnboarding": 0.0137,
+    "hybridHitRateUpliftVsOnboarding": 0.0161,
+    "remainingNdcgGapToOracle": 0.301,
+    "remainingRegretGapToOracle": 6.1399,
+    "worstHybridSegment": "novice",
+    "worstHybridSegmentNdcgAt5": 0.6265,
+    "falseConfidenceRate": 0.0153,
+    "recommendation": "El aprendizaje aporta valor sobre el test inicial, pero debe cerrarse la brecha de contexto y calibración antes de presentar la afinidad como una predicción fuerte."
+  },
+  "methodology": {
+    "agents": "Five engagement segments with latent five-axis palates, noisy onboarding answers, budgets, contexts and optional taste drift.",
+    "chronology": "Each agent is evaluated in event order. Only feedback available before an event trains that event recommendation.",
+    "feedback": "The current hybrid recommendation drives a noisy love/ok/not-for-me response; unrated events do not train the profile.",
+    "candidateSets": "24 synthetic wines sampled per decision from a 180-wine catalog.",
+    "baselines": {
+      "popularity": "Static catalog popularity independent of simulated feedback.",
+      "onboarding": "Initial Matchrim test profile with no longitudinal learning.",
+      "hybrid": "Current Matchrim calculateLearnedMatchrimProfile and affinity ranking.",
+      "oracle": "Evaluation ceiling using latent taste, context and budget; never visible to the hybrid model."
+    },
+    "knownLimits": [
+      "Synthetic responses inherit the assumptions encoded in the simulator.",
+      "The current five-axis model cannot represent grape, region, oak, aroma families or explicit occasion preferences.",
+      "Vision/OCR identity quality is evaluated by the separate recognition benchmark, not fabricated here.",
+      "Real-world retention, trust and willingness to pay require a consented human pilot."
+    ]
+  },
+  "auditProfiles": [
+    {
+      "id": "synthetic-user-00001",
+      "segment": "casual",
+      "events": 32,
+      "ratings": 18,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 5,
+        "dulce": 2,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.24,
+        "acidez": 3.64,
+        "dulce": 1.52,
+        "tanico": 1.07,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 2.24,
+        "acidez": 3.64,
+        "dulce": 1.52,
+        "tanico": 1.07,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 2.8,
+        "acidez": 4.4,
+        "dulce": 1.7,
+        "tanico": 1.1,
+        "afrutado": 4.6
+      },
+      "initialProfileRmse": 0.8399,
+      "finalProfileRmse": 0.4671,
+      "learnedAtRating": 6,
+      "loveRate": 0.8333,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 17
+    },
+    {
+      "id": "synthetic-user-00101",
+      "segment": "casual",
+      "events": 21,
+      "ratings": 12,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 4,
+        "dulce": 5,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 1.36,
+        "acidez": 3.82,
+        "dulce": 5,
+        "tanico": 1.34,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 1.36,
+        "acidez": 3.82,
+        "dulce": 5,
+        "tanico": 1.34,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 2,
+        "acidez": 3.3,
+        "dulce": 4.9,
+        "tanico": 1.5,
+        "afrutado": 4.9
+      },
+      "initialProfileRmse": 0.4197,
+      "finalProfileRmse": 0.3788,
+      "learnedAtRating": 3,
+      "loveRate": 0.5,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-00201",
+      "segment": "casual",
+      "events": 31,
+      "ratings": 15,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 3,
+        "dulce": 2,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.35,
+        "acidez": 2.68,
+        "dulce": 1.59,
+        "tanico": 0.68,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 0.3,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 0,
+        "afrutado": 3.68
+      },
+      "finalLearnedProfile": {
+        "potente": 2,
+        "acidez": 3,
+        "dulce": 2.1,
+        "tanico": 0.6,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 0.3156,
+      "finalProfileRmse": 1.637,
+      "learnedAtRating": 3,
+      "loveRate": 0.2,
+      "rejectionRate": 0.3333,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-00301",
+      "segment": "novice",
+      "events": 17,
+      "ratings": 7,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.55,
+        "acidez": 2.57,
+        "dulce": 4.92,
+        "tanico": 0.65,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 3.43,
+        "acidez": 2.21,
+        "dulce": 2.68,
+        "tanico": 1.82,
+        "afrutado": 3.69
+      },
+      "finalLearnedProfile": {
+        "potente": 3,
+        "acidez": 2.9,
+        "dulce": 5,
+        "tanico": 0.2,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 0.4041,
+      "finalProfileRmse": 1.4397,
+      "learnedAtRating": null,
+      "loveRate": 0.1429,
+      "rejectionRate": 0.2857,
+      "uniqueTopRecommendations": 11
+    },
+    {
+      "id": "synthetic-user-00401",
+      "segment": "casual",
+      "events": 25,
+      "ratings": 12,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 2,
+        "tanico": 3,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 2.87,
+        "dulce": 1.28,
+        "tanico": 4.87,
+        "afrutado": 2.42
+      },
+      "finalLatentProfile": {
+        "potente": 4.3,
+        "acidez": 4.3,
+        "dulce": 1.07,
+        "tanico": 5,
+        "afrutado": 1.82
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 1.8,
+        "tanico": 3.1,
+        "afrutado": 2.7
+      },
+      "initialProfileRmse": 0.9333,
+      "finalProfileRmse": 1.1904,
+      "learnedAtRating": 6,
+      "loveRate": 0.0833,
+      "rejectionRate": 0.0833,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-00501",
+      "segment": "enthusiast",
+      "events": 60,
+      "ratings": 39,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 4,
+        "dulce": 2,
+        "tanico": 4,
+        "afrutado": 1
+      },
+      "initialLatentProfile": {
+        "potente": 4.22,
+        "acidez": 4.49,
+        "dulce": 1.17,
+        "tanico": 3.33,
+        "afrutado": 1.39
+      },
+      "finalLatentProfile": {
+        "potente": 4.22,
+        "acidez": 4.49,
+        "dulce": 1.17,
+        "tanico": 3.33,
+        "afrutado": 1.39
+      },
+      "finalLearnedProfile": {
+        "potente": 4.4,
+        "acidez": 4,
+        "dulce": 1.7,
+        "tanico": 4.1,
+        "afrutado": 1.4
+      },
+      "initialProfileRmse": 0.5624,
+      "finalProfileRmse": 0.4788,
+      "learnedAtRating": 3,
+      "loveRate": 0.4103,
+      "rejectionRate": 0.1538,
+      "uniqueTopRecommendations": 20
+    },
+    {
+      "id": "synthetic-user-00601",
+      "segment": "casual",
+      "events": 28,
+      "ratings": 11,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 3,
+        "dulce": 5,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.06,
+        "acidez": 2.79,
+        "dulce": 5,
+        "tanico": 1.95,
+        "afrutado": 4.46
+      },
+      "finalLatentProfile": {
+        "potente": 2.06,
+        "acidez": 2.79,
+        "dulce": 5,
+        "tanico": 1.95,
+        "afrutado": 4.46
+      },
+      "finalLearnedProfile": {
+        "potente": 2,
+        "acidez": 2.9,
+        "dulce": 4.7,
+        "tanico": 1.2,
+        "afrutado": 4.5
+      },
+      "initialProfileRmse": 0.482,
+      "finalProfileRmse": 0.3654,
+      "learnedAtRating": 3,
+      "loveRate": 0.6364,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 14
+    },
+    {
+      "id": "synthetic-user-00701",
+      "segment": "enthusiast",
+      "events": 65,
+      "ratings": 48,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 2,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 1.94,
+        "acidez": 1.48,
+        "dulce": 4,
+        "tanico": 1.53,
+        "afrutado": 4.38
+      },
+      "finalLatentProfile": {
+        "potente": 0,
+        "acidez": 0,
+        "dulce": 2.61,
+        "tanico": 2.9,
+        "afrutado": 2.59
+      },
+      "finalLearnedProfile": {
+        "potente": 1.9,
+        "acidez": 2.1,
+        "dulce": 3,
+        "tanico": 1.2,
+        "afrutado": 4.9
+      },
+      "initialProfileRmse": 0.6253,
+      "finalProfileRmse": 1.8108,
+      "learnedAtRating": null,
+      "loveRate": 0.4167,
+      "rejectionRate": 0.1458,
+      "uniqueTopRecommendations": 19
+    },
+    {
+      "id": "synthetic-user-00801",
+      "segment": "casual",
+      "events": 23,
+      "ratings": 15,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 3,
+        "dulce": 3,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 3.05,
+        "dulce": 2.16,
+        "tanico": 5,
+        "afrutado": 3.35
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 3.05,
+        "dulce": 2.16,
+        "tanico": 5,
+        "afrutado": 3.35
+      },
+      "finalLearnedProfile": {
+        "potente": 4.6,
+        "acidez": 2.9,
+        "dulce": 1.8,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialProfileRmse": 0.606,
+      "finalProfileRmse": 0.2946,
+      "learnedAtRating": 3,
+      "loveRate": 0.6,
+      "rejectionRate": 0.0667,
+      "uniqueTopRecommendations": 15
+    },
+    {
+      "id": "synthetic-user-00901",
+      "segment": "casual",
+      "events": 27,
+      "ratings": 19,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 1,
+        "acidez": 3,
+        "dulce": 4,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.5,
+        "acidez": 1.99,
+        "dulce": 3.38,
+        "tanico": 1.4,
+        "afrutado": 3.8
+      },
+      "finalLatentProfile": {
+        "potente": 2.5,
+        "acidez": 1.99,
+        "dulce": 3.38,
+        "tanico": 1.4,
+        "afrutado": 3.8
+      },
+      "finalLearnedProfile": {
+        "potente": 1.9,
+        "acidez": 3,
+        "dulce": 4.1,
+        "tanico": 1,
+        "afrutado": 4.7
+      },
+      "initialProfileRmse": 0.8787,
+      "finalProfileRmse": 0.7572,
+      "learnedAtRating": null,
+      "loveRate": 0.7895,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 8
+    },
+    {
+      "id": "synthetic-user-01001",
+      "segment": "enthusiast",
+      "events": 41,
+      "ratings": 32,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 4,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.38,
+        "acidez": 1.85,
+        "dulce": 3.9,
+        "tanico": 1.05,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 1.29,
+        "acidez": 2.5,
+        "dulce": 4.42,
+        "tanico": 0,
+        "afrutado": 3.63
+      },
+      "finalLearnedProfile": {
+        "potente": 2.9,
+        "acidez": 2.7,
+        "dulce": 4.4,
+        "tanico": 1.2,
+        "afrutado": 4.4
+      },
+      "initialProfileRmse": 0.7381,
+      "finalProfileRmse": 0.9657,
+      "learnedAtRating": 9,
+      "loveRate": 0.125,
+      "rejectionRate": 0.125,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-01101",
+      "segment": "casual",
+      "events": 28,
+      "ratings": 17,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 2,
+        "dulce": 3,
+        "tanico": 2,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 1.92,
+        "acidez": 1.63,
+        "dulce": 2.99,
+        "tanico": 1.65,
+        "afrutado": 4.37
+      },
+      "finalLatentProfile": {
+        "potente": 1.92,
+        "acidez": 1.63,
+        "dulce": 2.99,
+        "tanico": 1.65,
+        "afrutado": 4.37
+      },
+      "finalLearnedProfile": {
+        "potente": 2.3,
+        "acidez": 1.9,
+        "dulce": 2.5,
+        "tanico": 1.7,
+        "afrutado": 4
+      },
+      "initialProfileRmse": 0.6532,
+      "finalProfileRmse": 0.3454,
+      "learnedAtRating": 4,
+      "loveRate": 0.8235,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 13
+    },
+    {
+      "id": "synthetic-user-01201",
+      "segment": "novice",
+      "events": 17,
+      "ratings": 9,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 2,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 1.27,
+        "acidez": 5,
+        "dulce": 1.98,
+        "tanico": 0.49,
+        "afrutado": 3.55
+      },
+      "finalLatentProfile": {
+        "potente": 1.27,
+        "acidez": 5,
+        "dulce": 1.98,
+        "tanico": 0.49,
+        "afrutado": 3.55
+      },
+      "finalLearnedProfile": {
+        "potente": 0.7,
+        "acidez": 5,
+        "dulce": 1.5,
+        "tanico": 0.7,
+        "afrutado": 3.8
+      },
+      "initialProfileRmse": 0.658,
+      "finalProfileRmse": 0.3653,
+      "learnedAtRating": 3,
+      "loveRate": 0.7778,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 10
+    },
+    {
+      "id": "synthetic-user-01301",
+      "segment": "novice",
+      "events": 11,
+      "ratings": 6,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 1,
+        "dulce": 2,
+        "tanico": 5,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 2.52,
+        "dulce": 1.41,
+        "tanico": 5,
+        "afrutado": 2.87
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 2.52,
+        "dulce": 1.41,
+        "tanico": 5,
+        "afrutado": 2.87
+      },
+      "finalLearnedProfile": {
+        "potente": 4.6,
+        "acidez": 1.3,
+        "dulce": 1.7,
+        "tanico": 5,
+        "afrutado": 3.4
+      },
+      "initialProfileRmse": 0.8868,
+      "finalProfileRmse": 0.634,
+      "learnedAtRating": 5,
+      "loveRate": 0.3333,
+      "rejectionRate": 0.1667,
+      "uniqueTopRecommendations": 8
+    },
+    {
+      "id": "synthetic-user-01401",
+      "segment": "novice",
+      "events": 17,
+      "ratings": 7,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 3,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 4.25,
+        "dulce": 1.61,
+        "tanico": 1.68,
+        "afrutado": 2.78
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 5,
+        "dulce": 2,
+        "tanico": 0,
+        "afrutado": 3.49
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 4.9,
+        "dulce": 1,
+        "tanico": 2.7,
+        "afrutado": 3.4
+      },
+      "initialProfileRmse": 0.7378,
+      "finalProfileRmse": 1.2887,
+      "learnedAtRating": null,
+      "loveRate": 0.1429,
+      "rejectionRate": 0.4286,
+      "uniqueTopRecommendations": 10
+    },
+    {
+      "id": "synthetic-user-01501",
+      "segment": "sommelier",
+      "events": 147,
+      "ratings": 117,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 2,
+        "dulce": 2,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 3.37,
+        "acidez": 1.67,
+        "dulce": 2.2,
+        "tanico": 2.26,
+        "afrutado": 4.23
+      },
+      "finalLatentProfile": {
+        "potente": 3.37,
+        "acidez": 1.67,
+        "dulce": 2.2,
+        "tanico": 2.26,
+        "afrutado": 4.23
+      },
+      "finalLearnedProfile": {
+        "potente": 3,
+        "acidez": 2.2,
+        "dulce": 2.6,
+        "tanico": 1.9,
+        "afrutado": 4.4
+      },
+      "initialProfileRmse": 0.4343,
+      "finalProfileRmse": 0.3814,
+      "learnedAtRating": 3,
+      "loveRate": 0.8547,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 26
+    },
+    {
+      "id": "synthetic-user-01601",
+      "segment": "novice",
+      "events": 10,
+      "ratings": 4,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 0
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 3.43,
+        "dulce": 0.83,
+        "tanico": 4.85,
+        "afrutado": 1.4
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 3.43,
+        "dulce": 0.83,
+        "tanico": 4.85,
+        "afrutado": 1.4
+      },
+      "finalLearnedProfile": {
+        "potente": 4.1,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 4.9,
+        "afrutado": 1.1
+      },
+      "initialProfileRmse": 1.0076,
+      "finalProfileRmse": 0.7728,
+      "learnedAtRating": 4,
+      "loveRate": 0.5,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-01701",
+      "segment": "novice",
+      "events": 13,
+      "ratings": 7,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 3,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 4.86,
+        "acidez": 3.54,
+        "dulce": 0.07,
+        "tanico": 3.44,
+        "afrutado": 2.18
+      },
+      "finalLatentProfile": {
+        "potente": 4.47,
+        "acidez": 2.21,
+        "dulce": 0,
+        "tanico": 1.77,
+        "afrutado": 0.9
+      },
+      "finalLearnedProfile": {
+        "potente": 4,
+        "acidez": 3.9,
+        "dulce": 0.9,
+        "tanico": 3,
+        "afrutado": 2.9
+      },
+      "initialProfileRmse": 0.7325,
+      "finalProfileRmse": 1.3731,
+      "learnedAtRating": null,
+      "loveRate": 0.2857,
+      "rejectionRate": 0.4286,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-01801",
+      "segment": "casual",
+      "events": 26,
+      "ratings": 15,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 2,
+        "dulce": 0,
+        "tanico": 3,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 3,
+        "acidez": 1.42,
+        "dulce": 3.04,
+        "tanico": 2.29,
+        "afrutado": 4.09
+      },
+      "finalLatentProfile": {
+        "potente": 3,
+        "acidez": 1.42,
+        "dulce": 3.04,
+        "tanico": 2.29,
+        "afrutado": 4.09
+      },
+      "finalLearnedProfile": {
+        "potente": 3.7,
+        "acidez": 2,
+        "dulce": 0.6,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 1.5435,
+      "finalProfileRmse": 1.2405,
+      "learnedAtRating": 7,
+      "loveRate": 0.2,
+      "rejectionRate": 0.3333,
+      "uniqueTopRecommendations": 14
+    },
+    {
+      "id": "synthetic-user-01901",
+      "segment": "casual",
+      "events": 31,
+      "ratings": 17,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 4,
+        "dulce": 4,
+        "tanico": 2,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 1.78,
+        "acidez": 3.57,
+        "dulce": 4.11,
+        "tanico": 0.95,
+        "afrutado": 4.64
+      },
+      "finalLatentProfile": {
+        "potente": 1.78,
+        "acidez": 3.57,
+        "dulce": 4.11,
+        "tanico": 0.95,
+        "afrutado": 4.64
+      },
+      "finalLearnedProfile": {
+        "potente": 2.1,
+        "acidez": 3.3,
+        "dulce": 4,
+        "tanico": 1.6,
+        "afrutado": 4.4
+      },
+      "initialProfileRmse": 0.7978,
+      "finalProfileRmse": 0.3636,
+      "learnedAtRating": 5,
+      "loveRate": 0.8235,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 15
+    },
+    {
+      "id": "synthetic-user-02001",
+      "segment": "enthusiast",
+      "events": 45,
+      "ratings": 34,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 4,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.42,
+        "acidez": 2.92,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 2.42,
+        "acidez": 2.92,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 2.8,
+        "acidez": 3.4,
+        "dulce": 5,
+        "tanico": 0.9,
+        "afrutado": 4.9
+      },
+      "initialProfileRmse": 0.5467,
+      "finalProfileRmse": 0.4881,
+      "learnedAtRating": 3,
+      "loveRate": 0.6765,
+      "rejectionRate": 0.0882,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-02101",
+      "segment": "casual",
+      "events": 27,
+      "ratings": 16,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 2.5,
+        "acidez": 5,
+        "dulce": 0.18,
+        "tanico": 0.42,
+        "afrutado": 3.31
+      },
+      "finalLatentProfile": {
+        "potente": 2.5,
+        "acidez": 5,
+        "dulce": 0.18,
+        "tanico": 0.42,
+        "afrutado": 3.31
+      },
+      "finalLearnedProfile": {
+        "potente": 2.4,
+        "acidez": 5,
+        "dulce": 0.9,
+        "tanico": 1.1,
+        "afrutado": 3.4
+      },
+      "initialProfileRmse": 0.3789,
+      "finalProfileRmse": 0.4463,
+      "learnedAtRating": 3,
+      "loveRate": 0.6875,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-02201",
+      "segment": "novice",
+      "events": 13,
+      "ratings": 5,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 2,
+        "dulce": 2,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 4.75,
+        "acidez": 2.93,
+        "dulce": 0.82,
+        "tanico": 5,
+        "afrutado": 2.04
+      },
+      "finalLatentProfile": {
+        "potente": 4.75,
+        "acidez": 2.93,
+        "dulce": 0.82,
+        "tanico": 5,
+        "afrutado": 2.04
+      },
+      "finalLearnedProfile": {
+        "potente": 4.2,
+        "acidez": 2.3,
+        "dulce": 1.7,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialProfileRmse": 0.8645,
+      "finalProfileRmse": 0.6913,
+      "learnedAtRating": 5,
+      "loveRate": 0.4,
+      "rejectionRate": 0.2,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-02301",
+      "segment": "casual",
+      "events": 26,
+      "ratings": 14,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 4,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 3.4,
+        "dulce": 0.47,
+        "tanico": 4.16,
+        "afrutado": 3.49
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 3.4,
+        "dulce": 0.47,
+        "tanico": 4.16,
+        "afrutado": 3.49
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3.4,
+        "dulce": 1,
+        "tanico": 4.5,
+        "afrutado": 3
+      },
+      "initialProfileRmse": 0.4296,
+      "finalProfileRmse": 0.3569,
+      "learnedAtRating": 3,
+      "loveRate": 0.9286,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 11
+    },
+    {
+      "id": "synthetic-user-02401",
+      "segment": "novice",
+      "events": 15,
+      "ratings": 6,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 3,
+        "dulce": 4,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 1.89,
+        "acidez": 3.33,
+        "dulce": 3.44,
+        "tanico": 0.66,
+        "afrutado": 4.38
+      },
+      "finalLatentProfile": {
+        "potente": 1.89,
+        "acidez": 3.33,
+        "dulce": 3.44,
+        "tanico": 0.66,
+        "afrutado": 4.38
+      },
+      "finalLearnedProfile": {
+        "potente": 2,
+        "acidez": 3.2,
+        "dulce": 3.5,
+        "tanico": 1,
+        "afrutado": 2.9
+      },
+      "initialProfileRmse": 0.698,
+      "finalProfileRmse": 0.6819,
+      "learnedAtRating": null,
+      "loveRate": 0,
+      "rejectionRate": 0.1667,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-02501",
+      "segment": "enthusiast",
+      "events": 61,
+      "ratings": 40,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 1,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 2,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 1.83,
+        "acidez": 5,
+        "dulce": 0.21,
+        "tanico": 0.82,
+        "afrutado": 3.22
+      },
+      "finalLatentProfile": {
+        "potente": 1.83,
+        "acidez": 5,
+        "dulce": 0.21,
+        "tanico": 0.82,
+        "afrutado": 3.22
+      },
+      "finalLearnedProfile": {
+        "potente": 1.7,
+        "acidez": 4.9,
+        "dulce": 1,
+        "tanico": 1.2,
+        "afrutado": 4.1
+      },
+      "initialProfileRmse": 0.6589,
+      "finalProfileRmse": 0.5607,
+      "learnedAtRating": 3,
+      "loveRate": 0.725,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 21
+    },
+    {
+      "id": "synthetic-user-02601",
+      "segment": "casual",
+      "events": 19,
+      "ratings": 9,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 4,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 3.57,
+        "acidez": 3.6,
+        "dulce": 4.26,
+        "tanico": 1.14,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 1.26,
+        "acidez": 5,
+        "dulce": 4.38,
+        "tanico": 1.46,
+        "afrutado": 4.81
+      },
+      "finalLearnedProfile": {
+        "potente": 3.1,
+        "acidez": 4.4,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 3.9
+      },
+      "initialProfileRmse": 0.7857,
+      "finalProfileRmse": 1.1554,
+      "learnedAtRating": null,
+      "loveRate": 0.3333,
+      "rejectionRate": 0.4444,
+      "uniqueTopRecommendations": 11
+    },
+    {
+      "id": "synthetic-user-02701",
+      "segment": "novice",
+      "events": 13,
+      "ratings": 6,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 1,
+        "dulce": 2,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.25,
+        "acidez": 1.9,
+        "dulce": 3.26,
+        "tanico": 1.67,
+        "afrutado": 3.74
+      },
+      "finalLatentProfile": {
+        "potente": 2.25,
+        "acidez": 1.9,
+        "dulce": 3.26,
+        "tanico": 1.67,
+        "afrutado": 3.74
+      },
+      "finalLearnedProfile": {
+        "potente": 2.7,
+        "acidez": 1.3,
+        "dulce": 2.2,
+        "tanico": 1.1,
+        "afrutado": 4.1
+      },
+      "initialProfileRmse": 0.8345,
+      "finalProfileRmse": 0.6553,
+      "learnedAtRating": 4,
+      "loveRate": 1,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 8
+    },
+    {
+      "id": "synthetic-user-02801",
+      "segment": "novice",
+      "events": 12,
+      "ratings": 6,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 2,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.85,
+        "acidez": 2.16,
+        "dulce": 3.11,
+        "tanico": 1.84,
+        "afrutado": 4.63
+      },
+      "finalLatentProfile": {
+        "potente": 2.85,
+        "acidez": 2.16,
+        "dulce": 3.11,
+        "tanico": 1.84,
+        "afrutado": 4.63
+      },
+      "finalLearnedProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 1.9,
+        "tanico": 1.8,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 0.652,
+      "finalProfileRmse": 0.6832,
+      "learnedAtRating": null,
+      "loveRate": 0,
+      "rejectionRate": 0.6667,
+      "uniqueTopRecommendations": 10
+    },
+    {
+      "id": "synthetic-user-02901",
+      "segment": "enthusiast",
+      "events": 47,
+      "ratings": 28,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 1,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 1.4,
+        "acidez": 2.57,
+        "dulce": 2.47,
+        "tanico": 1.72,
+        "afrutado": 4.84
+      },
+      "finalLatentProfile": {
+        "potente": 2.27,
+        "acidez": 1.8,
+        "dulce": 0.98,
+        "tanico": 4.6,
+        "afrutado": 3.47
+      },
+      "finalLearnedProfile": {
+        "potente": 1.3,
+        "acidez": 2.9,
+        "dulce": 1.5,
+        "tanico": 1.8,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 0.7223,
+      "finalProfileRmse": 1.5896,
+      "learnedAtRating": 5,
+      "loveRate": 0.3929,
+      "rejectionRate": 0.0714,
+      "uniqueTopRecommendations": 15
+    },
+    {
+      "id": "synthetic-user-03001",
+      "segment": "enthusiast",
+      "events": 42,
+      "ratings": 27,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 4,
+        "dulce": 2,
+        "tanico": 3,
+        "afrutado": 1
+      },
+      "initialLatentProfile": {
+        "potente": 4.63,
+        "acidez": 4.27,
+        "dulce": 1.61,
+        "tanico": 3.21,
+        "afrutado": 1.45
+      },
+      "finalLatentProfile": {
+        "potente": 4.63,
+        "acidez": 4.27,
+        "dulce": 1.61,
+        "tanico": 3.21,
+        "afrutado": 1.45
+      },
+      "finalLearnedProfile": {
+        "potente": 4.3,
+        "acidez": 4.1,
+        "dulce": 1.3,
+        "tanico": 3.7,
+        "afrutado": 1.5
+      },
+      "initialProfileRmse": 0.4178,
+      "finalProfileRmse": 0.3103,
+      "learnedAtRating": 3,
+      "loveRate": 0.6296,
+      "rejectionRate": 0.037,
+      "uniqueTopRecommendations": 17
+    },
+    {
+      "id": "synthetic-user-03101",
+      "segment": "casual",
+      "events": 32,
+      "ratings": 23,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 2,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 1.43,
+        "acidez": 3.69,
+        "dulce": 0.74,
+        "tanico": 1.75,
+        "afrutado": 4.49
+      },
+      "finalLatentProfile": {
+        "potente": 1.43,
+        "acidez": 3.69,
+        "dulce": 0.74,
+        "tanico": 1.75,
+        "afrutado": 4.49
+      },
+      "finalLearnedProfile": {
+        "potente": 2,
+        "acidez": 4.8,
+        "dulce": 1,
+        "tanico": 1.7,
+        "afrutado": 4
+      },
+      "initialProfileRmse": 0.9386,
+      "finalProfileRmse": 0.613,
+      "learnedAtRating": 6,
+      "loveRate": 0.9565,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 13
+    },
+    {
+      "id": "synthetic-user-03201",
+      "segment": "enthusiast",
+      "events": 40,
+      "ratings": 27,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 4,
+        "dulce": 2,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.9,
+        "acidez": 2.95,
+        "dulce": 2.03,
+        "tanico": 0.14,
+        "afrutado": 4.37
+      },
+      "finalLatentProfile": {
+        "potente": 2.9,
+        "acidez": 2.95,
+        "dulce": 2.03,
+        "tanico": 0.14,
+        "afrutado": 4.37
+      },
+      "finalLearnedProfile": {
+        "potente": 3,
+        "acidez": 3.8,
+        "dulce": 1.9,
+        "tanico": 1.1,
+        "afrutado": 4.7
+      },
+      "initialProfileRmse": 0.67,
+      "finalProfileRmse": 0.5956,
+      "learnedAtRating": null,
+      "loveRate": 0.4444,
+      "rejectionRate": 0.0741,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-03301",
+      "segment": "novice",
+      "events": 13,
+      "ratings": 6,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 4.3,
+        "acidez": 3.52,
+        "dulce": 1.14,
+        "tanico": 5,
+        "afrutado": 2.28
+      },
+      "finalLatentProfile": {
+        "potente": 4.3,
+        "acidez": 3.52,
+        "dulce": 1.14,
+        "tanico": 5,
+        "afrutado": 2.28
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 2.2
+      },
+      "initialProfileRmse": 0.4038,
+      "finalProfileRmse": 0.3851,
+      "learnedAtRating": 3,
+      "loveRate": 0.3333,
+      "rejectionRate": 0.1667,
+      "uniqueTopRecommendations": 11
+    },
+    {
+      "id": "synthetic-user-03401",
+      "segment": "enthusiast",
+      "events": 40,
+      "ratings": 28,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 1,
+        "dulce": 4,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 3.29,
+        "acidez": 1.24,
+        "dulce": 3.48,
+        "tanico": 1.13,
+        "afrutado": 4.23
+      },
+      "finalLatentProfile": {
+        "potente": 3.29,
+        "acidez": 1.24,
+        "dulce": 3.48,
+        "tanico": 1.13,
+        "afrutado": 4.23
+      },
+      "finalLearnedProfile": {
+        "potente": 3.3,
+        "acidez": 1.8,
+        "dulce": 2.9,
+        "tanico": 1.5,
+        "afrutado": 4.1
+      },
+      "initialProfileRmse": 0.3088,
+      "finalProfileRmse": 0.401,
+      "learnedAtRating": 3,
+      "loveRate": 0.8571,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-03501",
+      "segment": "sommelier",
+      "events": 136,
+      "ratings": 109,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 3,
+        "dulce": 2,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 1.54,
+        "acidez": 2.75,
+        "dulce": 2.16,
+        "tanico": 1.11,
+        "afrutado": 4.86
+      },
+      "finalLatentProfile": {
+        "potente": 3.29,
+        "acidez": 5,
+        "dulce": 1.76,
+        "tanico": 0.3,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 2.1,
+        "acidez": 2.7,
+        "dulce": 1.9,
+        "tanico": 1.2,
+        "afrutado": 4.5
+      },
+      "initialProfileRmse": 0.4576,
+      "finalProfileRmse": 1.2472,
+      "learnedAtRating": 3,
+      "loveRate": 0.4404,
+      "rejectionRate": 0.1009,
+      "uniqueTopRecommendations": 25
+    },
+    {
+      "id": "synthetic-user-03601",
+      "segment": "enthusiast",
+      "events": 65,
+      "ratings": 45,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 1,
+        "dulce": 2,
+        "tanico": 1,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 3.42,
+        "acidez": 1.55,
+        "dulce": 2.84,
+        "tanico": 0.98,
+        "afrutado": 2.7
+      },
+      "finalLatentProfile": {
+        "potente": 3.42,
+        "acidez": 1.55,
+        "dulce": 2.84,
+        "tanico": 0.98,
+        "afrutado": 2.7
+      },
+      "finalLearnedProfile": {
+        "potente": 2.9,
+        "acidez": 1.7,
+        "dulce": 2.6,
+        "tanico": 1.6,
+        "afrutado": 3.9
+      },
+      "initialProfileRmse": 0.5781,
+      "finalProfileRmse": 0.6575,
+      "learnedAtRating": 3,
+      "loveRate": 0.8222,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 20
+    },
+    {
+      "id": "synthetic-user-03701",
+      "segment": "sommelier",
+      "events": 129,
+      "ratings": 110,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 2,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.74,
+        "acidez": 1.25,
+        "dulce": 3.31,
+        "tanico": 1.87,
+        "afrutado": 4.09
+      },
+      "finalLatentProfile": {
+        "potente": 2.74,
+        "acidez": 1.25,
+        "dulce": 3.31,
+        "tanico": 1.87,
+        "afrutado": 4.09
+      },
+      "finalLearnedProfile": {
+        "potente": 3.1,
+        "acidez": 1.9,
+        "dulce": 2.9,
+        "tanico": 1.7,
+        "afrutado": 4.2
+      },
+      "initialProfileRmse": 0.2247,
+      "finalProfileRmse": 0.3921,
+      "learnedAtRating": 3,
+      "loveRate": 0.8091,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 23
+    },
+    {
+      "id": "synthetic-user-03801",
+      "segment": "enthusiast",
+      "events": 61,
+      "ratings": 39,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 3.98,
+        "acidez": 2.94,
+        "dulce": 1.65,
+        "tanico": 4.88,
+        "afrutado": 2.92
+      },
+      "finalLatentProfile": {
+        "potente": 3.98,
+        "acidez": 2.94,
+        "dulce": 1.65,
+        "tanico": 4.88,
+        "afrutado": 2.92
+      },
+      "finalLearnedProfile": {
+        "potente": 4.9,
+        "acidez": 3.3,
+        "dulce": 1.1,
+        "tanico": 5,
+        "afrutado": 2.8
+      },
+      "initialProfileRmse": 0.7243,
+      "finalProfileRmse": 0.5136,
+      "learnedAtRating": 12,
+      "loveRate": 0.5128,
+      "rejectionRate": 0.0769,
+      "uniqueTopRecommendations": 22
+    },
+    {
+      "id": "synthetic-user-03901",
+      "segment": "casual",
+      "events": 22,
+      "ratings": 11,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 4.3,
+        "dulce": 0.68,
+        "tanico": 4.88,
+        "afrutado": 2.42
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 4.3,
+        "dulce": 0.68,
+        "tanico": 4.88,
+        "afrutado": 2.42
+      },
+      "finalLearnedProfile": {
+        "potente": 4.6,
+        "acidez": 4.2,
+        "dulce": 0.7,
+        "tanico": 4.8,
+        "afrutado": 2.7
+      },
+      "initialProfileRmse": 0.6782,
+      "finalProfileRmse": 0.227,
+      "learnedAtRating": 4,
+      "loveRate": 0.5455,
+      "rejectionRate": 0.0909,
+      "uniqueTopRecommendations": 13
+    },
+    {
+      "id": "synthetic-user-04001",
+      "segment": "enthusiast",
+      "events": 60,
+      "ratings": 43,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 4,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 4.68,
+        "acidez": 3.49,
+        "dulce": 0.66,
+        "tanico": 5,
+        "afrutado": 2.02
+      },
+      "finalLatentProfile": {
+        "potente": 4.68,
+        "acidez": 3.49,
+        "dulce": 0.66,
+        "tanico": 5,
+        "afrutado": 2.02
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 2.7,
+        "dulce": 1,
+        "tanico": 4.1,
+        "afrutado": 2.1
+      },
+      "initialProfileRmse": 0.83,
+      "finalProfileRmse": 0.5771,
+      "learnedAtRating": 4,
+      "loveRate": 0.4186,
+      "rejectionRate": 0.1395,
+      "uniqueTopRecommendations": 18
+    },
+    {
+      "id": "synthetic-user-04101",
+      "segment": "casual",
+      "events": 23,
+      "ratings": 12,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 3,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.72,
+        "acidez": 5,
+        "dulce": 1.13,
+        "tanico": 1.85,
+        "afrutado": 3.32
+      },
+      "finalLatentProfile": {
+        "potente": 2.72,
+        "acidez": 5,
+        "dulce": 1.13,
+        "tanico": 1.85,
+        "afrutado": 3.32
+      },
+      "finalLearnedProfile": {
+        "potente": 2.6,
+        "acidez": 5,
+        "dulce": 0.9,
+        "tanico": 2,
+        "afrutado": 3.8
+      },
+      "initialProfileRmse": 0.7923,
+      "finalProfileRmse": 0.2515,
+      "learnedAtRating": 4,
+      "loveRate": 0.9167,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 10
+    },
+    {
+      "id": "synthetic-user-04201",
+      "segment": "novice",
+      "events": 15,
+      "ratings": 8,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2,
+        "acidez": 5,
+        "dulce": 1.33,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 2,
+        "acidez": 5,
+        "dulce": 1.33,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 2.1,
+        "acidez": 4.7,
+        "dulce": 1.1,
+        "tanico": 0.7,
+        "afrutado": 4.6
+      },
+      "initialProfileRmse": 0.1494,
+      "finalProfileRmse": 0.4014,
+      "learnedAtRating": 3,
+      "loveRate": 0.875,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-04301",
+      "segment": "casual",
+      "events": 31,
+      "ratings": 20,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 4.33,
+        "acidez": 4.46,
+        "dulce": 1.06,
+        "tanico": 3.53,
+        "afrutado": 1.22
+      },
+      "finalLatentProfile": {
+        "potente": 4.33,
+        "acidez": 4.46,
+        "dulce": 1.06,
+        "tanico": 3.53,
+        "afrutado": 1.22
+      },
+      "finalLearnedProfile": {
+        "potente": 4.7,
+        "acidez": 3.5,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 2.7
+      },
+      "initialProfileRmse": 1.0621,
+      "finalProfileRmse": 1.0395,
+      "learnedAtRating": null,
+      "loveRate": 0.4,
+      "rejectionRate": 0.1,
+      "uniqueTopRecommendations": 13
+    },
+    {
+      "id": "synthetic-user-04401",
+      "segment": "novice",
+      "events": 15,
+      "ratings": 8,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 0.62,
+        "acidez": 4.89,
+        "dulce": 1.67,
+        "tanico": 1.69,
+        "afrutado": 3.92
+      },
+      "finalLatentProfile": {
+        "potente": 0,
+        "acidez": 4.51,
+        "dulce": 3.16,
+        "tanico": 0,
+        "afrutado": 2.45
+      },
+      "finalLearnedProfile": {
+        "potente": 0.6,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 1.1,
+        "afrutado": 3.2
+      },
+      "initialProfileRmse": 0.6594,
+      "finalProfileRmse": 1.1876,
+      "learnedAtRating": 3,
+      "loveRate": 0.625,
+      "rejectionRate": 0.125,
+      "uniqueTopRecommendations": 10
+    },
+    {
+      "id": "synthetic-user-04501",
+      "segment": "enthusiast",
+      "events": 56,
+      "ratings": 42,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 4,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 4.42,
+        "acidez": 3.74,
+        "dulce": 1.02,
+        "tanico": 4.44,
+        "afrutado": 2.79
+      },
+      "finalLatentProfile": {
+        "potente": 4.42,
+        "acidez": 3.74,
+        "dulce": 1.02,
+        "tanico": 4.44,
+        "afrutado": 2.79
+      },
+      "finalLearnedProfile": {
+        "potente": 4.6,
+        "acidez": 4,
+        "dulce": 0.9,
+        "tanico": 4.2,
+        "afrutado": 2.4
+      },
+      "initialProfileRmse": 0.5528,
+      "finalProfileRmse": 0.2529,
+      "learnedAtRating": 3,
+      "loveRate": 0.7143,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 19
+    },
+    {
+      "id": "synthetic-user-04601",
+      "segment": "enthusiast",
+      "events": 57,
+      "ratings": 33,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.01,
+        "acidez": 5,
+        "dulce": 0.38,
+        "tanico": 1.45,
+        "afrutado": 4.92
+      },
+      "finalLatentProfile": {
+        "potente": 2.01,
+        "acidez": 5,
+        "dulce": 0.38,
+        "tanico": 1.45,
+        "afrutado": 4.92
+      },
+      "finalLearnedProfile": {
+        "potente": 2,
+        "acidez": 4.9,
+        "dulce": 0.9,
+        "tanico": 1.5,
+        "afrutado": 4.2
+      },
+      "initialProfileRmse": 0.3015,
+      "finalProfileRmse": 0.3988,
+      "learnedAtRating": 3,
+      "loveRate": 0.6667,
+      "rejectionRate": 0.0303,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-04701",
+      "segment": "novice",
+      "events": 17,
+      "ratings": 8,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 4.04,
+        "dulce": 1.49,
+        "tanico": 4.22,
+        "afrutado": 2.36
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 4.04,
+        "dulce": 1.49,
+        "tanico": 4.22,
+        "afrutado": 2.36
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3.9,
+        "dulce": 1,
+        "tanico": 4.9,
+        "afrutado": 1.1
+      },
+      "initialProfileRmse": 0.7323,
+      "finalProfileRmse": 0.6772,
+      "learnedAtRating": null,
+      "loveRate": 0,
+      "rejectionRate": 0.25,
+      "uniqueTopRecommendations": 11
+    },
+    {
+      "id": "synthetic-user-04801",
+      "segment": "novice",
+      "events": 14,
+      "ratings": 6,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 0,
+        "dulce": 0,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 3.96,
+        "acidez": 1.01,
+        "dulce": 2.12,
+        "tanico": 2.31,
+        "afrutado": 3.23
+      },
+      "finalLatentProfile": {
+        "potente": 3.96,
+        "acidez": 1.01,
+        "dulce": 2.12,
+        "tanico": 2.31,
+        "afrutado": 3.23
+      },
+      "finalLearnedProfile": {
+        "potente": 4.4,
+        "acidez": 0.2,
+        "dulce": 0.4,
+        "tanico": 0.9,
+        "afrutado": 3.5
+      },
+      "initialProfileRmse": 1.2921,
+      "finalProfileRmse": 1.082,
+      "learnedAtRating": 3,
+      "loveRate": 0.1667,
+      "rejectionRate": 0.1667,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-04901",
+      "segment": "sommelier",
+      "events": 138,
+      "ratings": 114,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 4,
+        "afrutado": 1
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 4.15,
+        "dulce": 1.38,
+        "tanico": 4.35,
+        "afrutado": 1.42
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 4.15,
+        "dulce": 1.38,
+        "tanico": 4.35,
+        "afrutado": 1.42
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3.7,
+        "dulce": 1,
+        "tanico": 4.5,
+        "afrutado": 1.8
+      },
+      "initialProfileRmse": 0.3035,
+      "finalProfileRmse": 0.3204,
+      "learnedAtRating": 3,
+      "loveRate": 0.8421,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 25
+    },
+    {
+      "id": "synthetic-user-05001",
+      "segment": "casual",
+      "events": 31,
+      "ratings": 17,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 1,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 3.52,
+        "acidez": 2.34,
+        "dulce": 5,
+        "tanico": 1.52,
+        "afrutado": 4.89
+      },
+      "finalLatentProfile": {
+        "potente": 3.52,
+        "acidez": 2.34,
+        "dulce": 5,
+        "tanico": 1.52,
+        "afrutado": 4.89
+      },
+      "finalLearnedProfile": {
+        "potente": 2.9,
+        "acidez": 2.2,
+        "dulce": 4.7,
+        "tanico": 0.9,
+        "afrutado": 4.9
+      },
+      "initialProfileRmse": 1.0173,
+      "finalProfileRmse": 0.4185,
+      "learnedAtRating": 3,
+      "loveRate": 0.6471,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-05101",
+      "segment": "enthusiast",
+      "events": 42,
+      "ratings": 32,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 4,
+        "tanico": 2,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.57,
+        "acidez": 2.97,
+        "dulce": 4.59,
+        "tanico": 0.57,
+        "afrutado": 3.84
+      },
+      "finalLatentProfile": {
+        "potente": 2.57,
+        "acidez": 2.97,
+        "dulce": 4.59,
+        "tanico": 0.57,
+        "afrutado": 3.84
+      },
+      "finalLearnedProfile": {
+        "potente": 2.8,
+        "acidez": 3.4,
+        "dulce": 4.9,
+        "tanico": 1.4,
+        "afrutado": 4.8
+      },
+      "initialProfileRmse": 0.7222,
+      "finalProfileRmse": 0.6247,
+      "learnedAtRating": 3,
+      "loveRate": 0.4688,
+      "rejectionRate": 0.0938,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-05201",
+      "segment": "novice",
+      "events": 15,
+      "ratings": 6,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 0,
+        "dulce": 4,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.96,
+        "acidez": 0.96,
+        "dulce": 3.56,
+        "tanico": 2,
+        "afrutado": 3.98
+      },
+      "finalLatentProfile": {
+        "potente": 2.96,
+        "acidez": 0.96,
+        "dulce": 3.56,
+        "tanico": 2,
+        "afrutado": 3.98
+      },
+      "finalLearnedProfile": {
+        "potente": 3.5,
+        "acidez": 1.1,
+        "dulce": 4.1,
+        "tanico": 1,
+        "afrutado": 4.2
+      },
+      "initialProfileRmse": 0.8001,
+      "finalProfileRmse": 0.5751,
+      "learnedAtRating": 3,
+      "loveRate": 0.3333,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-05301",
+      "segment": "novice",
+      "events": 16,
+      "ratings": 8,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 1,
+        "acidez": 2,
+        "dulce": 3,
+        "tanico": 2,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 1.79,
+        "acidez": 2.01,
+        "dulce": 2.77,
+        "tanico": 1.76,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 1.79,
+        "acidez": 2.01,
+        "dulce": 2.77,
+        "tanico": 1.76,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 1.1,
+        "acidez": 2,
+        "dulce": 3.1,
+        "tanico": 1.8,
+        "afrutado": 3.9
+      },
+      "initialProfileRmse": 0.59,
+      "finalProfileRmse": 0.6005,
+      "learnedAtRating": null,
+      "loveRate": 0.875,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 8
+    },
+    {
+      "id": "synthetic-user-05401",
+      "segment": "casual",
+      "events": 28,
+      "ratings": 16,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 3,
+        "dulce": 5,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.27,
+        "acidez": 2.42,
+        "dulce": 5,
+        "tanico": 1.39,
+        "afrutado": 4.42
+      },
+      "finalLatentProfile": {
+        "potente": 2.27,
+        "acidez": 2.42,
+        "dulce": 5,
+        "tanico": 1.39,
+        "afrutado": 4.42
+      },
+      "finalLearnedProfile": {
+        "potente": 2,
+        "acidez": 2.9,
+        "dulce": 5,
+        "tanico": 1.1,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 0.4268,
+      "finalProfileRmse": 0.3835,
+      "learnedAtRating": 3,
+      "loveRate": 0.5,
+      "rejectionRate": 0.1875,
+      "uniqueTopRecommendations": 14
+    },
+    {
+      "id": "synthetic-user-05501",
+      "segment": "novice",
+      "events": 12,
+      "ratings": 6,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 2,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 0.6,
+        "acidez": 5,
+        "dulce": 1.08,
+        "tanico": 1.78,
+        "afrutado": 4.06
+      },
+      "finalLatentProfile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 0.57,
+        "tanico": 1.63,
+        "afrutado": 4.54
+      },
+      "finalLearnedProfile": {
+        "potente": 0.6,
+        "acidez": 4.8,
+        "dulce": 1.9,
+        "tanico": 0.6,
+        "afrutado": 3.7
+      },
+      "initialProfileRmse": 1.0484,
+      "finalProfileRmse": 0.8862,
+      "learnedAtRating": 3,
+      "loveRate": 0.6667,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-05601",
+      "segment": "novice",
+      "events": 11,
+      "ratings": 4,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 1.86,
+        "acidez": 2.75,
+        "dulce": 2.43,
+        "tanico": 1.33,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 1.86,
+        "acidez": 2.75,
+        "dulce": 2.43,
+        "tanico": 1.33,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 2.7,
+        "acidez": 3,
+        "dulce": 1.4,
+        "tanico": 1.9,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 0.8757,
+      "finalProfileRmse": 0.6538,
+      "learnedAtRating": 4,
+      "loveRate": 0.5,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-05701",
+      "segment": "novice",
+      "events": 13,
+      "ratings": 7,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 4,
+        "dulce": 2,
+        "tanico": 3,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 2.03,
+        "acidez": 5,
+        "dulce": 0.82,
+        "tanico": 2.14,
+        "afrutado": 3.61
+      },
+      "finalLatentProfile": {
+        "potente": 2.03,
+        "acidez": 5,
+        "dulce": 0.82,
+        "tanico": 2.14,
+        "afrutado": 3.61
+      },
+      "finalLearnedProfile": {
+        "potente": 2,
+        "acidez": 4.6,
+        "dulce": 1.7,
+        "tanico": 2.2,
+        "afrutado": 3.1
+      },
+      "initialProfileRmse": 1.0698,
+      "finalProfileRmse": 0.4894,
+      "learnedAtRating": 3,
+      "loveRate": 1,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 8
+    },
+    {
+      "id": "synthetic-user-05801",
+      "segment": "sommelier",
+      "events": 129,
+      "ratings": 101,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 1,
+        "acidez": 3,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 1.33,
+        "acidez": 3.4,
+        "dulce": 5,
+        "tanico": 0.26,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 1.33,
+        "acidez": 3.4,
+        "dulce": 5,
+        "tanico": 0.26,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 1.5,
+        "acidez": 3.1,
+        "dulce": 5,
+        "tanico": 0.7,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 0.2589,
+      "finalProfileRmse": 0.2531,
+      "learnedAtRating": 3,
+      "loveRate": 0.505,
+      "rejectionRate": 0.099,
+      "uniqueTopRecommendations": 22
+    },
+    {
+      "id": "synthetic-user-05901",
+      "segment": "novice",
+      "events": 11,
+      "ratings": 6,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 0,
+        "dulce": 2,
+        "tanico": 3,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 2.02,
+        "acidez": 1.08,
+        "dulce": 2.48,
+        "tanico": 2.17,
+        "afrutado": 3.18
+      },
+      "finalLatentProfile": {
+        "potente": 1.29,
+        "acidez": 1.59,
+        "dulce": 1.96,
+        "tanico": 1.09,
+        "afrutado": 2.36
+      },
+      "finalLearnedProfile": {
+        "potente": 3.7,
+        "acidez": 0.6,
+        "dulce": 2.4,
+        "tanico": 2.3,
+        "afrutado": 2.9
+      },
+      "initialProfileRmse": 1.2161,
+      "finalProfileRmse": 1.3247,
+      "learnedAtRating": 3,
+      "loveRate": 0.5,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 7
+    },
+    {
+      "id": "synthetic-user-06001",
+      "segment": "sommelier",
+      "events": 150,
+      "ratings": 113,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 4,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 4.78,
+        "acidez": 4.08,
+        "dulce": 0.32,
+        "tanico": 4.13,
+        "afrutado": 2.53
+      },
+      "finalLatentProfile": {
+        "potente": 3.79,
+        "acidez": 2.76,
+        "dulce": 0,
+        "tanico": 4.23,
+        "afrutado": 1.76
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3.1,
+        "dulce": 1,
+        "tanico": 4.1,
+        "afrutado": 2.1
+      },
+      "initialProfileRmse": 0.4024,
+      "finalProfileRmse": 0.7379,
+      "learnedAtRating": 3,
+      "loveRate": 0.6726,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 28
+    },
+    {
+      "id": "synthetic-user-06101",
+      "segment": "casual",
+      "events": 32,
+      "ratings": 15,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 2,
+        "tanico": 5,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 4.72,
+        "acidez": 4.68,
+        "dulce": 0.43,
+        "tanico": 4.18,
+        "afrutado": 2.52
+      },
+      "finalLatentProfile": {
+        "potente": 4.72,
+        "acidez": 4.68,
+        "dulce": 0.43,
+        "tanico": 4.18,
+        "afrutado": 2.52
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3.1,
+        "dulce": 1.3,
+        "tanico": 4.3,
+        "afrutado": 2.1
+      },
+      "initialProfileRmse": 0.8906,
+      "finalProfileRmse": 0.8413,
+      "learnedAtRating": null,
+      "loveRate": 0.2667,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 19
+    },
+    {
+      "id": "synthetic-user-06201",
+      "segment": "novice",
+      "events": 17,
+      "ratings": 5,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 4,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 1
+      },
+      "initialLatentProfile": {
+        "potente": 4.96,
+        "acidez": 2.68,
+        "dulce": 0.33,
+        "tanico": 3.68,
+        "afrutado": 2.09
+      },
+      "finalLatentProfile": {
+        "potente": 4.96,
+        "acidez": 2.68,
+        "dulce": 0.33,
+        "tanico": 3.68,
+        "afrutado": 2.09
+      },
+      "finalLearnedProfile": {
+        "potente": 4.5,
+        "acidez": 3.6,
+        "dulce": 0.5,
+        "tanico": 4,
+        "afrutado": 1.5
+      },
+      "initialProfileRmse": 0.902,
+      "finalProfileRmse": 0.5547,
+      "learnedAtRating": 3,
+      "loveRate": 0.6,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-06301",
+      "segment": "enthusiast",
+      "events": 40,
+      "ratings": 30,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 4,
+        "dulce": 0,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.21,
+        "acidez": 3.11,
+        "dulce": 0.62,
+        "tanico": 0.04,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 3.28,
+        "acidez": 3.1,
+        "dulce": 1.15,
+        "tanico": 1.1,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 1.9,
+        "acidez": 4.5,
+        "dulce": 0.9,
+        "tanico": 1.1,
+        "afrutado": 4.3
+      },
+      "initialProfileRmse": 0.6546,
+      "finalProfileRmse": 0.9418,
+      "learnedAtRating": null,
+      "loveRate": 0.7,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 17
+    },
+    {
+      "id": "synthetic-user-06401",
+      "segment": "novice",
+      "events": 15,
+      "ratings": 5,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 3,
+        "dulce": 4,
+        "tanico": 2,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.72,
+        "acidez": 2.26,
+        "dulce": 3.03,
+        "tanico": 2.59,
+        "afrutado": 4.39
+      },
+      "finalLatentProfile": {
+        "potente": 2.72,
+        "acidez": 2.26,
+        "dulce": 3.03,
+        "tanico": 2.59,
+        "afrutado": 4.39
+      },
+      "finalLearnedProfile": {
+        "potente": 2.1,
+        "acidez": 3,
+        "dulce": 3.4,
+        "tanico": 1.9,
+        "afrutado": 4.5
+      },
+      "initialProfileRmse": 0.7075,
+      "finalProfileRmse": 0.5584,
+      "learnedAtRating": 5,
+      "loveRate": 0.4,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-06501",
+      "segment": "collector",
+      "events": 69,
+      "ratings": 53,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 0,
+        "dulce": 4,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.41,
+        "acidez": 0.53,
+        "dulce": 3.55,
+        "tanico": 2.45,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 2.41,
+        "acidez": 0.53,
+        "dulce": 3.55,
+        "tanico": 2.45,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 2.9,
+        "acidez": 1.6,
+        "dulce": 3.2,
+        "tanico": 1.6,
+        "afrutado": 4.3
+      },
+      "initialProfileRmse": 0.4559,
+      "finalProfileRmse": 0.7378,
+      "learnedAtRating": null,
+      "loveRate": 0.4717,
+      "rejectionRate": 0.0189,
+      "uniqueTopRecommendations": 19
+    },
+    {
+      "id": "synthetic-user-06601",
+      "segment": "novice",
+      "events": 11,
+      "ratings": 2,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 4,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 4.31,
+        "dulce": 0.67,
+        "tanico": 4.67,
+        "afrutado": 1.68
+      },
+      "finalLatentProfile": {
+        "potente": 4.87,
+        "acidez": 4.51,
+        "dulce": 1.12,
+        "tanico": 3.77,
+        "afrutado": 0.39
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 4.6,
+        "dulce": 0.4,
+        "tanico": 3.8,
+        "afrutado": 2
+      },
+      "initialProfileRmse": 0.5442,
+      "finalProfileRmse": 0.7907,
+      "learnedAtRating": null,
+      "loveRate": 1,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 6
+    },
+    {
+      "id": "synthetic-user-06701",
+      "segment": "enthusiast",
+      "events": 40,
+      "ratings": 31,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 3,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 3.27,
+        "dulce": 0.31,
+        "tanico": 4.27,
+        "afrutado": 3.38
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 3.27,
+        "dulce": 0.31,
+        "tanico": 4.27,
+        "afrutado": 3.38
+      },
+      "finalLearnedProfile": {
+        "potente": 4.6,
+        "acidez": 2.9,
+        "dulce": 0.7,
+        "tanico": 4.9,
+        "afrutado": 3.3
+      },
+      "initialProfileRmse": 0.6453,
+      "finalProfileRmse": 0.4119,
+      "learnedAtRating": 5,
+      "loveRate": 0.4839,
+      "rejectionRate": 0.129,
+      "uniqueTopRecommendations": 17
+    },
+    {
+      "id": "synthetic-user-06801",
+      "segment": "sommelier",
+      "events": 110,
+      "ratings": 96,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 2.68,
+        "dulce": 1.1,
+        "tanico": 4.99,
+        "afrutado": 3.59
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 2.68,
+        "dulce": 1.1,
+        "tanico": 4.99,
+        "afrutado": 3.59
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 1.1,
+        "tanico": 4.9,
+        "afrutado": 3
+      },
+      "initialProfileRmse": 0.3039,
+      "finalProfileRmse": 0.3035,
+      "learnedAtRating": 3,
+      "loveRate": 0.8958,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 25
+    },
+    {
+      "id": "synthetic-user-06901",
+      "segment": "enthusiast",
+      "events": 41,
+      "ratings": 31,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 2,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 4.75,
+        "dulce": 1.12,
+        "tanico": 2.48,
+        "afrutado": 1.87
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 4.75,
+        "dulce": 1.12,
+        "tanico": 2.48,
+        "afrutado": 1.87
+      },
+      "finalLearnedProfile": {
+        "potente": 4.8,
+        "acidez": 3.9,
+        "dulce": 1,
+        "tanico": 3.9,
+        "afrutado": 1.9
+      },
+      "initialProfileRmse": 0.4076,
+      "finalProfileRmse": 0.7485,
+      "learnedAtRating": 3,
+      "loveRate": 0.5161,
+      "rejectionRate": 0.0323,
+      "uniqueTopRecommendations": 18
+    },
+    {
+      "id": "synthetic-user-07001",
+      "segment": "novice",
+      "events": 17,
+      "ratings": 3,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 0,
+        "acidez": 3,
+        "dulce": 0,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 1.74,
+        "acidez": 3.17,
+        "dulce": 1.15,
+        "tanico": 1.39,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 1.74,
+        "acidez": 3.17,
+        "dulce": 1.15,
+        "tanico": 1.39,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 0.4,
+        "acidez": 3.3,
+        "dulce": 0.5,
+        "tanico": 1.4,
+        "afrutado": 5
+      },
+      "initialProfileRmse": 0.9509,
+      "finalProfileRmse": 0.6671,
+      "learnedAtRating": 3,
+      "loveRate": 1,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 8
+    },
+    {
+      "id": "synthetic-user-07101",
+      "segment": "sommelier",
+      "events": 115,
+      "ratings": 97,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 2,
+        "dulce": 3,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.23,
+        "acidez": 1.56,
+        "dulce": 3.44,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 1.24,
+        "acidez": 1.36,
+        "dulce": 4.72,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 2.3,
+        "acidez": 2.5,
+        "dulce": 2.6,
+        "tanico": 1.1,
+        "afrutado": 4.7
+      },
+      "initialProfileRmse": 0.296,
+      "finalProfileRmse": 1.2823,
+      "learnedAtRating": 3,
+      "loveRate": 0.5155,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 27
+    },
+    {
+      "id": "synthetic-user-07201",
+      "segment": "enthusiast",
+      "events": 47,
+      "ratings": 28,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 2,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 4.7,
+        "acidez": 2.18,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 2.58
+      },
+      "finalLatentProfile": {
+        "potente": 4.7,
+        "acidez": 2.18,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 2.58
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 2.6,
+        "dulce": 0.9,
+        "tanico": 4.9,
+        "afrutado": 2.9
+      },
+      "initialProfileRmse": 0.3024,
+      "finalProfileRmse": 0.4878,
+      "learnedAtRating": 3,
+      "loveRate": 0.8571,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 17
+    },
+    {
+      "id": "synthetic-user-07301",
+      "segment": "enthusiast",
+      "events": 47,
+      "ratings": 30,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 2,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.26,
+        "acidez": 3.16,
+        "dulce": 1.23,
+        "tanico": 1.14,
+        "afrutado": 4.83
+      },
+      "finalLatentProfile": {
+        "potente": 2.64,
+        "acidez": 3.26,
+        "dulce": 2.07,
+        "tanico": 2.38,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 3,
+        "acidez": 2.7,
+        "dulce": 2.2,
+        "tanico": 2,
+        "afrutado": 4.2
+      },
+      "initialProfileRmse": 0.9527,
+      "finalProfileRmse": 0.498,
+      "learnedAtRating": 4,
+      "loveRate": 0.7667,
+      "rejectionRate": 0.0333,
+      "uniqueTopRecommendations": 19
+    },
+    {
+      "id": "synthetic-user-07401",
+      "segment": "novice",
+      "events": 18,
+      "ratings": 7,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 3,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 3.55,
+        "acidez": 4.73,
+        "dulce": 0.87,
+        "tanico": 3.51,
+        "afrutado": 2.18
+      },
+      "finalLatentProfile": {
+        "potente": 3.55,
+        "acidez": 4.73,
+        "dulce": 0.87,
+        "tanico": 3.51,
+        "afrutado": 2.18
+      },
+      "finalLearnedProfile": {
+        "potente": 4.3,
+        "acidez": 4.2,
+        "dulce": 1,
+        "tanico": 3.5,
+        "afrutado": 1.9
+      },
+      "initialProfileRmse": 0.4584,
+      "finalProfileRmse": 0.4352,
+      "learnedAtRating": 3,
+      "loveRate": 0.4286,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-07501",
+      "segment": "sommelier",
+      "events": 98,
+      "ratings": 86,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 4.03,
+        "dulce": 0.99,
+        "tanico": 4.83,
+        "afrutado": 3.16
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 4.56,
+        "dulce": 1.06,
+        "tanico": 4.41,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3.8,
+        "dulce": 0.9,
+        "tanico": 4.6,
+        "afrutado": 2.5
+      },
+      "initialProfileRmse": 0.4573,
+      "finalProfileRmse": 1.1741,
+      "learnedAtRating": 3,
+      "loveRate": 0.7791,
+      "rejectionRate": 0.0116,
+      "uniqueTopRecommendations": 23
+    },
+    {
+      "id": "synthetic-user-07601",
+      "segment": "casual",
+      "events": 31,
+      "ratings": 20,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 1,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 1,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 1.94,
+        "acidez": 5,
+        "dulce": 0.32,
+        "tanico": 0.24,
+        "afrutado": 2.29
+      },
+      "finalLatentProfile": {
+        "potente": 1.94,
+        "acidez": 5,
+        "dulce": 0.32,
+        "tanico": 0.24,
+        "afrutado": 2.29
+      },
+      "finalLearnedProfile": {
+        "potente": 1.8,
+        "acidez": 4.9,
+        "dulce": 1,
+        "tanico": 1.1,
+        "afrutado": 3.9
+      },
+      "initialProfileRmse": 0.5741,
+      "finalProfileRmse": 0.8736,
+      "learnedAtRating": 3,
+      "loveRate": 0.75,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 20
+    },
+    {
+      "id": "synthetic-user-07701",
+      "segment": "enthusiast",
+      "events": 63,
+      "ratings": 37,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 2,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 1.89,
+        "acidez": 4.83,
+        "dulce": 0.06,
+        "tanico": 1.49,
+        "afrutado": 3.03
+      },
+      "finalLatentProfile": {
+        "potente": 1.58,
+        "acidez": 3.84,
+        "dulce": 0.03,
+        "tanico": 4.1,
+        "afrutado": 4.69
+      },
+      "finalLearnedProfile": {
+        "potente": 1.9,
+        "acidez": 4.9,
+        "dulce": 0.9,
+        "tanico": 1.6,
+        "afrutado": 3.9
+      },
+      "initialProfileRmse": 0.2479,
+      "finalProfileRmse": 1.3309,
+      "learnedAtRating": 3,
+      "loveRate": 0.6486,
+      "rejectionRate": 0.027,
+      "uniqueTopRecommendations": 18
+    },
+    {
+      "id": "synthetic-user-07801",
+      "segment": "casual",
+      "events": 23,
+      "ratings": 14,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 4,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 3.96,
+        "acidez": 3.52,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 2.55
+      },
+      "finalLatentProfile": {
+        "potente": 3.96,
+        "acidez": 3.52,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 2.55
+      },
+      "finalLearnedProfile": {
+        "potente": 3.5,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 3.3
+      },
+      "initialProfileRmse": 1.2794,
+      "finalProfileRmse": 0.639,
+      "learnedAtRating": 8,
+      "loveRate": 0.3571,
+      "rejectionRate": 0.4286,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-07901",
+      "segment": "casual",
+      "events": 20,
+      "ratings": 11,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 2,
+        "dulce": 2,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.21,
+        "acidez": 3.48,
+        "dulce": 2.31,
+        "tanico": 0.7,
+        "afrutado": 4.6
+      },
+      "finalLatentProfile": {
+        "potente": 2.21,
+        "acidez": 3.48,
+        "dulce": 2.31,
+        "tanico": 0.7,
+        "afrutado": 4.6
+      },
+      "finalLearnedProfile": {
+        "potente": 3,
+        "acidez": 2.6,
+        "dulce": 2.2,
+        "tanico": 1.9,
+        "afrutado": 4.5
+      },
+      "initialProfileRmse": 0.9755,
+      "finalProfileRmse": 0.7564,
+      "learnedAtRating": 3,
+      "loveRate": 0.7273,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-08001",
+      "segment": "novice",
+      "events": 16,
+      "ratings": 4,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 3,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 4.31,
+        "acidez": 3.93,
+        "dulce": 0.69,
+        "tanico": 4.1,
+        "afrutado": 1.46
+      },
+      "finalLatentProfile": {
+        "potente": 4.31,
+        "acidez": 3.93,
+        "dulce": 0.69,
+        "tanico": 4.1,
+        "afrutado": 1.46
+      },
+      "finalLearnedProfile": {
+        "potente": 4.1,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 3.3,
+        "afrutado": 1.8
+      },
+      "initialProfileRmse": 0.5814,
+      "finalProfileRmse": 0.4229,
+      "learnedAtRating": 3,
+      "loveRate": 0.75,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 7
+    },
+    {
+      "id": "synthetic-user-08101",
+      "segment": "novice",
+      "events": 15,
+      "ratings": 5,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 4,
+        "dulce": 0,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.13,
+        "acidez": 3.95,
+        "dulce": 0.93,
+        "tanico": 0.19,
+        "afrutado": 3.88
+      },
+      "finalLatentProfile": {
+        "potente": 2.13,
+        "acidez": 3.95,
+        "dulce": 0.93,
+        "tanico": 0.19,
+        "afrutado": 3.88
+      },
+      "finalLearnedProfile": {
+        "potente": 2.8,
+        "acidez": 4,
+        "dulce": 0.5,
+        "tanico": 1,
+        "afrutado": 4
+      },
+      "initialProfileRmse": 0.6782,
+      "finalProfileRmse": 0.5112,
+      "learnedAtRating": 3,
+      "loveRate": 0.6,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-08201",
+      "segment": "sommelier",
+      "events": 101,
+      "ratings": 89,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 4,
+        "dulce": 2,
+        "tanico": 3,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.29,
+        "acidez": 4.34,
+        "dulce": 1.7,
+        "tanico": 1.82,
+        "afrutado": 4.68
+      },
+      "finalLatentProfile": {
+        "potente": 2.29,
+        "acidez": 4.34,
+        "dulce": 1.7,
+        "tanico": 1.82,
+        "afrutado": 4.68
+      },
+      "finalLearnedProfile": {
+        "potente": 1.9,
+        "acidez": 4,
+        "dulce": 1.6,
+        "tanico": 2,
+        "afrutado": 4.7
+      },
+      "initialProfileRmse": 0.6652,
+      "finalProfileRmse": 0.248,
+      "learnedAtRating": 6,
+      "loveRate": 0.8876,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 23
+    },
+    {
+      "id": "synthetic-user-08301",
+      "segment": "casual",
+      "events": 23,
+      "ratings": 14,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 0,
+        "acidez": 2,
+        "dulce": 2,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 1.15,
+        "acidez": 2.63,
+        "dulce": 3.65,
+        "tanico": 0.91,
+        "afrutado": 4.33
+      },
+      "finalLatentProfile": {
+        "potente": 2.72,
+        "acidez": 4.01,
+        "dulce": 5,
+        "tanico": 0.42,
+        "afrutado": 3.46
+      },
+      "finalLearnedProfile": {
+        "potente": 0.8,
+        "acidez": 2.1,
+        "dulce": 2.3,
+        "tanico": 1.8,
+        "afrutado": 4.7
+      },
+      "initialProfileRmse": 1.1022,
+      "finalProfileRmse": 1.9015,
+      "learnedAtRating": 5,
+      "loveRate": 0.4286,
+      "rejectionRate": 0.1429,
+      "uniqueTopRecommendations": 14
+    },
+    {
+      "id": "synthetic-user-08401",
+      "segment": "novice",
+      "events": 16,
+      "ratings": 7,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 2.61,
+        "acidez": 5,
+        "dulce": 0.18,
+        "tanico": 1.1,
+        "afrutado": 4.01
+      },
+      "finalLatentProfile": {
+        "potente": 2.61,
+        "acidez": 5,
+        "dulce": 0.18,
+        "tanico": 1.1,
+        "afrutado": 4.01
+      },
+      "finalLearnedProfile": {
+        "potente": 3,
+        "acidez": 3.9,
+        "dulce": 1.1,
+        "tanico": 1,
+        "afrutado": 3.6
+      },
+      "initialProfileRmse": 1.0823,
+      "finalProfileRmse": 0.6903,
+      "learnedAtRating": 4,
+      "loveRate": 0.7143,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 10
+    },
+    {
+      "id": "synthetic-user-08501",
+      "segment": "enthusiast",
+      "events": 40,
+      "ratings": 31,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 2,
+        "dulce": 4,
+        "tanico": 3,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.92,
+        "acidez": 1.75,
+        "dulce": 3.77,
+        "tanico": 2.76,
+        "afrutado": 4.86
+      },
+      "finalLatentProfile": {
+        "potente": 2.92,
+        "acidez": 1.75,
+        "dulce": 3.77,
+        "tanico": 2.76,
+        "afrutado": 4.86
+      },
+      "finalLearnedProfile": {
+        "potente": 2.6,
+        "acidez": 2.1,
+        "dulce": 3.9,
+        "tanico": 2,
+        "afrutado": 4.2
+      },
+      "initialProfileRmse": 0.4281,
+      "finalProfileRmse": 0.5011,
+      "learnedAtRating": 3,
+      "loveRate": 0.5484,
+      "rejectionRate": 0.0323,
+      "uniqueTopRecommendations": 18
+    },
+    {
+      "id": "synthetic-user-08601",
+      "segment": "casual",
+      "events": 25,
+      "ratings": 13,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 5,
+        "dulce": 3,
+        "tanico": 2,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 1.26,
+        "acidez": 4.88,
+        "dulce": 1.52,
+        "tanico": 1.11,
+        "afrutado": 3.46
+      },
+      "finalLatentProfile": {
+        "potente": 1.26,
+        "acidez": 4.88,
+        "dulce": 1.52,
+        "tanico": 1.11,
+        "afrutado": 3.46
+      },
+      "finalLearnedProfile": {
+        "potente": 2.1,
+        "acidez": 5,
+        "dulce": 2.1,
+        "tanico": 1.3,
+        "afrutado": 4
+      },
+      "initialProfileRmse": 1.0635,
+      "finalProfileRmse": 0.5234,
+      "learnedAtRating": 3,
+      "loveRate": 1,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 10
+    },
+    {
+      "id": "synthetic-user-08701",
+      "segment": "enthusiast",
+      "events": 61,
+      "ratings": 39,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 1,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 1,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 1.87,
+        "acidez": 4.22,
+        "dulce": 1.39,
+        "tanico": 0.52,
+        "afrutado": 4.39
+      },
+      "finalLatentProfile": {
+        "potente": 2.13,
+        "acidez": 5,
+        "dulce": 0.94,
+        "tanico": 0,
+        "afrutado": 4.09
+      },
+      "finalLearnedProfile": {
+        "potente": 1.2,
+        "acidez": 4.8,
+        "dulce": 1,
+        "tanico": 1.1,
+        "afrutado": 4.6
+      },
+      "initialProfileRmse": 0.6513,
+      "finalProfileRmse": 0.6881,
+      "learnedAtRating": 5,
+      "loveRate": 0.8462,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 17
+    },
+    {
+      "id": "synthetic-user-08801",
+      "segment": "collector",
+      "events": 91,
+      "ratings": 63,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 2,
+        "acidez": 1,
+        "dulce": 4,
+        "tanico": 3,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.1,
+        "acidez": 1.27,
+        "dulce": 3.57,
+        "tanico": 2.53,
+        "afrutado": 4.31
+      },
+      "finalLatentProfile": {
+        "potente": 2.1,
+        "acidez": 1.27,
+        "dulce": 3.57,
+        "tanico": 2.53,
+        "afrutado": 4.31
+      },
+      "finalLearnedProfile": {
+        "potente": 2.1,
+        "acidez": 1.9,
+        "dulce": 3.5,
+        "tanico": 2.1,
+        "afrutado": 4.1
+      },
+      "initialProfileRmse": 0.3442,
+      "finalProfileRmse": 0.3522,
+      "learnedAtRating": 3,
+      "loveRate": 0.4762,
+      "rejectionRate": 0.0159,
+      "uniqueTopRecommendations": 20
+    },
+    {
+      "id": "synthetic-user-08901",
+      "segment": "novice",
+      "events": 15,
+      "ratings": 9,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 2.39,
+        "acidez": 2.29,
+        "dulce": 5,
+        "tanico": 0.26,
+        "afrutado": 5
+      },
+      "finalLatentProfile": {
+        "potente": 2.39,
+        "acidez": 2.29,
+        "dulce": 5,
+        "tanico": 0.26,
+        "afrutado": 5
+      },
+      "finalLearnedProfile": {
+        "potente": 4.9,
+        "acidez": 3.6,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "initialProfileRmse": 1.5101,
+      "finalProfileRmse": 1.5554,
+      "learnedAtRating": 7,
+      "loveRate": 0.1111,
+      "rejectionRate": 0.4444,
+      "uniqueTopRecommendations": 11
+    },
+    {
+      "id": "synthetic-user-09001",
+      "segment": "casual",
+      "events": 33,
+      "ratings": 18,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 1,
+        "dulce": 4,
+        "tanico": 2,
+        "afrutado": 5
+      },
+      "initialLatentProfile": {
+        "potente": 2.92,
+        "acidez": 1.7,
+        "dulce": 3.5,
+        "tanico": 2.47,
+        "afrutado": 3.49
+      },
+      "finalLatentProfile": {
+        "potente": 2.92,
+        "acidez": 1.7,
+        "dulce": 3.5,
+        "tanico": 2.47,
+        "afrutado": 3.49
+      },
+      "finalLearnedProfile": {
+        "potente": 3.1,
+        "acidez": 1.9,
+        "dulce": 3.2,
+        "tanico": 1.7,
+        "afrutado": 4.3
+      },
+      "initialProfileRmse": 0.8049,
+      "finalProfileRmse": 0.5308,
+      "learnedAtRating": 3,
+      "loveRate": 0.5556,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 18
+    },
+    {
+      "id": "synthetic-user-09101",
+      "segment": "enthusiast",
+      "events": 63,
+      "ratings": 46,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 4,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 2.49,
+        "dulce": 1.45,
+        "tanico": 4.6,
+        "afrutado": 3.68
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 2.49,
+        "dulce": 1.45,
+        "tanico": 4.6,
+        "afrutado": 3.68
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 4.4,
+        "afrutado": 3
+      },
+      "initialProfileRmse": 0.4294,
+      "finalProfileRmse": 0.4396,
+      "learnedAtRating": 3,
+      "loveRate": 0.6739,
+      "rejectionRate": 0.0217,
+      "uniqueTopRecommendations": 18
+    },
+    {
+      "id": "synthetic-user-09201",
+      "segment": "casual",
+      "events": 29,
+      "ratings": 13,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 5,
+        "tanico": 3,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.21,
+        "acidez": 2.93,
+        "dulce": 4.76,
+        "tanico": 1.77,
+        "afrutado": 4.03
+      },
+      "finalLatentProfile": {
+        "potente": 2.21,
+        "acidez": 2.93,
+        "dulce": 4.76,
+        "tanico": 1.77,
+        "afrutado": 4.03
+      },
+      "finalLearnedProfile": {
+        "potente": 2.4,
+        "acidez": 2.7,
+        "dulce": 4.9,
+        "tanico": 1.6,
+        "afrutado": 4.7
+      },
+      "initialProfileRmse": 0.6634,
+      "finalProfileRmse": 0.3402,
+      "learnedAtRating": 3,
+      "loveRate": 0.6154,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 16
+    },
+    {
+      "id": "synthetic-user-09301",
+      "segment": "enthusiast",
+      "events": 50,
+      "ratings": 29,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 4,
+        "afrutado": 2
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 4.19,
+        "dulce": 0.83,
+        "tanico": 4.02,
+        "afrutado": 1.29
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 4.19,
+        "dulce": 0.83,
+        "tanico": 4.02,
+        "afrutado": 1.29
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 3.9,
+        "dulce": 1,
+        "tanico": 4.1,
+        "afrutado": 1.8
+      },
+      "initialProfileRmse": 0.4869,
+      "finalProfileRmse": 0.2737,
+      "learnedAtRating": 3,
+      "loveRate": 0.8276,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 18
+    },
+    {
+      "id": "synthetic-user-09401",
+      "segment": "novice",
+      "events": 14,
+      "ratings": 7,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 1,
+        "dulce": 2,
+        "tanico": 5,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 3.75,
+        "acidez": 2.49,
+        "dulce": 0.69,
+        "tanico": 4.32,
+        "afrutado": 2.15
+      },
+      "finalLatentProfile": {
+        "potente": 3.75,
+        "acidez": 2.49,
+        "dulce": 0.69,
+        "tanico": 4.32,
+        "afrutado": 2.15
+      },
+      "finalLearnedProfile": {
+        "potente": 3.7,
+        "acidez": 1.6,
+        "dulce": 1.4,
+        "tanico": 5,
+        "afrutado": 4
+      },
+      "initialProfileRmse": 1.2955,
+      "finalProfileRmse": 1.0177,
+      "learnedAtRating": 6,
+      "loveRate": 0.2857,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 8
+    },
+    {
+      "id": "synthetic-user-09501",
+      "segment": "novice",
+      "events": 14,
+      "ratings": 4,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 5,
+        "dulce": 3,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 4.38,
+        "acidez": 4.69,
+        "dulce": 2.27,
+        "tanico": 4.19,
+        "afrutado": 2.19
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 4.88,
+        "dulce": 3.68,
+        "tanico": 3.21,
+        "afrutado": 1.7
+      },
+      "finalLearnedProfile": {
+        "potente": 4.1,
+        "acidez": 4.2,
+        "dulce": 2.7,
+        "tanico": 5,
+        "afrutado": 2.8
+      },
+      "initialProfileRmse": 0.6434,
+      "finalProfileRmse": 1.1511,
+      "learnedAtRating": null,
+      "loveRate": 0,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-09601",
+      "segment": "casual",
+      "events": 30,
+      "ratings": 14,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 3,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 3.23,
+        "acidez": 1.1,
+        "dulce": 3.79,
+        "tanico": 2.18,
+        "afrutado": 3.1
+      },
+      "finalLatentProfile": {
+        "potente": 3.23,
+        "acidez": 1.1,
+        "dulce": 3.79,
+        "tanico": 2.18,
+        "afrutado": 3.1
+      },
+      "finalLearnedProfile": {
+        "potente": 3.6,
+        "acidez": 1.1,
+        "dulce": 2.7,
+        "tanico": 1.8,
+        "afrutado": 3.6
+      },
+      "initialProfileRmse": 0.6195,
+      "finalProfileRmse": 0.5864,
+      "learnedAtRating": 3,
+      "loveRate": 0.6429,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 12
+    },
+    {
+      "id": "synthetic-user-09701",
+      "segment": "collector",
+      "events": 83,
+      "ratings": 64,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 4,
+        "acidez": 3,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 3
+      },
+      "initialLatentProfile": {
+        "potente": 5,
+        "acidez": 2.78,
+        "dulce": 0.34,
+        "tanico": 5,
+        "afrutado": 3.39
+      },
+      "finalLatentProfile": {
+        "potente": 4.2,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 4.85,
+        "afrutado": 2.75
+      },
+      "finalLearnedProfile": {
+        "potente": 4.7,
+        "acidez": 3,
+        "dulce": 0.8,
+        "tanico": 5,
+        "afrutado": 3.1
+      },
+      "initialProfileRmse": 0.5123,
+      "finalProfileRmse": 1.0032,
+      "learnedAtRating": 3,
+      "loveRate": 0.5469,
+      "rejectionRate": 0.0313,
+      "uniqueTopRecommendations": 19
+    },
+    {
+      "id": "synthetic-user-09801",
+      "segment": "novice",
+      "events": 14,
+      "ratings": 4,
+      "drifted": true,
+      "baseProfile": {
+        "potente": 3,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 2,
+        "afrutado": 4
+      },
+      "initialLatentProfile": {
+        "potente": 2.65,
+        "acidez": 4.21,
+        "dulce": 0.66,
+        "tanico": 1.96,
+        "afrutado": 3.44
+      },
+      "finalLatentProfile": {
+        "potente": 5,
+        "acidez": 3.71,
+        "dulce": 0,
+        "tanico": 2.72,
+        "afrutado": 4.39
+      },
+      "finalLearnedProfile": {
+        "potente": 3,
+        "acidez": 2.2,
+        "dulce": 1.5,
+        "tanico": 1.9,
+        "afrutado": 4
+      },
+      "initialProfileRmse": 1.0431,
+      "finalProfileRmse": 1.3686,
+      "learnedAtRating": null,
+      "loveRate": 0.25,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 9
+    },
+    {
+      "id": "synthetic-user-09901",
+      "segment": "casual",
+      "events": 20,
+      "ratings": 10,
+      "drifted": false,
+      "baseProfile": {
+        "potente": 5,
+        "acidez": 5,
+        "dulce": 0,
+        "tanico": 3,
+        "afrutado": 1
+      },
+      "initialLatentProfile": {
+        "potente": 4.96,
+        "acidez": 3.73,
+        "dulce": 0.3,
+        "tanico": 4.36,
+        "afrutado": 1.09
+      },
+      "finalLatentProfile": {
+        "potente": 4.96,
+        "acidez": 3.73,
+        "dulce": 0.3,
+        "tanico": 4.36,
+        "afrutado": 1.09
+      },
+      "finalLearnedProfile": {
+        "potente": 5,
+        "acidez": 4.4,
+        "dulce": 0.8,
+        "tanico": 3.8,
+        "afrutado": 1.9
+      },
+      "initialProfileRmse": 0.8445,
+      "finalProfileRmse": 0.5788,
+      "learnedAtRating": 3,
+      "loveRate": 0.9,
+      "rejectionRate": 0,
+      "uniqueTopRecommendations": 12
+    }
+  ],
+  "deterministicFingerprint": "dde60e2b940ab06f9d83580cb56b8c8fda2cb3cc94251ed47d0b5103f6923f3f"
+}
