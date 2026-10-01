@@ -5,19 +5,20 @@ Fecha: 2026-10-01
 Base: Matchrim 1.0 (67) + cambios locales posteriores
 
 Semilla: `10012026`
-Huella determinista: `dde60e2b940ab06f9d83580cb56b8c8fda2cb3cc94251ed47d0b5103f6923f`
+Huella determinista: `4b823fcdc41dbeb202c97bf073a07c7bcd77a8cf65a74ff092c31683d640440c`
 
 ## Dictamen
 
 La simulacion anual se completo con 10.000 agentes sinteticos, 421.722 decisiones y 287.675 valoraciones explicitas. No son 10.000 personas reales: es una auditoria determinista del algoritmo actual, ejecutada localmente y sin cuentas, PII, Supabase, vision ni trafico de produccion.
 
-El aprendizaje aporta valor, pero todavia no justifica presentar la afinidad como una prediccion fuerte:
+El aprendizaje aporta valor. La segunda pasada A/B valida una calibracion conservadora del porcentaje, pero no valida el olvido adaptativo del historial:
 
 - mejora NDCG@5 de `0,6853` a `0,6990` frente al test inicial;
 - mejora Hit@1 de `77,69%` a `79,30%`;
 - reduce recomendaciones claramente rechazables de `2,06%` a `1,72%`;
 - reduce el error del perfil de `0,6971` a `0,4587` tras 50 valoraciones;
-- empeora ligeramente la calibracion numerica: MAE `10,90` puntos frente a `10,56` del test inicial;
+- el candidato calibrado conserva exactamente NDCG@5 `0,6990`, Hit@1 `79,30%` y regret `6,1399`;
+- reduce MAE de `10,8955` a `10,3749`, error de calibracion de `6,15%` a `4,87%` y falsa confianza de `1,53%` a `1,43%`;
 - pierde rendimiento desde el mes 8 cuando el gusto cambia de forma sostenida.
 
 Funcionalmente, las suites automatizadas, el recorrido visual nativo y el build iOS pasan. Se corrigieron dos defectos encontrados durante esta sesion: aiRIM no estaba en la barra principal nativa y el control central Escanear quedaba recortado en paisaje.
@@ -36,7 +37,7 @@ El gate de TestFlight no se reabre solo con estos resultados. El replay real de 
 | Eventos con feedback | 68,21% |
 | Usuarios con deriva de gusto | 1.828 |
 | Usuarios que alcanzan el criterio de aprendizaje | 8.244 (82,44%) |
-| Tiempo total local | 34,497 s |
+| Tiempo total local A/B | 58,075 s |
 | Memoria residente maxima | 169,8 MB |
 
 Segmentos: principiante, casual, aficionado, coleccionista y sumiller. Cada agente tiene un gusto latente de cinco ejes, respuestas iniciales con ruido, presupuesto, ocasion, frecuencia de uso, probabilidad de valorar y, en el 18,28%, cambio gradual de gusto desde el dia 180.
@@ -48,6 +49,7 @@ Segmentos: principiante, casual, aficionado, coleccionista y sumiller. Cada agen
 | Popularidad | 19,54% | 19,35% | 18,60% | 27,50 | 31,61% | 36,59% |
 | Solo test inicial | 65,51% | 68,53% | 77,69% | 6,57 | 83,76% | 2,06% |
 | Matchrim actual | 66,81% | 69,90% | 79,30% | 6,14 | 84,61% | 1,72% |
+| Candidato calibrado | 66,81% | 69,90% | 79,30% | 6,14 | 84,61% | 1,72% |
 | Oraculo de evaluacion | 100% | 100% | 100% | 0 | 99,08% | 0% |
 
 El oraculo conoce el gusto latente, el presupuesto y la ocasion; nunca entrena ni informa al modelo Matchrim. Sirve solo como techo de evaluacion. La brecha NDCG restante es `0,3010`: la mayor oportunidad no esta en popularidad, sino en incorporar contexto de decision sin convertirlo en gusto permanente.
@@ -64,9 +66,9 @@ El oraculo conoce el gusto latente, el presupuesto y la ocasion; nunca entrena n
 | 25 | 4.048 | 0,4823 | 0,7231 |
 | 50 | 1.695 | 0,4587 | 0,6884 |
 
-La direccion del aprendizaje es correcta y continua mejorando hasta 50 valoraciones. Sin embargo, la afinidad superior recomendada pasa de `88,98%` a `90,77%`, mientras el MAE aumenta. El ranking mejora, pero el porcentaje se sobreexpresa. Debe calibrarse por confianza, volumen, contradiccion y calidad de ficha.
+La direccion del aprendizaje es correcta y continua mejorando hasta 50 valoraciones. La variante contrae el porcentaje hacia un prior de `72` segun la confianza aprendida: la afinidad superior media baja de `90,77%` a `89,48%` sin cambiar ningun ranking. El MAE mejora `0,5206` puntos y el error de calibracion `1,28` puntos porcentuales. Es un candidato de formula validado en esta simulacion; todavia no esta integrado en los porcentajes servidos por Winerim ni desplegado.
 
-La NDCG mensual sube hasta `0,7115` en el mes 7 y cae a `0,6841-0,6869` entre los meses 10 y 12. Coincide con la cohorte que cambia de gusto: el suelo de peso historico y la mezcla maxima actual hacen que la correccion sea lenta.
+La NDCG mensual sube hasta `0,7115` en el mes 7 y cae a `0,6841-0,6869` entre los meses 10 y 12. Coincide con la cohorte que cambia de gusto. Se probo una señal por ventanas de feedback: detecto 14 de 1.828 perfiles cambiantes (recall `0,77%`) y genero 16 falsos positivos. Ademas, las distribuciones se solapan (p95 cambiante `0,62`; p99 estable `0,70`). Por ello, la recencia adaptativa queda desactivada y no avanza a producto.
 
 El segmento mas debil es principiante: NDCG@5 `0,6265`, Hit@1 `70,15%`, MAE `11,39` y falsa confianza `2,61%`. Sumiller alcanza NDCG@5 `0,7230` y Hit@1 `82,30%`, principalmente por mas feedback y un test inicial menos ruidoso.
 
@@ -75,7 +77,8 @@ El segmento mas debil es principiante: NDCG@5 `0,6265`, Hit@1 `70,15%`, MAE `11,
 | Gate | Resultado |
 |---|---|
 | Unitarios y contratos | PASS |
-| Regresion anual determinista | PASS, 3.673 eventos ejecutados dos veces con igual huella |
+| Regresion pequena determinista | PASS, 3.673 eventos ejecutados dos veces con igual huella |
+| Reproduccion anual completa | PASS, 421.722 eventos ejecutados dos veces; huella identica `4b823fcdc41d...` |
 | TypeScript | PASS |
 | ESLint `--quiet` | PASS, 0 errores |
 | Build web produccion | PASS |
@@ -93,15 +96,16 @@ Correcciones de esta sesion:
 
 1. `aiRIM` sustituye a `Explora` en la barra principal de la app nativa. Explorar sigue accesible desde Inicio y las recomendaciones.
 2. El tab central Escanear se compacta en paisaje y el test valida que su bounding box queda completamente dentro de la barra.
-3. La puntuacion de afinidad usada por producto se exporta y reutiliza directamente en la simulacion; no hay una formula paralela.
-4. La simulacion pequena determinista se incorpora a `npm test`.
+3. La simulacion A/B mantiene historiales independientes, comparte oportunidad de feedback y ruido de experiencia, y ordena con el score bruto para impedir que el redondeo calibrado altere el ranking.
+4. La regresion determinista exige ahora mismo NDCG y regret identicos, junto con MAE del candidato inferior al actual.
+5. La formula local de auditoria no es aun la fuente de los porcentajes servidos por el endpoint Winerim; esa paridad es un gate explicito antes de integrar.
 
 ## Gates pendientes
 
 ### P0 - inteligencia
 
-- Calibrar el porcentaje: el ranking aprendido mejora, pero el MAE de afinidad no.
-- Adaptar el peso temporal a cambios sostenidos y mostrar una confianza menor durante una transicion.
+- Integrar la calibracion validada en la fuente unica que sirve afinidad a app y web, con paridad contra el endpoint Winerim y sin alterar orden.
+- Sustituir la deteccion de deriva rechazada por un diseño con feedback explicito de cambio de gusto o un modelo temporal validado; no bajar el umbral actual.
 - Reordenar por contexto efimero (plato, presupuesto, copa/botella, ocasion) sin escribirlo en el perfil estable.
 - Mantener abstencion cuando la identidad o ficha sensorial no soportan el score.
 

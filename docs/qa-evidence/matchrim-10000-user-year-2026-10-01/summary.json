@@ -19,9 +19,28 @@
     "feedbackRate": 0.6821,
     "loveRate": 0.6389,
     "rejectionRate": 0.0406,
+    "candidateLoveRate": 0.6389,
+    "candidateRejectionRate": 0.0406,
     "driftingUsers": 1828,
     "usersMeetingLearningCriterion": 8244,
-    "learningCriterionRate": 0.8244
+    "learningCriterionRate": 0.8244,
+    "shiftDetection": {
+      "detectedUsers": 30,
+      "truePositives": 14,
+      "falsePositives": 16,
+      "falseNegatives": 1814,
+      "trueNegatives": 8156,
+      "precision": 0.4667,
+      "recall": 0.0077,
+      "falsePositiveRate": 0.002,
+      "driftMagnitudeP50": 0.24,
+      "driftMagnitudeP90": 0.51,
+      "driftMagnitudeP95": 0.62,
+      "stableMagnitudeP50": 0.23,
+      "stableMagnitudeP90": 0.44,
+      "stableMagnitudeP95": 0.52,
+      "stableMagnitudeP99": 0.7
+    }
   },
   "strategyMetrics": {
     "popularity": {
@@ -67,6 +86,21 @@
       "rejectedTopRate": 0.0172,
       "falseConfidenceRate": 0.0153,
       "meanTopAffinity": 90.7651,
+      "catalogCoverage": 1
+    },
+    "candidate": {
+      "events": 421722,
+      "precisionAt5": 0.6681,
+      "recallAt5": 0.6681,
+      "ndcgAt5": 0.699,
+      "hitRateAt1": 0.793,
+      "meanRegret": 6.1399,
+      "affinityMae": 10.3749,
+      "calibrationError": 0.0487,
+      "correctTopRate": 0.8461,
+      "rejectedTopRate": 0.0172,
+      "falseConfidenceRate": 0.0143,
+      "meanTopAffinity": 89.4788,
       "catalogCoverage": 1
     },
     "oracle": {
@@ -190,6 +224,23 @@
     },
     {
       "segment": "novice",
+      "strategy": "candidate",
+      "events": 43370,
+      "precisionAt5": 0.6019,
+      "recallAt5": 0.6019,
+      "ndcgAt5": 0.6265,
+      "hitRateAt1": 0.7015,
+      "meanRegret": 8.6714,
+      "affinityMae": 9.6702,
+      "calibrationError": 0.0476,
+      "correctTopRate": 0.7896,
+      "rejectedTopRate": 0.0345,
+      "falseConfidenceRate": 0.021,
+      "meanTopAffinity": 83.714,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "novice",
       "strategy": "oracle",
       "events": 43370,
       "precisionAt5": 1,
@@ -254,6 +305,23 @@
       "rejectedTopRate": 0.0248,
       "falseConfidenceRate": 0.0216,
       "meanTopAffinity": 89.422,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "casual",
+      "strategy": "candidate",
+      "events": 71573,
+      "precisionAt5": 0.6379,
+      "recallAt5": 0.6379,
+      "ndcgAt5": 0.666,
+      "hitRateAt1": 0.7511,
+      "meanRegret": 7.2586,
+      "affinityMae": 10.2109,
+      "calibrationError": 0.047,
+      "correctTopRate": 0.8239,
+      "rejectedTopRate": 0.0248,
+      "falseConfidenceRate": 0.0196,
+      "meanTopAffinity": 87.0907,
       "catalogCoverage": 1
     },
     {
@@ -326,6 +394,23 @@
     },
     {
       "segment": "enthusiast",
+      "strategy": "candidate",
+      "events": 113600,
+      "precisionAt5": 0.6753,
+      "recallAt5": 0.6753,
+      "ndcgAt5": 0.707,
+      "hitRateAt1": 0.8038,
+      "meanRegret": 5.8552,
+      "affinityMae": 10.3421,
+      "calibrationError": 0.0453,
+      "correctTopRate": 0.8554,
+      "rejectedTopRate": 0.0145,
+      "falseConfidenceRate": 0.0133,
+      "meanTopAffinity": 90.0731,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "enthusiast",
       "strategy": "oracle",
       "events": 113600,
       "precisionAt5": 1,
@@ -394,6 +479,23 @@
     },
     {
       "segment": "collector",
+      "strategy": "candidate",
+      "events": 73554,
+      "precisionAt5": 0.6897,
+      "recallAt5": 0.6897,
+      "ndcgAt5": 0.7225,
+      "hitRateAt1": 0.8224,
+      "meanRegret": 5.4096,
+      "affinityMae": 10.4328,
+      "calibrationError": 0.0479,
+      "correctTopRate": 0.8613,
+      "rejectedTopRate": 0.0113,
+      "falseConfidenceRate": 0.0106,
+      "meanTopAffinity": 90.9221,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "collector",
       "strategy": "oracle",
       "events": 73554,
       "precisionAt5": 1,
@@ -458,6 +560,23 @@
       "rejectedTopRate": 0.0126,
       "falseConfidenceRate": 0.0123,
       "meanTopAffinity": 91.9304,
+      "catalogCoverage": 1
+    },
+    {
+      "segment": "sommelier",
+      "strategy": "candidate",
+      "events": 119625,
+      "precisionAt5": 0.6901,
+      "recallAt5": 0.6901,
+      "ndcgAt5": 0.723,
+      "hitRateAt1": 0.823,
+      "meanRegret": 5.272,
+      "affinityMae": 10.7241,
+      "calibrationError": 0.0537,
+      "correctTopRate": 0.8618,
+      "rejectedTopRate": 0.0126,
+      "falseConfidenceRate": 0.0122,
+      "meanTopAffinity": 91.5458,
       "catalogCoverage": 1
     },
     {
@@ -532,6 +651,23 @@
     },
     {
       "month": 1,
+      "strategy": "candidate",
+      "events": 35915,
+      "precisionAt5": 0.6685,
+      "recallAt5": 0.6685,
+      "ndcgAt5": 0.6997,
+      "hitRateAt1": 0.7945,
+      "meanRegret": 6.1614,
+      "affinityMae": 8.4321,
+      "calibrationError": 0.0161,
+      "correctTopRate": 0.8562,
+      "rejectedTopRate": 0.0155,
+      "falseConfidenceRate": 0.0094,
+      "meanTopAffinity": 84.3889,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 1,
       "strategy": "oracle",
       "events": 35915,
       "precisionAt5": 1,
@@ -596,6 +732,23 @@
       "rejectedTopRate": 0.0137,
       "falseConfidenceRate": 0.0119,
       "meanTopAffinity": 90.004,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 2,
+      "strategy": "candidate",
+      "events": 34787,
+      "precisionAt5": 0.673,
+      "recallAt5": 0.673,
+      "ndcgAt5": 0.7033,
+      "hitRateAt1": 0.7946,
+      "meanRegret": 6.0988,
+      "affinityMae": 9.1434,
+      "calibrationError": 0.0199,
+      "correctTopRate": 0.8517,
+      "rejectedTopRate": 0.0137,
+      "falseConfidenceRate": 0.01,
+      "meanTopAffinity": 87.1542,
       "catalogCoverage": 1
     },
     {
@@ -668,6 +821,23 @@
     },
     {
       "month": 3,
+      "strategy": "candidate",
+      "events": 35827,
+      "precisionAt5": 0.6735,
+      "recallAt5": 0.6735,
+      "ndcgAt5": 0.7041,
+      "hitRateAt1": 0.7956,
+      "meanRegret": 5.9853,
+      "affinityMae": 9.5395,
+      "calibrationError": 0.028,
+      "correctTopRate": 0.8576,
+      "rejectedTopRate": 0.0131,
+      "falseConfidenceRate": 0.0095,
+      "meanTopAffinity": 88.5615,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 3,
       "strategy": "oracle",
       "events": 35827,
       "precisionAt5": 1,
@@ -732,6 +902,23 @@
       "rejectedTopRate": 0.0117,
       "falseConfidenceRate": 0.0098,
       "meanTopAffinity": 90.6248,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 4,
+      "strategy": "candidate",
+      "events": 34425,
+      "precisionAt5": 0.6752,
+      "recallAt5": 0.6752,
+      "ndcgAt5": 0.7068,
+      "hitRateAt1": 0.8029,
+      "meanRegret": 5.8834,
+      "affinityMae": 9.7461,
+      "calibrationError": 0.033,
+      "correctTopRate": 0.8605,
+      "rejectedTopRate": 0.0117,
+      "falseConfidenceRate": 0.0088,
+      "meanTopAffinity": 89.3418,
       "catalogCoverage": 1
     },
     {
@@ -804,6 +991,23 @@
     },
     {
       "month": 5,
+      "strategy": "candidate",
+      "events": 35924,
+      "precisionAt5": 0.6759,
+      "recallAt5": 0.6759,
+      "ndcgAt5": 0.7077,
+      "hitRateAt1": 0.8046,
+      "meanRegret": 5.8658,
+      "affinityMae": 9.9644,
+      "calibrationError": 0.0378,
+      "correctTopRate": 0.8599,
+      "rejectedTopRate": 0.0128,
+      "falseConfidenceRate": 0.0101,
+      "meanTopAffinity": 89.7689,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 5,
       "strategy": "oracle",
       "events": 35924,
       "precisionAt5": 1,
@@ -868,6 +1072,23 @@
       "rejectedTopRate": 0.0125,
       "falseConfidenceRate": 0.0107,
       "meanTopAffinity": 90.9235,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 6,
+      "strategy": "candidate",
+      "events": 34517,
+      "precisionAt5": 0.6788,
+      "recallAt5": 0.6788,
+      "ndcgAt5": 0.7109,
+      "hitRateAt1": 0.8087,
+      "meanRegret": 5.7144,
+      "affinityMae": 9.9641,
+      "calibrationError": 0.0363,
+      "correctTopRate": 0.8649,
+      "rejectedTopRate": 0.0125,
+      "falseConfidenceRate": 0.0103,
+      "meanTopAffinity": 90.1209,
       "catalogCoverage": 1
     },
     {
@@ -940,6 +1161,23 @@
     },
     {
       "month": 7,
+      "strategy": "candidate",
+      "events": 34824,
+      "precisionAt5": 0.68,
+      "recallAt5": 0.68,
+      "ndcgAt5": 0.7115,
+      "hitRateAt1": 0.8068,
+      "meanRegret": 5.7551,
+      "affinityMae": 10.0977,
+      "calibrationError": 0.0417,
+      "correctTopRate": 0.8618,
+      "rejectedTopRate": 0.0117,
+      "falseConfidenceRate": 0.0097,
+      "meanTopAffinity": 90.3501,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 7,
       "strategy": "oracle",
       "events": 34824,
       "precisionAt5": 1,
@@ -1004,6 +1242,23 @@
       "rejectedTopRate": 0.0159,
       "falseConfidenceRate": 0.0144,
       "meanTopAffinity": 91.1415,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 8,
+      "strategy": "candidate",
+      "events": 35698,
+      "precisionAt5": 0.6685,
+      "recallAt5": 0.6685,
+      "ndcgAt5": 0.6997,
+      "hitRateAt1": 0.7968,
+      "meanRegret": 6.0718,
+      "affinityMae": 10.6862,
+      "calibrationError": 0.054,
+      "correctTopRate": 0.8519,
+      "rejectedTopRate": 0.0159,
+      "falseConfidenceRate": 0.0137,
+      "meanTopAffinity": 90.5959,
       "catalogCoverage": 1
     },
     {
@@ -1076,6 +1331,23 @@
     },
     {
       "month": 9,
+      "strategy": "candidate",
+      "events": 34647,
+      "precisionAt5": 0.6583,
+      "recallAt5": 0.6583,
+      "ndcgAt5": 0.6888,
+      "hitRateAt1": 0.782,
+      "meanRegret": 6.4617,
+      "affinityMae": 11.4089,
+      "calibrationError": 0.0783,
+      "correctTopRate": 0.829,
+      "rejectedTopRate": 0.0222,
+      "falseConfidenceRate": 0.0203,
+      "meanTopAffinity": 90.7363,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 9,
       "strategy": "oracle",
       "events": 34647,
       "precisionAt5": 1,
@@ -1140,6 +1412,23 @@
       "rejectedTopRate": 0.0265,
       "falseConfidenceRate": 0.0248,
       "meanTopAffinity": 91.2488,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 10,
+      "strategy": "candidate",
+      "events": 35725,
+      "precisionAt5": 0.6537,
+      "recallAt5": 0.6537,
+      "ndcgAt5": 0.6841,
+      "hitRateAt1": 0.7771,
+      "meanRegret": 6.571,
+      "affinityMae": 11.8499,
+      "calibrationError": 0.0888,
+      "correctTopRate": 0.8199,
+      "rejectedTopRate": 0.0265,
+      "falseConfidenceRate": 0.0247,
+      "meanTopAffinity": 90.8722,
       "catalogCoverage": 1
     },
     {
@@ -1212,6 +1501,23 @@
     },
     {
       "month": 11,
+      "strategy": "candidate",
+      "events": 34709,
+      "precisionAt5": 0.6552,
+      "recallAt5": 0.6552,
+      "ndcgAt5": 0.6846,
+      "hitRateAt1": 0.7739,
+      "meanRegret": 6.6289,
+      "affinityMae": 11.9648,
+      "calibrationError": 0.0939,
+      "correctTopRate": 0.8156,
+      "rejectedTopRate": 0.0261,
+      "falseConfidenceRate": 0.0237,
+      "meanTopAffinity": 90.9498,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 11,
       "strategy": "oracle",
       "events": 34709,
       "precisionAt5": 1,
@@ -1280,6 +1586,23 @@
     },
     {
       "month": 12,
+      "strategy": "candidate",
+      "events": 34724,
+      "precisionAt5": 0.6568,
+      "recallAt5": 0.6568,
+      "ndcgAt5": 0.6869,
+      "hitRateAt1": 0.7788,
+      "meanRegret": 6.4814,
+      "affinityMae": 11.7562,
+      "calibrationError": 0.0861,
+      "correctTopRate": 0.8242,
+      "rejectedTopRate": 0.0249,
+      "falseConfidenceRate": 0.0221,
+      "meanTopAffinity": 91.0349,
+      "catalogCoverage": 1
+    },
+    {
+      "month": 12,
       "strategy": "oracle",
       "events": 34724,
       "precisionAt5": 1,
@@ -1297,32 +1620,39 @@
     }
   ],
   "performance": {
-    "modelEvaluationP50Ms": 0.02379,
-    "modelEvaluationP95Ms": 0.069,
-    "modelEvaluationP99Ms": 0.08879,
-    "wallClockSeconds": 34.497,
+    "modelEvaluationP50Ms": 0.02575,
+    "modelEvaluationP95Ms": 0.07112,
+    "modelEvaluationP99Ms": 0.09133,
+    "candidateEvaluationP95Ms": 0.09975,
+    "wallClockSeconds": 58.075,
     "qualification": "In-process algorithm time, not backend load or mobile latency."
   },
   "conclusions": {
     "hybridNdcgUpliftVsPopularity": 0.5055,
     "hybridNdcgUpliftVsOnboarding": 0.0137,
     "hybridHitRateUpliftVsOnboarding": 0.0161,
+    "candidateNdcgUpliftVsCurrent": 0,
+    "candidateHitRateUpliftVsCurrent": 0,
+    "candidateAffinityMaeChangeVsCurrent": -0.5206,
+    "candidateCalibrationChangeVsCurrent": -0.0128,
+    "candidateRegretChangeVsCurrent": 0,
     "remainingNdcgGapToOracle": 0.301,
     "remainingRegretGapToOracle": 6.1399,
     "worstHybridSegment": "novice",
     "worstHybridSegmentNdcgAt5": 0.6265,
     "falseConfidenceRate": 0.0153,
-    "recommendation": "El aprendizaje aporta valor sobre el test inicial, pero debe cerrarse la brecha de contexto y calibración antes de presentar la afinidad como una predicción fuerte."
+    "recommendation": "La calibracion por confianza conserva el ranking y reduce el error de afinidad; puede avanzar a regresion de producto y paridad Edge. La recencia adaptativa queda rechazada porque la señal de deriva no separa perfiles estables y cambiantes con recall suficiente."
   },
   "methodology": {
     "agents": "Five engagement segments with latent five-axis palates, noisy onboarding answers, budgets, contexts and optional taste drift.",
     "chronology": "Each agent is evaluated in event order. Only feedback available before an event trains that event recommendation.",
-    "feedback": "The current hybrid recommendation drives a noisy love/ok/not-for-me response; unrated events do not train the profile.",
+    "feedback": "Current and candidate policies receive the same feedback opportunity and experience noise; each learns only from its own prior recommendations.",
     "candidateSets": "24 synthetic wines sampled per decision from a 180-wine catalog.",
     "baselines": {
       "popularity": "Static catalog popularity independent of simulated feedback.",
       "onboarding": "Initial Matchrim test profile with no longitudinal learning.",
       "hybrid": "Current Matchrim calculateLearnedMatchrimProfile and affinity ranking.",
+      "candidate": "Current ranking with confidence-aware affinity calibration. Preference-shift telemetry is measured, but adaptive forgetting is disabled.",
       "oracle": "Evaluation ceiling using latent taste, context and budget; never visible to the hybrid model."
     },
     "knownLimits": [
@@ -1367,8 +1697,18 @@
         "tanico": 1.1,
         "afrutado": 4.6
       },
+      "finalCandidateProfile": {
+        "potente": 2.8,
+        "acidez": 4.4,
+        "dulce": 1.7,
+        "tanico": 1.1,
+        "afrutado": 4.6
+      },
       "initialProfileRmse": 0.8399,
       "finalProfileRmse": 0.4671,
+      "finalCandidateProfileRmse": 0.4671,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.35,
       "learnedAtRating": 6,
       "loveRate": 0.8333,
       "rejectionRate": 0,
@@ -1408,8 +1748,18 @@
         "tanico": 1.5,
         "afrutado": 4.9
       },
+      "finalCandidateProfile": {
+        "potente": 2,
+        "acidez": 3.3,
+        "dulce": 4.9,
+        "tanico": 1.5,
+        "afrutado": 4.9
+      },
       "initialProfileRmse": 0.4197,
       "finalProfileRmse": 0.3788,
+      "finalCandidateProfileRmse": 0.3788,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.29,
       "learnedAtRating": 3,
       "loveRate": 0.5,
       "rejectionRate": 0,
@@ -1449,8 +1799,18 @@
         "tanico": 0.6,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 2,
+        "acidez": 3,
+        "dulce": 2.1,
+        "tanico": 0.6,
+        "afrutado": 5
+      },
       "initialProfileRmse": 0.3156,
       "finalProfileRmse": 1.637,
+      "finalCandidateProfileRmse": 1.637,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.67,
       "learnedAtRating": 3,
       "loveRate": 0.2,
       "rejectionRate": 0.3333,
@@ -1490,8 +1850,18 @@
         "tanico": 0.2,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 3,
+        "acidez": 2.9,
+        "dulce": 5,
+        "tanico": 0.2,
+        "afrutado": 5
+      },
       "initialProfileRmse": 0.4041,
       "finalProfileRmse": 1.4397,
+      "finalCandidateProfileRmse": 1.4397,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0.1429,
       "rejectionRate": 0.2857,
@@ -1531,8 +1901,18 @@
         "tanico": 3.1,
         "afrutado": 2.7
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 1.8,
+        "tanico": 3.1,
+        "afrutado": 2.7
+      },
       "initialProfileRmse": 0.9333,
       "finalProfileRmse": 1.1904,
+      "finalCandidateProfileRmse": 1.1904,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.14,
       "learnedAtRating": 6,
       "loveRate": 0.0833,
       "rejectionRate": 0.0833,
@@ -1572,8 +1952,18 @@
         "tanico": 4.1,
         "afrutado": 1.4
       },
+      "finalCandidateProfile": {
+        "potente": 4.4,
+        "acidez": 4,
+        "dulce": 1.7,
+        "tanico": 4.1,
+        "afrutado": 1.4
+      },
       "initialProfileRmse": 0.5624,
       "finalProfileRmse": 0.4788,
+      "finalCandidateProfileRmse": 0.4788,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.34,
       "learnedAtRating": 3,
       "loveRate": 0.4103,
       "rejectionRate": 0.1538,
@@ -1613,8 +2003,18 @@
         "tanico": 1.2,
         "afrutado": 4.5
       },
+      "finalCandidateProfile": {
+        "potente": 2,
+        "acidez": 2.9,
+        "dulce": 4.7,
+        "tanico": 1.2,
+        "afrutado": 4.5
+      },
       "initialProfileRmse": 0.482,
       "finalProfileRmse": 0.3654,
+      "finalCandidateProfileRmse": 0.3654,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.6364,
       "rejectionRate": 0,
@@ -1654,8 +2054,18 @@
         "tanico": 1.2,
         "afrutado": 4.9
       },
+      "finalCandidateProfile": {
+        "potente": 1.9,
+        "acidez": 2.1,
+        "dulce": 3,
+        "tanico": 1.2,
+        "afrutado": 4.9
+      },
       "initialProfileRmse": 0.6253,
       "finalProfileRmse": 1.8108,
+      "finalCandidateProfileRmse": 1.8108,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.53,
       "learnedAtRating": null,
       "loveRate": 0.4167,
       "rejectionRate": 0.1458,
@@ -1695,8 +2105,18 @@
         "tanico": 5,
         "afrutado": 3
       },
+      "finalCandidateProfile": {
+        "potente": 4.6,
+        "acidez": 2.9,
+        "dulce": 1.8,
+        "tanico": 5,
+        "afrutado": 3
+      },
       "initialProfileRmse": 0.606,
       "finalProfileRmse": 0.2946,
+      "finalCandidateProfileRmse": 0.2946,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.25,
       "learnedAtRating": 3,
       "loveRate": 0.6,
       "rejectionRate": 0.0667,
@@ -1736,8 +2156,18 @@
         "tanico": 1,
         "afrutado": 4.7
       },
+      "finalCandidateProfile": {
+        "potente": 1.9,
+        "acidez": 3,
+        "dulce": 4.1,
+        "tanico": 1,
+        "afrutado": 4.7
+      },
       "initialProfileRmse": 0.8787,
       "finalProfileRmse": 0.7572,
+      "finalCandidateProfileRmse": 0.7572,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.09,
       "learnedAtRating": null,
       "loveRate": 0.7895,
       "rejectionRate": 0,
@@ -1777,8 +2207,18 @@
         "tanico": 1.2,
         "afrutado": 4.4
       },
+      "finalCandidateProfile": {
+        "potente": 2.9,
+        "acidez": 2.7,
+        "dulce": 4.4,
+        "tanico": 1.2,
+        "afrutado": 4.4
+      },
       "initialProfileRmse": 0.7381,
       "finalProfileRmse": 0.9657,
+      "finalCandidateProfileRmse": 0.9657,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.55,
       "learnedAtRating": 9,
       "loveRate": 0.125,
       "rejectionRate": 0.125,
@@ -1818,8 +2258,18 @@
         "tanico": 1.7,
         "afrutado": 4
       },
+      "finalCandidateProfile": {
+        "potente": 2.3,
+        "acidez": 1.9,
+        "dulce": 2.5,
+        "tanico": 1.7,
+        "afrutado": 4
+      },
       "initialProfileRmse": 0.6532,
       "finalProfileRmse": 0.3454,
+      "finalCandidateProfileRmse": 0.3454,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.35,
       "learnedAtRating": 4,
       "loveRate": 0.8235,
       "rejectionRate": 0,
@@ -1859,8 +2309,18 @@
         "tanico": 0.7,
         "afrutado": 3.8
       },
+      "finalCandidateProfile": {
+        "potente": 0.7,
+        "acidez": 5,
+        "dulce": 1.5,
+        "tanico": 0.7,
+        "afrutado": 3.8
+      },
       "initialProfileRmse": 0.658,
       "finalProfileRmse": 0.3653,
+      "finalCandidateProfileRmse": 0.3653,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.7778,
       "rejectionRate": 0,
@@ -1900,8 +2360,18 @@
         "tanico": 5,
         "afrutado": 3.4
       },
+      "finalCandidateProfile": {
+        "potente": 4.6,
+        "acidez": 1.3,
+        "dulce": 1.7,
+        "tanico": 5,
+        "afrutado": 3.4
+      },
       "initialProfileRmse": 0.8868,
       "finalProfileRmse": 0.634,
+      "finalCandidateProfileRmse": 0.634,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 5,
       "loveRate": 0.3333,
       "rejectionRate": 0.1667,
@@ -1941,8 +2411,18 @@
         "tanico": 2.7,
         "afrutado": 3.4
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 4.9,
+        "dulce": 1,
+        "tanico": 2.7,
+        "afrutado": 3.4
+      },
       "initialProfileRmse": 0.7378,
       "finalProfileRmse": 1.2887,
+      "finalCandidateProfileRmse": 1.2887,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0.1429,
       "rejectionRate": 0.4286,
@@ -1982,8 +2462,18 @@
         "tanico": 1.9,
         "afrutado": 4.4
       },
+      "finalCandidateProfile": {
+        "potente": 3,
+        "acidez": 2.2,
+        "dulce": 2.6,
+        "tanico": 1.9,
+        "afrutado": 4.4
+      },
       "initialProfileRmse": 0.4343,
       "finalProfileRmse": 0.3814,
+      "finalCandidateProfileRmse": 0.3814,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.39,
       "learnedAtRating": 3,
       "loveRate": 0.8547,
       "rejectionRate": 0,
@@ -2023,8 +2513,18 @@
         "tanico": 4.9,
         "afrutado": 1.1
       },
+      "finalCandidateProfile": {
+        "potente": 4.1,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 4.9,
+        "afrutado": 1.1
+      },
       "initialProfileRmse": 1.0076,
       "finalProfileRmse": 0.7728,
+      "finalCandidateProfileRmse": 0.7728,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 4,
       "loveRate": 0.5,
       "rejectionRate": 0,
@@ -2064,8 +2564,18 @@
         "tanico": 3,
         "afrutado": 2.9
       },
+      "finalCandidateProfile": {
+        "potente": 4,
+        "acidez": 3.9,
+        "dulce": 0.9,
+        "tanico": 3,
+        "afrutado": 2.9
+      },
       "initialProfileRmse": 0.7325,
       "finalProfileRmse": 1.3731,
+      "finalCandidateProfileRmse": 1.3731,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0.2857,
       "rejectionRate": 0.4286,
@@ -2105,8 +2615,18 @@
         "tanico": 2,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 3.7,
+        "acidez": 2,
+        "dulce": 0.6,
+        "tanico": 2,
+        "afrutado": 5
+      },
       "initialProfileRmse": 1.5435,
       "finalProfileRmse": 1.2405,
+      "finalCandidateProfileRmse": 1.2405,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.46,
       "learnedAtRating": 7,
       "loveRate": 0.2,
       "rejectionRate": 0.3333,
@@ -2146,8 +2666,18 @@
         "tanico": 1.6,
         "afrutado": 4.4
       },
+      "finalCandidateProfile": {
+        "potente": 2.1,
+        "acidez": 3.3,
+        "dulce": 4,
+        "tanico": 1.6,
+        "afrutado": 4.4
+      },
       "initialProfileRmse": 0.7978,
       "finalProfileRmse": 0.3636,
+      "finalCandidateProfileRmse": 0.3636,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.41,
       "learnedAtRating": 5,
       "loveRate": 0.8235,
       "rejectionRate": 0,
@@ -2187,8 +2717,18 @@
         "tanico": 0.9,
         "afrutado": 4.9
       },
+      "finalCandidateProfile": {
+        "potente": 2.8,
+        "acidez": 3.4,
+        "dulce": 5,
+        "tanico": 0.9,
+        "afrutado": 4.9
+      },
       "initialProfileRmse": 0.5467,
       "finalProfileRmse": 0.4881,
+      "finalCandidateProfileRmse": 0.4881,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.32,
       "learnedAtRating": 3,
       "loveRate": 0.6765,
       "rejectionRate": 0.0882,
@@ -2228,8 +2768,18 @@
         "tanico": 1.1,
         "afrutado": 3.4
       },
+      "finalCandidateProfile": {
+        "potente": 2.4,
+        "acidez": 5,
+        "dulce": 0.9,
+        "tanico": 1.1,
+        "afrutado": 3.4
+      },
       "initialProfileRmse": 0.3789,
       "finalProfileRmse": 0.4463,
+      "finalCandidateProfileRmse": 0.4463,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.16,
       "learnedAtRating": 3,
       "loveRate": 0.6875,
       "rejectionRate": 0,
@@ -2269,8 +2819,18 @@
         "tanico": 5,
         "afrutado": 3
       },
+      "finalCandidateProfile": {
+        "potente": 4.2,
+        "acidez": 2.3,
+        "dulce": 1.7,
+        "tanico": 5,
+        "afrutado": 3
+      },
       "initialProfileRmse": 0.8645,
       "finalProfileRmse": 0.6913,
+      "finalCandidateProfileRmse": 0.6913,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 5,
       "loveRate": 0.4,
       "rejectionRate": 0.2,
@@ -2310,8 +2870,18 @@
         "tanico": 4.5,
         "afrutado": 3
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3.4,
+        "dulce": 1,
+        "tanico": 4.5,
+        "afrutado": 3
+      },
       "initialProfileRmse": 0.4296,
       "finalProfileRmse": 0.3569,
+      "finalCandidateProfileRmse": 0.3569,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.13,
       "learnedAtRating": 3,
       "loveRate": 0.9286,
       "rejectionRate": 0,
@@ -2351,8 +2921,18 @@
         "tanico": 1,
         "afrutado": 2.9
       },
+      "finalCandidateProfile": {
+        "potente": 2,
+        "acidez": 3.2,
+        "dulce": 3.5,
+        "tanico": 1,
+        "afrutado": 2.9
+      },
       "initialProfileRmse": 0.698,
       "finalProfileRmse": 0.6819,
+      "finalCandidateProfileRmse": 0.6819,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0,
       "rejectionRate": 0.1667,
@@ -2392,8 +2972,18 @@
         "tanico": 1.2,
         "afrutado": 4.1
       },
+      "finalCandidateProfile": {
+        "potente": 1.7,
+        "acidez": 4.9,
+        "dulce": 1,
+        "tanico": 1.2,
+        "afrutado": 4.1
+      },
       "initialProfileRmse": 0.6589,
       "finalProfileRmse": 0.5607,
+      "finalCandidateProfileRmse": 0.5607,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.3,
       "learnedAtRating": 3,
       "loveRate": 0.725,
       "rejectionRate": 0,
@@ -2433,8 +3023,18 @@
         "tanico": 1,
         "afrutado": 3.9
       },
+      "finalCandidateProfile": {
+        "potente": 3.1,
+        "acidez": 4.4,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 3.9
+      },
       "initialProfileRmse": 0.7857,
       "finalProfileRmse": 1.1554,
+      "finalCandidateProfileRmse": 1.1554,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0.3333,
       "rejectionRate": 0.4444,
@@ -2474,8 +3074,18 @@
         "tanico": 1.1,
         "afrutado": 4.1
       },
+      "finalCandidateProfile": {
+        "potente": 2.7,
+        "acidez": 1.3,
+        "dulce": 2.2,
+        "tanico": 1.1,
+        "afrutado": 4.1
+      },
       "initialProfileRmse": 0.8345,
       "finalProfileRmse": 0.6553,
+      "finalCandidateProfileRmse": 0.6553,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 4,
       "loveRate": 1,
       "rejectionRate": 0,
@@ -2515,8 +3125,18 @@
         "tanico": 1.8,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 3,
+        "acidez": 3,
+        "dulce": 1.9,
+        "tanico": 1.8,
+        "afrutado": 5
+      },
       "initialProfileRmse": 0.652,
       "finalProfileRmse": 0.6832,
+      "finalCandidateProfileRmse": 0.6832,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0,
       "rejectionRate": 0.6667,
@@ -2556,8 +3176,18 @@
         "tanico": 1.8,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 1.3,
+        "acidez": 2.9,
+        "dulce": 1.5,
+        "tanico": 1.8,
+        "afrutado": 5
+      },
       "initialProfileRmse": 0.7223,
       "finalProfileRmse": 1.5896,
+      "finalCandidateProfileRmse": 1.5896,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.34,
       "learnedAtRating": 5,
       "loveRate": 0.3929,
       "rejectionRate": 0.0714,
@@ -2597,8 +3227,18 @@
         "tanico": 3.7,
         "afrutado": 1.5
       },
+      "finalCandidateProfile": {
+        "potente": 4.3,
+        "acidez": 4.1,
+        "dulce": 1.3,
+        "tanico": 3.7,
+        "afrutado": 1.5
+      },
       "initialProfileRmse": 0.4178,
       "finalProfileRmse": 0.3103,
+      "finalCandidateProfileRmse": 0.3103,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.31,
       "learnedAtRating": 3,
       "loveRate": 0.6296,
       "rejectionRate": 0.037,
@@ -2638,8 +3278,18 @@
         "tanico": 1.7,
         "afrutado": 4
       },
+      "finalCandidateProfile": {
+        "potente": 2,
+        "acidez": 4.8,
+        "dulce": 1,
+        "tanico": 1.7,
+        "afrutado": 4
+      },
       "initialProfileRmse": 0.9386,
       "finalProfileRmse": 0.613,
+      "finalCandidateProfileRmse": 0.613,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.23,
       "learnedAtRating": 6,
       "loveRate": 0.9565,
       "rejectionRate": 0,
@@ -2679,8 +3329,18 @@
         "tanico": 1.1,
         "afrutado": 4.7
       },
+      "finalCandidateProfile": {
+        "potente": 3,
+        "acidez": 3.8,
+        "dulce": 1.9,
+        "tanico": 1.1,
+        "afrutado": 4.7
+      },
       "initialProfileRmse": 0.67,
       "finalProfileRmse": 0.5956,
+      "finalCandidateProfileRmse": 0.5956,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.36,
       "learnedAtRating": null,
       "loveRate": 0.4444,
       "rejectionRate": 0.0741,
@@ -2720,8 +3380,18 @@
         "tanico": 5,
         "afrutado": 2.2
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 2.2
+      },
       "initialProfileRmse": 0.4038,
       "finalProfileRmse": 0.3851,
+      "finalCandidateProfileRmse": 0.3851,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.3333,
       "rejectionRate": 0.1667,
@@ -2761,8 +3431,18 @@
         "tanico": 1.5,
         "afrutado": 4.1
       },
+      "finalCandidateProfile": {
+        "potente": 3.3,
+        "acidez": 1.8,
+        "dulce": 2.9,
+        "tanico": 1.5,
+        "afrutado": 4.1
+      },
       "initialProfileRmse": 0.3088,
       "finalProfileRmse": 0.401,
+      "finalCandidateProfileRmse": 0.401,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.32,
       "learnedAtRating": 3,
       "loveRate": 0.8571,
       "rejectionRate": 0,
@@ -2802,8 +3482,18 @@
         "tanico": 1.2,
         "afrutado": 4.5
       },
+      "finalCandidateProfile": {
+        "potente": 2.1,
+        "acidez": 2.7,
+        "dulce": 1.9,
+        "tanico": 1.2,
+        "afrutado": 4.5
+      },
       "initialProfileRmse": 0.4576,
       "finalProfileRmse": 1.2472,
+      "finalCandidateProfileRmse": 1.2472,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.44,
       "learnedAtRating": 3,
       "loveRate": 0.4404,
       "rejectionRate": 0.1009,
@@ -2843,8 +3533,18 @@
         "tanico": 1.6,
         "afrutado": 3.9
       },
+      "finalCandidateProfile": {
+        "potente": 2.9,
+        "acidez": 1.7,
+        "dulce": 2.6,
+        "tanico": 1.6,
+        "afrutado": 3.9
+      },
       "initialProfileRmse": 0.5781,
       "finalProfileRmse": 0.6575,
+      "finalCandidateProfileRmse": 0.6575,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.41,
       "learnedAtRating": 3,
       "loveRate": 0.8222,
       "rejectionRate": 0,
@@ -2884,8 +3584,18 @@
         "tanico": 1.7,
         "afrutado": 4.2
       },
+      "finalCandidateProfile": {
+        "potente": 3.1,
+        "acidez": 1.9,
+        "dulce": 2.9,
+        "tanico": 1.7,
+        "afrutado": 4.2
+      },
       "initialProfileRmse": 0.2247,
       "finalProfileRmse": 0.3921,
+      "finalCandidateProfileRmse": 0.3921,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.33,
       "learnedAtRating": 3,
       "loveRate": 0.8091,
       "rejectionRate": 0,
@@ -2925,8 +3635,18 @@
         "tanico": 5,
         "afrutado": 2.8
       },
+      "finalCandidateProfile": {
+        "potente": 4.9,
+        "acidez": 3.3,
+        "dulce": 1.1,
+        "tanico": 5,
+        "afrutado": 2.8
+      },
       "initialProfileRmse": 0.7243,
       "finalProfileRmse": 0.5136,
+      "finalCandidateProfileRmse": 0.5136,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.25,
       "learnedAtRating": 12,
       "loveRate": 0.5128,
       "rejectionRate": 0.0769,
@@ -2966,8 +3686,18 @@
         "tanico": 4.8,
         "afrutado": 2.7
       },
+      "finalCandidateProfile": {
+        "potente": 4.6,
+        "acidez": 4.2,
+        "dulce": 0.7,
+        "tanico": 4.8,
+        "afrutado": 2.7
+      },
       "initialProfileRmse": 0.6782,
       "finalProfileRmse": 0.227,
+      "finalCandidateProfileRmse": 0.227,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 4,
       "loveRate": 0.5455,
       "rejectionRate": 0.0909,
@@ -3007,8 +3737,18 @@
         "tanico": 4.1,
         "afrutado": 2.1
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 2.7,
+        "dulce": 1,
+        "tanico": 4.1,
+        "afrutado": 2.1
+      },
       "initialProfileRmse": 0.83,
       "finalProfileRmse": 0.5771,
+      "finalCandidateProfileRmse": 0.5771,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.33,
       "learnedAtRating": 4,
       "loveRate": 0.4186,
       "rejectionRate": 0.1395,
@@ -3048,8 +3788,18 @@
         "tanico": 2,
         "afrutado": 3.8
       },
+      "finalCandidateProfile": {
+        "potente": 2.6,
+        "acidez": 5,
+        "dulce": 0.9,
+        "tanico": 2,
+        "afrutado": 3.8
+      },
       "initialProfileRmse": 0.7923,
       "finalProfileRmse": 0.2515,
+      "finalCandidateProfileRmse": 0.2515,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.54,
       "learnedAtRating": 4,
       "loveRate": 0.9167,
       "rejectionRate": 0,
@@ -3089,8 +3839,18 @@
         "tanico": 0.7,
         "afrutado": 4.6
       },
+      "finalCandidateProfile": {
+        "potente": 2.1,
+        "acidez": 4.7,
+        "dulce": 1.1,
+        "tanico": 0.7,
+        "afrutado": 4.6
+      },
       "initialProfileRmse": 0.1494,
       "finalProfileRmse": 0.4014,
+      "finalCandidateProfileRmse": 0.4014,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.875,
       "rejectionRate": 0,
@@ -3130,8 +3890,18 @@
         "tanico": 5,
         "afrutado": 2.7
       },
+      "finalCandidateProfile": {
+        "potente": 4.7,
+        "acidez": 3.5,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 2.7
+      },
       "initialProfileRmse": 1.0621,
       "finalProfileRmse": 1.0395,
+      "finalCandidateProfileRmse": 1.0395,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.27,
       "learnedAtRating": null,
       "loveRate": 0.4,
       "rejectionRate": 0.1,
@@ -3171,8 +3941,18 @@
         "tanico": 1.1,
         "afrutado": 3.2
       },
+      "finalCandidateProfile": {
+        "potente": 0.6,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 1.1,
+        "afrutado": 3.2
+      },
       "initialProfileRmse": 0.6594,
       "finalProfileRmse": 1.1876,
+      "finalCandidateProfileRmse": 1.1876,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.625,
       "rejectionRate": 0.125,
@@ -3212,8 +3992,18 @@
         "tanico": 4.2,
         "afrutado": 2.4
       },
+      "finalCandidateProfile": {
+        "potente": 4.6,
+        "acidez": 4,
+        "dulce": 0.9,
+        "tanico": 4.2,
+        "afrutado": 2.4
+      },
       "initialProfileRmse": 0.5528,
       "finalProfileRmse": 0.2529,
+      "finalCandidateProfileRmse": 0.2529,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.59,
       "learnedAtRating": 3,
       "loveRate": 0.7143,
       "rejectionRate": 0,
@@ -3253,8 +4043,18 @@
         "tanico": 1.5,
         "afrutado": 4.2
       },
+      "finalCandidateProfile": {
+        "potente": 2,
+        "acidez": 4.9,
+        "dulce": 0.9,
+        "tanico": 1.5,
+        "afrutado": 4.2
+      },
       "initialProfileRmse": 0.3015,
       "finalProfileRmse": 0.3988,
+      "finalCandidateProfileRmse": 0.3988,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.21,
       "learnedAtRating": 3,
       "loveRate": 0.6667,
       "rejectionRate": 0.0303,
@@ -3294,8 +4094,18 @@
         "tanico": 4.9,
         "afrutado": 1.1
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3.9,
+        "dulce": 1,
+        "tanico": 4.9,
+        "afrutado": 1.1
+      },
       "initialProfileRmse": 0.7323,
       "finalProfileRmse": 0.6772,
+      "finalCandidateProfileRmse": 0.6772,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0,
       "rejectionRate": 0.25,
@@ -3335,8 +4145,18 @@
         "tanico": 0.9,
         "afrutado": 3.5
       },
+      "finalCandidateProfile": {
+        "potente": 4.4,
+        "acidez": 0.2,
+        "dulce": 0.4,
+        "tanico": 0.9,
+        "afrutado": 3.5
+      },
       "initialProfileRmse": 1.2921,
       "finalProfileRmse": 1.082,
+      "finalCandidateProfileRmse": 1.082,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.1667,
       "rejectionRate": 0.1667,
@@ -3376,8 +4196,18 @@
         "tanico": 4.5,
         "afrutado": 1.8
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3.7,
+        "dulce": 1,
+        "tanico": 4.5,
+        "afrutado": 1.8
+      },
       "initialProfileRmse": 0.3035,
       "finalProfileRmse": 0.3204,
+      "finalCandidateProfileRmse": 0.3204,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.31,
       "learnedAtRating": 3,
       "loveRate": 0.8421,
       "rejectionRate": 0,
@@ -3417,8 +4247,18 @@
         "tanico": 0.9,
         "afrutado": 4.9
       },
+      "finalCandidateProfile": {
+        "potente": 2.9,
+        "acidez": 2.2,
+        "dulce": 4.7,
+        "tanico": 0.9,
+        "afrutado": 4.9
+      },
       "initialProfileRmse": 1.0173,
       "finalProfileRmse": 0.4185,
+      "finalCandidateProfileRmse": 0.4185,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.41,
       "learnedAtRating": 3,
       "loveRate": 0.6471,
       "rejectionRate": 0,
@@ -3458,8 +4298,18 @@
         "tanico": 1.4,
         "afrutado": 4.8
       },
+      "finalCandidateProfile": {
+        "potente": 2.8,
+        "acidez": 3.4,
+        "dulce": 4.9,
+        "tanico": 1.4,
+        "afrutado": 4.8
+      },
       "initialProfileRmse": 0.7222,
       "finalProfileRmse": 0.6247,
+      "finalCandidateProfileRmse": 0.6247,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.4,
       "learnedAtRating": 3,
       "loveRate": 0.4688,
       "rejectionRate": 0.0938,
@@ -3499,8 +4349,18 @@
         "tanico": 1,
         "afrutado": 4.2
       },
+      "finalCandidateProfile": {
+        "potente": 3.5,
+        "acidez": 1.1,
+        "dulce": 4.1,
+        "tanico": 1,
+        "afrutado": 4.2
+      },
       "initialProfileRmse": 0.8001,
       "finalProfileRmse": 0.5751,
+      "finalCandidateProfileRmse": 0.5751,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.3333,
       "rejectionRate": 0,
@@ -3540,8 +4400,18 @@
         "tanico": 1.8,
         "afrutado": 3.9
       },
+      "finalCandidateProfile": {
+        "potente": 1.1,
+        "acidez": 2,
+        "dulce": 3.1,
+        "tanico": 1.8,
+        "afrutado": 3.9
+      },
       "initialProfileRmse": 0.59,
       "finalProfileRmse": 0.6005,
+      "finalCandidateProfileRmse": 0.6005,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0.875,
       "rejectionRate": 0,
@@ -3581,8 +4451,18 @@
         "tanico": 1.1,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 2,
+        "acidez": 2.9,
+        "dulce": 5,
+        "tanico": 1.1,
+        "afrutado": 5
+      },
       "initialProfileRmse": 0.4268,
       "finalProfileRmse": 0.3835,
+      "finalCandidateProfileRmse": 0.3835,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.26,
       "learnedAtRating": 3,
       "loveRate": 0.5,
       "rejectionRate": 0.1875,
@@ -3622,8 +4502,18 @@
         "tanico": 0.6,
         "afrutado": 3.7
       },
+      "finalCandidateProfile": {
+        "potente": 0.6,
+        "acidez": 4.8,
+        "dulce": 1.9,
+        "tanico": 0.6,
+        "afrutado": 3.7
+      },
       "initialProfileRmse": 1.0484,
       "finalProfileRmse": 0.8862,
+      "finalCandidateProfileRmse": 0.8862,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.6667,
       "rejectionRate": 0,
@@ -3663,8 +4553,18 @@
         "tanico": 1.9,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 2.7,
+        "acidez": 3,
+        "dulce": 1.4,
+        "tanico": 1.9,
+        "afrutado": 5
+      },
       "initialProfileRmse": 0.8757,
       "finalProfileRmse": 0.6538,
+      "finalCandidateProfileRmse": 0.6538,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 4,
       "loveRate": 0.5,
       "rejectionRate": 0,
@@ -3704,8 +4604,18 @@
         "tanico": 2.2,
         "afrutado": 3.1
       },
+      "finalCandidateProfile": {
+        "potente": 2,
+        "acidez": 4.6,
+        "dulce": 1.7,
+        "tanico": 2.2,
+        "afrutado": 3.1
+      },
       "initialProfileRmse": 1.0698,
       "finalProfileRmse": 0.4894,
+      "finalCandidateProfileRmse": 0.4894,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 1,
       "rejectionRate": 0,
@@ -3745,8 +4655,18 @@
         "tanico": 0.7,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 1.5,
+        "acidez": 3.1,
+        "dulce": 5,
+        "tanico": 0.7,
+        "afrutado": 5
+      },
       "initialProfileRmse": 0.2589,
       "finalProfileRmse": 0.2531,
+      "finalCandidateProfileRmse": 0.2531,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.36,
       "learnedAtRating": 3,
       "loveRate": 0.505,
       "rejectionRate": 0.099,
@@ -3786,8 +4706,18 @@
         "tanico": 2.3,
         "afrutado": 2.9
       },
+      "finalCandidateProfile": {
+        "potente": 3.7,
+        "acidez": 0.6,
+        "dulce": 2.4,
+        "tanico": 2.3,
+        "afrutado": 2.9
+      },
       "initialProfileRmse": 1.2161,
       "finalProfileRmse": 1.3247,
+      "finalCandidateProfileRmse": 1.3247,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.5,
       "rejectionRate": 0,
@@ -3827,8 +4757,18 @@
         "tanico": 4.1,
         "afrutado": 2.1
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3.1,
+        "dulce": 1,
+        "tanico": 4.1,
+        "afrutado": 2.1
+      },
       "initialProfileRmse": 0.4024,
       "finalProfileRmse": 0.7379,
+      "finalCandidateProfileRmse": 0.7379,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.23,
       "learnedAtRating": 3,
       "loveRate": 0.6726,
       "rejectionRate": 0,
@@ -3868,8 +4808,18 @@
         "tanico": 4.3,
         "afrutado": 2.1
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3.1,
+        "dulce": 1.3,
+        "tanico": 4.3,
+        "afrutado": 2.1
+      },
       "initialProfileRmse": 0.8906,
       "finalProfileRmse": 0.8413,
+      "finalCandidateProfileRmse": 0.8413,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.4,
       "learnedAtRating": null,
       "loveRate": 0.2667,
       "rejectionRate": 0,
@@ -3909,8 +4859,18 @@
         "tanico": 4,
         "afrutado": 1.5
       },
+      "finalCandidateProfile": {
+        "potente": 4.5,
+        "acidez": 3.6,
+        "dulce": 0.5,
+        "tanico": 4,
+        "afrutado": 1.5
+      },
       "initialProfileRmse": 0.902,
       "finalProfileRmse": 0.5547,
+      "finalCandidateProfileRmse": 0.5547,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.6,
       "rejectionRate": 0,
@@ -3950,8 +4910,18 @@
         "tanico": 1.1,
         "afrutado": 4.3
       },
+      "finalCandidateProfile": {
+        "potente": 1.9,
+        "acidez": 4.5,
+        "dulce": 0.9,
+        "tanico": 1.1,
+        "afrutado": 4.3
+      },
       "initialProfileRmse": 0.6546,
       "finalProfileRmse": 0.9418,
+      "finalCandidateProfileRmse": 0.9418,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.27,
       "learnedAtRating": null,
       "loveRate": 0.7,
       "rejectionRate": 0,
@@ -3991,8 +4961,18 @@
         "tanico": 1.9,
         "afrutado": 4.5
       },
+      "finalCandidateProfile": {
+        "potente": 2.1,
+        "acidez": 3,
+        "dulce": 3.4,
+        "tanico": 1.9,
+        "afrutado": 4.5
+      },
       "initialProfileRmse": 0.7075,
       "finalProfileRmse": 0.5584,
+      "finalCandidateProfileRmse": 0.5584,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 5,
       "loveRate": 0.4,
       "rejectionRate": 0,
@@ -4032,8 +5012,18 @@
         "tanico": 1.6,
         "afrutado": 4.3
       },
+      "finalCandidateProfile": {
+        "potente": 2.9,
+        "acidez": 1.6,
+        "dulce": 3.2,
+        "tanico": 1.6,
+        "afrutado": 4.3
+      },
       "initialProfileRmse": 0.4559,
       "finalProfileRmse": 0.7378,
+      "finalCandidateProfileRmse": 0.7378,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.42,
       "learnedAtRating": null,
       "loveRate": 0.4717,
       "rejectionRate": 0.0189,
@@ -4073,8 +5063,18 @@
         "tanico": 3.8,
         "afrutado": 2
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 4.6,
+        "dulce": 0.4,
+        "tanico": 3.8,
+        "afrutado": 2
+      },
       "initialProfileRmse": 0.5442,
       "finalProfileRmse": 0.7907,
+      "finalCandidateProfileRmse": 0.7907,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 1,
       "rejectionRate": 0,
@@ -4114,8 +5114,18 @@
         "tanico": 4.9,
         "afrutado": 3.3
       },
+      "finalCandidateProfile": {
+        "potente": 4.6,
+        "acidez": 2.9,
+        "dulce": 0.7,
+        "tanico": 4.9,
+        "afrutado": 3.3
+      },
       "initialProfileRmse": 0.6453,
       "finalProfileRmse": 0.4119,
+      "finalCandidateProfileRmse": 0.4119,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.44,
       "learnedAtRating": 5,
       "loveRate": 0.4839,
       "rejectionRate": 0.129,
@@ -4155,8 +5165,18 @@
         "tanico": 4.9,
         "afrutado": 3
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 1.1,
+        "tanico": 4.9,
+        "afrutado": 3
+      },
       "initialProfileRmse": 0.3039,
       "finalProfileRmse": 0.3035,
+      "finalCandidateProfileRmse": 0.3035,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.23,
       "learnedAtRating": 3,
       "loveRate": 0.8958,
       "rejectionRate": 0,
@@ -4196,8 +5216,18 @@
         "tanico": 3.9,
         "afrutado": 1.9
       },
+      "finalCandidateProfile": {
+        "potente": 4.8,
+        "acidez": 3.9,
+        "dulce": 1,
+        "tanico": 3.9,
+        "afrutado": 1.9
+      },
       "initialProfileRmse": 0.4076,
       "finalProfileRmse": 0.7485,
+      "finalCandidateProfileRmse": 0.7485,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.39,
       "learnedAtRating": 3,
       "loveRate": 0.5161,
       "rejectionRate": 0.0323,
@@ -4237,8 +5267,18 @@
         "tanico": 1.4,
         "afrutado": 5
       },
+      "finalCandidateProfile": {
+        "potente": 0.4,
+        "acidez": 3.3,
+        "dulce": 0.5,
+        "tanico": 1.4,
+        "afrutado": 5
+      },
       "initialProfileRmse": 0.9509,
       "finalProfileRmse": 0.6671,
+      "finalCandidateProfileRmse": 0.6671,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 1,
       "rejectionRate": 0,
@@ -4278,8 +5318,18 @@
         "tanico": 1.1,
         "afrutado": 4.7
       },
+      "finalCandidateProfile": {
+        "potente": 2.3,
+        "acidez": 2.5,
+        "dulce": 2.6,
+        "tanico": 1.1,
+        "afrutado": 4.7
+      },
       "initialProfileRmse": 0.296,
       "finalProfileRmse": 1.2823,
+      "finalCandidateProfileRmse": 1.2823,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.39,
       "learnedAtRating": 3,
       "loveRate": 0.5155,
       "rejectionRate": 0,
@@ -4319,8 +5369,18 @@
         "tanico": 4.9,
         "afrutado": 2.9
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 2.6,
+        "dulce": 0.9,
+        "tanico": 4.9,
+        "afrutado": 2.9
+      },
       "initialProfileRmse": 0.3024,
       "finalProfileRmse": 0.4878,
+      "finalCandidateProfileRmse": 0.4878,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.24,
       "learnedAtRating": 3,
       "loveRate": 0.8571,
       "rejectionRate": 0,
@@ -4360,8 +5420,18 @@
         "tanico": 2,
         "afrutado": 4.2
       },
+      "finalCandidateProfile": {
+        "potente": 3,
+        "acidez": 2.7,
+        "dulce": 2.2,
+        "tanico": 2,
+        "afrutado": 4.2
+      },
       "initialProfileRmse": 0.9527,
       "finalProfileRmse": 0.498,
+      "finalCandidateProfileRmse": 0.498,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.42,
       "learnedAtRating": 4,
       "loveRate": 0.7667,
       "rejectionRate": 0.0333,
@@ -4401,8 +5471,18 @@
         "tanico": 3.5,
         "afrutado": 1.9
       },
+      "finalCandidateProfile": {
+        "potente": 4.3,
+        "acidez": 4.2,
+        "dulce": 1,
+        "tanico": 3.5,
+        "afrutado": 1.9
+      },
       "initialProfileRmse": 0.4584,
       "finalProfileRmse": 0.4352,
+      "finalCandidateProfileRmse": 0.4352,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.4286,
       "rejectionRate": 0,
@@ -4442,8 +5522,18 @@
         "tanico": 4.6,
         "afrutado": 2.5
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3.8,
+        "dulce": 0.9,
+        "tanico": 4.6,
+        "afrutado": 2.5
+      },
       "initialProfileRmse": 0.4573,
       "finalProfileRmse": 1.1741,
+      "finalCandidateProfileRmse": 1.1741,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.38,
       "learnedAtRating": 3,
       "loveRate": 0.7791,
       "rejectionRate": 0.0116,
@@ -4483,8 +5573,18 @@
         "tanico": 1.1,
         "afrutado": 3.9
       },
+      "finalCandidateProfile": {
+        "potente": 1.8,
+        "acidez": 4.9,
+        "dulce": 1,
+        "tanico": 1.1,
+        "afrutado": 3.9
+      },
       "initialProfileRmse": 0.5741,
       "finalProfileRmse": 0.8736,
+      "finalCandidateProfileRmse": 0.8736,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.23,
       "learnedAtRating": 3,
       "loveRate": 0.75,
       "rejectionRate": 0,
@@ -4524,8 +5624,18 @@
         "tanico": 1.6,
         "afrutado": 3.9
       },
+      "finalCandidateProfile": {
+        "potente": 1.9,
+        "acidez": 4.9,
+        "dulce": 0.9,
+        "tanico": 1.6,
+        "afrutado": 3.9
+      },
       "initialProfileRmse": 0.2479,
       "finalProfileRmse": 1.3309,
+      "finalCandidateProfileRmse": 1.3309,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.26,
       "learnedAtRating": 3,
       "loveRate": 0.6486,
       "rejectionRate": 0.027,
@@ -4565,8 +5675,18 @@
         "tanico": 5,
         "afrutado": 3.3
       },
+      "finalCandidateProfile": {
+        "potente": 3.5,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 5,
+        "afrutado": 3.3
+      },
       "initialProfileRmse": 1.2794,
       "finalProfileRmse": 0.639,
+      "finalCandidateProfileRmse": 0.639,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.81,
       "learnedAtRating": 8,
       "loveRate": 0.3571,
       "rejectionRate": 0.4286,
@@ -4606,8 +5726,18 @@
         "tanico": 1.9,
         "afrutado": 4.5
       },
+      "finalCandidateProfile": {
+        "potente": 3,
+        "acidez": 2.6,
+        "dulce": 2.2,
+        "tanico": 1.9,
+        "afrutado": 4.5
+      },
       "initialProfileRmse": 0.9755,
       "finalProfileRmse": 0.7564,
+      "finalCandidateProfileRmse": 0.7564,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.7273,
       "rejectionRate": 0,
@@ -4647,8 +5777,18 @@
         "tanico": 3.3,
         "afrutado": 1.8
       },
+      "finalCandidateProfile": {
+        "potente": 4.1,
+        "acidez": 4,
+        "dulce": 1,
+        "tanico": 3.3,
+        "afrutado": 1.8
+      },
       "initialProfileRmse": 0.5814,
       "finalProfileRmse": 0.4229,
+      "finalCandidateProfileRmse": 0.4229,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.75,
       "rejectionRate": 0,
@@ -4688,8 +5828,18 @@
         "tanico": 1,
         "afrutado": 4
       },
+      "finalCandidateProfile": {
+        "potente": 2.8,
+        "acidez": 4,
+        "dulce": 0.5,
+        "tanico": 1,
+        "afrutado": 4
+      },
       "initialProfileRmse": 0.6782,
       "finalProfileRmse": 0.5112,
+      "finalCandidateProfileRmse": 0.5112,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.6,
       "rejectionRate": 0,
@@ -4729,8 +5879,18 @@
         "tanico": 2,
         "afrutado": 4.7
       },
+      "finalCandidateProfile": {
+        "potente": 1.9,
+        "acidez": 4,
+        "dulce": 1.6,
+        "tanico": 2,
+        "afrutado": 4.7
+      },
       "initialProfileRmse": 0.6652,
       "finalProfileRmse": 0.248,
+      "finalCandidateProfileRmse": 0.248,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.43,
       "learnedAtRating": 6,
       "loveRate": 0.8876,
       "rejectionRate": 0,
@@ -4770,8 +5930,18 @@
         "tanico": 1.8,
         "afrutado": 4.7
       },
+      "finalCandidateProfile": {
+        "potente": 0.8,
+        "acidez": 2.1,
+        "dulce": 2.3,
+        "tanico": 1.8,
+        "afrutado": 4.7
+      },
       "initialProfileRmse": 1.1022,
       "finalProfileRmse": 1.9015,
+      "finalCandidateProfileRmse": 1.9015,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.3,
       "learnedAtRating": 5,
       "loveRate": 0.4286,
       "rejectionRate": 0.1429,
@@ -4811,8 +5981,18 @@
         "tanico": 1,
         "afrutado": 3.6
       },
+      "finalCandidateProfile": {
+        "potente": 3,
+        "acidez": 3.9,
+        "dulce": 1.1,
+        "tanico": 1,
+        "afrutado": 3.6
+      },
       "initialProfileRmse": 1.0823,
       "finalProfileRmse": 0.6903,
+      "finalCandidateProfileRmse": 0.6903,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 4,
       "loveRate": 0.7143,
       "rejectionRate": 0,
@@ -4852,8 +6032,18 @@
         "tanico": 2,
         "afrutado": 4.2
       },
+      "finalCandidateProfile": {
+        "potente": 2.6,
+        "acidez": 2.1,
+        "dulce": 3.9,
+        "tanico": 2,
+        "afrutado": 4.2
+      },
       "initialProfileRmse": 0.4281,
       "finalProfileRmse": 0.5011,
+      "finalCandidateProfileRmse": 0.5011,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.45,
       "learnedAtRating": 3,
       "loveRate": 0.5484,
       "rejectionRate": 0.0323,
@@ -4893,8 +6083,18 @@
         "tanico": 1.3,
         "afrutado": 4
       },
+      "finalCandidateProfile": {
+        "potente": 2.1,
+        "acidez": 5,
+        "dulce": 2.1,
+        "tanico": 1.3,
+        "afrutado": 4
+      },
       "initialProfileRmse": 1.0635,
       "finalProfileRmse": 0.5234,
+      "finalCandidateProfileRmse": 0.5234,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.17,
       "learnedAtRating": 3,
       "loveRate": 1,
       "rejectionRate": 0,
@@ -4934,8 +6134,18 @@
         "tanico": 1.1,
         "afrutado": 4.6
       },
+      "finalCandidateProfile": {
+        "potente": 1.2,
+        "acidez": 4.8,
+        "dulce": 1,
+        "tanico": 1.1,
+        "afrutado": 4.6
+      },
       "initialProfileRmse": 0.6513,
       "finalProfileRmse": 0.6881,
+      "finalCandidateProfileRmse": 0.6881,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.3,
       "learnedAtRating": 5,
       "loveRate": 0.8462,
       "rejectionRate": 0,
@@ -4975,8 +6185,18 @@
         "tanico": 2.1,
         "afrutado": 4.1
       },
+      "finalCandidateProfile": {
+        "potente": 2.1,
+        "acidez": 1.9,
+        "dulce": 3.5,
+        "tanico": 2.1,
+        "afrutado": 4.1
+      },
       "initialProfileRmse": 0.3442,
       "finalProfileRmse": 0.3522,
+      "finalCandidateProfileRmse": 0.3522,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.51,
       "learnedAtRating": 3,
       "loveRate": 0.4762,
       "rejectionRate": 0.0159,
@@ -5016,8 +6236,18 @@
         "tanico": 0,
         "afrutado": 3
       },
+      "finalCandidateProfile": {
+        "potente": 4.9,
+        "acidez": 3.6,
+        "dulce": 5,
+        "tanico": 0,
+        "afrutado": 3
+      },
       "initialProfileRmse": 1.5101,
       "finalProfileRmse": 1.5554,
+      "finalCandidateProfileRmse": 1.5554,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 7,
       "loveRate": 0.1111,
       "rejectionRate": 0.4444,
@@ -5057,8 +6287,18 @@
         "tanico": 1.7,
         "afrutado": 4.3
       },
+      "finalCandidateProfile": {
+        "potente": 3.1,
+        "acidez": 1.9,
+        "dulce": 3.2,
+        "tanico": 1.7,
+        "afrutado": 4.3
+      },
       "initialProfileRmse": 0.8049,
       "finalProfileRmse": 0.5308,
+      "finalCandidateProfileRmse": 0.5308,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.65,
       "learnedAtRating": 3,
       "loveRate": 0.5556,
       "rejectionRate": 0,
@@ -5098,8 +6338,18 @@
         "tanico": 4.4,
         "afrutado": 3
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 4.4,
+        "afrutado": 3
+      },
       "initialProfileRmse": 0.4294,
       "finalProfileRmse": 0.4396,
+      "finalCandidateProfileRmse": 0.4396,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.25,
       "learnedAtRating": 3,
       "loveRate": 0.6739,
       "rejectionRate": 0.0217,
@@ -5139,8 +6389,18 @@
         "tanico": 1.6,
         "afrutado": 4.7
       },
+      "finalCandidateProfile": {
+        "potente": 2.4,
+        "acidez": 2.7,
+        "dulce": 4.9,
+        "tanico": 1.6,
+        "afrutado": 4.7
+      },
       "initialProfileRmse": 0.6634,
       "finalProfileRmse": 0.3402,
+      "finalCandidateProfileRmse": 0.3402,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.44,
       "learnedAtRating": 3,
       "loveRate": 0.6154,
       "rejectionRate": 0,
@@ -5180,8 +6440,18 @@
         "tanico": 4.1,
         "afrutado": 1.8
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 3.9,
+        "dulce": 1,
+        "tanico": 4.1,
+        "afrutado": 1.8
+      },
       "initialProfileRmse": 0.4869,
       "finalProfileRmse": 0.2737,
+      "finalCandidateProfileRmse": 0.2737,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.39,
       "learnedAtRating": 3,
       "loveRate": 0.8276,
       "rejectionRate": 0,
@@ -5221,8 +6491,18 @@
         "tanico": 5,
         "afrutado": 4
       },
+      "finalCandidateProfile": {
+        "potente": 3.7,
+        "acidez": 1.6,
+        "dulce": 1.4,
+        "tanico": 5,
+        "afrutado": 4
+      },
       "initialProfileRmse": 1.2955,
       "finalProfileRmse": 1.0177,
+      "finalCandidateProfileRmse": 1.0177,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 6,
       "loveRate": 0.2857,
       "rejectionRate": 0,
@@ -5262,8 +6542,18 @@
         "tanico": 5,
         "afrutado": 2.8
       },
+      "finalCandidateProfile": {
+        "potente": 4.1,
+        "acidez": 4.2,
+        "dulce": 2.7,
+        "tanico": 5,
+        "afrutado": 2.8
+      },
       "initialProfileRmse": 0.6434,
       "finalProfileRmse": 1.1511,
+      "finalCandidateProfileRmse": 1.1511,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0,
       "rejectionRate": 0,
@@ -5303,8 +6593,18 @@
         "tanico": 1.8,
         "afrutado": 3.6
       },
+      "finalCandidateProfile": {
+        "potente": 3.6,
+        "acidez": 1.1,
+        "dulce": 2.7,
+        "tanico": 1.8,
+        "afrutado": 3.6
+      },
       "initialProfileRmse": 0.6195,
       "finalProfileRmse": 0.5864,
+      "finalCandidateProfileRmse": 0.5864,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.29,
       "learnedAtRating": 3,
       "loveRate": 0.6429,
       "rejectionRate": 0,
@@ -5344,8 +6644,18 @@
         "tanico": 5,
         "afrutado": 3.1
       },
+      "finalCandidateProfile": {
+        "potente": 4.7,
+        "acidez": 3,
+        "dulce": 0.8,
+        "tanico": 5,
+        "afrutado": 3.1
+      },
       "initialProfileRmse": 0.5123,
       "finalProfileRmse": 1.0032,
+      "finalCandidateProfileRmse": 1.0032,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0.34,
       "learnedAtRating": 3,
       "loveRate": 0.5469,
       "rejectionRate": 0.0313,
@@ -5385,8 +6695,18 @@
         "tanico": 1.9,
         "afrutado": 4
       },
+      "finalCandidateProfile": {
+        "potente": 3,
+        "acidez": 2.2,
+        "dulce": 1.5,
+        "tanico": 1.9,
+        "afrutado": 4
+      },
       "initialProfileRmse": 1.0431,
       "finalProfileRmse": 1.3686,
+      "finalCandidateProfileRmse": 1.3686,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": null,
       "loveRate": 0.25,
       "rejectionRate": 0,
@@ -5426,13 +6746,23 @@
         "tanico": 3.8,
         "afrutado": 1.9
       },
+      "finalCandidateProfile": {
+        "potente": 5,
+        "acidez": 4.4,
+        "dulce": 0.8,
+        "tanico": 3.8,
+        "afrutado": 1.9
+      },
       "initialProfileRmse": 0.8445,
       "finalProfileRmse": 0.5788,
+      "finalCandidateProfileRmse": 0.5788,
+      "candidateShiftDetected": false,
+      "candidateShiftMagnitude": 0,
       "learnedAtRating": 3,
       "loveRate": 0.9,
       "rejectionRate": 0,
       "uniqueTopRecommendations": 12
     }
   ],
-  "deterministicFingerprint": "dde60e2b940ab06f9d83580cb56b8c8fda2cb3cc94251ed47d0b5103f6923f3f"
+  "deterministicFingerprint": "4b823fcdc41dbeb202c97bf073a07c7bcd77a8cf65a74ff092c31683d640440c"
 }

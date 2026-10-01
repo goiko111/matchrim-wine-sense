@@ -19,6 +19,8 @@ export interface LearnedMatchrimProfile {
     diversity: number;
     datedEvidence: number;
     conflicting: boolean;
+    preferenceShiftDetected: boolean;
+    preferenceShiftMagnitude: number;
   };
 }
 
@@ -41,6 +43,13 @@ export interface MatchrimRecommendationAudit {
 export interface MatchrimLearningAudit {
   learned: LearnedMatchrimProfile;
   recommendations: MatchrimRecommendationAudit[];
+}
+
+export interface MatchrimLearningOptions {
+  detectPreferenceShift?: boolean;
+  driftThreshold?: number;
+  calibrateAffinity?: boolean;
+  affinityPrior?: number;
 }
 
 const ATTRS = [
@@ -89,6 +98,16 @@ export const scoreMatchrimProfileAgainstSensory = (
   return Math.round((weightedScore / availableWeight) * 100);
 };
 
+export const calibrateMatchrimAffinityScore = (
+  score: number,
+  learningConfidence: number,
+  prior = 72,
+) => {
+  const normalizedConfidence = clamp(learningConfidence, 0, 70) / 70;
+  const reliability = 0.62 + normalizedConfidence * 0.38;
+  return Math.round(prior + (score - prior) * reliability);
+};
+
 const ratingWeight = (rating: Rating) => {
   if (rating === 'love') return 1;
   if (rating === 'ok') return 0.25;
@@ -107,9 +126,52 @@ const sensorySignature = (attrs: SensoryAttributes) => ATTRS
   .map(([, sourceKey]) => normalizeSensoryValue(attrs[sourceKey]))
   .join(':');
 
+export const detectMatchrimPreferenceShift = (
+  baseProfile: MatchrimProfileLike,
+  wines: TrainableWine[],
+  threshold = 0.9,
+) => {
+  const dated = wines
+    .filter((wine) => ratingWeight(wine.rating ?? null) !== 0 && evidenceTimestamp(wine) !== null)
+    .sort((left, right) => evidenceTimestamp(left)! - evidenceTimestamp(right)!);
+  const windowSize = Math.min(12, Math.floor(dated.length / 2));
+  if (windowSize < 6) return { detected: false, magnitude: 0, recentSamples: 0, olderSamples: 0 };
+  const recent = dated.slice(-windowSize);
+  const older = dated.slice(-windowSize * 2, -windowSize);
+  if (older.length < 6) return { detected: false, magnitude: 0, recentSamples: recent.length, olderSamples: older.length };
+
+  const preferenceDirection = (rows: TrainableWine[]) => {
+    const result = { ...baseProfile };
+    const totalWeight = rows.reduce((sum, wine) => sum + Math.abs(ratingWeight(wine.rating ?? null)), 0);
+    ATTRS.forEach(([targetKey, sourceKey]) => {
+      const direction = rows.reduce((sum, wine) => {
+        const value = normalizeSensoryValue(wine.sensory_attributes?.[sourceKey]);
+        if (value === null) return sum;
+        return sum + (value - baseProfile[targetKey]) * ratingWeight(wine.rating ?? null);
+      }, 0);
+      result[targetKey] = clamp(baseProfile[targetKey] + direction / Math.max(totalWeight, Number.EPSILON));
+    });
+    return result;
+  };
+  const olderProfile = preferenceDirection(older);
+  const recentProfile = preferenceDirection(recent);
+  const shift = mean(ATTRS.map(([targetKey]) => Math.abs(recentProfile[targetKey] - olderProfile[targetKey])));
+  return {
+    detected: shift >= threshold,
+    magnitude: Math.round(shift * 100) / 100,
+    recentSamples: recent.length,
+    olderSamples: older.length,
+  };
+};
+
+const mean = (values: number[]) => values.length
+  ? values.reduce((sum, value) => sum + value, 0) / values.length
+  : 0;
+
 export const calculateLearnedMatchrimProfile = (
   baseProfile: MatchrimProfileLike,
-  wines: TrainableWine[]
+  wines: TrainableWine[],
+  options: MatchrimLearningOptions = {},
 ): LearnedMatchrimProfile => {
   const deltas: Record<keyof MatchrimProfileLike, number> = {
     potente: 0,
@@ -132,6 +194,9 @@ export const calculateLearnedMatchrimProfile = (
       normalizeSensoryValue(attrs[sourceKey]) !== null
     )));
   });
+  const preferenceShift = options.detectPreferenceShift
+    ? detectMatchrimPreferenceShift(baseProfile, validWines, options.driftThreshold ?? 0.9)
+    : { detected: false, magnitude: 0, recentSamples: 0, olderSamples: 0 };
   const timestamps = validWines.map(evidenceTimestamp).filter((value): value is number => value !== null);
   const newestTimestamp = timestamps.length ? Math.max(...timestamps) : null;
   const signatures = new Set<string>();
@@ -146,7 +211,9 @@ export const calculateLearnedMatchrimProfile = (
     const ageDays = timestamp !== null && newestTimestamp !== null
       ? Math.max(0, (newestTimestamp - timestamp) / 86_400_000)
       : 0;
-    const recencyWeight = timestamp === null ? 1 : 0.2 + 0.8 * Math.pow(0.5, ageDays / 120);
+    const recencyWeight = timestamp === null
+      ? 1
+      : 0.2 + 0.8 * Math.pow(0.5, ageDays / 120);
     const effectiveWeight = weight * recencyWeight;
     signatures.add(sensorySignature(attrs));
     if (timestamp !== null) datedSamples += 1;
@@ -168,7 +235,14 @@ export const calculateLearnedMatchrimProfile = (
       profile: baseProfile,
       confidence: 0,
       samples: 0,
-      calibration: { consistency: 0, diversity: 0, datedEvidence: 0, conflicting: false },
+      calibration: {
+        consistency: 0,
+        diversity: 0,
+        datedEvidence: 0,
+        conflicting: false,
+        preferenceShiftDetected: false,
+        preferenceShiftMagnitude: 0,
+      },
     };
   }
 
@@ -202,6 +276,8 @@ export const calculateLearnedMatchrimProfile = (
       diversity: Math.round(diversityRatio * 100),
       datedEvidence: Math.round((datedSamples / samples) * 100),
       conflicting: samples >= 4 && consistencyRatio < 0.55,
+      preferenceShiftDetected: preferenceShift.detected,
+      preferenceShiftMagnitude: preferenceShift.magnitude,
     },
   };
 };
@@ -210,14 +286,18 @@ export const auditMatchrimLearning = (
   baseProfile: MatchrimProfileLike,
   wines: TrainableWine[],
   candidates: MatchrimRecommendationCandidate[],
+  options: MatchrimLearningOptions = {},
 ): MatchrimLearningAudit => {
-  const learned = calculateLearnedMatchrimProfile(baseProfile, wines);
+  const learned = calculateLearnedMatchrimProfile(baseProfile, wines, options);
 
   const recommendations = candidates
     .flatMap((candidate) => {
       const beforeScore = scoreMatchrimProfileAgainstSensory(baseProfile, candidate.sensory_attributes);
-      const afterScore = scoreMatchrimProfileAgainstSensory(learned.profile, candidate.sensory_attributes);
-      if (beforeScore === null || afterScore === null) return [];
+      const rawAfterScore = scoreMatchrimProfileAgainstSensory(learned.profile, candidate.sensory_attributes);
+      if (beforeScore === null || rawAfterScore === null) return [];
+      const afterScore = options.calibrateAffinity
+        ? calibrateMatchrimAffinityScore(rawAfterScore, learned.confidence, options.affinityPrior)
+        : rawAfterScore;
 
       return [{
         id: candidate.id,
@@ -226,9 +306,12 @@ export const auditMatchrimLearning = (
         beforeScore,
         afterScore,
         delta: afterScore - beforeScore,
+        rawAfterScore,
+        rawDelta: rawAfterScore - beforeScore,
       }];
     })
-    .sort((a, b) => b.afterScore - a.afterScore || b.delta - a.delta || a.name.localeCompare(b.name));
+    .sort((a, b) => b.rawAfterScore - a.rawAfterScore || b.rawDelta - a.rawDelta || a.name.localeCompare(b.name))
+    .map(({ rawAfterScore: _rawAfterScore, rawDelta: _rawDelta, ...recommendation }) => recommendation);
 
   return { learned, recommendations };
 };

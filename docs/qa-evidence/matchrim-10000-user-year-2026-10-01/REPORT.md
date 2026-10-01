@@ -10,9 +10,9 @@ Esta es una auditoría longitudinal **sintética**, no un estudio con 10.000 per
 - Periodo: 365 días.
 - Decisiones simuladas: 421.722.
 - Valoraciones explícitas: 287.675 (68.21% de los eventos).
-- Tiempo local total: 34.50 s.
+- Tiempo local total: 58.08 s.
 - Producción, Supabase, proveedor de visión y datos personales: **0 llamadas / 0 escrituras**.
-- Huella determinista: `dde60e2b940ab06f9d83580cb56b8c8fda2cb3cc94251ed47d0b5103f6923f3f`.
+- Huella determinista: `4b823fcdc41dbeb202c97bf073a07c7bcd77a8cf65a74ff092c31683d640440c`.
 
 ## Inteligencia de recomendación
 
@@ -21,15 +21,20 @@ Esta es una auditoría longitudinal **sintética**, no un estudio con 10.000 per
 | popularity | 19.54% | 19.54% | 19.35% | 18.60% | 27.50 | n/a |
 | onboarding | 65.51% | 65.51% | 68.53% | 77.69% | 6.57 | 10.5598 |
 | hybrid | 66.81% | 66.81% | 69.90% | 79.30% | 6.14 | 10.8955 |
+| candidate | 66.81% | 66.81% | 69.90% | 79.30% | 6.14 | 10.3749 |
 | oracle | 100.00% | 100.00% | 100.00% | 100.00% | 0.00 | 0 |
 
 - Mejora NDCG del híbrido frente a popularidad: 50.55%.
 - Mejora NDCG del híbrido frente al test inicial: 1.37%.
+- Cambio NDCG del candidato frente al híbrido actual: 0.00%.
+- Cambio MAE de afinidad del candidato: -0.52 puntos.
+- Cambio de calibración del candidato: -1.28%.
+- Detección de deriva: precision 46.67%, recall 0.77%, falsos positivos 0.20%.
 - Brecha NDCG restante frente al oráculo: 30.10%.
 - Falsa confianza del híbrido: 1.53%.
 - Segmento con menor NDCG híbrido: **novice** (62.65%).
 
-El aprendizaje aporta valor sobre el test inicial, pero debe cerrarse la brecha de contexto y calibración antes de presentar la afinidad como una predicción fuerte.
+La calibracion por confianza conserva el ranking y reduce el error de afinidad; puede avanzar a regresion de producto y paridad Edge. La recencia adaptativa queda rechazada porque la señal de deriva no separa perfiles estables y cambiantes con recall suficiente.
 
 ## Aprendizaje del perfil
 
@@ -53,7 +58,7 @@ El RMSE compara el perfil aprendido con el gusto latente sintético en escala 0-
 - Presupuesto y ocasión alteran la decisión real, pero no contaminan las cinco dimensiones persistentes.
 - Recomendación y feedback reproducibles mediante semilla fija.
 - Métricas mensuales, por segmento y por estrategia exportadas para regresión.
-- Latencia del algoritmo p50/p95/p99: 0.02379 / 0.069 / 0.08879 ms.
+- Latencia del algoritmo p50/p95/p99: 0.02575 / 0.07112 / 0.09133 ms.
 
 La navegación, accesibilidad, escáner, cartas, errores y layout móvil se validan además con la suite funcional/visual existente; este motor no sustituye esas pruebas.
 

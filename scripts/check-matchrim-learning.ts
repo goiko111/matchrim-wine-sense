@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 
-import { calculateLearnedMatchrimProfile } from '../src/utils/matchrimLearning';
+import {
+  calculateLearnedMatchrimProfile,
+  calibrateMatchrimAffinityScore,
+  detectMatchrimPreferenceShift,
+} from '../src/utils/matchrimLearning';
 import { generateMatchrimCode, normalizeMatchrimProfileForClassifier } from '../src/utils/matchrimPassport';
 import { generateMatchrimName, generateWineStyles } from '../src/utils/profileUtils';
 import { calculateEdgeLearnedProfile } from '../supabase/functions/_shared/matchrim-learning';
@@ -138,5 +142,41 @@ assert.deepEqual(
   recencyProfile.profile,
   'Client and Edge Functions must derive the same active profile from the same rows',
 );
+
+const oldStructured = Array.from({ length: 12 }, (_, index) => ({
+  rating: 'love' as const,
+  updated_at: new Date(now - (24 - index) * 7 * 86_400_000).toISOString(),
+  sensory_attributes: { potencia: 5, acidez: 2, dulzura: 1, taninos: 5, afrutado: 2 },
+}));
+const recentFresh = Array.from({ length: 12 }, (_, index) => ({
+  rating: 'love' as const,
+  updated_at: new Date(now - (12 - index) * 7 * 86_400_000).toISOString(),
+  sensory_attributes: { potencia: 2, acidez: 5, dulzura: 1, taninos: 1, afrutado: 5 },
+}));
+const shiftedEvidence = [...oldStructured, ...recentFresh];
+const shiftSignal = detectMatchrimPreferenceShift(baseProfile, shiftedEvidence, 0.9);
+assert.equal(shiftSignal.detected, true, 'A sustained reversal must activate adaptive recency');
+assert.ok(shiftSignal.magnitude >= 0.9);
+
+const measuredShiftProfile = calculateLearnedMatchrimProfile(baseProfile, shiftedEvidence, {
+  detectPreferenceShift: true,
+  driftThreshold: 0.9,
+});
+assert.equal(measuredShiftProfile.calibration.preferenceShiftDetected, true);
+
+const stableEvidence = Array.from({ length: 24 }, (_, index) => ({
+  rating: index % 5 === 0 ? 'ok' as const : 'love' as const,
+  updated_at: new Date(now - (24 - index) * 7 * 86_400_000).toISOString(),
+  sensory_attributes: { potencia: 4, acidez: 3, dulzura: 1, taninos: 4, afrutado: 3 },
+}));
+assert.equal(
+  detectMatchrimPreferenceShift(baseProfile, stableEvidence, 0.9).detected,
+  false,
+  'Repeated stable evidence must not be mistaken for taste drift',
+);
+
+assert.equal(calibrateMatchrimAffinityScore(92, 0), 84);
+assert.equal(calibrateMatchrimAffinityScore(92, 70), 92);
+assert.equal(calibrateMatchrimAffinityScore(40, 0), 52);
 
 console.log('Matchrim learning checks passed');

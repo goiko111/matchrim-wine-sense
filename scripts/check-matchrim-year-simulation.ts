@@ -22,6 +22,20 @@ assert.ok(
   first.strategyMetrics.hybrid.ndcgAt5 > first.strategyMetrics.popularity.ndcgAt5,
   'Personalized ranking must beat static popularity in the controlled cohort',
 );
+assert.equal(
+  first.strategyMetrics.candidate.ndcgAt5,
+  first.strategyMetrics.hybrid.ndcgAt5,
+  'Confidence calibration must not reorder recommendations',
+);
+assert.equal(
+  first.strategyMetrics.candidate.meanRegret,
+  first.strategyMetrics.hybrid.meanRegret,
+  'Confidence calibration must preserve the selected wine',
+);
+assert.ok(
+  first.strategyMetrics.candidate.affinityMae! < first.strategyMetrics.hybrid.affinityMae!,
+  'Confidence calibration must reduce affinity error in the controlled cohort',
+);
 assert.equal(first.strategyMetrics.oracle.meanRegret, 0, 'Oracle remains an evaluation ceiling only');
 assert.ok(
   first.profileLearning.find((row) => row.ratings === 5)!.meanProfileRmse

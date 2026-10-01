@@ -8,13 +8,14 @@ import { pathToFileURL } from 'node:url';
 import {
   auditMatchrimLearning,
   scoreMatchrimProfileAgainstSensory,
+  type MatchrimLearningOptions,
   type MatchrimRecommendationCandidate,
   type TrainableWine,
 } from '../src/utils/matchrimLearning';
 import type { MatchrimProfileLike } from '../src/utils/matchrimPassport';
 
 type Axis = keyof MatchrimProfileLike;
-type Strategy = 'popularity' | 'onboarding' | 'hybrid' | 'oracle';
+type Strategy = 'popularity' | 'onboarding' | 'hybrid' | 'candidate' | 'oracle';
 type Context = 'weekday' | 'aperitif' | 'seafood' | 'meat' | 'spicy' | 'celebration';
 type Rating = 'love' | 'ok' | 'not_for_me';
 
@@ -80,8 +81,12 @@ type UserAudit = {
   initialLatentProfile: MatchrimProfileLike;
   finalLatentProfile: MatchrimProfileLike;
   finalLearnedProfile: MatchrimProfileLike;
+  finalCandidateProfile: MatchrimProfileLike;
   initialProfileRmse: number;
   finalProfileRmse: number;
+  finalCandidateProfileRmse: number;
+  candidateShiftDetected: boolean;
+  candidateShiftMagnitude: number;
   learnedAtRating: number | null;
   loveRate: number;
   rejectionRate: number;
@@ -96,11 +101,17 @@ const SENSORY_KEYS: Record<Axis, 'potencia' | 'acidez' | 'dulzura' | 'taninos' |
   tanico: 'taninos',
   afrutado: 'afrutado',
 };
-const STRATEGIES: Strategy[] = ['popularity', 'onboarding', 'hybrid', 'oracle'];
+const STRATEGIES: Strategy[] = ['popularity', 'onboarding', 'hybrid', 'candidate', 'oracle'];
 const CONTEXTS: Context[] = ['weekday', 'aperitif', 'seafood', 'meat', 'spicy', 'celebration'];
 const MILESTONES = [0, 1, 3, 5, 10, 25, 50] as const;
 const DAY_MS = 86_400_000;
 const START_DATE = Date.parse('2026-01-01T12:00:00Z');
+const CANDIDATE_OPTIONS: MatchrimLearningOptions = {
+  detectPreferenceShift: true,
+  driftThreshold: 0.9,
+  calibrateAffinity: true,
+  affinityPrior: 72,
+};
 
 const SEGMENTS: Segment[] = [
   { id: 'novice', weight: 0.30, annualEvents: 14, feedbackRate: 0.46, onboardingNoise: 1.05, exploration: 0.12 },
@@ -358,8 +369,8 @@ const chooseContext = (segment: Segment, random: Random): Context => {
   return 'weekday';
 };
 
-const ratingForScore = (score: number, random: Random): Rating => {
-  const experienced = score + random.normal(0, 7);
+const ratingForScore = (score: number, experienceNoise: number): Rating => {
+  const experienced = score + experienceNoise;
   if (experienced >= 78) return 'love';
   if (experienced >= 57) return 'ok';
   return 'not_for_me';
@@ -389,14 +400,22 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
   const bySegment = new Map<string, MetricBucket>();
   const byMonth = new Map<string, MetricBucket>();
   const latencySamples: number[] = [];
+  const candidateLatencySamples: number[] = [];
   const profileMilestones = new Map<number, number[]>();
+  const driftShiftMagnitudes: number[] = [];
+  const stableShiftMagnitudes: number[] = [];
   const audits: UserAudit[] = [];
   let totalEvents = 0;
   let totalRatings = 0;
   let totalLove = 0;
   let totalRejected = 0;
+  let candidateLove = 0;
+  let candidateRejected = 0;
   let driftingUsers = 0;
   let learnedUsers = 0;
+  let candidateShiftDetectedUsers = 0;
+  let candidateShiftTruePositives = 0;
+  let candidateShiftFalsePositives = 0;
   const auditStep = Math.max(1, Math.floor(config.users / Math.max(1, config.auditProfiles)));
 
   MILESTONES.forEach((milestone) => profileMilestones.set(milestone, []));
@@ -419,6 +438,7 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
     ])) as MatchrimProfileLike;
     const budget = clamp(Math.exp(random.normal(3.15, 0.5)), 14, 90);
     const history: TrainableWine[] = [];
+    const candidateHistory: TrainableWine[] = [];
     const topRecommendations = new Set<string>();
     const recordedMilestones = new Set<number>();
     const initialError = profileRmse(baseProfile, latent);
@@ -427,6 +447,9 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
     let userRejected = 0;
     let userEventCount = 0;
     let finalLearnedProfile = baseProfile;
+    let finalCandidateProfile = baseProfile;
+    let candidateShiftDetected = false;
+    let candidateShiftMagnitude = 0;
     let finalLatentProfile = latent;
 
     profileMilestones.get(0)!.push(initialError);
@@ -440,10 +463,20 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
       const eventStarted = performance.now();
       const hybridAudit = auditMatchrimLearning(baseProfile, history, candidates);
       latencySamples.push(performance.now() - eventStarted);
+      const candidateStarted = performance.now();
+      const candidateAudit = auditMatchrimLearning(baseProfile, candidateHistory, candidates, CANDIDATE_OPTIONS);
+      candidateLatencySamples.push(performance.now() - candidateStarted);
       finalLearnedProfile = hybridAudit.learned.profile;
+      finalCandidateProfile = candidateAudit.learned.profile;
+      candidateShiftDetected ||= candidateAudit.learned.calibration.preferenceShiftDetected;
+      candidateShiftMagnitude = Math.max(
+        candidateShiftMagnitude,
+        candidateAudit.learned.calibration.preferenceShiftMagnitude,
+      );
       finalLatentProfile = activeLatent;
 
       const hybridById = new Map(hybridAudit.recommendations.map((item) => [item.id, item.afterScore]));
+      const candidateById = new Map(candidateAudit.recommendations.map((item) => [item.id, item.afterScore]));
       const rankings: Record<Strategy, RankedWine[]> = {
         popularity: candidates
           .map((wine) => ({ wine, score: wine.popularity }))
@@ -452,6 +485,14 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
         hybrid: candidates
           .map((wine) => ({ wine, score: hybridById.get(wine.id) ?? 0 }))
           .sort((a, b) => b.score - a.score || a.wine.id.localeCompare(b.wine.id)),
+        candidate: candidates
+          .map((wine) => ({
+            wine,
+            score: candidateById.get(wine.id) ?? 0,
+            rankingScore: scoreMatchrimProfileAgainstSensory(candidateAudit.learned.profile, wine.sensory_attributes) ?? 0,
+          }))
+          .sort((a, b) => b.rankingScore - a.rankingScore || a.wine.id.localeCompare(b.wine.id))
+          .map(({ wine, score }) => ({ wine, score })),
         oracle: candidates
           .map((wine) => ({ wine, score: trueWineScore(activeLatent, wine, context, budget) }))
           .sort((a, b) => b.score - a.score || a.wine.id.localeCompare(b.wine.id)),
@@ -460,24 +501,37 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
       const month = Math.min(12, Math.floor(day / Math.max(1, config.days / 12)) + 1);
 
       for (const strategy of STRATEGIES) {
-        const hasAffinity = strategy === 'onboarding' || strategy === 'hybrid' || strategy === 'oracle';
+        const hasAffinity = strategy === 'onboarding'
+          || strategy === 'hybrid'
+          || strategy === 'candidate'
+          || strategy === 'oracle';
         evaluateRanking(getBucket(overall, strategy), rankings[strategy], trueRanked, hasAffinity);
         evaluateRanking(getBucket(bySegment, `${segment.id}:${strategy}`), rankings[strategy], trueRanked, hasAffinity);
         evaluateRanking(getBucket(byMonth, `${month}:${strategy}`), rankings[strategy], trueRanked, hasAffinity);
       }
 
       const selected = rankings.hybrid[0];
+      const candidateSelected = rankings.candidate[0];
       const selectedTrueScore = trueWineScore(activeLatent, selected.wine, context, budget);
+      const candidateTrueScore = trueWineScore(activeLatent, candidateSelected.wine, context, budget);
       topRecommendations.add(selected.wine.id);
       totalEvents += 1;
       userEventCount += 1;
 
       if (random.next() <= segment.feedbackRate) {
-        const rating = ratingForScore(selectedTrueScore, random);
+        const experienceNoise = random.normal(0, 7);
+        const rating = ratingForScore(selectedTrueScore, experienceNoise);
+        const candidateRating = ratingForScore(candidateTrueScore, experienceNoise);
+        const updatedAt = new Date(START_DATE + day * DAY_MS).toISOString();
         history.push({
           rating,
           sensory_attributes: selected.wine.sensory_attributes,
-          updated_at: new Date(START_DATE + day * DAY_MS).toISOString(),
+          updated_at: updatedAt,
+        });
+        candidateHistory.push({
+          rating: candidateRating,
+          sensory_attributes: candidateSelected.wine.sensory_attributes,
+          updated_at: updatedAt,
         });
         totalRatings += 1;
         if (rating === 'love') {
@@ -487,6 +541,8 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
           totalRejected += 1;
           userRejected += 1;
         }
+        if (candidateRating === 'love') candidateLove += 1;
+        else if (candidateRating === 'not_for_me') candidateRejected += 1;
 
         const learnedAfterFeedback = auditMatchrimLearning(baseProfile, history, []).learned.profile;
         for (const milestone of MILESTONES) {
@@ -505,7 +561,20 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
     }
 
     finalLearnedProfile = auditMatchrimLearning(baseProfile, history, []).learned.profile;
+    const finalCandidateAudit = auditMatchrimLearning(baseProfile, candidateHistory, [], CANDIDATE_OPTIONS);
+    finalCandidateProfile = finalCandidateAudit.learned.profile;
+    candidateShiftDetected ||= finalCandidateAudit.learned.calibration.preferenceShiftDetected;
+    candidateShiftMagnitude = Math.max(
+      candidateShiftMagnitude,
+      finalCandidateAudit.learned.calibration.preferenceShiftMagnitude,
+    );
     finalLatentProfile = profileAtDay(latent, driftTarget, drifted, config.days - 1);
+    (drifted ? driftShiftMagnitudes : stableShiftMagnitudes).push(candidateShiftMagnitude);
+    if (candidateShiftDetected) {
+      candidateShiftDetectedUsers += 1;
+      if (drifted) candidateShiftTruePositives += 1;
+      else candidateShiftFalsePositives += 1;
+    }
 
     if (audits.length < config.auditProfiles && userIndex % auditStep === 0) {
       audits.push({
@@ -518,8 +587,12 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
         initialLatentProfile: Object.fromEntries(AXES.map((axis) => [axis, round(latent[axis], 2)])) as MatchrimProfileLike,
         finalLatentProfile: Object.fromEntries(AXES.map((axis) => [axis, round(finalLatentProfile[axis], 2)])) as MatchrimProfileLike,
         finalLearnedProfile,
+        finalCandidateProfile,
         initialProfileRmse: round(initialError),
         finalProfileRmse: round(profileRmse(finalLearnedProfile, finalLatentProfile)),
+        finalCandidateProfileRmse: round(profileRmse(finalCandidateProfile, finalLatentProfile)),
+        candidateShiftDetected,
+        candidateShiftMagnitude: round(candidateShiftMagnitude),
         learnedAtRating,
         loveRate: history.length ? round(userLove / history.length) : 0,
         rejectionRate: history.length ? round(userRejected / history.length) : 0,
@@ -553,6 +626,7 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
     };
   });
   const hybrid = strategyMetrics.hybrid;
+  const candidate = strategyMetrics.candidate;
   const onboarding = strategyMetrics.onboarding;
   const oracle = strategyMetrics.oracle;
   const worstSegment = segmentRows
@@ -565,10 +639,25 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
     segmentRows,
     monthRows,
     milestoneRows,
-    totals: { totalEvents, totalRatings, totalLove, totalRejected, driftingUsers, learnedUsers },
+    totals: {
+      totalEvents,
+      totalRatings,
+      totalLove,
+      totalRejected,
+      candidateLove,
+      candidateRejected,
+      driftingUsers,
+      learnedUsers,
+      candidateShiftDetectedUsers,
+      candidateShiftTruePositives,
+      candidateShiftFalsePositives,
+    },
     audits,
   };
   const fingerprint = createHash('sha256').update(JSON.stringify(deterministicPayload)).digest('hex');
+  const candidateShiftFalseNegatives = driftingUsers - candidateShiftTruePositives;
+  const stableUsers = config.users - driftingUsers;
+  const candidateShiftTrueNegatives = stableUsers - candidateShiftFalsePositives;
 
   const result = {
     generatedAt: '2026-10-01',
@@ -584,9 +673,28 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
       feedbackRate: round(totalRatings / Math.max(1, totalEvents)),
       loveRate: round(totalLove / Math.max(1, totalRatings)),
       rejectionRate: round(totalRejected / Math.max(1, totalRatings)),
+      candidateLoveRate: round(candidateLove / Math.max(1, totalRatings)),
+      candidateRejectionRate: round(candidateRejected / Math.max(1, totalRatings)),
       driftingUsers,
       usersMeetingLearningCriterion: learnedUsers,
       learningCriterionRate: round(learnedUsers / config.users),
+      shiftDetection: {
+        detectedUsers: candidateShiftDetectedUsers,
+        truePositives: candidateShiftTruePositives,
+        falsePositives: candidateShiftFalsePositives,
+        falseNegatives: candidateShiftFalseNegatives,
+        trueNegatives: candidateShiftTrueNegatives,
+        precision: round(candidateShiftTruePositives / Math.max(1, candidateShiftDetectedUsers)),
+        recall: round(candidateShiftTruePositives / Math.max(1, driftingUsers)),
+        falsePositiveRate: round(candidateShiftFalsePositives / Math.max(1, stableUsers)),
+        driftMagnitudeP50: round(percentile(driftShiftMagnitudes, 0.5)),
+        driftMagnitudeP90: round(percentile(driftShiftMagnitudes, 0.9)),
+        driftMagnitudeP95: round(percentile(driftShiftMagnitudes, 0.95)),
+        stableMagnitudeP50: round(percentile(stableShiftMagnitudes, 0.5)),
+        stableMagnitudeP90: round(percentile(stableShiftMagnitudes, 0.9)),
+        stableMagnitudeP95: round(percentile(stableShiftMagnitudes, 0.95)),
+        stableMagnitudeP99: round(percentile(stableShiftMagnitudes, 0.99)),
+      },
     },
     strategyMetrics,
     profileLearning: milestoneRows,
@@ -596,6 +704,7 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
       modelEvaluationP50Ms: round(percentile(latencySamples, 0.5), 5),
       modelEvaluationP95Ms: round(percentile(latencySamples, 0.95), 5),
       modelEvaluationP99Ms: round(percentile(latencySamples, 0.99), 5),
+      candidateEvaluationP95Ms: round(percentile(candidateLatencySamples, 0.95), 5),
       wallClockSeconds: round((performance.now() - started) / 1000, 3),
       qualification: 'In-process algorithm time, not backend load or mobile latency.',
     },
@@ -603,24 +712,30 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
       hybridNdcgUpliftVsPopularity: round(hybrid.ndcgAt5 - strategyMetrics.popularity.ndcgAt5),
       hybridNdcgUpliftVsOnboarding: round(hybrid.ndcgAt5 - onboarding.ndcgAt5),
       hybridHitRateUpliftVsOnboarding: round(hybrid.hitRateAt1 - onboarding.hitRateAt1),
+      candidateNdcgUpliftVsCurrent: round(candidate.ndcgAt5 - hybrid.ndcgAt5),
+      candidateHitRateUpliftVsCurrent: round(candidate.hitRateAt1 - hybrid.hitRateAt1),
+      candidateAffinityMaeChangeVsCurrent: round(candidate.affinityMae! - hybrid.affinityMae!),
+      candidateCalibrationChangeVsCurrent: round(candidate.calibrationError! - hybrid.calibrationError!),
+      candidateRegretChangeVsCurrent: round(candidate.meanRegret - hybrid.meanRegret),
       remainingNdcgGapToOracle: round(oracle.ndcgAt5 - hybrid.ndcgAt5),
       remainingRegretGapToOracle: round(hybrid.meanRegret - oracle.meanRegret),
       worstHybridSegment: worstSegment.segment,
       worstHybridSegmentNdcgAt5: worstSegment.ndcgAt5,
       falseConfidenceRate: hybrid.falseConfidenceRate,
-      recommendation: hybrid.ndcgAt5 > onboarding.ndcgAt5
-        ? 'El aprendizaje aporta valor sobre el test inicial, pero debe cerrarse la brecha de contexto y calibración antes de presentar la afinidad como una predicción fuerte.'
-        : 'El aprendizaje actual no mejora de forma consistente el test inicial; requiere revisar la actualización del perfil antes de ampliar su uso.',
+      recommendation: candidate.ndcgAt5 >= hybrid.ndcgAt5 && candidate.affinityMae! < hybrid.affinityMae!
+        ? 'La calibracion por confianza conserva el ranking y reduce el error de afinidad; puede avanzar a regresion de producto y paridad Edge. La recencia adaptativa queda rechazada porque la señal de deriva no separa perfiles estables y cambiantes con recall suficiente.'
+        : 'La variante candidata no supera conjuntamente ranking y calibracion; debe permanecer experimental.',
     },
     methodology: {
       agents: 'Five engagement segments with latent five-axis palates, noisy onboarding answers, budgets, contexts and optional taste drift.',
       chronology: 'Each agent is evaluated in event order. Only feedback available before an event trains that event recommendation.',
-      feedback: 'The current hybrid recommendation drives a noisy love/ok/not-for-me response; unrated events do not train the profile.',
+      feedback: 'Current and candidate policies receive the same feedback opportunity and experience noise; each learns only from its own prior recommendations.',
       candidateSets: `${config.candidatePoolSize} synthetic wines sampled per decision from a ${config.catalogSize}-wine catalog.`,
       baselines: {
         popularity: 'Static catalog popularity independent of simulated feedback.',
         onboarding: 'Initial Matchrim test profile with no longitudinal learning.',
         hybrid: 'Current Matchrim calculateLearnedMatchrimProfile and affinity ranking.',
+        candidate: 'Current ranking with confidence-aware affinity calibration. Preference-shift telemetry is measured, but adaptive forgetting is disabled.',
         oracle: 'Evaluation ceiling using latent taste, context and budget; never visible to the hybrid model.',
       },
       knownLimits: [
@@ -676,6 +791,10 @@ ${rows}
 
 - Mejora NDCG del híbrido frente a popularidad: ${metric(result.conclusions.hybridNdcgUpliftVsPopularity)}.
 - Mejora NDCG del híbrido frente al test inicial: ${metric(result.conclusions.hybridNdcgUpliftVsOnboarding)}.
+- Cambio NDCG del candidato frente al híbrido actual: ${metric(result.conclusions.candidateNdcgUpliftVsCurrent)}.
+- Cambio MAE de afinidad del candidato: ${result.conclusions.candidateAffinityMaeChangeVsCurrent.toFixed(2)} puntos.
+- Cambio de calibración del candidato: ${metric(result.conclusions.candidateCalibrationChangeVsCurrent)}.
+- Detección de deriva: precision ${metric(result.totals.shiftDetection.precision)}, recall ${metric(result.totals.shiftDetection.recall)}, falsos positivos ${metric(result.totals.shiftDetection.falsePositiveRate)}.
 - Brecha NDCG restante frente al oráculo: ${metric(result.conclusions.remainingNdcgGapToOracle)}.
 - Falsa confianza del híbrido: ${metric(result.conclusions.falseConfidenceRate)}.
 - Segmento con menor NDCG híbrido: **${result.conclusions.worstHybridSegment}** (${metric(result.conclusions.worstHybridSegmentNdcgAt5)}).
@@ -750,6 +869,9 @@ const main = () => {
     drifted: String(audit.drifted),
     initialProfileRmse: audit.initialProfileRmse,
     finalProfileRmse: audit.finalProfileRmse,
+    finalCandidateProfileRmse: audit.finalCandidateProfileRmse,
+    candidateShiftDetected: String(audit.candidateShiftDetected),
+    candidateShiftMagnitude: audit.candidateShiftMagnitude,
     learnedAtRating: audit.learnedAtRating,
     loveRate: audit.loveRate,
     rejectionRate: audit.rejectionRate,
