@@ -3,9 +3,9 @@
 ## Decision
 
 The `confidence-v1` affinity calibration is implemented in the client and in the
-`calculate-wine-affinity` Edge Function candidate. It can advance to isolated
-staging verification. It has not been deployed and does not reopen the
-TestFlight gate by itself.
+`calculate-wine-affinity` Edge Function candidate. The function was deployed
+only to isolated staging `qpbmqvfnunkylvtvnyyx`. It was not deployed to
+production and does not reopen the TestFlight gate by itself.
 
 The change addresses false precision in early profiles: a raw sensory score is
 shrunk towards a neutral prior of `72` while profile-learning confidence is low.
@@ -75,6 +75,9 @@ This is a deterministic model audit, not a study with 10,000 human participants.
 | Manual screenshot review | PASS, no overlapping scores, readable pins/list and persistent bottom navigation |
 | iOS simulator build | PASS with Xcode 26.0.1 and signing disabled |
 | Local Edge runtime | NOT RUN: this host has neither Deno nor an available Docker daemon |
+| Hosted Edge runtime | PASS in isolated staging; matrix `52/46/40/72/72/84/88/92` |
+| JWT boundary | PASS; ephemeral user created, authenticated, invoked and deleted |
+| Authenticated DB persistence | BLOCKED; staging Data API returns HTTP `503` while loading its schema cache |
 
 Visual evidence and machine-readable results:
 `docs/qa-evidence/matchrim-native-redesign/`.
@@ -92,13 +95,28 @@ The current build is not eligible for a new TestFlight on recognition quality:
 - Food-menu recall remains `0.2407`.
 - The cabinet still lacks an exhaustive human-validated
   `box -> crop -> result -> identity` reconciliation.
-- The Edge candidate has not run in an isolated authenticated staging project.
+- The hosted calibrator has run in isolated staging, but profile read/write has
+  not: Auth is healthy while the Data API returns HTTP `503` for its root,
+  `quiz_results` and `user_wines` probes.
 
 ## Next gate
 
-Deploy `_shared/matchrim-affinity.ts`, `_shared/matchrim-learning.ts` and
-`calculate-wine-affinity` to isolated staging. With an authenticated consenting
-test user, verify the four trace fields, database persistence, opt-out behavior
-and parity with the same raw score/confidence matrix. Then rerun the real vision
-benchmark. TestFlight requires the recognition thresholds already documented;
-this calibration change does not waive them.
+Restore the Data API/schema cache in `qpbmqvfnunkylvtvnyyx` (or designate a
+different isolated Matchrim staging project containing `quiz_results` and
+`user_wines`). Then, with an authenticated consenting test user, verify the four
+trace fields, database persistence and opt-out behavior. Hosted runtime parity
+is already green. Afterwards rerun the real vision benchmark. TestFlight
+requires the recognition thresholds already documented; this calibration
+change does not waive them.
+
+## Staging deployment record
+
+- Project: `qpbmqvfnunkylvtvnyyx` (`winerim-middleware-staging`).
+- Function: `calculate-wine-affinity`, version `1`, status `ACTIVE`, JWT required.
+- Deployment time: `2026-10-01T12:37:19Z`.
+- Bundle SHA-256:
+  `297036f39c57fe5050f58b402acf4da0e9cacaca1a9f8a99127cac93234a3984`.
+- The temporary runtime probe was deleted after the assertion.
+- No production function, database row, secret or TestFlight build was changed.
+- Machine-readable evidence:
+  `docs/qa-evidence/matchrim-affinity-staging-2026-10-01/results.json`.

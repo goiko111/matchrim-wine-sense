@@ -1,0 +1,51 @@
+{
+  "scope": "isolated staging only; no production or TestFlight mutation",
+  "project": {
+    "ref": "qpbmqvfnunkylvtvnyyx",
+    "name": "winerim-middleware-staging"
+  },
+  "deployment": {
+    "function": "calculate-wine-affinity",
+    "version": 1,
+    "status": "ACTIVE",
+    "verifyJwt": true,
+    "deployedAt": "2026-10-01T12:37:19Z",
+    "sha256": "297036f39c57fe5050f58b402acf4da0e9cacaca1a9f8a99127cac93234a3984"
+  },
+  "hostedRuntime": {
+    "model": "confidence-v1",
+    "inputs": [
+      [40, 0],
+      [40, 35],
+      [40, 70],
+      [72, 0],
+      [72, 70],
+      [92, 0],
+      [92, 35],
+      [92, 70]
+    ],
+    "actualAffinities": [52, 46, 40, 72, 72, 84, 88, 92],
+    "expectedAffinities": [52, 46, 40, 72, 72, 84, 88, 92],
+    "passed": true
+  },
+  "authentication": {
+    "healthHttpStatus": 200,
+    "ephemeralUserCreateHttpStatus": 200,
+    "ephemeralUserAuthenticateHttpStatus": 200,
+    "authenticatedFunctionHttpStatus": 200,
+    "ephemeralUserDeleteHttpStatus": 200,
+    "temporaryProbeRemoved": true
+  },
+  "dataApi": {
+    "rootHttpStatus": 503,
+    "quizResultsProbeHttpStatus": 503,
+    "userWinesProbeHttpStatus": 503,
+    "message": "Could not query the database for the schema cache. Retrying.",
+    "persistenceGatePassed": false
+  },
+  "secrets": {
+    "lovableApiKeyPresent": false,
+    "valuesRecorded": false
+  },
+  "nextAction": "Restore the staging Data API/schema cache or designate an isolated Matchrim staging database, then verify consent-filtered profile reads and affinity trace persistence."
+}
