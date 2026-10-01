@@ -1,13 +1,12 @@
 # Matchrim current state
 
-Updated: 2026-09-30
+Updated: 2026-10-01
 
 ## Release
 
-- Latest uploaded version: Matchrim `1.0 (65)`.
-- Latest local candidate: Matchrim `1.0 (66)`; Release archive succeeded at `/private/tmp/Matchrim-1.0-66-candidate-final.xcarchive`. It has not been uploaded.
-- App Store Connect accepted the upload and initially reported the package as processing. A later read-only check could not refresh that state because the available browser sessions returned `authResult=FAILED`.
-- Exact archive: `/private/tmp/Matchrim-1.0-65-final.xcarchive`.
+- Latest uploaded version: Matchrim `1.0 (66)`. App Store Connect accepted the package on 2026-10-01 at 06:00 CEST and reported it as processing.
+- Preserved archive: `~/Library/Developer/Xcode/Archives/2026-09-30/Matchrim 1.0 (66).xcarchive`.
+- The upload channel was authenticated through Xcode. Browser readback still requires a fresh App Store Connect login.
 - Bundle/team: `wine.matchrim.app` / `8X3XTD6XYX`.
 - The Lovable/web line remains pinned to `08e12fb`; no web or Supabase deployment was performed.
 
@@ -56,6 +55,8 @@ Updated: 2026-09-30
 - Compiled-layout QA passed `14/14` with zero console errors in portrait/landscape, preserved the prior web spacing and used no production traffic.
 - Native simulator smoke passed Home -> Scan -> Home, rotation and the `124x44 pt` Home target.
 - TypeScript, full contracts, production build, iOS simulator build and signed Release archive passed. ESLint remains at 0 errors and 105 inherited warnings.
+- App Store Connect upload passed through Xcode 26.0.1. TestFlight processing/readback and physical-device confirmation remain open.
+- The same build 66 binary was installed directly on the connected iPhone 16 Pro Max and launched successfully at 06:07 CEST; this confirms installation and startup only, not the pending hands-on workflow QA.
 - Evidence: `docs/MATCHRIM_BUILD66_CANDIDATE_2026-09-30.md`.
 
 Runtime versions observed: `matchrim-region-detector-v3`, `matchrim-region-analysis-v3-grounded` and `scan-wine-menu-2026-08-26-grounded-v3`.
@@ -75,10 +76,10 @@ Selected redacted physical-QA screenshots are versioned under `docs/qa-evidence/
 
 ## Residual
 
-- Apple processing/readback; no authenticated browser session was available for the read-only check.
+- Apple processing/readback; the browser session requires a fresh App Store Connect login.
 - Build 65 should not be assigned more widely until cabinet identity is measured with the corrected trace in isolated staging.
 - Physical camera and Photo Library open/return are covered. Fresh permission allow/deny and spoken VoiceOver remain open because the existing user state was not reset.
-- Build 66 fixes the Bodega/Profile safe area and eight undersized controls in simulator/layout QA; physical-device confirmation of the candidate remains required before rollout.
+- Build 66 fixes the Bodega/Profile safe area and eight undersized controls in simulator/layout QA; Apple accepted its upload and physical-device confirmation remains required before wider rollout.
 - Isolated staging has the three required functions active at version 1, but lacks `LOVABLE_API_KEY`; no fixture was sent to a known failing path.
 - After that secret is configured: traced staging reconciliation of final box/crop/result, then OCR/canonical resolution and confidence calibration for cabinet scenes.
 - iOS deployment target must move from 14 to 15 before April 2027.

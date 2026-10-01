@@ -52,4 +52,8 @@ La sesión de layout fue local y sintética. Todas las respuestas Supabase se in
 3. Si el gate de identidad pasa, instalar el build 66 en el iPhone físico y repetir únicamente safe area, objetivos táctiles, permisos limpios, guardar/puntuar y VoiceOver humano.
 4. Exportar con distribución App Store y subir solo tras esos gates.
 
-No se desplegó la web pública, Supabase ni TestFlight; no se modificó producción.
+No se desplegó la web pública ni Supabase; no se modificó producción.
+
+## Actualización 2026-10-01
+
+Tras autorización explícita del propietario, Xcode 26.0.1 subió `1.0 (66)` a App Store Connect. Apple aceptó el paquete y lo dejó en procesamiento de TestFlight a las 06:00 CEST. La distribución no debe ampliarse más allá de esta prueba solicitada mientras siga abierto el gate de identidad canónica del expositor.
