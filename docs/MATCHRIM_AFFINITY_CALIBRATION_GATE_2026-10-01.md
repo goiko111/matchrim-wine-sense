@@ -77,7 +77,10 @@ This is a deterministic model audit, not a study with 10,000 human participants.
 | Local Edge runtime | NOT RUN: this host has neither Deno nor an available Docker daemon |
 | Hosted Edge runtime | PASS in isolated staging; matrix `52/46/40/72/72/84/88/92` |
 | JWT boundary | PASS; ephemeral user created, authenticated, invoked and deleted |
-| Authenticated DB persistence | BLOCKED; staging Data API returns HTTP `503` while loading its schema cache |
+| Authenticated DB persistence | PASS in isolated `matchrim_qa`; trace persisted and unrelated metadata preserved |
+| Consent | PASS; one opted-in sample learned from two rated rows |
+| RLS isolation | PASS; first user could not read the second user's row |
+| Cleanup | PASS; both QA tables contain zero rows after deleting ephemeral users |
 
 Visual evidence and machine-readable results:
 `docs/qa-evidence/matchrim-native-redesign/`.
@@ -95,28 +98,30 @@ The current build is not eligible for a new TestFlight on recognition quality:
 - Food-menu recall remains `0.2407`.
 - The cabinet still lacks an exhaustive human-validated
   `box -> crop -> result -> identity` reconciliation.
-- The hosted calibrator has run in isolated staging, but profile read/write has
-  not: Auth is healthy while the Data API returns HTTP `503` for its root,
-  `quiz_results` and `user_wines` probes.
+- The affinity gate itself is complete in isolated staging. The remaining P0s
+  are recognition quality and the cabinet's exhaustive identity trace.
 
 ## Next gate
 
-Restore the Data API/schema cache in `qpbmqvfnunkylvtvnyyx` (or designate a
-different isolated Matchrim staging project containing `quiz_results` and
-`user_wines`). Then, with an authenticated consenting test user, verify the four
-trace fields, database persistence and opt-out behavior. Hosted runtime parity
-is already green. Afterwards rerun the real vision benchmark. TestFlight
+Configure the approved vision-provider credential in isolated staging and rerun
+the real five-material and independent recognition benchmarks. TestFlight still
 requires the recognition thresholds already documented; this calibration
 change does not waive them.
 
 ## Staging deployment record
 
 - Project: `qpbmqvfnunkylvtvnyyx` (`winerim-middleware-staging`).
-- Function: `calculate-wine-affinity`, version `1`, status `ACTIVE`, JWT required.
-- Deployment time: `2026-10-01T12:37:19Z`.
+- Function: `calculate-wine-affinity`, version `3`, status `ACTIVE`, JWT required.
+- Deployment time: `2026-10-01T12:46:08Z`.
 - Bundle SHA-256:
-  `297036f39c57fe5050f58b402acf4da0e9cacaca1a9f8a99127cac93234a3984`.
+  `089ee6e802731e43e030aaa85b7863db4f745f1c32e4a80e59070e64a7afc8ac`.
+- The Data API exposes only `matchrim_qa`; middleware tables in `public` remain
+  outside the API boundary.
+- `matchrim_qa` contains only `quiz_results` and `user_wines`, with owner RLS and
+  no anonymous grants. `MATCHRIM_DB_SCHEMA=matchrim_qa` exists only in staging;
+  all other environments retain the function's `public` default.
 - The temporary runtime probe was deleted after the assertion.
-- No production function, database row, secret or TestFlight build was changed.
+- Two ephemeral users and their rows were deleted; both QA tables ended empty.
+- No production function, production database row or TestFlight build changed.
 - Machine-readable evidence:
   `docs/qa-evidence/matchrim-affinity-staging-2026-10-01/results.json`.

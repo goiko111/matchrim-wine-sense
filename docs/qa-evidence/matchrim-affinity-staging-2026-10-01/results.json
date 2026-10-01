@@ -6,11 +6,11 @@
   },
   "deployment": {
     "function": "calculate-wine-affinity",
-    "version": 1,
+    "version": 3,
     "status": "ACTIVE",
     "verifyJwt": true,
-    "deployedAt": "2026-10-01T12:37:19Z",
-    "sha256": "297036f39c57fe5050f58b402acf4da0e9cacaca1a9f8a99127cac93234a3984"
+    "deployedAt": "2026-10-01T12:46:08Z",
+    "sha256": "089ee6e802731e43e030aaa85b7863db4f745f1c32e4a80e59070e64a7afc8ac"
   },
   "hostedRuntime": {
     "model": "confidence-v1",
@@ -37,15 +37,41 @@
     "temporaryProbeRemoved": true
   },
   "dataApi": {
-    "rootHttpStatus": 503,
-    "quizResultsProbeHttpStatus": 503,
-    "userWinesProbeHttpStatus": 503,
-    "message": "Could not query the database for the schema cache. Retrying.",
-    "persistenceGatePassed": false
+    "exposedSchemas": ["matchrim_qa"],
+    "publicSchemaExposed": false,
+    "quizResultsProbeHttpStatus": 200,
+    "userWinesProbeHttpStatus": 200,
+    "tables": ["quiz_results", "user_wines"],
+    "ownerRlsEnabled": true,
+    "anonymousGrants": false,
+    "persistenceGatePassed": true
+  },
+  "authenticatedE2E": {
+    "ratedRows": 2,
+    "optedInRows": 1,
+    "learningSamples": 1,
+    "temporaryResult": {
+      "affinity": 65,
+      "rawAffinity": 62,
+      "profileConfidence": 8,
+      "model": "confidence-v1"
+    },
+    "persistedResult": {
+      "affinity": 77,
+      "rawAffinity": 79,
+      "profileConfidence": 8,
+      "model": "confidence-v1"
+    },
+    "sourceMetadataPreserved": true,
+    "traceFieldsPersisted": true,
+    "foreignUserRowVisible": false,
+    "quizRowsAfterCleanup": 0,
+    "wineRowsAfterCleanup": 0,
+    "passed": true
   },
   "secrets": {
     "lovableApiKeyPresent": false,
     "valuesRecorded": false
   },
-  "nextAction": "Restore the staging Data API/schema cache or designate an isolated Matchrim staging database, then verify consent-filtered profile reads and affinity trace persistence."
+  "nextAction": "Configure the approved vision-provider credential in isolated staging and rerun the real recognition benchmark before another TestFlight decision."
 }

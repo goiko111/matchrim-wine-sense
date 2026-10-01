@@ -122,10 +122,14 @@ serve(async (req) => {
       throw new Error('No authorization header');
     }
 
+    const databaseSchema = Deno.env.get('MATCHRIM_DB_SCHEMA')?.trim() || 'public';
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
+      {
+        db: { schema: databaseSchema },
+        global: { headers: { Authorization: authHeader } },
+      }
     );
 
     const token = authHeader.replace('Bearer', '').trim();
