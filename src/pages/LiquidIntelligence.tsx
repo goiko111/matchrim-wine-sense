@@ -30,6 +30,11 @@ const LiquidIntelligence = () => {
   const [conversationQuestion, setConversationQuestion] = useState('');
 
   useEffect(() => {
+    if (!isNative) return;
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [currentState, isNative]);
+
+  useEffect(() => {
     const rawFunction = searchParams.get('function');
     const fn = rawFunction as FunctionType | null;
     const wineParam = searchParams.get('wine') || '';

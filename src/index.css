@@ -112,6 +112,10 @@ body {
     margin-bottom: 0.75rem;
   }
 
+  html.matchrim-native-platform .scan-page-heading {
+    display: none;
+  }
+
   .scan-page-heading h1 {
     font-size: 1.5rem;
     line-height: 2rem;
@@ -124,6 +128,31 @@ body {
 
   .scan-upload-empty {
     padding: 1rem;
+  }
+
+  html.matchrim-native-platform .scan-upload-empty {
+    display: grid;
+    width: calc(100vw - 3rem - var(--matchrim-safe-left) - var(--matchrim-safe-right));
+    max-width: calc(100vw - 3rem - var(--matchrim-safe-left) - var(--matchrim-safe-right));
+    grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: 1rem;
+  }
+
+  html.matchrim-native-platform .scan-upload-empty > *,
+  html.matchrim-native-platform .scan-upload-actions,
+  html.matchrim-native-platform .scan-upload-actions button {
+    min-width: 0;
+  }
+
+  html.matchrim-native-platform .scan-upload-actions button {
+    width: 100%;
+    max-width: 100%;
+    min-height: 3rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    white-space: normal;
+    line-height: 1.15;
   }
 
   .scan-upload-empty-icon {
@@ -142,6 +171,10 @@ body {
 
   .scan-upload-actions {
     margin-top: 0.75rem;
+  }
+
+  html.matchrim-native-platform .scan-upload-actions {
+    display: contents;
   }
 }
  
