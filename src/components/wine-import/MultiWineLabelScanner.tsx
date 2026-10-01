@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState, type FormEvent } from 'react';
+import { Capacitor } from '@capacitor/core';
 import {
   AlertTriangle,
   Camera,
@@ -87,6 +88,7 @@ interface MultiWineLabelScannerProps {
 }
 
 type ScanPhase = 'idle' | 'quality' | 'detecting' | 'analyzing' | 'ready' | 'cancelled' | 'error';
+type NativeResultView = 'scene' | 'wines' | 'compare';
 
 interface ScanPerformance {
   qualityMs: number;
@@ -155,6 +157,7 @@ const userFacingScanError = (error: unknown) => {
 
 export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScannerProps) => {
   const { user } = useAuth();
+  const isNative = Capacitor.isNativePlatform();
   const [preview, setPreview] = useState<string | null>(null);
   const [quality, setQuality] = useState<ImageQualityReport | null>(null);
   const [regions, setRegions] = useState<ScanRegion[]>([]);
@@ -166,6 +169,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   const [scanMetrics, setScanMetrics] = useState<ScanPerformance | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+  const [nativeResultView, setNativeResultView] = useState<NativeResultView>('scene');
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -334,6 +338,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     const controller = new AbortController();
     abortRef.current = controller;
     setConfirmed(false);
+    setNativeResultView('scene');
     setRegions([]);
     setCoverage(null);
     setSelectedRegionId(null);
@@ -747,6 +752,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           )}
 
           <div
+            hidden={isNative && regions.length > 0 && nativeResultView !== 'scene'}
             className="matchrim-scan-stage relative mx-auto overflow-hidden rounded-lg"
             style={{
               aspectRatio: quality?.width && quality?.height ? `${quality.width} / ${quality.height}` : undefined,
@@ -792,6 +798,28 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
           {regions.length > 0 && (
             <div className="space-y-4">
+              {isNative && (
+                <div className="grid grid-cols-3 rounded-lg bg-slate-100 p-1" role="tablist" aria-label="Vista de resultados">
+                  {([
+                    ['scene', 'Escena'],
+                    ['wines', `Vinos (${rankedGroups.length})`],
+                    ['compare', 'Comparar'],
+                  ] as const).map(([view, label]) => (
+                    <button
+                      key={view}
+                      type="button"
+                      role="tab"
+                      aria-selected={nativeResultView === view}
+                      onClick={() => setNativeResultView(view)}
+                      className={`matchrim-pressable min-h-11 rounded-md px-2 text-sm font-semibold ${nativeResultView === view ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-500'}`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div hidden={isNative && nativeResultView !== 'scene'} className="space-y-4">
               <div className="matchrim-data-rail grid grid-cols-3 gap-2 rounded-lg px-2 py-3 text-center sm:grid-cols-5">
                 <div><div className="text-xl font-bold text-emerald-700">{summary.recognized}</div><div className="text-xs text-slate-500">Reconocidos</div></div>
                 <div><div className="text-xl font-bold text-amber-700">{summary.uncertain}</div><div className="text-xs text-slate-500">Dudosos</div></div>
@@ -817,6 +845,9 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 {coverage?.notes.length ? <p className="mt-1 text-xs opacity-80">{coverage.notes.join(' ')}</p> : null}
               </div>
 
+              </div>
+
+              <div hidden={isNative && nativeResultView !== 'compare'}>
               <WineComparisonWorkspace
                 wines={rankedGroups.map((group) => ({
                   id: group.key,
@@ -836,7 +867,9 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                   } : null,
                 }))}
               />
+              </div>
 
+              <div hidden={isNative && nativeResultView !== 'wines'} className="space-y-4">
               <div className="matchrim-surface divide-y divide-stone-100 overflow-hidden rounded-lg">
                 {rankedGroups.map((group, index) => (
                   <button
@@ -873,6 +906,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                   {confirmed ? 'Lote confirmado' : `Confirmar ${confirmableGroups.length} referencia${confirmableGroups.length === 1 ? '' : 's'}`}
                 </Button>
               )}
+              </div>
             </div>
           )}
         </>

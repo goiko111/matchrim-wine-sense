@@ -28,6 +28,7 @@ import {
   type ScanHistoryItem,
 } from '@/utils/scanHistory';
 import { buildWinerimWineUrl, type WinerimWineWithMatch } from '@/services/winerimApi';
+import AiRimMark from '@/components/AiRimMark';
 
 type HomeLearningInfo = {
   samples: number;
@@ -106,7 +107,7 @@ const NativeAppHome = ({
         </header>
       ))}
 
-      <main className="matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(7.5rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
+      <main className="matchrim-native-home-main matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(7.5rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
         <div className="flex min-h-12 items-center justify-between gap-3">
           <button type="button" onClick={() => navigate('/')} className="matchrim-pressable flex min-h-11 items-center gap-2.5 text-left" aria-label="Inicio de Matchrim">
             <img src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" alt="" className="h-8 w-8" />
@@ -124,14 +125,14 @@ const NativeAppHome = ({
 
         <section className="mt-6" aria-labelledby="home-decision-title">
           <p className="text-sm font-semibold text-red-800">Tu vino, con contexto</p>
-          <h1 id="home-decision-title" className="mt-1 text-[2rem] font-bold leading-[1.08] text-slate-950">
+          <h1 id="home-decision-title" className="matchrim-native-display-title mt-1 text-[2rem] font-bold leading-[1.08] text-slate-950">
             ¿Qué quieres elegir?
           </h1>
           <p className="mt-2 max-w-xl text-[15px] leading-6 text-slate-600">
             Haz una foto. Matchrim identifica, compara y explica qué encaja contigo.
           </p>
 
-          <div className="mt-5 grid grid-cols-2 gap-3">
+          <div className="matchrim-native-scan-grid mt-5 grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => navigate('/escanear/etiqueta')}
@@ -165,6 +166,36 @@ const NativeAppHome = ({
           </div>
         </section>
 
+        {isNative && recentScans.length > 0 && (
+          <section className="mt-6" aria-labelledby="recent-native-scans-title">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <History className="h-4 w-4 text-slate-500" />
+                <h2 id="recent-native-scans-title" className="text-base font-bold text-slate-950">Continuar</h2>
+              </div>
+              <span className="text-xs font-medium text-slate-500">Últimos análisis</span>
+            </div>
+            <div className="mt-2 divide-y divide-slate-200 border-y border-slate-200">
+              {recentScans.slice(0, 2).map((item) => (
+                <button
+                  key={`native-${item.id}`}
+                  type="button"
+                  onClick={() => navigate(item.route)}
+                  className="matchrim-pressable flex min-h-16 w-full items-center gap-3 py-3 text-left"
+                >
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-semibold text-slate-950">{item.title}</span>
+                    <span className="mt-0.5 block truncate text-xs text-slate-500">
+                      {scanTypeLabels[item.type]} · {formatScanTime(item.createdAt)}
+                    </span>
+                  </span>
+                  <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="mt-6 border-y border-slate-200" aria-label="Comparación rápida">
           <button
             type="button"
@@ -182,18 +213,23 @@ const NativeAppHome = ({
           </button>
         </section>
 
-        <section className="mt-7" aria-labelledby="airim-home-title">
+        <section className={isNative ? 'mt-6 border-y border-slate-200' : 'mt-7'} aria-labelledby="airim-home-title">
           <button
             type="button"
             onClick={() => navigate('/inteligencia-liquida')}
-            className="matchrim-pressable flex w-full items-center gap-4 rounded-lg bg-red-950 p-4 text-left text-white shadow-sm"
+            aria-label="Pregunta a aiRIM"
+            className={`matchrim-pressable flex w-full items-center gap-3 text-left ${isNative ? 'min-h-[4.75rem] py-3 text-slate-950' : 'rounded-lg bg-red-950 p-4 text-white shadow-sm'}`}
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-white/12 text-red-50">
-              <BrainCircuit className="h-6 w-6" />
-            </span>
+            {isNative ? (
+              <AiRimMark className="h-11 w-11 rounded-md bg-red-50 text-red-900 ring-red-50" iconClassName="h-6 w-6" />
+            ) : (
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-white/12 text-red-50">
+                <BrainCircuit className="h-6 w-6" />
+              </span>
+            )}
             <span className="min-w-0 flex-1">
-              <span id="airim-home-title" className="block text-base font-bold">Pregunta a aiRIM</span>
-              <span className="mt-0.5 block text-sm leading-5 text-red-100/85">
+              <span id="airim-home-title" className="block text-base font-bold">{isNative ? 'Consultar a aiRIM' : 'Pregunta a aiRIM'}</span>
+              <span className={`mt-0.5 block text-sm leading-5 ${isNative ? 'text-slate-500' : 'text-red-100/85'}`}>
                 {learningInfo
                   ? `Tiene en cuenta tu perfil y ${learningInfo.samples} valoraciones.`
                   : hasCode
@@ -201,7 +237,7 @@ const NativeAppHome = ({
                     : 'Te orienta y te dice qué dato falta para personalizar.'}
               </span>
             </span>
-            <ChevronRight className="h-5 w-5 shrink-0 text-red-100" />
+            <ChevronRight className={`h-5 w-5 shrink-0 ${isNative ? 'text-slate-400' : 'text-red-100'}`} />
           </button>
         </section>
 
@@ -337,7 +373,7 @@ const NativeAppHome = ({
           </div>
         </section>
 
-        {recentScans.length > 0 && (
+        {!isNative && recentScans.length > 0 && (
           <section className="mt-8" aria-labelledby="recent-scans-title">
             <div className="flex items-center gap-2">
               <History className="h-4 w-4 text-slate-500" />

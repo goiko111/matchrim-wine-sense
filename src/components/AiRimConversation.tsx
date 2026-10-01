@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, BrainCircuit, LoaderCircle, Send, Sparkles, UserRound } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
+import AiRimMark from '@/components/AiRimMark';
 
 type ConversationMessage = {
   id: string;
@@ -22,6 +24,7 @@ interface AiRimConversationProps {
 }
 
 const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationProps) => {
+  const isNative = Capacitor.isNativePlatform();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [input, setInput] = useState(initialQuestion);
@@ -170,9 +173,13 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
         {messages.map((message) => (
           <div key={message.id} className={`flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             {message.role === 'assistant' && (
-              <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-950 text-white">
-                <BrainCircuit className="h-4 w-4" />
-              </span>
+              isNative ? (
+                <AiRimMark className="mt-1 h-8 w-8 rounded-full bg-red-950 text-white ring-red-950" iconClassName="h-4 w-4" />
+              ) : (
+                <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-950 text-white">
+                  <BrainCircuit className="h-4 w-4" />
+                </span>
+              )
             )}
             <div className={`max-w-[84%] rounded-lg px-4 py-3 text-sm leading-6 ${
               message.role === 'user'

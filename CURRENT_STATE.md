@@ -12,7 +12,7 @@ Updated: 2026-10-01
 
 ## Product
 
-- Native bottom navigation: Inicio, aiRIM, Escanear, Bodega and Perfil.
+- Native bottom navigation candidate 67: Inicio, Explora, Bodega and Perfil, with Escanear as the separate primary action. The web navigation remains unchanged.
 - Multi-label capture detects independent regions, supports correction, discard, retry and per-wine affinity.
 - Wine lists and boards use numbered pins plus a synchronized list instead of overlaying text.
 - Comparison supports 2-5 wines with personal/service modes, budget and glass/bottle context.
@@ -60,6 +60,20 @@ Updated: 2026-10-01
 - Evidence: `docs/MATCHRIM_BUILD66_CANDIDATE_2026-09-30.md`.
 
 Runtime versions observed: `matchrim-region-detector-v3`, `matchrim-region-analysis-v3-grounded` and `scan-wine-menu-2026-08-26-grounded-v3`.
+
+## Build 67 native design candidate
+
+- Local candidate only; it has not been uploaded to TestFlight or deployed to the web.
+- A development-signed build 67 was installed directly on the connected iPhone 16 Pro Max and launched successfully. `devicectl` confirmed bundle `wine.matchrim.app`, version `1.0`, build `67`, and a live process. This replaces the local installed binary only; it is not a TestFlight upload.
+- Native results now separate Scene, Wines and Compare. The web keeps its previous continuous layout.
+- aiRIM uses a sensory-compass mark and acts as contextual help instead of a native top-level tab.
+- Native Home, Auth and special-occasion flows share the neutral/burgundy system; recent work moves higher on Home.
+- Real iOS Dynamic Type now drives a bounded 94-135% scale through the existing bridge. Accessibility sizes switch the main scan actions to one column.
+- Simulator portrait, landscape and accessibility-extra-extra-extra-large passed without horizontal overflow.
+- Remote physical-device rotation is not supported by `devicectl` on this iPhone, so build 67 landscape remains Simulator-validated and requires a manual physical gesture before release.
+- Native visual regression passed on all five supplied materials with embedded deterministic responses. This validates layout and interaction, not OCR accuracy.
+- The 25 isolated QA personas passed 25/25. Route inventory passed 34/34 with zero overflow, page errors or console errors.
+- Evidence and exact residual gate: `docs/MATCHRIM_BUILD67_DESIGN_QA_2026-10-01.md`.
 
 ## Evidence
 

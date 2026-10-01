@@ -1,0 +1,26 @@
+{
+  "fixtureScope": "local embedded fixtures only; no production traffic",
+  "allPassed": true,
+  "results": [
+    {
+      "case": "native_navigation",
+      "actual": "PASS Inicio, Explora, Bodega, Perfil, Escanear"
+    },
+    {
+      "case": "multi_result_disclosure",
+      "actual": "PASS scene, wines and comparison are mutually exclusive"
+    },
+    {
+      "case": "four_real_menu_materials",
+      "actual": "PASS IMG_7547 2.jpg:portrait, IMG_7548 2.jpg:landscape, IMG_7552 2.jpg:portrait, IMG_7553 2.jpg:landscape"
+    },
+    {
+      "case": "airim_identity_and_occasions",
+      "actual": "PASS compact mark and native decision list"
+    },
+    {
+      "case": "native_auth",
+      "actual": "PASS neutral native layout"
+    }
+  ]
+}

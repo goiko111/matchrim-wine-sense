@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, PartyPopper, Users, ChefHat, Brain, Star, DollarSign, Send, Loader } from 'lucide-react';
+import { ArrowLeft, PartyPopper, Users, ChefHat, Brain, Star, DollarSign, Loader, Gift, Heart, CakeSlice, ChevronRight } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
@@ -23,6 +24,7 @@ interface QuestionData {
 }
 
 const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
+  const isNative = Capacitor.isNativePlatform();
   const [step, setStep] = useState<'select-moment' | 'questions' | 'result'>('select-moment');
   const [questionData, setQuestionData] = useState<QuestionData>({
     momentType: null,
@@ -41,24 +43,28 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
     {
       id: 'dinner-friends' as const,
       emoji: '🎉',
+      icon: Users,
       title: 'Cena con amigos',
       description: 'Para compartir buenos momentos'
     },
     {
       id: 'gift' as const,
       emoji: '🎁',
+      icon: Gift,
       title: 'Vino para regalar',
       description: 'El regalo perfecto para cualquier ocasión'
     },
     {
       id: 'intimate-dinner' as const,
       emoji: '💑',
+      icon: Heart,
       title: 'Cena íntima',
       description: 'Para momentos especiales en pareja'
     },
     {
       id: 'celebration' as const,
       emoji: '🎂',
+      icon: CakeSlice,
       title: 'Cumpleaños / celebración',
       description: 'Para celebrar en grande'
     }
@@ -172,55 +178,59 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
 
   if (step === 'select-moment') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-red-50 to-red-100 px-4 py-6">
+      <main className={isNative ? 'matchrim-app-shell matchrim-native-safe-x min-h-screen pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'min-h-screen bg-gradient-to-b from-red-50 to-red-100 px-4 py-6'}>
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className={isNative ? 'mx-auto mb-7 flex max-w-2xl items-center gap-3' : 'flex items-center gap-4 mb-8'}>
           <Button
             variant="ghost"
             size="sm"
             onClick={onBack}
-            className="text-red-700 hover:bg-red-100"
+            className={isNative ? 'matchrim-pressable h-11 w-11 rounded-full border border-slate-200 bg-white p-0 text-slate-700' : 'text-red-700 hover:bg-red-100'}
+            aria-label="Volver a aiRIM"
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-50">
               <PartyPopper className="h-4 w-4 text-red-800" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-red-900">Vinos para momentos especiales</h1>
-              <p className="text-sm text-red-600">¿Cuál es tu ocasión?</p>
+              <h1 className={isNative ? 'text-xl font-bold text-slate-950' : 'text-xl font-bold text-red-900'}>Vinos para momentos especiales</h1>
+              <p className={isNative ? 'text-sm text-slate-500' : 'text-sm text-red-600'}>¿Cuál es tu ocasión?</p>
             </div>
           </div>
         </div>
 
         {/* Moment Selection */}
-        <div className="space-y-4 max-w-md mx-auto">
-          {moments.map((moment) => (
+        <div className={isNative ? 'mx-auto max-w-2xl divide-y divide-slate-200 border-y border-slate-200' : 'space-y-4 max-w-md mx-auto'}>
+          {moments.map((moment) => {
+            const MomentIcon = moment.icon;
+            return (
             <Card 
               key={moment.id}
-              className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-red-200"
+              className={isNative ? 'matchrim-pressable cursor-pointer rounded-none border-0 bg-transparent shadow-none' : 'cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-red-200'}
               onClick={() => handleSelectMoment(moment.id)}
             >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="text-3xl">
-                    {moment.emoji}
+              <CardContent className={isNative ? 'p-0' : 'p-6'}>
+                <div className={isNative ? 'flex min-h-[4.75rem] items-center gap-3 py-3' : 'flex items-start gap-4'}>
+                  <div className={isNative ? 'flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-800' : 'text-3xl'}>
+                    {isNative ? <MomentIcon className="h-5 w-5" /> : moment.emoji}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-red-900 mb-2">
+                    <h3 className={isNative ? 'font-semibold text-slate-950' : 'font-semibold text-red-900 mb-2'}>
                       {moment.title}
                     </h3>
-                    <p className="text-sm text-red-600">
+                    <p className={isNative ? 'mt-0.5 text-sm text-slate-500' : 'text-sm text-red-600'}>
                       {moment.description}
                     </p>
                   </div>
+                  {isNative && <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />}
                 </div>
               </CardContent>
             </Card>
-          ))}
+          );})}
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -229,14 +239,15 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
     const IconComponent = question.icon;
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-red-50 to-red-100 px-4 py-6">
+      <main className={isNative ? 'matchrim-app-shell matchrim-native-safe-x min-h-screen pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'min-h-screen bg-gradient-to-b from-red-50 to-red-100 px-4 py-6'}>
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className={isNative ? 'mx-auto mb-7 flex max-w-2xl items-center gap-3' : 'flex items-center gap-4 mb-8'}>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setStep('select-moment')}
-            className="text-red-700 hover:bg-red-100"
+            className={isNative ? 'matchrim-pressable h-11 w-11 rounded-full border border-slate-200 bg-white p-0 text-slate-700' : 'text-red-700 hover:bg-red-100'}
+            aria-label="Volver a ocasiones"
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
@@ -245,14 +256,14 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
               <IconComponent className="h-4 w-4 text-red-800" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-red-900">{question.question}</h1>
-              <p className="text-sm text-red-600">Pregunta {currentQuestion + 1} de {questions.length}</p>
+              <h1 className={isNative ? 'text-lg font-bold text-slate-950' : 'text-lg font-bold text-red-900'}>{question.question}</h1>
+              <p className={isNative ? 'text-sm text-slate-500' : 'text-sm text-red-600'}>Pregunta {currentQuestion + 1} de {questions.length}</p>
             </div>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="max-w-md mx-auto mb-8">
+        <div className={isNative ? 'mx-auto mb-8 max-w-2xl' : 'max-w-md mx-auto mb-8'}>
           <div className="w-full bg-red-200 rounded-full h-2">
             <div 
               className="bg-red-600 h-2 rounded-full transition-all"
@@ -262,15 +273,15 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
         </div>
 
         {/* Question Options */}
-        <div className="space-y-3 max-w-md mx-auto">
+        <div className={isNative ? 'mx-auto max-w-2xl divide-y divide-slate-200 border-y border-slate-200' : 'space-y-3 max-w-md mx-auto'}>
           {question.options.map((option, index) => (
             <Button
               key={index}
               onClick={() => handleAnswerQuestion(option)}
-              className="w-full p-4 bg-white hover:bg-red-50 text-red-900 border border-red-200 rounded-lg text-left justify-start h-auto"
+              className={isNative ? 'matchrim-pressable min-h-14 w-full justify-between rounded-none border-0 bg-transparent px-1 py-3 text-left text-slate-900 hover:bg-slate-50' : 'w-full p-4 bg-white hover:bg-red-50 text-red-900 border border-red-200 rounded-lg text-left justify-start h-auto'}
               variant="outline"
             >
-              {option}
+              {option}{isNative && <ChevronRight className="ml-auto h-5 w-5 text-slate-400" />}
             </Button>
           ))}
         </div>
@@ -285,13 +296,13 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
             </div>
           </div>
         )}
-      </div>
+      </main>
     );
   }
 
   if (step === 'result') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-red-50 to-red-100 px-4 py-6">
+      <main className={isNative ? 'matchrim-app-shell matchrim-native-safe-x min-h-screen pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'min-h-screen bg-gradient-to-b from-red-50 to-red-100 px-4 py-6'}>
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Button
@@ -325,7 +336,7 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
             </Button>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 

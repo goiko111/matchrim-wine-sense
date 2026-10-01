@@ -10,12 +10,14 @@ import { useAuth } from '@/contexts/AuthContext';
 import { buildRegistrationRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 import { useI18n } from '@/i18n';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { Capacitor } from '@capacitor/core';
 
 const Auth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user, signIn } = useAuth();
   const { t } = useI18n();
+  const isNative = Capacitor.isNativePlatform();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const redirectPath = getSafeRedirectPath(searchParams.get('redirect'));
@@ -54,8 +56,8 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className={isNative ? 'matchrim-app-shell matchrim-native-auth min-h-screen px-[calc(1rem+var(--matchrim-safe-left))] pb-[calc(2rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4'}>
+      <div className={isNative ? 'mx-auto w-full max-w-md' : 'w-full max-w-md'}>
         <div className="flex items-center justify-between mb-4">
           <Button
             variant="ghost"
@@ -74,17 +76,17 @@ const Auth = () => {
           </Button>
           <LanguageSwitcher />
         </div>
-        <div className="text-center mb-4">
+        <div className={isNative ? 'mb-7 mt-8 text-left' : 'text-center mb-4'}>
           <img
             src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
             alt="Logo Matchrim"
-            className="h-16 w-16 mx-auto mb-4"
+            className={isNative ? 'mb-4 h-12 w-12' : 'h-16 w-16 mx-auto mb-4'}
           />
-          <h1 className="text-3xl font-bold text-red-900">Matchrim</h1>
-          <p className="text-red-600">{t('auth.tagline')}</p>
+          <h1 className={isNative ? 'text-3xl font-bold text-slate-950' : 'text-3xl font-bold text-red-900'}>Matchrim</h1>
+          <p className={isNative ? 'mt-1 text-slate-600' : 'text-red-600'}>{t('auth.tagline')}</p>
         </div>
 
-        <Card>
+        <Card className={isNative ? 'border-0 bg-transparent shadow-none' : undefined}>
           <CardHeader>
             <CardTitle className="text-center text-red-900">{t('auth.title')}</CardTitle>
             <CardDescription className="text-center">

@@ -2,6 +2,8 @@
 
 ## Immediate release follow-up
 
+0. Build 67 is a local native-design candidate. Do not upload it until its production-mode rebuild, signed archive and physical iPhone smoke pass, and do not widen distribution while cabinet canonical identity remains unresolved.
+
 1. Wait for Matchrim `1.0 (66)` to finish TestFlight processing, then install it only for the requested hands-on test while the cabinet identity gate remains documented as unresolved.
 2. Owner action: configure `LOVABLE_API_KEY` for Edge Functions in isolated staging `qpbmqvfnunkylvtvnyyx`. The three required functions are already active at version 1; no deployment is required for this gate.
 3. Run the new trace in that staging to capture final merged box, crop hash and result for every region. Reconcile traced regions to manual bottle slots, mark the mapping validated, then rerun `scripts/score-matchrim-fridge-identity.py`. Do not accept invented precision/recall when the trace is incomplete.

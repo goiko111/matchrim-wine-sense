@@ -13,6 +13,23 @@ html {
   background: hsl(var(--background));
 }
 
+html.matchrim-native-platform {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.matchrim-native-platform .matchrim-native-display-title {
+  font-size: min(2rem, 42px);
+}
+
+html.matchrim-native-platform .matchrim-native-scan-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-scan-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 body,
 #root,
 .App {
@@ -50,6 +67,37 @@ body {
 }
 
 @media (orientation: landscape) and (max-height: 600px) {
+  html.matchrim-native-platform .matchrim-native-home-main,
+  html.matchrim-native-platform .matchrim-native-airim-main {
+    max-width: 54rem;
+    padding-top: calc(0.5rem + var(--matchrim-safe-top));
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main > div:first-child {
+    min-height: 2.5rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main > section,
+  html.matchrim-native-platform .matchrim-native-airim-main > section {
+    margin-top: 1rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main [aria-labelledby="home-decision-title"] > div {
+    grid-template-columns: repeat(2, minmax(14rem, 1fr));
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main [aria-labelledby="home-decision-title"] button {
+    min-height: 8rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-tab-bar > div {
+    height: 3.5rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-tab-bar a {
+    min-height: 3rem;
+  }
+
   .scan-page-main {
     padding-top: 0.75rem;
     padding-bottom: 2rem;

@@ -10,6 +10,7 @@ import SpecialMomentsFlow from '@/components/SpecialMomentsFlow';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import AiRimConversation from '@/components/AiRimConversation';
 import { Input } from '@/components/ui/input';
+import AiRimMark from '@/components/AiRimMark';
 
 type AppState = 'landing' | 'function' | 'conversation';
 type FunctionType = 'wine-for-dish' | 'dish-for-wine' | 'pairing-check' | 'special-moments';
@@ -89,11 +90,15 @@ const LiquidIntelligence = () => {
     ];
 
     return (
-      <main className="matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
+      <main className="matchrim-native-airim-main matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
         <div className="flex min-h-12 items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-red-950 text-white">
-            <BrainCircuit className="h-5 w-5" />
-          </span>
+          {isNative ? (
+            <AiRimMark className="h-11 w-11 rounded-lg bg-red-950 text-white ring-red-950" />
+          ) : (
+            <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-red-950 text-white">
+              <BrainCircuit className="h-5 w-5" />
+            </span>
+          )}
           <div>
             <p className="text-sm font-semibold text-red-800">Tu copiloto de vino</p>
             <h1 className="text-2xl font-bold text-slate-950">aiRIM</h1>

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
-import { BrainCircuit, Home, ScanLine, UserRound, Wine, type LucideIcon } from 'lucide-react';
+import { BrainCircuit, Compass, Home, ScanLine, UserRound, Wine, type LucideIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import { useI18n } from '@/i18n';
@@ -29,10 +29,23 @@ const MobileBottomNav = () => {
     };
   }, [isNative]);
 
-  const navLinks: BottomNavLink[] = [
+  const webNavLinks: BottomNavLink[] = [
     { path: '/', label: t('nav.home'), icon: Home },
     { path: '/inteligencia-liquida', label: 'aiRIM', icon: BrainCircuit },
     { path: '/escanear', label: 'Escanear', icon: ScanLine },
+    { path: '/my-wines', label: 'Bodega', icon: Wine, requiresAuth: true },
+    {
+      path: '/profile',
+      label: 'Perfil',
+      icon: UserRound,
+      requiresAuth: true,
+      activePaths: ['/profile', '/matchrim', '/auth', '/registration'],
+    },
+  ];
+
+  const nativeNavLinks: BottomNavLink[] = [
+    { path: '/', label: t('nav.home'), icon: Home },
+    { path: '/usar-matchrim', label: 'Explora', icon: Compass, activePaths: ['/wine-styles', '/wines'] },
     { path: '/my-wines', label: 'Bodega', icon: Wine, requiresAuth: true },
     {
       path: '/profile',
@@ -55,13 +68,54 @@ const MobileBottomNav = () => {
     return link.path;
   };
 
+  if (isNative) {
+    const scanActive = location.pathname === '/escanear' || location.pathname.startsWith('/escanear/');
+    return (
+      <nav
+        aria-label="Navegación principal"
+        className="matchrim-tab-bar matchrim-native-tab-bar fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/90 bg-white/95 px-[calc(0.5rem+var(--matchrim-safe-left))] pb-[calc(0.35rem+var(--matchrim-safe-bottom))] pt-1.5 backdrop-blur-xl"
+      >
+        <div className="mx-auto grid h-16 max-w-lg grid-cols-[1fr_1fr_4.5rem_1fr_1fr] gap-0.5">
+          {nativeNavLinks.map((link, index) => {
+            const Icon = link.icon;
+            const isActive = isActivePath(link);
+            return (
+              <Link
+                key={`${link.path}-${link.label}`}
+                to={getLinkTarget(link)}
+                aria-label={link.label}
+                aria-current={isActive ? 'page' : undefined}
+                className={`matchrim-pressable relative flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 px-1 text-[0.6875rem] font-semibold leading-none ${index === 2 ? 'col-start-4' : ''} ${isActive ? 'text-red-900' : 'text-slate-500'}`}
+              >
+                <Icon className="h-[1.35rem] w-[1.35rem]" strokeWidth={isActive ? 2.3 : 1.9} aria-hidden="true" />
+                <span className="max-w-full truncate" aria-hidden="true">{link.label}</span>
+                {isActive && <span className="absolute top-0 h-0.5 w-5 rounded-full bg-red-800" aria-hidden="true" />}
+              </Link>
+            );
+          })}
+          <Link
+            to="/escanear"
+            aria-label="Escanear"
+            aria-current={scanActive ? 'page' : undefined}
+            className="matchrim-pressable absolute left-1/2 top-1.5 flex -translate-x-1/2 flex-col items-center gap-1 text-[0.6875rem] font-semibold text-slate-700"
+          >
+            <span className={`flex h-12 w-12 items-center justify-center rounded-full border-4 border-white text-white shadow-[0_10px_26px_-10px_rgba(42,8,19,0.75)] ${scanActive ? 'bg-red-900' : 'bg-slate-950'}`}>
+              <ScanLine className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span aria-hidden="true">Escanear</span>
+          </Link>
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <nav
       aria-label="Navegación principal"
       className={`matchrim-tab-bar fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/90 bg-white/95 px-2 pb-[calc(0.35rem+var(--matchrim-safe-bottom))] pt-1.5 backdrop-blur-xl ${isNative ? '' : 'md:hidden'}`}
     >
       <div className="mx-auto grid h-16 max-w-md grid-cols-5 gap-1">
-        {navLinks.map((link) => {
+        {webNavLinks.map((link) => {
           const Icon = link.icon;
           const isActive = isActivePath(link);
           const to = getLinkTarget(link);
