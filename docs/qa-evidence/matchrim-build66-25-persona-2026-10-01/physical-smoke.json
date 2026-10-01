@@ -1,0 +1,11 @@
+{
+  "release": "Matchrim 1.0 (66)",
+  "device": "connected physical iPhone",
+  "bundleIdentifier": "wine.matchrim.app",
+  "installedBuild": "66",
+  "devicectlLaunch": "PASS",
+  "xcuitest": "BLOCKED",
+  "xcuitestReason": "Timed out while enabling automation mode",
+  "navigationTestsExecuted": 0,
+  "qualification": "Installation and real launch passed; physical automated navigation was not approved in this run."
+}

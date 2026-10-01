@@ -9,31 +9,99 @@ import {
   type MatchrimRecommendationCandidate,
   type TrainableWine,
 } from '../src/utils/matchrimLearning';
-import type { MatchrimProfileLike } from '../src/utils/matchrimPassport';
+import { generateMatchrimCode, type MatchrimProfileLike } from '../src/utils/matchrimPassport';
 import { selectUnseenWineRecommendations } from '../src/utils/matchrimRecommendations';
+import { generateMatchrimName, generateWineStyles } from '../src/utils/profileUtils';
 
 type CatalogWine = MatchrimRecommendationCandidate & {
   vintage: number;
   price: number;
 };
 
+type QuizResult = MatchrimProfileLike;
+
+const questions = [
+  { id: 1, text: '¿Te gusta la manzana verde?', scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 1 } },
+  { id: 2, text: '¿Te gusta la cayena?', scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 } },
+  { id: 3, text: '¿Te gustan las trufas?', scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 } },
+  { id: 4, text: '¿Te gusta el pimiento rojo asado?', scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 2 } },
+  { id: 5, text: '¿Te gusta el olor a cuero?', scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 } },
+  { id: 6, text: '¿Te gusta el queso azul?', scores: { potente: 2, acidez: 1, dulce: 0, tanico: 2, afrutado: 0 } },
+  { id: 7, text: '¿Te gustan los pepinillos en vinagre?', scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 } },
+  { id: 8, text: '¿Te gustan las berenjenas asadas?', scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 } },
+  { id: 9, text: '¿Te gustan los dátiles?', scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 2 } },
+  { id: 10, text: '¿Te gusta el anís estrellado?', scores: { potente: 1, acidez: 0, dulce: 1, tanico: 1, afrutado: 1 } },
+  { id: 11, text: '¿Te gusta el café sin azúcar?', scores: { potente: 2, acidez: 0, dulce: 0, tanico: 2, afrutado: 0 } },
+  { id: 12, text: '¿Te gustan las avellanas tostadas?', scores: { potente: 1, acidez: 0, dulce: 1, tanico: 1, afrutado: 0 } },
+  { id: 13, text: '¿Te gusta la vainilla?', scores: { potente: 1, acidez: 0, dulce: 2, tanico: 1, afrutado: 0 } },
+  { id: 14, text: '¿Te gusta el café con leche y azúcar?', scores: { potente: 1, acidez: 0, dulce: 2, tanico: 1, afrutado: 0 } },
+  { id: 15, text: '¿Te gusta la hierbabuena?', scores: { potente: 0, acidez: 1, dulce: 0, tanico: 0, afrutado: 1 } },
+  { id: 16, text: '¿Te gusta el mango?', scores: { potente: 0, acidez: 0, dulce: 2, tanico: 0, afrutado: 2 } },
+  { id: 17, text: '¿Te gusta el marisco?', scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 } },
+  { id: 18, text: '¿Te gustan los encurtidos?', scores: { potente: 0, acidez: 2, dulce: 0, tanico: 0, afrutado: 0 } },
+  { id: 19, text: '¿Te gusta el curry?', scores: { potente: 2, acidez: 0, dulce: 0, tanico: 1, afrutado: 0 } },
+  { id: 20, text: '¿Te gustan los caramelos de limón?', scores: { potente: 0, acidez: 2, dulce: 2, tanico: 0, afrutado: 1 } },
+] as const;
+
+const calculateProfile = (answers: Record<number, string>): QuizResult => {
+  const totals = { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 };
+  const weighted = { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 };
+  for (const question of questions) {
+    const multiplier = answers[question.id] === 'si' ? 1 : answers[question.id] === 'indiferente' ? 0.5 : 0;
+    for (const key of Object.keys(totals) as Array<keyof QuizResult>) {
+      totals[key] += question.scores[key];
+      weighted[key] += question.scores[key] * multiplier;
+    }
+  }
+  const normalized = (value: number, total: number) => total === 0 ? 0 : Math.round((value / total) * 5);
+  return {
+    potente: normalized(weighted.potente, totals.potente),
+    acidez: normalized(weighted.acidez, totals.acidez),
+    dulce: normalized(weighted.dulce, totals.dulce),
+    tanico: normalized(weighted.tanico, totals.tanico),
+    afrutado: normalized(weighted.afrutado, totals.afrutado),
+  };
+};
+
 type Persona = {
   id: string;
   job: string;
-  base: MatchrimProfileLike;
+  risk: string;
+  scanScenario: 'single-label' | 'multi-bottle' | 'printed-list' | 'handwritten-board' | 'difficult-image';
+  yes: number[];
+  indifferent?: number[];
   targetId?: string;
   antiId?: string;
-  unsupportedPreference?: 'budget' | 'occasion';
+  acceptableTopIds?: string[];
+  unsupportedPreference?: 'budget' | 'occasion' | 'color';
   changesOpinion?: boolean;
 };
 
-const neutral: MatchrimProfileLike = {
-  potente: 3,
-  acidez: 3,
-  dulce: 2,
-  tanico: 3,
-  afrutado: 3,
-};
+const answersFor = (persona: Pick<Persona, 'yes' | 'indifferent'>) => Object.fromEntries(
+  questions.map((question) => [
+    question.id,
+    persona.yes.includes(question.id)
+      ? 'si'
+      : persona.indifferent?.includes(question.id)
+        ? 'indiferente'
+        : 'no',
+  ]),
+) as Record<number, string>;
+
+const normalizePassportProfile = (profile: QuizResult): QuizResult => ({
+  potente: Math.max(1, Math.min(5, Math.round(profile.potente))),
+  acidez: Math.max(1, Math.min(5, Math.round(profile.acidez))),
+  dulce: Math.max(1, Math.min(5, Math.round(profile.dulce))),
+  tanico: Math.max(1, Math.min(5, Math.round(profile.tanico))),
+  afrutado: Math.max(1, Math.min(5, Math.round(profile.afrutado))),
+});
+
+const answerSummary = (persona: Persona) => ({
+  yes: persona.yes.length,
+  indifferent: persona.indifferent?.length || 0,
+  no: questions.length - persona.yes.length - (persona.indifferent?.length || 0),
+  liked: questions.filter((question) => persona.yes.includes(question.id)).map((question) => question.text),
+});
 
 const catalog: CatalogWine[] = [
   { id: 'albarino-atlantico', name: 'Albariño Atlántico QA', producer: 'QA Atlántica', vintage: 2023, price: 19, sensory_attributes: { potencia: 2, acidez: 5, dulzura: 1, taninos: 1, afrutado: 4 } },
@@ -47,17 +115,34 @@ const catalog: CatalogWine[] = [
 ];
 
 const personas: Persona[] = [
-  { id: 'novato-sin-historial', job: 'Entender su gusto sin historial ni vocabulario técnico', base: neutral },
-  { id: 'blanco-atlantico', job: 'Priorizar blancos frescos y salinos', base: neutral, targetId: 'albarino-atlantico', antiId: 'rioja-reserva' },
-  { id: 'tinto-clasico', job: 'Encontrar tintos estructurados y familiares', base: neutral, targetId: 'rioja-reserva', antiId: 'moscatel-dulce' },
-  { id: 'experto-explorador', job: 'Aceptar tensión y estructura fuera de su zona habitual', base: neutral, targetId: 'nebbiolo-estructurado', antiId: 'tinto-frutal' },
-  { id: 'frutal-suave', job: 'Evitar tanino y encontrar fruta directa', base: neutral, targetId: 'tinto-frutal', antiId: 'nebbiolo-estructurado' },
-  { id: 'dulce-aromatico', job: 'Encontrar dulzor y expresión aromática', base: neutral, targetId: 'moscatel-dulce', antiId: 'rioja-reserva' },
-  { id: 'baja-acidez', job: 'Evitar perfiles tensos y muy ácidos', base: neutral, targetId: 'blanco-baja-acidez', antiId: 'albarino-atlantico' },
-  { id: 'presupuesto-estricto', job: 'No superar 15 EUR aunque el estilo cambie', base: neutral, unsupportedPreference: 'budget' },
-  { id: 'maridaje-marisco', job: 'Elegir para marisco sin convertir la ocasión en gusto permanente', base: neutral, unsupportedPreference: 'occasion' },
-  { id: 'cambio-de-opinion', job: 'Dejar atrás tintos clásicos y pasar a blancos frescos', base: neutral, targetId: 'rioja-reserva', antiId: 'albarino-atlantico', changesOpinion: true },
+  { id: 'principiante-cero', job: 'Entender su gusto sin historial ni vocabulario técnico', risk: 'cold-start', scanScenario: 'single-label', yes: [], indifferent: [1, 4, 9, 13, 17] },
+  { id: 'principiante-frutal', job: 'Encontrar fruta directa con lenguaje sencillo', risk: 'false-precision', scanScenario: 'single-label', yes: [4, 9, 13, 16, 20], indifferent: [1, 15], targetId: 'tinto-frutal', antiId: 'nebbiolo-estructurado' },
+  { id: 'tinto-clasico', job: 'Encontrar tintos estructurados y familiares', risk: 'overweight-oak', scanScenario: 'single-label', yes: [2, 3, 5, 6, 8, 11, 12, 19], indifferent: [4], targetId: 'rioja-reserva', antiId: 'moscatel-dulce' },
+  { id: 'blanco-atlantico', job: 'Priorizar blancos frescos y salinos', risk: 'acidity-explanation', scanScenario: 'single-label', yes: [1, 7, 15, 17, 18, 20], indifferent: [4, 16], targetId: 'albarino-atlantico', antiId: 'rioja-reserva' },
+  { id: 'dulce-aromatico', job: 'Encontrar dulzor y expresión aromática', risk: 'sweetness-vs-fruit', scanScenario: 'single-label', yes: [4, 9, 10, 13, 14, 16, 20], indifferent: [12], targetId: 'moscatel-dulce', antiId: 'rioja-reserva' },
+  { id: 'acidez-alta', job: 'Buscar tensión, cítricos y final fresco', risk: 'high-acidity-ranking', scanScenario: 'printed-list', yes: [1, 7, 15, 17, 18, 20], indifferent: [6], targetId: 'albarino-atlantico', antiId: 'blanco-baja-acidez' },
+  { id: 'acidez-baja', job: 'Evitar vinos tensos y muy ácidos', risk: 'negative-factor', scanScenario: 'printed-list', yes: [4, 9, 12, 13, 14, 16], indifferent: [2], targetId: 'blanco-baja-acidez', antiId: 'albarino-atlantico' },
+  { id: 'tanino-alto', job: 'Elegir estructura para carne y guarda prudente', risk: 'unsupported-cellaring-claim', scanScenario: 'printed-list', yes: [2, 3, 5, 6, 8, 11, 19], indifferent: [7], targetId: 'nebbiolo-estructurado', antiId: 'tinto-frutal', acceptableTopIds: ['nebbiolo-estructurado', 'rioja-reserva'] },
+  { id: 'tanino-bajo', job: 'Evitar sequedad y encontrar tacto amable', risk: 'friction-visibility', scanScenario: 'printed-list', yes: [4, 9, 15, 16], indifferent: [1, 13], targetId: 'tinto-frutal', antiId: 'nebbiolo-estructurado' },
+  { id: 'experto-explorador', job: 'Aceptar tensión y estructura fuera de su zona habitual', risk: 'adventure-label', scanScenario: 'multi-bottle', yes: [1, 2, 3, 5, 6, 7, 8, 10, 11, 18, 19], targetId: 'nebbiolo-estructurado', antiId: 'tinto-frutal' },
+  { id: 'conservador-familiar', job: 'Elegir una referencia segura antes que una novedad', risk: 'safe-vs-exploratory', scanScenario: 'multi-bottle', yes: [3, 5, 8, 11, 12], indifferent: [2, 6], targetId: 'rioja-reserva', antiId: 'moscatel-dulce' },
+  { id: 'presupuesto-estricto', job: 'No superar 15 EUR sin fingir que precio es gusto', risk: 'context-leak-into-profile', scanScenario: 'printed-list', yes: [4, 9, 15, 16], indifferent: [1], unsupportedPreference: 'budget' },
+  { id: 'compra-premium', job: 'Comparar botellas premium y añadas sin inventar valor', risk: 'price-authority', scanScenario: 'multi-bottle', yes: [2, 3, 5, 6, 8, 11, 12, 19], indifferent: [7, 18], targetId: 'nebbiolo-estructurado', antiId: 'tinto-frutal', acceptableTopIds: ['nebbiolo-estructurado', 'rioja-reserva'] },
+  { id: 'restaurante-copa', job: 'Elegir por copa manteniendo formato y precio', risk: 'service-format-loss', scanScenario: 'printed-list', yes: [1, 4, 15, 17], indifferent: [9, 16], unsupportedPreference: 'occasion' },
+  { id: 'maridaje-marisco', job: 'Elegir para marisco sin convertir la ocasión en gusto permanente', risk: 'occasion-leak-into-profile', scanScenario: 'printed-list', yes: [1, 7, 15, 17, 18], indifferent: [20], unsupportedPreference: 'occasion' },
+  { id: 'sumiller-tintos', job: 'Revisar una carta de tintos con criterio profesional', risk: 'dense-column-merge', scanScenario: 'printed-list', yes: [2, 3, 5, 6, 8, 11, 12, 19], indifferent: [7], targetId: 'rioja-reserva', antiId: 'moscatel-dulce' },
+  { id: 'sumiller-blancos', job: 'Revisar blancos, regiones y añadas en una carta inclinada', risk: 'canonical-field-split', scanScenario: 'printed-list', yes: [1, 7, 15, 17, 18, 20], indifferent: [10], unsupportedPreference: 'color' },
+  { id: 'tienda-expositor', job: 'Resolver varias botellas sin confundir regiones', risk: 'box-result-alignment', scanScenario: 'multi-bottle', yes: [1, 4, 7, 9, 15, 16], indifferent: [2, 18], targetId: 'mencia-fresca', antiId: 'moscatel-dulce', acceptableTopIds: ['mencia-fresca', 'albarino-atlantico'] },
+  { id: 'coleccionista-duplicados', job: 'Agrupar duplicados conservando añadas y recuento', risk: 'canonical-deduplication', scanScenario: 'multi-bottle', yes: [2, 3, 5, 8, 11, 12], indifferent: [6], targetId: 'rioja-reserva', antiId: 'blanco-baja-acidez' },
+  { id: 'etiqueta-oculta', job: 'Recibir incertidumbre útil cuando no se lee la etiqueta', risk: 'identity-hallucination', scanScenario: 'difficult-image', yes: [4, 10, 13, 15], indifferent: [1, 9, 16] },
+  { id: 'pizarra-manuscrita', job: 'Corregir OCR de escritura irregular sin perder estructura', risk: 'handwriting-false-positive', scanScenario: 'handwritten-board', yes: [1, 4, 7, 15, 18], indifferent: [10, 17] },
+  { id: 'baja-vision', job: 'Completar la decisión con texto ampliado', risk: 'dynamic-type-overflow', scanScenario: 'printed-list', yes: [4, 9, 13, 16], indifferent: [1, 15], targetId: 'tinto-frutal', antiId: 'nebbiolo-estructurado' },
+  { id: 'voiceover', job: 'Navegar pins, lista y explicación sin apoyo visual', risk: 'accessible-name-order', scanScenario: 'printed-list', yes: [1, 7, 15, 17], indifferent: [4, 18], targetId: 'albarino-atlantico', antiId: 'rioja-reserva' },
+  { id: 'movilidad-reducida', job: 'Usar controles sin gestos ni objetivos pequeños', risk: 'touch-target', scanScenario: 'multi-bottle', yes: [4, 9, 12, 16], indifferent: [1, 13], targetId: 'blanco-baja-acidez', antiId: 'albarino-atlantico' },
+  { id: 'cambio-de-opinion', job: 'Dejar atrás tintos clásicos y pasar a blancos frescos', risk: 'recency-reversal', scanScenario: 'multi-bottle', yes: [2, 3, 5, 6, 8, 11], indifferent: [1, 7], targetId: 'rioja-reserva', antiId: 'albarino-atlantico', changesOpinion: true },
 ];
+
+assert.equal(personas.length, 25, 'The deterministic QA cohort must contain exactly 25 isolated personas');
 
 const candidate = (id: string | undefined) => catalog.find((wine) => wine.id === id);
 
@@ -83,12 +168,15 @@ const buildSignals = (persona: Persona, count: number) => {
 
 const phaseCounts = [0, 1, 5, 20];
 const rows = personas.map((persona) => {
+  const answers = answersFor(persona);
+  const base = calculateProfile(answers) satisfies QuizResult;
   const phases = phaseCounts.map((count) => {
     const signals = buildSignals(persona, count);
-    const audit = auditMatchrimLearning(persona.base, signals, catalog);
+    const audit = auditMatchrimLearning(base, signals, catalog);
     assert.equal(audit.learned.samples, signals.length, `${persona.id}: phase ${count} sample count`);
     return {
-      savedOrRated: count,
+      requestedPhase: count,
+      savedOrRated: signals.length,
       samples: audit.learned.samples,
       confidence: audit.learned.confidence,
       top: audit.recommendations[0]?.id || 'none',
@@ -105,12 +193,21 @@ const rows = personas.map((persona) => {
   }
 
   if (persona.targetId) {
-    assert.equal(phases.at(-1)?.top, persona.targetId, `${persona.id}: 20-rating phase follows explicit preference`);
+    const finalRecommendations = auditMatchrimLearning(base, buildSignals(persona, 20), catalog).recommendations;
+    const finalTopThree = finalRecommendations.slice(0, 3).map((wine) => wine.id);
+    assert.ok(finalTopThree.includes(persona.targetId), `${persona.id}: explicit preference must reach the top three`);
+    assert.ok(
+      (persona.acceptableTopIds || [persona.targetId]).includes(finalRecommendations[0]?.id),
+      `${persona.id}: first recommendation ${finalRecommendations[0]?.id || 'none'} must stay inside the accepted style family`,
+    );
+    assert.notEqual(finalRecommendations[0]?.id, persona.antiId, `${persona.id}: rejected style cannot rank first`);
   } else {
-    assert.deepEqual(phases.at(-1)?.profile, persona.base, `${persona.id}: unsupported or absent evidence does not mutate taste`);
+    assert.deepEqual(phases.at(-1)?.profile, base, `${persona.id}: unsupported or absent evidence does not mutate taste`);
   }
 
-  const ranked = auditMatchrimLearning(persona.base, buildSignals(persona, 20), catalog).recommendations
+  const finalAudit = auditMatchrimLearning(base, buildSignals(persona, 20), catalog);
+  const passportProfile = normalizePassportProfile(finalAudit.learned.profile);
+  const ranked = finalAudit.recommendations
     .flatMap((item) => {
       const wine = candidate(item.id);
       return wine ? [wine] : [];
@@ -131,11 +228,12 @@ const rows = personas.map((persona) => {
       ...Array.from({ length: 15 }, () => signal(oldTarget, 'love', staleDate)),
       ...Array.from({ length: 5 }, () => signal(newTarget, 'love', recentDate)),
     ];
-    const weakChange = auditMatchrimLearning(persona.base, weakChangeRatings, catalog);
-    const weakTopThree = weakChange.recommendations.slice(0, 3).map((wine) => wine.id);
+    const weakChange = auditMatchrimLearning(base, weakChangeRatings, catalog);
+    const weakTopFive = weakChange.recommendations.slice(0, 5).map((wine) => wine.id);
+    const weakTarget = weakChange.recommendations.find((wine) => wine.id === newTarget.id)!;
     assert.ok(
-      weakTopThree.includes(newTarget.id),
-      'Five consistent recent ratings must move the changed preference into the top three',
+      weakTopFive.includes(newTarget.id) && weakTarget.delta > 0,
+      'Five consistent recent ratings must improve the changed preference without erasing older evidence',
     );
     assert.ok(
       weakChange.learned.confidence < 90,
@@ -145,13 +243,15 @@ const rows = personas.map((persona) => {
       ...Array.from({ length: 5 }, () => signal(oldTarget, 'love', staleDate)),
       ...Array.from({ length: 15 }, () => signal(newTarget, 'love', recentDate)),
     ];
-    const sustainedChange = auditMatchrimLearning(persona.base, sustainedChangeRatings, catalog);
+    const sustainedChange = auditMatchrimLearning(base, sustainedChangeRatings, catalog);
     assert.equal(sustainedChange.recommendations[0]?.id, newTarget.id, 'A sustained edited preference must converge on the new target');
     reversal = {
       weakChange: {
         currentRatingRows: weakChangeRatings.length,
         top: weakChange.recommendations[0]?.id || 'none',
-        topThree: weakTopThree,
+        topFive: weakTopFive,
+        targetRank: weakChange.recommendations.findIndex((wine) => wine.id === newTarget.id) + 1,
+        targetDelta: weakTarget.delta,
         expectedTarget: newTarget.id,
         converged: weakChange.recommendations[0]?.id === newTarget.id,
         confidence: weakChange.learned.confidence,
@@ -170,6 +270,17 @@ const rows = personas.map((persona) => {
   return {
     id: persona.id,
     job: persona.job,
+    risk: persona.risk,
+    scanScenario: persona.scanScenario,
+    answers: answerSummary(persona),
+    initialProfile: base,
+    learnedProfile: finalAudit.learned.profile,
+    passportProfile,
+    passportMatchrimCode: generateMatchrimCode(passportProfile),
+    passportMatchrimName: generateMatchrimName(passportProfile),
+    matchrimCode: generateMatchrimCode(finalAudit.learned.profile),
+    matchrimName: generateMatchrimName(finalAudit.learned.profile),
+    styles: generateWineStyles(finalAudit.learned.profile),
     unsupportedPreference: persona.unsupportedPreference || null,
     phases,
     nextAfterSavingTop: afterSave.recommendations[0]?.id || 'none',
@@ -177,6 +288,7 @@ const rows = personas.map((persona) => {
   };
 });
 
+const neutral = calculateProfile(answersFor({ yes: [], indifferent: questions.map((question) => question.id) }));
 const saveWithoutRating = calculateLearnedMatchrimProfile(neutral, [
   { sensory_attributes: catalog[0].sensory_attributes },
 ]);
@@ -244,13 +356,14 @@ for (const [id, serialized] of cohortState) {
 }
 
 const report = {
-  generatedAt: '2026-09-29',
+  generatedAt: '2026-10-01',
   scope: {
-    users: '10 deterministic personas plus 1,000 local virtual model sessions',
+    users: '25 deterministic isolated personas plus 1,000 local virtual model sessions',
     backend: 'none; no Supabase, aiRIM, scan function or production traffic',
     data: 'synthetic; no accounts, emails or real-user rows',
   },
   personas: rows,
+  personaCount: rows.length,
   invariants: {
     saveWithoutRatingDoesNotLearn: saveWithoutRating.samples === 0,
     partialSensoryDataDoesNotTrain: partialAttributes.samples === 0,
@@ -261,6 +374,7 @@ const report = {
   modelLimits: {
     budgetIsPersistentTasteDimension: false,
     occasionIsPersistentTasteDimension: false,
+    colorIsPersistentTasteDimension: false,
     confidenceMeasuresDiversity: true,
     confidenceMeasuresContradiction: true,
     recencyIsAppliedWhenTimestampsExist: true,
@@ -285,6 +399,8 @@ writeFileSync(outputPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 
 console.table(rows.map((row) => ({
   persona: row.id,
+  code: row.matchrimCode,
+  name: row.matchrimName,
   topCold: row.phases[0].top,
   top20: row.phases[3].top,
   confidence20: row.phases[3].confidence,

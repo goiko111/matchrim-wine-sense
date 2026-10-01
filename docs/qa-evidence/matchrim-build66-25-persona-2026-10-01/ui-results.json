@@ -1,0 +1,663 @@
+{
+  "release": "Matchrim 1.0 (66)",
+  "qualification": "25 isolated synthetic sessions against compiled local assets; all Supabase and Winerim traffic intercepted",
+  "realHumans": 0,
+  "productionReads": false,
+  "productionWrites": false,
+  "personaCount": 25,
+  "passed": 25,
+  "failed": 0,
+  "allPassed": true,
+  "results": [
+    {
+      "index": 1,
+      "persona": "principiante-cero",
+      "userId": "00000000-0000-4000-8000-000000000001",
+      "profile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Garnacha Atlántico",
+      "passportMatchrimName": "Garnacha Atlántico",
+      "learnedMatchrimCode": "Riesling Miel",
+      "learnedMatchrimName": "Riesling Miel",
+      "scanScenario": "single-label",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 2,
+      "persona": "principiante-frutal",
+      "userId": "00000000-0000-4000-8000-000000000002",
+      "profile": {
+        "potente": 0.5,
+        "acidez": 1.7,
+        "dulce": 3.1,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "passportMatchrimCode": "Chardonnay Dorado",
+      "passportMatchrimName": "Chardonnay Dorado",
+      "learnedMatchrimCode": "Pinot Dorado",
+      "learnedMatchrimName": "Pinot Dorado",
+      "scanScenario": "single-label",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 3,
+      "persona": "tinto-clasico",
+      "userId": "00000000-0000-4000-8000-000000000003",
+      "profile": {
+        "potente": 5,
+        "acidez": 1.6,
+        "dulce": 0.2,
+        "tanico": 5,
+        "afrutado": 1.7
+      },
+      "passportMatchrimCode": "Monastrell Tierra",
+      "passportMatchrimName": "Monastrell Tierra",
+      "learnedMatchrimCode": "Garnacha Fuego",
+      "learnedMatchrimName": "Garnacha Fuego",
+      "scanScenario": "single-label",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 4,
+      "persona": "blanco-atlantico",
+      "userId": "00000000-0000-4000-8000-000000000004",
+      "profile": {
+        "potente": 0.5,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 3.7
+      },
+      "passportMatchrimCode": "Godello Velo",
+      "passportMatchrimName": "Godello Velo",
+      "learnedMatchrimCode": "Albariño Primavera",
+      "learnedMatchrimName": "Albariño Primavera",
+      "scanScenario": "single-label",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 5,
+      "persona": "dulce-aromatico",
+      "userId": "00000000-0000-4000-8000-000000000005",
+      "profile": {
+        "potente": 1,
+        "acidez": 2,
+        "dulce": 5,
+        "tanico": 0.2,
+        "afrutado": 4.9
+      },
+      "passportMatchrimCode": "Gewürztraminer Aroma",
+      "passportMatchrimName": "Gewürztraminer Aroma",
+      "learnedMatchrimCode": "Malvasía Jardín",
+      "learnedMatchrimName": "Malvasía Jardín",
+      "scanScenario": "single-label",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry",
+        "landscape"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 6,
+      "persona": "acidez-alta",
+      "userId": "00000000-0000-4000-8000-000000000006",
+      "profile": {
+        "potente": 0.9,
+        "acidez": 5,
+        "dulce": 0.6,
+        "tanico": 0.5,
+        "afrutado": 3
+      },
+      "passportMatchrimCode": "Riesling Jardín",
+      "passportMatchrimName": "Riesling Jardín",
+      "learnedMatchrimCode": "Godello Aroma",
+      "learnedMatchrimName": "Godello Aroma",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 7,
+      "persona": "acidez-baja",
+      "userId": "00000000-0000-4000-8000-000000000007",
+      "profile": {
+        "potente": 2.2,
+        "acidez": 0,
+        "dulce": 3.9,
+        "tanico": 1,
+        "afrutado": 3.5
+      },
+      "passportMatchrimCode": "Gewürztraminer Aroma",
+      "passportMatchrimName": "Gewürztraminer Aroma",
+      "learnedMatchrimCode": "Malvasía Jardín",
+      "learnedMatchrimName": "Malvasía Jardín",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 8,
+      "persona": "tanino-alto",
+      "userId": "00000000-0000-4000-8000-000000000008",
+      "profile": {
+        "potente": 5,
+        "acidez": 3.5,
+        "dulce": 0.3,
+        "tanico": 5,
+        "afrutado": 0.5
+      },
+      "passportMatchrimCode": "Tempranillo Noble",
+      "passportMatchrimName": "Tempranillo Noble",
+      "learnedMatchrimCode": "Tempranillo Noble",
+      "learnedMatchrimName": "Tempranillo Noble",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 9,
+      "persona": "tanino-bajo",
+      "userId": "00000000-0000-4000-8000-000000000009",
+      "profile": {
+        "potente": 0.5,
+        "acidez": 1.7,
+        "dulce": 2.7,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "passportMatchrimCode": "Chardonnay Dorado",
+      "passportMatchrimName": "Chardonnay Dorado",
+      "learnedMatchrimCode": "Merlot Terciopelo",
+      "learnedMatchrimName": "Merlot Terciopelo",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 10,
+      "persona": "experto-explorador",
+      "userId": "00000000-0000-4000-8000-000000000010",
+      "profile": {
+        "potente": 5,
+        "acidez": 4.4,
+        "dulce": 0.3,
+        "tanico": 5,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Tempranillo Noble",
+      "passportMatchrimName": "Tempranillo Noble",
+      "learnedMatchrimCode": "Tempranillo Noble",
+      "learnedMatchrimName": "Tempranillo Noble",
+      "scanScenario": "multi-bottle",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry",
+        "landscape"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 11,
+      "persona": "conservador-familiar",
+      "userId": "00000000-0000-4000-8000-000000000011",
+      "profile": {
+        "potente": 4.6,
+        "acidez": 1.6,
+        "dulce": 0,
+        "tanico": 4.8,
+        "afrutado": 1.2
+      },
+      "passportMatchrimCode": "Tempranillo Especia",
+      "passportMatchrimName": "Tempranillo Especia",
+      "learnedMatchrimCode": "Syrah Bravo",
+      "learnedMatchrimName": "Syrah Bravo",
+      "scanScenario": "multi-bottle",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 12,
+      "persona": "presupuesto-estricto",
+      "userId": "00000000-0000-4000-8000-000000000012",
+      "profile": {
+        "potente": 0,
+        "acidez": 1,
+        "dulce": 2,
+        "tanico": 0,
+        "afrutado": 4
+      },
+      "passportMatchrimCode": "Merlot Terciopelo",
+      "passportMatchrimName": "Merlot Terciopelo",
+      "learnedMatchrimCode": "Verdejo Miel",
+      "learnedMatchrimName": "Verdejo Miel",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 13,
+      "persona": "compra-premium",
+      "userId": "00000000-0000-4000-8000-000000000013",
+      "profile": {
+        "potente": 5,
+        "acidez": 3.5,
+        "dulce": 0.3,
+        "tanico": 5,
+        "afrutado": 0.5
+      },
+      "passportMatchrimCode": "Tempranillo Noble",
+      "passportMatchrimName": "Tempranillo Noble",
+      "learnedMatchrimCode": "Tempranillo Noble",
+      "learnedMatchrimName": "Tempranillo Noble",
+      "scanScenario": "multi-bottle",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 14,
+      "persona": "restaurante-copa",
+      "userId": "00000000-0000-4000-8000-000000000014",
+      "profile": {
+        "potente": 0,
+        "acidez": 2,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 3
+      },
+      "passportMatchrimCode": "Pinot Luz",
+      "passportMatchrimName": "Pinot Luz",
+      "learnedMatchrimCode": "Chardonnay Luz",
+      "learnedMatchrimName": "Chardonnay Luz",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 15,
+      "persona": "maridaje-marisco",
+      "userId": "00000000-0000-4000-8000-000000000015",
+      "profile": {
+        "potente": 0,
+        "acidez": 4,
+        "dulce": 0,
+        "tanico": 0,
+        "afrutado": 1
+      },
+      "passportMatchrimCode": "Sauvignon Solar",
+      "passportMatchrimName": "Sauvignon Solar",
+      "learnedMatchrimCode": "Albariño Primavera",
+      "learnedMatchrimName": "Albariño Primavera",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry",
+        "landscape"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 16,
+      "persona": "sumiller-tintos",
+      "userId": "00000000-0000-4000-8000-000000000016",
+      "profile": {
+        "potente": 5,
+        "acidez": 2,
+        "dulce": 0,
+        "tanico": 5,
+        "afrutado": 1.2
+      },
+      "passportMatchrimCode": "Tempranillo Especia",
+      "passportMatchrimName": "Tempranillo Especia",
+      "learnedMatchrimCode": "Garnacha Fuego",
+      "learnedMatchrimName": "Garnacha Fuego",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 17,
+      "persona": "sumiller-blancos",
+      "userId": "00000000-0000-4000-8000-000000000017",
+      "profile": {
+        "potente": 0,
+        "acidez": 5,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 2
+      },
+      "passportMatchrimCode": "Godello Aroma",
+      "passportMatchrimName": "Godello Aroma",
+      "learnedMatchrimCode": "Sauvignon Aroma",
+      "learnedMatchrimName": "Sauvignon Aroma",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 18,
+      "persona": "tienda-expositor",
+      "userId": "00000000-0000-4000-8000-000000000018",
+      "profile": {
+        "potente": 1.8,
+        "acidez": 3.7,
+        "dulce": 0.7,
+        "tanico": 1.2,
+        "afrutado": 3.8
+      },
+      "passportMatchrimCode": "Sauvignon Velo",
+      "passportMatchrimName": "Sauvignon Velo",
+      "learnedMatchrimCode": "Pinot Vibrante",
+      "learnedMatchrimName": "Pinot Vibrante",
+      "scanScenario": "multi-bottle",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 19,
+      "persona": "coleccionista-duplicados",
+      "userId": "00000000-0000-4000-8000-000000000019",
+      "profile": {
+        "potente": 4.4,
+        "acidez": 1.9,
+        "dulce": 0.1,
+        "tanico": 5,
+        "afrutado": 1.4
+      },
+      "passportMatchrimCode": "Cabernet Intenso",
+      "passportMatchrimName": "Cabernet Intenso",
+      "learnedMatchrimCode": "Cabernet Intenso",
+      "learnedMatchrimName": "Cabernet Intenso",
+      "scanScenario": "multi-bottle",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 20,
+      "persona": "etiqueta-oculta",
+      "userId": "00000000-0000-4000-8000-000000000020",
+      "profile": {
+        "potente": 1,
+        "acidez": 1,
+        "dulce": 3,
+        "tanico": 1,
+        "afrutado": 3
+      },
+      "passportMatchrimCode": "Moscatel Primavera",
+      "passportMatchrimName": "Moscatel Primavera",
+      "learnedMatchrimCode": "Moscatel Primavera",
+      "learnedMatchrimName": "Moscatel Primavera",
+      "scanScenario": "difficult-image",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry",
+        "privacy-gate",
+        "landscape"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 21,
+      "persona": "pizarra-manuscrita",
+      "userId": "00000000-0000-4000-8000-000000000021",
+      "profile": {
+        "potente": 0,
+        "acidez": 3,
+        "dulce": 1,
+        "tanico": 0,
+        "afrutado": 2
+      },
+      "passportMatchrimCode": "Godello Velo",
+      "passportMatchrimName": "Godello Velo",
+      "learnedMatchrimCode": "Sauvignon Velo",
+      "learnedMatchrimName": "Sauvignon Velo",
+      "scanScenario": "handwritten-board",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 22,
+      "persona": "baja-vision",
+      "userId": "00000000-0000-4000-8000-000000000022",
+      "profile": {
+        "potente": 0.5,
+        "acidez": 1.7,
+        "dulce": 2.7,
+        "tanico": 0,
+        "afrutado": 5
+      },
+      "passportMatchrimCode": "Chardonnay Dorado",
+      "passportMatchrimName": "Chardonnay Dorado",
+      "learnedMatchrimCode": "Merlot Terciopelo",
+      "learnedMatchrimName": "Merlot Terciopelo",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry",
+        "dynamic-type-125"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 23,
+      "persona": "voiceover",
+      "userId": "00000000-0000-4000-8000-000000000023",
+      "profile": {
+        "potente": 0.5,
+        "acidez": 4.4,
+        "dulce": 0.5,
+        "tanico": 0,
+        "afrutado": 3.2
+      },
+      "passportMatchrimCode": "Sauvignon Aroma",
+      "passportMatchrimName": "Sauvignon Aroma",
+      "learnedMatchrimCode": "Riesling Jardín",
+      "learnedMatchrimName": "Riesling Jardín",
+      "scanScenario": "printed-list",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry",
+        "accessible-names"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 24,
+      "persona": "movilidad-reducida",
+      "userId": "00000000-0000-4000-8000-000000000024",
+      "profile": {
+        "potente": 1.8,
+        "acidez": 0,
+        "dulce": 3.4,
+        "tanico": 0.5,
+        "afrutado": 3.5
+      },
+      "passportMatchrimCode": "Verdejo Miel",
+      "passportMatchrimName": "Verdejo Miel",
+      "learnedMatchrimCode": "Merlot Terciopelo",
+      "learnedMatchrimName": "Merlot Terciopelo",
+      "scanScenario": "multi-bottle",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry",
+        {
+          "touchTargets": {
+            "profileTab": {
+              "width": 199,
+              "height": 44
+            },
+            "historyTab": {
+              "width": 199,
+              "height": 44
+            },
+            "copy": {
+              "width": 44,
+              "height": 44
+            }
+          }
+        }
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    },
+    {
+      "index": 25,
+      "persona": "cambio-de-opinion",
+      "userId": "00000000-0000-4000-8000-000000000025",
+      "profile": {
+        "potente": 4.6,
+        "acidez": 1.7,
+        "dulce": 0.5,
+        "tanico": 5,
+        "afrutado": 1.4
+      },
+      "passportMatchrimCode": "Tempranillo Especia",
+      "passportMatchrimName": "Tempranillo Especia",
+      "learnedMatchrimCode": "Cabernet Intenso",
+      "learnedMatchrimName": "Cabernet Intenso",
+      "scanScenario": "multi-bottle",
+      "checks": [
+        "home",
+        "profile",
+        "bodega-isolation",
+        "scan-entry",
+        "landscape"
+      ],
+      "consoleErrors": [],
+      "status": "PASS"
+    }
+  ],
+  "errors": []
+}

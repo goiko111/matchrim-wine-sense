@@ -17,6 +17,7 @@
     "qa:detection:replay": "tsx scripts/replay-matchrim-detection-normalization.ts",
     "qa:personalization": "tsx scripts/check-matchrim-personas.ts && node scripts/qa-matchrim-personalization-gates.cjs",
     "qa:integral:personas": "tsx scripts/qa-matchrim-integral-personas.ts",
+    "qa:integral:personas-ui": "node scripts/qa-matchrim-25-persona-ui.cjs",
     "qa:recognition:replay": "tsx scripts/qa-matchrim-recognition-replay.ts",
     "qa:staging:load": "tsx scripts/load-matchrim-staging.ts",
     "qa:integral:routes": "node scripts/qa-matchrim-route-inventory.cjs",

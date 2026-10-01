@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-10-01T04:37:20.968Z",
+  "qualification": {
+    "backend": "recorded real independent backend run; no provider call was repeated",
+    "local": "current-source deterministic normalization only",
+    "productionWrite": false,
+    "certified": false
+  },
+  "sources": {
+    "report": "/Users/GOIKO/2matchrim-p0-remediation-20260826/qa-artifacts/matchrim-independent-v2/e2e-final-25-2026-09-01/ground-truth-e2e-report.json",
+    "food": "/Users/GOIKO/2matchrim-release-integration-20260902/docs/qa-evidence/matchrim-build64-recognition-2026-09-28/food-menu-real-backend.json"
+  },
+  "identityFromRecordedBackend": {
+    "single_label": {
+      "scenes": 11,
+      "expected": 11,
+      "actual": 11,
+      "matched": 10,
+      "precision": 0.9091,
+      "recall": 0.9091
+    },
+    "multi_label": {
+      "scenes": 4,
+      "expected": 9,
+      "actual": 16,
+      "matched": 8,
+      "precision": 0.5,
+      "recall": 0.8889
+    },
+    "printed_wine_list": {
+      "scenes": 5,
+      "expected": 107,
+      "actual": 110,
+      "matched": 101,
+      "precision": 0.9182,
+      "recall": 0.9439
+    },
+    "handwritten_board": {
+      "scenes": 3,
+      "expected": 29,
+      "actual": 29,
+      "matched": 28,
+      "precision": 0.9655,
+      "recall": 0.9655
+    }
+  },
+  "detectionBoxes": {
+    "beforeLocalNormalization": {
+      "scenes": 15,
+      "expected": 29,
+      "actual": 44,
+      "matched": 27,
+      "precision": 0.6136,
+      "recall": 0.931
+    },
+    "afterLocalNormalization": {
+      "scenes": 15,
+      "expected": 29,
+      "actual": 32,
+      "matched": 27,
+      "precision": 0.8438,
+      "recall": 0.931
+    }
+  },
+  "foodMenu": {
+    "expected": 54,
+    "recordedProviderRows": 8,
+    "locallySegmentedRows": 13,
+    "matchedExpected": 13,
+    "precision": 1,
+    "recall": 0.2407,
+    "mergedRowsBefore": 1,
+    "mergedRowsAfter": 0,
+    "completenessImprovesOnlyAfterCandidateDeploy": true
+  },
+  "gate": {
+    "requiredPrecision": 0.9,
+    "requiredRecall": 0.9,
+    "passes": false,
+    "reason": "Current recorded identity and food-menu metrics remain below the release threshold; local source is not deployed."
+  }
+}
