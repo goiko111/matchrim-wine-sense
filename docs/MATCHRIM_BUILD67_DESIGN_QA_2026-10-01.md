@@ -2,7 +2,7 @@
 
 Fecha: 2026-10-01
 
-Estado: candidato local instalado con firma de desarrollo en el iPhone conectado. Sin despliegue web, Supabase ni TestFlight.
+Estado: build enviado correctamente a App Store Connect y en procesamiento para TestFlight. Tambien instalado con firma de desarrollo en el iPhone conectado. Sin despliegue web ni Supabase.
 
 ## Cambios cerrados
 
@@ -41,7 +41,7 @@ La rotacion remota del iPhone fisico no esta soportada por `devicectl`; el resul
 
 Los cinco materiales de esta pasada usan respuestas deterministas embebidas y no hacen trafico de produccion. Demuestran decodificacion, composicion, pins, listas, comparacion, accesibilidad y ausencia de amontonamiento. No vuelven a medir precision OCR ni identidad canonica.
 
-El transporte real autorizado de los cinco materiales ya habia completado 5/5. Sin embargo, el gate de identidad de la vitrina sigue sin una reconciliacion final box/crop/result fiable. El ultimo benchmark independiente registrado tambien mantiene `50.00%` de precision y `88.89%` de recall multietiqueta, y `24.07%` de recall en menu de comida. Por eso el candidato 67 no se ha subido a TestFlight.
+El transporte real autorizado de los cinco materiales ya habia completado 5/5. Sin embargo, el gate de identidad de la vitrina sigue sin una reconciliacion final box/crop/result fiable. El ultimo benchmark independiente registrado tambien mantiene `50.00%` de precision y `88.89%` de recall multietiqueta, y `24.07%` de recall en menu de comida. La autorizacion posterior del propietario permitio subir el build 67 a TestFlight para validacion acotada; la subida no convierte este gate de reconocimiento en aprobado.
 
 ## Evidencias
 
@@ -57,6 +57,8 @@ El transporte real autorizado de los cinco materiales ya habia completado 5/5. S
 - `docs/qa-evidence/matchrim-build67-candidate-2026-10-01/simulator/home-portrait-medium.png`
 - `docs/qa-evidence/matchrim-build67-candidate-2026-10-01/simulator/home-portrait-axxxl-fixed.png`
 
-## Gate para TestFlight
+## Estado de TestFlight
 
-La reconstruccion de produccion sin `VITE_MATCHRIM_QA_FIXTURES`, firma de desarrollo, instalacion y lanzamiento fisico ya pasan. Antes de TestFlight faltan el smoke manual en el iPhone de rotacion, Escanear, Auth y regreso desde Fotos, y un archivo Release. La subida requiere autorizacion explicita y no convierte el gate de identidad OCR en aprobado.
+La reconstruccion de produccion sin `VITE_MATCHRIM_QA_FIXTURES`, firma de desarrollo, instalacion y lanzamiento fisico pasan. El archivo Release `1.0 (67)` se genero con Xcode 26.0.1 y App Store Connect confirmo `Upload succeeded` el 2026-10-01 a las 08:43 CEST. Quedan para la validacion manual desde TestFlight la rotacion fisica, Escanear, Auth y regreso desde Fotos. La identidad OCR continua siendo un gate separado.
+
+Detalle de distribucion: `docs/MATCHRIM_BUILD67_TESTFLIGHT_UPLOAD_2026-10-01.md`.
