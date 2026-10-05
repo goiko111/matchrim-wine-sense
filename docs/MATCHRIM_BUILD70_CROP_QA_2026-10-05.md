@@ -93,3 +93,5 @@ Gates externos: produccion mantiene 403 administrativo de Supabase; la repeticio
 El push fue detenido por auto-review por la publicacion de metadatos internos de QA. `gh repo view` confirma que `goiko111/matchrim-wine-sense` es **publico** y que la cuenta dispone de permiso ADMIN. Se solicito al usuario elegir entre publicar solo codigo o tambien las evidencias no sensibles. Hasta recibir esa decision, los commits quedan locales; no se cambio la visibilidad del repositorio ni se intento un canal alternativo. Fotos privadas y claves no forman parte de los commits.
 
 TestFlight requiere cerrar los P0, validar runtime productivo equivalente, confirmar canal/cuenta/firma de distribucion y probar el archive exacto. El estudio de 100 cuentas sinteticas valida aislamiento y coherencia funcional, no satisface por si solo el gate de recomendacion humana.
+
+Continuacion aditiva: [candidato 71, moneda e identidad](MATCHRIM_BUILD71_REMEDIATION_QA_2026-10-05.md). Conserva este baseline; anade correcciones, reruns reales fallidos y aprobados por separado, binario Release reproducible y decision explicita NO-GO sin publicar produccion ni TestFlight.
