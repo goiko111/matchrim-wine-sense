@@ -135,6 +135,35 @@ assert.equal(areLikelySamePhysicalDetection(
   { x: 10, y: 48, width: 25, height: 42 },
 ), false, 'similarly sized bottles stacked in one column must remain independent');
 
+const cropHigherConfidence = normalizeDetectedRegions({ regions: [
+  { object_type: 'bottle', box: { x: 10, y: 0, width: 20, height: 95 }, confidence: 0.85 },
+  { object_type: 'label', box: { x: 12, y: 40, width: 16, height: 22 }, confidence: 0.98 },
+] });
+assert.equal(cropHigherConfidence.length, 1);
+assert.deepEqual(cropHigherConfidence[0].box, { x: 10, y: 0, width: 20, height: 95 },
+  'a high-confidence label must not replace the full bottle extent used for OCR');
+assert.equal(cropHigherConfidence[0].objectType, 'bottle');
+assert.equal(cropHigherConfidence[0].detectionConfidence, 0.98);
+
+const connectedCropFragments = [
+  { box: { x: 0, y: 8.4, width: 42, height: 47.6 }, confidence: 0.95 },
+  { box: { x: 0, y: 44, width: 40, height: 56 }, confidence: 0.94 },
+  { box: { x: 0, y: 8, width: 42, height: 92 }, confidence: 0.9 },
+  { box: { x: 52, y: 10, width: 48, height: 90 }, confidence: 0.92 },
+];
+for (const order of [connectedCropFragments, [...connectedCropFragments].reverse()]) {
+  const connected = normalizeDetectedRegions({ regions: order });
+  assert.equal(connected.length, 2, 'a full bottle must consolidate both partial tile detections');
+  assert.deepEqual(connected.find((region) => region.box.x === 0)?.box,
+    { x: 0, y: 8, width: 42, height: 92 });
+  assert.deepEqual(connected.find((region) => region.box.x === 52)?.box,
+    { x: 52, y: 10, width: 48, height: 90 }, 'the neighboring bottle must remain independent');
+}
+assert.equal(normalizeDetectedRegions({ regions: [
+  { box: { x: 10, y: 0, width: 25, height: 42 }, confidence: 0.9 },
+  { box: { x: 10, y: 48, width: 25, height: 42 }, confidence: 0.9 },
+] }).length, 2, 'extent consolidation cannot merge bottles on separate shelves');
+
 const malformedDenseDetection = {
   coverage: { status: 'partial', estimated_visible_objects: 70, confidence: 0.9 },
   regions: [

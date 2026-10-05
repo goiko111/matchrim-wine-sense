@@ -159,12 +159,15 @@ def main() -> None:
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     parser.add_argument("--artifacts", type=Path, default=DEFAULT_ARTIFACTS)
     parser.add_argument("--scene-pattern", default="")
+    parser.add_argument("--capture-kind", default="", help="Select an existing capture category without rebuilding the dataset.")
     parser.add_argument("--mode", choices=("etiqueta", "carta-vinos"), default="")
     parser.add_argument("--max-scenes", type=int, default=0)
     args = parser.parse_args()
 
     dataset = json.loads(args.dataset.read_text())
     scenes = [scene for scene in dataset["scenes"] if args.scene_pattern in scene["id"]]
+    if args.capture_kind:
+        scenes = [scene for scene in scenes if scene["capture_kind"] == args.capture_kind]
     if args.mode:
         scenes = [scene for scene in scenes if scene["mode"] == args.mode]
     if args.max_scenes > 0:

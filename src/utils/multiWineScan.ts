@@ -244,28 +244,36 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
   [...normalized]
     .sort((a, b) => b.detectionConfidence - a.detectionConfidence)
     .forEach((region) => {
-      const duplicateIndex = deduplicated.findIndex((kept) => areLikelySamePhysicalDetection(kept.box, region.box));
-      if (duplicateIndex === -1) {
-        deduplicated.push(region);
-        return;
-      }
+      let merged: ScanRegion = region;
+      let duplicateIndex = deduplicated.findIndex((kept) => areLikelySamePhysicalDetection(kept.box, merged.box));
+      while (duplicateIndex !== -1) {
+        const kept = deduplicated.splice(duplicateIndex, 1)[0];
+        const keptArea = kept.box.width * kept.box.height;
+        const mergedArea = merged.box.width * merged.box.height;
+        const keptLegibility = legibilityPriority[kept.quality.legibility];
+        const mergedLegibility = legibilityPriority[merged.quality.legibility];
+        const preferKept = kept.detectionConfidence > merged.detectionConfidence
+          || (kept.detectionConfidence === merged.detectionConfidence && keptLegibility > mergedLegibility)
+          || (kept.detectionConfidence === merged.detectionConfidence
+            && keptLegibility === mergedLegibility && keptArea > mergedArea);
+        const x = Math.min(kept.box.x, merged.box.x);
+        const y = Math.min(kept.box.y, merged.box.y);
 
-      const kept = deduplicated[duplicateIndex];
-      const keptArea = kept.box.width * kept.box.height;
-      const regionArea = region.box.width * region.box.height;
-      const keptLegibility = legibilityPriority[kept.quality.legibility];
-      const regionLegibility = legibilityPriority[region.quality.legibility];
-      if (
-        region.detectionConfidence > kept.detectionConfidence
-        || (region.detectionConfidence === kept.detectionConfidence && regionLegibility > keptLegibility)
-        || (
-          region.detectionConfidence === kept.detectionConfidence
-          && regionLegibility === keptLegibility
-          && regionArea > keptArea
-        )
-      ) {
-        deduplicated[duplicateIndex] = region;
+        // Keep the full physical extent even when a partial crop has higher confidence.
+        // Recheck existing fragments after extending the box so they cannot survive separately.
+        merged = {
+          ...(preferKept ? kept : merged),
+          objectType: kept.objectType === 'bottle' || merged.objectType === 'bottle'
+            ? 'bottle' : merged.objectType ?? kept.objectType,
+          box: {
+            x, y,
+            width: Math.max(kept.box.x + kept.box.width, merged.box.x + merged.box.width) - x,
+            height: Math.max(kept.box.y + kept.box.height, merged.box.y + merged.box.height) - y,
+          },
+        };
+        duplicateIndex = deduplicated.findIndex((other) => areLikelySamePhysicalDetection(other.box, merged.box));
       }
+      deduplicated.push(merged);
     });
 
   return deduplicated
