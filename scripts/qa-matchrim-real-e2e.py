@@ -28,6 +28,7 @@ MIN_MENU_RECALL = float(os.environ.get("MATCHRIM_MIN_MENU_RECALL", "0.85"))
 SELECTED_FIXTURE_IDS = {
     value.strip() for value in os.environ.get("MATCHRIM_E2E_FIXTURE_IDS", "").split(",") if value.strip()
 }
+EXTRA_FIXTURES_PATH = os.environ.get("MATCHRIM_E2E_EXTRA_FIXTURES", "").strip()
 
 FIXTURES = [
     {
@@ -99,6 +100,34 @@ FIXTURES = [
         ),
     },
 ]
+
+
+def load_extra_fixtures(path_value):
+    if not path_value:
+        return []
+    path = Path(path_value).expanduser().resolve()
+    payload = json.loads(path.read_text())
+    fixtures = payload.get("fixtures") if isinstance(payload, dict) else payload
+    if not isinstance(fixtures, list):
+        raise ValueError("External fixture file must contain a list or a fixtures list")
+    loaded = []
+    for fixture in fixtures:
+        if not isinstance(fixture, dict):
+            raise ValueError("Every external fixture must be an object")
+        required = {"id", "source", "mode", "rationale"}
+        missing = required - fixture.keys()
+        if missing:
+            raise ValueError(f"Fixture is missing required fields: {sorted(missing)}")
+        if fixture["mode"] not in {"etiqueta", "carta-vinos"}:
+            raise ValueError(f"Unsupported fixture mode: {fixture['mode']!r}")
+        source = Path(fixture["source"]).expanduser()
+        if not source.is_absolute():
+            source = (path.parent / source).resolve()
+        loaded.append({**fixture, "source": source})
+    return loaded
+
+
+FIXTURES.extend(load_extra_fixtures(EXTRA_FIXTURES_PATH))
 
 
 def refuse_production_url():

@@ -5,6 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "qa" / "ground-truth" / "matchrim-independent-v2.json"
+PILOT_MANIFEST = ROOT / "qa" / "ground-truth" / "matchrim-pilot-v3.json"
 PRIVATE_MANIFEST = ROOT / "qa" / "ground-truth" / "matchrim-v1.json"
 
 
@@ -40,7 +41,7 @@ def main() -> None:
         truth = source["ground_truth"]
         if source["mode"] == "etiqueta":
             assert truth["visible_bottles_estimate"] >= truth["expected_min_regions"]
-            assert truth["detector_cap"] == 30
+            assert truth["detector_cap"] == 60
             for box in truth.get("expected_boxes", []):
                 assert len(box) == 4
                 x, y, width, height = box
@@ -55,6 +56,31 @@ def main() -> None:
     print(
         "Independent Matchrim ground-truth checks passed: "
         "25 distinct Commons sources (11 single, 6 multi, 5 menu, 3 board)"
+    )
+
+    pilot = json.loads(PILOT_MANIFEST.read_text())
+    pilot_sources = pilot["sources"]
+    assert pilot["schema_version"] == 3
+    assert pilot["source_count"] == 60
+    assert len(pilot_sources) == 60
+    assert len({source["id"] for source in pilot_sources}) == 60
+    assert len({source["page_id"] for source in pilot_sources}) == 60
+    assert len({source["source_sha256"] for source in pilot_sources}) == 60
+    assert {source["id"] for source in sources}.issubset({source["id"] for source in pilot_sources})
+    assert not ({source["source_sha256"] for source in pilot_sources} & {source["sha256"] for source in private_manifest["sources"]})
+    assert all(len(source["source_sha256"]) == 64 for source in pilot_sources)
+    assert all(source["license"] and source["author"] for source in pilot_sources)
+    assert all(source["ground_truth"].get("detector_cap", 60) == 60 for source in pilot_sources)
+    assert sum(source["expectation"] == "abstain" for source in pilot_sources) == 8
+    assert sum(source["capture_kind"] == "handwritten_board" for source in pilot_sources) == 3
+    assert sum(source["capture_kind"] == "printed_wine_list" for source in pilot_sources) == 13
+    assert sum(source["mode"] == "etiqueta" for source in pilot_sources) == 36
+    assert sum(source["mode"] == "carta-vinos" for source in pilot_sources) == 24
+    assert sum(source["ground_truth"]["annotation_scope"] in {"wine_identity", "identity_and_boxes"} for source in pilot_sources) == 23
+
+    print(
+        "Matchrim pilot corpus checks passed: 60 independent sources "
+        "(36 label/display, 24 menu/board, 8 explicit negatives)"
     )
 
 

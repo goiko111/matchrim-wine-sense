@@ -26,18 +26,24 @@ def sha256(path: Path) -> str:
 
 
 def fetch_metadata(page_ids: list[int]) -> dict[str, dict]:
-    params = urllib.parse.urlencode({
-        "action": "query",
-        "pageids": "|".join(str(page_id) for page_id in page_ids),
-        "prop": "imageinfo",
-        "iiprop": "url|size|extmetadata",
-        "iiurlwidth": "1800",
-        "format": "json",
-    })
-    request = urllib.request.Request(f"{COMMONS_API}?{params}", headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=60) as response:
-        payload = json.load(response)
-    return {str(page["pageid"]): page for page in payload["query"]["pages"].values()}
+    pages = {}
+    for offset in range(0, len(page_ids), 25):
+        batch = page_ids[offset:offset + 25]
+        params = urllib.parse.urlencode({
+            "action": "query",
+            "pageids": "|".join(str(page_id) for page_id in batch),
+            "prop": "imageinfo",
+            "iiprop": "url|size|extmetadata",
+            "iiurlwidth": "1800",
+            "format": "json",
+        })
+        request = urllib.request.Request(f"{COMMONS_API}?{params}", headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(request, timeout=60) as response:
+            payload = json.load(response)
+        if "query" not in payload:
+            raise RuntimeError(f"Commons metadata batch failed: {payload}")
+        pages.update({str(page["pageid"]): page for page in payload["query"]["pages"].values()})
+    return pages
 
 
 def download(url: str, target: Path) -> None:

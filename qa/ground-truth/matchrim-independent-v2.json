@@ -36,7 +36,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -57,7 +57,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -78,7 +78,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -99,7 +99,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -120,7 +120,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -141,7 +141,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -162,7 +162,7 @@
         "visible_bottles_estimate": 2,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -183,7 +183,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -204,7 +204,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -225,7 +225,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -246,7 +246,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -267,7 +267,7 @@
         "visible_bottles_estimate": 1,
         "expected_min_regions": 1,
         "expected_min_identified": 1,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -292,7 +292,7 @@
         "visible_bottles_estimate": 8,
         "expected_min_regions": 6,
         "expected_min_identified": 4,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -313,7 +313,7 @@
         "visible_bottles_estimate": 2,
         "expected_min_regions": 2,
         "expected_min_identified": 2,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -334,7 +334,7 @@
         "visible_bottles_estimate": 10,
         "expected_min_regions": 6,
         "expected_min_identified": 0,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 4
       }
     },
@@ -361,7 +361,7 @@
         "visible_bottles_estimate": 6,
         "expected_min_regions": 5,
         "expected_min_identified": 3,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 0
       }
     },
@@ -382,7 +382,7 @@
         "visible_bottles_estimate": 70,
         "expected_min_regions": 12,
         "expected_min_identified": 0,
-        "detector_cap": 30,
+        "detector_cap": 60,
         "illegible_max_high_confidence_candidates": 8
       }
     },
@@ -457,7 +457,7 @@
     {
       "id": "commons-17259492",
       "page_id": 17259492,
-      "source_sha256": "7f48345c9154563bb1a2296806ce480cea64ace5f5444072854129ba6523038e",
+      "source_sha256": "abc49ce325456dc5159a22ccfa452c1abd7273101666d53c3387077efcd33b92",
       "license": "Public domain",
       "author": "Daderot",
       "mode": "carta-vinos",

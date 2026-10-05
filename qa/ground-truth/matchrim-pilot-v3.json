@@ -1,0 +1,1605 @@
+{
+  "schema_version": 3,
+  "dataset_id": "matchrim-pilot-v3-60-independent",
+  "created_at": "2026-10-05",
+  "source_count": 60,
+  "selection_policy": {
+    "independence": "Sixty distinct Wikimedia Commons files; none are derived from private Matchrim acceptance captures.",
+    "annotation": "Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+    "coverage": [
+      "single_label",
+      "multi_bottle",
+      "dense_display",
+      "cellar_rack",
+      "printed_wine_list",
+      "handwritten_board",
+      "food_menu_negative",
+      "glare",
+      "perspective",
+      "small_text"
+    ],
+    "license_source": "Wikimedia Commons imageinfo metadata fetched and source hashes locked at 1800 px."
+  },
+  "sources": [
+    {
+      "id": "commons-116618810",
+      "page_id": 116618810,
+      "source_sha256": "ba6b4de1049a10ceae1d97a17775b0e5f191c8abf1eb376ed6b42cad0991b4d7",
+      "license": "CC BY-SA 4.0",
+      "author": "Pacopac",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "El Miracle n\u00ba 01"
+        ],
+        "expected_boxes": [
+          [
+            0.2,
+            0.03,
+            0.6,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-128502713",
+      "page_id": 128502713,
+      "source_sha256": "e9fd7452bf9daff0c7d72aee32de9b113a9eecb75f1998fdc51d93d6bddb0a01",
+      "license": "CC BY 2.0",
+      "author": "Dominic Lockyer",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Bioca Mencia"
+        ],
+        "expected_boxes": [
+          [
+            0.28,
+            0.03,
+            0.44,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-128503275",
+      "page_id": 128503275,
+      "source_sha256": "cfae4e610020bd94ef6cf474837ed4b17755d4fc09587840edfcc255201320b9",
+      "license": "CC BY 2.0",
+      "author": "Dominic Lockyer",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Tres Picos"
+        ],
+        "expected_boxes": [
+          [
+            0.27,
+            0.03,
+            0.46,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-128610681",
+      "page_id": 128610681,
+      "source_sha256": "3cb759b8d9051b482b9e64f5a498cc2536a17b54f7df178784f7492f30a9fa2d",
+      "license": "CC BY-SA 2.0",
+      "author": "alljengi",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "reflection",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Gran Tehyda"
+        ],
+        "expected_boxes": [
+          [
+            0.27,
+            0.02,
+            0.48,
+            0.96
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-128610856",
+      "page_id": 128610856,
+      "source_sha256": "4aa1a535e0e2c6ea5fa2c01b801084875abb3982b14d819ec6c45f6b9a5eb372",
+      "license": "CC BY-SA 2.0",
+      "author": "Magnus Reuterdahl",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_closeup",
+      "difficulty": "perspective",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Adernats Essencia"
+        ],
+        "expected_boxes": [
+          [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152675154",
+      "page_id": 152675154,
+      "source_sha256": "cc3b8873b0503d4766d0622b8012331a2fde546b54bfe6a7e5742361580cf820",
+      "license": "CC BY 2.0",
+      "author": "Jameson Fink",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_closeup",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Castano Monastrell"
+        ],
+        "expected_boxes": [
+          [
+            0.12,
+            0.0,
+            0.76,
+            1.0
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152676516",
+      "page_id": 152676516,
+      "source_sha256": "1994ef109deb6ea6ac7d8eab1131bef17e1e6c760bd5c4e970c01b629d893801",
+      "license": "CC BY-SA 2.0",
+      "author": "Magnus Reuterdahl",
+      "mode": "etiqueta",
+      "capture_kind": "two_labels_closeup",
+      "difficulty": "crop",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "750"
+        ],
+        "expected_boxes": [
+          [
+            0.0,
+            0.0,
+            0.46,
+            1.0
+          ],
+          [
+            0.42,
+            0.0,
+            0.58,
+            1.0
+          ]
+        ],
+        "visible_bottles_estimate": 2,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152684780",
+      "page_id": 152684780,
+      "source_sha256": "222ddc4af893c284d7b251dcae71e9b051e65456e5861376d8430269f0c41792",
+      "license": "CC BY-SA 2.0",
+      "author": "Tnarik Innael",
+      "mode": "etiqueta",
+      "capture_kind": "single_label",
+      "difficulty": "low_light",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Arzuaga Crianza"
+        ],
+        "expected_boxes": [
+          [
+            0.24,
+            0.03,
+            0.52,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152687522",
+      "page_id": 152687522,
+      "source_sha256": "3d6bdeec03dc59bb9822aa2ffbee9c8690f44c36624e2b4ae2affbe01bca4e9f",
+      "license": "CC BY 2.0",
+      "author": "Nigab Pressbilder",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_product",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Beronia"
+        ],
+        "expected_boxes": [
+          [
+            0.28,
+            0.02,
+            0.44,
+            0.96
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-152733274",
+      "page_id": 152733274,
+      "source_sha256": "098eb8381f0978073d9da748e0f1f147336f7b95cd6641d845ceded7a3016053",
+      "license": "CC BY-SA 2.0",
+      "author": "Bernadette Farriol",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_closeup",
+      "difficulty": "partial_bottle",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Lalama"
+        ],
+        "expected_boxes": [
+          [
+            0.07,
+            0.02,
+            0.86,
+            0.96
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-26358451",
+      "page_id": 26358451,
+      "source_sha256": "4094fac1d7c662b86504a65fe0a2c50827646c6328be1e3d82804bcf457c2c12",
+      "license": "CC BY-SA 2.0",
+      "author": "Michal Osmenda",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_product",
+      "difficulty": "baseline",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Faustino I Gran Reserva"
+        ],
+        "expected_boxes": [
+          [
+            0.28,
+            0.02,
+            0.44,
+            0.96
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-32980703",
+      "page_id": 32980703,
+      "source_sha256": "47da9272616a9144b9599d9a7bd97823addb0b9f02b8ce8b6656aaf74cbc3c35",
+      "license": "CC BY-SA 3.0",
+      "author": "Agne27",
+      "mode": "etiqueta",
+      "capture_kind": "single_label_table",
+      "difficulty": "clutter",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Vina Gravonia"
+        ],
+        "expected_boxes": [
+          [
+            0.42,
+            0.03,
+            0.46,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-114960137",
+      "page_id": 114960137,
+      "source_sha256": "dd0746550c3b3fc8b3a495c358701d1b5481e298864d071cd0a4159bd52070a7",
+      "license": "CC BY-SA 4.0",
+      "author": "Christian Gebhardt",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_duplicate",
+      "difficulty": "overlap",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Moscatel Dulce"
+        ],
+        "expected_boxes": [
+          [
+            0.0,
+            0.01,
+            0.15,
+            0.98
+          ],
+          [
+            0.07,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.19,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.32,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.45,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.58,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.71,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.84,
+            0.01,
+            0.16,
+            0.98
+          ]
+        ],
+        "visible_bottles_estimate": 8,
+        "expected_min_regions": 6,
+        "expected_min_identified": 4,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-9941064",
+      "page_id": 9941064,
+      "source_sha256": "4db9d92a0dea2443767d6dae084eea0b9262926df0bf59263f33c8b9e46918bb",
+      "license": "CC BY-SA 3.0",
+      "author": "Cloudragams",
+      "mode": "etiqueta",
+      "capture_kind": "two_bottles",
+      "difficulty": "reflection",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Cloudy Bay Sauvignon Blanc"
+        ],
+        "expected_boxes": [
+          [
+            0.0,
+            0.15,
+            0.53,
+            0.83
+          ],
+          [
+            0.47,
+            0.12,
+            0.53,
+            0.86
+          ]
+        ],
+        "visible_bottles_estimate": 2,
+        "expected_min_regions": 2,
+        "expected_min_identified": 2,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-69528109",
+      "page_id": 69528109,
+      "source_sha256": "a93c926869f5554a83a6bcb2a3f26ac33ec788e5b96a1226b918a61114b41254",
+      "license": "CC BY-SA 4.0",
+      "author": "Matti Blume",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_drawer",
+      "difficulty": "orientation_and_occlusion",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "count_threshold",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 10,
+        "expected_min_regions": 6,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 4
+      }
+    },
+    {
+      "id": "commons-9865219",
+      "page_id": 9865219,
+      "source_sha256": "934a21d88f6b3800c6fbf4c1a53f535a99bca3edc3042f8fcf094cdb8d35adf4",
+      "license": "CC BY-SA 3.0",
+      "author": "Marcus Wong",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_shelf",
+      "difficulty": "reflection_and_occlusion",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Passion Pop Lemon Lime",
+          "Passion Pop Mixed Berry",
+          "Passion Pop Original",
+          "Somerton Brut Reserve",
+          "Golden Gate Spumante",
+          "Verdi Spumante"
+        ],
+        "expected_boxes": [
+          [
+            0.02,
+            0.05,
+            0.18,
+            0.77
+          ],
+          [
+            0.14,
+            0.04,
+            0.18,
+            0.78
+          ],
+          [
+            0.27,
+            0.04,
+            0.18,
+            0.78
+          ],
+          [
+            0.42,
+            0.03,
+            0.18,
+            0.8
+          ],
+          [
+            0.57,
+            0.04,
+            0.18,
+            0.79
+          ],
+          [
+            0.72,
+            0.04,
+            0.18,
+            0.79
+          ]
+        ],
+        "visible_bottles_estimate": 6,
+        "expected_min_regions": 5,
+        "expected_min_identified": 3,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-50584361",
+      "page_id": 50584361,
+      "source_sha256": "75e8311f464534a1d0761f29102f72a17d2fb709afc09505f96b64f7fa4386e5",
+      "license": "CC BY 2.0",
+      "author": "ricardo",
+      "mode": "etiqueta",
+      "capture_kind": "dense_wine_shelf",
+      "difficulty": "dense_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "count_threshold",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 70,
+        "expected_min_regions": 12,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 8
+      }
+    },
+    {
+      "id": "commons-118365446",
+      "page_id": 118365446,
+      "source_sha256": "e573596e9eac59c2aa8c9dcd030fa17e2c82fe8dc09a2eca0c8ebf8f304c3f23",
+      "license": "CC BY 4.0",
+      "author": "Sarah Stierch",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "glare_and_perspective",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Sauvignon Blanc",
+          "Pinot Grigio",
+          "Dry Riesling",
+          "William Loyd Reserve",
+          "Merlot",
+          "1900",
+          "Malbec",
+          "Syrah",
+          "Cabernet Sauvignon",
+          "X-Press",
+          "Petite Sirah",
+          "Three Sons",
+          "Single Barrel Reserve",
+          "Pink Ribbon Rose",
+          "Seyval Blanc",
+          "Forget Me Not",
+          "Amore",
+          "Gewurztraminer",
+          "Marechal Foch",
+          "Connelly Hoo",
+          "Pink Ribbon Rose"
+        ]
+      }
+    },
+    {
+      "id": "commons-131235304",
+      "page_id": 131235304,
+      "source_sha256": "edb24d3752487c82fe431c06b4e144fb26781937d64881b13289f9a14ad781ab",
+      "license": "CC BY 4.0",
+      "author": "Sarah Stierch",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "crumpled_small_text",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Luca Paretti Proseco",
+          "JP Chenet France",
+          "Retsina Kousatari",
+          "Viognier Avantis Winery",
+          "Moschofilero Bosinakis Winery",
+          "Sauvignon Blanc Wine Art Estate Techni",
+          "Chardonnay Landmark Vineyard",
+          "Riesling Wooden Valley Winery",
+          "Merlot Avantis Winery",
+          "Pinot Noir Ballard Lane",
+          "Cabernet Sauvignon Amethystos",
+          "Limnio Domo Caius Ruby Keane",
+          "Cabernet Franc Amethystos Cava",
+          "Zinfandel Plough Vineyards",
+          "Naoussa Found Estate",
+          "Cas San Porio Canvas Chateau"
+        ]
+      }
+    },
+    {
+      "id": "commons-37013918",
+      "page_id": 37013918,
+      "source_sha256": "1549beed4980aaba71ab08cad472798b178fef8ef677c415fe30eb1f9c8e13b0",
+      "license": "CC BY-SA 2.0",
+      "author": "Alpha",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "angled_two_columns",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Prelude a Grand Puy Ducasse",
+          "Chateau Smith Haut Lafitte",
+          "Oxford Landing",
+          "Arlequin Barossa",
+          "Deakin Estate",
+          "Wolf Blass Yellow Label",
+          "Arlequin Barossa",
+          "Tyrrell's Lost Block",
+          "Ironstone Sierra",
+          "Zonin Chianti",
+          "Villa Antinori Peppoli",
+          "Bodegas Lan Crianza",
+          "M Chapoutier La Bernardine Chateauneuf du Pape",
+          "Chateau de la Grille Chinon",
+          "La Roche Saint Vincent Saumur Champigny",
+          "Joseph Drouhin Cote de Beaune villages",
+          "Joseph Drouhin Cote de Nuits village",
+          "Chateau Haut Selve",
+          "Les Remparts de Ferriere",
+          "Chateau Lamarche Canon",
+          "Chateau de Valois",
+          "Chateau Haut Saint Brice",
+          "Citran Medoc",
+          "Saint Estephe Cru Bourgeois"
+        ]
+      }
+    },
+    {
+      "id": "commons-17259492",
+      "page_id": 17259492,
+      "source_sha256": "abc49ce325456dc5159a22ccfa452c1abd7273101666d53c3387077efcd33b92",
+      "license": "Public domain",
+      "author": "Daderot",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "aged_paper_and_mixed_menu",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Oliveira Madeira",
+          "Old Reserve Madeira",
+          "Bacchus Madeira",
+          "Prince Albert Madeira",
+          "Lobo Pale Sherry",
+          "Lobo Pale Sherry 1846",
+          "Yriarto Pale Delicate Sherry",
+          "Harmony Pale Sherry",
+          "London Dock Port",
+          "Brazil Port",
+          "Heidsick Champagne quarts",
+          "Heidsick Champagne pints",
+          "Irroy Cabinet Wine Champagne",
+          "Irroy Cabinet Wine Champagne pints",
+          "Longworth's Sparkling Catawba",
+          "Longworth's Sparkling Catawba pints",
+          "Howard March and Co south side",
+          "Table Claret",
+          "St Julien Claret",
+          "St Emillion 1844 Claret",
+          "Haut Talleur Claret",
+          "Ruddesheimer Hock"
+        ]
+      }
+    },
+    {
+      "id": "commons-155596646",
+      "page_id": 155596646,
+      "source_sha256": "ccb36f333032e52808fa80a05c48c941edc89f13efe800937d5f6f6b95d46567",
+      "license": "Public domain",
+      "author": "DPLA",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "dense_archival_scan",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Moet & Chandon Cuvee Dom Perignon",
+          "Moet & Chandon Imperial Brut",
+          "Mumm Cordon Rouge Brut",
+          "Mumm Cordon Rouge Brut",
+          "Mumm Extra Dry",
+          "Piper Heidsieck Extra Dry",
+          "Piper Heidsieck Brut",
+          "Taittinger Comtes de Champagne",
+          "Taittinger Brut La Francaise",
+          "Gold Seal Brut",
+          "Gold Seal Extra Dry",
+          "Hanns Kornell Brut",
+          "Hanns Kornell Sec",
+          "Hanns Kornell Sehr Trocken",
+          "Korbel Brut",
+          "Korbel Extra Dry",
+          "Korbel Pink Rose",
+          "Paul Masson Extra Dry",
+          "Schramsberg Blanc de Blancs",
+          "Chanson",
+          "Chauvenet Red Cap",
+          "Henri Marchant Cold Duck",
+          "Paul Masson",
+          "Taylor"
+        ]
+      }
+    },
+    {
+      "id": "commons-113061301",
+      "page_id": 113061301,
+      "source_sha256": "a62520695e1b1f9c2e569d83c27bfcd333549b485b52de35b7e9d3fc0bd939e3",
+      "license": "CC BY-SA 2.0",
+      "author": "Gary J. Wood",
+      "mode": "carta-vinos",
+      "capture_kind": "handwritten_board",
+      "difficulty": "handwriting",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Waves",
+          "Riesling",
+          "Dunes",
+          "Winter Harvest",
+          "Waves",
+          "Cabernet Franc",
+          "Baco Noir",
+          "Foch Res",
+          "Baco Noir Res"
+        ]
+      }
+    },
+    {
+      "id": "commons-151686648",
+      "page_id": 151686648,
+      "source_sha256": "50faf251b7da1f77d3c6c9d56ff3efba1a4d0f6d8e49cbaccddc9aee7ff2bf90",
+      "license": "CC0",
+      "author": "Sarah Stierch",
+      "mode": "carta-vinos",
+      "capture_kind": "handwritten_board",
+      "difficulty": "handwriting_and_prices",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Gundlach Bundschu Sauvignon Blanc 2023",
+          "Tagline Wines Chardonnay 2021",
+          "Topophilia Wine Co Rose of Grenache 2023",
+          "Vaughn Duffy Pinot Noir 2022",
+          "Mathis Wine Uber Red Blend 2020"
+        ]
+      }
+    },
+    {
+      "id": "commons-152561556",
+      "page_id": 152561556,
+      "source_sha256": "ced3e56f53cb45762e8b528c3c3f567bcd75809db902d27d873bf0f221ef4aea",
+      "license": "CC0",
+      "author": "Sarah Stierch",
+      "mode": "carta-vinos",
+      "capture_kind": "handwritten_board",
+      "difficulty": "dense_handwriting_and_uneven_light",
+      "expectation": "identify",
+      "ground_truth": {
+        "annotation_scope": "wine_identity",
+        "expected_wines": [
+          "Bardos Marioni Synkro Pet Nat",
+          "Bardos Marioni Serpent",
+          "Fres.Co Fume Blanc",
+          "Marioni Sunfisher",
+          "Marioni Chardonnay",
+          "Leisure Just Under There",
+          "Fres.Co Primitivo Rose",
+          "Marioni Rosa",
+          "Fres.Co Fire Fuego",
+          "Leisure Ah Um",
+          "Marioni Pinot",
+          "Marioni Primitivo",
+          "Fres.Co Other Hand",
+          "Leisure Fracaso",
+          "Marioni Merlot"
+        ]
+      }
+    },
+    {
+      "id": "commons-181944828",
+      "page_id": 181944828,
+      "source_sha256": "f7928ad27afb46fc4d5d1ecfa0c3bfdded3f17603b02c8566b030fb78f712854",
+      "license": "CC BY-SA 3.0",
+      "author": "Tatyana654",
+      "mode": "etiqueta",
+      "capture_kind": "dense_wine_cellar",
+      "difficulty": "dense_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 80,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-91726947",
+      "page_id": 91726947,
+      "source_sha256": "2291195ed934459ddb3671f8c22bd304535e97bbf1a3289fd5c458487c39e271",
+      "license": "CC BY-SA 4.0",
+      "author": "Tamjai Koafei 2000",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_display",
+      "difficulty": "reflection",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 4,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-91726948",
+      "page_id": 91726948,
+      "source_sha256": "202f32bba3f378724415eb94c5e3ab3a4bb6db6b2f623fe04a3a9a2bf8e99984",
+      "license": "CC BY-SA 4.0",
+      "author": "Tamjai Koafei 2000",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_display",
+      "difficulty": "reflection",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 4,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-91726949",
+      "page_id": 91726949,
+      "source_sha256": "22bef23af2c60951768177710adc3bd22e3fcfd28e69590c2dcc9b7f0ff3747c",
+      "license": "CC BY-SA 4.0",
+      "author": "Tamjai Koafei 2000",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_display",
+      "difficulty": "reflection",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 5,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-91726950",
+      "page_id": 91726950,
+      "source_sha256": "6705d5619942c62b059eef2df51dbcfc819ac14c892419596b8b29df0bef2601",
+      "license": "CC BY-SA 4.0",
+      "author": "Tamjai Koafei 2000",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_display",
+      "difficulty": "reflection",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 4,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-91726951",
+      "page_id": 91726951,
+      "source_sha256": "a1d716d24a5d7df7c01d65a4c2ec5021a4db241b39897eb5415d968f41b356f9",
+      "license": "CC BY-SA 4.0",
+      "author": "Tamjai Koafei 2000",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_display",
+      "difficulty": "reflection",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 5,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-91726954",
+      "page_id": 91726954,
+      "source_sha256": "04a0f76bfe40ad5ff2957eb1bf2b62165ce0f9e078236ee2d4940c000f1c2a7c",
+      "license": "CC BY-SA 4.0",
+      "author": "Tamjai Koafei 2000",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_display",
+      "difficulty": "reflection",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 5,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-91726963",
+      "page_id": 91726963,
+      "source_sha256": "1c7218d21233845fb3143266a8ae8b25c596e5583f67d77161af68ad2a714988",
+      "license": "CC BY-SA 4.0",
+      "author": "Tamjai Koafei 2000",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_duplicate",
+      "difficulty": "repetition",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 5,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-91726965",
+      "page_id": 91726965,
+      "source_sha256": "77ecfccdeae21a7be552a6b88ebc509858d8cfa32b278be1a82aeaede4d1b19b",
+      "license": "CC BY-SA 4.0",
+      "author": "Tamjai Koafei 2000",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_display",
+      "difficulty": "partial_labels",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 2,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-188972233",
+      "page_id": 188972233,
+      "source_sha256": "f9d849f9a9ba917c559840a447f6985ee88f89bdd59f7f99cec70f60cfe57333",
+      "license": "CC BY 2.0",
+      "author": "Shixart1985",
+      "mode": "etiqueta",
+      "capture_kind": "restaurant_display",
+      "difficulty": "background_and_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 8,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-133670691",
+      "page_id": 133670691,
+      "source_sha256": "60aef65527242de000b84df8371543dd12aa3ecd7346333e94527788972f53a9",
+      "license": "CC BY-SA 4.0",
+      "author": "JIP",
+      "mode": "etiqueta",
+      "capture_kind": "dense_wine_display",
+      "difficulty": "glare_and_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 50,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-200217222",
+      "page_id": 200217222,
+      "source_sha256": "9c19ec057892d0108b96f465d39a6ca2aadef0632afd08ab7d9fc931be36a321",
+      "license": "CC BY-SA 4.0",
+      "author": "PattayaPatrol",
+      "mode": "etiqueta",
+      "capture_kind": "dense_wine_rack",
+      "difficulty": "perspective_and_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 45,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-200271711",
+      "page_id": 200271711,
+      "source_sha256": "24b70c0f317fa07cd38cf7a812707308942e049a69dabda5cd3fe5864d405e28",
+      "license": "CC BY-SA 4.0",
+      "author": "PattayaPatrol",
+      "mode": "etiqueta",
+      "capture_kind": "dense_wine_rack",
+      "difficulty": "low_light_and_reflection",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 36,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-194511786",
+      "page_id": 194511786,
+      "source_sha256": "a38f75524da4f07caeeb9f1493db04a592e2fe213f755cce000158063617f16a",
+      "license": "CC BY-SA 4.0",
+      "author": "PattayaPatrol",
+      "mode": "etiqueta",
+      "capture_kind": "multi_bottle_rack",
+      "difficulty": "orientation_and_occlusion",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 18,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-80162719",
+      "page_id": 80162719,
+      "source_sha256": "1fc1437a74732e51ebc61478a5969cdd4ab4274e07242eb82ad8bba3bc7ee03c",
+      "license": "CC BY 2.0",
+      "author": "shankar s. from Dubai, united arab emirates",
+      "mode": "etiqueta",
+      "capture_kind": "cellar_rack",
+      "difficulty": "miniature_and_occlusion",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 20,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-23917720",
+      "page_id": 23917720,
+      "source_sha256": "dfeebf2e16823383b8895f9d3813fb4728a6de8a8bfb04b260698ea170b89898",
+      "license": "CC BY-SA 4.0",
+      "author": "A. J. van der Wal",
+      "mode": "etiqueta",
+      "capture_kind": "dense_wine_cellar",
+      "difficulty": "distance_and_perspective",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 80,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-10862308",
+      "page_id": 10862308,
+      "source_sha256": "f7cf0a782c5db905754dcb253f259db79985ce8d656a27a5a1b46458b48b352b",
+      "license": "CC BY-SA 3.0",
+      "author": "Tomas er",
+      "mode": "etiqueta",
+      "capture_kind": "dense_bottle_rack",
+      "difficulty": "orientation",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 60,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-10862316",
+      "page_id": 10862316,
+      "source_sha256": "87f868266627459d0dda77331b28399d8ed8fde9bae8307ed3cd4239ad820727",
+      "license": "CC BY-SA 3.0",
+      "author": "Tomas er",
+      "mode": "etiqueta",
+      "capture_kind": "dense_bottle_rack",
+      "difficulty": "orientation_and_low_light",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 70,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-80162744",
+      "page_id": 80162744,
+      "source_sha256": "28d4458c75e5002a71eaef7d57d02c23c97762dd7a71fbc4c883078c576623e2",
+      "license": "CC BY 2.0",
+      "author": "shankar s. from Dubai, united arab emirates",
+      "mode": "etiqueta",
+      "capture_kind": "dense_bottle_rack",
+      "difficulty": "occlusion_and_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 50,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-155766231",
+      "page_id": 155766231,
+      "source_sha256": "0830fd18d913d1d6068fdfb0d4403dfa36fefafc6af192d4585b07ceb9b3b23f",
+      "license": "Public domain",
+      "author": "Unknown / public-domain source",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "archival_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-155766232",
+      "page_id": 155766232,
+      "source_sha256": "b4a1e5800c00265eb9c792d5df9c43ad787eb271fa675356b133d8f01ff6a086",
+      "license": "Public domain",
+      "author": "Unknown / public-domain source",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "archival_small_text",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-155539606",
+      "page_id": 155539606,
+      "source_sha256": "86550a9d052f038efd0735d9201d69457e77b6defef396b02196f1b5efc9f20d",
+      "license": "Public domain",
+      "author": "Unknown / public-domain source",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "dense_two_columns",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-155539609",
+      "page_id": 155539609,
+      "source_sha256": "6074a3d1d87f9c34aa85f54157192f6b5e3e0818972f9955bff206fbf3ca1ecf",
+      "license": "Public domain",
+      "author": "Unknown / public-domain source",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "dense_two_columns",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-156177001",
+      "page_id": 156177001,
+      "source_sha256": "4fe35fc5357c083f443836f5066a4ef3d3cebe032b400618b849798ee88f5ffb",
+      "license": "Public domain",
+      "author": "Unknown / public-domain source",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "aged_paper",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-155343208",
+      "page_id": 155343208,
+      "source_sha256": "84056e0da125178f5c9f39dc28e6abb1be7a650f515bced8b216ef8b47c47e6c",
+      "license": "Public domain",
+      "author": "Unknown / public-domain source",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "aged_cover",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-155343209",
+      "page_id": 155343209,
+      "source_sha256": "8cbec5a3ed92e4b8a85ecbbea4410a901b8af43eb38623fff800f481ad363278",
+      "license": "Public domain",
+      "author": "Unknown / public-domain source",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "dense_archival_scan",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-21295613",
+      "page_id": 21295613,
+      "source_sha256": "0eddb218a2260f5c6565f1ac5b22112602e26533ad4d9487cdfb21fd2a85a22c",
+      "license": "CC BY 2.0",
+      "author": "Double--M",
+      "mode": "carta-vinos",
+      "capture_kind": "printed_wine_list",
+      "difficulty": "aged_paper_and_prices",
+      "expectation": "grounded_or_abstain",
+      "ground_truth": {
+        "annotation_scope": "structural_and_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-198342542",
+      "page_id": 198342542,
+      "source_sha256": "e8c64307ac4815bb65803d8dad2f7d3ed75d6c2ebd8c30fb171ab81b3f30b680",
+      "license": "CC0",
+      "author": "Andy Li",
+      "mode": "carta-vinos",
+      "capture_kind": "food_menu_negative",
+      "difficulty": "chalkboard_small_text",
+      "expectation": "abstain",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-59410813",
+      "page_id": 59410813,
+      "source_sha256": "e1a44704ce4091eefbb5a29223843f2bcc68aa164669d128c5cbe641edaf6e77",
+      "license": "CC0",
+      "author": "Beno\u00eet Prieur",
+      "mode": "carta-vinos",
+      "capture_kind": "food_menu_negative",
+      "difficulty": "chalkboard_perspective",
+      "expectation": "abstain",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-173475759",
+      "page_id": 173475759,
+      "source_sha256": "ac480686e4ac9ff9578cb45700a921a2b270c3b5aa5c3b86b0e9a8838facaccf",
+      "license": "CC0",
+      "author": "Andy Li",
+      "mode": "carta-vinos",
+      "capture_kind": "food_menu_negative",
+      "difficulty": "chalkboard_glare",
+      "expectation": "abstain",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-173322442",
+      "page_id": 173322442,
+      "source_sha256": "578186ce20db61cad8964932e1f36208fb45c04b293661be9ba13d078ba264ec",
+      "license": "CC0",
+      "author": "Andy Li",
+      "mode": "carta-vinos",
+      "capture_kind": "food_menu_negative",
+      "difficulty": "multi_board",
+      "expectation": "abstain",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-150250375",
+      "page_id": 150250375,
+      "source_sha256": "5ae44767928c20a3b63d18a9a25bb693cd0d730fd0ca8bdcde819f6b5237b617",
+      "license": "CC0",
+      "author": "Andy Li",
+      "mode": "carta-vinos",
+      "capture_kind": "food_menu_negative",
+      "difficulty": "handwritten_board",
+      "expectation": "abstain",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-153578765",
+      "page_id": 153578765,
+      "source_sha256": "3e62dbee2b171aa701d578f9be56e75167007e1bbfb72a528dee935d121eeaeb",
+      "license": "CC0",
+      "author": "Andy Li",
+      "mode": "carta-vinos",
+      "capture_kind": "food_menu_negative",
+      "difficulty": "printed_menu_perspective",
+      "expectation": "abstain",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-132188702",
+      "page_id": 132188702,
+      "source_sha256": "1f6df02b9d082ddbe367713e88c902df370d9839c73b19c62dbe17b7dfaf9a42",
+      "license": "CC0",
+      "author": "Andy Li",
+      "mode": "carta-vinos",
+      "capture_kind": "food_menu_negative",
+      "difficulty": "handwritten_menu",
+      "expectation": "abstain",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    },
+    {
+      "id": "commons-110467743",
+      "page_id": 110467743,
+      "source_sha256": "ebaa894c698a15b980f696734518b199545a54b363e0b727dd52e22aa81ab969",
+      "license": "CC BY-SA 4.0",
+      "author": "Bugsinmyfood",
+      "mode": "carta-vinos",
+      "capture_kind": "food_menu_negative",
+      "difficulty": "dense_mixed_menu",
+      "expectation": "abstain",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      }
+    }
+  ]
+}
