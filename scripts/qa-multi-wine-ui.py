@@ -130,6 +130,8 @@ def function_response(endpoint, request):
         return {
             "has_profile": True,
             "scan_version": "scan-wine-menu-ui-fixture-v1",
+            "moneda": "EUR",
+            "layout": "rows",
             "coverage": {
                 "status": "reported_complete",
                 "extracted_wines": 5,
@@ -139,6 +141,7 @@ def function_response(endpoint, request):
             "vinos": [
                 {
                     "nombre": "Finca Dofi",
+                    "texto_fuente": "Finca Dofi Alvaro Palacios 2021 86 EUR",
                     "productor": "Alvaro Palacios",
                     "anada": 2021,
                     "region": "Priorat",
@@ -156,6 +159,7 @@ def function_response(endpoint, request):
                 },
                 {
                     "nombre": "Pazo de Senorans",
+                    "texto_fuente": "Pazo de Senorans 2023 7.50 / 36 EUR",
                     "productor": "Pazo de Senorans",
                     "anada": 2023,
                     "region": "Rias Baixas",
@@ -916,6 +920,50 @@ def run_menu_qa(browser, results, console_errors):
     context.close()
 
 
+def run_menu_money_qa(browser, results, console_errors):
+    for currency in ("GBP", None):
+        def money_response(endpoint, request):
+            data = function_response(endpoint, request)
+            if endpoint == "scan-wine-menu":
+                data["moneda"] = currency
+                data["vinos"] = data["vinos"][:2]
+                data["coverage"]["estimated_visible_wines"] = 2
+                for wine in data["vinos"]:
+                    wine["moneda"] = currency
+                    wine["texto_fuente"] = f'{wine["nombre"]} {wine["productor"]} {wine["precio"]}'
+                    wine["affinity_calibrated"] = True
+            return data
+
+        context = browser.new_context(viewport={"width": 430, "height": 932}, is_mobile=True, has_touch=True)
+        page = context.new_page()
+        install_routes(page, console_errors, response_handler=money_response)
+        page.goto(f"{BASE_URL}/escanear/carta-vinos", wait_until="networkidle")
+        page.locator('input[type="file"]').nth(0).set_input_files(str(MENU_FIXTURES[0]))
+        page.get_by_text("Lista de la carta", exact=True).wait_for(timeout=30_000)
+        comparison = page.locator('section[aria-labelledby="wine-comparison-title"]')
+        text = comparison.inner_text()
+        assert "91%" in text, "already calibrated affinity must remain 91%, not 85%"
+        assert "\u20ac" not in text, "no EUR symbol for GBP or unknown prices"
+        budget = comparison.locator("#comparison-budget")
+        if currency:
+            assert "GBP" in text
+            assert budget.is_enabled()
+            budget.fill("40")
+            comparison.get_by_role("button", name="Servicio").click()
+            comparison.get_by_label("Formato").click()
+            page.get_by_role("option", name="Por copa").click(force=True)
+            budget.fill("10")
+            comparison.get_by_text("Elección para servir", exact=True).wait_for()
+            assert "7,50" in comparison.inner_text()
+        else:
+            assert "moneda pendiente" in text
+            assert budget.is_disabled()
+        assert_no_horizontal_overflow(page, f"money {currency}")
+        page.screenshot(path=str(ARTIFACTS / f"wine-menu-money-{currency or 'unknown'}-mobile.png"), full_page=True)
+        results.append({"case": f"carta_moneda_{currency or 'unknown'}", "expected": "sin EUR inventado, afinidad sin doble calibrar y presupuesto por copa con moneda verificable", "actual": "PASS"})
+        context.close()
+
+
 def run_menu_fixture_matrix(browser, results, console_errors):
     viewports = [
         {"width": 430, "height": 932},
@@ -1049,6 +1097,7 @@ def main():
             run_retry_policy_qa(browser, results, console_errors)
             run_retry_cancellation_qa(browser, results, console_errors)
             run_menu_qa(browser, results, console_errors)
+            run_menu_money_qa(browser, results, console_errors)
             run_menu_fixture_matrix(browser, results, console_errors)
             run_accessibility_qa(browser, results, console_errors)
             if EMBEDDED_FIXTURES:

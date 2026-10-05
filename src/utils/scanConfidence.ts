@@ -20,6 +20,12 @@ export const calibrateInferredAffinity = (value: unknown): number | null => {
   return Math.round(50 + (bounded - 50) * 0.85);
 };
 
+export const normalizeMenuAffinity = (value: unknown, alreadyCalibrated = false): number | null => {
+  const numeric = optionalScanNumber(value);
+  return numeric === null ? null : alreadyCalibrated
+    ? Math.round(clamp(numeric, 0, 100)) : calibrateInferredAffinity(numeric);
+};
+
 export const calibrateMenuIdentityConfidence = (options: {
   rawConfidence: unknown;
   hasReliablePosition: boolean;

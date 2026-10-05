@@ -9,7 +9,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const ANALYSIS_VERSION = 'matchrim-region-analysis-v7-null-preserving';
+const ANALYSIS_VERSION = 'matchrim-region-analysis-v8-partial-name';
 
 const parseJsonObject = (raw: string) => {
   const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -49,6 +49,10 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
   });
   const { identityMatches, groundedEvidence } = grounding;
   if (grounding.visibleTokenCount < 2 || identityMatches.length === 0) return null;
+  if (grounding.ungroundedNameTokens.length > 0) {
+    inferredFields.push('name');
+    uncertaintyReasons.push('Parte del nombre propuesto no aparece en el texto legible; confirma la referencia.');
+  }
   const producer = typeof raw.producer === 'string' && raw.producer.trim()
     ? raw.producer.trim() : null;
   if (producer && !grounding.fullyGroundedProducer) {

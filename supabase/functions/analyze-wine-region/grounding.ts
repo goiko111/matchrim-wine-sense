@@ -17,6 +17,7 @@ export interface CandidateGrounding {
   identityMatches: string[];
   nameMatches: string[];
   fullyGroundedName: boolean;
+  ungroundedNameTokens: string[];
   producerMatches: string[];
   fullyGroundedProducer: boolean;
   groundedVintage: boolean;
@@ -58,6 +59,7 @@ export const evaluateCandidateGrounding = ({
     nameMatches,
     fullyGroundedName: new Set(nameTokens).size >= 2
       && nameTokens.every((token) => visibleTokens.has(token)),
+    ungroundedNameTokens: nameTokens.filter((token) => !visibleTokens.has(token)),
     producerMatches,
     fullyGroundedProducer: producerTokens.length > 0
       && producerTokens.every((token) => visibleTokens.has(token)),

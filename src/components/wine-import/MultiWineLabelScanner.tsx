@@ -863,6 +863,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                   region: group.candidate.region,
                   affinity: group.candidate.affinity,
                   confidence: group.candidate.confidence,
+                  identityConfirmed: group.regionIds.some((id) => regions.some((region) => region.id === id && region.status === 'recognized')),
                   attributes: group.candidate.sensoryAttributes ? {
                     body: group.candidate.sensoryAttributes.potencia,
                     acidity: group.candidate.sensoryAttributes.acidez,

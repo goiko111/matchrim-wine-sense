@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { BadgeEuro, BriefcaseBusiness, Scale, ShieldCheck, UserRound } from 'lucide-react';
+import { Coins, BriefcaseBusiness, Scale, ShieldCheck, UserRound } from 'lucide-react';
+import { formatScanPrice, singlePriceCurrency } from '@/utils/scanMoney';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -32,9 +33,7 @@ const priorityLabels: Record<WineDecisionPriority, string> = {
   value: 'Mejor valor',
 };
 
-const formatPrice = (price: number | null | undefined) => (
-  typeof price === 'number' && Number.isFinite(price) ? `${price.toFixed(2)} €` : 'Sin precio'
-);
+const formatPrice = (wine: ComparableWine) => formatScanPrice(wine.price, wine.currency) ?? 'Sin precio';
 
 const formatService = (service: ComparableWine['service']) => {
   if (service === 'glass') return 'Copa';
@@ -80,12 +79,14 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     [selectedIds, wines],
   );
   const numericBudget = budget.trim() && Number.isFinite(Number(budget)) ? Number(budget) : null;
+  const priceCurrency = singlePriceCurrency(selectedWines);
   const decision = useMemo(() => buildWineComparisonDecision(selectedWines, {
     mode,
     priority,
     budget: numericBudget,
+    budgetCurrency: priceCurrency,
     serviceFormat: mode === 'service' ? serviceFormat : 'any',
-  }), [mode, numericBudget, priority, selectedWines, serviceFormat]);
+  }), [mode, numericBudget, priceCurrency, priority, selectedWines, serviceFormat]);
   const decisionLabel = decision.actionability === 'provisional'
     ? 'Opcion provisional: confirma los datos'
     : priority === 'certainty'
@@ -167,17 +168,17 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 <SelectContent>
                   <SelectItem value="affinity" disabled={!hasAffinities}>Mayor afinidad</SelectItem>
                   <SelectItem value="certainty">Identidad más segura</SelectItem>
-                  <SelectItem value="value" disabled={!hasPrices}>Mejor valor</SelectItem>
+                  <SelectItem value="value" disabled={!hasPrices || !priceCurrency}>Mejor valor</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {hasPrices && (
               <div>
-                <Label htmlFor="comparison-budget">Presupuesto máximo</Label>
+                <Label htmlFor="comparison-budget">Presupuesto máximo{priceCurrency ? ` (${priceCurrency})` : ' (moneda pendiente)'}</Label>
                 <div className="relative mt-2">
-                  <BadgeEuro className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
-                  <Input id="comparison-budget" inputMode="decimal" value={budget} onChange={(event) => setBudget(event.target.value)} className="min-h-11 pl-9" placeholder="Sin límite" />
+                  <Coins className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
+                  <Input id="comparison-budget" inputMode="decimal" value={budget} disabled={!priceCurrency} onChange={(event) => setBudget(event.target.value)} className="min-h-11 pl-9" placeholder="Sin límite" />
                 </div>
               </div>
             )}
@@ -230,7 +231,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               <tbody className="divide-y divide-stone-100">
                 <tr><th className="px-2 py-2 text-left font-medium">Afinidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.affinity == null ? '-' : `${Math.round(wine.affinity)}%`}</td>)}</tr>
                 <tr><th className="px-2 py-2 text-left font-medium">Confianza de identidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.confidence == null ? '-' : `${Math.round((wine.confidence > 1 ? wine.confidence / 100 : wine.confidence) * 100)}%`}</td>)}</tr>
-                {hasPrices && <tr><th className="px-2 py-2 text-left font-medium">Precio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatPrice(wine.price)}</td>)}</tr>}
+                {hasPrices && <tr><th className="px-2 py-2 text-left font-medium">Precio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatPrice(wine)}</td>)}</tr>}
                 {hasServiceFormats && <tr><th className="px-2 py-2 text-left font-medium">Servicio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatService(wine.service)}</td>)}</tr>}
                 {attributeLabels.map(([key, label]) => decision.ordered.some(({ wine }) => wine.attributes?.[key] != null) && (
                   <tr key={key}><th className="px-2 py-2 text-left font-medium">{label}</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2"><AttributeValue value={wine.attributes?.[key]} /></td>)}</tr>
@@ -246,7 +247,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                   <div className="min-w-0"><span className="mr-2 text-xs font-bold text-red-900">{index + 1}</span><span className="font-semibold text-slate-950">{wine.name}</span></div>
                   {wine.affinity != null && <span className="shrink-0 font-bold text-red-900">{Math.round(wine.affinity)}%</span>}
                 </div>
-                <p className="mt-1 text-xs text-slate-500">{[hasPrices ? formatPrice(wine.price) : null, hasServiceFormats ? formatService(wine.service) : null].filter(Boolean).join(' · ')}</p>
+                <p className="mt-1 text-xs text-slate-500">{[hasPrices ? formatPrice(wine) : null, hasServiceFormats ? formatService(wine.service) : null].filter(Boolean).join(' · ')}</p>
                 <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-600">
                   {attributeLabels.flatMap(([key, label]) => wine.attributes?.[key] == null ? [] : [<span key={key}>{label} <AttributeValue value={wine.attributes[key]} /></span>])}
                 </div>

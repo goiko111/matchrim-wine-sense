@@ -10,6 +10,7 @@ export interface MenuScanPosition {
 }
 
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
+import { normalizeScanPrice, resolveScanCurrency } from './scanMoney';
 
 export interface MenuScanWine {
   nombre: string;
@@ -18,6 +19,7 @@ export interface MenuScanWine {
   region: string | null;
   pais: string | null;
   precio: number | null;
+  moneda?: string | null;
   tipo: string;
   descripcion: string | null;
   uvas?: string[];
@@ -29,6 +31,7 @@ export interface MenuScanWine {
     afrutado: number;
   } | null;
   compatibilidad?: number | null;
+  affinity_calibrated?: boolean;
   razon?: string | null;
   texto_fuente?: string | null;
   dudas?: string[] | null;
@@ -48,6 +51,8 @@ export interface MenuScanResponse {
   vinos?: MenuScanWine[];
   has_profile?: boolean;
   scan_version?: string;
+  moneda?: string | null;
+  layout?: 'columns' | 'rows' | 'unknown';
   coverage?: {
     status?: 'reported_complete' | 'partial' | 'unknown';
     extracted_wines?: number;
@@ -66,6 +71,10 @@ export interface MenuTileResult {
   response: MenuScanResponse;
 }
 
+export const isMenuIdentityConfirmed = (wine: MenuScanWine) => (wine.confidence ?? 0) >= 0.85
+  && !(wine.dudas?.length)
+  && !(wine.campos_inferidos ?? []).some((field) => /^(nombre|name|productor|producer)$/.test(field));
+
 const fullTile: MenuScanTile = {
   id: 'full',
   box: { x: 0, y: 0, width: 100, height: 100 },
@@ -83,13 +92,13 @@ export const shouldRunRightFocusMenuScan = (
   completeColumnScans = false,
 ) => !completeColumnScans && (coverageStatus !== 'reported_complete' || extractedWines >= 8);
 
-export const buildMenuScanTiles = (width: number, height: number): MenuScanTile[] => {
+export const buildMenuScanTiles = (width: number, height: number, layout: MenuScanResponse['layout'] = 'unknown'): MenuScanTile[] => {
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
     return [getFullMenuScanTile()];
   }
 
   // A 12% overlap preserves rows close to a fold without making both calls near-duplicates.
-  return width >= height
+  return width >= height && layout === 'columns'
     ? [
         { id: 'left', box: { x: 0, y: 0, width: 56, height: 100 } },
         { id: 'right', box: { x: 44, y: 0, width: 56, height: 100 } },
@@ -98,6 +107,15 @@ export const buildMenuScanTiles = (width: number, height: number): MenuScanTile[
         { id: 'top', box: { x: 0, y: 0, width: 100, height: 56 } },
         { id: 'bottom', box: { x: 0, y: 44, width: 100, height: 56 } },
       ];
+};
+
+export const needsMenuRefinement = (response: MenuScanResponse) => {
+  const wines = response.vinos ?? [];
+  return response.coverage?.status !== 'reported_complete'
+    || wines.length >= 30
+    || wines.some((wine) => (wine.confidence ?? 0) < 0.7
+      || (wine.dudas ?? []).some((doubt) => /linea|columna|asociacion|nombre/i.test(doubt)))
+    || (response.coverage?.estimated_visible_wines ?? 0) > wines.length;
 };
 
 const percentage = (value: unknown) => {
@@ -256,6 +274,13 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
   const conflictingPrice = typeof left.precio === 'number' && typeof right.precio === 'number'
     && Math.abs(left.precio - right.precio) > 0.5
     && (!left.servicio || !right.servicio || left.servicio === right.servicio);
+  const conflictingCurrency = Boolean(left.moneda && right.moneda && left.moneda !== right.moneda);
+  const mergePrice = (key: 'copa' | 'botella' | 'llevar') => {
+    const a = normalizeScanPrice(left.precios?.[key]);
+    const b = normalizeScanPrice(right.precios?.[key]);
+    return conflictingCurrency || (a !== null && b !== null && Math.abs(a - b) > 0.5)
+      ? null : normalizeScanPrice(preferred.precios?.[key]) ?? normalizeScanPrice(fallback.precios?.[key]);
+  };
   return {
     ...fallback,
     ...preferred,
@@ -263,10 +288,10 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
     anada: preferred.anada ?? fallback.anada,
     region: preferred.region || fallback.region,
     pais: preferred.pais || fallback.pais,
-    precio: conflictingPrice ? null : preferred.precio ?? fallback.precio,
+    precio: conflictingPrice || conflictingCurrency ? null : preferred.precio ?? fallback.precio,
+    moneda: conflictingCurrency ? null : preferred.moneda ?? fallback.moneda ?? null,
     precios: {
-      ...(fallback.precios ?? {}),
-      ...(preferred.precios ?? {}),
+      copa: mergePrice('copa'), botella: mergePrice('botella'), llevar: mergePrice('llevar'),
     },
     servicio: preferred.servicio === fallback.servicio
       ? preferred.servicio
@@ -278,6 +303,7 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
     dudas: Array.from(new Set([
       ...(left.dudas ?? []), ...(right.dudas ?? []),
       ...(conflictingPrice ? ['Precio contradictorio entre recortes; revisa la carta.'] : []),
+      ...(conflictingCurrency ? ['Moneda contradictoria entre recortes; revisa la carta.'] : []),
     ])),
     campos_inferidos: Array.from(new Set([...(left.campos_inferidos ?? []), ...(right.campos_inferidos ?? [])])),
   };
@@ -286,7 +312,11 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
 export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanResponse => {
   const wines: MenuScanWine[] = [];
   results.forEach(({ tile, response }) => {
-    (response.vinos ?? []).map((wine) => mapMenuWineFromTile(wine, tile)).forEach((wine) => {
+    (response.vinos ?? []).map((wine) => mapMenuWineFromTile({
+      ...wine,
+      precio: normalizeScanPrice(wine.precio),
+      moneda: resolveScanCurrency(wine.moneda, wine.texto_fuente, response.moneda),
+    }, tile)).forEach((wine) => {
       const duplicateIndex = wines.findIndex((existing) => isOverlapDuplicate(existing, wine));
       const groundedFocusEvidence = Boolean(
         normalizeText(wine.texto_fuente).length >= 5

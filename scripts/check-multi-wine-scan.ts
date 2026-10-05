@@ -32,10 +32,12 @@ import {
 } from '../src/utils/wineAffinityExplanation';
 import { normalizeScanSensoryValue, optionalScanNumber } from '../supabase/functions/_shared/matchrim-scan-values';
 import { hasGroundedMenuName } from '../supabase/functions/_shared/matchrim-menu-grounding';
+import { normalizeScanPrice, resolveScanCurrency, formatScanPrice } from '../src/utils/scanMoney';
 import { buildWineComparisonDecision } from '../src/utils/wineComparison';
 import { isWineMenuItem } from '../src/utils/wineMenuGrounding';
 import {
   calibrateInferredAffinity,
+  normalizeMenuAffinity,
   calibrateMenuIdentityConfidence,
   getConfidenceBand,
 } from '../src/utils/scanConfidence';
@@ -48,6 +50,7 @@ import {
   mergeMenuTileResults,
   resolveMenuTileResults,
   shouldRunRightFocusMenuScan,
+  needsMenuRefinement,
   type MenuScanWine,
 } from '../src/utils/wineMenuScan';
 import {
@@ -66,6 +69,9 @@ for (const missing of [null, undefined, '', '  ', false, true, {}, [], 'NaN', In
 }
 assert.equal(optionalScanNumber(0), 0, 'a genuine numeric zero must remain distinct from absence');
 assert.equal(optionalScanNumber('2021'), 2021);
+assert.equal(normalizeMenuAffinity(85, true), 85, 'server calibrated affinity must not be calibrated twice');
+assert.equal(normalizeMenuAffinity(null, true), null);
+assert.equal(normalizeMenuAffinity(100, false), 93, 'legacy uncalibrated values retain the safety adjustment');
 assert.equal(normalizeScanSensoryValue(8), 4);
 assert.equal(normalizeScanSensoryValue(80), 4);
 assert.equal(normalizeWineAttributesForInsight({
@@ -377,9 +383,27 @@ assert.equal(shouldRejectTextAnalysis({
   warnings: [],
 }), false, 'high-resolution low-light captures must still reach OCR');
 
-const landscapeTiles = buildMenuScanTiles(1800, 1200);
+const landscapeTiles = buildMenuScanTiles(1800, 1200, 'columns');
 assert.deepEqual(landscapeTiles.map((tile) => tile.id), ['left', 'right']);
 assert.deepEqual(landscapeTiles.map((tile) => tile.box.width), [56, 56]);
+for (const layout of ['rows', 'unknown'] as const) {
+  const rowTiles = buildMenuScanTiles(1800, 1200, layout);
+  assert.deepEqual(rowTiles.map((tile) => tile.id), ['top', 'bottom']);
+  assert.ok(rowTiles.every((tile) => tile.box.width === 100), 'never bisect a chalkboard name/price row');
+}
+assert.equal(needsMenuRefinement({ vinos: [], coverage: { status: 'reported_complete' } }), false);
+assert.equal(needsMenuRefinement({ vinos: [], coverage: { status: 'partial' } }), true);
+assert.equal(needsMenuRefinement({ vinos: [{ nombre: 'Muga', confidence: 0.6 } as MenuScanWine], coverage: { status: 'reported_complete' } }), true);
+assert.equal(resolveScanCurrency(null, 'Muga 12.50 \u00a3'), 'GBP');
+assert.equal(resolveScanCurrency(null, 'Muga 12.50', 'GBP'), 'GBP');
+assert.equal(resolveScanCurrency('EUR', 'Muga 12.50 \u00a3'), null, 'contradictions must not relabel GBP as EUR');
+assert.equal(resolveScanCurrency(null, 'Muga $12.50'), null, 'dollar symbol is ambiguous');
+assert.equal(resolveScanCurrency(null, 'Muga 12.50'), null, 'never assume EUR');
+assert.equal(normalizeScanPrice(null), null);
+assert.equal(normalizeScanPrice(''), null);
+assert.equal(normalizeScanPrice(-4), null);
+assert.ok(formatScanPrice(12.5, 'GBP')?.includes('GBP'));
+assert.ok(formatScanPrice(12.5, null)?.includes('moneda pendiente'));
 assert.deepEqual(getRightFocusMenuScanTile().box, { x: 64, y: 0, width: 36, height: 100 });
 const portraitTiles = buildMenuScanTiles(1200, 1800);
 assert.deepEqual(portraitTiles.map((tile) => tile.id), ['top', 'bottom']);
@@ -878,9 +902,9 @@ assert.equal(calibrateMenuIdentityConfidence({
 }), 0.82);
 
 const comparisonWines = [
-  { id: 'a', name: 'Afinidad alta', affinity: 91, confidence: 0.7, price: 48, service: 'bottle' as const },
-  { id: 'b', name: 'Identidad segura', affinity: 84, confidence: 0.96, price: 32, service: 'both' as const },
-  { id: 'c', name: 'Mejor valor', affinity: 78, confidence: 0.82, price: 18, service: 'glass' as const },
+  { id: 'a', name: 'Afinidad alta', affinity: 91, confidence: 0.7, price: 48, currency: 'EUR', service: 'bottle' as const },
+  { id: 'b', name: 'Identidad segura', affinity: 84, confidence: 0.96, price: 32, currency: 'EUR', service: 'both' as const, prices: { glass: 7, bottle: 32 } },
+  { id: 'c', name: 'Mejor valor', affinity: 78, confidence: 0.82, price: 18, currency: 'EUR', service: 'glass' as const },
 ];
 const personalDecision = buildWineComparisonDecision(comparisonWines, {
   mode: 'personal',
@@ -895,12 +919,22 @@ const serviceDecision = buildWineComparisonDecision(comparisonWines, {
   mode: 'service',
   priority: 'certainty',
   budget: 40,
+  budgetCurrency: 'EUR',
   serviceFormat: 'glass',
 });
 assert.equal(serviceDecision.primary?.wine.id, 'b');
 assert.equal(serviceDecision.ordered.at(-1)?.wine.id, 'a');
 assert.ok(serviceDecision.ordered.at(-1)?.cautions.some((caution) => caution.includes('presupuesto')));
 assert.equal(serviceDecision.actionability, 'ready');
+const glassBudget = buildWineComparisonDecision([comparisonWines[1]], {
+  mode: 'service', priority: 'affinity', budget: 10, budgetCurrency: 'EUR', serviceFormat: 'glass',
+});
+assert.equal(glassBudget.actionability, 'ready');
+assert.equal(glassBudget.primary?.wine.price, 7);
+const missingGlassPrice = buildWineComparisonDecision([{ ...comparisonWines[1], prices: null }], {
+  mode: 'service', priority: 'affinity', budget: 40, budgetCurrency: 'EUR', serviceFormat: 'glass',
+});
+assert.equal(missingGlassPrice.actionability, 'provisional', 'bottle price cannot stand in for an unread glass price');
 
 const valueDecision = buildWineComparisonDecision(comparisonWines, {
   mode: 'personal',
@@ -921,6 +955,20 @@ const provisionalDecision = buildWineComparisonDecision([
   serviceFormat: 'any',
 });
 assert.equal(provisionalDecision.actionability, 'provisional');
+const disputedIdentity = buildWineComparisonDecision([{ ...comparisonWines[1], identityConfirmed: false }], {
+  mode: 'personal', priority: 'affinity', budget: null, serviceFormat: 'any',
+});
+assert.equal(disputedIdentity.actionability, 'provisional', 'numeric confidence cannot overrule a disputed identity');
+const mixedCurrencies = buildWineComparisonDecision([
+  { ...comparisonWines[1], currency: 'GBP' }, comparisonWines[2],
+], { mode: 'service', priority: 'value', budget: 30, budgetCurrency: 'EUR', serviceFormat: 'any' });
+assert.equal(mixedCurrencies.actionability, 'provisional');
+assert.equal(mixedCurrencies.ordered.find((entry) => entry.wine.currency === 'GBP')?.constraintStatus, 'unknown');
+assert.ok(mixedCurrencies.ordered.find((entry) => entry.wine.currency === 'GBP')?.cautions.some((note) => note.includes('Moneda')));
+assert.equal(evaluateCandidateGrounding({
+  name: 'Muga Reserva Especial', producer: 'Muga', vintage: null,
+  visibleText: ['Muga', 'Reserva'], evidence: ['Muga', 'Reserva'],
+}).ungroundedNameTokens.includes('especial'), true);
 
 const qaDetection = buildMatchrimQaFixturePayload('detect-wine-regions', {
   qa_fixture_name: 'IMG_7605 2.jpg',

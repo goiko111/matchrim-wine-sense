@@ -4,6 +4,7 @@ import { runMatchrimAi } from '../_shared/matchrim-ai-provider.ts';
 import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from '../_shared/matchrim-learning.ts';
 import { normalizeScanSensoryValue, optionalScanNumber } from '../_shared/matchrim-scan-values.ts';
 import { hasGroundedMenuName } from '../_shared/matchrim-menu-grounding.ts';
+import { normalizeScanCurrency, normalizeScanPrice, resolveScanCurrency } from '../_shared/matchrim-scan-money.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -20,7 +21,7 @@ type MatchrimProfile = {
 type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', number>>;
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const FUNCTION_VERSION = 'scan-wine-menu-2026-10-05-null-preserving-v6';
+const FUNCTION_VERSION = 'scan-wine-menu-2026-10-05-currency-layout-v7';
 
 const normalizeText = (value: unknown) => typeof value === 'string' ? value.trim() : '';
 const normalizeStringArray = (value: unknown) => Array.isArray(value)
@@ -214,6 +215,8 @@ serve(async (req) => {
 
 IMPORTANTE:
 - No mezcles texto ni precios de columnas distintas.
+- Indica layout "columns" solo si hay columnas independientes de vinos; usa "rows" para una pizarra o lista con nombre a la izquierda y precio a la derecha. Un nombre y su precio NO son dos columnas de vinos.
+- Conserva la moneda impresa SIN convertir importes: GBP para libra, EUR para euro. Nunca asumas EUR por el idioma del usuario, ni USD por un simbolo $ ambiguo. Si no hay evidencia, moneda null. El encabezado de la carta puede establecer la moneda de sus filas.
 - Respeta secciones, orden de lectura y si el precio es por copa, botella o para llevar.
 - Une productor, anada y nombre cuando aparezcan apilados en lineas contiguas dentro del mismo bloque y compartan un unico precio. No conviertas una marca y su variedad inmediatamente inferior en dos vinos si forman una sola referencia.
 - En cartas historicas, "Do", "idem" o comillas pueden heredar la identidad de la linea anterior solo cuando la alineacion visual lo demuestra. Conserva el nuevo formato/precio, incluye la herencia en campos_inferidos y baja confidence si la asociacion no es inequivoca.
@@ -235,6 +238,7 @@ Para cada vino proporciona:
 - region: Región vinícola
 - pais: País
 - precio: Precio (solo número)
+- moneda: codigo ISO de moneda visible o null; conserva el simbolo/codigo en texto_fuente si figura en la fila
 - precios: objeto { "copa": number|null, "botella": number|null, "llevar": number|null }
 - servicio: "copa", "botella", "ambos" o null
 - seccion: encabezado visible al que pertenece el vino
@@ -280,6 +284,7 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       "region": "Rioja",
       "pais": "España",
       "precio": 24.50,
+      "moneda": null,
       "precios": { "copa": 4.50, "botella": 24.50, "llevar": null },
       "servicio": "ambos",
       "seccion": "Tintos",
@@ -302,6 +307,8 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       "razon": "Breve explicación"` : ''}
     }
   ],
+  "moneda": null,
+  "layout": "columns|rows|unknown",
   "coverage": {
     "status": "reported_complete|partial|unknown",
     "estimated_visible_wines": 1,
@@ -389,11 +396,10 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
         atributos.dulzura != null && atributos.taninos != null && atributos.afrutado != null;
       if (learnedProfile && completeAttributes) {
         out.compatibilidad = calculateCompatibilityScale5(learnedProfile, atributos!);
-      } else if (completeAttributes && typeof w.compatibilidad === 'number') {
-        out.compatibilidad = clamp(Math.round(w.compatibilidad), 0, 100);
       } else {
         out.compatibilidad = null;
       }
+      out.affinity_calibrated = true;
 
       const position = normalizePosicion(w.posicion);
       out.posicion = position;
@@ -409,15 +415,16 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       out.texto_fuente = normalizeText(w.texto_fuente) || null;
       out.dudas = normalizeStringArray(w.dudas);
       out.campos_inferidos = normalizeStringArray(w.campos_inferidos);
+      out.precio = normalizeScanPrice(w.precio);
+      out.moneda = resolveScanCurrency(w.moneda, w.texto_fuente, result.moneda);
       out.servicio = w.servicio === 'copa' || w.servicio === 'botella' || w.servicio === 'ambos' ? w.servicio : null;
       out.seccion = typeof w.seccion === 'string' ? w.seccion.trim() || null : null;
       if (w.precios && typeof w.precios === 'object' && !Array.isArray(w.precios)) {
         const rawPrices = w.precios as Record<string, unknown>;
-        const normalizePrice = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : null;
         out.precios = {
-          copa: normalizePrice(rawPrices.copa),
-          botella: normalizePrice(rawPrices.botella),
-          llevar: normalizePrice(rawPrices.llevar),
+          copa: normalizeScanPrice(rawPrices.copa),
+          botella: normalizeScanPrice(rawPrices.botella),
+          llevar: normalizeScanPrice(rawPrices.llevar),
         };
       } else {
         out.precios = null;
@@ -448,6 +455,8 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       vinos,
       has_profile: Boolean(profile),
       profile_source: profileSource,
+      moneda: normalizeScanCurrency(result.moneda),
+      layout: result.layout === 'columns' || result.layout === 'rows' ? result.layout : 'unknown',
       coverage,
       scan_version: FUNCTION_VERSION,
       ai_provider: ai.provider,
