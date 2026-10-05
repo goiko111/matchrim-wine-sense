@@ -11,6 +11,7 @@ const genericTokens = new Set([
 
 export const hasGroundedMenuName = (name: string, source: string, producer = '') => {
   if (/\((?:wine|vino)\s*\d+\)/i.test(name)) return false;
+  if (/\b(ilegible|illegible|unreadable|unidentified|desconocido|parcialmente legible|partially legible)\b/i.test(name)) return false;
   const visible = new Set(tokens(source));
   if (/^\d{3,4}$/.test(name.trim())) return visible.has(name.trim());
   const distinctive = (value: string) => tokens(value)

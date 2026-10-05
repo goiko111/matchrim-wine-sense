@@ -94,6 +94,8 @@ assert.equal(hasGroundedMenuName('1886', 'A complex wine planted in 1900'), fals
 assert.equal(hasGroundedMenuName('La Rosa', 'La Rosa...'), true);
 assert.equal(hasGroundedMenuName('Bottle of Wine', 'Bottle of Wine 5.50'), false);
 assert.equal(hasGroundedMenuName('House Red Wine', 'House Red Wine 5.50'), false);
+assert.equal(hasGroundedMenuName('Languedoc-Roussillon (blanco parcialmente legible)', 'Languedoc-Roussillon'), false);
+assert.equal(hasGroundedMenuName('2021 [ilegible] Gap', '2021 Gap', 'Leisure'), false);
 assert.equal(isWineMenuItem({ nombre: 'Bottle of Wine', tipo: 'wine' }), false, 'legacy responses must also reject generic offers');
 assert.equal(hasGroundedMenuName('1900', '1900 - Estate wine'), true);
 assert.equal(hasGroundedMenuName('Muga Reserva', ''), false);
@@ -687,6 +689,12 @@ assert.equal(groupDuplicateWines([
   fullProducerRegion,
   partialProducerDuplicate,
 ]).length, 1, 'the same wine name with a partial compatible producer should group');
+const conflictingProducerRegion = makeRegion('other-producer', 5, 'Celler Aripta Brut', 82);
+conflictingProducerRegion.candidates[0].producer = 'Different Winery';
+assert.equal(groupDuplicateWines([
+  fullProducerRegion,
+  conflictingProducerRegion,
+]).length, 2, 'the same name must not bypass a contradictory known producer');
 const ungroundedDuplicate = {
   ...uncertainDuplicate,
   candidates: [{ ...uncertainDuplicate.candidates[0], confidence: 0.45 }],

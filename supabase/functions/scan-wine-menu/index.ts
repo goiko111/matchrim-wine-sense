@@ -21,7 +21,7 @@ type MatchrimProfile = {
 type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', number>>;
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const FUNCTION_VERSION = 'scan-wine-menu-2026-10-05-grounded-compact-v8';
+const FUNCTION_VERSION = 'scan-wine-menu-2026-10-05-no-placeholder-v9';
 
 const normalizeText = (value: unknown) => typeof value === 'string' ? value.trim() : '';
 const normalizeStringArray = (value: unknown) => Array.isArray(value)

@@ -598,7 +598,9 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
       const distinctiveNameTokens = normalizeIdentity(candidate.name)
         .split(' ')
         .filter((token) => token && !genericWineNameTokens.has(token));
-      if (exactWineName && compatibleVintage && distinctiveNameTokens.length >= 2) return true;
+      const compatibleProducerEvidence = areLikelyDuplicateWines(group.candidate, candidate)
+        || Math.min(group.candidate.confidence, candidate.confidence) < 0.72;
+      if (exactWineName && compatibleVintage && distinctiveNameTokens.length >= 2 && compatibleProducerEvidence) return true;
       if (exactWineName && areLikelyDuplicateWines(group.candidate, candidate)) return true;
       return Math.min(group.candidate.confidence, candidate.confidence) >= 0.6
         && Math.max(group.candidate.confidence, candidate.confidence) >= 0.72
