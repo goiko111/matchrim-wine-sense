@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-05",
+  "baseline_dataset": "qa-artifacts/matchrim-pilot-v3/materialization-report.json",
+  "policy": "Additive visual review only. Original scenes, hashes, annotations and raw benchmark reports remain unchanged. No model output is used as ground truth.",
+  "reviewed_negative_cases": [
+    { "scene_id": "commons-198342542", "judgement": "valid_abstention", "reason": "Food and generic drinks board. Bottle of wine is a generic offer, not an identifiable reference." },
+    { "scene_id": "commons-59410813", "judgement": "valid_abstention", "reason": "Food board with dishes and prices, no identifiable wine." },
+    { "scene_id": "commons-173475759", "judgement": "valid_abstention", "reason": "Food board. Adjacent partially visible drink text does not establish a wine reference." },
+    { "scene_id": "commons-173322442", "judgement": "valid_abstention", "reason": "Food boards including brandy as a crepe ingredient and wine as a galette ingredient, not wine references." }
+  ],
+  "invalid_negative_annotations": [
+    {
+      "scene_id": "commons-150250375",
+      "scene_sha256": "b5ee2a44508352668524f89975ce8adca1e0e200bc10f69f307a383b60606f4e",
+      "baseline_kind": "food_menu_negative",
+      "baseline_expectation": "abstain",
+      "visually_reviewed_kind": "mixed_drinks_wine_list",
+      "visually_reviewed_expectation": "identify_wine_only",
+      "currency_visible": "GBP",
+      "expected_wine_references": [
+        "Gobillard Grande Reserve Premier Cru",
+        "De Chanceny Cremant de Loire Brut",
+        "Rivarose Provence",
+        "Domaine de Menard Cotes de Gascogne",
+        "Chateau du Poyet Muscadet",
+        "Francois Lurton Sauvignon Blanc",
+        "Maison Labastide Les Bardets Blanc",
+        "Aubert & Mathieu Chardonnay",
+        "Chateau Saint Roch Corbarol Rose",
+        "Les Celliers Jean d'Alibert Clairieres Merlot",
+        "Chateau du Cedre Camille Malbec",
+        "Maison Labastide Les Bardets Rouge",
+        "Domaine du Cros Marcillac Lo Sang del Pais",
+        "Laudun Chusclan Cotes du Rhone",
+        "Lucien Lurton Sauternes Les Garonelles",
+        "Clos Lapeyre Jurancon La Magendia",
+        "Domaine Valcros Banyuls"
+      ],
+      "must_exclude": ["aperitifs", "mocktails", "cocktails", "armagnac", "cognac", "spirits", "whisky", "digestifs", "beer", "cider", "soft drinks", "hot drinks"],
+      "evaluation_note": "Do not count the 17 visible wine references as hallucinations. Retain the original raw 4/5 negative-test result and report the valid-negative denominator separately. Price, currency and field identity require separate checks."
+    }
+  ]
+}

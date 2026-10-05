@@ -1,0 +1,52 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64e",
+        "deviceId" : "00008140-000A3D8A01E8801C",
+        "deviceName" : "Goiko",
+        "modelName" : "iPhone 16 Pro Max",
+        "osBuildNumber" : "23G71",
+        "osVersion" : "26.6",
+        "platform" : "iOS"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 1,
+      "passedTests" : 2,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "MatchrimCandidateQA · Built with macOS 15.7.7",
+  "expectedFailures" : 0,
+  "failedTests" : 1,
+  "finishTime" : 1791203000.938,
+  "passedTests" : 0,
+  "result" : "Failed",
+  "skippedTests" : 0,
+  "startTime" : 1791202960.189,
+  "statistics" : [
+    {
+      "subtitle" : "3 test runs",
+      "title" : "1 configuration ran with test repetitions"
+    }
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "Failed to determine hittability of \"Elegir de galería\" Button: Activation point invalid and no suggested hit points based on element frame",
+      "targetName" : "MatchrimCandidateUITests",
+      "testIdentifier" : 1,
+      "testIdentifierString" : "MatchrimCandidateUITests/testScannerRotationAndBackground()",
+      "testIdentifierURL" : "test://com.apple.xcode/MatchrimCandidate69QA/MatchrimCandidateUITests/MatchrimCandidateUITests/testScannerRotationAndBackground",
+      "testName" : "testScannerRotationAndBackground()"
+    }
+  ],
+  "title" : "Test - MatchrimCandidateQA",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 1
+}

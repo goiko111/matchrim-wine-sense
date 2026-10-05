@@ -10,6 +10,8 @@ Entorno de datos: Supabase staging `qpbmqvfnunkylvtvnyyx`, esquema aislado `matc
 
 Produccion/TestFlight: no modificados
 
+Continuacion aditiva: [candidato 69, correcciones y rerun independiente](MATCHRIM_BUILD69_QA_2026-10-05.md). Este documento conserva los resultados del baseline; el informe enlazado distingue el nuevo binario y las nuevas versiones de funciones.
+
 ## Decision de release
 
 **NO-GO para un nuevo TestFlight.** El flujo funcional, la navegacion, aiRIM, la privacidad y el modelo de afinidad pasan sus gates internos. La identidad visual todavia no alcanza el umbral de precision en cartas impresas ni en escenas densas, y una vitrina real tarda 126.8 segundos. Subir ahora trasladaria al usuario resultados dudosos y una espera excesiva.
@@ -166,3 +168,5 @@ P0 pendiente:
 4. Ejecutar las 60 escenas con proveedor real cuando exista cuota aprobada, congelando modelo y version para eliminar variacion entre reruns.
 
 Accion unica para TestFlight: aprobar un nuevo build solo despues de que el benchmark real anterior pase el gate y repetir en el iPhone el binario firmado exacto. Hasta entonces, el telefono queda en la build 68 y no se sube ningun candidato dependiente de mocks ni de precision insuficiente.
+
+Continuacion aditiva: [candidato 70 y recortes](MATCHRIM_BUILD70_CROP_QA_2026-10-05.md). Conserva este piloto como baseline; añade rerun real de etiquetas, abstencion revisada visualmente, build reproducible y gates concretos de precio/moneda, reconocimiento y arranque. No cambia las conclusiones historicas del piloto.

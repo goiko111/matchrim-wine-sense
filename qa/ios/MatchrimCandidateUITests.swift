@@ -25,6 +25,29 @@ final class MatchrimCandidateUITests: XCTestCase {
     }
 
     @MainActor
+    private func waitForStableViewport(_ app: XCUIApplication, landscape: Bool) -> Bool {
+        let deadline = Date().addingTimeInterval(10)
+        var previous = CGRect.null
+        var stableSince: Date?
+        // Window bounds change before WebKit commits its rotated hit-testing coordinates.
+        while Date() < deadline {
+            let window = app.frame
+            let viewport = app.webViews.firstMatch.frame
+            let correctOrientation = (window.width > window.height) == landscape
+            let fillsWindow = abs(viewport.width - window.width) < 2
+                && abs(viewport.height - window.height) < 2
+            if correctOrientation && fillsWindow && viewport == previous {
+                if let stableSince, Date().timeIntervalSince(stableSince) >= 0.75 { return true }
+            } else {
+                stableSince = Date()
+            }
+            previous = viewport
+            RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+        }
+        return false
+    }
+
+    @MainActor
     private func labelSources(_ app: XCUIApplication) {
         app.links["Escanear"].tap()
         let mode = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Etiqueta de vino")).firstMatch
@@ -94,19 +117,13 @@ final class MatchrimCandidateUITests: XCTestCase {
         app.activate()
         XCTAssertTrue(app.buttons["Hacer foto"].waitForExistence(timeout: 15))
         XCUIDevice.shared.orientation = .landscapeLeft
-        let landscapeDeadline = Date().addingTimeInterval(10)
-        while app.frame.width <= app.frame.height && Date() < landscapeDeadline {
-            RunLoop.current.run(until: Date().addingTimeInterval(0.25))
-        }
+        XCTAssertTrue(waitForStableViewport(app, landscape: true))
         XCTAssertGreaterThan(app.frame.width, app.frame.height)
+        capture("candidate-scanner-landscape")
         XCTAssertTrue(app.buttons["Hacer foto"].isHittable)
         XCTAssertTrue(app.buttons["Elegir de galería"].isHittable)
-        capture("candidate-scanner-landscape")
         XCUIDevice.shared.orientation = .portrait
-        let portraitDeadline = Date().addingTimeInterval(10)
-        while app.frame.height <= app.frame.width && Date() < portraitDeadline {
-            RunLoop.current.run(until: Date().addingTimeInterval(0.25))
-        }
+        XCTAssertTrue(waitForStableViewport(app, landscape: false))
         XCTAssertGreaterThan(app.frame.height, app.frame.width)
         capture("candidate-scanner-portrait")
     }

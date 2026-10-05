@@ -1,0 +1,5848 @@
+{
+  "dataset_id": "matchrim-pilot-v3-60-independent",
+  "interception": false,
+  "production_guard": true,
+  "selected_scene_count": 17,
+  "completed_scene_count": 17,
+  "complete": true,
+  "metric_scope": "Reference-name and box matching; not verification of producer, vintage or sensory facts.",
+  "summary": {
+    "scene_count": 17,
+    "all_passed": false,
+    "pass_rate": 0.8235,
+    "original_pass_rate": 0.8235,
+    "controlled_variant_pass_rate": null,
+    "operational": {
+      "terminal_completion_rate": 1.0,
+      "console_error_scene_count": 0,
+      "recovered_transient_analysis_failures": 0
+    },
+    "identity_micro": {
+      "scene_count": 15,
+      "matched": 20,
+      "actual": 24,
+      "expected": 20,
+      "precision": 0.8333,
+      "recall": 1.0,
+      "false_positives": 4,
+      "missed": 0
+    },
+    "detection_micro": {
+      "scene_count": 15,
+      "matched": 29,
+      "actual": 36,
+      "expected": 29,
+      "precision": 0.8056,
+      "recall": 1.0,
+      "mean_iou": 0.7064,
+      "iou_threshold": 0.3
+    },
+    "abstention": {
+      "scene_count": 0,
+      "passed": 0,
+      "high_confidence_results": 0,
+      "false_positive_names": 0
+    },
+    "fridge_detection": {
+      "scene_count": 17,
+      "precision": 0.8056,
+      "precision_note": "IoU-backed precision from human boxes. Count-only dense scenes are excluded.",
+      "mean_capped_count_recall": 0.9745,
+      "mean_absolute_count_recall": 0.9689
+    },
+    "latency_ms": {
+      "mean": 21529,
+      "median": 12822,
+      "max": 105783
+    }
+  },
+  "results": [
+    {
+      "fixture": "commons-116618810",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-116618810.jpg",
+      "fixture_sha256": "1e552058994f07a510952bc3b145314db34826fd828c17e5040e3a16b547091b",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label / baseline / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 0,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "El Miracle n\u00ba 01",
+            "actual": "El Miracle n\u00ba01",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "El Miracle n\u00ba01"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 10,
+            "y": 2,
+            "width": 80,
+            "height": 96
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.98,
+          "notes": []
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "El Miracle n\u00ba01"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "El Miracle n\u00ba01",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 10,
+              "y": 2,
+              "width": 80,
+              "height": 96
+            },
+            "crop_sha256": "22c5727314691aed6fa250d4f7d21a88e116b2df3210731eccf270437accc2ec",
+            "crop_bytes": 164099
+          }
+        ]
+      },
+      "latency_ms": 10225,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.734,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.734
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-116618810-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.98,
+            "notes": []
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n1.2 MP \u00b7 brillo 117 \u00b7 contraste 71\n1 regiones en 9.3 s\nCalidad con avisos\nResolucion limitada para leer texto pequeno.\n1\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\n1\nEl Miracle n\u00ba01\nValencia\nPor confirmar \u00b7 55% identidad\n\u224876%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-116618810",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "El Miracle n\u00ba 01"
+        ],
+        "expected_boxes": [
+          [
+            0.2,
+            0.03,
+            0.6,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "1e552058994f07a510952bc3b145314db34826fd828c17e5040e3a16b547091b"
+    },
+    {
+      "fixture": "commons-128502713",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-128502713.jpg",
+      "fixture_sha256": "7a214eb8c2aaba249957f338b6b5b51db85e45f0b829b99fbcfc4530552b887f",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label / baseline / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Bioca Mencia",
+            "actual": "Bioca Menc\u00eda Selecci\u00f3n",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Bioca Menc\u00eda Selecci\u00f3n"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 22,
+            "y": 2,
+            "width": 56,
+            "height": 96
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.99,
+          "notes": []
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Bioca Menc\u00eda Selecci\u00f3n"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Bioca Menc\u00eda Selecci\u00f3n",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 22,
+              "y": 2,
+              "width": 56,
+              "height": 96
+            },
+            "crop_sha256": "23d17d9ed5a6c29b8074b4f0c590ea1ca5d729245f6d418a1a580b80fa8b59cc",
+            "crop_bytes": 172655
+          }
+        ]
+      },
+      "latency_ms": 9705,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.769,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.769
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-128502713-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.99,
+            "notes": []
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n1.8 MP \u00b7 brillo 154 \u00b7 contraste 76\n1 regiones en 8.7 s\n1\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\n1\nBioca Menc\u00eda Selecci\u00f3n\nBioca \u00b7 Valdeorras\nPor confirmar \u00b7 78% identidad\n\u224883%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-128502713",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Bioca Mencia"
+        ],
+        "expected_boxes": [
+          [
+            0.28,
+            0.03,
+            0.44,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "7a214eb8c2aaba249957f338b6b5b51db85e45f0b829b99fbcfc4530552b887f"
+    },
+    {
+      "fixture": "commons-128503275",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-128503275.jpg",
+      "fixture_sha256": "39c20c6e240f916a0ff4ab8012c86515c61645e49d18c165f7d85980f6b080d8",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label / baseline / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Tres Picos",
+            "actual": "Tres Picos",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Tres Picos"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 18,
+            "y": 2,
+            "width": 64,
+            "height": 97
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.99,
+          "notes": []
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Tres Picos"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Tres Picos",
+            "confidence": 0.97,
+            "recognition_status": "identified",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 18,
+              "y": 2,
+              "width": 64,
+              "height": 97
+            },
+            "crop_sha256": "45471faa8687d73128d37413c4c8fe7aac8977d54a72d856a66a2ba88b99996a",
+            "crop_bytes": 262623
+          }
+        ]
+      },
+      "latency_ms": 10235,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.697,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.697
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-128503275-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.99,
+            "notes": []
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "search-wines",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": null,
+          "ai_model": null
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n1.8 MP \u00b7 brillo 139 \u00b7 contraste 62\n1 regiones en 9.3 s\n1\n1\nReconocidos\n0\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\n1\nTres Picos\nBorsao \u00b7 Campo de Borja\nIdentidad confirmable\n79%\nAfinidad\nConfirmar 1 referencia\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-128503275",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Tres Picos"
+        ],
+        "expected_boxes": [
+          [
+            0.27,
+            0.03,
+            0.46,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "39c20c6e240f916a0ff4ab8012c86515c61645e49d18c165f7d85980f6b080d8"
+    },
+    {
+      "fixture": "commons-128610681",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-128610681.jpg",
+      "fixture_sha256": "d95a1c8304e4f2ad34c3702f971560294a82ece64d72df0af466e9b94d7333d0",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label / reflection / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 0,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Gran Tehyda",
+            "actual": "Gran Tehyda Rosado",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Gran Tehyda Rosado"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 22,
+            "y": 0,
+            "width": 56,
+            "height": 100
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.97,
+          "notes": []
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Gran Tehyda Rosado"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Gran Tehyda Rosado",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 22,
+              "y": 0,
+              "width": 56,
+              "height": 100
+            },
+            "crop_sha256": "69338b9a60109f1bb4fe27773831557c9f1808ff8be342934a88f4dff596d244",
+            "crop_bytes": 350467
+          }
+        ]
+      },
+      "latency_ms": 10717,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.823,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.823
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-128610681-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.97,
+            "notes": []
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n2.4 MP \u00b7 brillo 73 \u00b7 contraste 50\n1 regiones en 10.0 s\n1\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\nPrimer plano de una \u00fanica botella centrada en la imagen; el fondo muestra un restaurante sin otras botellas identificables.\n\n1\nGran Tehyda Rosado\nGran Tehyda \u00b7 Valle de la Orotava, Tenerife\nPor confirmar \u00b7 62% identidad\n\u224864%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-128610681",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "reflection",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Gran Tehyda"
+        ],
+        "expected_boxes": [
+          [
+            0.27,
+            0.02,
+            0.48,
+            0.96
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "d95a1c8304e4f2ad34c3702f971560294a82ece64d72df0af466e9b94d7333d0"
+    },
+    {
+      "fixture": "commons-128610856",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-128610856.jpg",
+      "fixture_sha256": "2dd5c45895348fc8660a09db9b15a320f82ae9f808fa9ba904052f726af89687",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label_closeup / perspective / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Adernats Essencia",
+            "actual": "Ess\u00e8ncia",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Ess\u00e8ncia"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 95,
+            "height": 100
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.97,
+          "notes": [
+            "Primer plano de una \u00fanica botella con dos etiquetas visibles (principal y secundaria) tratadas como una sola regi\u00f3n"
+          ]
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Ess\u00e8ncia"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Ess\u00e8ncia",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 0,
+              "y": 0,
+              "width": 95,
+              "height": 100
+            },
+            "crop_sha256": "e59517c0f88a75b3156d51f4bcded3398169b0c4048934d8984359ce393108a7",
+            "crop_bytes": 749063
+          }
+        ]
+      },
+      "latency_ms": 12261,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.95,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.95
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-128610856-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.97,
+            "notes": [
+              "Primer plano de una \u00fanica botella con dos etiquetas visibles (principal y secundaria) tratadas como una sola regi\u00f3n"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n2.6 MP \u00b7 brillo 80 \u00b7 contraste 85\n1 regiones en 11.6 s\n1\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\nPrimer plano de una \u00fanica botella con dos etiquetas visibles (principal y secundaria) tratadas como una sola regi\u00f3n Imagen de primer plano de una sola botella; etiqueta principal y etiqueta inferior pertenecen a la misma botella f\u00edsica\n\n1\nEss\u00e8ncia\nAdernats \u00b7 Tarragona\nPor confirmar \u00b7 78% identidad\n\u224873%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-128610856",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "perspective",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Adernats Essencia"
+        ],
+        "expected_boxes": [
+          [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "2dd5c45895348fc8660a09db9b15a320f82ae9f808fa9ba904052f726af89687"
+    },
+    {
+      "fixture": "commons-152675154",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-152675154.jpg",
+      "fixture_sha256": "39d77d31d0a06047c8512ce8b638b3daf9d18097de7893ad5df9bb7f231595c7",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label_closeup / baseline / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 0,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Castano Monastrell",
+            "actual": "Casta\u00f1o Monastrell",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Casta\u00f1o Monastrell"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 22,
+            "y": 0,
+            "width": 68,
+            "height": 100
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.97,
+          "notes": [
+            "Primer plano de una \u00fanica botella con etiqueta frontal completamente visible y legible"
+          ]
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Casta\u00f1o Monastrell"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Casta\u00f1o Monastrell",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 22,
+              "y": 0,
+              "width": 68,
+              "height": 100
+            },
+            "crop_sha256": "829942d8be6e4dbc1947e8ebd48ce52e9da4fff647c12ff87c4f748a65c3e461",
+            "crop_bytes": 424671
+          }
+        ]
+      },
+      "latency_ms": 12247,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.846,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.846
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-152675154-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.97,
+            "notes": [
+              "Primer plano de una \u00fanica botella con etiqueta frontal completamente visible y legible"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n2.4 MP \u00b7 brillo 101 \u00b7 contraste 81\n1 regiones en 11.4 s\n1\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\nPrimer plano de una \u00fanica botella con etiqueta frontal completamente visible y legible Imagen de primer plano de una sola botella; etiqueta principal \u00edntegra, sin otras botellas ni elementos adicionales detectables\n\n1\nCasta\u00f1o Monastrell\nYecla D.O.\nPor confirmar \u00b7 55% identidad\n\u224879%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-152675154",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Castano Monastrell"
+        ],
+        "expected_boxes": [
+          [
+            0.12,
+            0.0,
+            0.76,
+            1.0
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "39d77d31d0a06047c8512ce8b638b3daf9d18097de7893ad5df9bb7f231595c7"
+    },
+    {
+      "fixture": "commons-152676516",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-152676516.jpg",
+      "fixture_sha256": "5c27228847d403f2ae390f12645653c9e5392ab8c9b6f2c3c9b9215afe4d8b09",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "two_labels_closeup / crop / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 2,
+      "anchored_pins": 2,
+      "individual_affinity_scores": 2,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 2,
+        "matched_count": 1,
+        "precision": 0.5,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "750",
+            "actual": "750",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [
+          "Valverde"
+        ],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "750",
+        "Valverde"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 22,
+            "height": 100
+          },
+          {
+            "x": 18,
+            "y": 0,
+            "width": 62,
+            "height": 100
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 2,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 2,
+          "estimated_visible_objects": 2,
+          "confidence": 0.93,
+          "notes": [
+            "Segunda pasada confirma dos botellas: una parcialmente visible a la izquierda y una principal completamente legible en el centro."
+          ]
+        },
+        "detected_regions": 2,
+        "last_detector_response_regions": 2,
+        "analyzed_regions": 2,
+        "analysis_attempts": 2,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 2,
+        "candidate_names": [
+          "750",
+          "Valverde"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-2",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "750",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 2,
+            "request_box": {
+              "x": 18,
+              "y": 0,
+              "width": 62,
+              "height": 100
+            },
+            "crop_sha256": "22d7efc959ba6da249a1f40ce99fea0d44463ea13082710070aea3aaa57a2e80",
+            "crop_bytes": 226923
+          },
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Valverde",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 0,
+              "y": 0,
+              "width": 22,
+              "height": 100
+            },
+            "crop_sha256": "48985760e89a54ec441bfccb633854386bbd6b49c238b576324594103ef09191",
+            "crop_bytes": 98007
+          }
+        ]
+      },
+      "latency_ms": 13248,
+      "detection_accuracy": {
+        "expected_count": 2,
+        "actual_count": 2,
+        "matched_count": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.471,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.478
+          },
+          {
+            "expected_index": 1,
+            "actual_index": 1,
+            "iou": 0.463
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-152676516-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 2,
+            "estimated_visible_objects": 2,
+            "confidence": 0.93,
+            "notes": [
+              "Segunda pasada confirma dos botellas: una parcialmente visible a la izquierda y una principal completamente legible en el centro."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "BLOCKED_OR_FAIL",
+      "visible_excerpt": " etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n2.1 MP \u00b7 brillo 101 \u00b7 contraste 58\n2 regiones en 12.3 s\n1\n2\n0\nReconocidos\n2\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n2 de unas 2 botellas visibles detectadas.\n\nSegunda pasada confirma dos botellas: una parcialmente visible a la izquierda y una principal completamente legible en el centro. El \u00e1rea naranja borrosa a la derecha es bokeh de fondo, no una botella adicional.\n\nComparar 2\u20135 vinos\n\nElige referencias y decide con afinidad, certeza, precio y formato por separado.\n\n2/5 seleccionados\n750\nBodegas Nueva Valverde\n76%\nValverde\nValverde\n76%\nDecisi\u00f3n\nPara m\u00ed\nServicio\nPrioridad\nMayor afinidad\nElecci\u00f3n para ti\n\n750\n\nMayor afinidad\n\u2022 76% de afinidad registrada\n\u2022 Identidad con 78% de confianza\n1750\n76%\n\nCuerpo 3/5\nAcidez 3/5\nTanino 3/5\nDulzor 1/5\nFruta 3/5\nMadera 3/5\nIntensidad 3/5\n2Valverde\n76%\n\nCuerpo 3/5\nAcidez 3/5\nTanino 3/5\nDulzor 1/5\nFruta 3/5\nMadera 3/5\nIntensidad 3/5\n\nIdentidad dudosa: 62% de confianza\n\n1\n750\nBodegas Nueva Valverde\nPor confirmar \u00b7 78% identidad\n\u224876%\nEstimaci\u00f3n\n2\nValverde\nValverde\nPor confirmar \u00b7 62% identidad\n\u224876%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-152676516",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "crop",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "750"
+        ],
+        "expected_boxes": [
+          [
+            0.0,
+            0.0,
+            0.46,
+            1.0
+          ],
+          [
+            0.42,
+            0.0,
+            0.58,
+            1.0
+          ]
+        ],
+        "visible_bottles_estimate": 2,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "5c27228847d403f2ae390f12645653c9e5392ab8c9b6f2c3c9b9215afe4d8b09"
+    },
+    {
+      "fixture": "commons-152684780",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-152684780.jpg",
+      "fixture_sha256": "31301e5579c03c1a1f02d8c11deca7340b47f7e423947ebfd9ff808cdfcb8121",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label / low_light / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Arzuaga Crianza",
+            "actual": "Arzuaga Crianza",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Arzuaga Crianza"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 10,
+            "y": 0,
+            "width": 80,
+            "height": 100
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.98,
+          "notes": [
+            "Primer plano de una \u00fanica botella sostenida en mano, etiqueta frontal completamente visible y legible"
+          ]
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Arzuaga Crianza"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Arzuaga Crianza",
+            "confidence": 0.98,
+            "recognition_status": "identified",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 10,
+              "y": 0,
+              "width": 80,
+              "height": 100
+            },
+            "crop_sha256": "6cab94fffaf696fa3723ecc0f961d8fd8eb9781d4bb80c2f6a1ebca75d592531",
+            "crop_bytes": 430099
+          }
+        ]
+      },
+      "latency_ms": 13771,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.611,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.611
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-152684780-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.98,
+            "notes": [
+              "Primer plano de una \u00fanica botella sostenida en mano, etiqueta frontal completamente visible y legible"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "search-wines",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": null,
+          "ai_model": null
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n2.4 MP \u00b7 brillo 108 \u00b7 contraste 77\n1 regiones en 12.9 s\n1\n1\nReconocidos\n0\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\nPrimer plano de una \u00fanica botella sostenida en mano, etiqueta frontal completamente visible y legible Imagen de botella \u00fanica en primer plano; etiqueta principal, cuello y cuerpo incluidos en una sola regi\u00f3n\n\n1\nArzuaga Crianza\nBodegas Arzuaga Navarro, S.L. \u00b7 Ribera del Duero\nIdentidad confirmable\n76%\nAfinidad\nConfirmar 1 referencia\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-152684780",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "low_light",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Arzuaga Crianza"
+        ],
+        "expected_boxes": [
+          [
+            0.24,
+            0.03,
+            0.52,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "31301e5579c03c1a1f02d8c11deca7340b47f7e423947ebfd9ff808cdfcb8121"
+    },
+    {
+      "fixture": "commons-152687522",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-152687522.jpg",
+      "fixture_sha256": "d94aa320e5d9bb3fd0e2dc3b12963a8d0f7972cad52082103a984a587624b8c4",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label_product / baseline / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Beronia",
+            "actual": "Beronia Vino Ecol\u00f3gico",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Beronia Vino Ecol\u00f3gico"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 8,
+            "y": 1,
+            "width": 84,
+            "height": 98
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.98,
+          "notes": []
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Beronia Vino Ecol\u00f3gico"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Beronia Vino Ecol\u00f3gico",
+            "confidence": 0.97,
+            "recognition_status": "identified",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 8,
+              "y": 1,
+              "width": 84,
+              "height": 98
+            },
+            "crop_sha256": "f60da0200f09cdaa9fa8436d669f9c00611aca5693e32944eaec82c7311830d4",
+            "crop_bytes": 129135
+          }
+        ]
+      },
+      "latency_ms": 13326,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.513,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.513
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-152687522-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.98,
+            "notes": []
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "search-wines",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": null,
+          "ai_model": null
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n0.8 MP \u00b7 brillo 136 \u00b7 contraste 107\n1 regiones en 12.5 s\nCalidad con avisos\nResolucion limitada para leer texto pequeno.\n1\n1\nReconocidos\n0\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\nImagen de primer plano de una \u00fanica botella de vino tinto con etiqueta frontal y contraetiqueta claramente visibles. No se detectan botellas adicionales.\n\n1\nBeronia Vino Ecol\u00f3gico\nBodegas Beronia S.A. \u00b7 Rioja\nIdentidad confirmable\n79%\nAfinidad\nConfirmar 1 referencia\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-152687522",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Beronia"
+        ],
+        "expected_boxes": [
+          [
+            0.28,
+            0.02,
+            0.44,
+            0.96
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "d94aa320e5d9bb3fd0e2dc3b12963a8d0f7972cad52082103a984a587624b8c4"
+    },
+    {
+      "fixture": "commons-152733274",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-152733274.jpg",
+      "fixture_sha256": "5a00f470b7fbe803cef5b47008335e6625d006cd33ef564ff75b8eebff62fde3",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label_closeup / partial_bottle / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Lalama",
+            "actual": "Lalama",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Lalama"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 22,
+            "y": 0,
+            "width": 56,
+            "height": 100
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.97,
+          "notes": [
+            "Primer plano de una \u00fanica botella centrada en la imagen, etiqueta frontal completamente visible y legible"
+          ]
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Lalama"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Lalama",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 22,
+              "y": 0,
+              "width": 56,
+              "height": 100
+            },
+            "crop_sha256": "d4a798796b5b7bfe47ca327d372fc6470b50d5c45b66ea38ea089d6d6e6bde8b",
+            "crop_bytes": 366507
+          }
+        ]
+      },
+      "latency_ms": 12703,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.634,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.634
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-152733274-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.97,
+            "notes": [
+              "Primer plano de una \u00fanica botella centrada en la imagen, etiqueta frontal completamente visible y legible"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n3.2 MP \u00b7 brillo 130 \u00b7 contraste 66\n1 regiones en 12.1 s\n1\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\nPrimer plano de una \u00fanica botella centrada en la imagen, etiqueta frontal completamente visible y legible Los elementos laterales (copas, vaso) no constituyen botellas de vino analizables\n\n1\nLalama\nDominio do Bibei \u00b7 Ribeira Sacra\nPor confirmar \u00b7 78% identidad\n\u224893%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-152733274",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "partial_bottle",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Lalama"
+        ],
+        "expected_boxes": [
+          [
+            0.07,
+            0.02,
+            0.86,
+            0.96
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "5a00f470b7fbe803cef5b47008335e6625d006cd33ef564ff75b8eebff62fde3"
+    },
+    {
+      "fixture": "commons-26358451",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-26358451.jpg",
+      "fixture_sha256": "2f9f5abdb9b4172ce9b1a50fe1f80b943f5bd027a1b0f3e0fd0d44aef5e12c1f",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label_product / baseline / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 1,
+      "anchored_pins": 1,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Faustino I Gran Reserva",
+            "actual": "Faustino I Gran Reserva",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Faustino I Gran Reserva"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 18,
+            "y": 2,
+            "width": 55,
+            "height": 97
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 1,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 1,
+          "estimated_visible_objects": 1,
+          "confidence": 0.98,
+          "notes": [
+            "Imagen de primer plano de una \u00fanica botella completa con etiqueta frontal, contraetiqueta de cuello y c\u00e1psula claramente visibles"
+          ]
+        },
+        "detected_regions": 1,
+        "last_detector_response_regions": 1,
+        "analyzed_regions": 1,
+        "analysis_attempts": 1,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 1,
+        "candidate_names": [
+          "Faustino I Gran Reserva"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Faustino I Gran Reserva",
+            "confidence": 0.97,
+            "recognition_status": "identified",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 18,
+              "y": 2,
+              "width": 55,
+              "height": 97
+            },
+            "crop_sha256": "93f74a3a2c0d0aa71b6767b011af3fd0095c9c9463bf8061184e6d6850cbc6d2",
+            "crop_bytes": 236923
+          }
+        ]
+      },
+      "latency_ms": 11698,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.792,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.792
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-26358451-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 1,
+            "estimated_visible_objects": 1,
+            "confidence": 0.98,
+            "notes": [
+              "Imagen de primer plano de una \u00fanica botella completa con etiqueta frontal, contraetiqueta de cuello y c\u00e1psula claramente visibles"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "search-wines",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": null,
+          "ai_model": null
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n2.2 MP \u00b7 brillo 148 \u00b7 contraste 59\n1 regiones en 11.1 s\n1\n1\nReconocidos\n0\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n1 de unas 1 botellas visibles detectadas.\n\nImagen de primer plano de una \u00fanica botella completa con etiqueta frontal, contraetiqueta de cuello y c\u00e1psula claramente visibles El objeto de madera en el fondo derecho es un portacuchillos, no una botella ni elemento de vino\n\n1\nFaustino I Gran Reserva\nBodegas Faustino \u00b7 Rioja\nIdentidad confirmable\n76%\nAfinidad\nConfirmar 1 referencia\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-26358451",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "baseline",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Faustino I Gran Reserva"
+        ],
+        "expected_boxes": [
+          [
+            0.28,
+            0.02,
+            0.44,
+            0.96
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "2f9f5abdb9b4172ce9b1a50fe1f80b943f5bd027a1b0f3e0fd0d44aef5e12c1f"
+    },
+    {
+      "fixture": "commons-32980703",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-32980703.jpg",
+      "fixture_sha256": "4cd9b44593df12820f5912a7a9e7476dda4a4a3ec04e2d68ab06f7e2e7f72003",
+      "mode": "etiqueta",
+      "expected_results": 1,
+      "expected_rationale": "single_label_table / clutter / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 5,
+      "anchored_pins": 5,
+      "individual_affinity_scores": 3,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura parcial",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 3,
+        "matched_count": 1,
+        "precision": 0.333,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Vina Gravonia",
+            "actual": "Vi\u00f1a Gravonia",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [
+          "Petit Verdot 2006",
+          "Lifestyle Winery Chardonnay"
+        ],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Vi\u00f1a Gravonia",
+        "Petit Verdot 2006",
+        "Lifestyle Winery Chardonnay"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 19.6,
+            "y": 0,
+            "width": 37.4,
+            "height": 80
+          },
+          {
+            "x": 44,
+            "y": 0,
+            "width": 56,
+            "height": 100
+          },
+          {
+            "x": 0,
+            "y": 5,
+            "width": 4.48,
+            "height": 50
+          },
+          {
+            "x": 7.84,
+            "y": 35,
+            "width": 5.6,
+            "height": 40
+          },
+          {
+            "x": 0,
+            "y": 60,
+            "width": 8,
+            "height": 40
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 6,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          },
+          {
+            "tile": "right",
+            "status": 200,
+            "regions": 3,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          },
+          {
+            "tile": "left",
+            "status": 200,
+            "regions": 9,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 9,
+          "estimated_visible_objects": 9,
+          "confidence": 0.78,
+          "notes": [
+            "Botella principal con etiqueta legible en primer plano",
+            "Botella parcial a la derecha con etiqueta visible",
+            "Varias botellas en estanter\u00eda trasera con oclusi\u00f3n alta y legibilidad limitada",
+            "Botellas en estanter\u00eda izquierda muy oscuras y parcialmente visibles"
+          ]
+        },
+        "detected_regions": 5,
+        "last_detector_response_regions": 9,
+        "analyzed_regions": 5,
+        "analysis_attempts": 5,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 4,
+        "candidate_names": [
+          "Petit Verdot 2006",
+          "Vi\u00f1a Gravonia",
+          "Lifestyle Winery Chardonnay",
+          "Red Blend"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-5",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 5,
+            "request_box": {
+              "x": 0,
+              "y": 60,
+              "width": 8,
+              "height": 40
+            },
+            "crop_sha256": "2d11ac70b7e79ae29433e9deafed943d8f761bc9071d85c0214af67e1c28f6ce",
+            "crop_bytes": 42779
+          },
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Petit Verdot 2006",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 19.6,
+              "y": 0,
+              "width": 37.4,
+              "height": 80
+            },
+            "crop_sha256": "88de6eecc959e3d5505f4a959f39cbe3dd0fd7ff2807fc89a6d398c15d9c0ce9",
+            "crop_bytes": 373835
+          },
+          {
+            "region_id": "region-2",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Vi\u00f1a Gravonia",
+            "confidence": 0.97,
+            "recognition_status": "identified",
+            "fallback_code": null,
+            "request_index": 2,
+            "request_box": {
+              "x": 44,
+              "y": 0,
+              "width": 56,
+              "height": 100
+            },
+            "crop_sha256": "5ae95f6762b89a97328454dc3fb418d4bb59b39170d2ba5cac443a715d039859",
+            "crop_bytes": 593199
+          },
+          {
+            "region_id": "region-3",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Lifestyle Winery Chardonnay",
+            "confidence": 0.52,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 3,
+            "request_box": {
+              "x": 0,
+              "y": 5,
+              "width": 4.48,
+              "height": 50
+            },
+            "crop_sha256": "43f7c3e561a5c3b964855e74c9667a091315f06a042ab975c2ae6cbeace1d3be",
+            "crop_bytes": 42039
+          },
+          {
+            "region_id": "region-4",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Red Blend",
+            "confidence": 0.25,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 4,
+            "request_box": {
+              "x": 7.84,
+              "y": 35,
+              "width": 5.6,
+              "height": 40
+            },
+            "crop_sha256": "8e9cbd260703fed4e061ab5189919a818a9c35072393fe88ef7b58066a7740b4",
+            "crop_bytes": 34683
+          }
+        ]
+      },
+      "latency_ms": 36119,
+      "detection_accuracy": {
+        "expected_count": 1,
+        "actual_count": 5,
+        "matched_count": 1,
+        "precision": 0.2,
+        "recall": 1.0,
+        "mean_iou": 0.715,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 0,
+            "actual_index": 1,
+            "iou": 0.715
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-32980703-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "partial",
+            "detected_objects": 6,
+            "estimated_visible_objects": 10,
+            "confidence": 0.68,
+            "notes": [
+              "Estanter\u00eda de fondo contiene m\u00faltiples botellas parcialmente visibles con alta oclusi\u00f3n",
+              "Botellas en estantes laterales izquierdos apenas distinguibles como siluetas",
+              "Reflejos en botella principal dificultan separaci\u00f3n de algunas regiones"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "partial",
+            "detected_objects": 3,
+            "estimated_visible_objects": 6,
+            "confidence": 0.65,
+            "notes": [
+              "Botella principal en primer plano ocupa la mayor parte de la imagen",
+              "Botellas en estante superior parcialmente visibles y solapadas",
+              "Botella lateral izquierda muy ocluida",
+              "Botella derecha parcialmente visible con etiqueta parcialmente legible",
+              "Reflejos en botella principal dificultan separaci\u00f3n de regiones"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 9,
+            "estimated_visible_objects": 9,
+            "confidence": 0.78,
+            "notes": [
+              "Botella principal con etiqueta legible en primer plano",
+              "Botella parcial a la derecha con etiqueta visible",
+              "Varias botellas en estanter\u00eda trasera con oclusi\u00f3n alta y legibilidad limitada",
+              "Botellas en estanter\u00eda izquierda muy oscuras y parcialmente visibles"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "search-wines",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": null,
+          "ai_model": null
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "BLOCKED_OR_FAIL",
+      "visible_excerpt": "lla central trasera (Petit Verdot) son las m\u00e1s legibles\n\nComparar 2\u20135 vinos\n\nElige referencias y decide con afinidad, certeza, precio y formato por separado.\n\n3/5 seleccionados\nVi\u00f1a Gravonia\nL\u00f3pez de Heredia Vi\u00f1a Tondonia S.A.\n62%\nPetit Verdot 2006\nYakima Valley\n69%\nLifestyle Winery Chardonnay\nLifestyle Winery\n61%\nDecisi\u00f3n\nPara m\u00ed\nServicio\nPrioridad\nMayor afinidad\nElecci\u00f3n para ti\n\nVi\u00f1a Gravonia\n\nMayor afinidad\n\u2022 62% de afinidad registrada\n\u2022 Identidad con 97% de confianza\n1Vi\u00f1a Gravonia\n62%\n\nCuerpo 3/5\nAcidez 5/5\nTanino 1/5\nDulzor 1/5\nFruta 2/5\nMadera 4/5\nIntensidad 3/5\n2Petit Verdot 2006\n69%\n\nCuerpo 4/5\nAcidez 3/5\nTanino 5/5\nDulzor 1/5\nFruta 3/5\nMadera 4/5\nIntensidad 4/5\n\nIdentidad dudosa: 55% de confianza\n\n3Lifestyle Winery Chardonnay\n61%\n\nCuerpo 2/5\nAcidez 3/5\nTanino 1/5\nDulzor 2/5\nFruta 3/5\nMadera 2/5\nIntensidad 2/5\n\nIdentidad dudosa: 52% de confianza\n\n1\nVi\u00f1a Gravonia\nL\u00f3pez de Heredia Vi\u00f1a Tondonia S.A. \u00b7 Rioja Alta\nIdentidad confirmable\n62%\nAfinidad\n2\nPetit Verdot 2006\nYakima Valley\nPor confirmar \u00b7 55% identidad\n\u224869%\nEstimaci\u00f3n\n3\nLifestyle Winery Chardonnay\nLifestyle Winery\nPor confirmar \u00b7 52% identidad\n\u224861%\nEstimaci\u00f3n\nConfirmar 1 referencia\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-32980703",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "clutter",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Vina Gravonia"
+        ],
+        "expected_boxes": [
+          [
+            0.42,
+            0.03,
+            0.46,
+            0.94
+          ]
+        ],
+        "visible_bottles_estimate": 1,
+        "expected_min_regions": 1,
+        "expected_min_identified": 1,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "4cd9b44593df12820f5912a7a9e7476dda4a4a3ec04e2d68ab06f7e2e7f72003"
+    },
+    {
+      "fixture": "commons-114960137",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-114960137.jpg",
+      "fixture_sha256": "bbe546d4eb9e378582cd5e6a9bec48a67044e5f59360735dad2ea7009f20e17b",
+      "mode": "etiqueta",
+      "expected_results": 6,
+      "expected_rationale": "multi_bottle_duplicate / overlap / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 8,
+      "anchored_pins": 5,
+      "individual_affinity_scores": 1,
+      "high_confidence_results": 3,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Moscatel Dulce",
+            "actual": "La Geria Moscatel Dulce",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "La Geria Moscatel Dulce"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 10,
+            "height": 100
+          },
+          {
+            "x": 5,
+            "y": 0,
+            "width": 14,
+            "height": 100
+          },
+          {
+            "x": 17,
+            "y": 0,
+            "width": 15,
+            "height": 100
+          },
+          {
+            "x": 31,
+            "y": 0,
+            "width": 16,
+            "height": 100
+          },
+          {
+            "x": 46,
+            "y": 0,
+            "width": 16,
+            "height": 100
+          },
+          {
+            "x": 61,
+            "y": 0,
+            "width": 16,
+            "height": 100
+          },
+          {
+            "x": 76,
+            "y": 0,
+            "width": 15,
+            "height": 100
+          },
+          {
+            "x": 88,
+            "y": 0,
+            "width": 12,
+            "height": 100
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 8,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 8,
+          "estimated_visible_objects": 8,
+          "confidence": 0.85,
+          "notes": [
+            "Segunda pasada izquierda-derecha confirma 8 botellas f\u00edsicas visibles; las dos extremas est\u00e1n parcialmente recortadas por los bordes de la imagen"
+          ]
+        },
+        "detected_regions": 8,
+        "last_detector_response_regions": 8,
+        "analyzed_regions": 8,
+        "analysis_attempts": 8,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 8,
+        "candidate_names": [
+          "La Geria Moscatel Dulce",
+          "La Geria Moscatel Dulce",
+          "La Geria Moscatel Dulce",
+          "La Geria Moscatel Dulce",
+          "La Geria Moscatel Dulce",
+          "La Geria Moscatel Dulce",
+          "La Geria Moscatel Dulce",
+          "La Geria Moscatel Dulce"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-4",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "La Geria Moscatel Dulce",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 4,
+            "request_box": {
+              "x": 31,
+              "y": 0,
+              "width": 16,
+              "height": 100
+            },
+            "crop_sha256": "60e7365feb54f114bb204e3a63743e474c2101c9cc9d3262aeedf3e8e106970f",
+            "crop_bytes": 158935
+          },
+          {
+            "region_id": "region-5",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "La Geria Moscatel Dulce",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 5,
+            "request_box": {
+              "x": 46,
+              "y": 0,
+              "width": 16,
+              "height": 100
+            },
+            "crop_sha256": "4dd94e99eaed5fb7a9a8a89b2f49290b2798413076f4a58a2c5310f17ae578eb",
+            "crop_bytes": 150511
+          },
+          {
+            "region_id": "region-6",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "La Geria Moscatel Dulce",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 6,
+            "request_box": {
+              "x": 61,
+              "y": 0,
+              "width": 16,
+              "height": 100
+            },
+            "crop_sha256": "8c9738ee83fdd5065a1e13d6f28c28adb3ad5365541fdd22b4d78f0b946f1d83",
+            "crop_bytes": 160899
+          },
+          {
+            "region_id": "region-7",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "La Geria Moscatel Dulce",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 7,
+            "request_box": {
+              "x": 76,
+              "y": 0,
+              "width": 15,
+              "height": 100
+            },
+            "crop_sha256": "9743e78479c6c87d1ede0e8e212b17296ac9ef44a0d39e554bb163bea65d57ea",
+            "crop_bytes": 138803
+          },
+          {
+            "region_id": "region-3",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "La Geria Moscatel Dulce",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 3,
+            "request_box": {
+              "x": 17,
+              "y": 0,
+              "width": 15,
+              "height": 100
+            },
+            "crop_sha256": "facd0ce36c519e1b787ee6ad31171402d7019372cbc39eb2d73b995ddc0ba0bf",
+            "crop_bytes": 151867
+          },
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "La Geria Moscatel Dulce",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 0,
+              "y": 0,
+              "width": 10,
+              "height": 100
+            },
+            "crop_sha256": "f37798c81389a80c07923d64beafb69f06e81d55be2e65ab693a6ccb883b82d8",
+            "crop_bytes": 120039
+          },
+          {
+            "region_id": "region-2",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "La Geria Moscatel Dulce",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 2,
+            "request_box": {
+              "x": 5,
+              "y": 0,
+              "width": 14,
+              "height": 100
+            },
+            "crop_sha256": "7d1c8b4cdd1b58c54c833233c96baede91078d9dd1fc33ce3524990707547255",
+            "crop_bytes": 152167
+          },
+          {
+            "region_id": "region-8",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "La Geria Moscatel Dulce",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 8,
+            "request_box": {
+              "x": 88,
+              "y": 0,
+              "width": 12,
+              "height": 100
+            },
+            "crop_sha256": "91e58ee5bffe006edc885f15291699a4e58fbb34df2ebd0856167069e9c3eba2",
+            "crop_bytes": 112139
+          }
+        ]
+      },
+      "latency_ms": 24358,
+      "detection_accuracy": {
+        "expected_count": 8,
+        "actual_count": 8,
+        "matched_count": 8,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.712,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 4,
+            "actual_index": 4,
+            "iou": 0.873
+          },
+          {
+            "expected_index": 5,
+            "actual_index": 5,
+            "iou": 0.776
+          },
+          {
+            "expected_index": 3,
+            "actual_index": 3,
+            "iou": 0.776
+          },
+          {
+            "expected_index": 7,
+            "actual_index": 7,
+            "iou": 0.739
+          },
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.658
+          },
+          {
+            "expected_index": 2,
+            "actual_index": 2,
+            "iou": 0.64
+          },
+          {
+            "expected_index": 6,
+            "actual_index": 6,
+            "iou": 0.64
+          },
+          {
+            "expected_index": 1,
+            "actual_index": 1,
+            "iou": 0.592
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-114960137-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 8,
+            "estimated_visible_objects": 8,
+            "confidence": 0.85,
+            "notes": [
+              "Segunda pasada izquierda-derecha confirma 8 botellas f\u00edsicas visibles; las dos extremas est\u00e1n parcialmente recortadas por los bordes de la imagen"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n2.4 MP \u00b7 brillo 85 \u00b7 contraste 74\n8 regiones en 23.4 s\n+2\n+2\n5\n6\n+2\n0\nReconocidos\n8\nDudosos\n0\nSin reconocer\nCobertura estimada completa\n\n8 de unas 8 botellas visibles detectadas.\n\nSegunda pasada izquierda-derecha confirma 8 botellas f\u00edsicas visibles; las dos extremas est\u00e1n parcialmente recortadas por los bordes de la imagen Fila \u00fanica de botellas alineadas en expositor; las botellas del fondo son la misma referencia pero quedan ocultas por las del primer plano y no se distinguen como independientes\n\n1\nLa Geria Moscatel Dulce\nLa Geria \u00b7 Lanzarote \u00b7 8 botellas\nPor confirmar \u00b7 78% identidad\n\u224844%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-114960137",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "overlap",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Moscatel Dulce"
+        ],
+        "expected_boxes": [
+          [
+            0.0,
+            0.01,
+            0.15,
+            0.98
+          ],
+          [
+            0.07,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.19,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.32,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.45,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.58,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.71,
+            0.01,
+            0.18,
+            0.98
+          ],
+          [
+            0.84,
+            0.01,
+            0.16,
+            0.98
+          ]
+        ],
+        "visible_bottles_estimate": 8,
+        "expected_min_regions": 6,
+        "expected_min_identified": 4,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "bbe546d4eb9e378582cd5e6a9bec48a67044e5f59360735dad2ea7009f20e17b"
+    },
+    {
+      "fixture": "commons-9941064",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-9941064.jpg",
+      "fixture_sha256": "5bf8af7126a760cf44bebe6dbf035d6dcfc847979461eab021f04af80631d253",
+      "mode": "etiqueta",
+      "expected_results": 2,
+      "expected_rationale": "two_bottles / reflection / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 2,
+      "anchored_pins": 2,
+      "individual_affinity_scores": 2,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 1,
+        "actual_count": 2,
+        "matched_count": 1,
+        "precision": 0.5,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Cloudy Bay Sauvignon Blanc",
+            "actual": "Cloudy Bay Sauvignon Blanc",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [
+          "Cloudy Bay Sauvignon Blanc"
+        ],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Cloudy Bay Sauvignon Blanc",
+        "Cloudy Bay Sauvignon Blanc"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 0,
+            "y": 10,
+            "width": 42,
+            "height": 90
+          },
+          {
+            "x": 52,
+            "y": 10,
+            "width": 48,
+            "height": 90
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 2,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 2,
+          "estimated_visible_objects": 2,
+          "confidence": 0.92,
+          "notes": [
+            "Dos botellas f\u00edsicas claramente distinguibles en primer plano; los reflejos en la superficie espejada no constituyen botellas adicionales independientes"
+          ]
+        },
+        "detected_regions": 2,
+        "last_detector_response_regions": 2,
+        "analyzed_regions": 2,
+        "analysis_attempts": 2,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 2,
+        "candidate_names": [
+          "Cloudy Bay Sauvignon Blanc",
+          "Cloudy Bay Sauvignon Blanc"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-2",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Cloudy Bay Sauvignon Blanc",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 2,
+            "request_box": {
+              "x": 52,
+              "y": 10,
+              "width": 48,
+              "height": 90
+            },
+            "crop_sha256": "21b8c1534c54a6e5bcae8566027cdcd3951052514adfda685820f3db5689fddb",
+            "crop_bytes": 327127
+          },
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Cloudy Bay Sauvignon Blanc",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 0,
+              "y": 10,
+              "width": 42,
+              "height": 90
+            },
+            "crop_sha256": "a32569052127c44066b896d3e69352e67e1e596f035bdb312e5e48d101b1bd8f",
+            "crop_bytes": 280799
+          }
+        ]
+      },
+      "latency_ms": 12822,
+      "detection_accuracy": {
+        "expected_count": 2,
+        "actual_count": 2,
+        "matched_count": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "mean_iou": 0.806,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 1,
+            "actual_index": 1,
+            "iou": 0.869
+          },
+          {
+            "expected_index": 0,
+            "actual_index": 0,
+            "iou": 0.743
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-9941064-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 2,
+            "estimated_visible_objects": 2,
+            "confidence": 0.92,
+            "notes": [
+              "Dos botellas f\u00edsicas claramente distinguibles en primer plano; los reflejos en la superficie espejada no constituyen botellas adicionales independientes"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "BLOCKED_OR_FAIL",
+      "visible_excerpt": "tura estimada completa\n\n2 de unas 2 botellas visibles detectadas.\n\nDos botellas f\u00edsicas claramente distinguibles en primer plano; los reflejos en la superficie espejada no constituyen botellas adicionales independientes Superficie reflectante genera duplicados visuales pero no son botellas f\u00edsicas adicionales\n\nComparar 2\u20135 vinos\n\nElige referencias y decide con afinidad, certeza, precio y formato por separado.\n\n2/5 seleccionados\nCloudy Bay Sauvignon Blanc\nCloudy Bay\n69%\nCloudy Bay Sauvignon Blanc\nMarlborough\n69%\nDecisi\u00f3n\nPara m\u00ed\nServicio\nPrioridad\nMayor afinidad\nElecci\u00f3n para ti\n\nCloudy Bay Sauvignon Blanc\n\nMayor afinidad\n\u2022 69% de afinidad registrada\n\u2022 Identidad con 78% de confianza\n1Cloudy Bay Sauvignon Blanc\n69%\n\nCuerpo 3/5\nAcidez 5/5\nTanino 1/5\nDulzor 1/5\nFruta 4/5\nMadera 1/5\nIntensidad 3/5\n2Cloudy Bay Sauvignon Blanc\n69%\n\nCuerpo 3/5\nAcidez 5/5\nTanino 1/5\nDulzor 1/5\nFruta 4/5\nMadera 1/5\nIntensidad 3/5\n\nIdentidad dudosa: 55% de confianza\n\n1\nCloudy Bay Sauvignon Blanc\nCloudy Bay \u00b7 Marlborough\nPor confirmar \u00b7 78% identidad\n\u224869%\nEstimaci\u00f3n\n2\nCloudy Bay Sauvignon Blanc\nMarlborough\nPor confirmar \u00b7 55% identidad\n\u224869%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-9941064",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "reflection",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Cloudy Bay Sauvignon Blanc"
+        ],
+        "expected_boxes": [
+          [
+            0.0,
+            0.15,
+            0.53,
+            0.83
+          ],
+          [
+            0.47,
+            0.12,
+            0.53,
+            0.86
+          ]
+        ],
+        "visible_bottles_estimate": 2,
+        "expected_min_regions": 2,
+        "expected_min_identified": 2,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "5bf8af7126a760cf44bebe6dbf035d6dcfc847979461eab021f04af80631d253"
+    },
+    {
+      "fixture": "commons-69528109",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-69528109.jpg",
+      "fixture_sha256": "73565c9e7f9872700cecbd41e39f5f889db66c7110cc154d7a71ed21e4b22870",
+      "mode": "etiqueta",
+      "expected_results": 6,
+      "expected_rationale": "multi_bottle_drawer / orientation_and_occlusion / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "grounded_or_abstain",
+      "terminal_state": "completed",
+      "actual_results": 9,
+      "anchored_pins": 8,
+      "individual_affinity_scores": 3,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": null,
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "EnRoute",
+        "Far Niente Chardonnay",
+        "Caldono"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 20,
+            "y": 8,
+            "width": 25,
+            "height": 16
+          },
+          {
+            "x": 15,
+            "y": 18,
+            "width": 30,
+            "height": 18
+          },
+          {
+            "x": 54,
+            "y": 18,
+            "width": 28,
+            "height": 18
+          },
+          {
+            "x": 10,
+            "y": 30,
+            "width": 35,
+            "height": 22
+          },
+          {
+            "x": 53,
+            "y": 30,
+            "width": 30,
+            "height": 20
+          },
+          {
+            "x": 52,
+            "y": 42,
+            "width": 32,
+            "height": 22
+          },
+          {
+            "x": 10,
+            "y": 45,
+            "width": 35,
+            "height": 25
+          },
+          {
+            "x": 50,
+            "y": 55,
+            "width": 32,
+            "height": 28
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "width": 35,
+            "height": 30
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 9,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 9,
+          "estimated_visible_objects": 9,
+          "confidence": 0.78,
+          "notes": [
+            "Dos cajones abiertos con botellas en m\u00faltiples filas superpuestas",
+            "Reflejos en el caj\u00f3n izquierdo dificultan la separaci\u00f3n exacta de botellas individuales",
+            "Algunas botellas traseras parcialmente ocultas por las delanteras"
+          ]
+        },
+        "detected_regions": 9,
+        "last_detector_response_regions": 9,
+        "analyzed_regions": 9,
+        "analysis_attempts": 9,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 5,
+        "candidate_names": [
+          "Far Niente Chardonnay",
+          "EnRoute",
+          "Far Niente Chardonnay",
+          "EnRoute",
+          "Caldono"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-7",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Far Niente Chardonnay",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 7,
+            "request_box": {
+              "x": 10,
+              "y": 45,
+              "width": 35,
+              "height": 25
+            },
+            "crop_sha256": "01b01a687e1bb570d6dbb9543d2af5ebd264ca399d7b135c688f7b3e466327b5",
+            "crop_bytes": 123363
+          },
+          {
+            "region_id": "region-6",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "EnRoute",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 6,
+            "request_box": {
+              "x": 52,
+              "y": 42,
+              "width": 32,
+              "height": 22
+            },
+            "crop_sha256": "9b3278fd880e3fcca42cf6a1144b641bb782d0a7f1d20b673829c1d4d0b089a2",
+            "crop_bytes": 65535
+          },
+          {
+            "region_id": "region-9",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Far Niente Chardonnay",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 9,
+            "request_box": {
+              "x": 10,
+              "y": 60,
+              "width": 35,
+              "height": 30
+            },
+            "crop_sha256": "9f55092ebcabc687409bd0fd593667e757ffb66ea3a1c7386040fdf345940fc1",
+            "crop_bytes": 120367
+          },
+          {
+            "region_id": "region-8",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "EnRoute",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 8,
+            "request_box": {
+              "x": 50,
+              "y": 55,
+              "width": 32,
+              "height": 28
+            },
+            "crop_sha256": "7461778db4d033985de460f38bc8d5522efafc0dfc93eabab6d6400e8d83494a",
+            "crop_bytes": 87475
+          },
+          {
+            "region_id": "region-2",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 2,
+            "request_box": {
+              "x": 15,
+              "y": 18,
+              "width": 30,
+              "height": 18
+            },
+            "crop_sha256": "39396fa841ca3a58bf8de120d62aa33d800630bd6bb17797173671975c83020b",
+            "crop_bytes": 49767
+          },
+          {
+            "region_id": "region-5",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 5,
+            "request_box": {
+              "x": 53,
+              "y": 30,
+              "width": 30,
+              "height": 20
+            },
+            "crop_sha256": "e1d443158f1aa6dcd01b4f2a6a0b99ac6eca8e488701b8e5d13a8db6c50d07dc",
+            "crop_bytes": 51923
+          },
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 1,
+            "request_box": {
+              "x": 20,
+              "y": 8,
+              "width": 25,
+              "height": 16
+            },
+            "crop_sha256": "202fd95483176fce68b6468f3a33fb2c9ba705e45a7e9046c82461d60938eaaa",
+            "crop_bytes": 33795
+          },
+          {
+            "region_id": "region-4",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity",
+            "request_index": 4,
+            "request_box": {
+              "x": 10,
+              "y": 30,
+              "width": 35,
+              "height": 22
+            },
+            "crop_sha256": "4e25b824715ed7d71f983b1dbe9802d2fd67e02b841ab9411f0bb0ffa7731660",
+            "crop_bytes": 91031
+          },
+          {
+            "region_id": "region-3",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Caldono",
+            "confidence": 0.38,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 3,
+            "request_box": {
+              "x": 54,
+              "y": 18,
+              "width": 28,
+              "height": 18
+            },
+            "crop_sha256": "16f562ce6fae85eedeb1448a8f25279d56283a6d8386c1957fc2d13bf8a7ba17",
+            "crop_bytes": 36067
+          }
+        ]
+      },
+      "latency_ms": 25338,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-69528109-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 9,
+            "estimated_visible_objects": 9,
+            "confidence": 0.78,
+            "notes": [
+              "Dos cajones abiertos con botellas en m\u00faltiples filas superpuestas",
+              "Reflejos en el caj\u00f3n izquierdo dificultan la separaci\u00f3n exacta de botellas individuales",
+              "Algunas botellas traseras parcialmente ocultas por las delanteras"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "erdo presenta alto nivel de reflejo que reduce la legibilidad de etiquetas traseras El caj\u00f3n derecho muestra botellas m\u00e1s claramente con etiquetas legibles en m\u00faltiples filas\n\nComparar 2\u20135 vinos\n\nElige referencias y decide con afinidad, certeza, precio y formato por separado.\n\n3/5 seleccionados\nEnRoute\nEnRoute\n76%\nFar Niente Chardonnay\nFar Niente Winery\n67%\nCaldono\nIdentidad parcial\nDecisi\u00f3n\nPara m\u00ed\nServicio\nPrioridad\nMayor afinidad\nElecci\u00f3n para ti\n\nFar Niente Chardonnay\n\nMayor afinidad\n\u2022 67% de afinidad registrada\n\u2022 Identidad con 78% de confianza\n1Far Niente Chardonnay\n67%\n\nCuerpo 4/5\nAcidez 3/5\nTanino 1/5\nDulzor 2/5\nFruta 3/5\nMadera 4/5\nIntensidad 4/5\n2EnRoute\n76%\n\nCuerpo 4/5\nAcidez 3/5\nTanino 4/5\nDulzor 1/5\nFruta 3/5\nMadera 4/5\nIntensidad 4/5\n\nIdentidad dudosa: 62% de confianza\n\n3Caldono\n\nAfinidad no calculada \u00b7 Identidad dudosa: 38% de confianza\n\n1\nEnRoute\nEnRoute \u00b7 Napa Valley \u00b7 2 botellas\nPor confirmar \u00b7 62% identidad\n\u224876%\nEstimaci\u00f3n\n2\nFar Niente Chardonnay\nFar Niente Winery \u00b7 Napa Valley \u00b7 2 botellas\nPor confirmar \u00b7 78% identidad\n\u224867%\nEstimaci\u00f3n\n3\nCaldono\nIdentidad parcial\nPor confirmar \u00b7 38% identidad\n-\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-69528109",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "orientation_and_occlusion",
+      "ground_truth": {
+        "annotation_scope": "count_threshold",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 10,
+        "expected_min_regions": 6,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 4
+      },
+      "scene_sha256": "73565c9e7f9872700cecbd41e39f5f889db66c7110cc154d7a71ed21e4b22870"
+    },
+    {
+      "fixture": "commons-9865219",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-9865219.jpg",
+      "fixture_sha256": "407109241c27f32a25e276fa1590dcfeb98ec769e3842c9376a4ee6f2643f3a1",
+      "mode": "etiqueta",
+      "expected_results": 5,
+      "expected_rationale": "multi_bottle_shelf / reflection_and_occlusion / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "identify",
+      "terminal_state": "completed",
+      "actual_results": 9,
+      "anchored_pins": 4,
+      "individual_affinity_scores": 6,
+      "high_confidence_results": 5,
+      "coverage": "Cobertura estimada completa",
+      "accuracy": {
+        "expected_count": 6,
+        "actual_count": 6,
+        "matched_count": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Verdi Spumante",
+            "actual": "Verdi Spumante",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Golden Gate Spumante",
+            "actual": "Golden Gate Spumante",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Somerton Brut Reserve",
+            "actual": "Somerton Brut Reserve",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Passion Pop Original",
+            "actual": "Passion Pop Original",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Passion Pop Mixed Berry",
+            "actual": "Passion Pop Mixed Berry",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Passion Pop Lemon Lime",
+            "actual": "Passion Pop Lemon Lime",
+            "similarity": 1.0
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Somerton Brut Reserve",
+        "Passion Pop Original",
+        "Passion Pop Lemon Lime",
+        "Verdi Spumante",
+        "Passion Pop Mixed Berry",
+        "Golden Gate Spumante"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 14,
+            "y": 8,
+            "width": 18,
+            "height": 85
+          },
+          {
+            "x": 28,
+            "y": 8,
+            "width": 18,
+            "height": 85
+          },
+          {
+            "x": 44,
+            "y": 8,
+            "width": 18,
+            "height": 85
+          },
+          {
+            "x": 54,
+            "y": 8,
+            "width": 16,
+            "height": 55
+          },
+          {
+            "x": 58,
+            "y": 8,
+            "width": 14,
+            "height": 80
+          },
+          {
+            "x": 68,
+            "y": 8,
+            "width": 18,
+            "height": 88
+          },
+          {
+            "x": 76,
+            "y": 8,
+            "width": 12,
+            "height": 55
+          },
+          {
+            "x": 83,
+            "y": 8,
+            "width": 17,
+            "height": 88
+          },
+          {
+            "x": 0,
+            "y": 10,
+            "width": 18,
+            "height": 85
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 10,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "reported_complete",
+          "detected_objects": 10,
+          "estimated_visible_objects": 10,
+          "confidence": 0.82,
+          "notes": [
+            "Varias botellas en fila delantera claramente visibles; botellas traseras parcialmente ocluidas por las delanteras",
+            "Botella extremo derecho casi completamente fuera de encuadre"
+          ]
+        },
+        "detected_regions": 9,
+        "last_detector_response_regions": 10,
+        "analyzed_regions": 9,
+        "analysis_attempts": 9,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 8,
+        "candidate_names": [
+          "Verdi Spumante",
+          "Golden Gate Spumante",
+          "Passion Pop Mixed Berry",
+          "Somerton Brut Reserve",
+          "Passion Pop Lemon Lime",
+          "Passion Pop Original",
+          "Passion Pop Mixed Berry",
+          "Golden Gate Spumante"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-8",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Verdi Spumante",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 8,
+            "request_box": {
+              "x": 83,
+              "y": 8,
+              "width": 17,
+              "height": 88
+            },
+            "crop_sha256": "aef89b2cc2ddb9a0e22cff66f85d17b36dc2baebfbabbc9091bfd6aab3990b0b",
+            "crop_bytes": 119303
+          },
+          {
+            "region_id": "region-6",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Golden Gate Spumante",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 6,
+            "request_box": {
+              "x": 68,
+              "y": 8,
+              "width": 18,
+              "height": 88
+            },
+            "crop_sha256": "13ad0b46790f8ac25d9666668482f1176405d69fbdd9f0f0b89518c9970e12ef",
+            "crop_bytes": 149943
+          },
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Passion Pop Mixed Berry",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 14,
+              "y": 8,
+              "width": 18,
+              "height": 85
+            },
+            "crop_sha256": "013ee711c9d995ceb6be9cb2f024162563ba69c0e11e277a4c6966720608a948",
+            "crop_bytes": 155515
+          },
+          {
+            "region_id": "region-5",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Somerton Brut Reserve",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 5,
+            "request_box": {
+              "x": 58,
+              "y": 8,
+              "width": 14,
+              "height": 80
+            },
+            "crop_sha256": "c98576605ab57e85aa02e33621a8f53f011f101e6bc74478ab32e70380b91ae2",
+            "crop_bytes": 107839
+          },
+          {
+            "region_id": "region-9",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Passion Pop Lemon Lime",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 9,
+            "request_box": {
+              "x": 0,
+              "y": 10,
+              "width": 18,
+              "height": 85
+            },
+            "crop_sha256": "5882fdd19e86c3e3581cde29ab994b03a9873b481fa0b3eaef11554a76e64aa9",
+            "crop_bytes": 138175
+          },
+          {
+            "region_id": "region-3",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Passion Pop Original",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 3,
+            "request_box": {
+              "x": 44,
+              "y": 8,
+              "width": 18,
+              "height": 85
+            },
+            "crop_sha256": "7435aed8b1b9db7d0879590e31eb1fb572bb30af467d000d510c233b431ae471",
+            "crop_bytes": 145135
+          },
+          {
+            "region_id": "region-2",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Passion Pop Mixed Berry",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 2,
+            "request_box": {
+              "x": 28,
+              "y": 8,
+              "width": 18,
+              "height": 85
+            },
+            "crop_sha256": "a3cc24af8cf16697d22eac4143f0b1b308fac8d1d38027b2efc77fe724f6f0b5",
+            "crop_bytes": 158691
+          },
+          {
+            "region_id": "region-4",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity",
+            "request_index": 4,
+            "request_box": {
+              "x": 54,
+              "y": 8,
+              "width": 16,
+              "height": 55
+            },
+            "crop_sha256": "cb07493b2e8f4ef245995eeaeccd606fa4aa87222adcd9838f9af55e9fa25845",
+            "crop_bytes": 76611
+          },
+          {
+            "region_id": "region-7",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Golden Gate Spumante",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 7,
+            "request_box": {
+              "x": 76,
+              "y": 8,
+              "width": 12,
+              "height": 55
+            },
+            "crop_sha256": "487a7251497bd8adbf3ecfe98d9dedd4bf195a75cae5fb13dfe7e0cb06cb6d7d",
+            "crop_bytes": 71975
+          }
+        ]
+      },
+      "latency_ms": 31429,
+      "detection_accuracy": {
+        "expected_count": 6,
+        "actual_count": 9,
+        "matched_count": 6,
+        "precision": 0.667,
+        "recall": 1.0,
+        "mean_iou": 0.692,
+        "threshold": 0.3,
+        "matches": [
+          {
+            "expected_index": 1,
+            "actual_index": 0,
+            "iou": 0.831
+          },
+          {
+            "expected_index": 2,
+            "actual_index": 1,
+            "iou": 0.751
+          },
+          {
+            "expected_index": 4,
+            "actual_index": 4,
+            "iou": 0.704
+          },
+          {
+            "expected_index": 3,
+            "actual_index": 2,
+            "iou": 0.678
+          },
+          {
+            "expected_index": 0,
+            "actual_index": 8,
+            "iou": 0.653
+          },
+          {
+            "expected_index": 5,
+            "actual_index": 5,
+            "iou": 0.537
+          }
+        ]
+      },
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-9865219-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "reported_complete",
+            "detected_objects": 10,
+            "estimated_visible_objects": 10,
+            "confidence": 0.82,
+            "notes": [
+              "Varias botellas en fila delantera claramente visibles; botellas traseras parcialmente ocluidas por las delanteras",
+              "Botella extremo derecho casi completamente fuera de encuadre"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "on Pop Original\nPassion Pop\n52%\nPassion Pop Lemon Lime\nPassion Pop\n52%\nVerdi Spumante\nVerdi\n52%\nPassion Pop Mixed Berry\nPassion Pop\n51%\nGolden Gate Spumante\nGolden Gate\n51%\nDecisi\u00f3n\nPara m\u00ed\nServicio\nPrioridad\nMayor afinidad\nElecci\u00f3n para ti\n\nSomerton Brut Reserve\n\nMayor afinidad\n\u2022 62% de afinidad registrada\n\u2022 Identidad con 78% de confianza\n1Somerton Brut Reserve\n62%\n\nCuerpo 2/5\nAcidez 4/5\nTanino 1/5\nDulzor 2/5\nFruta 3/5\nIntensidad 2/5\n2Passion Pop Lemon Lime\n52%\n\nCuerpo 2/5\nAcidez 4/5\nTanino 1/5\nDulzor 4/5\nFruta 5/5\nIntensidad 2/5\n3Passion Pop Original\n52%\n\nCuerpo 2/5\nAcidez 3/5\nTanino 1/5\nDulzor 4/5\nFruta 4/5\nIntensidad 2/5\n1\nSomerton Brut Reserve\nMiranda Wines\nPor confirmar \u00b7 78% identidad\n\u224862%\nEstimaci\u00f3n\n2\nPassion Pop Original\nPassion Pop\nPor confirmar \u00b7 78% identidad\n\u224852%\nEstimaci\u00f3n\n3\nPassion Pop Lemon Lime\nPassion Pop\nPor confirmar \u00b7 78% identidad\n\u224852%\nEstimaci\u00f3n\n4\nVerdi Spumante\nVerdi\nPor confirmar \u00b7 55% identidad\n\u224852%\nEstimaci\u00f3n\n5\nPassion Pop Mixed Berry\nPassion Pop \u00b7 2 botellas\nPor confirmar \u00b7 78% identidad\n\u224851%\nEstimaci\u00f3n\n6\nGolden Gate Spumante\nGolden Gate \u00b7 2 botellas\nPor confirmar \u00b7 55% identidad\n\u224851%\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-9865219",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "reflection_and_occlusion",
+      "ground_truth": {
+        "annotation_scope": "identity_and_boxes",
+        "expected_wines": [
+          "Passion Pop Lemon Lime",
+          "Passion Pop Mixed Berry",
+          "Passion Pop Original",
+          "Somerton Brut Reserve",
+          "Golden Gate Spumante",
+          "Verdi Spumante"
+        ],
+        "expected_boxes": [
+          [
+            0.02,
+            0.05,
+            0.18,
+            0.77
+          ],
+          [
+            0.14,
+            0.04,
+            0.18,
+            0.78
+          ],
+          [
+            0.27,
+            0.04,
+            0.18,
+            0.78
+          ],
+          [
+            0.42,
+            0.03,
+            0.18,
+            0.8
+          ],
+          [
+            0.57,
+            0.04,
+            0.18,
+            0.79
+          ],
+          [
+            0.72,
+            0.04,
+            0.18,
+            0.79
+          ]
+        ],
+        "visible_bottles_estimate": 6,
+        "expected_min_regions": 5,
+        "expected_min_identified": 3,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "407109241c27f32a25e276fa1590dcfeb98ec769e3842c9376a4ee6f2643f3a1"
+    },
+    {
+      "fixture": "commons-50584361",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-50584361.jpg",
+      "fixture_sha256": "95955595e80dac7df28f081b29fe57cf10eaf6a4b5dc7752ecbcbaf91e734bb8",
+      "mode": "etiqueta",
+      "expected_results": 12,
+      "expected_rationale": "dense_wine_shelf / dense_small_text / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "grounded_or_abstain",
+      "terminal_state": "completed",
+      "actual_results": 40,
+      "anchored_pins": 16,
+      "individual_affinity_scores": 23,
+      "high_confidence_results": 1,
+      "coverage": "Cobertura parcial",
+      "accuracy": null,
+      "canonical_accuracy": null,
+      "displayed_names": [
+        "Luis Pato",
+        "Quinta do Falco",
+        "Piedra Cancel",
+        "Bons Anos",
+        "Quinta Nova",
+        "Garcia Cancelas",
+        "Ch\u00e2teau Bel Brun",
+        "Bellruche",
+        "Vinho Reis",
+        "Reserva Especial",
+        "Quinta do Mar",
+        "Flor de Vetus",
+        "Bans Anos",
+        "Reserva Especial",
+        "Dora",
+        "Baderau",
+        "Deutz Brut Classic",
+        "Brut Classic",
+        "Quinta Marian",
+        "Bir Doda",
+        "Sid\u00f3s De S\u00f3s",
+        "DODA",
+        "Vinho dos Reis"
+      ],
+      "backend": {
+        "function": "multi-wine-label",
+        "detector_http_status": 200,
+        "detector_version": "matchrim-region-detector-v4-candidate",
+        "detected_boxes": [
+          {
+            "x": 26,
+            "y": 4.48,
+            "width": 6,
+            "height": 19.6
+          },
+          {
+            "x": 29,
+            "y": 4.48,
+            "width": 6,
+            "height": 19.6
+          },
+          {
+            "x": 20,
+            "y": 8,
+            "width": 6,
+            "height": 22
+          },
+          {
+            "x": 27,
+            "y": 8,
+            "width": 6,
+            "height": 22
+          },
+          {
+            "x": 0,
+            "y": 11,
+            "width": 20,
+            "height": 78.91999999999999
+          },
+          {
+            "x": 34,
+            "y": 11.2,
+            "width": 5,
+            "height": 16.8
+          },
+          {
+            "x": 38,
+            "y": 11.2,
+            "width": 5,
+            "height": 16.8
+          },
+          {
+            "x": 40,
+            "y": 11.2,
+            "width": 8,
+            "height": 38.400000000000006
+          },
+          {
+            "x": 33,
+            "y": 14,
+            "width": 5,
+            "height": 20
+          },
+          {
+            "x": 38,
+            "y": 14,
+            "width": 5,
+            "height": 20
+          },
+          {
+            "x": 16,
+            "y": 24.64,
+            "width": 9,
+            "height": 24.96
+          },
+          {
+            "x": 24,
+            "y": 24.64,
+            "width": 8,
+            "height": 24.96
+          },
+          {
+            "x": 30,
+            "y": 24.64,
+            "width": 5,
+            "height": 15.68
+          },
+          {
+            "x": 35,
+            "y": 24.64,
+            "width": 5,
+            "height": 15.68
+          },
+          {
+            "x": 45,
+            "y": 24.64,
+            "width": 5,
+            "height": 15.68
+          },
+          {
+            "x": 54,
+            "y": 24.64,
+            "width": 12,
+            "height": 39.36
+          },
+          {
+            "x": 63,
+            "y": 24.64,
+            "width": 9,
+            "height": 24.96
+          },
+          {
+            "x": 70,
+            "y": 24.64,
+            "width": 10,
+            "height": 24.96
+          },
+          {
+            "x": 78,
+            "y": 24.64,
+            "width": 9,
+            "height": 24.96
+          },
+          {
+            "x": 85,
+            "y": 24.64,
+            "width": 5,
+            "height": 15.68
+          },
+          {
+            "x": 90,
+            "y": 24.64,
+            "width": 10,
+            "height": 21.36
+          },
+          {
+            "x": 84,
+            "y": 28,
+            "width": 6,
+            "height": 18
+          },
+          {
+            "x": 30,
+            "y": 30,
+            "width": 6,
+            "height": 18
+          },
+          {
+            "x": 36,
+            "y": 30,
+            "width": 6,
+            "height": 18
+          },
+          {
+            "x": 32,
+            "y": 44,
+            "width": 8,
+            "height": 5.6
+          },
+          {
+            "x": 87,
+            "y": 44,
+            "width": 8,
+            "height": 5.6
+          },
+          {
+            "x": 84,
+            "y": 46,
+            "width": 6,
+            "height": 18
+          },
+          {
+            "x": 18,
+            "y": 48,
+            "width": 6,
+            "height": 18
+          },
+          {
+            "x": 18,
+            "y": 50.72,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 27,
+            "y": 50.72,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 36,
+            "y": 50.72,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 64,
+            "y": 50.72,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 73,
+            "y": 50.72,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 82,
+            "y": 50.72,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 18,
+            "y": 64.16,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 27,
+            "y": 64.16,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 55,
+            "y": 64.16,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 64,
+            "y": 64.16,
+            "width": 9,
+            "height": 11.2
+          },
+          {
+            "x": 55,
+            "y": 77.6,
+            "width": 9,
+            "height": 12.32
+          },
+          {
+            "x": 64,
+            "y": 77.6,
+            "width": 9,
+            "height": 12.32
+          }
+        ],
+        "detected_boxes_source": "analysis_request_region_box",
+        "trace_complete": true,
+        "detector_calls": [
+          {
+            "tile": "full",
+            "status": 200,
+            "regions": 30,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          },
+          {
+            "tile": "bottom",
+            "status": 200,
+            "regions": 30,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          },
+          {
+            "tile": "top",
+            "status": 200,
+            "regions": 29,
+            "detector_version": "matchrim-region-detector-v4-candidate"
+          }
+        ],
+        "analysis_versions": [
+          "matchrim-region-analysis-v7-null-preserving"
+        ],
+        "coverage": {
+          "status": "partial",
+          "detected_objects": 29,
+          "estimated_visible_objects": 80,
+          "confidence": 0.65,
+          "notes": [
+            "El expositor contiene aproximadamente 3 filas por cada uno de los 2 m\u00f3dulos con unas 12-15 botellas por fila, estimando ~80 botellas totales visibles",
+            "El l\u00edmite de 30 regiones impide cubrir todas las botellas individualmente",
+            "Las botellas est\u00e1n muy juntas con oclusi\u00f3n mutua, dificultando la separaci\u00f3n precisa",
+            "Las botellas superiores (champagnes Deutz y Louis Roederer) se han priorizado por mayor legibilidad"
+          ]
+        },
+        "detected_regions": 40,
+        "last_detector_response_regions": 29,
+        "analyzed_regions": 40,
+        "analysis_attempts": 40,
+        "recovered_analysis_failures": 0,
+        "final_failed_regions": [],
+        "identified_candidates": 31,
+        "candidate_names": [
+          "Deutz Brut Classic",
+          "Reserva Especial",
+          "Brut Classic",
+          "Brut Classic",
+          "Deutz Brut Classic",
+          "Deutz Brut Classic",
+          "Deutz Brut Classic",
+          "Luis Pato",
+          "Deutz Brut Classic",
+          "Dora",
+          "Reserva Especial",
+          "Bons Anos",
+          "Quinta do Mar",
+          "Bons Anos",
+          "Quinta do Falco",
+          "Bir Doda",
+          "Quinta Nova",
+          "Garcia Cancelas",
+          "DEUTZ Brut Classic",
+          "Sid\u00f3s De S\u00f3s",
+          "Baderau",
+          "Bgpleresc",
+          "Flor de Vetus",
+          "Vinho dos Reis",
+          "Vinho Reis",
+          "Bans Anos",
+          "Ch\u00e2teau Bel Brun",
+          "Bellruche",
+          "Quinta Marian",
+          "DODA",
+          "Piedra Cancel"
+        ],
+        "region_results": [
+          {
+            "region_id": "region-6",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Deutz Brut Classic",
+            "confidence": 0.78,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 6,
+            "request_box": {
+              "x": 34,
+              "y": 11.2,
+              "width": 5,
+              "height": 16.8
+            },
+            "crop_sha256": "7382927a2e20d68645a37c066d7844f3601c59404ad75a1c7d53a528af346aea",
+            "crop_bytes": 21451
+          },
+          {
+            "region_id": "region-8",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Reserva Especial",
+            "confidence": 0.45,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 8,
+            "request_box": {
+              "x": 40,
+              "y": 11.2,
+              "width": 8,
+              "height": 38.400000000000006
+            },
+            "crop_sha256": "a59378399b6bf881318405ff509b88751f904f82fcdc07fdc24af267b7fb47be",
+            "crop_bytes": 59327
+          },
+          {
+            "region_id": "region-7",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Brut Classic",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 7,
+            "request_box": {
+              "x": 38,
+              "y": 11.2,
+              "width": 5,
+              "height": 16.8
+            },
+            "crop_sha256": "d88c8dcf66de5f23ce1455b18752054ec89042df6bfa6ede28a834efae217ebe",
+            "crop_bytes": 21159
+          },
+          {
+            "region_id": "region-1",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Brut Classic",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 1,
+            "request_box": {
+              "x": 26,
+              "y": 4.48,
+              "width": 6,
+              "height": 19.6
+            },
+            "crop_sha256": "e7770a8aead039916042c7c1a7875a8af22e6513e9ab49dd7a8ff7c96a749e0e",
+            "crop_bytes": 28155
+          },
+          {
+            "region_id": "region-2",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Deutz Brut Classic",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 2,
+            "request_box": {
+              "x": 29,
+              "y": 4.48,
+              "width": 6,
+              "height": 19.6
+            },
+            "crop_sha256": "ca9b032486a53725c54d6b84e807a4b9660d50842350b14c92a4d8e0fbc5e6e1",
+            "crop_bytes": 23951
+          },
+          {
+            "region_id": "region-3",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity",
+            "request_index": 3,
+            "request_box": {
+              "x": 20,
+              "y": 8,
+              "width": 6,
+              "height": 22
+            },
+            "crop_sha256": "d9487c1aed92fd15fa66c3c167b6ccc71285e3595a8fd60e9eae81f27f98567d",
+            "crop_bytes": 34415
+          },
+          {
+            "region_id": "region-10",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Deutz Brut Classic",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 10,
+            "request_box": {
+              "x": 38,
+              "y": 14,
+              "width": 5,
+              "height": 20
+            },
+            "crop_sha256": "40de1adefdbc5bf36a7e3105ff020bb3c4a22c17732fe5836123d5264a1c0be7",
+            "crop_bytes": 26823
+          },
+          {
+            "region_id": "region-4",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Deutz Brut Classic",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 4,
+            "request_box": {
+              "x": 27,
+              "y": 8,
+              "width": 6,
+              "height": 22
+            },
+            "crop_sha256": "074cd291f8d7190900ba5400e341c4fd490047d3d3475877c629760019959913",
+            "crop_bytes": 29895
+          },
+          {
+            "region_id": "region-22",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Luis Pato",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 22,
+            "request_box": {
+              "x": 84,
+              "y": 28,
+              "width": 6,
+              "height": 18
+            },
+            "crop_sha256": "5c4a696868b6c6ef64c4ee58c2ee76399e72ace4ae217f7845f91c71e9d312a9",
+            "crop_bytes": 30831
+          },
+          {
+            "region_id": "region-9",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Deutz Brut Classic",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 9,
+            "request_box": {
+              "x": 33,
+              "y": 14,
+              "width": 5,
+              "height": 20
+            },
+            "crop_sha256": "09291bbbaf1776eafd741339f00aed356b45752c40370bca09b5c0ebf4f43422",
+            "crop_bytes": 26719
+          },
+          {
+            "region_id": "region-23",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Dora",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 23,
+            "request_box": {
+              "x": 30,
+              "y": 30,
+              "width": 6,
+              "height": 18
+            },
+            "crop_sha256": "80fed836f4ea27b97c237c4e87b2687442663b22a81524a91f03c32d12f4c4ff",
+            "crop_bytes": 28927
+          },
+          {
+            "region_id": "region-24",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Reserva Especial",
+            "confidence": 0.35,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 24,
+            "request_box": {
+              "x": 36,
+              "y": 30,
+              "width": 6,
+              "height": 18
+            },
+            "crop_sha256": "4de34c2c152c54ca764ffbfb3fcf452cba3c777fcc6b439933981844032d8be6",
+            "crop_bytes": 29559
+          },
+          {
+            "region_id": "region-28",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Bons Anos",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 28,
+            "request_box": {
+              "x": 18,
+              "y": 48,
+              "width": 6,
+              "height": 18
+            },
+            "crop_sha256": "019d26196a982270ebfee6e71eb17a9068182dffc260bf32e65a01b639f3df75",
+            "crop_bytes": 28611
+          },
+          {
+            "region_id": "region-27",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Quinta do Mar",
+            "confidence": 0.45,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 27,
+            "request_box": {
+              "x": 84,
+              "y": 46,
+              "width": 6,
+              "height": 18
+            },
+            "crop_sha256": "3e2c5ccf55ae6900e2f3ec6e8c7bf1819b3a98ddaad6498d6788010abd51bd6d",
+            "crop_bytes": 28531
+          },
+          {
+            "region_id": "region-5",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Bons Anos",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 5,
+            "request_box": {
+              "x": 0,
+              "y": 11,
+              "width": 20,
+              "height": 78.91999999999999
+            },
+            "crop_sha256": "d36f35d3b94668080939291ead8e0038daf45a65d912dc141ccaec26bdf94bce",
+            "crop_bytes": 224099
+          },
+          {
+            "region_id": "region-18",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Quinta do Falco",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 18,
+            "request_box": {
+              "x": 70,
+              "y": 24.64,
+              "width": 10,
+              "height": 24.96
+            },
+            "crop_sha256": "d2856fe1637b634d647d46df016bdd66d702f6243fc418efe52266afd7fd42e3",
+            "crop_bytes": 48451
+          },
+          {
+            "region_id": "region-17",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 17,
+            "request_box": {
+              "x": 63,
+              "y": 24.64,
+              "width": 9,
+              "height": 24.96
+            },
+            "crop_sha256": "3b4452fb5bad3aae2ba222befdac57285d76d2700583e0e891272d051973ef08",
+            "crop_bytes": 40779
+          },
+          {
+            "region_id": "region-12",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Bir Doda",
+            "confidence": 0.45,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 12,
+            "request_box": {
+              "x": 24,
+              "y": 24.64,
+              "width": 8,
+              "height": 24.96
+            },
+            "crop_sha256": "4c9aaffaa3188cf2c98a6f8b46d70cc0434c44a4da140c07ff64cfea7331377d",
+            "crop_bytes": 40775
+          },
+          {
+            "region_id": "region-11",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Quinta Nova",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 11,
+            "request_box": {
+              "x": 16,
+              "y": 24.64,
+              "width": 9,
+              "height": 24.96
+            },
+            "crop_sha256": "965f3ff11bb61ae0a258eb0c71838f62090ba4866dab04942eafee70effa2def",
+            "crop_bytes": 40619
+          },
+          {
+            "region_id": "region-16",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Garcia Cancelas",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 16,
+            "request_box": {
+              "x": 54,
+              "y": 24.64,
+              "width": 12,
+              "height": 39.36
+            },
+            "crop_sha256": "c119eb36250d723eaa23a2834d3e3104882d9ac568d9172a29435aff971c4b17",
+            "crop_bytes": 79651
+          },
+          {
+            "region_id": "region-13",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity",
+            "request_index": 13,
+            "request_box": {
+              "x": 30,
+              "y": 24.64,
+              "width": 5,
+              "height": 15.68
+            },
+            "crop_sha256": "854ce05a48d8a12d75e69a1538723cae3ddb9fef4884ecff346069526c7ce72a",
+            "crop_bytes": 19159
+          },
+          {
+            "region_id": "region-19",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 19,
+            "request_box": {
+              "x": 78,
+              "y": 24.64,
+              "width": 9,
+              "height": 24.96
+            },
+            "crop_sha256": "0d2f12e984bbbed57d5417d4c8d157c14eea08fe14e386c997c7243c762164f8",
+            "crop_bytes": 40203
+          },
+          {
+            "region_id": "region-14",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "DEUTZ Brut Classic",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 14,
+            "request_box": {
+              "x": 35,
+              "y": 24.64,
+              "width": 5,
+              "height": 15.68
+            },
+            "crop_sha256": "32a7f6f21deee1d70a3a8be889f92989e307a7113687a0e82ec7ecfbf00ef35f",
+            "crop_bytes": 20107
+          },
+          {
+            "region_id": "region-21",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Sid\u00f3s De S\u00f3s",
+            "confidence": 0.45,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 21,
+            "request_box": {
+              "x": 90,
+              "y": 24.64,
+              "width": 10,
+              "height": 21.36
+            },
+            "crop_sha256": "13e946300cb20597a69a72aae1b96b97f4d8a70c54768f845dc4a528f9d1f5ee",
+            "crop_bytes": 41335
+          },
+          {
+            "region_id": "region-20",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Baderau",
+            "confidence": 0.61,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 20,
+            "request_box": {
+              "x": 85,
+              "y": 24.64,
+              "width": 5,
+              "height": 15.68
+            },
+            "crop_sha256": "1ac94ddf23e573f4f1f1f1f6247ab2a562eba55f4064fe3fd91613ea2d8e59fd",
+            "crop_bytes": 20699
+          },
+          {
+            "region_id": "region-15",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Bgpleresc",
+            "confidence": 0.18,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 15,
+            "request_box": {
+              "x": 45,
+              "y": 24.64,
+              "width": 5,
+              "height": 15.68
+            },
+            "crop_sha256": "fcde9caecbc80e6ec956f069f1638d960806f90a21469981599b4792ba0e8cc1",
+            "crop_bytes": 18155
+          },
+          {
+            "region_id": "region-38",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 38,
+            "request_box": {
+              "x": 64,
+              "y": 64.16,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "85a817dfe43c093f4ad2ee26922de3e99f367db088ab367109ae0e9985eeaef7",
+            "crop_bytes": 18415
+          },
+          {
+            "region_id": "region-36",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 36,
+            "request_box": {
+              "x": 27,
+              "y": 64.16,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "57880dc716ed36cdc83fc9ad6c5f04348dd3704633d225d1b010e49c858d4048",
+            "crop_bytes": 19339
+          },
+          {
+            "region_id": "region-35",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Flor de Vetus",
+            "confidence": 0.41,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 35,
+            "request_box": {
+              "x": 18,
+              "y": 64.16,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "11ae96bf4ee86a594bf9536737f06f9520a9fa8aea8571c23f7beb65af0af573",
+            "crop_bytes": 20043
+          },
+          {
+            "region_id": "region-37",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity",
+            "request_index": 37,
+            "request_box": {
+              "x": 55,
+              "y": 64.16,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "57d30e051eb39ad1e5aaed7798f82f295a7e70f5a51447d099e84eecb6813b82",
+            "crop_bytes": 18503
+          },
+          {
+            "region_id": "region-39",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Vinho dos Reis",
+            "confidence": 0.45,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 39,
+            "request_box": {
+              "x": 55,
+              "y": 77.6,
+              "width": 9,
+              "height": 12.32
+            },
+            "crop_sha256": "aa2d2cb3a5538efe6f127a9c76b97e5037f3c1194f987b7c9c03ade59df1374f",
+            "crop_bytes": 19407
+          },
+          {
+            "region_id": "region-40",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Vinho Reis",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 40,
+            "request_box": {
+              "x": 64,
+              "y": 77.6,
+              "width": 9,
+              "height": 12.32
+            },
+            "crop_sha256": "426a2e64e346c189dd4bace38789e650fa0b060a1fb6acb9bbc4dd25c56142fe",
+            "crop_bytes": 19311
+          },
+          {
+            "region_id": "region-29",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Bans Anos",
+            "confidence": 0.38,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 29,
+            "request_box": {
+              "x": 18,
+              "y": 50.72,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "62446d9950fbfdb1749df05187729d535a97d0976fbf3854fae4a8e8efad46df",
+            "crop_bytes": 21851
+          },
+          {
+            "region_id": "region-30",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Ch\u00e2teau Bel Brun",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 30,
+            "request_box": {
+              "x": 27,
+              "y": 50.72,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "1e30dca43400dcf2dc37a93d02dd58da49864ef54e7e4bff69f8dd02659e88a9",
+            "crop_bytes": 21447
+          },
+          {
+            "region_id": "region-32",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "ungrounded_identity",
+            "request_index": 32,
+            "request_box": {
+              "x": 64,
+              "y": 50.72,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "67b6a26d99a0ef581b01052db33a1f05402abba6f893a72f91ca4f8a9ce5927c",
+            "crop_bytes": 22483
+          },
+          {
+            "region_id": "region-31",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Bellruche",
+            "confidence": 0.55,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 31,
+            "request_box": {
+              "x": 36,
+              "y": 50.72,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "94b2f07f715f3f9d1b1429994f1081cb3816a67d90d4c5fee60690e9aa8763ac",
+            "crop_bytes": 20495
+          },
+          {
+            "region_id": "region-34",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Quinta Marian",
+            "confidence": 0.52,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 34,
+            "request_box": {
+              "x": 82,
+              "y": 50.72,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "9654514a08d9c7f206e6cd39cb7320f342ab7d7f097447451ef215d7896f041c",
+            "crop_bytes": 21911
+          },
+          {
+            "region_id": "region-25",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "DODA",
+            "confidence": 0.45,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 25,
+            "request_box": {
+              "x": 32,
+              "y": 44,
+              "width": 8,
+              "height": 5.6
+            },
+            "crop_sha256": "425f3661dc12c6f9a7b584381a29cab66e3c43e0be3553da03f9f322a4dfa01b",
+            "crop_bytes": 16103
+          },
+          {
+            "region_id": "region-33",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": "Piedra Cancel",
+            "confidence": 0.62,
+            "recognition_status": "uncertain",
+            "fallback_code": null,
+            "request_index": 33,
+            "request_box": {
+              "x": 73,
+              "y": 50.72,
+              "width": 9,
+              "height": 11.2
+            },
+            "crop_sha256": "e6d3311d31c9ddbd8dbfc5b89ec095c5072f75c6f33615297ea05cd435835e7c",
+            "crop_bytes": 22863
+          },
+          {
+            "region_id": "region-26",
+            "attempts": 1,
+            "status_codes": [
+              200
+            ],
+            "candidate": null,
+            "confidence": null,
+            "recognition_status": "unreadable",
+            "fallback_code": "insufficient_visible_text",
+            "request_index": 26,
+            "request_box": {
+              "x": 87,
+              "y": 44,
+              "width": 8,
+              "height": 5.6
+            },
+            "crop_sha256": "3db14cf28cd7347b8ab07015002a97885438562d315110e82e1904b5bf20b82a",
+            "crop_bytes": 14851
+          }
+        ]
+      },
+      "latency_ms": 105783,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/labels-extent70/commons-50584361-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "partial",
+            "detected_objects": 30,
+            "estimated_visible_objects": 180,
+            "confidence": 0.55,
+            "notes": [
+              "La imagen contiene dos grandes expositores con aproximadamente 6-7 estantes cada uno y entre 12-18 botellas por estante, sumando estimadamente 150-200 botellas visibles.",
+              "El l\u00edmite de 30 regiones impide cubrir todas las botellas individuales.",
+              "Se han priorizado las botellas con mayor legibilidad de etiqueta y menor oclusi\u00f3n.",
+              "Las botellas de champagne en la parte superior (Deutz y otras) tambi\u00e9n son visibles pero quedan fuera del l\u00edmite.",
+              "Las filas inferiores de ambos expositores tienen alta densidad y oclusi\u00f3n mutua."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "partial",
+            "detected_objects": 30,
+            "estimated_visible_objects": 120,
+            "confidence": 0.55,
+            "notes": [
+              "El expositor contiene aproximadamente 120 botellas visibles distribuidas en 5 filas y dos m\u00f3dulos",
+              "El l\u00edmite de 30 regiones impide cubrir todas las botellas individuales",
+              "Muchas botellas est\u00e1n parcialmente ocultas por otras o por los marcos del expositor",
+              "La iluminaci\u00f3n oscura reduce la legibilidad de la mayor\u00eda de etiquetas"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "detect-wine-regions",
+          "status": 200,
+          "tile": null,
+          "coverage": {
+            "status": "partial",
+            "detected_objects": 29,
+            "estimated_visible_objects": 80,
+            "confidence": 0.65,
+            "notes": [
+              "El expositor contiene aproximadamente 3 filas por cada uno de los 2 m\u00f3dulos con unas 12-15 botellas por fila, estimando ~80 botellas totales visibles",
+              "El l\u00edmite de 30 regiones impide cubrir todas las botellas individualmente",
+              "Las botellas est\u00e1n muy juntas con oclusi\u00f3n mutua, dificultando la separaci\u00f3n precisa",
+              "Las botellas superiores (champagnes Deutz y Louis Roederer) se han priorizado por mayor legibilidad"
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "analyze-wine-region",
+          "status": 200,
+          "tile": null,
+          "coverage": null,
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "\nVinho Reis\nReis \u00b7 Val da Raposa\nPor confirmar \u00b7 55% identidad\n\u224876%\nEstimaci\u00f3n\n10\nReserva Especial\nRioja\nPor confirmar \u00b7 45% identidad\n\u224876%\nEstimaci\u00f3n\n11\nQuinta do Mar\nIdentidad parcial\nPor confirmar \u00b7 45% identidad\n\u224876%\nEstimaci\u00f3n\n12\nFlor de Vetus\nToro\nPor confirmar \u00b7 41% identidad\n\u224876%\nEstimaci\u00f3n\n13\nBans Anos\nRioja\nPor confirmar \u00b7 38% identidad\n\u224876%\nEstimaci\u00f3n\n14\nReserva Especial\nRioja\nPor confirmar \u00b7 35% identidad\n\u224876%\nEstimaci\u00f3n\n15\nDora\nAndorra\nPor confirmar \u00b7 62% identidad\n\u224873%\nEstimaci\u00f3n\n16\nBaderau\nLuis Fo...\nPor confirmar \u00b7 61% identidad\n\u224873%\nEstimaci\u00f3n\n17\nDeutz Brut Classic\nChampagne Deutz \u00b7 Champagne \u00b7 6 botellas\nPor confirmar \u00b7 78% identidad\n\u224867%\nEstimaci\u00f3n\n18\nBrut Classic\nDeutz \u00b7 Champagne \u00b7 2 botellas\nPor confirmar \u00b7 55% identidad\n\u224867%\nEstimaci\u00f3n\n19\nQuinta Marian\nQuinta Marian\nPor confirmar \u00b7 52% identidad\n-\nEstimaci\u00f3n\n20\nBir Doda\nIdentidad parcial\nPor confirmar \u00b7 45% identidad\n-\nEstimaci\u00f3n\n21\nSid\u00f3s De S\u00f3s\nIdentidad parcial\nPor confirmar \u00b7 45% identidad\n-\nEstimaci\u00f3n\n22\nDODA\nIdentidad parcial\nPor confirmar \u00b7 45% identidad\n-\nEstimaci\u00f3n\n23\nVinho dos Reis\nIdentidad parcial\nPor confirmar \u00b7 45% identidad\n-\nEstimaci\u00f3n\nConfirmar 0 referencias\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-50584361",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "dense_small_text",
+      "ground_truth": {
+        "annotation_scope": "count_threshold",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 70,
+        "expected_min_regions": 12,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 8
+      },
+      "scene_sha256": "95955595e80dac7df28f081b29fe57cf10eaf6a4b5dc7752ecbcbaf91e734bb8"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "restored_after_qa": true,
+  "bundle_identifier": "wine.matchrim.app",
+  "version": "1.0",
+  "build": "68",
+  "launch_success": true,
+  "launch_info": {
+    "arguments": [
+      "devicectl",
+      "device",
+      "process",
+      "launch",
+      "--device",
+      "F0737162-3EB8-5148-BCDC-5720EE1A03C8",
+      "wine.matchrim.app",
+      "--json-output",
+      "/private/tmp/matchrim-restored68-launch.json"
+    ],
+    "commandType": "devicectl.device.process.launch",
+    "environment": {
+      "TERM": "dumb"
+    },
+    "jsonVersion": 2,
+    "outcome": "success",
+    "version": "477.30"
+  },
+  "production_reference": "cbjynrbvrhcmpaojmqdp",
+  "preserve_user_data": "same-bundle install; no uninstall or reset"
+}

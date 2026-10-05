@@ -1,0 +1,3353 @@
+{
+  "metric_scope": "Approximate reference-name matching and human-annotated box matching, not canonical producer/vintage or sensory verification.",
+  "source_commit_after69": "19123b7dde26dab2dadca93788c97f62998e7ece",
+  "provider": "anthropic",
+  "model": "claude-sonnet-4-6",
+  "interception": false,
+  "complete": true,
+  "before": {
+    "scene_count": 25,
+    "all_passed": false,
+    "pass_rate": 0.64,
+    "original_pass_rate": 0.64,
+    "controlled_variant_pass_rate": null,
+    "operational": {
+      "terminal_completion_rate": 1,
+      "console_error_scene_count": 1,
+      "recovered_transient_analysis_failures": 1
+    },
+    "identity_micro": {
+      "scene_count": 23,
+      "matched": 147,
+      "actual": 237,
+      "expected": 156,
+      "precision": 0.6203,
+      "recall": 0.9423,
+      "false_positives": 90,
+      "missed": 9
+    },
+    "detection_micro": {
+      "scene_count": 15,
+      "matched": 27,
+      "actual": 41,
+      "expected": 29,
+      "precision": 0.6585,
+      "recall": 0.931,
+      "mean_iou": 0.7074,
+      "iou_threshold": 0.3
+    },
+    "abstention": {
+      "scene_count": 0,
+      "passed": 0,
+      "high_confidence_results": 0,
+      "false_positive_names": 0
+    },
+    "fridge_detection": {
+      "scene_count": 17,
+      "precision": 0.6585,
+      "precision_note": "IoU-backed precision from human boxes. Count-only dense scenes are excluded.",
+      "mean_capped_count_recall": 1.5912,
+      "mean_absolute_count_recall": 0.9891
+    },
+    "latency_ms": {
+      "mean": 59254,
+      "median": 25426,
+      "max": 189707
+    }
+  },
+  "after69": {
+    "scene_count": 25,
+    "all_passed": false,
+    "pass_rate": 0.72,
+    "original_pass_rate": 0.72,
+    "controlled_variant_pass_rate": null,
+    "operational": {
+      "terminal_completion_rate": 1,
+      "console_error_scene_count": 0,
+      "recovered_transient_analysis_failures": 0
+    },
+    "identity_micro": {
+      "scene_count": 23,
+      "matched": 146,
+      "actual": 175,
+      "expected": 156,
+      "precision": 0.8343,
+      "recall": 0.9359,
+      "false_positives": 29,
+      "missed": 10
+    },
+    "detection_micro": {
+      "scene_count": 15,
+      "matched": 29,
+      "actual": 42,
+      "expected": 29,
+      "precision": 0.6905,
+      "recall": 1,
+      "mean_iou": 0.6775,
+      "iou_threshold": 0.3
+    },
+    "abstention": {
+      "scene_count": 0,
+      "passed": 0,
+      "high_confidence_results": 0,
+      "false_positive_names": 0
+    },
+    "fridge_detection": {
+      "scene_count": 17,
+      "precision": 0.6905,
+      "precision_note": "IoU-backed precision from human boxes. Count-only dense scenes are excluded.",
+      "mean_capped_count_recall": 0.9941,
+      "mean_absolute_count_recall": 0.9857
+    },
+    "latency_ms": {
+      "mean": 49176,
+      "median": 26004,
+      "max": 176350
+    }
+  },
+  "category_results": [
+    {
+      "category": "labels",
+      "before": {
+        "scenes": 17,
+        "annotated_scenes": 15,
+        "passed": 14,
+        "matched": 19,
+        "actual": 23,
+        "expected": 20,
+        "precision": 0.8260869565217391,
+        "recall": 0.95,
+        "false_positives": 4,
+        "missed": 1,
+        "mean_latency_ms": 24157
+      },
+      "after69": {
+        "scenes": 17,
+        "annotated_scenes": 15,
+        "passed": 13,
+        "matched": 20,
+        "actual": 29,
+        "expected": 20,
+        "precision": 0.6896551724137931,
+        "recall": 1,
+        "false_positives": 9,
+        "missed": 0,
+        "mean_latency_ms": 24375
+      }
+    },
+    {
+      "category": "printed_wine_list",
+      "before": {
+        "scenes": 5,
+        "annotated_scenes": 5,
+        "passed": 1,
+        "matched": 101,
+        "actual": 164,
+        "expected": 107,
+        "precision": 0.6158536585365854,
+        "recall": 0.9439252336448598,
+        "false_positives": 63,
+        "missed": 6,
+        "mean_latency_ms": 162697
+      },
+      "after69": {
+        "scenes": 5,
+        "annotated_scenes": 5,
+        "passed": 3,
+        "matched": 99,
+        "actual": 108,
+        "expected": 107,
+        "precision": 0.9166666666666666,
+        "recall": 0.9252336448598131,
+        "false_positives": 9,
+        "missed": 8,
+        "mean_latency_ms": 132557
+      }
+    },
+    {
+      "category": "handwritten_board",
+      "before": {
+        "scenes": 3,
+        "annotated_scenes": 3,
+        "passed": 1,
+        "matched": 27,
+        "actual": 50,
+        "expected": 29,
+        "precision": 0.54,
+        "recall": 0.9310344827586207,
+        "false_positives": 23,
+        "missed": 2,
+        "mean_latency_ms": 85736
+      },
+      "after69": {
+        "scenes": 3,
+        "annotated_scenes": 3,
+        "passed": 2,
+        "matched": 27,
+        "actual": 38,
+        "expected": 29,
+        "precision": 0.7105263157894737,
+        "recall": 0.9310344827586207,
+        "false_positives": 11,
+        "missed": 2,
+        "mean_latency_ms": 50743
+      }
+    }
+  ],
+  "scene_results": [
+    {
+      "fixture": "commons-116618810",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "El Miracle nº 01",
+              "actual": "El Miracle nº01",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.734,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.734
+            }
+          ]
+        },
+        "latency_ms": 10324
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "El Miracle nº 01",
+              "actual": "El Miracle nº01",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.734,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.734
+            }
+          ]
+        },
+        "latency_ms": 11759,
+        "high_confidence_results": 0,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-128502713",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Bioca Mencia",
+              "actual": "Bioca Mencía Selección",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.769,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.769
+            }
+          ]
+        },
+        "latency_ms": 9671
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Bioca Mencia",
+              "actual": "Bioca Mencía Selección",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.769,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.769
+            }
+          ]
+        },
+        "latency_ms": 10196,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-128503275",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Tres Picos",
+              "actual": "Tres Picos",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.697,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.697
+            }
+          ]
+        },
+        "latency_ms": 9691
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Tres Picos",
+              "actual": "Tres Picos",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.697,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.697
+            }
+          ]
+        },
+        "latency_ms": 9671,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-128610681",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Gran Tehyda",
+              "actual": "Gran Tehyda Rosado",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.823,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.823
+            }
+          ]
+        },
+        "latency_ms": 10155
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Gran Tehyda",
+              "actual": "Gran Tehyda Rosado",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.823,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.823
+            }
+          ]
+        },
+        "latency_ms": 10706,
+        "high_confidence_results": 0,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-128610856",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Adernats Essencia",
+              "actual": "Adernats Essència",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 1,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 1
+            }
+          ]
+        },
+        "latency_ms": 13174
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Adernats Essencia",
+              "actual": "Essència",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.95,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.95
+            }
+          ]
+        },
+        "latency_ms": 13758,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-152675154",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Castano Monastrell",
+              "actual": "Castaño Monastrell",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.808,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.808
+            }
+          ]
+        },
+        "latency_ms": 14218
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Castano Monastrell",
+              "actual": "Castaño Monastrell",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.808,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.808
+            }
+          ]
+        },
+        "latency_ms": 12231,
+        "high_confidence_results": 0,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-152676516",
+      "category": "labels",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 2,
+          "matched_count": 1,
+          "precision": 0.5,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "750",
+              "actual": "750",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [
+            "Valverde"
+          ],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 2,
+          "actual_count": 2,
+          "matched_count": 2,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.471,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.478
+            },
+            {
+              "expected_index": 1,
+              "actual_index": 1,
+              "iou": 0.463
+            }
+          ]
+        },
+        "latency_ms": 12235
+      },
+      "after69": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 2,
+          "matched_count": 1,
+          "precision": 0.5,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "750",
+              "actual": "750",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [
+            "Valverde"
+          ],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 2,
+          "actual_count": 2,
+          "matched_count": 2,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.471,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.478
+            },
+            {
+              "expected_index": 1,
+              "actual_index": 1,
+              "iou": 0.463
+            }
+          ]
+        },
+        "latency_ms": 13377,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-152684780",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Arzuaga Crianza",
+              "actual": "Arzuaga Crianza",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.652,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.652
+            }
+          ]
+        },
+        "latency_ms": 12709
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Arzuaga Crianza",
+              "actual": "Arzuaga Crianza",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.652,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.652
+            }
+          ]
+        },
+        "latency_ms": 15281,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-152687522",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Beronia",
+              "actual": "Beronia Vino Ecológico",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.539,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.539
+            }
+          ]
+        },
+        "latency_ms": 12780
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Beronia",
+              "actual": "Beronia Vino Ecológico",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.539,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.539
+            }
+          ]
+        },
+        "latency_ms": 11749,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-152733274",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Lalama",
+              "actual": "Lalama",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.634,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.634
+            }
+          ]
+        },
+        "latency_ms": 13270
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Lalama",
+              "actual": "Lalama",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.634,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.634
+            }
+          ]
+        },
+        "latency_ms": 13718,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-26358451",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Faustino I Gran Reserva",
+              "actual": "Faustino I Gran Reserva",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.792,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.792
+            }
+          ]
+        },
+        "latency_ms": 9718
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Faustino I Gran Reserva",
+              "actual": "Faustino I Gran Reserva",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.792,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.792
+            }
+          ]
+        },
+        "latency_ms": 11708,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-32980703",
+      "category": "labels",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 2,
+          "matched_count": 0,
+          "precision": 0,
+          "recall": 0,
+          "matches": [],
+          "false_positives": [
+            "Petit Verdot",
+            "Vizetelly Winery Chardonnay"
+          ],
+          "missed": [
+            "Vina Gravonia"
+          ]
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 10,
+          "matched_count": 0,
+          "precision": 0,
+          "recall": 0,
+          "mean_iou": 0,
+          "threshold": 0.3,
+          "matches": []
+        },
+        "latency_ms": 38036
+      },
+      "after69": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 6,
+          "matched_count": 1,
+          "precision": 0.167,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Vina Gravonia",
+              "actual": "Viña Gravonia",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [
+            "Viña Tondonia",
+            "Petit Verdot",
+            "Red Blend",
+            "Petit Verdot 2006",
+            "Dottie Red Blend"
+          ],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 1,
+          "actual_count": 9,
+          "matched_count": 1,
+          "precision": 0.111,
+          "recall": 1,
+          "mean_iou": 0.698,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 0,
+              "actual_index": 3,
+              "iou": 0.698
+            }
+          ]
+        },
+        "latency_ms": 40148,
+        "high_confidence_results": 2,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-114960137",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 1,
+          "matched_count": 1,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Moscatel Dulce",
+              "actual": "La Geria Moscatel Dulce",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 8,
+          "actual_count": 8,
+          "matched_count": 7,
+          "precision": 0.875,
+          "recall": 0.875,
+          "mean_iou": 0.711,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 3,
+              "actual_index": 3,
+              "iou": 0.927
+            },
+            {
+              "expected_index": 2,
+              "actual_index": 2,
+              "iou": 0.827
+            },
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.787
+            },
+            {
+              "expected_index": 1,
+              "actual_index": 1,
+              "iou": 0.689
+            },
+            {
+              "expected_index": 4,
+              "actual_index": 4,
+              "iou": 0.656
+            },
+            {
+              "expected_index": 7,
+              "actual_index": 6,
+              "iou": 0.639
+            },
+            {
+              "expected_index": 6,
+              "actual_index": 5,
+              "iou": 0.452
+            }
+          ]
+        },
+        "latency_ms": 25426
+      },
+      "after69": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 2,
+          "matched_count": 1,
+          "precision": 0.5,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Moscatel Dulce",
+              "actual": "La Geria Moscatel Dulce",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Leria"
+          ],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 8,
+          "actual_count": 8,
+          "matched_count": 8,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.667,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 4,
+              "actual_index": 4,
+              "iou": 0.827
+            },
+            {
+              "expected_index": 3,
+              "actual_index": 3,
+              "iou": 0.827
+            },
+            {
+              "expected_index": 2,
+              "actual_index": 2,
+              "iou": 0.689
+            },
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.658
+            },
+            {
+              "expected_index": 7,
+              "actual_index": 7,
+              "iou": 0.617
+            },
+            {
+              "expected_index": 5,
+              "actual_index": 5,
+              "iou": 0.61
+            },
+            {
+              "expected_index": 1,
+              "actual_index": 1,
+              "iou": 0.592
+            },
+            {
+              "expected_index": 6,
+              "actual_index": 6,
+              "iou": 0.517
+            }
+          ]
+        },
+        "latency_ms": 26483,
+        "high_confidence_results": 4,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-9941064",
+      "category": "labels",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 2,
+          "matched_count": 1,
+          "precision": 0.5,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Cloudy Bay Sauvignon Blanc",
+              "actual": "Cloudy Bay Sauvignon Blanc",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [
+            "Cloudy Bay Sauvignon Blanc"
+          ],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 2,
+          "actual_count": 2,
+          "matched_count": 2,
+          "precision": 1,
+          "recall": 1,
+          "mean_iou": 0.806,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 1,
+              "actual_index": 1,
+              "iou": 0.869
+            },
+            {
+              "expected_index": 0,
+              "actual_index": 0,
+              "iou": 0.743
+            }
+          ]
+        },
+        "latency_ms": 13235
+      },
+      "after69": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 1,
+          "actual_count": 3,
+          "matched_count": 1,
+          "precision": 0.333,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Cloudy Bay Sauvignon Blanc",
+              "actual": "Cloudy Bay Sauvignon Blanc",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [
+            "Cloudy Bay Sauvignon Blanc",
+            "Cloudy Bay"
+          ],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 2,
+          "actual_count": 3,
+          "matched_count": 2,
+          "precision": 0.667,
+          "recall": 1,
+          "mean_iou": 0.675,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 1,
+              "actual_index": 1,
+              "iou": 0.869
+            },
+            {
+              "expected_index": 0,
+              "actual_index": 2,
+              "iou": 0.482
+            }
+          ]
+        },
+        "latency_ms": 25455,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-69528109",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": null,
+        "detection": null,
+        "latency_ms": 50701
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": null,
+        "detection": null,
+        "latency_ms": 26004,
+        "high_confidence_results": 1,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-9865219",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 6,
+          "actual_count": 6,
+          "matched_count": 6,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Verdi Spumante",
+              "actual": "Verdi Spumante",
+              "similarity": 1
+            },
+            {
+              "expected": "Golden Gate Spumante",
+              "actual": "Golden Gate Spumante",
+              "similarity": 1
+            },
+            {
+              "expected": "Somerton Brut Reserve",
+              "actual": "Somerton Brut Reserve",
+              "similarity": 1
+            },
+            {
+              "expected": "Passion Pop Original",
+              "actual": "Passion Pop Original",
+              "similarity": 1
+            },
+            {
+              "expected": "Passion Pop Mixed Berry",
+              "actual": "Passion Pop Mixed Berry",
+              "similarity": 1
+            },
+            {
+              "expected": "Passion Pop Lemon Lime",
+              "actual": "Passion Pop Lemon Lime",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 6,
+          "actual_count": 9,
+          "matched_count": 6,
+          "precision": 0.667,
+          "recall": 1,
+          "mean_iou": 0.687,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 1,
+              "actual_index": 2,
+              "iou": 0.831
+            },
+            {
+              "expected_index": 2,
+              "actual_index": 3,
+              "iou": 0.751
+            },
+            {
+              "expected_index": 4,
+              "actual_index": 5,
+              "iou": 0.679
+            },
+            {
+              "expected_index": 3,
+              "actual_index": 4,
+              "iou": 0.678
+            },
+            {
+              "expected_index": 0,
+              "actual_index": 6,
+              "iou": 0.653
+            },
+            {
+              "expected_index": 5,
+              "actual_index": 7,
+              "iou": 0.53
+            }
+          ]
+        },
+        "latency_ms": 30089
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 6,
+          "actual_count": 6,
+          "matched_count": 6,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Verdi Spumante",
+              "actual": "Verdi Spumante",
+              "similarity": 1
+            },
+            {
+              "expected": "Golden Gate Spumante",
+              "actual": "Golden Gate Spumante",
+              "similarity": 1
+            },
+            {
+              "expected": "Somerton Brut Reserve",
+              "actual": "Somerton Brut Reserve",
+              "similarity": 1
+            },
+            {
+              "expected": "Passion Pop Original",
+              "actual": "Passion Pop Original",
+              "similarity": 1
+            },
+            {
+              "expected": "Passion Pop Mixed Berry",
+              "actual": "Passion Pop Mixed Berry",
+              "similarity": 1
+            },
+            {
+              "expected": "Passion Pop Lemon Lime",
+              "actual": "Passion Pop Lemon Lime",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": {
+          "expected_count": 6,
+          "actual_count": 10,
+          "matched_count": 6,
+          "precision": 0.6,
+          "recall": 1,
+          "mean_iou": 0.654,
+          "threshold": 0.3,
+          "matches": [
+            {
+              "expected_index": 1,
+              "actual_index": 0,
+              "iou": 0.831
+            },
+            {
+              "expected_index": 2,
+              "actual_index": 8,
+              "iou": 0.716
+            },
+            {
+              "expected_index": 4,
+              "actual_index": 3,
+              "iou": 0.692
+            },
+            {
+              "expected_index": 0,
+              "actual_index": 7,
+              "iou": 0.653
+            },
+            {
+              "expected_index": 5,
+              "actual_index": 4,
+              "iou": 0.552
+            },
+            {
+              "expected_index": 3,
+              "actual_index": 1,
+              "iou": 0.482
+            }
+          ]
+        },
+        "latency_ms": 35107,
+        "high_confidence_results": 6,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-50584361",
+      "category": "labels",
+      "before": {
+        "status": "PASS",
+        "accuracy": null,
+        "detection": null,
+        "latency_ms": 125237
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": null,
+        "detection": null,
+        "latency_ms": 127030,
+        "high_confidence_results": 5,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-118365446",
+      "category": "printed_wine_list",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 21,
+          "actual_count": 42,
+          "matched_count": 20,
+          "precision": 0.476,
+          "recall": 0.952,
+          "matches": [
+            {
+              "expected": "Pink Ribbon Rose",
+              "actual": "Pink Ribbon Rosé || Buck Creek Winery Pink Ribbon Rosé",
+              "similarity": 1
+            },
+            {
+              "expected": "Marechal Foch",
+              "actual": "Marechal Foch || Buck Creek Winery Marechal Foch",
+              "similarity": 1
+            },
+            {
+              "expected": "Gewurztraminer",
+              "actual": "Gewurztraminer",
+              "similarity": 1
+            },
+            {
+              "expected": "Amore",
+              "actual": "Amore",
+              "similarity": 1
+            },
+            {
+              "expected": "Forget Me Not",
+              "actual": "Forget Me Not || Buck Creek Winery Forget Me Not",
+              "similarity": 1
+            },
+            {
+              "expected": "Seyval Blanc",
+              "actual": "Seyval Blanc",
+              "similarity": 1
+            },
+            {
+              "expected": "Pink Ribbon Rose",
+              "actual": "Pink Ribbon Rosé",
+              "similarity": 1
+            },
+            {
+              "expected": "Single Barrel Reserve",
+              "actual": "Single Barrel Reserve",
+              "similarity": 1
+            },
+            {
+              "expected": "Three Sons",
+              "actual": "Three Sons || Buck Creek Winery Three Sons",
+              "similarity": 1
+            },
+            {
+              "expected": "Petite Sirah",
+              "actual": "Petite Sirah",
+              "similarity": 1
+            },
+            {
+              "expected": "X-Press",
+              "actual": "X-Press",
+              "similarity": 1
+            },
+            {
+              "expected": "Cabernet Sauvignon",
+              "actual": "Cabernet Sauvignon",
+              "similarity": 1
+            },
+            {
+              "expected": "Syrah",
+              "actual": "Syrah",
+              "similarity": 1
+            },
+            {
+              "expected": "Malbec",
+              "actual": "Malbec",
+              "similarity": 1
+            },
+            {
+              "expected": "1900",
+              "actual": "1900",
+              "similarity": 1
+            },
+            {
+              "expected": "Merlot",
+              "actual": "Merlot",
+              "similarity": 1
+            },
+            {
+              "expected": "Dry Riesling",
+              "actual": "Dry Riesling || Datos por revisar Dry Riesling",
+              "similarity": 1
+            },
+            {
+              "expected": "Pinot Grigio",
+              "actual": "Pinot Grigio || Buck Creek Winery Pinot Grigio",
+              "similarity": 1
+            },
+            {
+              "expected": "Sauvignon Blanc",
+              "actual": "Sauvignon Blanc || Buck Creek Winery Sauvignon Blanc",
+              "similarity": 1
+            },
+            {
+              "expected": "William Loyd Reserve",
+              "actual": "William Loyd Reserve Riesling || William Loyd William Loyd Reserve Riesling",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Three Sons",
+            "X-Press Blend (Wine 7) || Buck Creek Winery X-Press Blend (Wine 7)",
+            "1886 || Buck Creek Winery 1886",
+            "Malbec || Buck Creek Winery Malbec",
+            "Cabernet Sauvignon || Buck Creek Winery Cabernet Sauvignon",
+            "Petite Sirah || Buck Creek Winery Petite Sirah",
+            "Single Barrel Reserve || Buck Creek Winery Single Barrel Reserve",
+            "Three Sons",
+            "Marechal Foch",
+            "Illy Hoo",
+            "Single Barrel Reserve",
+            "Sirah",
+            "Tinto Aromas Chocolate (Wine 6) || Buck Creek Winery Tinto Aromas Chocolate (Wine 6)",
+            "X-Press || Buck Creek Winery X-Press",
+            "Dry Riesling || Buck Creek Winery Dry Riesling",
+            "Pinot Grigio || Datos por revisar Pinot Grigio",
+            "Pink Ribbon Rosé",
+            "Seyval Blanc",
+            "Forget Me Not",
+            "Seyval Blanc || Buck Creek Winery Seyval Blanc",
+            "Buck Creek Classic (Wine 2) || Buck Creek Winery Buck Creek Classic (Wine 2)",
+            "Gewurztraminer || Buck Creek Winery Gewurztraminer"
+          ],
+          "missed": [
+            "Connelly Hoo"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 189707
+      },
+      "after69": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 21,
+          "actual_count": 22,
+          "matched_count": 19,
+          "precision": 0.864,
+          "recall": 0.905,
+          "matches": [
+            {
+              "expected": "Pink Ribbon Rose",
+              "actual": "Pink Ribbon Rosé",
+              "similarity": 1
+            },
+            {
+              "expected": "Marechal Foch",
+              "actual": "Marechal Foch",
+              "similarity": 1
+            },
+            {
+              "expected": "Gewurztraminer",
+              "actual": "Gewurztraminer",
+              "similarity": 1
+            },
+            {
+              "expected": "Amore",
+              "actual": "Amore",
+              "similarity": 1
+            },
+            {
+              "expected": "Forget Me Not",
+              "actual": "Forget Me Not",
+              "similarity": 1
+            },
+            {
+              "expected": "Seyval Blanc",
+              "actual": "Seyval Blanc",
+              "similarity": 1
+            },
+            {
+              "expected": "Single Barrel Reserve",
+              "actual": "Single Barrel Reserve",
+              "similarity": 1
+            },
+            {
+              "expected": "Three Sons",
+              "actual": "Three Sons",
+              "similarity": 1
+            },
+            {
+              "expected": "Petite Sirah",
+              "actual": "Petite Sirah",
+              "similarity": 1
+            },
+            {
+              "expected": "X-Press",
+              "actual": "X-Press",
+              "similarity": 1
+            },
+            {
+              "expected": "Cabernet Sauvignon",
+              "actual": "Cabernet Sauvignon",
+              "similarity": 1
+            },
+            {
+              "expected": "Malbec",
+              "actual": "Malbec",
+              "similarity": 1
+            },
+            {
+              "expected": "1900",
+              "actual": "1900",
+              "similarity": 1
+            },
+            {
+              "expected": "Merlot",
+              "actual": "Merlot",
+              "similarity": 1
+            },
+            {
+              "expected": "William Loyd Reserve",
+              "actual": "William Loyd Reserve || Buck Creek Winery William Loyd Reserve",
+              "similarity": 1
+            },
+            {
+              "expected": "Dry Riesling",
+              "actual": "Dry Riesling || Datos por revisar Dry Riesling",
+              "similarity": 1
+            },
+            {
+              "expected": "Pinot Grigio",
+              "actual": "Pinot Grigio || Datos por revisar Pinot Grigio",
+              "similarity": 1
+            },
+            {
+              "expected": "Sauvignon Blanc",
+              "actual": "Sauvignon Blanc || Datos por revisar Sauvignon Blanc",
+              "similarity": 1
+            },
+            {
+              "expected": "Syrah",
+              "actual": "Byrah",
+              "similarity": 0.8
+            }
+          ],
+          "false_positives": [
+            "Three Sons",
+            "Single Barrel Reserve",
+            "Lilly Hoo"
+          ],
+          "missed": [
+            "Pink Ribbon Rose",
+            "Connelly Hoo"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 176350,
+        "high_confidence_results": 0,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-131235304",
+      "category": "printed_wine_list",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 16,
+          "actual_count": 16,
+          "matched_count": 15,
+          "precision": 0.938,
+          "recall": 0.938,
+          "matches": [
+            {
+              "expected": "Cabernet Franc Amethystos Cava",
+              "actual": "Cabernet Franc Amethystos Cava || Amethystos Cabernet Franc Amethystos Cava",
+              "similarity": 1
+            },
+            {
+              "expected": "Merlot Avantis Winery",
+              "actual": "Merlot || Avantis Winery Merlot",
+              "similarity": 1
+            },
+            {
+              "expected": "Cas San Porio Canvas Chateau",
+              "actual": "Cas San || Porio Canvas Chateau Cas San",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Naoussa Found Estate",
+              "actual": "Naoussa 2006 || Found Estate Naoussa 2006",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Zinfandel Plough Vineyards",
+              "actual": "Zinfandel || Plough Vineyards Zinfandel",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Cabernet Sauvignon Amethystos",
+              "actual": "Cabernet Sauvignon 2018 || Amethystos Cabernet Sauvignon 2018",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Pinot Noir Ballard Lane",
+              "actual": "Pinot Noir || Ballard Lane Pinot Noir",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Riesling Wooden Valley Winery",
+              "actual": "Riesling || Wooden Valley Winery Riesling",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Chardonnay Landmark Vineyard",
+              "actual": "Chardonnay 2019 || Landmark Vineyard Chardonnay 2019",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Moschofilero Bosinakis Winery",
+              "actual": "Moschofilero 2018 || Bosinakis Winery Moschofilero 2018",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Viognier Avantis Winery",
+              "actual": "Viognier 2019 || Avantis Winery Viognier 2019",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Retsina Kousatari",
+              "actual": "Retsina || Kousatari Retsina",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Luca Paretti Proseco",
+              "actual": "Luca Paretti Prosecco Rose Brut || Luca Paretti Luca Paretti Prosecco Rose Brut",
+              "similarity": 0.976
+            },
+            {
+              "expected": "Sauvignon Blanc Wine Art Estate Techni",
+              "actual": "Sauvignon Blanc 2018 || Wine Art Estate Sauvignon Blanc 2018",
+              "similarity": 0.96
+            },
+            {
+              "expected": "JP Chenet France",
+              "actual": "JP Chenet France Brut || JP Chenet JP Chenet France Brut",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Limnio 2017 || Domo Caias Limnio 2017"
+          ],
+          "missed": [
+            "Limnio Domo Caius Ruby Keane"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 138199
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 16,
+          "actual_count": 16,
+          "matched_count": 15,
+          "precision": 0.938,
+          "recall": 0.938,
+          "matches": [
+            {
+              "expected": "Merlot Avantis Winery",
+              "actual": "Merlot || Avantis Winery Merlot",
+              "similarity": 1
+            },
+            {
+              "expected": "Cas San Porio Canvas Chateau",
+              "actual": "Cas San || Porio Canvas Chateau Cas San",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Naoussa Found Estate",
+              "actual": "Naoussa 2006 || Found Estate Naoussa 2006",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Zinfandel Plough Vineyards",
+              "actual": "Zinfandel || Plough Vineyards Zinfandel",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Cabernet Franc Amethystos Cava",
+              "actual": "Cabernet Franc || Amethystos Cava Cabernet Franc",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Cabernet Sauvignon Amethystos",
+              "actual": "Cabernet Sauvignon 2018 || Amethystos Cabernet Sauvignon 2018",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Pinot Noir Ballard Lane",
+              "actual": "Pinot Noir || Ballard Lane Pinot Noir",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Riesling Wooden Valley Winery",
+              "actual": "Riesling || Wooden Valley Winery Riesling",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Chardonnay Landmark Vineyard",
+              "actual": "Chardonnay 2019 || Landmark Vineyard Chardonnay 2019",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Moschofilero Bosinakis Winery",
+              "actual": "Moschofilero 2018 || Bosinakis Winery Moschofilero 2018",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Viognier Avantis Winery",
+              "actual": "Viognier 2019 || Avantis Winery Viognier 2019",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Retsina Kousatari",
+              "actual": "Retsina || Kousatari Retsina",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Luca Paretti Proseco",
+              "actual": "Luca Paretti Prosecco Rose Brut || Luca Paretti Luca Paretti Prosecco Rose Brut",
+              "similarity": 0.976
+            },
+            {
+              "expected": "Sauvignon Blanc Wine Art Estate Techni",
+              "actual": "Sauvignon Blanc 2018 || Wine Art Estate Sauvignon Blanc 2018",
+              "similarity": 0.96
+            },
+            {
+              "expected": "JP Chenet France",
+              "actual": "JP Chenet France Brut || JP Chenet JP Chenet France Brut",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Limnio 2017 || Domo Caias Limnio 2017"
+          ],
+          "missed": [
+            "Limnio Domo Caius Ruby Keane"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 128853,
+        "high_confidence_results": 14,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-37013918",
+      "category": "printed_wine_list",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 24,
+          "actual_count": 36,
+          "matched_count": 23,
+          "precision": 0.639,
+          "recall": 0.958,
+          "matches": [
+            {
+              "expected": "Saint Estephe Cru Bourgeois",
+              "actual": "Saint Estephe Cru Bourgeois || Bordeaux Saint Estephe Cru Bourgeois",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau Haut Saint Brice",
+              "actual": "Château Haut Saint Brice || Saint Emilion Grand Cru Château Haut Saint Brice",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau de Valois",
+              "actual": "Château de Valois || Grand vin de Pomerol Château de Valois",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau Lamarche Canon",
+              "actual": "Château Lamarche Canon || Canon Fronsac Château Lamarche Canon",
+              "similarity": 1
+            },
+            {
+              "expected": "Les Remparts de Ferriere",
+              "actual": "Les Remparts de Ferriere || Margaux Les Remparts de Ferriere",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau Haut Selve",
+              "actual": "Château Haut-Selve || Graves Château Haut-Selve",
+              "similarity": 1
+            },
+            {
+              "expected": "Joseph Drouhin Cote de Nuits village",
+              "actual": "Côte de Nuits village || Joseph Drouhin Côte de Nuits village",
+              "similarity": 1
+            },
+            {
+              "expected": "Joseph Drouhin Cote de Beaune villages",
+              "actual": "Côte de Beaune villages || Joseph Drouhin Côte de Beaune villages",
+              "similarity": 1
+            },
+            {
+              "expected": "La Roche Saint Vincent Saumur Champigny",
+              "actual": "Saumur Champigny || La Roche Saint Vincent Saumur Champigny",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau de la Grille Chinon",
+              "actual": "Chinon || Chateau de la Grille Chinon",
+              "similarity": 1
+            },
+            {
+              "expected": "Zonin Chianti",
+              "actual": "Zonin Chianti || Zonin Zonin Chianti",
+              "similarity": 1
+            },
+            {
+              "expected": "Ironstone Sierra",
+              "actual": "Ironstone Sierra || Ironstone Ironstone Sierra",
+              "similarity": 1
+            },
+            {
+              "expected": "Tyrrell's Lost Block",
+              "actual": "Tyrrell's Lost Block || Tyrrell's Tyrrell's Lost Block",
+              "similarity": 1
+            },
+            {
+              "expected": "Deakin Estate",
+              "actual": "Deakin Estate || Deakin Estate Deakin Estate",
+              "similarity": 1
+            },
+            {
+              "expected": "Oxford Landing",
+              "actual": "Oxford Landing || Oxford Landing Oxford Landing",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau Smith Haut Lafitte",
+              "actual": "Château Smith-Haut-Lafitte || Château Smith-Haut-Lafitte Château Smith-Haut-Lafitte",
+              "similarity": 1
+            },
+            {
+              "expected": "Prelude a Grand Puy Ducasse",
+              "actual": "Prélude à Grand Puy Ducasse || Grand Puy Ducasse Prélude à Grand Puy Ducasse",
+              "similarity": 1
+            },
+            {
+              "expected": "M Chapoutier La Bernardine Chateauneuf du Pape",
+              "actual": "Châteauneuf du Pape || La Bernardine, M.Chapoutier Châteauneuf du Pape",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Bodegas Lan Crianza",
+              "actual": "Lan Crianza || Lan Lan Crianza",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Villa Antinori Peppoli",
+              "actual": "Antinori Peppoli || Antinori Antinori Peppoli",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Arlequin Barossa",
+              "actual": "Arlequin || Arlequin Arlequin",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Arlequin Barossa",
+              "actual": "Arlequin || Arlequin Arlequin",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Wolf Blass Yellow Label",
+              "actual": "Wolf Blass Yellow River || Wolf Blass Wolf Blass Yellow River",
+              "similarity": 0.826
+            }
+          ],
+          "false_positives": [
+            "Grenache, Shiraz, Mouverdre || Australia Grenache, Shiraz, Mouverdre",
+            "Tempranillo",
+            "Shiraz || Australia Shiraz",
+            "Sangiovese, Merlot",
+            "Médoc Cru Bourgeois Exceptionnel || Bordeaux Médoc Cru Bourgeois Exceptionnel",
+            "Ducasse Cab, Sauv., Merlot || Ducasse Ducasse Cab, Sauv., Merlot",
+            "Cabernet Sauvignon || Australia Cabernet Sauvignon",
+            "Pinot Noir || Australia Pinot Noir",
+            "Zinfandel",
+            "Sangiovese, Canaiolo",
+            "Grenache, Shiraz, Mourvedre || Australia Grenache, Shiraz, Mourvedre",
+            "Merlot || Australia Merlot",
+            "Lafitte Cab, Sauv., Merlot || Lafitte Lafitte Cab, Sauv., Merlot"
+          ],
+          "missed": [
+            "Citran Medoc"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 161967
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 24,
+          "actual_count": 24,
+          "matched_count": 24,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Saint Estephe Cru Bourgeois",
+              "actual": "Saint Estephe Cru Bourgeois || Bordeaux Saint Estephe Cru Bourgeois",
+              "similarity": 1
+            },
+            {
+              "expected": "Citran Medoc",
+              "actual": "Citran || Medoc Cru Bourgeois Exceptionel Citran",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau Haut Saint Brice",
+              "actual": "Château Haut Saint Brice || Saint Emilion Grand Cru Château Haut Saint Brice",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau de Valois",
+              "actual": "Château de Valois || Grand vin de Pomerol Château de Valois",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau Lamarche Canon",
+              "actual": "Château Lamarche Canon || Canon Fronsac Château Lamarche Canon",
+              "similarity": 1
+            },
+            {
+              "expected": "Les Remparts de Ferriere",
+              "actual": "Les Remparts de Ferriere || Margaux Les Remparts de Ferriere",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau Haut Selve",
+              "actual": "Château Haut-Selve || Graves Château Haut-Selve",
+              "similarity": 1
+            },
+            {
+              "expected": "Joseph Drouhin Cote de Nuits village",
+              "actual": "Côte de Nuits village || Joseph Drouhin Côte de Nuits village",
+              "similarity": 1
+            },
+            {
+              "expected": "Joseph Drouhin Cote de Beaune villages",
+              "actual": "Côte de Beaune villages || Joseph Drouhin Côte de Beaune villages",
+              "similarity": 1
+            },
+            {
+              "expected": "La Roche Saint Vincent Saumur Champigny",
+              "actual": "Saumur Champigny || La Roche Saint Vincent Saumur Champigny",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau de la Grille Chinon",
+              "actual": "Chinon || Chateau de la Grille Chinon",
+              "similarity": 1
+            },
+            {
+              "expected": "Zonin Chianti",
+              "actual": "Zonin Chianti || Zonin Zonin Chianti",
+              "similarity": 1
+            },
+            {
+              "expected": "Ironstone Sierra",
+              "actual": "Ironstone Sierra || Ironstone Ironstone Sierra",
+              "similarity": 1
+            },
+            {
+              "expected": "Tyrrell's Lost Block",
+              "actual": "Tyrrell's Lost Block || Tyrrell's Tyrrell's Lost Block",
+              "similarity": 1
+            },
+            {
+              "expected": "Deakin Estate",
+              "actual": "Deakin Estate || Deakin Estate Deakin Estate",
+              "similarity": 1
+            },
+            {
+              "expected": "Oxford Landing",
+              "actual": "Oxford Landing || Oxford Landing Oxford Landing",
+              "similarity": 1
+            },
+            {
+              "expected": "Chateau Smith Haut Lafitte",
+              "actual": "Château Smith-Haut-Lafitte || Château Smith-Haut-Lafitte Château Smith-Haut-Lafitte",
+              "similarity": 1
+            },
+            {
+              "expected": "Prelude a Grand Puy Ducasse",
+              "actual": "Prélude à Grand Puy Ducasse || Grand Puy Ducasse Prélude à Grand Puy Ducasse",
+              "similarity": 1
+            },
+            {
+              "expected": "M Chapoutier La Bernardine Chateauneuf du Pape",
+              "actual": "Châteauneuf du Pape || La Bernardine, M.Chapoutier Châteauneuf du Pape",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Bodegas Lan Crianza",
+              "actual": "Lan Crianza || Lan Lan Crianza",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Villa Antinori Peppoli",
+              "actual": "Antinori Peppoli || Antinori Antinori Peppoli",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Arlequin Barossa",
+              "actual": "Arlequin || Arlequin Arlequin",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Wolf Blass Yellow Label",
+              "actual": "Wolf Blass || Wolf Blass Wolf Blass",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Arlequin Barossa",
+              "actual": "Arlequin || Arlequin Arlequin",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": null,
+        "latency_ms": 102947,
+        "high_confidence_results": 18,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-17259492",
+      "category": "printed_wine_list",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 22,
+          "actual_count": 33,
+          "matched_count": 21,
+          "precision": 0.636,
+          "recall": 0.955,
+          "matches": [
+            {
+              "expected": "St Julien Claret",
+              "actual": "St. Julien Claret || Saint-Julien, Burdeos St. Julien Claret",
+              "similarity": 1
+            },
+            {
+              "expected": "Table Claret",
+              "actual": "Table Claret || Burdeos Table Claret",
+              "similarity": 1
+            },
+            {
+              "expected": "Longworth's Sparkling Catawba",
+              "actual": "Longworth's Sparkling Catawba || Longworth Longworth's Sparkling Catawba",
+              "similarity": 1
+            },
+            {
+              "expected": "Irroy Cabinet Wine Champagne pints",
+              "actual": "Irroy Cabinet Wine Champagne Pints || Irroy Irroy Cabinet Wine Champagne Pints",
+              "similarity": 1
+            },
+            {
+              "expected": "Heidsick Champagne pints",
+              "actual": "Heidsick Champagne Pints || Heidsick Heidsick Champagne Pints",
+              "similarity": 1
+            },
+            {
+              "expected": "Heidsick Champagne quarts",
+              "actual": "Heidsick Champagne Quarts || Heidsick Heidsick Champagne Quarts",
+              "similarity": 1
+            },
+            {
+              "expected": "Brazil Port",
+              "actual": "Brazil Port || Oporto Brazil Port",
+              "similarity": 1
+            },
+            {
+              "expected": "London Dock Port",
+              "actual": "London Dock Port || London Dock London Dock Port",
+              "similarity": 1
+            },
+            {
+              "expected": "Harmony Pale Sherry",
+              "actual": "Harmony Pale Sherry || Harmony Harmony Pale Sherry",
+              "similarity": 1
+            },
+            {
+              "expected": "Yriarto Pale Delicate Sherry",
+              "actual": "Yriarto Pale Delicate Sherry || Yriarto Yriarto Pale Delicate Sherry",
+              "similarity": 1
+            },
+            {
+              "expected": "Lobo Pale Sherry",
+              "actual": "Lobo Pale Sherry || Lobo Lobo Pale Sherry",
+              "similarity": 1
+            },
+            {
+              "expected": "Old Reserve Madeira",
+              "actual": "Old Reserve Madeira || Madeira Old Reserve Madeira",
+              "similarity": 1
+            },
+            {
+              "expected": "Prince Albert Madeira",
+              "actual": "Madeira Prince Albert || Madeira Madeira Prince Albert",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Bacchus Madeira",
+              "actual": "Madeira Bacchus || Madeira Madeira Bacchus",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Oliveira Madeira",
+              "actual": "Madeira Oleiveira || Oleiveira Madeira Oleiveira",
+              "similarity": 0.97
+            },
+            {
+              "expected": "Ruddesheimer Hock",
+              "actual": "Ruddesheimer || Rheingau Ruddesheimer",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Haut Talleur Claret",
+              "actual": "Haut Talleur || Bordeaux Haut Talleur",
+              "similarity": 0.96
+            },
+            {
+              "expected": "St Emillion 1844 Claret",
+              "actual": "St. Emillion 1844 1844 || Saint-Émilion, Bordeaux St. Emillion 1844 1844",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Howard March and Co south side",
+              "actual": "Howard, March & Co. south side || Howard, March & Co. Howard, March & Co. south side",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Irroy Cabinet Wine Champagne",
+              "actual": "Irroy Cabinet Wine Champagne Quarts || Irroy Irroy Cabinet Wine Champagne Quarts",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Lobo Pale Sherry 1846",
+              "actual": "Sherry Lobo || Lobo Sherry Lobo",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Bacchus Old and Pure Madeira || Bacchus Bacchus Old and Pure Madeira",
+            "Champagne Heidsick || Heidsick Champagne Heidsick",
+            "Irroy Cabin Champagne || Irroy Irroy Cabin Champagne",
+            "Irroy Do || Irroy Irroy Do",
+            "Oleiveira Madeira || Oleiveira Oleiveira Madeira",
+            "Prince Albert Very Fine Madeira || Madeira Prince Albert Very Fine Madeira",
+            "Do 1846 Sherry 1846 || Jerez Do 1846 Sherry 1846",
+            "Madeira Old Reserve || Madeira Madeira Old Reserve",
+            "Sherry Yriarto || Yriarto Sherry Yriarto",
+            "Sherry Harmony || Jerez Sherry Harmony",
+            "Port London Dock || Oporto Port London Dock",
+            "Port Brazil || Oporto Port Brazil"
+          ],
+          "missed": [
+            "Longworth's Sparkling Catawba pints"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 151450
+      },
+      "after69": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 22,
+          "actual_count": 25,
+          "matched_count": 20,
+          "precision": 0.8,
+          "recall": 0.909,
+          "matches": [
+            {
+              "expected": "Table Claret",
+              "actual": "Table Claret || Burdeos Table Claret",
+              "similarity": 1
+            },
+            {
+              "expected": "Longworth's Sparkling Catawba",
+              "actual": "Longworth's Sparkling Catawba || Longworth Longworth's Sparkling Catawba",
+              "similarity": 1
+            },
+            {
+              "expected": "Irroy Cabinet Wine Champagne",
+              "actual": "Irroy Cabinet Wine Champagne || Irroy Irroy Cabinet Wine Champagne",
+              "similarity": 1
+            },
+            {
+              "expected": "Heidsick Champagne pints",
+              "actual": "Heidsick Champagne pints || Heidsick Heidsick Champagne pints",
+              "similarity": 1
+            },
+            {
+              "expected": "Heidsick Champagne quarts",
+              "actual": "Heidsick Champagne quarts || Heidsick Heidsick Champagne quarts",
+              "similarity": 1
+            },
+            {
+              "expected": "Brazil Port",
+              "actual": "Brazil Port || Oporto Brazil Port",
+              "similarity": 1
+            },
+            {
+              "expected": "London Dock Port",
+              "actual": "London Dock Port || Oporto London Dock Port",
+              "similarity": 1
+            },
+            {
+              "expected": "Harmony Pale Sherry",
+              "actual": "Harmony Pale Sherry || Jerez Harmony Pale Sherry",
+              "similarity": 1
+            },
+            {
+              "expected": "Yriarto Pale Delicate Sherry",
+              "actual": "Yriarto Pale Delicate Sherry || Jerez Yriarto Pale Delicate Sherry",
+              "similarity": 1
+            },
+            {
+              "expected": "Lobo Pale Sherry",
+              "actual": "Lobo Pale Sherry || Jerez Lobo Pale Sherry",
+              "similarity": 1
+            },
+            {
+              "expected": "Old Reserve Madeira",
+              "actual": "Old Reserve Madeira || Madeira Old Reserve Madeira",
+              "similarity": 1
+            },
+            {
+              "expected": "Prince Albert Madeira",
+              "actual": "Prince Albert very fine Madeira || Madeira Prince Albert very fine Madeira",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Bacchus Madeira",
+              "actual": "Bacchus || Madeira Bacchus",
+              "similarity": 0.99
+            },
+            {
+              "expected": "Oliveira Madeira",
+              "actual": "Madeira Oleiveira || Oleiveira Madeira Oleiveira",
+              "similarity": 0.97
+            },
+            {
+              "expected": "Haut Talleur Claret",
+              "actual": "Haut Talleur || Burdeos Haut Talleur",
+              "similarity": 0.96
+            },
+            {
+              "expected": "St Emillion 1844 Claret",
+              "actual": "St. Emillion 1844 1844 || Saint-Émilion, Burdeos St. Emillion 1844 1844",
+              "similarity": 0.96
+            },
+            {
+              "expected": "St Julien Claret",
+              "actual": "St. Julien || Saint-Julien, Burdeos St. Julien",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Howard March and Co south side",
+              "actual": "Howard March & Co. south side || Howard, March & Co. Howard March & Co. south side",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Lobo Pale Sherry 1846",
+              "actual": "Lobo Sherry || Lobo Lobo Sherry",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Irroy Cabinet Wine Champagne pints",
+              "actual": "Irroy Cabin Champagne || Irroy Irroy Cabin Champagne",
+              "similarity": 0.84
+            }
+          ],
+          "false_positives": [
+            "Oleiveira Madeira || Madeira Oleiveira Madeira",
+            "Bacchus old and pure Madeira || Madeira Bacchus old and pure Madeira",
+            "Do 1846 Sherry 1846 || Jerez Do 1846 Sherry 1846",
+            "Yriarto Sherry || Yriarto Yriarto Sherry",
+            "Harmony Sherry || Jerez Harmony Sherry"
+          ],
+          "missed": [
+            "Longworth's Sparkling Catawba pints",
+            "Ruddesheimer Hock"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 101448,
+        "high_confidence_results": 3,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-155596646",
+      "category": "printed_wine_list",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 24,
+          "actual_count": 37,
+          "matched_count": 22,
+          "precision": 0.595,
+          "recall": 0.917,
+          "matches": [
+            {
+              "expected": "Taylor",
+              "actual": "Taylor Sparkling Burgundy || Taylor Taylor Sparkling Burgundy",
+              "similarity": 1
+            },
+            {
+              "expected": "Henri Marchant Cold Duck",
+              "actual": "Henri Marchant Cold Duck || Henri Marchant Henri Marchant Cold Duck",
+              "similarity": 1
+            },
+            {
+              "expected": "Schramsberg Blanc de Blancs",
+              "actual": "Schramsberg Blanc De Blancs || Schramsberg Schramsberg Blanc De Blancs",
+              "similarity": 1
+            },
+            {
+              "expected": "Paul Masson Extra Dry",
+              "actual": "Paul Masson Extra Dry || Paul Masson Paul Masson Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Korbel Pink Rose",
+              "actual": "Korbel Pink Rose || Korbel Korbel Pink Rose",
+              "similarity": 1
+            },
+            {
+              "expected": "Korbel Extra Dry",
+              "actual": "Korbel Extra Dry || Korbel Korbel Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Korbel Brut",
+              "actual": "Korbel Brut || Korbel Korbel Brut",
+              "similarity": 1
+            },
+            {
+              "expected": "Gold Seal Extra Dry",
+              "actual": "Gold Seal Extra Dry || Gold Seal Gold Seal Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Taittinger Brut La Francaise",
+              "actual": "Taittinger Brut-La Francaise || Taittinger Taittinger Brut-La Francaise",
+              "similarity": 1
+            },
+            {
+              "expected": "Piper Heidsieck Extra Dry",
+              "actual": "Piper-Heidsieck Extra Dry || Piper-Heidsieck Piper-Heidsieck Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Mumm Extra Dry",
+              "actual": "Mumm Extra Dry || Mumm Mumm Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Moet & Chandon Imperial Brut",
+              "actual": "Moët & Chandon Imperial Brut || Moët & Chandon Moët & Chandon Imperial Brut",
+              "similarity": 1
+            },
+            {
+              "expected": "Paul Masson",
+              "actual": "Paul Masson Sparkling Burgundy || Paul Masson Paul Masson Sparkling Burgundy",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Chauvenet Red Cap",
+              "actual": "Chauvenet Red Cap Sparkling Burgundy || Chauvenet Chauvenet Red Cap Sparkling Burgundy",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Chanson",
+              "actual": "Chanson Sparkling Burgundy || Chanson Chanson Sparkling Burgundy",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Hanns Kornell Sehr Trocken",
+              "actual": "Hanns Kornell Sehr Trocken (Natural) California || Hanns Kornell Hanns Kornell Sehr Trocken (Natural) California",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Hanns Kornell Brut",
+              "actual": "Hanns Kornell Brut California || Hanns Kornell Hanns Kornell Brut California",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Gold Seal Brut",
+              "actual": "Gold Seal Brut New York || Gold Seal Gold Seal Brut New York",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Taittinger Comtes de Champagne",
+              "actual": "Taittinger Comtes De Champagne Brut Blanc De Blancs Vintage || Taittinger Taittinger Comtes De Champagne Brut Blanc De Blancs Vintage",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Piper Heidsieck Brut",
+              "actual": "Piper-Heidsieck Brut Vintage || Piper-Heidsieck Piper-Heidsieck Brut Vintage",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Mumm Cordon Rouge Brut",
+              "actual": "Mumm Cordon Rouge Brut Vintage || Mumm Mumm Cordon Rouge Brut Vintage",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Moet & Chandon Cuvee Dom Perignon",
+              "actual": "Moët & Chandon Cuvée Dom Perignon Vintage || Moët & Chandon Moët & Chandon Cuvée Dom Perignon Vintage",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Vintage Champagne (Fifth 18.00) || Champagne Vintage Champagne (Fifth 18.00)",
+            "Vintage Champagne (Fifth 22.00 / Tenth 12.00) || Champagne Vintage Champagne (Fifth 22.00 / Tenth 12.00)",
+            "Vintage Champagne Magnum (Fifth 36.00) || Champagne Vintage Champagne Magnum (Fifth 36.00)",
+            "Champagne (Fifth 17.50 / Tenth 9.50) || Champagne Champagne (Fifth 17.50 / Tenth 9.50)",
+            "Champagne (Fifth 21.00) || Champagne Champagne (Fifth 21.00)",
+            "Vintage Champagne (Fifth 24.00 / Tenth 13.00) || Champagne Vintage Champagne (Fifth 24.00 / Tenth 13.00)",
+            "Vintage Champagne (Fifth 21.00 / Tenth 11.00) || Champagne Vintage Champagne (Fifth 21.00 / Tenth 11.00)",
+            "Sparkling Wine (Fifth 16.00)",
+            "Sparkling Wine (Fifth 9.50 / Tenth 5.50) - línea 1",
+            "Sparkling Wine (Bottle 8.00 / Fifth 9.50 / Tenth 5.50)",
+            "Sparkling Wine (Fifth 10.00 / Tenth 5.75) - línea 1",
+            "Sparkling Wine (Fifth 12.50)",
+            "Sparkling Wine (Fifth 9.00 / Tenth 5.00)",
+            "Sparkling Wine Section 2 (Fifth 12.00) - línea 1",
+            "Sparkling Wine Section 2 (Bottle 2.50 / Fifth 9.00 / Tenth 4.75)"
+          ],
+          "missed": [
+            "Mumm Cordon Rouge Brut",
+            "Hanns Kornell Sec"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 172161
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 24,
+          "actual_count": 21,
+          "matched_count": 21,
+          "precision": 1,
+          "recall": 0.875,
+          "matches": [
+            {
+              "expected": "Taylor",
+              "actual": "Taylor || Taylor Taylor",
+              "similarity": 1
+            },
+            {
+              "expected": "Henri Marchant Cold Duck",
+              "actual": "Henri Marchant Cold Duck || Henri Marchant Henri Marchant Cold Duck",
+              "similarity": 1
+            },
+            {
+              "expected": "Chauvenet Red Cap",
+              "actual": "Chauvenet Red Cap || Chauvenet Chauvenet Red Cap",
+              "similarity": 1
+            },
+            {
+              "expected": "Chanson",
+              "actual": "Chanson || Chanson Chanson",
+              "similarity": 1
+            },
+            {
+              "expected": "Schramsberg Blanc de Blancs",
+              "actual": "Schramsberg Blanc De Blancs || Schramsberg Schramsberg Blanc De Blancs",
+              "similarity": 1
+            },
+            {
+              "expected": "Paul Masson Extra Dry",
+              "actual": "Paul Masson Extra Dry || Paul Masson Paul Masson Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Korbel Pink Rose",
+              "actual": "Korbel Pink Rose || Korbel Korbel Pink Rose",
+              "similarity": 1
+            },
+            {
+              "expected": "Korbel Extra Dry",
+              "actual": "Korbel Extra Dry || Korbel Korbel Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Korbel Brut",
+              "actual": "Korbel Brut || Korbel Korbel Brut",
+              "similarity": 1
+            },
+            {
+              "expected": "Hanns Kornell Sec",
+              "actual": "Hanns Kornell Sec || Hanns Kornell Hanns Kornell Sec",
+              "similarity": 1
+            },
+            {
+              "expected": "Gold Seal Extra Dry",
+              "actual": "Gold Seal Extra Dry || Gold Seal Gold Seal Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Taittinger Brut La Francaise",
+              "actual": "Taittinger Brut-La Francaise || Taittinger Taittinger Brut-La Francaise",
+              "similarity": 1
+            },
+            {
+              "expected": "Piper Heidsieck Extra Dry",
+              "actual": "Piper-Heidsieck Extra Dry || Piper-Heidsieck Piper-Heidsieck Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Mumm Extra Dry",
+              "actual": "Mumm Extra Dry || Mumm Mumm Extra Dry",
+              "similarity": 1
+            },
+            {
+              "expected": "Moet & Chandon Imperial Brut",
+              "actual": "Moët & Chandon Imperial Brut || Moët & Chandon Moët & Chandon Imperial Brut",
+              "similarity": 1
+            },
+            {
+              "expected": "Hanns Kornell Brut",
+              "actual": "Hanns Kornell Brut California || Hanns Kornell Hanns Kornell Brut California",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Gold Seal Brut",
+              "actual": "Gold Seal Brut New York || Gold Seal Gold Seal Brut New York",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Taittinger Comtes de Champagne",
+              "actual": "Taittinger Comtes De Champagne Brut Blanc De Blancs Vintage || Taittinger Taittinger Comtes De Champagne Brut Blanc De Blancs Vintage",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Piper Heidsieck Brut",
+              "actual": "Piper-Heidsieck Brut Vintage || Piper-Heidsieck Piper-Heidsieck Brut Vintage",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Mumm Cordon Rouge Brut",
+              "actual": "Mumm Cordon Rouge Brut Vintage (Tenth) || Mumm Mumm Cordon Rouge Brut Vintage (Tenth)",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Moet & Chandon Cuvee Dom Perignon",
+              "actual": "Moët & Chandon Cuvée Dom Perignon Vintage || Moët & Chandon Moët & Chandon Cuvée Dom Perignon Vintage",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": [
+            "Mumm Cordon Rouge Brut",
+            "Hanns Kornell Sehr Trocken",
+            "Paul Masson"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 153188,
+        "high_confidence_results": 15,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-113061301",
+      "category": "handwritten_board",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 9,
+          "actual_count": 11,
+          "matched_count": 8,
+          "precision": 0.727,
+          "recall": 0.889,
+          "matches": [
+            {
+              "expected": "Baco Noir",
+              "actual": "Baco Noir",
+              "similarity": 1
+            },
+            {
+              "expected": "Cabernet Franc",
+              "actual": "Cabernet Franc",
+              "similarity": 1
+            },
+            {
+              "expected": "Waves",
+              "actual": "Waves White",
+              "similarity": 1
+            },
+            {
+              "expected": "Winter Harvest",
+              "actual": "Winter Harvest",
+              "similarity": 1
+            },
+            {
+              "expected": "Dunes",
+              "actual": "Dunes",
+              "similarity": 1
+            },
+            {
+              "expected": "Riesling",
+              "actual": "Riesling",
+              "similarity": 1
+            },
+            {
+              "expected": "Waves",
+              "actual": "Waves Red",
+              "similarity": 1
+            },
+            {
+              "expected": "Foch Res",
+              "actual": "Foch Reserve",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Reserves (SOLD OUT)",
+            "Vino (primera línea, precio $14.95)",
+            "Pinot Noir"
+          ],
+          "missed": [
+            "Baco Noir Res"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 84944
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 9,
+          "actual_count": 8,
+          "matched_count": 8,
+          "precision": 1,
+          "recall": 0.889,
+          "matches": [
+            {
+              "expected": "Baco Noir",
+              "actual": "Baco Noir",
+              "similarity": 1
+            },
+            {
+              "expected": "Cabernet Franc",
+              "actual": "Cabernet Franc",
+              "similarity": 1
+            },
+            {
+              "expected": "Waves",
+              "actual": "Waves Red",
+              "similarity": 1
+            },
+            {
+              "expected": "Winter Harvest",
+              "actual": "Winter Harvest",
+              "similarity": 1
+            },
+            {
+              "expected": "Dunes",
+              "actual": "Dunes",
+              "similarity": 1
+            },
+            {
+              "expected": "Riesling",
+              "actual": "Riesling",
+              "similarity": 1
+            },
+            {
+              "expected": "Waves",
+              "actual": "Waves White",
+              "similarity": 1
+            },
+            {
+              "expected": "Foch Res",
+              "actual": "Foch Reserve",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": [
+            "Baco Noir Res"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 45673,
+        "high_confidence_results": 0,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-151686648",
+      "category": "handwritten_board",
+      "before": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 5,
+          "actual_count": 5,
+          "matched_count": 5,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Mathis Wine Uber Red Blend 2020",
+              "actual": "\"Uber\" Red Blend 2020 || Mathis Wine \"Uber\" Red Blend 2020",
+              "similarity": 1
+            },
+            {
+              "expected": "Vaughn Duffy Pinot Noir 2022",
+              "actual": "Pinot Noir 2022 || Vaughn Duffy Pinot Noir 2022",
+              "similarity": 1
+            },
+            {
+              "expected": "Topophilia Wine Co Rose of Grenache 2023",
+              "actual": "Rosé of Grenache 2023 || Topophilia Wine Co. Rosé of Grenache 2023",
+              "similarity": 1
+            },
+            {
+              "expected": "Tagline Wines Chardonnay 2021",
+              "actual": "Chardonnay 2021 || Tagline Wines Chardonnay 2021",
+              "similarity": 1
+            },
+            {
+              "expected": "Gundlach Bundschu Sauvignon Blanc 2023",
+              "actual": "Sauvignon Blanc 2023 || Gundlach Bundschu Sauvignon Blanc 2023",
+              "similarity": 1
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": null,
+        "latency_ms": 32545
+      },
+      "after69": {
+        "status": "PASS",
+        "accuracy": {
+          "expected_count": 5,
+          "actual_count": 5,
+          "matched_count": 5,
+          "precision": 1,
+          "recall": 1,
+          "matches": [
+            {
+              "expected": "Mathis Wine Uber Red Blend 2020",
+              "actual": "\"Uber\" Red Blend 2020 2020 || Mathis Wine \"Uber\" Red Blend 2020 2020",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Vaughn Duffy Pinot Noir 2022",
+              "actual": "Pinot Noir 2022 2022 || Vaughn Duffy Pinot Noir 2022 2022",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Topophilia Wine Co Rose of Grenache 2023",
+              "actual": "Rosé of Grenache 2023 2023 || Topophilia Wine Co. Rosé of Grenache 2023 2023",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Tagline Wines Chardonnay 2021",
+              "actual": "Chardonnay 2021 2021 || Tagline Wines Chardonnay 2021 2021",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Gundlach Bundschu Sauvignon Blanc 2023",
+              "actual": "Sauvignon Blanc 2023 2023 || Gundlach Bundschu Sauvignon Blanc 2023 2023",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [],
+          "missed": []
+        },
+        "detection": null,
+        "latency_ms": 31501,
+        "high_confidence_results": 5,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    },
+    {
+      "fixture": "commons-152561556",
+      "category": "handwritten_board",
+      "before": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 15,
+          "actual_count": 34,
+          "matched_count": 14,
+          "precision": 0.412,
+          "recall": 0.933,
+          "matches": [
+            {
+              "expected": "Fres.Co Fume Blanc",
+              "actual": "Blanc",
+              "similarity": 1
+            },
+            {
+              "expected": "Bardos Marioni Serpent",
+              "actual": "Serpent || Bardos/Marioni Serpent",
+              "similarity": 1
+            },
+            {
+              "expected": "Bardos Marioni Synkro Pet Nat",
+              "actual": "Synkro || Bardos/Marioni Synkro",
+              "similarity": 1
+            },
+            {
+              "expected": "Marioni Merlot",
+              "actual": "Merlot 2019 || Marioni Merlot 2019",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Leisure Fracaso",
+              "actual": "¡Fracaso! 2021 || Leisure ¡Fracaso! 2021",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Fres.Co Other Hand",
+              "actual": "Other Hand... 2022 || Fres.co Other Hand... 2022",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Marioni Primitivo",
+              "actual": "Primitivo 2021 || Marioni Primitivo 2021",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Leisure Ah Um",
+              "actual": "Ah Um || Fres.co Ah Um",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Fres.Co Fire Fuego",
+              "actual": "Fire Fuego 2023 || Marioni Fire Fuego 2023",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Marioni Rosa",
+              "actual": "Rosa - White 2022 || Marioni Rosa - White 2022",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Fres.Co Primitivo Rose",
+              "actual": "Primitivo 2023 || Fres.co Primitivo 2023",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Leisure Just Under There",
+              "actual": "Under There",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Marioni Chardonnay",
+              "actual": "Chardonnay Sonoma Mtn. 2022 || Marioni Chardonnay Sonoma Mtn. 2022",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Marioni Sunfisher",
+              "actual": "Sunfisher 2023 || Marioni Sunfisher 2023",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Petaluma Gap || Petaluma Gap Petaluma Gap",
+            "Merlot Sonoma Mtn. || Sonoma Mountain Merlot Sonoma Mtn.",
+            "Lake Co.",
+            "Pinot Petal... 2021 || Leisure Pinot Petal... 2021",
+            "Pinot Noir Petaluma Gap || Petaluma Gap Pinot Noir Petaluma Gap",
+            "Mitivo Kenwood || Mitivo Mitivo Kenwood",
+            "Co. Blend || Calaveras County Co. Blend",
+            "Upper Hand Bordeaux Blend || Upper Hand Upper Hand Bordeaux Blend",
+            "Red Blend || Acaso Red Blend",
+            "MTN.",
+            "Kenwood",
+            "Fumé Blanc 2021 || Fres.co Fumé Blanc 2021",
+            "Just Under Th... 2022 || Leisure Just Under Th... 2022",
+            "Fisher White Field Blend || Fisher Fisher White Field Blend",
+            "KRD Pet Nat || KRD KRD Pet Nat",
+            "ENT IKER Sauvignon Blanc || ENT IKER ENT IKER Sauvignon Blanc",
+            "Mitivo Rosé Kenwood || Mitivo Mitivo Rosé Kenwood",
+            "Fuego Sauvignon Blanc || Fuego Fuego Sauvignon Blanc",
+            "Blanc",
+            "White Zinfandel Lake Co. || Lake County White Zinfandel Lake Co."
+          ],
+          "missed": [
+            "Marioni Pinot"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 139720
+      },
+      "after69": {
+        "status": "BLOCKED_OR_FAIL",
+        "accuracy": {
+          "expected_count": 15,
+          "actual_count": 25,
+          "matched_count": 14,
+          "precision": 0.56,
+          "recall": 0.933,
+          "matches": [
+            {
+              "expected": "Bardos Marioni Serpent",
+              "actual": "Serpent || Bardos / Marioni Serpent",
+              "similarity": 1
+            },
+            {
+              "expected": "Bardos Marioni Synkro Pet Nat",
+              "actual": "Synkro || Bardos / Marioni Synkro",
+              "similarity": 1
+            },
+            {
+              "expected": "Marioni Merlot",
+              "actual": "Merlot 2020 || Marioni Merlot 2020",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Leisure Fracaso",
+              "actual": "¡Fracaso! 2021 || Leisure ¡Fracaso! 2021",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Fres.Co Other Hand",
+              "actual": "Other Hand... 2022 || Fres.co Other Hand... 2022",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Marioni Primitivo",
+              "actual": "Primitivo 2021 || Marioni Primitivo 2021",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Leisure Ah Um",
+              "actual": "Ah Um || Fres.co Ah Um",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Fres.Co Fire Fuego",
+              "actual": "Fire Fuego 2023 || Marioni Fire Fuego 2023",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Marioni Rosa",
+              "actual": "Rosa 2022 || Marioni Rosa 2022",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Fres.Co Primitivo Rose",
+              "actual": "Primitivo 2023 || Fres.co Primitivo 2023",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Leisure Just Under There",
+              "actual": "Under There",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Marioni Chardonnay",
+              "actual": "Chardonnay - Sonoma Mtn. 2022 || Marioni Chardonnay - Sonoma Mtn. 2022",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Marioni Sunfisher",
+              "actual": "Sunfisher 2023 || Marioni Sunfisher 2023",
+              "similarity": 0.96
+            },
+            {
+              "expected": "Fres.Co Fume Blanc",
+              "actual": "Fumé Blanc 2021 || Fres.co Fumé Blanc 2021",
+              "similarity": 0.96
+            }
+          ],
+          "false_positives": [
+            "Upper Hand - Bordeaux Blend",
+            "Acaso - Sonoma Red Blend || Sonoma Acaso - Sonoma Red Blend",
+            "Merlot - Sonoma Mtn. || Sonoma Mountain Merlot - Sonoma Mtn.",
+            "Pinot Petal... 2021 || Leisure Pinot Petal... 2021",
+            "Blanc - Sauvignon Blanc",
+            "Fisher - White Field Blend || Fisher Fisher - White Field Blend",
+            "Fuego - Sauvignon Blanc || Fuego Fuego - Sauvignon Blanc",
+            "KRD Pet Nat || KRD KRD Pet Nat",
+            "White Zin - Lake Co. || Lake County White Zin - Lake Co.",
+            "Just Under Th... 2022 || Leisure Just Under Th... 2022",
+            "Calaveras Co. Blend || Calaveras County Calaveras Co. Blend"
+          ],
+          "missed": [
+            "Marioni Pinot"
+          ]
+        },
+        "detection": null,
+        "latency_ms": 75056,
+        "high_confidence_results": 12,
+        "horizontal_overflow": false,
+        "unhandled_console_errors": []
+      }
+    }
+  ],
+  "limitations": [
+    "Non-deterministic provider; descriptive paired runs, not causal estimates.",
+    "Some annotations include only main bottle or unique name without vintages; dense count-only scenes do not certify identity.",
+    "The later build70 extent patch is NOT included in these 25-scene after69 metrics.",
+    "Raw legacy capped-count recall exceeded 1; retained as baseline defect, not interpreted as detection accuracy."
+  ]
+}

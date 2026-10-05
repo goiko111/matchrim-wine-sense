@@ -1,0 +1,80 @@
+[
+  {
+    "created_at": 1788515141568,
+    "entrypoint_path": "file:///tmp/user_fn_qpbmqvfnunkylvtvnyyx_097c010d-5c11-4bc8-b511-56e415eaf90f_7/source/supabase/functions/analyze-wine-region/index.ts",
+    "ezbr_sha256": "1c3b7945631dee8e07064b32ec75a7f2c31b4dfdbec7c531812bd68ba406a309",
+    "id": "097c010d-5c11-4bc8-b511-56e415eaf90f",
+    "import_map": false,
+    "name": "analyze-wine-region",
+    "slug": "analyze-wine-region",
+    "status": "ACTIVE",
+    "updated_at": 1791200375407,
+    "verify_jwt": true,
+    "version": 7
+  },
+  {
+    "created_at": 1788515144428,
+    "entrypoint_path": "file:///tmp/user_fn_qpbmqvfnunkylvtvnyyx_d53d11cd-6bfb-4770-9e47-76de71c72d56_6/source/supabase/functions/scan-wine-menu/index.ts",
+    "ezbr_sha256": "bef1f0ed6532b92359a03a36dd36a640a5ea47786f40d3d3d067a6900ed2a81f",
+    "id": "d53d11cd-6bfb-4770-9e47-76de71c72d56",
+    "import_map": false,
+    "name": "scan-wine-menu",
+    "slug": "scan-wine-menu",
+    "status": "ACTIVE",
+    "updated_at": 1791200378617,
+    "verify_jwt": true,
+    "version": 6
+  },
+  {
+    "created_at": 1788515145852,
+    "entrypoint_path": "file:///tmp/user_fn_qpbmqvfnunkylvtvnyyx_ae180b11-967d-4141-a256-139cd3172ea3_4/source/supabase/functions/detect-wine-regions/index.ts",
+    "ezbr_sha256": "b4427cc9c888167ef502176b82b65d4fc339a7712305e85c7c5a8b967a7460d6",
+    "id": "ae180b11-967d-4141-a256-139cd3172ea3",
+    "import_map": false,
+    "name": "detect-wine-regions",
+    "slug": "detect-wine-regions",
+    "status": "ACTIVE",
+    "updated_at": 1790864498049,
+    "verify_jwt": true,
+    "version": 4
+  },
+  {
+    "created_at": 1790858239441,
+    "entrypoint_path": "file:///tmp/user_fn_qpbmqvfnunkylvtvnyyx_ca682ef2-e881-4e1d-8a31-e24ccee0b8c0_5/source/supabase/functions/calculate-wine-affinity/index.ts",
+    "ezbr_sha256": "089ee6e802731e43e030aaa85b7863db4f745f1c32e4a80e59070e64a7afc8ac",
+    "id": "ca682ef2-e881-4e1d-8a31-e24ccee0b8c0",
+    "import_map": false,
+    "name": "calculate-wine-affinity",
+    "slug": "calculate-wine-affinity",
+    "status": "ACTIVE",
+    "updated_at": 1790864498049,
+    "verify_jwt": true,
+    "version": 5
+  },
+  {
+    "created_at": 1791171614127,
+    "entrypoint_path": "file:///tmp/user_fn_qpbmqvfnunkylvtvnyyx_5019601e-8f9f-4824-a934-db0b7fc39d8c_1/source/supabase/functions/matchrim-recommendations/index.ts",
+    "ezbr_sha256": "936c96ad13177d156ac957ec30442c0a0f465f8aeb6e5eb2312375738f5f6d08",
+    "id": "5019601e-8f9f-4824-a934-db0b7fc39d8c",
+    "import_map": false,
+    "name": "matchrim-recommendations",
+    "slug": "matchrim-recommendations",
+    "status": "ACTIVE",
+    "updated_at": 1791171614127,
+    "verify_jwt": true,
+    "version": 1
+  },
+  {
+    "created_at": 1791175857412,
+    "entrypoint_path": "file:///tmp/user_fn_qpbmqvfnunkylvtvnyyx_a3c20753-1e3e-4b0f-968c-1efbd4f054d8_2/source/supabase/functions/search-wines/index.ts",
+    "ezbr_sha256": "9c7835f662353e044cad70efb91137bfc28a797c01516f521b992bd7ede0d2d3",
+    "id": "a3c20753-1e3e-4b0f-968c-1efbd4f054d8",
+    "import_map": false,
+    "name": "search-wines",
+    "slug": "search-wines",
+    "status": "ACTIVE",
+    "updated_at": 1791175920019,
+    "verify_jwt": false,
+    "version": 2
+  }
+]

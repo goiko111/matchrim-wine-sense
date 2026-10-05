@@ -1,0 +1,1222 @@
+{
+  "dataset_id": "matchrim-pilot-v3-60-independent",
+  "interception": false,
+  "production_guard": true,
+  "selected_scene_count": 5,
+  "completed_scene_count": 5,
+  "complete": true,
+  "metric_scope": "Reference-name and box matching; not verification of producer, vintage or sensory facts.",
+  "summary": {
+    "scene_count": 5,
+    "all_passed": false,
+    "pass_rate": 0.8,
+    "original_pass_rate": 0.8,
+    "controlled_variant_pass_rate": null,
+    "operational": {
+      "terminal_completion_rate": 1.0,
+      "console_error_scene_count": 0,
+      "recovered_transient_analysis_failures": 0
+    },
+    "identity_micro": {
+      "scene_count": 0,
+      "matched": 0,
+      "actual": 0,
+      "expected": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "false_positives": 0,
+      "missed": 0
+    },
+    "detection_micro": {
+      "scene_count": 0,
+      "matched": 0,
+      "actual": 0,
+      "expected": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "mean_iou": 0.0,
+      "iou_threshold": 0.3
+    },
+    "abstention": {
+      "scene_count": 5,
+      "passed": 4,
+      "high_confidence_results": 17,
+      "false_positive_names": 17
+    },
+    "fridge_detection": {
+      "scene_count": 0,
+      "precision": null,
+      "precision_note": "Unavailable until exhaustive per-bottle boxes are human-annotated.",
+      "mean_capped_count_recall": null,
+      "mean_absolute_count_recall": null
+    },
+    "latency_ms": {
+      "mean": 25419,
+      "median": 11268,
+      "max": 85619
+    }
+  },
+  "results": [
+    {
+      "fixture": "commons-198342542",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-198342542.jpg",
+      "fixture_sha256": "cc555c3e4f3ee6e4f48b50ed4477b3ac0d68e23d48710cf29604f95c36edea8a",
+      "mode": "carta-vinos",
+      "expected_results": 0,
+      "expected_rationale": "food_menu_negative / chalkboard_small_text / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "abstain",
+      "terminal_state": "abstained",
+      "actual_results": 0,
+      "anchored_pins": 0,
+      "individual_affinity_scores": 0,
+      "high_confidence_results": 0,
+      "coverage": {
+        "status": "partial",
+        "extracted_wines": 0
+      },
+      "accuracy": {
+        "expected_count": 0,
+        "actual_count": 0,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": {
+        "expected_count": 0,
+        "actual_count": 0,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [],
+        "missed": []
+      },
+      "displayed_names": [],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 2,
+        "versions": [
+          "scan-wine-menu-2026-10-05-null-preserving-v6"
+        ],
+        "ai_providers": [
+          "anthropic"
+        ],
+        "ai_models": [
+          "claude-sonnet-4-6"
+        ],
+        "attempted_call_count": 3,
+        "recovered_menu_failures": 0,
+        "coverage": {
+          "status": "partial",
+          "extracted_wines": 0
+        },
+        "names": [],
+        "items": []
+      },
+      "latency_ms": 8759,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/negative-menus70/commons-198342542-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "right",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La pizarra visible en la imagen no es una carta de vinos. Se trata de un men\u00fa de comida de una cafeter\u00eda/fish & chips con platos como 'Battered Cod Fillets & Chips', 'Scampi & Chips', 'Breaded Seafood Platter & Chips', 'Sausage & Chips', 'All Day Breakfast', acompa\u00f1amientos como 'Peas/Mushy Peas', 'Baked Beans', 'Bread & Butter', 'Roll & Butter', y un men\u00fa infantil. No se identifica ning\u00fan vino, espumoso, generoso ni vino dulce en ninguna de las pizarras visibles. Por tanto, no se puede extraer ninguna entrada de vino."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "left",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen muestra la pizarra del 'The Lido Restaurant' con secciones de Hot Drinks, Cold Drinks, Food, Children's Menu y Specials. No hay ninguna carta de vinos ni referencias a vinos individuales en la pizarra visible. La \u00fanica menci\u00f3n relacionada con alcohol es 'Bottle of Beer... 3.50' y 'Bottle of Wine... 5.50' como categor\u00edas gen\u00e9ricas de bebidas fr\u00edas, sin nombre de productor, variedad, a\u00f1ada ni ning\u00fan otro atributo vin\u00edcola identificable. Seg\u00fan las instrucciones, no se pueden incluir referencias sin nombre legible, y 'Bottle of Wine' es una categor\u00eda gen\u00e9rica, no un vino. Por tanto, no se extrae ning\u00fan vino."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "full",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen muestra la carta de un restaurante de comida (The Lido Restaurant) con men\u00fas de hot drinks, cold drinks y food (desayunos, bocadillos, fish & chips, etc.).",
+              "Se aprecia una secci\u00f3n de 'Bottle of Beer' y 'Bottle of Wine' en el men\u00fa de Cold Drinks, pero los precios y nombres de vinos espec\u00edficos no son legibles con suficiente claridad para extraer referencias individuales de vino.",
+              "No se identifican nombres de vinos, productores ni a\u00f1adas en ninguna parte de la imagen. Solo se menciona gen\u00e9ricamente 'Bottle of Wine' con un precio que parece ser 5.00, pero sin ninguna referencia de vino identificable.",
+              "Seg\u00fan las instrucciones, no se pueden incluir filas sin nombre legible de vino. Se declara cobertura parcial con 0 vinos extra\u00edbles."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nCarta de vinos\n\nSube la carta y te digo qu\u00e9 pedir\u00eda primero.\n\nNo ha salido un escaneo \u00fatil\n\nNo he encontrado vinos claros en el documento. Prueba con una foto m\u00e1s cercana o con una secci\u00f3n m\u00e1s peque\u00f1a de la carta.\n\nReintentar foto\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-198342542",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "chalkboard_small_text",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "cc555c3e4f3ee6e4f48b50ed4477b3ac0d68e23d48710cf29604f95c36edea8a"
+    },
+    {
+      "fixture": "commons-59410813",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-59410813.jpg",
+      "fixture_sha256": "43f67b8cc973e74d4a054f3b02f81ccc3a4ae09a3025c45621df9e0151858ed8",
+      "mode": "carta-vinos",
+      "expected_results": 0,
+      "expected_rationale": "food_menu_negative / chalkboard_perspective / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "abstain",
+      "terminal_state": "abstained",
+      "actual_results": 0,
+      "anchored_pins": 0,
+      "individual_affinity_scores": 0,
+      "high_confidence_results": 0,
+      "coverage": {
+        "status": "partial",
+        "extracted_wines": 0
+      },
+      "accuracy": {
+        "expected_count": 0,
+        "actual_count": 0,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": {
+        "expected_count": 0,
+        "actual_count": 0,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [],
+        "missed": []
+      },
+      "displayed_names": [],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 3,
+        "versions": [
+          "scan-wine-menu-2026-10-05-null-preserving-v6"
+        ],
+        "ai_providers": [
+          "anthropic"
+        ],
+        "ai_models": [
+          "claude-sonnet-4-6"
+        ],
+        "attempted_call_count": 4,
+        "recovered_menu_failures": 0,
+        "coverage": {
+          "status": "partial",
+          "extracted_wines": 0
+        },
+        "names": [],
+        "items": []
+      },
+      "latency_ms": 13258,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/negative-menus70/commons-59410813-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "bottom",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La pizarra mostrada no es una carta de vinos. Es un men\u00fa de platos principales ('Les plats') de un restaurante vietnam\u00e9s/franc\u00e9s con platos como B\u00f2 B\u00fan, Maxi B\u00f2 B\u00fan, Poulet croustillant, B\u00fan b\u00ed chay y B\u00f2 kho. No se identifica ning\u00fan vino, espumoso, generoso ni vino dulce en la imagen. No se incluye ninguna fila para no inventar datos."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "full",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen no contiene una carta de vinos. Es el men\u00fa de comida de un restaurante vietnam\u00e9s/franc\u00e9s con platos como B\u00f2 B\u00fan, Poulet croustillant, B\u00f2 kho, entrantes como Nems y Beignets aux crevettes, y f\u00f3rmulas de men\u00fa a precios fijos. No se identifica ning\u00fan vino, espumoso, generoso ni vino dulce en ninguna secci\u00f3n de la imagen. No se incluye ninguna fila para evitar inventar referencias inexistentes."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "top",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen muestra una pizarra de men\u00fa de restaurante (probablemente vietnamita/asi\u00e1tico) con platos de comida como Nems, Beignets aux crevettes, Salade Rinpai, B\u00f2 B\u00fan, etc. No contiene ninguna referencia a vinos, espumosos, generosos ni vinos dulces. Se excluyen todos los elementos seg\u00fan las instrucciones (no son vino). No hay cerveza, vermut ni destilados visibles tampoco. La carta no es una carta de vinos."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "right-focus",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen muestra una pizarra de un restaurante con precios de platos de comida (entrantes, platos principales), no una carta de vinos. Se mencionan precios como 5\u20ac00, 5\u20ac50, 9\u20ac80, 14\u20ac90, 12\u20ac00, 10\u20ac50, 11\u20ac00, y un men\u00fa 'plat + dessert 18\u20ac50'. Tambi\u00e9n aparecen referencias a 'poulet' (pollo), 'porc' (cerdo), 'nems', '5 \u00e9pices' (cinco especias), lo que confirma que es un men\u00fa de cocina asi\u00e1tica/francesa. No se identifica ning\u00fan vino, espumoso, generoso ni vino dulce en la imagen. Se excluyen todos los \u00edtems por no ser vinos."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nCarta de vinos\n\nSube la carta y te digo qu\u00e9 pedir\u00eda primero.\n\nNo ha salido un escaneo \u00fatil\n\nNo he encontrado vinos claros en el documento. Prueba con una foto m\u00e1s cercana o con una secci\u00f3n m\u00e1s peque\u00f1a de la carta.\n\nReintentar foto\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-59410813",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "chalkboard_perspective",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "43f67b8cc973e74d4a054f3b02f81ccc3a4ae09a3025c45621df9e0151858ed8"
+    },
+    {
+      "fixture": "commons-173475759",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-173475759.jpg",
+      "fixture_sha256": "8c5c3ebc8d53ff225e8bd2e6e7812bd866aa795858cb9178950e2e25dca8905f",
+      "mode": "carta-vinos",
+      "expected_results": 0,
+      "expected_rationale": "food_menu_negative / chalkboard_glare / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "abstain",
+      "terminal_state": "abstained",
+      "actual_results": 0,
+      "anchored_pins": 0,
+      "individual_affinity_scores": 0,
+      "high_confidence_results": 0,
+      "coverage": {
+        "status": "partial",
+        "extracted_wines": 0
+      },
+      "accuracy": {
+        "expected_count": 0,
+        "actual_count": 0,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": {
+        "expected_count": 0,
+        "actual_count": 0,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [],
+        "missed": []
+      },
+      "displayed_names": [],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 2,
+        "versions": [
+          "scan-wine-menu-2026-10-05-null-preserving-v6"
+        ],
+        "ai_providers": [
+          "anthropic"
+        ],
+        "ai_models": [
+          "claude-sonnet-4-6"
+        ],
+        "attempted_call_count": 3,
+        "recovered_menu_failures": 0,
+        "coverage": {
+          "status": "partial",
+          "extracted_wines": 0
+        },
+        "names": [],
+        "items": []
+      },
+      "latency_ms": 8189,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/negative-menus70/commons-173475759-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "full",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen muestra una pizarra de comida (food menu), no una carta de vinos. Se identifican secciones de Salads, Mains y Small Plates con platos como Fish Finger Sandwich, Loaded Hash Browns, Bhaji Bap, Croque Monsieur, Homemade Burger, entre otros. No se detecta ning\u00fan vino, espumoso, generoso ni vino dulce en la imagen. Se excluyen todos los \u00edtems por no ser vino."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "right",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen muestra una pizarra de comida (mains y small plates), no una carta de vinos. No se identifican vinos, espumosos, generosos ni vinos dulces en ninguna secci\u00f3n visible. Los productos listados son: Fish Finger Sandwich, Loaded Hash Browns, Bhaji Bap, Croque Monsieur, Homemade Burger, Root Vegetable Bites y Cheese & Jalape\u00f1o Nachos. No se incluye ninguna fila porque no hay vinos legibles en la imagen."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "left",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La pizarra visible en la imagen corresponde a un men\u00fa de COMIDA (Salads, Spinach & Egg Roti Roll, Homemade Hoummous, Pan Fried Potatoes, Halloumi Bites), no a una carta de vinos.",
+              "En el panel izquierdo se aprecian precios (9.95, 7.50, 9.95, 7.95, 9.95) y referencias parciales a bebidas ('mint & lime', 'thyme', 'spritz 7.95'), que podr\u00edan corresponder a c\u00f3cteles, spritz u otras bebidas no vin\u00edcolas. Ninguna l\u00ednea legible puede identificarse inequ\u00edvocamente como un vino.",
+              "No se incluye ning\u00fan vino porque ninguna l\u00ednea cumple los criterios m\u00ednimos de legibilidad e identificaci\u00f3n como vino seg\u00fan las instrucciones."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nCarta de vinos\n\nSube la carta y te digo qu\u00e9 pedir\u00eda primero.\n\nNo ha salido un escaneo \u00fatil\n\nNo he encontrado vinos claros en el documento. Prueba con una foto m\u00e1s cercana o con una secci\u00f3n m\u00e1s peque\u00f1a de la carta.\n\nReintentar foto\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-173475759",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "chalkboard_glare",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "8c5c3ebc8d53ff225e8bd2e6e7812bd866aa795858cb9178950e2e25dca8905f"
+    },
+    {
+      "fixture": "commons-173322442",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-173322442.jpg",
+      "fixture_sha256": "4977543fe1b9cff71fb71e71a1b250bd80e132dfc7bfb1b894b19647848acb56",
+      "mode": "carta-vinos",
+      "expected_results": 0,
+      "expected_rationale": "food_menu_negative / multi_board / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "abstain",
+      "terminal_state": "abstained",
+      "actual_results": 0,
+      "anchored_pins": 0,
+      "individual_affinity_scores": 0,
+      "high_confidence_results": 0,
+      "coverage": {
+        "status": "partial",
+        "extracted_wines": 0
+      },
+      "accuracy": {
+        "expected_count": 0,
+        "actual_count": 0,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [],
+        "missed": []
+      },
+      "canonical_accuracy": {
+        "expected_count": 0,
+        "actual_count": 0,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [],
+        "missed": []
+      },
+      "displayed_names": [],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 3,
+        "versions": [
+          "scan-wine-menu-2026-10-05-null-preserving-v6"
+        ],
+        "ai_providers": [
+          "anthropic"
+        ],
+        "ai_models": [
+          "claude-sonnet-4-6"
+        ],
+        "attempted_call_count": 4,
+        "recovered_menu_failures": 0,
+        "coverage": {
+          "status": "partial",
+          "extracted_wines": 0
+        },
+        "names": [],
+        "items": []
+      },
+      "latency_ms": 11268,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/negative-menus70/commons-173322442-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "bottom",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "This is not a wine menu. The chalkboards displayed are a food and beverage menu for a caf\u00e9/cr\u00eaperie, featuring hot chocolate, tea, iced drinks, milkshakes, cr\u00eapes/galettes, and seafood specials.",
+              "No wine references are visible anywhere on the boards.",
+              "Zero wine entries can be extracted. All items are excluded per instructions (non-wine beverages, food items)."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "full",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen no contiene una carta de vinos. Se trata de la pizarra de men\u00fa de una cafeter\u00eda/creper\u00eda que ofrece caf\u00e9, t\u00e9, chocolate caliente, crepas (les cr\u00eapes), galettes y especiales de mariscos. No hay ninguna referencia a vinos, espumosos, generosos ni vinos dulces en ninguna secci\u00f3n visible. No se puede extraer ning\u00fan vino sin inventar informaci\u00f3n."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "top",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La imagen muestra una pizarra de cafeter\u00eda/creper\u00eda con tres secciones: COFFEE (caf\u00e9), Les Cr\u00eapes (crepes) y Galettes (galettes saladas). No hay ninguna referencia a vinos, espumosos, generosos ni vinos dulces en ninguna de las secciones visibles. Los productos listados son bebidas calientes (caf\u00e9, t\u00e9, chocolate caliente) y platos de crepes/galettes con ingredientes como jam\u00f3n, queso, huevo, setas, etc. No se puede extraer ning\u00fan vino porque no existe ninguno en esta carta."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "right-focus",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La pizarra mostrada no es una carta de vinos. Se trata de un men\u00fa de galettes (crepes saladas) con secciones 'Ham', 'Vegetarian' y 'Vegan', m\u00e1s una secci\u00f3n de 'Seafood Specials'. No aparece ning\u00fan vino, espumoso, generoso ni vino dulce en ninguna parte de la imagen. No se han incluido filas porque ning\u00fan producto listado es vino."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "PASS",
+      "visible_excerpt": "Esc\u00e1ner Matchrim\nCarta de vinos\n\nSube la carta y te digo qu\u00e9 pedir\u00eda primero.\n\nNo ha salido un escaneo \u00fatil\n\nNo he encontrado vinos claros en el documento. Prueba con una foto m\u00e1s cercana o con una secci\u00f3n m\u00e1s peque\u00f1a de la carta.\n\nReintentar foto\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-173322442",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "multi_board",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "4977543fe1b9cff71fb71e71a1b250bd80e132dfc7bfb1b894b19647848acb56"
+    },
+    {
+      "fixture": "commons-150250375",
+      "source": "qa-artifacts/matchrim-pilot-v3/scenes/commons-150250375.jpg",
+      "fixture_sha256": "b5ee2a44508352668524f89975ce8adca1e0e200bc10f69f307a383b60606f4e",
+      "mode": "carta-vinos",
+      "expected_results": 0,
+      "expected_rationale": "food_menu_negative / handwritten_board / Twenty-five identity-annotated sources plus thirty-five human-selected structural, abstention and negative scenes. Model output is never ground truth.",
+      "expectation": "abstain",
+      "terminal_state": "completed",
+      "actual_results": 17,
+      "anchored_pins": 5,
+      "individual_affinity_scores": 17,
+      "high_confidence_results": 17,
+      "coverage": {
+        "status": "partial",
+        "extracted_wines": 17
+      },
+      "accuracy": {
+        "expected_count": 0,
+        "actual_count": 17,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [
+          "Les Bardets Rouge, Maison Labastide || Maison Labastide Les Bardets Rouge, Maison Labastide",
+          "Camille Malbec, Ch\u00e2teau du Cedre || Ch\u00e2teau du Cedre Camille Malbec, Ch\u00e2teau du Cedre",
+          "C\u00f4tes du Rh\u00f4ne, Laudun Chusclan || Laudun Chusclan C\u00f4tes du Rh\u00f4ne, Laudun Chusclan",
+          "Sauvignon Blanc, Francois Lurton || Francois Lurton Sauvignon Blanc, Francois Lurton",
+          "Marcillac \"Lo Sang del Pais\", Domaine du Cros || Domaine du Cros Marcillac \"Lo Sang del Pais\", Domaine du Cros",
+          "Gobillard, Grande R\u00e9serve Premier Cru || Gobillard Gobillard, Grande R\u00e9serve Premier Cru",
+          "Les Bardets Blanc, Maison Labastide || Maison Labastide Les Bardets Blanc, Maison Labastide",
+          "Chardonnay, Aubert & Mathieu || Aubert & Mathieu Chardonnay, Aubert & Mathieu",
+          "Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert || Les Celliers Jean d'Alibert Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert",
+          "Cr\u00e9mant de Loire Brut, De Chanceny || De Chanceny Cr\u00e9mant de Loire Brut, De Chanceny",
+          "C\u00f4tes de Gascogne, Domaine de M\u00e9nard || Domaine de M\u00e9nard C\u00f4tes de Gascogne, Domaine de M\u00e9nard",
+          "Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch || Ch\u00e2teau Saint Roch Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch",
+          "Rivarose, Provence || Rivarose Rivarose, Provence",
+          "Muscadet, Ch\u00e2teau du Poyet || Ch\u00e2teau du Poyet Muscadet, Ch\u00e2teau du Poyet",
+          "Juran\u00e7on La Magendia, Clos Lapeyre || Clos Lapeyre Juran\u00e7on La Magendia, Clos Lapeyre",
+          "Banyuls, Domaine Valcros || Domaine Valcros Banyuls, Domaine Valcros",
+          "Sauternes Les Garonelles, Lucien Lurton || Lucien Lurton Sauternes Les Garonelles, Lucien Lurton"
+        ],
+        "missed": []
+      },
+      "canonical_accuracy": {
+        "expected_count": 0,
+        "actual_count": 17,
+        "matched_count": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "matches": [],
+        "false_positives": [
+          "Gobillard Gobillard, Grande R\u00e9serve Premier Cru",
+          "De Chanceny Cr\u00e9mant de Loire Brut, De Chanceny",
+          "Rivarose Rivarose, Provence",
+          "Domaine de M\u00e9nard C\u00f4tes de Gascogne, Domaine de M\u00e9nard",
+          "Ch\u00e2teau du Poyet Muscadet, Ch\u00e2teau du Poyet",
+          "Francois Lurton Sauvignon Blanc, Francois Lurton",
+          "Maison Labastide Les Bardets Blanc, Maison Labastide",
+          "Aubert & Mathieu Chardonnay, Aubert & Mathieu",
+          "Ch\u00e2teau Saint Roch Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch",
+          "Les Celliers Jean d'Alibert Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert",
+          "Ch\u00e2teau du Cedre Camille Malbec, Ch\u00e2teau du Cedre",
+          "Maison Labastide Les Bardets Rouge, Maison Labastide",
+          "Domaine du Cros Marcillac \"Lo Sang del Pais\", Domaine du Cros",
+          "Laudun Chusclan C\u00f4tes du Rh\u00f4ne, Laudun Chusclan",
+          "Lucien Lurton Sauternes Les Garonelles, Lucien Lurton",
+          "Clos Lapeyre Juran\u00e7on La Magendia, Clos Lapeyre",
+          "Domaine Valcros Banyuls, Domaine Valcros"
+        ],
+        "missed": []
+      },
+      "displayed_names": [
+        "Les Bardets Rouge, Maison Labastide || Maison Labastide Les Bardets Rouge, Maison Labastide",
+        "Camille Malbec, Ch\u00e2teau du Cedre || Ch\u00e2teau du Cedre Camille Malbec, Ch\u00e2teau du Cedre",
+        "C\u00f4tes du Rh\u00f4ne, Laudun Chusclan || Laudun Chusclan C\u00f4tes du Rh\u00f4ne, Laudun Chusclan",
+        "Sauvignon Blanc, Francois Lurton || Francois Lurton Sauvignon Blanc, Francois Lurton",
+        "Marcillac \"Lo Sang del Pais\", Domaine du Cros || Domaine du Cros Marcillac \"Lo Sang del Pais\", Domaine du Cros",
+        "Gobillard, Grande R\u00e9serve Premier Cru || Gobillard Gobillard, Grande R\u00e9serve Premier Cru",
+        "Les Bardets Blanc, Maison Labastide || Maison Labastide Les Bardets Blanc, Maison Labastide",
+        "Chardonnay, Aubert & Mathieu || Aubert & Mathieu Chardonnay, Aubert & Mathieu",
+        "Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert || Les Celliers Jean d'Alibert Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert",
+        "Cr\u00e9mant de Loire Brut, De Chanceny || De Chanceny Cr\u00e9mant de Loire Brut, De Chanceny",
+        "C\u00f4tes de Gascogne, Domaine de M\u00e9nard || Domaine de M\u00e9nard C\u00f4tes de Gascogne, Domaine de M\u00e9nard",
+        "Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch || Ch\u00e2teau Saint Roch Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch",
+        "Rivarose, Provence || Rivarose Rivarose, Provence",
+        "Muscadet, Ch\u00e2teau du Poyet || Ch\u00e2teau du Poyet Muscadet, Ch\u00e2teau du Poyet",
+        "Juran\u00e7on La Magendia, Clos Lapeyre || Clos Lapeyre Juran\u00e7on La Magendia, Clos Lapeyre",
+        "Banyuls, Domaine Valcros || Domaine Valcros Banyuls, Domaine Valcros",
+        "Sauternes Les Garonelles, Lucien Lurton || Lucien Lurton Sauternes Les Garonelles, Lucien Lurton"
+      ],
+      "backend": {
+        "function": "scan-wine-menu",
+        "http_status": 200,
+        "call_count": 2,
+        "versions": [
+          "scan-wine-menu-2026-10-05-null-preserving-v6"
+        ],
+        "ai_providers": [
+          "anthropic"
+        ],
+        "ai_models": [
+          "claude-sonnet-4-6"
+        ],
+        "attempted_call_count": 4,
+        "recovered_menu_failures": 0,
+        "coverage": {
+          "status": "partial",
+          "extracted_wines": 17
+        },
+        "names": [
+          "Gobillard Gobillard, Grande R\u00e9serve Premier Cru",
+          "De Chanceny Cr\u00e9mant de Loire Brut, De Chanceny",
+          "Rivarose Rivarose, Provence",
+          "Domaine de M\u00e9nard C\u00f4tes de Gascogne, Domaine de M\u00e9nard",
+          "Ch\u00e2teau du Poyet Muscadet, Ch\u00e2teau du Poyet",
+          "Francois Lurton Sauvignon Blanc, Francois Lurton",
+          "Maison Labastide Les Bardets Blanc, Maison Labastide",
+          "Aubert & Mathieu Chardonnay, Aubert & Mathieu",
+          "Ch\u00e2teau Saint Roch Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch",
+          "Les Celliers Jean d'Alibert Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert",
+          "Ch\u00e2teau du Cedre Camille Malbec, Ch\u00e2teau du Cedre",
+          "Maison Labastide Les Bardets Rouge, Maison Labastide",
+          "Domaine du Cros Marcillac \"Lo Sang del Pais\", Domaine du Cros",
+          "Laudun Chusclan C\u00f4tes du Rh\u00f4ne, Laudun Chusclan",
+          "Lucien Lurton Sauternes Les Garonelles, Lucien Lurton",
+          "Clos Lapeyre Juran\u00e7on La Magendia, Clos Lapeyre",
+          "Domaine Valcros Banyuls, Domaine Valcros"
+        ],
+        "items": [
+          {
+            "name": "Gobillard, Grande R\u00e9serve Premier Cru",
+            "producer": "Gobillard",
+            "vintage": null,
+            "section": "CHAMPAGNE",
+            "price": 90,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Gobillard, Grande R\u00e9serve Premier Cru \u2013 / \u00a390.00",
+            "position": {
+              "x": 5.0,
+              "y": 38.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.85
+            }
+          },
+          {
+            "name": "Cr\u00e9mant de Loire Brut, De Chanceny",
+            "producer": "De Chanceny",
+            "vintage": null,
+            "section": "SPARKLING",
+            "price": 50,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Cr\u00e9mant de Loire Brut, De Chanceny, Loire \u00a39.00 / \u00a350.00",
+            "position": {
+              "x": 5.0,
+              "y": 43.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.85
+            }
+          },
+          {
+            "name": "Rivarose, Provence",
+            "producer": "Rivarose",
+            "vintage": null,
+            "section": "SPARKLING",
+            "price": 47,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Rivarose, Provence \u00a38.50 / \u00a347.00",
+            "position": {
+              "x": 5.0,
+              "y": 47.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "C\u00f4tes de Gascogne, Domaine de M\u00e9nard",
+            "producer": "Domaine de M\u00e9nard",
+            "vintage": null,
+            "section": "WHITE",
+            "price": 34,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "C\u00f4tes de Gascogne, Domaine de M\u00e9nard, South West France \u00a36.50 / \u00a334.00",
+            "position": {
+              "x": 5.0,
+              "y": 53.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Muscadet, Ch\u00e2teau du Poyet",
+            "producer": "Ch\u00e2teau du Poyet",
+            "vintage": null,
+            "section": "WHITE",
+            "price": 36,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Muscadet, Ch\u00e2teau du Poyet, Loire \u00a36.75 / \u00a336.00",
+            "position": {
+              "x": 5.0,
+              "y": 57.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Sauvignon Blanc, Francois Lurton",
+            "producer": "Francois Lurton",
+            "vintage": null,
+            "section": "WHITE",
+            "price": 40,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Sauvignon Blanc, Francois Lurton, Languedoc-Roussillon \u00a37.50 / \u00a340.00",
+            "position": {
+              "x": 5.0,
+              "y": 61.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Les Bardets Blanc, Maison Labastide",
+            "producer": "Maison Labastide",
+            "vintage": null,
+            "section": "WHITE",
+            "price": 43,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Les Bardets Blanc, Maison Labastide, South West France \u00a38.00 / \u00a343.00",
+            "position": {
+              "x": 5.0,
+              "y": 65.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Chardonnay, Aubert & Mathieu",
+            "producer": "Aubert & Mathieu",
+            "vintage": null,
+            "section": "WHITE",
+            "price": 47,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Chardonnay, Aubert & Mathieu, Languedoc-Roussillon \u00a38.75 / \u00a347.00",
+            "position": {
+              "x": 5.0,
+              "y": 69.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch",
+            "producer": "Ch\u00e2teau Saint Roch",
+            "vintage": null,
+            "section": "ROSE",
+            "price": 40,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch, C\u00f4te Roussillon \u00a37.50 / \u00a340.00",
+            "position": {
+              "x": 5.0,
+              "y": 74.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert",
+            "producer": "Les Celliers Jean d'Alibert",
+            "vintage": null,
+            "section": "RED",
+            "price": 34,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert, Languedoc \u00a36.50 / \u00a334.00",
+            "position": {
+              "x": 5.0,
+              "y": 80.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Camille Malbec, Ch\u00e2teau du Cedre",
+            "producer": "Ch\u00e2teau du Cedre",
+            "vintage": null,
+            "section": "RED",
+            "price": 40,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Camille Malbec, Ch\u00e2teau du Cedre, South West France \u00a37.50 / \u00a340.00",
+            "position": {
+              "x": 5.0,
+              "y": 84.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Les Bardets Rouge, Maison Labastide",
+            "producer": "Maison Labastide",
+            "vintage": null,
+            "section": "RED",
+            "price": 43,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Les Bardets Rouge, Maison Labastide, South West France \u00a38.00 / \u00a343.00",
+            "position": {
+              "x": 5.0,
+              "y": 87.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Marcillac \"Lo Sang del Pais\", Domaine du Cros",
+            "producer": "Domaine du Cros",
+            "vintage": null,
+            "section": "RED",
+            "price": 44,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "Marcillac \"Lo Sang del Pais\", Domaine du Cros, South West France \u00a38.25 / \u00a344.00",
+            "position": {
+              "x": 5.0,
+              "y": 90.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "C\u00f4tes du Rh\u00f4ne, Laudun Chusclan",
+            "producer": "Laudun Chusclan",
+            "vintage": null,
+            "section": "RED",
+            "price": 43,
+            "confidence": 0.88,
+            "doubts": [],
+            "source_text": "C\u00f4tes du Rh\u00f4ne, Laudun Chusclan, Rh\u00f4ne \u00a38.50 / \u00a343.00",
+            "position": {
+              "x": 5.0,
+              "y": 93.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.83
+            }
+          },
+          {
+            "name": "Sauternes Les Garonelles, Lucien Lurton",
+            "producer": "Lucien Lurton",
+            "vintage": null,
+            "section": "DESSERT",
+            "price": 47,
+            "confidence": 0.88,
+            "doubts": [
+              "tama\u00f1o de copa indicado como 50ml / 375ml"
+            ],
+            "source_text": "Sauternes Les Garonelles, Lucien Lurton, Bordeaux \u00a38.75 / \u00a347.00",
+            "position": {
+              "x": 5.0,
+              "y": 96.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.8
+            }
+          },
+          {
+            "name": "Juran\u00e7on La Magendia, Clos Lapeyre",
+            "producer": "Clos Lapeyre",
+            "vintage": null,
+            "section": "DESSERT",
+            "price": 48,
+            "confidence": 0.88,
+            "doubts": [
+              "tama\u00f1o de copa indicado como 50ml / 375ml"
+            ],
+            "source_text": "Juran\u00e7on La Magendia, Clos Lapeyre, South West France \u00a38.50 / \u00a348.00",
+            "position": {
+              "x": 5.0,
+              "y": 98.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.8
+            }
+          },
+          {
+            "name": "Banyuls, Domaine Valcros",
+            "producer": "Domaine Valcros",
+            "vintage": null,
+            "section": "DESSERT",
+            "price": null,
+            "confidence": 0.82,
+            "doubts": [
+              "precio no legible con claridad en la imagen"
+            ],
+            "source_text": "Banyuls, Domaine Valcros (o), (50ml / 500ml)",
+            "position": {
+              "x": 5.0,
+              "y": 100.0,
+              "width": 42.0,
+              "height": 4.0,
+              "confidence": 0.75
+            }
+          }
+        ]
+      },
+      "latency_ms": 85619,
+      "detection_accuracy": null,
+      "horizontal_overflow": false,
+      "console_errors": [],
+      "overflow_elements": [],
+      "unhandled_console_errors": [],
+      "network_failures": [],
+      "http_errors": [],
+      "screenshot": "/private/tmp/matchrim-100-account-pilot/negative-menus70/commons-150250375-real-mobile.png",
+      "api_call_summaries": [
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "top",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 8,
+            "estimated_visible_wines": 12,
+            "notes": [
+              "La parte inferior de la carta de vinos est\u00e1 cortada; hay al menos una l\u00ednea de vino blanco adicional no completamente legible.",
+              "La secci\u00f3n de tintos y rosados no es visible en la imagen.",
+              "Se han excluido cervezas, sidras, destilados, c\u00f3cteles, aperitivos y mocktails seg\u00fan las instrucciones.",
+              "Los precios de copa/botella se han asignado siguiendo el encabezado 'GLASS 125ML / BOTTLE 750ML' visible en la carta.",
+              "El precio del Cr\u00e9mant de Loire aparece como \u00a39.00/\u00a350.00 en la primera l\u00ednea de SPARKLING pero el bloque siguiente muestra \u00a38.50/\u00a347.00; se han asignado los precios al vino correspondiente seg\u00fan orden visual."
+            ]
+          },
+          "wine_names": [
+            "Gobillard, Grande R\u00e9serve Premier Cru",
+            "Cr\u00e9mant de Loire Brut, De Chanceny, Loire",
+            "Rivarose, Provence",
+            "C\u00f4tes de Gascogne, Domaine de M\u00e9nard, South West France",
+            "Muscadet, Ch\u00e2teau du Poyet, Loire",
+            "Sauvignon Blanc, Francois Lurton, Languedoc-Roussillon",
+            "Les Bardets Blanc, Maison Labastide, South West France",
+            "Picpoul de Pinet, Cht & Mathieu, Languedoc-Roussillon"
+          ],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "bottom",
+          "coverage": {
+            "status": "reported_complete",
+            "extracted_wines": 14,
+            "estimated_visible_wines": 14,
+            "notes": [
+              "Se han extra\u00eddo todos los vinos visibles en la carta.",
+              "El Chardonnay Aubert & Mathieu y el Banyuls Domaine Valcros tienen precios con baja legibilidad en sus l\u00edneas.",
+              "Los precios de los vinos de postre corresponden a 50ml/copa y 375ml o 500ml/botella seg\u00fan se indica en la carta.",
+              "Se han excluido cervezas, sidras y bebidas no v\u00ednicas seg\u00fan las instrucciones."
+            ]
+          },
+          "wine_names": [
+            "C\u00f4tes de Gascogne, Domaine de M\u00e9nard",
+            "Muscadet, Ch\u00e2teau du Poyet",
+            "Sauvignon Blanc, Francois Lurton",
+            "Les Bardets Blanc, Maison Labastide",
+            "Chardonnay, Aubert & Mathieu",
+            "Corbarol Rose, Ch\u00e2teau Saint Roch",
+            "Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert",
+            "Camille Malbec, Ch\u00e2teau du Cedre",
+            "Les Bardets Rouge, Maison Labastide",
+            "Marcillac \"Lo Sang del Pais\", Domaine du Cros",
+            "C\u00f4tes du Rh\u00f4ne, Laudun Chusclan",
+            "Sauternes Les Garonelles, Lucien Lurton",
+            "Jurancon La Magendia, Clos Lapeyre",
+            "Banyuls, Domaine Valcros"
+          ],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "full",
+          "coverage": {
+            "status": "reported_complete",
+            "extracted_wines": 17,
+            "estimated_visible_wines": 17,
+            "notes": [
+              "Se han extra\u00eddo todos los vinos visibles y legibles de la carta.",
+              "Se han excluido cervezas, sidras, destilados, c\u00f3cteles, aperitivos y mocktails.",
+              "El precio del Banyuls no era claramente legible en la imagen.",
+              "Los vinos de postre indican tama\u00f1o de copa 50ml y botella 375ml seg\u00fan la carta.",
+              "Total de vinos extra\u00eddos: 17, por debajo del l\u00edmite de 30."
+            ]
+          },
+          "wine_names": [
+            "Gobillard, Grande R\u00e9serve Premier Cru",
+            "Cr\u00e9mant de Loire Brut, De Chanceny",
+            "Rivarose, Provence",
+            "C\u00f4tes de Gascogne, Domaine de M\u00e9nard",
+            "Muscadet, Ch\u00e2teau du Poyet",
+            "Sauvignon Blanc, Francois Lurton",
+            "Les Bardets Blanc, Maison Labastide",
+            "Chardonnay, Aubert & Mathieu",
+            "Corbarol Ros\u00e9, Ch\u00e2teau Saint Roch",
+            "Clairi\u00e8res Merlot, Les Celliers Jean d'Alibert",
+            "Camille Malbec, Ch\u00e2teau du Cedre",
+            "Les Bardets Rouge, Maison Labastide",
+            "Marcillac \"Lo Sang del Pais\", Domaine du Cros",
+            "C\u00f4tes du Rh\u00f4ne, Laudun Chusclan",
+            "Sauternes Les Garonelles, Lucien Lurton",
+            "Juran\u00e7on La Magendia, Clos Lapeyre",
+            "Banyuls, Domaine Valcros"
+          ],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        },
+        {
+          "function": "scan-wine-menu",
+          "status": 200,
+          "tile": "right-focus",
+          "coverage": {
+            "status": "partial",
+            "extracted_wines": 0,
+            "estimated_visible_wines": 0,
+            "notes": [
+              "La carta fotografiada no contiene ninguna secci\u00f3n de vinos. Las secciones visibles son: Armagnac & Cognac, Spirits, Whisky, Digestif, Beers & Cider, Soft Drinks y Hot Drinks. No se ha encontrado ninguna referencia a vino (tinto, blanco, rosado, espumoso, generoso o dulce) en ninguna l\u00ednea legible de la imagen. Por tanto, no se extrae ning\u00fan vino y la cobertura es parcial por ausencia de producto relevante."
+            ]
+          },
+          "wine_names": [],
+          "ai_provider": "anthropic",
+          "ai_model": "claude-sonnet-4-6"
+        }
+      ],
+      "status": "BLOCKED_OR_FAIL",
+      "visible_excerpt": "\n7\nLes Bardets Blanc, Maison Labastide\nMaison Labastide \u00b7 South West France \u00b7 ambos \u00b7 43.00\u20ac\n\u224866%\nIdentidad alta\n8\nChardonnay, Aubert & Mathieu\nAubert & Mathieu \u00b7 Languedoc-Roussillon \u00b7 ambos \u00b7 47.00\u20ac\n\u224864%\nIdentidad alta\n10\nClairi\u00e8res Merlot, Les Celliers Jean d'Alibert\nLes Celliers Jean d'Alibert \u00b7 Languedoc \u00b7 ambos \u00b7 34.00\u20ac\n\u224864%\nIdentidad alta\n2\nCr\u00e9mant de Loire Brut, De Chanceny\nDe Chanceny \u00b7 Loire \u00b7 ambos \u00b7 50.00\u20ac\n\u224862%\nIdentidad alta\n4\nC\u00f4tes de Gascogne, Domaine de M\u00e9nard\nDomaine de M\u00e9nard \u00b7 South West France \u00b7 ambos \u00b7 34.00\u20ac\n\u224862%\nIdentidad alta\n9\nCorbarol Ros\u00e9, Ch\u00e2teau Saint Roch\nCh\u00e2teau Saint Roch \u00b7 C\u00f4te Roussillon \u00b7 ambos \u00b7 40.00\u20ac\n\u224862%\nIdentidad alta\n3\nRivarose, Provence\nRivarose \u00b7 Provence \u00b7 ambos \u00b7 47.00\u20ac\n\u224860%\nIdentidad alta\n5\nMuscadet, Ch\u00e2teau du Poyet\nCh\u00e2teau du Poyet \u00b7 Loire \u00b7 ambos \u00b7 36.00\u20ac\n\u224860%\nIdentidad alta\n16\nJuran\u00e7on La Magendia, Clos Lapeyre\nClos Lapeyre \u00b7 South West France \u00b7 ambos \u00b7 48.00\u20ac\n\u224856%\nIdentidad alta\n17\nBanyuls, Domaine Valcros\nDomaine Valcros \u00b7 South West France\n\u224849%\nIdentidad media\n15\nSauternes Les Garonelles, Lucien Lurton\nLucien Lurton \u00b7 Bordeaux \u00b7 ambos \u00b7 47.00\u20ac\n\u224848%\nIdentidad alta\nVer fichas completas y acciones\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+      "source_id": "commons-150250375",
+      "variant": "original",
+      "variant_kind": "original",
+      "difficulty": "handwritten_board",
+      "ground_truth": {
+        "annotation_scope": "negative_abstention",
+        "expected_wines": [],
+        "expected_boxes": [],
+        "visible_bottles_estimate": 0,
+        "expected_min_regions": 0,
+        "expected_min_identified": 0,
+        "detector_cap": 60,
+        "illegible_max_high_confidence_candidates": 0
+      },
+      "scene_sha256": "b5ee2a44508352668524f89975ce8adca1e0e200bc10f69f307a383b60606f4e"
+    }
+  ]
+}

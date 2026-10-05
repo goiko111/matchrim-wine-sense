@@ -1,0 +1,753 @@
+{
+  "source_commit": "19123b7dde26dab2dadca93788c97f62998e7ece",
+  "version": "1.0",
+  "build": "69",
+  "bundle": "wine.matchrim.app",
+  "sdk": "iphoneos26.0",
+  "channel": "signed development QA; staging only; not a TestFlight archive",
+  "backend_project": "qpbmqvfnunkylvtvnyyx",
+  "schema": "matchrim_qa",
+  "fixtures": false,
+  "anonymous_analytics": false,
+  "app_path": "/private/tmp/matchrim-identity-v5-device/Build/Products/Debug-iphoneos/App.app",
+  "simulator_path": "/private/tmp/matchrim-identity-v5-simulator/Build/Products/Debug-iphonesimulator/App.app",
+  "executable_sha256": "4d04d0e6843a29dda2c6245f47d33fba805abe9d28552c33728be7174c3f183c",
+  "web_assets_sha256": "4dd32ac5d4f9bdbacce5dd9b3c6a32e90d4aa3a1684c7992d5fdb75205d7bbc6",
+  "web_assets": [
+    {
+      "path": "public/assets/AccountDeletion-DZ71X0QH.js",
+      "sha256": "4a615656a065127f39cd6df373b904ee121edc54f474bf93ff5b9e657523a193",
+      "bytes": 5744
+    },
+    {
+      "path": "public/assets/Admin-BK74WI4-.js",
+      "sha256": "bbf521e585f5774fed662b814c645f857e8213679bdf66de195a6debbfe47945",
+      "bytes": 499002
+    },
+    {
+      "path": "public/assets/AiRimMark-Bwx2R_Og.js",
+      "sha256": "01029297870464223a396fa57b9765ce1800302787eab50863e3f989c6ae1881",
+      "bytes": 749
+    },
+    {
+      "path": "public/assets/AppNav-DHvcih4h.js",
+      "sha256": "ccf52cd8477b396c5f0159c7a13f3dbba90c08135b52f4cc548a40169ca4264b",
+      "bytes": 5126
+    },
+    {
+      "path": "public/assets/Auth-E-14m0u3.js",
+      "sha256": "70cd4a9bb61b6cdb15a8329bad1a50c49890e22496acdfcdbb5aafd5743a07f2",
+      "bytes": 4287
+    },
+    {
+      "path": "public/assets/Combination-BcMLfcbt.js",
+      "sha256": "e5ffb22059902e89db0e121fe3791214d3d970a98b3dba4915dac7b56a057d8a",
+      "bytes": 43971
+    },
+    {
+      "path": "public/assets/DataStats-q3PHLTN1.js",
+      "sha256": "a841aaaf6b134a0913ab554591daefbf7a7ef82bb0fe9aa3dfd0378eb2d1b936",
+      "bytes": 5628
+    },
+    {
+      "path": "public/assets/DataViewer-BMdHtXlC.js",
+      "sha256": "37d71e8e504a1b0d2475c047cf4d780102e93b64b1ca44ce291362f4cf2ca17b",
+      "bytes": 1260
+    },
+    {
+      "path": "public/assets/DataViewerTabs-FIHwuUKq.js",
+      "sha256": "87d2dc2c603324aa840ae3f1cb30d98f5e732c9a8870387ae3eb9ede479794ed",
+      "bytes": 19272
+    },
+    {
+      "path": "public/assets/ForgotPassword-Cq75e-Za.js",
+      "sha256": "7952e27386ae56d1fca97b81b8605b59d1df94706a15ab61d8169b783c8f00de",
+      "bytes": 1923
+    },
+    {
+      "path": "public/assets/Header-BUzO2X43.js",
+      "sha256": "e34693eb00c9801b0c489e06de266b7b8ebb7cd3c911b62a7bc55a0ac35e0196",
+      "bytes": 3449
+    },
+    {
+      "path": "public/assets/ImportCSV-AKeN_keI.js",
+      "sha256": "5400ab27a404b44d6a5e90e62abd2daf4f9702015efbf38434f0dc4008f122f5",
+      "bytes": 33203
+    },
+    {
+      "path": "public/assets/Index-BuyjlXum.js",
+      "sha256": "1abbaceab333bea20320688d06325730dcd51cf82ae0a623ef3bb097b9f599ae",
+      "bytes": 18669
+    },
+    {
+      "path": "public/assets/LanguageSwitcher-oHf4SrHj.js",
+      "sha256": "7e5b347be077f4371105e170a10c4419e45a5e729c80f889006ad1aae139c364",
+      "bytes": 1009
+    },
+    {
+      "path": "public/assets/LiquidIntelligence-DuHmU1IQ.js",
+      "sha256": "12a1e1f7bd6adae7bef90e1a06191c3850b0fbd915dcbb9e29ab46ab9caf0c36",
+      "bytes": 57178
+    },
+    {
+      "path": "public/assets/Matchrim-Rz0aEO9F.js",
+      "sha256": "4ad498fb069ea949344c0f7d5eecb8c0a5a92120b0d149480c1251adaa34ad11",
+      "bytes": 57998
+    },
+    {
+      "path": "public/assets/MobileBottomNav-KbFkf0wp.js",
+      "sha256": "af54bc1e26e1c52f3101ffb072159ac0b8851c04b6c281582787a0023c5b7ce9",
+      "bytes": 6462
+    },
+    {
+      "path": "public/assets/MyWines-Vhzxyqgq.js",
+      "sha256": "3ee871f06fdf482b7432b7c6bf705cee4f2b3faa68f815f4c8f32a0972d4752d",
+      "bytes": 55582
+    },
+    {
+      "path": "public/assets/NotFound-Ct1Wtaxo.js",
+      "sha256": "e853cc5b2080f218005d87515afdd2515d8ca4e0dab0285649665211b2ae447d",
+      "bytes": 870
+    },
+    {
+      "path": "public/assets/PrivacyPolicy-C5CCq0_9.js",
+      "sha256": "650734f0d204f0ba3992c9a5d0f68779cb25f1d737152a2dc39017d0328deef3",
+      "bytes": 6757
+    },
+    {
+      "path": "public/assets/Profile-CD-6y5wL.js",
+      "sha256": "f5cc35a2c3f998027ef81efcb59403f6adf6e545817933613a127ba6c72c8d23",
+      "bytes": 36912
+    },
+    {
+      "path": "public/assets/RegionMap-BKWjo1HA.css",
+      "sha256": "5f22f7580559f3bc02f8c0b080b3b320e761afb190fa43092a873e14f2fd3f01",
+      "bytes": 37103
+    },
+    {
+      "path": "public/assets/RegionMap-mXIKoW3Y.js",
+      "sha256": "41c695442589741e3ce3f19d64679888e025fc22c18879830f23c6973c73d21c",
+      "bytes": 1626506
+    },
+    {
+      "path": "public/assets/Registration-Cesbq_qQ.js",
+      "sha256": "9e5658de72d7cac9464b9d7de4531ac65295f2bafc36b82533cb8352ab3fdabc",
+      "bytes": 19658
+    },
+    {
+      "path": "public/assets/ResetPassword-ulAVPAmn.js",
+      "sha256": "045c56b5c24d60be3e637d11ec7b966357635c7bc15a557eee5160289676b02a",
+      "bytes": 2598
+    },
+    {
+      "path": "public/assets/Scan-FBG3tRs4.js",
+      "sha256": "530ac850d948b1a8a7fa326e912378fcbccd265b109fda94381792847ebce058",
+      "bytes": 78031
+    },
+    {
+      "path": "public/assets/Terms-mUA9Al_S.js",
+      "sha256": "ad47eceff4a039aa2e3aa97513f87f8905f815896f0c93358b98b0ce7f8b395b",
+      "bytes": 3788
+    },
+    {
+      "path": "public/assets/UseMatchrim-CFjSXxet.js",
+      "sha256": "c301f3aa0c470218fd01749ca0fa3beaebffea4568e2b94fbd750e0ce7cd0d54",
+      "bytes": 18429
+    },
+    {
+      "path": "public/assets/WineCard-5lObtCRs.js",
+      "sha256": "ac4d4cd0c66bd771262486d25868586b5af055d04de340bc50a19a4f39074fd4",
+      "bytes": 15408
+    },
+    {
+      "path": "public/assets/WineDetail-CYClQzuM.js",
+      "sha256": "eb7d93eff6222aa566fe0a78a43f11074e190165aab901943688c3620a000490",
+      "bytes": 8716
+    },
+    {
+      "path": "public/assets/WineImport-DiUiN4RY.js",
+      "sha256": "6f066cdf0c99a33949a7b8cc369423beabd82172482bb703b85c2a4b8772878e",
+      "bytes": 5603
+    },
+    {
+      "path": "public/assets/WineImporter-IGRdIUNS.js",
+      "sha256": "70e4c46a7b02b2c0f21f06ef2ad21edc3716362ae408b99c796e695907fe7271",
+      "bytes": 11239
+    },
+    {
+      "path": "public/assets/WineMenuScanner-8n_oT4TQ.js",
+      "sha256": "d9e8b9205f3e8137be1b43c20e8b1e90460a97a63cc0cfc4eceb8d2c97f2d7c4",
+      "bytes": 59296
+    },
+    {
+      "path": "public/assets/WineSearch-B1pCtNoO.js",
+      "sha256": "374df290d50171b5ed5c0c71354a01f69155cb40974805959c9e20769ff78f8b",
+      "bytes": 108577
+    },
+    {
+      "path": "public/assets/WineStyleDetail-9LryvbdC.js",
+      "sha256": "80945ae886fddf1a0787de3d0bc350811b1127c145241f1d48af540cc9bf9397",
+      "bytes": 42748
+    },
+    {
+      "path": "public/assets/WineStyles-BvJ81StV.js",
+      "sha256": "5deeb5ebaede55c4eee8d22f1130007978f2979a14041102c586a7289632a6bd",
+      "bytes": 27825
+    },
+    {
+      "path": "public/assets/alert-DI_4nv3O.js",
+      "sha256": "cc58f631d6a31d30f0408eb0d5e8491064fedba7bf43947726b0306b99aaa2c4",
+      "bytes": 908
+    },
+    {
+      "path": "public/assets/analytics-BZPF5f_D.js",
+      "sha256": "5152fa6791b6df9caa40dd81ac0e2d19566aa6122c968378cc1851ac5a162eaf",
+      "bytes": 65
+    },
+    {
+      "path": "public/assets/arrow-left-B17WPu96.js",
+      "sha256": "6a1a58ac8c2b860f11be6816cb761d3b26c3b62bdd8a1745004b5495de45e75a",
+      "bytes": 333
+    },
+    {
+      "path": "public/assets/arrow-right-B4l_cyQb.js",
+      "sha256": "ecd0d4b0529c9567a62dba280a97557a440ddedf312103e9a83cf93a995a8dc1",
+      "bytes": 333
+    },
+    {
+      "path": "public/assets/award-C4F7yrFb.js",
+      "sha256": "421a10b5ab820eb0527bac2b76bcd75d113368d6530240080541209cd6a2617a",
+      "bytes": 443
+    },
+    {
+      "path": "public/assets/badge-DEa4lmlK.js",
+      "sha256": "554088a30d97299a14230f01cd637793b0dc813ff23bca633f5df4559b96625c",
+      "bytes": 710
+    },
+    {
+      "path": "public/assets/bookmark-plus-CmabOm0k.js",
+      "sha256": "89d93e02eb117a34d6dd0806b12d1496c7b4909c61633d73b3e29e4d07ebf47d",
+      "bytes": 446
+    },
+    {
+      "path": "public/assets/brain-YtErgwKz.js",
+      "sha256": "995f6c5c6872e427697fec7fe8f683a9214e269aa3dbba4a801b4139857f5ff0",
+      "bytes": 903
+    },
+    {
+      "path": "public/assets/building-2-DqLQbEZS.js",
+      "sha256": "7ee32d9eb152dfe944f68e1babd53ac7d7110cae63da87f24f0f6a77fb8bc204",
+      "bytes": 607
+    },
+    {
+      "path": "public/assets/calendar-DLoyfZJG.js",
+      "sha256": "d8da216663f437c4bc22bc7022ed243e968bea3ddd0ebff99d6064e29e8ff4de",
+      "bytes": 426
+    },
+    {
+      "path": "public/assets/camera-DYNNMC40.js",
+      "sha256": "945ceb0f13897b3b87fb25943bb516127b88452fae268a59a0d9d5b1e86fdd4e",
+      "bytes": 417
+    },
+    {
+      "path": "public/assets/checkbox-B7fNxEp1.js",
+      "sha256": "0670b120b5b223f7b130da036b6b8d432bc41590fa91ee7deca8d8b9378ce7c6",
+      "bytes": 2823
+    },
+    {
+      "path": "public/assets/chef-hat-JDHJ03jn.js",
+      "sha256": "d9d769a23cd4029372f268ddc44bfb61568f69ace4b259412f67f9f755e26256",
+      "bytes": 476
+    },
+    {
+      "path": "public/assets/chevron-left-C4BioPgK.js",
+      "sha256": "08dbcbf11f5718e69e2491d7715b5a7a05aebb5dce15d99f5fc4a5cd764fe8cf",
+      "bytes": 298
+    },
+    {
+      "path": "public/assets/circle-alert-DIGzoFpN.js",
+      "sha256": "9eafdb1468d1e19a1fb1e6cc91026b1cb46948abd912ba1086689e97397b20f5",
+      "bytes": 418
+    },
+    {
+      "path": "public/assets/circle-check-big-CcEGwGVi.js",
+      "sha256": "69cf899ee6868ad878efc325c32841939c1a78e6845f2934d0cce7bfba9ea5b2",
+      "bytes": 356
+    },
+    {
+      "path": "public/assets/circle-x-D1Hb3tak.js",
+      "sha256": "1d253180358d433ded3821b14b0e6e909d5b4095c77e1fd6065efd81824687c5",
+      "bytes": 667
+    },
+    {
+      "path": "public/assets/copy-CIBkpaMr.js",
+      "sha256": "eea0010dbcb1eef977b211e64282a27737009ac3f461ec9fa2ecfa77f11f854d",
+      "bytes": 400
+    },
+    {
+      "path": "public/assets/dialog-eAP0HUUW.js",
+      "sha256": "ce7f472fa25768737221969f27a681e49f71a8eaf944dc07b72855c10f1834ad",
+      "bytes": 2002
+    },
+    {
+      "path": "public/assets/dropdown-menu-DU_BQ48I.js",
+      "sha256": "15df12cf8ff9f58b524600990a2e4de42fc98435972e2170e211cff523e7b761",
+      "bytes": 21124
+    },
+    {
+      "path": "public/assets/external-link-DOz9wIsI.js",
+      "sha256": "6141e913a677c2250ae1417febdb824e8bb75b2ef7281f74b83e77d5a7f056f6",
+      "bytes": 419
+    },
+    {
+      "path": "public/assets/eye-Cb5_CIp1.js",
+      "sha256": "8cd3410be04d61daaaf91461b8477e1958cbedba81808d4d30c35c0c599cc4a8",
+      "bytes": 420
+    },
+    {
+      "path": "public/assets/eye-off-B6rQ7c8G.js",
+      "sha256": "d55e71f0a1b4dae8b19148dfdce8d5b186937b7ea0f742e90a005fd605e07969",
+      "bytes": 598
+    },
+    {
+      "path": "public/assets/file-spreadsheet-FlurUS6N.js",
+      "sha256": "a513118c6f23a96262a829658a9e2631c69227a67c56db51bf1c44596453a565",
+      "bytes": 926
+    },
+    {
+      "path": "public/assets/file-text-CNCgvgWo.js",
+      "sha256": "edce8ebb119fc9df57f1dc135694e8ed387cb159644a46641e8c2853a48d9ff2",
+      "bytes": 501
+    },
+    {
+      "path": "public/assets/grape-1EJ6DrgI.js",
+      "sha256": "2a4af2022fb9b82ddb6eac34e34c2a34906398d833a4dcf0f9dcf6fdd11073b5",
+      "bytes": 708
+    },
+    {
+      "path": "public/assets/heart-C1TQzSD9.js",
+      "sha256": "851426abc5ee4935309aa2598cccfb52c00e5f3e532225530d8e9616ea2711dd",
+      "bytes": 409
+    },
+    {
+      "path": "public/assets/hero-tinto-versatil-iLS2Co8t.jpg",
+      "sha256": "b4d2432e4c215d8a888aa50ccad83e636c0b1578c548daf3622c2590cc2d50da",
+      "bytes": 156193
+    },
+    {
+      "path": "public/assets/history-DYx_bOFi.js",
+      "sha256": "db6ef17be428b16be3ba9da36d83eb32b389077f9a51f3303d003ea40167b124",
+      "bytes": 406
+    },
+    {
+      "path": "public/assets/index-CDS2FLoH.css",
+      "sha256": "5eb6153c1b193dbb3c68366bc036e73847b78e5df62ad527fb2e3d3bc7597356",
+      "bytes": 128316
+    },
+    {
+      "path": "public/assets/index-CpwYB147.js",
+      "sha256": "9aa8f9460f89911dde61ed982cfde298b00d1cea2ba368236cb24cc235ba2832",
+      "bytes": 4359
+    },
+    {
+      "path": "public/assets/index-DVNl05Wi.js",
+      "sha256": "ad0886b169b2c9c2b5bdb7446a49621acd7c3e6a860bb7fc89066a2e30538be8",
+      "bytes": 489253
+    },
+    {
+      "path": "public/assets/index-DauGrQrn.js",
+      "sha256": "fa4301ac21ebd4fe5cc30a02205a9c7a31d8896f463d9f57af8c4e790a5c611d",
+      "bytes": 232
+    },
+    {
+      "path": "public/assets/index-DqFnAb-O.js",
+      "sha256": "3047e8f343ac3a4e7a73b91f85e82a0a53f0af0cbd0c8be842f6101082fd7ca2",
+      "bytes": 5209
+    },
+    {
+      "path": "public/assets/index-ONxLgIBk.js",
+      "sha256": "0f7c3c78dc7fdf6f4126ef33082884c6059bc866e379e25b0916fce3a12f42e4",
+      "bytes": 17654
+    },
+    {
+      "path": "public/assets/input-Bk0Y8Dkb.js",
+      "sha256": "0053bc5731bbb04a2af833b2905da29129be1dfb572961a98c58ce814461fd92",
+      "bytes": 580
+    },
+    {
+      "path": "public/assets/label-B-20DpOt.js",
+      "sha256": "6f2a7c175895ac1fa52171b9d089ce0dc9293f3de7d1a4392d3798ee3152dc51",
+      "bytes": 554
+    },
+    {
+      "path": "public/assets/lightbulb-CFRB0YLt.js",
+      "sha256": "2516a1ce3d09ba07a32c30a773345468276008b73f2d2f3a3f0086a6c54a6f66",
+      "bytes": 455
+    },
+    {
+      "path": "public/assets/loader-circle-BF6PGvaK.js",
+      "sha256": "9a5e47e14b3784772b583b155a27fa2a69d70f6365c2dd3ec0f2081926a0a7a9",
+      "bytes": 312
+    },
+    {
+      "path": "public/assets/mail-Cn6KVxe-.js",
+      "sha256": "c5c486df571acd81d44d6e5d7351086794f365d067c7fdfc51b4bb1888488244",
+      "bytes": 384
+    },
+    {
+      "path": "public/assets/map-pin-pFni5u7G.js",
+      "sha256": "1f89a04f658defdc8024c5eb3a4ec5f6e61f5b446f7f6083167b4d6969cf0ef2",
+      "bytes": 422
+    },
+    {
+      "path": "public/assets/matchrimLearning-fv7iIJPS.js",
+      "sha256": "ccea449d7964401f2192b6da1129a2d1c0520d1e2d623cb950cfc6c9706a80b6",
+      "bytes": 2782
+    },
+    {
+      "path": "public/assets/matchrimLocalProfile-DMhpPQIq.js",
+      "sha256": "84fae842b28ae7b75e155fc8709478d48ea8b22967c94a801414f7886efdfdad",
+      "bytes": 487
+    },
+    {
+      "path": "public/assets/matchrimPassport-CLyGsfH6.js",
+      "sha256": "5ce31392c82076d1cca3c523e5b88c867338422e0ded6c991d798537416b21ca",
+      "bytes": 1962
+    },
+    {
+      "path": "public/assets/message-circle-vnK4l0r9.js",
+      "sha256": "ac6f1681e2b3156e14f0351f99eeb2814948a61e78fb0213b3dc27e79ba616a9",
+      "bytes": 316
+    },
+    {
+      "path": "public/assets/navigation-BjSHZKvn.js",
+      "sha256": "9ae37b5c86e224afe71920fba3f323281778316ee25d3c33c483c0ff61e66da0",
+      "bytes": 222
+    },
+    {
+      "path": "public/assets/overlayPins-C8p-222Z.js",
+      "sha256": "ba1ac839afed20db35df7c05fe3e118143cddcaa4d5e8131155dd8ff3a85530f",
+      "bytes": 62782
+    },
+    {
+      "path": "public/assets/palette-CAfuwkzJ.js",
+      "sha256": "7986b4a97c6976ef8cc79a5d50409290c4b505fd2c1b49ee416982c611bf781e",
+      "bytes": 779
+    },
+    {
+      "path": "public/assets/pdf-BAFhSO9X.js",
+      "sha256": "7cb6fab443c900993ccdc8c9e264a9db3385eba38dafe897f53175cf173e5b00",
+      "bytes": 446178
+    },
+    {
+      "path": "public/assets/pdf.worker-BPDUMpZa.js",
+      "sha256": "942c0a60603524de6e64390aacbcdc45d70dd97173977e7ec0392dc72c5595dc",
+      "bytes": 1015950
+    },
+    {
+      "path": "public/assets/progress-Bkia7bK-.js",
+      "sha256": "2966985241896dcc7070ebce2e1a389e34da0f47e2df0c233f0feee36ee4509c",
+      "bytes": 2886
+    },
+    {
+      "path": "public/assets/question-11-anis-DbjOcpbt.jpg",
+      "sha256": "4dea1e80258fb2610d807c93fe64f0d895ae95987d016fd2635961030d070cb8",
+      "bytes": 44577
+    },
+    {
+      "path": "public/assets/question-12-avellanas-tostadas-BHAXGwcL.jpg",
+      "sha256": "6f92114a25800dd1ea861cd679221037e8e1f341db91f1ba029f789d421c9869",
+      "bytes": 144646
+    },
+    {
+      "path": "public/assets/question-13-vainilla-BXzYbYLJ.jpg",
+      "sha256": "9f424cd500dedf2fd13e333f680d828481bfbd5ad0e85bf3d29c67074fe509cb",
+      "bytes": 29211
+    },
+    {
+      "path": "public/assets/question-14-cafe-con-leche-CUepAXx1.jpg",
+      "sha256": "28440572b74ddc6f1d7b7d3f6797a3bfe209601a7c59d334ecedb2a6eecfeba3",
+      "bytes": 44153
+    },
+    {
+      "path": "public/assets/question-15-hierbabuena-CwLF3tyD.jpg",
+      "sha256": "1006004e2e26b949201fe8a3081ab41d94ccf5963740f70786a30555f5995b8f",
+      "bytes": 87471
+    },
+    {
+      "path": "public/assets/question-16-mango-ANSh1N5I.jpg",
+      "sha256": "7069d21d53aaa8601536b3d990852fa90c3b6926f03f717a78fdf297849242be",
+      "bytes": 50494
+    },
+    {
+      "path": "public/assets/question-17-marisco-CAUavwGJ.jpg",
+      "sha256": "f3062805fabcd00bf5ad1a7bd895bdf1fcbabcc2bd9b0785bc6bbfe6168f1515",
+      "bytes": 148177
+    },
+    {
+      "path": "public/assets/question-18-encurtidos-DW47zXYl.jpg",
+      "sha256": "22f5b4d8c03b1c42af2a5b217c3d3913e99866bc4240ed09d97d5f1f515daf22",
+      "bytes": 77164
+    },
+    {
+      "path": "public/assets/question-19-curry-DTf_3pwD.jpg",
+      "sha256": "fc8e4d0fdc01ab7399de19e10651434b60c3750c54536d2aff841ab8fc4aae27",
+      "bytes": 69083
+    },
+    {
+      "path": "public/assets/question-2-cayena-BaptgsmZ.jpg",
+      "sha256": "ceab1f2be457be3f96a217c431c976bef3b5af254080118d307b2a28ba6f6fad",
+      "bytes": 124302
+    },
+    {
+      "path": "public/assets/question-20-caramelos-limon-Br_srOhs.jpg",
+      "sha256": "22ac73e85f58c5e6d31aef7e9b86a85be30c23a7a80df05101760e056d07e5a8",
+      "bytes": 77584
+    },
+    {
+      "path": "public/assets/question-4-pimiento-rojo-DpUlukRl.jpg",
+      "sha256": "6281e467bf71957da7932b8e0879b7a86d5e561bae86fb5746076fa2fd4f84ce",
+      "bytes": 86825
+    },
+    {
+      "path": "public/assets/question-5-cuero-DVy29yb0.jpg",
+      "sha256": "519d0073a93d686e942c9f13080bfba445b89f569fef658ef92761c3a27b8e5f",
+      "bytes": 176441
+    },
+    {
+      "path": "public/assets/question-5-manzanas-verdes-Dawgo6fi.jpg",
+      "sha256": "8df18506ceeda33ec5f21444bb71cfa475866a039f81c755baee3904cfcc9942",
+      "bytes": 16452
+    },
+    {
+      "path": "public/assets/question-6-berenjenas-B_k6J_Vp.jpg",
+      "sha256": "36c7b49c59509dc8f56389154a39e491b18123fdf5627c4db0f0ec4e8cd334df",
+      "bytes": 49074
+    },
+    {
+      "path": "public/assets/question-6-queso-azul-B1rPHrw2.jpg",
+      "sha256": "72d0fd3b83c5bcf6de4ec1e2256cd9b19544cace02617928e930def48635db2d",
+      "bytes": 98151
+    },
+    {
+      "path": "public/assets/question-7-pepinillos-B6BLwLON.jpg",
+      "sha256": "3db7ad07f08e9b29e8512c2d4883c9d0d25de102d1efda2522fc299f1cce40ee",
+      "bytes": 80359
+    },
+    {
+      "path": "public/assets/question-7-trufas-wb9Mws2W.jpg",
+      "sha256": "993194a682dc56d1a83cb8b44a1352f147a043949a4ca9eb0e1daeb1a1fd1ea3",
+      "bytes": 90320
+    },
+    {
+      "path": "public/assets/question-8-datiles-DmGm6K6X.jpg",
+      "sha256": "456e39c522afb16afcbbb18cf669c2ec9105307d66dc4d5b659277ba28a37fb9",
+      "bytes": 37998
+    },
+    {
+      "path": "public/assets/question-9-espresso-1KgKE-hR.jpg",
+      "sha256": "2db5db43b331537ef10ba404a36ab1899d11ce8324b33c4a623fb60a51cf527c",
+      "bytes": 15338
+    },
+    {
+      "path": "public/assets/radio-group-bUZI46hs.js",
+      "sha256": "d1d23b87980f631a2a9a1299c7aa4dd5717e366392d789d5fe3b65a13ff875ca",
+      "bytes": 3976
+    },
+    {
+      "path": "public/assets/scale-afIh-eOV.js",
+      "sha256": "d0f942a056efebc704ceee6e3a0dfcb587a27cf6f00394fdcc9db94467889948",
+      "bytes": 532
+    },
+    {
+      "path": "public/assets/scanHistory-C9AG3biU.js",
+      "sha256": "509b07ab8f47280409b989817b26a28a8fa07c30a70739a4d990790845fcc490",
+      "bytes": 1080
+    },
+    {
+      "path": "public/assets/search-Byyo4ftt.js",
+      "sha256": "3f001a52ef2b03a282383df972440e4782d685456988373de187e152e4b7f166",
+      "bytes": 336
+    },
+    {
+      "path": "public/assets/select-CNuURFPH.js",
+      "sha256": "14d987b2febe5a92d0a4184eeb65b19cd2ab884da65c485c600fd94702767918",
+      "bytes": 21464
+    },
+    {
+      "path": "public/assets/separator-BVyJ2va3.js",
+      "sha256": "0345cf340f5a1bce3c9ab71b03fd75b58fe9f24dab9a72424124e2f7fee03153",
+      "bytes": 668
+    },
+    {
+      "path": "public/assets/share-2-CSwSOMVR.js",
+      "sha256": "deb8bfaf10528cbb886009b8e5d0cb9c4db29b659f5a126b3a1615c2d1bc5094",
+      "bytes": 520
+    },
+    {
+      "path": "public/assets/shield-check-CL1pKUGf.js",
+      "sha256": "c8ed85526c0cef3d027e9f62461885c4f6cbd64ae2da4502f633697bf1ba01a6",
+      "bytes": 488
+    },
+    {
+      "path": "public/assets/star-DrYcSYxJ.js",
+      "sha256": "72e545b3911649056ef27b4800828bb0539f6dbbcce4059538a657cb1312e397",
+      "bytes": 641
+    },
+    {
+      "path": "public/assets/sword-o7aOWNtD.js",
+      "sha256": "3860094666ed4543035713b2b38a8af45f3801ac0212e009d8c9f85cbbf04296",
+      "bytes": 486
+    },
+    {
+      "path": "public/assets/table-CAbZFjf7.js",
+      "sha256": "413d9ca1eb1595a9c0935634a20899bd82507e0d577b45a2cb4a8e2b9ac8acbf",
+      "bytes": 1486
+    },
+    {
+      "path": "public/assets/tabs-jZKcdScM.js",
+      "sha256": "5c5afd5738a73e2752108678036f55ac84de38d27dae33ee264ef331295c5595",
+      "bytes": 3247
+    },
+    {
+      "path": "public/assets/target-B5AylnzI.js",
+      "sha256": "7353306ba2983ada74fec8f633f99a8d7eccdc4cd930c8640e386d47001b7bdd",
+      "bytes": 390
+    },
+    {
+      "path": "public/assets/textarea-BoNuszuy.js",
+      "sha256": "eac47fdce2235d12faeec0a6afb43219a27fc95fd3d40880db1735e56aa41fde",
+      "bytes": 482
+    },
+    {
+      "path": "public/assets/thermometer-Bv2hNli0.js",
+      "sha256": "597530150f5745953e63d9be3131447173b34aed0375f56662644cba6c48795b",
+      "bytes": 326
+    },
+    {
+      "path": "public/assets/thumbs-down-DiuuIcjX.js",
+      "sha256": "dc62bff37ea053dfe3651e7a4b87dd425c0b2041edf50a33384726474ef85133",
+      "bytes": 471
+    },
+    {
+      "path": "public/assets/thumbs-up-DoiQRH0f.js",
+      "sha256": "8026053766519b0471601a465fc1397e9068a6e4416bb0d6d3a695d021c48eb5",
+      "bytes": 470
+    },
+    {
+      "path": "public/assets/trash-2-mhtfuMI4.js",
+      "sha256": "161eacb7463bc06bfa6d8d8b5b635cf1bc199c4848ecbf1961872cbf0ca1e519",
+      "bytes": 526
+    },
+    {
+      "path": "public/assets/trending-down-xjCPsMXs.js",
+      "sha256": "079f279d6a3b986fcd4aa38c1236798e22df4fcd7f3c1d58ee91d499249e7924",
+      "bytes": 613
+    },
+    {
+      "path": "public/assets/trending-up-DROD-8TA.js",
+      "sha256": "289cf2af8562e35cd1b1a93275ede1857662cf2cf6fea035e11d326b1430f1de",
+      "bytes": 373
+    },
+    {
+      "path": "public/assets/users-CD6AErhs.js",
+      "sha256": "f230d9ea2c51f708f063836dfde21fbf9e2bdd7131362f0022ad2f44dab38368",
+      "bytes": 473
+    },
+    {
+      "path": "public/assets/utensils-M9lAOlb6.js",
+      "sha256": "207e81cf35b2eaeb4b3ec61e81216b310561b4d77fd1942686047709360e56b4",
+      "bytes": 430
+    },
+    {
+      "path": "public/assets/wine-BihU1LXI.js",
+      "sha256": "3c78ce102d7b5371a6ec4573d9393bbd5c711b5c1e84d028dc200beee7f91413",
+      "bytes": 1530
+    },
+    {
+      "path": "public/assets/wine-bottle-placeholder-C3OB_emv.png",
+      "sha256": "ddce92a0e7d491de7ec1a0f04a4aacfbd7e6bbe5abf8a95d4dd870bed4f77d1b",
+      "bytes": 13091
+    },
+    {
+      "path": "public/assets/wineAffinityExplanation-GndJYlu_.js",
+      "sha256": "1833a4ded168a28a9c7857fd8261c61345eb7b6f142d3626486b94d78c48eeab",
+      "bytes": 5605
+    },
+    {
+      "path": "public/assets/winerimApi-CnVBOwi-.js",
+      "sha256": "b001794eb7a23fb70d6220a2075b6ff9cbb2632cfa0f00eca41eea40b86578c3",
+      "bytes": 10529
+    },
+    {
+      "path": "public/assets/winerimClassifier-Blhw6l7-.js",
+      "sha256": "6aecd079e0b4a7d73212949530a7c57252e9c101a8fd41d24d99d528776f8207",
+      "bytes": 8204
+    },
+    {
+      "path": "public/assets/winerimDataAggregation-CwSoxBf8.js",
+      "sha256": "934a23f06def2f91d7a74d6030164934a0937a460af25ad695f7d6f1671ed409",
+      "bytes": 31544
+    },
+    {
+      "path": "public/assets/zap-DkUvelPb.js",
+      "sha256": "44dd2432d5b0dac1bd9a681881175b13b109346f6ba30be1a30969f3af03bfac",
+      "bytes": 3824
+    },
+    {
+      "path": "public/cordova.js",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "public/cordova_plugins.js",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "public/favicon.ico",
+      "sha256": "9f081d20c7c14cd4d08271b728d7c62b997d894150915760c222f01285f923ba",
+      "bytes": 1150
+    },
+    {
+      "path": "public/index.html",
+      "sha256": "eaaddd6ecf4c3926b48dca435b8ca28d26ae77844951a341288f6b4ebddf4ec1",
+      "bytes": 2379
+    },
+    {
+      "path": "public/lovable-uploads/9619b04e-8a8f-4c87-94a5-c676792d96ad.png",
+      "sha256": "b2b83f99cca8b95481b5a7ca302b2e7cdc3da7cd997b023c9de81e48b776f7f3",
+      "bytes": 446435
+    },
+    {
+      "path": "public/lovable-uploads/a4fc1eb2-1ed7-4f1d-a8fa-aa5825514114.png",
+      "sha256": "d8b0e5a9fd1786d642338ec05440de977fd064cc7afce420eb8119441ab4811c",
+      "bytes": 26555
+    },
+    {
+      "path": "public/lovable-uploads/b9329c73-68b0-4f4a-96a2-c96545694186.png",
+      "sha256": "b2b83f99cca8b95481b5a7ca302b2e7cdc3da7cd997b023c9de81e48b776f7f3",
+      "bytes": 446435
+    },
+    {
+      "path": "public/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png",
+      "sha256": "b2b83f99cca8b95481b5a7ca302b2e7cdc3da7cd997b023c9de81e48b776f7f3",
+      "bytes": 446435
+    },
+    {
+      "path": "public/manifest.webmanifest",
+      "sha256": "ad23fcccecc72e1f9e584c1979a5430ee9f0ddf2bc439edab7550bc3e3815da4",
+      "bytes": 566
+    },
+    {
+      "path": "public/placeholder.svg",
+      "sha256": "64badf7aabda0b9630b87020ffb6095cb858ccbcf66b355c2aa08b1063954d3b",
+      "bytes": 3253
+    },
+    {
+      "path": "public/robots.txt",
+      "sha256": "a3d27b3ca5ce32341fa9f96f01169b521b1657c05d1860c45d1e53a6258e9e8b",
+      "bytes": 160
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64e",
+        "deviceId" : "00008140-000A3D8A01E8801C",
+        "deviceName" : "Goiko",
+        "modelName" : "iPhone 16 Pro Max",
+        "osBuildNumber" : "23G71",
+        "osVersion" : "26.6",
+        "platform" : "iOS"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 0,
+      "passedTests" : 3,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "MatchrimCandidateQA · Built with macOS 15.7.7",
+  "expectedFailures" : 0,
+  "failedTests" : 0,
+  "finishTime" : 1791203347.964,
+  "passedTests" : 1,
+  "result" : "Passed",
+  "skippedTests" : 0,
+  "startTime" : 1791203301.402,
+  "statistics" : [
+    {
+      "subtitle" : "3 test runs",
+      "title" : "1 configuration ran with test repetitions"
+    }
+  ],
+  "testFailures" : [
+
+  ],
+  "title" : "Test - MatchrimCandidateQA",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 1
+}
