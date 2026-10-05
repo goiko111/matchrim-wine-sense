@@ -1,0 +1,49 @@
+{
+  "fixtures": [
+    {
+      "id": "public-single-castano",
+      "source": "../../qa-artifacts/matchrim-pilot-v3/scenes/commons-152675154.jpg",
+      "mode": "etiqueta",
+      "expected_min_results": 1,
+      "expected_min_identified": 1,
+      "expected_wines": ["Castano Monastrell"],
+      "identity_min_precision": 0.9,
+      "identity_min_recall": 0.85,
+      "rationale": "Etiqueta unica frontal con identidad anotada."
+    },
+    {
+      "id": "public-multi-shelf",
+      "source": "../../qa-artifacts/matchrim-pilot-v3/scenes/commons-9865219.jpg",
+      "mode": "etiqueta",
+      "expected_min_results": 6,
+      "expected_min_identified": 5,
+      "expected_wines": ["Passion Pop Lemon Lime", "Passion Pop Mixed Berry", "Passion Pop Original", "Somerton Brut Reserve", "Golden Gate Spumante", "Verdi Spumante"],
+      "identity_min_precision": 0.9,
+      "identity_min_recall": 0.85,
+      "rationale": "Estanteria multibotella con seis referencias anotadas, reflejos y oclusion."
+    },
+    {
+      "id": "public-printed-list",
+      "source": "../../qa-artifacts/matchrim-pilot-v3/scenes/commons-131235304.jpg",
+      "mode": "carta-vinos",
+      "expected_wines": ["Luca Paretti Proseco", "JP Chenet France", "Retsina Kousatari", "Viognier Avantis Winery", "Moschofilero Bosinakis Winery", "Sauvignon Blanc Wine Art Estate Techni", "Chardonnay Landmark Vineyard", "Riesling Wooden Valley Winery", "Merlot Avantis Winery", "Pinot Noir Ballard Lane", "Cabernet Sauvignon Amethystos", "Limnio Domo Caius Ruby Keane", "Cabernet Franc Amethystos Cava", "Zinfandel Plough Vineyards", "Naoussa Found Estate", "Cas San Porio Canvas Chateau"],
+      "rationale": "Carta impresa arrugada y con texto pequeno; dieciseis referencias anotadas."
+    },
+    {
+      "id": "public-handwritten-board",
+      "source": "../../qa-artifacts/matchrim-pilot-v3/scenes/commons-151686648.jpg",
+      "mode": "carta-vinos",
+      "expected_wines": ["Gundlach Bundschu Sauvignon Blanc 2023", "Tagline Wines Chardonnay 2021", "Topophilia Wine Co Rose of Grenache 2023", "Vaughn Duffy Pinot Noir 2022", "Mathis Wine Uber Red Blend 2020"],
+      "rationale": "Pizarra manuscrita con cinco vinos y precios anotados."
+    },
+    {
+      "id": "public-food-negative",
+      "source": "../../qa-artifacts/matchrim-pilot-v3/scenes/commons-59410813.jpg",
+      "mode": "carta-vinos",
+      "expectation": "abstain",
+      "expected_wines": [],
+      "max_high_confidence_results": 0,
+      "rationale": "Pizarra de comida sin vinos; debe abstenerse y no inventar referencias."
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
+
 export type ScanRegionStatus =
   | 'pending'
   | 'analyzing'
@@ -433,10 +435,7 @@ export const normalizeScanCoverage = (
 };
 
 const textValue = (value: unknown) => typeof value === 'string' && value.trim() ? value.trim() : null;
-const numericValue = (value: unknown) => {
-  const numeric = Number(value);
-  return Number.isFinite(numeric) ? numeric : null;
-};
+const numericValue = optionalScanNumber;
 
 const stringArray = (value: unknown) => Array.isArray(value)
   ? value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0).map((item) => item.trim())
@@ -525,9 +524,21 @@ export const buildCanonicalWineKey = (candidate: WineCandidate) => [
 const identityTokens = (value: string | null | undefined) => new Set(normalizeIdentity(value).split(' ').filter(Boolean));
 const producerStopWords = new Set(['bodega', 'bodegas', 'winery', 'wine', 'wines', 'sa']);
 const genericWineNameTokens = new Set([
+  'blanc',
+  'blanco',
+  'brut',
+  'crianza',
+  'cuvee',
+  'gran',
+  'original',
   'product',
+  'reserve',
+  'reserva',
+  'rose',
+  'rosado',
   'sparkling',
   'spumante',
+  'tinto',
   'vino',
   'wine',
 ]);
@@ -573,6 +584,13 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
     const current = canGroup ? groups.find((group) => {
       if (buildCanonicalWineKey(group.candidate) === canonicalKey) return true;
       const exactWineName = normalizeIdentity(group.candidate.name) === normalizeIdentity(candidate.name);
+      const compatibleVintage = !group.candidate.vintage
+        || !candidate.vintage
+        || group.candidate.vintage === candidate.vintage;
+      const distinctiveNameTokens = normalizeIdentity(candidate.name)
+        .split(' ')
+        .filter((token) => token && !genericWineNameTokens.has(token));
+      if (exactWineName && compatibleVintage && distinctiveNameTokens.length >= 2) return true;
       if (exactWineName && areLikelyDuplicateWines(group.candidate, candidate)) return true;
       return Math.min(group.candidate.confidence, candidate.confidence) >= 0.6
         && Math.max(group.candidate.confidence, candidate.confidence) >= 0.72

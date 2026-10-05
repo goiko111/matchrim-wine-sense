@@ -28,7 +28,10 @@ import { buildMatchrimQaFixturePayload } from '../src/utils/matchrimQaFixtures';
 import {
   buildDetailedAffinityExplanation,
   calculateLocalMatchrimAffinity,
+  normalizeWineAttributesForInsight,
 } from '../src/utils/wineAffinityExplanation';
+import { normalizeScanSensoryValue, optionalScanNumber } from '../supabase/functions/_shared/matchrim-scan-values';
+import { hasGroundedMenuName } from '../supabase/functions/_shared/matchrim-menu-grounding';
 import { buildWineComparisonDecision } from '../src/utils/wineComparison';
 import { isWineMenuItem } from '../src/utils/wineMenuGrounding';
 import {
@@ -55,6 +58,39 @@ import {
   waitForAbortableDelay,
 } from '../src/utils/edgeFunctionResilience';
 import { clusterOverlayPins } from '../src/utils/overlayPins';
+
+for (const missing of [null, undefined, '', '  ', false, true, {}, [], 'NaN', Infinity]) {
+  assert.equal(optionalScanNumber(missing), null, 'unknown scan data must remain unknown');
+  assert.equal(normalizeScanSensoryValue(missing), null);
+  assert.equal(calibrateInferredAffinity(missing), null, 'missing affinity must not become an 8% recommendation');
+}
+assert.equal(optionalScanNumber(0), 0, 'a genuine numeric zero must remain distinct from absence');
+assert.equal(optionalScanNumber('2021'), 2021);
+assert.equal(normalizeScanSensoryValue(8), 4);
+assert.equal(normalizeScanSensoryValue(80), 4);
+assert.equal(normalizeWineAttributesForInsight({
+  potencia: 3, acidez: 4, dulzura: null, taninos: 2, afrutado: 4,
+}), null, 'missing sweetness must not become a confident sensory minimum');
+assert.equal(calculateLocalMatchrimAffinity({
+  potente: 3, acidez: 4, dulce: 1, tanico: 2, afrutado: 4,
+}, { potencia: 3, acidez: 4, dulzura: null, taninos: 2, afrutado: 4 }), null);
+const unknownNumbers = normalizeWineCandidates({ candidates: [{
+  name: 'Unknown fields', vintage: null, alcohol: null, affinity_confidence: null,
+  sensory_attributes: { potencia: null, madera: null },
+}] }, 'unknown')[0];
+assert.equal(unknownNumbers.vintage, null);
+assert.equal(unknownNumbers.alcohol, null);
+assert.equal(unknownNumbers.affinityConfidence, null);
+assert.equal(unknownNumbers.sensoryAttributes?.potencia, null);
+assert.equal(unknownNumbers.sensoryAttributes?.madera, null);
+assert.equal(hasGroundedMenuName('Buck Creek Classic (Wine 2)', 'This will become a Buck Creek classic'), false);
+assert.equal(hasGroundedMenuName('1886', 'A complex wine planted in 1900'), false);
+assert.equal(hasGroundedMenuName('La Rosa', 'La Rosa...'), true);
+assert.equal(hasGroundedMenuName('1900', '1900 - Estate wine'), true);
+assert.equal(hasGroundedMenuName('Muga Reserva', ''), false);
+assert.equal(hasGroundedMenuName('Vintage Champagne (Fifth 18.00)', 'Vintage Champagne Fifth 18.00', 'Champagne'), false);
+assert.equal(hasGroundedMenuName('Sparkling Wine Section 2 (Fifth 12.00)', 'Sparkling Wine Fifth 12.00'), false);
+assert.equal(hasGroundedMenuName('Brut', 'JP Chenet France Brut', 'JP Chenet France'), true);
 
 const regions = normalizeDetectedRegions({
   regions: [
@@ -167,6 +203,26 @@ const denseMergedDetection = mergeWineDetectionTileResults([{
 }]);
 assert.equal(denseMergedDetection.regions.length, 48, 'dense refinements must retain lower rows beyond the former 30-region cap');
 assert.ok(denseMergedDetection.regions.some((region) => region.box.y > 70), 'dense refinements must keep lower-shelf regions');
+const retainedMainBottle = mergeWineDetectionTileResults([
+  {
+    tile: getFullWineDetectionTile(),
+    payload: {
+      regions: [{ box: { x: 45, y: 3, width: 30, height: 94 }, confidence: 0.95 }],
+      coverage: { status: 'partial', estimated_visible_objects: 3 },
+    },
+  },
+  {
+    tile: { id: 'left', box: { x: 0, y: 0, width: 56, height: 100 } },
+    payload: { regions: [{ box: { x: 10, y: 0, width: 30, height: 90 }, confidence: 0.85 }] },
+  },
+  {
+    tile: { id: 'right', box: { x: 44, y: 0, width: 56, height: 100 } },
+    payload: { regions: [{ box: { x: 60, y: 0, width: 35, height: 90 }, confidence: 0.85 }] },
+  },
+]);
+assert.equal(retainedMainBottle.regions.length, 3);
+assert.ok(retainedMainBottle.regions.some((region) => region.box.x === 45),
+  'regional refinement must not discard a foreground bottle seen only in the full image');
 
 const coverage = normalizeScanCoverage({
   coverage: {
@@ -228,7 +284,39 @@ const groundedIdentity = evaluateCandidateGrounding({
   evidence: ['CHARLES HEIDSIECK', 'BRUT RESERVE visible', 'known Champagne house'],
 });
 assert.deepEqual(groundedIdentity.identityMatches, ['charles', 'heidsieck']);
+assert.deepEqual(groundedIdentity.nameMatches, ['charles', 'heidsieck']);
+assert.deepEqual(groundedIdentity.producerMatches, ['charles', 'heidsieck']);
+assert.equal(groundedIdentity.fullyGroundedProducer, true);
+assert.equal(groundedIdentity.groundedVintage, false);
 assert.deepEqual(groundedIdentity.groundedEvidence, ['CHARLES HEIDSIECK', 'BRUT RESERVE visible']);
+
+const distinctiveProductName = evaluateCandidateGrounding({
+  name: 'Passion Pop Lemon Lime',
+  producer: null,
+  vintage: null,
+  visibleText: ['PASSION POP', 'LEMON LIME'],
+  evidence: ['PASSION POP', 'LEMON LIME'],
+});
+assert.deepEqual(distinctiveProductName.nameMatches, ['passion', 'pop', 'lemon', 'lime']);
+assert.equal(distinctiveProductName.fullyGroundedName, true);
+const inventedSecondaryIdentity = evaluateCandidateGrounding({
+  name: 'Passion Pop Mixed Berry', producer: 'Golden Gate', vintage: 2021,
+  visibleText: ['PASSION POP', 'MIXED BERRY'], evidence: ['PASSION POP', 'MIXED BERRY'],
+});
+assert.equal(inventedSecondaryIdentity.fullyGroundedName, true);
+assert.equal(inventedSecondaryIdentity.fullyGroundedProducer, false);
+assert.equal(inventedSecondaryIdentity.groundedVintage, false);
+assert.equal(evaluateCandidateGrounding({
+  name: 'Tres Picos', producer: 'Bodegas Borsao', vintage: 2021,
+  visibleText: ['TRES PICOS', 'BORSAO', '2021'], evidence: ['TRES PICOS', 'BORSAO 2021'],
+}).fullyGroundedProducer, true);
+assert.equal(evaluateCandidateGrounding({
+  name: 'Passion Pop Lemon Lime',
+  producer: null,
+  vintage: null,
+  visibleText: ['PASSION POP', 'SPARKLING WINE'],
+  evidence: ['PASSION POP', 'SPARKLING WINE'],
+}).fullyGroundedName, false, 'a visible brand cannot confirm an unreadable product variant');
 
 const designOnlyGuess = evaluateCandidateGrounding({
   name: 'Invented Estate Reserva',
@@ -283,6 +371,26 @@ const menuWine = (name: string, x: number, y: number, source: string): MenuScanW
 const mappedRightWine = mapMenuWineFromTile(menuWine('Solape', 5, 20, 'Solape 2021 20'), landscapeTiles[1]);
 assert.equal(mappedRightWine.posicion?.x, 46.8);
 assert.equal(mappedRightWine.posicion?.width, 11.2);
+const conflictingRowPrices = mergeMenuTileResults([{
+  tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+  response: { vinos: [
+    { ...menuWine('Three Sons', 20, 30, 'Three Sons 20'), precio: 20, seccion: 'Dry' },
+    { ...menuWine('Three Sons', 28, 31, 'Three Sons 24'), precio: 24, seccion: 'Estate' },
+  ] },
+}]);
+assert.equal(conflictingRowPrices.vinos?.length, 1);
+assert.equal(conflictingRowPrices.vinos?.[0].precio, null, 'conflicting OCR prices must not be silently chosen');
+assert.ok(conflictingRowPrices.vinos?.[0].dudas?.some((doubt) => doubt.includes('Precio contradictorio')));
+for (const patch of [{ anada: 2022 }, { productor: 'Different producer' }]) {
+  const distinctReferences = mergeMenuTileResults([{
+    tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+    response: { vinos: [
+      { ...menuWine('Three Sons', 20, 30, 'Three Sons'), anada: 2021 },
+      { ...menuWine('Three Sons', 20, 30, 'Three Sons'), anada: 2021, ...patch },
+    ] },
+  }]);
+  assert.equal(distinctReferences.vinos?.length, 2, 'known vintage/producer differences cannot be deduplicated by position');
+}
 const mergedMenu = mergeMenuTileResults([
   {
     tile: landscapeTiles[0],
@@ -341,9 +449,11 @@ assert.deepEqual(
   ['Pedro Ximenez Don PX', 'Fino Ynocente'],
   'a focus crop must retain grounded medium-confidence OCR and abstain without source evidence',
 );
-assert.equal(shouldRunRightFocusMenuScan(1200, 1800, 'reported_complete', 10), true);
-assert.equal(shouldRunRightFocusMenuScan(1800, 1200, 'reported_complete', 10), false);
-assert.equal(shouldRunRightFocusMenuScan(1800, 1200, 'partial', 3), true);
+assert.equal(shouldRunRightFocusMenuScan('reported_complete', 7), false);
+assert.equal(shouldRunRightFocusMenuScan('reported_complete', 8), true);
+assert.equal(shouldRunRightFocusMenuScan('partial', 3), true);
+assert.equal(shouldRunRightFocusMenuScan('partial', 24, true), false,
+  'a third horizontal crop must not re-read descriptions after both columns succeeded');
 
 const sameNameDifferentSection = mergeMenuTileResults([{
   tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
@@ -374,6 +484,37 @@ const completeFullMenu = resolveMenuTileResults([
   })),
 ]);
 assert.deepEqual(completeFullMenu.vinos?.map((wine) => wine.nombre), ['Completo']);
+const fullWithFocusMenu = resolveMenuTileResults([
+  {
+    tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+    response: { vinos: [menuWine('Pagina principal', 10, 10, 'Pagina principal')], coverage: { status: 'reported_complete' } },
+  },
+  {
+    tile: getRightFocusMenuScanTile(),
+    response: { vinos: [menuWine('Borde derecho', 50, 50, 'Borde derecho')], coverage: { status: 'partial' } },
+  },
+]);
+assert.deepEqual(
+  fullWithFocusMenu.vinos?.map((wine) => wine.nombre),
+  ['Pagina principal', 'Borde derecho'],
+  'a focus-only refinement must augment rather than replace the full-page scan',
+);
+const truncatedFocusMenu = resolveMenuTileResults([{
+  tile: getRightFocusMenuScanTile(),
+  response: {
+    vinos: [
+      { ...menuWine('Gaudensius Blanc', 10, 10, 'Gaudensius blan...'), confidence: 0.62 },
+      { ...menuWine('Costa di Rosa', 10, 20, 'Costa di ros...'), confidence: 0.45 },
+      { ...menuWine('La Rosa', 10, 30, 'La Rosa...'), confidence: 0.4 },
+      { ...menuWine('Guess without text', 10, 40, ''), confidence: 0.8 },
+    ],
+  },
+}]);
+assert.deepEqual(
+  truncatedFocusMenu.vinos?.map((wine) => wine.nombre),
+  ['Gaudensius Blanc', 'Costa di Rosa', 'La Rosa'],
+  'truncated but visibly grounded border rows must remain reviewable',
+);
 const uncertainFullMenu = resolveMenuTileResults([
   {
     tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
@@ -526,6 +667,31 @@ const genericDescriptorGroups = groupDuplicateWines([
 ]);
 assert.equal(genericDescriptorGroups.length, 1, 'generic wine descriptors must not create a second reference');
 assert.equal(genericDescriptorGroups[0].count, 2);
+const conflictingProducerCopy = {
+  ...uncertainDuplicate,
+  candidates: [{
+    ...uncertainDuplicate.candidates[0],
+    producer: 'OCR neighbour producer',
+  }],
+};
+assert.equal(groupDuplicateWines([
+  makeRegion('r1', 1, 'Celler Aripta Brut', 82),
+  conflictingProducerCopy,
+]).length, 1, 'an exact distinctive product name must win over a conflicting secondary producer read');
+assert.equal(groupDuplicateWines([
+  { ...makeRegion('generic-a', 1, 'Reserva Especial', 70), candidates: [{ ...candidates[0], name: 'Reserva Especial', producer: 'Bodega Uno' }] },
+  { ...makeRegion('generic-b', 2, 'Reserva Especial', 70), candidates: [{ ...candidates[0], name: 'Reserva Especial', producer: 'Bodega Dos' }] },
+]).length, 2, 'generic shared product names cannot override conflicting producers');
+const differentVintageCopy = {
+  ...conflictingProducerCopy,
+  candidates: [{ ...conflictingProducerCopy.candidates[0], vintage: 2022 }],
+};
+const vintageRegion = makeRegion('r1', 1, 'Celler Aripta Brut', 82);
+vintageRegion.candidates[0].vintage = 2021;
+assert.equal(groupDuplicateWines([
+  vintageRegion,
+  differentVintageCopy,
+]).length, 2, 'exact names with conflicting visible vintages must remain separate');
 assert.equal(getConfirmableWineGroups([
   makeRegion('r1', 1, 'Celler Aripta Brut', 82),
   groundedUncertainDuplicate,
@@ -750,6 +916,14 @@ assert.equal(isWineMenuItem({ nombre: 'Cerveza artesanal', tipo: 'cerveza', secc
 assert.equal(isWineMenuItem({ nombre: 'Chateau', tipo: 'tinto', seccion: 'Tintos' }), false);
 assert.equal(isWineMenuItem({ nombre: 'Chat', tipo: 'tinto', seccion: 'Tintos' }), false);
 assert.equal(isWineMenuItem({ nombre: 'Cha', tipo: 'tinto', seccion: 'Tintos' }), false);
+assert.equal(isWineMenuItem({ nombre: 'Brut', productor: null, texto_fuente: 'Brut', tipo: 'espumoso', seccion: 'Espumosos' }), false);
+assert.equal(isWineMenuItem({
+  nombre: 'Brut',
+  productor: 'JP Chenet France',
+  texto_fuente: 'JP Chenet France\nBrut\n10 / 36',
+  tipo: 'espumoso',
+  seccion: 'Espumosos',
+}), true);
 assert.equal(isWineMenuItem({ nombre: 'Fino Ynocente', tipo: 'generoso', seccion: 'Generosos' }), true);
 assert.equal(isWineMenuItem({ nombre: 'Pedro Ximenez Don PX', tipo: 'dulce', seccion: 'Dulces' }), true);
 

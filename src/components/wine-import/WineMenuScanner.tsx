@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { optionalScanNumber, normalizeScanSensoryValue } from '../../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -103,16 +104,14 @@ const parseNullableNumber = (value: string) => {
 };
 
 const normalizePercentage = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   return Math.max(0, Math.min(100, numeric));
 };
 
 const normalizeAttributeTo5 = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
-  const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
-  return Math.max(1, Math.min(5, Math.round(scaled)));
+  const numeric = normalizeScanSensoryValue(value);
+  return numeric === null ? null : Math.round(numeric);
 };
 
 const normalizeAttributesTo5 = (attributes: ScannedWine['atributos']) => {
@@ -132,8 +131,8 @@ const normalizeAttributesTo5 = (attributes: ScannedWine['atributos']) => {
 
 const normalizeCompatibility = calibrateInferredAffinity;
 const normalizeProfileValue = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   return Math.max(1, Math.min(5, Math.round(numeric)));
 };
 
@@ -161,8 +160,8 @@ const readStoredMatchrimProfile = (): MatchrimProfilePayload | null => {
 };
 
 const normalizePositionConfidence = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   return numeric > 1 ? Math.max(0, Math.min(1, numeric / 100)) : Math.max(0, Math.min(1, numeric));
 };
 
@@ -585,10 +584,10 @@ export const WineMenuScanner = ({
       let attemptedTileCount = settledTiles.length;
       let data = resolveMenuTileResults(successfulTiles);
       if (!isMatchrimFixtureQaEnabled && shouldRunRightFocusMenuScan(
-        prepared.width,
-        prepared.height,
         data.coverage?.status,
         data.vinos?.length ?? 0,
+        successfulTiles.some(({ tile }) => tile.id === 'left')
+          && successfulTiles.some(({ tile }) => tile.id === 'right'),
       )) {
         const focusTile = getRightFocusMenuScanTile();
         attemptedTileCount += 1;

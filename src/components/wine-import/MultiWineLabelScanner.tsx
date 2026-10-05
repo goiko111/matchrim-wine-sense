@@ -191,9 +191,13 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         value: region,
       })),
   ), [regions]);
-  const rankedGroups = useMemo(() => [...duplicateGroups].sort((a, b) => (
-    (b.candidate.affinity ?? -1) - (a.candidate.affinity ?? -1)
-  )), [duplicateGroups]);
+  const rankedGroups = useMemo(() => [...duplicateGroups].sort((a, b) => {
+    const aRecognized = a.regionIds.some((id) => regions.some((region) => region.id === id && region.status === 'recognized'));
+    const bRecognized = b.regionIds.some((id) => regions.some((region) => region.id === id && region.status === 'recognized'));
+    if (aRecognized !== bRecognized) return bRecognized ? 1 : -1;
+    return (b.candidate.affinity ?? -1) - (a.candidate.affinity ?? -1)
+      || b.candidate.confidence - a.candidate.confidence;
+  }), [duplicateGroups, regions]);
   const loading = phase === 'quality' || phase === 'detecting' || phase === 'analyzing';
   const progress = phase === 'quality'
     ? 8
@@ -411,7 +415,10 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         );
         const completedRegionalResults = regionalResults.filter((result): result is NonNullable<typeof result> => result !== null);
         if (completedRegionalResults.length === regionalResults.length) {
-          const refined = mergeWineDetectionTileResults(completedRegionalResults);
+          const refined = mergeWineDetectionTileResults([
+            { tile: fullTile, payload: detection },
+            ...completedRegionalResults,
+          ]);
           if (refined.regions.length > 0) {
             detected = refined.regions;
             resolvedCoverage = refined.coverage;
@@ -871,7 +878,11 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
               <div hidden={isNative && nativeResultView !== 'wines'} className="space-y-4">
               <div className="matchrim-surface divide-y divide-stone-100 overflow-hidden rounded-lg">
-                {rankedGroups.map((group, index) => (
+                {rankedGroups.map((group, index) => {
+                  const identityConfirmed = group.regionIds.some((id) => (
+                    regions.some((region) => region.id === id && region.status === 'recognized')
+                  ));
+                  return (
                   <button
                     key={group.key}
                     type="button"
@@ -886,13 +897,17 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                         {[group.candidate.producer, group.candidate.region].filter(Boolean).join(' · ') || 'Identidad parcial'}
                         {group.count > 1 ? ` · ${group.count} botellas` : ''}
                       </span>
+                      <span className={`block text-[11px] font-semibold ${identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
+                        {identityConfirmed ? 'Identidad confirmable' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
+                      </span>
                     </span>
                     <span className="shrink-0 text-right">
-                      <span className="block font-bold text-red-900">{group.candidate.affinity == null ? '-' : `${Math.round(group.candidate.affinity)}%`}</span>
-                      <span className="block text-[11px] text-slate-500">Afinidad</span>
+                      <span className="block font-bold text-red-900">{group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
+                      <span className="block text-[11px] text-slate-500">{identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
                     </span>
                   </button>
-                ))}
+                  );
+                })}
               </div>
 
               {phase === 'ready' && (

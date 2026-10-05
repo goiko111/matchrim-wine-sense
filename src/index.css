@@ -99,7 +99,6 @@ body {
   }
 
   html.matchrim-native-platform .matchrim-native-tab-bar .matchrim-native-scan-tab {
-    top: 0.25rem;
     min-height: 0;
     gap: 0.125rem;
   }

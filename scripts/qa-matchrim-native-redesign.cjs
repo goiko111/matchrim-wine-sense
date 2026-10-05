@@ -58,7 +58,7 @@ const main = async () => {
   const results = [];
 
   try {
-    const context = await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 1 });
+    const context = await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
     await installNativeContext(context);
     const page = await context.newPage();
     page.on('console', (message) => {
@@ -74,6 +74,9 @@ const main = async () => {
     if (!await noHorizontalOverflow(page)) throw new Error('Home overflows horizontally');
     await page.screenshot({ path: path.join(OUTPUT_DIR, 'home-native.png'), fullPage: false });
     results.push({ case: 'native_navigation', actual: `PASS ${navigationLabels.join(', ')}` });
+    await page.getByRole('link', { name: 'Escanear', exact: true }).tap();
+    await page.getByRole('button', { name: /^Etiqueta de vino/ }).waitFor({ state: 'visible', timeout: 10_000 });
+    results.push({ case: 'native_scan_touch_navigation', actual: 'PASS central scan tab opens scan modes from home' });
 
     await page.goto(`${BASE_URL}/escanear/etiqueta`, { waitUntil: 'networkidle' });
     const inputs = page.locator('input[type="file"]');

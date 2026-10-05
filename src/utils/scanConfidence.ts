@@ -1,16 +1,18 @@
+import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
+
 export type ConfidenceBand = 'alta' | 'media' | 'baja' | 'sin medir';
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
 export const normalizeConfidence = (value: unknown): number | null => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   return clamp(numeric > 1 ? numeric / 100 : numeric, 0, 1);
 };
 
 export const calibrateInferredAffinity = (value: unknown): number | null => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   const bounded = clamp(numeric, 0, 100);
 
   // Sensory attributes here are inferred, not measured. Pull extremes towards

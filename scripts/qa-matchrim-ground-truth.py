@@ -111,7 +111,8 @@ def summarize(results: list[dict]) -> dict:
     for result in label_results:
         truth = result["ground_truth"]
         actual = result["actual_results"]
-        capped_detection_recall.append(min(actual, truth["detector_cap"]) / min(truth["visible_bottles_estimate"], truth["detector_cap"]))
+        expected_with_cap = min(truth["visible_bottles_estimate"], truth["detector_cap"])
+        capped_detection_recall.append(min(actual, expected_with_cap) / expected_with_cap)
         absolute_detection_recall.append(min(actual, truth["visible_bottles_estimate"]) / truth["visible_bottles_estimate"])
     return {
         "scene_count": len(results),
@@ -154,7 +155,7 @@ def summarize(results: list[dict]) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run real Matchrim E2E over the 30-scene ground-truth dataset.")
+    parser = argparse.ArgumentParser(description="Run real Matchrim E2E over an existing ground-truth dataset.")
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     parser.add_argument("--artifacts", type=Path, default=DEFAULT_ARTIFACTS)
     parser.add_argument("--scene-pattern", default="")
@@ -176,6 +177,23 @@ def main() -> None:
     runner.ARTIFACTS = args.artifacts
     args.artifacts.mkdir(parents=True, exist_ok=True)
     results = []
+    report_path = args.artifacts / "ground-truth-e2e-report.json"
+
+    def save_report():
+        report = {
+            "dataset_id": dataset["dataset_id"],
+            "interception": False,
+            "production_guard": True,
+            "selected_scene_count": len(scenes),
+            "completed_scene_count": len(results),
+            "complete": len(results) == len(scenes),
+            "metric_scope": "Reference-name and box matching; not verification of producer, vintage or sensory facts.",
+            "summary": summarize(results),
+            "results": results,
+        }
+        report_path.write_text(json.dumps(report, indent=2, ensure_ascii=True) + "\n")
+        return report
+
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, executable_path=runner.CHROME)
         for index, scene in enumerate(scenes, start=1):
@@ -191,6 +209,7 @@ def main() -> None:
                 "scene_sha256": scene["sha256"],
             })
             results.append(result)
+            save_report()
             accuracy = result.get("accuracy") or {}
             print(
                 f"DONE {scene['id']} {result['status']} actual={result['actual_results']} "
@@ -200,16 +219,7 @@ def main() -> None:
             )
         browser.close()
 
-    report = {
-        "dataset_id": dataset["dataset_id"],
-        "interception": False,
-        "production_guard": True,
-        "selected_scene_count": len(scenes),
-        "summary": summarize(results),
-        "results": results,
-    }
-    report_path = args.artifacts / "ground-truth-e2e-report.json"
-    report_path.write_text(json.dumps(report, indent=2, ensure_ascii=True) + "\n")
+    report = save_report()
     print(json.dumps(report["summary"], indent=2))
     print(f"report={report_path}")
     if not report["summary"]["all_passed"]:

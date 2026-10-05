@@ -97,7 +97,7 @@ const MobileBottomNav = () => {
             to="/escanear"
             aria-label="Escanear"
             aria-current={scanActive ? 'page' : undefined}
-            className="matchrim-native-scan-tab matchrim-pressable absolute left-1/2 top-1.5 flex -translate-x-1/2 flex-col items-center gap-1 text-[0.6875rem] font-semibold text-slate-700"
+            className="matchrim-native-scan-tab matchrim-pressable relative col-start-3 row-start-1 flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 text-[0.6875rem] font-semibold text-slate-700"
           >
             <span className={`matchrim-native-scan-tab-icon flex h-12 w-12 items-center justify-center rounded-full border-4 border-white text-white shadow-[0_10px_26px_-10px_rgba(42,8,19,0.75)] ${scanActive ? 'bg-red-900' : 'bg-slate-950'}`}>
               <ScanLine className="h-5 w-5" aria-hidden="true" />

@@ -2,6 +2,8 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 import { runMatchrimAi } from '../_shared/matchrim-ai-provider.ts';
 import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from '../_shared/matchrim-learning.ts';
+import { normalizeScanSensoryValue, optionalScanNumber } from '../_shared/matchrim-scan-values.ts';
+import { hasGroundedMenuName } from '../_shared/matchrim-menu-grounding.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,7 +20,7 @@ type MatchrimProfile = {
 type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', number>>;
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const FUNCTION_VERSION = 'scan-wine-menu-2026-08-27-regional-v4-candidate';
+const FUNCTION_VERSION = 'scan-wine-menu-2026-10-05-null-preserving-v6';
 
 const normalizeText = (value: unknown) => typeof value === 'string' ? value.trim() : '';
 const normalizeStringArray = (value: unknown) => Array.isArray(value)
@@ -26,22 +28,20 @@ const normalizeStringArray = (value: unknown) => Array.isArray(value)
   : [];
 const nonWinePattern = /\b(vermut|vermouth|cerveza|beer|bier|sidra|cider|whisky|whiskey|ginebra|gin|vodka|ron|rum|cocktail|coctel|licor|destilado|destilados|spirits?)\b/i;
 const wineTypePattern = /\b(tinto|blanco|rosado|espumoso|generoso|dulce|fortificado|orange|natural|champagne|cava|sherry|jerez)\b/i;
+const genericWineNamePattern = /^(brut|cava|champagne|reserva|reserve|rose|rosado|spumante|tinto|blanco|wine|vino)$/i;
 
 const isWineRecord = (wine: Record<string, unknown>) => {
   const name = normalizeText(wine.nombre ?? wine.name);
   if (!name || nonWinePattern.test(`${name} ${normalizeText(wine.tipo)}`)) return false;
+  if (!hasGroundedMenuName(name, normalizeText(wine.texto_fuente), normalizeText(wine.productor))) return false;
   const section = normalizeText(wine.seccion);
   return !nonWinePattern.test(section) || wineTypePattern.test(normalizeText(wine.tipo));
 };
 
 // Sensory attrs always 1-5 integers. Normalize legacy 0-10 or 0-100 inputs.
 const normalizeSensoryValueTo5 = (value: unknown): number | null => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
-  let v = numeric;
-  if (v > 10) v = v / 20;
-  else if (v > 5) v = v / 2;
-  return clamp(Math.round(v), 1, 5);
+  const numeric = normalizeScanSensoryValue(value);
+  return numeric === null ? null : Math.round(numeric);
 };
 
 const normalizeSensoryAttributes = (
@@ -100,8 +100,8 @@ const calibrateMenuIdentityConfidence = (
   wine: Record<string, unknown>,
   position: { confidence: number } | null,
 ) => {
-  const numeric = Number(rawValue);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(rawValue);
+  if (numeric === null) return null;
   const raw = clamp(numeric > 1 ? numeric / 100 : numeric, 0, 1);
   let cap = 0.88;
   if (typeof wine.texto_fuente !== 'string' || !wine.texto_fuente.trim()) cap = Math.min(cap, 0.82);
@@ -114,7 +114,7 @@ const calibrateMenuIdentityConfidence = (
   if (/^(do|ditto|idem|same)$/i.test(visibleName)) cap = Math.min(cap, 0.4);
   if (inferredFields.some((field) => ['nombre', 'name', 'productor', 'producer'].includes(field))) cap = Math.min(cap, 0.55);
   const hasRegion = typeof wine.region === 'string' && Boolean(wine.region.trim());
-  const hasPrice = Number.isFinite(Number(wine.precio));
+  const hasPrice = optionalScanNumber(wine.precio) !== null;
   if (!hasRegion && !hasPrice) cap = Math.min(cap, 0.68);
   return Math.round(Math.min(raw, cap) * 100) / 100;
 };
@@ -122,10 +122,10 @@ const calibrateMenuIdentityConfidence = (
 const normalizePosicion = (raw: unknown): { x: number; y: number; width: number; height: number; confidence: number } | null => {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as Record<string, unknown>;
-  const x = Number(r.x);
-  const y = Number(r.y);
-  const confidence = Number(r.confidence);
-  if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(confidence)) return null;
+  const x = optionalScanNumber(r.x);
+  const y = optionalScanNumber(r.y);
+  const confidence = optionalScanNumber(r.confidence);
+  if (x === null || y === null || confidence === null) return null;
   if (x < 0 || x > 100 || y < 0 || y > 100) return null;
   if (confidence < 0.7) return null;
   const width = Number.isFinite(Number(r.width)) ? clamp(Number(r.width), 0, 100) : 0;
@@ -219,12 +219,14 @@ IMPORTANTE:
 - En cartas historicas, "Do", "idem" o comillas pueden heredar la identidad de la linea anterior solo cuando la alineacion visual lo demuestra. Conserva el nuevo formato/precio, incluye la herencia en campos_inferidos y baja confidence si la asociacion no es inequivoca.
 - Conserva como filas distintas dos apariciones de la misma referencia cuando tengan diferente tamano, servicio o precio. No las dedupliques dentro de esta respuesta.
 - Si una linea no se puede asociar con seguridad, baja confidence o no la incluyas.
+- Nunca inventes un nombre a partir de la descripcion, el precio o el numero de fila. No uses sustitutos como "Wine 1", "Sparkling Wine (Fifth 12.00)" o "Tinto aromas chocolate". Si la marca/referencia no es legible, omite la fila y declara cobertura parcial.
 - confidence mide solo la asociacion visual entre los campos de esa linea. No subas confidence por conocer el vino.
 - Usa confidence > 0.90 solo si nombre, productor y precio son inequivocos y visibles en la misma linea.
 - Endereza mentalmente la perspectiva, pero devuelve las posiciones respecto a la imagen original.
 - Incluye TODAS las lineas de vino completas y legibles, hasta 30. Haz una segunda pasada por cada seccion y por el borde inferior antes de responder. Si hay mas de 30, prioriza lineas completas y legibles, no supuesta importancia.
 - Excluye cerveza, vermut/vermouth, sidra, destilados, cocteles, encabezados y cualquier producto que no sea vino. Espumosos, generosos y vinos dulces si cuentan como vino.
 - No completes productor, region, pais, uvas o anada por conocimiento general sin declararlo en campos_inferidos. Si no puede leerse ni inferirse con suficiente base, usa null.
+- Si una linea de marca o referencia va seguida por un estilo generico como "Brut", el nombre debe conservar la marca (por ejemplo "JP Chenet France Brut"). Nunca devuelvas solo "Brut", "Reserva", "Cava" o una variedad si la marca contigua es legible.
 
 Para cada vino proporciona:
 - nombre: Nombre del vino
@@ -261,7 +263,7 @@ ADEMÁS, calcula la compatibilidad de cada vino con este perfil de usuario (esca
 - Afrutado: ${Math.round(learnedProfile.afrutado)}
 
 Para cada vino, estima también:
-- atributos: objeto con potencia, acidez, dulzura, taninos, afrutado (enteros 1-5, NUNCA 0 ni >5)
+- atributos: objeto con potencia, acidez, dulzura, taninos, afrutado (enteros 1-5; null si no hay evidencia suficiente, NUNCA conviertas ausencia en 0 o 1)
 - compatibilidad: porcentaje 0-100 de compatibilidad con el perfil del usuario
 - razon: explicación breve de la compatibilidad`;
     }
@@ -382,11 +384,12 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       out.atributos = atributos;
 
       // Recalculate compatibilidad server-side when we have a profile + attrs to keep AI honest.
-      if (learnedProfile && atributos &&
+      const completeAttributes = atributos &&
         atributos.potencia != null && atributos.acidez != null &&
-        atributos.dulzura != null && atributos.taninos != null && atributos.afrutado != null) {
-        out.compatibilidad = calculateCompatibilityScale5(learnedProfile, atributos);
-      } else if (typeof w.compatibilidad === 'number') {
+        atributos.dulzura != null && atributos.taninos != null && atributos.afrutado != null;
+      if (learnedProfile && completeAttributes) {
+        out.compatibilidad = calculateCompatibilityScale5(learnedProfile, atributos!);
+      } else if (completeAttributes && typeof w.compatibilidad === 'number') {
         out.compatibilidad = clamp(Math.round(w.compatibilidad), 0, 100);
       } else {
         out.compatibilidad = null;
@@ -395,8 +398,12 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       const position = normalizePosicion(w.posicion);
       out.posicion = position;
       out.confidence = calibrateMenuIdentityConfidence(w.confidence, w, position);
-      out.nombre = normalizeText(w.nombre ?? w.name);
-      out.productor = normalizeText(w.productor) || null;
+      const rawName = normalizeText(w.nombre ?? w.name);
+      const producer = normalizeText(w.productor);
+      out.nombre = genericWineNamePattern.test(rawName) && producer
+        ? `${producer} ${rawName}`
+        : rawName;
+      out.productor = producer || null;
       out.region = normalizeText(w.region) || null;
       out.pais = normalizeText(w.pais) || null;
       out.texto_fuente = normalizeText(w.texto_fuente) || null;

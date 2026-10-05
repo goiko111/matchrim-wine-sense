@@ -9,6 +9,8 @@ export interface MenuScanPosition {
   confianza?: number | null;
 }
 
+import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
+
 export interface MenuScanWine {
   nombre: string;
   productor: string | null;
@@ -76,12 +78,10 @@ export const getRightFocusMenuScanTile = (): MenuScanTile => ({
 });
 
 export const shouldRunRightFocusMenuScan = (
-  width: number,
-  height: number,
   coverageStatus: 'reported_complete' | 'partial' | 'unknown' | undefined,
   extractedWines: number,
-) => coverageStatus !== 'reported_complete'
-  || (height > width && extractedWines >= 8);
+  completeColumnScans = false,
+) => !completeColumnScans && (coverageStatus !== 'reported_complete' || extractedWines >= 8);
 
 export const buildMenuScanTiles = (width: number, height: number): MenuScanTile[] => {
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
@@ -101,8 +101,8 @@ export const buildMenuScanTiles = (width: number, height: number): MenuScanTile[
 };
 
 const percentage = (value: unknown) => {
-  const numeric = Number(value);
-  return Number.isFinite(numeric) ? Math.max(0, Math.min(100, numeric)) : null;
+  const numeric = optionalScanNumber(value);
+  return numeric === null ? null : Math.max(0, Math.min(100, numeric));
 };
 
 export const mapMenuWineFromTile = (wine: MenuScanWine, tile: MenuScanTile): MenuScanWine => {
@@ -193,12 +193,23 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
   const conflictingSection = Boolean(leftSection && rightSection && leftSection !== rightSection);
   const leftProducer = normalizeText(left.productor);
   const rightProducer = normalizeText(right.productor);
+  const conflictingProducer = Boolean(leftProducer && rightProducer && leftProducer !== rightProducer);
   const missingProducer = !leftProducer || !rightProducer;
   const conflictingVintage = Boolean(left.anada && right.anada && left.anada !== right.anada);
+  if (conflictingVintage || conflictingProducer) return false;
   const conflictingPrice = Boolean(
     typeof left.precio === 'number'
     && typeof right.precio === 'number'
     && Math.abs(left.precio - right.precio) > 0.5
+  );
+  const samePhysicalRow = Boolean(
+    (sameName || strongOcrName)
+    && !conflictingVintage
+    && !conflictingProducer
+    && (!left.tipo || !right.tipo || left.tipo === right.tipo)
+    && leftAnchor && rightAnchor
+    && Math.abs(leftAnchor.x - rightAnchor.x) <= 25
+    && Math.abs(leftAnchor.y - rightAnchor.y) <= 2.5
   );
   const genericSource = [leftSource, rightSource].some((source) => (
     source === normalizeText(left.nombre)
@@ -236,12 +247,15 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
     )
   );
 
-  return sameSource || samePosition || nearbyPartialIdentity || sameCanonicalRow;
+  return sameSource || samePosition || samePhysicalRow || nearbyPartialIdentity || sameCanonicalRow;
 };
 
 const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
   const preferred = (right.confidence ?? 0) > (left.confidence ?? 0) ? right : left;
   const fallback = preferred === left ? right : left;
+  const conflictingPrice = typeof left.precio === 'number' && typeof right.precio === 'number'
+    && Math.abs(left.precio - right.precio) > 0.5
+    && (!left.servicio || !right.servicio || left.servicio === right.servicio);
   return {
     ...fallback,
     ...preferred,
@@ -249,7 +263,7 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
     anada: preferred.anada ?? fallback.anada,
     region: preferred.region || fallback.region,
     pais: preferred.pais || fallback.pais,
-    precio: preferred.precio ?? fallback.precio,
+    precio: conflictingPrice ? null : preferred.precio ?? fallback.precio,
     precios: {
       ...(fallback.precios ?? {}),
       ...(preferred.precios ?? {}),
@@ -261,7 +275,10 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
         : preferred.servicio || fallback.servicio,
     texto_fuente: preferred.texto_fuente || fallback.texto_fuente,
     posicion: preferred.posicion || fallback.posicion,
-    dudas: Array.from(new Set([...(left.dudas ?? []), ...(right.dudas ?? [])])),
+    dudas: Array.from(new Set([
+      ...(left.dudas ?? []), ...(right.dudas ?? []),
+      ...(conflictingPrice ? ['Precio contradictorio entre recortes; revisa la carta.'] : []),
+    ])),
     campos_inferidos: Array.from(new Set([...(left.campos_inferidos ?? []), ...(right.campos_inferidos ?? [])])),
   };
 };
@@ -276,11 +293,11 @@ export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanRespons
         && tokenOverlap(
           wine.nombre,
           wine.texto_fuente ?? '',
-        ) >= 0.6
+        ) >= 0.4
       );
       const isUncorroboratedFocusGuess = tile.id === 'right-focus'
         && duplicateIndex === -1
-        && ((wine.confidence ?? 0) < 0.58 || !groundedFocusEvidence);
+        && ((wine.confidence ?? 0) < 0.4 || !groundedFocusEvidence);
       if (isUncorroboratedFocusGuess) return;
       if (duplicateIndex === -1) wines.push(wine);
       else wines[duplicateIndex] = richerWine(wines[duplicateIndex], wine);
@@ -315,16 +332,14 @@ export const resolveMenuTileResults = (results: MenuTileResult[]): MenuScanRespo
   const fullResult = results.find((result) => result.tile.id === 'full');
   const focusResults = results.filter((result) => result.tile.id === 'right-focus');
   const regionalResults = results.filter((result) => result.tile.id !== 'full' && result.tile.id !== 'right-focus');
-  if (!fullResult || regionalResults.length === 0) {
-    return mergeMenuTileResults([...regionalResults, ...focusResults].length
-      ? [...regionalResults, ...focusResults]
-      : results);
-  }
+  if (!fullResult) return mergeMenuTileResults(results);
+  if (regionalResults.length === 0) return mergeMenuTileResults([fullResult, ...focusResults]);
 
   const fullWines = mergeMenuTileResults([fullResult]).vinos ?? [];
   const regionalWines = mergeMenuTileResults(regionalResults).vinos ?? [];
   const overlappingRegionalRows = regionalWines.filter((regionalWine) => (
-    fullWines.some((fullWine) => isOverlapDuplicate(fullWine, regionalWine))
+    fullWines.some((fullWine) => isOverlapDuplicate(fullWine, regionalWine)
+      || tokenOverlap(fullWine.nombre, regionalWine.nombre) >= 0.8)
   )).length;
   const overlapRatio = overlappingRegionalRows / Math.max(1, Math.min(fullWines.length, regionalWines.length));
 

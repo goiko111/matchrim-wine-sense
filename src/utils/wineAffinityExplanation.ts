@@ -1,4 +1,5 @@
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { normalizeScanSensoryValue } from '../../supabase/functions/_shared/matchrim-scan-values';
 
 type AttributeKey = 'potente' | 'acidez' | 'dulce' | 'tanico' | 'afrutado';
 
@@ -42,12 +43,7 @@ const ATTRIBUTE_LABELS: Record<AttributeKey, string> = {
   afrutado: 'fruta',
 };
 
-const clampAttribute = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
-  const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
-  return Math.max(1, Math.min(5, scaled));
-};
+const clampAttribute = normalizeScanSensoryValue;
 
 export const normalizeWineAttributesForInsight = (attrs?: WineAttributeInput | null) => {
   if (!attrs) return null;

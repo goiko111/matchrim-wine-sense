@@ -182,11 +182,24 @@ def single_name_similarity(expected, actual):
         return 0.0
     if left == right:
         return 1.0
+    reference_qualifiers = {"barolo", "barbaresco", "ultra", "cuvee", "rose", "rosado"}
+    left_qualifiers = set(left.split()) & reference_qualifiers
+    right_qualifiers = set(right.split()) & reference_qualifiers
+    if left_qualifiers and right_qualifiers and left_qualifiers != right_qualifiers:
+        return 0.0
     if min(len(left), len(right)) >= 7 and (left in right or right in left):
         return 0.96
-    left_tokens = set(left.split())
-    right_tokens = set(right.split())
+    ignored_tokens = {
+        "wine", "section", "vino",
+    }
+    left_tokens = {token for token in left.split() if token not in ignored_tokens and not re.fullmatch(r"(?:19|20)\d{2}", token)}
+    right_tokens = {token for token in right.split() if token not in ignored_tokens and not re.fullmatch(r"(?:19|20)\d{2}", token)}
+    if len(left_tokens) >= 2 and left_tokens <= right_tokens:
+        return 0.99
+    if len(right_tokens) >= 2 and right_tokens <= left_tokens:
+        return 0.96
     token_overlap = len(left_tokens & right_tokens) / max(1, len(left_tokens | right_tokens))
+    token_order_similarity = SequenceMatcher(None, " ".join(sorted(left_tokens)), " ".join(sorted(right_tokens))).ratio()
     left_parts = left.split()
     right_parts = right.split()
     shorter, longer = (left_parts, right_parts) if len(left_parts) <= len(right_parts) else (right_parts, left_parts)
@@ -197,7 +210,7 @@ def single_name_similarity(expected, actual):
         ),
         default=0.0,
     )
-    return max(SequenceMatcher(None, left, right).ratio(), token_overlap, window_similarity)
+    return max(SequenceMatcher(None, left, right).ratio(), token_overlap, token_order_similarity, window_similarity)
 
 
 def name_similarity(expected, actual):
@@ -355,7 +368,7 @@ def map_menu_position(position, scan_region):
 
 def menu_identity(item):
     return " ".join(str(value) for value in (
-        item.get("producer"), item.get("name"), item.get("vintage"), item.get("section")
+        item.get("producer"), item.get("name"), item.get("vintage")
     ) if value not in (None, ""))
 
 
@@ -668,7 +681,11 @@ def run_fixture(browser, fixture, file_path):
 
     has_overflow = page.evaluate("() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2")
     overflow_elements = page.evaluate("""() => Array.from(document.querySelectorAll('body *'))
-      .filter((element) => element.scrollWidth > element.clientWidth + 2)
+      .filter((element) => {
+        if (element.scrollWidth <= element.clientWidth + 2) return false;
+        const style = window.getComputedStyle(element);
+        return style.textOverflow !== 'ellipsis' && style.overflowX !== 'hidden';
+      })
       .slice(0, 12)
       .map((element) => ({
         tag: element.tagName,

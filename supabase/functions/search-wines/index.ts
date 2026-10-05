@@ -92,11 +92,12 @@ serve(async (req) => {
       .limit(limit);
 
     if (error) {
-      console.error('Error searching wines:', error);
-      throw error;
+      // Catalog lookup enriches a scan but must never invalidate an otherwise
+      // grounded OCR result (for example in an isolated staging schema).
+      console.warn('Local wine catalog unavailable; continuing without it:', error.code);
     }
 
-    let allWines = wines || [];
+    let allWines = error ? [] : (wines || []);
     console.log(`Found ${allWines.length} wines in database matching "${query}"`);
 
     // Always search externally to complement results

@@ -1,6 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { runMatchrimAi } from '../_shared/matchrim-ai-provider.ts';
 import { evaluateCandidateGrounding, normalizeGroundingTokens } from './grounding.ts';
+import { optionalScanNumber } from '../_shared/matchrim-scan-values.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,7 +9,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const ANALYSIS_VERSION = 'matchrim-region-analysis-v4-candidate';
+const ANALYSIS_VERSION = 'matchrim-region-analysis-v7-null-preserving';
 
 const parseJsonObject = (raw: string) => {
   const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -27,14 +28,14 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
   const raw = value as Record<string, unknown>;
   const name = typeof raw.name === 'string' ? raw.name.trim() : '';
   if (!name || name.toLowerCase() === 'sin nombre') return null;
-  const vintage = Number(raw.vintage);
-  const alcohol = Number(raw.alcohol);
+  const vintage = optionalScanNumber(raw.vintage);
+  const alcohol = optionalScanNumber(raw.alcohol);
   const sensory = raw.sensory_attributes && typeof raw.sensory_attributes === 'object'
     ? raw.sensory_attributes as Record<string, unknown>
     : null;
   const normalizeSensory = (key: string) => {
-    const numeric = Number(sensory?.[key]);
-    return Number.isFinite(numeric) ? clamp(Math.round(numeric), 1, 5) : null;
+    const numeric = optionalScanNumber(sensory?.[key]);
+    return numeric === null ? null : clamp(Math.round(numeric), 1, 5);
   };
   const evidence = stringArray(raw.evidence);
   const uncertaintyReasons = stringArray(raw.uncertainty_reasons);
@@ -48,6 +49,16 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
   });
   const { identityMatches, groundedEvidence } = grounding;
   if (grounding.visibleTokenCount < 2 || identityMatches.length === 0) return null;
+  const producer = typeof raw.producer === 'string' && raw.producer.trim()
+    ? raw.producer.trim() : null;
+  if (producer && !grounding.fullyGroundedProducer) {
+    inferredFields.push('producer');
+    uncertaintyReasons.push('La bodega propuesta no esta respaldada por texto visible.');
+  }
+  if (vintage !== null && !grounding.groundedVintage) {
+    inferredFields.push('vintage');
+    uncertaintyReasons.push('La anada propuesta no es legible en este recorte.');
+  }
 
   const identitySignals = [raw.producer, raw.vintage, raw.region, raw.country]
     .filter((signal) => typeof signal === 'number' || (typeof signal === 'string' && signal.trim())).length;
@@ -55,7 +66,9 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
   if (groundedEvidence.length === 0) confidence = Math.min(confidence, 0.4);
   else if (groundedEvidence.length < 2) confidence = Math.min(confidence, 0.62);
   if (identityMatches.length < 2) confidence = Math.min(confidence, 0.62);
-  if (identitySignals === 0) confidence = Math.min(confidence, 0.62);
+  // A fully visible multi-token product name can identify a reference even when
+  // producer, vintage and region are absent. Single generic words cannot.
+  if (identitySignals === 0 && !grounding.fullyGroundedName) confidence = Math.min(confidence, 0.62);
   if (uncertaintyReasons.length > 0) confidence = Math.min(confidence, 0.78);
   if (inferredFields.some((field) => ['name', 'nombre', 'producer', 'productor'].includes(field.toLowerCase()))) {
     confidence = Math.min(confidence, 0.55);
@@ -63,17 +76,17 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
 
   return {
     name,
-    producer: typeof raw.producer === 'string' && raw.producer.trim() ? raw.producer.trim() : null,
-    vintage: Number.isFinite(vintage) ? vintage : null,
+    producer: grounding.fullyGroundedProducer ? producer : null,
+    vintage: grounding.groundedVintage ? vintage : null,
     region: typeof raw.region === 'string' && raw.region.trim() ? raw.region.trim() : null,
     country: typeof raw.country === 'string' && raw.country.trim() ? raw.country.trim() : null,
     grapes: stringArray(raw.grapes),
-    alcohol: Number.isFinite(alcohol) ? alcohol : null,
+    alcohol: alcohol,
     confidence: Math.round(confidence * 100) / 100,
     source: 'label',
     evidence: groundedEvidence,
     uncertainty_reasons: uncertaintyReasons,
-    inferred_fields: inferredFields,
+    inferred_fields: Array.from(new Set(inferredFields)),
     sensory_attributes: sensory ? {
       potencia: normalizeSensory('potencia'),
       acidez: normalizeSensory('acidez'),
