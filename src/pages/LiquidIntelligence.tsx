@@ -205,7 +205,7 @@ const LiquidIntelligence = () => {
       <div className="min-h-screen">
         {renderContent()}
       </div>
-      <MobileBottomNav />
+      {(isNative || !user) && <MobileBottomNav />}
     </div>
   );
 };

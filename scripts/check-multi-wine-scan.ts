@@ -148,6 +148,26 @@ const mergedDetection = mergeWineDetectionTileResults([
 assert.equal(mergedDetection.regions.length, 1, 'overlap tiles should not duplicate the same bottle');
 assert.equal(mergedDetection.coverage.status, 'reported_complete');
 
+const denseGridRegions = Array.from({ length: 48 }, (_, index) => ({
+  object_type: 'bottle',
+  box: {
+    x: (index % 8) * 12 + 1,
+    y: Math.floor(index / 8) * 16 + 1,
+    width: 8,
+    height: 13,
+  },
+  confidence: 0.8,
+}));
+const denseMergedDetection = mergeWineDetectionTileResults([{
+  tile: getFullWineDetectionTile(),
+  payload: {
+    coverage: { status: 'partial', estimated_visible_objects: 48, confidence: 0.8 },
+    regions: denseGridRegions,
+  },
+}]);
+assert.equal(denseMergedDetection.regions.length, 48, 'dense refinements must retain lower rows beyond the former 30-region cap');
+assert.ok(denseMergedDetection.regions.some((region) => region.box.y > 70), 'dense refinements must keep lower-shelf regions');
+
 const coverage = normalizeScanCoverage({
   coverage: {
     status: 'partial',
@@ -456,10 +476,59 @@ const uncertainDuplicate = {
 assert.equal(groupDuplicateWines([
   makeRegion('r1', 1, 'Celler Aripta Brut', 82),
   uncertainDuplicate,
-]).length, 2, 'uncertain identities must not be grouped as duplicate bottles');
+]).length, 1, 'matching uncertain copies should group without becoming confirmable');
+const partialProducerDuplicate = {
+  ...uncertainDuplicate,
+  candidates: [{
+    ...uncertainDuplicate.candidates[0],
+    producer: 'Aripta',
+  }],
+};
+const fullProducerRegion = makeRegion('r1', 1, 'Celler Aripta Brut', 82);
+fullProducerRegion.candidates[0].producer = 'Celler Aripta';
+assert.equal(groupDuplicateWines([
+  fullProducerRegion,
+  partialProducerDuplicate,
+]).length, 1, 'the same wine name with a partial compatible producer should group');
+const ungroundedDuplicate = {
+  ...uncertainDuplicate,
+  candidates: [{ ...uncertainDuplicate.candidates[0], confidence: 0.45 }],
+};
+assert.equal(groupDuplicateWines([
+  makeRegion('r1', 1, 'Celler Aripta Brut', 82),
+  ungroundedDuplicate,
+]).length, 2, 'very low-confidence identities must remain separate');
+const groundedUncertainDuplicate = {
+  ...uncertainDuplicate,
+  candidates: [{
+    ...uncertainDuplicate.candidates[0],
+    confidence: 0.78,
+    uncertaintyReasons: ['La añada no es legible.'],
+  }],
+};
+const groundedUncertainGroups = groupDuplicateWines([
+  makeRegion('r1', 1, 'Celler Aripta Brut', 82),
+  groundedUncertainDuplicate,
+]);
+assert.equal(groundedUncertainGroups.length, 1, 'grounded uncertain copies should group as one reference');
+assert.equal(groundedUncertainGroups[0].count, 2);
+const genericDescriptorVariant = {
+  ...uncertainDuplicate,
+  candidates: [{
+    ...uncertainDuplicate.candidates[0],
+    name: 'Celler Aripta Brut Sparkling Wine Product',
+    confidence: 0.62,
+  }],
+};
+const genericDescriptorGroups = groupDuplicateWines([
+  makeRegion('r1', 1, 'Celler Aripta Brut', 82),
+  genericDescriptorVariant,
+]);
+assert.equal(genericDescriptorGroups.length, 1, 'generic wine descriptors must not create a second reference');
+assert.equal(genericDescriptorGroups[0].count, 2);
 assert.equal(getConfirmableWineGroups([
   makeRegion('r1', 1, 'Celler Aripta Brut', 82),
-  uncertainDuplicate,
+  groundedUncertainDuplicate,
 ]).length, 1, 'uncertain identities must not enter batch confirmation');
 const manuallyConfirmed = confirmWineCandidateIdentity(uncertainDuplicate.candidates[0]);
 assert.equal(manuallyConfirmed.confidence, 1);

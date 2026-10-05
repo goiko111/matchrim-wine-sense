@@ -210,7 +210,7 @@ const Scan = () => {
           </>
         )}
       </main>
-      <MobileBottomNav />
+      {(isNative || !user) && <MobileBottomNav />}
     </div>
   );
 };

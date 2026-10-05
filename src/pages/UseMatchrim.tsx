@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -110,6 +111,7 @@ const UseMatchrim = () => {
   const [winerimSectionFilter, setWinerimSectionFilter] = useState('all');
   const [winerimMaxPrice, setWinerimMaxPrice] = useState('');
   const [winerimSortMode, setWinerimSortMode] = useState<WinerimSortMode>('match');
+  const [shareRestaurantSignal, setShareRestaurantSignal] = useState(false);
 
   const currentUseMatchrimPath = useMemo(() => {
     const queryString = searchParams.toString();
@@ -305,6 +307,7 @@ const UseMatchrim = () => {
           is_winerim_restaurant: isWinerimRestaurant,
           matchrim_code: matchrimCode,
           matchrim_profile: { ...profile } as Json,
+          source: shareRestaurantSignal ? 'restaurant_lead_opt_in' : 'private_matchrim_session',
         })
         .select('id')
         .single();
@@ -479,12 +482,11 @@ const UseMatchrim = () => {
       <main className="mx-auto max-w-6xl px-4 py-10">
         <div className="mb-8 text-white">
           <Badge className="mb-4 bg-white/15 text-white hover:bg-white/15">
-            Código Winerim
+            Modo restaurante
           </Badge>
-          <h1 className="text-4xl font-bold">Usa tu Matchrim en un restaurante</h1>
+          <h1 className="text-4xl font-bold">Elige vino en un restaurante</h1>
           <p className="mt-3 max-w-3xl text-white/80">
-            Si el restaurante tiene Winerim, tu código filtra la carta. Si no lo tiene, escanea la carta y guardaremos
-            la señal para que ese restaurante pueda ver que sus clientes quieren Winerim.
+            Personaliza una carta Winerim con tu perfil o escanea cualquier carta para ordenar sus vinos por afinidad.
           </p>
         </div>
 
@@ -524,10 +526,10 @@ const UseMatchrim = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MapPin className="h-5 w-5" />
-                Restaurante donde estás
+                ¿Cómo tienes la carta?
               </CardTitle>
               <CardDescription>
-                Esta información convierte cada uso en una señal comercial para Winerim.
+                El nombre del restaurante sirve para tu historial. Compartir interés con Winerim es opcional.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-5">
@@ -558,22 +560,22 @@ const UseMatchrim = () => {
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="winerim" className="gap-2">
                     <Sparkles className="h-4 w-4" />
-                    Tiene Winerim
+                    Carta Winerim
                   </TabsTrigger>
                   <TabsTrigger value="scanner" className="gap-2">
                     <ScanLine className="h-4 w-4" />
-                    No tiene Winerim
+                    Escanear carta
                   </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="winerim" className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="restaurant-code">Código o slug de restaurante Winerim</Label>
+                    <Label htmlFor="restaurant-code">Código de la carta</Label>
                     <Input
                       id="restaurant-code"
                       value={restaurantCode}
                       onChange={(event) => setRestaurantCode(event.target.value)}
-                      placeholder="Opcional, si viene en el QR o carta"
+                      placeholder="Opcional, aparece en el QR o la carta"
                     />
                   </div>
                   <Button
@@ -582,7 +584,7 @@ const UseMatchrim = () => {
                     className="w-full gap-2 bg-red-800 hover:bg-red-900"
                   >
                     {loadingWinerimWines ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                    Filtrar carta desde API Winerim
+                    Ver vinos recomendados
                   </Button>
 
                   <Button
@@ -591,7 +593,7 @@ const UseMatchrim = () => {
                     className="w-full gap-2"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    Abrir carta en Winerim
+                    Abrir carta completa
                   </Button>
 
                   {winerimError && (
@@ -724,8 +726,19 @@ const UseMatchrim = () => {
                       <Wine className="mx-auto mb-3 h-10 w-10 text-red-800" />
                       <h3 className="font-semibold">Escanea la carta de este restaurante</h3>
                       <p className="mt-2 text-sm text-muted-foreground">
-                        Te mostraremos los vinos que más encajan con {matchrimCode} y guardaremos la demanda para Winerim.
+                        Te mostraremos los vinos que más encajan con {matchrimCode}. La foto se usa para analizar la carta, no para captar al restaurante.
                       </p>
+                      <div className="mx-auto mt-4 flex max-w-md items-start gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-left">
+                        <Checkbox
+                          id="share-restaurant-signal"
+                          checked={shareRestaurantSignal}
+                          onCheckedChange={(checked) => setShareRestaurantSignal(checked === true)}
+                          className="mt-0.5"
+                        />
+                        <Label htmlFor="share-restaurant-signal" className="cursor-pointer text-sm font-normal leading-5 text-slate-700">
+                          Avisar a Winerim de que me gustaría encontrar aquí una carta personalizada. Solo se comparte el nombre y la ciudad del restaurante; nunca mi perfil ni la foto.
+                        </Label>
+                      </div>
                       <Button
                         onClick={prepareScanner}
                         disabled={savingSession}

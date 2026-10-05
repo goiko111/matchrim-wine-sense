@@ -287,6 +287,8 @@ export interface ResolvedWineDetection {
   refined: boolean;
 }
 
+export const MAX_REFINED_WINE_REGIONS = 60;
+
 const fullDetectionTile: WineDetectionTile = {
   id: 'full',
   box: { x: 0, y: 0, width: 100, height: 100 },
@@ -365,7 +367,7 @@ export const mergeWineDetectionTileResults = (
       confidence: region.detectionConfidence,
       quality: region.quality,
     })),
-  }).slice(0, 30);
+  }).slice(0, MAX_REFINED_WINE_REGIONS);
   const tileCoverage = results.map(({ payload }) => normalizeScanCoverage(payload, normalizeDetectedRegions(payload).length));
   const statuses = tileCoverage.map((item) => item.status);
   const status: ScanCoverageStatus = statuses.every((item) => item === 'reported_complete')
@@ -522,6 +524,13 @@ export const buildCanonicalWineKey = (candidate: WineCandidate) => [
 
 const identityTokens = (value: string | null | undefined) => new Set(normalizeIdentity(value).split(' ').filter(Boolean));
 const producerStopWords = new Set(['bodega', 'bodegas', 'winery', 'wine', 'wines', 'sa']);
+const genericWineNameTokens = new Set([
+  'product',
+  'sparkling',
+  'spumante',
+  'vino',
+  'wine',
+]);
 
 export const areLikelyDuplicateWines = (left: WineCandidate, right: WineCandidate) => {
   if (left.vintage && right.vintage && left.vintage !== right.vintage) return false;
@@ -540,7 +549,9 @@ export const areLikelyDuplicateWines = (left: WineCandidate, right: WineCandidat
   const producerTokens = new Set([...leftProducer, ...rightProducer]);
   const extraTokens = [...new Set([...leftName, ...rightName])]
     .filter((token) => !leftName.has(token) || !rightName.has(token));
-  return extraTokens.length > 0 && extraTokens.every((token) => /^\d{4}$/.test(token) || producerTokens.has(token));
+  return sharedName.length >= 2
+    && extraTokens.length > 0
+    && extraTokens.every((token) => /^\d{4}$/.test(token) || producerTokens.has(token) || genericWineNameTokens.has(token));
 };
 
 export interface DuplicateWineGroup {
@@ -556,11 +567,17 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
     if (region.status === 'discarded' || region.status === 'unrecognized') return;
     const candidate = getSelectedCandidate(region);
     if (!candidate) return;
-    const canGroup = region.status === 'recognized'
-      && candidate.confidence >= 0.72
-      && candidate.uncertaintyReasons.length === 0;
     const canonicalKey = buildCanonicalWineKey(candidate);
-    const current = canGroup ? groups.find((group) => areLikelyDuplicateWines(group.candidate, candidate)) : null;
+    const canGroup = (region.status === 'recognized' || region.status === 'uncertain')
+      && candidate.confidence >= 0.5;
+    const current = canGroup ? groups.find((group) => {
+      if (buildCanonicalWineKey(group.candidate) === canonicalKey) return true;
+      const exactWineName = normalizeIdentity(group.candidate.name) === normalizeIdentity(candidate.name);
+      if (exactWineName && areLikelyDuplicateWines(group.candidate, candidate)) return true;
+      return Math.min(group.candidate.confidence, candidate.confidence) >= 0.6
+        && Math.max(group.candidate.confidence, candidate.confidence) >= 0.72
+        && areLikelyDuplicateWines(group.candidate, candidate);
+    }) : null;
     if (current) {
       current.regionIds.push(region.id);
       current.count += 1;
