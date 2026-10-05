@@ -5,6 +5,8 @@ const genericTokens = new Set([
   'wine', 'wines', 'vino', 'vin', 'champagne', 'sparkling', 'vintage', 'fifth', 'tenth',
   'bottle', 'bottles', 'botella', 'magnum', 'linea', 'line', 'section', 'seccion',
   'brut', 'cava', 'reserve', 'reserva', 'blanco', 'tinto', 'rosado', 'rose', 'sec',
+  'of', 'the', 'by', 'a', 'an', 'de', 'del', 'la', 'el', 'los', 'las',
+  'glass', 'glasses', 'copa', 'copas', 'house', 'casa', 'red', 'white',
 ]);
 
 export const hasGroundedMenuName = (name: string, source: string, producer = '') => {

@@ -15,7 +15,7 @@ const genericIdentityPattern = /^(cha|chat|chate|chateau|champagne|cava|vino|win
 export const isWineMenuItem = (wine: WineMenuIdentityFields) => {
   const nameAndType = `${wine.nombre || ''} ${wine.tipo || ''}`.trim();
   if (!nameAndType || nonWinePattern.test(nameAndType)) return false;
-  if (wine.texto_fuente && !hasGroundedMenuName(wine.nombre || '', wine.texto_fuente, wine.productor || '')) return false;
+  if (!hasGroundedMenuName(wine.nombre || '', wine.texto_fuente || wine.nombre || '', wine.productor || '')) return false;
   const hasSpecificProducer = Boolean((wine.productor || '').trim().match(/[a-z0-9]{3,}/i));
   const sourceSupportsProducer = hasSpecificProducer
     && (wine.texto_fuente || '').toLowerCase().includes((wine.productor || '').trim().toLowerCase());

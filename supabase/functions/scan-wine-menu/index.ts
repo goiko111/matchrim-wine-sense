@@ -21,7 +21,7 @@ type MatchrimProfile = {
 type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', number>>;
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const FUNCTION_VERSION = 'scan-wine-menu-2026-10-05-currency-layout-v7';
+const FUNCTION_VERSION = 'scan-wine-menu-2026-10-05-grounded-compact-v8';
 
 const normalizeText = (value: unknown) => typeof value === 'string' ? value.trim() : '';
 const normalizeStringArray = (value: unknown) => Array.isArray(value)
@@ -248,7 +248,7 @@ Para cada vino proporciona:
 - campos_inferidos: array de campos no leidos literalmente en la imagen
 - tipo: tinto, blanco, rosado, espumoso, generoso o dulce
 - uvas: Array con variedades principales
-- descripcion: Breve descripción (máximo 150 palabras) con aromas y notas de cata
+- descripcion: Maximo 24 palabras, solo notas visibles o respaldadas por una identidad legible; null si no hay base. Declara descripcion y atributos en campos_inferidos cuando no se lean literalmente. No inventes notas de cata.
 - posicion: opcional. Objeto { "x": number 0-100, "y": number 0-100, "width": number 0-100, "height": number 0-100, "confidence": number 0-1 } donde (x,y) es el punto de anclaje EXACTO justo al lado del nombre del vino dentro de la imagen, expresado como porcentaje del ancho/alto de la imagen. width/height describen el bounding box del bloque del vino. confidence es tu certeza de que la posición es exacta. Si NO puedes ver el bloque con claridad o tu confidence sería < 0.7, devuelve posicion: null. NUNCA inventes columnas, posiciones aproximadas ni distribuyas vinos uniformemente.`;
 
     const learnedProfile = profile
@@ -269,7 +269,7 @@ ADEMÁS, calcula la compatibilidad de cada vino con este perfil de usuario (esca
 Para cada vino, estima también:
 - atributos: objeto con potencia, acidez, dulzura, taninos, afrutado (enteros 1-5; null si no hay evidencia suficiente, NUNCA conviertas ausencia en 0 o 1)
 - compatibilidad: porcentaje 0-100 de compatibilidad con el perfil del usuario
-- razon: explicación breve de la compatibilidad`;
+- razon: explicacion de maximo 18 palabras basada en los atributos disponibles; null si no hay evidencia suficiente`;
     }
 
     prompt += `
