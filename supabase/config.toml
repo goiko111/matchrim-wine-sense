@@ -1,1 +1,12 @@
 project_id = "cbjynrbvrhcmpaojmqdp"
+[functions.detect-wine-regions-v72]
+verify_jwt = true
+
+[functions.analyze-wine-region-v72]
+verify_jwt = true
+
+[functions.scan-wine-menu-v72]
+verify_jwt = true
+
+[functions.calculate-wine-affinity-v72]
+verify_jwt = true
