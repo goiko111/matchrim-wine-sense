@@ -1,5 +1,15 @@
 # Matchrim next steps
 
+## Latest gate: local77 challenge, 2026-10-08
+
+1. Resolve the requested remote-call budget before new vision execution; shared ledger stays289/300. Do not reset it or treat local tests as live benchmark calls.
+2. Freeze reviewed source groups and complete independent bottle/row annotations, then run real recognition per mode with raw response/crop/identity evidence. New24 source files are not yet model-evaluated.
+3. Close the feature gaps in the77 matrix: real personalized ranking, authenticated persistence/isolation, restaurant availability/consent, food cancellation/PDF coverage and physical accessibility/performance.
+4. Food backend still needs staged correction of null sensory coercion. No backend or published web changes in77.
+5. Preserve uploaded75/local76 and the separate77 candidate. Do not upload another build solely because functional mocks and compilation pass.
+
+See [MATCHRIM_77_CHALLENGE_2026-10-08.md](docs/MATCHRIM_77_CHALLENGE_2026-10-08.md).
+
 ## Latest gate: uploaded75 / local76, 2026-10-08
 
 1. Confirm processing/availability of build75 in TestFlight after App Store Connect login. Upload already succeeded; do not upload75 again or claim it is on the phone without verification.

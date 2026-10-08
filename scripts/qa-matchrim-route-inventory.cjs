@@ -28,6 +28,17 @@ const OUTPUT_DIR = path.resolve(
     || 'docs/qa-evidence/matchrim-integral-qa-2026-09-29/routes',
 );
 const HEAD = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { encoding: 'utf8' }).trim();
+const ISOLATED = process.env.MATCHRIM_ROUTE_QA_ISOLATED === 'true';
+const makeContext = async (browser) => {
+  const context = await browser.newContext({ viewport: { width: 430, height: 932 } });
+  if (ISOLATED) {
+    await context.route('**/*', (route) => {
+      if (new URL(route.request().url()).origin === new URL(BASE_URL).origin) return route.continue();
+      return route.fulfill({ status: 200, contentType: 'application/json', body: '[]' });
+    });
+  }
+  return context;
+};
 
 const routes = [
   { route: '/', objective: 'Inicio de decisión y acceso a escaneo, aiRIM y recomendaciones', surface: 'consumer', capture: 'home' },
@@ -72,7 +83,7 @@ const main = async () => {
   const results = [];
 
   try {
-    const probeContext = await browser.newContext({ viewport: { width: 430, height: 932 } });
+    const probeContext = await makeContext(browser);
     const probePage = await probeContext.newPage();
     try {
       await probePage.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded', timeout: 20_000 });
@@ -88,7 +99,7 @@ const main = async () => {
     }
 
     for (const route of routes) {
-      const context = await browser.newContext({ viewport: { width: 430, height: 932 } });
+      const context = await makeContext(browser);
       const page = await context.newPage();
       const consoleErrors = [];
       const pageErrors = [];
@@ -144,9 +155,10 @@ const main = async () => {
   }
 
   const report = {
-    generatedAt: '2026-09-29',
+    generatedAt: new Date().toISOString(),
     build: `local HEAD ${HEAD} plus current QA working-tree fixes`,
     scope: 'anonymous local route inventory; no account creation and no production writes',
+    isolatedBackend: ISOLATED,
     totals: {
       routes: results.length,
       rendered: results.filter((result) => result.rendered).length,

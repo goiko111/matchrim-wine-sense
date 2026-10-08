@@ -1,0 +1,1072 @@
+{
+  "generatedAt": "2026-10-08T10:44:18.344Z",
+  "candidate": "1.0 (77)",
+  "uploaded": false,
+  "productionDeploy": false,
+  "newVisionCalls": 0,
+  "remoteBudget": {
+    "used": 289,
+    "limit": 300,
+    "additionalApprovalPending": true
+  },
+  "publicCorpus": {
+    "existingFiles": 60,
+    "addedFiles": 24,
+    "uniqueFiles": 84,
+    "independentSceneCount": null,
+    "agentAnnotations": true,
+    "independentHumanValidation": false
+  },
+  "food": [
+    {
+      "case": "menu-flow",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "menu",
+          "profile": {
+            "potente": 4,
+            "acidez": 4,
+            "dulce": 1,
+            "tanico": 3,
+            "afrutado": 4
+          },
+          "image_bytes_estimate": 569603
+        }
+      ],
+      "console_and_page_errors": []
+    },
+    {
+      "case": "dish-flow",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "dish",
+          "profile": {
+            "potente": 4,
+            "acidez": 4,
+            "dulce": 1,
+            "tanico": 3,
+            "afrutado": 4
+          },
+          "image_bytes_estimate": 680264
+        }
+      ],
+      "console_and_page_errors": []
+    },
+    {
+      "case": "empty-menu",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "menu",
+          "profile": {
+            "potente": 4,
+            "acidez": 4,
+            "dulce": 1,
+            "tanico": 3,
+            "afrutado": 4
+          },
+          "image_bytes_estimate": 569603
+        }
+      ],
+      "console_and_page_errors": []
+    },
+    {
+      "case": "malformed-response",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "menu",
+          "profile": {
+            "potente": 4,
+            "acidez": 4,
+            "dulce": 1,
+            "tanico": 3,
+            "afrutado": 4
+          },
+          "image_bytes_estimate": 569603
+        }
+      ],
+      "console_and_page_errors": []
+    },
+    {
+      "case": "null-profile",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "menu",
+          "profile": null,
+          "image_bytes_estimate": 569603
+        }
+      ],
+      "console_and_page_errors": []
+    },
+    {
+      "case": "score-range",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "menu",
+          "profile": {
+            "potente": 4,
+            "acidez": 4,
+            "dulce": 1,
+            "tanico": 3,
+            "afrutado": 4
+          },
+          "image_bytes_estimate": 569603
+        }
+      ],
+      "console_and_page_errors": []
+    },
+    {
+      "case": "invalid-image",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [],
+      "console_and_page_errors": [
+        "Error scanning food pairing: Error: El dispositivo no puede abrir este formato de imagen\n    at r.onerror (http://127.0.0.1:4426/assets/overlayPins-3a7GlXAm.js:13:26850)"
+      ]
+    },
+    {
+      "case": "anonymous-save",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "menu",
+          "profile": {
+            "potente": 4,
+            "acidez": 4,
+            "dulce": 1,
+            "tanico": 3,
+            "afrutado": 4
+          },
+          "image_bytes_estimate": 569603
+        }
+      ],
+      "console_and_page_errors": []
+    },
+    {
+      "case": "airim-context",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "menu",
+          "profile": {
+            "potente": 4,
+            "acidez": 4,
+            "dulce": 1,
+            "tanico": 3,
+            "afrutado": 4
+          },
+          "image_bytes_estimate": 569603
+        }
+      ],
+      "console_and_page_errors": []
+    },
+    {
+      "case": "partial-sensory",
+      "evidence_class": "controlled_backend_functional",
+      "status": "PASS",
+      "requests": [
+        {
+          "mode": "menu",
+          "profile": {
+            "potente": 4,
+            "acidez": 4,
+            "dulce": 1,
+            "tanico": 3,
+            "afrutado": 4
+          },
+          "image_bytes_estimate": 569603
+        }
+      ],
+      "console_and_page_errors": []
+    }
+  ],
+  "scanner": [
+    {
+      "case": "privacidad_y_safe_area",
+      "expected": "sin acceso a fotos antes del consentimiento, sin solapes y por debajo de 59 px de safe area",
+      "actual": "PASS guard=59.0px gate_y=229.0 acknowledgement_bottom=681.0 cta_flow_top=693.0 visible_cta_bottom=539.0 nav_top=741.4 nav_links=[{'name': 'Inicio', 'width': 72.1875, 'height': 64}, {'name': 'aiRIM', 'width': 72.203125, 'height': 64}, {'name': 'Escanear', 'width': 72.203125, 'height': 64}, {'name': 'Bodega', 'width': 72.203125, 'height': 64}, {'name': 'Perfil', 'width': 72.1875, 'height': 64}] {'scrollWidth': 393, 'clientWidth': 393}"
+    },
+    {
+      "case": "privacidad_paisaje",
+      "expected": "consentimiento desplazable y CTA visible sobre la navegacion a 932x430",
+      "actual": "PASS cta_bottom=239.0 boundary=409.0 {'scrollWidth': 932, 'clientWidth': 932}"
+    },
+    {
+      "case": "multietiqueta_resumen",
+      "expected": "5 regiones, 3 referencias, duplicado agrupado, duda y objeto sin reconocer",
+      "actual": "PASS"
+    },
+    {
+      "case": "multietiqueta_comparacion",
+      "expected": "compara referencias y cambia entre decisión personal y servicio sin inventar un score",
+      "actual": "PASS"
+    },
+    {
+      "case": "multietiqueta_metricas",
+      "expected": "resumen visible de regiones y tiempo total tras terminar",
+      "actual": "PASS 5 regiones en 0.2 s"
+    },
+    {
+      "case": "multietiqueta_overflow_movil",
+      "expected": "sin desbordamiento horizontal a 393x852 con nombres largos",
+      "actual": "PASS {'scrollWidth': 393, 'clientWidth': 393}"
+    },
+    {
+      "case": "multietiqueta_detalle",
+      "expected": "top candidatos, evidencia, duda, gate de identidad y afinidad explicada en drawer",
+      "actual": "PASS"
+    },
+    {
+      "case": "multietiqueta_abstencion_y_correccion",
+      "expected": "motivo de abstencion, acciones, correccion manual y afinidad pendiente sin datos",
+      "actual": "PASS"
+    },
+    {
+      "case": "multietiqueta_correccion_invalida_afinidad",
+      "expected": "corregir la identidad elimina afinidad y ficha sensorial heredadas del vino anterior",
+      "actual": "PASS"
+    },
+    {
+      "case": "multietiqueta_recuperacion_compuesta",
+      "expected": "corregir invalida afinidad heredada, descartar elimina la region y reanalizar sustituye la identidad",
+      "actual": "PASS attempts={'region-2': 1, 'region-1': 2, 'region-3': 1, 'region-4': 1, 'region-5': 1}"
+    },
+    {
+      "case": "multietiqueta_traza_region_crop_resultado",
+      "expected": "tres cajas desordenadas se normalizan y cada region conserva caja, crop unico y resultado espacial",
+      "actual": "PASS traces=[{'region_id': 'region-1', 'region_index': 1, 'region_box': {'x': 8, 'y': 12, 'width': 18, 'height': 72}, 'crop_sha256': 'b2d1b5b730df50cb26bc33b99b3ac2f734fffb8698e4c908686f3c8bebb9f84c', 'candidate': 'Botella izquierda'}, {'region_id': 'region-2', 'region_index': 2, 'region_box': {'x': 37, 'y': 12, 'width': 18, 'height': 72}, 'crop_sha256': 'ffac16d18f0a29b2e108a72963bdb143202be3005ce9bc56de6952951264bf5f', 'candidate': 'Botella central'}, {'region_id': 'region-3', 'region_index': 3, 'region_box': {'x': 66, 'y': 12, 'width': 18, 'height': 72}, 'crop_sha256': 'e77f0c9b7704cec5254d7ad04f07c0acee91e2a380f22b56e7b8376478250e56', 'candidate': 'Botella derecha'}]"
+    },
+    {
+      "case": "multietiqueta_refinamiento_regional",
+      "expected": "respuesta completa invalida dispara full+2 zonas, descarta franjas y conserva dos botellas",
+      "actual": "PASS tiles=['full', 'left', 'right'] summary=2 regiones en 0.3 s · detección refinada por zonas {'scrollWidth': 393, 'clientWidth': 393}"
+    },
+    {
+      "case": "multietiqueta_fallback_regional",
+      "expected": "si una zona falla tras retry se conservan full y zona util, avisando cobertura parcial",
+      "actual": "PASS attempts={'full': 1, 'left': 1, 'right': 2} summary=2 regiones en 0.8 s · detección refinada por zonas · 1 reintento"
+    },
+    {
+      "case": "multietiqueta_decision_provisional",
+      "expected": "ninguna identidad dudosa se presenta como eleccion final",
+      "actual": "PASS {'scrollWidth': 393, 'clientWidth': 393}"
+    },
+    {
+      "case": "multietiqueta_retry_selectivo",
+      "expected": "503 de detector/region se reintenta una vez, 400 no se repite y el lote termina",
+      "actual": "PASS attempts={'detector': 2, 'region-2': 1, 'region-1': 2, 'region-3': 1, 'region-4': 1, 'region-5': 1} summary=5 regiones en 1.3 s · 2 reintentos"
+    },
+    {
+      "case": "multietiqueta_cancelacion_backoff",
+      "expected": "cancelar durante Retry-After evita una segunda llamada",
+      "actual": "PASS attempts={'region-2': 1, 'region-1': 1, 'region-3': 1, 'region-4': 1, 'region-5': 1}"
+    },
+    {
+      "case": "carta_vista_dual",
+      "expected": "imagen con pines numericos y lista sincronizada sin texto superpuesto",
+      "actual": "PASS"
+    },
+    {
+      "case": "carta_comparacion_servicio",
+      "expected": "comparación completa de 2 a 5 con presupuesto y formato por copa verificables",
+      "actual": "PASS"
+    },
+    {
+      "case": "carta_overflow_escritorio",
+      "expected": "sin desbordamiento horizontal a 1440x1000",
+      "actual": "PASS {'scrollWidth': 1440, 'clientWidth': 1440}"
+    },
+    {
+      "case": "carta_interaccion",
+      "expected": "zoom, filtro por precio y drawer detallado",
+      "actual": "PASS"
+    },
+    {
+      "case": "carta_fichas_progresivas",
+      "expected": "la accion global no expande todas las fichas; cada vino se abre de forma independiente",
+      "actual": "PASS una ficha visible tras abrirla expresamente"
+    },
+    {
+      "case": "carta_moneda_GBP",
+      "expected": "sin EUR inventado, afinidad sin doble calibrar y presupuesto por copa con moneda verificable",
+      "actual": "PASS"
+    },
+    {
+      "case": "carta_moneda_unknown",
+      "expected": "sin EUR inventado, afinidad sin doble calibrar y presupuesto por copa con moneda verificable",
+      "actual": "PASS"
+    },
+    {
+      "case": "fixture_IMG_7548 2",
+      "expected": "decodifica, normaliza y presenta resultados a 430x932",
+      "actual": "PASS {'scrollWidth': 430, 'clientWidth': 430}"
+    },
+    {
+      "case": "fixture_IMG_7552 2",
+      "expected": "decodifica, normaliza y presenta resultados a 932x430",
+      "actual": "PASS {'scrollWidth': 932, 'clientWidth': 932}"
+    },
+    {
+      "case": "fixture_IMG_7553 2",
+      "expected": "decodifica, normaliza y presenta resultados a 430x932",
+      "actual": "PASS {'scrollWidth': 430, 'clientWidth': 430}"
+    },
+    {
+      "case": "carta_touch_targets",
+      "expected": "pins, zoom y cierre con zonas tactiles de al menos 44x44 px",
+      "actual": "PASS [{'width': 55, 'height': 55}, {'width': 55, 'height': 55}, {'width': 55, 'height': 55}, {'width': 55, 'height': 55}]"
+    },
+    {
+      "case": "carta_voiceover_basico",
+      "expected": "botones con nombre accesible, dialogo identificado y cierre nombrado",
+      "actual": "PASS"
+    },
+    {
+      "case": "carta_dynamic_type_125",
+      "expected": "texto al 125% sin desbordamiento horizontal ni controles inaccesibles",
+      "actual": "PASS {'scrollWidth': 393, 'clientWidth': 393}"
+    },
+    {
+      "case": "multietiqueta_sin_red",
+      "expected": "mensaje accionable, foto conservada y reintento disponible",
+      "actual": "PASS"
+    },
+    {
+      "case": "consola",
+      "expected": "sin errores de consola",
+      "actual": "PASS"
+    }
+  ],
+  "personas": {
+    "release": "Matchrim 1.0 (66)",
+    "qualification": "25 isolated synthetic sessions against compiled local assets; all Supabase and Winerim traffic intercepted",
+    "realHumans": 0,
+    "productionReads": false,
+    "productionWrites": false,
+    "personaCount": 25,
+    "passed": 25,
+    "failed": 0,
+    "allPassed": true,
+    "results": [
+      {
+        "index": 1,
+        "persona": "principiante-cero",
+        "userId": "00000000-0000-4000-8000-000000000001",
+        "profile": {
+          "potente": 0,
+          "acidez": 1,
+          "dulce": 1,
+          "tanico": 0,
+          "afrutado": 1
+        },
+        "passportMatchrimCode": "Garnacha Atlántico",
+        "passportMatchrimName": "Garnacha Atlántico",
+        "learnedMatchrimCode": "Riesling Miel",
+        "learnedMatchrimName": "Riesling Miel",
+        "scanScenario": "single-label",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 2,
+        "persona": "principiante-frutal",
+        "userId": "00000000-0000-4000-8000-000000000002",
+        "profile": {
+          "potente": 0.5,
+          "acidez": 1.7,
+          "dulce": 3.1,
+          "tanico": 0,
+          "afrutado": 5
+        },
+        "passportMatchrimCode": "Chardonnay Dorado",
+        "passportMatchrimName": "Chardonnay Dorado",
+        "learnedMatchrimCode": "Pinot Dorado",
+        "learnedMatchrimName": "Pinot Dorado",
+        "scanScenario": "single-label",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 3,
+        "persona": "tinto-clasico",
+        "userId": "00000000-0000-4000-8000-000000000003",
+        "profile": {
+          "potente": 5,
+          "acidez": 1.6,
+          "dulce": 0.2,
+          "tanico": 5,
+          "afrutado": 1.7
+        },
+        "passportMatchrimCode": "Monastrell Tierra",
+        "passportMatchrimName": "Monastrell Tierra",
+        "learnedMatchrimCode": "Garnacha Fuego",
+        "learnedMatchrimName": "Garnacha Fuego",
+        "scanScenario": "single-label",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 4,
+        "persona": "blanco-atlantico",
+        "userId": "00000000-0000-4000-8000-000000000004",
+        "profile": {
+          "potente": 0.5,
+          "acidez": 5,
+          "dulce": 1,
+          "tanico": 0,
+          "afrutado": 3.7
+        },
+        "passportMatchrimCode": "Godello Velo",
+        "passportMatchrimName": "Godello Velo",
+        "learnedMatchrimCode": "Albariño Primavera",
+        "learnedMatchrimName": "Albariño Primavera",
+        "scanScenario": "single-label",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 5,
+        "persona": "dulce-aromatico",
+        "userId": "00000000-0000-4000-8000-000000000005",
+        "profile": {
+          "potente": 1,
+          "acidez": 2,
+          "dulce": 5,
+          "tanico": 0.2,
+          "afrutado": 4.9
+        },
+        "passportMatchrimCode": "Gewürztraminer Aroma",
+        "passportMatchrimName": "Gewürztraminer Aroma",
+        "learnedMatchrimCode": "Malvasía Jardín",
+        "learnedMatchrimName": "Malvasía Jardín",
+        "scanScenario": "single-label",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry",
+          "landscape"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 6,
+        "persona": "acidez-alta",
+        "userId": "00000000-0000-4000-8000-000000000006",
+        "profile": {
+          "potente": 0.9,
+          "acidez": 5,
+          "dulce": 0.6,
+          "tanico": 0.5,
+          "afrutado": 3
+        },
+        "passportMatchrimCode": "Riesling Jardín",
+        "passportMatchrimName": "Riesling Jardín",
+        "learnedMatchrimCode": "Godello Aroma",
+        "learnedMatchrimName": "Godello Aroma",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 7,
+        "persona": "acidez-baja",
+        "userId": "00000000-0000-4000-8000-000000000007",
+        "profile": {
+          "potente": 2.2,
+          "acidez": 0,
+          "dulce": 3.9,
+          "tanico": 1,
+          "afrutado": 3.5
+        },
+        "passportMatchrimCode": "Gewürztraminer Aroma",
+        "passportMatchrimName": "Gewürztraminer Aroma",
+        "learnedMatchrimCode": "Malvasía Jardín",
+        "learnedMatchrimName": "Malvasía Jardín",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 8,
+        "persona": "tanino-alto",
+        "userId": "00000000-0000-4000-8000-000000000008",
+        "profile": {
+          "potente": 5,
+          "acidez": 3.5,
+          "dulce": 0.3,
+          "tanico": 5,
+          "afrutado": 0.5
+        },
+        "passportMatchrimCode": "Tempranillo Noble",
+        "passportMatchrimName": "Tempranillo Noble",
+        "learnedMatchrimCode": "Tempranillo Noble",
+        "learnedMatchrimName": "Tempranillo Noble",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 9,
+        "persona": "tanino-bajo",
+        "userId": "00000000-0000-4000-8000-000000000009",
+        "profile": {
+          "potente": 0.5,
+          "acidez": 1.7,
+          "dulce": 2.7,
+          "tanico": 0,
+          "afrutado": 5
+        },
+        "passportMatchrimCode": "Chardonnay Dorado",
+        "passportMatchrimName": "Chardonnay Dorado",
+        "learnedMatchrimCode": "Merlot Terciopelo",
+        "learnedMatchrimName": "Merlot Terciopelo",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 10,
+        "persona": "experto-explorador",
+        "userId": "00000000-0000-4000-8000-000000000010",
+        "profile": {
+          "potente": 5,
+          "acidez": 4.4,
+          "dulce": 0.3,
+          "tanico": 5,
+          "afrutado": 1
+        },
+        "passportMatchrimCode": "Tempranillo Noble",
+        "passportMatchrimName": "Tempranillo Noble",
+        "learnedMatchrimCode": "Tempranillo Noble",
+        "learnedMatchrimName": "Tempranillo Noble",
+        "scanScenario": "multi-bottle",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry",
+          "landscape"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 11,
+        "persona": "conservador-familiar",
+        "userId": "00000000-0000-4000-8000-000000000011",
+        "profile": {
+          "potente": 4.6,
+          "acidez": 1.6,
+          "dulce": 0,
+          "tanico": 4.8,
+          "afrutado": 1.2
+        },
+        "passportMatchrimCode": "Tempranillo Especia",
+        "passportMatchrimName": "Tempranillo Especia",
+        "learnedMatchrimCode": "Syrah Bravo",
+        "learnedMatchrimName": "Syrah Bravo",
+        "scanScenario": "multi-bottle",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 12,
+        "persona": "presupuesto-estricto",
+        "userId": "00000000-0000-4000-8000-000000000012",
+        "profile": {
+          "potente": 0,
+          "acidez": 1,
+          "dulce": 2,
+          "tanico": 0,
+          "afrutado": 4
+        },
+        "passportMatchrimCode": "Merlot Terciopelo",
+        "passportMatchrimName": "Merlot Terciopelo",
+        "learnedMatchrimCode": "Verdejo Miel",
+        "learnedMatchrimName": "Verdejo Miel",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 13,
+        "persona": "compra-premium",
+        "userId": "00000000-0000-4000-8000-000000000013",
+        "profile": {
+          "potente": 5,
+          "acidez": 3.5,
+          "dulce": 0.3,
+          "tanico": 5,
+          "afrutado": 0.5
+        },
+        "passportMatchrimCode": "Tempranillo Noble",
+        "passportMatchrimName": "Tempranillo Noble",
+        "learnedMatchrimCode": "Tempranillo Noble",
+        "learnedMatchrimName": "Tempranillo Noble",
+        "scanScenario": "multi-bottle",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 14,
+        "persona": "restaurante-copa",
+        "userId": "00000000-0000-4000-8000-000000000014",
+        "profile": {
+          "potente": 0,
+          "acidez": 2,
+          "dulce": 1,
+          "tanico": 0,
+          "afrutado": 3
+        },
+        "passportMatchrimCode": "Pinot Luz",
+        "passportMatchrimName": "Pinot Luz",
+        "learnedMatchrimCode": "Chardonnay Luz",
+        "learnedMatchrimName": "Chardonnay Luz",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 15,
+        "persona": "maridaje-marisco",
+        "userId": "00000000-0000-4000-8000-000000000015",
+        "profile": {
+          "potente": 0,
+          "acidez": 4,
+          "dulce": 0,
+          "tanico": 0,
+          "afrutado": 1
+        },
+        "passportMatchrimCode": "Sauvignon Solar",
+        "passportMatchrimName": "Sauvignon Solar",
+        "learnedMatchrimCode": "Albariño Primavera",
+        "learnedMatchrimName": "Albariño Primavera",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry",
+          "landscape"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 16,
+        "persona": "sumiller-tintos",
+        "userId": "00000000-0000-4000-8000-000000000016",
+        "profile": {
+          "potente": 5,
+          "acidez": 2,
+          "dulce": 0,
+          "tanico": 5,
+          "afrutado": 1.2
+        },
+        "passportMatchrimCode": "Tempranillo Especia",
+        "passportMatchrimName": "Tempranillo Especia",
+        "learnedMatchrimCode": "Garnacha Fuego",
+        "learnedMatchrimName": "Garnacha Fuego",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 17,
+        "persona": "sumiller-blancos",
+        "userId": "00000000-0000-4000-8000-000000000017",
+        "profile": {
+          "potente": 0,
+          "acidez": 5,
+          "dulce": 1,
+          "tanico": 0,
+          "afrutado": 2
+        },
+        "passportMatchrimCode": "Godello Aroma",
+        "passportMatchrimName": "Godello Aroma",
+        "learnedMatchrimCode": "Sauvignon Aroma",
+        "learnedMatchrimName": "Sauvignon Aroma",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 18,
+        "persona": "tienda-expositor",
+        "userId": "00000000-0000-4000-8000-000000000018",
+        "profile": {
+          "potente": 1.8,
+          "acidez": 3.7,
+          "dulce": 0.7,
+          "tanico": 1.2,
+          "afrutado": 3.8
+        },
+        "passportMatchrimCode": "Sauvignon Velo",
+        "passportMatchrimName": "Sauvignon Velo",
+        "learnedMatchrimCode": "Pinot Vibrante",
+        "learnedMatchrimName": "Pinot Vibrante",
+        "scanScenario": "multi-bottle",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 19,
+        "persona": "coleccionista-duplicados",
+        "userId": "00000000-0000-4000-8000-000000000019",
+        "profile": {
+          "potente": 4.4,
+          "acidez": 1.9,
+          "dulce": 0.1,
+          "tanico": 5,
+          "afrutado": 1.4
+        },
+        "passportMatchrimCode": "Cabernet Intenso",
+        "passportMatchrimName": "Cabernet Intenso",
+        "learnedMatchrimCode": "Cabernet Intenso",
+        "learnedMatchrimName": "Cabernet Intenso",
+        "scanScenario": "multi-bottle",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 20,
+        "persona": "etiqueta-oculta",
+        "userId": "00000000-0000-4000-8000-000000000020",
+        "profile": {
+          "potente": 1,
+          "acidez": 1,
+          "dulce": 3,
+          "tanico": 1,
+          "afrutado": 3
+        },
+        "passportMatchrimCode": "Moscatel Primavera",
+        "passportMatchrimName": "Moscatel Primavera",
+        "learnedMatchrimCode": "Moscatel Primavera",
+        "learnedMatchrimName": "Moscatel Primavera",
+        "scanScenario": "difficult-image",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry",
+          "privacy-gate",
+          "landscape"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 21,
+        "persona": "pizarra-manuscrita",
+        "userId": "00000000-0000-4000-8000-000000000021",
+        "profile": {
+          "potente": 0,
+          "acidez": 3,
+          "dulce": 1,
+          "tanico": 0,
+          "afrutado": 2
+        },
+        "passportMatchrimCode": "Godello Velo",
+        "passportMatchrimName": "Godello Velo",
+        "learnedMatchrimCode": "Sauvignon Velo",
+        "learnedMatchrimName": "Sauvignon Velo",
+        "scanScenario": "handwritten-board",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 22,
+        "persona": "baja-vision",
+        "userId": "00000000-0000-4000-8000-000000000022",
+        "profile": {
+          "potente": 0.5,
+          "acidez": 1.7,
+          "dulce": 2.7,
+          "tanico": 0,
+          "afrutado": 5
+        },
+        "passportMatchrimCode": "Chardonnay Dorado",
+        "passportMatchrimName": "Chardonnay Dorado",
+        "learnedMatchrimCode": "Merlot Terciopelo",
+        "learnedMatchrimName": "Merlot Terciopelo",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry",
+          "dynamic-type-125"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 23,
+        "persona": "voiceover",
+        "userId": "00000000-0000-4000-8000-000000000023",
+        "profile": {
+          "potente": 0.5,
+          "acidez": 4.4,
+          "dulce": 0.5,
+          "tanico": 0,
+          "afrutado": 3.2
+        },
+        "passportMatchrimCode": "Sauvignon Aroma",
+        "passportMatchrimName": "Sauvignon Aroma",
+        "learnedMatchrimCode": "Riesling Jardín",
+        "learnedMatchrimName": "Riesling Jardín",
+        "scanScenario": "printed-list",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry",
+          "accessible-names"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 24,
+        "persona": "movilidad-reducida",
+        "userId": "00000000-0000-4000-8000-000000000024",
+        "profile": {
+          "potente": 1.8,
+          "acidez": 0,
+          "dulce": 3.4,
+          "tanico": 0.5,
+          "afrutado": 3.5
+        },
+        "passportMatchrimCode": "Verdejo Miel",
+        "passportMatchrimName": "Verdejo Miel",
+        "learnedMatchrimCode": "Merlot Terciopelo",
+        "learnedMatchrimName": "Merlot Terciopelo",
+        "scanScenario": "multi-bottle",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry",
+          {
+            "touchTargets": {
+              "profileTab": {
+                "width": 199,
+                "height": 44
+              },
+              "historyTab": {
+                "width": 199,
+                "height": 44
+              },
+              "copy": {
+                "width": 44,
+                "height": 44
+              }
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      },
+      {
+        "index": 25,
+        "persona": "cambio-de-opinion",
+        "userId": "00000000-0000-4000-8000-000000000025",
+        "profile": {
+          "potente": 4.6,
+          "acidez": 1.7,
+          "dulce": 0.5,
+          "tanico": 5,
+          "afrutado": 1.4
+        },
+        "passportMatchrimCode": "Tempranillo Especia",
+        "passportMatchrimName": "Tempranillo Especia",
+        "learnedMatchrimCode": "Cabernet Intenso",
+        "learnedMatchrimName": "Cabernet Intenso",
+        "scanScenario": "multi-bottle",
+        "checks": [
+          "home",
+          "profile",
+          "bodega-isolation",
+          "scan-entry",
+          "landscape"
+        ],
+        "consoleErrors": [],
+        "status": "PASS"
+      }
+    ],
+    "errors": []
+  },
+  "routes": {
+    "routes": 34,
+    "rendered": 34,
+    "overflow": 0,
+    "pageErrors": 0,
+    "consoleErrors": 0
+  },
+  "verification": [
+    {
+      "name": "release-tests",
+      "status": 0,
+      "elapsedMs": 4822
+    },
+    {
+      "name": "typecheck",
+      "status": 0,
+      "elapsedMs": 6324
+    },
+    {
+      "name": "lint",
+      "status": 0,
+      "elapsedMs": 2667
+    },
+    {
+      "name": "build",
+      "status": 0,
+      "elapsedMs": 8927
+    }
+  ],
+  "native": [
+    {
+      "name": "simulator-build",
+      "status": 0
+    },
+    {
+      "name": "simulator-install",
+      "status": 0
+    },
+    {
+      "name": "simulator-qa",
+      "status": 0
+    },
+    {
+      "name": "archive",
+      "status": 0
+    },
+    {
+      "name": "export",
+      "status": 0
+    }
+  ],
+  "simulatorTestsPassed": true,
+  "ipa": {
+    "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-challenge-20261008/Matchrim-1.0-77-local-candidate.ipa",
+    "sha256": "117f5eb2899d4aa4b6c6fa49570e0a038c725098fd92ee1920641f715cdac57d"
+  }
+}

@@ -11,7 +11,7 @@
     "typecheck": "tsc -p tsconfig.app.json --noEmit",
     "preview": "vite preview",
     "test:identity": "tsx scripts/check-matchrim-identity75.ts && tsx scripts/check-matchrim-edge-routing.ts",
-    "test:release": "npm test && npm run test:identity && tsx scripts/check-matchrim-catalog-handler.ts && tsx scripts/check-matchrim-training-evidence.ts && tsx scripts/check-matchrim-navigation-security.ts",
+    "test:release": "npm test && npm run test:identity && tsx scripts/check-matchrim-catalog-handler.ts && tsx scripts/check-matchrim-training-evidence.ts && tsx scripts/check-matchrim-navigation-security.ts && tsx scripts/check-matchrim-food-client.ts",
     "test": "tsx scripts/check-winerim-classifier.ts && tsx scripts/check-matchrim-learning.ts && tsx scripts/check-matchrim-personas.ts && tsx scripts/check-matchrim-year-simulation.ts && tsx scripts/check-matchrim-food-contract.ts && tsx scripts/check-matchrim-bodega-identity.ts && tsx scripts/check-multi-wine-scan.ts && python3 scripts/check-matchrim-e2e-trace.py && python3 scripts/check-matchrim-fridge-scorer.py && python3 scripts/check-matchrim-name-scoring.py && python3 scripts/check-matchrim-ground-truth.py && python3 scripts/check-matchrim-independent-ground-truth.py",
     "qa:ground-truth:build": "python3 scripts/build-matchrim-ground-truth.py",
     "qa:ground-truth:e2e": "python3 scripts/qa-matchrim-ground-truth.py",

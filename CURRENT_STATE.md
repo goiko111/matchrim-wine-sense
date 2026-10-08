@@ -1,5 +1,14 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-08, additive challenge / local77
+
+- Added 24 licensed public challenge files to the preserved60 baseline:84 public files, NOT84 independent scenes. Agent-reviewed annotations and provenance/hashes are committed; canonical independent validation remains open.
+- Fixed food scanner crash on malformed responses, missing-profile coercion, impossible score display and corrupt-image submission. Error recovery is now visible and actionable; nullable sensory dimensions remain unknown.
+- Final food functional QA10/10; scanner31/31; synthetic persona UI25/25; anonymous isolated routes34/34. These do NOT certify real OCR/identity or human recommendation quality.
+- Local build77, no upload/deploy/owner-phone installation. Uploaded75 remains unchanged. Backend router remains catalog75/affinity73/vision72.
+- New remote vision requests:0. Prior budget289/300; requested additional budget has not been approved in this batch.
+- Evidence and residual feature matrix: [MATCHRIM_77_CHALLENGE_2026-10-08.md](docs/MATCHRIM_77_CHALLENGE_2026-10-08.md).
+
 ## Latest checkpoint: 2026-10-08, uploaded 75 / local remediation 76
 
 - Explicit owner request superseded the earlier upload HOLD. Apple accepted **1.0 (75)** at 10:39:36 Europe/Madrid: `Upload succeeded`, `Uploaded package is processing`, exit 0. Internal TestFlight only; availability after processing is not verified because the ASC browser session needs login.

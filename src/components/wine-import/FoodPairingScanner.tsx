@@ -24,40 +24,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { trackAppEvent } from "@/lib/analytics";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { convertPdfFirstPageToImageFile } from "@/utils/pdfToImage";
+import { prepareImageForAnalysis } from "@/utils/imageAnalysis";
+import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
+import { FoodScanResponseError, parseFoodScanResponse, type FoodScanResult, type FoodDishResult, type FoodWineRecommendation } from "@/utils/foodScanResponse";
 
 type FoodScanMode = "menu" | "dish";
-
-interface FoodWineRecommendation {
-  nombre: string;
-  tipo: string;
-  uvas?: string[];
-  match: number;
-  razon: string;
-  atributos?: {
-    potencia: number;
-    acidez: number;
-    dulzura: number;
-    taninos: number;
-    afrutado: number;
-  } | null;
-}
-
-interface FoodDishResult {
-  nombre: string;
-  categoria: string;
-  match: number;
-  razon: string;
-  recomendaciones: FoodWineRecommendation[];
-}
-
-interface FoodScanResult {
-  mode: FoodScanMode;
-  summary: string;
-  dishes: FoodDishResult[];
-  has_profile: boolean;
-  profile_source?: "auth" | "client" | "none";
-  scan_version?: string;
-}
 
 interface FoodPairingScannerProps {
   initialMode?: FoodScanMode;
@@ -65,26 +36,10 @@ interface FoodPairingScannerProps {
   lockMode?: boolean;
 }
 
-interface MatchrimProfilePayload {
-  potente: number;
-  acidez: number;
-  dulce: number;
-  tanico: number;
-  afrutado: number;
-}
-
 const processingSteps: Record<FoodScanMode, string[]> = {
   menu: ["Leyendo el menú...", "Detectando platos...", "Sugiriendo vinos para cada plato..."],
   dish: ["Analizando el plato...", "Leyendo textura e intensidad...", "Buscando vinos que encajen contigo..."],
 };
-
-const normalizeImageFile = async (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 
 const getMatchTone = (match: number) => {
   if (match >= 80) return "text-green-700";
@@ -99,51 +54,25 @@ const getPairingDecision = (match: number) => {
   return "Difícil para tu perfil";
 };
 
-const normalizeProfileValue = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
-  return Math.max(1, Math.min(5, Math.round(numeric)));
-};
-
-const readStoredMatchrimProfile = (): MatchrimProfilePayload | null => {
-  try {
-    const rawProfile = localStorage.getItem("matchrim_quiz_result");
-    if (!rawProfile) return null;
-
-    const parsed = JSON.parse(rawProfile) as Partial<Record<keyof MatchrimProfilePayload, unknown>>;
-    const potente = normalizeProfileValue(parsed.potente);
-    const acidez = normalizeProfileValue(parsed.acidez);
-    const dulce = normalizeProfileValue(parsed.dulce);
-    const tanico = normalizeProfileValue(parsed.tanico);
-    const afrutado = normalizeProfileValue(parsed.afrutado);
-
-    if (potente === null || acidez === null || dulce === null || tanico === null || afrutado === null) {
-      return null;
-    }
-
-    return { potente, acidez, dulce, tanico, afrutado };
-  } catch (error) {
-    console.warn("Could not read stored Matchrim profile for food scan:", error);
-    return null;
-  }
-};
-
 export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockMode = false }: FoodPairingScannerProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  const errorRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<FoodScanMode>(initialMode);
   const [loading, setLoading] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [preview, setPreview] = useState<string | null>(null);
+  const [scanError, setScanError] = useState<string | null>(null);
   const [result, setResult] = useState<FoodScanResult | null>(null);
   const [savingKey, setSavingKey] = useState<string | null>(null);
   const [savedKeys, setSavedKeys] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setMode(initialMode);
+    setScanError(null);
     setResult(null);
     setPreview(null);
     setSavedKeys(new Set());
@@ -170,7 +99,12 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     }, 120);
   }, [result, loading]);
 
+  useEffect(() => {
+    if (scanError && !loading) errorRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [scanError, loading]);
+
   const selectMode = (nextMode: FoodScanMode) => {
+    setScanError(null);
     setMode(nextMode);
     setResult(null);
     setPreview(null);
@@ -204,12 +138,13 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     }
 
     setLoading(true);
+    setScanError(null);
     setResult(null);
     setSavedKeys(new Set());
 
     try {
       const imageFile = isPdf ? await convertPdfFirstPageToImageFile(file, "menu-page.jpg") : file;
-      const image = await normalizeImageFile(imageFile);
+      const { dataUrl: image } = await prepareImageForAnalysis(imageFile);
       setPreview(image);
       trackAppEvent("food_scan_started", {
         userId: user?.id,
@@ -222,12 +157,12 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
       });
 
       const { data, error } = await supabase.functions.invoke("scan-food-pairing", {
-        body: { image, mode, restaurantName, matchrimProfile: readStoredMatchrimProfile() },
+        body: { image, mode, restaurantName, matchrimProfile: readMatchrimLocalProfile() },
       });
 
       if (error) throw error;
 
-      const scanResult = data as FoodScanResult;
+      const scanResult = parseFoodScanResponse(data);
       setResult(scanResult);
       trackAppEvent("food_scan_completed", {
         userId: user?.id,
@@ -248,8 +183,10 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
         toast.info("No he podido detectar platos claros. Prueba con una foto más cercana.");
       }
     } catch (error) {
-      console.error("Error scanning food pairing:", error);
+      if (error instanceof FoodScanResponseError) console.warn("Invalid food scan response");
+      else console.error("Error scanning food pairing:", error);
       const message = error instanceof Error ? error.message : "No se pudo analizar la imagen";
+      setScanError(message);
       trackAppEvent("food_scan_failed", {
         userId: user?.id,
         metadata: { mode, error: message },
@@ -330,6 +267,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
   };
 
   const clearScan = () => {
+    setScanError(null);
     setPreview(null);
     setResult(null);
     setSavedKeys(new Set());
@@ -409,7 +347,9 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                   type="button"
                   variant="destructive"
                   size="icon"
-                  className="absolute right-3 top-3 h-10 w-10 rounded-md"
+                  aria-label="Elegir otra imagen"
+                  title="Elegir otra imagen"
+                  className="absolute right-3 top-3 h-11 w-11 rounded-md"
                   onClick={clearScan}
                 >
                   <X className="h-4 w-4" />
@@ -462,6 +402,16 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           </div>
         )}
       </div>
+
+      {scanError && (
+        <div ref={errorRef} role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900">
+          <p>{scanError}</p>
+          <Button type="button" variant="outline" className="mt-3 min-h-11 gap-2" onClick={() => fileInputRef.current?.click()}>
+            <FileUp className="h-4 w-4" />
+            Seleccionar otra foto
+          </Button>
+        </div>
+      )}
 
       {result && (
         <div ref={resultRef} className="scroll-mt-24 space-y-4">
