@@ -428,6 +428,14 @@ const menuWine = (name: string, x: number, y: number, source: string): MenuScanW
   posicion: { x, y, width: 20, height: 5, confidence: 0.9 },
 });
 const mappedRightWine = mapMenuWineFromTile(menuWine('Solape', 5, 20, 'Solape 2021 20'), landscapeTiles[1]);
+const adjacentDistinctCuvees = mergeMenuTileResults([{
+  tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+  response: { vinos: [
+    { ...menuWine('Barbaresco Marchesi di Barolo', 19, 63, 'Barbaresco Marchesi di Barolo 25'), productor: 'Marchesi di Barolo', precio: 25 },
+    { ...menuWine('Barolo Marchesi di Barolo', 19, 65, 'Barolo Marchesi di Barolo 35'), productor: 'Marchesi di Barolo', precio: 35 },
+  ] },
+}]);
+assert.equal(adjacentDistinctCuvees.vinos?.length, 2, 'nearby distinct names cannot merge merely because producer words overlap');
 assert.equal(mappedRightWine.posicion?.x, 46.8);
 assert.equal(mappedRightWine.posicion?.width, 11.2);
 const conflictingRowPrices = mergeMenuTileResults([{

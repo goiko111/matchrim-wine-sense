@@ -224,6 +224,8 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
       || normalizedRightName.includes(normalizedLeftName)
       || commonPrefixRatio(normalizedLeftName, normalizedRightName) >= 0.86
     );
+  // Shared winery tokens and nearby OCR boxes do not identify the same cuvee.
+  if (!sameName && !nearName && !strongOcrName) return false;
   const strongNearName = strongOcrName && nearName;
   const leftSection = normalizeText(left.seccion);
   const rightSection = normalizeText(right.seccion);

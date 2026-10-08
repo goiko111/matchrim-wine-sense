@@ -10,6 +10,7 @@ The sections below dated 2026-10-01 are historical, not the current release gate
 - New isolated production catalog endpoint `search-wines-v75` deployed through Lovable at source commit `d84018d9ffa5ba44cbdb1abc0609d41fd130652e`; vision v72 and affinity v73 unchanged. Web not republished.
 - Release decision is HOLD for recognition/validation quality, not an assumed Apple agreement or exhausted provider quota. Do not relabel mocks or synthetic users as human evidence.
 - Authoritative batch report: [MATCHRIM_75_QA_2026-10-08.md](docs/MATCHRIM_75_QA_2026-10-08.md).
+- Final cuvee-merge correction preserves distinct wines from one winery. A targeted real rerun of the first original menu reaches 16/16 names (one duplicate remains; one recovered vision HTTP500). Final native QA6/6 on each device and mocked scanner31/31 passed; this is not a full final25 recognition pass.
 
 ## Historical checkpoint
 

@@ -1133,6 +1133,12 @@ def main():
                 })
             else:
                 run_offline_qa(browser, results)
+        (ARTIFACTS / "checks-before-browser-teardown.json").write_text(json.dumps({
+            "release_pass": False,
+            "scope": "Assertions finished; browser teardown and final console gate still pending",
+            "results": results,
+            "console_errors": console_errors,
+        }, indent=2, ensure_ascii=True) + "\n")
         browser.close()
 
     ignored = [message for message in console_errors if "favicon" not in message.lower()]
