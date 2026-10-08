@@ -1,0 +1,207 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
+import { CatalogSearchInputError, catalogSearchFilter, parseCatalogSearchInput } from '../_shared/matchrim-catalog-search-v75.ts';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+type SearchWine = {
+  name?: string;
+  producer?: string | null;
+  region?: string | null;
+  country?: string | null;
+  grape_varieties?: string[] | null;
+  tipo?: string | null;
+  estilo?: string | null;
+};
+
+const normalizeSearchText = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+
+const addSearchVariant = (variants: Set<string>, value: string) => {
+  const cleaned = value.replace(/\s+/g, ' ').trim();
+  if (cleaned.length >= 2) variants.add(cleaned);
+};
+
+const buildSearchVariants = (query: string) => {
+  const normalized = normalizeSearchText(query);
+  const variants = new Set<string>();
+
+  addSearchVariant(variants, query);
+  addSearchVariant(variants, normalized);
+  addSearchVariant(variants, normalized.replace(/\s*\/\s*/g, '/'));
+  addSearchVariant(variants, normalized.replace(/[^a-z0-9]+/g, ' '));
+
+  const compact = normalized.replace(/[^a-z0-9]/g, '');
+  addSearchVariant(variants, compact);
+
+  // Short acronym wines are often written interchangeably as BC/DC, BC DC or BCDC.
+  if (/^[a-z]{4}$/.test(compact)) {
+    addSearchVariant(variants, `${compact.slice(0, 2)}/${compact.slice(2)}`);
+    addSearchVariant(variants, `${compact.slice(0, 2)} ${compact.slice(2)}`);
+  }
+
+  return Array.from(variants).slice(0, 8);
+};
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  if (req.method !== 'POST') return new Response(JSON.stringify({ error: 'Metodo no permitido', wines: [] }), {
+    status: 405, headers: { ...corsHeaders, 'Content-Type': 'application/json', Allow: 'POST, OPTIONS' },
+  });
+
+  try {
+    let body: unknown;
+    try { body = await req.json(); } catch { throw new CatalogSearchInputError('JSON invalido'); }
+    const { query, limit } = parseCatalogSearchInput(body);
+    
+    if (!query || query.trim().length < 2) {
+      return new Response(
+        JSON.stringify({ wines: [] }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    const searchVariants = buildSearchVariants(query);
+    const searchFilters = catalogSearchFilter(searchVariants);
+
+    // Search in local database first
+    const { data: wines, error } = await supabaseClient
+      .from('wines')
+      .select('*')
+      .or(searchFilters)
+      .limit(limit);
+
+    if (error) {
+      // Catalog lookup enriches a scan but must never invalidate an otherwise
+      // grounded OCR result (for example in an isolated staging schema).
+      console.warn('Local wine catalog unavailable; continuing without it:', error.code);
+    }
+
+    let allWines = error ? [] : (wines || []);
+    console.log(`Found ${allWines.length} wines in database matching "${query}"`);
+
+    // Always search externally to complement results
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (LOVABLE_API_KEY) {
+      try {
+        console.log('Searching external sources for wines...');
+        
+        const remainingSlots = Math.max(5, limit - allWines.length);
+        const aliases = searchVariants
+          .filter((variant) => variant.toLowerCase() !== query.trim().toLowerCase())
+          .slice(0, 5);
+        const searchPrompt = `Busca vinos REALES que coincidan con la búsqueda: "${query}"
+${aliases.length ? `\nTambién prueba estas formas equivalentes del nombre: ${aliases.map((alias) => `"${alias}"`).join(', ')}\n` : ''}
+
+INSTRUCCIONES CRÍTICAS:
+- SOLO vinos que existan realmente en el mercado
+- Interpreta nombres con barras, espacios o siglas compactas como equivalentes cuando proceda (por ejemplo BC/DC, BC DC y BCDC)
+- Da prioridad a vinos icónicos y reconocidos de la bodega/región mencionada
+- Si buscas "Muga", incluye OBLIGATORIAMENTE: Muga Reserva, Muga Crianza, Prado Enea, Torre Muga
+- Si buscas una bodega, incluye su gama completa de vinos principales
+- Información completa y verificable de cada vino
+- Devuelve máximo ${remainingSlots} vinos
+- ORDENA por importancia/reconocimiento del vino
+
+Formato JSON (sin markdown):
+{
+  "wines": [
+    {
+      "name": "nombre completo del vino",
+      "producer": "nombre de la bodega",
+      "region": "denominación de origen",
+      "country": "país",
+      "grape_varieties": ["variedad1", "variedad2"],
+      "tipo": "uno de: Espumoso, Blanco, Tinto, Rosado, Dulce, Fortificado",
+      "estilo": "estilo Winerim si se puede inferir; si no, categoría descriptiva"
+    }
+  ]
+}
+
+DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
+
+        const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash',
+            messages: [
+              { role: 'user', content: searchPrompt }
+            ],
+            temperature: 0.3,
+            max_tokens: 2000,
+          }),
+          signal: AbortSignal.timeout(8000),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          let content = data.choices?.[0]?.message?.content || '{}';
+          
+          // Clean up markdown code blocks
+          content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+          
+          // Remove any text before the first {
+          const firstBrace = content.indexOf('{');
+          if (firstBrace > 0) {
+            content = content.substring(firstBrace);
+          }
+          
+          const externalData = JSON.parse(content) as { wines?: SearchWine[] };
+          
+          if (externalData.wines && Array.isArray(externalData.wines)) {
+            console.log(`Found ${externalData.wines.length} wines from external sources`);
+            
+            // Merge results, avoiding duplicates
+            const existingNames = new Set(allWines.map(w => w.name?.toLowerCase()));
+            const newWines = externalData.wines.filter((wine) => 
+              !existingNames.has(wine.name?.toLowerCase())
+            );
+            
+            allWines = [...allWines, ...newWines];
+          }
+        }
+      } catch (externalError) {
+        console.error('Error searching external sources:', externalError);
+        // Continue with database results
+      }
+    }
+
+    return new Response(
+      JSON.stringify({ wines: allWines }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    if (error instanceof CatalogSearchInputError) return new Response(
+      JSON.stringify({ error: error.message, wines: [] }),
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+    );
+    console.error('Error in search-wines:', error);
+    const message = error instanceof Error ? error.message : 'Error desconocido';
+    return new Response(
+      JSON.stringify({ error: message, wines: [] }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
+    );
+  }
+});
