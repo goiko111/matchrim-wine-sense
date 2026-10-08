@@ -92,6 +92,9 @@ export const shouldRunRightFocusMenuScan = (
   completeColumnScans = false,
 ) => !completeColumnScans && (coverageStatus !== 'reported_complete' || extractedWines >= 8);
 
+export const mayHaveUnreadMenuColumn = (response: MenuScanResponse) => response.layout === 'columns'
+  || (response.coverage?.status !== 'reported_complete' && (response.vinos?.length ?? 0) >= 12);
+
 export const buildMenuScanTiles = (width: number, height: number, layout: MenuScanResponse['layout'] = 'unknown'): MenuScanTile[] => {
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
     return [getFullMenuScanTile()];
@@ -172,7 +175,23 @@ const commonPrefixRatio = (left: string, right: string) => {
   return commonLength / Math.max(1, maxComparableLength);
 };
 
+const variantWords = new Set('crianza reserva gran especial blanco tinto rosado rose brut nature demi sec extra ultra'.split(' '));
+const grapeWords = new Set('cabernet sauvignon merlot pinot noir blanc grigio chardonnay syrah shiraz riesling gewurztraminer tempranillo garnacha grenache albarino godello mourvedre mouverdre sangiovese canaiolo zinfandel malbec monastrell prosecco spumante'.split(' '));
+const isGrapeOnly = (name: string) => {
+  const words = normalizeText(name).split(' ').filter(Boolean);
+  return words.length > 0 && words.every((word) => grapeWords.has(word));
+};
+
+const hasConflictingVariant = (left: MenuScanWine, right: MenuScanWine) => {
+  const a = normalizeText(left.nombre).split(' ');
+  const b = normalizeText(right.nombre).split(' ');
+  return [...new Set([...a, ...b])].some((word) => variantWords.has(word)
+    && a.includes(word) !== b.includes(word)
+    && !(a.includes(word) ? b : a).some((fragment) => fragment.length >= 3 && word.startsWith(fragment)));
+};
+
 const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
+  if (hasConflictingVariant(left, right)) return false;
   const normalizedLeftName = normalizeText(left.nombre);
   const normalizedRightName = normalizeText(right.nombre);
   const sameName = normalizedLeftName === normalizedRightName
@@ -214,12 +233,22 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
   const conflictingProducer = Boolean(leftProducer && rightProducer && leftProducer !== rightProducer);
   const missingProducer = !leftProducer || !rightProducer;
   const conflictingVintage = Boolean(left.anada && right.anada && left.anada !== right.anada);
-  if (conflictingVintage || conflictingProducer) return false;
+  if (conflictingVintage || conflictingProducer || (conflictingSection
+    && leftAnchor && rightAnchor && Math.abs(leftAnchor.y - rightAnchor.y) > 3)) return false;
   const conflictingPrice = Boolean(
     typeof left.precio === 'number'
     && typeof right.precio === 'number'
     && Math.abs(left.precio - right.precio) > 0.5
   );
+  const matchingServicePrices = (['copa', 'botella', 'llevar'] as const).filter((service) => {
+    const a = normalizeScanPrice(left.precios?.[service]);
+    const b = normalizeScanPrice(right.precios?.[service]);
+    return a !== null && b !== null && Math.abs(a - b) <= 0.5;
+  }).length >= 2;
+  const sameServiceRow = (sameName || strongOcrName) && matchingServicePrices
+    && !conflictingSection && !conflictingVintage && !conflictingProducer
+    && (!left.moneda || !right.moneda || left.moneda === right.moneda)
+    && (!left.tipo || !right.tipo || left.tipo === right.tipo);
   const samePhysicalRow = Boolean(
     (sameName || strongOcrName)
     && !conflictingVintage
@@ -265,7 +294,7 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
     )
   );
 
-  return sameSource || samePosition || samePhysicalRow || nearbyPartialIdentity || sameCanonicalRow;
+  return sameSource || samePosition || samePhysicalRow || sameServiceRow || nearbyPartialIdentity || sameCanonicalRow;
 };
 
 const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
@@ -334,6 +363,23 @@ export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanRespons
     });
   });
 
+  // A column crop can return the grapes/price from an already captured complete
+  // row as a second wine. Collapse only a uniquely corroborated description.
+  const resolvedWines = wines.filter((fragment) => {
+    if (fragment.productor || !isGrapeOnly(fragment.nombre)) return true;
+    const words = normalizeText(fragment.nombre).split(' ');
+    const price = normalizeScanPrice(fragment.precio);
+    if (price === null) return true;
+    const completeRows = wines.filter((row) => row !== fragment
+      && !isGrapeOnly(row.nombre)
+      && normalizeText(row.nombre).length >= 4
+      && normalizeScanPrice(row.precio) === price
+      && normalizeText(row.seccion) === normalizeText(fragment.seccion)
+      && (!row.moneda || !fragment.moneda || row.moneda === fragment.moneda)
+      && (!row.anada || !fragment.anada || row.anada === fragment.anada)
+      && words.every((word) => normalizeText(row.texto_fuente).split(' ').includes(word)));
+    return completeRows.length !== 1;
+  });
   const statuses = results.map((result) => result.response.coverage?.status ?? 'unknown');
   const status = statuses.includes('partial')
     ? 'partial'
@@ -341,18 +387,19 @@ export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanRespons
       ? 'reported_complete'
       : 'unknown';
   const notes = Array.from(new Set(results.flatMap((result) => result.response.coverage?.notes ?? [])));
+  if (resolvedWines.length < wines.length) notes.push(`${wines.length - resolvedWines.length} fragmentos de uvas y precio unidos a su fila completa.`);
   const estimates = results
     .map((result) => result.response.coverage?.estimated_visible_wines)
     .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
 
   return {
-    vinos: wines,
+    vinos: resolvedWines,
     has_profile: results.some((result) => result.response.has_profile),
     scan_version: Array.from(new Set(results.map((result) => result.response.scan_version).filter(Boolean))).join('+') || undefined,
     coverage: {
       status,
-      extracted_wines: wines.length,
-      estimated_visible_wines: estimates.length === results.length ? Math.max(wines.length, ...estimates) : null,
+      extracted_wines: resolvedWines.length,
+      estimated_visible_wines: estimates.length === results.length ? Math.max(resolvedWines.length, ...estimates) : null,
       notes,
     },
   };

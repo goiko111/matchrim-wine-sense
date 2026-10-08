@@ -116,6 +116,7 @@ export const buildAffinityInsights = (
   if (!wineAttributes) return null;
 
   const keys: AttributeKey[] = ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'];
+  if (keys.some((key) => clampAttribute(profile[key]) === null)) return null;
   const insights = keys.map((key) => {
     const profileValue = clampAttribute(profile[key]) ?? 3;
     const wineValue = wineAttributes[key];

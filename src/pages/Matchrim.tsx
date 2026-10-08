@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Wine } from 'lucide-react';
 import AppNav from '@/components/AppNav';
+import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
@@ -46,13 +47,13 @@ const Matchrim = () => {
           setCurrentStep('results');
         }
       } else {
-        const savedResult = localStorage.getItem('matchrim_quiz_result');
+        const savedResult = readMatchrimLocalProfile();
         const savedAnswers = localStorage.getItem('matchrim_quiz_answers');
 
         if (savedResult) {
-          setQuizResult(JSON.parse(savedResult));
+          setQuizResult(savedResult);
           if (savedAnswers) {
-            setAnswers(JSON.parse(savedAnswers));
+            try { setAnswers(JSON.parse(savedAnswers)); } catch { setAnswers({}); }
           }
           setCurrentStep('results');
         }
@@ -87,12 +88,6 @@ const Matchrim = () => {
         localStorage.setItem('matchrim_quiz_answers', JSON.stringify(newAnswers));
         localStorage.setItem('matchrim_test_completed', 'true');
       }
-    }
-  };
-
-  const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
@@ -244,7 +239,6 @@ const Matchrim = () => {
             question={questions[currentQuestionIndex]}
             currentAnswer={answers[questions[currentQuestionIndex].id] || ''}
             onAnswer={handleAnswer}
-            onNext={handleNext}
             onPrevious={handlePrevious}
             isFirst={currentQuestionIndex === 0}
             isLast={currentQuestionIndex === questions.length - 1}

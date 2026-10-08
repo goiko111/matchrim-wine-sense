@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,6 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
+import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 import { toast } from "sonner";
 import {
   Wine,
@@ -162,8 +164,8 @@ const routeForWineSection = (section: WineSection) => {
 };
 
 const normalizeAttributeTo5 = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
   return Math.max(1, Math.min(5, Math.round(scaled)));
 };
@@ -184,8 +186,8 @@ const normalizeSensoryAttributesTo5 = (attributes: unknown) => {
 };
 
 const normalizeAffinity = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   return Math.max(0, Math.min(100, Math.round(numeric)));
 };
 
@@ -219,6 +221,7 @@ const MyWines = () => {
   const [learningWines, setLearningWines] = useState<LearningWine[]>([]);
   const [filteredWines, setFilteredWines] = useState<UserWine[]>([]);
   const [loading, setLoading] = useState(true);
+  const [wineLoadFailed, setWineLoadFailed] = useState(false);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -398,6 +401,7 @@ const MyWines = () => {
 
 	  const loadWines = async () => {
 	    setLoading(true);
+      setWineLoadFailed(false);
 	    try {
 	      let query = supabase.from("user_wines").select("*").eq("user_id", user!.id);
       
@@ -422,6 +426,7 @@ const MyWines = () => {
       void loadSectionCounts();
     } catch (error) {
       console.error("Error loading wines:", error);
+      setWineLoadFailed(true);
       toast.error("Error al cargar tus vinos");
     } finally {
 	      setLoading(false);
@@ -599,7 +604,7 @@ const MyWines = () => {
       // Calculate affinity in background
       if (insertedWine && (saveStatus === 'collection' || saveStatus === 'tasted') && !extractedData?.matchrim_affinity) {
         supabase.functions
-          .invoke("calculate-wine-affinity", {
+          .invoke(resolveMatchrimEdgeFunctionName("calculate-wine-affinity", import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
             body: { wine_id: insertedWine.id }
           })
           .then(({ data: affinityData }) => {
@@ -705,7 +710,7 @@ const MyWines = () => {
       // Calculate affinity in background for collection and tasted wines
       if (newWine && (saveStatus === 'collection' || saveStatus === 'tasted')) {
         toast.info("Calculando afinidad Matchrim...");
-        const { data: affinityData, error: affinityError } = await supabase.functions.invoke('calculate-wine-affinity', {
+        const { data: affinityData, error: affinityError } = await supabase.functions.invoke(resolveMatchrimEdgeFunctionName('calculate-wine-affinity', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
           body: { wine_id: newWine.id }
         });
 
@@ -781,19 +786,22 @@ const MyWines = () => {
     }
   };
 
-  const handleRating = async (wineId: string, rating: 'love' | 'ok' | 'not_for_me') => {
+  const pendingRatings = useRef(new Set<string>());
+  const handleRating = async (wineId: string, rating: 'love' | 'ok' | 'not_for_me' | null) => {
+    if (pendingRatings.current.has(wineId)) return;
+    pendingRatings.current.add(wineId);
     try {
       const wine = wines.find(w => w.id === wineId);
       
-      const updateData: any = { rating, use_for_profile_training: true };
+      const updateData: any = { rating, use_for_profile_training: rating !== null };
       
-      if (wine?.status === 'wishlist') {
+      if (rating && wine?.status === 'wishlist') {
         updateData.status = 'tasted';
         updateData.consumption_date = new Date().toISOString();
       }
 
       // If rating from collection, optionally decrement quantity
-      if (wine?.status === 'collection' && wine.quantity && wine.quantity > 0) {
+      if (rating && wine?.status === 'collection' && !wine.rating && wine.quantity && wine.quantity > 0) {
         updateData.quantity = wine.quantity - 1;
         if (wine.quantity === 1) {
           updateData.status = 'tasted';
@@ -809,7 +817,7 @@ const MyWines = () => {
 
       if (error) throw error;
 
-      const message = wine?.status === 'collection'
+      const message = wine?.status === 'collection' && !wine.rating
         ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' y movido a Ya Probados'}`
         : wine?.status === 'wishlist'
           ? 'Vino movido a Ya Probados y usado para afinar tu perfil'
@@ -840,7 +848,7 @@ const MyWines = () => {
       }
 
       supabase.functions
-        .invoke("calculate-wine-affinity", {
+        .invoke(resolveMatchrimEdgeFunctionName("calculate-wine-affinity", import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
           body: { wine_id: wineId }
         })
         .then(({ error }) => {
@@ -849,11 +857,13 @@ const MyWines = () => {
           }
         });
 
-	      loadWines();
-	      loadLearningWines();
-	    } catch (error) {
+	      await loadWines();
+	      await loadLearningWines();
+    } catch (error) {
       console.error("Error rating wine:", error);
       toast.error("Error al guardar valoración");
+    } finally {
+      pendingRatings.current.delete(wineId);
     }
   };
 
@@ -1446,7 +1456,13 @@ const MyWines = () => {
                 </div>
 
                 {/* Wine Collection Grid */}
-                {filteredWines.length === 0 ? (
+                {wineLoadFailed ? (
+                  <div role="alert" className="space-y-3 border-y border-amber-200 py-6">
+                    <h2 className="font-semibold text-slate-950">No hemos podido cargar tus vinos</h2>
+                    <p className="text-sm text-slate-600">Tus datos no se han borrado. Comprueba la conexión y vuelve a intentarlo.</p>
+                    <Button variant="outline" className="min-h-11" onClick={() => void loadWines()}>Reintentar</Button>
+                  </div>
+                ) : filteredWines.length === 0 ? (
                   <Card>
                     <CardContent className="flex flex-col items-center px-5 py-12 text-center">
                       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-red-50 text-red-900">
@@ -1548,7 +1564,8 @@ const MyWines = () => {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8"
+                                className="h-11 w-11 shrink-0"
+                                aria-label={wine.is_favorite ? `Quitar ${wine.name} de favoritos` : `Guardar ${wine.name} en favoritos`}
                                 onClick={() => handleToggleFavorite(wine.id, wine.is_favorite)}
                               >
                                 <Heart className={`h-4 w-4 ${wine.is_favorite ? 'fill-red-500 text-red-500' : ''}`} />
@@ -1556,7 +1573,8 @@ const MyWines = () => {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="h-11 w-11 shrink-0"
+                                aria-label={`Eliminar ${wine.name}`}
                                 onClick={() => handleDeleteWine(wine.id)}
                               >
                                 <Trash2 className="h-4 w-4 text-destructive" />
@@ -1700,6 +1718,11 @@ const MyWines = () => {
                           )}
 
                           {/* Rating Buttons - move wishlist wines to tasted and train the profile */}
+                          {wine.rating && (
+                            <Button variant="ghost" className="min-h-11 text-slate-600" onClick={() => handleRating(wine.id, null)}>
+                              Quitar valoración
+                            </Button>
+                          )}
                           {(wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
                             <div className="flex gap-2 pt-2">
                               <Button

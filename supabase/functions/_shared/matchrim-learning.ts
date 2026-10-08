@@ -1,3 +1,6 @@
+import { optionalScanNumber } from './matchrim-scan-values.ts';
+import { selectMatchrimTrainingEvidence } from './matchrim-training-evidence.ts';
+
 export type MatchrimLearningProfile = {
   potente: number;
   acidez: number;
@@ -7,6 +10,8 @@ export type MatchrimLearningProfile = {
 };
 
 export type MatchrimTrainingRow = {
+  id?: string;
+  use_for_profile_training?: boolean | null;
   rating?: string | null;
   sensory_attributes?: Record<string, unknown> | null;
   updated_at?: string | null;
@@ -30,8 +35,8 @@ const attributes = [
 const clamp = (value: number, min = 0, max = 5) => Math.max(min, Math.min(max, value));
 
 const normalizeSensoryValue = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
   return clamp(Math.round(scaled), 1, 5);
 };
@@ -58,7 +63,7 @@ export const calculateEdgeLearnedProfileAudit = (
   baseProfile: MatchrimLearningProfile,
   rows: MatchrimTrainingRow[],
 ): MatchrimEdgeLearningAudit => {
-  const validRows = rows.filter((row) => {
+  const validRows = selectMatchrimTrainingEvidence(rows).filter((row) => {
     const sensory = row.sensory_attributes;
     return Boolean(
       ratingWeight(row.rating)

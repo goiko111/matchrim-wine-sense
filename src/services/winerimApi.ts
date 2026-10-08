@@ -3,6 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { clasificarVino, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
 import { buildMatchrimAffinityCalibration, MATCHRIM_AFFINITY_MODEL } from '@/utils/matchrimAffinityCalibration';
 import { normalizeMatchrimProfileForClassifier } from '@/utils/matchrimPassport';
+import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch } from '@/utils/winerimLabelIdentity';
+import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
@@ -735,10 +737,10 @@ export const findWinerimWineForLabel = async (
   const trimmedName = (input.name || '').trim();
   if (trimmedName.length < 2) return null;
 
-  const query = [trimmedName, input.producer].filter(Boolean).join(' ').slice(0, 120);
+  const query = canonicalLabelSearchQuery(input);
 
   try {
-    const { data, error } = await supabase.functions.invoke('search-wines', {
+    const { data, error } = await supabase.functions.invoke(resolveMatchrimEdgeFunctionName('search-wines', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
       body: { query, limit: 20 },
     });
     if (error) throw error;
@@ -752,6 +754,7 @@ export const findWinerimWineForLabel = async (
     let best: { candidate: RawSearchWine; score: number } | null = null;
     for (const candidate of candidates) {
       if (!candidate?.id || !candidate?.name) continue;
+      if (!isSafeCanonicalLabelMatch(input, candidate)) continue;
       const score = scoreCandidate(input, candidate);
       if (!best || score > best.score) {
         best = { candidate, score };

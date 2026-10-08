@@ -1,4 +1,5 @@
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
+import { hasSpecificWineIdentity } from '../../supabase/functions/_shared/matchrim-menu-grounding';
 
 export type ScanRegionStatus =
   | 'pending'
@@ -240,14 +241,40 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
     } satisfies ScanRegion];
   });
 
-  const deduplicated: ScanRegion[] = [];
-  [...normalized]
+  // A scene-sized proposal containing separate bottles is a container, not an
+  // individual object. Let the smaller detections survive instead of absorbing them.
+  const objects = normalized.filter((container) => {
+    const contained = normalized.filter((other) => other !== container
+      && container.box.width * container.box.height >= 2.5 * other.box.width * other.box.height
+      && intersectionOverSmallerArea(container.box, other.box) >= 0.9);
+    return !contained.some((left, i) => contained.slice(i + 1).some((right) => {
+      if (intersectionOverUnion(left.box, right.box) > 0.15) return false;
+      const sideBySide = overlapRatio(left.box.y, left.box.height, right.box.y, right.box.height) >= 0.5
+        && Math.abs(left.box.x + left.box.width / 2 - right.box.x - right.box.width / 2)
+          >= (left.box.width + right.box.width) / 2 * 0.8;
+      const stackedBottles = left.objectType === 'bottle' && right.objectType === 'bottle'
+        && overlapRatio(left.box.x, left.box.width, right.box.x, right.box.width) >= 0.5
+        && Math.abs(left.box.y + left.box.height / 2 - right.box.y - right.box.height / 2)
+          >= (left.box.height + right.box.height) / 2;
+      return sideBySide || stackedBottles;
+    }));
+  });
+  const deduplicated: Array<{ region: ScanRegion; members: NormalizedBox[] }> = [];
+  [...objects]
     .sort((a, b) => b.detectionConfidence - a.detectionConfidence)
     .forEach((region) => {
       let merged: ScanRegion = region;
-      let duplicateIndex = deduplicated.findIndex((kept) => areLikelySamePhysicalDetection(kept.box, merged.box));
+      let members = [region.box];
+      const compatibleCluster = (cluster: { members: NormalizedBox[] }) => {
+        const proposed = [...members, ...cluster.members];
+        const anchor = proposed.reduce((largest, box) => box.width * box.height > largest.width * largest.height ? box : largest);
+        return proposed.every((box) => box === anchor || areLikelySamePhysicalDetection(anchor, box));
+      };
+      let duplicateIndex = deduplicated.findIndex(compatibleCluster);
       while (duplicateIndex !== -1) {
-        const kept = deduplicated.splice(duplicateIndex, 1)[0];
+        const cluster = deduplicated.splice(duplicateIndex, 1)[0];
+        const kept = cluster.region;
+        members = [...members, ...cluster.members];
         const keptArea = kept.box.width * kept.box.height;
         const mergedArea = merged.box.width * merged.box.height;
         const keptLegibility = legibilityPriority[kept.quality.legibility];
@@ -260,7 +287,7 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
         const y = Math.min(kept.box.y, merged.box.y);
 
         // Keep the full physical extent even when a partial crop has higher confidence.
-        // Recheck existing fragments after extending the box so they cannot survive separately.
+        // Compatibility uses observed boxes, never an enlarged synthetic union.
         merged = {
           ...(preferKept ? kept : merged),
           objectType: kept.objectType === 'bottle' || merged.objectType === 'bottle'
@@ -271,12 +298,13 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
             height: Math.max(kept.box.y + kept.box.height, merged.box.y + merged.box.height) - y,
           },
         };
-        duplicateIndex = deduplicated.findIndex((other) => areLikelySamePhysicalDetection(other.box, merged.box));
+        duplicateIndex = deduplicated.findIndex(compatibleCluster);
       }
-      deduplicated.push(merged);
+      deduplicated.push({ region: merged, members });
     });
 
   return deduplicated
+    .map(({ region }) => region)
     .sort((a, b) => (a.box.y - b.box.y) || (a.box.x - b.box.x))
     .map((region, index) => ({ ...region, index: index + 1, id: `region-${index + 1}` }));
 };
@@ -370,17 +398,19 @@ export const mergeWineDetectionTileResults = (
   const mapped = results.flatMap(({ tile, payload }) => (
     normalizeDetectedRegions(payload).map((region) => mapDetectedRegionFromTile(region, tile))
   ));
-  const regions = normalizeDetectedRegions({
+  const allRegions = normalizeDetectedRegions({
     regions: mapped.map((region) => ({
       object_type: region.objectType,
       box: region.box,
       confidence: region.detectionConfidence,
       quality: region.quality,
     })),
-  }).slice(0, MAX_REFINED_WINE_REGIONS);
+  });
+  const regions = allRegions.slice(0, MAX_REFINED_WINE_REGIONS);
+  const capped = allRegions.length > regions.length;
   const tileCoverage = results.map(({ payload }) => normalizeScanCoverage(payload, normalizeDetectedRegions(payload).length));
   const statuses = tileCoverage.map((item) => item.status);
-  const status: ScanCoverageStatus = statuses.every((item) => item === 'reported_complete')
+  const status: ScanCoverageStatus = capped ? 'partial' : statuses.length > 0 && statuses.every((item) => item === 'reported_complete')
     ? 'reported_complete'
     : statuses.includes('partial')
       ? 'partial'
@@ -388,6 +418,7 @@ export const mergeWineDetectionTileResults = (
   const estimates = tileCoverage.flatMap((item) => item.estimatedVisibleObjects === null ? [] : [item.estimatedVisibleObjects]);
   const notes = Array.from(new Set([
     'Deteccion refinada por zonas solapadas para reducir objetos mezclados.',
+    ...(capped ? ['Quedan objetos fuera del limite de este lote; acerca la imagen y escanea otra zona.'] : []),
     ...tileCoverage.flatMap((item) => item.notes),
   ])).slice(0, 5);
 
@@ -399,8 +430,8 @@ export const mergeWineDetectionTileResults = (
       estimatedVisibleObjects: status === 'reported_complete'
         ? regions.length
         : estimates.length
-          ? Math.max(regions.length, ...estimates)
-          : null,
+          ? Math.max(allRegions.length, ...estimates)
+          : capped ? allRegions.length : null,
       confidence: tileCoverage.every((item) => item.confidence !== null)
         ? Math.min(...tileCoverage.map((item) => item.confidence as number))
         : null,
@@ -480,12 +511,14 @@ export const normalizeWineCandidates = (payload: unknown, regionId: string): Win
     const raw = asRecord(value);
     const name = textValue(raw?.name ?? raw?.nombre);
     if (!raw || !name || name.toLowerCase() === 'sin nombre') return [];
+    const producer = textValue(raw.producer ?? raw.productor);
+    if (!hasSpecificWineIdentity(name, producer || '')) return [];
     const sensory = asRecord(raw.sensory_attributes ?? raw.atributos);
 
     return [{
       id: `${regionId}-candidate-${index + 1}`,
       name,
-      producer: textValue(raw.producer ?? raw.productor),
+      producer,
       vintage: numericValue(raw.vintage ?? raw.anada),
       region: textValue(raw.region),
       country: textValue(raw.country ?? raw.pais),

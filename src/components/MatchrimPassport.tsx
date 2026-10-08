@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Copy, ExternalLink, QrCode, ScanLine, Share2, Wine } from 'lucide-react';
 import { toast } from 'sonner';
+import { buildLocalMatchrimQr } from '@/utils/matchrimLocalQr';
 import {
   buildMatchrimShareUrl,
   buildWinerimCartaUrl,
@@ -33,7 +34,7 @@ const MatchrimPassport: React.FC<MatchrimPassportProps> = ({
   const code = codeOverride || generateMatchrimCode(profile);
   const shareUrl = buildMatchrimShareUrl(profile, code);
   const winerimUrl = buildWinerimCartaUrl(profile, code);
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=12&data=${encodeURIComponent(shareUrl)}`;
+  const qrUrl = React.useMemo(() => buildLocalMatchrimQr(shareUrl), [shareUrl]);
   const [codeGrape, ...codeCharacterParts] = code.split(' ');
   const codeCharacter = codeCharacterParts.join(' ');
 

@@ -1,3 +1,5 @@
+import { Capacitor } from '@capacitor/core';
+
 export interface MatchrimProfileLike {
   potente: number;
   acidez: number;
@@ -80,8 +82,22 @@ export const generateMatchrimCode = (profile: MatchrimProfileLike): string => {
 export const encodeProfileVector = (profile: MatchrimProfileLike) =>
   `${encodeDigit(profile.potente)}${encodeDigit(profile.acidez)}${encodeDigit(profile.dulce)}${encodeDigit(profile.tanico)}${encodeDigit(profile.afrutado)}`;
 
+export const resolveMatchrimShareOrigin = (currentOrigin: string | undefined, native: boolean, publicOrigin?: string) => {
+  if (!native) return currentOrigin || 'https://winerim.wine';
+  if (!publicOrigin) throw new Error('Falta configurar el enlace público de Matchrim');
+  const url = new URL(publicOrigin);
+  if (url.protocol !== 'https:' || url.hostname === 'localhost' || url.search || url.hash || url.pathname !== '/') {
+    throw new Error('El enlace público de Matchrim no es válido');
+  }
+  return url.origin;
+};
+
 export const buildMatchrimShareUrl = (profile: MatchrimProfileLike, code = generateMatchrimCode(profile)) => {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://winerim.wine';
+  const origin = resolveMatchrimShareOrigin(
+    typeof window !== 'undefined' ? window.location.origin : undefined,
+    Capacitor.isNativePlatform(),
+    import.meta.env.VITE_MATCHRIM_SHARE_ORIGIN,
+  );
   const params = new URLSearchParams({
     code,
     v: encodeProfileVector(profile),

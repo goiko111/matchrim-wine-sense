@@ -112,5 +112,6 @@ export const streamAiRimResponse = async (
     }
   }
 
+  if (!accumulatedResponse.trim()) throw new Error('aiRIM devolvió una respuesta vacía.');
   return accumulatedResponse;
 };

@@ -1,5 +1,19 @@
 # Matchrim next steps
 
+## Active gate: 2026-10-08
+
+1. Preserve candidate75 and its evidence. Do not repeat integration or regenerate datasets. Correct remaining dense-scene identity/recall and first-menu duplicates; verify improvements on one frozen source revision.
+2. Obtain independent qualified annotation of canonical identity/boxes and unreadable cases. Agent label review is not human approval. Keep raw OCR, identity confidence and preference affinity distinct.
+3. Close real personalized-ranking validation and the previously failed synthetic confidence/change-detection gates without promoting rejected experimental detectors.
+4. Finish physical-camera, fresh-permission, authenticated persistence, spoken VoiceOver and constrained-network/memory workflows in an isolated account/install; preserve owner data.
+5. Only after quality passes, verify current ASC numbering/channel and upload the signed next build. The local75 signature succeeds; build75 has NOT been uploaded. Published web must remain unchanged.
+
+Current evidence and exact residuals: [MATCHRIM_75_QA_2026-10-08.md](docs/MATCHRIM_75_QA_2026-10-08.md).
+
+The steps below are historical Oct1 context. In particular, production management permission is still denied but Lovable successfully deployed the isolated catalog75 endpoint; do not treat management access as an absolute deployment blocker.
+
+## Historical steps
+
 ## Immediate release follow-up
 
 0. Build 67 is a local native-design candidate. Do not upload it until its production-mode rebuild, signed archive and physical iPhone smoke pass, and do not widen distribution while cabinet canonical identity remains unresolved.

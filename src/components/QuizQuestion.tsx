@@ -9,7 +9,6 @@ interface QuizQuestionProps {
   question: Question;
   currentAnswer: string;
   onAnswer: (value: string) => void;
-  onNext: () => void;
   onPrevious: () => void;
   isFirst: boolean;
   isLast: boolean;
@@ -22,7 +21,6 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   question, 
   currentAnswer, 
   onAnswer, 
-  onNext, 
   onPrevious, 
   isFirst, 
   isLast,
@@ -33,10 +31,6 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   // Función para manejar el cambio de respuesta que automáticamente avanza
   const handleAnswerChange = (value: string) => {
     onAnswer(value);
-    // Avanzar automáticamente después de responder
-    setTimeout(() => {
-      onNext();
-    }, 500); // Pequeño retraso para que el usuario vea su selección
   };
   
   return (

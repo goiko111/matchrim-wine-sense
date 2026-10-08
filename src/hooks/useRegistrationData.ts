@@ -69,7 +69,6 @@ export const useRegistrationData = () => {
     setIsSaving(true);
     
     try {
-      console.log('Starting registration process for:', registrationData.email);
       
       // First, create the user account
       const { error: signUpError } = await signUp(
@@ -116,7 +115,6 @@ export const useRegistrationData = () => {
         return { success: true, requiresEmailConfirmation: true };
       }
 
-      console.log('Session available, updating profile for user:', session.user.id);
 
       // Update profile with additional data
       const { error: profileError } = await supabase

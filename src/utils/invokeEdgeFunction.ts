@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { EdgeFunctionError, parseRetryAfterMs } from '@/utils/edgeFunctionResilience';
 import { ensureMatchrimQaProfile, isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
+import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -20,7 +21,8 @@ export const invokeEdgeFunction = async <ResponseBody>(
   }
 
   const { data: { session } } = await supabase.auth.getSession();
-  const response = await fetch(`${SUPABASE_URL}/functions/v1/${functionName}`, {
+  const resolvedName = resolveMatchrimEdgeFunctionName(functionName, import.meta.env.VITE_MATCHRIM_EDGE_RELEASE);
+  const response = await fetch(`${SUPABASE_URL}/functions/v1/${resolvedName}`, {
     method: 'POST',
     headers: {
       apikey: SUPABASE_PUBLISHABLE_KEY,

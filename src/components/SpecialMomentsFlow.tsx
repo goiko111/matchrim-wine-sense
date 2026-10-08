@@ -208,8 +208,17 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
             return (
             <Card 
               key={moment.id}
+              role="button"
+              tabIndex={0}
+              aria-label={moment.title}
               className={isNative ? 'matchrim-pressable cursor-pointer rounded-none border-0 bg-transparent shadow-none' : 'cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-red-200'}
               onClick={() => handleSelectMoment(moment.id)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  handleSelectMoment(moment.id);
+                }
+              }}
             >
               <CardContent className={isNative ? 'p-0' : 'p-6'}>
                 <div className={isNative ? 'flex min-h-[4.75rem] items-center gap-3 py-3' : 'flex items-start gap-4'}>
@@ -309,7 +318,8 @@ const SpecialMomentsFlow: React.FC<SpecialMomentsFlowProps> = ({ onBack }) => {
             variant="ghost"
             size="sm"
             onClick={() => setStep('questions')}
-            className="text-red-700 hover:bg-red-100"
+            className="h-11 w-11 p-0 text-red-700 hover:bg-red-100"
+            aria-label="Volver a preguntas"
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>

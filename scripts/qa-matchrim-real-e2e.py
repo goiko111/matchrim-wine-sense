@@ -29,6 +29,8 @@ SELECTED_FIXTURE_IDS = {
     value.strip() for value in os.environ.get("MATCHRIM_E2E_FIXTURE_IDS", "").split(",") if value.strip()
 }
 EXTRA_FIXTURES_PATH = os.environ.get("MATCHRIM_E2E_EXTRA_FIXTURES", "").strip()
+BACKEND_ENVIRONMENT = os.environ.get("MATCHRIM_E2E_BACKEND_ENVIRONMENT", "unspecified")
+VERSIONED_FUNCTIONS = {"detect-wine-regions", "analyze-wine-region", "scan-wine-menu", "calculate-wine-affinity"}
 
 FIXTURES = [
     {
@@ -548,6 +550,9 @@ def run_fixture(browser, fixture, file_path):
         if marker not in path:
             return
         function_name = path.split(marker, 1)[1].split("/", 1)[0]
+        deployed_function = function_name
+        if function_name.endswith("-v72") and function_name.removesuffix("-v72") in VERSIONED_FUNCTIONS:
+            function_name = function_name.removesuffix("-v72")
         try:
             request_payload = response.request.post_data_json or {}
         except Exception:
@@ -565,6 +570,8 @@ def run_fixture(browser, fixture, file_path):
             trace_request_payload["image_bytes"] = len(request_image)
         api_calls.append({
             "function": function_name,
+            "deployed_function": deployed_function,
+            "backend_host": urlparse(response.url).hostname,
             "status": response.status,
             "region_id": request_payload.get("region_id"),
             "request_payload": trace_request_payload,
@@ -700,6 +707,8 @@ def run_fixture(browser, fixture, file_path):
       }))""")
     screenshot = ARTIFACTS / f"{fixture['id']}-real-mobile.png"
     page.screenshot(path=str(screenshot), full_page=True)
+    viewport_screenshot = ARTIFACTS / f"{fixture['id']}-real-viewport.png"
+    page.screenshot(path=str(viewport_screenshot))
     unhandled_console_errors = list(console_errors)
     recovered_failures = (
         backend.get("recovered_analysis_failures", 0)
@@ -729,8 +738,11 @@ def run_fixture(browser, fixture, file_path):
         "unhandled_console_errors": unhandled_console_errors,
         "network_failures": network_failures, "http_errors": http_errors,
         "screenshot": str(screenshot),
+        "viewport_screenshot": str(viewport_screenshot),
         "api_call_summaries": [{
             "function": call.get("function"),
+            "deployed_function": call.get("deployed_function"),
+            "backend_host": call.get("backend_host"),
             "status": call.get("status"),
             "tile": (call.get("request_payload") or {}).get("scan_region", {}).get("id"),
             "coverage": (call.get("payload") or {}).get("coverage"),
@@ -774,7 +786,8 @@ def main():
             )
         browser.close()
     report = {
-        "base_url": BASE_URL, "interception": False, "production_guard": True,
+        "base_url": BASE_URL, "interception": False, "app_host_guard": True,
+        "backend_environment": BACKEND_ENVIRONMENT,
         "menu_thresholds": {"precision": MIN_MENU_PRECISION, "recall": MIN_MENU_RECALL},
         "all_passed": all(result["status"] == "PASS" for result in results), "results": results,
     }

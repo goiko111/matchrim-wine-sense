@@ -2,6 +2,8 @@
 // get personalized scanner recommendations. Always returns values normalized
 // to integers 1-5 (or null if any axis is missing/invalid).
 
+import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
+
 const KEYS = ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'] as const;
 
 export type MatchrimLocalProfile = Record<typeof KEYS[number], number>;
@@ -9,8 +11,8 @@ export type MatchrimLocalProfile = Record<typeof KEYS[number], number>;
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
 const toScale5 = (value: unknown): number | null => {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return null;
+  const n = optionalScanNumber(value);
+  if (n === null) return null;
   let v = n;
   if (v > 10) v = v / 20;
   else if (v > 5) v = v / 2;

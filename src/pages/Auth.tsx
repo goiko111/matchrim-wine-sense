@@ -105,6 +105,8 @@ const Auth = () => {
                   <div>
                     <Input
                       type="email"
+                      aria-label={t('auth.email')}
+                      autoComplete="email"
                       placeholder={t('auth.email')}
                       value={loginForm.email}
                       onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
@@ -114,6 +116,8 @@ const Auth = () => {
                   <div className="relative">
                     <Input
                       type={showPassword ? 'text' : 'password'}
+                      aria-label={t('auth.password')}
+                      autoComplete="current-password"
                       placeholder={t('auth.password')}
                       value={loginForm.password}
                       onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
@@ -123,7 +127,7 @@ const Auth = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword((v) => !v)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center text-muted-foreground hover:text-foreground"
                       aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

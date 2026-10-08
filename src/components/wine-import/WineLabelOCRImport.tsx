@@ -10,6 +10,7 @@ import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
 import { recordScanHistory, updateScanHistoryItem } from "@/utils/scanHistory";
 import { buildWinerimWineUrl, findWinerimWineForLabel, type WinerimLabelLookupResult } from "@/services/winerimApi";
+import { resolveMatchrimEdgeFunctionName } from "@/utils/matchrimEdgeRouting";
 
 
 interface ExtractedWineData {
@@ -276,7 +277,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
     setAffinityMessage(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('calculate-wine-affinity', {
+      const { data, error } = await supabase.functions.invoke(resolveMatchrimEdgeFunctionName('calculate-wine-affinity', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
         body: {
           wine: {
             name: wine.nombre,

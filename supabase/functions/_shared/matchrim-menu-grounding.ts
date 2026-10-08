@@ -7,17 +7,32 @@ const genericTokens = new Set([
   'brut', 'cava', 'reserve', 'reserva', 'blanco', 'tinto', 'rosado', 'rose', 'sec',
   'of', 'the', 'by', 'a', 'an', 'de', 'del', 'la', 'el', 'los', 'las',
   'glass', 'glasses', 'copa', 'copas', 'house', 'casa', 'red', 'white',
+  'prosecco', 'cremant', 'spumante', 'frizzante', 'extra', 'dry', 'seco',
+  'cabernet', 'sauvignon', 'merlot', 'pinot', 'noir', 'blanc', 'chardonnay',
+  'syrah', 'shiraz', 'riesling', 'gewurztraminer', 'tempranillo', 'garnacha',
+  'albarino', 'godello', 'mencia', 'rioja', 'crianza', 'seleccion',
+  'sangiovese', 'canaiolo', 'malbec', 'zinfandel', 'franc', 'grigio', 'gris',
+  'mourvedre', 'monastrell', 'grenache', 'cab', 'sauv',
+  'bodega', 'bodegas', 'winery', 'wines', 'sl', 'sa',
 ]);
 
+const distinctiveTokens = (value: string) => tokens(value)
+  .filter((token) => !genericTokens.has(token) && !/^\d+$/.test(token));
+
+// A grape, region or category alone cannot identify a particular bottle.
+const descriptivePlaceholder = /^(?:wine|vino|vin|rose|rosado|red|white|blanco|tinto)\s*\(/i;
+export const hasSpecificWineIdentity = (name: string, producer = '') =>
+  !descriptivePlaceholder.test(name.trim())
+  && (distinctiveTokens(name).length > 0 || distinctiveTokens(producer).length > 0);
+
 export const hasGroundedMenuName = (name: string, source: string, producer = '') => {
+  if (descriptivePlaceholder.test(name.trim())) return false;
   if (/\((?:wine|vino)\s*\d+\)/i.test(name)) return false;
   if (/\b(ilegible|illegible|unreadable|unidentified|desconocido|parcialmente legible|partially legible)\b/i.test(name)) return false;
   const visible = new Set(tokens(source));
   if (/^\d{3,4}$/.test(name.trim())) return visible.has(name.trim());
-  const distinctive = (value: string) => tokens(value)
-    .filter((token) => !genericTokens.has(token) && !/^\d+$/.test(token));
-  const nameTokens = distinctive(name);
+  const nameTokens = distinctiveTokens(name);
   return nameTokens.length > 0
     ? nameTokens.some((token) => visible.has(token))
-    : distinctive(producer).some((token) => visible.has(token));
+    : distinctiveTokens(producer).some((token) => visible.has(token));
 };

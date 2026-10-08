@@ -51,6 +51,7 @@ import {
   resolveMenuTileResults,
   shouldRunRightFocusMenuScan,
   needsMenuRefinement,
+  mayHaveUnreadMenuColumn,
   type MenuScanWine,
 } from '../src/utils/wineMenuScan';
 import {
@@ -512,6 +513,30 @@ assert.equal(shouldRunRightFocusMenuScan('reported_complete', 8), true);
 assert.equal(shouldRunRightFocusMenuScan('partial', 3), true);
 assert.equal(shouldRunRightFocusMenuScan('partial', 24, true), false,
   'a third horizontal crop must not re-read descriptions after both columns succeeded');
+assert.equal(mayHaveUnreadMenuColumn({ layout: 'columns' }), true);
+assert.equal(mayHaveUnreadMenuColumn({ layout: 'rows', vinos: Array(12).fill(menuWine('Wine', 10, 10, 'Wine')), coverage: { status: 'unknown' } }), true,
+  'a dense incomplete portrait may hide a second page even when the model reports rows');
+assert.equal(mayHaveUnreadMenuColumn({ layout: 'rows', vinos: Array(12).fill(menuWine('Wine', 10, 10, 'Wine')), coverage: { status: 'reported_complete' } }), false);
+assert.equal(mayHaveUnreadMenuColumn({ layout: 'rows', vinos: Array(11).fill(menuWine('Wine', 10, 10, 'Wine')), coverage: { status: 'partial' } }), false,
+  'do not add a speculative lateral crop to small row-only menus');
+const servicePriceDuplicate = mergeMenuTileResults([{
+  tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+  response: { vinos: [
+    { ...menuWine('Casa Castillo', 10, 52, 'Casa Castillo monastrell Jumilia 4 23'), productor: null, precio: 4, precios: { copa: 4, botella: 23 }, servicio: 'ambos' },
+    { ...menuWine('Casa Castillo', 7, 28, 'Casa Castillo monastrell Jumilla 4 23'), productor: null, precio: 23, precios: { copa: 4, botella: 23 }, servicio: 'ambos', seccion: 'TINTOS' },
+  ] },
+}]);
+assert.equal(servicePriceDuplicate.vinos?.length, 1, 'matching cup and bottle prices must corroborate duplicate crop rows despite inaccurate anchors');
+assert.equal(servicePriceDuplicate.vinos?.[0].precio, null, 'a contradictory generic price remains unknown');
+assert.deepEqual(servicePriceDuplicate.vinos?.[0].precios, { copa: 4, botella: 23, llevar: null });
+const distinctServiceRows = mergeMenuTileResults([{
+  tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },
+  response: { vinos: [
+    { ...menuWine('Casa Castillo', 10, 52, 'Casa Castillo 4 23'), precios: { copa: 4, botella: 23 }, seccion: 'TINTOS' },
+    { ...menuWine('Casa Castillo', 7, 28, 'Casa Castillo 4 23'), precios: { copa: 4, botella: 23 }, seccion: 'BLANCOS' },
+  ] },
+}]);
+assert.equal(distinctServiceRows.vinos?.length, 2, 'matching prices must not collapse distinct sections');
 
 const sameNameDifferentSection = mergeMenuTileResults([{
   tile: { id: 'full', box: { x: 0, y: 0, width: 100, height: 100 } },

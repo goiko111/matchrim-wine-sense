@@ -1,5 +1,18 @@
 # Matchrim current state
 
+## Current checkpoint: 2026-10-08, candidate 75
+
+The sections below dated 2026-10-01 are historical, not the current release gate.
+
+- Candidate `1.0 (75)` is built/signed, installed directly as a development build on the connected iPhone, and **not uploaded to TestFlight**. Last historical upload receipt available is 73; current ASC readback was not performed.
+- Native main menu contains aiRIM with a speech-bubble icon. Six-step guide, safe-area/privacy and honest identity/affinity states are integrated.
+- Functional scanner suite passes 31/31 with mocks; independent real 25-scene benchmark is below gate (name precision 77.25%, recall 82.69%, before final fixes). Original four menus yield 97.14%/98.55%; dense cabinet remains partial.
+- New isolated production catalog endpoint `search-wines-v75` deployed through Lovable at source commit `d84018d9ffa5ba44cbdb1abc0609d41fd130652e`; vision v72 and affinity v73 unchanged. Web not republished.
+- Release decision is HOLD for recognition/validation quality, not an assumed Apple agreement or exhausted provider quota. Do not relabel mocks or synthetic users as human evidence.
+- Authoritative batch report: [MATCHRIM_75_QA_2026-10-08.md](docs/MATCHRIM_75_QA_2026-10-08.md).
+
+## Historical checkpoint
+
 Updated: 2026-10-01
 
 ## Release

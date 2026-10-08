@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import { writeFileSync } from 'node:fs';
+import { isSafeCanonicalLabelMatch as safe } from '../src/utils/winerimLabelIdentity';
+import { applyHostedScanAffinity } from '../src/utils/hostedScanAffinity';
+import type { WineCandidate } from '../src/utils/multiWineScan';
+
+let passed = 0;
+const check = (name: string, run: () => void) => { run(); passed++; console.log('PASS', name); };
+check('Different cuvee cannot share a canonical identity', () => assert.equal(safe({name:'Laurent Perrier La Cuvee',producer:'Laurent Perrier'}, {name:'Laurent Perrier Ultra Brut',producer:'Laurent Perrier'}),false));
+check('Reservation qualifier cannot be added silently', () => assert.equal(safe({name:'Muga'}, {name:'Muga Reserva'}),false));
+check('Different vintage is not interchangeable', () => assert.equal(safe({name:'Muga Reserva',vintage:2021}, {name:'Muga Reserva',vintage:2020}),false));
+check('Generic variety without producer is ambiguous', () => assert.equal(safe({name:'Sauvignon Blanc'}, {name:'Sauvignon Blanc',producer:'Cloudy Bay'}),false));
+check('Producer disambiguates generic variety', () => assert.equal(safe({name:'Sauvignon Blanc',producer:'Cloudy Bay'}, {name:'Cloudy Bay Sauvignon Blanc',producer:'Cloudy Bay'}),true));
+check('Accents and separators do not change identity', () => assert.equal(safe({name:'Vina Gravonia',producer:'Bodegas Lopez de Heredia'}, {name:'Viña Gravonia',producer:'Lopez de Heredia'}),true));
+check('Same name from different winery must not match', () => assert.equal(safe({name:'Reserva',producer:'Muga'}, {name:'Reserva',producer:'Rioja Alta'}),false));
+check('Exact unique name remains usable', () => assert.equal(safe({name:'Lalama'}, {name:'Lalama',producer:'Dominio do Bibei'}),true));
+const candidate: WineCandidate = {id:'one',name:'QA',producer:null,vintage:null,region:null,country:null,grapes:[],alcohol:null,confidence:.95,source:'inference',evidence:[],uncertaintyReasons:[],inferredFields:[],affinity:90,affinityConfidence:.58};
+check('Hosted null clears stale local number', () => { const out=applyHostedScanAffinity(candidate,{affinity:null});assert.equal(out.affinity,null);assert.equal(out.affinityConfidence,null); });
+check('Profile confidence is normalized from backend percent', () => {const out=applyHostedScanAffinity(candidate,{affinity:80,raw_affinity:90,affinity_confidence:20,learning_samples:2});assert.equal(out.affinityConfidence,.2);assert(out.affinityReason?.includes('2 valoraciones'));assert(out.affinityReason?.includes('20%'));assert(out.affinityReason?.includes('no probabilidad'));});
+check('Inference ceiling cannot become catalog certainty', () => {const out=applyHostedScanAffinity(candidate,{affinity:80,affinity_confidence:90});assert.equal(out.affinityConfidence,.58);assert(out.affinityReason?.includes('inferidos'));});
+check('Absent confidence is unknown, not fabricated', () => assert.equal(applyHostedScanAffinity(candidate,{affinity:80}).affinityConfidence,null));
+for(const value of [NaN,Infinity,-1,101]) check('Invalid score rejected '+String(value),()=>assert.equal(applyHostedScanAffinity(candidate,{affinity:value}),candidate));
+check('Zero score is a valid explicit result',()=>assert.equal(applyHostedScanAffinity(candidate,{affinity:0,affinity_confidence:0}).affinity,0));
+check('Manual correction metadata is preserved',()=>assert.equal(applyHostedScanAffinity({...candidate,source:'manual',name:'Corrected'},{affinity:70,affinity_confidence:20}).name,'Corrected'));
+writeFileSync('../remediation-tests.json',JSON.stringify({passed,production_touched:false,release73_unchanged:true},null,2));

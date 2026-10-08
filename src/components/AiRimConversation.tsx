@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, BrainCircuit, LoaderCircle, Send, Sparkles, UserRound } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +31,9 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
   const [isLoading, setIsLoading] = useState(false);
   const [profileContext, setProfileContext] = useState<string | null>(null);
   const [learningSamples, setLearningSamples] = useState(0);
+  const requestController = useRef<AbortController | null>(null);
+  const contextOwner = useRef(user?.id);
+  useEffect(() => () => { requestController.current?.abort(); }, [user?.id]);
   const [messages, setMessages] = useState<ConversationMessage[]>([
     {
       id: 'welcome',
@@ -40,6 +43,14 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
   ]);
 
   useEffect(() => {
+    if (contextOwner.current !== user?.id) {
+      requestController.current?.abort();
+      requestController.current = null;
+      setMessages((current) => current.filter(message => message.id === 'welcome'));
+      setInput('');
+      setIsLoading(false);
+      contextOwner.current = user?.id;
+    }
     if (!user) {
       setProfileContext(null);
       setLearningSamples(0);
@@ -47,6 +58,8 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
     }
 
     let cancelled = false;
+    setProfileContext(null);
+    setLearningSamples(0);
 
     const loadContext = async () => {
       const [{ data: baseProfile }, { data: trainingWines }] = await Promise.all([
@@ -59,7 +72,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
           .maybeSingle(),
         supabase
           .from('user_wines')
-          .select('rating, sensory_attributes, created_at, updated_at')
+          .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
           .eq('user_id', user.id)
           .eq('use_for_profile_training', true)
           .not('rating', 'is', null)
@@ -108,9 +121,12 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
     setMessages((current) => [...current, userMessage]);
     setInput('');
     setIsLoading(true);
+    const controller = new AbortController();
+    requestController.current = controller;
 
     try {
       const { data, error } = await supabase.functions.invoke('ai-wine-chat', {
+        signal: controller.signal,
         body: {
           message: question,
           context: [
@@ -120,6 +136,8 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
           ].filter(Boolean).join('\n'),
         },
       });
+      if (controller.signal.aborted) throw new DOMException('Consulta cancelada', 'AbortError');
+      if (requestController.current !== controller) return;
       if (error) throw error;
       if (!data?.success || !data?.response) throw new Error(data?.error || 'Respuesta vacía');
 
@@ -129,11 +147,17 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
         text: String(data.response),
       }]);
     } catch (error) {
+      if (requestController.current !== controller) return;
+      setMessages((current) => current.filter(message => message.id !== userMessage.id));
+      setInput(question);
+      if (controller.signal.aborted) return;
       console.error('Error asking aiRIM:', error);
       toast.error('aiRIM no está disponible ahora. Tu pregunta no se ha perdido.');
-      setInput(question);
     } finally {
-      setIsLoading(false);
+      if (requestController.current === controller) {
+        requestController.current = null;
+        setIsLoading(false);
+      }
     }
   };
 
@@ -196,9 +220,9 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
           </div>
         ))}
         {isLoading && (
-          <div className="flex items-center gap-2 text-sm text-slate-500" role="status">
-            <LoaderCircle className="h-4 w-4 animate-spin text-red-800" />
-            Contrastando tu perfil y la consulta...
+          <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+            <span role="status" className="flex items-center gap-2"><LoaderCircle className="h-4 w-4 animate-spin text-red-800" />Contrastando tu perfil y la consulta...</span>
+            <Button variant="ghost" className="min-h-11" onClick={() => requestController.current?.abort()}>Cancelar consulta</Button>
           </div>
         )}
       </section>

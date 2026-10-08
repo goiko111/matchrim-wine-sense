@@ -660,8 +660,8 @@ export const runMatchrimYearSimulation = (config: SimulationConfig) => {
   const candidateShiftTrueNegatives = stableUsers - candidateShiftFalsePositives;
 
   const result = {
-    generatedAt: '2026-10-01',
-    qualification: 'Synthetic longitudinal model audit. It does not represent 10,000 human participants or prove real retention, satisfaction or commercial outcomes.',
+    generatedAt: new Date().toISOString().slice(0, 10),
+    qualification: 'Synthetic longitudinal model audit. It does not represent human participants or prove real retention, satisfaction or commercial outcomes.',
     isolation: 'Local deterministic execution only. No production accounts, photos, APIs, Supabase rows, provider calls or personal data are read or written.',
     config,
     totals: {
@@ -769,7 +769,7 @@ const markdownReport = (result: ReturnType<typeof runMatchrimYearSimulation>) =>
   )).join('\n');
   return `# Matchrim - simulación sintética de ${result.totals.users.toLocaleString('es-ES')} usuarios durante un año
 
-Fecha: 2026-10-01
+Fecha: ${new Date().toISOString().slice(0, 10)}
 
 ## Dictamen
 
@@ -811,7 +811,7 @@ El RMSE compara el perfil aprendido con el gusto latente sintético en escala 0-
 
 ## QA funcional incluido
 
-- Aislamiento de los 10.000 historiales en memoria; cada agente solo aprende de sus propias valoraciones previas.
+- Aislamiento de los ${result.config.users.toLocaleString('es-ES')} historiales en memoria; cada agente solo aprende de sus propias valoraciones previas.
 - Orden cronológico sin fuga de señales futuras.
 - Eventos sin valoración no entrenan el perfil.
 - Presupuesto y ocasión alteran la decisión real, pero no contaminan las cinco dimensiones persistentes.

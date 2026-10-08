@@ -29,6 +29,7 @@ import {
 } from '@/utils/scanHistory';
 import { buildWinerimWineUrl, type WinerimWineWithMatch } from '@/services/winerimApi';
 import AiRimMark from '@/components/AiRimMark';
+import MatchrimQuickGuide from '@/components/MatchrimQuickGuide';
 
 type HomeLearningInfo = {
   samples: number;
@@ -108,6 +109,11 @@ const NativeAppHome = ({
       ))}
 
       <main className="matchrim-native-home-main matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(7.5rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
+        {isNative && import.meta.env.VITE_MATCHRIM_NATIVE_GUIDE_ENABLED === 'true' && (
+          <div className="flex justify-end">
+            <MatchrimQuickGuide existing={Boolean(user || hasQuizResults || recentScans.length)} />
+          </div>
+        )}
         <div className="flex min-h-12 items-center justify-between gap-3">
           <button type="button" onClick={() => navigate('/')} className="matchrim-pressable flex min-h-11 items-center gap-2.5 text-left" aria-label="Inicio de Matchrim">
             <img src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" alt="" className="h-8 w-8" />

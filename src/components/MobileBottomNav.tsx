@@ -5,6 +5,7 @@ import { BrainCircuit, Home, ScanLine, UserRound, Wine, type LucideIcon } from '
 import { useAuth } from '@/contexts/AuthContext';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import { useI18n } from '@/i18n';
+import AiRimMark from '@/components/AiRimMark';
 
 type BottomNavLink = {
   path: string;
@@ -87,7 +88,11 @@ const MobileBottomNav = () => {
                 aria-current={isActive ? 'page' : undefined}
                 className={`matchrim-pressable relative flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 px-1 text-[0.6875rem] font-semibold leading-none ${index === 2 ? 'col-start-4' : ''} ${isActive ? 'text-red-900' : 'text-slate-500'}`}
               >
-                <Icon className="h-[1.35rem] w-[1.35rem]" strokeWidth={isActive ? 2.3 : 1.9} aria-hidden="true" />
+                {link.path === '/inteligencia-liquida' ? (
+                  <AiRimMark className="h-[1.35rem] w-[1.35rem]" iconClassName="h-[1.35rem] w-[1.35rem]" />
+                ) : (
+                  <Icon className="h-[1.35rem] w-[1.35rem]" strokeWidth={isActive ? 2.3 : 1.9} aria-hidden="true" />
+                )}
                 <span className="max-w-full truncate" aria-hidden="true">{link.label}</span>
                 {isActive && <span className="absolute top-0 h-0.5 w-5 rounded-full bg-red-800" aria-hidden="true" />}
               </Link>

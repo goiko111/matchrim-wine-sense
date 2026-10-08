@@ -1,5 +1,7 @@
 import type { MatchrimProfileLike } from './matchrimPassport';
 import { calibrateMatchrimAffinityScore } from './matchrimAffinityCalibration';
+import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
+import { selectMatchrimTrainingEvidence } from '../../supabase/functions/_shared/matchrim-training-evidence';
 
 export { calibrateMatchrimAffinityScore } from './matchrimAffinityCalibration';
 
@@ -7,6 +9,8 @@ type Rating = 'love' | 'ok' | 'not_for_me' | null;
 type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', unknown>>;
 
 export interface TrainableWine {
+  id?: string;
+  use_for_profile_training?: boolean | null;
   rating?: Rating;
   sensory_attributes?: SensoryAttributes | null;
   updated_at?: string | null;
@@ -66,8 +70,8 @@ const ATTRS = [
 const clamp = (value: number, min = 0, max = 5) => Math.max(min, Math.min(max, value));
 
 const normalizeSensoryValue = (value: unknown) => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null) return null;
   let v = numeric;
   if (v > 10) v = v / 20; // legacy 0-100
   else if (v > 5) v = v / 2; // legacy 0-10
@@ -124,7 +128,7 @@ export const detectMatchrimPreferenceShift = (
   wines: TrainableWine[],
   threshold = 0.9,
 ) => {
-  const dated = wines
+  const dated = selectMatchrimTrainingEvidence(wines)
     .filter((wine) => ratingWeight(wine.rating ?? null) !== 0 && evidenceTimestamp(wine) !== null)
     .sort((left, right) => evidenceTimestamp(left)! - evidenceTimestamp(right)!);
   const windowSize = Math.min(12, Math.floor(dated.length / 2));
@@ -180,7 +184,7 @@ export const calculateLearnedMatchrimProfile = (
     tanico: 0,
     afrutado: 0,
   };
-  const validWines = wines.filter((wine) => {
+  const validWines = selectMatchrimTrainingEvidence(wines).filter((wine) => {
     const weight = ratingWeight(wine.rating ?? null);
     const attrs = wine.sensory_attributes;
     return Boolean(weight && attrs && ATTRS.every(([, sourceKey]) => (

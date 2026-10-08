@@ -67,6 +67,34 @@ body {
 }
 
 @media (orientation: landscape) and (max-height: 600px) {
+  .matchrim-quick-guide {
+    width: calc(100vw - 2rem - var(--matchrim-safe-left) - var(--matchrim-safe-right));
+    max-width: 44rem;
+    max-height: calc(100dvh - 1rem - var(--matchrim-safe-top) - var(--matchrim-safe-bottom));
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .matchrim-quick-guide [data-testid="matchrim-guide-content"] {
+    min-height: 3rem;
+    flex: 1 1 auto;
+  }
+
+  .matchrim-guide-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .matchrim-guide-primary {
+    display: contents;
+  }
+
+  .matchrim-guide-footer > button {
+    margin-top: 0;
+  }
+
   html.matchrim-native-platform .matchrim-native-home-main,
   html.matchrim-native-platform .matchrim-native-airim-main {
     max-width: 54rem;

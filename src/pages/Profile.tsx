@@ -10,6 +10,7 @@ import { useQuizResults } from '@/hooks/useQuizResults';
 import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin, Loader2, ArrowRight, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AppNav from '@/components/AppNav';
+import NativeAccountActions from '@/components/NativeAccountActions';
 import MatchrimPassport from '@/components/MatchrimPassport';
 import WineCard from '@/components/WineCard';
 import {
@@ -322,7 +323,7 @@ const Profile = () => {
     const loadTrainingWines = async () => {
       const { data, error } = await supabase
         .from('user_wines')
-        .select('rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+        .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
         .eq('user_id', user.id)
         .eq('use_for_profile_training', true)
         .not('rating', 'is', null)
@@ -760,6 +761,7 @@ const Profile = () => {
     <>
       <AppNav />
       <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8">
+      <NativeAccountActions />
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-red-900 mb-2 flex items-center gap-2">
           <User className="w-8 h-8" />

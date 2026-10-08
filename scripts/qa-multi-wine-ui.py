@@ -27,6 +27,9 @@ MENU_FIXTURES = [ARTIFACTS / "fixtures" / f"{source.stem}.jpg" for source in MEN
 CHROME = os.environ.get("MATCHRIM_QA_CHROME")
 QA_ONLY = os.environ.get("MATCHRIM_QA_ONLY")
 TRACE_REPORT = os.environ.get("MATCHRIM_QA_TRACE_REPORT")
+TARGET_EDGE_RELEASE = os.environ.get("MATCHRIM_QA_EDGE_RELEASE")
+VERSIONED_FUNCTIONS = {"detect-wine-regions", "analyze-wine-region", "scan-wine-menu", "calculate-wine-affinity"}
+OBSERVED_FUNCTIONS = set()
 
 
 def materialize_fixtures():
@@ -231,8 +234,28 @@ def function_response(endpoint, request):
 
 
 def install_routes(page, console_errors, *, accept_privacy=True, response_handler=None):
+    def deny_external(route):
+        if urlparse(route.request.url).netloc == urlparse(BASE_URL).netloc:
+            return route.continue_()
+        return route.fulfill(status=200, content_type="application/json", body="{}")
+    page.context.route("**/*", deny_external)
     def handle_function(route: Route):
         endpoint = urlparse(route.request.url).path.rstrip("/").split("/")[-1]
+        OBSERVED_FUNCTIONS.add(endpoint)
+        if TARGET_EDGE_RELEASE == "75":
+            allowed = {**{name: name + '-v72' for name in VERSIONED_FUNCTIONS},
+                       'calculate-wine-affinity': 'calculate-wine-affinity-v73',
+                       'search-wines': 'search-wines-v75'}
+            if endpoint in allowed:
+                raise AssertionError(f"Unversioned candidate75 endpoint: {endpoint}")
+            endpoint = next((name for name, deployed in allowed.items() if deployed == endpoint), endpoint)
+        if TARGET_EDGE_RELEASE == "72":
+            if endpoint in VERSIONED_FUNCTIONS:
+                raise AssertionError(f"Production candidate used an unversioned function: {endpoint}")
+            if endpoint.endswith("-v72"):
+                endpoint = endpoint.removesuffix("-v72")
+                if endpoint not in VERSIONED_FUNCTIONS:
+                    raise AssertionError(f"Unexpected versioned function: {endpoint}")
         response = response_handler(endpoint, route.request) if response_handler else function_response(endpoint, route.request)
         if isinstance(response, tuple):
             status, body, extra_headers = response
@@ -260,6 +283,7 @@ def install_routes(page, console_errors, *, accept_privacy=True, response_handle
         else "localStorage.removeItem('matchrim.scan_privacy_notice.v2');"
     )
     page.add_init_script(f"""
+      localStorage.setItem('matchrim.onboarding.v1', JSON.stringify({{version:2,result:'completed'}}));
       localStorage.setItem('matchrim_quiz_result', JSON.stringify({{
         potente: 4, acidez: 4, dulce: 1, tanico: 3, afrutado: 4
       }}));
@@ -1052,6 +1076,7 @@ def run_offline_qa(browser, results):
     page.goto(f"{BASE_URL}/escanear/etiqueta")
     page.wait_for_load_state("networkidle")
     page.unroute("**/functions/v1/**")
+    page.route("**/functions/v1/**", lambda route: route.abort("internetdisconnected"))
     context.set_offline(True)
     page.locator('input[type="file"]').nth(1).set_input_files(str(LABEL_FIXTURE))
     page.get_by_text("No hay conexión", exact=False).wait_for(timeout=30_000)
@@ -1117,6 +1142,8 @@ def main():
         raise AssertionError(f"Console errors: {ignored}")
 
     results.append({"case": "consola", "expected": "sin errores de consola", "actual": "PASS"})
+    if TARGET_EDGE_RELEASE == "72":
+        (ARTIFACTS / "observed-functions.json").write_text(json.dumps(sorted(OBSERVED_FUNCTIONS), indent=2) + "\n")
     (ARTIFACTS / "ui-qa-results.json").write_text(json.dumps(results, indent=2, ensure_ascii=True) + "\n")
     print(json.dumps(results, indent=2, ensure_ascii=True))
 

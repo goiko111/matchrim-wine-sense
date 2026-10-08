@@ -41,6 +41,7 @@ import {
 import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
+import { applyHostedScanAffinity, type HostedScanAffinity } from '@/utils/hostedScanAffinity';
 import { clusterOverlayPins } from '@/utils/overlayPins';
 import {
   calculateLocalMatchrimAffinity,
@@ -234,12 +235,12 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         ...candidate,
         name: catalogMatch.wine.name || candidate.name,
         producer: catalogMatch.wine.winery || candidate.producer,
-        vintage: Number(catalogMatch.wine.vintage) || candidate.vintage,
+        vintage: candidate.vintage,
         region: catalogMatch.wine.region || candidate.region,
         country: catalogMatch.wine.country || candidate.country,
         grapes: catalogMatch.wine.grapes?.length ? catalogMatch.wine.grapes : candidate.grapes,
         confidence: Math.max(candidate.confidence, catalogMatch.confidence),
-        source: 'catalog',
+        source: candidate.source,
         evidence: [...candidate.evidence, 'Coincidencia en el catálogo Winerim'],
       };
     }
@@ -261,18 +262,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
     if (!user) return enriched;
     try {
-      const affinity = await invokeEdgeFunction<{
-        affinity?: number | null;
-        sensory_attributes?: WineCandidate['sensoryAttributes'];
-      }>('calculate-wine-affinity', { wine: candidateToAffinityWine(enriched) }, signal);
-      if (typeof affinity.affinity !== 'number') return enriched;
-      return {
-        ...enriched,
-        affinity: affinity.affinity,
-        sensoryAttributes: affinity.sensory_attributes ?? enriched.sensoryAttributes ?? null,
-        affinityConfidence: Math.round(Math.min(enriched.confidence, enriched.source === 'catalog' ? 0.9 : 0.58) * 100) / 100,
-        affinityReason: 'Calculado contra tu perfil Matchrim con atributos sensoriales declarados como ficha o inferencia.',
-      };
+      const affinity = await invokeEdgeFunction<HostedScanAffinity>('calculate-wine-affinity', { wine: candidateToAffinityWine(enriched) }, signal);
+      return applyHostedScanAffinity(enriched, affinity);
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') throw error;
       console.warn('[multi-label] Affinity unavailable:', error);
@@ -899,12 +890,12 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                         {group.count > 1 ? ` · ${group.count} botellas` : ''}
                       </span>
                       <span className={`block text-[11px] font-semibold ${identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
-                        {identityConfirmed ? 'Identidad confirmable' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
+                        {identityConfirmed ? 'Nombre leído · revisa la referencia' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
                       </span>
                     </span>
                     <span className="shrink-0 text-right">
-                      <span className="block font-bold text-red-900">{group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
-                      <span className="block text-[11px] text-slate-500">{identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
+                      <span data-testid="scan-affinity-value" className="block font-bold text-red-900">{group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
+                      <span className="block text-[11px] text-slate-500">{group.candidate.affinity == null ? 'Sin datos' : identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
                     </span>
                   </button>
                   );
@@ -1033,6 +1024,10 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                           <div><span className="block text-lg font-bold text-slate-900">{Math.round(selectedCandidate.confidence * 100)}%</span>Identidad</div>
                           <div><span className="block text-lg font-bold text-slate-900">{selectedCandidate.affinityConfidence == null ? '-' : `${Math.round(selectedCandidate.affinityConfidence * 100)}%`}</span>Respaldo afinidad</div>
                         </div>
+
+                        {selectedCandidate.affinityReason && (
+                          <p className="text-sm leading-6 text-slate-600">{selectedCandidate.affinityReason}</p>
+                        )}
 
                         {selectedCandidate.uncertaintyReasons.length > 0 && (
                           <div className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-3 text-sm text-amber-950">

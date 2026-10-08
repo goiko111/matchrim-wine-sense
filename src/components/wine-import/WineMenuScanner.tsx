@@ -45,6 +45,7 @@ import {
   resolveMenuTileResults,
   shouldRunRightFocusMenuScan,
   needsMenuRefinement,
+  mayHaveUnreadMenuColumn,
   isMenuIdentityConfirmed,
   type MenuScanResponse as WineMenuScanResponse,
   type MenuScanTile,
@@ -598,7 +599,7 @@ export const WineMenuScanner = ({
       }
       failedTileCount += settledTiles.filter((result) => result.status === 'rejected').length;
       let data = resolveMenuTileResults(successfulTiles);
-      if (!isMatchrimFixtureQaEnabled && fullResponse?.layout === 'columns' && shouldRunRightFocusMenuScan(
+      if (!isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn({ ...data, layout: fullResponse?.layout }) && shouldRunRightFocusMenuScan(
         data.coverage?.status,
         data.vinos?.length ?? 0,
         successfulTiles.some(({ tile }) => tile.id === 'left')
@@ -626,9 +627,10 @@ export const WineMenuScanner = ({
         };
       }
 
-      if (data?.vinos && data.vinos.length > 0) {
+      const normalizedWines = (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : [])
+        .filter(isWineMenuItem).map(normalizeScannedWine);
+      if (normalizedWines.length > 0) {
 	      setScanPhase('ranking');
-	        const normalizedWines = (data.vinos as ScannedWine[]).filter(isWineMenuItem).map(normalizeScannedWine);
 	        if (data.coverage?.status === 'partial') {
 	          const expected = data.coverage.estimated_visible_wines;
 	          setMenuQualityWarnings((warnings) => [
@@ -668,7 +670,10 @@ export const WineMenuScanner = ({
 
         toast.success(`✨ ${normalizedWines.length} vinos detectados en la carta`);
       } else {
-        setScanFeedback("No he encontrado vinos claros en el documento. Prueba con una foto más cercana o con una sección más pequeña de la carta.");
+        setScannedWines([]);
+        setScanFeedback(data?.vinos?.length
+          ? 'He leído categorías o descripciones, pero no una referencia de vino verificable. Prueba con una foto más cercana que incluya el nombre y la bodega.'
+          : "No he encontrado vinos claros en el documento. Prueba con una foto más cercana o con una sección más pequeña de la carta.");
         toast.info("No se encontraron vinos en el documento");
       }
     } catch (error) {
