@@ -1,0 +1,1643 @@
+{
+  "authorized_at": "2026-10-08T10:56:35Z",
+  "authorization": "Owner: adelante, hazlo, approving up to300 additional calls",
+  "prior_requests": 289,
+  "prior_budget": 300,
+  "additional_limit": 300,
+  "requests": [
+    {
+      "index": 1,
+      "case": "commons-131626296-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T10:56:37Z"
+    },
+    {
+      "index": 2,
+      "case": "commons-131626296-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:56:40Z"
+    },
+    {
+      "index": 3,
+      "case": "commons-171025734-menu-comida",
+      "function": "scan-food-pairing",
+      "started_at": "2026-10-08T10:56:49Z"
+    },
+    {
+      "index": 4,
+      "case": "commons-7478133-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:57:10Z"
+    },
+    {
+      "index": 5,
+      "case": "commons-7478133-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:57:20Z"
+    },
+    {
+      "index": 6,
+      "case": "commons-7478133-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:57:20Z"
+    },
+    {
+      "index": 7,
+      "case": "commons-171025734-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:58:34Z"
+    },
+    {
+      "index": 8,
+      "case": "commons-171025734-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:58:37Z"
+    },
+    {
+      "index": 9,
+      "case": "commons-171025734-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:58:37Z"
+    },
+    {
+      "index": 10,
+      "case": "commons-7478133-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T10:58:45Z"
+    },
+    {
+      "index": 11,
+      "case": "commons-7478133-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T10:58:49Z"
+    },
+    {
+      "index": 12,
+      "case": "commons-7478133-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T10:58:49Z"
+    },
+    {
+      "index": 13,
+      "case": "commons-7478133-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:58:53Z"
+    },
+    {
+      "index": 14,
+      "case": "commons-7478133-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:58:53Z"
+    },
+    {
+      "index": 15,
+      "case": "commons-7478133-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:58:53Z"
+    },
+    {
+      "index": 16,
+      "case": "commons-113034945-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:02Z"
+    },
+    {
+      "index": 17,
+      "case": "commons-113034945-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:05Z"
+    },
+    {
+      "index": 18,
+      "case": "commons-113034945-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:05Z"
+    },
+    {
+      "index": 19,
+      "case": "commons-113127551-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:13Z"
+    },
+    {
+      "index": 20,
+      "case": "commons-113127551-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:16Z"
+    },
+    {
+      "index": 21,
+      "case": "commons-113127551-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:16Z"
+    },
+    {
+      "index": 22,
+      "case": "commons-116700257-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T10:59:25Z"
+    },
+    {
+      "index": 23,
+      "case": "commons-116700257-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T10:59:32Z"
+    },
+    {
+      "index": 24,
+      "case": "commons-116700257-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T10:59:32Z"
+    },
+    {
+      "index": 25,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:38Z"
+    },
+    {
+      "index": 26,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:38Z"
+    },
+    {
+      "index": 27,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:38Z"
+    },
+    {
+      "index": 28,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:38Z"
+    },
+    {
+      "index": 29,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:40Z"
+    },
+    {
+      "index": 30,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:41Z"
+    },
+    {
+      "index": 31,
+      "case": "commons-116700257-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T10:59:42Z"
+    },
+    {
+      "index": 32,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:42Z"
+    },
+    {
+      "index": 33,
+      "case": "commons-116700257-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T10:59:44Z"
+    },
+    {
+      "index": 34,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:45Z"
+    },
+    {
+      "index": 35,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:45Z"
+    },
+    {
+      "index": 36,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:45Z"
+    },
+    {
+      "index": 37,
+      "case": "commons-116700257-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T10:59:47Z"
+    },
+    {
+      "index": 38,
+      "case": "commons-116700257-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T10:59:48Z"
+    },
+    {
+      "index": 39,
+      "case": "commons-144753629-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:56Z"
+    },
+    {
+      "index": 40,
+      "case": "commons-144753629-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:58Z"
+    },
+    {
+      "index": 41,
+      "case": "commons-144753629-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T10:59:58Z"
+    },
+    {
+      "index": 42,
+      "case": "commons-148028485-plato",
+      "function": "scan-food-pairing",
+      "started_at": "2026-10-08T11:00:07Z"
+    },
+    {
+      "index": 43,
+      "case": "commons-148028485-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:00:19Z"
+    },
+    {
+      "index": 44,
+      "case": "commons-148028485-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:00:22Z"
+    },
+    {
+      "index": 45,
+      "case": "commons-148028485-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:00:27Z"
+    },
+    {
+      "index": 46,
+      "case": "commons-148324546-menu-comida",
+      "function": "scan-food-pairing",
+      "started_at": "2026-10-08T11:00:37Z"
+    },
+    {
+      "index": 47,
+      "case": "commons-148324546-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:01:06Z"
+    },
+    {
+      "index": 48,
+      "case": "commons-148324546-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:01:10Z"
+    },
+    {
+      "index": 49,
+      "case": "commons-148324546-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:01:10Z"
+    },
+    {
+      "index": 50,
+      "case": "commons-159930620-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:01:19Z"
+    },
+    {
+      "index": 51,
+      "case": "commons-159930620-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:01:24Z"
+    },
+    {
+      "index": 52,
+      "case": "commons-159930620-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:01:24Z"
+    },
+    {
+      "index": 53,
+      "case": "commons-159930620-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:01:24Z"
+    },
+    {
+      "index": 54,
+      "case": "commons-159930620-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:01:27Z"
+    },
+    {
+      "index": 55,
+      "case": "commons-159930620-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:01:27Z"
+    },
+    {
+      "index": 56,
+      "case": "commons-159930620-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:01:27Z"
+    },
+    {
+      "index": 57,
+      "case": "commons-159930620-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:01:30Z"
+    },
+    {
+      "index": 58,
+      "case": "commons-159930620-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:01:30Z"
+    },
+    {
+      "index": 59,
+      "case": "commons-177500191-menu-comida",
+      "function": "scan-food-pairing",
+      "started_at": "2026-10-08T11:01:41Z"
+    },
+    {
+      "index": 60,
+      "case": "commons-177500191-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:06Z"
+    },
+    {
+      "index": 61,
+      "case": "commons-177500191-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:09Z"
+    },
+    {
+      "index": 62,
+      "case": "commons-177500191-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:09Z"
+    },
+    {
+      "index": 63,
+      "case": "commons-31013876-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:17Z"
+    },
+    {
+      "index": 64,
+      "case": "commons-31013876-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:21Z"
+    },
+    {
+      "index": 65,
+      "case": "commons-31013876-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:21Z"
+    },
+    {
+      "index": 66,
+      "case": "commons-355816-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:29Z"
+    },
+    {
+      "index": 67,
+      "case": "commons-355816-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:32Z"
+    },
+    {
+      "index": 68,
+      "case": "commons-355816-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:02:32Z"
+    },
+    {
+      "index": 69,
+      "case": "commons-355816-menu-comida",
+      "function": "scan-food-pairing",
+      "started_at": "2026-10-08T11:02:41Z"
+    },
+    {
+      "index": 70,
+      "case": "commons-49129956-menu-comida",
+      "function": "scan-food-pairing",
+      "started_at": "2026-10-08T11:02:49Z"
+    },
+    {
+      "index": 71,
+      "case": "commons-49129956-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:03:13Z"
+    },
+    {
+      "index": 72,
+      "case": "commons-49129956-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:03:15Z"
+    },
+    {
+      "index": 73,
+      "case": "commons-49129956-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:03:15Z"
+    },
+    {
+      "index": 74,
+      "case": "commons-55328769-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:03:24Z"
+    },
+    {
+      "index": 75,
+      "case": "commons-55328769-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:03:38Z"
+    },
+    {
+      "index": 76,
+      "case": "commons-55328769-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:03:38Z"
+    },
+    {
+      "index": 77,
+      "case": "commons-68162629-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:03:58Z"
+    },
+    {
+      "index": 78,
+      "case": "commons-68162629-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:04:01Z"
+    },
+    {
+      "index": 79,
+      "case": "commons-68162629-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:04:01Z"
+    },
+    {
+      "index": 80,
+      "case": "commons-68335063-menu-comida",
+      "function": "scan-food-pairing",
+      "started_at": "2026-10-08T11:04:10Z"
+    },
+    {
+      "index": 81,
+      "case": "commons-68335063-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:04:25Z"
+    },
+    {
+      "index": 82,
+      "case": "commons-68335063-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:04:28Z"
+    },
+    {
+      "index": 83,
+      "case": "commons-68335063-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:04:28Z"
+    },
+    {
+      "index": 84,
+      "case": "commons-7478099-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:04:36Z"
+    },
+    {
+      "index": 85,
+      "case": "commons-7478099-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:05:10Z"
+    },
+    {
+      "index": 86,
+      "case": "commons-7478099-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:05:10Z"
+    },
+    {
+      "index": 87,
+      "case": "commons-7478099-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:05:42Z"
+    },
+    {
+      "index": 88,
+      "case": "commons-78354929-menu-comida",
+      "function": "scan-food-pairing",
+      "started_at": "2026-10-08T11:05:51Z"
+    },
+    {
+      "index": 89,
+      "case": "commons-78354929-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:06:17Z"
+    },
+    {
+      "index": 90,
+      "case": "commons-78354929-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:06:27Z"
+    },
+    {
+      "index": 91,
+      "case": "commons-78354929-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:06:27Z"
+    },
+    {
+      "index": 92,
+      "case": "commons-7893320-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:06:44Z"
+    },
+    {
+      "index": 93,
+      "case": "commons-7893320-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:07:05Z"
+    },
+    {
+      "index": 94,
+      "case": "commons-7893320-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:07:05Z"
+    },
+    {
+      "index": 95,
+      "case": "commons-7893320-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:07:28Z"
+    },
+    {
+      "index": 96,
+      "case": "commons-7893320-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:07:46Z"
+    },
+    {
+      "index": 97,
+      "case": "commons-7893320-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:08:02Z"
+    },
+    {
+      "index": 98,
+      "case": "commons-7893320-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:08:02Z"
+    },
+    {
+      "index": 99,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:14Z"
+    },
+    {
+      "index": 100,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:15Z"
+    },
+    {
+      "index": 101,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:15Z"
+    },
+    {
+      "index": 102,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:15Z"
+    },
+    {
+      "index": 103,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:15Z"
+    },
+    {
+      "index": 104,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:16Z"
+    },
+    {
+      "index": 105,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:16Z"
+    },
+    {
+      "index": 106,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:16Z"
+    },
+    {
+      "index": 107,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:16Z"
+    },
+    {
+      "index": 108,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:16Z"
+    },
+    {
+      "index": 109,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:18Z"
+    },
+    {
+      "index": 110,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:18Z"
+    },
+    {
+      "index": 111,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:18Z"
+    },
+    {
+      "index": 112,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:18Z"
+    },
+    {
+      "index": 113,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:18Z"
+    },
+    {
+      "index": 114,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:19Z"
+    },
+    {
+      "index": 115,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:19Z"
+    },
+    {
+      "index": 116,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:19Z"
+    },
+    {
+      "index": 117,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:20Z"
+    },
+    {
+      "index": 118,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:20Z"
+    },
+    {
+      "index": 119,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:21Z"
+    },
+    {
+      "index": 120,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:21Z"
+    },
+    {
+      "index": 121,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:21Z"
+    },
+    {
+      "index": 122,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:21Z"
+    },
+    {
+      "index": 123,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:22Z"
+    },
+    {
+      "index": 124,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:22Z"
+    },
+    {
+      "index": 125,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:23Z"
+    },
+    {
+      "index": 126,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:23Z"
+    },
+    {
+      "index": 127,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:23Z"
+    },
+    {
+      "index": 128,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:24Z"
+    },
+    {
+      "index": 129,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:24Z"
+    },
+    {
+      "index": 130,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:24Z"
+    },
+    {
+      "index": 131,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:25Z"
+    },
+    {
+      "index": 132,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:25Z"
+    },
+    {
+      "index": 133,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:25Z"
+    },
+    {
+      "index": 134,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:26Z"
+    },
+    {
+      "index": 135,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:26Z"
+    },
+    {
+      "index": 136,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:26Z"
+    },
+    {
+      "index": 137,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:27Z"
+    },
+    {
+      "index": 138,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:27Z"
+    },
+    {
+      "index": 139,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:27Z"
+    },
+    {
+      "index": 140,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:28Z"
+    },
+    {
+      "index": 141,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:28Z"
+    },
+    {
+      "index": 142,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:28Z"
+    },
+    {
+      "index": 143,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:29Z"
+    },
+    {
+      "index": 144,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:29Z"
+    },
+    {
+      "index": 145,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:29Z"
+    },
+    {
+      "index": 146,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:30Z"
+    },
+    {
+      "index": 147,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:30Z"
+    },
+    {
+      "index": 148,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:31Z"
+    },
+    {
+      "index": 149,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:31Z"
+    },
+    {
+      "index": 150,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:31Z"
+    },
+    {
+      "index": 151,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:32Z"
+    },
+    {
+      "index": 152,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:32Z"
+    },
+    {
+      "index": 153,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:32Z"
+    },
+    {
+      "index": 154,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:32Z"
+    },
+    {
+      "index": 155,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:33Z"
+    },
+    {
+      "index": 156,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:33Z"
+    },
+    {
+      "index": 157,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:34Z"
+    },
+    {
+      "index": 158,
+      "case": "commons-7893320-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:08:34Z"
+    },
+    {
+      "index": 159,
+      "case": "commons-80448425-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:08:41Z"
+    },
+    {
+      "index": 160,
+      "case": "img_7547-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:12:04Z"
+    },
+    {
+      "index": 161,
+      "case": "img_7547-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:12:28Z"
+    },
+    {
+      "index": 162,
+      "case": "img_7547-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:12:28Z"
+    },
+    {
+      "index": 163,
+      "case": "img_7547-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:12:44Z"
+    },
+    {
+      "index": 164,
+      "case": "img_7548-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:13:09Z"
+    },
+    {
+      "index": 165,
+      "case": "img_7552-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:13:33Z"
+    },
+    {
+      "index": 166,
+      "case": "img_7552-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:13:55Z"
+    },
+    {
+      "index": 167,
+      "case": "img_7552-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:13:55Z"
+    },
+    {
+      "index": 168,
+      "case": "img_7552-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:14:17Z"
+    },
+    {
+      "index": 169,
+      "case": "img_7553-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:14:26Z"
+    },
+    {
+      "index": 170,
+      "case": "img_7553-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:14:59Z"
+    },
+    {
+      "index": 171,
+      "case": "img_7553-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:15:00Z"
+    },
+    {
+      "index": 172,
+      "case": "img_7553-2-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:15:37Z"
+    },
+    {
+      "index": 173,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:16:07Z"
+    },
+    {
+      "index": 174,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:16:20Z"
+    },
+    {
+      "index": 175,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:16:20Z"
+    },
+    {
+      "index": 176,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:32Z"
+    },
+    {
+      "index": 177,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:32Z"
+    },
+    {
+      "index": 178,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:32Z"
+    },
+    {
+      "index": 179,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:32Z"
+    },
+    {
+      "index": 180,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:32Z"
+    },
+    {
+      "index": 181,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:34Z"
+    },
+    {
+      "index": 182,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:35Z"
+    },
+    {
+      "index": 183,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:35Z"
+    },
+    {
+      "index": 184,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:35Z"
+    },
+    {
+      "index": 185,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:35Z"
+    },
+    {
+      "index": 186,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:36Z"
+    },
+    {
+      "index": 187,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:37Z"
+    },
+    {
+      "index": 188,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:37Z"
+    },
+    {
+      "index": 189,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:37Z"
+    },
+    {
+      "index": 190,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:37Z"
+    },
+    {
+      "index": 191,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:38Z"
+    },
+    {
+      "index": 192,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:38Z"
+    },
+    {
+      "index": 193,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:38Z"
+    },
+    {
+      "index": 194,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:39Z"
+    },
+    {
+      "index": 195,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:39Z"
+    },
+    {
+      "index": 196,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:40Z"
+    },
+    {
+      "index": 197,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:41Z"
+    },
+    {
+      "index": 198,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:42Z"
+    },
+    {
+      "index": 199,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:42Z"
+    },
+    {
+      "index": 200,
+      "case": "multibottle-fridge-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:16:43Z"
+    },
+    {
+      "index": 201,
+      "case": "commons-80448425-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:16:52Z"
+    },
+    {
+      "index": 202,
+      "case": "commons-80448425-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:56Z"
+    },
+    {
+      "index": 203,
+      "case": "commons-80448425-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:56Z"
+    },
+    {
+      "index": 204,
+      "case": "commons-80448425-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:16:56Z"
+    },
+    {
+      "index": 205,
+      "case": "commons-8802178-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:17:03Z"
+    },
+    {
+      "index": 206,
+      "case": "commons-8802178-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:17:11Z"
+    },
+    {
+      "index": 207,
+      "case": "commons-8802178-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:17:14Z"
+    },
+    {
+      "index": 208,
+      "case": "commons-8802178-carta-vinos",
+      "function": "scan-wine-menu-v72",
+      "started_at": "2026-10-08T11:17:14Z"
+    },
+    {
+      "index": 209,
+      "case": "commons-93111644-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:17:22Z"
+    },
+    {
+      "index": 210,
+      "case": "commons-93111644-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:17:27Z"
+    },
+    {
+      "index": 211,
+      "case": "commons-93111644-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:17:27Z"
+    },
+    {
+      "index": 212,
+      "case": "commons-93111644-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:17:27Z"
+    },
+    {
+      "index": 213,
+      "case": "commons-94131711-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:17:37Z"
+    },
+    {
+      "index": 214,
+      "case": "commons-94131711-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:17:50Z"
+    },
+    {
+      "index": 215,
+      "case": "commons-94131711-etiqueta",
+      "function": "detect-wine-regions-v72",
+      "started_at": "2026-10-08T11:17:50Z"
+    },
+    {
+      "index": 216,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:02Z"
+    },
+    {
+      "index": 217,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:02Z"
+    },
+    {
+      "index": 218,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:02Z"
+    },
+    {
+      "index": 219,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:02Z"
+    },
+    {
+      "index": 220,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:02Z"
+    },
+    {
+      "index": 221,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:05Z"
+    },
+    {
+      "index": 222,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:05Z"
+    },
+    {
+      "index": 223,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:06Z"
+    },
+    {
+      "index": 224,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:06Z"
+    },
+    {
+      "index": 225,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:07Z"
+    },
+    {
+      "index": 226,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:08Z"
+    },
+    {
+      "index": 227,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:10Z"
+    },
+    {
+      "index": 228,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:10Z"
+    },
+    {
+      "index": 229,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:11Z"
+    },
+    {
+      "index": 230,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:11Z"
+    },
+    {
+      "index": 231,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:13Z"
+    },
+    {
+      "index": 232,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:13Z"
+    },
+    {
+      "index": 233,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:13Z"
+    },
+    {
+      "index": 234,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:15Z"
+    },
+    {
+      "index": 235,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:15Z"
+    },
+    {
+      "index": 236,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:15Z"
+    },
+    {
+      "index": 237,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:16Z"
+    },
+    {
+      "index": 238,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:16Z"
+    },
+    {
+      "index": 239,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:19Z"
+    },
+    {
+      "index": 240,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:19Z"
+    },
+    {
+      "index": 241,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:20Z"
+    },
+    {
+      "index": 242,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:20Z"
+    },
+    {
+      "index": 243,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:20Z"
+    },
+    {
+      "index": 244,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:22Z"
+    },
+    {
+      "index": 245,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:22Z"
+    },
+    {
+      "index": 246,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:22Z"
+    },
+    {
+      "index": 247,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:23Z"
+    },
+    {
+      "index": 248,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:24Z"
+    },
+    {
+      "index": 249,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:26Z"
+    },
+    {
+      "index": 250,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:27Z"
+    },
+    {
+      "index": 251,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:27Z"
+    },
+    {
+      "index": 252,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:28Z"
+    },
+    {
+      "index": 253,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:29Z"
+    },
+    {
+      "index": 254,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:29Z"
+    },
+    {
+      "index": 255,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:30Z"
+    },
+    {
+      "index": 256,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:31Z"
+    },
+    {
+      "index": 257,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:32Z"
+    },
+    {
+      "index": 258,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:32Z"
+    },
+    {
+      "index": 259,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:32Z"
+    },
+    {
+      "index": 260,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:34Z"
+    },
+    {
+      "index": 261,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:34Z"
+    },
+    {
+      "index": 262,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:35Z"
+    },
+    {
+      "index": 263,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:35Z"
+    },
+    {
+      "index": 264,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:35Z"
+    },
+    {
+      "index": 265,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:37Z"
+    },
+    {
+      "index": 266,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:38Z"
+    },
+    {
+      "index": 267,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:38Z"
+    },
+    {
+      "index": 268,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:39Z"
+    },
+    {
+      "index": 269,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:40Z"
+    },
+    {
+      "index": 270,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:41Z"
+    },
+    {
+      "index": 271,
+      "case": "commons-94131711-etiqueta",
+      "function": "analyze-wine-region-v72",
+      "started_at": "2026-10-08T11:18:41Z"
+    },
+    {
+      "index": 272,
+      "case": "commons-94131711-etiqueta",
+      "function": "search-wines-v75",
+      "started_at": "2026-10-08T11:18:43Z"
+    }
+  ],
+  "blocked": null,
+  "counting": "Edge POST requests including catalog/retries; internal provider fanout is not observable"
+}

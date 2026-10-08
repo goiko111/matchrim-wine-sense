@@ -1,0 +1,16 @@
+{
+  "review_kind": "Additive post-run source review; not a replacement holdout or human certification",
+  "baseline_preserved": "matchrim-challenge-v4-annotations.json",
+  "corrections": [
+    {
+      "source_id": "commons-55328769",
+      "case": "commons-55328769-carta-vinos",
+      "invalid_negative": true,
+      "reason": "Full-resolution source review shows a printed wine tasting menu in the foreground below the welcome board. The scene is not a pure no-wine-list negative.",
+      "replacement_classification": "mixed_winery_sign_and_small_printed_wine_menu",
+      "canonical_ground_truth": null,
+      "scoring_policy": "Exclude from negative pass rate; do not convert model output into ground truth. Review names and vintages independently before a future positive benchmark.",
+      "provenance": "Agent visual inspection of the original downloaded image after seeing a non-empty response. Not independent or blinded review."
+    }
+  ]
+}

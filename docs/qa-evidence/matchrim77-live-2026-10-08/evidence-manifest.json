@@ -1,0 +1,880 @@
+{
+  "application_commit": "402da5db1a77067ee586e92672f099477bfc62b8",
+  "candidate": 77,
+  "artifact_root": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim77-live-20261008",
+  "certified": false,
+  "images_committed": false,
+  "run_sha256": "d91d5141e67c5535f426ccd5bc4a87d925738ed75287726ad355a357db822bdf",
+  "source_files": [
+    {
+      "case": "img_7547-2-carta-vinos",
+      "sha256": "fc9524d652bb9ee2ed221bacabaef17315278a01639e03de6d5d58c885e312e2"
+    },
+    {
+      "case": "img_7548-2-carta-vinos",
+      "sha256": "d8db5c9f4b6a6c8879abf3f721b428f5c4689ca08ee21f83735ceea0d0c50b47"
+    },
+    {
+      "case": "img_7552-2-carta-vinos",
+      "sha256": "40594c196daf6cb0b8e5a954b9a98cd7a51134114976a42e95cda981989ba15f"
+    },
+    {
+      "case": "img_7553-2-carta-vinos",
+      "sha256": "0667f77f488bb19959bf2f40526aabbbfa71936044b04157afc0c4ef78aac60b"
+    },
+    {
+      "case": "multibottle-fridge-etiqueta",
+      "sha256": "778d4dcbbdb0c29127795f03d56afd87de9762326543a14e38be5b26d408e11f"
+    },
+    {
+      "case": "commons-131626296-etiqueta",
+      "sha256": "6ab14764db5618c868c7b5b663d6300eeefa4e438d2c909cd7c925b008d74f0b"
+    },
+    {
+      "case": "commons-171025734-menu-comida",
+      "sha256": "c32afc4dc6f5c02258c4b3ff2a33e646b2d6c4fe8d3bb6e8ce6e7348e8824e9b"
+    },
+    {
+      "case": "commons-171025734-carta-vinos",
+      "sha256": "c32afc4dc6f5c02258c4b3ff2a33e646b2d6c4fe8d3bb6e8ce6e7348e8824e9b"
+    },
+    {
+      "case": "commons-7478133-carta-vinos",
+      "sha256": "d336d37276be571a18af64085afdd92eb596a40685e7faa2e0dc20c3fc744d94"
+    },
+    {
+      "case": "commons-7478133-etiqueta",
+      "sha256": "d336d37276be571a18af64085afdd92eb596a40685e7faa2e0dc20c3fc744d94"
+    },
+    {
+      "case": "commons-113034945-carta-vinos",
+      "sha256": "a1819bc2bb091f47a0d548ee84ecf40ea8d0119f9e7e04f689aef6e536a4fbaf"
+    },
+    {
+      "case": "commons-113127551-carta-vinos",
+      "sha256": "ed469e8f7334a8632b2fc2c65d5f0e69afb07a495ce257fa2e9292a99bc0001c"
+    },
+    {
+      "case": "commons-116700257-etiqueta",
+      "sha256": "e882b5b980174658de2f72214c8007fcac198e63fd7b4c3f91cf3b107c5549f4"
+    },
+    {
+      "case": "commons-144753629-carta-vinos",
+      "sha256": "2be2ad4972c0d9fd50f392f3c2fa784af43ba8afe8d7992bc0c926c8715d2c04"
+    },
+    {
+      "case": "commons-148028485-plato",
+      "sha256": "3441f4779a828484d1547c2bed233f933556807405b25038c81af51def64d474"
+    },
+    {
+      "case": "commons-148028485-etiqueta",
+      "sha256": "3441f4779a828484d1547c2bed233f933556807405b25038c81af51def64d474"
+    },
+    {
+      "case": "commons-148324546-menu-comida",
+      "sha256": "15a82f5bbaace92067533e1820ba3428b362561216de93cdaba4bbaa64cfff6a"
+    },
+    {
+      "case": "commons-148324546-carta-vinos",
+      "sha256": "15a82f5bbaace92067533e1820ba3428b362561216de93cdaba4bbaa64cfff6a"
+    },
+    {
+      "case": "commons-159930620-etiqueta",
+      "sha256": "faf70c3d701e304ea5b8ba75b14e8dc6c91e20cebe329cad85aa3df62809cb35"
+    },
+    {
+      "case": "commons-177500191-menu-comida",
+      "sha256": "6d7c03a56f66e5d7346d2736eb75147c10f2cb1c2c4e7592ad1e426725d4ba50"
+    },
+    {
+      "case": "commons-177500191-carta-vinos",
+      "sha256": "6d7c03a56f66e5d7346d2736eb75147c10f2cb1c2c4e7592ad1e426725d4ba50"
+    },
+    {
+      "case": "commons-31013876-carta-vinos",
+      "sha256": "486248d8ebd50e4b3b1edc02a853a3180b4680ecc454757e908456012a97613d"
+    },
+    {
+      "case": "commons-355816-carta-vinos",
+      "sha256": "f6e70d1db20113a949096dbe9fef9f300b8525e59077b81b1d1c150bfcc19157"
+    },
+    {
+      "case": "commons-355816-menu-comida",
+      "sha256": "f6e70d1db20113a949096dbe9fef9f300b8525e59077b81b1d1c150bfcc19157"
+    },
+    {
+      "case": "commons-49129956-menu-comida",
+      "sha256": "21d3e8c1e928e5bfde86b10d9817e57c6e8add604ad437562fe6f5cab292ba5e"
+    },
+    {
+      "case": "commons-49129956-carta-vinos",
+      "sha256": "21d3e8c1e928e5bfde86b10d9817e57c6e8add604ad437562fe6f5cab292ba5e"
+    },
+    {
+      "case": "commons-55328769-carta-vinos",
+      "sha256": "918f7e11db93fa0f8da43c3276e12e0f5ce2ad85f248932ccc529869a5456493"
+    },
+    {
+      "case": "commons-68162629-carta-vinos",
+      "sha256": "9776b189e3693257e110614e6e63b335f9dbd1255f12e86c40a5d57f0b2544b2"
+    },
+    {
+      "case": "commons-68335063-menu-comida",
+      "sha256": "dd432749fcca450eac512d8fab37cde570482ffc49fb193108c81359983f70e9"
+    },
+    {
+      "case": "commons-68335063-carta-vinos",
+      "sha256": "dd432749fcca450eac512d8fab37cde570482ffc49fb193108c81359983f70e9"
+    },
+    {
+      "case": "commons-7478099-carta-vinos",
+      "sha256": "4306ed8e2b92c2cfc8dcf4172c9e04a38427d2328759ecdfe4cfbd0c66a91423"
+    },
+    {
+      "case": "commons-78354929-menu-comida",
+      "sha256": "2083c6c52f0ad234ac9e0ec61bac44186d55fbff3f8996eef423a74c0aa06f92"
+    },
+    {
+      "case": "commons-78354929-carta-vinos",
+      "sha256": "2083c6c52f0ad234ac9e0ec61bac44186d55fbff3f8996eef423a74c0aa06f92"
+    },
+    {
+      "case": "commons-7893320-carta-vinos",
+      "sha256": "23c7477a7bf4e426d94fe85c4062d50672f1df299362d2772bfd0f867b8ce396"
+    },
+    {
+      "case": "commons-7893320-etiqueta",
+      "sha256": "23c7477a7bf4e426d94fe85c4062d50672f1df299362d2772bfd0f867b8ce396"
+    },
+    {
+      "case": "commons-80448425-etiqueta",
+      "sha256": "26a9c8d75766bc530b35aa9e4ae67bcc00de7a0c0c58cb310aca72464760048d"
+    },
+    {
+      "case": "commons-8802178-etiqueta",
+      "sha256": "b2f032df61f05c11673a3f3010ae33ea0de575213d1a6251e919d1cc9b93b1a3"
+    },
+    {
+      "case": "commons-8802178-carta-vinos",
+      "sha256": "b2f032df61f05c11673a3f3010ae33ea0de575213d1a6251e919d1cc9b93b1a3"
+    },
+    {
+      "case": "commons-93111644-etiqueta",
+      "sha256": "331397a8e63193de6f3f2a4035b8abd063ec279743b0dbe0fdbe9824a8746c4d"
+    },
+    {
+      "case": "commons-94131711-etiqueta",
+      "sha256": "2ff346795f519d22cc398f5a24da8d60f2f01a373e3a4cc98896ae0c1bb92957"
+    }
+  ],
+  "files": [
+    {
+      "path": "img_7547-2-carta-vinos/backend-trace.json",
+      "sha256": "1663ee58ffdbecbc6b058b11c563516212884d933bfa904f7d4916d54518fc44"
+    },
+    {
+      "path": "img_7547-2-carta-vinos/detail.png",
+      "sha256": "949f61d447bc7bd6d041104f96fd7ecfdc7a82436b9a23d37ef81d290c33d68b"
+    },
+    {
+      "path": "img_7547-2-carta-vinos/result.json",
+      "sha256": "c4d525440b11714e39527192b757daf37097c5858115d0c5f337f889fc23c8e5"
+    },
+    {
+      "path": "img_7547-2-carta-vinos/results.png",
+      "sha256": "0ff6d035d3f5c7f1fc84cd0e818a1d3ed35d2d47a80be873210c615d9bd6d80a"
+    },
+    {
+      "path": "img_7547-2-carta-vinos/scene.png",
+      "sha256": "f8e1593360e92da397e1d5efc0d02ae79a5b1b0e5f1e861555d1169a73cc6223"
+    },
+    {
+      "path": "img_7548-2-carta-vinos/backend-trace.json",
+      "sha256": "22270e61bb97afb40de58888b103c8005ba04f94f0200b5841ada8e3824ead92"
+    },
+    {
+      "path": "img_7548-2-carta-vinos/detail.png",
+      "sha256": "8d9274df497616980a775286185632ba2a373726449d5be6ed1419942bc31b2a"
+    },
+    {
+      "path": "img_7548-2-carta-vinos/result.json",
+      "sha256": "43a511a89ce7e33ef8ab6c918768344580ae41eeee120c6dfd67a461623872dc"
+    },
+    {
+      "path": "img_7548-2-carta-vinos/results.png",
+      "sha256": "b1d9ef876d167b16d124058bab5e1d842fa7c6206811deadbf1106fb938ee571"
+    },
+    {
+      "path": "img_7548-2-carta-vinos/scene.png",
+      "sha256": "fb45b96052f27f027706569465c6d4d8c58a36419c29500224185e514277ee8e"
+    },
+    {
+      "path": "img_7552-2-carta-vinos/backend-trace.json",
+      "sha256": "cd94f752e0b1d215e9f296b6de35e319c5f86f5488a8f0947e2227a31ae03da2"
+    },
+    {
+      "path": "img_7552-2-carta-vinos/detail.png",
+      "sha256": "05390ff143834a16ea9f14af5d1b9ac6b34d13cd42141632aa88751b96e17507"
+    },
+    {
+      "path": "img_7552-2-carta-vinos/result.json",
+      "sha256": "14bdbf74108da6ef1d2b79c37eb37503bcd656ba4f5112eb5b7c1d981db28a84"
+    },
+    {
+      "path": "img_7552-2-carta-vinos/results.png",
+      "sha256": "4744c82391377d73ad0cb9b1ba45193c4828c6ef9dece71c8c2c65b3b02090d6"
+    },
+    {
+      "path": "img_7552-2-carta-vinos/scene.png",
+      "sha256": "86dc87090d19664712b8300a8de2baa3e933544559ba6657be7dc975fb267685"
+    },
+    {
+      "path": "img_7553-2-carta-vinos/backend-trace.json",
+      "sha256": "62fb51fa742bd10aa6f42a4f888fbd994b4714d4d63c01ab53f90cdb28717b4a"
+    },
+    {
+      "path": "img_7553-2-carta-vinos/detail.png",
+      "sha256": "3eae6bd08b4d3d8c0f4edd7d9439d101ab3f2de6b0e935619373f3a855e1e77f"
+    },
+    {
+      "path": "img_7553-2-carta-vinos/result.json",
+      "sha256": "c7c4e3169afc2e1206383b69be309c746d7cac06509316e00f0b8f872239ec77"
+    },
+    {
+      "path": "img_7553-2-carta-vinos/results.png",
+      "sha256": "1f203576c6376cebabc39b28314b37630bfe9733ff8e22d2d6f1deea1b8629ed"
+    },
+    {
+      "path": "img_7553-2-carta-vinos/scene.png",
+      "sha256": "98b96779d947a8ff9116436c77a89027f8cff88be9db15914a5af73bf7f3d379"
+    },
+    {
+      "path": "multibottle-fridge-etiqueta/backend-trace.json",
+      "sha256": "5ecaa4849a4c4190e8a0437d036c05ec3e3ae0d041f4a2901d148712a3033d61"
+    },
+    {
+      "path": "multibottle-fridge-etiqueta/detail.png",
+      "sha256": "fbfab80306c91b95452198bdf128ee111dbfa3ba9a9c24923261584bba864fa4"
+    },
+    {
+      "path": "multibottle-fridge-etiqueta/result.json",
+      "sha256": "594c7581caa9249c8f9072256180db15ad3ec78614829cd96f566655d5441913"
+    },
+    {
+      "path": "multibottle-fridge-etiqueta/results.png",
+      "sha256": "dae6ba286ebb0c957df14d9245f2696fede70dddc03b345a840e26740faecbc2"
+    },
+    {
+      "path": "multibottle-fridge-etiqueta/scene.png",
+      "sha256": "c6c8bd8497d94eeac848871a01b412c3b5a5e7a41ed12e875b36d295fc3b47e6"
+    },
+    {
+      "path": "commons-131626296-etiqueta/backend-trace.json",
+      "sha256": "a6b8d389ab8e7ec4fa4474cee46ff84c0a63156b3330fb950d96ac7208d7838b"
+    },
+    {
+      "path": "commons-131626296-etiqueta/detail.png",
+      "sha256": "96dfc4044bce5e09284d7b0cd89b00de092737d699d262b599343982e74882fa"
+    },
+    {
+      "path": "commons-131626296-etiqueta/result.json",
+      "sha256": "3d5c3746c3e1007f78527bef720063633d4ae63156638072e90d0d40c21ec7e1"
+    },
+    {
+      "path": "commons-131626296-etiqueta/results.png",
+      "sha256": "fde18f932173ba76b9277a94ef3c2f8a065a3b92d96ad3d0d38cf1cef6586cfa"
+    },
+    {
+      "path": "commons-131626296-etiqueta/scene.png",
+      "sha256": "bab342c62319c708efcbfc4dba4371ffcd0d670d9359ca7f807bd2bc89cdd03a"
+    },
+    {
+      "path": "commons-171025734-menu-comida/backend-trace.json",
+      "sha256": "99507a4f160465179bc3976d0752acf33f8a11fb84ff0f47f0a1fdff78d72b67"
+    },
+    {
+      "path": "commons-171025734-menu-comida/result.json",
+      "sha256": "72ec53eacae9d3b68abdc9d48244c02e71d15697972afe5c632634c5f6104d39"
+    },
+    {
+      "path": "commons-171025734-menu-comida/results.png",
+      "sha256": "99a5e36dc5ce5a32bd7cc52584feb5e36cbc1f12b15317d7b1e048964e56ebb9"
+    },
+    {
+      "path": "commons-171025734-menu-comida/scene.png",
+      "sha256": "88e4e50005ffbc9bccfd83a26f4f201a0085db9b4119be5e5df58ab33cb12e45"
+    },
+    {
+      "path": "commons-171025734-carta-vinos/backend-trace.json",
+      "sha256": "f38f1bee660b933861e1db95eecd3e192a0e09d937c3c7d770c28218a5d4069b"
+    },
+    {
+      "path": "commons-171025734-carta-vinos/result.json",
+      "sha256": "dd9c5e80b049258a4c7c0c455dd28d18662e0f467ef8fb27cfe06bb2cce2556b"
+    },
+    {
+      "path": "commons-171025734-carta-vinos/results.png",
+      "sha256": "e3bda75b527cf8733e26f561af22ac31ec46ff75bc7516f1de51e782690476b2"
+    },
+    {
+      "path": "commons-171025734-carta-vinos/scene.png",
+      "sha256": "ffbd66d0de99a54b1b23ca18aaa22307cecfbeba3c19aff82a92857be9843deb"
+    },
+    {
+      "path": "commons-7478133-carta-vinos/backend-trace.json",
+      "sha256": "d7109ecf35b433f7518a515de53d8354ee9a130ce1049b3d4baa68318941c77f"
+    },
+    {
+      "path": "commons-7478133-carta-vinos/detail.png",
+      "sha256": "f3313b96a3391960144f110f1122b0239458e08512c6ccdb461fd32a66f62dca"
+    },
+    {
+      "path": "commons-7478133-carta-vinos/result.json",
+      "sha256": "f484395d9871cb017991085d89ec30a95a83e4c7f65158e9cb1ffc3512147001"
+    },
+    {
+      "path": "commons-7478133-carta-vinos/results.png",
+      "sha256": "fdbf46fec96ccab4a207f25bf4eccaa1133a6f09a37b139886a4758cd33ed1c2"
+    },
+    {
+      "path": "commons-7478133-carta-vinos/scene.png",
+      "sha256": "32146a82c8ce6a2869add58a66df81b6ac47174ff6a3efbcee27d3c3becf32ea"
+    },
+    {
+      "path": "commons-7478133-etiqueta/backend-trace.json",
+      "sha256": "06db968392ad7352e798e718afa9e6c85b7a5d8fd73233e48ca86ee95227dca5"
+    },
+    {
+      "path": "commons-7478133-etiqueta/detail.png",
+      "sha256": "ef34f9fb95ea136573f778be1272233ccd974d8430f507eba64957b0e081f4d5"
+    },
+    {
+      "path": "commons-7478133-etiqueta/result.json",
+      "sha256": "57ea7e4581e595357b6105b88ddebb1a6c758191bbfe7f7353477b4dd63b2e6b"
+    },
+    {
+      "path": "commons-7478133-etiqueta/results.png",
+      "sha256": "54b79d981962d7b691af787c5f987b6d7ae0e161e09c12c4edee605bcdf291ff"
+    },
+    {
+      "path": "commons-7478133-etiqueta/scene.png",
+      "sha256": "0e0b682f64719d6db8640e58963c0c56269fa2a8528890205dc57a192c179a4a"
+    },
+    {
+      "path": "commons-113034945-carta-vinos/backend-trace.json",
+      "sha256": "64d6d1acd4705fc49fd72a89ed87c7082f0d9e78bcbfd1548480395cba035673"
+    },
+    {
+      "path": "commons-113034945-carta-vinos/result.json",
+      "sha256": "05bf34f16fc25ee472fb90e17c407473335a0bf2cb15e0740f6536669e695f3c"
+    },
+    {
+      "path": "commons-113034945-carta-vinos/results.png",
+      "sha256": "0b38c6c5496d6ee9e430c25e10d0e8a9d5dabde85f1d9beea2a6af2a35072482"
+    },
+    {
+      "path": "commons-113034945-carta-vinos/scene.png",
+      "sha256": "0b38c6c5496d6ee9e430c25e10d0e8a9d5dabde85f1d9beea2a6af2a35072482"
+    },
+    {
+      "path": "commons-113127551-carta-vinos/backend-trace.json",
+      "sha256": "edbfe45283a3f9aefde4c54add6902a3b5e1210aadc112f83bb53b2d47a50c9b"
+    },
+    {
+      "path": "commons-113127551-carta-vinos/result.json",
+      "sha256": "c3787d394b9f97ab3b5415596226e0398dc950da85f37a6b8ea53820c968d021"
+    },
+    {
+      "path": "commons-113127551-carta-vinos/results.png",
+      "sha256": "dce54bead66b45c1118557808e1f69951be55523a7a77b390f24f54d6921106e"
+    },
+    {
+      "path": "commons-113127551-carta-vinos/scene.png",
+      "sha256": "dce54bead66b45c1118557808e1f69951be55523a7a77b390f24f54d6921106e"
+    },
+    {
+      "path": "commons-116700257-etiqueta/backend-trace.json",
+      "sha256": "f5d3b68162752e8f5e33ae9fd77e4be5ecd6f3fa9e46f4c3fb54f91f540fc70a"
+    },
+    {
+      "path": "commons-116700257-etiqueta/detail.png",
+      "sha256": "7202253aa9fd1745c2fbda5ced2ed1c3707720785f8596531ee1e77fdb2088b7"
+    },
+    {
+      "path": "commons-116700257-etiqueta/result.json",
+      "sha256": "ea499632193f1345a0c3a6d8782e1f0c420f7606fb4f360c5bbd8a18b3af1ad7"
+    },
+    {
+      "path": "commons-116700257-etiqueta/results.png",
+      "sha256": "4ddf2099f62f4b2f3d34ed00f3bacc4d4f3e1f4eef87dc58f68e736738ef5c20"
+    },
+    {
+      "path": "commons-116700257-etiqueta/scene.png",
+      "sha256": "a7cef07da1062253f931a8065c88db6133cad4c144869de8d8de1e31db8bdd77"
+    },
+    {
+      "path": "commons-144753629-carta-vinos/backend-trace.json",
+      "sha256": "90a682a10e5ff04f6a353bfbc4490e08545932e3c99c36dda1aac9553cb95c9b"
+    },
+    {
+      "path": "commons-144753629-carta-vinos/result.json",
+      "sha256": "1c4ba4e79195217aea4c5ca1d8b31fcaa75b8fff49e6aa0580ee4687ac1c5fa9"
+    },
+    {
+      "path": "commons-144753629-carta-vinos/results.png",
+      "sha256": "8f1329937b190b5718ec72adaa3d509ebbffc4e0ec06d61e030f35c317e07aef"
+    },
+    {
+      "path": "commons-144753629-carta-vinos/scene.png",
+      "sha256": "8f1329937b190b5718ec72adaa3d509ebbffc4e0ec06d61e030f35c317e07aef"
+    },
+    {
+      "path": "commons-148028485-plato/backend-trace.json",
+      "sha256": "7ea46e18fe0dd62ea21c1054a1e45236e985044cfa7e702f6bc69e4721f82e79"
+    },
+    {
+      "path": "commons-148028485-plato/result.json",
+      "sha256": "cbaf102582978fd87358711bfbd514ae181a13d6f30ba3a95bf0d09e13050d62"
+    },
+    {
+      "path": "commons-148028485-plato/results.png",
+      "sha256": "cbc04fc7596b071f81b0414f0314d8a71f3bfb800e9a8c085d3a65958f5455fd"
+    },
+    {
+      "path": "commons-148028485-plato/scene.png",
+      "sha256": "1dbdf59657cf2022f795943f91123b557fd06a82205bfdf49424404044abb2d5"
+    },
+    {
+      "path": "commons-148028485-etiqueta/backend-trace.json",
+      "sha256": "8966687cc7abccc13a76788a1618378fccdae9d2628c887e8a1f972fd37150f0"
+    },
+    {
+      "path": "commons-148028485-etiqueta/detail.png",
+      "sha256": "f90e63b55d3cfda0a0683a0bcd247a7fb1d75462ee8e35eb3509af10c6ed4d8f"
+    },
+    {
+      "path": "commons-148028485-etiqueta/result.json",
+      "sha256": "fd9cd5099d9b5dc29bfefd046b216bebb7da94d8ef2fb73df75fc05a52a0082b"
+    },
+    {
+      "path": "commons-148028485-etiqueta/results.png",
+      "sha256": "bed64a9083bd6d537c2d1f1dc9414efacd06f3c38c9966f7619e41cb9ae39703"
+    },
+    {
+      "path": "commons-148028485-etiqueta/scene.png",
+      "sha256": "0eb441120ad8ecfc0dd95ccb702c30856f16de51b8a25a1569c931b995c881d0"
+    },
+    {
+      "path": "commons-148324546-menu-comida/backend-trace.json",
+      "sha256": "8bd50b8d87c644c458fb29e25ffceb1b848e0e49b91382d87d4ed02b8ea58cfb"
+    },
+    {
+      "path": "commons-148324546-menu-comida/result.json",
+      "sha256": "199587a1b6e85006c10fe10c87b381cb553022bba9a5a11350621619d3e58a3d"
+    },
+    {
+      "path": "commons-148324546-menu-comida/results.png",
+      "sha256": "5920dde5d067a9444e641513b459667d7ad26d287f458f19677058ecdc206bed"
+    },
+    {
+      "path": "commons-148324546-menu-comida/scene.png",
+      "sha256": "7ed840eb43e1e44d40683bd4d0089f05c2dde1e456a9c06e4598a1ac6eea6975"
+    },
+    {
+      "path": "commons-148324546-carta-vinos/backend-trace.json",
+      "sha256": "7a2a80b3d35b10270f42f4c69a915b3ee27160c4b2ec4b09acf0b3399f79f974"
+    },
+    {
+      "path": "commons-148324546-carta-vinos/result.json",
+      "sha256": "65ff7aaca6ef6a1ca9dad676114c5e1cff92fc06d50221914da3e7ee7094ba95"
+    },
+    {
+      "path": "commons-148324546-carta-vinos/results.png",
+      "sha256": "aa64d818a8ab15f0c8433bcf62f62637a2027accd4177a22e5d37788984f0929"
+    },
+    {
+      "path": "commons-148324546-carta-vinos/scene.png",
+      "sha256": "aa64d818a8ab15f0c8433bcf62f62637a2027accd4177a22e5d37788984f0929"
+    },
+    {
+      "path": "commons-159930620-etiqueta/backend-trace.json",
+      "sha256": "19376b274bead30087a0e63ffe8c9353a5f83d4ad05fd30bab6d7832e98abd08"
+    },
+    {
+      "path": "commons-159930620-etiqueta/detail.png",
+      "sha256": "1318dba57f7adac7c5bb1b33b787bbb1d68ac2d715c8284c88696ffdd362df00"
+    },
+    {
+      "path": "commons-159930620-etiqueta/result.json",
+      "sha256": "81ce69f714f04eff6f879518fe5b0cf62c1abb343178055b397f92e59c11a46b"
+    },
+    {
+      "path": "commons-159930620-etiqueta/results.png",
+      "sha256": "f7e2a7736f5060ba815dfc26e572820e9ce1fee3a409ab263e046ad96ffa7fc2"
+    },
+    {
+      "path": "commons-159930620-etiqueta/scene.png",
+      "sha256": "6ca2711fc6b60b2629e44caa00bc3db0f3f950f92c46904954280826e43f8eb8"
+    },
+    {
+      "path": "commons-177500191-menu-comida/backend-trace.json",
+      "sha256": "a0fe5b9702f9f9089bb6e18d620b8e8847e4ba4fe28de5f1451ff254aecb1a2e"
+    },
+    {
+      "path": "commons-177500191-menu-comida/result.json",
+      "sha256": "a8ee13a6a78f183577d5830d4b79931f70066caf8e61a4eda4af2f3c5d398401"
+    },
+    {
+      "path": "commons-177500191-menu-comida/results.png",
+      "sha256": "e35f38fb404717f727d35f28099af10de27084587e577a2dddafbcc65d574b77"
+    },
+    {
+      "path": "commons-177500191-menu-comida/scene.png",
+      "sha256": "c7179b5f9abe250b9efd58c877dd3afca2c9a0380b045409572e5df08af6d9ab"
+    },
+    {
+      "path": "commons-177500191-carta-vinos/backend-trace.json",
+      "sha256": "64ece1d9428872c1e3a80b856ec2985f65c329c2b765753b7d703353c36caf67"
+    },
+    {
+      "path": "commons-177500191-carta-vinos/result.json",
+      "sha256": "9d6de2ae23674fceb20ea1a2dcbf0532aa095f909c17a3bbde195a188fc44bb6"
+    },
+    {
+      "path": "commons-177500191-carta-vinos/results.png",
+      "sha256": "1422facf5b9868a867861801d911426f1bca1bf8402188bcfe260e8a0883c24b"
+    },
+    {
+      "path": "commons-177500191-carta-vinos/scene.png",
+      "sha256": "d6e0923c48f7d4037c1f10ed9c73a1c6455767f5a7240d0574e28757c5cde437"
+    },
+    {
+      "path": "commons-31013876-carta-vinos/backend-trace.json",
+      "sha256": "ce9e70a29de7a8c2a550b5e6ee4e7735e8f59cd6aa6b18fe64371ccbda5e3732"
+    },
+    {
+      "path": "commons-31013876-carta-vinos/result.json",
+      "sha256": "8836bcc9806ec1d86c39c0200498aa5918643824ba3758bc00b908966ad21581"
+    },
+    {
+      "path": "commons-31013876-carta-vinos/results.png",
+      "sha256": "002b189b9b4fdc771a0ac721a17291948fa66e129acbd3c45a359d9ddd07b5de"
+    },
+    {
+      "path": "commons-31013876-carta-vinos/scene.png",
+      "sha256": "002b189b9b4fdc771a0ac721a17291948fa66e129acbd3c45a359d9ddd07b5de"
+    },
+    {
+      "path": "commons-355816-carta-vinos/backend-trace.json",
+      "sha256": "29e9f0e8011a88b603305a3527b36b08243851e827aa79dbd3e8f748b2a4d0a5"
+    },
+    {
+      "path": "commons-355816-carta-vinos/result.json",
+      "sha256": "c4500312bb85c3143015526f4edc52a9b0e9e5215c597a5458e9b9bd817f1942"
+    },
+    {
+      "path": "commons-355816-carta-vinos/results.png",
+      "sha256": "0c78c880a47f62813977df3c68d755183df6b839797c093efcea5b2009d748f3"
+    },
+    {
+      "path": "commons-355816-carta-vinos/scene.png",
+      "sha256": "0c78c880a47f62813977df3c68d755183df6b839797c093efcea5b2009d748f3"
+    },
+    {
+      "path": "commons-355816-menu-comida/backend-trace.json",
+      "sha256": "cd8a2ed81c010a5f8933d69ece6b8393470e8e5d469605297fe4d4fecd8873f1"
+    },
+    {
+      "path": "commons-355816-menu-comida/result.json",
+      "sha256": "f4fa0de134cb526691c4a13520cda6ba13fa849b1b9f0cc79e124ec0360a628e"
+    },
+    {
+      "path": "commons-355816-menu-comida/results.png",
+      "sha256": "372ac76920d10d3edd09cf7e8a64f3a63962e0c1ce9d0252affe11908d8d097e"
+    },
+    {
+      "path": "commons-355816-menu-comida/scene.png",
+      "sha256": "372ac76920d10d3edd09cf7e8a64f3a63962e0c1ce9d0252affe11908d8d097e"
+    },
+    {
+      "path": "commons-49129956-menu-comida/backend-trace.json",
+      "sha256": "8625f8a9db9201f9ad6f548e6287ffc5bf9ca6c1758edf45dabe80c33d48707e"
+    },
+    {
+      "path": "commons-49129956-menu-comida/result.json",
+      "sha256": "1b938bbccb9b270a7a45da93e5af0ae7308e82abcd59dd9d2b713acacc776ac7"
+    },
+    {
+      "path": "commons-49129956-menu-comida/results.png",
+      "sha256": "7861aded642e6f9a779408241e9cb911a52d6bb89935201eabf20fbd148f43ae"
+    },
+    {
+      "path": "commons-49129956-menu-comida/scene.png",
+      "sha256": "d0515bc28aa7af0f8abc941a480328c8b4fd4234c148d241a7946c0abb82b4ab"
+    },
+    {
+      "path": "commons-49129956-carta-vinos/backend-trace.json",
+      "sha256": "f160d7cb49e980b7f53e3dc33cd5f75da4d2c54dc1e45a72be9aa9ef8344b761"
+    },
+    {
+      "path": "commons-49129956-carta-vinos/result.json",
+      "sha256": "a861688bd643785b10ae6f6c44fa973abdb021324cf082ca9d2e0e36c58c297f"
+    },
+    {
+      "path": "commons-49129956-carta-vinos/results.png",
+      "sha256": "557d7509a127debf397cb8c8ff5fc97d9a74f7781f2a8caea2543f08dabec6cd"
+    },
+    {
+      "path": "commons-49129956-carta-vinos/scene.png",
+      "sha256": "557d7509a127debf397cb8c8ff5fc97d9a74f7781f2a8caea2543f08dabec6cd"
+    },
+    {
+      "path": "commons-55328769-carta-vinos/backend-trace.json",
+      "sha256": "9e7158229e1dd3b3bc91fba6c83ed89b40fb8be8fabd74bb52bd8af3f14749ed"
+    },
+    {
+      "path": "commons-55328769-carta-vinos/detail.png",
+      "sha256": "691e4dbf5da2b207d9bbe59ffbab298eceaaa5011962657faa7c7811ef06fbea"
+    },
+    {
+      "path": "commons-55328769-carta-vinos/result.json",
+      "sha256": "c71e37422aca6efbb93406148296db38884f9f360468f081bd64024e335261ca"
+    },
+    {
+      "path": "commons-55328769-carta-vinos/results.png",
+      "sha256": "e3ce6f4cd48ee3fe57fb922635460e1c65acb1f4b373b20d6cf7f566f80e097e"
+    },
+    {
+      "path": "commons-55328769-carta-vinos/scene.png",
+      "sha256": "28ea66a091e602c28038684f6c19ddf2291680efbfaf19f1b488ba90b028d4f5"
+    },
+    {
+      "path": "commons-68162629-carta-vinos/backend-trace.json",
+      "sha256": "011a64d5cbd24aed7475bbb4ac372a0f9a28919612283f4ed85ac2003a4733f0"
+    },
+    {
+      "path": "commons-68162629-carta-vinos/result.json",
+      "sha256": "0a232ddcbce1af15f4d00a9bffcea9b38ec70a5575bec16d1a3d657936fa879b"
+    },
+    {
+      "path": "commons-68162629-carta-vinos/results.png",
+      "sha256": "33f311e7b1f3dcbcbc0476b0e3030d4df0f0633493e763a7486461f1f9bba935"
+    },
+    {
+      "path": "commons-68162629-carta-vinos/scene.png",
+      "sha256": "988203034b9a0d903ae1429997c4ab46eff6e8ac3c9d3c36b60ac531691dfce9"
+    },
+    {
+      "path": "commons-68335063-menu-comida/backend-trace.json",
+      "sha256": "de385c0e327ed82a9ad6e11a814f8a4c6b780c841b45e802cbe63117f90b9dd5"
+    },
+    {
+      "path": "commons-68335063-menu-comida/result.json",
+      "sha256": "f9281f37ec148f1fdafb2a3c37f289ae673ae8c17b2253a03b7310dfc990241f"
+    },
+    {
+      "path": "commons-68335063-menu-comida/results.png",
+      "sha256": "908c786cadf764fec769ad132c30a8b40b45a6e4ddfcaecd0fa845d30822d69d"
+    },
+    {
+      "path": "commons-68335063-menu-comida/scene.png",
+      "sha256": "e9b22dc236a01bd73fdddd216634e76873181b3fe787cad66e153391b6e47dd5"
+    },
+    {
+      "path": "commons-68335063-carta-vinos/backend-trace.json",
+      "sha256": "6f27268e7469912b682ee711ade359c73ad345bf1370368f46463c2141148d6e"
+    },
+    {
+      "path": "commons-68335063-carta-vinos/result.json",
+      "sha256": "3c9732802ad0e4229aa30934232d3864808963823d82dcdb2ea96fda6cb4115c"
+    },
+    {
+      "path": "commons-68335063-carta-vinos/results.png",
+      "sha256": "1e5dc58a1c4e9f70fdcb6a35aaec8ba95fee26b1b0d7b0e650d3b30537f67e4d"
+    },
+    {
+      "path": "commons-68335063-carta-vinos/scene.png",
+      "sha256": "1e5dc58a1c4e9f70fdcb6a35aaec8ba95fee26b1b0d7b0e650d3b30537f67e4d"
+    },
+    {
+      "path": "commons-7478099-carta-vinos/backend-trace.json",
+      "sha256": "c8a75fd3a49c8dd9aecd1b13419e022c1b95c382ce52e0bed23a6392260a6778"
+    },
+    {
+      "path": "commons-7478099-carta-vinos/detail.png",
+      "sha256": "247ec88c9bcbf57a96aeca0b1363e4b4777085122b4acd2e9fe8cea1c9e94477"
+    },
+    {
+      "path": "commons-7478099-carta-vinos/result.json",
+      "sha256": "8a038127fbee9649d7d7df1a770ae67928e5d1d6fbc206b95c7b069de97fd6fb"
+    },
+    {
+      "path": "commons-7478099-carta-vinos/results.png",
+      "sha256": "8d599676859201e7ef3a231aaba05d62d70bbe708b7f1adbdb5ee12999c2a576"
+    },
+    {
+      "path": "commons-7478099-carta-vinos/scene.png",
+      "sha256": "09339514860e7b9cede2bbbfcb4222e8f75ff4fc1fadc80c54fb88c726f1625f"
+    },
+    {
+      "path": "commons-78354929-menu-comida/backend-trace.json",
+      "sha256": "c8712d693b247cb67448fec83ff73b5e663ad9f60837437f0a577ab0747392bc"
+    },
+    {
+      "path": "commons-78354929-menu-comida/result.json",
+      "sha256": "8ac68faf1f35f0905a3ece1e5d2855f2577de46af0eed9065c72c29ca4b72941"
+    },
+    {
+      "path": "commons-78354929-menu-comida/results.png",
+      "sha256": "6efe904ceef5f65b6197cf7c4f9d29d704e789f0cd325a7dba75266e9927297c"
+    },
+    {
+      "path": "commons-78354929-menu-comida/scene.png",
+      "sha256": "25c83af6d3f02959f4c3a6bd1b4bdc43351afb082d5726dedbdf01252b114db3"
+    },
+    {
+      "path": "commons-78354929-carta-vinos/backend-trace.json",
+      "sha256": "377eb13ca911051afec7690dc574fd7dc241858abc02a5efee743e343f938462"
+    },
+    {
+      "path": "commons-78354929-carta-vinos/detail.png",
+      "sha256": "460388d617d5842dcef43ed34a092e42868ea5b02a1b75bbc779d46cf7343ac7"
+    },
+    {
+      "path": "commons-78354929-carta-vinos/result.json",
+      "sha256": "31463a74a3a7120c9fb2e71d923fb2a0a2d68e234455ce4852e1581642e1b20f"
+    },
+    {
+      "path": "commons-78354929-carta-vinos/results.png",
+      "sha256": "3ea302297cbcd91bb6910589c2eb8aa33b719fa1b7fb2998b7c0d85a9cc60fbd"
+    },
+    {
+      "path": "commons-78354929-carta-vinos/scene.png",
+      "sha256": "cefac7ddd3bd64693c7542503b53c0de2818fe6b965b766266d8206ccb4bc070"
+    },
+    {
+      "path": "commons-7893320-carta-vinos/backend-trace.json",
+      "sha256": "1a4eecff15149a4f70c516d3ac2f667b349ca47f1d26ff4067df8e0f38801d43"
+    },
+    {
+      "path": "commons-7893320-carta-vinos/detail.png",
+      "sha256": "3c6f45d5c37ea149e169d5024812430b54528e89a81fb8b2d4684388bb42e01d"
+    },
+    {
+      "path": "commons-7893320-carta-vinos/result.json",
+      "sha256": "f580a3731e39204f71718e551817d2a8818d60c6f43e27e6eac44adc6f03225e"
+    },
+    {
+      "path": "commons-7893320-carta-vinos/results.png",
+      "sha256": "7432b6802bc96f24e253690696ca8705e18d87cc77d5697b774908470c9cca3a"
+    },
+    {
+      "path": "commons-7893320-carta-vinos/scene.png",
+      "sha256": "cd71d0a1fd9a089894293676582e0c94449d85720ce97d5003e653b0d8b6c170"
+    },
+    {
+      "path": "commons-7893320-etiqueta/backend-trace.json",
+      "sha256": "3e5870876f2fa7f88ecefc769c19a23e999bfa7ff61a288b442ed88bb280d735"
+    },
+    {
+      "path": "commons-7893320-etiqueta/result.json",
+      "sha256": "ce6e9ffc924eb8a1a7e2556b10ea3ce848f57f866e59bebcc17e20945f69f719"
+    },
+    {
+      "path": "commons-7893320-etiqueta/results.png",
+      "sha256": "9387598c9544761d5adf4dfbe397c877c526c2f0d1ca0297d03a6d18737a9e83"
+    },
+    {
+      "path": "commons-7893320-etiqueta/scene.png",
+      "sha256": "b07b171e47f43fd8f02c88817cf7abab6da94e3fb21ce499572fbc40a9321de4"
+    },
+    {
+      "path": "commons-80448425-etiqueta/backend-trace.json",
+      "sha256": "b8b222de9a46d3cfd1054f01b672fc68b4dc23471bd30ccf05cc9afda78eac8b"
+    },
+    {
+      "path": "commons-80448425-etiqueta/result.json",
+      "sha256": "615717ea86ea46f5655cd27a1a446b0bf785506e4bafbc0e5571e977036d60bb"
+    },
+    {
+      "path": "commons-80448425-etiqueta/results.png",
+      "sha256": "80915e9335210bc4562ec7a5947f7679e66f63db7971e824f8a5e579ddc7216d"
+    },
+    {
+      "path": "commons-80448425-etiqueta/scene.png",
+      "sha256": "1ee210a9644ffb8b6dd9025e8e344ce1065da1b0eb9b480a58f453572be82baa"
+    },
+    {
+      "path": "commons-8802178-etiqueta/backend-trace.json",
+      "sha256": "ce9058c423e7a588828821c1a85cb86856efb56b798d51913223eb39594e4d9e"
+    },
+    {
+      "path": "commons-8802178-etiqueta/result.json",
+      "sha256": "54694a2c9b1c56edd6e6c18cc8590006246a6f5645d062f9fd99a8d710ca25c6"
+    },
+    {
+      "path": "commons-8802178-etiqueta/results.png",
+      "sha256": "fadf11035ec0b15bb6c1402d9b641313b6895a172db5c8c7d9af955ffc443b63"
+    },
+    {
+      "path": "commons-8802178-etiqueta/scene.png",
+      "sha256": "fadf11035ec0b15bb6c1402d9b641313b6895a172db5c8c7d9af955ffc443b63"
+    },
+    {
+      "path": "commons-8802178-carta-vinos/backend-trace.json",
+      "sha256": "b937d124edb73fd6fd8ef8c059726a52fd4e248c85080949ca609c1afd56499f"
+    },
+    {
+      "path": "commons-8802178-carta-vinos/result.json",
+      "sha256": "3f67873b189bb3661c0a114e5ee03811c18bfc1f53340b5ddff918c45d2cc4f1"
+    },
+    {
+      "path": "commons-8802178-carta-vinos/results.png",
+      "sha256": "b25ec152433725d1b1af47524c17821e193b077254a494fe66079aa026fd0c13"
+    },
+    {
+      "path": "commons-8802178-carta-vinos/scene.png",
+      "sha256": "b25ec152433725d1b1af47524c17821e193b077254a494fe66079aa026fd0c13"
+    },
+    {
+      "path": "commons-93111644-etiqueta/backend-trace.json",
+      "sha256": "38a8096a9805e1fa7bfbdc2d228c6ebac2e6bf75a2c8a9256dcb4748d58df065"
+    },
+    {
+      "path": "commons-93111644-etiqueta/detail.png",
+      "sha256": "1b5aefbd17485cd82b18fdffe3259ab3b048c1da8647d4de78319025b808bfe0"
+    },
+    {
+      "path": "commons-93111644-etiqueta/result.json",
+      "sha256": "289db3153baf4d9114d61c6944c18e2fd450c1a323d01fa1797ef1e4dcbe51ad"
+    },
+    {
+      "path": "commons-93111644-etiqueta/results.png",
+      "sha256": "27d7d56ee390c54592de78b4ce17bb9c95f11dbd5f28df9cfc511d09cf21359a"
+    },
+    {
+      "path": "commons-93111644-etiqueta/scene.png",
+      "sha256": "ba76af4ceefa9da96afe00ef0e91ed9b093d0abffd7ecdef0253af6335186abe"
+    },
+    {
+      "path": "commons-94131711-etiqueta/backend-trace.json",
+      "sha256": "c247a92fe9809df4e371fa09f3b7cfb60487f24f369117a0eea9570ee1666f95"
+    },
+    {
+      "path": "commons-94131711-etiqueta/detail.png",
+      "sha256": "50c1147f9bff28d1b3d60b3789c55b4de7e7f8823e77552caa8dc50f2a416c2b"
+    },
+    {
+      "path": "commons-94131711-etiqueta/result.json",
+      "sha256": "ab6573acf464a94d2452326f4af4e080a75d8f9cb84bcf96105806f8a06287a6"
+    },
+    {
+      "path": "commons-94131711-etiqueta/results.png",
+      "sha256": "72f3ce125c135644799fcc6f5cbb1e7a087b071ac84ca32e17f565835eeed648"
+    },
+    {
+      "path": "commons-94131711-etiqueta/scene.png",
+      "sha256": "38e38b9fbe673ee1cee74ec8d30b1179cf84a07ac10a76bde1bf74e23443265f"
+    }
+  ]
+}

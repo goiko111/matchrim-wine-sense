@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-08, completed real77 benchmark
+
+- Real production recognition through local77 mobile Chrome:40/40 journeys over29 files; no mocks. Additional authorized calls272/300; prior289/300 preserved; total561. No quota block.28 additional calls unused.
+- Four original wine menus:67/69/69, name precision/recall97.10%; one Spanish food menu7/7; valid negatives14/15. These are NOT canonical identity or human recommendation metrics.
+- Quality HOLD: non-wine drinks admitted/scored, same reference affinity varies up to12points across photos, aliases/count duplication, dense60-region/0-identity case, food omissions and misleading preference inference. No horizontal overflow does not certify uncluttered overlays.
+- App source stayed402da5d; no deployment/upload/phone installation. Existing local77 candidate unchanged. Historical uploaded75 not reuploaded.
+- Evidence: [MATCHRIM_77_REAL_BENCHMARK_2026-10-08.md](docs/MATCHRIM_77_REAL_BENCHMARK_2026-10-08.md). Earlier zero-call/budget-pending checkpoint below is historical and superseded for this batch.
+
 ## Latest checkpoint: 2026-10-08, additive challenge / local77
 
 - Added 24 licensed public challenge files to the preserved60 baseline:84 public files, NOT84 independent scenes. Agent-reviewed annotations and provenance/hashes are committed; canonical independent validation remains open.

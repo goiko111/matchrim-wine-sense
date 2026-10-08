@@ -1,5 +1,15 @@
 # Matchrim next steps
 
+## Latest gate: real77 benchmark complete, quality HOLD
+
+1. Fix non-wine classification, canonical aliases/counting and source-grounded sensory attributes in isolation; add recorded-response regression tests for the confirmed cases before spending more calls.
+2. Separate food extraction from preference ranking; preserve options/sections, avoid treating wine sweetness as food preference, and bound dense unreadable-crop processing. Validate overlays visually, not only overflow.
+3. Retest affected frozen images after fixes in staging.272/300 additional calls consumed; prior289/300 immutable. Do not reset ledgers. Attribution exception commons-355816 must be excluded from further remote processing pending review.
+4. Close independent canonical annotation, human recommendation outcomes, authenticated account persistence/isolation and physical-accessibility gates separately.40 terminal journeys are not40 quality passes.
+5. Keep published web and historical uploaded75 unchanged; local77 is not release-approved. Do not upload on compilation success alone. Current benchmark does not require another owner action or more provider budget.
+
+See [MATCHRIM_77_REAL_BENCHMARK_2026-10-08.md](docs/MATCHRIM_77_REAL_BENCHMARK_2026-10-08.md). Earlier budget-pending instructions below are historical.
+
 ## Latest gate: local77 challenge, 2026-10-08
 
 1. Resolve the requested remote-call budget before new vision execution; shared ledger stays289/300. Do not reset it or treat local tests as live benchmark calls.

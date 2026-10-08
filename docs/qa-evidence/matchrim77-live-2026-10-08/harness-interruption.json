@@ -1,0 +1,8 @@
+{
+  "at": "2026-10-08T11:11:59.287Z",
+  "case": "commons-80448425-etiqueta",
+  "reason": "Terminal label Análisis incompleto missed by unaccented matcher; interrupted while no remote request pending, then browser teardown stalled; main runner terminated, server stopped",
+  "requestsPreserved": 159,
+  "rerunCountsAgainstSameLimit": true,
+  "productVersionUnchanged": true
+}

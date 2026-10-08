@@ -1,0 +1,2764 @@
+{
+  "candidate": 77,
+  "selected": 40,
+  "completed": 40,
+  "complete": true,
+  "certified": false,
+  "new_edge_requests": 272,
+  "limit": 300,
+  "provider_stop": null,
+  "functions": {
+    "scan-wine-menu-v72": 66,
+    "detect-wine-regions-v72": 21,
+    "analyze-wine-region-v72": 150,
+    "search-wines-v75": 26,
+    "scan-food-pairing": 8
+  },
+  "http_statuses": {
+    "200": 270,
+    "500": 1
+  },
+  "negative_cases": 15,
+  "negative_pass": 14,
+  "negative_false_item_cases": [
+    "commons-93111644-etiqueta"
+  ],
+  "exhaustive_name_metrics": {
+    "cases": 5,
+    "matched": 74,
+    "actual": 76,
+    "expected": 76,
+    "precision": 0.9736842105263158,
+    "recall": 0.9736842105263158
+  },
+  "exhaustive_name_metrics_by_mode": {
+    "carta-vinos": {
+      "cases": 4,
+      "matched": 67,
+      "actual": 69,
+      "expected": 69,
+      "precision": 0.9710144927536232,
+      "recall": 0.9710144927536232
+    },
+    "menu-comida": {
+      "cases": 1,
+      "matched": 7,
+      "actual": 7,
+      "expected": 7,
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  },
+  "cross_photo_affinity_variation": {
+    "scope": "Same synthetic profile, matched reference names across different photos. Inferred wine attributes may differ; not a fixed-input scoring determinism test.",
+    "items": [
+      {
+        "name": "Amontillado El Contrabandista",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 57
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 69
+          }
+        ],
+        "range_points": 12
+      },
+      {
+        "name": "Amontillado Vina AB",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 57
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 69
+          }
+        ],
+        "range_points": 12
+      },
+      {
+        "name": "Oloroso Don Nuno",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 56
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 67
+          }
+        ],
+        "range_points": 11
+      },
+      {
+        "name": "Bertola Palo Cortado",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 56
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 67
+          }
+        ],
+        "range_points": 11
+      },
+      {
+        "name": "Fino Viejo Tradicion",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 58
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 64
+          }
+        ],
+        "range_points": 6
+      },
+      {
+        "name": "Manzanilla Pasada Xixarito",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 58
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 64
+          }
+        ],
+        "range_points": 6
+      },
+      {
+        "name": "Fino Ynocente",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 57
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 62
+          }
+        ],
+        "range_points": 5
+      },
+      {
+        "name": "Manzanilla Alegria",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 57
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 62
+          }
+        ],
+        "range_points": 5
+      },
+      {
+        "name": "Moscatel Zumbral",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 48
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 45
+          }
+        ],
+        "range_points": 3
+      },
+      {
+        "name": "Laurent Perrier Ultra Brut",
+        "observations": [
+          {
+            "case": "img_7547-2-carta-vinos",
+            "score": 69
+          },
+          {
+            "case": "img_7548-2-carta-vinos",
+            "score": 71
+          }
+        ],
+        "range_points": 2
+      },
+      {
+        "name": "Laurent Perrier Rose",
+        "observations": [
+          {
+            "case": "img_7547-2-carta-vinos",
+            "score": 69
+          },
+          {
+            "case": "img_7548-2-carta-vinos",
+            "score": 71
+          }
+        ],
+        "range_points": 2
+      },
+      {
+        "name": "Laurent Perrier La Cuvee",
+        "observations": [
+          {
+            "case": "img_7547-2-carta-vinos",
+            "score": 67
+          },
+          {
+            "case": "img_7548-2-carta-vinos",
+            "score": 69
+          }
+        ],
+        "range_points": 2
+      },
+      {
+        "name": "Pedro Ximenez Don PX",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 45
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 46
+          }
+        ],
+        "range_points": 1
+      },
+      {
+        "name": "Agusti Torello Kripta",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 69
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 69
+          }
+        ],
+        "range_points": 0
+      },
+      {
+        "name": "Maxim Riesling Sekt Brut",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 69
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 69
+          }
+        ],
+        "range_points": 0
+      },
+      {
+        "name": "Joan Raventos Rose BN",
+        "observations": [
+          {
+            "case": "img_7552-2-carta-vinos",
+            "score": 71
+          },
+          {
+            "case": "img_7553-2-carta-vinos",
+            "score": 71
+          }
+        ],
+        "range_points": 0
+      }
+    ]
+  },
+  "latency": {
+    "p50_ms": 15285,
+    "p95_ms": 73766,
+    "definition": "Local UI elapsed including navigation and 4-second terminal stability wait; not provider-only latency"
+  },
+  "issue_counts": {
+    "UNMATCHED_OR_DUPLICATE_NAMES": 2,
+    "ANNOTATED_NAMES_MISSED": 2,
+    "HTTP_ERROR_INCLUDING_RECOVERED": 1,
+    "PRINTED_LABELS_COUNTED_AS_PHYSICAL_BOTTLES": 1,
+    "NEGATIVE_ANNOTATION_INVALID_EXCLUDED": 1,
+    "NEGATIVE_RETURNED_ITEMS": 1
+  },
+  "cases": [
+    {
+      "case": "img_7547-2-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 17,
+      "actual_names_or_rows": [
+        "8\nDolcetto d'alba Elio Grasso\nElio Grasso · Dolcetto d'Alba · copa · 13.00 · moneda pendiente\n≈83%\nIdentidad baja",
+        "9\nBricco dell'uccellone Barbera\nPiamonte · copa · 35.00 · moneda pendiente\n≈83%\nIdentidad media",
+        "5\nAmarone\nVeneto · copa · 18.00 · moneda pendiente\n≈73%\nIdentidad media",
+        "6\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Barbaresco · copa · 25.00 · moneda pendiente\n≈73%\nIdentidad alta",
+        "10\nNebbiolo Nino Negri\nNino Negri · Valtellina · copa · 15.00 · moneda pendiente\n≈73%\nIdentidad baja",
+        "1\nLugana Allegrini\nAllegrini · Lugana · copa · 12.00 · moneda pendiente\n≈71%\nIdentidad baja",
+        "2\nGreco di tufo Terredora di Paolo\nTerredora di Paolo · Greco di Tufo · copa · 12.00 · moneda pendiente\n≈71%\nIdentidad baja",
+        "3\nQuater vitis Firriato\nFirriato · Sicilia · copa · 13.00 · moneda pendiente\n≈71%\nIdentidad baja",
+        "7\nBarolo Marchesi di Barolo\nMarchesi di Barolo · Barolo · copa · 35.00 · moneda pendiente\n≈71%\nIdentidad alta",
+        "16\nCosta di ros\nEtna · copa · 18.00 · moneda pendiente\n≈71%\nIdentidad media",
+        "4\nPoully fume blanc Reverdy y fils\nReverdy y fils · Pouilly-Fumé · copa · 13.00 · moneda pendiente\n≈69%\nIdentidad baja",
+        "13\nLaurent Perrier rose\nLaurent Perrier · Champagne · copa\n≈69%\nIdentidad baja",
+        "14\nGaudensius blanc\nSicily · copa\n≈69%\nIdentidad media",
+        "15\nLaurent Perriere Ultra Brut\nLaurent Perrier · Champagne · copa\n≈69%\nIdentidad baja",
+        "11\nLaurent Perrier La Cuvee\nLaurent Perrier · Champagne · copa\n≈67%\nIdentidad baja",
+        "12\nLaurent Perriere Ultra\nLaurent Perrier · Champagne\n≈67%\nIdentidad baja",
+        "17\nLa Rosa\nRibera del Duero · copa · 25.00 · moneda pendiente\n≈67%\nIdentidad media"
+      ],
+      "expected": [
+        "Laurent Perrier La Cuvee",
+        "Laurent Perrier Ultra Brut",
+        "Laurent Perrier Rose",
+        "Gaudensius blanco",
+        "Lugana Allegrini",
+        "Greco di Tufo Terredora di Paolo",
+        "Quater Vitis Firriato",
+        "Pouilly Fume Blanc Reverdy y Fils",
+        "Amarone",
+        "Barbaresco Marchesi di Barolo",
+        "Barolo Marchesi di Barolo",
+        "Dolcetto d'Alba Elio Grasso",
+        "Bricco dell'Uccellone Barbera",
+        "Nebbiolo Nino Negri",
+        "Costa di Rose",
+        "La Rosa"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [
+        "UNMATCHED_OR_DUPLICATE_NAMES"
+      ],
+      "latency_ms": 64733,
+      "function_calls": 4,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 16,
+        "actual_count": 17,
+        "matched_count": 16,
+        "precision": 0.941,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Pouilly Fume Blanc Reverdy y Fils",
+            "actual": "4\nPoully fume blanc Reverdy y fils\nReverdy y fils · Pouilly-Fumé · copa · 13.00 · moneda pendiente\n≈69%\nIdentidad baja",
+            "similarity": 0.99
+          },
+          {
+            "expected": "Laurent Perrier Ultra Brut",
+            "actual": "15\nLaurent Perriere Ultra Brut\nLaurent Perrier · Champagne · copa\n≈69%\nIdentidad baja",
+            "similarity": 0.99
+          },
+          {
+            "expected": "Gaudensius blanco",
+            "actual": "14\nGaudensius blanc\nSicily · copa\n≈69%\nIdentidad media",
+            "similarity": 0.97
+          },
+          {
+            "expected": "La Rosa",
+            "actual": "17\nLa Rosa\nRibera del Duero · copa · 25.00 · moneda pendiente\n≈67%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Costa di Rose",
+            "actual": "16\nCosta di ros\nEtna · copa · 18.00 · moneda pendiente\n≈71%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Nebbiolo Nino Negri",
+            "actual": "10\nNebbiolo Nino Negri\nNino Negri · Valtellina · copa · 15.00 · moneda pendiente\n≈73%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Bricco dell'Uccellone Barbera",
+            "actual": "9\nBricco dell'uccellone Barbera\nPiamonte · copa · 35.00 · moneda pendiente\n≈83%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Dolcetto d'Alba Elio Grasso",
+            "actual": "8\nDolcetto d'alba Elio Grasso\nElio Grasso · Dolcetto d'Alba · copa · 13.00 · moneda pendiente\n≈83%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Barolo Marchesi di Barolo",
+            "actual": "7\nBarolo Marchesi di Barolo\nMarchesi di Barolo · Barolo · copa · 35.00 · moneda pendiente\n≈71%\nIdentidad alta",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Barbaresco Marchesi di Barolo",
+            "actual": "6\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Barbaresco · copa · 25.00 · moneda pendiente\n≈73%\nIdentidad alta",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Amarone",
+            "actual": "5\nAmarone\nVeneto · copa · 18.00 · moneda pendiente\n≈73%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Quater Vitis Firriato",
+            "actual": "3\nQuater vitis Firriato\nFirriato · Sicilia · copa · 13.00 · moneda pendiente\n≈71%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Greco di Tufo Terredora di Paolo",
+            "actual": "2\nGreco di tufo Terredora di Paolo\nTerredora di Paolo · Greco di Tufo · copa · 12.00 · moneda pendiente\n≈71%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Lugana Allegrini",
+            "actual": "1\nLugana Allegrini\nAllegrini · Lugana · copa · 12.00 · moneda pendiente\n≈71%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Laurent Perrier Rose",
+            "actual": "13\nLaurent Perrier rose\nLaurent Perrier · Champagne · copa\n≈69%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Laurent Perrier La Cuvee",
+            "actual": "11\nLaurent Perrier La Cuvee\nLaurent Perrier · Champagne · copa\n≈67%\nIdentidad baja",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [
+          "12\nLaurent Perriere Ultra\nLaurent Perrier · Champagne\n≈67%\nIdentidad baja"
+        ],
+        "missed": []
+      },
+      "metric_scope": "exhaustive legacy/agent name transcription, not canonical identity",
+      "aggregate_name_eligible": true
+    },
+    {
+      "case": "img_7548-2-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 8,
+      "actual_names_or_rows": [
+        "5\nCosta di rose. Umberto Cesari\nUmberto Cesari · Emilia Romagna · botella · 40,00 €\n≈79%\nIdentidad alta",
+        "6\nLa Rosa Raventos i blanc\nRaventós i Blanc · Conca del riu anoia · botella · 33,00 €\n≈79%\nIdentidad alta",
+        "7\nChateau miraval rose\nChâteau Miraval · Cotes de provence · botella · 55,00 €\n≈79%\nIdentidad alta",
+        "8\nChateau d esclans whispering angels\nChâteau d'Esclans · Cotes de Provence · botella · 52,00 €\n≈79%\nIdentidad alta",
+        "4\nGaudensius blanc de noir\nSicily/Italy · botella · 55,00 €\n≈76%\nIdentidad media",
+        "2\nLaurent Perriere Ultra brut\nLaurent Perrier · Champagne · botella · 130,00 €\n≈71%\nIdentidad alta",
+        "3\nLaurent Perrier rose\nLaurent Perrier · Champagne · botella · 155,00 €\n≈71%\nIdentidad alta",
+        "1\nLaurent Perrier La Cuvee\nLaurent Perrier · Champagne · botella · 90,00 €\n≈69%\nIdentidad alta"
+      ],
+      "expected": [
+        "Laurent Perrier La Cuvee",
+        "Laurent Perrier Ultra Brut",
+        "Laurent Perrier Rose",
+        "Gaudensius Blanc de Noir",
+        "Costa di Rose Umberto Cesari",
+        "La Rosa Raventos i Blanc",
+        "Chateau Miraval Rose",
+        "Chateau d'Esclans Whispering Angel"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 22900,
+      "function_calls": 1,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 8,
+        "actual_count": 8,
+        "matched_count": 8,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Laurent Perrier Ultra Brut",
+            "actual": "2\nLaurent Perriere Ultra brut\nLaurent Perrier · Champagne · botella · 130,00 €\n≈71%\nIdentidad alta",
+            "similarity": 0.99
+          },
+          {
+            "expected": "Chateau d'Esclans Whispering Angel",
+            "actual": "8\nChateau d esclans whispering angels\nChâteau d'Esclans · Cotes de Provence · botella · 52,00 €\n≈79%\nIdentidad alta",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Chateau Miraval Rose",
+            "actual": "7\nChateau miraval rose\nChâteau Miraval · Cotes de provence · botella · 55,00 €\n≈79%\nIdentidad alta",
+            "similarity": 0.96
+          },
+          {
+            "expected": "La Rosa Raventos i Blanc",
+            "actual": "6\nLa Rosa Raventos i blanc\nRaventós i Blanc · Conca del riu anoia · botella · 33,00 €\n≈79%\nIdentidad alta",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Costa di Rose Umberto Cesari",
+            "actual": "5\nCosta di rose. Umberto Cesari\nUmberto Cesari · Emilia Romagna · botella · 40,00 €\n≈79%\nIdentidad alta",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Gaudensius Blanc de Noir",
+            "actual": "4\nGaudensius blanc de noir\nSicily/Italy · botella · 55,00 €\n≈76%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Laurent Perrier Rose",
+            "actual": "3\nLaurent Perrier rose\nLaurent Perrier · Champagne · botella · 155,00 €\n≈71%\nIdentidad alta",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Laurent Perrier La Cuvee",
+            "actual": "1\nLaurent Perrier La Cuvee\nLaurent Perrier · Champagne · botella · 90,00 €\n≈69%\nIdentidad alta",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "metric_scope": "exhaustive legacy/agent name transcription, not canonical identity",
+      "aggregate_name_eligible": true
+    },
+    {
+      "case": "img_7552-2-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 13,
+      "actual_names_or_rows": [
+        "1\nJoan Raventós Rosé BN\nJoan Raventós · Cava · ambos\n≈71%\nIdentidad baja",
+        "2\nKripta\nAgustí Torelló · Cava · ambos\n≈69%\nIdentidad alta",
+        "3\nMaxim Riesling Sekt Brut\nMaxim · Mosela · ambos\n≈69%\nIdentidad baja",
+        "4\nManzanilla Pasada Xixarito\nBodegas Baron · ambos\n≈58%\nIdentidad media",
+        "6\nFino Viejo, Tradición\nTradición · ambos\n≈58%\nIdentidad baja",
+        "5\nManzanilla Alegria\nWilliams & Humbert · ambos\n≈57%\nIdentidad media",
+        "7\nFino Ynocente\nValdespino · ambos\n≈57%\nIdentidad media",
+        "8\nAmontillado Viña AB\nGonzalez Byass · ambos\n≈57%\nIdentidad media",
+        "9\nAmontillado El Contrabandista\nValdespino · ambos\n≈57%\nIdentidad media",
+        "10\nBertola, Palo Cortado\nDiez Mérito · ambos\n≈56%\nIdentidad media",
+        "11\nOloroso Don Nuño\nLustau · ambos\n≈56%\nIdentidad media",
+        "12\nMoscatel Zumbral\nDimobe · ambos\n≈48%\nIdentidad media",
+        "13\nPedro Ximenez, Don Px\nToro Albalá · ambos\n≈45%\nIdentidad media"
+      ],
+      "expected": [
+        "Joan Raventos Rose BN",
+        "Agusti Torello Kripta",
+        "Maxim Riesling Sekt Brut",
+        "Manzanilla Pasada Xixarito",
+        "Manzanilla Alegria",
+        "Fino Viejo Tradicion",
+        "Fino Ynocente",
+        "Amontillado Vina AB",
+        "Amontillado El Contrabandista",
+        "Bertola Palo Cortado",
+        "Oloroso Don Nuno",
+        "Moscatel Zumbral",
+        "Pedro Ximenez Don PX"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 51421,
+      "function_calls": 4,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 13,
+        "actual_count": 13,
+        "matched_count": 13,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Agusti Torello Kripta",
+            "actual": "2\nKripta\nAgustí Torelló · Cava · ambos\n≈69%\nIdentidad alta",
+            "similarity": 0.99
+          },
+          {
+            "expected": "Pedro Ximenez Don PX",
+            "actual": "13\nPedro Ximenez, Don Px\nToro Albalá · ambos\n≈45%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Moscatel Zumbral",
+            "actual": "12\nMoscatel Zumbral\nDimobe · ambos\n≈48%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Oloroso Don Nuno",
+            "actual": "11\nOloroso Don Nuño\nLustau · ambos\n≈56%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Bertola Palo Cortado",
+            "actual": "10\nBertola, Palo Cortado\nDiez Mérito · ambos\n≈56%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Amontillado El Contrabandista",
+            "actual": "9\nAmontillado El Contrabandista\nValdespino · ambos\n≈57%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Amontillado Vina AB",
+            "actual": "8\nAmontillado Viña AB\nGonzalez Byass · ambos\n≈57%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Fino Ynocente",
+            "actual": "7\nFino Ynocente\nValdespino · ambos\n≈57%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Fino Viejo Tradicion",
+            "actual": "6\nFino Viejo, Tradición\nTradición · ambos\n≈58%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Manzanilla Alegria",
+            "actual": "5\nManzanilla Alegria\nWilliams & Humbert · ambos\n≈57%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Manzanilla Pasada Xixarito",
+            "actual": "4\nManzanilla Pasada Xixarito\nBodegas Baron · ambos\n≈58%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Maxim Riesling Sekt Brut",
+            "actual": "3\nMaxim Riesling Sekt Brut\nMaxim · Mosela · ambos\n≈69%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Joan Raventos Rose BN",
+            "actual": "1\nJoan Raventós Rosé BN\nJoan Raventós · Cava · ambos\n≈71%\nIdentidad baja",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "metric_scope": "exhaustive legacy/agent name transcription, not canonical identity",
+      "aggregate_name_eligible": true
+    },
+    {
+      "case": "img_7553-2-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 31,
+      "actual_names_or_rows": [
+        "10\nDomaine de la Janasse\nCôtes du Rhône · ambos · 5.00 · moneda pendiente\n≈83%\nIdentidad media",
+        "11\nHuerto de la Condesa\nMálaga · ambos · 6.00 · moneda pendiente\n≈83%\nIdentidad media",
+        "12\nPrieler, Blaufränkisch\nOggau Ried · ambos · 6.00 · moneda pendiente\n≈83%\nIdentidad media",
+        "13\nDiaz Bayo 4 Meses\nRibera del Duero · ambos · 3.50 · moneda pendiente\n≈83%\nIdentidad media",
+        "14\nAgrícola de Cadalso\nMadrid · ambos · 4.00 · moneda pendiente\n≈79%\nIdentidad media",
+        "16\nLa Viña de Ayer\nMadrid · ambos · 4.00 · moneda pendiente\n≈79%\nIdentidad media",
+        "17\nNat Cool Zorzal\nNavarra · ambos · 5.50 · moneda pendiente\n≈79%\nIdentidad media",
+        "9\nMayela 2023\nRioja · ambos · 3.00 · moneda pendiente\n≈76%\nIdentidad media",
+        "15\nCasa Castillo\nJumilla · ambos · 4.00 · moneda pendiente\n≈76%\nIdentidad media",
+        "1\nFinca la Olma ecológico\nRueda · ambos · 3.00 · moneda pendiente\n≈71%\nIdentidad media",
+        "6\nMein Castes Brancas\nRibeiro · ambos · 6.00 · moneda pendiente\n≈71%\nIdentidad media",
+        "8\nPercheron\nSouth Africa · ambos · 4.50 · moneda pendiente\n≈71%\nIdentidad media",
+        "19\nJoan Raventós Rosé BN, Cava\nJoan Raventós · Cava · botella · 17.00 · moneda pendiente\n≈71%\nIdentidad baja",
+        "2\nCan Feixes\nPenedés · ambos · 4.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "4\nDereszła Tokaji Dry\nTokaj · ambos · 4.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "5\nNat Cool Mosel\nMosel · ambos · 4.50 · moneda pendiente\n≈69%\nIdentidad media",
+        "20\nAgustí Torelló, Kripta, Cava\nAgustí Torelló · Cava · botella · 23.00 · moneda pendiente\n≈69%\nIdentidad baja",
+        "21\nMaxim Riesling Sekt Brut\nMaxim · Mosel · botella · 26.00 · moneda pendiente\n≈69%\nIdentidad baja",
+        "26\nAmontillado Viña AB\nGonzález Byass · Jerez · botella · 17.00 · moneda pendiente\n≈69%\nIdentidad baja",
+        "27\nAmontillado El Contrabandista\nJerez · botella · 29.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "7\nHuerto de la Condesa\nMálaga · ambos · 6.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "28\nBertola, Palo Cortado\nDiez Mérito · Jerez · botella · 35.00 · moneda pendiente\n≈67%\nIdentidad baja",
+        "29\nOloroso Don Nuño\nLustau · Jerez · botella · 35.00 · moneda pendiente\n≈67%\nIdentidad baja",
+        "18\nLópez de Haro Rosado\nRioja · ambos · 3.00 · moneda pendiente\n≈66%\nIdentidad media",
+        "3\nForlong ecológico\nJerez · ambos · 4.50 · moneda pendiente\n≈64%\nIdentidad media",
+        "22\nManzanilla Pasada Xixarito\nBodegas Baron (inferido) · Jerez · botella · 35.00 · moneda pendiente\n≈64%\nIdentidad baja",
+        "24\nFino Viejo, Tradición\nBodegas Tradición · Jerez · botella · 35.00 · moneda pendiente\n≈64%\nIdentidad baja",
+        "23\nManzanilla Alegría\nWilliams & Humbert · Jerez · botella · 35.00 · moneda pendiente\n≈62%\nIdentidad baja",
+        "25\nFino Inocente\nValdespino · Jerez · botella · 29.00 · moneda pendiente\n≈62%\nIdentidad baja",
+        "31\nPedro Ximénez\nDon Px (inferido) · Jerez/Montilla-Moriles · botella · 23.00 · moneda pendiente\n≈46%\nIdentidad baja",
+        "30\nMoscatel Zumbral\nDimobe (inferido) · Málaga · botella · 20.00 · moneda pendiente\n≈45%\nIdentidad baja"
+      ],
+      "expected": [
+        "Finca la Olma ecologico",
+        "Can Feixes",
+        "Forlong ecologico",
+        "Dereszla Tokaji Dry",
+        "Nat Cool Mosel",
+        "Mein Castes Brancas",
+        "Huerto de la Condesa",
+        "Percheron Chenin Blanc",
+        "Mayela 2023",
+        "Domaine de la Janasse",
+        "Huerto de la Condesa",
+        "Prieler Blaufrankisch",
+        "Diaz Bayo 4 Meses",
+        "Agricola de Cadalso",
+        "Casa Castillo",
+        "La Vina de Ayer",
+        "Nat Cool Zorzal",
+        "Lopez de Haro Rosado",
+        "L'Arnaude",
+        "Joan Raventos Rose BN",
+        "Agusti Torello Kripta",
+        "Maxim Riesling Sekt Brut",
+        "Manzanilla Pasada Xixarito",
+        "Manzanilla Alegria",
+        "Fino Viejo Tradicion",
+        "Fino Ynocente",
+        "Amontillado Vina AB",
+        "Amontillado El Contrabandista",
+        "Bertola Palo Cortado",
+        "Oloroso Don Nuno",
+        "Moscatel Zumbral",
+        "Pedro Ximenez Don PX"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [
+        "ANNOTATED_NAMES_MISSED",
+        "UNMATCHED_OR_DUPLICATE_NAMES"
+      ],
+      "latency_ms": 100158,
+      "function_calls": 4,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 32,
+        "actual_count": 31,
+        "matched_count": 30,
+        "precision": 0.968,
+        "recall": 0.938,
+        "matches": [
+          {
+            "expected": "Pedro Ximenez Don PX",
+            "actual": "31\nPedro Ximénez\nDon Px (inferido) · Jerez/Montilla-Moriles · botella · 23.00 · moneda pendiente\n≈46%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Moscatel Zumbral",
+            "actual": "30\nMoscatel Zumbral\nDimobe (inferido) · Málaga · botella · 20.00 · moneda pendiente\n≈45%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Oloroso Don Nuno",
+            "actual": "29\nOloroso Don Nuño\nLustau · Jerez · botella · 35.00 · moneda pendiente\n≈67%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Bertola Palo Cortado",
+            "actual": "28\nBertola, Palo Cortado\nDiez Mérito · Jerez · botella · 35.00 · moneda pendiente\n≈67%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Amontillado El Contrabandista",
+            "actual": "27\nAmontillado El Contrabandista\nJerez · botella · 29.00 · moneda pendiente\n≈69%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Amontillado Vina AB",
+            "actual": "26\nAmontillado Viña AB\nGonzález Byass · Jerez · botella · 17.00 · moneda pendiente\n≈69%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Fino Viejo Tradicion",
+            "actual": "24\nFino Viejo, Tradición\nBodegas Tradición · Jerez · botella · 35.00 · moneda pendiente\n≈64%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Manzanilla Alegria",
+            "actual": "23\nManzanilla Alegría\nWilliams & Humbert · Jerez · botella · 35.00 · moneda pendiente\n≈62%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Manzanilla Pasada Xixarito",
+            "actual": "22\nManzanilla Pasada Xixarito\nBodegas Baron (inferido) · Jerez · botella · 35.00 · moneda pendiente\n≈64%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Maxim Riesling Sekt Brut",
+            "actual": "21\nMaxim Riesling Sekt Brut\nMaxim · Mosel · botella · 26.00 · moneda pendiente\n≈69%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Agusti Torello Kripta",
+            "actual": "20\nAgustí Torelló, Kripta, Cava\nAgustí Torelló · Cava · botella · 23.00 · moneda pendiente\n≈69%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Joan Raventos Rose BN",
+            "actual": "19\nJoan Raventós Rosé BN, Cava\nJoan Raventós · Cava · botella · 17.00 · moneda pendiente\n≈71%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Lopez de Haro Rosado",
+            "actual": "18\nLópez de Haro Rosado\nRioja · ambos · 3.00 · moneda pendiente\n≈66%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Nat Cool Zorzal",
+            "actual": "17\nNat Cool Zorzal\nNavarra · ambos · 5.50 · moneda pendiente\n≈79%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "La Vina de Ayer",
+            "actual": "16\nLa Viña de Ayer\nMadrid · ambos · 4.00 · moneda pendiente\n≈79%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Casa Castillo",
+            "actual": "15\nCasa Castillo\nJumilla · ambos · 4.00 · moneda pendiente\n≈76%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Agricola de Cadalso",
+            "actual": "14\nAgrícola de Cadalso\nMadrid · ambos · 4.00 · moneda pendiente\n≈79%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Diaz Bayo 4 Meses",
+            "actual": "13\nDiaz Bayo 4 Meses\nRibera del Duero · ambos · 3.50 · moneda pendiente\n≈83%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Prieler Blaufrankisch",
+            "actual": "12\nPrieler, Blaufränkisch\nOggau Ried · ambos · 6.00 · moneda pendiente\n≈83%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Huerto de la Condesa",
+            "actual": "7\nHuerto de la Condesa\nMálaga · ambos · 6.00 · moneda pendiente\n≈67%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Domaine de la Janasse",
+            "actual": "10\nDomaine de la Janasse\nCôtes du Rhône · ambos · 5.00 · moneda pendiente\n≈83%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Mayela 2023",
+            "actual": "9\nMayela 2023\nRioja · ambos · 3.00 · moneda pendiente\n≈76%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Huerto de la Condesa",
+            "actual": "11\nHuerto de la Condesa\nMálaga · ambos · 6.00 · moneda pendiente\n≈83%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Mein Castes Brancas",
+            "actual": "6\nMein Castes Brancas\nRibeiro · ambos · 6.00 · moneda pendiente\n≈71%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Nat Cool Mosel",
+            "actual": "5\nNat Cool Mosel\nMosel · ambos · 4.50 · moneda pendiente\n≈69%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Forlong ecologico",
+            "actual": "3\nForlong ecológico\nJerez · ambos · 4.50 · moneda pendiente\n≈64%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Can Feixes",
+            "actual": "2\nCan Feixes\nPenedés · ambos · 4.00 · moneda pendiente\n≈69%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Finca la Olma ecologico",
+            "actual": "1\nFinca la Olma ecológico\nRueda · ambos · 3.00 · moneda pendiente\n≈71%\nIdentidad media",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Fino Ynocente",
+            "actual": "25\nFino Inocente\nValdespino · Jerez · botella · 29.00 · moneda pendiente\n≈62%\nIdentidad baja",
+            "similarity": 0.923
+          },
+          {
+            "expected": "Dereszla Tokaji Dry",
+            "actual": "4\nDereszła Tokaji Dry\nTokaj · ambos · 4.00 · moneda pendiente\n≈69%\nIdentidad media",
+            "similarity": 0.824
+          }
+        ],
+        "false_positives": [
+          "8\nPercheron\nSouth Africa · ambos · 4.50 · moneda pendiente\n≈71%\nIdentidad media"
+        ],
+        "missed": [
+          "Percheron Chenin Blanc",
+          "L'Arnaude"
+        ]
+      },
+      "metric_scope": "exhaustive legacy/agent name transcription, not canonical identity",
+      "aggregate_name_eligible": true
+    },
+    {
+      "case": "multibottle-fridge-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 8,
+      "actual_names_or_rows": [
+        "1\nDeutz Brut Classic\nChampagne Deutz · Champagne\nNombre leído · revisa la referencia\n69%\nAfinidad",
+        "2\nChampagne Hatton\nChampagne\nPor confirmar · 55% identidad\n≈71%\nEstimación",
+        "3\nHaton Reserva\nChampagne\nPor confirmar · 55% identidad\n≈69%\nEstimación",
+        "4\nSierra Cantabria\nIdentidad parcial\nPor confirmar · 75% identidad\n-\nSin datos",
+        "5\nSANTENAY\nSANTENAY\nPor confirmar · 62% identidad\n-\nSin datos",
+        "6\nAndré Clouet\nChampagne\nPor confirmar · 55% identidad\n-\nSin datos",
+        "7\nCuvée de l'Année Brut\nIdentidad parcial\nPor confirmar · 55% identidad\n-\nSin datos",
+        "8\nANARES\nIdentidad parcial\nPor confirmar · 40% identidad\n-\nSin datos"
+      ],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 44516,
+      "function_calls": 28,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 24,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-131626296-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 1,
+      "actual_names_or_rows": [
+        "1\nChamanara\nChâteau Chamanara · Bordeaux\nPor confirmar · 55% identidad\n≈76%\nEstimación"
+      ],
+      "expected": [
+        "Chateau Chamanara"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 11421,
+      "function_calls": 2,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 1,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 1,
+        "actual_count": 1,
+        "matched_count": 1,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Chateau Chamanara",
+            "actual": "1\nChamanara\nChâteau Chamanara · Bordeaux\nPor confirmar · 55% identidad\n≈76%\nEstimación",
+            "similarity": 0.96
+          }
+        ],
+        "missed": []
+      },
+      "metric_scope": "visible annotated subset only; other outputs unjudged",
+      "aggregate_name_eligible": false
+    },
+    {
+      "case": "commons-171025734-menu-comida",
+      "mode": "menu-comida",
+      "terminal": "completed",
+      "items": 7,
+      "actual_names_or_rows": [
+        "Ensalada Mixta",
+        "Espárragos con Mayonesa",
+        "Arroz a la Cubana",
+        "Calamares a la Romana",
+        "Dorada a la Plancha",
+        "Cinta de lomo con patatas",
+        "1/4 Pollo a la brasa"
+      ],
+      "expected": [
+        "Ensalada mixta",
+        "Esparragos con mayonesa",
+        "Arroz a la cubana",
+        "Calamares a la romana",
+        "Dorada a la plancha",
+        "Cinta de lomo",
+        "Pollo a la brasa"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 20460,
+      "function_calls": 1,
+      "runtime_versions": [
+        "scan-food-pairing-2026-06-30-client-profile-v1"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 7,
+        "actual_count": 7,
+        "matched_count": 7,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Dorada a la plancha",
+            "actual": "Dorada a la Plancha",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Calamares a la romana",
+            "actual": "Calamares a la Romana",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Arroz a la cubana",
+            "actual": "Arroz a la Cubana",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Esparragos con mayonesa",
+            "actual": "Espárragos con Mayonesa",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Ensalada mixta",
+            "actual": "Ensalada Mixta",
+            "similarity": 1.0
+          },
+          {
+            "expected": "Pollo a la brasa",
+            "actual": "1/4 Pollo a la brasa",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Cinta de lomo",
+            "actual": "Cinta de lomo con patatas",
+            "similarity": 0.96
+          }
+        ],
+        "false_positives": [],
+        "missed": []
+      },
+      "metric_scope": "exhaustive legacy/agent name transcription, not canonical identity",
+      "aggregate_name_eligible": true,
+      "recommendations": [
+        {
+          "dish": "Ensalada Mixta",
+          "score": 75,
+          "wines": [
+            {
+              "name": "Albariño (Rías Baixas)",
+              "score": 90,
+              "reason": "Su acidez vibrante, notas cítricas y afrutadas, y ligera estructura, lo hacen ideal para limpiar el paladar y complementar la frescura de la ensalada."
+            },
+            {
+              "name": "Verdejo (Rueda)",
+              "score": 85,
+              "reason": "Un vino con cuerpo medio, buena acidez y notas herbáceas y afrutadas que marida bien con la diversidad de ingredientes de la ensalada, incluyendo posibles atunes o huevo."
+            }
+          ]
+        },
+        {
+          "dish": "Espárragos con Mayonesa",
+          "score": 60,
+          "wines": [
+            {
+              "name": "Txakoli (Getariako Txakolina)",
+              "score": 80,
+              "reason": "Su acidez viva y ligera efervescencia cortan la grasa de la mayonesa, y sus notas herbáceas y cítricas armonizan con el espárrago."
+            },
+            {
+              "name": "Fino (Jerez)",
+              "score": 75,
+              "reason": "La sequedad extrema, notas salinas y almendradas del Fino son excelentes para cortar la riqueza de la mayonesa y complementar el sabor del espárrago."
+            }
+          ]
+        },
+        {
+          "dish": "Arroz a la Cubana",
+          "score": 70,
+          "wines": [
+            {
+              "name": "Rosado (Navarra)",
+              "score": 85,
+              "reason": "La fruta roja fresca y la buena acidez de un rosado estructurado complementan el tomate y la riqueza del huevo, sin sobrecargar el plato."
+            },
+            {
+              "name": "Mencía Joven (Bierzo)",
+              "score": 70,
+              "reason": "Un tinto ligero con buena acidez y notas de frutos rojos y herbáceas puede armonizar con el tomate y aportar un poco más de cuerpo."
+            }
+          ]
+        },
+        {
+          "dish": "Calamares a la Romana",
+          "score": 85,
+          "wines": [
+            {
+              "name": "Cava Brut Nature",
+              "score": 95,
+              "reason": "Las burbujas y la alta acidez del Cava son perfectas para cortar la grasa de la fritura y la cremosidad del calamar, aportando frescura."
+            },
+            {
+              "name": "Sauvignon Blanc (Rueda)",
+              "score": 80,
+              "reason": "Su vivacidad, acidez y notas cítricas y ligeramente herbáceas complementan bien la fritura y el sabor marino del calamar."
+            }
+          ]
+        },
+        {
+          "dish": "Dorada a la Plancha",
+          "score": 90,
+          "wines": [
+            {
+              "name": "Godello (Valdeorras)",
+              "score": 95,
+              "reason": "Con cuerpo medio, acidez equilibrada, notas de fruta blanca y un toque mineral, es un maridaje excelente para la dorada a la plancha."
+            },
+            {
+              "name": "Chardonnay sin barrica (Cataluña)",
+              "score": 85,
+              "reason": "Un Chardonnay fresco y sin paso por madera ofrece un buen equilibrio entre cuerpo, acidez y notas frutales, perfecto para realzar la dorada."
+            }
+          ]
+        },
+        {
+          "dish": "Cinta de lomo con patatas",
+          "score": 95,
+          "wines": [
+            {
+              "name": "Tempranillo Joven (Rioja)",
+              "score": 95,
+              "reason": "Un Tempranillo joven, afrutado y con buena estructura y taninos suaves es ideal para la carne de lomo, complementando su sabor sin ser excesivo."
+            },
+            {
+              "name": "Garnacha (Campo de Borja)",
+              "score": 90,
+              "reason": "Con su cuerpo medio, notas de frutos rojos maduros y especias, y taninos suaves, la Garnacha ofrece un maridaje potente y afrutado para el lomo."
+            }
+          ]
+        },
+        {
+          "dish": "1/4 Pollo a la brasa",
+          "score": 90,
+          "wines": [
+            {
+              "name": "Monastrell (Jumilla)",
+              "score": 95,
+              "reason": "Un Monastrell con buena potencia, notas de frutos negros, especias y taninos firmes pero pulidos es un excelente compañero para el pollo a la brasa, realzando los sabores ahumados."
+            },
+            {
+              "name": "Rioja Crianza",
+              "score": 90,
+              "reason": "Un Crianza con su equilibrio de fruta, notas de vainilla y especias de la barrica, y taninos maduros, armoniza muy bien con la carne asada y la piel caramelizada del pollo."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "commons-171025734-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": null,
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 10812,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-7478133-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 4,
+      "actual_names_or_rows": [
+        "4\nGivry 1er Cru Le Manoir Murisaltien 2002\nLe Manoir Murisaltien · Givry, Bourgogne · botella\n≈83%\nIdentidad alta",
+        "1\nChateau Lynch Bages 2001\nChateau Lynch Bages · Pauillac · botella\n≈79%\nIdentidad baja",
+        "2\nChateau Dauzac Margaux Grand Cru Classe 2004\nChateau Dauzac · Margaux · botella\n≈79%\nIdentidad baja",
+        "3\nNuits-Saint-Georges 1er Cru 2002\nFrédéric Magnien · Nuits-Saint-Georges, Bourgogne · botella\n≈79%\nIdentidad alta"
+      ],
+      "expected": [
+        "Chateau Lynch Bages 2001",
+        "Chateau Dauzac Margaux Grand Cru Classe 2004",
+        "Nuits-Saint-Georges 1er Cru Frederic Magnien 2002",
+        "Givry 1er Cru Le Manoir Murisaltien 2002"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [
+        "HTTP_ERROR_INCLUDING_RECOVERED"
+      ],
+      "latency_ms": 22878,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 4,
+        "actual_count": 4,
+        "matched_count": 4,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Nuits-Saint-Georges 1er Cru Frederic Magnien 2002",
+            "actual": "3\nNuits-Saint-Georges 1er Cru 2002\nFrédéric Magnien · Nuits-Saint-Georges, Bourgogne · botella\n≈79%\nIdentidad alta",
+            "similarity": 0.99
+          },
+          {
+            "expected": "Givry 1er Cru Le Manoir Murisaltien 2002",
+            "actual": "4\nGivry 1er Cru Le Manoir Murisaltien 2002\nLe Manoir Murisaltien · Givry, Bourgogne · botella\n≈83%\nIdentidad alta",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Chateau Dauzac Margaux Grand Cru Classe 2004",
+            "actual": "2\nChateau Dauzac Margaux Grand Cru Classe 2004\nChateau Dauzac · Margaux · botella\n≈79%\nIdentidad baja",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Chateau Lynch Bages 2001",
+            "actual": "1\nChateau Lynch Bages 2001\nChateau Lynch Bages · Pauillac · botella\n≈79%\nIdentidad baja",
+            "similarity": 0.96
+          }
+        ],
+        "missed": []
+      },
+      "metric_scope": "visible annotated subset only; other outputs unjudged",
+      "aggregate_name_eligible": false
+    },
+    {
+      "case": "commons-7478133-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 3,
+      "actual_names_or_rows": [
+        "1\nChâteau Lynch-Bages\nPauillac\nPor confirmar · 55% identidad\n≈76%\nEstimación",
+        "2\nChâteau Dauzac\nChâteau Dauzac · Margaux\nPor confirmar · 55% identidad\n≈76%\nEstimación",
+        "3\nGivry 1er Cru\nBourgogne\nPor confirmar · 55% identidad\n-\nSin datos"
+      ],
+      "expected": [
+        "Chateau Lynch Bages 2001",
+        "Chateau Dauzac Margaux Grand Cru Classe 2004",
+        "Nuits-Saint-Georges 1er Cru Frederic Magnien 2002",
+        "Givry 1er Cru Le Manoir Murisaltien 2002"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [
+        "ANNOTATED_NAMES_MISSED",
+        "PRINTED_LABELS_COUNTED_AS_PHYSICAL_BOTTLES"
+      ],
+      "latency_ms": 15285,
+      "function_calls": 6,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 3,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 4,
+        "actual_count": 3,
+        "matched_count": 1,
+        "recall": 0.25,
+        "matches": [
+          {
+            "expected": "Chateau Lynch Bages 2001",
+            "actual": "1\nChâteau Lynch-Bages\nPauillac\nPor confirmar · 55% identidad\n≈76%\nEstimación",
+            "similarity": 0.99
+          }
+        ],
+        "missed": [
+          "Chateau Dauzac Margaux Grand Cru Classe 2004",
+          "Nuits-Saint-Georges 1er Cru Frederic Magnien 2002",
+          "Givry 1er Cru Le Manoir Murisaltien 2002"
+        ]
+      },
+      "metric_scope": "visible annotated subset only; other outputs unjudged",
+      "aggregate_name_eligible": false
+    },
+    {
+      "case": "commons-113034945-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": [],
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 10803,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-113127551-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": [],
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 11774,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-116700257-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 6,
+      "actual_names_or_rows": [
+        "1\nJoven Capel Blanco Frizzante Sparkling\nIdentidad parcial\nNombre leído · revisa la referencia\n58%\nAfinidad",
+        "2\nDile Moscato Magic\nDile HAND · 2 botellas\nNombre leído · revisa la referencia\n56%\nAfinidad",
+        "3\nJoven Capel Blanco Frizzante\nMurcia\nPor confirmar · 55% identidad\n≈64%\nEstimación",
+        "4\nJoven Capel\nCapel\nPor confirmar · 55% identidad\n≈62%\nEstimación",
+        "5\nDILE Moscato\nIdentidad parcial\nPor confirmar · 55% identidad\n≈52%\nEstimación",
+        "6\nDILE SUPREME\nIdentidad parcial\nPor confirmar · 50% identidad\n-\nSin datos"
+      ],
+      "expected": [
+        "Joven Capel",
+        "Dile Moscato"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 29518,
+      "function_calls": 17,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 11,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 2,
+        "actual_count": 6,
+        "matched_count": 2,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "Dile Moscato",
+            "actual": "5\nDILE Moscato\nIdentidad parcial\nPor confirmar · 55% identidad\n≈52%\nEstimación",
+            "similarity": 0.96
+          },
+          {
+            "expected": "Joven Capel",
+            "actual": "4\nJoven Capel\nCapel\nPor confirmar · 55% identidad\n≈62%\nEstimación",
+            "similarity": 0.96
+          }
+        ],
+        "missed": []
+      },
+      "metric_scope": "visible annotated subset only; other outputs unjudged",
+      "aggregate_name_eligible": false
+    },
+    {
+      "case": "commons-144753629-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": [],
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 10730,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-148028485-plato",
+      "mode": "plato",
+      "terminal": "completed",
+      "items": 1,
+      "actual_names_or_rows": [
+        "Cesta de Picnic de Quesos, Uvas y Pan"
+      ],
+      "expected": [
+        "cheese",
+        "bread",
+        "fruit"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 11409,
+      "function_calls": 1,
+      "runtime_versions": [
+        "scan-food-pairing-2026-06-30-client-profile-v1"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "recommendations": [
+        {
+          "dish": "Cesta de Picnic de Quesos, Uvas y Pan",
+          "score": 90,
+          "wines": [
+            {
+              "name": "Columbia Crest Cabernet Sauvignon (2012)",
+              "score": 85,
+              "reason": "El Cabernet Sauvignon, especialmente con una década de envejecimiento, suele ofrecer una potencia media-alta, taninos bien integrados pero presentes, y un perfil afrutado de bayas negras con notas terrosas o especiadas. Su acidez moderada y bajo dulzor se alinean muy bien con el perfil del usuario y los componentes del plato, especialmente los quesos maduros y las uvas."
+            },
+            {
+              "name": "Chianti Classico Riserva",
+              "score": 92,
+              "reason": "Un Chianti Classico Riserva, elaborado con Sangiovese, ofrece una acidez vibrante (4) que complementaría maravillosamente los quesos, una buena potencia (4) y taninos firmes pero pulidos (3-4). Su perfil afrutado de cereza y ciruela roja, junto con notas terrosas, se alinea con el gusto afrutado del usuario sin ser excesivamente dulce."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "commons-148028485-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 1,
+      "actual_names_or_rows": [
+        "1\nCabernet Sauvignon\nColumbia Crest · Columbia Valley\nNombre leído · revisa la referencia\n79%\nAfinidad"
+      ],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 17488,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 1,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-148324546-menu-comida",
+      "mode": "menu-comida",
+      "terminal": "completed",
+      "items": 8,
+      "actual_names_or_rows": [
+        "Brisket (1/2 LB)",
+        "Pork Spare Ribs (1/2 LB)",
+        "Jalapeño Havarti Sausage",
+        "Beef Ribs (Weekends Only)",
+        "Bacon Brisket",
+        "OG Burger (Unavailable Sundays)",
+        "Crisp Apple Slaw",
+        "Pickled Extras (Pickles, Red Onions, Jalapeños)"
+      ],
+      "expected": [
+        "brisket",
+        "pork spare ribs",
+        "mac and cheese",
+        "potato salad"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 28544,
+      "function_calls": 1,
+      "runtime_versions": [
+        "scan-food-pairing-2026-06-30-client-profile-v1"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "recommendations": [
+        {
+          "dish": "Brisket (1/2 LB)",
+          "score": 90,
+          "wines": [
+            {
+              "name": "Syrah / Shiraz",
+              "score": 95,
+              "reason": "Un Syrah o Shiraz australiano ofrece potencia, taninos estructurados (3-4) que cortan la grasa del brisket, y un perfil afrutado oscuro (4) con notas especiadas y ahumadas que complementan la barbacoa. Su acidez (3-4) limpia el paladar."
+            },
+            {
+              "name": "Zinfandel (Primitivo)",
+              "score": 90,
+              "reason": "El Zinfandel es conocido por su potencia (4), su carácter frutal maduro (4) con notas de pimienta y especias, y una acidez refrescante (3-4) que equilibra la riqueza de la carne. Sus taninos suelen ser suaves a medios (3), perfectos para el ahumado."
+            }
+          ]
+        },
+        {
+          "dish": "Pork Spare Ribs (1/2 LB)",
+          "score": 88,
+          "wines": [
+            {
+              "name": "Garnacha / Grenache",
+              "score": 92,
+              "reason": "La Garnacha ofrece cuerpo medio-alto (3-4), taninos suaves (2-3) que no opacan la carne, y un carácter afrutado (4) de frutos rojos maduros, con toques especiados y buena acidez (3-4), ideal para equilibrar el dulzor y la grasa de las costillas."
+            },
+            {
+              "name": "Pinot Noir (robusto)",
+              "score": 85,
+              "reason": "Un Pinot Noir de un estilo más robusto o de Nuevo Mundo, con su perfil afrutado (4) de cereza y especias, acidez vibrante (4) y taninos sedosos (2-3), puede complementar la jugosidad de las costillas sin dominarlas, ofreciendo un contraste elegante."
+            }
+          ]
+        },
+        {
+          "dish": "Jalapeño Havarti Sausage",
+          "score": 85,
+          "wines": [
+            {
+              "name": "Tempranillo Crianza",
+              "score": 90,
+              "reason": "Un Tempranillo Crianza tiene potencia (3-4), acidez equilibrada (3-4), taninos medios (3) y un perfil afrutado (3-4) con notas de especias y cuero que complementan el carácter ahumado y picante de la salchicha. La crianza en barrica añade complejidad."
+            },
+            {
+              "name": "Verdejo (con crianza)",
+              "score": 80,
+              "reason": "Un Verdejo con un poco de crianza sobre lías o en barrica puede aportar cuerpo (3), una acidez vibrante (4) y un carácter afrutado (3) con notas herbáceas y un toque amargo que se lleva bien con el jalapeño y la riqueza del queso, sin chocar con el picante."
+            }
+          ]
+        },
+        {
+          "dish": "Beef Ribs (Weekends Only)",
+          "score": 92,
+          "wines": [
+            {
+              "name": "Cabernet Sauvignon",
+              "score": 95,
+              "reason": "Un Cabernet Sauvignon es un maridaje clásico para la carne de res. Ofrece alta potencia (4-5), taninos firmes (4) que se integran con la grasa, acidez (3-4) y un perfil afrutado (3-4) de grosella negra y pimiento que complementa la intensidad de las costillas de res."
+            },
+            {
+              "name": "Malbec (argentino)",
+              "score": 93,
+              "reason": "El Malbec argentino es potente (4), con taninos suaves a medios (3) y una acidez jugosa (3-4). Su explosión de fruta negra madura (4) y notas especiadas se complementa a la perfección con la riqueza y el sabor intenso de las costillas de res, sin opacarlas."
+            }
+          ]
+        },
+        {
+          "dish": "Bacon Brisket",
+          "score": 87,
+          "wines": [
+            {
+              "name": "Merlot (con estructura)",
+              "score": 88,
+              "reason": "Un Merlot con buena estructura (3-4), taninos suaves (3) y una acidez viva (3) puede complementar la riqueza del bacon brisket. Sus notas afrutadas (4) de ciruela y cereza, junto con un toque terroso, armonizan bien con el perfil ahumado y salado."
+            },
+            {
+              "name": "Rioja Reserva",
+              "score": 85,
+              "reason": "Un Rioja Reserva, con su complejidad, buena acidez (3-4), taninos pulidos (3-4) y perfil afrutado (3) evolucionado con notas de vainilla y especias de la barrica, ofrece un maridaje sofisticado que puede manejar la intensidad del Bacon Brisket."
+            }
+          ]
+        },
+        {
+          "dish": "OG Burger (Unavailable Sundays)",
+          "score": 80,
+          "wines": [
+            {
+              "name": "Carménère",
+              "score": 88,
+              "reason": "El Carménère ofrece un cuerpo medio-alto (3-4), acidez refrescante (3) y taninos suaves (2-3), con un carácter afrutado (3-4) de frutos rojos, pimiento asado y especias, que complementa muy bien la carne de la hamburguesa y sus posibles condimentos."
+            },
+            {
+              "name": "Côtes du Rhône",
+              "score": 85,
+              "reason": "Un Côtes du Rhône tinto es afrutado (4), con cuerpo medio (3-4), taninos suaves (2-3) y buena acidez (3), lo que lo hace muy versátil para la hamburguesa. Sus notas de especias y frutos rojos se integran a la perfección con la carne a la parrilla."
+            }
+          ]
+        },
+        {
+          "dish": "Crisp Apple Slaw",
+          "score": 75,
+          "wines": [
+            {
+              "name": "Sauvignon Blanc (del Loira)",
+              "score": 85,
+              "reason": "Un Sauvignon Blanc del Loira (Sancerre, Pouilly-Fumé) es conocido por su alta acidez (5), notas cítricas y herbáceas (3), y un carácter mineral que complementaría la acidez de la manzana y limpiaría el paladar de cualquier grasa. Su potencia es media (2-3)."
+            },
+            {
+              "name": "Albariño",
+              "score": 80,
+              "reason": "El Albariño tiene una acidez vibrante (4-5), un perfil afrutado (3-4) de frutas de hueso y cítricos, y un toque salino que realzaría la frescura del slaw y contrastaría con las carnes, sin opacar los sabores. Es de potencia media (3)."
+            }
+          ]
+        },
+        {
+          "dish": "Pickled Extras (Pickles, Red Onions, Jalapeños)",
+          "score": 70,
+          "wines": [
+            {
+              "name": "Riesling (seco)",
+              "score": 85,
+              "reason": "Un Riesling seco (trocken) tiene una acidez excepcionalmente alta (5), notas cítricas y de manzana verde (3), y un carácter mineral. Su frescura y capacidad de corte lo hacen ideal para los encurtidos y el picante de los jalapeños, sin añadir dulzura."
+            },
+            {
+              "name": "Txakoli",
+              "score": 80,
+              "reason": "El Txakoli es un vino ligero y efervescente, con una acidez muy alta (5), notas cítricas y herbáceas (2-3). Su carácter refrescante y ligeramente salino es perfecto para limpiar el paladar y complementar los sabores ácidos de los encurtidos."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "commons-148324546-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": null,
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 12858,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-159930620-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 2,
+      "actual_names_or_rows": [
+        "1\nMAMBA\nLa Quinta · Ribera del Duero · 2 botellas\nNombre leído · revisa la referencia\n79%\nAfinidad",
+        "2\nLa Quinta Mamba\nRibera del Duero · 2 botellas\nNombre leído · revisa la referencia\n76%\nAfinidad"
+      ],
+      "expected": [
+        "La Quinta Mamba"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 20901,
+      "function_calls": 9,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 5,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "name_observations": {
+        "expected_count": 1,
+        "actual_count": 2,
+        "matched_count": 1,
+        "recall": 1.0,
+        "matches": [
+          {
+            "expected": "La Quinta Mamba",
+            "actual": "1\nMAMBA\nLa Quinta · Ribera del Duero · 2 botellas\nNombre leído · revisa la referencia\n79%\nAfinidad",
+            "similarity": 0.99
+          }
+        ],
+        "missed": []
+      },
+      "metric_scope": "visible annotated subset only; other outputs unjudged",
+      "aggregate_name_eligible": false
+    },
+    {
+      "case": "commons-177500191-menu-comida",
+      "mode": "menu-comida",
+      "terminal": "completed",
+      "items": 8,
+      "actual_names_or_rows": [
+        "Salade Composée",
+        "Gambas",
+        "Crevette à l'ail",
+        "Poisson-Poulet braisé",
+        "Sauce d'arachide (con acompañamiento)",
+        "Sauce Gombo (con acompañamiento)",
+        "Dakouin (con acompañamiento)",
+        "Ananas pirogue"
+      ],
+      "expected": [
+        "Salade composee",
+        "Gambas",
+        "Crevette a l'ail",
+        "Poisson",
+        "Poulet braise"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 24109,
+      "function_calls": 1,
+      "runtime_versions": [
+        "scan-food-pairing-2026-06-30-client-profile-v1"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "recommendations": [
+        {
+          "dish": "Salade Composée",
+          "score": 60,
+          "wines": [
+            {
+              "name": "Sauvignon Blanc del Loira",
+              "score": 85,
+              "reason": "Su acidez vibrante y notas cítricas/herbales realzarán la frescura de la ensalada sin opacarla. La acidez del vino complementa la acidez deseada por el usuario."
+            },
+            {
+              "name": "Verdejo Rueda",
+              "score": 80,
+              "reason": "Un Verdejo joven aporta frescura, notas de fruta blanca y un toque amargo que puede armonizar con distintos ingredientes de la ensalada. Su acidez se ajusta al perfil."
+            }
+          ]
+        },
+        {
+          "dish": "Gambas",
+          "score": 75,
+          "wines": [
+            {
+              "name": "Albariño Rías Baixas",
+              "score": 90,
+              "reason": "La acidez punzante y el carácter salino del Albariño, junto con sus notas afrutadas, complementan perfectamente el sabor del marisco, alineándose con la acidez y afrutado del usuario."
+            },
+            {
+              "name": "Chardonnay (sin madera) Chablis",
+              "score": 85,
+              "reason": "Un Chablis ofrece mineralidad, frescura y acidez, realzando la delicadeza de las gambas sin dominar. Su potencia es moderada y la acidez es alta, lo que encaja con el perfil."
+            }
+          ]
+        },
+        {
+          "dish": "Crevette à l'ail",
+          "score": 80,
+          "wines": [
+            {
+              "name": "Verdejo Rueda fermentado en barrica",
+              "score": 90,
+              "reason": "Un Verdejo con un ligero paso por barrica aporta cuerpo y complejidad que pueden manejar el ajo, manteniendo la acidez y el carácter frutal que busca el usuario."
+            },
+            {
+              "name": "Godello Valdeorras",
+              "score": 88,
+              "reason": "El Godello ofrece un buen equilibrio entre cuerpo, acidez y notas de fruta de hueso, lo que lo hace ideal para platos con cierta untuosidad y sabor, complementando el ajo sin ser abrumador."
+            }
+          ]
+        },
+        {
+          "dish": "Poisson-Poulet braisé",
+          "score": 85,
+          "wines": [
+            {
+              "name": "Pinot Noir Borgoña",
+              "score": 92,
+              "reason": "Un Pinot Noir ligero a medio cuerpo, con buena acidez y notas de fruta roja y terrosas, realzará los sabores braseados sin dominar, respetando el perfil de taninos moderados del usuario."
+            },
+            {
+              "name": "Gamay (Beaujolais Villages)",
+              "score": 88,
+              "reason": "Vinos de Gamay son conocidos por su perfil afrutado, alta acidez y taninos muy suaves, siendo una excelente opción para aves y pescados con preparaciones más intensas. Cumple con la potencia, acidez y afrutado deseado."
+            }
+          ]
+        },
+        {
+          "dish": "Sauce d'arachide (con acompañamiento)",
+          "score": 70,
+          "wines": [
+            {
+              "name": "Vino Naranja Seco (Jerez)",
+              "score": 80,
+              "reason": "Un vino naranja seco, con su complejidad oxidativa, frutos secos y acidez, puede ser un maridaje sorprendente y efectivo para la riqueza de la salsa de cacahuete. Se alinea con la potencia del usuario."
+            },
+            {
+              "name": "Chenin Blanc Seco (Vouvray)",
+              "score": 75,
+              "reason": "Un Chenin Blanc seco ofrece alta acidez, notas de miel y nueces (en versiones más maduras), y un cuerpo que puede manejar la densidad de la salsa. Su afrutado y acidez son ideales."
+            }
+          ]
+        },
+        {
+          "dish": "Sauce Gombo (con acompañamiento)",
+          "score": 65,
+          "wines": [
+            {
+              "name": "Garnacha Blanca Terra Alta",
+              "score": 80,
+              "reason": "Ofrece cuerpo, buena acidez y notas de fruta blanca y hierbas que complementarán los sabores vegetales del gombo. Su potencia encaja con el perfil del usuario."
+            },
+            {
+              "name": "Rosado Seco (Provenza)",
+              "score": 78,
+              "reason": "Un rosado seco de Provenza aporta frescura, acidez y delicadas notas frutales que pueden limpiar el paladar y armonizar con los sabores vegetales. Su perfil es ligero pero con carácter."
+            }
+          ]
+        },
+        {
+          "dish": "Dakouin (con acompañamiento)",
+          "score": 70,
+          "wines": [
+            {
+              "name": "Grüner Veltliner Kamptal",
+              "score": 85,
+              "reason": "Con su alta acidez, notas de pimienta blanca y toques cítricos/vegetales, el Grüner Veltliner puede cortar la densidad y complementar los sabores fermentados del Dakouin, alineándose con la preferencia por la acidez del usuario."
+            },
+            {
+              "name": "Champagne Brut Nature",
+              "score": 82,
+              "reason": "Las burbujas y la alta acidez de un Brut Nature, junto con sus notas tostadas y de levadura, pueden ofrecer un contraste y una limpieza del paladar excelentes para un plato fermentado y con almidón."
+            }
+          ]
+        },
+        {
+          "dish": "Ananas pirogue",
+          "score": 40,
+          "wines": [
+            {
+              "name": "Moscato d'Asti",
+              "score": 50,
+              "reason": "Aunque el usuario no prefiere dulzura, un vino ligeramente dulce como el Moscato d'Asti, con su baja graduación alcohólica, notas frutales y burbuja, es uno de los pocos vinos que maridan bien con fruta fresca, especialmente piña. Su dulzor es delicado."
+            },
+            {
+              "name": "Brachetto d'Acqui",
+              "score": 45,
+              "reason": "Similar al Moscato, este vino espumoso tinto dulce con notas de fresa y rosa puede complementar el dulzor y la acidez de la piña, ofreciendo un contraste interesante. Su dulzura es leve para un postre."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "commons-177500191-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": null,
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 11222,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-31013876-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": [],
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 11735,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-355816-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": [],
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 11277,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-355816-menu-comida",
+      "mode": "menu-comida",
+      "terminal": "completed",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": null,
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 7700,
+      "function_calls": 1,
+      "runtime_versions": [
+        "scan-food-pairing-2026-06-30-client-profile-v1"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "recommendations": []
+    },
+    {
+      "case": "commons-49129956-menu-comida",
+      "mode": "menu-comida",
+      "terminal": "completed",
+      "items": 7,
+      "actual_names_or_rows": [
+        "A3) 黑椒牛柳絲炒意粉",
+        "A6) 咖喱羊腩飯",
+        "A7) 咖喱牛腩飯",
+        "A8) 葡國雞飯/意粉",
+        "1) 石炭燒豬頸肉飯",
+        "4) 紐西蘭西冷扒飯",
+        "6) 雙仔牛柳"
+      ],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 23072,
+      "function_calls": 1,
+      "runtime_versions": [
+        "scan-food-pairing-2026-06-30-client-profile-v1"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "recommendations": [
+        {
+          "dish": "A3) 黑椒牛柳絲炒意粉",
+          "score": 85,
+          "wines": [
+            {
+              "name": "Syrah/Shiraz",
+              "score": 90,
+              "reason": "Un Syrah o Shiraz de buena potencia y afrutado (frutos negros, pimienta negra) complementará la salsa de pimienta y la robustez de la ternera, con taninos firmes que limpiarán el paladar."
+            },
+            {
+              "name": "Cabernet Sauvignon (Chile)",
+              "score": 88,
+              "reason": "Un Cabernet Sauvignon chileno, con su perfil afrutado (cassis), notas de pimiento verde y taninos estructurados, armonizará con la carne y la pimienta negra del plato."
+            }
+          ]
+        },
+        {
+          "dish": "A6) 咖喱羊腩飯",
+          "score": 90,
+          "wines": [
+            {
+              "name": "Rioja Crianza",
+              "score": 87,
+              "reason": "Un Rioja Crianza, con su frutosidad, cuerpo medio-alto y notas especiadas de la barrica, se enfrentará bien a la intensidad del curry y el cordero, aportando taninos suaves y buena acidez."
+            },
+            {
+              "name": "Zinfandel (California)",
+              "score": 89,
+              "reason": "El Zinfandel ofrece una explosión de fruta madura, especias y una potencia que puede manejar la complejidad del curry y la riqueza del cordero, manteniendo una buena acidez."
+            }
+          ]
+        },
+        {
+          "dish": "A7) 咖喱牛腩飯",
+          "score": 88,
+          "wines": [
+            {
+              "name": "Garnacha/Grenache",
+              "score": 86,
+              "reason": "La Garnacha, con su calidez, frutosidad (frutos rojos), notas especiadas y taninos suaves, complementará la riqueza del curry y la ternera sin dominarla."
+            },
+            {
+              "name": "Merlot (Chile)",
+              "score": 85,
+              "reason": "Un Merlot chileno, más frutal y con un toque especiado, ofrece cuerpo y taninos suaves para acompañar el curry de ternera, equilibrando la intensidad del plato."
+            }
+          ]
+        },
+        {
+          "dish": "A8) 葡國雞飯/意粉",
+          "score": 80,
+          "wines": [
+            {
+              "name": "Albariño (Rías Baixas)",
+              "score": 82,
+              "reason": "Un Albariño fresco y afrutado con su acidez vibrante y notas cítricas puede cortar la riqueza del plato y realzar los matices especiados del Pollo a la Portuguesa."
+            },
+            {
+              "name": "Verdejo (Rueda)",
+              "score": 80,
+              "reason": "Un Verdejo con su carácter herbáceo, acidez refrescante y ligeras notas de fruta de hueso, complementará los sabores especiados y la cremosidad del plato."
+            }
+          ]
+        },
+        {
+          "dish": "1) 石炭燒豬頸肉飯",
+          "score": 92,
+          "wines": [
+            {
+              "name": "Pinot Noir (Nueva Zelanda)",
+              "score": 88,
+              "reason": "Un Pinot Noir neozelandés, con su acidez brillante, frutosidad (frutos rojos) y taninos suaves, puede complementar la carne de cerdo a la parrilla, sin opacarla, y realzar los sabores."
+            },
+            {
+              "name": "Tempranillo (Joven)",
+              "score": 85,
+              "reason": "Un Tempranillo joven, con su explosión de fruta roja y fresca acidez, ofrece un contrapunto vibrante a la carne de cerdo, realzando sus sabores sin la pesadez de taninos excesivos."
+            }
+          ]
+        },
+        {
+          "dish": "4) 紐西蘭西冷扒飯",
+          "score": 95,
+          "wines": [
+            {
+              "name": "Malbec (Argentina)",
+              "score": 93,
+              "reason": "Un Malbec argentino, con su cuerpo robusto, intensidad de frutos negros, taninos sedosos y buena acidez, es un maridaje clásico para la ternera, realzando su sabor sin ser excesivamente tánico."
+            },
+            {
+              "name": "Ribera del Duero Crianza",
+              "score": 91,
+              "reason": "Un Ribera del Duero Crianza, potente, con buena estructura, fruta madura y notas especiadas y tostadas de la barrica, es ideal para acompañar un buen corte de ternera, manejando la potencia y los taninos del usuario."
+            }
+          ]
+        },
+        {
+          "dish": "6) 雙仔牛柳",
+          "score": 95,
+          "wines": [
+            {
+              "name": "Barolo/Barbaresco",
+              "score": 94,
+              "reason": "Un Barolo o Barbaresco, con su gran estructura, acidez elevada, taninos firmes y complejos aromas a frutos rojos, rosa y alquitrán, es un maridaje sublime para la ternera, acorde con la potencia y acidez del usuario."
+            },
+            {
+              "name": "Château Margaux (Burdeos)",
+              "score": 95,
+              "reason": "Un gran tinto de Burdeos, como un Margaux, ofrece elegancia, complejidad, acidez equilibrada y taninos pulidos que se fusionan con la ternera de primera calidad, satisfaciendo su perfil de potencia y afrutado."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "commons-49129956-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": null,
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 11235,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-55328769-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 5,
+      "actual_names_or_rows": [
+        "5\n2018 Sparkling Vidal Icewine 2018\nInniskillin · Niagara Peninsula · ambos\n≈57%\nIdentidad baja",
+        "4\n2019 Cabernet Franc Icewine 2019\nInniskillin · Niagara Peninsula · ambos\n≈52%\nIdentidad baja",
+        "1\n2020 Riesling Icewine 2020\nInniskillin · Niagara Peninsula · ambos\n≈49%\nIdentidad baja",
+        "2\n2020 Vidal Icewine 2020\nInniskillin · Niagara Peninsula · ambos\n≈49%\nIdentidad baja",
+        "3\n2017 Oak Aged Vidal Icewine 2017\nInniskillin · Niagara Peninsula · ambos\n≈48%\nIdentidad baja"
+      ],
+      "expected": [],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [
+        "NEGATIVE_ANNOTATION_INVALID_EXCLUDED"
+      ],
+      "latency_ms": 33002,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-68162629-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": [],
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 11847,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-68335063-menu-comida",
+      "mode": "menu-comida",
+      "terminal": "completed",
+      "items": 3,
+      "actual_names_or_rows": [
+        "Burger con boulette de Cereales",
+        "Burger con boulette de Tofu",
+        "Burger tradicional (asumiendo carne)"
+      ],
+      "expected": [
+        "tofu",
+        "kombucha"
+      ],
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 14969,
+      "function_calls": 1,
+      "runtime_versions": [
+        "scan-food-pairing-2026-06-30-client-profile-v1"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "recommendations": [
+        {
+          "dish": "Burger con boulette de Cereales",
+          "score": 85,
+          "wines": [
+            {
+              "name": "Pinot Noir Joven",
+              "score": 90,
+              "reason": "Un Pinot Noir joven, con su perfil afrutado (cereza, frambuesa), acidez viva y taninos suaves, complementará la burger de cereales sin abrumar. Su potencia media-alta (para un Pinot Noir) encaja con el perfil del usuario."
+            },
+            {
+              "name": "Garnacha/Grenache Rosado",
+              "score": 80,
+              "reason": "Un rosado de Garnacha, afrutado (fresa, grosella), con buena acidez y cuerpo medio, es muy versátil para burgers. Su frescura y sus notas frutales armonizan bien con el carácter vegetal y las salsas típicas de una burger."
+            }
+          ]
+        },
+        {
+          "dish": "Burger con boulette de Tofu",
+          "score": 88,
+          "wines": [
+            {
+              "name": "Syrah Joven",
+              "score": 92,
+              "reason": "Un Syrah joven, con su potencia, carácter afrutado (frutas negras, especias) y taninos presentes pero suaves, es excelente para la robustez de una burger de tofu, especialmente si lleva salsas más intensas. Su acidez mantendrá el paladar limpio."
+            },
+            {
+              "name": "Sauvignon Blanc con crianza",
+              "score": 85,
+              "reason": "Un Sauvignon Blanc con algo de crianza o de una región más cálida puede ofrecer la acidez deseada por el usuario junto con un perfil afrutado más tropical y un cuerpo que se sostenga con la burger. Sus notas herbáceas complementan bien el tofu."
+            }
+          ]
+        },
+        {
+          "dish": "Burger tradicional (asumiendo carne)",
+          "score": 90,
+          "wines": [
+            {
+              "name": "Tempranillo Crianza",
+              "score": 95,
+              "reason": "Un Tempranillo Crianza, con su buena potencia, notas de frutas rojas maduras, acidez equilibrada y taninos pulidos, es un maridaje clásico para una burger de carne. Encaja perfectamente con la preferencia de potencia y afrutado del usuario."
+            },
+            {
+              "name": "Zinfandel / Primitivo",
+              "score": 90,
+              "reason": "Estos vinos son conocidos por su perfil afrutado (frutas negras maduras, mermelada), especiado, con buena potencia y acidez suficiente. Sus taninos suelen ser suaves, lo que los hace muy accesibles y complementarios para carnes a la parrilla como la de una burger."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "commons-68335063-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": null,
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 10745,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-7478099-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 34,
+      "actual_names_or_rows": [
+        "13\nPommard Supérieur 1923\nBourgogne · botella · 8.60 · moneda pendiente\n≈83%\nIdentidad media",
+        "6\nBordeaux Superieur\nBordeaux · botella · 4.00 · moneda pendiente\n≈76%\nIdentidad media",
+        "7\nMedoc\nBordeaux · botella · 4.60 · moneda pendiente\n≈76%\nIdentidad media",
+        "20\nBeaune\nBeaune, Borgoña · botella · 50.00 · moneda pendiente\n≈76%\nIdentidad media",
+        "21\nMacon\nMacon, Borgoña · botella · 50.00 · moneda pendiente\n≈76%\nIdentidad media",
+        "22\nPommard Supérieur 1923\nPommard, Borgoña · botella · 66.00 · moneda pendiente\n≈76%\nIdentidad media",
+        "32\nMacon\nMacon, Borgoña · botella · 1.00 · moneda pendiente\n≈76%\nIdentidad media",
+        "29\nG. H. Mumm, Cordon Rouge\nG. H. Mumm · Champaña · 5.00 · moneda pendiente\n≈73%\nIdentidad media",
+        "10\nChâteau Carbonnieux, Château Bottled\nGraves · botella · 10.00 · moneda pendiente\n≈71%\nIdentidad media",
+        "19\nChâteau Carbonnieux, Château Bottled\nChâteau Carbonnieux · Graves · botella · 100.00 · moneda pendiente\n≈71%\nIdentidad media",
+        "1\nPerrier Jouët, Finest Extra Quality\nbotella · 17.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "2\nLanson, Extra Quality, Extra Dry\nbotella · 18.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "3\nVeuve Clicquot. Dey\nbotella · 19.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "4\nG.H. Mumm. Cordon Rouge, Très Sec\nbotella · 21.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "8\nGraves\nBordeaux · botella · 4.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "9\nClos du Gravier, Extra Dey\nBordeaux · botella · 4.60 · moneda pendiente\n≈69%\nIdentidad media",
+        "12\nBeaune\nBourgogne · botella · 7.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "14\nChablis\nChablis · botella · 5.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "16\ndu Gravier, Extra Dry\nbotella · 60.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "18\nGraves Dry Royal, 1st Growth Podensac\nGraves · botella · 70.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "26\nSouth African Dry Dominion Sparkling\nbotella · 126.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "30\nGraves\nGraves · botella · 1.00 · moneda pendiente\n≈69%\nIdentidad media",
+        "5\nGolden Guines\nbotella · 15.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "11\nMacon\nBourgogne · botella · 5.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "15\nSouth African Hock Type\nbotella · 3.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "23\nChablis\nChablis, Borgoña · botella · 50.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "24\nSouth African Hock Type, Paarl Amber\nPaarl · botella · 50.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "25\nAustralian Highercombe Amber\nHighercombe · botella · 50.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "27\nBerncasteler\nBernkastel, Mosela · botella · 76.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "33\nChablis\nChablis, Borgoña · botella · 1.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "34\nHock\nbotella · 1.00 · moneda pendiente\n≈67%\nIdentidad media",
+        "28\nPale Dry\nambos · 50.00 · moneda pendiente\n≈64%\nIdentidad media",
+        "17\nHaut Sauternes\nSauternes · botella · 40.00 · moneda pendiente\n≈49%\nIdentidad media",
+        "31\nSauternes\nSauternes · botella · 1.00 · moneda pendiente\n≈49%\nIdentidad media"
+      ],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 73766,
+      "function_calls": 4,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-78354929-menu-comida",
+      "mode": "menu-comida",
+      "terminal": "completed",
+      "items": 8,
+      "actual_names_or_rows": [
+        "Grilled Lemongrass Beef (Bao Bun)",
+        "Shrimp & Grits",
+        "Grilled Lemongrass Pork (Bao Bun)",
+        "Tuna Avocado Salad",
+        "Mushroom Provolone Panini",
+        "Grilled Chicken Avocado Salad",
+        "Spring Rolls (Goi Cuon - Fresh)",
+        "Fried Egg Rolls (Pork)"
+      ],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 24973,
+      "function_calls": 1,
+      "runtime_versions": [
+        "scan-food-pairing-2026-06-30-client-profile-v1"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false,
+      "recommendations": [
+        {
+          "dish": "Grilled Lemongrass Beef (Bao Bun)",
+          "score": 90,
+          "wines": [
+            {
+              "name": "Syrah/Shiraz",
+              "score": 95,
+              "reason": "Un Syrah/Shiraz potente con notas de fruta negra, pimienta y toques especiados complementará la carne a la parrilla y el lemongrass, su estructura y taninos firmes pero redondos equilibrarán el plato."
+            },
+            {
+              "name": "Cabernet Franc",
+              "score": 90,
+              "reason": "Ofrece buena acidez y taninos moderados, con notas de pimiento verde y fruta roja que pueden armonizar con el lemongrass y la carne sin opacar los sabores. Es menos potente que el Syrah pero con gran carácter."
+            }
+          ]
+        },
+        {
+          "dish": "Shrimp & Grits",
+          "score": 85,
+          "wines": [
+            {
+              "name": "Viognier",
+              "score": 90,
+              "reason": "Un Viognier de cuerpo medio a completo, con sus notas de melocotón, albaricoque y un ligero toque floral, puede complementar la cremosidad de los grits y el dulzor del camarón, aportando acidez equilibrada."
+            },
+            {
+              "name": "Chardonnay (sin roble)",
+              "score": 85,
+              "reason": "Un Chardonnay fresco y sin crianza en roble aportará cuerpo y una acidez vibrante que cortará la untuosidad de los grits y realzará el sabor del camarón. Sus notas de manzana y cítricos son refrescantes."
+            }
+          ]
+        },
+        {
+          "dish": "Grilled Lemongrass Pork (Bao Bun)",
+          "score": 88,
+          "wines": [
+            {
+              "name": "Pinot Noir",
+              "score": 92,
+              "reason": "Un Pinot Noir de cuerpo medio, con sus notas de cereza, frambuesa y tierra, combina de maravilla con el cerdo y el lemongrass. Su acidez y taninos suaves respetan la delicadeza del plato mientras aportan complejidad."
+            },
+            {
+              "name": "Grüner Veltliner",
+              "score": 88,
+              "reason": "Un blanco austriaco con alta acidez, notas cítricas, toques de pimienta blanca y un ligero amargor final que puede limpiar el paladar y resaltar los sabores herbáceos del lemongrass y la carne de cerdo."
+            }
+          ]
+        },
+        {
+          "dish": "Tuna Avocado Salad",
+          "score": 80,
+          "wines": [
+            {
+              "name": "Sauvignon Blanc",
+              "score": 90,
+              "reason": "La acidez brillante y las notas herbáceas, cítricas y a veces de fruta de la pasión del Sauvignon Blanc complementarán la frescura del atún y cortarán la riqueza del aguacate, aportando un gran contraste."
+            },
+            {
+              "name": "Albariño",
+              "score": 85,
+              "reason": "Este vino gallego ofrece una acidez refrescante, notas de fruta de hueso (melocotón, albaricoque) y toques salinos que armonizan muy bien con el atún, el aguacate y los aderezos de ensalada."
+            }
+          ]
+        },
+        {
+          "dish": "Mushroom Provolone Panini",
+          "score": 75,
+          "wines": [
+            {
+              "name": "Chianti Classico",
+              "score": 80,
+              "reason": "La acidez y los taninos del Sangiovese, junto con sus notas terrosas y de cereza agria, complementarán perfectamente los champiñones y el queso provolone sin ser demasiado abrumadores."
+            },
+            {
+              "name": "Valpolicella Classico",
+              "score": 78,
+              "reason": "Un tinto ligero y afrutado con buena acidez y notas de cereza que se maridaría bien con los sabores terrosos de los champiñones y el queso, sin abrumar el paladar."
+            }
+          ]
+        },
+        {
+          "dish": "Grilled Chicken Avocado Salad",
+          "score": 82,
+          "wines": [
+            {
+              "name": "Pinot Grigio/Gris",
+              "score": 88,
+              "reason": "Un Pinot Grigio seco y crujiente, con su acidez refrescante y notas de pera, manzana verde y cítricos, realzará el pollo a la parrilla y el aguacate, ofreciendo un maridaje ligero y agradable."
+            },
+            {
+              "name": "Verdejo",
+              "score": 85,
+              "reason": "Este vino español ofrece una acidez vibrante, notas de hinojo, hierba y un ligero amargor que se casa bien con la frescura de la ensalada y el pollo, aportando complejidad."
+            }
+          ]
+        },
+        {
+          "dish": "Spring Rolls (Goi Cuon - Fresh)",
+          "score": 78,
+          "wines": [
+            {
+              "name": "Riesling (Seco)",
+              "score": 85,
+              "reason": "Un Riesling seco con su alta acidez, notas cítricas y minerales, será un excelente compañero para la frescura de los rollitos, limpiando el paladar y realzando los sabores herbales."
+            },
+            {
+              "name": "Txakoli",
+              "score": 80,
+              "reason": "Un vino ligeramente espumoso con una acidez muy alta y notas cítricas que refresca el paladar y complementa la ligereza y los sabores frescos de los rollitos de primavera."
+            }
+          ]
+        },
+        {
+          "dish": "Fried Egg Rolls (Pork)",
+          "score": 70,
+          "wines": [
+            {
+              "name": "Cava (Brut Nature)",
+              "score": 80,
+              "reason": "Las burbujas y la alta acidez de un Cava Brut Nature son excelentes para cortar la grasa de los fritos, limpiando el paladar y realzando los sabores del relleno de cerdo."
+            },
+            {
+              "name": "Gamay (Beaujolais Villages)",
+              "score": 75,
+              "reason": "Un Gamay joven es ligero, afrutado y con buena acidez. Sus notas de fruta roja vibrante pueden complementar los sabores de la carne de cerdo y el crujiente de los rollitos sin abrumar."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "commons-78354929-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 5,
+      "actual_names_or_rows": [
+        "1\nWAVE SERIES, SAUVIGNON BLANC\nambos\nIdentidad media",
+        "2\n8 TO Z WINERY (CHARDONNAY)\n8 to Z Winery · ambos\nIdentidad media",
+        "3\nMASSERIA VERDE (PINOT GRIGIO)\nMASSERIA VERDE · ambos\nIdentidad media",
+        "4\nWAVE SERIES, (PINOT NOIR)\nambos\nIdentidad media",
+        "5\nHIDDEN CRUSH (CABERNET SAUVIGNON)\nHIDDEN CRUSH · ambos\nIdentidad media"
+      ],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 26883,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-7893320-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "completed",
+      "items": 4,
+      "actual_names_or_rows": [
+        "1\nASSEMBLAGE 2004\nbotella · 19.95 · moneda pendiente\n≈83%\nIdentidad media",
+        "3\nGAMAY NOIR 2004\nbotella · 16.95 · moneda pendiente\n≈79%\nIdentidad media",
+        "4\nMay Noir\nbotella · 16.95 · moneda pendiente\n≈79%\nIdentidad baja",
+        "2\nVICTORIA BLOCK CHARDONNAY 2005\nbotella · 24.95 · moneda pendiente\n≈69%\nIdentidad media"
+      ],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 60662,
+      "function_calls": 4,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-7893320-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 54808,
+      "function_calls": 63,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 60,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-80448425-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 10299,
+      "function_calls": 4,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 3,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-8802178-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": [],
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 7699,
+      "function_calls": 1,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 0,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-8802178-carta-vinos",
+      "mode": "carta-vinos",
+      "terminal": "abstained",
+      "items": 0,
+      "actual_names_or_rows": [],
+      "expected": [],
+      "negative": true,
+      "negative_pass": true,
+      "issues": [],
+      "latency_ms": 11235,
+      "function_calls": 3,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "scan-wine-menu-2026-10-05-no-placeholder-v9"
+      ],
+      "region_count": null,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-93111644-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 3,
+      "actual_names_or_rows": [
+        "1\nJunmai Ginjo Tokusen\nKyoto\nPor confirmar · 55% identidad\n≈67%\nEstimación",
+        "2\nROYAL CASTLE Tequila Gold\nJalisco\nPor confirmar · 55% identidad\n-\nSin datos",
+        "3\nBaileys The Original Irish Cream\nBaileys\nPor confirmar · 55% identidad\n-\nSin datos"
+      ],
+      "expected": null,
+      "negative": true,
+      "negative_pass": false,
+      "issues": [
+        "NEGATIVE_RETURNED_ITEMS"
+      ],
+      "latency_ms": 13758,
+      "function_calls": 4,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 3,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    },
+    {
+      "case": "commons-94131711-etiqueta",
+      "mode": "etiqueta",
+      "terminal": "completed",
+      "items": 20,
+      "actual_names_or_rows": [
+        "1\nDark Horse Double Down\nIdentidad parcial · 2 botellas\nNombre leído · revisa la referencia\n79%\nAfinidad",
+        "2\n120 Reserva Especial\nSanta Rita\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "3\nBicicleta Sauvignon Blanc\nCono Sur · 4 botellas\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "4\nApothic Red Winemaker's Blend\nApothic · California\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "5\n120 Reserva Especial Sauvignon Blanc\nSanta Rita · 2 botellas\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "6\nTakuku\nMarlborough\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "7\nSauvignon Blanc\nCono Sur\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "8\nTA_KU\nIdentidad parcial\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "9\nSauvignon Blanc\nBabich · Marlborough · 2 botellas\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "10\nCarlo Rossi Red\nCarlo Rossi · California\nNombre leído · revisa la referencia\n71%\nAfinidad",
+        "11\nOyster Bay Chardonnay\nOyster Bay · 6 botellas\nNombre leído · revisa la referencia\n69%\nAfinidad",
+        "12\nEscudo Rojo\nIdentidad parcial · 2 botellas\nNombre leído · revisa la referencia\n-\nSin datos",
+        "13\nThe Shy Pig\nIdentidad parcial · 5 botellas\nNombre leído · revisa la referencia\n-\nSin datos",
+        "14\nThe Shy Pig Shiraz\nSouth Eastern Australia · 2 botellas\nNombre leído · revisa la referencia\n-\nSin datos",
+        "15\nEscudo Rojo Syrah\nIdentidad parcial · 2 botellas\nPor confirmar · 55% identidad\n≈83%\nEstimación",
+        "16\nCono Sur\nCono Sur\nPor confirmar · 78% identidad\n≈71%\nEstimación",
+        "17\nCarlo Rossi\nCalifornia\nPor confirmar · 62% identidad\n≈71%\nEstimación",
+        "18\n20 Barrels Sauvignon Blanc\nValle de Casablanca\nPor confirmar · 55% identidad\n≈71%\nEstimación",
+        "19\nBabich Sauvignon Blanc\nBabich Wines · Marlborough\nPor confirmar · 55% identidad\n≈71%\nEstimación",
+        "20\nApothic Red\nApothic · California\nPor confirmar · 55% identidad\n≈71%\nEstimación"
+      ],
+      "expected": null,
+      "negative": false,
+      "negative_pass": null,
+      "issues": [],
+      "latency_ms": 73957,
+      "function_calls": 60,
+      "runtime_versions": [
+        "google/gemini-2.5-flash",
+        "lovable",
+        "matchrim-region-analysis-v8-partial-name",
+        "matchrim-region-detector-v4-candidate"
+      ],
+      "region_count": 39,
+      "canonical_identity_precision": null,
+      "canonical_identity_recall": null,
+      "independent_human_validated": false
+    }
+  ]
+}
