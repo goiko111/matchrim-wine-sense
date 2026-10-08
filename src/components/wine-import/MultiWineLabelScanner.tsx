@@ -405,17 +405,13 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           },
         );
         const completedRegionalResults = regionalResults.filter((result): result is NonNullable<typeof result> => result !== null);
-        if (completedRegionalResults.length === regionalResults.length) {
-          const refined = mergeWineDetectionTileResults([
-            { tile: fullTile, payload: detection },
-            ...completedRegionalResults,
-          ]);
-          if (refined.regions.length > 0) {
-            detected = refined.regions;
-            resolvedCoverage = refined.coverage;
-            detectionRefined = true;
-          }
-        }
+        const refined = mergeWineDetectionTileResults([
+          { tile: fullTile, payload: detection },
+          ...completedRegionalResults,
+        ], { failedTiles: regionalResults.length - completedRegionalResults.length });
+        detected = refined.regions;
+        resolvedCoverage = refined.coverage;
+        detectionRefined = refined.refined;
       }
       const detectionFinishedAt = globalThis.performance.now();
       setCoverage(resolvedCoverage);

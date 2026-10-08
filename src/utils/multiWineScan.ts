@@ -394,6 +394,7 @@ export const shouldRefineWineDetection = (payload: unknown, regions: ScanRegion[
 
 export const mergeWineDetectionTileResults = (
   results: WineDetectionTileResult[],
+  { failedTiles = 0 }: { failedTiles?: number } = {},
 ): ResolvedWineDetection => {
   const mapped = results.flatMap(({ tile, payload }) => (
     normalizeDetectedRegions(payload).map((region) => mapDetectedRegionFromTile(region, tile))
@@ -410,14 +411,16 @@ export const mergeWineDetectionTileResults = (
   const capped = allRegions.length > regions.length;
   const tileCoverage = results.map(({ payload }) => normalizeScanCoverage(payload, normalizeDetectedRegions(payload).length));
   const statuses = tileCoverage.map((item) => item.status);
-  const status: ScanCoverageStatus = capped ? 'partial' : statuses.length > 0 && statuses.every((item) => item === 'reported_complete')
+  const status: ScanCoverageStatus = capped || failedTiles > 0 ? 'partial' : statuses.length > 0 && statuses.every((item) => item === 'reported_complete')
     ? 'reported_complete'
     : statuses.includes('partial')
       ? 'partial'
       : 'unknown';
   const estimates = tileCoverage.flatMap((item) => item.estimatedVisibleObjects === null ? [] : [item.estimatedVisibleObjects]);
+  const refined = results.some(({ tile }) => tile.id !== 'full');
   const notes = Array.from(new Set([
-    'Deteccion refinada por zonas solapadas para reducir objetos mezclados.',
+    ...(failedTiles > 0 ? [`${failedTiles} zona${failedTiles === 1 ? '' : 's'} sin analizar; se conservan los resultados disponibles. Acerca esa parte de la imagen y vuelve a escanear.`] : []),
+    ...(refined ? ['Deteccion refinada por zonas solapadas para reducir objetos mezclados.'] : []),
     ...(capped ? ['Quedan objetos fuera del limite de este lote; acerca la imagen y escanea otra zona.'] : []),
     ...tileCoverage.flatMap((item) => item.notes),
   ])).slice(0, 5);
@@ -427,17 +430,17 @@ export const mergeWineDetectionTileResults = (
     coverage: {
       status,
       detectedObjects: regions.length,
-      estimatedVisibleObjects: status === 'reported_complete'
+      estimatedVisibleObjects: failedTiles > 0 ? null : status === 'reported_complete'
         ? regions.length
         : estimates.length
           ? Math.max(allRegions.length, ...estimates)
           : capped ? allRegions.length : null,
-      confidence: tileCoverage.every((item) => item.confidence !== null)
+      confidence: failedTiles === 0 && tileCoverage.every((item) => item.confidence !== null)
         ? Math.min(...tileCoverage.map((item) => item.confidence as number))
         : null,
       notes,
     },
-    refined: true,
+    refined,
   };
 };
 

@@ -1,5 +1,17 @@
 # Matchrim next steps
 
+## Latest gate: uploaded75 / local76, 2026-10-08
+
+1. Confirm processing/availability of build75 in TestFlight after App Store Connect login. Upload already succeeded; do not upload75 again or claim it is on the phone without verification.
+2. Preserve the uploaded75 binary. Post-upload regional fallback and literal-source deduplication fixes belong to local candidate76, not75.
+3. Continue dense-scene identity/recall and independent human annotation work using the existing dataset. Do not mistake the 17-to-16 recorded menu replay for a new model benchmark. Existing live-request budget remains 289/300; no additional remote vision requests in this remediation.
+4. Finish the residual physical, authenticated-persistence and real personalized-ranking validation gates below. Existing functional mocks/synthetic personas are not real human feedback.
+5. Only upload another candidate under the applicable owner authorization and documented quality/distribution gate. Published web stays unchanged.
+
+See [MATCHRIM_76_REMEDIATION_2026-10-08.md](docs/MATCHRIM_76_REMEDIATION_2026-10-08.md).
+
+## Historical pre-upload gate
+
 ## Active gate: 2026-10-08
 
 1. Preserve candidate75 and its evidence. Do not repeat integration or regenerate datasets. Correct remaining dense-scene identity/recall and first-menu duplicates; verify improvements on one frozen source revision.

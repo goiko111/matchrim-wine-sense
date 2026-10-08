@@ -720,7 +720,7 @@ def run_regional_detection_fallback_qa(browser, results):
                 },
                 "regions": [{
                     "object_type": "bottle",
-                    "box": {"x": 12, "y": 10, "width": 18, "height": 74},
+                    "box": {"x": 70 if tile == "full" else 12, "y": 10, "width": 18, "height": 74},
                     "confidence": 0.84,
                     "quality": {"glare": "low", "occlusion": "low", "legibility": "good"},
                 }],
@@ -736,15 +736,18 @@ def run_regional_detection_fallback_qa(browser, results):
     page.get_by_text("Lote listo para revisar").wait_for(timeout=30_000)
     summary = page.get_by_test_id("scan-performance-summary").inner_text()
     assert attempts == {"full": 1, "left": 1, "right": 2}, attempts
-    assert "1 regiones" in summary, summary
-    assert "detección refinada por zonas" not in summary, summary
+    assert "2 regiones" in summary, summary
+    assert "detección refinada por zonas" in summary, summary
+    assert page.get_by_text("Cobertura parcial", exact=True).count() == 1
+    assert page.get_by_text("1 zona sin analizar", exact=False).count() == 1
     assert page.get_by_text("Botella full conservada", exact=True).count() >= 1
     assert all("Failed to load resource" in message for message in expected_console_errors), expected_console_errors
     results.append({
         "case": "multietiqueta_fallback_regional",
-        "expected": "si una zona falla tras retry se conserva la deteccion completa utilizable",
+        "expected": "si una zona falla tras retry se conservan full y zona util, avisando cobertura parcial",
         "actual": f"PASS attempts={attempts} summary={summary}",
     })
+    page.screenshot(path=str(ARTIFACTS / "multi-label-partial-region-recovery-mobile.png"), full_page=True)
     context.close()
 
 
@@ -944,6 +947,44 @@ def run_menu_qa(browser, results, console_errors):
     context.close()
 
 
+def run_menu_recorded_trace_qa(browser, results, console_errors):
+    trace_path = os.environ.get("MATCHRIM_QA_MENU_TRACE")
+    if not trace_path:
+        raise ValueError("MATCHRIM_QA_MENU_TRACE is required for recorded-menu QA")
+    calls = json.loads(Path(trace_path).read_text())
+    by_tile = {call["request_payload"]["scan_region"]["id"]: call for call in calls}
+    observed = []
+
+    def recorded_response(endpoint, request):
+        if endpoint != "scan-wine-menu":
+            return function_response(endpoint, request)
+        tile_id = request.post_data_json.get("scan_region", {}).get("id", "full")
+        observed.append(tile_id)
+        call = by_tile[tile_id]
+        return call["status"], call["payload"], {}
+
+    context = browser.new_context(viewport={"width": 393, "height": 852}, is_mobile=True, has_touch=True)
+    page = context.new_page()
+    recorded_errors = []
+    install_routes(page, recorded_errors, response_handler=recorded_response)
+    page.goto(f"{BASE_URL}/escanear/carta-vinos", wait_until="networkidle")
+    page.locator('input[type="file"]').nth(0).set_input_files(str(MENU_FIXTURES[0]))
+    page.get_by_text("16 resultados", exact=True).wait_for(timeout=60_000)
+    assert "Laurent Perrier Ultra Brut" not in page.locator("body").inner_text()
+    page.locator('button[aria-label^="Abrir vino "][aria-label$=": Laurent Perriere Ultra"]').click()
+    drawer = page.get_by_role("dialog")
+    drawer.get_by_text("Nombre discrepante entre recortes; se conserva la lectura literal. Confirma la referencia antes de puntuar.", exact=False).wait_for()
+    affinity = drawer.get_by_text("Afinidad estimada", exact=True).locator("..")
+    assert "%" not in affinity.inner_text(), affinity.inner_text()
+    page.screenshot(path=str(ARTIFACTS / "wine-menu-recorded-name-conflict-mobile.png"), full_page=False)
+    (ARTIFACTS / "recorded-console.json").write_text(json.dumps(recorded_errors, indent=2))
+    # Only the known injected HTTP500 is expected; retain all other errors.
+    console_errors.extend(message for message in recorded_errors if "500" not in message)
+    results.append({"case": "carta_respuesta_real_grabada", "expected": "16 entradas, nombre literal sin Brut inferido y sin afinidad heredada", "actual": f"PASS tiles={observed}; offline replay, no new model request"})
+    assert_no_horizontal_overflow(page, "recorded menu mobile")
+    context.close()
+
+
 def run_menu_money_qa(browser, results, console_errors):
     for currency in ("GBP", None):
         def money_response(endpoint, request):
@@ -1105,7 +1146,9 @@ def main():
         if CHROME:
             launch_options["executable_path"] = CHROME
         browser = playwright.chromium.launch(**launch_options)
-        if QA_ONLY == "identity-recovery-actions":
+        if QA_ONLY == "recorded-menu":
+            run_menu_recorded_trace_qa(browser, results, console_errors)
+        elif QA_ONLY == "identity-recovery-actions":
             run_identity_recovery_actions_qa(browser, results, console_errors)
         elif QA_ONLY == "region-trace-alignment":
             run_region_trace_alignment_qa(browser, results, console_errors)

@@ -40,4 +40,4 @@ try {
   for (const [file, bytes] of configs) fs.writeFileSync(file, bytes);
 }
 if (!fs.existsSync('ios/App/App/public/index.html')) throw new Error('Native assets were not copied');
-console.log('Production candidate 75 assets ready; versioned catalog75/affinity73/vision72, public schema, no fixtures.');
+console.log('Production candidate assets ready; versioned catalog75/affinity73/vision72, public schema, no fixtures.');

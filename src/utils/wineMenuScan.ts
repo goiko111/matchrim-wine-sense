@@ -190,7 +190,24 @@ const hasConflictingVariant = (left: MenuScanWine, right: MenuScanWine) => {
     && !(a.includes(word) ? b : a).some((fragment) => fragment.length >= 3 && word.startsWith(fragment)));
 };
 
+const sourceHeading = (wine: MenuScanWine) => normalizeText((wine.texto_fuente || '')
+  .split(/\r?\n|\b(?:zona|zone|uva|grapes?|crianza|aging)\s*[:/]/i)[0]);
+
+const sameLiteralSourceRow = (left: MenuScanWine, right: MenuScanWine) => {
+  const heading = sourceHeading(left);
+  const a = positionAnchor(left);
+  const b = positionAnchor(right);
+  const producer = normalizeText(left.productor);
+  return heading.length >= 12 && heading === sourceHeading(right)
+    && [normalizeText(left.nombre), normalizeText(right.nombre)].includes(heading)
+    && Boolean(producer && producer === normalizeText(right.productor))
+    && !(left.anada && right.anada && left.anada !== right.anada)
+    && !(left.tipo && right.tipo && left.tipo !== right.tipo)
+    && Boolean(a && b && Math.abs(a.x - b.x) <= 25 && Math.abs(a.y - b.y) <= 2.5);
+};
+
 const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
+  if (sameLiteralSourceRow(left, right)) return true;
   if (hasConflictingVariant(left, right)) return false;
   const normalizedLeftName = normalizeText(left.nombre);
   const normalizedRightName = normalizeText(right.nombre);
@@ -300,7 +317,12 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
 };
 
 const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
-  const preferred = (right.confidence ?? 0) > (left.confidence ?? 0) ? right : left;
+  const nameDisagreement = normalizeText(left.nombre) !== normalizeText(right.nombre)
+    && sameLiteralSourceRow(left, right);
+  // A model-expanded name must not outrank the literal line just by confidence.
+  const preferred = nameDisagreement
+    ? (sourceHeading(left) === normalizeText(left.nombre) ? left : right)
+    : (right.confidence ?? 0) > (left.confidence ?? 0) ? right : left;
   const fallback = preferred === left ? right : left;
   const conflictingPrice = typeof left.precio === 'number' && typeof right.precio === 'number'
     && Math.abs(left.precio - right.precio) > 0.5
@@ -315,6 +337,13 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
   return {
     ...fallback,
     ...preferred,
+    ...(nameDisagreement ? {
+      confidence: Math.min(left.confidence ?? 0, right.confidence ?? 0),
+      compatibilidad: null,
+      atributos: null,
+      razon: null,
+      affinity_calibrated: false,
+    } : {}),
     productor: preferred.productor || fallback.productor,
     anada: preferred.anada ?? fallback.anada,
     region: preferred.region || fallback.region,
@@ -333,10 +362,11 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
     posicion: preferred.posicion || fallback.posicion,
     dudas: Array.from(new Set([
       ...(left.dudas ?? []), ...(right.dudas ?? []),
+      ...(nameDisagreement ? ['Nombre discrepante entre recortes; se conserva la lectura literal. Confirma la referencia antes de puntuar.'] : []),
       ...(conflictingPrice ? ['Precio contradictorio entre recortes; revisa la carta.'] : []),
       ...(conflictingCurrency ? ['Moneda contradictoria entre recortes; revisa la carta.'] : []),
     ])),
-    campos_inferidos: Array.from(new Set([...(left.campos_inferidos ?? []), ...(right.campos_inferidos ?? [])])),
+    campos_inferidos: Array.from(new Set([...(left.campos_inferidos ?? []), ...(right.campos_inferidos ?? []), ...(nameDisagreement ? ['nombre'] : [])])),
   };
 };
 

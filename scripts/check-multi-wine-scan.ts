@@ -224,6 +224,29 @@ const mergedDetection = mergeWineDetectionTileResults([
 ]);
 assert.equal(mergedDetection.regions.length, 1, 'overlap tiles should not duplicate the same bottle');
 assert.equal(mergedDetection.coverage.status, 'reported_complete');
+const partialRefinement = mergeWineDetectionTileResults([
+  {
+    tile: getFullWineDetectionTile(),
+    payload: { coverage: { status: 'reported_complete', estimated_visible_objects: 1, confidence: 0.9 },
+      regions: [{ object_type: 'bottle', box: { x: 70, y: 10, width: 15, height: 70 }, confidence: 0.8 }] },
+  },
+  {
+    tile: detectionTiles[0],
+    payload: { coverage: { status: 'reported_complete', estimated_visible_objects: 1, confidence: 0.9 },
+      regions: [{ object_type: 'bottle', box: { x: 10, y: 10, width: 15, height: 70 }, confidence: 0.8 }] },
+  },
+], { failedTiles: 1 });
+assert.equal(partialRefinement.regions.length, 2, 'a successful tile must keep its extra bottle when another tile fails');
+assert.equal(partialRefinement.coverage.status, 'partial', 'failed tiles cannot claim complete coverage');
+assert.equal(partialRefinement.coverage.confidence, null, 'successful crop confidence is not full-scene confidence');
+assert.ok(partialRefinement.coverage.notes.some(note => note.includes('1 zona')));
+const allTilesFailed = mergeWineDetectionTileResults([{
+  tile: getFullWineDetectionTile(),
+  payload: { regions: [{ box: { x: 10, y: 10, width: 15, height: 70 }, confidence: 0.8 }] },
+}], { failedTiles: 2 });
+assert.equal(allTilesFailed.regions.length, 1, 'keep full-frame detections when all refinements fail');
+assert.equal(allTilesFailed.refined, false);
+assert.equal(allTilesFailed.coverage.status, 'partial');
 
 const denseGridRegions = Array.from({ length: 48 }, (_, index) => ({
   object_type: 'bottle',
@@ -436,6 +459,28 @@ const adjacentDistinctCuvees = mergeMenuTileResults([{
   ] },
 }]);
 assert.equal(adjacentDistinctCuvees.vinos?.length, 2, 'nearby distinct names cannot merge merely because producer words overlap');
+const literalMenuRows: MenuScanWine[] = [
+  { ...menuWine('Laurent Perriere Ultra', 52.8, 16.52, 'Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha'),
+    productor: 'Laurent-Perrier', confidence: 0.55, compatibilidad: 69,
+    posicion: { x: 52.8, y: 16.52, width: 26, height: 3.808 } },
+  { ...menuWine('Laurent Perrier Ultra Brut', 81.532, 18.2, 'Laurent Perriere Ultra\nZona/zone: Champagne\nUva/grapes: Pinot noir, cha'),
+    productor: 'Laurent Perrier', confidence: 0.9, compatibilidad: 90,
+    posicion: { x: 81.532, y: 18.2, width: 16.596, height: 4.9 } },
+];
+const literalMerge = mergeMenuTileResults([{tile: { id: 'full', box: {x:0,y:0,width:100,height:100} }, response: {vinos:literalMenuRows}}]);
+assert.equal(literalMerge.vinos?.length, 1, 'same literal row from nearby crops is one result despite model-expanded name');
+assert.equal(literalMerge.vinos?.[0].nombre, 'Laurent Perriere Ultra', 'preserve literal OCR, not an unobserved qualifier');
+assert.equal(literalMerge.vinos?.[0].compatibilidad, null, 'name disagreement invalidates derived affinity');
+assert.ok(literalMerge.vinos?.[0].dudas?.some(doubt => doubt.includes('Nombre')));
+assert.ok((literalMerge.vinos?.[0].confidence ?? 1) <= 0.55);
+for (const patch of [
+  {anada: 2022}, {productor:'Another winery'}, {posicion:{x:80,y:70,width:15,height:4}},
+  {texto_fuente:'Laurent Perrier La Cuvee\nZona: Champagne'},
+]) {
+  assert.equal(mergeMenuTileResults([{tile:{id:'full',box:{x:0,y:0,width:100,height:100}},
+    response:{vinos:[literalMenuRows[0],{...literalMenuRows[1],...patch}]}}]).vinos?.length,2,
+  'do not collapse different vintage/producer/row/source to improve a metric');
+}
 assert.equal(mappedRightWine.posicion?.x, 46.8);
 assert.equal(mappedRightWine.posicion?.width, 11.2);
 const conflictingRowPrices = mergeMenuTileResults([{

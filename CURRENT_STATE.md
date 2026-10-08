@@ -1,8 +1,18 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-08, uploaded 75 / local remediation 76
+
+- Explicit owner request superseded the earlier upload HOLD. Apple accepted **1.0 (75)** at 10:39:36 Europe/Madrid: `Upload succeeded`, `Uploaded package is processing`, exit 0. Internal TestFlight only; availability after processing is not verified because the ASC browser session needs login.
+- Uploaded source remains `f5a37da968da202bd1dafd9eae05ae935d4939bc`. No web publication, no extra tester invitations, no further backend deployment.
+- Build76 is a separate local candidate. It preserves successful regional detections after another tile fails, labels coverage partial, and resolves matching literal menu rows conservatively without inheriting a disputed affinity score.
+- Recorded first-menu response replay: 17 rows -> 16 rows; this is offline postprocessing verification, NOT a fresh recognition benchmark or proof of canonical identity.
+- Full functional UI suite: 31/31 using controlled backend responses. Release contracts, typecheck, lint and web build pass. Native QA and targeted recorded-menu UI evidence are documented in the remediation report.
+- All unresolved independent-recognition and real-human recommendation gates below remain open. Upload authorization is not quality certification.
+- Current report: [MATCHRIM_76_REMEDIATION_2026-10-08.md](docs/MATCHRIM_76_REMEDIATION_2026-10-08.md).
+
 ## Current checkpoint: 2026-10-08, candidate 75
 
-The sections below dated 2026-10-01 are historical, not the current release gate.
+The checkpoint immediately below is the historical pre-upload decision, superseded administratively by the owner's explicit request above. Its quality findings remain valid. Sections dated 2026-10-01 are older history.
 
 - Candidate `1.0 (75)` is built/signed, installed directly as a development build on the connected iPhone, and **not uploaded to TestFlight**. Last historical upload receipt available is 73; current ASC readback was not performed.
 - Native main menu contains aiRIM with a speech-bubble icon. Six-step guide, safe-area/privacy and honest identity/affinity states are integrated.
