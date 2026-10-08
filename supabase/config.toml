@@ -13,3 +13,6 @@ verify_jwt = true
 
 [functions.calculate-wine-affinity-v73]
 verify_jwt = true
+
+[functions.search-wines-v75]
+verify_jwt = true
