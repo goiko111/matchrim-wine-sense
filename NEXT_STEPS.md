@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, local79 candidate
+
+1. Local queue checkpoints completed: dense crop/cost contract, literal menu dedup/food evidence, shared learned profile, same-scan food save/isolation. Do not repeat completed UI suites by inertia.
+2. Remaining data/runtime gates: canonical sensory response contract, independent detection/identity ground truth and approved live recognition; hosted multi-account persistence/idempotency and physical accessibility. Preserve28 unused vision calls and frozen corpus.
+3. Review wider legacy/Sonner toast delivery separately; critical scanner save errors now persist visibly. No generic backend idempotency/schema migration was deployed.
+4. Candidate79 is unsigned simulator-only, not TestFlight-ready. Existing tester invitation is unsent; owner Apple sign-in intervention already recorded. Current assignment authorizes no distribution/push/production action.
+
 ## Current delta: 2026-10-11, profile parity
 
 1. Shared scan profile and explanation inputs now verified locally; catalog sensory coverage/provenance remains a real-data gate (zero complete sensory sheets in138 recorded rows).

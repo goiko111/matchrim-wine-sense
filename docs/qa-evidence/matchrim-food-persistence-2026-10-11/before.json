@@ -1,0 +1,238 @@
+{
+  "scope": "Intercepted food-save regression; synthetic account, no remote writes or vision.",
+  "remote_calls": 0,
+  "results": [
+    {
+      "case": "wishlist-favorite",
+      "passed": false,
+      "error": "duplicate insert for one suggestion: [{'method': 'POST', 'body': {'user_id': '00000000-0000-4000-8000-000000000079', 'name': 'Blanco fresco', 'producer': None, 'vintage': None, 'region': None, 'country': None, 'grape_varieties': ['Albarino'], 'tasting_notes': 'Hipotesis de maridaje, no identidad.', 'status': 'wishlist', 'is_favorite': False, 'matchrim_affinity': None, 'sensory_attributes': None, 'use_for_profile_training': False, 'consumption_place': None, 'consumption_place_type': None, 'place_details': {'source': 'food_pairing_scanner', 'scan_mode': 'menu', 'dish_name': 'Dorada', 'dish_category': 'Pescado', 'dish_match': None, 'evidence': 'unverified_style_suggestion'}}, 'query': {}}, {'method': 'POST', 'body': {'user_id': '00000000-0000-4000-8000-000000000079', 'name': 'Blanco fresco', 'producer': None, 'vintage': None, 'region': None, 'country': None, 'grape_varieties': ['Albarino'], 'tasting_notes': 'Hipotesis de maridaje, no identidad.', 'status': 'wishlist', 'is_favorite': True, 'matchrim_affinity': None, 'sensory_attributes': None, 'use_for_profile_training': False, 'consumption_place': None, 'consumption_place_type': None, 'place_details': {'source': 'food_pairing_scanner', 'scan_mode': 'menu', 'dish_name': 'Dorada', 'dish_category': 'Pescado', 'dish_match': None, 'evidence': 'unverified_style_suggestion'}}, 'query': {}}]",
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": true,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {}
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "favorite-first",
+      "passed": false,
+      "error": "Locator.is_disabled: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"En Quiero Probar\", exact=True)\n",
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": true,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {}
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "failed-update-retry",
+      "passed": false,
+      "error": "Locator.wait_for: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_text(\"No se pudo guardar la recomendaci\u00f3n\", exact=True) to be visible\n",
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": true,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {}
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "pending-save",
+      "passed": false,
+      "error": "second mutation allowed during save",
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {}
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "signout-result",
+      "passed": false,
+      "error": "old account scan survives sign-out",
+      "writes": [],
+      "errors": []
+    },
+    {
+      "case": "signout-pending-scan",
+      "passed": false,
+      "error": "old account scan survives sign-out",
+      "writes": [],
+      "errors": []
+    }
+  ]
+}

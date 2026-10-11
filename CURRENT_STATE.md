@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, local79 persistence
+
+- Same-scan food suggestion wishlist/favourite now uses one row, owner-scoped updates, serialized saves and confirmed success. Sign-out clears results and aborts pending scan; errors visible above navigation.
+- Red baseline6/6 failures; final7/7 controlled cases +10/10 food regression pass. Full release/typecheck/focused lint/web PASS; final unsigned simulator79 rebuilt, not installed/uploaded. No live writes or vision calls.
+- Report: [MATCHRIM_FOOD_PERSISTENCE_2026-10-11.md](docs/MATCHRIM_FOOD_PERSISTENCE_2026-10-11.md). Cross-session idempotency, hosted RLS/persistence, catalog sensory coverage, live recognition and physical accessibility remain separate gates. Invitation still unsent; no Apple action.
+
 ## Latest checkpoint: 2026-10-11, profile parity / local79
 
 - Label/menu use the same owner-scoped learned snapshot for scoring and explanation. Five displayed weights now match the existing equal-weight calculation. Auth failures cannot reuse stale local quiz; five-second profile timeout, account-state and feedback isolation verified.

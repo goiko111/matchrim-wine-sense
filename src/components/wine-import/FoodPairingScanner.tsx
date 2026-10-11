@@ -41,13 +41,19 @@ const processingSteps: Record<FoodScanMode, string[]> = {
   dish: ["Analizando el plato...", "Leyendo textura e intensidad...", "Buscando vinos que encajen contigo..."],
 };
 
-export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockMode = false }: FoodPairingScannerProps) => {
+export const FoodPairingScanner = (props: FoodPairingScannerProps) => {
+  const { user } = useAuth();
+  return <FoodPairingScannerSession key={JSON.stringify([user?.id ?? 'anonymous', props.initialMode, props.restaurantName])} {...props} />;
+};
+
+const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockMode = false }: FoodPairingScannerProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const errorRef = useRef<HTMLDivElement>(null);
+  const saveErrorRef = useRef<HTMLParagraphElement>(null);
   const [mode, setMode] = useState<FoodScanMode>(initialMode);
   const [loading, setLoading] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
@@ -56,14 +62,19 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
   const [result, setResult] = useState<FoodScanResult | null>(null);
   const [savingKey, setSavingKey] = useState<string | null>(null);
   const [savedKeys, setSavedKeys] = useState<Set<string>>(new Set());
+  const [saveError, setSaveError] = useState<{ rowKey: string; message: string } | null>(null);
+  const savedRows = useRef(new Map<string, string>());
+  const savingRef = useRef(false);
+  const mountedRef = useRef(true);
+  const scanController = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    setMode(initialMode);
-    setScanError(null);
-    setResult(null);
-    setPreview(null);
-    setSavedKeys(new Set());
-  }, [initialMode]);
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      scanController.current?.abort();
+    };
+  }, []);
 
   useEffect(() => {
     if (!loading) {
@@ -90,12 +101,21 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     if (scanError && !loading) errorRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
   }, [scanError, loading]);
 
+  useEffect(() => {
+    if (saveError) saveErrorRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [saveError]);
+
   const selectMode = (nextMode: FoodScanMode) => {
+    if (savingRef.current) return;
+    scanController.current?.abort();
+    setLoading(false);
     setScanError(null);
     setMode(nextMode);
     setResult(null);
     setPreview(null);
     setSavedKeys(new Set());
+    setSaveError(null);
+    savedRows.current.clear();
     trackAppEvent("scan_option_selected", {
       userId: user?.id,
       metadata: { option: nextMode === "menu" ? "food_menu" : "dish_photo" },
@@ -107,7 +127,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     source: "camera" | "file"
   ) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file || savingRef.current) return;
 
     const isImage = file.type.startsWith("image/");
     const isPdf = file.type === "application/pdf";
@@ -128,10 +148,16 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     setScanError(null);
     setResult(null);
     setSavedKeys(new Set());
+    setSaveError(null);
+    savedRows.current.clear();
+    scanController.current?.abort();
+    const controller = new AbortController();
+    scanController.current = controller;
 
     try {
       const imageFile = isPdf ? await convertPdfFirstPageToImageFile(file, "menu-page.jpg") : file;
       const { dataUrl: image } = await prepareImageForAnalysis(imageFile);
+      if (controller.signal.aborted) return;
       setPreview(image);
       trackAppEvent("food_scan_started", {
         userId: user?.id,
@@ -145,8 +171,10 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
 
       const { data, error } = await supabase.functions.invoke("scan-food-pairing", {
         body: { image, mode, restaurantName, matchrimProfile: readMatchrimLocalProfile() },
+        signal: controller.signal,
       });
 
+      if (controller.signal.aborted) return;
       if (error) throw error;
 
       const scanResult = parseFoodScanResponse(data);
@@ -170,6 +198,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
         toast.info("No he podido detectar platos claros. Prueba con una foto más cercana.");
       }
     } catch (error) {
+      if (controller.signal.aborted) return;
       if (error instanceof FoodScanResponseError) console.warn("Invalid food scan response");
       else console.error("Error scanning food pairing:", error);
       const message = error instanceof Error ? error.message : "No se pudo analizar la imagen";
@@ -180,14 +209,17 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
       });
       toast.error(message);
     } finally {
-      setLoading(false);
-      if (event.target) event.target.value = "";
+      if (!controller.signal.aborted) {
+        setLoading(false);
+        if (event.target) event.target.value = "";
+      }
     }
   };
 
   const saveRecommendation = async (
     dish: FoodDishResult,
     recommendation: FoodWineRecommendation,
+    dishIndex: number,
     recommendationIndex: number,
     favorite = false
   ) => {
@@ -196,11 +228,19 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
       return;
     }
 
-    const saveKey = `${favorite ? "favorite" : "wishlist"}-${dish.nombre}-${recommendation.nombre}-${recommendationIndex}`;
+    const rowKey = `${dishIndex}-${recommendationIndex}`;
+    const saveKey = `${favorite ? "favorite" : "wishlist"}-${rowKey}`;
+    if (savingRef.current || savedKeys.has(saveKey)) return;
+    savingRef.current = true;
+    setSaveError(null);
     setSavingKey(saveKey);
 
     try {
-      const { error } = await supabase
+      const existingId = savedRows.current.get(rowKey);
+      // A favourite is a flag on the same saved idea, not a second wine.
+      const mutation = existingId
+        ? supabase.from("user_wines").update({ is_favorite: true }).eq('id', existingId).eq('user_id', user.id)
+        : supabase
         .from("user_wines")
         .insert({
           user_id: user.id,
@@ -227,10 +267,14 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
             evidence: 'unverified_style_suggestion',
           } as Json,
         });
+      const { data, error } = await mutation.select('id').single();
 
       if (error) throw error;
+      if (!data?.id) throw new Error('Saved recommendation not confirmed');
+      if (!mountedRef.current) return;
+      savedRows.current.set(rowKey, data.id);
 
-      setSavedKeys((current) => new Set(current).add(saveKey));
+      setSavedKeys((current) => new Set(current).add(`wishlist-${rowKey}`).add(saveKey));
       trackAppEvent("wine_saved", {
         userId: user.id,
         metadata: {
@@ -247,18 +291,26 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           : `${recommendation.nombre} guardado en Quiero Probar`
       );
     } catch (error) {
+      if (!mountedRef.current) return;
       console.error("Error saving food recommendation:", error);
+      setSaveError({ rowKey, message: "No se pudo guardar la recomendación" });
       toast.error("No se pudo guardar la recomendación");
     } finally {
-      setSavingKey(null);
+      savingRef.current = false;
+      if (mountedRef.current) setSavingKey(null);
     }
   };
 
   const clearScan = () => {
+    if (savingRef.current) return;
+    scanController.current?.abort();
+    setLoading(false);
     setScanError(null);
     setPreview(null);
     setResult(null);
     setSavedKeys(new Set());
+    setSaveError(null);
+    savedRows.current.clear();
   };
 
   const currentStep = processingSteps[mode][stepIndex];
@@ -272,6 +324,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
             variant={mode === "menu" ? "default" : "ghost"}
             className={mode === "menu" ? "bg-red-900 hover:bg-red-950" : "text-slate-700"}
             onClick={() => selectMode("menu")}
+            disabled={Boolean(savingKey)}
           >
             <BookOpen className="mr-2 h-4 w-4" />
             Menú
@@ -281,6 +334,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
             variant={mode === "dish" ? "default" : "ghost"}
             className={mode === "dish" ? "bg-red-900 hover:bg-red-950" : "text-slate-700"}
             onClick={() => selectMode("dish")}
+            disabled={Boolean(savingKey)}
           >
             <ChefHat className="mr-2 h-4 w-4" />
             Plato
@@ -311,7 +365,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           accept={mode === "menu" ? "image/*,application/pdf" : "image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"}
           onChange={(event) => handleFileSelect(event, "file")}
           className="hidden"
-          disabled={loading}
+          disabled={loading || Boolean(savingKey)}
         />
         <input
           ref={cameraInputRef}
@@ -320,7 +374,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           capture="environment"
           onChange={(event) => handleFileSelect(event, "camera")}
           className="hidden"
-          disabled={loading}
+          disabled={loading || Boolean(savingKey)}
         />
         {preview ? (
           <div className="space-y-4">
@@ -339,6 +393,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                   title="Elegir otra imagen"
                   className="absolute right-3 top-3 h-11 w-11 rounded-md"
                   onClick={clearScan}
+                  disabled={Boolean(savingKey)}
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -447,8 +502,8 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                 </div>
 
                 {dish.recomendaciones.map((recommendation, recommendationIndex) => {
-                  const saveKey = `wishlist-${dish.nombre}-${recommendation.nombre}-${recommendationIndex}`;
-                  const favoriteSaveKey = `favorite-${dish.nombre}-${recommendation.nombre}-${recommendationIndex}`;
+                  const saveKey = `wishlist-${dishIndex}-${recommendationIndex}`;
+                  const favoriteSaveKey = `favorite-${dishIndex}-${recommendationIndex}`;
                   const isSaved = savedKeys.has(saveKey);
                   const isFavoriteSaved = savedKeys.has(favoriteSaveKey);
 
@@ -485,8 +540,8 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                           type="button"
                           variant={isSaved ? "secondary" : "outline"}
                           className="gap-2"
-                          disabled={isSaved || savingKey === saveKey}
-                          onClick={() => saveRecommendation(dish, recommendation, recommendationIndex)}
+                          disabled={isSaved || Boolean(savingKey)}
+                          onClick={() => saveRecommendation(dish, recommendation, dishIndex, recommendationIndex)}
                         >
                           {isSaved ? (
                             <CheckCircle className="h-4 w-4 text-green-700" />
@@ -501,8 +556,8 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                           type="button"
                           variant={isFavoriteSaved ? "secondary" : "outline"}
                           className="gap-2"
-                          disabled={isFavoriteSaved || savingKey === favoriteSaveKey}
-                          onClick={() => saveRecommendation(dish, recommendation, recommendationIndex, true)}
+                          disabled={isFavoriteSaved || Boolean(savingKey)}
+                          onClick={() => saveRecommendation(dish, recommendation, dishIndex, recommendationIndex, true)}
                         >
                           {isFavoriteSaved ? (
                             <CheckCircle className="h-4 w-4 text-green-700" />
@@ -523,6 +578,9 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                           Preguntar a aiRIM
                         </Button>
                       </div>
+                      {saveError?.rowKey === `${dishIndex}-${recommendationIndex}` && (
+                        <p ref={saveErrorRef} role="alert" className="mt-2 text-sm text-red-800">{saveError.message}</p>
+                      )}
                     </div>
                   );
                 })}

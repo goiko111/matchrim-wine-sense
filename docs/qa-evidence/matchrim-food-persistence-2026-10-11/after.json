@@ -1,0 +1,313 @@
+{
+  "scope": "Intercepted food-save regression; synthetic account, no remote writes or vision.",
+  "remote_calls": 0,
+  "results": [
+    {
+      "case": "wishlist-favorite",
+      "passed": true,
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {
+            "select": [
+              "id"
+            ]
+          }
+        },
+        {
+          "method": "PATCH",
+          "body": {
+            "is_favorite": true
+          },
+          "query": {
+            "id": [
+              "eq.synthetic-row"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000079"
+            ],
+            "select": [
+              "id"
+            ]
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "favorite-first",
+      "passed": true,
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": true,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {
+            "select": [
+              "id"
+            ]
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "failed-update-retry",
+      "passed": true,
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {
+            "select": [
+              "id"
+            ]
+          }
+        },
+        {
+          "method": "PATCH",
+          "body": {
+            "is_favorite": true
+          },
+          "query": {
+            "id": [
+              "eq.synthetic-row"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000079"
+            ],
+            "select": [
+              "id"
+            ]
+          }
+        },
+        {
+          "method": "PATCH",
+          "body": {
+            "is_favorite": true
+          },
+          "query": {
+            "id": [
+              "eq.synthetic-row"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000079"
+            ],
+            "select": [
+              "id"
+            ]
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "unconfirmed-update-retry",
+      "passed": true,
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {
+            "select": [
+              "id"
+            ]
+          }
+        },
+        {
+          "method": "PATCH",
+          "body": {
+            "is_favorite": true
+          },
+          "query": {
+            "id": [
+              "eq.synthetic-row"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000079"
+            ],
+            "select": [
+              "id"
+            ]
+          }
+        },
+        {
+          "method": "PATCH",
+          "body": {
+            "is_favorite": true
+          },
+          "query": {
+            "id": [
+              "eq.synthetic-row"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000079"
+            ],
+            "select": [
+              "id"
+            ]
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "pending-save",
+      "passed": true,
+      "writes": [
+        {
+          "method": "POST",
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000079",
+            "name": "Blanco fresco",
+            "producer": null,
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "tasting_notes": "Hipotesis de maridaje, no identidad.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "place_details": {
+              "source": "food_pairing_scanner",
+              "scan_mode": "menu",
+              "dish_name": "Dorada",
+              "dish_category": "Pescado",
+              "dish_match": null,
+              "evidence": "unverified_style_suggestion"
+            }
+          },
+          "query": {
+            "select": [
+              "id"
+            ]
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "signout-result",
+      "passed": true,
+      "writes": [],
+      "errors": []
+    },
+    {
+      "case": "signout-pending-scan",
+      "passed": true,
+      "writes": [],
+      "errors": []
+    }
+  ]
+}
