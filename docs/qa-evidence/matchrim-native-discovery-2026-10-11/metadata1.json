@@ -1,0 +1,533 @@
+{
+  "method": "Static plist/json/xcconfig reads and directory listings only; no Xcode/simctl service query",
+  "appProject": {
+    "projectConfigurations": [
+      {
+        "name": "Debug",
+        "settings": {
+          "SDKROOT": "iphoneos",
+          "IPHONEOS_DEPLOYMENT_TARGET": "14.0"
+        },
+        "baseConfiguration": null
+      },
+      {
+        "name": "Release",
+        "settings": {
+          "SDKROOT": "iphoneos",
+          "IPHONEOS_DEPLOYMENT_TARGET": "14.0"
+        },
+        "baseConfiguration": null
+      }
+    ],
+    "targets": [
+      {
+        "name": "App",
+        "productType": "com.apple.product-type.application",
+        "configurations": [
+          {
+            "name": "Debug",
+            "settings": {
+              "TARGETED_DEVICE_FAMILY": "1,2",
+              "PRODUCT_NAME": "$(TARGET_NAME)",
+              "IPHONEOS_DEPLOYMENT_TARGET": "14.0"
+            },
+            "baseConfiguration": "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"
+          },
+          {
+            "name": "Release",
+            "settings": {
+              "TARGETED_DEVICE_FAMILY": "1,2",
+              "PRODUCT_NAME": "$(TARGET_NAME)",
+              "IPHONEOS_DEPLOYMENT_TARGET": "14.0"
+            },
+            "baseConfiguration": "Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig"
+          }
+        ]
+      }
+    ]
+  },
+  "podsProject": {
+    "projectConfigurations": [
+      {
+        "name": "Debug",
+        "settings": {
+          "IPHONEOS_DEPLOYMENT_TARGET": "14.0",
+          "PRODUCT_NAME": "$(TARGET_NAME)"
+        },
+        "baseConfiguration": null
+      },
+      {
+        "name": "Release",
+        "settings": {
+          "IPHONEOS_DEPLOYMENT_TARGET": "14.0",
+          "PRODUCT_NAME": "$(TARGET_NAME)"
+        },
+        "baseConfiguration": null
+      }
+    ],
+    "targets": [
+      {
+        "name": "Capacitor",
+        "productType": "com.apple.product-type.framework",
+        "configurations": [
+          {
+            "name": "Debug",
+            "settings": {
+              "ENABLE_USER_SCRIPT_SANDBOXING": "NO",
+              "TARGETED_DEVICE_FAMILY": "1,2",
+              "SDKROOT": "iphoneos",
+              "PRODUCT_NAME": "Capacitor",
+              "IPHONEOS_DEPLOYMENT_TARGET": "14.0",
+              "ARCHS": "$(ARCHS_STANDARD_64_BIT)",
+              "SKIP_INSTALL": "YES"
+            },
+            "baseConfiguration": "Capacitor.debug.xcconfig"
+          },
+          {
+            "name": "Release",
+            "settings": {
+              "ENABLE_USER_SCRIPT_SANDBOXING": "NO",
+              "TARGETED_DEVICE_FAMILY": "1,2",
+              "SDKROOT": "iphoneos",
+              "PRODUCT_NAME": "Capacitor",
+              "IPHONEOS_DEPLOYMENT_TARGET": "14.0",
+              "ARCHS": "$(ARCHS_STANDARD_64_BIT)",
+              "SKIP_INSTALL": "YES"
+            },
+            "baseConfiguration": "Capacitor.release.xcconfig"
+          }
+        ]
+      },
+      {
+        "name": "CapacitorCordova",
+        "productType": "com.apple.product-type.framework",
+        "configurations": [
+          {
+            "name": "Debug",
+            "settings": {
+              "ENABLE_USER_SCRIPT_SANDBOXING": "NO",
+              "TARGETED_DEVICE_FAMILY": "1,2",
+              "SDKROOT": "iphoneos",
+              "PRODUCT_NAME": "Cordova",
+              "IPHONEOS_DEPLOYMENT_TARGET": "14.0",
+              "ARCHS": "$(ARCHS_STANDARD_64_BIT)",
+              "SKIP_INSTALL": "YES"
+            },
+            "baseConfiguration": "CapacitorCordova.debug.xcconfig"
+          },
+          {
+            "name": "Release",
+            "settings": {
+              "ENABLE_USER_SCRIPT_SANDBOXING": "NO",
+              "TARGETED_DEVICE_FAMILY": "1,2",
+              "SDKROOT": "iphoneos",
+              "PRODUCT_NAME": "Cordova",
+              "IPHONEOS_DEPLOYMENT_TARGET": "14.0",
+              "ARCHS": "$(ARCHS_STANDARD_64_BIT)",
+              "SKIP_INSTALL": "YES"
+            },
+            "baseConfiguration": "CapacitorCordova.release.xcconfig"
+          }
+        ]
+      },
+      {
+        "name": "Pods-App",
+        "productType": "com.apple.product-type.framework",
+        "configurations": [
+          {
+            "name": "Debug",
+            "settings": {
+              "ENABLE_USER_SCRIPT_SANDBOXING": "NO",
+              "TARGETED_DEVICE_FAMILY": "1,2",
+              "SDKROOT": "iphoneos",
+              "PRODUCT_NAME": "$(TARGET_NAME:c99extidentifier)",
+              "IPHONEOS_DEPLOYMENT_TARGET": "14.0",
+              "ARCHS": "$(ARCHS_STANDARD_64_BIT)",
+              "SKIP_INSTALL": "YES"
+            },
+            "baseConfiguration": "Pods-App.debug.xcconfig"
+          },
+          {
+            "name": "Release",
+            "settings": {
+              "ENABLE_USER_SCRIPT_SANDBOXING": "NO",
+              "TARGETED_DEVICE_FAMILY": "1,2",
+              "SDKROOT": "iphoneos",
+              "PRODUCT_NAME": "$(TARGET_NAME:c99extidentifier)",
+              "IPHONEOS_DEPLOYMENT_TARGET": "14.0",
+              "ARCHS": "$(ARCHS_STANDARD_64_BIT)",
+              "SKIP_INSTALL": "YES"
+            },
+            "baseConfiguration": "Pods-App.release.xcconfig"
+          }
+        ]
+      }
+    ]
+  },
+  "xcconfigPlatformOverrides": [
+    {
+      "file": "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig",
+      "relevant": []
+    },
+    {
+      "file": "Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig",
+      "relevant": []
+    },
+    {
+      "file": "Pods/Target Support Files/Capacitor/Capacitor.debug.xcconfig",
+      "relevant": []
+    },
+    {
+      "file": "Pods/Target Support Files/Capacitor/Capacitor.release.xcconfig",
+      "relevant": []
+    },
+    {
+      "file": "Pods/Target Support Files/CapacitorCordova/CapacitorCordova.debug.xcconfig",
+      "relevant": []
+    },
+    {
+      "file": "Pods/Target Support Files/CapacitorCordova/CapacitorCordova.release.xcconfig",
+      "relevant": []
+    }
+  ],
+  "schemeDirectories": {
+    "projectShared": {
+      "exists": false,
+      "error": "ENOENT"
+    },
+    "workspaceShared": {
+      "exists": false,
+      "error": "ENOENT"
+    }
+  },
+  "platforms": {
+    "iPhoneOS": {
+      "info": {
+        "CFBundleShortVersionString": "18.5",
+        "CFBundleIdentifier": "com.apple.platform.iphoneos",
+        "Description": "iOS",
+        "DefaultProperties": {
+          "DEFAULT_COMPILER": "com.apple.compilers.llvm.clang.1_0",
+          "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
+          "TARGETED_DEVICE_FAMILY": "1",
+          "GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]": "YES",
+          "COMPRESS_PNG_FILES": "YES",
+          "PLIST_FILE_OUTPUT_FORMAT": "binary",
+          "STRINGS_FILE_OUTPUT_ENCODING": "binary",
+          "ARCHS": "$(ARCHS_STANDARD)",
+          "SDKROOT": "iphoneos",
+          "INFOPLIST_OUTPUT_FORMAT": "binary",
+          "CODE_SIGN_CONTEXT_CLASS": "XCiPhoneOSCodeSignContext",
+          "DEPLOYMENT_TARGET_SETTING_NAME": "IPHONEOS_DEPLOYMENT_TARGET"
+        },
+        "AdditionalInfo": {
+          "DTXcodeBuild": "$(XCODE_PRODUCT_BUILD_VERSION)",
+          "DTPlatformVersion": "18.5",
+          "DTCompiler": "$(GCC_VERSION)",
+          "DTSDKName": "$(SDK_NAME)",
+          "BuildMachineOSBuild": "$(MAC_OS_X_PRODUCT_BUILD_VERSION)",
+          "DTPlatformName": "iphoneos",
+          "DTXcode": "$(XCODE_VERSION_ACTUAL)",
+          "DTPlatformBuild": "$(PLATFORM_PRODUCT_BUILD_VERSION)",
+          "DTSDKBuild": "$(SDK_PRODUCT_BUILD_VERSION)",
+          "CFBundleSupportedPlatforms": [
+            "iPhoneOS"
+          ],
+          "MinimumOSVersion": "$($(DEPLOYMENT_TARGET_SETTING_NAME))"
+        },
+        "CFBundleVersion": "18.5",
+        "OverrideProperties": {
+          "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
+          "SDKROOT": "iphoneos"
+        },
+        "FamilyPlatforms": {
+          "Device": "iphoneos",
+          "Simulator": "iphonesimulator"
+        },
+        "Name": "iphoneos",
+        "Version": "18.5",
+        "MinimumSDKVersion": "18.5",
+        "FamilyIdentifier": "iphoneos",
+        "FamilyDisplayName": "iOS",
+        "CFBundleDevelopmentRegion": "English",
+        "CFBundleName": "iOS Platform",
+        "Type": "Platform",
+        "Icon": "Icon.icns",
+        "Identifier": "com.apple.platform.iphoneos",
+        "FamilyName": "iOS"
+      },
+      "sdkDirectories": [
+        "iPhoneOS.sdk",
+        "iPhoneOS18.5.sdk"
+      ]
+    },
+    "iPhoneSimulator": {
+      "info": {
+        "CFBundleName": "iOS Simulator Platform",
+        "DefaultProperties": {
+          "GCC_OBJC_LEGACY_DISPATCH": "YES",
+          "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
+          "DEFAULT_COMPILER": "com.apple.compilers.llvm.clang.1_0",
+          "OBJC_ABI_VERSION": "2",
+          "AD_HOC_CODE_SIGNING_ALLOWED": "NO",
+          "TARGETED_DEVICE_FAMILY": "1",
+          "GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]": "YES",
+          "CODE_SIGNING_ALLOWED": "NO",
+          "COMPRESS_PNG_FILES": "YES",
+          "PLIST_FILE_OUTPUT_FORMAT": "binary",
+          "STRINGS_FILE_OUTPUT_ENCODING": "binary",
+          "ARCHS": "$(ARCHS_STANDARD)",
+          "SDKROOT": "iphonesimulator",
+          "INFOPLIST_OUTPUT_FORMAT": "binary",
+          "CODE_SIGN_CONTEXT_CLASS": "XCiPhoneSimulatorCodeSignContext",
+          "DEPLOYMENT_TARGET_SETTING_NAME": "IPHONEOS_DEPLOYMENT_TARGET"
+        },
+        "AdditionalInfo": {
+          "DTXcodeBuild": "$(XCODE_PRODUCT_BUILD_VERSION)",
+          "DTPlatformVersion": "18.5",
+          "DTCompiler": "$(GCC_VERSION)",
+          "DTSDKName": "$(SDK_NAME)",
+          "BuildMachineOSBuild": "$(MAC_OS_X_PRODUCT_BUILD_VERSION)",
+          "DTPlatformName": "iphonesimulator",
+          "DTXcode": "$(XCODE_VERSION_ACTUAL)",
+          "DTPlatformBuild": "$(PLATFORM_PRODUCT_BUILD_VERSION)",
+          "DTSDKBuild": "$(SDK_PRODUCT_BUILD_VERSION)",
+          "CFBundleSupportedPlatforms": [
+            "iPhoneSimulator"
+          ],
+          "MinimumOSVersion": "$($(DEPLOYMENT_TARGET_SETTING_NAME))"
+        },
+        "Icon": "Icon.icns",
+        "IsDeploymentPlatform": "NO",
+        "CFBundleDevelopmentRegion": "English",
+        "CFBundleVersion": "18.5",
+        "Identifier": "com.apple.platform.iphonesimulator",
+        "Name": "iphonesimulator",
+        "FamilyName": "iOS",
+        "Type": "Platform",
+        "CFBundleShortVersionString": "18.5",
+        "FamilyPlatforms": {
+          "Device": "iphoneos",
+          "Simulator": "iphonesimulator"
+        },
+        "MinimumSDKVersion": "18.5",
+        "RuntimeSystemSpecification": "rts.iphonesimulator",
+        "FamilyIdentifier": "iphoneos",
+        "CFBundleIdentifier": "com.apple.platform.iphonesimulator",
+        "Description": "iOS Simulator",
+        "FamilyDisplayName": "iOS",
+        "OverrideProperties": {
+          "VALID_ARCHS": "$(ARCHS_STANDARD)",
+          "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
+          "ARCHS": "$(ARCHS_STANDARD)",
+          "SDKROOT": "iphonesimulator"
+        },
+        "Version": "18.5"
+      },
+      "sdkDirectories": [
+        "iPhoneSimulator.sdk",
+        "iPhoneSimulator18.5.sdk"
+      ]
+    }
+  },
+  "simulatorSDK": {
+    "DisplayName": "Simulator - iOS 18.5",
+    "DefaultProperties": {
+      "TAPI_USE_SRCROOT": "YES",
+      "AD_HOC_CODE_SIGNING_ALLOWED": "YES",
+      "DEFAULT_COMPILER": "com.apple.compilers.llvm.clang.1_0",
+      "TEST_LIBRARY_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/usr/lib",
+      "DEPLOYMENT_TARGET_SUGGESTED_VALUES": [
+        "12.0",
+        "12.1",
+        "12.2",
+        "12.3",
+        "12.4",
+        "13.0",
+        "13.1",
+        "13.2",
+        "13.3",
+        "13.4",
+        "13.5",
+        "13.6",
+        "14.0",
+        "14.1",
+        "14.2",
+        "14.3",
+        "14.4",
+        "14.5",
+        "14.6",
+        "14.7",
+        "15.0",
+        "15.1",
+        "15.2",
+        "15.3",
+        "15.4",
+        "15.5",
+        "15.6",
+        "16.0",
+        "16.1",
+        "16.2",
+        "16.3",
+        "16.4",
+        "16.5",
+        "16.6",
+        "17.0",
+        "17.1",
+        "17.2",
+        "17.3",
+        "17.4",
+        "17.5",
+        "17.6",
+        "18.0",
+        "18.1",
+        "18.2",
+        "18.3",
+        "18.4",
+        "18.5"
+      ],
+      "TEST_FRAMEWORK_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks $(SDKROOT)/Developer/Library/Frameworks",
+      "CODE_SIGN_IDENTITY": "-",
+      "CODE_SIGNING_REQUIRED": "YES",
+      "TAPI_VERIFY_MODE": "Pedantic",
+      "SUPPORTED_DEVICE_FAMILIES": "1,2",
+      "PLATFORM_NAME": "iphonesimulator",
+      "ENTITLEMENTS_DESTINATION": "__entitlements",
+      "ENTITLEMENTS_REQUIRED": "YES",
+      "CODE_SIGN_ENTITLEMENTS": "",
+      "IPHONEOS_DEPLOYMENT_TARGET": "18.5",
+      "LLVM_TARGET_TRIPLE_SUFFIX": "-simulator",
+      "DEAD_CODE_STRIPPING": "YES"
+    },
+    "MinimalDisplayName": "Simulator - 18.5",
+    "Version": "18.5",
+    "IsBaseSDK": "YES",
+    "SupportedTargets": {
+      "iphonesimulator": {
+        "LLVMTargetTripleVendor": "apple",
+        "DeploymentTargetSettingName": "IPHONEOS_DEPLOYMENT_TARGET",
+        "SwiftConcurrencyMinimumDeploymentTarget": "15.0",
+        "Archs": [
+          "arm64",
+          "x86_64"
+        ],
+        "LLVMTargetTripleEnvironment": "simulator",
+        "ClangRuntimeLibraryPlatformName": "iossim",
+        "MaximumDeploymentTarget": "18.5.99",
+        "BuildVersionPlatformID": "7",
+        "DefaultDeploymentTarget": "18.5",
+        "LLVMTargetTripleSys": "ios",
+        "DeviceFamilies": [
+          {
+            "Identifier": "1",
+            "Name": "phone",
+            "DisplayName": "iPhone"
+          },
+          {
+            "Identifier": "2",
+            "Name": "pad",
+            "DisplayName": "iPad"
+          }
+        ],
+        "MinimumDeploymentTarget": "12.0",
+        "SwiftOSRuntimeMinimumDeploymentTarget": "12.2",
+        "PlatformFamilyDisplayName": "iOS",
+        "RecommendedDeploymentTarget": "15.0",
+        "PlatformFamilyName": "iOS",
+        "ValidDeploymentTargets": [
+          "12.0",
+          "12.1",
+          "12.2",
+          "12.3",
+          "12.4",
+          "13.0",
+          "13.1",
+          "13.2",
+          "13.3",
+          "13.4",
+          "13.5",
+          "13.6",
+          "14.0",
+          "14.1",
+          "14.2",
+          "14.3",
+          "14.4",
+          "14.5",
+          "14.6",
+          "14.7",
+          "15.0",
+          "15.1",
+          "15.2",
+          "15.3",
+          "15.4",
+          "15.5",
+          "15.6",
+          "16.0",
+          "16.1",
+          "16.2",
+          "16.3",
+          "16.4",
+          "16.5",
+          "16.6",
+          "17.0",
+          "17.1",
+          "17.2",
+          "17.3",
+          "17.4",
+          "17.5",
+          "17.6",
+          "18.0",
+          "18.1",
+          "18.2",
+          "18.3",
+          "18.4",
+          "18.5"
+        ],
+        "SystemPrefix": ""
+      }
+    },
+    "PropertyConditionFallbackNames": [
+      "embeddedsimulator"
+    ],
+    "DefaultDeploymentTarget": "18.5",
+    "MaximumDeploymentTarget": "18.5.99",
+    "DebuggerOptions": {
+      "SupportsViewDebugging": "YES"
+    },
+    "CanonicalName": "iphonesimulator18.5",
+    "CustomProperties": {}
+  },
+  "publicRuntimeVolumes": {
+    "exists": true,
+    "names": [
+      "iOS_22G86",
+      "iOS_23A8464"
+    ]
+  },
+  "publicRuntimeListings": {
+    "/Library/Developer/CoreSimulator/Profiles/Runtimes": {
+      "exists": false,
+      "error": "ENOENT"
+    },
+    "/Library/Developer/CoreSimulator/Volumes/iOS_22G86/Library/Developer/CoreSimulator/Profiles/Runtimes": {
+      "exists": true,
+      "names": [
+        "iOS 18.6.simruntime"
+      ]
+    },
+    "/Library/Developer/CoreSimulator/Volumes/iOS_23A8464/Library/Developer/CoreSimulator/Profiles/Runtimes": {
+      "exists": true,
+      "names": [
+        "iOS 26.0.simruntime"
+      ]
+    }
+  },
+  "excluded": [
+    "real user HOME",
+    "device registrations",
+    "accounts",
+    "sessions",
+    "keychains",
+    ".env"
+  ]
+}

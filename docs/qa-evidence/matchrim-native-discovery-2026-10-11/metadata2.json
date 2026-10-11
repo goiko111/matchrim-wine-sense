@@ -1,0 +1,274 @@
+{
+  "method": "Second and final static public runtime metadata read; no service invocation or private registry access",
+  "runtimes": [
+    {
+      "runtime": "/Library/Developer/CoreSimulator/Volumes/iOS_22G86/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.6.simruntime",
+      "infoKeys": [
+        "CFBundleName",
+        "DTXcode",
+        "DTSDKName",
+        "NSHumanReadableCopyright",
+        "DTSDKBuild",
+        "CFBundleDevelopmentRegion",
+        "CFBundleVersion",
+        "BuildMachineOSBuild",
+        "DTPlatformName",
+        "CFBundlePackageType",
+        "CFBundleShortVersionString",
+        "CFBundleSupportedPlatforms",
+        "CFBundleInfoDictionaryVersion",
+        "CFBundleExecutable",
+        "DTCompiler",
+        "CFBundleIdentifier",
+        "DTPlatformVersion",
+        "DTXcodeBuild",
+        "LSMinimumSystemVersion",
+        "CFBundleSignature",
+        "DTPlatformBuild"
+      ],
+      "info": {
+        "CFBundleName": "iOS 18.6",
+        "DTSDKName": "macosx14.0.internal",
+        "DTSDKBuild": "23A344",
+        "CFBundleVersion": "362",
+        "BuildMachineOSBuild": "23A344014",
+        "DTPlatformName": "macosx",
+        "CFBundleShortVersionString": "362",
+        "CFBundleSupportedPlatforms": [
+          "MacOSX"
+        ],
+        "CFBundleInfoDictionaryVersion": "6.0",
+        "CFBundleIdentifier": "com.apple.CoreSimulator.SimRuntime.iOS-18-6",
+        "DTPlatformVersion": "14.0",
+        "DTXcodeBuild": "16E6052g",
+        "LSMinimumSystemVersion": "10.10",
+        "DTPlatformBuild": "23A344"
+      },
+      "resourceNames": [
+        "RuntimeRoot",
+        "SampleContent",
+        "dirty-data-segments-order.txt",
+        "dylib-order.txt",
+        "en.lproj",
+        "profile.plist",
+        "update_dyld_sim_shared_cache"
+      ],
+      "metadata": {
+        "Contents/Resources/profile.plist": {
+          "keys": [
+            "forwardHostNotificationsWithState",
+            "supportedProductFamilyIDs",
+            "pairingRequirements",
+            "environment",
+            "supportedFeatures",
+            "forwardHostNotifications",
+            "requiredHostServices",
+            "supportedArchs",
+            "minHostVersion",
+            "conditionalFeatures",
+            "platformIdentifier",
+            "defaultVersionString",
+            "supportedFeaturesConditionalOnDeviceType"
+          ],
+          "selected": {
+            "forwardHostNotificationsWithState": {
+              "com.apple.system.thermalpressurelevel": "com.apple.system.thermalpressurelevel"
+            },
+            "forwardHostNotifications": {
+              "com.apple.system.clock_set": "com.apple.system.clock_set"
+            },
+            "requiredHostServices": {
+              "com.apple.SystemConfiguration.configd_host": "com.apple.SystemConfiguration.configd",
+              "com.apple.SystemConfiguration.configd": "com.apple.SystemConfiguration.configd",
+              "com.apple.gputools.agent.producer.sim": "com.apple.gputools.agent.producer.sim",
+              "com.apple.fpsd.sim": "com.apple.fpsd.sim",
+              "com.apple.SystemConfiguration.PPPController": "com.apple.SystemConfiguration.PPPController",
+              "com.apple.coreservices.lsuseractivity.simulatorsupport": "com.apple.coreservices.lsuseractivity.simulatorsupport",
+              "com.apple.PowerManagement.control": "com.apple.PowerManagement.control",
+              "com.apple.audio.audiohald": "com.apple.audio.audiohald",
+              "com.apple.FSEvents": "com.apple.FSEvents",
+              "com.apple.audio.coreaudiod": "com.apple.audio.coreaudiod",
+              "com.apple.storekitservice.sim2host": "com.apple.storekitservice.sim2host",
+              "com.apple.FileProvider.sim2host": "com.apple.FileProvider.sim2host"
+            },
+            "minHostVersion": "13.0.0",
+            "platformIdentifier": "com.apple.platform.iphonesimulator",
+            "defaultVersionString": "18.6"
+          }
+        },
+        "Contents/Resources/RuntimeRoot/System/Library/CoreServices/SystemVersion.plist": {
+          "keys": [
+            "ProductName",
+            "ProductVersion",
+            "BuildID",
+            "ProductBuildVersion",
+            "SystemImageID",
+            "ProductCopyright"
+          ],
+          "selected": {
+            "ProductName": "iPhone OS",
+            "ProductVersion": "18.6",
+            "BuildID": "4AF62D86-6941-11F0-BFC9-419008E2B2AA",
+            "ProductBuildVersion": "22G86"
+          }
+        }
+      }
+    },
+    {
+      "runtime": "/Library/Developer/CoreSimulator/Volumes/iOS_23A8464/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.0.simruntime",
+      "infoKeys": [
+        "CFBundleName",
+        "DTXcode",
+        "DTSDKName",
+        "NSHumanReadableCopyright",
+        "DTSDKBuild",
+        "CFBundleDevelopmentRegion",
+        "CFBundleVersion",
+        "BuildMachineOSBuild",
+        "DTPlatformName",
+        "CFBundlePackageType",
+        "CFBundleShortVersionString",
+        "CFBundleSupportedPlatforms",
+        "CFBundleInfoDictionaryVersion",
+        "CFBundleExecutable",
+        "DTCompiler",
+        "CFBundleIdentifier",
+        "DTPlatformVersion",
+        "DTXcodeBuild",
+        "LSMinimumSystemVersion",
+        "CFBundleSignature",
+        "DTPlatformBuild"
+      ],
+      "info": {
+        "CFBundleName": "iOS 26.0",
+        "DTSDKName": "macosx14.0.internal",
+        "DTSDKBuild": "23A344",
+        "CFBundleVersion": "375",
+        "BuildMachineOSBuild": "23A344014",
+        "DTPlatformName": "macosx",
+        "CFBundleShortVersionString": "375",
+        "CFBundleSupportedPlatforms": [
+          "MacOSX"
+        ],
+        "CFBundleInfoDictionaryVersion": "6.0",
+        "CFBundleIdentifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-0",
+        "DTPlatformVersion": "14.0",
+        "DTXcodeBuild": "17A6264k",
+        "LSMinimumSystemVersion": "10.10",
+        "DTPlatformBuild": "23A344"
+      },
+      "resourceNames": [
+        "RuntimeRoot",
+        "SampleContent",
+        "dirty-data-segments-order.txt",
+        "dylib-order.txt",
+        "en.lproj",
+        "profile.plist",
+        "update_dyld_sim_shared_cache"
+      ],
+      "metadata": {
+        "Contents/Resources/profile.plist": {
+          "keys": [
+            "forwardHostNotificationsWithState",
+            "supportedProductFamilyIDs",
+            "pairingRequirements",
+            "environment",
+            "supportedFeatures",
+            "forwardHostNotifications",
+            "requiredHostServices",
+            "supportedArchs",
+            "minHostVersion",
+            "conditionalFeatures",
+            "platformIdentifier",
+            "defaultVersionString",
+            "supportedFeaturesConditionalOnDeviceType"
+          ],
+          "selected": {
+            "forwardHostNotificationsWithState": {
+              "com.apple.system.thermalpressurelevel": "com.apple.system.thermalpressurelevel"
+            },
+            "forwardHostNotifications": {
+              "com.apple.system.clock_set": "com.apple.system.clock_set"
+            },
+            "requiredHostServices": {
+              "com.apple.SystemConfiguration.configd_host": "com.apple.SystemConfiguration.configd",
+              "com.apple.SystemConfiguration.configd": "com.apple.SystemConfiguration.configd",
+              "com.apple.gputools.agent.producer.sim": "com.apple.gputools.agent.producer.sim",
+              "com.apple.fpsd.sim": "com.apple.fpsd.sim",
+              "com.apple.SystemConfiguration.PPPController": "com.apple.SystemConfiguration.PPPController",
+              "com.apple.coreservices.lsuseractivity.simulatorsupport": "com.apple.coreservices.lsuseractivity.simulatorsupport",
+              "com.apple.PowerManagement.control": "com.apple.PowerManagement.control",
+              "com.apple.audio.audiohald": "com.apple.audio.audiohald",
+              "com.apple.FSEvents": "com.apple.FSEvents",
+              "com.apple.audio.coreaudiod": "com.apple.audio.coreaudiod",
+              "com.apple.modelmanager.simulator": "com.apple.modelmanager.simulator",
+              "com.apple.storekitservice.sim2host": "com.apple.storekitservice.sim2host",
+              "com.apple.FileProvider.sim2host": "com.apple.FileProvider.sim2host"
+            },
+            "minHostVersion": "14.0.0",
+            "platformIdentifier": "com.apple.platform.iphonesimulator",
+            "defaultVersionString": "26.0"
+          }
+        },
+        "Contents/Resources/RuntimeRoot/System/Library/CoreServices/SystemVersion.plist": {
+          "keys": [
+            "ProductName",
+            "ProductVersion",
+            "BuildID",
+            "ProductBuildVersion",
+            "SystemImageID",
+            "ProductCopyright"
+          ],
+          "selected": {
+            "ProductName": "iPhone OS",
+            "ProductVersion": "26.0.1",
+            "BuildID": "A47E7492-A944-11F0-AD01-916FC9B1C416",
+            "ProductBuildVersion": "23A8464"
+          }
+        }
+      }
+    }
+  ],
+  "hostPublicSystemVersion": {
+    "ProductBuildVersion": "24G720",
+    "ProductVersion": "15.7.7",
+    "BuildID": "489EBBF8-4496-11F1-959E-B0D92CB03825",
+    "ProductName": "macOS",
+    "iOSSupportVersion": "18.7",
+    "ProductUserVisibleVersion": "15.7.7"
+  },
+  "isolatedCoreSimulator": {
+    "directoryExists": false,
+    "devicesDirectoryExists": false,
+    "defaultDeviceSetExists": false
+  },
+  "inspectedXCConfigIncludes": [
+    {
+      "file": "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig",
+      "includes": []
+    },
+    {
+      "file": "Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig",
+      "includes": []
+    },
+    {
+      "file": "Pods/Target Support Files/Capacitor/Capacitor.debug.xcconfig",
+      "includes": []
+    },
+    {
+      "file": "Pods/Target Support Files/Capacitor/Capacitor.release.xcconfig",
+      "includes": []
+    },
+    {
+      "file": "Pods/Target Support Files/CapacitorCordova/CapacitorCordova.debug.xcconfig",
+      "includes": []
+    },
+    {
+      "file": "Pods/Target Support Files/CapacitorCordova/CapacitorCordova.release.xcconfig",
+      "includes": []
+    }
+  ],
+  "realUserRegistryInspected": false,
+  "runtimeRegistrationOrAvailabilityQueried": false,
+  "effectiveBuildSettingsServiceQueried": false
+}

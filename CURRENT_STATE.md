@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, native discovery read-only
+
+- Assignment12: two static metadata probes exit0, unchanged sandbox/isolated HOME. No explicit source target restriction; deployment14.0 valid for SDK18.5. Public runtimes18.6 and26.0.1 readable; host minimums satisfied, but registration/eligibility not proven. Isolated CoreSimulator/device registry absent. Supports discovery/registration hypothesis, not a proven cause.
+- Eight targeted config hashes unchanged; no build/service query/installation/private HOME access, product edits or QA replay.11 exit70/no app remains.28 calls and previous79/80 preserved.
+- Report: [MATCHRIM_NATIVE_DISCOVERY_2026-10-11.md](docs/MATCHRIM_NATIVE_DISCOVERY_2026-10-11.md). Diagnosis delivered; integration still blocked. A service-backed availability query may initialize state and needs separate authorization; no automatic action.
+
 ## Latest checkpoint: 2026-10-11, isolated native integration blocked
 
 - Assignment11 prepared accumulated source03-10 at9ae9ed7 in isolation, reused matching assignment10 dist and attempted one unsigned simulator build with no version override. Xcode exits70 before compilation: no valid generic Simulator destination. Same isolated environment lists SDK18.5; exact runtime/platform-discovery cause unresolved. No new app or integration approval.

@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, static native discovery diagnosis
+
+1. Assignment12 delivered two metadata-only probes. No explicit target exclusion; SDK18.5 and runtime packages18.6/26.0.1 exist. Isolated registry absent; registration/availability/compatibility cause not proven.
+2. A service-backed runtime-availability query with explicitly isolated state is the next discriminating step, but may initialize services/registry and requires separate authorization. Do not revert to real HOME, install components, change config or retry build automatically.
+3.11 integration gate remains exit70/no app. Prior79/80 and28 calls unchanged. Real recognition/affinity, physical/RLS and Apple/invitation/distribution remain separate, unresolved gates.
+
 ## Current delta: 2026-10-11, isolated native destination gate
 
 1. Assignment11 stopped after one unsigned attempt, exit70 before compilation. Resolve generic Simulator destination visibility under approved isolation in a separately authorized local follow-up before another build. SDK18.5 is listed; do not assume a download or Apple sign-in is required.

@@ -1,0 +1,69 @@
+{
+  "documentationHead": "bbbffd079fd7dd07a9c56116c9c77442e0876ea5",
+  "applicationSourceBaseline": "9ae9ed7b68a07fa48c4ac1479a22d931839d7cb6",
+  "cleanBeforeDocumentation": true,
+  "narrowConfigurationChecks": [
+    {
+      "file": "App/App.xcodeproj/project.pbxproj",
+      "baselineSha256": "b3b2e90124509ffc8d30d02e343743e23201ce7802f84aacfda413709ad22a48",
+      "isolatedSha256": "b3b2e90124509ffc8d30d02e343743e23201ce7802f84aacfda413709ad22a48",
+      "canonicalSha256": "b3b2e90124509ffc8d30d02e343743e23201ce7802f84aacfda413709ad22a48",
+      "unchanged": true
+    },
+    {
+      "file": "App/Pods/Pods.xcodeproj/project.pbxproj",
+      "baselineSha256": "90675e4b5bd731b56a541e1db8b3f387648347d67160830c3e082f2eca482d35",
+      "isolatedSha256": "90675e4b5bd731b56a541e1db8b3f387648347d67160830c3e082f2eca482d35",
+      "canonicalSha256": "90675e4b5bd731b56a541e1db8b3f387648347d67160830c3e082f2eca482d35",
+      "unchanged": true
+    },
+    {
+      "file": "App/Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig",
+      "baselineSha256": "58d2fa1158b5396a6bd504dba730f24de91f519f2b3e89a1148013d41b67cf07",
+      "isolatedSha256": "58d2fa1158b5396a6bd504dba730f24de91f519f2b3e89a1148013d41b67cf07",
+      "canonicalSha256": "58d2fa1158b5396a6bd504dba730f24de91f519f2b3e89a1148013d41b67cf07",
+      "unchanged": true
+    },
+    {
+      "file": "App/Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig",
+      "baselineSha256": "58d2fa1158b5396a6bd504dba730f24de91f519f2b3e89a1148013d41b67cf07",
+      "isolatedSha256": "58d2fa1158b5396a6bd504dba730f24de91f519f2b3e89a1148013d41b67cf07",
+      "canonicalSha256": "58d2fa1158b5396a6bd504dba730f24de91f519f2b3e89a1148013d41b67cf07",
+      "unchanged": true
+    },
+    {
+      "file": "App/Pods/Target Support Files/Capacitor/Capacitor.debug.xcconfig",
+      "baselineSha256": "c9a90239a59a1d3804a49ca41354b0f796148c435ae87b9fd2e27be7905dffd6",
+      "isolatedSha256": "c9a90239a59a1d3804a49ca41354b0f796148c435ae87b9fd2e27be7905dffd6",
+      "canonicalSha256": "c9a90239a59a1d3804a49ca41354b0f796148c435ae87b9fd2e27be7905dffd6",
+      "unchanged": true
+    },
+    {
+      "file": "App/Pods/Target Support Files/Capacitor/Capacitor.release.xcconfig",
+      "baselineSha256": "c9a90239a59a1d3804a49ca41354b0f796148c435ae87b9fd2e27be7905dffd6",
+      "isolatedSha256": "c9a90239a59a1d3804a49ca41354b0f796148c435ae87b9fd2e27be7905dffd6",
+      "canonicalSha256": "c9a90239a59a1d3804a49ca41354b0f796148c435ae87b9fd2e27be7905dffd6",
+      "unchanged": true
+    },
+    {
+      "file": "App/Pods/Target Support Files/CapacitorCordova/CapacitorCordova.debug.xcconfig",
+      "baselineSha256": "8319e490149fc182d8d05a7477fff3aa6b068d2cadd24e69f1a40292e79a9ead",
+      "isolatedSha256": "8319e490149fc182d8d05a7477fff3aa6b068d2cadd24e69f1a40292e79a9ead",
+      "canonicalSha256": "8319e490149fc182d8d05a7477fff3aa6b068d2cadd24e69f1a40292e79a9ead",
+      "unchanged": true
+    },
+    {
+      "file": "App/Pods/Target Support Files/CapacitorCordova/CapacitorCordova.release.xcconfig",
+      "baselineSha256": "8319e490149fc182d8d05a7477fff3aa6b068d2cadd24e69f1a40292e79a9ead",
+      "isolatedSha256": "8319e490149fc182d8d05a7477fff3aa6b068d2cadd24e69f1a40292e79a9ead",
+      "canonicalSha256": "8319e490149fc182d8d05a7477fff3aa6b068d2cadd24e69f1a40292e79a9ead",
+      "unchanged": true
+    }
+  ],
+  "prior11SandboxSha256": "935c2157a85b1dd404b00f74f1c2dc047dcdbd7c3a89ae07f2d17282f976048d",
+  "priorBinaryAndMassSourceHashesNotRepeated": true,
+  "newToolQueries": 2,
+  "newBuilds": 0,
+  "serviceCommands": 0,
+  "metadataOnly": true
+}

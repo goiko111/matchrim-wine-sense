@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "<ARTIFACT11>/offline.sb",
+    "/opt/homebrew/Cellar/node@20/20.20.2/bin/node",
+    "<ARTIFACT12>/query1.cjs"
+  ],
+  "exitCode": 0,
+  "signal": null,
+  "error": null,
+  "environment": "unchanged clean isolated environment from11",
+  "sandbox": "unchanged11 offline.sb",
+  "timeoutMs": 20000
+}
