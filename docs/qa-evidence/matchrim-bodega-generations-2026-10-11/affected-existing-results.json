@@ -1,0 +1,92 @@
+{
+  "scope": "Focused local first-use and notice QA; synthetic accounts, all remote traffic intercepted.",
+  "remote_application_calls": 0,
+  "results": [
+    {
+      "case": "bodega-rejected-notice",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "PATCH"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "PATCH"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "bodega-timeout-retry",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "bodega-logout-pending",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/auth/v1/logout",
+          "method": "POST"
+        }
+      ]
+    }
+  ]
+}

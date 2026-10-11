@@ -1,0 +1,482 @@
+{
+  "scope": "local intercepted UI, not real accounts/server writes",
+  "results": [
+    {
+      "case": "late-counts",
+      "passed": false,
+      "failures": [
+        "stale A count replaced B count: 7"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "late-learning",
+      "passed": false,
+      "failures": [
+        "stale A learning visible in B"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "loaded-owner-to-slow",
+      "passed": false,
+      "error": "Locator.inner_text: Timeout 7000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=re.compile(r\"^Quiero Probar Pendientes\"))\n",
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "loaded-owner-to-error",
+      "passed": false,
+      "failures": [
+        "A counters retained while B loading/failed: 7",
+        "A learning retained while B loading/failed"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "same-owner-counts",
+      "passed": false,
+      "failures": [
+        "older count replaced same-owner fresh result: 7"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "same-owner-learning",
+      "passed": false,
+      "failures": [
+        "older learning replaced fresh learning",
+        "old learning restored"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-return-success",
+      "passed": false,
+      "failures": [
+        "stale favorite response produced notice",
+        "stale favorite response triggered refresh"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-return-error",
+      "passed": false,
+      "failures": [
+        "stale favorite response produced notice"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-unmount",
+      "passed": false,
+      "failures": [
+        "stale favorite response produced notice",
+        "stale favorite response triggered refresh"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-logout",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-double-click",
+      "passed": false,
+      "failures": [
+        "duplicate in-flight favorite writes: 2",
+        "favorite should confirm once"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    }
+  ]
+}

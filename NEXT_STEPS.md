@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, assignment03 complete
+
+1. Bodega read/favorite lifetime checkpoint closed locally; see `docs/MATCHRIM_BODEGA_GENERATIONS_2026-10-11.md`. Do not repeat unrelated completed suites.
+2. No native rebuild for this source delta. Existing unsigned80 is unchanged; assemble a combined candidate only when an authorized release scope requires it. No push, Apple action, invite or vision-budget use.
+3. Wait for the next authorized scope. Other Bodega mutation lifecycles, hosted persistence/RLS, live canonical data/recognition, physical QA and Apple distribution remain separate. No server cancellation or exactly-once claim from ignored client responses.
+
 ## Current delta: 2026-10-11, assignment02 complete
 
 1. First-use/tutorial and visible-notice milestone closed locally. Do not repeat its25 UI cases or the previous39 by inertia. See `docs/MATCHRIM_ONBOARDING_NOTICES_2026-10-11.md` and assignment02 log.

@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, Bodega account lifetimes
+
+- Assignment03 closes a specific gap left by474d496: section counts/learning now reject late responses, account-keyed state resets on owner changes, and pending favorites cannot toast/refresh after unmount or A -> B -> A. Double-submit blocked within the mounted view.
+-15/15 new controlled UI +5/5 uncancellable-read variants +3/3 affected Bodega regressions; identity/learning checks, typecheck, lint0 errors/107 inherited warnings and web build PASS. Baseline9 reproduced failing cases; no remote accounts/writes or server-isolation claim.
+- Source-only delta, not a new native candidate. Unsigned80 remains the previous binary and does not include this fix. No push/deploy/TestFlight/invitation/vision calls;28 calls preserved.
+- Report: [MATCHRIM_BODEGA_GENERATIONS_2026-10-11.md](docs/MATCHRIM_BODEGA_GENERATIONS_2026-10-11.md). Other mutations and hosted persistence remain separate audits; client abort does not certify server cancellation or exactly-once.
+
 ## Latest checkpoint: 2026-10-11, onboarding/notices / local80
 
 - Assignment02 complete: new authenticated users no longer bypass the optional guide; valid state/events are owner-scoped, legacy global keys preserved without unverified attribution. Returning quiz/saved-wine experience, skip/reopen/account transitions and truthful six-step content verified.

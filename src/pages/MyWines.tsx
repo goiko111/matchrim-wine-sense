@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AppNav from "@/components/AppNav";
@@ -210,7 +210,7 @@ const getStoredAffinityTrace = (wine: UserWine) => {
   };
 };
 
-const MyWines = () => {
+const MyWinesForOwner = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -223,9 +223,26 @@ const MyWines = () => {
   const [loading, setLoading] = useState(true);
   const [wineLoadFailed, setWineLoadFailed] = useState(false);
   const wineLoadController = useRef<AbortController | null>(null);
+  const countLoadController = useRef<AbortController | null>(null);
+  const learningLoadController = useRef<AbortController | null>(null);
+  const ownerLifetime = useRef({ active: false, generation: 0 });
+  const pendingFavorites = useRef(new Set<string>());
+  const [savingFavorites, setSavingFavorites] = useState<Set<string>>(new Set());
   const wineLoadErrorRef = useRef<HTMLDivElement>(null);
   const currentOwner = useRef(user?.id);
   currentOwner.current = user?.id;
+  useLayoutEffect(() => {
+    const lifetime = ownerLifetime.current;
+    lifetime.active = true;
+    lifetime.generation += 1;
+    return () => {
+      lifetime.active = false;
+      lifetime.generation += 1;
+      wineLoadController.current?.abort();
+      countLoadController.current?.abort();
+      learningLoadController.current?.abort();
+    };
+  }, []);
   useEffect(() => {
     if (wineLoadFailed && !loading) wineLoadErrorRef.current?.scrollIntoView({ block: 'center', behavior: 'instant' });
   }, [wineLoadFailed, loading]);
@@ -305,12 +322,16 @@ const MyWines = () => {
 	      return;
 	    }
 	    loadWines();
-	    return () => { wineLoadController.current?.abort(); };
+	    return () => {
+        wineLoadController.current?.abort();
+        countLoadController.current?.abort();
+      };
 	  }, [authLoading, user, navigate, statusFilter]);
 
 	  useEffect(() => {
 	    if (authLoading || !user) return;
 	    loadLearningWines();
+	    return () => { learningLoadController.current?.abort(); };
 	  }, [authLoading, user]);
 
   useEffect(() => {
@@ -384,14 +405,22 @@ const MyWines = () => {
   };
 
   const loadSectionCounts = async () => {
-    if (!user) return;
+    if (!user || !ownerLifetime.current.active) return;
+    const generation = ownerLifetime.current.generation;
+    countLoadController.current?.abort();
+    const controller = new AbortController();
+    countLoadController.current = controller;
+    const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+      && countLoadController.current === controller && !controller.signal.aborted;
 
     try {
       const { data, error } = await supabase
         .from("user_wines")
         .select("id, status, rating, is_favorite")
-        .eq("user_id", user.id);
+        .eq("user_id", user.id)
+        .abortSignal(controller.signal);
 
+      if (!isCurrent()) return;
       if (error) throw error;
 
       const rows = ((data as WineSectionCountRow[]) || []);
@@ -403,19 +432,24 @@ const MyWines = () => {
         rejected: rows.filter((wine) => wine.rating === 'not_for_me').length,
       });
     } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error loading wine section counts:", error);
     }
   };
 
 	  const loadWines = async () => {
 	    const ownerId = user?.id;
-      if (!ownerId) return;
+      if (!ownerId || !ownerLifetime.current.active) return;
+      const generation = ownerLifetime.current.generation;
       wineLoadController.current?.abort();
+      // Counts belong to the latest list refresh, even while that list is pending.
+      countLoadController.current?.abort();
       const controller = new AbortController();
       wineLoadController.current = controller;
       let timedOut = false;
       const deadline = window.setTimeout(() => { timedOut = true; controller.abort(); }, 10000);
-      const isCurrent = () => currentOwner.current === ownerId && wineLoadController.current === controller
+      const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+        && currentOwner.current === ownerId && wineLoadController.current === controller
         && (!controller.signal.aborted || timedOut);
 	    setLoading(true);
       setWineLoadFailed(false);
@@ -453,7 +487,13 @@ const MyWines = () => {
 	  };
 
 	  const loadLearningWines = async () => {
-	    if (!user) return;
+	    if (!user || !ownerLifetime.current.active) return;
+      const generation = ownerLifetime.current.generation;
+      learningLoadController.current?.abort();
+      const controller = new AbortController();
+      learningLoadController.current = controller;
+      const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+        && learningLoadController.current === controller && !controller.signal.aborted;
 
 	    try {
 	      const { data, error } = await supabase
@@ -461,14 +501,17 @@ const MyWines = () => {
 	        .select("id, name, rating, sensory_attributes, use_for_profile_training, grape_varieties, status, created_at")
 	        .eq("user_id", user.id)
 	        .not("rating", "is", null)
-	        .order("created_at", { ascending: false });
+	        .order("created_at", { ascending: false })
+          .abortSignal(controller.signal);
 
+	      if (!isCurrent()) return;
 	      if (error) throw error;
 	      setLearningWines(((data as LearningWine[]) || []).map((wine) => ({
 	        ...wine,
 	        sensory_attributes: normalizeSensoryAttributesTo5(wine.sensory_attributes),
 	      })));
 	    } catch (error) {
+        if (!isCurrent()) return;
 	      console.error("Error loading learning wines:", error);
 	    }
 	  };
@@ -753,7 +796,12 @@ const MyWines = () => {
 
   const handleToggleFavorite = async (wineId: string, currentFavorite: boolean) => {
     const ownerId = user?.id;
-    if (!ownerId) return;
+    if (!ownerId || !ownerLifetime.current.active || pendingFavorites.current.has(wineId)) return;
+    const generation = ownerLifetime.current.generation;
+    const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+      && currentOwner.current === ownerId;
+    pendingFavorites.current.add(wineId);
+    setSavingFavorites(new Set(pendingFavorites.current));
     try {
       const { data, error } = await supabase
         .from("user_wines")
@@ -761,16 +809,19 @@ const MyWines = () => {
         .eq("id", wineId)
         .eq("user_id", ownerId).select('id').single();
 
-      if (currentOwner.current !== ownerId) return;
+      if (!isCurrent()) return;
       if (error) throw error;
       if (!data?.id) throw new Error('Favorite update not confirmed');
 
       toast.success(currentFavorite ? "Eliminado de Favoritos" : "Añadido a Mis vinos > Favoritos");
       loadWines();
     } catch (error) {
-      if (currentOwner.current !== ownerId) return;
+      if (!isCurrent()) return;
       console.error("Error toggling favorite:", error);
       toast.error("Error al actualizar favorito");
+    } finally {
+      pendingFavorites.current.delete(wineId);
+      if (isCurrent()) setSavingFavorites(new Set(pendingFavorites.current));
     }
   };
 
@@ -1590,6 +1641,8 @@ const MyWines = () => {
                                 size="icon"
                                 className="h-11 w-11 shrink-0"
                                 aria-label={wine.is_favorite ? `Quitar ${wine.name} de favoritos` : `Guardar ${wine.name} en favoritos`}
+                                disabled={savingFavorites.has(wine.id)}
+                                aria-busy={savingFavorites.has(wine.id)}
                                 onClick={() => handleToggleFavorite(wine.id, wine.is_favorite)}
                               >
                                 <Heart className={`h-4 w-4 ${wine.is_favorite ? 'fill-red-500 text-red-500' : ''}`} />
@@ -2069,6 +2122,12 @@ const MyWines = () => {
       </main>
     </div>
   );
+};
+
+// A new account gets a fresh view and lifetime, including an A -> B -> A return.
+const MyWines = () => {
+  const { user } = useAuth();
+  return <MyWinesForOwner key={user?.id ?? 'anonymous'} />;
 };
 
 export default MyWines;

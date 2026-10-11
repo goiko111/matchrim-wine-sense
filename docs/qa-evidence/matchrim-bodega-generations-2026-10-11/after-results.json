@@ -1,0 +1,580 @@
+{
+  "scope": "local intercepted UI, not real accounts/server writes",
+  "results": [
+    {
+      "case": "late-counts",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "late-learning",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "loaded-owner-to-slow",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "loaded-owner-to-error",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "same-owner-counts",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "same-owner-learning",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-return-success",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-return-error",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-unmount",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-logout",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-double-click",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "favorite-return-retry",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "reads-logout",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "reads-unmount",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "late-reads-to-error",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000081",
+          "kind": "learning"
+        }
+      ],
+      "pageErrors": []
+    }
+  ]
+}
