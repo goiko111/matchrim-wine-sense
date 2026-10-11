@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, bottom navigation
+
+- Assignment06 closes native320/135 label clipping and DOM/visual order mismatch. Five destinations and central scanner preserved; measured bottom reserve includes safe areas. Web Bodega bar now stays fixed to the viewport instead of its backdrop-filter header.
+-17/19 controlled variants PASS; two320px/200% page-wide overflow stress cases remain failed.75 initial targets plus5 after rotation,26 route checks;14 redirect contracts/typecheck/lint0 errors106 warnings/web build PASS. Not physical accessibility or real-user certification.
+- Report: [MATCHRIM_BOTTOM_NAV_2026-10-11.md](docs/MATCHRIM_BOTTOM_NAV_2026-10-11.md). No native build/push/deploy/Apple/invite/vision. Previous80 lacks assignments03-06;28 calls remain. This entry supersedes the earlier nav-label residual only at the tested100/135% dimensions.
+
 ## Latest checkpoint: 2026-10-11, Bodega control legibility
 
 - Assignment05 closes the three documented layout gaps: top actions, learning CTA and aiRIM controls adapt to available width with intact labels and44px targets. Catalog decorative icons no longer intercept input touches. No routes, guards, rating/quantity/learning policies or confirmation helpers changed.

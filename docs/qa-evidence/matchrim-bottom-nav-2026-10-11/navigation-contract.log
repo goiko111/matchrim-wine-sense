@@ -1,0 +1,77 @@
+{
+  "baseline": false,
+  "passed": 14,
+  "failed": 0,
+  "results": [
+    {
+      "path": "//outside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/\\outside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%5coutside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%2foutside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%252foutside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%255coutside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/\t/outside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "javascript:alert(1)",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%ZZ",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/profile",
+      "expected": "/profile",
+      "actual": "/profile"
+    },
+    {
+      "path": "/my-wines",
+      "expected": "/my-wines",
+      "actual": "/my-wines"
+    },
+    {
+      "path": "/escanear/carta-vinos?occasion=cena%20en%20casa",
+      "expected": "/escanear/carta-vinos?occasion=cena%20en%20casa",
+      "actual": "/escanear/carta-vinos?occasion=cena%20en%20casa"
+    },
+    {
+      "path": "/matchrim?returnTo=%2Fprofile",
+      "expected": "/matchrim?returnTo=%2Fprofile",
+      "actual": "/matchrim?returnTo=%2Fprofile"
+    },
+    {
+      "path": "/profile#ratings",
+      "expected": "/profile#ratings",
+      "actual": "/profile#ratings"
+    }
+  ]
+}

@@ -151,7 +151,7 @@ body {
   }
 
   html.matchrim-native-platform .matchrim-native-tab-bar > div {
-    height: 3.5rem;
+    min-height: 3.5rem;
   }
 
   html.matchrim-native-platform .matchrim-native-tab-bar a {

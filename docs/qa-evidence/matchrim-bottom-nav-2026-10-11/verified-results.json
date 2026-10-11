@@ -1,0 +1,4203 @@
+{
+  "scope": "local intercepted UI; viewport/auth/safearea variants, not people or physical accessibility",
+  "results": [
+    {
+      "case": "native-320-100",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 773.65625,
+          "width": 320,
+          "height": 78.34375,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 8,
+              "y": 780.65625,
+              "width": 56.921875,
+              "height": 65.75,
+              "right": 64.921875,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 21.6875,
+                "y": 819.453125,
+                "width": 29.546875,
+                "height": 13,
+                "right": 51.234375,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 66.921875,
+              "y": 780.65625,
+              "width": 56.921875,
+              "height": 65.75,
+              "right": 123.84375,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 80.203125,
+                "y": 819.453125,
+                "width": 30.34375,
+                "height": 13,
+                "right": 110.546875,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 125.84375,
+              "y": 780.65625,
+              "width": 68.296875,
+              "height": 65.75,
+              "right": 194.140625,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 134.875,
+                "y": 832.65625,
+                "width": 50.234375,
+                "height": 13,
+                "right": 185.109375,
+                "bottom": 845.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 196.140625,
+              "y": 780.65625,
+              "width": 56.921875,
+              "height": 65.75,
+              "right": 253.0625,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 203.875,
+                "y": 819.453125,
+                "width": 41.4375,
+                "height": 13,
+                "right": 245.3125,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 255.0625,
+              "y": 780.65625,
+              "width": 56.9375,
+              "height": 65.75,
+              "right": 312,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 268.890625,
+                "y": 819.453125,
+                "width": 29.28125,
+                "height": 13,
+                "right": 298.171875,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "78.3438px",
+        "lastControl": {
+          "box": {
+            "x": 41,
+            "y": 673,
+            "width": 115,
+            "height": 44
+          },
+          "nav": {
+            "x": 0,
+            "y": 773.65625,
+            "width": 320,
+            "height": 78.34375
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-320-135",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 746.625,
+          "width": 320,
+          "height": 105.375,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 10.796875,
+              "y": 755.71875,
+              "width": 55.3125,
+              "height": 88.734375,
+              "right": 66.109375,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 19.4375,
+                "y": 808.078125,
+                "width": 38.03125,
+                "height": 17,
+                "right": 57.46875,
+                "bottom": 825.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 68.796875,
+              "y": 755.71875,
+              "width": 55.3125,
+              "height": 88.734375,
+              "right": 124.109375,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 76.734375,
+                "y": 808.078125,
+                "width": 39.421875,
+                "height": 17,
+                "right": 116.15625,
+                "bottom": 825.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 126.796875,
+              "y": 755.71875,
+              "width": 66.390625,
+              "height": 88.734375,
+              "right": 193.1875,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 127.3125,
+                "y": 825.90625,
+                "width": 65.34375,
+                "height": 17,
+                "right": 192.65625,
+                "bottom": 842.90625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 195.875,
+              "y": 755.71875,
+              "width": 55.3125,
+              "height": 88.734375,
+              "right": 251.1875,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 196.484375,
+                "y": 808.078125,
+                "width": 54.09375,
+                "height": 17,
+                "right": 250.578125,
+                "bottom": 825.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 253.875,
+              "y": 755.71875,
+              "width": 55.328125,
+              "height": 88.734375,
+              "right": 309.203125,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 262.703125,
+                "y": 808.078125,
+                "width": 37.671875,
+                "height": 17,
+                "right": 300.375,
+                "bottom": 825.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "105.375px",
+        "lastControl": {
+          "box": {
+            "x": 54.984375,
+            "y": 611.078125,
+            "width": 210.03125,
+            "height": 59.390625
+          },
+          "nav": {
+            "x": 0,
+            "y": 746.625,
+            "width": 320,
+            "height": 105.375
+          }
+        }
+      },
+      "destinations": [
+        {
+          "label": "Inicio",
+          "path": "/",
+          "query": {}
+        },
+        {
+          "label": "aiRIM",
+          "path": "/inteligencia-liquida",
+          "query": {}
+        },
+        {
+          "label": "Escanear",
+          "path": "/escanear",
+          "query": {}
+        },
+        {
+          "label": "Bodega",
+          "path": "/my-wines",
+          "query": {}
+        },
+        {
+          "label": "Perfil",
+          "path": "/profile",
+          "query": {}
+        },
+        {
+          "nested": "/my-wines/wishlist",
+          "active": "Bodega"
+        },
+        {
+          "nested": "/escanear/etiqueta",
+          "active": "Escanear"
+        },
+        {
+          "nested": "/matchrim",
+          "active": "Perfil"
+        }
+      ],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-393-100",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 773.65625,
+          "width": 393,
+          "height": 78.34375,
+          "right": 393,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 8,
+              "y": 780.65625,
+              "width": 70.953125,
+              "height": 65.75,
+              "right": 78.953125,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 28.703125,
+                "y": 819.453125,
+                "width": 29.546875,
+                "height": 13,
+                "right": 58.25,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 80.953125,
+              "y": 780.65625,
+              "width": 70.96875,
+              "height": 65.75,
+              "right": 151.921875,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 101.265625,
+                "y": 819.453125,
+                "width": 30.34375,
+                "height": 13,
+                "right": 131.609375,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 153.921875,
+              "y": 780.65625,
+              "width": 85.140625,
+              "height": 65.75,
+              "right": 239.0625,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 171.375,
+                "y": 832.65625,
+                "width": 50.234375,
+                "height": 13,
+                "right": 221.609375,
+                "bottom": 845.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 241.0625,
+              "y": 780.65625,
+              "width": 70.96875,
+              "height": 65.75,
+              "right": 312.03125,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 255.828125,
+                "y": 819.453125,
+                "width": 41.4375,
+                "height": 13,
+                "right": 297.265625,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 314.03125,
+              "y": 780.65625,
+              "width": 70.96875,
+              "height": 65.75,
+              "right": 385,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 334.875,
+                "y": 819.453125,
+                "width": 29.28125,
+                "height": 13,
+                "right": 364.15625,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "78.3438px",
+        "lastControl": {
+          "box": {
+            "x": 41,
+            "y": 673,
+            "width": 151.5,
+            "height": 44
+          },
+          "nav": {
+            "x": 0,
+            "y": 773.65625,
+            "width": 393,
+            "height": 78.34375
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-393-135",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 746.625,
+          "width": 393,
+          "height": 105.375,
+          "right": 393,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 10.796875,
+              "y": 755.71875,
+              "width": 69.34375,
+              "height": 88.734375,
+              "right": 80.140625,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 26.453125,
+                "y": 808.078125,
+                "width": 38.03125,
+                "height": 17,
+                "right": 64.484375,
+                "bottom": 825.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 82.828125,
+              "y": 755.71875,
+              "width": 69.359375,
+              "height": 88.734375,
+              "right": 152.1875,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 97.796875,
+                "y": 808.078125,
+                "width": 39.421875,
+                "height": 17,
+                "right": 137.21875,
+                "bottom": 825.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 154.875,
+              "y": 755.71875,
+              "width": 83.234375,
+              "height": 88.734375,
+              "right": 238.109375,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 163.8125,
+                "y": 825.90625,
+                "width": 65.34375,
+                "height": 17,
+                "right": 229.15625,
+                "bottom": 842.90625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 240.796875,
+              "y": 755.71875,
+              "width": 69.359375,
+              "height": 88.734375,
+              "right": 310.15625,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 248.421875,
+                "y": 808.078125,
+                "width": 54.09375,
+                "height": 17,
+                "right": 302.515625,
+                "bottom": 825.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 312.84375,
+              "y": 755.71875,
+              "width": 69.359375,
+              "height": 88.734375,
+              "right": 382.203125,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 328.6875,
+                "y": 808.078125,
+                "width": 37.671875,
+                "height": 17,
+                "right": 366.359375,
+                "bottom": 825.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "105.375px",
+        "lastControl": {
+          "box": {
+            "x": 54.984375,
+            "y": 610.359375,
+            "width": 283.03125,
+            "height": 59.390625
+          },
+          "nav": {
+            "x": 0,
+            "y": 746.625,
+            "width": 393,
+            "height": 105.375
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-852-100",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 324.40625,
+          "width": 852,
+          "height": 68.59375,
+          "right": 852,
+          "bottom": 393
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 170,
+              "y": 331.40625,
+              "width": 96.921875,
+              "height": 56,
+              "right": 266.921875,
+              "bottom": 387.40625
+            },
+            "text": [
+              {
+                "x": 203.6875,
+                "y": 365.328125,
+                "width": 29.546875,
+                "height": 13,
+                "right": 233.234375,
+                "bottom": 378.328125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 268.921875,
+              "y": 331.40625,
+              "width": 96.921875,
+              "height": 56,
+              "right": 365.84375,
+              "bottom": 387.40625
+            },
+            "text": [
+              {
+                "x": 302.203125,
+                "y": 365.328125,
+                "width": 30.34375,
+                "height": 13,
+                "right": 332.546875,
+                "bottom": 378.328125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 367.84375,
+              "y": 331.40625,
+              "width": 116.296875,
+              "height": 56,
+              "right": 484.140625,
+              "bottom": 387.40625
+            },
+            "text": [
+              {
+                "x": 400.875,
+                "y": 373.53125,
+                "width": 50.234375,
+                "height": 13,
+                "right": 451.109375,
+                "bottom": 386.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 486.140625,
+              "y": 331.40625,
+              "width": 96.921875,
+              "height": 56,
+              "right": 583.0625,
+              "bottom": 387.40625
+            },
+            "text": [
+              {
+                "x": 513.875,
+                "y": 365.328125,
+                "width": 41.4375,
+                "height": 13,
+                "right": 555.3125,
+                "bottom": 378.328125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 585.0625,
+              "y": 331.40625,
+              "width": 96.9375,
+              "height": 56,
+              "right": 682,
+              "bottom": 387.40625
+            },
+            "text": [
+              {
+                "x": 618.890625,
+                "y": 365.328125,
+                "width": 29.28125,
+                "height": 13,
+                "right": 648.171875,
+                "bottom": 378.328125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "68.5938px",
+        "lastControl": {
+          "box": {
+            "x": 281,
+            "y": 223,
+            "width": 108,
+            "height": 44
+          },
+          "nav": {
+            "x": 0,
+            "y": 324.40625,
+            "width": 852,
+            "height": 68.59375
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-852-135",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 300.765625,
+          "width": 852,
+          "height": 92.234375,
+          "right": 852,
+          "bottom": 393
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 80.40625,
+              "y": 309.859375,
+              "width": 130.84375,
+              "height": 75.59375,
+              "right": 211.25,
+              "bottom": 385.453125
+            },
+            "text": [
+              {
+                "x": 126.8125,
+                "y": 355.65625,
+                "width": 38.03125,
+                "height": 17,
+                "right": 164.84375,
+                "bottom": 372.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 213.9375,
+              "y": 309.859375,
+              "width": 130.859375,
+              "height": 75.59375,
+              "right": 344.796875,
+              "bottom": 385.453125
+            },
+            "text": [
+              {
+                "x": 259.65625,
+                "y": 355.65625,
+                "width": 39.421875,
+                "height": 17,
+                "right": 299.078125,
+                "bottom": 372.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 347.484375,
+              "y": 309.859375,
+              "width": 157.015625,
+              "height": 75.59375,
+              "right": 504.5,
+              "bottom": 385.453125
+            },
+            "text": [
+              {
+                "x": 393.3125,
+                "y": 366.71875,
+                "width": 65.34375,
+                "height": 17,
+                "right": 458.65625,
+                "bottom": 383.71875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 507.1875,
+              "y": 309.859375,
+              "width": 130.859375,
+              "height": 75.59375,
+              "right": 638.046875,
+              "bottom": 385.453125
+            },
+            "text": [
+              {
+                "x": 545.5625,
+                "y": 355.65625,
+                "width": 54.09375,
+                "height": 17,
+                "right": 599.65625,
+                "bottom": 372.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 640.734375,
+              "y": 309.859375,
+              "width": 130.859375,
+              "height": 75.59375,
+              "right": 771.59375,
+              "bottom": 385.453125
+            },
+            "text": [
+              {
+                "x": 687.328125,
+                "y": 355.65625,
+                "width": 37.671875,
+                "height": 17,
+                "right": 725,
+                "bottom": 372.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "92.2344px",
+        "lastControl": {
+          "box": {
+            "x": 65.78125,
+            "y": 165,
+            "width": 149.90625,
+            "height": 59.390625
+          },
+          "nav": {
+            "x": 0,
+            "y": 300.765625,
+            "width": 852,
+            "height": 92.234375
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "web-320-100",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 775.40625,
+          "width": 320,
+          "height": 76.59375,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 8,
+              "y": 782.40625,
+              "width": 57.59375,
+              "height": 64,
+              "right": 65.59375,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 23.1875,
+                "y": 821.203125,
+                "width": 27.203125,
+                "height": 12,
+                "right": 50.390625,
+                "bottom": 833.203125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 69.59375,
+              "y": 782.40625,
+              "width": 57.59375,
+              "height": 64,
+              "right": 127.1875,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 84.453125,
+                "y": 821.203125,
+                "width": 27.875,
+                "height": 12,
+                "right": 112.328125,
+                "bottom": 833.203125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 131.1875,
+              "y": 782.40625,
+              "width": 57.609375,
+              "height": 64,
+              "right": 188.796875,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 136.921875,
+                "y": 832.40625,
+                "width": 46.125,
+                "height": 12,
+                "right": 183.046875,
+                "bottom": 844.40625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 192.796875,
+              "y": 782.40625,
+              "width": 57.59375,
+              "height": 64,
+              "right": 250.390625,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 202.578125,
+                "y": 821.203125,
+                "width": 38.03125,
+                "height": 12,
+                "right": 240.609375,
+                "bottom": 833.203125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 254.390625,
+              "y": 782.40625,
+              "width": 57.59375,
+              "height": 64,
+              "right": 311.984375,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 269.703125,
+                "y": 821.203125,
+                "width": 26.96875,
+                "height": 12,
+                "right": 296.671875,
+                "bottom": 833.203125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "76.5938px",
+        "lastControl": {
+          "box": {
+            "x": 41,
+            "y": 674,
+            "width": 115,
+            "height": 44
+          },
+          "nav": {
+            "x": 0,
+            "y": 775.40625,
+            "width": 320,
+            "height": 76.59375
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "web-320-135",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 748.96875,
+          "width": 320,
+          "height": 103.03125,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 10.796875,
+              "y": 758.0625,
+              "width": 55.359375,
+              "height": 86.390625,
+              "right": 66.15625,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 24.875,
+                "y": 812.53125,
+                "width": 27.203125,
+                "height": 12,
+                "right": 52.078125,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 71.546875,
+              "y": 758.0625,
+              "width": 55.375,
+              "height": 86.390625,
+              "right": 126.921875,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 85.296875,
+                "y": 812.53125,
+                "width": 27.875,
+                "height": 12,
+                "right": 113.171875,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 132.3125,
+              "y": 758.0625,
+              "width": 55.359375,
+              "height": 86.390625,
+              "right": 187.671875,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 136.9375,
+                "y": 827.640625,
+                "width": 46.125,
+                "height": 12,
+                "right": 183.0625,
+                "bottom": 839.640625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 193.0625,
+              "y": 758.0625,
+              "width": 55.375,
+              "height": 86.390625,
+              "right": 248.4375,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 201.734375,
+                "y": 812.53125,
+                "width": 38.03125,
+                "height": 12,
+                "right": 239.765625,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 253.828125,
+              "y": 758.0625,
+              "width": 55.375,
+              "height": 86.390625,
+              "right": 309.203125,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 268.03125,
+                "y": 812.53125,
+                "width": 26.96875,
+                "height": 12,
+                "right": 295,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "103.031px",
+        "lastControl": {
+          "box": {
+            "x": 54.984375,
+            "y": 613.0625,
+            "width": 210.03125,
+            "height": 59.390625
+          },
+          "nav": {
+            "x": 0,
+            "y": 748.96875,
+            "width": 320,
+            "height": 103.03125
+          }
+        }
+      },
+      "destinations": [
+        {
+          "label": "Inicio",
+          "path": "/",
+          "query": {}
+        },
+        {
+          "label": "aiRIM",
+          "path": "/inteligencia-liquida",
+          "query": {}
+        },
+        {
+          "label": "Escanear",
+          "path": "/escanear",
+          "query": {}
+        },
+        {
+          "label": "Bodega",
+          "path": "/my-wines",
+          "query": {}
+        },
+        {
+          "label": "Perfil",
+          "path": "/profile",
+          "query": {}
+        },
+        {
+          "nested": "/my-wines/wishlist",
+          "active": "Bodega"
+        },
+        {
+          "nested": "/escanear/etiqueta",
+          "active": "Escanear"
+        },
+        {
+          "nested": "/matchrim",
+          "active": "Perfil"
+        }
+      ],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "web-393-100",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 775.40625,
+          "width": 393,
+          "height": 76.59375,
+          "right": 393,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 8,
+              "y": 782.40625,
+              "width": 72.1875,
+              "height": 64,
+              "right": 80.1875,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 30.484375,
+                "y": 821.203125,
+                "width": 27.203125,
+                "height": 12,
+                "right": 57.6875,
+                "bottom": 833.203125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 84.1875,
+              "y": 782.40625,
+              "width": 72.203125,
+              "height": 64,
+              "right": 156.390625,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 106.34375,
+                "y": 821.203125,
+                "width": 27.875,
+                "height": 12,
+                "right": 134.21875,
+                "bottom": 833.203125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 160.390625,
+              "y": 782.40625,
+              "width": 72.203125,
+              "height": 64,
+              "right": 232.59375,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 173.421875,
+                "y": 832.40625,
+                "width": 46.125,
+                "height": 12,
+                "right": 219.546875,
+                "bottom": 844.40625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 236.59375,
+              "y": 782.40625,
+              "width": 72.203125,
+              "height": 64,
+              "right": 308.796875,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 253.671875,
+                "y": 821.203125,
+                "width": 38.03125,
+                "height": 12,
+                "right": 291.703125,
+                "bottom": 833.203125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 312.796875,
+              "y": 782.40625,
+              "width": 72.1875,
+              "height": 64,
+              "right": 384.984375,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 335.40625,
+                "y": 821.203125,
+                "width": 26.96875,
+                "height": 12,
+                "right": 362.375,
+                "bottom": 833.203125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "76.5938px",
+        "lastControl": {
+          "box": {
+            "x": 41,
+            "y": 674,
+            "width": 151.5,
+            "height": 44
+          },
+          "nav": {
+            "x": 0,
+            "y": 775.40625,
+            "width": 393,
+            "height": 76.59375
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "web-393-135",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 748.96875,
+          "width": 393,
+          "height": 103.03125,
+          "right": 393,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 10.796875,
+              "y": 758.0625,
+              "width": 69.96875,
+              "height": 86.390625,
+              "right": 80.765625,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 32.171875,
+                "y": 812.53125,
+                "width": 27.203125,
+                "height": 12,
+                "right": 59.375,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 86.15625,
+              "y": 758.0625,
+              "width": 69.96875,
+              "height": 86.390625,
+              "right": 156.125,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 107.203125,
+                "y": 812.53125,
+                "width": 27.875,
+                "height": 12,
+                "right": 135.078125,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 161.515625,
+              "y": 758.0625,
+              "width": 69.96875,
+              "height": 86.390625,
+              "right": 231.484375,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 173.4375,
+                "y": 827.640625,
+                "width": 46.125,
+                "height": 12,
+                "right": 219.5625,
+                "bottom": 839.640625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 236.875,
+              "y": 758.0625,
+              "width": 69.96875,
+              "height": 86.390625,
+              "right": 306.84375,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 252.84375,
+                "y": 812.53125,
+                "width": 38.03125,
+                "height": 12,
+                "right": 290.875,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 312.234375,
+              "y": 758.0625,
+              "width": 69.96875,
+              "height": 86.390625,
+              "right": 382.203125,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 333.734375,
+                "y": 812.53125,
+                "width": 26.96875,
+                "height": 12,
+                "right": 360.703125,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "103.031px",
+        "lastControl": {
+          "box": {
+            "x": 54.984375,
+            "y": 613.34375,
+            "width": 283.03125,
+            "height": 59.390625
+          },
+          "nav": {
+            "x": 0,
+            "y": 748.96875,
+            "width": 393,
+            "height": 103.03125
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "web-852-100",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "desktopBottomNavHidden": true
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "web-852-135",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "desktopBottomNavHidden": true
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-safe-bottom",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 712.625,
+          "width": 393,
+          "height": 139.375,
+          "right": 393,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 10.796875,
+              "y": 721.71875,
+              "width": 69.34375,
+              "height": 88.734375,
+              "right": 80.140625,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 26.453125,
+                "y": 774.078125,
+                "width": 38.03125,
+                "height": 17,
+                "right": 64.484375,
+                "bottom": 791.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 82.828125,
+              "y": 721.71875,
+              "width": 69.359375,
+              "height": 88.734375,
+              "right": 152.1875,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 97.796875,
+                "y": 774.078125,
+                "width": 39.421875,
+                "height": 17,
+                "right": 137.21875,
+                "bottom": 791.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 154.875,
+              "y": 721.71875,
+              "width": 83.234375,
+              "height": 88.734375,
+              "right": 238.109375,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 163.8125,
+                "y": 791.90625,
+                "width": 65.34375,
+                "height": 17,
+                "right": 229.15625,
+                "bottom": 808.90625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 240.796875,
+              "y": 721.71875,
+              "width": 69.359375,
+              "height": 88.734375,
+              "right": 310.15625,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 248.421875,
+                "y": 774.078125,
+                "width": 54.09375,
+                "height": 17,
+                "right": 302.515625,
+                "bottom": 791.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 312.84375,
+              "y": 721.71875,
+              "width": 69.359375,
+              "height": 88.734375,
+              "right": 382.203125,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 328.6875,
+                "y": 774.078125,
+                "width": 37.671875,
+                "height": 17,
+                "right": 366.359375,
+                "bottom": 791.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "139.375px",
+        "lastControl": {
+          "box": {
+            "x": 54.984375,
+            "y": 576.359375,
+            "width": 283.03125,
+            "height": 59.390625
+          },
+          "nav": {
+            "x": 0,
+            "y": 712.625,
+            "width": 393,
+            "height": 139.375
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-safe-landscape",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 279.765625,
+          "width": 852,
+          "height": 113.234375,
+          "right": 852,
+          "bottom": 393
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 94.40625,
+              "y": 288.859375,
+              "width": 130.84375,
+              "height": 75.59375,
+              "right": 225.25,
+              "bottom": 364.453125
+            },
+            "text": [
+              {
+                "x": 140.8125,
+                "y": 334.65625,
+                "width": 38.03125,
+                "height": 17,
+                "right": 178.84375,
+                "bottom": 351.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 227.9375,
+              "y": 288.859375,
+              "width": 130.859375,
+              "height": 75.59375,
+              "right": 358.796875,
+              "bottom": 364.453125
+            },
+            "text": [
+              {
+                "x": 273.65625,
+                "y": 334.65625,
+                "width": 39.421875,
+                "height": 17,
+                "right": 313.078125,
+                "bottom": 351.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 361.484375,
+              "y": 288.859375,
+              "width": 157.015625,
+              "height": 75.59375,
+              "right": 518.5,
+              "bottom": 364.453125
+            },
+            "text": [
+              {
+                "x": 407.3125,
+                "y": 345.71875,
+                "width": 65.34375,
+                "height": 17,
+                "right": 472.65625,
+                "bottom": 362.71875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 521.1875,
+              "y": 288.859375,
+              "width": 130.859375,
+              "height": 75.59375,
+              "right": 652.046875,
+              "bottom": 364.453125
+            },
+            "text": [
+              {
+                "x": 559.5625,
+                "y": 334.65625,
+                "width": 54.09375,
+                "height": 17,
+                "right": 613.65625,
+                "bottom": 351.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 654.734375,
+              "y": 288.859375,
+              "width": 130.859375,
+              "height": 75.59375,
+              "right": 785.59375,
+              "bottom": 364.453125
+            },
+            "text": [
+              {
+                "x": 701.328125,
+                "y": 334.65625,
+                "width": 37.671875,
+                "height": 17,
+                "right": 739,
+                "bottom": 351.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "113.234px",
+        "lastControl": {
+          "box": {
+            "x": 109.78125,
+            "y": 144.1875,
+            "width": 280.625,
+            "height": 59.390625
+          },
+          "nav": {
+            "x": 0,
+            "y": 279.765625,
+            "width": 852,
+            "height": 113.234375
+          }
+        },
+        "rotated": {
+          "box": {
+            "x": 0,
+            "y": 725.625,
+            "width": 393,
+            "height": 126.375,
+            "right": 393,
+            "bottom": 852
+          },
+          "links": [
+            {
+              "label": "Inicio",
+              "box": {
+                "x": 54.796875,
+                "y": 734.71875,
+                "width": 57.8125,
+                "height": 88.734375,
+                "right": 112.609375,
+                "bottom": 823.453125
+              },
+              "text": [
+                {
+                  "x": 64.6875,
+                  "y": 787.078125,
+                  "width": 38.03125,
+                  "height": 17,
+                  "right": 102.71875,
+                  "bottom": 804.078125
+                }
+              ],
+              "textOverflow": "clip",
+              "fontSize": "14.85px",
+              "hit": [
+                true,
+                true,
+                true
+              ],
+              "current": null,
+              "href": "/"
+            },
+            {
+              "label": "aiRIM",
+              "box": {
+                "x": 115.296875,
+                "y": 734.71875,
+                "width": 57.8125,
+                "height": 88.734375,
+                "right": 173.109375,
+                "bottom": 823.453125
+              },
+              "text": [
+                {
+                  "x": 124.484375,
+                  "y": 787.078125,
+                  "width": 39.421875,
+                  "height": 17,
+                  "right": 163.90625,
+                  "bottom": 804.078125
+                }
+              ],
+              "textOverflow": "clip",
+              "fontSize": "14.85px",
+              "hit": [
+                true,
+                true,
+                true
+              ],
+              "current": null,
+              "href": "/inteligencia-liquida"
+            },
+            {
+              "label": "Escanear",
+              "box": {
+                "x": 175.796875,
+                "y": 734.71875,
+                "width": 69.390625,
+                "height": 88.734375,
+                "right": 245.1875,
+                "bottom": 823.453125
+              },
+              "text": [
+                {
+                  "x": 177.8125,
+                  "y": 804.90625,
+                  "width": 65.34375,
+                  "height": 17,
+                  "right": 243.15625,
+                  "bottom": 821.90625
+                }
+              ],
+              "textOverflow": "clip",
+              "fontSize": "14.85px",
+              "hit": [
+                true,
+                true,
+                true
+              ],
+              "current": null,
+              "href": "/escanear"
+            },
+            {
+              "label": "Bodega",
+              "box": {
+                "x": 247.875,
+                "y": 734.71875,
+                "width": 57.8125,
+                "height": 88.734375,
+                "right": 305.6875,
+                "bottom": 823.453125
+              },
+              "text": [
+                {
+                  "x": 249.734375,
+                  "y": 787.078125,
+                  "width": 54.09375,
+                  "height": 17,
+                  "right": 303.828125,
+                  "bottom": 804.078125
+                }
+              ],
+              "textOverflow": "clip",
+              "fontSize": "14.85px",
+              "hit": [
+                true,
+                true,
+                true
+              ],
+              "current": "page",
+              "href": "/my-wines"
+            },
+            {
+              "label": "Perfil",
+              "box": {
+                "x": 308.375,
+                "y": 734.71875,
+                "width": 57.828125,
+                "height": 88.734375,
+                "right": 366.203125,
+                "bottom": 823.453125
+              },
+              "text": [
+                {
+                  "x": 318.453125,
+                  "y": 787.078125,
+                  "width": 37.671875,
+                  "height": 17,
+                  "right": 356.125,
+                  "bottom": 804.078125
+                }
+              ],
+              "textOverflow": "clip",
+              "fontSize": "14.85px",
+              "hit": [
+                true,
+                true,
+                true
+              ],
+              "current": null,
+              "href": "/profile"
+            }
+          ],
+          "domOrder": [
+            "Inicio",
+            "aiRIM",
+            "Escanear",
+            "Bodega",
+            "Perfil"
+          ],
+          "visualOrder": [
+            "Inicio",
+            "aiRIM",
+            "Escanear",
+            "Bodega",
+            "Perfil"
+          ],
+          "issues": [],
+          "paddingBottom": "126.375px"
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-320-200",
+      "passed": false,
+      "failures": [],
+      "error": "page layout viewport exceeds requested width",
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 1034.453125,
+          "width": 459,
+          "height": 188.546875,
+          "right": 459,
+          "bottom": 1223
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 16,
+              "y": 1047.453125,
+              "width": 79.03125,
+              "height": 130.359375,
+              "right": 95.03125,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 28.828125,
+                "y": 1124.46875,
+                "width": 53.375,
+                "height": 26,
+                "right": 82.203125,
+                "bottom": 1150.46875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 99.03125,
+              "y": 1047.453125,
+              "width": 79.03125,
+              "height": 130.359375,
+              "right": 178.0625,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 110.5625,
+                "y": 1124.46875,
+                "width": 55.96875,
+                "height": 26,
+                "right": 166.53125,
+                "bottom": 1150.46875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 182.0625,
+              "y": 1047.453125,
+              "width": 94.859375,
+              "height": 130.359375,
+              "right": 276.921875,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 183.234375,
+                "y": 1150.3125,
+                "width": 92.515625,
+                "height": 26,
+                "right": 275.75,
+                "bottom": 1176.3125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 280.921875,
+              "y": 1047.453125,
+              "width": 79.03125,
+              "height": 130.359375,
+              "right": 359.953125,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 281.96875,
+                "y": 1124.46875,
+                "width": 76.9375,
+                "height": 26,
+                "right": 358.90625,
+                "bottom": 1150.46875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 363.953125,
+              "y": 1047.453125,
+              "width": 79.046875,
+              "height": 130.359375,
+              "right": 443,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 377.421875,
+                "y": 1124.46875,
+                "width": 52.09375,
+                "height": 26,
+                "right": 429.515625,
+                "bottom": 1150.46875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "188.547px"
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-scan-200",
+      "passed": false,
+      "failures": [],
+      "error": "page layout viewport exceeds requested width",
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 953.046875,
+          "width": 437,
+          "height": 210.953125,
+          "right": 437,
+          "bottom": 1164
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 16,
+              "y": 966.046875,
+              "width": 74.796875,
+              "height": 152.765625,
+              "right": 90.796875,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 26.703125,
+                "y": 1054.265625,
+                "width": 53.375,
+                "height": 26,
+                "right": 80.078125,
+                "bottom": 1080.265625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 94.796875,
+              "y": 966.046875,
+              "width": 74.8125,
+              "height": 152.765625,
+              "right": 169.609375,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 104.21875,
+                "y": 1054.265625,
+                "width": 55.96875,
+                "height": 26,
+                "right": 160.1875,
+                "bottom": 1080.265625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 173.609375,
+              "y": 966.046875,
+              "width": 89.765625,
+              "height": 152.765625,
+              "right": 263.375,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 176.265625,
+                "y": 1063.8125,
+                "width": 84.4375,
+                "height": 26,
+                "right": 260.703125,
+                "bottom": 1089.8125
+              },
+              {
+                "x": 214.453125,
+                "y": 1091.3125,
+                "width": 8.078125,
+                "height": 26,
+                "right": 222.53125,
+                "bottom": 1117.3125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 267.375,
+              "y": 966.046875,
+              "width": 74.8125,
+              "height": 152.765625,
+              "right": 342.1875,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 272.265625,
+                "y": 1040.515625,
+                "width": 65.03125,
+                "height": 26,
+                "right": 337.296875,
+                "bottom": 1066.515625
+              },
+              {
+                "x": 298.8125,
+                "y": 1068.015625,
+                "width": 11.921875,
+                "height": 26,
+                "right": 310.734375,
+                "bottom": 1094.015625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fmy-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 346.1875,
+              "y": 966.046875,
+              "width": 74.8125,
+              "height": 152.765625,
+              "right": 421,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 357.546875,
+                "y": 1054.265625,
+                "width": 52.09375,
+                "height": 26,
+                "right": 409.640625,
+                "bottom": 1080.265625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fprofile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "210.953px"
+      },
+      "destinations": [],
+      "requests": [],
+      "pageErrors": []
+    },
+    {
+      "case": "native-landscape-200",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 235.8125,
+          "width": 852,
+          "height": 157.1875,
+          "right": 852,
+          "bottom": 393
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 60,
+              "y": 248.8125,
+              "width": 143.0625,
+              "height": 112,
+              "right": 203.0625,
+              "bottom": 360.8125
+            },
+            "text": [
+              {
+                "x": 104.84375,
+                "y": 316.65625,
+                "width": 53.375,
+                "height": 26,
+                "right": 158.21875,
+                "bottom": 342.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 207.0625,
+              "y": 248.8125,
+              "width": 143.078125,
+              "height": 112,
+              "right": 350.140625,
+              "bottom": 360.8125
+            },
+            "text": [
+              {
+                "x": 250.609375,
+                "y": 316.65625,
+                "width": 55.96875,
+                "height": 26,
+                "right": 306.578125,
+                "bottom": 342.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 354.140625,
+              "y": 248.8125,
+              "width": 171.703125,
+              "height": 112,
+              "right": 525.84375,
+              "bottom": 360.8125
+            },
+            "text": [
+              {
+                "x": 393.734375,
+                "y": 333.0625,
+                "width": 92.515625,
+                "height": 26,
+                "right": 486.25,
+                "bottom": 359.0625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 529.84375,
+              "y": 248.8125,
+              "width": 143.078125,
+              "height": 112,
+              "right": 672.921875,
+              "bottom": 360.8125
+            },
+            "text": [
+              {
+                "x": 562.90625,
+                "y": 316.65625,
+                "width": 76.9375,
+                "height": 26,
+                "right": 639.84375,
+                "bottom": 342.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 676.921875,
+              "y": 248.8125,
+              "width": 143.078125,
+              "height": 112,
+              "right": 820,
+              "bottom": 360.8125
+            },
+            "text": [
+              {
+                "x": 722.40625,
+                "y": 316.65625,
+                "width": 52.09375,
+                "height": 26,
+                "right": 774.5,
+                "bottom": 342.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "157.188px",
+        "lastControl": {
+          "box": {
+            "x": 141,
+            "y": 35,
+            "width": 226,
+            "height": 88
+          },
+          "nav": {
+            "x": 0,
+            "y": 235.8125,
+            "width": 852,
+            "height": 157.1875
+          }
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-anonymous",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 712.625,
+          "width": 320,
+          "height": 139.375,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 10.796875,
+              "y": 721.71875,
+              "width": 55.3125,
+              "height": 88.734375,
+              "right": 66.109375,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 19.4375,
+                "y": 774.078125,
+                "width": 38.03125,
+                "height": 17,
+                "right": 57.46875,
+                "bottom": 791.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 68.796875,
+              "y": 721.71875,
+              "width": 55.3125,
+              "height": 88.734375,
+              "right": 124.109375,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 76.734375,
+                "y": 774.078125,
+                "width": 39.421875,
+                "height": 17,
+                "right": 116.15625,
+                "bottom": 791.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 126.796875,
+              "y": 721.71875,
+              "width": 66.390625,
+              "height": 88.734375,
+              "right": 193.1875,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 127.3125,
+                "y": 791.90625,
+                "width": 65.34375,
+                "height": 17,
+                "right": 192.65625,
+                "bottom": 808.90625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 195.875,
+              "y": 721.71875,
+              "width": 55.3125,
+              "height": 88.734375,
+              "right": 251.1875,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 196.484375,
+                "y": 774.078125,
+                "width": 54.09375,
+                "height": 17,
+                "right": 250.578125,
+                "bottom": 791.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fmy-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 253.875,
+              "y": 721.71875,
+              "width": 55.328125,
+              "height": 88.734375,
+              "right": 309.203125,
+              "bottom": 810.453125
+            },
+            "text": [
+              {
+                "x": 262.703125,
+                "y": 774.078125,
+                "width": 37.671875,
+                "height": 17,
+                "right": 300.375,
+                "bottom": 791.078125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "14.85px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fprofile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "139.375px"
+      },
+      "destinations": [
+        {
+          "label": "Inicio",
+          "path": "/",
+          "query": {}
+        },
+        {
+          "label": "aiRIM",
+          "path": "/inteligencia-liquida",
+          "query": {}
+        },
+        {
+          "label": "Escanear",
+          "path": "/escanear",
+          "query": {}
+        },
+        {
+          "label": "Bodega",
+          "path": "/auth",
+          "query": {
+            "redirect": [
+              "/my-wines"
+            ]
+          }
+        },
+        {
+          "label": "Perfil",
+          "path": "/auth",
+          "query": {
+            "redirect": [
+              "/profile"
+            ]
+          }
+        }
+      ],
+      "requests": [],
+      "pageErrors": []
+    },
+    {
+      "case": "web-anonymous",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 748.96875,
+          "width": 320,
+          "height": 103.03125,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 10.796875,
+              "y": 758.0625,
+              "width": 55.359375,
+              "height": 86.390625,
+              "right": 66.15625,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 24.875,
+                "y": 812.53125,
+                "width": 27.203125,
+                "height": 12,
+                "right": 52.078125,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 71.546875,
+              "y": 758.0625,
+              "width": 55.375,
+              "height": 86.390625,
+              "right": 126.921875,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 85.296875,
+                "y": 812.53125,
+                "width": 27.875,
+                "height": 12,
+                "right": 113.171875,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 132.3125,
+              "y": 758.0625,
+              "width": 55.359375,
+              "height": 86.390625,
+              "right": 187.671875,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 136.9375,
+                "y": 827.640625,
+                "width": 46.125,
+                "height": 12,
+                "right": 183.0625,
+                "bottom": 839.640625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 193.0625,
+              "y": 758.0625,
+              "width": 55.375,
+              "height": 86.390625,
+              "right": 248.4375,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 201.734375,
+                "y": 812.53125,
+                "width": 38.03125,
+                "height": 12,
+                "right": 239.765625,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fmy-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 253.828125,
+              "y": 758.0625,
+              "width": 55.375,
+              "height": 86.390625,
+              "right": 309.203125,
+              "bottom": 844.453125
+            },
+            "text": [
+              {
+                "x": 268.03125,
+                "y": 812.53125,
+                "width": 26.96875,
+                "height": 12,
+                "right": 295,
+                "bottom": 824.53125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "10px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fprofile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "103.031px"
+      },
+      "destinations": [
+        {
+          "label": "Inicio",
+          "path": "/",
+          "query": {}
+        },
+        {
+          "label": "aiRIM",
+          "path": "/inteligencia-liquida",
+          "query": {}
+        },
+        {
+          "label": "Escanear",
+          "path": "/escanear",
+          "query": {}
+        },
+        {
+          "label": "Bodega",
+          "path": "/auth",
+          "query": {
+            "redirect": [
+              "/my-wines"
+            ]
+          }
+        },
+        {
+          "label": "Perfil",
+          "path": "/auth",
+          "query": {
+            "redirect": [
+              "/profile"
+            ]
+          }
+        }
+      ],
+      "requests": [],
+      "pageErrors": []
+    }
+  ]
+}

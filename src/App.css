@@ -9,10 +9,10 @@
 
 @media (max-width: 767px) {
   body.has-mobile-app-nav .App {
-    padding-bottom: calc(4.75rem + var(--matchrim-safe-bottom));
+    padding-bottom: var(--matchrim-bottom-nav-height, calc(4.75rem + var(--matchrim-safe-bottom)));
   }
 }
 
 body.has-native-app-nav .App {
-  padding-bottom: calc(4.75rem + var(--matchrim-safe-bottom));
+  padding-bottom: var(--matchrim-bottom-nav-height, calc(4.75rem + var(--matchrim-safe-bottom)));
 }

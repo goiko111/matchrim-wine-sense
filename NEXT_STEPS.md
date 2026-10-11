@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, assignment06 checkpoint complete
+
+1. Native320/135 bottom labels/order, safe-area content reserve and web Bodega fixed positioning closed locally. See `docs/MATCHRIM_BOTTOM_NAV_2026-10-11.md`; no need to redo the passing targeted matrix unchanged.
+2. Keep320px/200% Bodega/scan page-wide viewport expansion as a separate residual, not accessibility-approved. Landscape200 passes; real Dynamic Type/VoiceOver still require physical QA.
+3. Wait for authorized scope or actual external/distribution gate. Preserve28 vision calls and unsigned80; recent source fixes are not in that binary. No native number/push/deploy/Apple/invitation action in this checkpoint.
+
 ## Current delta: 2026-10-11, assignment05 complete
 
 1. Top Bodega actions, learning CTA and contextual aiRIM legibility closed locally; see `docs/MATCHRIM_BODEGA_LEGIBILITY_2026-10-11.md`. Guards/routes/mutation policy untouched. No need to replay prior functional suites for these classes.
