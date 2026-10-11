@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, assignment07 complete
+
+1. The two initial Bodega/scan-hub320px/200% overflow cases are closed by measured local reflow fixes. See `docs/MATCHRIM_REFLOW_200_2026-10-11.md`;14 affected variants approved without rewriting prior06 evidence.
+2. Do not extrapolate to the whole app, other data states, open dialogs or selected scanner/privacy-screen layouts at200%. Physical Dynamic Type/VoiceOver, live intelligence and hosted persistence remain unapproved by browser fixtures.
+3. Stop this bounded assignment. Preserve unsigned80, source deltas03-07,28 vision calls and all ledgers/corpora. No native build/number, push, deploy, Apple or invitation action in this scope.
+
 ## Current delta: 2026-10-11, assignment06 checkpoint complete
 
 1. Native320/135 bottom labels/order, safe-area content reserve and web Bodega fixed positioning closed locally. See `docs/MATCHRIM_BOTTOM_NAV_2026-10-11.md`; no need to redo the passing targeted matrix unchanged.

@@ -136,10 +136,10 @@ const MobileBottomNav = () => {
               }`}
             >
               {isScan ? (
-                <span className={`flex h-11 w-11 items-center justify-center rounded-full shadow-[0_8px_22px_-10px_rgba(72,6,25,0.9)] ${
+                <span className={`flex aspect-square w-11 max-w-full shrink-0 items-center justify-center rounded-full shadow-[0_8px_22px_-10px_rgba(72,6,25,0.9)] ${
                   isActive ? 'bg-red-900 text-white' : 'bg-slate-950 text-white'
                 }`}>
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+                  <Icon className="h-5 w-5 max-h-[60%] max-w-[60%]" aria-hidden="true" />
                 </span>
               ) : (
                 <Icon className="h-[1.35rem] w-[1.35rem]" strokeWidth={isActive ? 2.3 : 1.9} aria-hidden="true" />

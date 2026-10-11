@@ -257,8 +257,8 @@ export const ScanHub = ({
     const secondaryOptions = scanOptions.slice(2);
 
     return (
-      <div className="space-y-7">
-        <div className="grid gap-3 sm:grid-cols-2">
+      <div className="space-y-7 [overflow-wrap:anywhere]">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {primaryOptions.map((option) => {
             const Icon = option.icon;
             const isMenu = option.id === "wine-menu";
@@ -267,7 +267,7 @@ export const ScanHub = ({
                 key={option.id}
                 type="button"
                 onClick={() => selectMode(option.id)}
-                className={`matchrim-pressable flex min-h-[7.5rem] items-start gap-4 rounded-lg p-4 text-left shadow-sm ${
+                className={`matchrim-pressable flex min-h-[7.5rem] min-w-0 flex-wrap items-start gap-4 rounded-lg p-4 text-left shadow-sm ${
                   isMenu
                     ? "bg-emerald-950 text-white"
                     : "border border-slate-200 bg-white text-slate-950"
@@ -278,7 +278,7 @@ export const ScanHub = ({
                 }`}>
                   <Icon className="h-5 w-5" />
                 </span>
-                <span className="min-w-0 flex-1 pt-0.5">
+                <span className="min-w-0 flex-[1_1_9rem] pt-0.5">
                   <span className="block text-lg font-bold">{option.title}</span>
                   <span className={`mt-1 block text-sm leading-5 ${isMenu ? "text-white/72" : "text-slate-500"}`}>
                     {option.description}
@@ -300,14 +300,14 @@ export const ScanHub = ({
                   key={option.id}
                   type="button"
                   onClick={() => selectMode(option.id)}
-                  className="matchrim-pressable flex min-h-[4.75rem] w-full items-center gap-3 py-3 text-left"
+                  className="matchrim-pressable flex min-h-[4.75rem] w-full min-w-0 flex-wrap items-center gap-3 py-3 text-left"
                 >
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-700">
                     <Icon className="h-[1.1rem] w-[1.1rem]" />
                   </span>
-                  <span className="min-w-0 flex-1">
+                  <span className="min-w-0 flex-[1_1_9rem]">
                     <span className="block text-sm font-semibold text-slate-950">{option.title}</span>
-                    <span className="mt-0.5 block truncate text-xs text-slate-500">{option.description}</span>
+                    <span className="mt-0.5 block text-xs text-slate-500">{option.description}</span>
                   </span>
                   <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
                 </button>

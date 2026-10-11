@@ -196,7 +196,7 @@ const Scan = () => {
                 <ScanLine className="h-4 w-4" />
                 <span className="text-sm font-semibold">Cámara y galería</span>
               </div>
-              <h1 className="mt-1 text-[2rem] font-bold leading-tight text-slate-950">Escanear</h1>
+              <h1 className="mt-1 text-[2rem] font-bold leading-tight text-slate-950 [overflow-wrap:anywhere]">Escanear</h1>
               <p className="mt-2 max-w-2xl text-[15px] leading-6 text-slate-600">
                 Elige lo que tienes delante. Cada vino se identifica y puntúa por separado.
               </p>

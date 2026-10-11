@@ -10,6 +10,8 @@ p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--url', default='http://127.0.0.1:4441')
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--cases')
+p.add_argument('--layout-diagnostics', action='store_true')
+p.add_argument('--reflow-content', action='store_true')
 args = p.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
 UID = '00000000-0000-4000-8000-000000000080'
@@ -31,6 +33,12 @@ variants += [('native-safe-bottom', True, True, 393, 852, 135, (0,0,34)),
              ('native-landscape-200', True, True, 852, 393, 200, (44,16,21)),
              ('native-anonymous', True, False, 320, 852, 135, (0,0,34)),
              ('web-anonymous', False, False, 320, 852, 135, (0,0,0))]
+variants += [('native-scan-100', True, False, 320, 852, 100, (0,0,0)),
+             ('native-scan-135', True, False, 393, 852, 135, (0,0,0)),
+             ('native-scan-landscape-100', True, False, 852, 393, 100, (0,0,0)),
+             ('native-scan-landscape-135', True, False, 852, 393, 135, (44,16,21)),
+             ('web-scan-200', False, False, 320, 852, 200, (0,0,34)),
+             ('web-bodega-200', False, True, 320, 852, 200, (0,0,34))]
 LABELS = ['Inicio', 'aiRIM', 'Escanear', 'Bodega', 'Perfil']
 PATHS = ['/', '/inteligencia-liquida', '/escanear', '/my-wines', '/profile']
 MEASURE = """nav => {
@@ -95,6 +103,18 @@ with sync_playwright() as pw:
             else:
                 nav.wait_for();page.wait_for_timeout(100)
                 measurements=nav.evaluate(MEASURE);failures+=measurements['issues']
+                if args.layout_diagnostics:
+                    measurements['layoutDiagnostics']=page.evaluate("""requestedWidth=>{
+                      const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom}};
+                      const root=document.documentElement,v=window.visualViewport;
+                      const nodes=[...document.querySelectorAll('main,main *')].filter(e=>e.getBoundingClientRect().width);
+                      return {innerWidth,innerHeight,rootFont:getComputedStyle(root).fontSize,
+                        visualViewport:v&&{width:v.width,height:v.height,scale:v.scale,offsetLeft:v.offsetLeft,offsetTop:v.offsetTop},
+                        document:{clientWidth:root.clientWidth,clientHeight:root.clientHeight,scrollWidth:root.scrollWidth,scrollHeight:root.scrollHeight},
+                        overflow:nodes.filter(e=>e.getBoundingClientRect().right>requestedWidth+1||e.scrollWidth>e.clientWidth+1).map(e=>{
+                          const s=getComputedStyle(e);return {tag:e.tagName,role:e.getAttribute('role'),text:e.textContent.trim().slice(0,120),className:e.getAttribute('class'),box:rect(e),parent:rect(e.parentElement),clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,minWidth:s.minWidth,width:s.width,display:s.display,gridTemplateColumns:s.gridTemplateColumns,whiteSpace:s.whiteSpace,overflowWrap:s.overflowWrap,overflowX:s.overflowX,fontSize:s.fontSize,flexShrink:s.flexShrink};
+                        }).slice(0,100)};
+                    }""",width)
                 assert measurements['visualOrder']==LABELS, 'visual destination order changed'
                 assert measurements['box']['x']>=-1 and measurements['box']['right']<=width+1, 'page layout viewport exceeds requested width'
                 assert abs(measurements['box']['bottom']-height)<1, 'bar is not anchored to viewport bottom'
@@ -117,7 +137,12 @@ with sync_playwright() as pw:
                     if not last.evaluate('(e)=>{const b=e.getBoundingClientRect();return e.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2))}'):failures.append('last control hit-test failed')
                     measurements['lastControl']={'box':b,'nav':n}
                     page.screenshot(path=str(args.output/(name+'-content-end.png')))
-                if name in ['native-320-135','web-320-135','native-anonymous','web-anonymous']:
+                if args.reflow_content:
+                    from qa_matchrim_reflow import check_content
+                    content=check_content(page,nav,authenticated,args.output,name,args.url)
+                    measurements['content']=content;failures+=content['failures']
+                    open_start()
+                if name in ['native-320-135','web-320-135','native-anonymous','web-anonymous','native-320-200','native-scan-200']:
                     for label,path in zip(LABELS,PATHS):
                         open_start();link=nav.get_by_role('link',name=label,exact=True);link.focus();page.keyboard.press('Enter')
                         expected='/auth' if not authenticated and label in ['Bodega','Perfil'] else path

@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, two-route200% reflow
+
+- Assignment07 closes the two320px/200% initial-route failures from06. Instrumented root32px/visual scale1 unchanged; Bodega inner/scroll width459 ->320, scan437 ->320. Local min-content/wrapping fixes preserve complete actions/descriptions; filter target and web scanner hit collision also corrected.
+-14 unique affected variants PASS,230 content-control/643 text measurements,70 content destinations and29 nav checks. Typecheck/lint0 errors106 inherited warnings/web build PASS. Original06 full17/19 evidence remains unchanged; this is new delta evidence, not global app200% certification.
+- Report: [MATCHRIM_REFLOW_200_2026-10-11.md](docs/MATCHRIM_REFLOW_200_2026-10-11.md). No native build/push/deploy/Apple/invites/backend/vision; previous80 lacks03-07.28 calls preserved. Other routes, data combinations, dialogs and physical accessibility remain separate gates.
+
 ## Latest checkpoint: 2026-10-11, bottom navigation
 
 - Assignment06 closes native320/135 label clipping and DOM/visual order mismatch. Five destinations and central scanner preserved; measured bottom reserve includes safe areas. Web Bodega bar now stays fixed to the viewport instead of its backdrop-filter header.

@@ -1257,7 +1257,7 @@ const MyWinesForOwner = () => {
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
       <AppNav />
 
-      <main className="matchrim-native-page-top matchrim-native-page-x mx-auto max-w-7xl pb-8">
+      <main className="matchrim-native-page-top matchrim-native-page-x mx-auto max-w-7xl pb-8 [overflow-wrap:anywhere]">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">Mis Vinos</h1>
           <p className="text-muted-foreground">
@@ -1267,8 +1267,8 @@ const MyWinesForOwner = () => {
 
         <div className="space-y-6">
           <Card className="border-red-100 bg-white">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex flex-wrap items-center gap-2">
                 <Plus className="h-5 w-5 text-red-900" />
                 Añadir o encontrar vinos
               </CardTitle>
@@ -1276,7 +1276,7 @@ const MyWinesForOwner = () => {
                 Elige una acción. Favoritos es una vista transversal: un vino puede seguir en Bodega, Quiero Probar o Ya Probados y aparecer también en Favoritos.
               </CardDescription>
             </CardHeader>
-            <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
+            <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3 p-4 pt-0 sm:p-6 sm:pt-0">
               <Button
                 type="button"
                 variant="outline"
@@ -1313,8 +1313,8 @@ const MyWinesForOwner = () => {
                     <span className="block text-xs font-normal text-muted-foreground">Buscar, validar o completar</span>
                   </span>
                 </Button>
-              <div className="min-w-0 rounded-lg border border-stone-200 bg-stone-50 p-4">
-                <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
+              <div className="min-w-0 rounded-lg border border-stone-200 bg-stone-50 p-2 sm:p-4 [&_input]:pl-8 [&_input]:pr-8">
+                <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-semibold">
                   <Search className="h-4 w-4 shrink-0 text-red-900" />
                   Buscar catálogo
                 </div>
@@ -1325,13 +1325,13 @@ const MyWinesForOwner = () => {
 
           <Card className="border-red-100 bg-white">
             <CardContent className="p-4 sm:p-5">
-              <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr]">
-                <div className="rounded-lg border border-red-100 bg-red-50/70 p-4 sm:p-5">
-                  <div className="flex items-start gap-3">
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+                <div className="min-w-0 rounded-lg border border-red-100 bg-red-50/70 p-4 sm:p-5">
+                  <div className="flex flex-wrap items-start gap-3">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-white text-red-900 shadow-sm">
                       <ActiveSectionIcon className="h-5 w-5" />
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-[1_1_10rem]">
                       <p className="text-xs font-semibold uppercase text-red-900/70">
                         {activeSectionCopy[statusFilter].kicker}
                       </p>
@@ -1347,7 +1347,7 @@ const MyWinesForOwner = () => {
                   <div className="mt-4 flex flex-col gap-2 sm:flex-row">
                     <Button
                       type="button"
-                      className="matchrim-pressable gap-2 bg-red-800 hover:bg-red-900"
+                      className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-2 whitespace-normal bg-red-800 hover:bg-red-900"
                       onClick={activeSectionCopy[statusFilter].onAction}
                     >
                       <ActiveSectionIcon className="h-4 w-4" />
@@ -1356,7 +1356,7 @@ const MyWinesForOwner = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="matchrim-pressable gap-2 bg-white"
+                      className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-2 whitespace-normal bg-white"
                       onClick={() => navigate('/escanear')}
                     >
                       <ScanLine className="h-4 w-4" />
@@ -1365,7 +1365,7 @@ const MyWinesForOwner = () => {
                   </div>
                 </div>
 
-                <div className="grid gap-2 sm:grid-cols-5 lg:grid-cols-1">
+                <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-5 lg:grid-cols-1">
                   {sectionCards.map((item) => {
                     const SectionIcon = item.icon;
                     const isActive = item.section === statusFilter;
@@ -1375,7 +1375,7 @@ const MyWinesForOwner = () => {
                         key={item.section}
                         type="button"
                         onClick={() => navigateToWineSection(item.section)}
-                        className={`matchrim-pressable flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors ${
+                        className={`matchrim-pressable flex min-h-16 min-w-0 flex-wrap items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors ${
                           isActive
                             ? 'border-red-900 bg-red-950 text-white shadow-sm'
                             : 'border-stone-200 bg-white text-foreground hover:border-red-200 hover:bg-red-50/50'
@@ -1386,9 +1386,9 @@ const MyWinesForOwner = () => {
                         }`}>
                           <SectionIcon className="h-4 w-4" />
                         </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-semibold">{item.label}</span>
-                          <span className={`block truncate text-xs ${
+                        <span className="min-w-0 flex-[1_1_8rem]">
+                          <span className="block text-sm font-semibold">{item.label}</span>
+                          <span className={`block text-xs ${
                             isActive ? 'text-white/70' : 'text-muted-foreground'
                           }`}>
                             {item.helper}
@@ -1408,8 +1408,8 @@ const MyWinesForOwner = () => {
           </Card>
 
 		            <Card className="overflow-hidden border-red-100 bg-white">
-	              <CardHeader className="border-b bg-red-950 text-white">
-	                <CardTitle className="flex items-center gap-2">
+	              <CardHeader className="border-b bg-red-950 p-4 text-white sm:p-6">
+	                <CardTitle className="flex flex-wrap items-center gap-2">
 	                  <Sparkles className="h-5 w-5" />
 	                  Así aprende tu Matchrim
 	                </CardTitle>
@@ -1420,7 +1420,7 @@ const MyWinesForOwner = () => {
 	              <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3 p-4">
 	                <div className="rounded-lg border bg-muted/30 p-4">
 	                  <p className="text-xs font-semibold uppercase text-muted-foreground">Señales útiles</p>
-	                  <div className="mt-2 flex items-end gap-2">
+	                  <div className="mt-2 flex flex-wrap items-end gap-2">
 	                    <span className="text-3xl font-bold">{learningStats.trainingCount}</span>
 	                    <span className="pb-1 text-sm text-muted-foreground">entrenando</span>
 	                  </div>
@@ -1485,36 +1485,36 @@ const MyWinesForOwner = () => {
                 setFilterType('all');
               }}
             >
-              <TabsList className="grid h-auto w-full grid-cols-2 sm:grid-cols-5">
-                <TabsTrigger value="collection" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+              <TabsList className="grid h-auto w-full grid-cols-[repeat(auto-fit,minmax(min(100%,8rem),1fr))]">
+                <TabsTrigger value="collection" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Wine className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Mi Bodega</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Vinos que tengo</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="wishlist" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                <TabsTrigger value="wishlist" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Heart className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Quiero Probar</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Lista de deseos</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="tasted" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                <TabsTrigger value="tasted" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Star className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Ya Probados</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Puntúa y entrena</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="favorites" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                <TabsTrigger value="favorites" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Heart className="h-4 w-4 fill-current" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Favoritos</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Tus marcados</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="rejected" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                <TabsTrigger value="rejected" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <ThumbsDown className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>No repetir</span>
@@ -1564,7 +1564,7 @@ const MyWinesForOwner = () => {
                 <div className="flex items-center gap-2">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" className="gap-2">
+                      <Button variant="outline" size="sm" className="min-h-11 gap-2">
                         <Filter className="h-4 w-4" />
                         Filtros
                       </Button>
@@ -1681,18 +1681,18 @@ const MyWinesForOwner = () => {
                           </div>
                         )}
                         
-                        <CardHeader>
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex-1 min-w-0">
-                              <CardTitle className="text-lg truncate flex items-center gap-2">
+                        <CardHeader className="p-4 sm:p-6">
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div className="min-w-0 flex-[1_1_8rem]">
+                              <CardTitle className="flex flex-wrap items-center gap-2 text-lg">
                                 {wine.name}
                                 {getRatingIcon(wine.rating)}
                               </CardTitle>
                               {wine.producer && (
-                                <CardDescription className="truncate">{wine.producer}</CardDescription>
+                                <CardDescription>{wine.producer}</CardDescription>
                               )}
                             </div>
-                            <div className="flex gap-1">
+                            <div className="flex flex-wrap gap-1">
                               <Button
                                 variant="ghost"
                                 size="icon"
@@ -1718,10 +1718,10 @@ const MyWinesForOwner = () => {
                             </div>
                           </div>
                         </CardHeader>
-                        <CardContent className="space-y-3">
+                        <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
                           {/* Quantity for collection items */}
                           {wine.status === 'collection' && wine.quantity !== null && (
-                            <div className="flex items-center justify-between text-sm">
+                            <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
                               <span className="text-muted-foreground">Stock en bodega</span>
                               <Badge variant={wine.quantity > 0 ? 'default' : 'secondary'}>
                                 {wine.quantity} {wine.quantity === 1 ? 'botella' : 'botellas'}

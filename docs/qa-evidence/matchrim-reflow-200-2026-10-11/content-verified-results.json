@@ -1,0 +1,2896 @@
+{
+  "scope": "local intercepted UI; viewport/auth/safearea variants, not people or physical accessibility",
+  "results": [
+    {
+      "case": "native-320-200",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 665.8125,
+          "width": 320,
+          "height": 186.1875,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 16,
+              "y": 678.8125,
+              "width": 52.296875,
+              "height": 128,
+              "right": 68.296875,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 21.734375,
+                "y": 740.90625,
+                "width": 40.8125,
+                "height": 26,
+                "right": 62.546875,
+                "bottom": 766.90625
+              },
+              {
+                "x": 35.859375,
+                "y": 768.40625,
+                "width": 12.578125,
+                "height": 26,
+                "right": 48.4375,
+                "bottom": 794.40625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 72.296875,
+              "y": 678.8125,
+              "width": 52.3125,
+              "height": 128,
+              "right": 124.609375,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 79.921875,
+                "y": 740.90625,
+                "width": 37.046875,
+                "height": 26,
+                "right": 116.96875,
+                "bottom": 766.90625
+              },
+              {
+                "x": 88.984375,
+                "y": 768.40625,
+                "width": 18.9375,
+                "height": 26,
+                "right": 107.921875,
+                "bottom": 794.40625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 128.609375,
+              "y": 678.8125,
+              "width": 62.765625,
+              "height": 128,
+              "right": 191.375,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 129.796875,
+                "y": 750.6875,
+                "width": 60.375,
+                "height": 26,
+                "right": 190.171875,
+                "bottom": 776.6875
+              },
+              {
+                "x": 143.90625,
+                "y": 778.1875,
+                "width": 32.15625,
+                "height": 26,
+                "right": 176.0625,
+                "bottom": 804.1875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 195.375,
+              "y": 678.8125,
+              "width": 52.3125,
+              "height": 128,
+              "right": 247.6875,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 195.53125,
+                "y": 740.90625,
+                "width": 51.984375,
+                "height": 26,
+                "right": 247.515625,
+                "bottom": 766.90625
+              },
+              {
+                "x": 209.046875,
+                "y": 768.40625,
+                "width": 24.96875,
+                "height": 26,
+                "right": 234.015625,
+                "bottom": 794.40625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 251.6875,
+              "y": 678.8125,
+              "width": 52.3125,
+              "height": 128,
+              "right": 304,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 251.796875,
+                "y": 754.65625,
+                "width": 52.09375,
+                "height": 26,
+                "right": 303.890625,
+                "bottom": 780.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "186.188px",
+        "layoutDiagnostics": {
+          "innerWidth": 320,
+          "innerHeight": 852,
+          "rootFont": "32px",
+          "visualViewport": {
+            "width": 320,
+            "height": 852,
+            "scale": 1,
+            "offsetLeft": 0,
+            "offsetTop": 0
+          },
+          "document": {
+            "clientWidth": 320,
+            "clientHeight": 852,
+            "scrollWidth": 320,
+            "scrollHeight": 11657
+          },
+          "overflow": []
+        },
+        "lastControl": {
+          "box": {
+            "x": 65,
+            "y": 481,
+            "width": 190,
+            "height": 88
+          },
+          "nav": {
+            "x": 0,
+            "y": 665.8125,
+            "width": 320,
+            "height": 186.1875
+          }
+        },
+        "content": {
+          "text": {
+            "texts": [
+              {
+                "text": "Mis Vinos",
+                "tag": "H1",
+                "box": {
+                  "x": 32,
+                  "y": -10753,
+                  "right": 288,
+                  "bottom": -10593,
+                  "width": 256,
+                  "height": 160
+                },
+                "errors": []
+              },
+              {
+                "text": "Tu bodega, tus pendientes y las se\u00f1ales que hacen que Matchrim aprenda.",
+                "tag": "P",
+                "box": {
+                  "x": 32,
+                  "y": -10577,
+                  "right": 288,
+                  "bottom": -10337,
+                  "width": 256,
+                  "height": 240
+                },
+                "errors": []
+              },
+              {
+                "text": "A\u00f1adir o encontrar vinos",
+                "tag": "H3",
+                "box": {
+                  "x": 65,
+                  "y": -10240,
+                  "right": 255,
+                  "bottom": -10040,
+                  "width": 190,
+                  "height": 200
+                },
+                "errors": []
+              },
+              {
+                "text": "Elige una acci\u00f3n. Favoritos es una vista transversal: un vino puede seguir en Bodega, Quiero Probar o Ya Probados y aparecer tambi\u00e9n en Favoritos.",
+                "tag": "P",
+                "box": {
+                  "x": 65,
+                  "y": -10028,
+                  "right": 255,
+                  "bottom": -9508,
+                  "width": 190,
+                  "height": 520
+                },
+                "errors": []
+              },
+              {
+                "text": "Escanear etiqueta",
+                "tag": "SPAN",
+                "box": {
+                  "x": 154,
+                  "y": -9443,
+                  "right": 222,
+                  "bottom": -9283,
+                  "width": 68,
+                  "height": 160
+                },
+                "errors": []
+              },
+              {
+                "text": "Identificar y guardar",
+                "tag": "SPAN",
+                "box": {
+                  "x": 154,
+                  "y": -9283,
+                  "right": 222,
+                  "bottom": -9155,
+                  "width": 68,
+                  "height": 128
+                },
+                "errors": []
+              },
+              {
+                "text": "Escanear carta",
+                "tag": "SPAN",
+                "box": {
+                  "x": 154,
+                  "y": -9065,
+                  "right": 222,
+                  "bottom": -8945,
+                  "width": 68,
+                  "height": 120
+                },
+                "errors": []
+              },
+              {
+                "text": "Encontrar candidatos",
+                "tag": "SPAN",
+                "box": {
+                  "x": 154,
+                  "y": -8945,
+                  "right": 222,
+                  "bottom": -8817,
+                  "width": 68,
+                  "height": 128
+                },
+                "errors": []
+              },
+              {
+                "text": "A\u00f1adir manualmente",
+                "tag": "SPAN",
+                "box": {
+                  "x": 154,
+                  "y": -8727,
+                  "right": 222,
+                  "bottom": -8527,
+                  "width": 68,
+                  "height": 200
+                },
+                "errors": []
+              },
+              {
+                "text": "Buscar, validar o completar",
+                "tag": "SPAN",
+                "box": {
+                  "x": 154,
+                  "y": -8527,
+                  "right": 222,
+                  "bottom": -8335,
+                  "width": 68,
+                  "height": 192
+                },
+                "errors": []
+              },
+              {
+                "text": "Buscar cat\u00e1logo",
+                "tag": "DIV",
+                "box": {
+                  "x": 82,
+                  "y": -8261,
+                  "right": 238,
+                  "bottom": -8133,
+                  "width": 156,
+                  "height": 128
+                },
+                "errors": []
+              },
+              {
+                "text": "Vinos que tienes ahora",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -7745,
+                  "right": 222,
+                  "bottom": -7617,
+                  "width": 124,
+                  "height": 128
+                },
+                "errors": []
+              },
+              {
+                "text": "Mi Bodega",
+                "tag": "H2",
+                "box": {
+                  "x": 98,
+                  "y": -7609,
+                  "right": 222,
+                  "bottom": -7429,
+                  "width": 124,
+                  "height": 180
+                },
+                "errors": []
+              },
+              {
+                "text": "Aqu\u00ed viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, pasan a Ya Probados.",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -7413,
+                  "right": 222,
+                  "bottom": -6741,
+                  "width": 124,
+                  "height": 672
+                },
+                "errors": []
+              },
+              {
+                "text": "A\u00f1adir vino",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 98,
+                  "y": -6709,
+                  "right": 222,
+                  "bottom": -6509,
+                  "width": 124,
+                  "height": 200
+                },
+                "errors": []
+              },
+              {
+                "text": "Escanear algo",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 98,
+                  "y": -6493,
+                  "right": 222,
+                  "bottom": -6251,
+                  "width": 124,
+                  "height": 242
+                },
+                "errors": []
+              },
+              {
+                "text": "Mi Bodega",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -6065,
+                  "right": 230,
+                  "bottom": -6025,
+                  "width": 140,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Tengo",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -6025,
+                  "right": 230,
+                  "bottom": -5993,
+                  "width": 140,
+                  "height": 32
+                },
+                "errors": []
+              },
+              {
+                "text": "1",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5969,
+                  "right": 133.734375,
+                  "bottom": -5929,
+                  "width": 43.734375,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Quiero Probar",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5767,
+                  "right": 230,
+                  "bottom": -5687,
+                  "width": 140,
+                  "height": 80
+                },
+                "errors": []
+              },
+              {
+                "text": "Pendientes",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5687,
+                  "right": 230,
+                  "bottom": -5655,
+                  "width": 140,
+                  "height": 32
+                },
+                "errors": []
+              },
+              {
+                "text": "0",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5631,
+                  "right": 137.9375,
+                  "bottom": -5591,
+                  "width": 47.9375,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Ya Probados",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5429,
+                  "right": 230,
+                  "bottom": -5349,
+                  "width": 140,
+                  "height": 80
+                },
+                "errors": []
+              },
+              {
+                "text": "Valorados",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5349,
+                  "right": 230,
+                  "bottom": -5317,
+                  "width": 140,
+                  "height": 32
+                },
+                "errors": []
+              },
+              {
+                "text": "0",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5293,
+                  "right": 137.9375,
+                  "bottom": -5253,
+                  "width": 47.9375,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Favoritos",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5091,
+                  "right": 230,
+                  "bottom": -5051,
+                  "width": 140,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Marcados",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -5051,
+                  "right": 230,
+                  "bottom": -5019,
+                  "width": 140,
+                  "height": 32
+                },
+                "errors": []
+              },
+              {
+                "text": "0",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -4995,
+                  "right": 137.9375,
+                  "bottom": -4955,
+                  "width": 47.9375,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "No repetir",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -4793,
+                  "right": 230,
+                  "bottom": -4753,
+                  "width": 140,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Evitar",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -4753,
+                  "right": 230,
+                  "bottom": -4721,
+                  "width": 140,
+                  "height": 32
+                },
+                "errors": []
+              },
+              {
+                "text": "0",
+                "tag": "SPAN",
+                "box": {
+                  "x": 90,
+                  "y": -4697,
+                  "right": 137.9375,
+                  "bottom": -4657,
+                  "width": 47.9375,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "As\u00ed aprende tu Matchrim",
+                "tag": "H3",
+                "box": {
+                  "x": 65,
+                  "y": -4518,
+                  "right": 255,
+                  "bottom": -4222,
+                  "width": 190,
+                  "height": 296
+                },
+                "errors": []
+              },
+              {
+                "text": "Tus valoraciones afinan el perfil: \u201cme encanta\u201d acerca tus recomendaciones a ese vino, \u201cno va\u201d las aleja y \u201ccorrecto\u201d pesa menos.",
+                "tag": "P",
+                "box": {
+                  "x": 65,
+                  "y": -4210,
+                  "right": 255,
+                  "bottom": -3810,
+                  "width": 190,
+                  "height": 400
+                },
+                "errors": []
+              },
+              {
+                "text": "Se\u00f1ales \u00fatiles",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -3712,
+                  "right": 222,
+                  "bottom": -3648,
+                  "width": 124,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": "0",
+                "tag": "SPAN",
+                "box": {
+                  "x": 98,
+                  "y": -3632,
+                  "right": 137.609375,
+                  "bottom": -3560,
+                  "width": 39.609375,
+                  "height": 72
+                },
+                "errors": []
+              },
+              {
+                "text": "entrenando",
+                "tag": "SPAN",
+                "box": {
+                  "x": 98,
+                  "y": -3544,
+                  "right": 222,
+                  "bottom": -3456,
+                  "width": 124,
+                  "height": 88
+                },
+                "errors": []
+              },
+              {
+                "text": "0",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -3440,
+                  "right": 222,
+                  "bottom": -3376,
+                  "width": 124,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": "vino",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -3440,
+                  "right": 222,
+                  "bottom": -3376,
+                  "width": 124,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": "s",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -3440,
+                  "right": 222,
+                  "bottom": -3376,
+                  "width": 124,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": "puntuado",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -3440,
+                  "right": 222,
+                  "bottom": -3376,
+                  "width": 124,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": "s",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -3440,
+                  "right": 222,
+                  "bottom": -3376,
+                  "width": 124,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": ".",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -3440,
+                  "right": 222,
+                  "bottom": -3376,
+                  "width": 124,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": "Preferencias claras",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -3286,
+                  "right": 222,
+                  "bottom": -3190,
+                  "width": 124,
+                  "height": 96
+                },
+                "errors": []
+              },
+              {
+                "text": "A\u00fan sin uvas dominantes",
+                "tag": "SPAN",
+                "box": {
+                  "x": 98,
+                  "y": -3174,
+                  "right": 222,
+                  "bottom": -3014,
+                  "width": 124,
+                  "height": 160
+                },
+                "errors": []
+              },
+              {
+                "text": "0",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -2998,
+                  "right": 222,
+                  "bottom": -2902,
+                  "width": 124,
+                  "height": 96
+                },
+                "errors": []
+              },
+              {
+                "text": "\u201cme encanta\u201d y",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -2998,
+                  "right": 222,
+                  "bottom": -2902,
+                  "width": 124,
+                  "height": 96
+                },
+                "errors": []
+              },
+              {
+                "text": "0",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -2998,
+                  "right": 222,
+                  "bottom": -2902,
+                  "width": 124,
+                  "height": 96
+                },
+                "errors": []
+              },
+              {
+                "text": "\u201cno va\u201d.",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -2998,
+                  "right": 222,
+                  "bottom": -2902,
+                  "width": 124,
+                  "height": 96
+                },
+                "errors": []
+              },
+              {
+                "text": "Perfil que aparece",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -2812,
+                  "right": 222,
+                  "bottom": -2716,
+                  "width": 124,
+                  "height": 96
+                },
+                "errors": []
+              },
+              {
+                "text": "Necesito vinos con atributos 1-5.",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -2700,
+                  "right": 222,
+                  "bottom": -2540,
+                  "width": 124,
+                  "height": 160
+                },
+                "errors": []
+              },
+              {
+                "text": "Siguiente paso",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -2410,
+                  "right": 222,
+                  "bottom": -2346,
+                  "width": 124,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": "Punt\u00faa un vino con atributos para que Matchrim empiece a aprender.",
+                "tag": "P",
+                "box": {
+                  "x": 98,
+                  "y": -2330,
+                  "right": 222,
+                  "bottom": -2050,
+                  "width": 124,
+                  "height": 280
+                },
+                "errors": []
+              },
+              {
+                "text": "Puntuar pendientes",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 98,
+                  "y": -2026,
+                  "right": 222,
+                  "bottom": -1472,
+                  "width": 124,
+                  "height": 554
+                },
+                "errors": []
+              },
+              {
+                "text": "Mi Bodega",
+                "tag": "SPAN",
+                "box": {
+                  "x": 113.90625,
+                  "y": -1314,
+                  "right": 246.09375,
+                  "bottom": -1274,
+                  "width": 132.1875,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Quiero Probar",
+                "tag": "SPAN",
+                "box": {
+                  "x": 94.484375,
+                  "y": -1202,
+                  "right": 265.515625,
+                  "bottom": -1162,
+                  "width": 171.03125,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Ya Probados",
+                "tag": "SPAN",
+                "box": {
+                  "x": 102.71875,
+                  "y": -1090,
+                  "right": 257.28125,
+                  "bottom": -1050,
+                  "width": 154.5625,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Favoritos",
+                "tag": "SPAN",
+                "box": {
+                  "x": 123.34375,
+                  "y": -978,
+                  "right": 236.640625,
+                  "bottom": -938,
+                  "width": 113.296875,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "No repetir",
+                "tag": "SPAN",
+                "box": {
+                  "x": 118.765625,
+                  "y": -866,
+                  "right": 241.234375,
+                  "bottom": -826,
+                  "width": 122.46875,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Filtros",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 32,
+                  "y": -734,
+                  "right": 206.046875,
+                  "bottom": -662,
+                  "width": 174.046875,
+                  "height": 72
+                },
+                "errors": []
+              },
+              {
+                "text": "Vino QA local",
+                "tag": "H3",
+                "box": {
+                  "x": 65,
+                  "y": -581,
+                  "right": 255,
+                  "bottom": -469,
+                  "width": 190,
+                  "height": 112
+                },
+                "errors": []
+              },
+              {
+                "text": "Stock en bodega",
+                "tag": "SPAN",
+                "box": {
+                  "x": 65,
+                  "y": -333,
+                  "right": 255,
+                  "bottom": -253,
+                  "width": 190,
+                  "height": 80
+                },
+                "errors": []
+              },
+              {
+                "text": "1",
+                "tag": "DIV",
+                "box": {
+                  "x": 65,
+                  "y": -237,
+                  "right": 197.6875,
+                  "bottom": -195,
+                  "width": 132.6875,
+                  "height": 42
+                },
+                "errors": []
+              },
+              {
+                "text": "botella",
+                "tag": "DIV",
+                "box": {
+                  "x": 65,
+                  "y": -237,
+                  "right": 197.6875,
+                  "bottom": -195,
+                  "width": 132.6875,
+                  "height": 42
+                },
+                "errors": []
+              },
+              {
+                "text": "\u00bfPor qu\u00e9 encaja?",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 65,
+                  "y": -131,
+                  "right": 255,
+                  "bottom": 63,
+                  "width": 190,
+                  "height": 194
+                },
+                "errors": []
+              },
+              {
+                "text": "Buscar parecido",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 65,
+                  "y": 79,
+                  "right": 255,
+                  "bottom": 233,
+                  "width": 190,
+                  "height": 154
+                },
+                "errors": []
+              },
+              {
+                "text": "Me encanta",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 65,
+                  "y": 273,
+                  "right": 255,
+                  "bottom": 361,
+                  "width": 190,
+                  "height": 88
+                },
+                "errors": []
+              },
+              {
+                "text": "Correcto",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 65,
+                  "y": 377,
+                  "right": 255,
+                  "bottom": 465,
+                  "width": 190,
+                  "height": 88
+                },
+                "errors": []
+              },
+              {
+                "text": "No va",
+                "tag": "BUTTON",
+                "box": {
+                  "x": 65,
+                  "y": 481,
+                  "right": 255,
+                  "bottom": 569,
+                  "width": 190,
+                  "height": 88
+                },
+                "errors": []
+              }
+            ],
+            "issues": []
+          },
+          "controls": [
+            {
+              "text": "Escanear etiquetaIdentificar y guardar",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 156,
+                "width": 190,
+                "height": 354,
+                "right": 255,
+                "bottom": 510
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Escanear cartaEncontrar candidatos",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 176,
+                "width": 190,
+                "height": 314,
+                "right": 255,
+                "bottom": 490
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "A\u00f1adir manualmenteBuscar, validar o completar",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 104,
+                "width": 190,
+                "height": 458,
+                "right": 255,
+                "bottom": 562
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Busca vino o bodega...",
+              "role": null,
+              "box": {
+                "x": 82,
+                "y": 289,
+                "width": 156,
+                "height": 88,
+                "right": 238,
+                "bottom": 377
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "A\u00f1adir vino",
+              "role": null,
+              "box": {
+                "x": 98,
+                "y": 233,
+                "width": 124,
+                "height": 200,
+                "right": 222,
+                "bottom": 433
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Escanear algo",
+              "role": null,
+              "box": {
+                "x": 98,
+                "y": 212,
+                "width": 124,
+                "height": 242,
+                "right": 222,
+                "bottom": 454
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Mi BodegaTengo1",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 192,
+                "width": 190,
+                "height": 282,
+                "right": 255,
+                "bottom": 474
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Quiero ProbarPendientes0",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 172,
+                "width": 190,
+                "height": 322,
+                "right": 255,
+                "bottom": 494
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Ya ProbadosValorados0",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 172,
+                "width": 190,
+                "height": 322,
+                "right": 255,
+                "bottom": 494
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "FavoritosMarcados0",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 192,
+                "width": 190,
+                "height": 282,
+                "right": 255,
+                "bottom": 474
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "No repetirEvitar0",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 192,
+                "width": 190,
+                "height": 282,
+                "right": 255,
+                "bottom": 474
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Puntuar pendientes",
+              "role": null,
+              "box": {
+                "x": 98,
+                "y": 56,
+                "width": 124,
+                "height": 554,
+                "right": 222,
+                "bottom": 610
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Mi BodegaVinos que tengo",
+              "role": "tab",
+              "box": {
+                "x": 40,
+                "y": 277,
+                "width": 240,
+                "height": 112,
+                "right": 280,
+                "bottom": 389
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Quiero ProbarLista de deseos",
+              "role": "tab",
+              "box": {
+                "x": 40,
+                "y": 277,
+                "width": 240,
+                "height": 112,
+                "right": 280,
+                "bottom": 389
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Ya ProbadosPunt\u00faa y entrena",
+              "role": "tab",
+              "box": {
+                "x": 40,
+                "y": 277,
+                "width": 240,
+                "height": 112,
+                "right": 280,
+                "bottom": 389
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "FavoritosTus marcados",
+              "role": "tab",
+              "box": {
+                "x": 40,
+                "y": 277,
+                "width": 240,
+                "height": 112,
+                "right": 280,
+                "bottom": 389
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "No repetirSe\u00f1al negativa",
+              "role": "tab",
+              "box": {
+                "x": 40,
+                "y": 277,
+                "width": 240,
+                "height": 112,
+                "right": 280,
+                "bottom": 389
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Filtros",
+              "role": null,
+              "box": {
+                "x": 32,
+                "y": 297,
+                "width": 174.046875,
+                "height": 72,
+                "right": 206.046875,
+                "bottom": 369
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Guardar Vino QA local en favoritos",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 289,
+                "width": 88,
+                "height": 88,
+                "right": 153,
+                "bottom": 377
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Eliminar Vino QA local",
+              "role": null,
+              "box": {
+                "x": 161,
+                "y": 289,
+                "width": 88,
+                "height": 88,
+                "right": 249,
+                "bottom": 377
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "\u00bfPor qu\u00e9 encaja?",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 236,
+                "width": 190,
+                "height": 194,
+                "right": 255,
+                "bottom": 430
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Buscar parecido",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 256,
+                "width": 190,
+                "height": 154,
+                "right": 255,
+                "bottom": 410
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Me encanta",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 289,
+                "width": 190,
+                "height": 88,
+                "right": 255,
+                "bottom": 377
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Correcto",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 377,
+                "width": 190,
+                "height": 88,
+                "right": 255,
+                "bottom": 465
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "No va",
+              "role": null,
+              "box": {
+                "x": 65,
+                "y": 481,
+                "width": 190,
+                "height": 88,
+                "right": 255,
+                "bottom": 569
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "destinations": [
+            {
+              "label": "Mi Bodega",
+              "path": "/my-wines/collection"
+            },
+            {
+              "label": "Quiero Probar",
+              "path": "/my-wines/wishlist"
+            },
+            {
+              "label": "Ya Probados",
+              "path": "/my-wines/tasted"
+            },
+            {
+              "label": "Favoritos",
+              "path": "/my-wines/favorites"
+            },
+            {
+              "label": "No repetir",
+              "path": "/my-wines/no-repetir"
+            }
+          ],
+          "failures": []
+        }
+      },
+      "destinations": [
+        {
+          "label": "Inicio",
+          "path": "/",
+          "query": {}
+        },
+        {
+          "label": "aiRIM",
+          "path": "/inteligencia-liquida",
+          "query": {}
+        },
+        {
+          "label": "Escanear",
+          "path": "/escanear",
+          "query": {}
+        },
+        {
+          "label": "Bodega",
+          "path": "/my-wines",
+          "query": {}
+        },
+        {
+          "label": "Perfil",
+          "path": "/profile",
+          "query": {}
+        },
+        {
+          "nested": "/my-wines/wishlist",
+          "active": "Bodega"
+        },
+        {
+          "nested": "/escanear/etiqueta",
+          "active": "Escanear"
+        },
+        {
+          "nested": "/matchrim",
+          "active": "Perfil"
+        }
+      ],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-scan-200",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 665.8125,
+          "width": 320,
+          "height": 186.1875,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 16,
+              "y": 678.8125,
+              "width": 52.296875,
+              "height": 128,
+              "right": 68.296875,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 21.734375,
+                "y": 740.90625,
+                "width": 40.8125,
+                "height": 26,
+                "right": 62.546875,
+                "bottom": 766.90625
+              },
+              {
+                "x": 35.859375,
+                "y": 768.40625,
+                "width": 12.578125,
+                "height": 26,
+                "right": 48.4375,
+                "bottom": 794.40625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 72.296875,
+              "y": 678.8125,
+              "width": 52.3125,
+              "height": 128,
+              "right": 124.609375,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 79.921875,
+                "y": 740.90625,
+                "width": 37.046875,
+                "height": 26,
+                "right": 116.96875,
+                "bottom": 766.90625
+              },
+              {
+                "x": 88.984375,
+                "y": 768.40625,
+                "width": 18.9375,
+                "height": 26,
+                "right": 107.921875,
+                "bottom": 794.40625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 128.609375,
+              "y": 678.8125,
+              "width": 62.765625,
+              "height": 128,
+              "right": 191.375,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 129.796875,
+                "y": 750.6875,
+                "width": 60.375,
+                "height": 26,
+                "right": 190.171875,
+                "bottom": 776.6875
+              },
+              {
+                "x": 143.90625,
+                "y": 778.1875,
+                "width": 32.15625,
+                "height": 26,
+                "right": 176.0625,
+                "bottom": 804.1875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 195.375,
+              "y": 678.8125,
+              "width": 52.3125,
+              "height": 128,
+              "right": 247.6875,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 195.53125,
+                "y": 740.90625,
+                "width": 51.984375,
+                "height": 26,
+                "right": 247.515625,
+                "bottom": 766.90625
+              },
+              {
+                "x": 209.046875,
+                "y": 768.40625,
+                "width": 24.96875,
+                "height": 26,
+                "right": 234.015625,
+                "bottom": 794.40625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fmy-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 251.6875,
+              "y": 678.8125,
+              "width": 52.3125,
+              "height": 128,
+              "right": 304,
+              "bottom": 806.8125
+            },
+            "text": [
+              {
+                "x": 251.796875,
+                "y": 754.65625,
+                "width": 52.09375,
+                "height": 26,
+                "right": 303.890625,
+                "bottom": 780.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fprofile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "186.188px",
+        "layoutDiagnostics": {
+          "innerWidth": 320,
+          "innerHeight": 852,
+          "rootFont": "32px",
+          "visualViewport": {
+            "width": 320,
+            "height": 852,
+            "scale": 1,
+            "offsetLeft": 0,
+            "offsetTop": 0
+          },
+          "document": {
+            "clientWidth": 320,
+            "clientHeight": 852,
+            "scrollWidth": 320,
+            "scrollHeight": 3234
+          },
+          "overflow": []
+        },
+        "content": {
+          "text": {
+            "texts": [
+              {
+                "text": "C\u00e1mara y galer\u00eda",
+                "tag": "SPAN",
+                "box": {
+                  "x": 79.359375,
+                  "y": 52,
+                  "right": 288,
+                  "bottom": 132,
+                  "width": 208.640625,
+                  "height": 80
+                },
+                "errors": []
+              },
+              {
+                "text": "Escanear",
+                "tag": "H1",
+                "box": {
+                  "x": 32,
+                  "y": 140,
+                  "right": 288,
+                  "bottom": 300,
+                  "width": 256,
+                  "height": 160
+                },
+                "errors": []
+              },
+              {
+                "text": "Elige lo que tienes delante. Cada vino se identifica y punt\u00faa por separado.",
+                "tag": "P",
+                "box": {
+                  "x": 32,
+                  "y": 316,
+                  "right": 288,
+                  "bottom": 412,
+                  "width": 256,
+                  "height": 96
+                },
+                "errors": []
+              },
+              {
+                "text": "Carta de vinos",
+                "tag": "SPAN",
+                "box": {
+                  "x": 64,
+                  "y": 624,
+                  "right": 256,
+                  "bottom": 736,
+                  "width": 192,
+                  "height": 112
+                },
+                "errors": []
+              },
+              {
+                "text": "Sube la carta y te digo qu\u00e9 pedir\u00eda primero.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 64,
+                  "y": 744,
+                  "right": 256,
+                  "bottom": 864,
+                  "width": 192,
+                  "height": 120
+                },
+                "errors": []
+              },
+              {
+                "text": "Etiqueta de vino",
+                "tag": "SPAN",
+                "box": {
+                  "x": 65,
+                  "y": 1165,
+                  "right": 255,
+                  "bottom": 1277,
+                  "width": 190,
+                  "height": 112
+                },
+                "errors": []
+              },
+              {
+                "text": "Identifica una etiqueta o varias botellas sin mezclarlas.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 65,
+                  "y": 1285,
+                  "right": 255,
+                  "bottom": 1445,
+                  "width": 190,
+                  "height": 160
+                },
+                "errors": []
+              },
+              {
+                "text": "Tambi\u00e9n puedes",
+                "tag": "H2",
+                "box": {
+                  "x": 32,
+                  "y": 1614,
+                  "right": 288,
+                  "bottom": 1654,
+                  "width": 256,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Men\u00fa de comida",
+                "tag": "SPAN",
+                "box": {
+                  "x": 32,
+                  "y": 1799,
+                  "right": 288,
+                  "bottom": 1839,
+                  "width": 256,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Convierte platos del men\u00fa en ideas de vino.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 32,
+                  "y": 1843,
+                  "right": 288,
+                  "bottom": 1907,
+                  "width": 256,
+                  "height": 64
+                },
+                "errors": []
+              },
+              {
+                "text": "Plato",
+                "tag": "SPAN",
+                "box": {
+                  "x": 32,
+                  "y": 2124,
+                  "right": 288,
+                  "bottom": 2164,
+                  "width": 256,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Haz una foto y encuentra el vino que le va.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 32,
+                  "y": 2168,
+                  "right": 288,
+                  "bottom": 2264,
+                  "width": 256,
+                  "height": 96
+                },
+                "errors": []
+              },
+              {
+                "text": "Encontrar vino",
+                "tag": "SPAN",
+                "box": {
+                  "x": 32,
+                  "y": 2481,
+                  "right": 288,
+                  "bottom": 2521,
+                  "width": 256,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Dime presupuesto, ocasi\u00f3n o tienda y te digo qu\u00e9 buscar\u00eda.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 32,
+                  "y": 2525,
+                  "right": 288,
+                  "bottom": 2621,
+                  "width": 256,
+                  "height": 96
+                },
+                "errors": []
+              }
+            ],
+            "issues": []
+          },
+          "controls": [
+            {
+              "text": "Carta de vinosSube la carta y te digo qu\u00e9 pedir\u00eda primero.",
+              "role": null,
+              "box": {
+                "x": 32,
+                "y": 75,
+                "width": 256,
+                "height": 516,
+                "right": 288,
+                "bottom": 591
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Etiqueta de vinoIdentifica una etiqueta o varias botellas sin mezclarlas.",
+              "role": null,
+              "box": {
+                "x": 32,
+                "y": 54,
+                "width": 256,
+                "height": 558,
+                "right": 288,
+                "bottom": 612
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Men\u00fa de comidaConvierte platos del men\u00fa en ideas de vino.",
+              "role": null,
+              "box": {
+                "x": 32,
+                "y": 171,
+                "width": 256,
+                "height": 324,
+                "right": 288,
+                "bottom": 495
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "PlatoHaz una foto y encuentra el vino que le va.",
+              "role": null,
+              "box": {
+                "x": 32,
+                "y": 154,
+                "width": 256,
+                "height": 357,
+                "right": 288,
+                "bottom": 511
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Encontrar vinoDime presupuesto, ocasi\u00f3n o tienda y te digo qu\u00e9 buscar\u00eda.",
+              "role": null,
+              "box": {
+                "x": 32,
+                "y": 154,
+                "width": 256,
+                "height": 357,
+                "right": 288,
+                "bottom": 511
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "destinations": [
+            {
+              "label": "Carta de vinos",
+              "path": "/escanear/carta-vinos",
+              "privacyGate": "unaccepted"
+            },
+            {
+              "label": "Etiqueta de vino",
+              "path": "/escanear/etiqueta",
+              "privacyGate": "unaccepted"
+            },
+            {
+              "label": "Men\u00fa de comida",
+              "path": "/escanear/menu-comida",
+              "privacyGate": "unaccepted"
+            },
+            {
+              "label": "Plato",
+              "path": "/escanear/plato",
+              "privacyGate": "unaccepted"
+            },
+            {
+              "label": "Encontrar vino",
+              "path": "/escanear/encontrar-vino",
+              "privacyGate": "unaccepted"
+            }
+          ],
+          "failures": []
+        }
+      },
+      "destinations": [
+        {
+          "label": "Inicio",
+          "path": "/",
+          "query": {}
+        },
+        {
+          "label": "aiRIM",
+          "path": "/inteligencia-liquida",
+          "query": {}
+        },
+        {
+          "label": "Escanear",
+          "path": "/escanear",
+          "query": {}
+        },
+        {
+          "label": "Bodega",
+          "path": "/auth",
+          "query": {
+            "redirect": [
+              "/my-wines"
+            ]
+          }
+        },
+        {
+          "label": "Perfil",
+          "path": "/auth",
+          "query": {
+            "redirect": [
+              "/profile"
+            ]
+          }
+        }
+      ],
+      "requests": [],
+      "pageErrors": []
+    },
+    {
+      "case": "native-scan-100",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 773.65625,
+          "width": 320,
+          "height": 78.34375,
+          "right": 320,
+          "bottom": 852
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 8,
+              "y": 780.65625,
+              "width": 56.921875,
+              "height": 65.75,
+              "right": 64.921875,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 21.6875,
+                "y": 819.453125,
+                "width": 29.546875,
+                "height": 13,
+                "right": 51.234375,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 66.921875,
+              "y": 780.65625,
+              "width": 56.921875,
+              "height": 65.75,
+              "right": 123.84375,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 80.203125,
+                "y": 819.453125,
+                "width": 30.34375,
+                "height": 13,
+                "right": 110.546875,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 125.84375,
+              "y": 780.65625,
+              "width": 68.296875,
+              "height": 65.75,
+              "right": 194.140625,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 134.875,
+                "y": 832.65625,
+                "width": 50.234375,
+                "height": 13,
+                "right": 185.109375,
+                "bottom": 845.65625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 196.140625,
+              "y": 780.65625,
+              "width": 56.921875,
+              "height": 65.75,
+              "right": 253.0625,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 203.875,
+                "y": 819.453125,
+                "width": 41.4375,
+                "height": 13,
+                "right": 245.3125,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fmy-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 255.0625,
+              "y": 780.65625,
+              "width": 56.9375,
+              "height": 65.75,
+              "right": 312,
+              "bottom": 846.40625
+            },
+            "text": [
+              {
+                "x": 268.890625,
+                "y": 819.453125,
+                "width": 29.28125,
+                "height": 13,
+                "right": 298.171875,
+                "bottom": 832.453125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "11px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fprofile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "78.3438px",
+        "layoutDiagnostics": {
+          "innerWidth": 320,
+          "innerHeight": 852,
+          "rootFont": "16px",
+          "visualViewport": {
+            "width": 320,
+            "height": 852,
+            "scale": 1,
+            "offsetLeft": 0,
+            "offsetTop": 0
+          },
+          "document": {
+            "clientWidth": 320,
+            "clientHeight": 852,
+            "scrollWidth": 320,
+            "scrollHeight": 964
+          },
+          "overflow": []
+        },
+        "content": {
+          "text": {
+            "texts": [
+              {
+                "text": "C\u00e1mara y galer\u00eda",
+                "tag": "SPAN",
+                "box": {
+                  "x": 40,
+                  "y": 36,
+                  "right": 153.0625,
+                  "bottom": 56,
+                  "width": 113.0625,
+                  "height": 20
+                },
+                "errors": []
+              },
+              {
+                "text": "Escanear",
+                "tag": "H1",
+                "box": {
+                  "x": 16,
+                  "y": 60,
+                  "right": 304,
+                  "bottom": 100,
+                  "width": 288,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Elige lo que tienes delante. Cada vino se identifica y punt\u00faa por separado.",
+                "tag": "P",
+                "box": {
+                  "x": 16,
+                  "y": 108,
+                  "right": 304,
+                  "bottom": 156,
+                  "width": 288,
+                  "height": 48
+                },
+                "errors": []
+              },
+              {
+                "text": "Carta de vinos",
+                "tag": "SPAN",
+                "box": {
+                  "x": 96,
+                  "y": 198,
+                  "right": 252,
+                  "bottom": 226,
+                  "width": 156,
+                  "height": 28
+                },
+                "errors": []
+              },
+              {
+                "text": "Sube la carta y te digo qu\u00e9 pedir\u00eda primero.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 96,
+                  "y": 230,
+                  "right": 252,
+                  "bottom": 270,
+                  "width": 156,
+                  "height": 40
+                },
+                "errors": []
+              },
+              {
+                "text": "Etiqueta de vino",
+                "tag": "SPAN",
+                "box": {
+                  "x": 97,
+                  "y": 331,
+                  "right": 251,
+                  "bottom": 359,
+                  "width": 154,
+                  "height": 28
+                },
+                "errors": []
+              },
+              {
+                "text": "Identifica una etiqueta o varias botellas sin mezclarlas.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 97,
+                  "y": 363,
+                  "right": 251,
+                  "bottom": 423,
+                  "width": 154,
+                  "height": 60
+                },
+                "errors": []
+              },
+              {
+                "text": "Tambi\u00e9n puedes",
+                "tag": "H2",
+                "box": {
+                  "x": 16,
+                  "y": 468,
+                  "right": 304,
+                  "bottom": 488,
+                  "width": 288,
+                  "height": 20
+                },
+                "errors": []
+              },
+              {
+                "text": "Men\u00fa de comida",
+                "tag": "SPAN",
+                "box": {
+                  "x": 68,
+                  "y": 509,
+                  "right": 272,
+                  "bottom": 529,
+                  "width": 204,
+                  "height": 20
+                },
+                "errors": []
+              },
+              {
+                "text": "Convierte platos del men\u00fa en ideas de vino.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 68,
+                  "y": 531,
+                  "right": 272,
+                  "bottom": 563,
+                  "width": 204,
+                  "height": 32
+                },
+                "errors": []
+              },
+              {
+                "text": "Plato",
+                "tag": "SPAN",
+                "box": {
+                  "x": 68,
+                  "y": 588,
+                  "right": 272,
+                  "bottom": 608,
+                  "width": 204,
+                  "height": 20
+                },
+                "errors": []
+              },
+              {
+                "text": "Haz una foto y encuentra el vino que le va.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 68,
+                  "y": 610,
+                  "right": 272,
+                  "bottom": 642,
+                  "width": 204,
+                  "height": 32
+                },
+                "errors": []
+              },
+              {
+                "text": "Encontrar vino",
+                "tag": "SPAN",
+                "box": {
+                  "x": 68,
+                  "y": 667,
+                  "right": 272,
+                  "bottom": 687,
+                  "width": 204,
+                  "height": 20
+                },
+                "errors": []
+              },
+              {
+                "text": "Dime presupuesto, ocasi\u00f3n o tienda y te digo qu\u00e9 buscar\u00eda.",
+                "tag": "SPAN",
+                "box": {
+                  "x": 68,
+                  "y": 689,
+                  "right": 272,
+                  "bottom": 721,
+                  "width": 204,
+                  "height": 32
+                },
+                "errors": []
+              }
+            ],
+            "issues": []
+          },
+          "controls": [
+            {
+              "text": "Carta de vinosSube la carta y te digo qu\u00e9 pedir\u00eda primero.",
+              "role": null,
+              "box": {
+                "x": 16,
+                "y": 180,
+                "width": 288,
+                "height": 120,
+                "right": 304,
+                "bottom": 300
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Etiqueta de vinoIdentifica una etiqueta o varias botellas sin mezclarlas.",
+              "role": null,
+              "box": {
+                "x": 16,
+                "y": 312,
+                "width": 288,
+                "height": 128,
+                "right": 304,
+                "bottom": 440
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Men\u00fa de comidaConvierte platos del men\u00fa en ideas de vino.",
+              "role": null,
+              "box": {
+                "x": 16,
+                "y": 385,
+                "width": 288,
+                "height": 78,
+                "right": 304,
+                "bottom": 463
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "PlatoHaz una foto y encuentra el vino que le va.",
+              "role": null,
+              "box": {
+                "x": 16,
+                "y": 463,
+                "width": 288,
+                "height": 79,
+                "right": 304,
+                "bottom": 542
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "text": "Encontrar vinoDime presupuesto, ocasi\u00f3n o tienda y te digo qu\u00e9 buscar\u00eda.",
+              "role": null,
+              "box": {
+                "x": 16,
+                "y": 542,
+                "width": 288,
+                "height": 79,
+                "right": 304,
+                "bottom": 621
+              },
+              "hit": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "destinations": [
+            {
+              "label": "Carta de vinos",
+              "path": "/escanear/carta-vinos",
+              "privacyGate": "unaccepted"
+            },
+            {
+              "label": "Etiqueta de vino",
+              "path": "/escanear/etiqueta",
+              "privacyGate": "unaccepted"
+            },
+            {
+              "label": "Men\u00fa de comida",
+              "path": "/escanear/menu-comida",
+              "privacyGate": "unaccepted"
+            },
+            {
+              "label": "Plato",
+              "path": "/escanear/plato",
+              "privacyGate": "unaccepted"
+            },
+            {
+              "label": "Encontrar vino",
+              "path": "/escanear/encontrar-vino",
+              "privacyGate": "unaccepted"
+            }
+          ],
+          "failures": []
+        }
+      },
+      "destinations": [],
+      "requests": [],
+      "pageErrors": []
+    }
+  ]
+}

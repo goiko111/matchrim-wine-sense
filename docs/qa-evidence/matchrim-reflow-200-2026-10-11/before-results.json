@@ -1,0 +1,3719 @@
+{
+  "scope": "local intercepted UI; viewport/auth/safearea variants, not people or physical accessibility",
+  "results": [
+    {
+      "case": "native-320-200",
+      "passed": false,
+      "failures": [],
+      "error": "page layout viewport exceeds requested width",
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 1034.453125,
+          "width": 459,
+          "height": 188.546875,
+          "right": 459,
+          "bottom": 1223
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 16,
+              "y": 1047.453125,
+              "width": 79.03125,
+              "height": 130.359375,
+              "right": 95.03125,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 28.828125,
+                "y": 1124.46875,
+                "width": 53.375,
+                "height": 26,
+                "right": 82.203125,
+                "bottom": 1150.46875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 99.03125,
+              "y": 1047.453125,
+              "width": 79.03125,
+              "height": 130.359375,
+              "right": 178.0625,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 110.5625,
+                "y": 1124.46875,
+                "width": 55.96875,
+                "height": 26,
+                "right": 166.53125,
+                "bottom": 1150.46875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 182.0625,
+              "y": 1047.453125,
+              "width": 94.859375,
+              "height": 130.359375,
+              "right": 276.921875,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 183.234375,
+                "y": 1150.3125,
+                "width": 92.515625,
+                "height": 26,
+                "right": 275.75,
+                "bottom": 1176.3125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 280.921875,
+              "y": 1047.453125,
+              "width": 79.03125,
+              "height": 130.359375,
+              "right": 359.953125,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 281.96875,
+                "y": 1124.46875,
+                "width": 76.9375,
+                "height": 26,
+                "right": 358.90625,
+                "bottom": 1150.46875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/my-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 363.953125,
+              "y": 1047.453125,
+              "width": 79.046875,
+              "height": 130.359375,
+              "right": 443,
+              "bottom": 1177.8125
+            },
+            "text": [
+              {
+                "x": 377.421875,
+                "y": 1124.46875,
+                "width": 52.09375,
+                "height": 26,
+                "right": 429.515625,
+                "bottom": 1150.46875
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/profile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "188.547px",
+        "layoutDiagnostics": {
+          "innerWidth": 459,
+          "innerHeight": 1223,
+          "rootFont": "32px",
+          "visualViewport": {
+            "width": 320,
+            "height": 852,
+            "scale": 1,
+            "offsetLeft": 0,
+            "offsetTop": 0
+          },
+          "document": {
+            "clientWidth": 320,
+            "clientHeight": 852,
+            "scrollWidth": 459,
+            "scrollHeight": 9754
+          },
+          "overflow": [
+            {
+              "tag": "MAIN",
+              "role": null,
+              "text": "Mis VinosTu bodega, tus pendientes y las se\u00f1ales que hacen que Matchrim aprenda.A\u00f1adir o encontrar vinosElige una acci\u00f3n",
+              "className": "matchrim-native-page-top matchrim-native-page-x mx-auto max-w-7xl pb-8",
+              "box": {
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 9565,
+                "right": 320,
+                "bottom": 9565
+              },
+              "parent": {
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 9565,
+                "right": 320,
+                "bottom": 9565
+              },
+              "clientWidth": 320,
+              "scrollWidth": 459,
+              "minWidth": "0px",
+              "width": "320px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "A\u00f1adir o encontrar vinosElige una acci\u00f3n. Favoritos es una vista transversal: un vino puede seguir en Bodega, Quiero Pro",
+              "className": "space-y-6",
+              "box": {
+                "x": 32,
+                "y": 532,
+                "width": 256,
+                "height": 8969,
+                "right": 288,
+                "bottom": 9501
+              },
+              "parent": {
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 9565,
+                "right": 320,
+                "bottom": 9565
+              },
+              "clientWidth": 256,
+              "scrollWidth": 427,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "A\u00f1adir o encontrar vinosElige una acci\u00f3n. Favoritos es una vista transversal: un vino puede seguir en Bodega, Quiero Pro",
+              "className": "rounded-lg border text-card-foreground shadow-sm border-red-100 bg-white",
+              "box": {
+                "x": 32,
+                "y": 532,
+                "width": 256,
+                "height": 3110,
+                "right": 288,
+                "bottom": 3642
+              },
+              "parent": {
+                "x": 32,
+                "y": 532,
+                "width": 256,
+                "height": 8969,
+                "right": 288,
+                "bottom": 9501
+              },
+              "clientWidth": 254,
+              "scrollWidth": 263,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "A\u00f1adir o encontrar vinosElige una acci\u00f3n. Favoritos es una vista transversal: un vino puede seguir en Bodega, Quiero Pro",
+              "className": "flex flex-col space-y-1.5 p-6",
+              "box": {
+                "x": 33,
+                "y": 533,
+                "width": 254,
+                "height": 812,
+                "right": 287,
+                "bottom": 1345
+              },
+              "parent": {
+                "x": 32,
+                "y": 532,
+                "width": 256,
+                "height": 3110,
+                "right": 288,
+                "bottom": 3642
+              },
+              "clientWidth": 254,
+              "scrollWidth": 263,
+              "minWidth": "0px",
+              "width": "254px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "H3",
+              "role": null,
+              "text": "A\u00f1adir o encontrar vinos",
+              "className": "text-2xl font-semibold leading-none tracking-tight flex items-center gap-2",
+              "box": {
+                "x": 81,
+                "y": 581,
+                "width": 158,
+                "height": 144,
+                "right": 239,
+                "bottom": 725
+              },
+              "parent": {
+                "x": 33,
+                "y": 533,
+                "width": 254,
+                "height": 812,
+                "right": 287,
+                "bottom": 1345
+              },
+              "clientWidth": 158,
+              "scrollWidth": 215,
+              "minWidth": "auto",
+              "width": "158px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "48px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Buscar cat\u00e1logo",
+              "className": "min-w-0 rounded-lg border border-stone-200 bg-stone-50 p-4",
+              "box": {
+                "x": 81,
+                "y": 3335,
+                "width": 158,
+                "height": 258,
+                "right": 239,
+                "bottom": 3593
+              },
+              "parent": {
+                "x": 33,
+                "y": 1345,
+                "width": 254,
+                "height": 2296,
+                "right": 287,
+                "bottom": 3641
+              },
+              "clientWidth": 156,
+              "scrollWidth": 194,
+              "minWidth": "0px",
+              "width": "158px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Buscar cat\u00e1logo",
+              "className": "mb-3 flex items-center gap-2 text-sm font-semibold",
+              "box": {
+                "x": 114,
+                "y": 3368,
+                "width": 92,
+                "height": 80,
+                "right": 206,
+                "bottom": 3448
+              },
+              "parent": {
+                "x": 81,
+                "y": 3335,
+                "width": 158,
+                "height": 258,
+                "right": 239,
+                "bottom": 3593
+              },
+              "clientWidth": 92,
+              "scrollWidth": 159,
+              "minWidth": "0px",
+              "width": "92px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "",
+              "className": "relative",
+              "box": {
+                "x": 114,
+                "y": 3472,
+                "width": 92,
+                "height": 88,
+                "right": 206,
+                "bottom": 3560
+              },
+              "parent": {
+                "x": 81,
+                "y": 3335,
+                "width": 158,
+                "height": 258,
+                "right": 239,
+                "bottom": 3593
+              },
+              "clientWidth": 92,
+              "scrollWidth": 162,
+              "minWidth": "0px",
+              "width": "92px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "",
+              "className": "relative",
+              "box": {
+                "x": 114,
+                "y": 3472,
+                "width": 92,
+                "height": 88,
+                "right": 206,
+                "bottom": 3560
+              },
+              "parent": {
+                "x": 114,
+                "y": 3472,
+                "width": 92,
+                "height": 88,
+                "right": 206,
+                "bottom": 3560
+              },
+              "clientWidth": 92,
+              "scrollWidth": 162,
+              "minWidth": "0px",
+              "width": "92px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Vinos que tienes ahoraMi BodegaAqu\u00ed viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, ",
+              "className": "rounded-lg border text-card-foreground shadow-sm border-red-100 bg-white",
+              "box": {
+                "x": 32,
+                "y": 3690,
+                "width": 256,
+                "height": 1620,
+                "right": 288,
+                "bottom": 5310
+              },
+              "parent": {
+                "x": 32,
+                "y": 532,
+                "width": 256,
+                "height": 8969,
+                "right": 288,
+                "bottom": 9501
+              },
+              "clientWidth": 254,
+              "scrollWidth": 426,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Vinos que tienes ahoraMi BodegaAqu\u00ed viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, ",
+              "className": "p-4 sm:p-5",
+              "box": {
+                "x": 33,
+                "y": 3691,
+                "width": 254,
+                "height": 1618,
+                "right": 287,
+                "bottom": 5309
+              },
+              "parent": {
+                "x": 32,
+                "y": 3690,
+                "width": 256,
+                "height": 1620,
+                "right": 288,
+                "bottom": 5310
+              },
+              "clientWidth": 254,
+              "scrollWidth": 426,
+              "minWidth": "0px",
+              "width": "254px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Vinos que tienes ahoraMi BodegaAqu\u00ed viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, ",
+              "className": "grid gap-4 lg:grid-cols-[1.15fr_1fr]",
+              "box": {
+                "x": 65,
+                "y": 3723,
+                "width": 190,
+                "height": 1554,
+                "right": 255,
+                "bottom": 5277
+              },
+              "parent": {
+                "x": 33,
+                "y": 3691,
+                "width": 254,
+                "height": 1618,
+                "right": 287,
+                "bottom": 5309
+              },
+              "clientWidth": 190,
+              "scrollWidth": 394,
+              "minWidth": "0px",
+              "width": "190px",
+              "display": "grid",
+              "gridTemplateColumns": "393.922px",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Vinos que tienes ahoraMi BodegaAqu\u00ed viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, ",
+              "className": "rounded-lg border border-red-100 bg-red-50/70 p-4 sm:p-5",
+              "box": {
+                "x": 65,
+                "y": 3723,
+                "width": 393.921875,
+                "height": 818,
+                "right": 458.921875,
+                "bottom": 4541
+              },
+              "parent": {
+                "x": 65,
+                "y": 3723,
+                "width": 190,
+                "height": 1554,
+                "right": 255,
+                "bottom": 5277
+              },
+              "clientWidth": 392,
+              "scrollWidth": 392,
+              "minWidth": "auto",
+              "width": "393.922px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Vinos que tienes ahoraMi BodegaAqu\u00ed viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, ",
+              "className": "flex items-start gap-3",
+              "box": {
+                "x": 98,
+                "y": 3756,
+                "width": 327.921875,
+                "height": 544,
+                "right": 425.921875,
+                "bottom": 4300
+              },
+              "parent": {
+                "x": 65,
+                "y": 3723,
+                "width": 393.921875,
+                "height": 818,
+                "right": 458.921875,
+                "bottom": 4541
+              },
+              "clientWidth": 328,
+              "scrollWidth": 328,
+              "minWidth": "0px",
+              "width": "327.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Vinos que tienes ahoraMi BodegaAqu\u00ed viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, ",
+              "className": "min-w-0",
+              "box": {
+                "x": 210,
+                "y": 3756,
+                "width": 215.921875,
+                "height": 544,
+                "right": 425.921875,
+                "bottom": 4300
+              },
+              "parent": {
+                "x": 98,
+                "y": 3756,
+                "width": 327.921875,
+                "height": 544,
+                "right": 425.921875,
+                "bottom": 4300
+              },
+              "clientWidth": 216,
+              "scrollWidth": 216,
+              "minWidth": "0px",
+              "width": "215.922px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "P",
+              "role": null,
+              "text": "Vinos que tienes ahora",
+              "className": "text-xs font-semibold uppercase text-red-900/70",
+              "box": {
+                "x": 210,
+                "y": 3756,
+                "width": 215.921875,
+                "height": 64,
+                "right": 425.921875,
+                "bottom": 3820
+              },
+              "parent": {
+                "x": 210,
+                "y": 3756,
+                "width": 215.921875,
+                "height": 544,
+                "right": 425.921875,
+                "bottom": 4300
+              },
+              "clientWidth": 216,
+              "scrollWidth": 216,
+              "minWidth": "0px",
+              "width": "215.922px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "H2",
+              "role": null,
+              "text": "Mi Bodega",
+              "className": "mt-1 text-2xl font-bold leading-tight text-red-950",
+              "box": {
+                "x": 210,
+                "y": 3828,
+                "width": 215.921875,
+                "height": 120,
+                "right": 425.921875,
+                "bottom": 3948
+              },
+              "parent": {
+                "x": 210,
+                "y": 3756,
+                "width": 215.921875,
+                "height": 544,
+                "right": 425.921875,
+                "bottom": 4300
+              },
+              "clientWidth": 216,
+              "scrollWidth": 216,
+              "minWidth": "0px",
+              "width": "215.922px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "48px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "P",
+              "role": null,
+              "text": "Aqu\u00ed viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, pasan a Ya Probados.",
+              "className": "mt-2 max-w-2xl text-sm leading-6 text-red-950/75",
+              "box": {
+                "x": 210,
+                "y": 3964,
+                "width": 215.921875,
+                "height": 336,
+                "right": 425.921875,
+                "bottom": 4300
+              },
+              "parent": {
+                "x": 210,
+                "y": 3756,
+                "width": 215.921875,
+                "height": 544,
+                "right": 425.921875,
+                "bottom": 4300
+              },
+              "clientWidth": 216,
+              "scrollWidth": 216,
+              "minWidth": "0px",
+              "width": "215.922px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "A\u00f1adir vinoEscanear algo",
+              "className": "mt-4 flex flex-col gap-2 sm:flex-row",
+              "box": {
+                "x": 98,
+                "y": 4332,
+                "width": 327.921875,
+                "height": 176,
+                "right": 425.921875,
+                "bottom": 4508
+              },
+              "parent": {
+                "x": 65,
+                "y": 3723,
+                "width": 393.921875,
+                "height": 818,
+                "right": 458.921875,
+                "bottom": 4541
+              },
+              "clientWidth": 328,
+              "scrollWidth": 328,
+              "minWidth": "0px",
+              "width": "327.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "A\u00f1adir vino",
+              "className": "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground h-10 px-4 py-2 matchrim-pressable gap-2 bg-red-800 hover:bg-red-900",
+              "box": {
+                "x": 98,
+                "y": 4332,
+                "width": 327.921875,
+                "height": 80,
+                "right": 425.921875,
+                "bottom": 4412
+              },
+              "parent": {
+                "x": 98,
+                "y": 4332,
+                "width": 327.921875,
+                "height": 176,
+                "right": 425.921875,
+                "bottom": 4508
+              },
+              "clientWidth": 328,
+              "scrollWidth": 328,
+              "minWidth": "auto",
+              "width": "327.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "Escanear algo",
+              "className": "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 matchrim-pressable gap-2 bg-white",
+              "box": {
+                "x": 98,
+                "y": 4428,
+                "width": 327.921875,
+                "height": 80,
+                "right": 425.921875,
+                "bottom": 4508
+              },
+              "parent": {
+                "x": 98,
+                "y": 4332,
+                "width": 327.921875,
+                "height": 176,
+                "right": 425.921875,
+                "bottom": 4508
+              },
+              "clientWidth": 326,
+              "scrollWidth": 326,
+              "minWidth": "auto",
+              "width": "327.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Mi BodegaTengo1Quiero ProbarPendientes0Ya ProbadosValorados0FavoritosMarcados0No repetirEvitar0",
+              "className": "grid gap-2 sm:grid-cols-5 lg:grid-cols-1",
+              "box": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 704,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "parent": {
+                "x": 65,
+                "y": 3723,
+                "width": 190,
+                "height": 1554,
+                "right": 255,
+                "bottom": 5277
+              },
+              "clientWidth": 394,
+              "scrollWidth": 394,
+              "minWidth": "auto",
+              "width": "393.922px",
+              "display": "grid",
+              "gridTemplateColumns": "393.922px",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "Mi BodegaTengo1",
+              "className": "matchrim-pressable flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors border-red-900 bg-red-950 text-white shadow-sm",
+              "box": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4701
+              },
+              "parent": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 704,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "clientWidth": 392,
+              "scrollWidth": 392,
+              "minWidth": "auto",
+              "width": "393.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Mi BodegaTengo",
+              "className": "min-w-0 flex-1",
+              "box": {
+                "x": 186,
+                "y": 4601,
+                "width": 180.1875,
+                "height": 72,
+                "right": 366.1875,
+                "bottom": 4673
+              },
+              "parent": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4701
+              },
+              "clientWidth": 180,
+              "scrollWidth": 180,
+              "minWidth": "0px",
+              "width": "180.188px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Mi Bodega",
+              "className": "block truncate text-sm font-semibold",
+              "box": {
+                "x": 186,
+                "y": 4601,
+                "width": 180.1875,
+                "height": 40,
+                "right": 366.1875,
+                "bottom": 4641
+              },
+              "parent": {
+                "x": 186,
+                "y": 4601,
+                "width": 180.1875,
+                "height": 72,
+                "right": 366.1875,
+                "bottom": 4673
+              },
+              "clientWidth": 180,
+              "scrollWidth": 180,
+              "minWidth": "0px",
+              "width": "180.188px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Tengo",
+              "className": "block truncate text-xs text-white/70",
+              "box": {
+                "x": 186,
+                "y": 4641,
+                "width": 180.1875,
+                "height": 32,
+                "right": 366.1875,
+                "bottom": 4673
+              },
+              "parent": {
+                "x": 186,
+                "y": 4601,
+                "width": 180.1875,
+                "height": 72,
+                "right": 366.1875,
+                "bottom": 4673
+              },
+              "clientWidth": 180,
+              "scrollWidth": 180,
+              "minWidth": "0px",
+              "width": "180.188px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "1",
+              "className": "rounded-full px-2 py-0.5 text-xs font-bold bg-white text-red-950",
+              "box": {
+                "x": 390.1875,
+                "y": 4617,
+                "width": 43.734375,
+                "height": 40,
+                "right": 433.921875,
+                "bottom": 4657
+              },
+              "parent": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4701
+              },
+              "clientWidth": 44,
+              "scrollWidth": 44,
+              "minWidth": "auto",
+              "width": "43.7344px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "Quiero ProbarPendientes0",
+              "className": "matchrim-pressable flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors border-stone-200 bg-white text-foreground hover:border-red-200 hover:bg-red-50/50",
+              "box": {
+                "x": 65,
+                "y": 4717,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4845
+              },
+              "parent": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 704,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "clientWidth": 392,
+              "scrollWidth": 392,
+              "minWidth": "auto",
+              "width": "393.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Quiero ProbarPendientes",
+              "className": "min-w-0 flex-1",
+              "box": {
+                "x": 186,
+                "y": 4745,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 4817
+              },
+              "parent": {
+                "x": 65,
+                "y": 4717,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4845
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Quiero Probar",
+              "className": "block truncate text-sm font-semibold",
+              "box": {
+                "x": 186,
+                "y": 4745,
+                "width": 175.984375,
+                "height": 40,
+                "right": 361.984375,
+                "bottom": 4785
+              },
+              "parent": {
+                "x": 186,
+                "y": 4745,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 4817
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Pendientes",
+              "className": "block truncate text-xs text-muted-foreground",
+              "box": {
+                "x": 186,
+                "y": 4785,
+                "width": 175.984375,
+                "height": 32,
+                "right": 361.984375,
+                "bottom": 4817
+              },
+              "parent": {
+                "x": 186,
+                "y": 4745,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 4817
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "0",
+              "className": "rounded-full px-2 py-0.5 text-xs font-bold bg-stone-100 text-stone-700",
+              "box": {
+                "x": 385.984375,
+                "y": 4761,
+                "width": 47.9375,
+                "height": 40,
+                "right": 433.921875,
+                "bottom": 4801
+              },
+              "parent": {
+                "x": 65,
+                "y": 4717,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4845
+              },
+              "clientWidth": 48,
+              "scrollWidth": 48,
+              "minWidth": "auto",
+              "width": "47.9375px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "Ya ProbadosValorados0",
+              "className": "matchrim-pressable flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors border-stone-200 bg-white text-foreground hover:border-red-200 hover:bg-red-50/50",
+              "box": {
+                "x": 65,
+                "y": 4861,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4989
+              },
+              "parent": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 704,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "clientWidth": 392,
+              "scrollWidth": 392,
+              "minWidth": "auto",
+              "width": "393.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Ya ProbadosValorados",
+              "className": "min-w-0 flex-1",
+              "box": {
+                "x": 186,
+                "y": 4889,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 4961
+              },
+              "parent": {
+                "x": 65,
+                "y": 4861,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4989
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Ya Probados",
+              "className": "block truncate text-sm font-semibold",
+              "box": {
+                "x": 186,
+                "y": 4889,
+                "width": 175.984375,
+                "height": 40,
+                "right": 361.984375,
+                "bottom": 4929
+              },
+              "parent": {
+                "x": 186,
+                "y": 4889,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 4961
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Valorados",
+              "className": "block truncate text-xs text-muted-foreground",
+              "box": {
+                "x": 186,
+                "y": 4929,
+                "width": 175.984375,
+                "height": 32,
+                "right": 361.984375,
+                "bottom": 4961
+              },
+              "parent": {
+                "x": 186,
+                "y": 4889,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 4961
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "0",
+              "className": "rounded-full px-2 py-0.5 text-xs font-bold bg-stone-100 text-stone-700",
+              "box": {
+                "x": 385.984375,
+                "y": 4905,
+                "width": 47.9375,
+                "height": 40,
+                "right": 433.921875,
+                "bottom": 4945
+              },
+              "parent": {
+                "x": 65,
+                "y": 4861,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 4989
+              },
+              "clientWidth": 48,
+              "scrollWidth": 48,
+              "minWidth": "auto",
+              "width": "47.9375px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "FavoritosMarcados0",
+              "className": "matchrim-pressable flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors border-stone-200 bg-white text-foreground hover:border-red-200 hover:bg-red-50/50",
+              "box": {
+                "x": 65,
+                "y": 5005,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 5133
+              },
+              "parent": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 704,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "clientWidth": 392,
+              "scrollWidth": 392,
+              "minWidth": "auto",
+              "width": "393.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "FavoritosMarcados",
+              "className": "min-w-0 flex-1",
+              "box": {
+                "x": 186,
+                "y": 5033,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 5105
+              },
+              "parent": {
+                "x": 65,
+                "y": 5005,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 5133
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Favoritos",
+              "className": "block truncate text-sm font-semibold",
+              "box": {
+                "x": 186,
+                "y": 5033,
+                "width": 175.984375,
+                "height": 40,
+                "right": 361.984375,
+                "bottom": 5073
+              },
+              "parent": {
+                "x": 186,
+                "y": 5033,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 5105
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Marcados",
+              "className": "block truncate text-xs text-muted-foreground",
+              "box": {
+                "x": 186,
+                "y": 5073,
+                "width": 175.984375,
+                "height": 32,
+                "right": 361.984375,
+                "bottom": 5105
+              },
+              "parent": {
+                "x": 186,
+                "y": 5033,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 5105
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "0",
+              "className": "rounded-full px-2 py-0.5 text-xs font-bold bg-stone-100 text-stone-700",
+              "box": {
+                "x": 385.984375,
+                "y": 5049,
+                "width": 47.9375,
+                "height": 40,
+                "right": 433.921875,
+                "bottom": 5089
+              },
+              "parent": {
+                "x": 65,
+                "y": 5005,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 5133
+              },
+              "clientWidth": 48,
+              "scrollWidth": 48,
+              "minWidth": "auto",
+              "width": "47.9375px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "No repetirEvitar0",
+              "className": "matchrim-pressable flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors border-stone-200 bg-white text-foreground hover:border-red-200 hover:bg-red-50/50",
+              "box": {
+                "x": 65,
+                "y": 5149,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "parent": {
+                "x": 65,
+                "y": 4573,
+                "width": 393.921875,
+                "height": 704,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "clientWidth": 392,
+              "scrollWidth": 392,
+              "minWidth": "auto",
+              "width": "393.922px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "No repetirEvitar",
+              "className": "min-w-0 flex-1",
+              "box": {
+                "x": 186,
+                "y": 5177,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 5249
+              },
+              "parent": {
+                "x": 65,
+                "y": 5149,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "No repetir",
+              "className": "block truncate text-sm font-semibold",
+              "box": {
+                "x": 186,
+                "y": 5177,
+                "width": 175.984375,
+                "height": 40,
+                "right": 361.984375,
+                "bottom": 5217
+              },
+              "parent": {
+                "x": 186,
+                "y": 5177,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 5249
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Evitar",
+              "className": "block truncate text-xs text-muted-foreground",
+              "box": {
+                "x": 186,
+                "y": 5217,
+                "width": 175.984375,
+                "height": 32,
+                "right": 361.984375,
+                "bottom": 5249
+              },
+              "parent": {
+                "x": 186,
+                "y": 5177,
+                "width": 175.984375,
+                "height": 72,
+                "right": 361.984375,
+                "bottom": 5249
+              },
+              "clientWidth": 176,
+              "scrollWidth": 176,
+              "minWidth": "0px",
+              "width": "175.984px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "0",
+              "className": "rounded-full px-2 py-0.5 text-xs font-bold bg-stone-100 text-stone-700",
+              "box": {
+                "x": 385.984375,
+                "y": 5193,
+                "width": 47.9375,
+                "height": 40,
+                "right": 433.921875,
+                "bottom": 5233
+              },
+              "parent": {
+                "x": 65,
+                "y": 5149,
+                "width": 393.921875,
+                "height": 128,
+                "right": 458.921875,
+                "bottom": 5277
+              },
+              "clientWidth": 48,
+              "scrollWidth": 48,
+              "minWidth": "auto",
+              "width": "47.9375px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "As\u00ed aprende tu MatchrimTus valoraciones afinan el perfil: \u201cme encanta\u201d acerca tus recomendaciones a ese vino, \u201cno va\u201d la",
+              "className": "rounded-lg border text-card-foreground shadow-sm overflow-hidden border-red-100 bg-white",
+              "box": {
+                "x": 32,
+                "y": 5358,
+                "width": 256,
+                "height": 2537,
+                "right": 288,
+                "bottom": 7895
+              },
+              "parent": {
+                "x": 32,
+                "y": 532,
+                "width": 256,
+                "height": 8969,
+                "right": 288,
+                "bottom": 9501
+              },
+              "clientWidth": 254,
+              "scrollWidth": 263,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "As\u00ed aprende tu MatchrimTus valoraciones afinan el perfil: \u201cme encanta\u201d acerca tus recomendaciones a ese vino, \u201cno va\u201d la",
+              "className": "flex flex-col space-y-1.5 p-6 border-b bg-red-950 text-white",
+              "box": {
+                "x": 33,
+                "y": 5359,
+                "width": 254,
+                "height": 781,
+                "right": 287,
+                "bottom": 6140
+              },
+              "parent": {
+                "x": 32,
+                "y": 5358,
+                "width": 256,
+                "height": 2537,
+                "right": 288,
+                "bottom": 7895
+              },
+              "clientWidth": 254,
+              "scrollWidth": 263,
+              "minWidth": "0px",
+              "width": "254px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "H3",
+              "role": null,
+              "text": "As\u00ed aprende tu Matchrim",
+              "className": "text-2xl font-semibold leading-none tracking-tight flex items-center gap-2",
+              "box": {
+                "x": 81,
+                "y": 5407,
+                "width": 158,
+                "height": 192,
+                "right": 239,
+                "bottom": 5599
+              },
+              "parent": {
+                "x": 33,
+                "y": 5359,
+                "width": 254,
+                "height": 781,
+                "right": 287,
+                "bottom": 6140
+              },
+              "clientWidth": 158,
+              "scrollWidth": 212,
+              "minWidth": "auto",
+              "width": "158px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "48px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "P",
+              "role": null,
+              "text": "Tus valoraciones afinan el perfil: \u201cme encanta\u201d acerca tus recomendaciones a ese vino, \u201cno va\u201d las aleja y \u201ccorrecto\u201d pe",
+              "className": "text-sm text-white/75",
+              "box": {
+                "x": 81,
+                "y": 5611,
+                "width": 158,
+                "height": 480,
+                "right": 239,
+                "bottom": 6091
+              },
+              "parent": {
+                "x": 33,
+                "y": 5359,
+                "width": 254,
+                "height": 781,
+                "right": 287,
+                "bottom": 6140
+              },
+              "clientWidth": 158,
+              "scrollWidth": 215,
+              "minWidth": "auto",
+              "width": "158px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Se\u00f1ales \u00fatiles0entrenando0 vinos puntuados.Preferencias clarasA\u00fan sin uvas dominantes0 \u201cme encanta\u201d y 0 \u201cno va\u201d.Perfil q",
+              "className": "grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3 p-4",
+              "box": {
+                "x": 33,
+                "y": 6140,
+                "width": 254,
+                "height": 1754,
+                "right": 287,
+                "bottom": 7894
+              },
+              "parent": {
+                "x": 32,
+                "y": 5358,
+                "width": 256,
+                "height": 2537,
+                "right": 288,
+                "bottom": 7895
+              },
+              "clientWidth": 254,
+              "scrollWidth": 258,
+              "minWidth": "0px",
+              "width": "254px",
+              "display": "grid",
+              "gridTemplateColumns": "190px",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Se\u00f1ales \u00fatiles0entrenando0 vinos puntuados.",
+              "className": "rounded-lg border bg-muted/30 p-4",
+              "box": {
+                "x": 65,
+                "y": 6172,
+                "width": 190,
+                "height": 298,
+                "right": 255,
+                "bottom": 6470
+              },
+              "parent": {
+                "x": 33,
+                "y": 6140,
+                "width": 254,
+                "height": 1754,
+                "right": 287,
+                "bottom": 7894
+              },
+              "clientWidth": 188,
+              "scrollWidth": 225,
+              "minWidth": "auto",
+              "width": "190px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "0entrenando",
+              "className": "mt-2 flex items-end gap-2",
+              "box": {
+                "x": 98,
+                "y": 6285,
+                "width": 124,
+                "height": 72,
+                "right": 222,
+                "bottom": 6357
+              },
+              "parent": {
+                "x": 65,
+                "y": 6172,
+                "width": 190,
+                "height": 298,
+                "right": 255,
+                "bottom": 6470
+              },
+              "clientWidth": 124,
+              "scrollWidth": 193,
+              "minWidth": "0px",
+              "width": "124px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Preferencias clarasA\u00fan sin uvas dominantes0 \u201cme encanta\u201d y 0 \u201cno va\u201d.",
+              "className": "rounded-lg border bg-muted/30 p-4",
+              "box": {
+                "x": 65,
+                "y": 6494,
+                "width": 190,
+                "height": 378,
+                "right": 255,
+                "bottom": 6872
+              },
+              "parent": {
+                "x": 33,
+                "y": 6140,
+                "width": 254,
+                "height": 1754,
+                "right": 287,
+                "bottom": 7894
+              },
+              "clientWidth": 188,
+              "scrollWidth": 204,
+              "minWidth": "auto",
+              "width": "190px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "P",
+              "role": null,
+              "text": "Preferencias claras",
+              "className": "text-xs font-semibold uppercase text-muted-foreground",
+              "box": {
+                "x": 98,
+                "y": 6527,
+                "width": 124,
+                "height": 64,
+                "right": 222,
+                "bottom": 6591
+              },
+              "parent": {
+                "x": 65,
+                "y": 6494,
+                "width": 190,
+                "height": 378,
+                "right": 255,
+                "bottom": 6872
+              },
+              "clientWidth": 124,
+              "scrollWidth": 172,
+              "minWidth": "0px",
+              "width": "124px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "A\u00fan sin uvas dominantes",
+              "className": "mt-2 flex flex-wrap gap-1.5",
+              "box": {
+                "x": 98,
+                "y": 6607,
+                "width": 124,
+                "height": 120,
+                "right": 222,
+                "bottom": 6727
+              },
+              "parent": {
+                "x": 65,
+                "y": 6494,
+                "width": 190,
+                "height": 378,
+                "right": 255,
+                "bottom": 6872
+              },
+              "clientWidth": 124,
+              "scrollWidth": 141,
+              "minWidth": "0px",
+              "width": "124px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "Puntuar pendientes",
+              "className": "inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:bg-accent hover:text-accent-foreground rounded-md px-3 mt-3 h-auto min-h-11 max-w-full gap-2 whitespace-normal border-amber-300 bg-white py-2 text-amber-950",
+              "box": {
+                "x": 98,
+                "y": 7715,
+                "width": 124,
+                "height": 114,
+                "right": 222,
+                "bottom": 7829
+              },
+              "parent": {
+                "x": 65,
+                "y": 7298,
+                "width": 190,
+                "height": 564,
+                "right": 255,
+                "bottom": 7862
+              },
+              "clientWidth": 122,
+              "scrollWidth": 154,
+              "minWidth": "0px",
+              "width": "124px",
+              "display": "inline-flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Mi BodegaVinos que tengoQuiero ProbarLista de deseosYa ProbadosPunt\u00faa y entrenaFavoritosTus marcadosNo repetirSe\u00f1al nega",
+              "className": null,
+              "box": {
+                "x": 32,
+                "y": 7943,
+                "width": 256,
+                "height": 1558,
+                "right": 288,
+                "bottom": 9501
+              },
+              "parent": {
+                "x": 32,
+                "y": 532,
+                "width": 256,
+                "height": 8969,
+                "right": 288,
+                "bottom": 9501
+              },
+              "clientWidth": 256,
+              "scrollWidth": 330,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": "tablist",
+              "text": "Mi BodegaVinos que tengoQuiero ProbarLista de deseosYa ProbadosPunt\u00faa y entrenaFavoritosTus marcadosNo repetirSe\u00f1al nega",
+              "className": "items-center justify-center rounded-md bg-muted p-1 text-muted-foreground grid h-auto w-full grid-cols-2 sm:grid-cols-5",
+              "box": {
+                "x": 32,
+                "y": 7943,
+                "width": 256,
+                "height": 352,
+                "right": 288,
+                "bottom": 8295
+              },
+              "parent": {
+                "x": 32,
+                "y": 7943,
+                "width": 256,
+                "height": 1558,
+                "right": 288,
+                "bottom": 9501
+              },
+              "clientWidth": 256,
+              "scrollWidth": 330,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "grid",
+              "gridTemplateColumns": "120px 120px",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": "tab",
+              "text": "Mi BodegaVinos que tengo",
+              "className": "inline-flex items-center justify-center whitespace-nowrap rounded-sm py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm min-h-14 gap-1 px-1 sm:gap-2 sm:px-3",
+              "box": {
+                "x": 40,
+                "y": 7951,
+                "width": 120,
+                "height": 112,
+                "right": 160,
+                "bottom": 8063
+              },
+              "parent": {
+                "x": 32,
+                "y": 7943,
+                "width": 256,
+                "height": 352,
+                "right": 288,
+                "bottom": 8295
+              },
+              "clientWidth": 120,
+              "scrollWidth": 167,
+              "minWidth": "auto",
+              "width": "120px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Mi BodegaVinos que tengo",
+              "className": "flex min-w-0 flex-col items-start",
+              "box": {
+                "x": 74.703125,
+                "y": 7987,
+                "width": 77.296875,
+                "height": 40,
+                "right": 152,
+                "bottom": 8027
+              },
+              "parent": {
+                "x": 40,
+                "y": 7951,
+                "width": 120,
+                "height": 112,
+                "right": 160,
+                "bottom": 8063
+              },
+              "clientWidth": 77,
+              "scrollWidth": 132,
+              "minWidth": "0px",
+              "width": "77.2969px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": "tab",
+              "text": "Quiero ProbarLista de deseos",
+              "className": "inline-flex items-center justify-center whitespace-nowrap rounded-sm py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm min-h-14 gap-1 px-1 sm:gap-2 sm:px-3",
+              "box": {
+                "x": 160,
+                "y": 7951,
+                "width": 120,
+                "height": 112,
+                "right": 280,
+                "bottom": 8063
+              },
+              "parent": {
+                "x": 32,
+                "y": 7943,
+                "width": 256,
+                "height": 352,
+                "right": 288,
+                "bottom": 8295
+              },
+              "clientWidth": 120,
+              "scrollWidth": 202,
+              "minWidth": "auto",
+              "width": "120px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Quiero ProbarLista de deseos",
+              "className": "flex min-w-0 flex-col items-start",
+              "box": {
+                "x": 191.125,
+                "y": 7987,
+                "width": 80.875,
+                "height": 40,
+                "right": 272,
+                "bottom": 8027
+              },
+              "parent": {
+                "x": 160,
+                "y": 7951,
+                "width": 120,
+                "height": 112,
+                "right": 280,
+                "bottom": 8063
+              },
+              "clientWidth": 81,
+              "scrollWidth": 171,
+              "minWidth": "0px",
+              "width": "80.875px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Quiero Probar",
+              "className": null,
+              "box": {
+                "x": 191.125,
+                "y": 7987,
+                "width": 171.03125,
+                "height": 40,
+                "right": 362.15625,
+                "bottom": 8027
+              },
+              "parent": {
+                "x": 191.125,
+                "y": 7987,
+                "width": 80.875,
+                "height": 40,
+                "right": 272,
+                "bottom": 8027
+              },
+              "clientWidth": 171,
+              "scrollWidth": 171,
+              "minWidth": "auto",
+              "width": "171.031px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": "tab",
+              "text": "Ya ProbadosPunt\u00faa y entrena",
+              "className": "inline-flex items-center justify-center whitespace-nowrap rounded-sm py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm min-h-14 gap-1 px-1 sm:gap-2 sm:px-3",
+              "box": {
+                "x": 40,
+                "y": 8063,
+                "width": 120,
+                "height": 112,
+                "right": 160,
+                "bottom": 8175
+              },
+              "parent": {
+                "x": 32,
+                "y": 7943,
+                "width": 256,
+                "height": 352,
+                "right": 288,
+                "bottom": 8295
+              },
+              "clientWidth": 120,
+              "scrollWidth": 187,
+              "minWidth": "auto",
+              "width": "120px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Ya ProbadosPunt\u00faa y entrena",
+              "className": "flex min-w-0 flex-col items-start",
+              "box": {
+                "x": 72.46875,
+                "y": 8099,
+                "width": 79.53125,
+                "height": 40,
+                "right": 152,
+                "bottom": 8139
+              },
+              "parent": {
+                "x": 40,
+                "y": 8063,
+                "width": 120,
+                "height": 112,
+                "right": 160,
+                "bottom": 8175
+              },
+              "clientWidth": 80,
+              "scrollWidth": 155,
+              "minWidth": "0px",
+              "width": "79.5312px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": "tab",
+              "text": "FavoritosTus marcados",
+              "className": "inline-flex items-center justify-center whitespace-nowrap rounded-sm py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm min-h-14 gap-1 px-1 sm:gap-2 sm:px-3",
+              "box": {
+                "x": 160,
+                "y": 8063,
+                "width": 120,
+                "height": 112,
+                "right": 280,
+                "bottom": 8175
+              },
+              "parent": {
+                "x": 32,
+                "y": 7943,
+                "width": 256,
+                "height": 352,
+                "right": 288,
+                "bottom": 8295
+              },
+              "clientWidth": 120,
+              "scrollWidth": 150,
+              "minWidth": "auto",
+              "width": "120px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "FavoritosTus marcados",
+              "className": "flex min-w-0 flex-col items-start",
+              "box": {
+                "x": 197.140625,
+                "y": 8099,
+                "width": 74.859375,
+                "height": 40,
+                "right": 272,
+                "bottom": 8139
+              },
+              "parent": {
+                "x": 160,
+                "y": 8063,
+                "width": 120,
+                "height": 112,
+                "right": 280,
+                "bottom": 8175
+              },
+              "clientWidth": 75,
+              "scrollWidth": 113,
+              "minWidth": "0px",
+              "width": "74.8594px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": "tab",
+              "text": "No repetirSe\u00f1al negativa",
+              "className": "inline-flex items-center justify-center whitespace-nowrap rounded-sm py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm min-h-14 gap-1 px-1 sm:gap-2 sm:px-3",
+              "box": {
+                "x": 40,
+                "y": 8175,
+                "width": 120,
+                "height": 112,
+                "right": 160,
+                "bottom": 8287
+              },
+              "parent": {
+                "x": 32,
+                "y": 7943,
+                "width": 256,
+                "height": 352,
+                "right": 288,
+                "bottom": 8295
+              },
+              "clientWidth": 120,
+              "scrollWidth": 158,
+              "minWidth": "auto",
+              "width": "120px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "No repetirSe\u00f1al negativa",
+              "className": "flex min-w-0 flex-col items-start",
+              "box": {
+                "x": 75.890625,
+                "y": 8211,
+                "width": 76.109375,
+                "height": 40,
+                "right": 152,
+                "bottom": 8251
+              },
+              "parent": {
+                "x": 40,
+                "y": 8175,
+                "width": 120,
+                "height": 112,
+                "right": 160,
+                "bottom": 8287
+              },
+              "clientWidth": 76,
+              "scrollWidth": 122,
+              "minWidth": "0px",
+              "width": "76.1094px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Vino QA localStock en bodega1 botella\u00bfPor qu\u00e9 encaja?Buscar parecidoMe encantaCorrectoNo va",
+              "className": "rounded-lg border bg-card text-card-foreground shadow-sm relative group",
+              "box": {
+                "x": 32,
+                "y": 8463,
+                "width": 256,
+                "height": 1038,
+                "right": 288,
+                "bottom": 9501
+              },
+              "parent": {
+                "x": 32,
+                "y": 8463,
+                "width": 256,
+                "height": 1038,
+                "right": 288,
+                "bottom": 9501
+              },
+              "clientWidth": 254,
+              "scrollWidth": 256,
+              "minWidth": "auto",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Vino QA local",
+              "className": "flex items-start justify-between gap-2",
+              "box": {
+                "x": 81,
+                "y": 8512,
+                "width": 158,
+                "height": 88,
+                "right": 239,
+                "bottom": 8600
+              },
+              "parent": {
+                "x": 33,
+                "y": 8464,
+                "width": 254,
+                "height": 184,
+                "right": 287,
+                "bottom": 8648
+              },
+              "clientWidth": 158,
+              "scrollWidth": 200,
+              "minWidth": "auto",
+              "width": "158px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Stock en bodega1 botella\u00bfPor qu\u00e9 encaja?Buscar parecidoMe encantaCorrectoNo va",
+              "className": "p-6 pt-0 space-y-3",
+              "box": {
+                "x": 33,
+                "y": 8648,
+                "width": 254,
+                "height": 852,
+                "right": 287,
+                "bottom": 9500
+              },
+              "parent": {
+                "x": 32,
+                "y": 8463,
+                "width": 256,
+                "height": 1038,
+                "right": 288,
+                "bottom": 9501
+              },
+              "clientWidth": 254,
+              "scrollWidth": 256,
+              "minWidth": "0px",
+              "width": "254px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Stock en bodega1 botella",
+              "className": "flex items-center justify-between text-sm",
+              "box": {
+                "x": 81,
+                "y": 8648,
+                "width": 158,
+                "height": 120,
+                "right": 239,
+                "bottom": 8768
+              },
+              "parent": {
+                "x": 33,
+                "y": 8648,
+                "width": 254,
+                "height": 852,
+                "right": 287,
+                "bottom": 9500
+              },
+              "clientWidth": 158,
+              "scrollWidth": 208,
+              "minWidth": "0px",
+              "width": "158px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            }
+          ]
+        }
+      },
+      "destinations": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "native-scan-200",
+      "passed": false,
+      "failures": [],
+      "error": "page layout viewport exceeds requested width",
+      "measurements": {
+        "box": {
+          "x": 0,
+          "y": 953.046875,
+          "width": 437,
+          "height": 210.953125,
+          "right": 437,
+          "bottom": 1164
+        },
+        "links": [
+          {
+            "label": "Inicio",
+            "box": {
+              "x": 16,
+              "y": 966.046875,
+              "width": 74.796875,
+              "height": 152.765625,
+              "right": 90.796875,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 26.703125,
+                "y": 1054.265625,
+                "width": 53.375,
+                "height": 26,
+                "right": 80.078125,
+                "bottom": 1080.265625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/"
+          },
+          {
+            "label": "aiRIM",
+            "box": {
+              "x": 94.796875,
+              "y": 966.046875,
+              "width": 74.8125,
+              "height": 152.765625,
+              "right": 169.609375,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 104.21875,
+                "y": 1054.265625,
+                "width": 55.96875,
+                "height": 26,
+                "right": 160.1875,
+                "bottom": 1080.265625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/inteligencia-liquida"
+          },
+          {
+            "label": "Escanear",
+            "box": {
+              "x": 173.609375,
+              "y": 966.046875,
+              "width": 89.765625,
+              "height": 152.765625,
+              "right": 263.375,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 176.265625,
+                "y": 1063.8125,
+                "width": 84.4375,
+                "height": 26,
+                "right": 260.703125,
+                "bottom": 1089.8125
+              },
+              {
+                "x": 214.453125,
+                "y": 1091.3125,
+                "width": 8.078125,
+                "height": 26,
+                "right": 222.53125,
+                "bottom": 1117.3125
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": "page",
+            "href": "/escanear"
+          },
+          {
+            "label": "Bodega",
+            "box": {
+              "x": 267.375,
+              "y": 966.046875,
+              "width": 74.8125,
+              "height": 152.765625,
+              "right": 342.1875,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 272.265625,
+                "y": 1040.515625,
+                "width": 65.03125,
+                "height": 26,
+                "right": 337.296875,
+                "bottom": 1066.515625
+              },
+              {
+                "x": 298.8125,
+                "y": 1068.015625,
+                "width": 11.921875,
+                "height": 26,
+                "right": 310.734375,
+                "bottom": 1094.015625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fmy-wines"
+          },
+          {
+            "label": "Perfil",
+            "box": {
+              "x": 346.1875,
+              "y": 966.046875,
+              "width": 74.8125,
+              "height": 152.765625,
+              "right": 421,
+              "bottom": 1118.8125
+            },
+            "text": [
+              {
+                "x": 357.546875,
+                "y": 1054.265625,
+                "width": 52.09375,
+                "height": 26,
+                "right": 409.640625,
+                "bottom": 1080.265625
+              }
+            ],
+            "textOverflow": "clip",
+            "fontSize": "22px",
+            "hit": [
+              true,
+              true,
+              true
+            ],
+            "current": null,
+            "href": "/auth?redirect=%2Fprofile"
+          }
+        ],
+        "domOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "visualOrder": [
+          "Inicio",
+          "aiRIM",
+          "Escanear",
+          "Bodega",
+          "Perfil"
+        ],
+        "issues": [],
+        "paddingBottom": "210.953px",
+        "layoutDiagnostics": {
+          "innerWidth": 437,
+          "innerHeight": 1164,
+          "rootFont": "32px",
+          "visualViewport": {
+            "width": 320,
+            "height": 852,
+            "scale": 1,
+            "offsetLeft": 0,
+            "offsetTop": 0
+          },
+          "document": {
+            "clientWidth": 320,
+            "clientHeight": 852,
+            "scrollWidth": 437,
+            "scrollHeight": 2406
+          },
+          "overflow": [
+            {
+              "tag": "MAIN",
+              "role": null,
+              "text": "C\u00e1mara y galer\u00edaEscanearElige lo que tienes delante. Cada vino se identifica y punt\u00faa por separado.Carta de vinosSube la",
+              "className": "scan-page-main matchrim-native-safe-x mx-auto max-w-5xl pb-6 pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6",
+              "box": {
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 1905,
+                "right": 320,
+                "bottom": 1905
+              },
+              "parent": {
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 2195,
+                "right": 320,
+                "bottom": 2195
+              },
+              "clientWidth": 320,
+              "scrollWidth": 437,
+              "minWidth": "0px",
+              "width": "320px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "C\u00e1mara y galer\u00edaEscanearElige lo que tienes delante. Cada vino se identifica y punt\u00faa por separado.",
+              "className": "mb-6",
+              "box": {
+                "x": 32,
+                "y": 52,
+                "width": 256,
+                "height": 280,
+                "right": 288,
+                "bottom": 332
+              },
+              "parent": {
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 1905,
+                "right": 320,
+                "bottom": 1905
+              },
+              "clientWidth": 256,
+              "scrollWidth": 272,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "H1",
+              "role": null,
+              "text": "Escanear",
+              "className": "mt-1 text-[2rem] font-bold leading-tight text-slate-950",
+              "box": {
+                "x": 32,
+                "y": 140,
+                "width": 256,
+                "height": 80,
+                "right": 288,
+                "bottom": 220
+              },
+              "parent": {
+                "x": 32,
+                "y": 52,
+                "width": 256,
+                "height": 280,
+                "right": 288,
+                "bottom": 332
+              },
+              "clientWidth": 256,
+              "scrollWidth": 272,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "64px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Carta de vinosSube la carta y te digo qu\u00e9 pedir\u00eda primero.Etiqueta de vinoIdentifica una etiqueta o varias botellas sin ",
+              "className": "space-y-7",
+              "box": {
+                "x": 32,
+                "y": 380,
+                "width": 256,
+                "height": 1477,
+                "right": 288,
+                "bottom": 1857
+              },
+              "parent": {
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 1905,
+                "right": 320,
+                "bottom": 1905
+              },
+              "clientWidth": 256,
+              "scrollWidth": 405,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "DIV",
+              "role": null,
+              "text": "Carta de vinosSube la carta y te digo qu\u00e9 pedir\u00eda primero.Etiqueta de vinoIdentifica una etiqueta o varias botellas sin ",
+              "className": "grid gap-3 sm:grid-cols-2",
+              "box": {
+                "x": 32,
+                "y": 380,
+                "width": 256,
+                "height": 842,
+                "right": 288,
+                "bottom": 1222
+              },
+              "parent": {
+                "x": 32,
+                "y": 380,
+                "width": 256,
+                "height": 1477,
+                "right": 288,
+                "bottom": 1857
+              },
+              "clientWidth": 256,
+              "scrollWidth": 405,
+              "minWidth": "0px",
+              "width": "256px",
+              "display": "grid",
+              "gridTemplateColumns": "405.453px",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "Carta de vinosSube la carta y te digo qu\u00e9 pedir\u00eda primero.",
+              "className": "matchrim-pressable flex min-h-[7.5rem] items-start gap-4 rounded-lg p-4 text-left shadow-sm bg-emerald-950 text-white",
+              "box": {
+                "x": 32,
+                "y": 380,
+                "width": 405.453125,
+                "height": 388,
+                "right": 437.453125,
+                "bottom": 768
+              },
+              "parent": {
+                "x": 32,
+                "y": 380,
+                "width": 256,
+                "height": 842,
+                "right": 288,
+                "bottom": 1222
+              },
+              "clientWidth": 405,
+              "scrollWidth": 405,
+              "minWidth": "auto",
+              "width": "405.453px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Carta de vinosSube la carta y te digo qu\u00e9 pedir\u00eda primero.",
+              "className": "min-w-0 flex-1 pt-0.5",
+              "box": {
+                "x": 192,
+                "y": 412,
+                "width": 141.453125,
+                "height": 324,
+                "right": 333.453125,
+                "bottom": 736
+              },
+              "parent": {
+                "x": 32,
+                "y": 380,
+                "width": 405.453125,
+                "height": 388,
+                "right": 437.453125,
+                "bottom": 768
+              },
+              "clientWidth": 141,
+              "scrollWidth": 141,
+              "minWidth": "0px",
+              "width": "141.453px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Carta de vinos",
+              "className": "block text-lg font-bold",
+              "box": {
+                "x": 192,
+                "y": 416,
+                "width": 141.453125,
+                "height": 112,
+                "right": 333.453125,
+                "bottom": 528
+              },
+              "parent": {
+                "x": 192,
+                "y": 412,
+                "width": 141.453125,
+                "height": 324,
+                "right": 333.453125,
+                "bottom": 736
+              },
+              "clientWidth": 141,
+              "scrollWidth": 141,
+              "minWidth": "0px",
+              "width": "141.453px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "36px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Sube la carta y te digo qu\u00e9 pedir\u00eda primero.",
+              "className": "mt-1 block text-sm leading-5 text-white/72",
+              "box": {
+                "x": 192,
+                "y": 536,
+                "width": 141.453125,
+                "height": 200,
+                "right": 333.453125,
+                "bottom": 736
+              },
+              "parent": {
+                "x": 192,
+                "y": 412,
+                "width": 141.453125,
+                "height": 324,
+                "right": 333.453125,
+                "bottom": 736
+              },
+              "clientWidth": 141,
+              "scrollWidth": 141,
+              "minWidth": "0px",
+              "width": "141.453px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "svg",
+              "role": null,
+              "text": "",
+              "className": "lucide lucide-chevron-right mt-1 h-5 w-5 shrink-0 text-white/45",
+              "box": {
+                "x": 365.453125,
+                "y": 420,
+                "width": 40,
+                "height": 40,
+                "right": 405.453125,
+                "bottom": 460
+              },
+              "parent": {
+                "x": 32,
+                "y": 380,
+                "width": 405.453125,
+                "height": 388,
+                "right": 437.453125,
+                "bottom": 768
+              },
+              "clientWidth": 40,
+              "scrollWidth": 40,
+              "minWidth": "auto",
+              "width": "40px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "32px",
+              "flexShrink": "0"
+            },
+            {
+              "tag": "path",
+              "role": null,
+              "text": "",
+              "className": null,
+              "box": {
+                "x": 380.453125,
+                "y": 430,
+                "width": 10,
+                "height": 20,
+                "right": 390.453125,
+                "bottom": 450
+              },
+              "parent": {
+                "x": 365.453125,
+                "y": 420,
+                "width": 40,
+                "height": 40,
+                "right": 405.453125,
+                "bottom": 460
+              },
+              "clientWidth": 0,
+              "scrollWidth": 0,
+              "minWidth": "0px",
+              "width": "auto",
+              "display": "inline",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "text": "Etiqueta de vinoIdentifica una etiqueta o varias botellas sin mezclarlas.",
+              "className": "matchrim-pressable flex min-h-[7.5rem] items-start gap-4 rounded-lg p-4 text-left shadow-sm border border-slate-200 bg-white text-slate-950",
+              "box": {
+                "x": 32,
+                "y": 792,
+                "width": 405.453125,
+                "height": 430,
+                "right": 437.453125,
+                "bottom": 1222
+              },
+              "parent": {
+                "x": 32,
+                "y": 380,
+                "width": 256,
+                "height": 842,
+                "right": 288,
+                "bottom": 1222
+              },
+              "clientWidth": 403,
+              "scrollWidth": 403,
+              "minWidth": "auto",
+              "width": "405.453px",
+              "display": "flex",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Etiqueta de vinoIdentifica una etiqueta o varias botellas sin mezclarlas.",
+              "className": "min-w-0 flex-1 pt-0.5",
+              "box": {
+                "x": 193,
+                "y": 825,
+                "width": 139.453125,
+                "height": 364,
+                "right": 332.453125,
+                "bottom": 1189
+              },
+              "parent": {
+                "x": 32,
+                "y": 792,
+                "width": 405.453125,
+                "height": 430,
+                "right": 437.453125,
+                "bottom": 1222
+              },
+              "clientWidth": 139,
+              "scrollWidth": 139,
+              "minWidth": "0px",
+              "width": "139.453px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Etiqueta de vino",
+              "className": "block text-lg font-bold",
+              "box": {
+                "x": 193,
+                "y": 829,
+                "width": 139.453125,
+                "height": 112,
+                "right": 332.453125,
+                "bottom": 941
+              },
+              "parent": {
+                "x": 193,
+                "y": 825,
+                "width": 139.453125,
+                "height": 364,
+                "right": 332.453125,
+                "bottom": 1189
+              },
+              "clientWidth": 139,
+              "scrollWidth": 139,
+              "minWidth": "0px",
+              "width": "139.453px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "36px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Identifica una etiqueta o varias botellas sin mezclarlas.",
+              "className": "mt-1 block text-sm leading-5 text-slate-500",
+              "box": {
+                "x": 193,
+                "y": 949,
+                "width": 139.453125,
+                "height": 240,
+                "right": 332.453125,
+                "bottom": 1189
+              },
+              "parent": {
+                "x": 193,
+                "y": 825,
+                "width": 139.453125,
+                "height": 364,
+                "right": 332.453125,
+                "bottom": 1189
+              },
+              "clientWidth": 139,
+              "scrollWidth": 139,
+              "minWidth": "0px",
+              "width": "139.453px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "svg",
+              "role": null,
+              "text": "",
+              "className": "lucide lucide-chevron-right mt-1 h-5 w-5 shrink-0 text-slate-400",
+              "box": {
+                "x": 364.453125,
+                "y": 833,
+                "width": 40,
+                "height": 40,
+                "right": 404.453125,
+                "bottom": 873
+              },
+              "parent": {
+                "x": 32,
+                "y": 792,
+                "width": 405.453125,
+                "height": 430,
+                "right": 437.453125,
+                "bottom": 1222
+              },
+              "clientWidth": 40,
+              "scrollWidth": 40,
+              "minWidth": "auto",
+              "width": "40px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "32px",
+              "flexShrink": "0"
+            },
+            {
+              "tag": "path",
+              "role": null,
+              "text": "",
+              "className": null,
+              "box": {
+                "x": 379.453125,
+                "y": 843,
+                "width": 10,
+                "height": 20,
+                "right": 389.453125,
+                "bottom": 863
+              },
+              "parent": {
+                "x": 364.453125,
+                "y": 833,
+                "width": 40,
+                "height": 40,
+                "right": 404.453125,
+                "bottom": 873
+              },
+              "clientWidth": 0,
+              "scrollWidth": 0,
+              "minWidth": "0px",
+              "width": "auto",
+              "display": "inline",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Men\u00fa de comidaConvierte platos del men\u00fa en ideas de vino.",
+              "className": "min-w-0 flex-1",
+              "box": {
+                "x": 136,
+                "y": 1359,
+                "width": 88,
+                "height": 156,
+                "right": 224,
+                "bottom": 1515
+              },
+              "parent": {
+                "x": 32,
+                "y": 1335,
+                "width": 256,
+                "height": 204,
+                "right": 288,
+                "bottom": 1539
+              },
+              "clientWidth": 88,
+              "scrollWidth": 94,
+              "minWidth": "0px",
+              "width": "88px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Men\u00fa de comida",
+              "className": "block text-sm font-semibold text-slate-950",
+              "box": {
+                "x": 136,
+                "y": 1359,
+                "width": 88,
+                "height": 120,
+                "right": 224,
+                "bottom": 1479
+              },
+              "parent": {
+                "x": 136,
+                "y": 1359,
+                "width": 88,
+                "height": 156,
+                "right": 224,
+                "bottom": 1515
+              },
+              "clientWidth": 88,
+              "scrollWidth": 94,
+              "minWidth": "0px",
+              "width": "88px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Convierte platos del men\u00fa en ideas de vino.",
+              "className": "mt-0.5 block truncate text-xs text-slate-500",
+              "box": {
+                "x": 136,
+                "y": 1483,
+                "width": 88,
+                "height": 32,
+                "right": 224,
+                "bottom": 1515
+              },
+              "parent": {
+                "x": 136,
+                "y": 1359,
+                "width": 88,
+                "height": 156,
+                "right": 224,
+                "bottom": 1515
+              },
+              "clientWidth": 88,
+              "scrollWidth": 445,
+              "minWidth": "0px",
+              "width": "88px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Haz una foto y encuentra el vino que le va.",
+              "className": "mt-0.5 block truncate text-xs text-slate-500",
+              "box": {
+                "x": 136,
+                "y": 1621.5,
+                "width": 88,
+                "height": 32,
+                "right": 224,
+                "bottom": 1653.5
+              },
+              "parent": {
+                "x": 136,
+                "y": 1577.5,
+                "width": 88,
+                "height": 76,
+                "right": 224,
+                "bottom": 1653.5
+              },
+              "clientWidth": 88,
+              "scrollWidth": 430,
+              "minWidth": "0px",
+              "width": "88px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Encontrar vinoDime presupuesto, ocasi\u00f3n o tienda y te digo qu\u00e9 buscar\u00eda.",
+              "className": "min-w-0 flex-1",
+              "box": {
+                "x": 136,
+                "y": 1716,
+                "width": 88,
+                "height": 116,
+                "right": 224,
+                "bottom": 1832
+              },
+              "parent": {
+                "x": 32,
+                "y": 1691,
+                "width": 256,
+                "height": 165,
+                "right": 288,
+                "bottom": 1856
+              },
+              "clientWidth": 88,
+              "scrollWidth": 124,
+              "minWidth": "0px",
+              "width": "88px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "32px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Encontrar vino",
+              "className": "block text-sm font-semibold text-slate-950",
+              "box": {
+                "x": 136,
+                "y": 1716,
+                "width": 88,
+                "height": 80,
+                "right": 224,
+                "bottom": 1796
+              },
+              "parent": {
+                "x": 136,
+                "y": 1716,
+                "width": 88,
+                "height": 116,
+                "right": 224,
+                "bottom": 1832
+              },
+              "clientWidth": 88,
+              "scrollWidth": 124,
+              "minWidth": "0px",
+              "width": "88px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "normal",
+              "overflowWrap": "normal",
+              "overflowX": "visible",
+              "fontSize": "28px",
+              "flexShrink": "1"
+            },
+            {
+              "tag": "SPAN",
+              "role": null,
+              "text": "Dime presupuesto, ocasi\u00f3n o tienda y te digo qu\u00e9 buscar\u00eda.",
+              "className": "mt-0.5 block truncate text-xs text-slate-500",
+              "box": {
+                "x": 136,
+                "y": 1800,
+                "width": 88,
+                "height": 32,
+                "right": 224,
+                "bottom": 1832
+              },
+              "parent": {
+                "x": 136,
+                "y": 1716,
+                "width": 88,
+                "height": 116,
+                "right": 224,
+                "bottom": 1832
+              },
+              "clientWidth": 88,
+              "scrollWidth": 603,
+              "minWidth": "0px",
+              "width": "88px",
+              "display": "block",
+              "gridTemplateColumns": "none",
+              "whiteSpace": "nowrap",
+              "overflowWrap": "normal",
+              "overflowX": "hidden",
+              "fontSize": "24px",
+              "flexShrink": "1"
+            }
+          ]
+        }
+      },
+      "destinations": [],
+      "requests": [],
+      "pageErrors": []
+    }
+  ]
+}
