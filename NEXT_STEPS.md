@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, isolated native destination gate
+
+1. Assignment11 stopped after one unsigned attempt, exit70 before compilation. Resolve generic Simulator destination visibility under approved isolation in a separately authorized local follow-up before another build. SDK18.5 is listed; do not assume a download or Apple sign-in is required.
+2. Prepared source/resources and canonical integrity are verified, but no new .app exists and accumulated03-10 integration is not certified. Preserve prior79/80 and all01-10 evidence.
+3. Live identity/sensory/affinity outcomes, hosted persistence/RLS, physical accessibility and distribution/invitation remain separate gates;28 calls untouched. No automatic retry or scope expansion.
+
 ## Current delta: 2026-10-11, complete shop examples
 
 1. Assignment10 complete: full example labels,44px targets and selected shop form reflow verified locally across5 variants. Do not repeat08/09 or expand this bounded checkpoint automatically.

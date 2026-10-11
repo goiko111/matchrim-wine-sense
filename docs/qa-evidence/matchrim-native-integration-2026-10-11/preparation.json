@@ -1,0 +1,19 @@
+{
+  "baseline": "9ae9ed7b68a07fa48c4ac1479a22d931839d7cb6",
+  "cleanBefore": true,
+  "sourceFiles": 333,
+  "distFiles": 146,
+  "loggedBuildFiles": 138,
+  "testedAssignment10Sources": 3,
+  "assignment10BuildLogSha256": "99393656ca9654269bb7e7f301862d56217e52472b44e69ad79bbbf3e285107b",
+  "fixtureFlag": {
+    "value": false,
+    "evidence": "Assignment10 build command VITE_MATCHRIM_QA_FIXTURES=false; no fixture chunks in matching dist inventory"
+  },
+  "nativeConfiguration": "Copied unchanged; no version, target, signing, endpoint or native project edits",
+  "dependencyStrategy": "Read-only installed node_modules via mirrored relative paths; existing Pods copied without xcuserdata",
+  "webStrategy": "Reuse local assignment10 dist; no new Vite build, .env access or runtime execution",
+  "sourceTreeSha256": "ec8a9b5adfcdcaf3afe1db1c3d388c26e12ae0faa1c49e0a5c17343c1116e241",
+  "webTreeSha256": "35c84d9397243aa71f8253b45f8c0e2737dade545d5addf603fd03fbf392c655",
+  "isolatedRelativePath": "mirror/Users/GOIKO/2matchrim76-recognition-20261008"
+}

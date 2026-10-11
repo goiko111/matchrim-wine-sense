@@ -1,0 +1,27 @@
+{
+  "baseline": "9ae9ed7b68a07fa48c4ac1479a22d931839d7cb6",
+  "canonicalGitCleanBeforeDocumentation": true,
+  "sourceFiles": 333,
+  "canonicalSourceHashesUnchanged": true,
+  "isolatedTrackedSourceHashesUnchanged": true,
+  "canonicalNativeFiles": 200,
+  "canonicalNativeIncludingEmbeddedOldWebUnchanged": true,
+  "installedCapacitorFiles": 104,
+  "installedCapacitorUnchanged": true,
+  "canonicalDistFiles": 146,
+  "canonicalDistUnchanged": true,
+  "isolatedDistMatchesAssignment10": true,
+  "preparedEmbeddedWebMatchesAssignment10": true,
+  "preparedEmbeddedWebExtras": [
+    "cordova_plugins.js",
+    "cordova.js"
+  ],
+  "localPodReferencesChecked": 121,
+  "missingLocalPodReferences": [],
+  "sdkDiscoveryExitCode": 0,
+  "installedSimulatorSDKAdvertised": true,
+  "nativeBuildExitCode": 70,
+  "appProduced": false,
+  "installOrLaunchPerformed": false,
+  "blockedGate": "Isolated Xcode destination discovery rejects generic iOS Simulator, reports iOS18.5 not installed despite SDK listing. Runtime/platform visibility within isolated HOME is unresolved; not a source compiler failure or proof of a globally absent SDK. No relaxed-isolation retry or download."
+}

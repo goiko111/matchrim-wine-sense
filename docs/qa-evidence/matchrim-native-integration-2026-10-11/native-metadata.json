@@ -1,0 +1,22 @@
+{
+  "configs": [
+    {
+      "name": "Debug",
+      "version": "1.0",
+      "build": "77",
+      "bundleIdentifier": "wine.matchrim.app",
+      "minimumIOS": "14.0"
+    },
+    {
+      "name": "Release",
+      "version": "1.0",
+      "build": "77",
+      "bundleIdentifier": "wine.matchrim.app",
+      "minimumIOS": "14.0"
+    }
+  ],
+  "unchanged": true,
+  "noCommandVersionOverride": true,
+  "xcode": "16.4 (16F6)",
+  "simulatorSDK": "18.5"
+}

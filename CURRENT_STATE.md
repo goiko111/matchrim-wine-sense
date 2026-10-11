@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, isolated native integration blocked
+
+- Assignment11 prepared accumulated source03-10 at9ae9ed7 in isolation, reused matching assignment10 dist and attempted one unsigned simulator build with no version override. Xcode exits70 before compilation: no valid generic Simulator destination. Same isolated environment lists SDK18.5; exact runtime/platform-discovery cause unresolved. No new app or integration approval.
+-333 source/200 canonical iOS/146 dist/104 installed Capacitor files and prior79/80 binaries unchanged. Git clean before documentation; no product edits, downloads, installation/launch, account or distribution action.28 calls preserved.
+- Report: [MATCHRIM_NATIVE_INTEGRATION_2026-10-11.md](docs/MATCHRIM_NATIVE_INTEGRATION_2026-10-11.md). Stop at local tooling gate. Previous80 lacks03-10; no TestFlight/invitation claim.
+
 ## Latest checkpoint: 2026-10-11, complete shop examples
 
 - Assignment10 fixes literal truncation of four example choices and measured form/CTA targets/reflow. Five local variants now PASS;20 full visible/accessibility labels and80 exact click/touch/Enter/Space selections.320px/200% page width397 ->320. Conditional selected shop heading wrap only; no result or logic redesign.

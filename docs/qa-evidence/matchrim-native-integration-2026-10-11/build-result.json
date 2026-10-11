@@ -1,0 +1,63 @@
+{
+  "started": "2026-10-11T17:47:06.240Z",
+  "finished": "2026-10-11T17:47:07.017Z",
+  "exitCode": 70,
+  "signal": null,
+  "error": null,
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "<ARTIFACT11>/offline.sb",
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
+    "-workspace",
+    "ios/App/App.xcworkspace",
+    "-scheme",
+    "App",
+    "-configuration",
+    "Debug",
+    "-sdk",
+    "iphonesimulator",
+    "-destination",
+    "generic/platform=iOS Simulator",
+    "-derivedDataPath",
+    "<ARTIFACT11>/DerivedData11",
+    "-resultBundlePath",
+    "<ARTIFACT11>/Build11.xcresult",
+    "-disableAutomaticPackageResolution",
+    "-skipPackageUpdates",
+    "-onlyUsePackageVersionsFromResolvedFile",
+    "-packageCachePath",
+    "<ARTIFACT11>/PackageCache",
+    "-jobs",
+    "2",
+    "-quiet",
+    "build",
+    "CODE_SIGNING_ALLOWED=NO"
+  ],
+  "environment": {
+    "PATH": "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin",
+    "HOME": "<ARTIFACT11>/isolated-home",
+    "CFFIXED_USER_HOME": "<ARTIFACT11>/isolated-home",
+    "TMPDIR": "<ARTIFACT11>/tmp/",
+    "LANG": "en_US.UTF-8",
+    "USER": "local-build",
+    "LOGNAME": "local-build",
+    "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer",
+    "CI": "1",
+    "DO_NOT_TRACK": "1"
+  },
+  "packageResolutionDisabled": true,
+  "signingAllowed": false,
+  "versionOverride": false,
+  "installOrLaunchRequested": false,
+  "internetNetworkDeniedBySandbox": true,
+  "previousBinaryTreeSha256Before": {
+    "unsigned79": "2f6c04a30de518fd31c15f46011189a873f27d8cfa48ea0f4a51df48fe704e6a",
+    "unsigned80": "f2f2726767205824b9a09c1defb10545fbb899101332f45f7a0ed090b9eef1b2"
+  },
+  "previousBinaryTreeSha256After": {
+    "unsigned79": "2f6c04a30de518fd31c15f46011189a873f27d8cfa48ea0f4a51df48fe704e6a",
+    "unsigned80": "f2f2726767205824b9a09c1defb10545fbb899101332f45f7a0ed090b9eef1b2"
+  },
+  "previousBinariesUnchanged": true
+}
