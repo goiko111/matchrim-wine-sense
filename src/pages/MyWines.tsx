@@ -1276,15 +1276,15 @@ const MyWinesForOwner = () => {
                 Elige una acción. Favoritos es una vista transversal: un vino puede seguir en Bodega, Quiero Probar o Ya Probados y aparecer también en Favoritos.
               </CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-3 md:grid-cols-4">
+            <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
               <Button
                 type="button"
                 variant="outline"
-                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                className="matchrim-pressable h-auto min-h-11 min-w-0 justify-start gap-3 whitespace-normal p-4 text-left"
                 onClick={() => navigate('/escanear/etiqueta')}
               >
                 <ScanLine className="h-5 w-5 shrink-0 text-red-900" />
-                <span>
+                <span className="min-w-0 break-words">
                   <span className="block font-semibold">Escanear etiqueta</span>
                   <span className="block text-xs font-normal text-muted-foreground">Identificar y guardar</span>
                 </span>
@@ -1292,11 +1292,11 @@ const MyWinesForOwner = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                className="matchrim-pressable h-auto min-h-11 min-w-0 justify-start gap-3 whitespace-normal p-4 text-left"
                 onClick={() => navigate('/escanear/carta-vinos')}
               >
                 <Search className="h-5 w-5 shrink-0 text-red-900" />
-                <span>
+                <span className="min-w-0 break-words">
                   <span className="block font-semibold">Escanear carta</span>
                   <span className="block text-xs font-normal text-muted-foreground">Encontrar candidatos</span>
                 </span>
@@ -1304,18 +1304,18 @@ const MyWinesForOwner = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                className="matchrim-pressable h-auto min-h-11 min-w-0 justify-start gap-3 whitespace-normal p-4 text-left"
                 onClick={() => navigate('/my-wines/add')}
               >
                 <Plus className="h-5 w-5 shrink-0 text-red-900" />
-                  <span>
+                  <span className="min-w-0 break-words">
                     <span className="block font-semibold">Añadir manualmente</span>
                     <span className="block text-xs font-normal text-muted-foreground">Buscar, validar o completar</span>
                   </span>
                 </Button>
-              <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
+              <div className="min-w-0 rounded-lg border border-stone-200 bg-stone-50 p-4">
                 <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
-                  <Search className="h-4 w-4 text-red-900" />
+                  <Search className="h-4 w-4 shrink-0 text-red-900" />
                   Buscar catálogo
                 </div>
                 <WineSearchBar onSelectWine={handleSearchWineSelect} />
@@ -1417,7 +1417,7 @@ const MyWinesForOwner = () => {
 	                  Tus valoraciones afinan el perfil: “me encanta” acerca tus recomendaciones a ese vino, “no va” las aleja y “correcto” pesa menos.
 	                </CardDescription>
 	              </CardHeader>
-	              <CardContent className="grid gap-3 p-4 md:grid-cols-4">
+	              <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3 p-4">
 	                <div className="rounded-lg border bg-muted/30 p-4">
 	                  <p className="text-xs font-semibold uppercase text-muted-foreground">Señales útiles</p>
 	                  <div className="mt-2 flex items-end gap-2">
@@ -1468,10 +1468,10 @@ const MyWinesForOwner = () => {
 	                  <Button
 	                    variant="outline"
 	                    size="sm"
-	                    className="mt-3 gap-2 border-amber-300 bg-white text-amber-950"
+	                    className="mt-3 h-auto min-h-11 max-w-full gap-2 whitespace-normal border-amber-300 bg-white py-2 text-amber-950"
 	                    onClick={() => navigateToWineSection('wishlist')}
 	                  >
-	                    <Heart className="h-4 w-4" />
+	                    <Heart className="h-4 w-4 shrink-0" />
 	                    Puntuar pendientes
 	                  </Button>
 	                </div>
@@ -1803,25 +1803,25 @@ const MyWinesForOwner = () => {
 	                            </p>
 	                          )}
 
-	                          <div className="grid gap-2 pt-2 sm:grid-cols-2">
+	                          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-2 pt-2">
 	                            <Button
 	                              type="button"
 	                              variant="outline"
 	                              size="sm"
-	                              className="gap-2"
+	                              className="h-auto min-h-11 min-w-0 gap-2 whitespace-normal py-2"
 	                              onClick={() => askAiRimAboutWine(wine, 'fit')}
 	                            >
-	                              <Sparkles className="h-4 w-4" />
+	                              <Sparkles className="h-4 w-4 shrink-0" />
 	                              ¿Por qué encaja?
 	                            </Button>
 	                            <Button
 	                              type="button"
 	                              variant="outline"
 	                              size="sm"
-	                              className="gap-2"
+	                              className="h-auto min-h-11 min-w-0 gap-2 whitespace-normal py-2"
 	                              onClick={() => askAiRimAboutWine(wine, 'similar')}
 	                            >
-	                              <ScanLine className="h-4 w-4" />
+	                              <ScanLine className="h-4 w-4 shrink-0" />
 	                              Buscar parecido
 	                            </Button>
 	                          </div>

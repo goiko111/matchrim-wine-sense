@@ -1,0 +1,90 @@
+{
+  "scope": "intercepted browser UI with CSS text sizing, not physical accessibility or backend",
+  "files": [
+    {
+      "file": "before-results.json",
+      "source": "before/results.json",
+      "sha256": "c491e7bee00537256840625ca0d20bfdbe271744b1cb7f7736991967133bf9d4"
+    },
+    {
+      "file": "after-results.json",
+      "source": "after/results.json",
+      "sha256": "5db0fc39b5011b05a4daa8da28ab3179fa20540b40615990612f85fd8dd4f9fa"
+    },
+    {
+      "file": "final-results.json",
+      "source": "final/results.json",
+      "sha256": "f9ff8b9257ee2e74bd4e57f3db985b4aee7dfd997f190690a67782b3caa3f692"
+    },
+    {
+      "file": "keyboard-noattrs-results.json",
+      "source": "keyboard-noattrs/results.json",
+      "sha256": "90ebd478c638e393b7376368a81219025ced8980a3f53063241561960fb971fe"
+    },
+    {
+      "file": "before-landscape-135-label.png",
+      "source": "before/landscape-135-label.png",
+      "sha256": "b5cfa80ba5f7fe574b889c47ec293dbdc8a695ecbf7cdbec8bf4d0294289e8c6"
+    },
+    {
+      "file": "before-landscape-135-learning.png",
+      "source": "before/landscape-135-learning.png",
+      "sha256": "b031fd0199b6b053fdac37e8b345ec3d7df5de37ac4495704d46b0d9f89f0b29"
+    },
+    {
+      "file": "before-landscape-135-fit.png",
+      "source": "before/landscape-135-fit.png",
+      "sha256": "9c0edaef647cd7b57f23bba3c0ace66b382b72295ea0cfee24cfd6b3d8ce0762"
+    },
+    {
+      "file": "final-landscape-135-label.png",
+      "source": "final/landscape-135-label.png",
+      "sha256": "99cb230a0d5a4fcdb214361cd6647fabb812bc9268b010f10817ed7e5eab86ce"
+    },
+    {
+      "file": "final-landscape-135-learning.png",
+      "source": "final/landscape-135-learning.png",
+      "sha256": "723fb0d6a9b5d2aae3fbe3a04715a2bdb669026b6626b14ddcefdaa877983389"
+    },
+    {
+      "file": "final-landscape-135-fit.png",
+      "source": "final/landscape-135-fit.png",
+      "sha256": "34af8174aec272cfa8e707887a0f8da89e745dfbd6784af0d5cb30e8fa55d872"
+    },
+    {
+      "file": "final-landscape-135-similar.png",
+      "source": "final/landscape-135-similar.png",
+      "sha256": "cfaf1214a541dc071bf959d7097e637f7cca596f4b2dbbb140ea10a308b2d2f3"
+    },
+    {
+      "file": "final-narrow-135-manual.png",
+      "source": "final/narrow-135-manual.png",
+      "sha256": "058528681e6f50ae44ad5fb59357444b4b6cbce7310b47a7607745ef91c110fc"
+    },
+    {
+      "file": "final-portrait-100-learning.png",
+      "source": "final/portrait-100-learning.png",
+      "sha256": "60139f191a3fd2e06c1e53d7b597acc02f79f43e1f7fc3d6891b3bde4da3b3b8"
+    },
+    {
+      "file": "final-empty-landscape-135-learning.png",
+      "source": "final/empty-landscape-135-learning.png",
+      "sha256": "4057ed2f13994bb78b2d1064e869752a8169cff5132643fd57443c072dfb3f13"
+    },
+    {
+      "file": "lint.log",
+      "source": "lint.log",
+      "sha256": "2acde2bd4dccb26add313aee58c20599316f2ccad6e37f65e23421f2bd249d30"
+    },
+    {
+      "file": "typecheck.log",
+      "source": "typecheck.log",
+      "sha256": "e38c26b5e7b0982ac7fdacb4832749746b5c3c678e6de661d1a003afe6ce9d6d"
+    },
+    {
+      "file": "build.log",
+      "source": "build.log",
+      "sha256": "faeb6dfce0ec76176a49cae3769d4907b65d19fbd8db3ebbc8afe76b466d650b"
+    }
+  ]
+}

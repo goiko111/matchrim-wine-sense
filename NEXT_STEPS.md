@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, assignment05 complete
+
+1. Top Bodega actions, learning CTA and contextual aiRIM legibility closed locally; see `docs/MATCHRIM_BODEGA_LEGIBILITY_2026-10-11.md`. Guards/routes/mutation policy untouched. No need to replay prior functional suites for these classes.
+2. Observed separate residual: global bottom-nav labels abbreviate at320px/135%; catalog placeholder clips within its native single-line field, although full panel heading and input focus work. Do not certify global accessibility or catalog search from these targeted tests.
+3. Wait for the next authorized scope or actual live/physical/distribution gate. Preserve previous80, all earlier source deltas/evidence and28 vision calls. No native number, push, deploy, Apple or invitation action in this scope.
+
 ## Current delta: 2026-10-11, assignment04 complete
 
 1. Rating/training/delete lifetime and response-confirmation checkpoint closed locally.54 unique intercepted UI cases; see `docs/MATCHRIM_BODEGA_ACTIONS_2026-10-11.md`. No actual server persistence or user outcome certification.

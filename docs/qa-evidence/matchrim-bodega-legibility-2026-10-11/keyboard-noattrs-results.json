@@ -1,0 +1,1163 @@
+{
+  "scope": "six viewport/content variants, not people or native accessibility",
+  "results": [
+    {
+      "case": "landscape-135",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "label": {
+          "box": {
+            "x": 65.78125,
+            "y": 149.84375,
+            "width": 352.125,
+            "height": 93.78125,
+            "right": 417.90625,
+            "bottom": 243.625
+          },
+          "parent": {
+            "x": 33.390625,
+            "y": 149.84375,
+            "width": 785.21875,
+            "height": 290.125,
+            "right": 818.609375,
+            "bottom": 439.96875
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Escanear etiqueta",
+              "rect": {
+                "x": 126.15625,
+                "y": 174.4375,
+                "width": 158.34375,
+                "height": 22,
+                "right": 284.5,
+                "bottom": 196.4375
+              }
+            },
+            {
+              "text": "Identificar y guardar",
+              "rect": {
+                "x": 126.15625,
+                "y": 200.4375,
+                "width": 147.046875,
+                "height": 19,
+                "right": 273.203125,
+                "bottom": 219.4375
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 214
+        },
+        "menu": {
+          "box": {
+            "x": 434.09375,
+            "y": 149.84375,
+            "width": 352.125,
+            "height": 93.78125,
+            "right": 786.21875,
+            "bottom": 243.625
+          },
+          "parent": {
+            "x": 33.390625,
+            "y": 149.84375,
+            "width": 785.21875,
+            "height": 290.125,
+            "right": 818.609375,
+            "bottom": 439.96875
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Escanear carta",
+              "rect": {
+                "x": 494.46875,
+                "y": 174.4375,
+                "width": 131.296875,
+                "height": 22,
+                "right": 625.765625,
+                "bottom": 196.4375
+              }
+            },
+            {
+              "text": "Encontrar candidatos",
+              "rect": {
+                "x": 494.46875,
+                "y": 200.4375,
+                "width": 156.328125,
+                "height": 19,
+                "right": 650.796875,
+                "bottom": 219.4375
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 214
+        },
+        "manual": {
+          "box": {
+            "x": 65.78125,
+            "y": 122.8125,
+            "width": 352.125,
+            "height": 147.765625,
+            "right": 417.90625,
+            "bottom": 270.578125
+          },
+          "parent": {
+            "x": 33.390625,
+            "y": 12.84375,
+            "width": 785.21875,
+            "height": 290.125,
+            "right": 818.609375,
+            "bottom": 302.96875
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "A\u00f1adir manualmente",
+              "rect": {
+                "x": 126.15625,
+                "y": 174.390625,
+                "width": 182.546875,
+                "height": 22,
+                "right": 308.703125,
+                "bottom": 196.390625
+              }
+            },
+            {
+              "text": "Buscar, validar o completar",
+              "rect": {
+                "x": 126.15625,
+                "y": 200.390625,
+                "width": 198.25,
+                "height": 19,
+                "right": 324.40625,
+                "bottom": 219.390625
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 351
+        },
+        "catalog-title": {
+          "box": {
+            "x": 456.6875,
+            "y": 183.40625,
+            "width": 306.9375,
+            "height": 27,
+            "right": 763.625,
+            "bottom": 210.40625
+          },
+          "parent": {
+            "x": 434.09375,
+            "y": 160.8125,
+            "width": 352.125,
+            "height": 147.765625,
+            "right": 786.21875,
+            "bottom": 308.578125
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Buscar cat\u00e1logo",
+              "rect": {
+                "x": 489.078125,
+                "y": 185.40625,
+                "width": 142.203125,
+                "height": 22,
+                "right": 631.28125,
+                "bottom": 207.40625
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 313
+        },
+        "catalog": {
+          "box": {
+            "x": 456.6875,
+            "y": 166.59375,
+            "width": 306.9375,
+            "height": 59.390625,
+            "right": 763.625,
+            "bottom": 225.984375
+          },
+          "parent": {
+            "x": 456.6875,
+            "y": 166.59375,
+            "width": 306.9375,
+            "height": 59.390625,
+            "right": 763.625,
+            "bottom": 225.984375
+          },
+          "issues": [],
+          "texts": [],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 373
+        },
+        "learning": {
+          "box": {
+            "x": 456.6875,
+            "y": 167.21875,
+            "width": 235.078125,
+            "height": 59.390625,
+            "right": 691.765625,
+            "bottom": 226.609375
+          },
+          "parent": {
+            "x": 434.09375,
+            "y": 15.046875,
+            "width": 362.921875,
+            "height": 234.15625,
+            "right": 797.015625,
+            "bottom": 249.203125
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Puntuar pendientes",
+              "rect": {
+                "x": 506.265625,
+                "y": 185.40625,
+                "width": 168.3125,
+                "height": 22,
+                "right": 674.578125,
+                "bottom": 207.40625
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 1501
+        },
+        "fit": {
+          "box": {
+            "x": 65.78125,
+            "y": 166.875,
+            "width": 310.625,
+            "height": 59.390625,
+            "right": 376.40625,
+            "bottom": 226.265625
+          },
+          "parent": {
+            "x": 65.78125,
+            "y": 156.078125,
+            "width": 310.625,
+            "height": 140.375,
+            "right": 376.40625,
+            "bottom": 296.453125
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "\u00bfPor qu\u00e9 encaja?",
+              "rect": {
+                "x": 164.3125,
+                "y": 185.0625,
+                "width": 145.9375,
+                "height": 22,
+                "right": 310.25,
+                "bottom": 207.0625
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 2150
+        },
+        "similar": {
+          "box": {
+            "x": 65.78125,
+            "y": 167.0625,
+            "width": 310.625,
+            "height": 59.390625,
+            "right": 376.40625,
+            "bottom": 226.453125
+          },
+          "parent": {
+            "x": 65.78125,
+            "y": 86.078125,
+            "width": 310.625,
+            "height": 140.375,
+            "right": 376.40625,
+            "bottom": 226.453125
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Buscar parecido",
+              "rect": {
+                "x": 167.421875,
+                "y": 185.25,
+                "width": 139.71875,
+                "height": 22,
+                "right": 307.140625,
+                "bottom": 207.25
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 2220
+        },
+        "fit-noattrs": {
+          "box": {
+            "x": 475.578125,
+            "y": 166.875,
+            "width": 310.640625,
+            "height": 59.390625,
+            "right": 786.21875,
+            "bottom": 226.265625
+          },
+          "parent": {
+            "x": 475.578125,
+            "y": 156.078125,
+            "width": 310.640625,
+            "height": 140.375,
+            "right": 786.21875,
+            "bottom": 296.453125
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "\u00bfPor qu\u00e9 encaja?",
+              "rect": {
+                "x": 574.125,
+                "y": 185.0625,
+                "width": 145.9375,
+                "height": 22,
+                "right": 720.0625,
+                "bottom": 207.0625
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 2150
+        },
+        "similar-noattrs": {
+          "box": {
+            "x": 475.578125,
+            "y": 167.0625,
+            "width": 310.640625,
+            "height": 59.390625,
+            "right": 786.21875,
+            "bottom": 226.453125
+          },
+          "parent": {
+            "x": 475.578125,
+            "y": 86.078125,
+            "width": 310.640625,
+            "height": 140.375,
+            "right": 786.21875,
+            "bottom": 226.453125
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Buscar parecido",
+              "rect": {
+                "x": 577.234375,
+                "y": 185.25,
+                "width": 139.71875,
+                "height": 22,
+                "right": 716.953125,
+                "bottom": 207.25
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 2220
+        }
+      },
+      "destinations": [
+        {
+          "control": "Escanear etiqueta",
+          "path": "/escanear/etiqueta",
+          "query": {}
+        },
+        {
+          "control": "Escanear carta",
+          "path": "/escanear/carta-vinos",
+          "query": {}
+        },
+        {
+          "control": "A\u00f1adir manualmente",
+          "path": "/my-wines/add",
+          "query": {}
+        },
+        {
+          "control": "Puntuar pendientes",
+          "path": "/my-wines/wishlist",
+          "query": {}
+        },
+        {
+          "control": "\u00bfPor qu\u00e9 encaja?",
+          "path": "/inteligencia-liquida",
+          "query": {
+            "function": [
+              "wine-fit"
+            ],
+            "wine": [
+              "Reserva Especial de la Familia del Valle de las Montanas \u00b7 Bodega de Prueba y Tradicion Familiar \u00b7 2018 \u00b7 Ribera del Duero \u00b7 Espana \u00b7 Cabernet Sauvignon, Tempranillo"
+            ]
+          }
+        },
+        {
+          "control": "Buscar parecido",
+          "path": "/inteligencia-liquida",
+          "query": {
+            "function": [
+              "similar-wine"
+            ],
+            "wine": [
+              "Reserva Especial de la Familia del Valle de las Montanas \u00b7 Bodega de Prueba y Tradicion Familiar \u00b7 2018 \u00b7 Ribera del Duero \u00b7 Espana \u00b7 Cabernet Sauvignon, Tempranillo"
+            ]
+          }
+        },
+        {
+          "control": "\u00bfPor qu\u00e9 encaja? (no sensory attributes)",
+          "path": "/inteligencia-liquida",
+          "query": {
+            "function": [
+              "wine-fit"
+            ],
+            "wine": [
+              "Vino sin ficha sensorial \u00b7 Bodega de Prueba y Tradicion Familiar \u00b7 2018 \u00b7 Ribera del Duero \u00b7 Espana \u00b7 Cabernet Sauvignon, Tempranillo"
+            ]
+          }
+        },
+        {
+          "control": "Buscar parecido (no sensory attributes)",
+          "path": "/inteligencia-liquida",
+          "query": {
+            "function": [
+              "similar-wine"
+            ],
+            "wine": [
+              "Vino sin ficha sensorial \u00b7 Bodega de Prueba y Tradicion Familiar \u00b7 2018 \u00b7 Ribera del Duero \u00b7 Espana \u00b7 Cabernet Sauvignon, Tempranillo"
+            ]
+          }
+        }
+      ],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "empty-landscape-135",
+      "passed": true,
+      "failures": [],
+      "measurements": {
+        "label": {
+          "box": {
+            "x": 65.78125,
+            "y": 149.84375,
+            "width": 352.125,
+            "height": 93.78125,
+            "right": 417.90625,
+            "bottom": 243.625
+          },
+          "parent": {
+            "x": 33.390625,
+            "y": 149.84375,
+            "width": 785.21875,
+            "height": 290.125,
+            "right": 818.609375,
+            "bottom": 439.96875
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Escanear etiqueta",
+              "rect": {
+                "x": 126.15625,
+                "y": 174.4375,
+                "width": 158.34375,
+                "height": 22,
+                "right": 284.5,
+                "bottom": 196.4375
+              }
+            },
+            {
+              "text": "Identificar y guardar",
+              "rect": {
+                "x": 126.15625,
+                "y": 200.4375,
+                "width": 147.046875,
+                "height": 19,
+                "right": 273.203125,
+                "bottom": 219.4375
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 214
+        },
+        "menu": {
+          "box": {
+            "x": 434.09375,
+            "y": 149.84375,
+            "width": 352.125,
+            "height": 93.78125,
+            "right": 786.21875,
+            "bottom": 243.625
+          },
+          "parent": {
+            "x": 33.390625,
+            "y": 149.84375,
+            "width": 785.21875,
+            "height": 290.125,
+            "right": 818.609375,
+            "bottom": 439.96875
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Escanear carta",
+              "rect": {
+                "x": 494.46875,
+                "y": 174.4375,
+                "width": 131.296875,
+                "height": 22,
+                "right": 625.765625,
+                "bottom": 196.4375
+              }
+            },
+            {
+              "text": "Encontrar candidatos",
+              "rect": {
+                "x": 494.46875,
+                "y": 200.4375,
+                "width": 156.328125,
+                "height": 19,
+                "right": 650.796875,
+                "bottom": 219.4375
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 214
+        },
+        "manual": {
+          "box": {
+            "x": 65.78125,
+            "y": 122.8125,
+            "width": 352.125,
+            "height": 147.765625,
+            "right": 417.90625,
+            "bottom": 270.578125
+          },
+          "parent": {
+            "x": 33.390625,
+            "y": 12.84375,
+            "width": 785.21875,
+            "height": 290.125,
+            "right": 818.609375,
+            "bottom": 302.96875
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "A\u00f1adir manualmente",
+              "rect": {
+                "x": 126.15625,
+                "y": 174.390625,
+                "width": 182.546875,
+                "height": 22,
+                "right": 308.703125,
+                "bottom": 196.390625
+              }
+            },
+            {
+              "text": "Buscar, validar o completar",
+              "rect": {
+                "x": 126.15625,
+                "y": 200.390625,
+                "width": 198.25,
+                "height": 19,
+                "right": 324.40625,
+                "bottom": 219.390625
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 351
+        },
+        "catalog-title": {
+          "box": {
+            "x": 456.6875,
+            "y": 183.40625,
+            "width": 306.9375,
+            "height": 27,
+            "right": 763.625,
+            "bottom": 210.40625
+          },
+          "parent": {
+            "x": 434.09375,
+            "y": 160.8125,
+            "width": 352.125,
+            "height": 147.765625,
+            "right": 786.21875,
+            "bottom": 308.578125
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Buscar cat\u00e1logo",
+              "rect": {
+                "x": 489.078125,
+                "y": 185.40625,
+                "width": 142.203125,
+                "height": 22,
+                "right": 631.28125,
+                "bottom": 207.40625
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 313
+        },
+        "catalog": {
+          "box": {
+            "x": 456.6875,
+            "y": 166.59375,
+            "width": 306.9375,
+            "height": 59.390625,
+            "right": 763.625,
+            "bottom": 225.984375
+          },
+          "parent": {
+            "x": 456.6875,
+            "y": 166.59375,
+            "width": 306.9375,
+            "height": 59.390625,
+            "right": 763.625,
+            "bottom": 225.984375
+          },
+          "issues": [],
+          "texts": [],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 373
+        },
+        "learning": {
+          "box": {
+            "x": 456.6875,
+            "y": 167.21875,
+            "width": 235.078125,
+            "height": 59.390625,
+            "right": 691.765625,
+            "bottom": 226.609375
+          },
+          "parent": {
+            "x": 434.09375,
+            "y": 42.046875,
+            "width": 362.921875,
+            "height": 207.15625,
+            "right": 797.015625,
+            "bottom": 249.203125
+          },
+          "issues": [],
+          "texts": [
+            {
+              "text": "Puntuar pendientes",
+              "rect": {
+                "x": 506.265625,
+                "y": 185.40625,
+                "width": 168.3125,
+                "height": 22,
+                "right": 674.578125,
+                "bottom": 207.40625
+              }
+            }
+          ],
+          "hitTests": [
+            true,
+            true,
+            true
+          ],
+          "nav": {
+            "x": 0,
+            "y": 280.765625,
+            "width": 852,
+            "height": 112.234375,
+            "right": 852,
+            "bottom": 393
+          },
+          "animation": "none",
+          "transform": "none",
+          "scrollY": 1474
+        }
+      },
+      "destinations": [
+        {
+          "control": "Escanear etiqueta",
+          "path": "/escanear/etiqueta",
+          "query": {}
+        },
+        {
+          "control": "Escanear carta",
+          "path": "/escanear/carta-vinos",
+          "query": {}
+        },
+        {
+          "control": "A\u00f1adir manualmente",
+          "path": "/my-wines/add",
+          "query": {}
+        },
+        {
+          "control": "Puntuar pendientes",
+          "path": "/my-wines/wishlist",
+          "query": {}
+        }
+      ],
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "pageErrors": []
+    }
+  ]
+}

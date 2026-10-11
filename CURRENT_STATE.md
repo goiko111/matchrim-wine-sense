@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, Bodega control legibility
+
+- Assignment05 closes the three documented layout gaps: top actions, learning CTA and aiRIM controls adapt to available width with intact labels and44px targets. Catalog decorative icons no longer intercept input touches. No routes, guards, rating/quantity/learning policies or confirmation helpers changed.
+-6/6 viewport/content variants,46 bounds/hit-test targets,34 route activations, plus2 keyboard/no-sensory supplemental variants PASS. Typecheck/lint0 errors/106 inherited warnings/web build PASS. Viewport pixels inspected, not physical accessibility certification.
+- Report: [MATCHRIM_BODEGA_LEGIBILITY_2026-10-11.md](docs/MATCHRIM_BODEGA_LEGIBILITY_2026-10-11.md). Global nav abbreviation at320px/135% remains visible outside this scope. No native build/push/deploy/Apple/vision; previous80 unchanged and28 calls preserved.
+
 ## Latest checkpoint: 2026-10-11, Bodega rating/training/delete
 
 - Assignment04: three action lifetimes now reject obsolete completions, serialize pending per-wine actions and require affected-row/field confirmation. No empty-response success. Explicit rating/consumption policy retained; missing attributes no longer claimed as training.
