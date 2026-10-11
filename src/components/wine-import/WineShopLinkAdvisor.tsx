@@ -125,17 +125,17 @@ const WineShopLinkAdvisorSession = () => {
 
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ShoppingBag className="h-5 w-5 text-red-900" />
+      <Card className="min-w-0 [overflow-wrap:anywhere]">
+        <CardHeader className="p-3 sm:p-6">
+          <CardTitle className="flex min-w-0 items-start gap-2 tracking-normal">
+            <ShoppingBag className="h-5 w-5 shrink-0 text-red-900" />
             Encontrar vino
           </CardTitle>
           <CardDescription>
             Haz una pregunta abierta o pega una tienda. Matchrim no vende vino: te ayuda a decidir qué botella buscaría para ti.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-3 pt-0 sm:p-6 sm:pt-0">
           <div className="space-y-2">
             <Label htmlFor="shop-intent">Qué quieres encontrar</Label>
             <Textarea
@@ -151,9 +151,9 @@ const WineShopLinkAdvisorSession = () => {
                   key={ex}
                   type="button"
                   onClick={() => setIntent(ex)}
-                  className="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs text-slate-700 hover:border-red-200 hover:bg-red-50"
+                  className="min-h-11 w-full min-w-0 whitespace-normal rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-left text-xs leading-5 text-slate-700 hover:border-red-200 hover:bg-red-50"
                 >
-                  {ex.length > 60 ? ex.slice(0, 60) + "…" : ex}
+                  {ex}
                 </button>
               ))}
             </div>
@@ -164,6 +164,7 @@ const WineShopLinkAdvisorSession = () => {
               <Label htmlFor="shop-url">Enlace de tienda o búsqueda opcional</Label>
               <Input
                 id="shop-url"
+                className="min-h-11 min-w-0"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://…"
@@ -174,6 +175,7 @@ const WineShopLinkAdvisorSession = () => {
               <Label htmlFor="shop-budget">Presupuesto (opcional)</Label>
               <Input
                 id="shop-budget"
+                className="min-h-11 min-w-0"
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
                 placeholder="Ej.: hasta 20€"
@@ -184,7 +186,7 @@ const WineShopLinkAdvisorSession = () => {
           <Button
             onClick={handleSubmit}
             disabled={loading || !canSubmit}
-            className="w-full gap-2 bg-red-900 hover:bg-red-950"
+            className="h-auto min-h-11 w-full flex-wrap gap-2 whitespace-normal bg-red-900 py-2 hover:bg-red-950"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
             {loading ? "Buscando…" : "Encontrar mi vino"}

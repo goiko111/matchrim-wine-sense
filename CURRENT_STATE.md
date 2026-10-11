@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, complete shop examples
+
+- Assignment10 fixes literal truncation of four example choices and measured form/CTA targets/reflow. Five local variants now PASS;20 full visible/accessibility labels and80 exact click/touch/Enter/Space selections.320px/200% page width397 ->320. Conditional selected shop heading wrap only; no result or logic redesign.
+- Six protected08/09 AST nodes unchanged. Typecheck/lint0errors106inheritedwarnings/web build6.47s PASS.27 evidence hashes and3 source hashes. No remote requests or model submissions; physical accessibility and intelligence remain separate gates.
+- Report: [MATCHRIM_SHOP_EXAMPLES_2026-10-11.md](docs/MATCHRIM_SHOP_EXAMPLES_2026-10-11.md). No native/push/deploy/Apple/invite/backend/vision; previous80 lacks03-10 and28 calls remain. Bounded checkpoint complete; stop.
+
 ## Latest checkpoint: 2026-10-11, local history owner
 
 - Assignment09 closes reproduced late shop responses repopulating history after existing owner cleanup. Captured owner/lifetime guards cover result/error/finally; account-keyed shop state; shared guarded history call for reachable writers; explicit owner-aware hub/home reads. Existing cleanup byte-identical, no retention/migration/deletion change. Legacy scanner is unrouted and untouched.

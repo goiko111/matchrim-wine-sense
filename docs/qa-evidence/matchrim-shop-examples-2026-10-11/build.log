@@ -1,0 +1,156 @@
+
+> vite_react_shadcn_ts@0.0.0 build
+> vite build
+
+vite v5.4.10 building for production...
+transforming...
+✓ 3628 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                              2.37 kB │ gzip:   0.73 kB
+dist/assets/wine-bottle-placeholder-C3OB_emv.png            13.09 kB
+dist/assets/question-9-espresso-1KgKE-hR.jpg                15.34 kB
+dist/assets/question-5-manzanas-verdes-Dawgo6fi.jpg         16.45 kB
+dist/assets/question-13-vainilla-BXzYbYLJ.jpg               29.21 kB
+dist/assets/question-8-datiles-DmGm6K6X.jpg                 38.00 kB
+dist/assets/question-14-cafe-con-leche-CUepAXx1.jpg         44.15 kB
+dist/assets/question-11-anis-DbjOcpbt.jpg                   44.58 kB
+dist/assets/question-6-berenjenas-B_k6J_Vp.jpg              49.07 kB
+dist/assets/question-16-mango-ANSh1N5I.jpg                  50.49 kB
+dist/assets/question-19-curry-DTf_3pwD.jpg                  69.08 kB
+dist/assets/question-18-encurtidos-DW47zXYl.jpg             77.16 kB
+dist/assets/question-20-caramelos-limon-Br_srOhs.jpg        77.58 kB
+dist/assets/question-7-pepinillos-B6BLwLON.jpg              80.36 kB
+dist/assets/question-4-pimiento-rojo-DpUlukRl.jpg           86.83 kB
+dist/assets/question-15-hierbabuena-CwLF3tyD.jpg            87.47 kB
+dist/assets/question-7-trufas-wb9Mws2W.jpg                  90.32 kB
+dist/assets/question-6-queso-azul-B1rPHrw2.jpg              98.15 kB
+dist/assets/question-2-cayena-BaptgsmZ.jpg                 124.30 kB
+dist/assets/question-12-avellanas-tostadas-BHAXGwcL.jpg    144.65 kB
+dist/assets/question-17-marisco-CAUavwGJ.jpg               148.18 kB
+dist/assets/hero-tinto-versatil-iLS2Co8t.jpg               156.19 kB
+dist/assets/question-5-cuero-DVy29yb0.jpg                  176.44 kB
+dist/assets/RegionMap-BKWjo1HA.css                          37.10 kB │ gzip:   5.00 kB
+dist/assets/index-BUHxjJob.css                             131.42 kB │ gzip:  20.95 kB
+dist/assets/matchrimEdgeRouting-DqIvQ_ga.js                  0.18 kB │ gzip:   0.17 kB
+dist/assets/index-otZB4u3j.js                                0.23 kB │ gzip:   0.17 kB
+dist/assets/matchrim-scan-values-BBMbqQgD.js                 0.28 kB │ gzip:   0.20 kB
+dist/assets/chevron-left-CRXO9jUE.js                         0.30 kB │ gzip:   0.25 kB
+dist/assets/matchrimWineMutation-DTBy7Dm_.js                 0.31 kB │ gzip:   0.23 kB
+dist/assets/loader-circle-B5qb9HsB.js                        0.31 kB │ gzip:   0.26 kB
+dist/assets/message-circle-BQw0DWjv.js                       0.32 kB │ gzip:   0.26 kB
+dist/assets/thermometer-DlQ0r2Kj.js                          0.33 kB │ gzip:   0.27 kB
+dist/assets/arrow-right-SLZMvaCB.js                          0.33 kB │ gzip:   0.27 kB
+dist/assets/arrow-left-Bx7RbBN5.js                           0.33 kB │ gzip:   0.27 kB
+dist/assets/search-BKNNlEU_.js                               0.34 kB │ gzip:   0.27 kB
+dist/assets/circle-check-big-BfdbRoaC.js                     0.36 kB │ gzip:   0.28 kB
+dist/assets/trending-up-CV2R6UyF.js                          0.37 kB │ gzip:   0.28 kB
+dist/assets/mail-BbdXgVoo.js                                 0.38 kB │ gzip:   0.30 kB
+dist/assets/target-B9vx0Ezx.js                               0.39 kB │ gzip:   0.26 kB
+dist/assets/copy-CnXLrYfa.js                                 0.40 kB │ gzip:   0.30 kB
+dist/assets/history-DpY6eUej.js                              0.41 kB │ gzip:   0.30 kB
+dist/assets/heart-Bm5nQxOt.js                                0.41 kB │ gzip:   0.31 kB
+dist/assets/camera-4BhdNOZn.js                               0.42 kB │ gzip:   0.31 kB
+dist/assets/circle-alert-DfBTqEUC.js                         0.42 kB │ gzip:   0.29 kB
+dist/assets/external-link-C6ob6kja.js                        0.42 kB │ gzip:   0.30 kB
+dist/assets/eye-HzCvWWZ3.js                                  0.42 kB │ gzip:   0.30 kB
+dist/assets/map-pin-Dpk7eLgm.js                              0.42 kB │ gzip:   0.32 kB
+dist/assets/calendar-B9HK-bxr.js                             0.43 kB │ gzip:   0.30 kB
+dist/assets/utensils-bobZpmAs.js                             0.43 kB │ gzip:   0.31 kB
+dist/assets/award-DUhH-JPK.js                                0.44 kB │ gzip:   0.33 kB
+dist/assets/bookmark-plus-CQ1E63yl.js                        0.45 kB │ gzip:   0.32 kB
+dist/assets/lightbulb-BPcwQisd.js                            0.46 kB │ gzip:   0.32 kB
+dist/assets/navigation-D4bAZ8Pd.js                           0.47 kB │ gzip:   0.30 kB
+dist/assets/thumbs-up-DiQ33tMW.js                            0.47 kB │ gzip:   0.34 kB
+dist/assets/thumbs-down-lBCt7yj4.js                          0.47 kB │ gzip:   0.34 kB
+dist/assets/users-D3nhF_yJ.js                                0.47 kB │ gzip:   0.32 kB
+dist/assets/chef-hat-ZA4eJTI5.js                             0.48 kB │ gzip:   0.34 kB
+dist/assets/textarea-kuofgaZi.js                             0.48 kB │ gzip:   0.32 kB
+dist/assets/sword-Bi9LTzAS.js                                0.49 kB │ gzip:   0.32 kB
+dist/assets/shield-check-C6tbZgKe.js                         0.49 kB │ gzip:   0.35 kB
+dist/assets/file-text-DRQwBL4s.js                            0.50 kB │ gzip:   0.32 kB
+dist/assets/share-2-CmCR0HWT.js                              0.52 kB │ gzip:   0.33 kB
+dist/assets/matchrimLocalProfile-D6qMZE0n.js                 0.53 kB │ gzip:   0.35 kB
+dist/assets/trash-2-CyI6k-mN.js                              0.53 kB │ gzip:   0.34 kB
+dist/assets/scale-CgNA75-i.js                                0.53 kB │ gzip:   0.34 kB
+dist/assets/label-CcSqxMTO.js                                0.55 kB │ gzip:   0.38 kB
+dist/assets/input-DdtZjpwP.js                                0.58 kB │ gzip:   0.36 kB
+dist/assets/eye-off-D3BWNUz9.js                              0.60 kB │ gzip:   0.37 kB
+dist/assets/building-2-C4w38NsJ.js                           0.61 kB │ gzip:   0.35 kB
+dist/assets/trending-down-UTEcfNPH.js                        0.61 kB │ gzip:   0.32 kB
+dist/assets/star-Cz_LveW7.js                                 0.64 kB │ gzip:   0.40 kB
+dist/assets/circle-x-YO0nCO9j.js                             0.67 kB │ gzip:   0.31 kB
+dist/assets/separator-udnoh597.js                            0.67 kB │ gzip:   0.40 kB
+dist/assets/analytics-CsPGVRUC.js                            0.68 kB │ gzip:   0.45 kB
+dist/assets/grape-CdNibCV5.js                                0.71 kB │ gzip:   0.38 kB
+dist/assets/badge-B_g7aT0L.js                                0.71 kB │ gzip:   0.37 kB
+dist/assets/palette-B5Ge_yE_.js                              0.78 kB │ gzip:   0.44 kB
+dist/assets/NotFound-Dq7iuDSo.js                             0.87 kB │ gzip:   0.50 kB
+dist/assets/brain-Bqp_5vRk.js                                0.90 kB │ gzip:   0.47 kB
+dist/assets/alert-B7bKmVeV.js                                0.91 kB │ gzip:   0.47 kB
+dist/assets/file-spreadsheet-CkHV6kE7.js                     0.93 kB │ gzip:   0.44 kB
+dist/assets/LanguageSwitcher-DJI_cizw.js                     1.01 kB │ gzip:   0.63 kB
+dist/assets/DataViewer-zVy6CGl0.js                           1.26 kB │ gzip:   0.65 kB
+dist/assets/table-CFj3ney-.js                                1.49 kB │ gzip:   0.52 kB
+dist/assets/wine-eZjBis0v.js                                 1.53 kB │ gzip:   0.59 kB
+dist/assets/ForgotPassword-CPyTiAUa.js                       1.93 kB │ gzip:   0.95 kB
+dist/assets/dialog-Cah0S3F5.js                               2.00 kB │ gzip:   0.80 kB
+dist/assets/matchrimPassport-qg8WfZJr.js                     2.12 kB │ gzip:   1.11 kB
+dist/assets/ResetPassword-Crtuy5pG.js                        2.60 kB │ gzip:   1.26 kB
+dist/assets/scanAnalysisPolicy-PeC04oHG.js                   2.62 kB │ gzip:   1.46 kB
+dist/assets/checkbox-GvYFaX0w.js                             2.82 kB │ gzip:   1.40 kB
+dist/assets/progress-DkY4JdFL.js                             2.89 kB │ gzip:   1.35 kB
+dist/assets/tabs-BscGo7W9.js                                 3.24 kB │ gzip:   1.37 kB
+dist/assets/matchrimLearning-CBgBs0gv.js                     3.44 kB │ gzip:   1.54 kB
+dist/assets/Header-CFN7Y5uo.js                               3.45 kB │ gzip:   1.21 kB
+dist/assets/Terms-RkBq-bWE.js                                3.79 kB │ gzip:   1.67 kB
+dist/assets/zap-ClWO2hS6.js                                  3.82 kB │ gzip:   1.07 kB
+dist/assets/radio-group-C1Z_z4IF.js                          3.98 kB │ gzip:   1.80 kB
+dist/assets/index-Bt4thxv0.js                                4.36 kB │ gzip:   1.95 kB
+dist/assets/Auth-DnJ2BqJj.js                                 4.44 kB │ gzip:   1.79 kB
+dist/assets/AppNav-Cx_Im8Ot.js                               5.15 kB │ gzip:   1.79 kB
+dist/assets/index-CihhUsXV.js                                5.20 kB │ gzip:   2.00 kB
+dist/assets/WineImport-BGcH4dTF.js                           5.56 kB │ gzip:   2.22 kB
+dist/assets/DataStats-Bs1GF6hk.js                            5.62 kB │ gzip:   1.76 kB
+dist/assets/AccountDeletion-DEURPYWN.js                      5.70 kB │ gzip:   2.29 kB
+dist/assets/PrivacyPolicy-C3jIxmn-.js                        6.76 kB │ gzip:   2.65 kB
+dist/assets/MobileBottomNav-BTKljXVx.js                      7.62 kB │ gzip:   2.55 kB
+dist/assets/winerimClassifier-Blhw6l7-.js                    8.18 kB │ gzip:   2.43 kB
+dist/assets/WineDetail-Cg4he4Pl.js                           8.71 kB │ gzip:   3.05 kB
+dist/assets/WineImporter-BWifCGzy.js                        11.16 kB │ gzip:   3.51 kB
+dist/assets/multiWineScan-Dpcx8rS3.js                       14.34 kB │ gzip:   5.49 kB
+dist/assets/UseMatchrim-BQJ6mmrx.js                         18.69 kB │ gzip:   6.56 kB
+dist/assets/winerimApi-CpmZE7xB.js                          18.97 kB │ gzip:   7.53 kB
+dist/assets/DataViewerTabs-C3a3YAij.js                      19.25 kB │ gzip:   4.25 kB
+dist/assets/Registration-BhK_-i80.js                        19.36 kB │ gzip:   5.84 kB
+dist/assets/Index-BVjyKtLf.js                               20.68 kB │ gzip:   6.54 kB
+dist/assets/dropdown-menu-DrITH3rn.js                       21.12 kB │ gzip:   6.23 kB
+dist/assets/select-B1rnohWD.js                              21.46 kB │ gzip:   7.48 kB
+dist/assets/WineStyles-DbD9HBLi.js                          27.76 kB │ gzip:   8.95 kB
+dist/assets/winerimDataAggregation-awbdW9zr.js              31.41 kB │ gzip:   7.82 kB
+dist/assets/ImportCSV-DFAcl94g.js                           33.13 kB │ gzip:  10.40 kB
+dist/assets/WineCard-D4chyQG5.js                            36.35 kB │ gzip:  12.32 kB
+dist/assets/Profile-DilAB3A6.js                             38.58 kB │ gzip:  12.04 kB
+dist/assets/WineStyleDetail-CmtlKlHl.js                     42.32 kB │ gzip:  12.82 kB
+dist/assets/Combination-BbTYegHR.js                         43.97 kB │ gzip:  16.42 kB
+dist/assets/Matchrim-Cerxmwn5.js                            57.32 kB │ gzip:  16.69 kB
+dist/assets/LiquidIntelligence-DqqSHE-4.js                  57.90 kB │ gzip:  14.88 kB
+dist/assets/MyWines-6QBJ8_GJ.js                             61.41 kB │ gzip:  16.37 kB
+dist/assets/WineMenuScanner-DzQ0_DGk.js                     64.77 kB │ gzip:  19.43 kB
+dist/assets/overlayPins-FoTWLIkr.js                         68.01 kB │ gzip:  22.49 kB
+dist/assets/WineSearch-790qVR5Z.js                         108.25 kB │ gzip:  27.61 kB
+dist/assets/Scan-DblYNGy6.js                               135.91 kB │ gzip:  37.78 kB
+dist/assets/pdf-BAFhSO9X.js                                446.17 kB │ gzip: 130.33 kB
+dist/assets/Admin-BJgnzhfR.js                              498.85 kB │ gzip: 132.94 kB
+dist/assets/index-DLu2CdMF.js                              520.92 kB │ gzip: 153.77 kB
+dist/assets/pdf.worker-BPDUMpZa.js                       1,015.92 kB │ gzip: 296.20 kB
+dist/assets/RegionMap-DK7PrE01.js                        1,626.17 kB │ gzip: 448.71 kB
+✓ built in 6.47s
+Browserslist: browsers data (caniuse-lite) is 24 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

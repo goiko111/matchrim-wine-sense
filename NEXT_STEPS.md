@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, complete shop examples
+
+1. Assignment10 complete: full example labels,44px targets and selected shop form reflow verified locally across5 variants. Do not repeat08/09 or expand this bounded checkpoint automatically.
+2. Live recognition/canonical annotation, sensory provenance and human affinity outcomes remain separate intelligence gates. Browser selection tests do not close them;28 vision calls preserved.
+3. Physical accessibility, combined native build and distribution/invitation remain separate authorized work. No Apple action here; previous unsigned80 lacks03-10 and tester invitation is still unsent.
+
 ## Current delta: 2026-10-11, assignment09 complete
 
 1. Late shop response/history owner boundary closed locally; see `docs/MATCHRIM_HISTORY_OWNER_2026-10-11.md`.13 unique new cases and27 pure checks. Existing cleanup retained; no need to repeat01-08 suites.

@@ -161,7 +161,7 @@ const Scan = () => {
                 >
                   <ArrowLeft className="h-5 w-5" />
                 </button>
-                <div className="min-w-0 flex-1 pt-0.5">
+                <div className={`min-w-0 flex-1 pt-0.5${activeMode === "shop-link" ? " [overflow-wrap:anywhere]" : ""}`}>
                   <div className="flex items-center gap-2 text-red-800">
                     {ActiveScanIcon && <ActiveScanIcon className="h-4 w-4" />}
                     <span className="text-sm font-semibold">Escáner Matchrim</span>

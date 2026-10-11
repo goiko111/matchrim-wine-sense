@@ -1,0 +1,49 @@
+{
+  "baseline": "b7de58bd2265628abc91a887ee32abb558068bdc",
+  "method": "TypeScript AST node extraction; byte equality of protected bodies",
+  "checks": [
+    {
+      "file": "src/components/wine-import/WineShopLinkAdvisor.tsx",
+      "name": "EXAMPLES",
+      "before": "2e1e8c2c7232728c4f950de72a15c17e74d9b7ccd10cd9df1c3fbc38a0f34af8",
+      "after": "2e1e8c2c7232728c4f950de72a15c17e74d9b7ccd10cd9df1c3fbc38a0f34af8",
+      "unchanged": true
+    },
+    {
+      "file": "src/components/wine-import/WineShopLinkAdvisor.tsx",
+      "name": "lifetime",
+      "before": "0c71ae9b7a249d1934322d67c8d4af159b71ae7b3e20800f016f25c49d6b1eab",
+      "after": "0c71ae9b7a249d1934322d67c8d4af159b71ae7b3e20800f016f25c49d6b1eab",
+      "unchanged": true
+    },
+    {
+      "file": "src/components/wine-import/WineShopLinkAdvisor.tsx",
+      "name": "handleSubmit",
+      "before": "e99dd4c192f6ddd13f58ec1cd2b71b83c57fbd4df585464994ca63ed8f449d91",
+      "after": "e99dd4c192f6ddd13f58ec1cd2b71b83c57fbd4df585464994ca63ed8f449d91",
+      "unchanged": true
+    },
+    {
+      "file": "src/components/wine-import/WineShopLinkAdvisor.tsx",
+      "name": "resultRendering",
+      "before": "ff55cac53ecabec43b537a50b385fc993e72bc8510749b81b36fd000cb339af2",
+      "after": "ff55cac53ecabec43b537a50b385fc993e72bc8510749b81b36fd000cb339af2",
+      "unchanged": true
+    },
+    {
+      "file": "src/components/wine-import/WineShopLinkAdvisor.tsx",
+      "name": "WineShopLinkAdvisor",
+      "before": "23cab8527888e34384e31b48ab3d898b59b4b36555ae16542fd3bfb8c8239ede",
+      "after": "23cab8527888e34384e31b48ab3d898b59b4b36555ae16542fd3bfb8c8239ede",
+      "unchanged": true
+    },
+    {
+      "file": "src/pages/Scan.tsx",
+      "name": "handleExtractComplete",
+      "before": "b5945f4ca1f37941b40f8f62539c8eb297425e567bba4fae7392e1922d996691",
+      "after": "b5945f4ca1f37941b40f8f62539c8eb297425e567bba4fae7392e1922d996691",
+      "unchanged": true
+    }
+  ],
+  "passed": true
+}
