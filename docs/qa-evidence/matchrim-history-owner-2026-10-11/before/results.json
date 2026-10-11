@@ -1,0 +1,1087 @@
+{
+  "scope": "Local shop-response/history ownership QA; every nonlocal request is intercepted.",
+  "remote_calls": 0,
+  "real_vision": false,
+  "results": [
+    {
+      "case": "current",
+      "passed": true,
+      "observed": {
+        "request_body": {
+          "intent": "Consulta QA A sin tienda real",
+          "url": null,
+          "budget": null,
+          "matchrimProfile": null
+        },
+        "before_release": {
+          "owner": "00000000-0000-4000-8000-000000000091",
+          "history": [
+            {
+              "id": "synthetic-prior",
+              "type": "shop-link",
+              "title": "QA historial previo A",
+              "route": "/escanear/encontrar-vino",
+              "createdAt": 1791740000000
+            }
+          ]
+        },
+        "after_release": {
+          "owner": "00000000-0000-4000-8000-000000000091",
+          "history": [
+            {
+              "id": "0cb8c8dc-4c2c-47b9-9857-679e7d5bdd77",
+              "type": "shop-link",
+              "title": "Encontrar vino: QA tienda A",
+              "subtitle": "QA resultado vigente A",
+              "route": "/escanear/encontrar-vino",
+              "externalUrl": null,
+              "actionLabel": null,
+              "payload": {
+                "intent": "Consulta QA A sin tienda real",
+                "url": null,
+                "budget": null
+              },
+              "createdAt": 1791738365605
+            },
+            {
+              "id": "synthetic-prior",
+              "type": "shop-link",
+              "title": "QA historial previo A",
+              "route": "/escanear/encontrar-vino",
+              "createdAt": 1791740000000
+            }
+          ]
+        },
+        "result_visible": 1,
+        "late_error_visible": 0
+      },
+      "final": {
+        "owner": "00000000-0000-4000-8000-000000000091",
+        "history": [
+          {
+            "id": "0cb8c8dc-4c2c-47b9-9857-679e7d5bdd77",
+            "type": "shop-link",
+            "title": "Encontrar vino: QA tienda A",
+            "subtitle": "QA resultado vigente A",
+            "route": "/escanear/encontrar-vino",
+            "externalUrl": null,
+            "actionLabel": null,
+            "payload": {
+              "intent": "Consulta QA A sin tienda real",
+              "url": null,
+              "budget": null
+            },
+            "createdAt": 1791738365605
+          },
+          {
+            "id": "synthetic-prior",
+            "type": "shop-link",
+            "title": "QA historial previo A",
+            "route": "/escanear/encontrar-vino",
+            "createdAt": 1791740000000
+          }
+        ]
+      },
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "shop_link_analyzed",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091",
+            "metadata": {
+              "has_url": false,
+              "has_intent": true
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-shop-link"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "switch",
+      "passed": false,
+      "error": "obsolete result rendered",
+      "observed": {
+        "request_body": {
+          "intent": "Consulta QA A sin tienda real",
+          "url": null,
+          "budget": null,
+          "matchrimProfile": null
+        },
+        "before_release": {
+          "owner": "00000000-0000-4000-8000-000000000092",
+          "history": []
+        },
+        "after_release": {
+          "owner": "00000000-0000-4000-8000-000000000092",
+          "history": [
+            {
+              "id": "a7a3aa55-629e-4cc8-9c9d-ce8fe1856948",
+              "type": "shop-link",
+              "title": "Encontrar vino: QA tienda A",
+              "subtitle": "QA resultado vigente A",
+              "route": "/escanear/encontrar-vino",
+              "externalUrl": null,
+              "actionLabel": null,
+              "payload": {
+                "intent": "Consulta QA A sin tienda real",
+                "url": null,
+                "budget": null
+              },
+              "createdAt": 1791738368194
+            }
+          ]
+        },
+        "result_visible": 1,
+        "late_error_visible": 0
+      },
+      "final": {
+        "owner": "00000000-0000-4000-8000-000000000092",
+        "history": [
+          {
+            "id": "a7a3aa55-629e-4cc8-9c9d-ce8fe1856948",
+            "type": "shop-link",
+            "title": "Encontrar vino: QA tienda A",
+            "subtitle": "QA resultado vigente A",
+            "route": "/escanear/encontrar-vino",
+            "externalUrl": null,
+            "actionLabel": null,
+            "payload": {
+              "intent": "Consulta QA A sin tienda real",
+              "url": null,
+              "budget": null
+            },
+            "createdAt": 1791738368194
+          }
+        ]
+      },
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000092"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "shop_link_analyzed",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091",
+            "metadata": {
+              "has_url": false,
+              "has_intent": true
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-shop-link"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "logout",
+      "passed": false,
+      "error": "obsolete result rendered",
+      "observed": {
+        "request_body": {
+          "intent": "Consulta QA A sin tienda real",
+          "url": null,
+          "budget": null,
+          "matchrimProfile": null
+        },
+        "before_release": {
+          "owner": "anonymous",
+          "history": []
+        },
+        "after_release": {
+          "owner": "anonymous",
+          "history": [
+            {
+              "id": "409ab08d-e430-4acd-a3bd-6bb35f0f486b",
+              "type": "shop-link",
+              "title": "Encontrar vino: QA tienda A",
+              "subtitle": "QA resultado vigente A",
+              "route": "/escanear/encontrar-vino",
+              "externalUrl": null,
+              "actionLabel": null,
+              "payload": {
+                "intent": "Consulta QA A sin tienda real",
+                "url": null,
+                "budget": null
+              },
+              "createdAt": 1791738369869
+            }
+          ]
+        },
+        "result_visible": 1,
+        "late_error_visible": 0
+      },
+      "final": {
+        "owner": "anonymous",
+        "history": [
+          {
+            "id": "409ab08d-e430-4acd-a3bd-6bb35f0f486b",
+            "type": "shop-link",
+            "title": "Encontrar vino: QA tienda A",
+            "subtitle": "QA resultado vigente A",
+            "route": "/escanear/encontrar-vino",
+            "externalUrl": null,
+            "actionLabel": null,
+            "payload": {
+              "intent": "Consulta QA A sin tienda real",
+              "url": null,
+              "budget": null
+            },
+            "createdAt": 1791738369869
+          }
+        ]
+      },
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": null,
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {}
+        },
+        {
+          "user_id": null,
+          "event_name": "shop_link_analyzed",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091",
+            "metadata": {
+              "has_url": false,
+              "has_intent": true
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-shop-link"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/v1/logout"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "unmount",
+      "passed": false,
+      "error": "obsolete success event",
+      "observed": {
+        "request_body": {
+          "intent": "Consulta QA A sin tienda real",
+          "url": null,
+          "budget": null,
+          "matchrimProfile": null
+        },
+        "before_release": {
+          "owner": "00000000-0000-4000-8000-000000000091",
+          "history": [
+            {
+              "id": "synthetic-prior",
+              "type": "shop-link",
+              "title": "QA historial previo A",
+              "route": "/escanear/encontrar-vino",
+              "createdAt": 1791740000000
+            }
+          ]
+        },
+        "after_release": {
+          "owner": "00000000-0000-4000-8000-000000000091",
+          "history": [
+            {
+              "id": "9b4f4f45-7948-4ca1-9bc1-ca1abf561624",
+              "type": "shop-link",
+              "title": "Encontrar vino: QA tienda A",
+              "subtitle": "QA resultado vigente A",
+              "route": "/escanear/encontrar-vino",
+              "externalUrl": null,
+              "actionLabel": null,
+              "payload": {
+                "intent": "Consulta QA A sin tienda real",
+                "url": null,
+                "budget": null
+              },
+              "createdAt": 1791738371575
+            },
+            {
+              "id": "synthetic-prior",
+              "type": "shop-link",
+              "title": "QA historial previo A",
+              "route": "/escanear/encontrar-vino",
+              "createdAt": 1791740000000
+            }
+          ]
+        },
+        "result_visible": 0,
+        "late_error_visible": 0
+      },
+      "final": {
+        "owner": "00000000-0000-4000-8000-000000000091",
+        "history": [
+          {
+            "id": "9b4f4f45-7948-4ca1-9bc1-ca1abf561624",
+            "type": "shop-link",
+            "title": "Encontrar vino: QA tienda A",
+            "subtitle": "QA resultado vigente A",
+            "route": "/escanear/encontrar-vino",
+            "externalUrl": null,
+            "actionLabel": null,
+            "payload": {
+              "intent": "Consulta QA A sin tienda real",
+              "url": null,
+              "budget": null
+            },
+            "createdAt": 1791738371575
+          },
+          {
+            "id": "synthetic-prior",
+            "type": "shop-link",
+            "title": "QA historial previo A",
+            "route": "/escanear/encontrar-vino",
+            "createdAt": 1791740000000
+          }
+        ]
+      },
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "shop_link_analyzed",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091",
+            "metadata": {
+              "has_url": false,
+              "has_intent": true
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-shop-link"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "aba",
+      "passed": false,
+      "error": "obsolete result rendered",
+      "observed": {
+        "request_body": {
+          "intent": "Consulta QA A sin tienda real",
+          "url": null,
+          "budget": null,
+          "matchrimProfile": null
+        },
+        "before_release": {
+          "owner": "00000000-0000-4000-8000-000000000091",
+          "history": []
+        },
+        "after_release": {
+          "owner": "00000000-0000-4000-8000-000000000091",
+          "history": [
+            {
+              "id": "040e649c-d086-4de4-8eb8-9e513d297a62",
+              "type": "shop-link",
+              "title": "Encontrar vino: QA tienda A",
+              "subtitle": "QA resultado vigente A",
+              "route": "/escanear/encontrar-vino",
+              "externalUrl": null,
+              "actionLabel": null,
+              "payload": {
+                "intent": "Consulta QA A sin tienda real",
+                "url": null,
+                "budget": null
+              },
+              "createdAt": 1791738373529
+            }
+          ]
+        },
+        "result_visible": 1,
+        "late_error_visible": 0
+      },
+      "final": {
+        "owner": "00000000-0000-4000-8000-000000000091",
+        "history": [
+          {
+            "id": "040e649c-d086-4de4-8eb8-9e513d297a62",
+            "type": "shop-link",
+            "title": "Encontrar vino: QA tienda A",
+            "subtitle": "QA resultado vigente A",
+            "route": "/escanear/encontrar-vino",
+            "externalUrl": null,
+            "actionLabel": null,
+            "payload": {
+              "intent": "Consulta QA A sin tienda real",
+              "url": null,
+              "budget": null
+            },
+            "createdAt": 1791738373529
+          }
+        ]
+      },
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000092"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "shop_link_analyzed",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091",
+            "metadata": {
+              "has_url": false,
+              "has_intent": true
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-shop-link"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "late-error",
+      "passed": false,
+      "error": "obsolete error notice rendered",
+      "observed": {
+        "request_body": {
+          "intent": "Consulta QA A sin tienda real",
+          "url": null,
+          "budget": null,
+          "matchrimProfile": null
+        },
+        "before_release": {
+          "owner": "00000000-0000-4000-8000-000000000092",
+          "history": []
+        },
+        "after_release": {
+          "owner": "00000000-0000-4000-8000-000000000092",
+          "history": []
+        },
+        "result_visible": 0,
+        "late_error_visible": 1
+      },
+      "final": {
+        "owner": "00000000-0000-4000-8000-000000000092",
+        "history": []
+      },
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000092"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-shop-link"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "reader-cleanup",
+      "passed": true,
+      "observed": {
+        "after_cleanup": {
+          "owner": "00000000-0000-4000-8000-000000000092",
+          "history": []
+        }
+      },
+      "final": {
+        "owner": "00000000-0000-4000-8000-000000000092",
+        "history": []
+      },
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000092"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000092"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "home-cleanup",
+      "passed": true,
+      "observed": {
+        "after_cleanup": {
+          "owner": "00000000-0000-4000-8000-000000000092",
+          "history": []
+        }
+      },
+      "final": {
+        "owner": "00000000-0000-4000-8000-000000000092",
+        "history": []
+      },
+      "events": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "multitab",
+      "passed": false,
+      "error": "obsolete result rendered",
+      "observed": {
+        "request_body": {
+          "intent": "Consulta QA A sin tienda real",
+          "url": null,
+          "budget": null,
+          "matchrimProfile": null
+        },
+        "before_release": {
+          "owner": "00000000-0000-4000-8000-000000000092",
+          "history": []
+        },
+        "after_release": {
+          "owner": "00000000-0000-4000-8000-000000000092",
+          "history": [
+            {
+              "id": "3661943c-a1ef-49c3-9d77-74521bdbd748",
+              "type": "shop-link",
+              "title": "Encontrar vino: QA tienda A",
+              "subtitle": "QA resultado vigente A",
+              "route": "/escanear/encontrar-vino",
+              "externalUrl": null,
+              "actionLabel": null,
+              "payload": {
+                "intent": "Consulta QA A sin tienda real",
+                "url": null,
+                "budget": null
+              },
+              "createdAt": 1791738381226
+            }
+          ]
+        },
+        "result_visible": 1,
+        "late_error_visible": 0
+      },
+      "final": {
+        "owner": "00000000-0000-4000-8000-000000000092",
+        "history": [
+          {
+            "id": "3661943c-a1ef-49c3-9d77-74521bdbd748",
+            "type": "shop-link",
+            "title": "Encontrar vino: QA tienda A",
+            "subtitle": "QA resultado vigente A",
+            "route": "/escanear/encontrar-vino",
+            "externalUrl": null,
+            "actionLabel": null,
+            "payload": {
+              "intent": "Consulta QA A sin tienda real",
+              "url": null,
+              "budget": null
+            },
+            "createdAt": 1791738381226
+          }
+        ]
+      },
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000091",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000092"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000092"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000092",
+          "event_name": "shop_link_analyzed",
+          "route": "/escanear/encontrar-vino",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000091",
+            "metadata": {
+              "has_url": false,
+              "has_intent": true
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-shop-link"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

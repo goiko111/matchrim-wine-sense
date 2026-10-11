@@ -1,0 +1,9 @@
+{"scope":"local synthetic history ownership/retention contract, not auth or RLS","passed":27}
+[scanHistory] Failed to read history: SyntaxError: Expected property name or '}' in JSON at position 1
+    at JSON.parse (<anonymous>)
+    at readAll (/Users/GOIKO/2matchrim76-recognition-20261008/src/utils/scanHistory.ts:39:25)
+    at getScanHistory (/Users/GOIKO/2matchrim76-recognition-20261008/src/utils/scanHistory.ts:69:35)
+    at <anonymous> (/Users/GOIKO/2matchrim76-recognition-20261008/scripts/check-matchrim-history-owner.ts:64:35)
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)

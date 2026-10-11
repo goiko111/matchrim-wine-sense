@@ -3,6 +3,7 @@
  * Consumed by ScanHub to render "Últimos escaneos" and by scanners to attach lookups
  * (e.g. Winerim Library match on a label scan).
  */
+import { isMatchrimLocalOwner } from './matchrimLocalOwner';
 
 export type ScanHistoryType = "label" | "wine-menu" | "food-menu" | "dish" | "shop-link";
 
@@ -64,8 +65,24 @@ const generateId = () => {
   return `scan-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 };
 
-export const getScanHistory = (): ScanHistoryItem[] => readAll();
+export const getScanHistory = (ownerId: string | null): ScanHistoryItem[] =>
+  isMatchrimLocalOwner(ownerId) ? readAll() : [];
 
+export interface ScanHistoryContext {
+  ownerId: string | null;
+  isCurrent: () => boolean;
+}
+
+/** Capture the owner and lifetime at operation start, never after its response. */
+export const recordOwnedScanHistory = (
+  context: ScanHistoryContext,
+  input: Omit<ScanHistoryItem, 'id' | 'createdAt'> & { id?: string; createdAt?: number },
+): ScanHistoryItem | null => {
+  if (!context.isCurrent() || !isMatchrimLocalOwner(context.ownerId)) return null;
+  return recordScanHistory(input);
+};
+
+// Retained only for the currently unrouted legacy scanner; active writers use the guarded contract.
 export const recordScanHistory = (
   input: Omit<ScanHistoryItem, "id" | "createdAt"> & { id?: string; createdAt?: number },
 ): ScanHistoryItem | null => {

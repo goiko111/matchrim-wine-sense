@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -82,17 +82,19 @@ const NativeAppHome = ({
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
   const hasCode = hasQuizResults && Boolean(matchrimCode);
-  const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory().slice(0, 3));
+  const ownerId = user?.id ?? null;
+  const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory(ownerId).slice(0, 3));
 
-  useEffect(() => {
-    const refresh = () => setRecentScans(getScanHistory().slice(0, 3));
+  useLayoutEffect(() => {
+    const refresh = () => setRecentScans(getScanHistory(ownerId).slice(0, 3));
+    refresh();
     window.addEventListener(SCAN_HISTORY_UPDATED_EVENT, refresh);
     window.addEventListener('storage', refresh);
     return () => {
       window.removeEventListener(SCAN_HISTORY_UPDATED_EVENT, refresh);
       window.removeEventListener('storage', refresh);
     };
-  }, []);
+  }, [ownerId]);
 
   const openProfile = () => {
     navigate(user ? '/profile' : buildAuthRedirectPath('/profile'));

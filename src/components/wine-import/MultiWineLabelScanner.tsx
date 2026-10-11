@@ -69,7 +69,7 @@ import {
   type ScanCoverage,
   type WineCandidate,
 } from '@/utils/multiWineScan';
-import { recordScanHistory } from '@/utils/scanHistory';
+import { recordOwnedScanHistory } from '@/utils/scanHistory';
 import { saveLabelBatch, type LabelSaveBatch, type LabelSaveCallback, type LabelSaveResult } from '@/utils/labelScanSave';
 
 interface MultiWineLabelScannerProps {
@@ -710,6 +710,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     const batch = batchRef.current;
     const generation = saveLifetime.current.generation;
     const isCurrent = () => saveLifetime.current.active && saveLifetime.current.generation === generation;
+    const historyContext = { ownerId: batch.ownerId, isCurrent };
     savingRef.current = true;
     setSaving(true);
     setBatchLocked(true);
@@ -718,7 +719,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     savingRef.current = false;
     setSaving(false);
     if (outcome !== 'confirmed') return;
-    recordScanHistory({
+    recordOwnedScanHistory(historyContext, {
       type: 'label',
       title: `${groups.length} referencia${groups.length === 1 ? '' : 's'} confirmada${groups.length === 1 ? '' : 's'}`,
       subtitle: `${regions.length} objetos · ${summary.uncertain} dudosos · ${summary.unrecognized} sin reconocer`,

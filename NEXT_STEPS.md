@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, assignment09 complete
+
+1. Late shop response/history owner boundary closed locally; see `docs/MATCHRIM_HISTORY_OWNER_2026-10-11.md`.13 unique new cases and27 pure checks. Existing cleanup retained; no need to repeat01-08 suites.
+2. Do not reactivate the unrouted legacy scanner without its own lifetime review. Any history migration/retention decision, hosted isolation/RLS, atomic cross-tab semantics, real intelligence and physical QA remain separate gates; local fixtures do not certify them.
+3. Stop bounded scope. Preserve previous unsigned80, source deltas03-09,28 vision calls and all corpora/holdouts/ledgers/evidence. No native build/number, push, deploy, Apple/TestFlight or invitation action here.
+
 ## Current delta: 2026-10-11, assignment08 complete
 
 1. Actual label batch-save boundary closed locally: explicit verified result, owner/lifetime guards, pending lock and partial ledger. See `docs/MATCHRIM_LABEL_SAVE_2026-10-11.md`;18 unique mobile scenarios and53 pure checks. Do not rerun unrelated completed suites by inertia.

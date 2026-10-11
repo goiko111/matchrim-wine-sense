@@ -1,0 +1,43 @@
+{
+  "baseline": "a8b3a0a850cd92ba3e734213c02f325ce0fc7b20",
+  "capturedAt": "2026-10-11T17:13:07.525Z",
+  "cleanupFunctionByteIdentical": true,
+  "sources": [
+    {
+      "path": "src/utils/matchrimLocalOwner.ts",
+      "sha256": "c5cc357cd552a2d0e406eadb4606468bf2f3492cf43ae632f52fa6ac7eb00a81"
+    },
+    {
+      "path": "src/utils/scanHistory.ts",
+      "sha256": "bfc0e0d12813733ff2b20a195af0d132ccb4c65accbbbc127496b805b17b9067"
+    },
+    {
+      "path": "src/components/wine-import/WineShopLinkAdvisor.tsx",
+      "sha256": "982eec7737c5a2f5572f9d19c034dd38eed7d09d5e2485d27b124c192ae177f3"
+    },
+    {
+      "path": "src/components/wine-import/ScanHub.tsx",
+      "sha256": "c6c134dc89edf005a7b425bff03211f5176a02d6d8c2a44c0f26d400b975cea7"
+    },
+    {
+      "path": "src/components/NativeAppHome.tsx",
+      "sha256": "4dda60ddbdf5df3941d207e277bb724536e0e3f356e73f70be646cea102c43c9"
+    },
+    {
+      "path": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "sha256": "adca1d702d85621262e1b00d29558a77470f12931c85be5c7e931b69c2526b19"
+    },
+    {
+      "path": "scripts/check-matchrim-history-owner.ts",
+      "sha256": "d8622177de854b117aa1908fdba55658c6d8b49d4eb546be3c1dcfcbd0b75863"
+    },
+    {
+      "path": "scripts/qa-matchrim-history-owner.py",
+      "sha256": "265064facffcacbcee2d6934ae322389d6e30811b1e2655caa96a71368c0e20e"
+    }
+  ],
+  "sdk": "2.107.0",
+  "remoteCalls": 0,
+  "visionCalls": 0,
+  "nativeBuild": false
+}

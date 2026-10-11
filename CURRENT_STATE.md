@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, local history owner
+
+- Assignment09 closes reproduced late shop responses repopulating history after existing owner cleanup. Captured owner/lifetime guards cover result/error/finally; account-keyed shop state; shared guarded history call for reachable writers; explicit owner-aware hub/home reads. Existing cleanup byte-identical, no retention/migration/deletion change. Legacy scanner is unrouted and untouched.
+-13 unique new local UI cases,27 pure checks, existing owner-policy regression and one label-success case PASS. Typecheck/lint0 errors106 inherited warnings/web build6.79s PASS.32 evidence hashes; no server/RLS/real-user/vision claim.
+- Report: [MATCHRIM_HISTORY_OWNER_2026-10-11.md](docs/MATCHRIM_HISTORY_OWNER_2026-10-11.md). No native build/push/deploy/Apple/invites/backend/paid calls. Previous80 lacks03-09;28 vision calls and prior artifacts preserved. New reproduction is a local fixture finding, not a claimed production incident.
+
 ## Latest checkpoint: 2026-10-11, label-save confirmation
 
 - Assignment08 closes false batch-success after rejected/unknown inserts, duplicate pending confirmation and stale owner/lifetime continuation in the actual Scan -> ScanHub -> multi-label boundary. Explicit result contract, minimal returned-row verification, same-batch partial ledger and visible status. Ambiguity blocks reinsertion; only explicit rejection permits a user retry of pending groups. Saving remains wishlist, not tasting/training.

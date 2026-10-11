@@ -4,6 +4,15 @@ const PRIVATE_KEYS = [
   'matchrim.scan_history.v1',
 ];
 
+// Local cache ownership only; this is not server authorization.
+export const isMatchrimLocalOwner = (userId: string | null): boolean => {
+  try {
+    return localStorage.getItem(OWNER_KEY) === (userId || 'anonymous');
+  } catch {
+    return false;
+  }
+};
+
 export const reconcileMatchrimLocalOwner = (userId: string | null, signedOut = false) => {
   try {
     const owner = localStorage.getItem(OWNER_KEY);

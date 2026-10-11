@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, BookOpen, Camera, ChefHat, ChevronRight, ExternalLink, History, Loader2, ScanLine, ShoppingBag, Wine } from "lucide-react";
 import { MultiWineLabelScanner } from "@/components/wine-import/MultiWineLabelScanner";
@@ -94,11 +94,13 @@ const formatScanTime = (timestamp: number) => {
 
 const RecentScansSection = () => {
   const navigate = useNavigate();
-  const [items, setItems] = useState<ScanHistoryItem[]>(() => getScanHistory());
+  const { user } = useAuth();
+  const ownerId = user?.id ?? null;
+  const [items, setItems] = useState<ScanHistoryItem[]>(() => getScanHistory(ownerId));
 
-  const refresh = useCallback(() => setItems(getScanHistory()), []);
+  const refresh = useCallback(() => setItems(getScanHistory(ownerId)), [ownerId]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     refresh();
     if (typeof window === "undefined") return;
     const handler = () => refresh();
