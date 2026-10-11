@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, BookOpen, Camera, ChefHat, ChevronRight, ExternalLink, History, Loader2, ScanLine, ShoppingBag, Wine } from "lucide-react";
 import { MultiWineLabelScanner } from "@/components/wine-import/MultiWineLabelScanner";
-import { WineLabelOCRImport } from "@/components/wine-import/WineLabelOCRImport";
+import type { LabelSaveCallback } from "@/utils/labelScanSave";
 import FoodPairingScanner from "@/components/wine-import/FoodPairingScanner";
 import WineShopLinkAdvisor from "@/components/wine-import/WineShopLinkAdvisor";
 import { useAuth } from "@/contexts/AuthContext";
@@ -19,7 +19,7 @@ export type ScanMode = "label" | "wine-menu" | "food-menu" | "dish" | "shop-link
 
 
 interface ScanHubProps {
-  onExtractComplete: Parameters<typeof WineLabelOCRImport>[0]["onExtractComplete"];
+  onExtractComplete: LabelSaveCallback;
   initialMode?: ScanMode;
   mode?: ScanMode;
   variant?: "hub" | "selected" | "legacy";

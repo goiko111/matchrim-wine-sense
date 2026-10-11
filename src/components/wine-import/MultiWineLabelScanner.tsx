@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { Capacitor } from '@capacitor/core';
 import {
   AlertTriangle,
@@ -70,21 +70,10 @@ import {
   type WineCandidate,
 } from '@/utils/multiWineScan';
 import { recordScanHistory } from '@/utils/scanHistory';
+import { saveLabelBatch, type LabelSaveBatch, type LabelSaveCallback, type LabelSaveResult } from '@/utils/labelScanSave';
 
 interface MultiWineLabelScannerProps {
-  onExtractComplete: (wine: {
-    nombre: string;
-    productor: string | null;
-    anada: number | null;
-    region: string | null;
-    pais: string | null;
-    uvas: string[];
-    alcohol: number | null;
-    notas_cata: string | null;
-    matchrim_affinity?: number | null;
-    sensory_attributes?: WineCandidate['sensoryAttributes'];
-    affinity_reason?: string | null;
-  }) => void | Promise<void>;
+  onExtractComplete: LabelSaveCallback;
 }
 
 type ScanPhase = 'idle' | 'quality' | 'profile' | 'detecting' | 'analyzing' | 'ready' | 'cancelled' | 'error';
@@ -165,6 +154,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const [scanMetrics, setScanMetrics] = useState<ScanPerformance | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [batchLocked, setBatchLocked] = useState(false);
+  const [saveResults, setSaveResults] = useState<Array<LabelSaveResult | undefined>>([]);
+  const savingRef = useRef(false);
+  const saveLifetime = useRef({ active: false, generation: 0 });
+  const batchRef = useRef<(LabelSaveBatch & { groups: ReturnType<typeof getConfirmableWineGroups> }) | null>(null);
   const [nativeResultView, setNativeResultView] = useState<NativeResultView>('scene');
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -172,6 +167,16 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const lastFileRef = useRef<File | null>(null);
   const preparedSizeRef = useRef<{ width: number; height: number } | null>(null);
   const scanProfileRef = useRef<ScanProfileSnapshot | null>(null);
+
+  useLayoutEffect(() => {
+    const lifetime = saveLifetime.current;
+    lifetime.active = true;
+    lifetime.generation += 1;
+    return () => {
+      lifetime.active = false;
+      lifetime.generation += 1;
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     abortRef.current?.abort();
@@ -190,6 +195,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
   const duplicateGroups = useMemo(() => groupDuplicateWines(regions), [regions]);
   const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions), [regions]);
+  const savedCount = saveResults.filter((result) => result?.status === 'saved').length;
+  const saveFailure = saveResults.find((result) => result && result.status !== 'saved');
   const regionPinClusters = useMemo(() => clusterOverlayPins(
     regions
       .filter((region) => region.status !== 'discarded')
@@ -332,6 +339,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const startScan = async (file: File) => {
+    if (savingRef.current) return;
+    saveLifetime.current.generation += 1;
+    batchRef.current = null;
+    setSaveResults([]);
+    setBatchLocked(false);
     const scanStartedAt = globalThis.performance.now();
     lastFileRef.current = file;
     abortRef.current?.abort();
@@ -508,6 +520,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (savingRef.current) return;
     const file = event.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) {
@@ -527,6 +540,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const resetScan = () => {
+    if (savingRef.current) return;
+    saveLifetime.current.generation += 1;
+    batchRef.current = null;
+    setSaveResults([]);
+    setBatchLocked(false);
     abortRef.current?.abort();
     setPreview(null);
     setQuality(null);
@@ -550,7 +568,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const reanalyzeSelected = async () => {
-    if (!selectedRegion || !preview || !preparedSizeRef.current || loading) return;
+    if (batchRef.current || !selectedRegion || !preview || !preparedSizeRef.current || loading) return;
     const preflight = regionPreflight(selectedRegion, preparedSizeRef.current.width, preparedSizeRef.current.height, true);
     if (preflight) {
       updateRegion(selectedRegion.id, () => deferRegion(selectedRegion, preflight));
@@ -574,13 +592,13 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const discardSelected = () => {
-    if (!selectedRegion) return;
+    if (batchRef.current || !selectedRegion) return;
     updateRegion(selectedRegion.id, (current) => ({ ...current, status: 'discarded' }));
     setSelectedRegionId(null);
   };
 
   const selectCandidate = (candidateId: string) => {
-    if (!selectedRegion) return;
+    if (batchRef.current || !selectedRegion) return;
     updateRegion(selectedRegion.id, (current) => {
       const candidate = current.candidates.find((item) => item.id === candidateId);
       return {
@@ -592,7 +610,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const confirmSelectedCandidate = () => {
-    if (!selectedRegion || !selectedCandidate) return;
+    if (batchRef.current || !selectedRegion || !selectedCandidate) return;
     updateRegion(selectedRegion.id, (current) => ({
       ...current,
       status: 'recognized',
@@ -604,7 +622,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const editCandidate = (patch: Pick<Partial<WineCandidate>, 'name' | 'producer'>) => {
-    if (!selectedRegion || !selectedCandidate) return;
+    if (batchRef.current || !selectedRegion || !selectedCandidate) return;
     updateRegion(selectedRegion.id, (current) => ({
       ...current,
       status: 'recognized',
@@ -616,7 +634,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
   const identifySelectedManually = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!selectedRegion) return;
+    if (batchRef.current || !selectedRegion) return;
     const formData = new FormData(event.currentTarget);
     const name = String(formData.get('manual-wine-name') ?? '').trim();
     const producer = String(formData.get('manual-wine-producer') ?? '').trim();
@@ -662,27 +680,44 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const confirmBatch = async () => {
-    const groups = getConfirmableWineGroups(regions).filter((group) => group.candidate.name);
+    if (savingRef.current || confirmed || !saveLifetime.current.active) return;
+    if (batchRef.current && batchRef.current.results.filter((result) => result?.status === 'saved').length === batchRef.current.wines.length) return;
+    const groups = batchRef.current?.groups ?? getConfirmableWineGroups(regions).filter((group) => group.candidate.name);
     if (!groups.length) {
       toast.error('No hay referencias confirmables en este lote');
       return;
     }
-    for (const group of groups) {
-      const candidate = group.candidate;
-      await Promise.resolve(onExtractComplete({
-        nombre: candidate.name,
-        productor: candidate.producer,
-        anada: candidate.vintage,
-        region: candidate.region,
-        pais: candidate.country,
-        uvas: candidate.grapes,
-        alcohol: candidate.alcohol,
-        notas_cata: candidate.evidence.join('. ') || null,
-        matchrim_affinity: candidate.affinity,
-        sensory_attributes: candidate.sensoryAttributes,
-        affinity_reason: candidate.affinityReason,
-      }));
+    if (!batchRef.current) {
+      batchRef.current = {
+        ownerId: user?.id ?? null,
+        groups,
+        wines: groups.map(({ candidate }) => ({
+          nombre: candidate.name,
+          productor: candidate.producer,
+          anada: candidate.vintage,
+          region: candidate.region,
+          pais: candidate.country,
+          uvas: candidate.grapes,
+          alcohol: candidate.alcohol,
+          notas_cata: candidate.evidence.join('. ') || null,
+          matchrim_affinity: candidate.affinity,
+          sensory_attributes: candidate.sensoryAttributes,
+          affinity_reason: candidate.affinityReason,
+        })),
+        results: [],
+      };
     }
+    const batch = batchRef.current;
+    const generation = saveLifetime.current.generation;
+    const isCurrent = () => saveLifetime.current.active && saveLifetime.current.generation === generation;
+    savingRef.current = true;
+    setSaving(true);
+    setBatchLocked(true);
+    const outcome = await saveLabelBatch(batch, onExtractComplete, isCurrent, () => setSaveResults([...batch.results]));
+    if (!isCurrent()) return;
+    savingRef.current = false;
+    setSaving(false);
+    if (outcome !== 'confirmed') return;
     recordScanHistory({
       type: 'label',
       title: `${groups.length} referencia${groups.length === 1 ? '' : 's'} confirmada${groups.length === 1 ? '' : 's'}`,
@@ -761,7 +796,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 </Button>
               )}
               {!loading && (
-                <Button type="button" variant="outline" size="icon" className="matchrim-pressable h-11 w-11 bg-white" onClick={resetScan} aria-label="Cerrar análisis">
+                <Button type="button" variant="outline" size="icon" className="matchrim-pressable h-11 w-11 bg-white" onClick={resetScan} disabled={saving} aria-label="Cerrar análisis">
                   <X className="h-4 w-4" />
                 </Button>
               )}
@@ -914,6 +949,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               {scanProfile && <p className="text-sm text-stone-600" data-testid="scan-profile-source">{scanProfile.note}</p>}
               <div className="matchrim-surface divide-y divide-stone-100 overflow-hidden rounded-lg">
                 {rankedGroups.map((group, index) => {
+                  const savedIndex = batchRef.current?.groups.findIndex((item) => item.key === group.key) ?? -1;
+                  const saveResult = savedIndex < 0 ? undefined : saveResults[savedIndex];
                   const identityConfirmed = group.regionIds.some((id) => (
                     regions.some((region) => region.id === id && region.status === 'recognized')
                   ));
@@ -937,6 +974,13 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       <span className={`block text-[11px] font-semibold ${identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
                         {identityConfirmed ? 'Nombre leído · revisa la referencia' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
                       </span>
+                      {batchLocked && savedIndex >= 0 && (
+                        <span className="mt-1 block text-xs font-medium text-slate-700">
+                          {saveResult?.status === 'saved' ? 'Guardado en Quiero Probar'
+                            : saveResult?.status === 'rejected' ? 'No guardado: rechazo'
+                              : saveResult ? 'Guardado sin confirmar' : 'Pendiente de guardar'}
+                        </span>
+                      )}
                     </span>
                     <span className="shrink-0 text-right">
                       <span data-testid="scan-affinity-value" className="block font-bold text-red-900">{group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
@@ -963,15 +1007,30 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               )}
 
               {phase === 'ready' && (
+                <div className="space-y-3" aria-busy={saving}>
+                {batchLocked && (
+                  <p role="status" className="text-sm leading-6 text-slate-700">
+                    {savedCount} de {batchRef.current?.wines.length ?? 0} referencias guardadas en Quiero Probar.
+                  </p>
+                )}
+                {saveFailure && !saving && (
+                  <div role="alert" className="border-l-4 border-amber-600 bg-amber-50 p-3 text-sm leading-6 text-amber-950">
+                    {saveFailure.status === 'rejected'
+                      ? 'Lote sin confirmar: una referencia fue rechazada. Puedes reintentar las pendientes; las ya guardadas no se repetirán.'
+                      : 'No podemos confirmar el guardado de una referencia. Puede haberse guardado. Revisa tu Bodega antes de volver a escanear; no repetiremos esta inserción.'}
+                  </div>
+                )}
                 <Button
                   type="button"
-                  className="matchrim-pressable min-h-12 w-full gap-2 bg-red-950 hover:bg-red-900"
+                  className="matchrim-pressable h-auto min-h-12 w-full gap-2 whitespace-normal bg-red-950 py-3 hover:bg-red-900"
                   onClick={() => void confirmBatch()}
-                  disabled={confirmed || confirmableGroups.length === 0}
+                  disabled={saving || confirmed || confirmableGroups.length === 0 || Boolean(saveFailure && saveFailure.status !== 'rejected')}
                 >
-                  <Check className="h-4 w-4" />
-                  {confirmed ? 'Lote confirmado' : `Confirmar ${confirmableGroups.length} referencia${confirmableGroups.length === 1 ? '' : 's'}`}
+                  {saving ? <Loader2 aria-hidden="true" className="h-4 w-4 shrink-0 animate-spin motion-reduce:animate-none" />
+                    : saveFailure ? <AlertTriangle aria-hidden="true" className="h-4 w-4 shrink-0" /> : <Check aria-hidden="true" className="h-4 w-4 shrink-0" />}
+                  {saving ? 'Guardando lote' : confirmed ? 'Lote confirmado' : saveFailure?.status === 'rejected' ? 'Reintentar pendientes' : saveFailure ? 'Guardado sin confirmar' : `Confirmar ${confirmableGroups.length} referencia${confirmableGroups.length === 1 ? '' : 's'}`}
                 </Button>
+                </div>
               )}
               </div>
             </div>
@@ -1004,7 +1063,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       identityConfidence={0}
                       affinity={null}
                       attributes={null}
-                      primaryAction={{ label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }}
+                      primaryAction={batchLocked ? null : { label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }}
                     />}
                       <div className={`rounded-lg border-l-4 px-3 py-3 text-sm ${selectedRegion.status === 'deferred' ? 'border-stone-400 bg-stone-100 text-stone-900' : 'border-red-700 bg-red-50 text-red-950'}`}>
                       <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> {selectedRegion.status === 'deferred' ? 'Región sin analizar' : 'Sin identidad fiable'}</div>
@@ -1025,14 +1084,14 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       <div className="grid gap-3 sm:grid-cols-2">
                         <label className="text-sm font-medium text-slate-800">
                           Vino
-                          <Input name="manual-wine-name" className="mt-1 min-h-11" autoComplete="off" required />
+                          <Input name="manual-wine-name" disabled={batchLocked} className="mt-1 min-h-11" autoComplete="off" required />
                         </label>
                         <label className="text-sm font-medium text-slate-800">
                           Bodega (opcional)
-                          <Input name="manual-wine-producer" className="mt-1 min-h-11" autoComplete="off" />
+                          <Input name="manual-wine-producer" disabled={batchLocked} className="mt-1 min-h-11" autoComplete="off" />
                         </label>
                       </div>
-                      <Button type="submit" className="min-h-11 gap-2"><Check className="h-4 w-4" /> Aplicar identidad manual</Button>
+                      <Button type="submit" disabled={batchLocked} className="min-h-11 gap-2"><Check className="h-4 w-4" /> Aplicar identidad manual</Button>
                     </form>
                   </div>
                 ) : (
@@ -1048,6 +1107,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                               type="button"
                               className={`matchrim-pressable flex min-h-14 w-full items-center gap-3 px-3 py-2 text-left ${active ? 'bg-red-50' : 'bg-white'}`}
                               onClick={() => selectCandidate(candidate.id)}
+                              disabled={batchLocked}
                               aria-pressed={active}
                             >
                               <span className="text-xs font-bold text-red-900">{index + 1}</span>
@@ -1072,11 +1132,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         <div className="grid gap-3 sm:grid-cols-2">
                           <label className="text-sm font-medium text-slate-800">
                             Vino
-                            <Input className="mt-1 min-h-11" value={selectedCandidate.name} onChange={(event) => editCandidate({ name: event.target.value })} />
+                            <Input disabled={batchLocked} className="mt-1 min-h-11" value={selectedCandidate.name} onChange={(event) => editCandidate({ name: event.target.value })} />
                           </label>
                           <label className="text-sm font-medium text-slate-800">
                             Bodega
-                            <Input className="mt-1 min-h-11" value={selectedCandidate.producer ?? ''} onChange={(event) => editCandidate({ producer: event.target.value || null })} />
+                            <Input disabled={batchLocked} className="mt-1 min-h-11" value={selectedCandidate.producer ?? ''} onChange={(event) => editCandidate({ producer: event.target.value || null })} />
                           </label>
                         </div>
 
@@ -1107,10 +1167,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           sensorySource={selectedCandidate.sensorySource ?? 'inference'}
                           uncertaintyReasons={selectedCandidate.uncertaintyReasons}
                           hasAlternatives={selectedRegion.candidates.length > 1 || duplicateGroups.length > 1}
-                          primaryAction={selectedRegion.status === 'uncertain'
+                          primaryAction={!batchLocked && selectedRegion.status === 'uncertain'
                             ? { label: 'Confirmar este candidato', onClick: confirmSelectedCandidate }
                             : null}
-                          secondaryAction={selectedRegion.status === 'uncertain'
+                          secondaryAction={!batchLocked && selectedRegion.status === 'uncertain'
                             ? { label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }
                             : null}
                         />
@@ -1144,10 +1204,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
                     Siguiente <ChevronRight className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={() => void reanalyzeSelected()}>
+                  <Button type="button" variant="outline" disabled={batchLocked} className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={() => void reanalyzeSelected()}>
                     <RefreshCw className="h-4 w-4" /> Reanalizar
                   </Button>
-                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white text-red-800" onClick={discardSelected}>
+                  <Button type="button" variant="outline" disabled={batchLocked} className="matchrim-pressable min-h-11 gap-2 bg-white text-red-800" onClick={discardSelected}>
                     <Trash2 className="h-4 w-4" /> Descartar
                   </Button>
                 </div>

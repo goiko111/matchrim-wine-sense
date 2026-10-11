@@ -8,8 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { trackAppEvent } from "@/lib/analytics";
 import { buildAuthRedirectPath } from "@/utils/navigation";
+import { confirmedLabelInsertId, labelInsertErrorResult, type LabelSaveCallback } from "@/utils/labelScanSave";
 import { ArrowLeft, ScanLine } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { Navigate, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -43,22 +44,6 @@ const scanPathAliases: Record<string, ScanMode> = {
   "comprar-vino": "shop-link",
 };
 
-interface ScanExtractedWine {
-  nombre: string;
-  productor?: string | null;
-  anada?: number | null;
-  region?: string | null;
-  pais?: string | null;
-  uvas?: string[] | null;
-  alcohol?: number | null;
-  notas_cata?: string | null;
-  affinity_reason?: string | null;
-  imagen_url?: string | null;
-  matchrim_affinity?: number | null;
-  sensory_attributes?: Json | null;
-  is_favorite?: boolean;
-}
-
 const Scan = () => {
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
@@ -74,6 +59,16 @@ const Scan = () => {
     ? scanOptions.find((option) => option.id === activeMode)
     : null;
   const ActiveScanIcon = activeOption?.icon;
+  const saveLifetime = useRef({ active: false, generation: 0 });
+  useLayoutEffect(() => {
+    const lifetime = saveLifetime.current;
+    lifetime.active = true;
+    lifetime.generation += 1;
+    return () => {
+      lifetime.active = false;
+      lifetime.generation += 1;
+    };
+  }, [user?.id, location.pathname, location.search]);
 
   useEffect(() => {
     if (modeParam || !scanModes.has(requestedMode as ScanMode)) return;
@@ -84,14 +79,18 @@ const Scan = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [location.pathname]);
 
-  const handleExtractComplete = async (wine: ScanExtractedWine) => {
+  const handleExtractComplete: LabelSaveCallback = async (wine, context) => {
+    const generation = saveLifetime.current.generation;
+    const isCurrent = () => saveLifetime.current.active
+      && saveLifetime.current.generation === generation && context.isCurrent();
+    if (!isCurrent()) return { status: "obsolete" };
     if (!user) {
       navigate(buildAuthRedirectPath(`${location.pathname}${location.search}`));
-      return;
+      return { status: "auth-required" };
     }
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("user_wines")
         .insert({
           user_id: user.id,
@@ -113,9 +112,14 @@ const Scan = () => {
             source: "label_scanner",
             affinity_reason: wine.affinity_reason || null,
           } as Json,
-        });
+        })
+        .select("id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training")
+        .single();
 
-      if (error) throw error;
+      if (!isCurrent()) return { status: "obsolete" };
+      if (error) return labelInsertErrorResult(error);
+      const rowId = confirmedLabelInsertId(data, wine, user.id);
+      if (!rowId) return { status: "ambiguous" };
 
       trackAppEvent("wine_saved", {
         userId: user.id,
@@ -130,9 +134,9 @@ const Scan = () => {
           ? `${wine.nombre} guardado en Quiero Probar y Favoritos`
           : `${wine.nombre} guardado en Quiero Probar`
       );
-    } catch (error) {
-      console.error("Error saving scanned label wine:", error);
-      toast.error("No se pudo guardar el vino");
+      return { status: "saved", rowId, ownerId: user.id };
+    } catch {
+      return { status: isCurrent() ? "ambiguous" : "obsolete" };
     }
   };
 

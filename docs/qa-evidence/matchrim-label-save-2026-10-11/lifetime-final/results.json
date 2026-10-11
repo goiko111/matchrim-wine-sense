@@ -1,0 +1,1184 @@
+{
+  "scope": "Real Scan/ScanHub/batch UI with existing deterministic vision fixtures and intercepted writes.",
+  "vision": "existing deterministic fixture; not recognition accuracy",
+  "remote_calls": 0,
+  "results": [
+    {
+      "case": "pending-double",
+      "passed": true,
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        },
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Pazo de Senorans",
+            "producer": "Pazo de Senorans",
+            "vintage": 2023,
+            "region": "Rias Baixas",
+            "country": "Espana",
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Pazo de Senorans. Marca visible: Pazo de Senorans",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 2,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4,
+              "madera": 1,
+              "intensidad": 3
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": [],
+      "console_errors": [],
+      "history": [
+        {
+          "key": "matchrim.scan_history.v1",
+          "value": "[{\"id\":\"f06e4fc4-44d6-4eb8-819f-5a867faf9179\",\"type\":\"label\",\"title\":\"2 referencias confirmadas\",\"subtitle\":\"5 objetos \u00b7 1 dudosos \u00b7 0 sin reconocer\",\"route\":\"/escanear/etiqueta\",\"externalUrl\":null,\"actionLabel\":null,\"payload\":{\"batch\":[{\"name\":\"Muga Reserva\",\"count\":2,\"affinity\":null},{\"name\":\"Pazo de Senorans\",\"count\":1,\"affinity\":null}]},\"createdAt\":1791737564477}]"
+        }
+      ],
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_started",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "file_type": "image/jpeg",
+              "file_size": 1041114
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_completed",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "regions": 5,
+              "recognized": 3,
+              "uncertain": 1,
+              "quality_ms": 84,
+              "profile_ms": 9,
+              "detection_ms": 260,
+              "analysis_ms": 376,
+              "total_ms": 729,
+              "concurrency": 3,
+              "detection_calls": 1,
+              "detection_refined": false,
+              "retries": 0,
+              "edge_requests": 5,
+              "deferred_regions": 1
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "wine_saved",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "source": "label_scanner",
+              "wine_name": "Muga Reserva",
+              "match": null
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "wine_saved",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "source": "label_scanner",
+              "wine_name": "Pazo de Senorans",
+              "match": null
+            }
+          }
+        }
+      ],
+      "layout": {
+        "x": 16,
+        "y": 573.5,
+        "width": 361,
+        "height": 48,
+        "bottom": 621.5,
+        "navTop": 773.65625,
+        "innerWidth": 393,
+        "scrollWidth": 393
+      }
+    },
+    {
+      "case": "switch-owner",
+      "passed": true,
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": [],
+      "console_errors": [],
+      "history": [],
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_started",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "file_type": "image/jpeg",
+              "file_size": 1041114
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_completed",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "regions": 5,
+              "recognized": 3,
+              "uncertain": 1,
+              "quality_ms": 72,
+              "profile_ms": 9,
+              "detection_ms": 254,
+              "analysis_ms": 371,
+              "total_ms": 707,
+              "concurrency": 3,
+              "detection_calls": 1,
+              "detection_refined": false,
+              "retries": 0,
+              "edge_requests": 5,
+              "deferred_regions": 1
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000082",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000082"
+          }
+        }
+      ],
+      "layout": null
+    },
+    {
+      "case": "logout",
+      "passed": true,
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/v1/logout"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": [],
+      "console_errors": [],
+      "history": [],
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_started",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "file_type": "image/jpeg",
+              "file_size": 1041114
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_completed",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "regions": 5,
+              "recognized": 3,
+              "uncertain": 1,
+              "quality_ms": 82,
+              "profile_ms": 10,
+              "detection_ms": 256,
+              "analysis_ms": 370,
+              "total_ms": 717,
+              "concurrency": 3,
+              "detection_calls": 1,
+              "detection_refined": false,
+              "retries": 0,
+              "edge_requests": 5,
+              "deferred_regions": 1
+            }
+          }
+        },
+        {
+          "user_id": null,
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {}
+        }
+      ],
+      "layout": null
+    },
+    {
+      "case": "unmount",
+      "passed": true,
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/functions/v1/matchrim-recommendations"
+        }
+      ],
+      "errors": [],
+      "console_errors": [],
+      "history": [],
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_started",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "file_type": "image/jpeg",
+              "file_size": 1041114
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_completed",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "regions": 5,
+              "recognized": 3,
+              "uncertain": 1,
+              "quality_ms": 79,
+              "profile_ms": 10,
+              "detection_ms": 257,
+              "analysis_ms": 371,
+              "total_ms": 716,
+              "concurrency": 3,
+              "detection_calls": 1,
+              "detection_refined": false,
+              "retries": 0,
+              "edge_requests": 5,
+              "deferred_regions": 1
+            }
+          }
+        }
+      ],
+      "layout": null
+    },
+    {
+      "case": "mode-switch",
+      "passed": true,
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": [],
+      "console_errors": [],
+      "history": [],
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_started",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "file_type": "image/jpeg",
+              "file_size": 1041114
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_completed",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "regions": 5,
+              "recognized": 3,
+              "uncertain": 1,
+              "quality_ms": 75,
+              "profile_ms": 10,
+              "detection_ms": 254,
+              "analysis_ms": 369,
+              "total_ms": 708,
+              "concurrency": 3,
+              "detection_calls": 1,
+              "detection_refined": false,
+              "retries": 0,
+              "edge_requests": 5,
+              "deferred_regions": 1
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        }
+      ],
+      "layout": null
+    },
+    {
+      "case": "query-change",
+      "passed": true,
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "errors": [],
+      "console_errors": [],
+      "history": [],
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_started",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "file_type": "image/jpeg",
+              "file_size": 1041114
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_completed",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "regions": 5,
+              "recognized": 3,
+              "uncertain": 1,
+              "quality_ms": 72,
+              "profile_ms": 9,
+              "detection_ms": 254,
+              "analysis_ms": 392,
+              "total_ms": 727,
+              "concurrency": 3,
+              "detection_calls": 1,
+              "detection_refined": false,
+              "retries": 0,
+              "edge_requests": 5,
+              "deferred_regions": 1
+            }
+          }
+        }
+      ],
+      "layout": {
+        "x": 16,
+        "y": 573.5,
+        "width": 361,
+        "height": 48,
+        "bottom": 621.5,
+        "navTop": 773.65625,
+        "innerWidth": 393,
+        "scrollWidth": 393
+      }
+    },
+    {
+      "case": "aba",
+      "passed": true,
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/app_events"
+        }
+      ],
+      "errors": [],
+      "console_errors": [],
+      "history": [],
+      "events": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_started",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "file_type": "image/jpeg",
+              "file_size": 1041114
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "multi_wine_label_scan_completed",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081",
+            "metadata": {
+              "regions": 5,
+              "recognized": 3,
+              "uncertain": 1,
+              "quality_ms": 82,
+              "profile_ms": 10,
+              "detection_ms": 255,
+              "analysis_ms": 377,
+              "total_ms": 723,
+              "concurrency": 3,
+              "detection_calls": 1,
+              "detection_refined": false,
+              "retries": 0,
+              "edge_requests": 5,
+              "deferred_regions": 1
+            }
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000082",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000082"
+          }
+        },
+        {
+          "user_id": "00000000-0000-4000-8000-000000000081",
+          "event_name": "scan_hub_opened",
+          "route": "/escanear/etiqueta",
+          "platform": "web",
+          "app_version": "matchrim-2026-06-22",
+          "metadata": {
+            "userId": "00000000-0000-4000-8000-000000000081"
+          }
+        }
+      ],
+      "layout": null
+    }
+  ]
+}

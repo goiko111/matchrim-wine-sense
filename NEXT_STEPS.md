@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, assignment08 complete
+
+1. Actual label batch-save boundary closed locally: explicit verified result, owner/lifetime guards, pending lock and partial ledger. See `docs/MATCHRIM_LABEL_SAVE_2026-10-11.md`;18 unique mobile scenarios and53 pure checks. Do not rerun unrelated completed suites by inertia.
+2. Hosted `.insert().select().single()` permissions/representation, ambiguous-write reconciliation and server/cross-session idempotency still need an explicitly authorized backend gate. Unknown outcome must not be retried automatically; client lifetime checks do not undo an in-flight server commit.
+3. Stop this bounded assignment. Preserve source deltas03-08, previous unsigned80,28 vision calls and all corpora/ledgers. No native build/number, push/deploy, Apple or invitation in this scope; live intelligence, physical QA and distribution remain separate.
+
 ## Current delta: 2026-10-11, assignment07 complete
 
 1. The two initial Bodega/scan-hub320px/200% overflow cases are closed by measured local reflow fixes. See `docs/MATCHRIM_REFLOW_200_2026-10-11.md`;14 affected variants approved without rewriting prior06 evidence.

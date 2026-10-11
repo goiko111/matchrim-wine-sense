@@ -1,0 +1,37 @@
+{
+  "baseline": "9a2b22861b8697f29fc9d19cd4a9397552f6348d",
+  "capturedAt": "2026-10-11T16:53:31.028Z",
+  "sources": [
+    {
+      "path": "src/pages/Scan.tsx",
+      "sha256": "97c070e3bd21e5aead33ceed26ad8631c530782fc7eea40b517a3f7168bca63b"
+    },
+    {
+      "path": "src/components/wine-import/ScanHub.tsx",
+      "sha256": "de9e811ae91099b86b9bd2ce08039d0a5222d5a60f98ac18349b6b12afed5437"
+    },
+    {
+      "path": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "sha256": "3380ab56bf1859a997bdbf4bf5627da4cb6473fe73026521a9ef27d8802d0dd7"
+    },
+    {
+      "path": "src/utils/labelScanSave.ts",
+      "sha256": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77"
+    },
+    {
+      "path": "scripts/check-matchrim-label-save.ts",
+      "sha256": "b2414b7ade1759b6e7b1be4c2405c2deb09c1b599ffbfa7ff4e8a68c98e81e4b"
+    },
+    {
+      "path": "scripts/qa-matchrim-label-save.py",
+      "sha256": "0946df7ab3e96dbcf0a97010c0780c14ca028c86772d6751f9d378c857858571"
+    }
+  ],
+  "sdk": {
+    "supabaseJs": "2.107.0",
+    "postgrestJs": "2.107.0"
+  },
+  "remoteCalls": 0,
+  "visionCalls": 0,
+  "nativeBuild": false
+}

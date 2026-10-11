@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, label-save confirmation
+
+- Assignment08 closes false batch-success after rejected/unknown inserts, duplicate pending confirmation and stale owner/lifetime continuation in the actual Scan -> ScanHub -> multi-label boundary. Explicit result contract, minimal returned-row verification, same-batch partial ledger and visible status. Ambiguity blocks reinsertion; only explicit rejection permits a user retry of pending groups. Saving remains wishlist, not tasting/training.
+-18 unique intercepted mobile scenarios PASS (17 full +7 lifetime-focused with6 repeated),53 new pure checks,18 mutation regressions and multi-scan checks. Typecheck/lint0 errors106 inherited warnings/web build6.67s PASS.42 evidence hashes. Normal insert null does not prove zero writes; no hosted persistence/RLS/exactly-once claim.
+- Report: [MATCHRIM_LABEL_SAVE_2026-10-11.md](docs/MATCHRIM_LABEL_SAVE_2026-10-11.md). No native build/push/deploy/Apple/invites/backend/vision. Previous80 lacks03-08;28 calls and prior evidence/corpora/ledgers preserved. Real backend, cross-session reconciliation and physical/distribution gates remain separate.
+
 ## Latest checkpoint: 2026-10-11, two-route200% reflow
 
 - Assignment07 closes the two320px/200% initial-route failures from06. Instrumented root32px/visual scale1 unchanged; Bodega inner/scroll width459 ->320, scan437 ->320. Local min-content/wrapping fixes preserve complete actions/descriptions; filter target and web scanner hit collision also corrected.

@@ -1,0 +1,550 @@
+{
+  "scope": "Real Scan/ScanHub/batch UI with existing deterministic vision fixtures and intercepted writes.",
+  "vision": "existing deterministic fixture; not recognition accuracy",
+  "remote_calls": 0,
+  "results": [
+    {
+      "case": "denied",
+      "passed": false,
+      "error": "false batch success",
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        },
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Pazo de Senorans",
+            "producer": "Pazo de Senorans",
+            "vintage": 2023,
+            "region": "Rias Baixas",
+            "country": "Espana",
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Pazo de Senorans. Marca visible: Pazo de Senorans",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 2,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4,
+              "madera": 1,
+              "intensidad": 3
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "errors": [],
+      "history": [
+        {
+          "key": "matchrim.scan_history.v1",
+          "value": "[{\"id\":\"f81fcbd2-f434-4b97-9278-9952db27fe11\",\"type\":\"label\",\"title\":\"2 referencias confirmadas\",\"subtitle\":\"5 objetos \u00b7 1 dudosos \u00b7 0 sin reconocer\",\"route\":\"/escanear/etiqueta\",\"externalUrl\":null,\"actionLabel\":null,\"payload\":{\"batch\":[{\"name\":\"Muga Reserva\",\"count\":2,\"affinity\":null},{\"name\":\"Pazo de Senorans\",\"count\":1,\"affinity\":null}]},\"createdAt\":1791736844551}]"
+        }
+      ]
+    },
+    {
+      "case": "minimal",
+      "passed": false,
+      "error": "false batch success",
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        },
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Pazo de Senorans",
+            "producer": "Pazo de Senorans",
+            "vintage": 2023,
+            "region": "Rias Baixas",
+            "country": "Espana",
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Pazo de Senorans. Marca visible: Pazo de Senorans",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 2,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4,
+              "madera": 1,
+              "intensidad": 3
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "errors": [],
+      "history": [
+        {
+          "key": "matchrim.scan_history.v1",
+          "value": "[{\"id\":\"d476b24d-513f-433e-bebc-613459ad1a8a\",\"type\":\"label\",\"title\":\"2 referencias confirmadas\",\"subtitle\":\"5 objetos \u00b7 1 dudosos \u00b7 0 sin reconocer\",\"route\":\"/escanear/etiqueta\",\"externalUrl\":null,\"actionLabel\":null,\"payload\":{\"batch\":[{\"name\":\"Muga Reserva\",\"count\":2,\"affinity\":null},{\"name\":\"Pazo de Senorans\",\"count\":1,\"affinity\":null}]},\"createdAt\":1791736846714}]"
+        }
+      ]
+    },
+    {
+      "case": "pending-double",
+      "passed": false,
+      "error": "duplicate confirmation during pending insert",
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        },
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        },
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Pazo de Senorans",
+            "producer": "Pazo de Senorans",
+            "vintage": 2023,
+            "region": "Rias Baixas",
+            "country": "Espana",
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Pazo de Senorans. Marca visible: Pazo de Senorans",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 2,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4,
+              "madera": 1,
+              "intensidad": 3
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "errors": [],
+      "history": [
+        {
+          "key": "matchrim.scan_history.v1",
+          "value": "[{\"id\":\"1f9abd82-9f19-45cd-9556-4361fa405716\",\"type\":\"label\",\"title\":\"2 referencias confirmadas\",\"subtitle\":\"5 objetos \u00b7 1 dudosos \u00b7 0 sin reconocer\",\"route\":\"/escanear/etiqueta\",\"externalUrl\":null,\"actionLabel\":null,\"payload\":{\"batch\":[{\"name\":\"Muga Reserva\",\"count\":2,\"affinity\":null},{\"name\":\"Pazo de Senorans\",\"count\":1,\"affinity\":null}]},\"createdAt\":1791736848788}]"
+        }
+      ]
+    },
+    {
+      "case": "switch-owner",
+      "passed": false,
+      "error": "obsolete batch continued inserting",
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        },
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Pazo de Senorans",
+            "producer": "Pazo de Senorans",
+            "vintage": 2023,
+            "region": "Rias Baixas",
+            "country": "Espana",
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Pazo de Senorans. Marca visible: Pazo de Senorans",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 2,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4,
+              "madera": 1,
+              "intensidad": 3
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/v1/user"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "errors": [],
+      "history": [
+        {
+          "key": "matchrim.scan_history.v1",
+          "value": "[{\"id\":\"8ec250bf-e250-43a8-89f4-920c3f1274b2\",\"type\":\"label\",\"title\":\"2 referencias confirmadas\",\"subtitle\":\"5 objetos \u00b7 1 dudosos \u00b7 0 sin reconocer\",\"route\":\"/escanear/etiqueta\",\"externalUrl\":null,\"actionLabel\":null,\"payload\":{\"batch\":[{\"name\":\"Muga Reserva\",\"count\":2,\"affinity\":null},{\"name\":\"Pazo de Senorans\",\"count\":1,\"affinity\":null}]},\"createdAt\":1791736851428}]"
+        }
+      ]
+    },
+    {
+      "case": "success",
+      "passed": true,
+      "writes": [
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Muga Reserva",
+            "producer": "Bodegas Muga",
+            "vintage": 2020,
+            "region": "Rioja",
+            "country": "Espana",
+            "grape_varieties": [
+              "Tempranillo"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Muga Reserva. Marca visible: Bodegas Muga",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 3,
+              "dulzura": 1,
+              "taninos": 4,
+              "afrutado": 3,
+              "madera": 4,
+              "intensidad": 4
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        },
+        {
+          "body": {
+            "user_id": "00000000-0000-4000-8000-000000000081",
+            "name": "Pazo de Senorans",
+            "producer": "Pazo de Senorans",
+            "vintage": 2023,
+            "region": "Rias Baixas",
+            "country": "Espana",
+            "grape_varieties": [
+              "Albarino"
+            ],
+            "alcohol_content": null,
+            "tasting_notes": "Texto visible: Pazo de Senorans. Marca visible: Pazo de Senorans",
+            "image_url": null,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 2,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4,
+              "madera": 1,
+              "intensidad": 3
+            },
+            "status": "wishlist",
+            "is_favorite": false,
+            "use_for_profile_training": false,
+            "place_details": {
+              "source": "label_scanner",
+              "affinity_reason": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos."
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "errors": [],
+      "history": [
+        {
+          "key": "matchrim.scan_history.v1",
+          "value": "[{\"id\":\"03dfca3a-78fc-4ea7-bc81-5474a7372e38\",\"type\":\"label\",\"title\":\"2 referencias confirmadas\",\"subtitle\":\"5 objetos \u00b7 1 dudosos \u00b7 0 sin reconocer\",\"route\":\"/escanear/etiqueta\",\"externalUrl\":null,\"actionLabel\":null,\"payload\":{\"batch\":[{\"name\":\"Muga Reserva\",\"count\":2,\"affinity\":null},{\"name\":\"Pazo de Senorans\",\"count\":1,\"affinity\":null}]},\"createdAt\":1791736853673}]"
+        }
+      ]
+    }
+  ]
+}
