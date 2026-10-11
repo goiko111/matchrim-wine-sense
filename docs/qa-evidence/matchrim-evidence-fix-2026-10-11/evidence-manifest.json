@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-11",
+  "baseline": "d63e6c9",
+  "scope": "Recorded responses and synthetic catalog regression; not new recognition",
+  "remote_vision_calls": 0,
+  "simulator_build": 78,
+  "testflight_upload": false,
+  "tester_invitation": "blocked_apple_login",
+  "files": [
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/release-tests.log",
+      "sha256": "3110e12c508f8283d21b5eaf727cce86dfb2b1b6c43891926bd3dcc935f7c4a5"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/lint.log",
+      "sha256": "a6d929739f7aa7e783a2d248fc1515c0edf7e6ccb026872b80e0abd63b60f95d"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/web-build.log",
+      "sha256": "31c890743d830a2a6cd071da8b7e54c71a57504d78864fcbbe710ebcd73e2644"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/ios-build.log",
+      "sha256": "c46bcffe9aa37ca8cd401d1f2aeb780bdeed20c2b9517b6d9aae589ccf1d2a5c"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/simulator-launch.png",
+      "sha256": "c41e20b0d71ef4b4aad8c406a6449451a7bd8e7d4b01d7c567e5a88e8e910dd9"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/aliases-catalog-landscape-detail.png",
+      "sha256": "b85c18cc78c2d9176f208f047d55224c047e1e775fbf03233193bf1348c025f2"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/aliases-catalog-landscape.png",
+      "sha256": "e54a69883e6dabcee7f50de3894ef8fcd52e75526d0f62eecd234aefdf80620c"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/aliases-catalog-portrait-detail.png",
+      "sha256": "5a0c14e807ca686a0bc69beef33fbff3bca349ad6bbca4b964f3a44d3c6d06e1"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/aliases-catalog-portrait.png",
+      "sha256": "9a43322645762a2bf1cdd4408e0da0bb3472cc5226b4bd4902e76ebe6cc6fbc0"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/aliases-pending-landscape-detail.png",
+      "sha256": "12d38f75b35a66da88098b289f7449895f9aef2af83f067b5fd5ccc4a222a05a"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/aliases-pending-landscape.png",
+      "sha256": "442642e87ae08400da322d94e872bc4aa5091d47c9b371a4b7a76560482d66f3"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/aliases-pending-portrait-detail.png",
+      "sha256": "a3971e491eebba2b5bce7e2bb2f209d0082022502c759489a5752b434b55c2dd"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/aliases-pending-portrait.png",
+      "sha256": "81b6de09612a8c837f78d7e4f51a152b745c7ff7f0accec57d91c013d25b8575"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/menu-pending-landscape.png",
+      "sha256": "3b128f7592dc68c335fcf7bd28f3f3e6df02d08f9aea67c5037a9f248c1e7a21"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/menu-pending-portrait.png",
+      "sha256": "92390ca9e5a3553da38a83b37709f8a876674555565c972440e0d5c98ace1f7f"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/non-wine-landscape.png",
+      "sha256": "21c2af78d2bbe96a3b07c3591589eacef930c4e8a0f8a873cfe85a0455328951"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/non-wine-portrait.png",
+      "sha256": "76a09a7432fd6ea4e720c1e40213c0e2c4d8a56378a2f4cad07ffd8e83ab646b"
+    },
+    {
+      "path": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-evidence-fix-20261011/final-v3/results.json",
+      "sha256": "36255fef0447e5231807945c3f7813408c8fa54351a814e9810957e9891bc2df"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { hasGroundedMenuName } from '../../supabase/functions/_shared/matchrim-menu-grounding';
+import { isNonWineIdentity } from './wineCategory';
 
 export interface WineMenuIdentityFields {
   nombre?: string | null;
@@ -14,7 +15,7 @@ const genericIdentityPattern = /^(cha|chat|chate|chateau|champagne|cava|vino|win
 
 export const isWineMenuItem = (wine: WineMenuIdentityFields) => {
   const nameAndType = `${wine.nombre || ''} ${wine.tipo || ''}`.trim();
-  if (!nameAndType || nonWinePattern.test(nameAndType)) return false;
+  if (!nameAndType || isNonWineIdentity(wine.nombre, wine.tipo)) return false;
   if (!hasGroundedMenuName(wine.nombre || '', wine.texto_fuente || wine.nombre || '', wine.productor || '')) return false;
   const hasSpecificProducer = Boolean((wine.productor || '').trim().match(/[a-z0-9]{3,}/i));
   const sourceSupportsProducer = hasSpecificProducer

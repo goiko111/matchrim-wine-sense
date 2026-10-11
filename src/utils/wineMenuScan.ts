@@ -13,6 +13,8 @@ import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-sc
 import { normalizeScanPrice, resolveScanCurrency } from './scanMoney';
 
 export interface MenuScanWine {
+  canonicalId?: string | null;
+  sensorySource?: 'catalog' | 'inference';
   nombre: string;
   productor: string | null;
   anada: number | null;

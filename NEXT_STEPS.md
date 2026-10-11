@@ -1,5 +1,14 @@
 # Matchrim next steps
 
+## Latest gate: 2026-10-11, remediation and tester invitation
+
+1. After owner signs into the existing App Store Connect tab, inspect the latest eligible Matchrim build and invite the explicitly requested external tester. Do not grant App Store Connect admin/internal roles or claim an invitation already sent. Uploaded75 is historical evidence, not current readback.
+2. Validate catalog sensory provenance/coverage and learned-profile parity before describing recommendation consistency as solved in production. The client now abstains from numerical affinity on photo-only attributes;23 regressions and8 UI cases pass locally.
+3. Keep Oct8 baseline immutable. Next detector work: readability/cost gate and box/count accuracy, then menu partial/full duplicates and food extraction. Preserve unused28 additional calls; do not reset ledgers.
+4. Repeat real E2E in the approved isolated environment, then physical accessibility/account persistence and release signing. Local simulator78 is unsigned and not TestFlight-ready; signed77 and uploaded75 are untouched.
+
+See [MATCHRIM_SCAN_EVIDENCE_REMEDIATION_2026-10-11.md](docs/MATCHRIM_SCAN_EVIDENCE_REMEDIATION_2026-10-11.md).
+
 ## Latest gate: real77 benchmark complete, quality HOLD
 
 1. Fix non-wine classification, canonical aliases/counting and source-grounded sensory attributes in isolation; add recorded-response regression tests for the confirmed cases before spending more calls.

@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, scan-evidence remediation
+
+- Classification/identity/affinity evidence fixes implemented: recorded non-wine candidates rejected, conservative aliases grouped, distinct cuvees/vintages protected, ambiguous catalog matches refused, unverified scan percentages withheld. Same catalog attributes/profile use one deterministic score.
+- New regressions23/23; full release tests/typecheck/lint/build pass. Mobile recorded-response UI8/8 portrait/landscape, zero overflow/page exceptions. These are not fresh model accuracy or human recommendation results.
+- Unsigned simulator build override78 compiled/installed/launched; home screenshot verified. Existing signed77 and uploaded75 untouched; no web/backend deploy, TestFlight upload or new vision requests.
+- Requested additional tester invitation NOT sent: App Store Connect login expired; owner sign-in requested. Current latest eligible TestFlight build cannot be reverified until login.
+- Report: [MATCHRIM_SCAN_EVIDENCE_REMEDIATION_2026-10-11.md](docs/MATCHRIM_SCAN_EVIDENCE_REMEDIATION_2026-10-11.md). Dense detection, physical counts, menu/food residuals and actual catalog sensory coverage remain open.
+
 ## Latest checkpoint: 2026-10-08, completed real77 benchmark
 
 - Real production recognition through local77 mobile Chrome:40/40 journeys over29 files; no mocks. Additional authorized calls272/300; prior289/300 preserved; total561. No quota block.28 additional calls unused.

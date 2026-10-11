@@ -41,10 +41,9 @@ import {
 import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
-import { applyHostedScanAffinity, type HostedScanAffinity } from '@/utils/hostedScanAffinity';
+import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
 import { clusterOverlayPins } from '@/utils/overlayPins';
 import {
-  calculateLocalMatchrimAffinity,
   readStoredMatchrimProfile,
 } from '@/utils/wineAffinityExplanation';
 import {
@@ -128,16 +127,6 @@ const statusClass = (region: ScanRegion) => {
   if (region.status === 'discarded') return 'border-stone-400 bg-stone-600 text-white';
   return 'border-white bg-stone-950 text-white';
 };
-
-const candidateToAffinityWine = (candidate: WineCandidate) => ({
-  name: candidate.name,
-  producer: candidate.producer,
-  vintage: candidate.vintage,
-  region: candidate.region,
-  country: candidate.country,
-  grape_varieties: candidate.grapes,
-  sensory_attributes: candidate.sensoryAttributes,
-});
 
 const userFacingScanError = (error: unknown) => {
   if (typeof navigator !== 'undefined' && !navigator.onLine) {
@@ -245,30 +234,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       };
     }
 
-    const localAffinity = calculateLocalMatchrimAffinity(
-      readStoredMatchrimProfile(),
-      enriched.sensoryAttributes,
-    );
-    if (localAffinity !== null) {
-      enriched = {
-        ...enriched,
-        affinity: localAffinity,
-        affinityConfidence: Math.round(Math.min(enriched.confidence, enriched.source === 'catalog' ? 0.9 : 0.58) * 100) / 100,
-        affinityReason: enriched.source === 'catalog'
-          ? 'Calculado localmente contra tu perfil con atributos del catálogo.'
-          : 'Calculado localmente contra tu perfil con atributos sensoriales inferidos; confirma la identidad para mejorar la precisión.',
-      };
-    }
-
-    if (!user) return enriched;
-    try {
-      const affinity = await invokeEdgeFunction<HostedScanAffinity>('calculate-wine-affinity', { wine: candidateToAffinityWine(enriched) }, signal);
-      return applyHostedScanAffinity(enriched, affinity);
-    } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') throw error;
-      console.warn('[multi-label] Affinity unavailable:', error);
-      return enriched;
-    }
+    return applyScanWineEvidence(enriched, readStoredMatchrimProfile(), catalogMatch?.wine);
   };
 
   const analyzeRegion = async (
@@ -833,7 +799,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 </div>
                 <p className="mt-1 leading-5">
                   {coverage?.estimatedVisibleObjects
-                    ? `${coverage.detectedObjects} de unas ${coverage.estimatedVisibleObjects} botellas visibles detectadas.`
+                    ? `${coverage.detectedObjects} regiones de unos ${coverage.estimatedVisibleObjects} objetos estimados. No es un inventario confirmado.`
                     : `${regions.length} regiones revisadas. No sabemos cuántas botellas visibles quedaron fuera.`}
                 </p>
                 {coverage?.notes.length ? <p className="mt-1 text-xs opacity-80">{coverage.notes.join(' ')}</p> : null}
@@ -875,7 +841,9 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                     key={group.key}
                     type="button"
                     className="matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"
-                    onClick={() => setSelectedRegionId(group.regionIds[0])}
+                    onClick={() => setSelectedRegionId(regions.find((region) => (
+                      group.regionIds.includes(region.id) && getSelectedCandidate(region)?.id === group.candidate.id
+                    ))?.id ?? group.regionIds[0])}
                     aria-label={`Abrir detalle de ${group.candidate.name}`}
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-950 text-sm font-bold text-white">{index + 1}</span>
@@ -883,7 +851,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                       <span className="block font-semibold text-slate-950">{group.candidate.name}</span>
                       <span className="block text-xs leading-5 text-slate-500">
                         {[group.candidate.producer, group.candidate.region].filter(Boolean).join(' · ') || 'Identidad parcial'}
-                        {group.count > 1 ? ` · ${group.count} botellas` : ''}
+                        {group.count > 1 ? ` · ${group.count} regiones agrupadas` : ''}
                       </span>
                       <span className={`block text-[11px] font-semibold ${identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
                         {identityConfirmed ? 'Nombre leído · revisa la referencia' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
@@ -1038,7 +1006,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                           identityConfidence={selectedCandidate.confidence}
                           affinity={selectedCandidate.affinity}
                           attributes={selectedCandidate.sensoryAttributes}
-                          sensorySource={selectedCandidate.source === 'catalog' ? 'catalog' : 'inference'}
+                          sensorySource={selectedCandidate.sensorySource ?? 'inference'}
                           uncertaintyReasons={selectedCandidate.uncertaintyReasons}
                           hasAlternatives={selectedRegion.candidates.length > 1 || duplicateGroups.length > 1}
                           primaryAction={selectedRegion.status === 'uncertain'
@@ -1061,7 +1029,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                           score={selectedCandidate.affinity}
                           identificationConfidence={selectedCandidate.confidence}
                           attributes={selectedCandidate.sensoryAttributes}
-                          sensorySource={selectedCandidate.source === 'catalog' ? 'catalog' : 'inference'}
+                          sensorySource={selectedCandidate.sensorySource ?? 'inference'}
                         />
                       </>
                     )}

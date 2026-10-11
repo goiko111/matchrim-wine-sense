@@ -1,0 +1,70 @@
+{
+  "scope": "Recorded-response/synthetic catalog UI replay, NOT real recognition or iPhone QA",
+  "remote_calls": 0,
+  "results": [
+    {
+      "scenario": "non-wine",
+      "orientation": "portrait",
+      "passed": true,
+      "intercepted_requests": 7,
+      "errors": [],
+      "screenshot": "non-wine-portrait.png"
+    },
+    {
+      "scenario": "non-wine",
+      "orientation": "landscape",
+      "passed": true,
+      "intercepted_requests": 7,
+      "errors": [],
+      "screenshot": "non-wine-landscape.png"
+    },
+    {
+      "scenario": "aliases-pending",
+      "orientation": "portrait",
+      "passed": true,
+      "intercepted_requests": 12,
+      "errors": [],
+      "screenshot": "aliases-pending-portrait.png"
+    },
+    {
+      "scenario": "aliases-pending",
+      "orientation": "landscape",
+      "passed": true,
+      "intercepted_requests": 12,
+      "errors": [],
+      "screenshot": "aliases-pending-landscape.png"
+    },
+    {
+      "scenario": "aliases-catalog",
+      "orientation": "portrait",
+      "passed": true,
+      "intercepted_requests": 12,
+      "errors": [],
+      "screenshot": "aliases-catalog-portrait.png"
+    },
+    {
+      "scenario": "aliases-catalog",
+      "orientation": "landscape",
+      "passed": true,
+      "intercepted_requests": 12,
+      "errors": [],
+      "screenshot": "aliases-catalog-landscape.png"
+    },
+    {
+      "scenario": "menu-pending",
+      "orientation": "portrait",
+      "passed": true,
+      "intercepted_requests": 5,
+      "errors": [],
+      "screenshot": "menu-pending-portrait.png"
+    },
+    {
+      "scenario": "menu-pending",
+      "orientation": "landscape",
+      "passed": true,
+      "intercepted_requests": 5,
+      "errors": [],
+      "screenshot": "menu-pending-landscape.png"
+    }
+  ]
+}

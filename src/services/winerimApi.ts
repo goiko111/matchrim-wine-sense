@@ -3,8 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { clasificarVino, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
 import { buildMatchrimAffinityCalibration, MATCHRIM_AFFINITY_MODEL } from '@/utils/matchrimAffinityCalibration';
 import { normalizeMatchrimProfileForClassifier } from '@/utils/matchrimPassport';
-import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch } from '@/utils/winerimLabelIdentity';
+import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch, hasAmbiguousCanonicalMatches } from '@/utils/winerimLabelIdentity';
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
+import { normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
+import { isNonWineIdentity } from '@/utils/wineCategory';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
@@ -698,6 +700,8 @@ interface RawSearchWine {
   image_url?: string | null;
   grape_varieties?: string[] | null;
   tipo?: string | null;
+  tasting_attributes?: WinerimWine['tastingAttributes'];
+  tastingAttributes?: WinerimWine['tastingAttributes'];
 }
 
 const scoreCandidate = (input: WinerimLabelLookupInput, candidate: RawSearchWine): number => {
@@ -750,10 +754,12 @@ export const findWinerimWineForLabel = async (
       : [];
 
     if (!candidates.length) return null;
+    if (hasAmbiguousCanonicalMatches(input, candidates.filter((candidate) => candidate.id && !isNonWineIdentity(candidate.name, candidate.tipo)))) return null;
 
     let best: { candidate: RawSearchWine; score: number } | null = null;
     for (const candidate of candidates) {
       if (!candidate?.id || !candidate?.name) continue;
+      if (isNonWineIdentity(candidate.name, candidate.tipo)) continue;
       if (!isSafeCanonicalLabelMatch(input, candidate)) continue;
       const score = scoreCandidate(input, candidate);
       if (!best || score > best.score) {
@@ -763,6 +769,7 @@ export const findWinerimWineForLabel = async (
 
     if (!best || best.score < 0.45) return null;
 
+    const sensory = normalizeWineAttributesForInsight(best.candidate.tastingAttributes ?? best.candidate.tasting_attributes);
     const wine: WinerimWine = {
       id: best.candidate.id!,
       name: best.candidate.name!,
@@ -774,6 +781,10 @@ export const findWinerimWineForLabel = async (
       photo: best.candidate.photo || best.candidate.image_url || undefined,
       type: best.candidate.tipo || undefined,
       grapes: Array.isArray(best.candidate.grape_varieties) ? best.candidate.grape_varieties : undefined,
+      tastingAttributes: sensory ? {
+        power: sensory.potente, acidity: sensory.acidez, sweetness: sensory.dulce,
+        tannin: sensory.tanico, fruity: sensory.afrutado,
+      } : null,
     };
 
     return {

@@ -1,4 +1,5 @@
 import { hasSpecificWineIdentity } from '../../supabase/functions/_shared/matchrim-menu-grounding';
+import { isNonWineIdentity } from './wineCategory';
 
 type LabelIdentity = {
   name?: string | null;
@@ -19,6 +20,7 @@ export const canonicalLabelSearchQuery = (input: LabelIdentity): string =>
   (input.name || '').trim().slice(0, 120);
 
 export const isSafeCanonicalLabelMatch = (input: LabelIdentity, candidate: LabelIdentity): boolean => {
+  if (isNonWineIdentity(input.name, candidate.name)) return false;
   const inputName = words(input.name);
   const candidateName = words(candidate.name);
   if (!inputName.length || !candidateName.length) return false;
@@ -32,4 +34,13 @@ export const isSafeCanonicalLabelMatch = (input: LabelIdentity, candidate: Label
   if (!inputName.every(word => candidateIdentity.has(word)) || !candidateName.every(word => inputIdentity.has(word))) return false;
   if (input.vintage && candidate.vintage && String(input.vintage) !== String(candidate.vintage)) return false;
   return true;
+};
+
+export const hasAmbiguousCanonicalMatches = (input: LabelIdentity, candidates: LabelIdentity[]): boolean => {
+  const identities = new Set(candidates.filter((candidate) => isSafeCanonicalLabelMatch(input, candidate))
+    .map((candidate) => [
+      [...new Set([...words(candidate.name), ...producerWords(candidate.producer)])].sort().join(' '),
+      producerWords(candidate.producer).sort().join(' '), String(candidate.vintage ?? ''),
+    ].join('|')));
+  return identities.size > 1;
 };

@@ -819,7 +819,7 @@ const conflictingProducerCopy = {
 assert.equal(groupDuplicateWines([
   makeRegion('r1', 1, 'Celler Aripta Brut', 82),
   conflictingProducerCopy,
-]).length, 1, 'an exact distinctive product name must win over a conflicting secondary producer read');
+]).length, 2, 'a contradictory producer requires review rather than silent grouping');
 assert.equal(groupDuplicateWines([
   { ...makeRegion('generic-a', 1, 'Reserva Especial', 70), candidates: [{ ...candidates[0], name: 'Reserva Especial', producer: 'Bodega Uno' }] },
   { ...makeRegion('generic-b', 2, 'Reserva Especial', 70), candidates: [{ ...candidates[0], name: 'Reserva Especial', producer: 'Bodega Dos' }] },

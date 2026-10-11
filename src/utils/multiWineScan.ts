@@ -1,5 +1,6 @@
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { hasSpecificWineIdentity } from '../../supabase/functions/_shared/matchrim-menu-grounding';
+import { isNonWineIdentity } from './wineCategory';
 
 export type ScanRegionStatus =
   | 'pending'
@@ -23,6 +24,7 @@ export interface RegionQuality {
 }
 
 export type RegionRecognitionFallbackCode =
+  | 'not_wine'
   | 'insufficient_visible_text'
   | 'ungrounded_identity'
   | 'unknown';
@@ -47,6 +49,8 @@ export interface WineCandidate {
   evidence: string[];
   uncertaintyReasons: string[];
   inferredFields: string[];
+  canonicalId?: string | null;
+  sensorySource?: 'catalog' | 'inference';
   sensoryAttributes?: {
     potencia?: number | null;
     acidez?: number | null;
@@ -485,6 +489,15 @@ const stringArray = (value: unknown) => Array.isArray(value)
 
 export const normalizeRecognitionFallback = (payload: unknown): RegionRecognitionFallback | null => {
   const root = asRecord(payload);
+  const candidates = Array.isArray(root?.candidates) ? root.candidates : root?.wine ? [root.wine] : [];
+  if (candidates.length && candidates.every((value) => {
+    const candidate = asRecord(value);
+    return candidate && isNonWineIdentity(candidate.name ?? candidate.nombre, candidate.type, candidate.tipo, candidate.category, candidate.beverage_type);
+  })) return {
+    code: 'not_wine',
+    message: 'La referencia leida corresponde a otra bebida, no a un vino. No se calcula afinidad.',
+    suggestedActions: ['Revisar el recorte si la lectura es incorrecta', 'Descartar esta region'],
+  };
   const raw = asRecord(root?.fallback);
   if (!raw) return null;
   const rawCode = textValue(raw.code);
@@ -513,7 +526,8 @@ export const normalizeWineCandidates = (payload: unknown, regionId: string): Win
   return rawCandidates.slice(0, 3).flatMap((value, index) => {
     const raw = asRecord(value);
     const name = textValue(raw?.name ?? raw?.nombre);
-    if (!raw || !name || name.toLowerCase() === 'sin nombre') return [];
+    if (!raw || !name || name.toLowerCase() === 'sin nombre'
+      || isNonWineIdentity(name, raw.type, raw.tipo, raw.category, raw.beverage_type)) return [];
     const producer = textValue(raw.producer ?? raw.productor);
     if (!hasSpecificWineIdentity(name, producer || '')) return [];
     const sensory = asRecord(raw.sensory_attributes ?? raw.atributos);
@@ -528,7 +542,7 @@ export const normalizeWineCandidates = (payload: unknown, regionId: string): Win
       grapes: stringArray(raw.grapes ?? raw.uvas),
       alcohol: numericValue(raw.alcohol),
       confidence: normalizeConfidence(raw.confidence ?? raw.confianza, index === 0 ? 0.55 : 0.35),
-      source: raw.source === 'catalog' ? 'catalog' : raw.source === 'manual' ? 'manual' : raw.source === 'inference' ? 'inference' : 'label',
+      source: raw.source === 'inference' ? 'inference' : 'label',
       evidence: stringArray(raw.evidence ?? raw.evidencias),
       uncertaintyReasons: stringArray(raw.uncertainty_reasons ?? raw.motivos_duda),
       inferredFields: stringArray(raw.inferred_fields ?? raw.campos_inferidos),
@@ -541,9 +555,10 @@ export const normalizeWineCandidates = (payload: unknown, regionId: string): Win
         madera: numericValue(sensory.madera ?? sensory.wood),
         intensidad: numericValue(sensory.intensidad ?? sensory.intensity),
       } : null,
-      affinity: numericValue(raw.affinity ?? raw.matchrim_affinity),
-      affinityConfidence: numericValue(raw.affinity_confidence),
-      affinityReason: textValue(raw.affinity_reason ?? raw.reason ?? raw.razon),
+      sensorySource: 'inference',
+      affinity: null,
+      affinityConfidence: null,
+      affinityReason: 'Afinidad pendiente de una ficha sensorial verificada.',
     } satisfies WineCandidate];
   });
 };
@@ -604,9 +619,15 @@ export const areLikelyDuplicateWines = (left: WineCandidate, right: WineCandidat
   const producerTokens = new Set([...leftProducer, ...rightProducer]);
   const extraTokens = [...new Set([...leftName, ...rightName])]
     .filter((token) => !leftName.has(token) || !rightName.has(token));
+  const producerInFullName = (!leftProducer.size || !rightProducer.size) && producerTokens.size > 0
+    && [...producerTokens].every((token) => leftName.has(token) || rightName.has(token));
+  const sameProducerAlias = (sharedProducer.length > 0 || producerInFullName)
+    && sharedName.some((token) => !producerTokens.has(token) && !genericWineNameTokens.has(token))
+    && extraTokens.every((token) => producerTokens.has(token));
+  if (sameProducerAlias) return true;
   return sharedName.length >= 2
     && extraTokens.length > 0
-    && extraTokens.every((token) => /^\d{4}$/.test(token) || producerTokens.has(token) || genericWineNameTokens.has(token));
+    && extraTokens.every((token) => producerTokens.has(token) || ['wine', 'vino', 'product', 'sparkling'].includes(token));
 };
 
 export interface DuplicateWineGroup {
@@ -634,12 +655,10 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
       const distinctiveNameTokens = normalizeIdentity(candidate.name)
         .split(' ')
         .filter((token) => token && !genericWineNameTokens.has(token));
-      const compatibleProducerEvidence = areLikelyDuplicateWines(group.candidate, candidate)
-        || Math.min(group.candidate.confidence, candidate.confidence) < 0.72;
+      const compatibleProducerEvidence = areLikelyDuplicateWines(group.candidate, candidate);
       if (exactWineName && compatibleVintage && distinctiveNameTokens.length >= 2 && compatibleProducerEvidence) return true;
       if (exactWineName && areLikelyDuplicateWines(group.candidate, candidate)) return true;
-      return Math.min(group.candidate.confidence, candidate.confidence) >= 0.6
-        && Math.max(group.candidate.confidence, candidate.confidence) >= 0.72
+      return Math.min(group.candidate.confidence, candidate.confidence) >= 0.5
         && areLikelyDuplicateWines(group.candidate, candidate);
     }) : null;
     if (current) {
@@ -689,6 +708,8 @@ export const correctWineCandidateIdentity = (
   uncertaintyReasons: [],
   inferredFields: [],
   sensoryAttributes: null,
+  canonicalId: null,
+  sensorySource: 'inference',
   affinity: null,
   affinityConfidence: null,
   affinityReason: null,

@@ -1,0 +1,4874 @@
+{
+  "scope": "Recorded production responses from Oct8; replay is not new recognition or human ground truth",
+  "cases": [
+    {
+      "id": "commons-93111644-etiqueta",
+      "trace_sha256": "38a8096a9805e1fa7bfbdc2d228c6ebac2e6bf75a2c8a9256dcb4748d58df065",
+      "calls": [
+        {
+          "function": "detect-wine-regions",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "image_kind": "multi_bottle",
+            "regions": [
+              {
+                "id": "region-1",
+                "object_type": "bottle",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 32,
+                  "height": 95
+                },
+                "confidence": 0.95,
+                "quality": {
+                  "glare": "low",
+                  "occlusion": "low",
+                  "legibility": "good"
+                }
+              },
+              {
+                "id": "region-2",
+                "object_type": "bottle",
+                "box": {
+                  "x": 33,
+                  "y": 0,
+                  "width": 31,
+                  "height": 92
+                },
+                "confidence": 0.94,
+                "quality": {
+                  "glare": "low",
+                  "occlusion": "low",
+                  "legibility": "good"
+                }
+              },
+              {
+                "id": "region-3",
+                "object_type": "bottle",
+                "box": {
+                  "x": 64,
+                  "y": 0,
+                  "width": 36,
+                  "height": 92
+                },
+                "confidence": 0.93,
+                "quality": {
+                  "glare": "low",
+                  "occlusion": "low",
+                  "legibility": "good"
+                }
+              }
+            ],
+            "coverage": {
+              "status": "reported_complete",
+              "detected_objects": 3,
+              "estimated_visible_objects": 3,
+              "confidence": 0.95,
+              "notes": []
+            },
+            "notes": [],
+            "detector_version": "matchrim-region-detector-v4-candidate",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "analyze-wine-region",
+          "region_id": "region-3",
+          "status": 200,
+          "payload": {
+            "visible_text": [
+              "TAMANOHIKARI",
+              "SINCE1673 KYOTO",
+              "玉乃光",
+              "純米吟釀特撰",
+              "B18.10"
+            ],
+            "candidates": [
+              {
+                "name": "Junmai Ginjo Tokusen",
+                "producer": null,
+                "vintage": null,
+                "region": "Kyoto",
+                "country": "Japan",
+                "grapes": [],
+                "alcohol": null,
+                "confidence": 0.55,
+                "source": "label",
+                "evidence": [
+                  "TAMANOHIKARI",
+                  "SINCE1673 KYOTO"
+                ],
+                "uncertainty_reasons": [
+                  "Parte del nombre propuesto no aparece en el texto legible; confirma la referencia.",
+                  "La bodega propuesta no esta respaldada por texto visible."
+                ],
+                "inferred_fields": [
+                  "producer",
+                  "country",
+                  "grapes",
+                  "name"
+                ],
+                "sensory_attributes": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 2,
+                  "taninos": 1,
+                  "afrutado": 4,
+                  "madera": null,
+                  "intensidad": 3
+                }
+              }
+            ],
+            "recognition_status": "uncertain",
+            "fallback": null,
+            "analysis_version": "matchrim-region-analysis-v8-partial-name",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "analyze-wine-region",
+          "region_id": "region-2",
+          "status": 200,
+          "payload": {
+            "visible_text": [
+              "BAILEYS",
+              "The ORIGINAL Irish Cream",
+              "PRODUCT of IRELAND",
+              "LIQUEUR",
+              "17% alc/vol",
+              "70CL",
+              "百利",
+              "百利甜酒"
+            ],
+            "candidates": [
+              {
+                "name": "Baileys The Original Irish Cream",
+                "producer": "Baileys",
+                "vintage": null,
+                "region": null,
+                "country": "Ireland",
+                "grapes": [],
+                "alcohol": null,
+                "confidence": 0.55,
+                "source": "label",
+                "evidence": [
+                  "BAILEYS",
+                  "The ORIGINAL Irish Cream",
+                  "PRODUCT of IRELAND",
+                  "17% alc/vol",
+                  "LIQUEUR",
+                  "70CL"
+                ],
+                "uncertainty_reasons": [],
+                "inferred_fields": [
+                  "producer"
+                ],
+                "sensory_attributes": {
+                  "potencia": 3,
+                  "acidez": 2,
+                  "dulzura": 4,
+                  "taninos": null,
+                  "afrutado": 2,
+                  "madera": null,
+                  "intensidad": 3
+                }
+              }
+            ],
+            "recognition_status": "uncertain",
+            "fallback": null,
+            "analysis_version": "matchrim-region-analysis-v8-partial-name",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "analyze-wine-region",
+          "region_id": "region-1",
+          "status": 200,
+          "payload": {
+            "visible_text": [
+              "ROYAL CASTLE",
+              "TEQUILA",
+              "GOLD",
+              "SAN LUIS",
+              "JALISCO, MEXICO",
+              "HECHO EN MEXICO",
+              "Denominación de Origen",
+              "Norma Oficial Mexicana de Calidad"
+            ],
+            "candidates": [
+              {
+                "name": "ROYAL CASTLE Tequila Gold",
+                "producer": null,
+                "vintage": null,
+                "region": "Jalisco",
+                "country": "Mexico",
+                "grapes": [],
+                "alcohol": null,
+                "confidence": 0.55,
+                "source": "label",
+                "evidence": [
+                  "ROYAL CASTLE",
+                  "TEQUILA",
+                  "GOLD",
+                  "SAN LUIS",
+                  "JALISCO, MEXICO",
+                  "HECHO EN MEXICO"
+                ],
+                "uncertainty_reasons": [
+                  "La bodega propuesta no esta respaldada por texto visible."
+                ],
+                "inferred_fields": [
+                  "country",
+                  "producer"
+                ],
+                "sensory_attributes": {
+                  "potencia": 4,
+                  "acidez": 2,
+                  "dulzura": 2,
+                  "taninos": null,
+                  "afrutado": 3,
+                  "madera": 3,
+                  "intensidad": 4
+                }
+              }
+            ],
+            "recognition_status": "uncertain",
+            "fallback": null,
+            "analysis_version": "matchrim-region-analysis-v8-partial-name",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        }
+      ]
+    },
+    {
+      "id": "commons-159930620-etiqueta",
+      "trace_sha256": "19376b274bead30087a0e63ffe8c9353a5f83d4ad05fd30bab6d7832e98abd08",
+      "calls": [
+        {
+          "function": "detect-wine-regions",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "image_kind": "multi_bottle",
+            "regions": [
+              {
+                "id": "region-1",
+                "object_type": "bottle",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 16,
+                  "height": 97
+                },
+                "confidence": 0.85,
+                "quality": {
+                  "glare": "low",
+                  "occlusion": "high",
+                  "legibility": "limited"
+                }
+              },
+              {
+                "id": "region-2",
+                "object_type": "bottle",
+                "box": {
+                  "x": 12,
+                  "y": 0,
+                  "width": 26,
+                  "height": 98
+                },
+                "confidence": 0.95,
+                "quality": {
+                  "glare": "low",
+                  "occlusion": "medium",
+                  "legibility": "good"
+                }
+              },
+              {
+                "id": "region-3",
+                "object_type": "bottle",
+                "box": {
+                  "x": 38,
+                  "y": 0,
+                  "width": 26,
+                  "height": 98
+                },
+                "confidence": 0.98,
+                "quality": {
+                  "glare": "low",
+                  "occlusion": "low",
+                  "legibility": "good"
+                }
+              },
+              {
+                "id": "region-4",
+                "object_type": "bottle",
+                "box": {
+                  "x": 64,
+                  "y": 0,
+                  "width": 26,
+                  "height": 98
+                },
+                "confidence": 0.98,
+                "quality": {
+                  "glare": "low",
+                  "occlusion": "low",
+                  "legibility": "good"
+                }
+              },
+              {
+                "id": "region-5",
+                "object_type": "bottle",
+                "box": {
+                  "x": 88,
+                  "y": 0,
+                  "width": 12,
+                  "height": 97
+                },
+                "confidence": 0.88,
+                "quality": {
+                  "glare": "low",
+                  "occlusion": "high",
+                  "legibility": "limited"
+                }
+              }
+            ],
+            "coverage": {
+              "status": "reported_complete",
+              "detected_objects": 5,
+              "estimated_visible_objects": 5,
+              "confidence": 0.98,
+              "notes": []
+            },
+            "notes": [],
+            "detector_version": "matchrim-region-detector-v4-candidate",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "analyze-wine-region",
+          "region_id": "region-3",
+          "status": 200,
+          "payload": {
+            "visible_text": [
+              "LA QUINTA",
+              "MAMBA",
+              "RIBERA DEL DUERO",
+              "DENOMINACIÓN DE ORIGEN"
+            ],
+            "candidates": [
+              {
+                "name": "La Quinta Mamba",
+                "producer": null,
+                "vintage": null,
+                "region": "Ribera del Duero",
+                "country": "España",
+                "grapes": [],
+                "alcohol": null,
+                "confidence": 0.85,
+                "source": "label",
+                "evidence": [
+                  "LA QUINTA",
+                  "MAMBA",
+                  "RIBERA DEL DUERO",
+                  "DENOMINACIÓN DE ORIGEN"
+                ],
+                "uncertainty_reasons": [],
+                "inferred_fields": [
+                  "country"
+                ],
+                "sensory_attributes": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 4,
+                  "afrutado": 3,
+                  "madera": null,
+                  "intensidad": 4
+                }
+              }
+            ],
+            "recognition_status": "identified",
+            "fallback": null,
+            "analysis_version": "matchrim-region-analysis-v8-partial-name",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "analyze-wine-region",
+          "region_id": "region-2",
+          "status": 200,
+          "payload": {
+            "visible_text": [
+              "LA QUINTA",
+              "MAMBA",
+              "RIBERA DEL DUERO",
+              "DENOMINACIÓN DE ORIGEN"
+            ],
+            "candidates": [
+              {
+                "name": "MAMBA",
+                "producer": "La Quinta",
+                "vintage": null,
+                "region": "Ribera del Duero",
+                "country": "España",
+                "grapes": [],
+                "alcohol": null,
+                "confidence": 0.95,
+                "source": "label",
+                "evidence": [
+                  "LA QUINTA",
+                  "MAMBA",
+                  "RIBERA DEL DUERO",
+                  "DENOMINACIÓN DE ORIGEN"
+                ],
+                "uncertainty_reasons": [],
+                "inferred_fields": [
+                  "country"
+                ],
+                "sensory_attributes": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 4,
+                  "afrutado": 4,
+                  "madera": 3,
+                  "intensidad": 4
+                }
+              }
+            ],
+            "recognition_status": "identified",
+            "fallback": null,
+            "analysis_version": "matchrim-region-analysis-v8-partial-name",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "analyze-wine-region",
+          "region_id": "region-4",
+          "status": 200,
+          "payload": {
+            "visible_text": [
+              "LA QUINTA",
+              "MAMBA",
+              "RIBERA DEL DUERO",
+              "DENOMINACIÓN DE ORIGEN"
+            ],
+            "candidates": [
+              {
+                "name": "La Quinta Mamba",
+                "producer": null,
+                "vintage": null,
+                "region": "Ribera del Duero",
+                "country": "España",
+                "grapes": [],
+                "alcohol": null,
+                "confidence": 0.85,
+                "source": "label",
+                "evidence": [
+                  "LA QUINTA",
+                  "MAMBA",
+                  "RIBERA DEL DUERO",
+                  "DENOMINACIÓN DE ORIGEN"
+                ],
+                "uncertainty_reasons": [],
+                "inferred_fields": [
+                  "country"
+                ],
+                "sensory_attributes": {
+                  "potencia": null,
+                  "acidez": null,
+                  "dulzura": null,
+                  "taninos": null,
+                  "afrutado": null,
+                  "madera": null,
+                  "intensidad": null
+                }
+              }
+            ],
+            "recognition_status": "identified",
+            "fallback": null,
+            "analysis_version": "matchrim-region-analysis-v8-partial-name",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "analyze-wine-region",
+          "region_id": "region-5",
+          "status": 200,
+          "payload": {
+            "visible_text": [
+              "De esta",
+              "producir",
+              "mejores",
+              "El P",
+              "Isabel",
+              "REN - 8352 - BU"
+            ],
+            "candidates": [],
+            "recognition_status": "unreadable",
+            "fallback": {
+              "code": "ungrounded_identity",
+              "message": "El texto visible no respalda con seguridad ninguna identidad.",
+              "suggested_actions": [
+                "Acerca la camara a una sola etiqueta.",
+                "Evita reflejos y enfoca el nombre o la bodega.",
+                "Introduce la identidad manualmente si la conoces."
+              ]
+            },
+            "analysis_version": "matchrim-region-analysis-v8-partial-name",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "analyze-wine-region",
+          "region_id": "region-1",
+          "status": 200,
+          "payload": {
+            "visible_text": [
+              "LA QuiNT",
+              "MAM",
+              "RIBER",
+              "oro",
+              "ESPAÑA",
+              "ILLO"
+            ],
+            "candidates": [
+              {
+                "name": "Mamba",
+                "producer": null,
+                "vintage": null,
+                "region": "Ribera del Duero",
+                "country": "España",
+                "grapes": [],
+                "alcohol": null,
+                "confidence": 0.55,
+                "source": "label",
+                "evidence": [
+                  "LA QuiNT",
+                  "MAM",
+                  "RIBER",
+                  "ESPAÑA"
+                ],
+                "uncertainty_reasons": [
+                  "Parte del nombre 'Mamba' está oculta o borrosa ('ba').",
+                  "La palabra 'RIBER' está incompleta, 'del Duero' se infiere de la región conocida para este vino.",
+                  "Parte del nombre propuesto no aparece en el texto legible; confirma la referencia.",
+                  "La bodega propuesta no esta respaldada por texto visible."
+                ],
+                "inferred_fields": [
+                  "producer",
+                  "region",
+                  "country",
+                  "name"
+                ],
+                "sensory_attributes": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4,
+                  "madera": 2,
+                  "intensidad": 3
+                }
+              }
+            ],
+            "recognition_status": "uncertain",
+            "fallback": null,
+            "analysis_version": "matchrim-region-analysis-v8-partial-name",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        }
+      ]
+    },
+    {
+      "id": "img_7547-2-carta-vinos",
+      "trace_sha256": "1663ee58ffdbecbc6b058b11c563516212884d933bfa904f7d4916d54518fc44",
+      "calls": [
+        {
+          "function": "scan-wine-menu",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "vinos": [
+              {
+                "nombre": "Lugana Allegrini",
+                "productor": "Allegrini",
+                "anada": null,
+                "region": "Lugana",
+                "pais": "Italia",
+                "precio": 12,
+                "moneda": null,
+                "precios": {
+                  "copa": 12,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium White / Blanco",
+                "confidence": 0.55,
+                "texto_fuente": "Lugana Allegrini C/copa 12",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Turbiana"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 42.6,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Buen equilibrio de acidez y afrutado, con potencia media, aunque el perfil busca más potencia.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Greco di tufo Terredora di Paolo",
+                "productor": "Terredora di Paolo",
+                "anada": null,
+                "region": "Greco di Tufo",
+                "pais": "Italia",
+                "precio": 12,
+                "moneda": null,
+                "precios": {
+                  "copa": 12,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium White / Blanco",
+                "confidence": 0.55,
+                "texto_fuente": "Greco di tufo Terredora di Paolo 12",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo",
+                  "uvas"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Greco"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 45.4,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Buen equilibrio de acidez y afrutado, con potencia media, aunque el perfil busca más potencia.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Quater vitis Firriato",
+                "productor": "Firriato",
+                "anada": null,
+                "region": "Sicilia",
+                "pais": "Italia",
+                "precio": 13,
+                "moneda": null,
+                "precios": {
+                  "copa": 13,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium White / Blanco",
+                "confidence": 0.55,
+                "texto_fuente": "Quater vitis Firriato 13",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "blanco",
+                "uvas": null,
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 48.2,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Buen equilibrio de acidez y afrutado, con potencia media, aunque el perfil busca más potencia.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Poully fume blanc Reverdy y fils",
+                "productor": "Reverdy y fils",
+                "anada": null,
+                "region": "Pouilly-Fumé",
+                "pais": "Francia",
+                "precio": 13,
+                "moneda": null,
+                "precios": {
+                  "copa": 13,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium White / Blanco",
+                "confidence": 0.55,
+                "texto_fuente": "Poully fume blanc Reverdy y fils 13",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo",
+                  "uvas"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Sauvignon Blanc"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 51,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 69,
+                "razon": "Muy buena acidez y afrutado, aunque el perfil busca más potencia, y los taninos son bajos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Amarone",
+                "productor": null,
+                "anada": null,
+                "region": "Veneto",
+                "pais": "Italia",
+                "precio": 18,
+                "moneda": null,
+                "precios": {
+                  "copa": 18,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.62,
+                "texto_fuente": "Amarone 18",
+                "dudas": [
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "tipo",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Corvina",
+                  "Rondinella",
+                  "Molinara"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 62.4,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 5,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 4,
+                  "afrutado": 5
+                },
+                "compatibilidad": 73,
+                "razon": "Excelente potencia, taninos y afrutado, la acidez es ligeramente más baja que el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Barbaresco Marchesi di Barolo",
+                "productor": "Marchesi di Barolo",
+                "anada": null,
+                "region": "Barbaresco",
+                "pais": "Italia",
+                "precio": 25,
+                "moneda": null,
+                "precios": {
+                  "copa": 25,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.88,
+                "texto_fuente": "Barbaresco Marchesi di Barolo 25",
+                "dudas": [],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "tipo",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Nebbiolo"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 65.2,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 5,
+                  "afrutado": 4
+                },
+                "compatibilidad": 73,
+                "razon": "Muy buena potencia, acidez, afrutado y taninos altos, muy cercano al perfil deseado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Barolo Marchesi di Barolo",
+                "productor": "Marchesi di Barolo",
+                "anada": null,
+                "region": "Barolo",
+                "pais": "Italia",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": 35,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.88,
+                "texto_fuente": "Barolo Marchesi di Barolo 35",
+                "dudas": [],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "tipo",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Nebbiolo"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 68,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 5,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 5,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Coincide perfectamente en potencia, acidez, afrutado y taninos. Ideal para el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Dolcetto d'alba Elio Grasso",
+                "productor": "Elio Grasso",
+                "anada": null,
+                "region": "Dolcetto d'Alba",
+                "pais": "Italia",
+                "precio": 13,
+                "moneda": null,
+                "precios": {
+                  "copa": 13,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.55,
+                "texto_fuente": "Dolcetto d'alba Elio Grasso 13",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Dolcetto"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 70.8,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Buena acidez y afrutado, taninos medios. La potencia es un poco menor a lo buscado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Bricco dell'uccellone Barbera",
+                "productor": null,
+                "anada": null,
+                "region": "Piamonte",
+                "pais": "Italia",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": 35,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.62,
+                "texto_fuente": "Bricco dell'uccellone Barbera 35",
+                "dudas": [
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "tipo",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Barbera"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 73.6,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Muy buena acidez, potencia y afrutado. Taninos medios, lo cual es adecuado para el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Nebbiolo Nino Negri",
+                "productor": "Nino Negri",
+                "anada": null,
+                "region": "Valtellina",
+                "pais": "Italia",
+                "precio": 15,
+                "moneda": null,
+                "precios": {
+                  "copa": 15,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.55,
+                "texto_fuente": "Nebbiolo Nino Negri 15",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Nebbiolo"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 20.3,
+                  "y": 76.4,
+                  "width": 59.4,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 5,
+                  "afrutado": 4
+                },
+                "compatibilidad": 73,
+                "razon": "Muy buena potencia, acidez y afrutado, con taninos altos. Muy cercano al perfil deseado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Laurent Perrier La Cuvee",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perrier La Cuvee Zona/zone: Champagne Uva/grapes: Chardonnay, Pinot Crianza/aging:",
+                "dudas": [
+                  "precio"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "tipo",
+                  "uvas",
+                  "descripcion"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Chardonnay",
+                  "Pinot Noir",
+                  "Pinot Meunier"
+                ],
+                "descripcion": "4 años sobre lías.",
+                "posicion": {
+                  "x": 80.9,
+                  "y": 14.8,
+                  "width": 17.5,
+                  "height": 7.3,
+                  "confidence": 0.7
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 67,
+                "razon": "Alta acidez y baja dulzura coinciden, pero busca más potencia y taninos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Laurent Perriere Ultra",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr",
+                "dudas": [
+                  "precio"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "tipo",
+                  "uvas",
+                  "descripcion"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Pinot Noir",
+                  "Chardonnay"
+                ],
+                "descripcion": "6 años sobre lías.",
+                "posicion": {
+                  "x": 80.9,
+                  "y": 22.8,
+                  "width": 17.5,
+                  "height": 7.3,
+                  "confidence": 0.7
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 67,
+                "razon": "Alta acidez y baja dulzura coinciden, pero busca más potencia y taninos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Laurent Perrier rose",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perrier rose Zona/zone: Champagne Uva/grapes: Pinot noir Crianza/aging: 5 años",
+                "dudas": [
+                  "precio"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "tipo",
+                  "uvas",
+                  "descripcion"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Pinot Noir"
+                ],
+                "descripcion": "5 años sobre lías.",
+                "posicion": {
+                  "x": 80.9,
+                  "y": 30.6,
+                  "width": 17.5,
+                  "height": 7.3,
+                  "confidence": 0.7
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 69,
+                "razon": "Alta acidez y afrutado, baja dulzura coinciden, pero busca más potencia y taninos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Gaudensius blanc",
+                "productor": null,
+                "anada": null,
+                "region": "Sicily",
+                "pais": "Italia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.62,
+                "texto_fuente": "Gaudensius blanc Zona/zone: Sicily/Ita Uva/grapes: Nerello Crianza/aging: 3 ar",
+                "dudas": [
+                  "precio",
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "tipo",
+                  "uvas",
+                  "descripcion"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Nerello Mascalese"
+                ],
+                "descripcion": "3 años sobre lías.",
+                "posicion": {
+                  "x": 80.9,
+                  "y": 39.4,
+                  "width": 17.5,
+                  "height": 7.3,
+                  "confidence": 0.7
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Buena acidez y afrutado. Busca más potencia y taninos, pero el perfil se acerca.",
+                "affinity_calibrated": true
+              }
+            ],
+            "has_profile": true,
+            "profile_source": "client",
+            "moneda": null,
+            "layout": "columns",
+            "coverage": {
+              "status": "partial",
+              "extracted_wines": 14,
+              "estimated_visible_wines": 17,
+              "notes": [
+                "La moneda '€' se infiere de la palabra 'copa' y el contexto europeo, pero no está impresa de manera explícita en las filas del precio, por lo que se deja como null.",
+                "Los precios en la columna derecha de 'Espumosos/Cha' no son visibles.",
+                "La fila 'Ask for the wine of the month' no es un vino específico y se omite.",
+                "Algunos productores se infieren del nombre del vino cuando no están explícitamente separados.",
+                "Se ha omitido parte del texto de la columna derecha para no sobrepasar el límite de 30 vinos y priorizar los vinos con precios legibles."
+              ]
+            },
+            "scan_version": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "scan-wine-menu",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "vinos": [
+              {
+                "nombre": "Amarone",
+                "productor": null,
+                "anada": null,
+                "region": "Veneto",
+                "pais": "Italia",
+                "precio": 18,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 18,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.74,
+                "texto_fuente": "Amarone 18",
+                "dudas": [],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Corvina",
+                  "Rondinella",
+                  "Molinara"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 19.1,
+                  "y": 28.5,
+                  "width": 64.9,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 5,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 4,
+                  "afrutado": 4
+                },
+                "compatibilidad": 76,
+                "razon": "Vino potente, afrutado y tánico, acorde con perfil de usuario.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Barbaresco Marchesi di Barolo",
+                "productor": "Marchesi di Barolo",
+                "anada": null,
+                "region": "Piamonte",
+                "pais": "Italia",
+                "precio": 25,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 25,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.88,
+                "texto_fuente": "Barbaresco Marchesi di Barolo 25",
+                "dudas": [],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Nebbiolo"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 19.1,
+                  "y": 32.5,
+                  "width": 64.9,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 5,
+                  "afrutado": 3
+                },
+                "compatibilidad": 71,
+                "razon": "Alta acidez y taninos, coincide con potencia deseada y bajo dulzor.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Barolo Marchesi di Barolo",
+                "productor": "Marchesi di Barolo",
+                "anada": null,
+                "region": "Piamonte",
+                "pais": "Italia",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.88,
+                "texto_fuente": "Barolo Marchesi di Barolo 35",
+                "dudas": [],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Nebbiolo"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 19.1,
+                  "y": 36.4,
+                  "width": 64.9,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 5,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 5,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Potencia, acidez y taninos altos, bajo dulzor, excelente compatibilidad con el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Dolcetto d'alba Elio Grasso",
+                "productor": "Elio Grasso",
+                "anada": null,
+                "region": "Piamonte",
+                "pais": "Italia",
+                "precio": 13,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 13,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.88,
+                "texto_fuente": "Dolcetto d'alba Elio Grasso 13",
+                "dudas": [],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Dolcetto"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 19.1,
+                  "y": 40.4,
+                  "width": 64.9,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Vino afrutado, taninos moderados y baja dulzura, buena acidez, ligeramente menos potente.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Bricco dell'uccellone Barbera",
+                "productor": null,
+                "anada": null,
+                "region": "Piamonte",
+                "pais": "Italia",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.74,
+                "texto_fuente": "Bricco dell'uccellone Barbera 35",
+                "dudas": [],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Barbera"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 19.1,
+                  "y": 44.4,
+                  "width": 64.9,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Alta acidez y buena potencia/afrutado. Taninos y dulzor bajos, muy compatible.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Nebbiolo Nino Negri",
+                "productor": "Nino Negri",
+                "anada": null,
+                "region": "Lombardía",
+                "pais": "Italia",
+                "precio": 15,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 15,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "Premium Red / Tinto",
+                "confidence": 0.88,
+                "texto_fuente": "Nebbiolo Nino Negri 15",
+                "dudas": [],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "uvas"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Nebbiolo"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 19.1,
+                  "y": 48.4,
+                  "width": 64.9,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 4,
+                  "afrutado": 3
+                },
+                "compatibilidad": 79,
+                "razon": "Buena potencia, alta acidez y taninos, afrutado moderado, y bajo dulzor.",
+                "affinity_calibrated": true
+              }
+            ],
+            "has_profile": true,
+            "profile_source": "client",
+            "moneda": null,
+            "layout": "rows",
+            "coverage": {
+              "status": "reported_complete",
+              "extracted_wines": 6,
+              "estimated_visible_wines": 6,
+              "notes": [
+                "No se asume moneda, ya que no se especifica explícitamente y el símbolo no está presente."
+              ]
+            },
+            "scan_version": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "scan-wine-menu",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "vinos": [
+              {
+                "nombre": "Laurent Perrier La Cuvee",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "Espumosos/Champagne",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perrier La Cuvee",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Chardonnay",
+                  "Pinot Noir"
+                ],
+                "descripcion": "Zona: Champagne. Uvas: Chardonnay, Pinot. Crianza: 4 años sobre lías.",
+                "posicion": {
+                  "x": 52.88,
+                  "y": 14.86,
+                  "width": 43.12,
+                  "height": 5.48,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Alta acidez y afrutado, baja dulzura y taninos, equilibrio con potencia moderada.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Laurent Perriere Ultra",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "Espumosos/Champagne",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perriere Ultra",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Pinot Noir",
+                  "Chardonnay"
+                ],
+                "descripcion": "Zona: Champagne. Uvas: Pinot noir, Chardonnay. Crianza: 6 años sobre lías.",
+                "posicion": {
+                  "x": 52.92,
+                  "y": 20.91,
+                  "width": 43.12,
+                  "height": 5.46,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Alta acidez y afrutado, baja dulzura y taninos, equilibrio con potencia moderada.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Laurent Perrier rose",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "Espumosos/Champagne",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perrier ros",
+                "dudas": [
+                  "nombre"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "nombre"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Pinot Noir"
+                ],
+                "descripcion": "Zona: Champagne. Uvas: Pinot noir. Crianza: 5 años sobre lías.",
+                "posicion": {
+                  "x": 52.88,
+                  "y": 27.02,
+                  "width": 43.08,
+                  "height": 5.48,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Alta acidez y afrutado, baja dulzura y taninos, equilibrio con potencia moderada.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Gaudensius blanco",
+                "productor": null,
+                "anada": null,
+                "region": "Sicilia",
+                "pais": "Italia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "Espumosos/Champagne",
+                "confidence": 0.55,
+                "texto_fuente": "Gaudensius blan",
+                "dudas": [
+                  "nombre"
+                ],
+                "campos_inferidos": [
+                  "nombre"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Nerello Mascalese"
+                ],
+                "descripcion": "Zona: Sicilia. Uvas: Nerello. Crianza: 3 años.",
+                "posicion": {
+                  "x": 52.9,
+                  "y": 33.12,
+                  "width": 43.1,
+                  "height": 5.44,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Probablemente buena acidez, baja dulzura/taninos, podría ser afrutado y potencia moderada.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Lugana Allegrini",
+                "productor": "Allegrini",
+                "anada": null,
+                "region": null,
+                "pais": null,
+                "precio": 12,
+                "moneda": null,
+                "precios": {
+                  "copa": 12,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium White / Blanco",
+                "confidence": 0.55,
+                "texto_fuente": "Lugana Allegrini 12",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Turbiana"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 10.36,
+                  "y": 62.77,
+                  "width": 38.31,
+                  "height": 2.21,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Generalmente vinos blancos frescos, buena acidez, afrutado moderado, baja potencia y taninos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Greco di tufo Terredora di Paolo",
+                "productor": "Terredora di Paolo",
+                "anada": null,
+                "region": "Campania",
+                "pais": "Italia",
+                "precio": 12,
+                "moneda": null,
+                "precios": {
+                  "copa": 12,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium White / Blanco",
+                "confidence": 0.55,
+                "texto_fuente": "Greco di tufo Terredora di Paolo 12",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "uvas"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Greco"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 10.38,
+                  "y": 66.42,
+                  "width": 38.31,
+                  "height": 2.22,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Conocido por acidez vibrante, buena mineralidad, afrutado sutil, baja dulzura y taninos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Quater vitis Firriato",
+                "productor": "Firriato",
+                "anada": null,
+                "region": "Sicilia",
+                "pais": "Italia",
+                "precio": 13,
+                "moneda": null,
+                "precios": {
+                  "copa": 13,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium White / Blanco",
+                "confidence": 0.55,
+                "texto_fuente": "Quater vitis Firriato 13",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": null,
+                "descripcion": null,
+                "posicion": {
+                  "x": 10.4,
+                  "y": 70.1,
+                  "width": 38.33,
+                  "height": 2.22,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 67,
+                "razon": "Como blanco siciliano, probablemente buena acidez, afrutado, baja dulzura y taninos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Pouilly fume blanc Reverdy y fils",
+                "productor": "Reverdy y fils",
+                "anada": null,
+                "region": "Loira",
+                "pais": "Francia",
+                "precio": 13,
+                "moneda": null,
+                "precios": {
+                  "copa": 13,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Premium White / Blanco",
+                "confidence": 0.55,
+                "texto_fuente": "Poully fume blanc Reverdy y fils 13",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "uvas"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Sauvignon Blanc"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 10.43,
+                  "y": 73.78,
+                  "width": 38.33,
+                  "height": 2.22,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Típico de Sauvignon Blanc de Loira: alta acidez, afrutado cítrico, baja dulzura y taninos.",
+                "affinity_calibrated": true
+              }
+            ],
+            "has_profile": true,
+            "profile_source": "client",
+            "moneda": null,
+            "layout": "columns",
+            "coverage": {
+              "status": "partial",
+              "extracted_wines": 8,
+              "estimated_visible_wines": 10,
+              "notes": [
+                "The 'Ask for the wine of the month' is not a specific wine, so it's excluded.",
+                "The 'Premium Red / Tinto' section is visible, but no wines are fully visible in the image.",
+                "The price currency for the 'Premium White / Blanco' section is not explicitly stated (e.g., €, $), so it's left as null.",
+                "Only the first few wines from the right-hand column (Espumosos/Champagne) are extracted. Full details including prices are not visible for most of these."
+              ]
+            },
+            "scan_version": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "scan-wine-menu",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "vinos": [
+              {
+                "nombre": "Laurent Perrier La Cuvee",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 12,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perrier La Cuvee\nZona/zone: Champagne\nUva/grapes: Chardonnay, Pinot\nCrianza/aging: 4 anos sobre lis",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "uvas",
+                  "descripcion",
+                  "servicio",
+                  "seccion"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Chardonnay",
+                  "Pinot Noir",
+                  "Pinot Meunier"
+                ],
+                "descripcion": "4 años de crianza sobre lías, mezcla de Chardonnay y Pinot.",
+                "posicion": {
+                  "x": 48,
+                  "y": 14.8,
+                  "width": 46,
+                  "height": 5,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 73,
+                "razon": "Alta acidez y afrutado, potencia media, taninos bajos y dulzura baja.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Laurent Perriere Ultra Brut",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 12,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perriere Ultra\nZona/zone: Champagne\nUva/grapes: Pinot noir, cha\nCrianza/aging: 6 anos sobr",
+                "dudas": [
+                  "nombre completo",
+                  "uvas completas"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "uvas",
+                  "descripcion",
+                  "servicio",
+                  "seccion"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Pinot Noir",
+                  "Chardonnay"
+                ],
+                "descripcion": "6 años de crianza sobre lías, Pinot Noir y Chardonnay. Estilo Ultra Brut.",
+                "posicion": {
+                  "x": 48,
+                  "y": 20.9,
+                  "width": 46,
+                  "height": 5,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Muy alta acidez, baja dulzura, potencia media y afrutado, taninos bajos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Laurent Perrier ros",
+                "productor": "Laurent Perrier",
+                "anada": null,
+                "region": "Champagne",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 13,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.55,
+                "texto_fuente": "Laurent Perrier ros\nZona/zone: Champagne\nUva/grapes: Pinot noir\nCrianza/aging: 5 anos",
+                "dudas": [
+                  "nombre completo"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "uvas",
+                  "descripcion",
+                  "servicio",
+                  "seccion"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Pinot Noir"
+                ],
+                "descripcion": "Champagne Rosé de Pinot Noir, 5 años de crianza.",
+                "posicion": {
+                  "x": 48,
+                  "y": 26.9,
+                  "width": 46,
+                  "height": 5,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 73,
+                "razon": "Acidez y afrutado altos, baja dulzura y taninos, potencia media.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Gaudensius blan",
+                "productor": null,
+                "anada": null,
+                "region": "Sicily",
+                "pais": "Italia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 13,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.62,
+                "texto_fuente": "Gaudensius blan\nZona/zone: Sicily/Ita\nUva/grapes: Nerello\nCrianza/aging: 3 ar",
+                "dudas": [
+                  "nombre completo",
+                  "productor",
+                  "descripcion"
+                ],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "uvas",
+                  "descripcion",
+                  "servicio",
+                  "seccion",
+                  "tipo"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Nerello Mascalese"
+                ],
+                "descripcion": "Espumoso blanco de Sicilia, uva Nerello, 3 años de crianza.",
+                "posicion": {
+                  "x": 48,
+                  "y": 33.1,
+                  "width": 46,
+                  "height": 5,
+                  "confidence": 0.8
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Acidez alta, dulzura baja, potencia y afrutado medios, taninos bajos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Costa di ros",
+                "productor": null,
+                "anada": null,
+                "region": "Etna",
+                "pais": "Italia",
+                "precio": 18,
+                "moneda": null,
+                "precios": {
+                  "copa": 18,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.62,
+                "texto_fuente": "Costa di ros\nZona/zone: E\nUva/grapes:\nCrianza/agin",
+                "dudas": [
+                  "nombre completo",
+                  "productor",
+                  "uvas",
+                  "descripcion"
+                ],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "servicio",
+                  "seccion",
+                  "tipo"
+                ],
+                "tipo": "espumoso",
+                "uvas": [],
+                "descripcion": "Espumoso rosado de la región del Etna, Italia.",
+                "posicion": {
+                  "x": 48,
+                  "y": 42.6,
+                  "width": 46,
+                  "height": 5,
+                  "confidence": 0.8
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Acidez y afrutado altos, baja dulzura y taninos, potencia media.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "La Rosa",
+                "productor": null,
+                "anada": null,
+                "region": "Ribera del Duero",
+                "pais": "España",
+                "precio": 25,
+                "moneda": null,
+                "precios": {
+                  "copa": 25,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": "copa",
+                "seccion": "Espumosos/Cha",
+                "confidence": 0.62,
+                "texto_fuente": "La Rosa\nZona/zon\nUva/gra",
+                "dudas": [
+                  "region completa",
+                  "uvas",
+                  "productor",
+                  "descripcion"
+                ],
+                "campos_inferidos": [
+                  "pais",
+                  "region",
+                  "servicio",
+                  "seccion",
+                  "tipo"
+                ],
+                "tipo": "espumoso",
+                "uvas": [],
+                "descripcion": "Espumoso de la Ribera del Duero, España.",
+                "posicion": {
+                  "x": 48,
+                  "y": 50.8,
+                  "width": 46,
+                  "height": 4,
+                  "confidence": 0.7
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 67,
+                "razon": "Acidez, afrutado y potencia medios, baja dulzura y taninos.",
+                "affinity_calibrated": true
+              }
+            ],
+            "has_profile": true,
+            "profile_source": "client",
+            "moneda": null,
+            "layout": "columns",
+            "coverage": {
+              "status": "partial",
+              "extracted_wines": 6,
+              "estimated_visible_wines": 10,
+              "notes": [
+                "Many wine details (producer, full name, vintage, grapes, full region) are missing or unclear due to OCR quality and image blur. Prices are visible but currency symbol is absent. Assuming 'C/copa' means price per glass.",
+                "The layout is clearly two columns, with prices on the left column referring to the wines on the right column (which is typical for a wine list organized by categories and with prices on the side).",
+                "The section 'Espumosos/Cha' is inferred for all extracted wines as they are under this main heading and sub-headings like 'France', 'Italy', 'Spain' are for origin, not distinct sections."
+              ]
+            },
+            "scan_version": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        }
+      ]
+    },
+    {
+      "id": "img_7553-2-carta-vinos",
+      "trace_sha256": "62fb51fa742bd10aa6f42a4f888fbd994b4714d4d63c01ab53f90cdb28717b4a",
+      "calls": [
+        {
+          "function": "scan-wine-menu",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "vinos": [
+              {
+                "nombre": "Finca la Olma ecológico",
+                "productor": null,
+                "anada": null,
+                "region": "Rueda",
+                "pais": "España",
+                "precio": 3,
+                "moneda": null,
+                "precios": {
+                  "copa": 3,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Finca la Olma ecológico, verdejo, Rueda 3,00 17,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Verdejo"
+                ],
+                "descripcion": "Vino blanco ecológico de Rueda con uva Verdejo.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 12.3,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Ecológico de Verdejo en Rueda, probable buena acidez y afrutado, baja dulzura y taninos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Can Feixes",
+                "productor": null,
+                "anada": null,
+                "region": "Penedés",
+                "pais": "España",
+                "precio": 4,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Can Feixes, macabeu, pereliada, Penedés 4,00 23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Macabeo",
+                  "Parellada"
+                ],
+                "descripcion": "Vino blanco del Penedés con Macabeo y Parellada.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 14.5,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "De Penedés, uvas Macabeo y Parellada, sugiere acidez vibrante y buen afrutado, baja dulzura.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Forlong ecológico",
+                "productor": null,
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 4.5,
+                "moneda": null,
+                "precios": {
+                  "copa": 4.5,
+                  "botella": 26,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Forlong ecológico, palomino fino, Jerez 4,50 26,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": "Palomino Fino ecológico de Jerez. Un vino generoso.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 16.7,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 2
+                },
+                "compatibilidad": 64,
+                "razon": "Generoso de Palomino Fino (Jerez), potente, seco, acidez media, bajo afrutado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Dereszła Tokaji Dry",
+                "productor": null,
+                "anada": null,
+                "region": "Tokaj",
+                "pais": "Hungría",
+                "precio": 4,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Dereszła Tokaji Dry, tokaji, Hungría 4,00 23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Furmint",
+                  "Hárslevelű"
+                ],
+                "descripcion": "Tokaji Dry de Hungría, probablemente Furmint/Hárslevelű, seco y mineral.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 18.9,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Tokaji Dry, muy buena acidez, potencia y sequedad, bajo afrutado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Nat Cool Mosel",
+                "productor": null,
+                "anada": null,
+                "region": "Mosel",
+                "pais": "Alemania",
+                "precio": 4.5,
+                "moneda": null,
+                "precios": {
+                  "copa": 4.5,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Nat Cool Mosel, riesling, Mosel 4,50 35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Riesling"
+                ],
+                "descripcion": "Riesling de Mosel, con alta acidez, aromas florales y minerales.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 21,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 69,
+                "razon": "Riesling de Mosel, muy alta acidez y afrutado, seco, perfil ideal para el usuario.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Mein Castes Brancas",
+                "productor": null,
+                "anada": null,
+                "region": "Ribeiro",
+                "pais": "España",
+                "precio": 6,
+                "moneda": null,
+                "precios": {
+                  "copa": 6,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Mein Castes Brancas, Godello,Albarino, Ribeiro 6,00 35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Godello",
+                  "Albariño"
+                ],
+                "descripcion": "Vino blanco de Ribeiro con Godello y Albariño, fresco y aromático.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 23.2,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Godello/Albariño de Ribeiro, buena acidez, afrutado y sequedad, muy compatible.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Huerto de la Condesa",
+                "productor": null,
+                "anada": null,
+                "region": "Málaga",
+                "pais": "España",
+                "precio": 6,
+                "moneda": null,
+                "precios": {
+                  "copa": 6,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Huerto de la Condesa, viogner, moscatel, Málaga 6,00 35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Viognier",
+                  "Moscatel"
+                ],
+                "descripcion": "Vino blanco de Málaga con Viognier y Moscatel, aromático y floral.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 25.4,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 2,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 67,
+                "razon": "Viognier/Moscatel puede tener un toque de dulzura y menor acidez, pero es afrutado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Percheron",
+                "productor": null,
+                "anada": null,
+                "region": "South Africa",
+                "pais": "Sudáfrica",
+                "precio": 4.5,
+                "moneda": null,
+                "precios": {
+                  "copa": 4.5,
+                  "botella": 29,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Percheron chenin blanc, viogner, South Africa 4,50 29,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Chenin Blanc",
+                  "Viognier"
+                ],
+                "descripcion": "Mezcla de Chenin Blanc y Viognier de Sudáfrica, probablemente fresco y aromático.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 27.6,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Chenin Blanc y Viognier de Sudáfrica, probable buena acidez y afrutado, seco.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Mayela",
+                "productor": null,
+                "anada": 2023,
+                "region": "Rioja",
+                "pais": "España",
+                "precio": 3,
+                "moneda": null,
+                "precios": {
+                  "copa": 3,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Mayela 2023, tempranillo, Rioja 3,00 17,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Tempranillo"
+                ],
+                "descripcion": "Tempranillo joven de Rioja, fresco y afrutado, probablemente con baja potencia y taninos suaves.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 32.2,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 4
+                },
+                "compatibilidad": 76,
+                "razon": "Tempranillo joven de Rioja, buena fruta, acidez media, taninos suaves, potencia moderada.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Domaine de la Janasse",
+                "productor": null,
+                "anada": null,
+                "region": "Côtes du Rhône",
+                "pais": "Francia",
+                "precio": 5,
+                "moneda": null,
+                "precios": {
+                  "copa": 5,
+                  "botella": 29,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Domaine de la Janasse, garnacha Côtes du Rhône 5,00 29,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha"
+                ],
+                "descripcion": "Garnacha de Côtes du Rhône, afrutado, especiado, con taninos medios y buena estructura.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 34.4,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Garnacha del Ródano, buena potencia y afrutado, taninos medios, acidez adecuada.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Huerto de la Condesa",
+                "productor": null,
+                "anada": null,
+                "region": "Málaga",
+                "pais": "España",
+                "precio": 6,
+                "moneda": null,
+                "precios": {
+                  "copa": 6,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Huerto de la Condesa, garnacha, syrah Málaga 6,00 35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha",
+                  "Syrah"
+                ],
+                "descripcion": "Garnacha y Syrah de Málaga, con notas de fruta negra y especias, taninos presentes.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 36.6,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Garnacha/Syrah de Málaga, con buen afrutado, potencia y taninos medios, buena acidez.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Prieler, Blaufränkisch",
+                "productor": null,
+                "anada": null,
+                "region": "Oggau Ried",
+                "pais": "Austria",
+                "precio": 6,
+                "moneda": null,
+                "precios": {
+                  "copa": 6,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Prieler, Blaufränkisch, Oggau Ried, Austria 6,00 35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Blaufränkisch"
+                ],
+                "descripcion": "Blaufränkisch de Austria, conocido por su acidez vibrante, fruta roja y notas especiadas.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 38.8,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Blaufränkisch, buena acidez y afrutado, taninos presentes pero suaves, potencia media.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Diaz Bayo 4 Meses",
+                "productor": null,
+                "anada": null,
+                "region": "Ribera del Duero",
+                "pais": "España",
+                "precio": 3.5,
+                "moneda": null,
+                "precios": {
+                  "copa": 3.5,
+                  "botella": 20,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Diaz Bayo 4 Meses, tempranillo, Ribera del Duero 3,50 20,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Tempranillo"
+                ],
+                "descripcion": "Tempranillo con 4 meses de barrica de Ribera del Duero, afrutado, estructurado.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 41,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Tempranillo de Ribera del Duero, buena potencia y afrutado, taninos medios, seco.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Agrícola de Cadalso",
+                "productor": null,
+                "anada": null,
+                "region": "Madrid",
+                "pais": "España",
+                "precio": 4,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Agrícola de Cadalso, garnacha, Madrid 4,00 23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha"
+                ],
+                "descripcion": "Garnacha de Madrid, vinos con buena acidez y fruta, taninos suaves.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 43.1,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Garnacha de Madrid, buena acidez y afrutado, taninos suaves, potencia media.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Casa Castillo",
+                "productor": null,
+                "anada": null,
+                "region": "Jumilla",
+                "pais": "España",
+                "precio": 4,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Casa Castillo, monastrell, Jumilla 4,00 23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Monastrell"
+                ],
+                "descripcion": "Monastrell de Jumilla, potente, con fruta negra, especias y taninos firmes.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 45.3,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 5,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 4,
+                  "afrutado": 4
+                },
+                "compatibilidad": 76,
+                "razon": "Monastrell de Jumilla, potente, afrutado y con taninos firmes, buena acidez.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "La Viña de Ayer",
+                "productor": null,
+                "anada": null,
+                "region": "Madrid",
+                "pais": "España",
+                "precio": 4,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "La Viña de Ayer, garnacha, Madrid 4,00 23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha"
+                ],
+                "descripcion": "Garnacha de Madrid, vinos con buena acidez y fruta, taninos suaves.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 47.5,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Garnacha de Madrid, buena acidez y afrutado, taninos suaves, potencia media.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Nat Cool Zorzal",
+                "productor": null,
+                "anada": null,
+                "region": "Navarra",
+                "pais": "España",
+                "precio": 5.5,
+                "moneda": null,
+                "precios": {
+                  "copa": 5.5,
+                  "botella": 45,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Nat Cool Zorzal, garnacha Navarra 5,50 45 (11)",
+                "dudas": [
+                  "precio_botella_incertidumbre"
+                ],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha"
+                ],
+                "descripcion": "Garnacha de Navarra, estilo Nat Cool, fresco, ligero y afrutado.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 49.7,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Garnacha Nat Cool, fresca y afrutada, buena acidez, taninos suaves, potencia media.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "López de Haro Rosado",
+                "productor": null,
+                "anada": null,
+                "region": "Rioja",
+                "pais": "España",
+                "precio": 3,
+                "moneda": null,
+                "precios": {
+                  "copa": 3,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "ROSADOS",
+                "confidence": 0.74,
+                "texto_fuente": "López de Haro Rosado, garnacha/tempranillo, Rioja 3,00 17,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "descripcion",
+                  "region",
+                  "pais"
+                ],
+                "tipo": "rosado",
+                "uvas": [
+                  "Garnacha",
+                  "Tempranillo"
+                ],
+                "descripcion": "Rosado de Rioja, mezcla de Garnacha y Tempranillo, fresco y afrutado.",
+                "posicion": {
+                  "x": 10.9,
+                  "y": 54.3,
+                  "width": 55.4,
+                  "height": 1.7,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 2,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 66,
+                "razon": "Rosado de Rioja, excelente acidez y afrutado, muy poca dulzura y taninos, fresco.",
+                "affinity_calibrated": true
+              }
+            ],
+            "has_profile": true,
+            "profile_source": "client",
+            "moneda": null,
+            "layout": "unknown",
+            "coverage": {
+              "status": "unknown",
+              "extracted_wines": 18,
+              "estimated_visible_wines": null,
+              "notes": []
+            },
+            "scan_version": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "scan-wine-menu",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "vinos": [
+              {
+                "nombre": "López de Haro Rosado",
+                "productor": null,
+                "anada": null,
+                "region": "Rioja",
+                "pais": "España",
+                "precio": 17,
+                "moneda": null,
+                "precios": {
+                  "copa": 3,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "ROSADOS",
+                "confidence": 0.74,
+                "texto_fuente": "López de Haro Rosado, garnacha/tempranillo, Rioja 3,00 17,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "pais"
+                ],
+                "tipo": "rosado",
+                "uvas": [
+                  "Garnacha",
+                  "Tempranillo"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 10.3,
+                  "y": 66.82,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 4
+                },
+                "compatibilidad": 76,
+                "razon": "Afrutado y fresco con baja dulzura y taninos, buena acidez, ligeramente menos potente.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "L'Arnaude",
+                "productor": null,
+                "anada": null,
+                "region": "Provenza",
+                "pais": "Francia",
+                "precio": 23,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "ROSADOS",
+                "confidence": 0.74,
+                "texto_fuente": "L'Arnaude, Cinsault Grenache, Provenza, Francia 4,00 23,00",
+                "dudas": [],
+                "campos_inferidos": [],
+                "tipo": "rosado",
+                "uvas": [
+                  "Cinsault",
+                  "Garnacha"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 10.3,
+                  "y": 70.89,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Afrutado, acidez alta, dulzura baja, taninos muy suaves, potencia media; buena coincidencia.",
+                "affinity_calibrated": true
+              }
+            ],
+            "has_profile": true,
+            "profile_source": "client",
+            "moneda": null,
+            "layout": "rows",
+            "coverage": {
+              "status": "partial",
+              "extracted_wines": 2,
+              "estimated_visible_wines": 6,
+              "notes": [
+                "Only 'ROSADOS' section is fully readable and extractable with confidence for full wine lines. Other sections ('VERMOUTH', 'CERVEZAS') are explicitly excluded or not wines. The top section, presumably 'TINTOS' or 'BLANCOS', has 4 lines that are partially visible but their names are not fully clear and their pricing columns are cut off or misaligned at the start. Therefore, these lines were not included."
+              ]
+            },
+            "scan_version": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "scan-wine-menu",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "vinos": [
+              {
+                "nombre": "Finca la Olma ecológico",
+                "productor": null,
+                "anada": null,
+                "region": "Rueda",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 3,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Finca la Olma ecológico, verdejo, Rueda                 3,00     17,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Verdejo"
+                ],
+                "descripcion": "Vino ecológico, elaborado con uva verdejo de Rueda.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 14.8,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Buen equilibrio de acidez y afrutado, baja dulzura y taninos, coincide bien.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Can Feixes",
+                "productor": null,
+                "anada": null,
+                "region": "Penedés",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Can Feixes, macabeu, perellada, Penedés                  4,00     23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Macabeu",
+                  "Perellada"
+                ],
+                "descripcion": "Vino blanco del Penedés, elaborado con macabeu y perellada.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 17,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Buen equilibrio de acidez y afrutado, baja dulzura y taninos, coincide bien.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Forlong ecológico",
+                "productor": null,
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 4.5,
+                  "botella": 26,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Forlong ecológico, palomino fino, Jerez                    4,50     26,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": "Vino ecológico de Jerez, elaborado con palomino fino.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 19.3,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 71,
+                "razon": "Buena acidez y potencia, afrutado medio, ideal para perfil buscado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Dereszla Tokaji Dry",
+                "productor": null,
+                "anada": null,
+                "region": null,
+                "pais": "Hungría",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.68,
+                "texto_fuente": "Dereszla Tokaji Dry, tokaji, Hungría                        4,00     23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Tokaji"
+                ],
+                "descripcion": "Tokaji seco de Hungría, posiblemente con uvas Furmint o Hárslevelű.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 21.5,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 73,
+                "razon": "Alta acidez y afrutado, baja dulzura, coincide muy bien con el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Nat Cool Mosel",
+                "productor": null,
+                "anada": null,
+                "region": "Mosel",
+                "pais": "Alemania",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 4.5,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Nat Cool Mosel, riesling, Mosel                           4,50     35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Riesling"
+                ],
+                "descripcion": "Riesling de Mosel, conocido por su acidez vibrante y notas frutales.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 23.8,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 69,
+                "razon": "Muy alta acidez y afrutado, ideal para el perfil de usuario.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Meín Castes Brancas",
+                "productor": null,
+                "anada": null,
+                "region": "Ribeiro",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 6,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Meín Castes Brancas, Godello, Albariño, Ribeiro           6,00     35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Godello",
+                  "Albariño"
+                ],
+                "descripcion": "Vino blanco del Ribeiro, mezcla de Godello y Albariño.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 26,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 73,
+                "razon": "Buena potencia, acidez y afrutado, muy adecuado al perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Huerto de la Condesa",
+                "productor": null,
+                "anada": null,
+                "region": "Málaga",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 6,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.74,
+                "texto_fuente": "Huerto de la Condesa, viogner, moscatel, Málaga           6,00     35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Viognier",
+                  "Moscatel"
+                ],
+                "descripcion": "Vino blanco de Málaga, con Viognier y Moscatel.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 28.2,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 2,
+                  "taninos": 1,
+                  "afrutado": 5
+                },
+                "compatibilidad": 67,
+                "razon": "Afrutado intenso y potencia, dulzura ligeramente más alta que el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Percheron chenin blanc",
+                "productor": null,
+                "anada": null,
+                "region": null,
+                "pais": "Sudáfrica",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 4.5,
+                  "botella": 29,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "BLANCOS",
+                "confidence": 0.68,
+                "texto_fuente": "Percheron chenin blanc, viogner, South Africa             4,50     29,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo",
+                  "pais"
+                ],
+                "tipo": "blanco",
+                "uvas": [
+                  "Chenin Blanc",
+                  "Viognier"
+                ],
+                "descripcion": "Chenin Blanc de Sudáfrica, posiblemente con un toque de Viognier.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 30.5,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Buena acidez y afrutado, baja dulzura, muy adecuado al perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Mayela",
+                "productor": null,
+                "anada": 2023,
+                "region": "Rioja",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 3,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Mayela 2023, tempranillo, Rioja                           3,00     17,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Tempranillo"
+                ],
+                "descripcion": "Vino tinto joven de Rioja, añada 2023, elaborado con tempranillo.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 34.9,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Afrutado, acidez y taninos medios, buena combinación con el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Domaine de la Janasse",
+                "productor": null,
+                "anada": null,
+                "region": "Côtes du Rhône",
+                "pais": "Francia",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 5,
+                  "botella": 29,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Domaine de la Janasse, garnacha Côtes du Rhône           5,00     29,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo",
+                  "pais"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha"
+                ],
+                "descripcion": "Vino tinto de Côtes du Rhône, Francia, elaborado con Garnacha.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 37.1,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Buena potencia, afrutado y taninos medios, muy afín al perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Huerto de la Condesa",
+                "productor": null,
+                "anada": null,
+                "region": "Málaga",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 6,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Huerto de la Condesa, garnacha, syrah Málaga             6,00     35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha",
+                  "Syrah"
+                ],
+                "descripcion": "Vino tinto de Málaga, mezcla de Garnacha y Syrah.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 39.4,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Buena potencia, afrutado y taninos, adecuado para el perfil del usuario.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Prieler Blaufränkisch",
+                "productor": null,
+                "anada": null,
+                "region": "Oggau Ried",
+                "pais": "Austria",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 6,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Prieler, Blaufränkisch, Oggau Ried, Austria              6,00     35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Blaufränkisch"
+                ],
+                "descripcion": "Blaufränkisch de Oggau Ried, Austria. Variedad con buena acidez.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 41.6,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 93,
+                "razon": "Muy buen match con potencia, acidez, taninos y afrutado del perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Diaz Bayo 4 Meses",
+                "productor": null,
+                "anada": null,
+                "region": "Ribera del Duero",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 3.5,
+                  "botella": 20,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Diaz Bayo 4 Meses, tempranillo, Ribera del Duero          3,50     20,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Tempranillo"
+                ],
+                "descripcion": "Tinto de Ribera del Duero, 4 meses de barrica, Tempranillo.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 43.9,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 83,
+                "razon": "Buena potencia, afrutado y taninos medios, muy afín al perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Agrícola de Cadalso",
+                "productor": null,
+                "anada": null,
+                "region": "Madrid",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Agrícola de Cadalso, garnacha, Madrid                     4,00     23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha"
+                ],
+                "descripcion": "Garnacha de Madrid, de la Agrícola de Cadalso.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 46.1,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Afrutado, acidez y taninos medios, buena combinación con el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Casa Castillo",
+                "productor": null,
+                "anada": null,
+                "region": "Jumilla",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Casa Castillo, monastrell, Jumilla                        4,00     23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Monastrell"
+                ],
+                "descripcion": "Monastrell de Jumilla de Casa Castillo. Potente y estructurado.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 48.4,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 4,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Buena potencia, afrutado y taninos, adecuado para el perfil del usuario.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "La Viña de Ayer",
+                "productor": null,
+                "anada": null,
+                "region": "Madrid",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 4,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "La Viña de Ayer, garnacha, Madrid                         4,00     23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha"
+                ],
+                "descripcion": "Garnacha de Madrid, de la bodega La Viña de Ayer.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 50.6,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Afrutado, acidez y taninos medios, buena combinación con el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Nat Cool Zorzal",
+                "productor": null,
+                "anada": null,
+                "region": "Navarra",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 5.5,
+                  "botella": 45,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "TINTOS",
+                "confidence": 0.74,
+                "texto_fuente": "Nat Cool Zorzal, garnacha Navarra                         5,50     45 (11)",
+                "dudas": [
+                  "precio_botella_nota"
+                ],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "tinto",
+                "uvas": [
+                  "Garnacha"
+                ],
+                "descripcion": "Garnacha de Navarra, parte de la línea 'Nat Cool'.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 52.8,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 3,
+                  "afrutado": 4
+                },
+                "compatibilidad": 79,
+                "razon": "Afrutado, acidez y taninos medios, buena combinación con el perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "López de Haro Rosado",
+                "productor": null,
+                "anada": null,
+                "region": "Rioja",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": 3,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "ambos",
+                "seccion": "ROSADOS",
+                "confidence": 0.74,
+                "texto_fuente": "López de Haro Rosado, garnacha/tempranillo, Rioja         3,00     17,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "rosado",
+                "uvas": [
+                  "Garnacha",
+                  "Tempranillo"
+                ],
+                "descripcion": "Rosado de Rioja, mezcla de Garnacha y Tempranillo.",
+                "posicion": {
+                  "x": 10.3,
+                  "y": 57.3,
+                  "width": 81.3,
+                  "height": 2.2,
+                  "confidence": 0.95
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Buena acidez y afrutado, baja dulzura, muy adecuado al perfil.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Joan Raventós Rosé BN",
+                "productor": null,
+                "anada": null,
+                "region": "Cava",
+                "pais": "España",
+                "precio": null,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": null,
+                  "llevar": null
+                },
+                "servicio": null,
+                "seccion": "ESPUMOSOS",
+                "confidence": 0.74,
+                "texto_fuente": "Joan Raventós Rosé BN, Cava",
+                "dudas": [
+                  "precio"
+                ],
+                "campos_inferidos": [
+                  "tipo"
+                ],
+                "tipo": "espumoso",
+                "uvas": [],
+                "descripcion": "Cava rosado de Joan Raventós, Brut Nature.",
+                "posicion": {
+                  "x": 75.3,
+                  "y": 14.8,
+                  "width": 20.3,
+                  "height": 1.9,
+                  "confidence": 0.85
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Buena acidez y afrutado, baja dulzura, muy adecuado al perfil.",
+                "affinity_calibrated": true
+              }
+            ],
+            "has_profile": true,
+            "profile_source": "client",
+            "moneda": null,
+            "layout": "unknown",
+            "coverage": {
+              "status": "unknown",
+              "extracted_wines": 19,
+              "estimated_visible_wines": null,
+              "notes": []
+            },
+            "scan_version": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        },
+        {
+          "function": "scan-wine-menu",
+          "region_id": null,
+          "status": 200,
+          "payload": {
+            "vinos": [
+              {
+                "nombre": "Joan Raventós Rosé BN, Cava",
+                "productor": "Joan Raventós",
+                "anada": null,
+                "region": "Cava",
+                "pais": "España",
+                "precio": 17,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "ESPUMOSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Joan Raventós Rosé BN, Cava 17,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "espumoso",
+                "uvas": [],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 18.9,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 71,
+                "razon": "Espumoso Rosado, alta acidez y afrutado, baja dulzura y taninos, compatibilidad alta.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Agustí Torelló, Kripta, Cava",
+                "productor": "Agustí Torelló",
+                "anada": null,
+                "region": "Cava",
+                "pais": "España",
+                "precio": 23,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "ESPUMOSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Agustí Torelló, Kripta, Cava 23,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "espumoso",
+                "uvas": [],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 21.2,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 4,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 3
+                },
+                "compatibilidad": 69,
+                "razon": "Cava de prestigio, buena acidez, baja dulzura y taninos, lo que lo hace muy compatible.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Maxim Riesling Sekt Brut",
+                "productor": "Maxim",
+                "anada": null,
+                "region": "Mosel",
+                "pais": "Alemania",
+                "precio": 26,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 26,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "ESPUMOSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Maxim Riesling Sekt Brut, Mos 26,00",
+                "dudas": [
+                  "productor",
+                  "region"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "espumoso",
+                "uvas": [
+                  "Riesling"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 23.6,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.85
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 5,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 69,
+                "razon": "Riesling Sekt, muy alta acidez, afrutado, baja dulzura y taninos. Muy compatible.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Manzanilla Pasada Xixarito",
+                "productor": "Bodegas Baron (inferido)",
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "GENEROSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Manzanilia Pasada Xixarito, Boo 35,00",
+                "dudas": [
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 28.5,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.8
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 2
+                },
+                "compatibilidad": 64,
+                "razon": "Generoso seco y potente, baja dulzura y taninos, buena acidez, pero poco afrutado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Manzanilla Alegría",
+                "productor": "Williams & Humbert",
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "GENEROSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Manzanilla Alegria, Williams & 35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 30.8,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 2
+                },
+                "compatibilidad": 62,
+                "razon": "Generoso seco, baja dulzura y taninos, buena acidez, pero perfil afrutado bajo.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Fino Viejo, Tradición",
+                "productor": "Bodegas Tradición",
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "GENEROSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Fino Viejo, Tradición 35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 33.1,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 2
+                },
+                "compatibilidad": 64,
+                "razon": "Vino generoso potente y seco, baja dulzura y taninos, acidez adecuada. Poco afrutado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Fino Inocente",
+                "productor": "Valdespino",
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 29,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 29,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "GENEROSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Fino Ynocente, Valdespino 29,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 35.4,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 1,
+                  "afrutado": 2
+                },
+                "compatibilidad": 62,
+                "razon": "Generoso seco, perfil aromático complejo, baja dulzura/taninos, acidez adecuada. Poco afrutado.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Amontillado Viña AB",
+                "productor": "González Byass",
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 17,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 17,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "GENEROSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Amontillado Viña AB, Gonzal 17,00",
+                "dudas": [
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 38.3,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.85
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 2
+                },
+                "compatibilidad": 69,
+                "razon": "Generoso potente y seco, baja dulzura, acidez y taninos moderados. Perfil afrutado bajo.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Amontillado El Contrabandista",
+                "productor": null,
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 29,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 29,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "GENEROSOS",
+                "confidence": 0.62,
+                "texto_fuente": "Amontillado El Contrabandis 29,00",
+                "dudas": [
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 40.7,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.8
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 2
+                },
+                "compatibilidad": 69,
+                "razon": "Generoso potente y seco, baja dulzura, acidez y taninos moderados. Perfil afrutado bajo.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Bertola, Palo Cortado",
+                "productor": "Diez Mérito",
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "GENEROSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Bertola, Palo Cortado, Diez 35,00",
+                "dudas": [
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 43,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.85
+                },
+                "atributos": {
+                  "potencia": 5,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 2
+                },
+                "compatibilidad": 67,
+                "razon": "Palo Cortado potente y seco. Muy baja dulzura y afrutado, alta potencia.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Oloroso Don Nuño",
+                "productor": "Lustau",
+                "anada": null,
+                "region": "Jerez",
+                "pais": "España",
+                "precio": 35,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 35,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "GENEROSOS",
+                "confidence": 0.55,
+                "texto_fuente": "Oloroso Don Nuño, Lustau 35,00",
+                "dudas": [],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "tipo"
+                ],
+                "tipo": "generoso",
+                "uvas": [
+                  "Palomino Fino"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 45.3,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.9
+                },
+                "atributos": {
+                  "potencia": 5,
+                  "acidez": 3,
+                  "dulzura": 1,
+                  "taninos": 2,
+                  "afrutado": 2
+                },
+                "compatibilidad": 67,
+                "razon": "Oloroso potente y seco, baja dulzura y afrutado. Alta potencia, acidez media.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Moscatel Zumbral",
+                "productor": "Dimobe (inferido)",
+                "anada": null,
+                "region": "Málaga",
+                "pais": "España",
+                "precio": 20,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 20,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "DULCES",
+                "confidence": 0.55,
+                "texto_fuente": "Moscatel Zumbral, Dimo 20,00",
+                "dudas": [
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "dulce",
+                "uvas": [
+                  "Moscatel"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 49.3,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.8
+                },
+                "atributos": {
+                  "potencia": 3,
+                  "acidez": 2,
+                  "dulzura": 5,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 45,
+                "razon": "Vino dulce, alta dulzura (opuesto al perfil), afrutado. Baja acidez y taninos.",
+                "affinity_calibrated": true
+              },
+              {
+                "nombre": "Pedro Ximénez",
+                "productor": "Don Px (inferido)",
+                "anada": null,
+                "region": "Jerez/Montilla-Moriles",
+                "pais": "España",
+                "precio": 23,
+                "moneda": null,
+                "precios": {
+                  "copa": null,
+                  "botella": 23,
+                  "llevar": null
+                },
+                "servicio": "botella",
+                "seccion": "DULCES",
+                "confidence": 0.55,
+                "texto_fuente": "Pedro Ximenez, Don Px 23,00",
+                "dudas": [
+                  "productor"
+                ],
+                "campos_inferidos": [
+                  "productor",
+                  "region",
+                  "pais",
+                  "uvas",
+                  "tipo"
+                ],
+                "tipo": "dulce",
+                "uvas": [
+                  "Pedro Ximénez"
+                ],
+                "descripcion": null,
+                "posicion": {
+                  "x": 36.3,
+                  "y": 51.7,
+                  "width": 57.3,
+                  "height": 2.2,
+                  "confidence": 0.8
+                },
+                "atributos": {
+                  "potencia": 4,
+                  "acidez": 2,
+                  "dulzura": 5,
+                  "taninos": 1,
+                  "afrutado": 4
+                },
+                "compatibilidad": 46,
+                "razon": "Vino dulce, alta dulzura (opuesto al perfil), afrutado. Baja acidez y taninos.",
+                "affinity_calibrated": true
+              }
+            ],
+            "has_profile": true,
+            "profile_source": "client",
+            "moneda": null,
+            "layout": "columns",
+            "coverage": {
+              "status": "partial",
+              "extracted_wines": 13,
+              "estimated_visible_wines": 13,
+              "notes": [
+                "No se puede determinar la moneda explícitamente, se infiere EUR por contexto geográfico común de los vinos españoles, pero no hay símbolo.",
+                "El texto del productor de 'Manzanilla Pasada Xixarito' está cortado, sólo se ve 'Boo'. Se infiere 'Bodegas Baron' como productor de 'Manzanilla Pasada Xixarito'.",
+                "El texto del productor de 'Amontillado Viña AB' está cortado, sólo se ve 'Gonzal'. Se infiere 'González Byass'.",
+                "El texto del productor de 'Amontillado El Contrabandista' está cortado, no se puede inferir con seguridad. Se deja como null.",
+                "El texto del productor de 'Bertola, Palo Cortado' está cortado, sólo se ve 'Diez'. Se infiere 'Diez Mérito'."
+              ]
+            },
+            "scan_version": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+            "ai_provider": "lovable",
+            "ai_model": "google/gemini-2.5-flash"
+          }
+        }
+      ]
+    }
+  ]
+}

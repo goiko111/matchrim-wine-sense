@@ -33,6 +33,9 @@ import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { formatScanPrice, normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
 import { clusterOverlayPins } from "@/utils/overlayPins";
+import { applyMenuWineEvidence } from '@/utils/scanWineEvidence';
+import { findWinerimWineForLabel } from '@/services/winerimApi';
+import { mapWithConcurrency } from '@/utils/multiWineScan';
 import {
   normalizeMenuAffinity,
   calibrateMenuIdentityConfidence,
@@ -627,8 +630,20 @@ export const WineMenuScanner = ({
         };
       }
 
-      const normalizedWines = (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : [])
-        .filter(isWineMenuItem).map(normalizeScannedWine);
+      const profile = readStoredMatchrimProfile();
+      setScanPhase('ranking');
+      const normalizedWines = await mapWithConcurrency(
+        (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : []).filter(isWineMenuItem).map(normalizeScannedWine),
+        3,
+        async (wine) => {
+          if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+          const catalog = !isMatchrimFixtureQaEnabled && isMenuIdentityConfirmed(wine)
+            ? await findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada })
+            : null;
+          if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+          return applyMenuWineEvidence(wine, profile, catalog?.wine);
+        },
+      );
       if (normalizedWines.length > 0) {
 	      setScanPhase('ranking');
 	        if (data.coverage?.status === 'partial') {
@@ -641,7 +656,7 @@ export const WineMenuScanner = ({
 	          ]);
 	        }
         setScannedWines(normalizedWines);
-        setHasProfile(!!data.has_profile);
+        setHasProfile(Boolean(profile) || !!data.has_profile);
         onScanComplete?.(normalizedWines.length);
         trackAppEvent("wine_menu_scan_completed", {
           userId: user?.id,
@@ -1186,7 +1201,8 @@ export const WineMenuScanner = ({
 	                  })() : (
                     <p className="text-sm text-emerald-900">{scannedWines.some((wine) => wine.compatibilidad != null)
                       ? 'Confirma primero las identidades dudosas. La afinidad de esos candidatos es provisional.'
-                      : 'Completa tu test para que pueda elegir por encaje.'}</p>
+                      : hasProfile ? 'Tu perfil está listo. Faltan fichas sensoriales verificadas de estos vinos para calcular afinidad.'
+                        : 'Completa tu test para que pueda elegir por encaje.'}</p>
 	                  )}
 	                </div>
 
@@ -1702,7 +1718,7 @@ export const WineMenuScanner = ({
 		                      score={wine.compatibilidad}
 		                      identificationConfidence={wine.confidence}
 		                      attributes={wine.atributos}
-		                      sensorySource="inference"
+		                      sensorySource={wine.sensorySource ?? 'inference'}
 		                    />
 		                  </div>
 
@@ -1885,7 +1901,7 @@ export const WineMenuScanner = ({
 			                    identityConfidence={selectedPinWine.confidence}
 			                    affinity={selectedPinWine.compatibilidad}
 			                    attributes={selectedPinWine.atributos}
-			                    sensorySource="inference"
+			                    sensorySource={selectedPinWine.sensorySource ?? 'inference'}
 			                    uncertaintyReasons={selectedPinWine.dudas}
 			                    hasAlternatives={scannedWines.length > 1}
 			                  />
@@ -1895,7 +1911,7 @@ export const WineMenuScanner = ({
 	                  score={selectedPinWine.compatibilidad}
 	                  identificationConfidence={selectedPinWine.confidence}
 	                  attributes={selectedPinWine.atributos}
-	                  sensorySource="inference"
+	                  sensorySource={selectedPinWine.sensorySource ?? 'inference'}
 	                />
 	              </div>
 	              <DrawerFooter className="border-t border-stone-200 bg-white">
