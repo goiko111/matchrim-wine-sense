@@ -1,6 +1,8 @@
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { hasSpecificWineIdentity } from '../../supabase/functions/_shared/matchrim-menu-grounding';
 import { isNonWineIdentity } from './wineCategory';
+import type { CropGeometry } from './imageCropGeometry';
+import type { RegionDeferral } from './scanAnalysisPolicy';
 
 export type ScanRegionStatus =
   | 'pending'
@@ -8,6 +10,7 @@ export type ScanRegionStatus =
   | 'recognized'
   | 'uncertain'
   | 'unrecognized'
+  | 'deferred'
   | 'discarded';
 
 export interface NormalizedBox {
@@ -66,6 +69,8 @@ export interface WineCandidate {
 }
 
 export interface ScanRegion {
+  deferral?: RegionDeferral | null;
+  cropGeometry?: CropGeometry;
   id: string;
   index: number;
   objectType: 'bottle' | 'label' | null;
@@ -109,17 +114,17 @@ export const normalizeBox = (value: unknown): NormalizedBox | null => {
   const raw = asRecord(value);
   if (!raw) return null;
 
-  const x = Number(raw.x ?? raw.left);
-  const y = Number(raw.y ?? raw.top);
-  const width = Number(raw.width ?? raw.w);
-  const height = Number(raw.height ?? raw.h);
-  if (![x, y, width, height].every(Number.isFinite)) return null;
+  const x = optionalScanNumber(raw.x ?? raw.left);
+  const y = optionalScanNumber(raw.y ?? raw.top);
+  const width = optionalScanNumber(raw.width ?? raw.w);
+  const height = optionalScanNumber(raw.height ?? raw.h);
+  if (x === null || y === null || width === null || height === null || width <= 0 || height <= 0) return null;
 
   const normalized = {
     x: clamp(x, 0, 100),
     y: clamp(y, 0, 100),
-    width: clamp(width, 0, 100),
-    height: clamp(height, 0, 100),
+    width: clamp(x + width, 0, 100) - clamp(x, 0, 100),
+    height: clamp(y + height, 0, 100) - clamp(y, 0, 100),
   };
 
   normalized.width = Math.min(normalized.width, 100 - normalized.x);
@@ -716,6 +721,7 @@ export const correctWineCandidateIdentity = (
 });
 
 export const summarizeScanRegions = (regions: ScanRegion[]) => ({
+  deferred: regions.filter((region) => region.status === 'deferred').length,
   recognized: regions.filter((region) => region.status === 'recognized').length,
   uncertain: regions.filter((region) => region.status === 'uncertain').length,
   unrecognized: regions.filter((region) => region.status === 'unrecognized').length,

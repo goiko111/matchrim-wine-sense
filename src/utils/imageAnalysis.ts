@@ -1,4 +1,5 @@
 import type { NormalizedBox } from '@/utils/multiWineScan';
+import { getCropGeometry } from './imageCropGeometry';
 
 export interface ImageQualityReport {
   width: number;
@@ -129,19 +130,15 @@ export const prepareImageForAnalysis = async (file: File, maxDimension = 2400): 
   };
 };
 
-export const cropImageRegion = async (
+export const cropImageRegionWithQuality = async (
   dataUrl: string,
   box: NormalizedBox,
   paddingPercent = 2,
   maxDimension = 1600,
 ) => {
   const image = await loadImage(dataUrl);
-  const paddingX = image.naturalWidth * paddingPercent / 100;
-  const paddingY = image.naturalHeight * paddingPercent / 100;
-  const sourceX = Math.max(0, image.naturalWidth * box.x / 100 - paddingX);
-  const sourceY = Math.max(0, image.naturalHeight * box.y / 100 - paddingY);
-  const sourceWidth = Math.min(image.naturalWidth - sourceX, image.naturalWidth * box.width / 100 + paddingX * 2);
-  const sourceHeight = Math.min(image.naturalHeight - sourceY, image.naturalHeight * box.height / 100 + paddingY * 2);
+  const geometry = getCropGeometry(image.naturalWidth, image.naturalHeight, box, paddingPercent);
+  const { x: sourceX, y: sourceY, width: sourceWidth, height: sourceHeight } = geometry.pixels;
   const scale = Math.min(1, maxDimension / Math.max(sourceWidth, sourceHeight));
   const canvas = document.createElement('canvas');
   canvas.width = Math.max(1, Math.round(sourceWidth * scale));
@@ -151,5 +148,13 @@ export const cropImageRegion = async (
   context.imageSmoothingEnabled = true;
   context.imageSmoothingQuality = 'high';
   context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
-  return canvasToDataUrl(canvas, 0.92);
+  return {
+    dataUrl: canvasToDataUrl(canvas, 0.92),
+    geometry,
+    quality: inspectPixels(context, canvas.width, canvas.height),
+  };
 };
+
+export const cropImageRegion = async (dataUrl: string, box: NormalizedBox, paddingPercent = 2, maxDimension = 1600) => (
+  (await cropImageRegionWithQuality(dataUrl, box, paddingPercent, maxDimension)).dataUrl
+);

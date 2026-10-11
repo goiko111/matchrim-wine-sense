@@ -858,7 +858,7 @@ assert.deepEqual(summarizeScanRegions([
   makeRegion('r1', 1, 'A', 80),
   { ...makeRegion('r2', 2, 'B', 70), status: 'uncertain' },
   { ...makeRegion('r3', 3, 'C', 60), status: 'unrecognized' },
-]), { recognized: 1, uncertain: 1, unrecognized: 1, discarded: 0, pending: 0 });
+]), { recognized: 1, uncertain: 1, unrecognized: 1, discarded: 0, pending: 0, deferred: 0 });
 
 let active = 0;
 let maxActive = 0;

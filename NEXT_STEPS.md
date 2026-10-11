@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current local assignment: 2026-10-11, dense gate checkpoint
+
+1. Continue partial/full wine-menu duplicates and food-vs-wine preference separation using recorded responses; then catalog sensory coverage/profile parity.
+2. Dense client gate now verified locally (8/8 mobile):12 automatic regions,24 request cap, clipped crops and explicit deferrals. Validate the recall/utility tradeoff on an approved isolated live benchmark before release; do not call deferred regions successful recognition.
+3. Preserve baseline78 binary and all corpus/ledgers. No paid calls, production, deploy, upload or invitation in assignment MATCHRIM-5H-20261011-01. Apple invitation is owner intervention; do not repeat login attempts.
+4. Final combined candidate needs fresh iOS build and separate physical/account/accessibility gates. See `docs/MATCHRIM_DENSE_GATE_2026-10-11.md`.
+
 ## Latest gate: 2026-10-11, remediation and tester invitation
 
 1. After owner signs into the existing App Store Connect tab, inspect the latest eligible Matchrim build and invite the explicitly requested external tester. Do not grant App Store Connect admin/internal roles or claim an invitation already sent. Uploaded75 is historical evidence, not current readback.

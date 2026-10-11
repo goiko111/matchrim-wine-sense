@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, dense-scene local gate
+
+- On baseline5431cff: corrected clipped box/crop geometry; native-pixel/legibility/contrast gate;12 automatic regions and24 client Edge attempts per batch. Deferred regions stay reviewable, separate from failed recognition. Only selected outline drawn.
+- Focused contracts, existing normalization/identity/evidence tests,8/8 mobile offline UI, typecheck, focused lint and web build PASS. No claim of new model precision/recall or physical count. Baseline78 binary preserved, no native rebuild in this batch.
+- Recorded Ontario replay:60 regions retained,12 analysed,48 deferred;15 intercepted requests vs63 historical. This is a bounded-analysis tradeoff, not improved recognition coverage.
+- Report: [MATCHRIM_DENSE_GATE_2026-10-11.md](docs/MATCHRIM_DENSE_GATE_2026-10-11.md). Assignment log: `docs/assignments/MATCHRIM-5H-20261011-01.md`.
+- No remote calls, deploy, upload, invitation or budget reset. Next local queue: menu partial/full duplication and food preference separation.
+
 ## Latest checkpoint: 2026-10-11, scan-evidence remediation
 
 - Classification/identity/affinity evidence fixes implemented: recorded non-wine candidates rejected, conservative aliases grouped, distinct cuvees/vintages protected, ambiguous catalog matches refused, unverified scan percentages withheld. Same catalog attributes/profile use one deterministic score.

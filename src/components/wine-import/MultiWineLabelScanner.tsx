@@ -38,7 +38,9 @@ import {
   EdgeFunctionError,
   invokeWithEdgeFunctionRetry,
 } from '@/utils/edgeFunctionResilience';
-import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
+import { cropImageRegion, cropImageRegionWithQuality, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
+import { labelCropPadding } from '@/utils/imageCropGeometry';
+import { createScanRequestBudget, cropQualityDeferral, deferRegion, MAX_MANUAL_REGION_REQUESTS, planRegionAnalysis, regionPreflight, ScanRequestLimitError, type ScanRequestBudget } from '@/utils/scanAnalysisPolicy';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
@@ -62,7 +64,6 @@ import {
   normalizeRecognitionFallback,
   normalizeScanCoverage,
   normalizeWineCandidates,
-  prioritizeRegionsForAnalysis,
   shouldRefineWineDetection,
   summarizeScanRegions,
   type ScanRegion,
@@ -99,6 +100,8 @@ interface ScanPerformance {
   detectionCalls: number;
   detectionRefined: boolean;
   retries: number;
+  edgeRequests: number;
+  deferred: number;
 }
 
 const PHASE_LABELS: Record<ScanPhase, string> = {
@@ -116,6 +119,7 @@ const statusLabel = (region: ScanRegion) => {
   if (region.status === 'uncertain') return 'Dudoso';
   if (region.status === 'unrecognized') return 'Sin reconocer';
   if (region.status === 'discarded') return 'Descartado';
+  if (region.status === 'deferred') return 'Sin analizar';
   if (region.status === 'analyzing') return 'Analizando';
   return 'Pendiente';
 };
@@ -164,6 +168,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   const fileInputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const lastFileRef = useRef<File | null>(null);
+  const preparedSizeRef = useRef<{ width: number; height: number } | null>(null);
 
   const selectedRegion = regions.find((region) => region.id === selectedRegionId) ?? null;
   const selectedCandidate = selectedRegion ? getSelectedCandidate(selectedRegion) : null;
@@ -203,12 +208,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     setRegions((current) => current.map((region) => region.id === regionId ? updater(region) : region));
   };
 
-  const enrichCandidate = async (candidate: WineCandidate, signal: AbortSignal) => {
+  const enrichCandidate = async (candidate: WineCandidate, signal: AbortSignal, budget: ScanRequestBudget) => {
     let enriched = candidate;
     const canResolveCanonically = candidate.confidence >= 0.72
       && candidate.evidence.length >= 2
       && candidate.uncertaintyReasons.length === 0;
-    const catalogMatch = isMatchrimFixtureQaEnabled || !canResolveCanonically
+    const shouldSearch = !isMatchrimFixtureQaEnabled && canResolveCanonically && budget.remaining > 0;
+    if (shouldSearch) budget.reserve(signal);
+    const catalogMatch = !shouldSearch
       ? null
       : await findWinerimWineForLabel({
           name: candidate.name,
@@ -241,24 +248,35 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     region: ScanRegion,
     imageDataUrl: string,
     signal: AbortSignal,
+    budget: ScanRequestBudget,
     fixtureName?: string,
     onRetry?: () => void,
   ) => {
-    updateRegion(region.id, (current) => ({ ...current, status: 'analyzing', error: null, fallback: null }));
+    updateRegion(region.id, (current) => ({ ...current, status: 'analyzing', error: null, fallback: null, deferral: null }));
     try {
-      const cropDataUrl = await cropImageRegion(imageDataUrl, region.box);
+      if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+      const crop = await cropImageRegionWithQuality(imageDataUrl, region.box, labelCropPadding(region.box));
+      if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+      const cropDataUrl = crop.dataUrl;
+      const qualityDeferral = cropQualityDeferral(crop.quality);
+      if (qualityDeferral) return { ...deferRegion(region, qualityDeferral), cropDataUrl, cropGeometry: crop.geometry };
       const payload = await invokeWithEdgeFunctionRetry(
-        () => invokeEdgeFunction<Record<string, unknown>>(
+        () => {
+          budget.reserve(signal);
+          return invokeEdgeFunction<Record<string, unknown>>(
           'analyze-wine-region',
             {
               image: cropDataUrl,
               region_id: region.id,
               region_index: region.index,
               region_box: region.box,
+              crop_box: crop.geometry.sourceBox,
+              crop_pixels: crop.geometry.pixels,
               qa_fixture_name: fixtureName ?? null,
             },
             signal,
-          ),
+          );
+        },
         signal,
         {
           maxAttempts: 3,
@@ -269,12 +287,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       );
       let candidates = normalizeWineCandidates(payload, region.id);
       if (candidates[0]) {
-        const first = await enrichCandidate(candidates[0], signal);
+        const first = await enrichCandidate(candidates[0], signal, budget);
         candidates = [first, ...candidates.slice(1)];
       }
       return {
         ...region,
         cropDataUrl,
+        cropGeometry: crop.geometry,
+        deferral: null,
         candidates,
         selectedCandidateId: candidates[0]?.id ?? null,
         status: determineRegionStatus(candidates),
@@ -283,9 +303,13 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       } satisfies ScanRegion;
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') throw error;
+      if (error instanceof ScanRequestLimitError) return deferRegion(region, {
+        code: 'request_limit', message: 'Pendiente de análisis: se alcanzó el límite de solicitudes del lote. Puedes analizar esta región por separado.',
+      });
       return {
         ...region,
         status: 'unrecognized' as const,
+        deferral: null,
         fallback: null,
         error: error instanceof Error ? error.message : 'No se pudo analizar la región',
       };
@@ -310,10 +334,12 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     let retries = 0;
     let detectionCalls = 0;
     let detectionRefined = false;
+    const budget = createScanRequestBudget();
 
     try {
       setPhase('quality');
       const prepared = await prepareImageForAnalysis(file);
+      preparedSizeRef.current = { width: prepared.width, height: prepared.height };
       const qualityFinishedAt = globalThis.performance.now();
       if (controller.signal.aborted) return;
       setPreview(prepared.dataUrl);
@@ -328,11 +354,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       const detectImage = async (image: string, tileId: string) => {
         detectionCalls += 1;
         return invokeWithEdgeFunctionRetry(
-          () => invokeEdgeFunction<Record<string, unknown>>(
+          () => {
+            budget.reserve(controller.signal);
+            return invokeEdgeFunction<Record<string, unknown>>(
             'detect-wine-regions',
             { image, qa_fixture_name: file.name, detection_tile: tileId },
             controller.signal,
-          ),
+            );
+          },
           controller.signal,
           {
             maxAttempts: 2,
@@ -388,27 +417,28 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         return;
       }
 
-      setRegions(detected);
+      const plan = planRegionAnalysis(detected, prepared.width, prepared.height);
+      setRegions([...plan.automatic, ...plan.deferred].sort((a, b) => a.index - b.index));
       setSelectedRegionId(null);
       setPhase('analyzing');
       let completed = 0;
       const connection = (navigator as Navigator & {
         connection?: { effectiveType?: string; saveData?: boolean };
       }).connection ?? null;
-      const concurrency = getRegionAnalysisConcurrency(detected.length, connection);
-      const prioritizedRegions = prioritizeRegionsForAnalysis(detected);
+      const concurrency = getRegionAnalysisConcurrency(plan.automatic.length, connection);
       setAnalysisConcurrency(concurrency);
-      const analyzedByPriority = await mapWithConcurrency(prioritizedRegions, concurrency, async (region) => {
-        const result = await analyzeRegion(region, prepared.dataUrl, controller.signal, file.name, () => {
+      const analyzedByPriority = await mapWithConcurrency(plan.automatic, concurrency, async (region) => {
+        const result = await analyzeRegion(region, prepared.dataUrl, controller.signal, budget, file.name, () => {
           retries += 1;
         });
+        if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
         completed += 1;
-        setAnalysisProgress(Math.round(completed / detected.length * 100));
+        setAnalysisProgress(Math.round(completed / plan.automatic.length * 100));
         updateRegion(region.id, () => result);
         return result;
       });
       if (controller.signal.aborted) return;
-      const analyzed = [...analyzedByPriority].sort((left, right) => left.index - right.index);
+      const analyzed = [...analyzedByPriority, ...plan.deferred].sort((left, right) => left.index - right.index);
       const analysisFinishedAt = globalThis.performance.now();
       setRegions(analyzed);
       const scanPerformance = {
@@ -420,6 +450,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         detectionCalls,
         detectionRefined,
         retries,
+        edgeRequests: budget.used,
+        deferred: summarizeScanRegions(analyzed).deferred,
       };
       setScanMetrics(scanPerformance);
       setPhase('ready');
@@ -437,6 +469,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           detection_calls: scanPerformance.detectionCalls,
           detection_refined: scanPerformance.detectionRefined,
           retries: scanPerformance.retries,
+          edge_requests: scanPerformance.edgeRequests,
+          deferred_regions: scanPerformance.deferred,
         },
       });
     } catch (error) {
@@ -482,6 +516,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     setScanMetrics(null);
     setConfirmed(false);
     lastFileRef.current = null;
+    preparedSizeRef.current = null;
     setPhase('idle');
     if (cameraInputRef.current) cameraInputRef.current.value = '';
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -492,15 +527,27 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const reanalyzeSelected = async () => {
-    if (!selectedRegion || !preview || loading) return;
+    if (!selectedRegion || !preview || !preparedSizeRef.current || loading) return;
+    const preflight = regionPreflight(selectedRegion, preparedSizeRef.current.width, preparedSizeRef.current.height, true);
+    if (preflight) {
+      updateRegion(selectedRegion.id, () => deferRegion(selectedRegion, preflight));
+      return;
+    }
     const controller = new AbortController();
     abortRef.current = controller;
     setPhase('analyzing');
     setAnalysisProgress(0);
-    const result = await analyzeRegion(selectedRegion, preview, controller.signal, lastFileRef.current?.name);
-    updateRegion(selectedRegion.id, () => result);
-    setAnalysisProgress(100);
-    setPhase('ready');
+    try {
+      const result = await analyzeRegion(selectedRegion, preview, controller.signal, createScanRequestBudget(MAX_MANUAL_REGION_REQUESTS), lastFileRef.current?.name);
+      if (controller.signal.aborted) return;
+      updateRegion(selectedRegion.id, () => result);
+      setAnalysisProgress(100);
+      setPhase('ready');
+    } catch (error) {
+      if (controller.signal.aborted) return;
+      setErrorMessage(userFacingScanError(error));
+      setPhase('error');
+    }
   };
 
   const discardSelected = () => {
@@ -723,7 +770,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
             }}
           >
             <img src={preview} alt="Foto analizada con regiones numeradas" className="absolute inset-0 block h-full w-full object-contain" />
-            {regions.filter((region) => region.status !== 'discarded').map((region) => (
+            {regions.filter((region) => region.status !== 'discarded' && region.id === selectedRegionId).map((region) => (
                 <div
                   key={region.id}
                   className={`pointer-events-none absolute border-2 transition ${selectedRegionId === region.id ? 'ring-2 ring-white ring-offset-1 ring-offset-black' : ''} ${statusClass(region)}`}
@@ -780,6 +827,11 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
               )}
 
               <div hidden={isNative && nativeResultView !== 'scene'} className="space-y-4">
+              {summary.deferred > 0 && (
+                <div className="border-l-4 border-stone-400 bg-stone-50 px-3 py-3 text-sm text-stone-800" data-testid="scan-deferred-summary" role="status">
+                  <strong>{summary.deferred} regiones sin analizar.</strong> Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.
+                </div>
+              )}
               <div className="matchrim-data-rail grid grid-cols-3 gap-2 rounded-lg px-2 py-3 text-center sm:grid-cols-5">
                 <div><div className="text-xl font-bold text-emerald-700">{summary.recognized}</div><div className="text-xs text-slate-500">Reconocidos</div></div>
                 <div><div className="text-xl font-bold text-amber-700">{summary.uncertain}</div><div className="text-xs text-slate-500">Dudosos</div></div>
@@ -792,7 +844,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 <div className="flex items-center gap-2 font-semibold">
                   <Eye className="h-4 w-4" />
                   {coverage?.status === 'reported_complete'
-                    ? 'Cobertura estimada completa'
+                    ? 'Detección estimada completa'
                     : coverage?.status === 'partial'
                       ? 'Cobertura parcial'
                       : 'Cobertura sin verificar'}
@@ -800,9 +852,14 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 <p className="mt-1 leading-5">
                   {coverage?.estimatedVisibleObjects
                     ? `${coverage.detectedObjects} regiones de unos ${coverage.estimatedVisibleObjects} objetos estimados. No es un inventario confirmado.`
-                    : `${regions.length} regiones revisadas. No sabemos cuántas botellas visibles quedaron fuera.`}
+                    : `${regions.length} regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.`}
                 </p>
-                {coverage?.notes.length ? <p className="mt-1 text-xs opacity-80">{coverage.notes.join(' ')}</p> : null}
+                {coverage?.notes.length ? (
+                  <details className="mt-2 text-xs opacity-80">
+                    <summary className="min-h-11 cursor-pointer py-3">Detalles de la detección</summary>
+                    <p>{coverage.notes.join(' ')}</p>
+                  </details>
+                ) : null}
               </div>
 
               </div>
@@ -866,6 +923,21 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 })}
               </div>
 
+              {regions.some((region) => region.status === 'deferred' || region.status === 'unrecognized') && (
+                <section aria-label="Regiones pendientes de identificar" className="divide-y divide-stone-200">
+                  {regions.filter((region) => region.status === 'deferred' || region.status === 'unrecognized').map((region) => (
+                    <button key={region.id} type="button" onClick={() => setSelectedRegionId(region.id)}
+                      className="flex min-h-16 w-full items-start gap-3 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800"
+                      aria-label={`Revisar región ${region.index}: ${statusLabel(region)}`}>
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-stone-200 text-sm font-semibold">{region.index}</span>
+                      <span className="min-w-0"><span className="block font-semibold">{statusLabel(region)}</span>
+                        <span className="block text-xs leading-5 text-stone-600">{region.deferral?.message ?? region.fallback?.message ?? region.error ?? 'Revisa el recorte o identifica el vino manualmente.'}</span>
+                      </span>
+                    </button>
+                  ))}
+                </section>
+              )}
+
               {phase === 'ready' && (
                 <Button
                   type="button"
@@ -901,17 +973,17 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
 
                 {selectedRegion.candidates.length === 0 ? (
                   <div className="space-y-4">
-                    <AiRimContextGuide
+                    {selectedRegion.status !== 'deferred' && <AiRimContextGuide
                       context="label"
                       name={null}
                       identityConfidence={0}
                       affinity={null}
                       attributes={null}
                       primaryAction={{ label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }}
-                    />
-                      <div className="rounded-lg border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
-                      <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> Sin identidad fiable</div>
-                      <p className="mt-1">{selectedRegion.fallback?.message ?? 'No hay evidencia visual suficiente para asignar un vino.'}</p>
+                    />}
+                      <div className={`rounded-lg border-l-4 px-3 py-3 text-sm ${selectedRegion.status === 'deferred' ? 'border-stone-400 bg-stone-100 text-stone-900' : 'border-red-700 bg-red-50 text-red-950'}`}>
+                      <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> {selectedRegion.status === 'deferred' ? 'Región sin analizar' : 'Sin identidad fiable'}</div>
+                      <p className="mt-1">{selectedRegion.deferral?.message ?? selectedRegion.fallback?.message ?? 'No hay evidencia visual suficiente para asignar un vino.'}</p>
                       <p className="mt-1 font-medium">No se asignara una identidad ni una afinidad inventadas.</p>
                       {selectedRegion.fallback?.suggestedActions.length ? (
                         <ul className="mt-2 list-disc space-y-1 pl-5">
