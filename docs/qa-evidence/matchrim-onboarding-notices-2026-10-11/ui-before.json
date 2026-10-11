@@ -1,0 +1,138 @@
+{
+  "scope": "Focused local first-use and notice QA; synthetic accounts, all remote traffic intercepted.",
+  "remote_application_calls": 0,
+  "results": [
+    {
+      "case": "new-auth",
+      "passed": false,
+      "error": "eligible first use omitted guide",
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "page_errors": []
+    },
+    {
+      "case": "new-anonymous",
+      "passed": true,
+      "requests": []
+    },
+    {
+      "case": "returning-quiz",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/functions/v1/matchrim-recommendations",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "legacy-corrupt",
+      "passed": false,
+      "error": "eligible first use omitted guide",
+      "requests": [],
+      "page_errors": []
+    },
+    {
+      "case": "other-owner-completed",
+      "passed": false,
+      "error": "eligible first use omitted guide",
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "page_errors": []
+    },
+    {
+      "case": "own-skipped",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "guide-flow",
+      "passed": false,
+      "error": "",
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "page_errors": []
+    },
+    {
+      "case": "scan-notice",
+      "passed": false,
+      "error": "important scan validation is invisible",
+      "requests": [
+        {
+          "path": "/rest/v1/app_events",
+          "method": "POST"
+        }
+      ],
+      "page_errors": []
+    },
+    {
+      "case": "bodega-rejected-notice",
+      "passed": false,
+      "error": "important bodega rejection is invisible",
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ],
+      "page_errors": []
+    }
+  ]
+}

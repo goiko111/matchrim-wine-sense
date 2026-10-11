@@ -207,7 +207,6 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
         userId: user?.id,
         metadata: { mode, error: message },
       });
-      toast.error(message);
     } finally {
       if (!controller.signal.aborted) {
         setLoading(false);
@@ -294,7 +293,6 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
       if (!mountedRef.current) return;
       console.error("Error saving food recommendation:", error);
       setSaveError({ rowKey, message: "No se pudo guardar la recomendación" });
-      toast.error("No se pudo guardar la recomendación");
     } finally {
       savingRef.current = false;
       if (mountedRef.current) setSavingKey(null);

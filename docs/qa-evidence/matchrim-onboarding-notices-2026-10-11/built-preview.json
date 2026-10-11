@@ -1,0 +1,107 @@
+{
+  "scope": "Focused local first-use and notice QA; synthetic accounts, all remote traffic intercepted.",
+  "remote_application_calls": 0,
+  "results": [
+    {
+      "case": "new-auth",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "guide-flow",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "guide-landscape-text",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "scan-notice",
+      "passed": true,
+      "requests": []
+    },
+    {
+      "case": "bodega-rejected-notice",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "PATCH"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "PATCH"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    }
+  ]
+}

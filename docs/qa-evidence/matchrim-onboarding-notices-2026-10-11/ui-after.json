@@ -1,0 +1,478 @@
+{
+  "scope": "Focused local first-use and notice QA; synthetic accounts, all remote traffic intercepted.",
+  "remote_application_calls": 0,
+  "results": [
+    {
+      "case": "new-auth",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "new-anonymous",
+      "passed": true,
+      "requests": []
+    },
+    {
+      "case": "returning-quiz",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/functions/v1/matchrim-recommendations",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "returning-wines",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "legacy-corrupt",
+      "passed": true,
+      "requests": []
+    },
+    {
+      "case": "other-owner-completed",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "own-skipped",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "scoped-corrupt",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "future-version",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "old-scoped-skip",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "anon-to-account",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/auth/v1/user",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "account-switch",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/auth/v1/user",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/auth/v1/user",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "logout",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/auth/v1/logout",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "case": "guide-flow",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "guide-bottles",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/auth/v1/user",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/app_events",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "case": "guide-airim",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "guide-profile",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "guide-keyboard",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "guide-landscape-text",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "guide-portrait-text",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/quiz_results",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "scan-notice",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/app_events",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "case": "bodega-rejected-notice",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "PATCH"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "PATCH"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "bodega-timeout-retry",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "case": "bodega-logout-pending",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/rest/v1/user_roles",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET"
+        },
+        {
+          "path": "/auth/v1/logout",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "case": "notice-logout",
+      "passed": true,
+      "requests": [
+        {
+          "path": "/auth/v1/user",
+          "method": "GET"
+        },
+        {
+          "path": "/rest/v1/app_events",
+          "method": "POST"
+        },
+        {
+          "path": "/auth/v1/logout",
+          "method": "POST"
+        },
+        {
+          "path": "/rest/v1/app_events",
+          "method": "POST"
+        }
+      ]
+    }
+  ]
+}

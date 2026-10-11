@@ -37,6 +37,8 @@ type HomeLearningInfo = {
 };
 
 interface NativeAppHomeProps {
+  onboardingReady?: boolean;
+  hasSavedWines?: boolean;
   hasQuizResults: boolean;
   matchrimCode?: string;
   loadingCode?: boolean;
@@ -65,6 +67,8 @@ const formatScanTime = (timestamp: number) => {
 };
 
 const NativeAppHome = ({
+  onboardingReady = true,
+  hasSavedWines = false,
   hasQuizResults,
   matchrimCode = '',
   loadingCode = false,
@@ -111,7 +115,8 @@ const NativeAppHome = ({
       <main className="matchrim-native-home-main matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(7.5rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
         {isNative && import.meta.env.VITE_MATCHRIM_NATIVE_GUIDE_ENABLED === 'true' && (
           <div className="flex justify-end">
-            <MatchrimQuickGuide existing={Boolean(user || hasQuizResults || recentScans.length)} />
+            <MatchrimQuickGuide key={user?.id ?? 'anonymous'} ownerId={user?.id ?? null} ready={onboardingReady}
+              existing={Boolean(hasQuizResults || hasSavedWines || recentScans.length)} />
           </div>
         )}
         <div className="flex min-h-12 items-center justify-between gap-3">

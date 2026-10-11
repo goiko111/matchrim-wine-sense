@@ -222,6 +222,13 @@ const MyWines = () => {
   const [filteredWines, setFilteredWines] = useState<UserWine[]>([]);
   const [loading, setLoading] = useState(true);
   const [wineLoadFailed, setWineLoadFailed] = useState(false);
+  const wineLoadController = useRef<AbortController | null>(null);
+  const wineLoadErrorRef = useRef<HTMLDivElement>(null);
+  const currentOwner = useRef(user?.id);
+  currentOwner.current = user?.id;
+  useEffect(() => {
+    if (wineLoadFailed && !loading) wineLoadErrorRef.current?.scrollIntoView({ block: 'center', behavior: 'instant' });
+  }, [wineLoadFailed, loading]);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -298,6 +305,7 @@ const MyWines = () => {
 	      return;
 	    }
 	    loadWines();
+	    return () => { wineLoadController.current?.abort(); };
 	  }, [authLoading, user, navigate, statusFilter]);
 
 	  useEffect(() => {
@@ -400,10 +408,19 @@ const MyWines = () => {
   };
 
 	  const loadWines = async () => {
+	    const ownerId = user?.id;
+      if (!ownerId) return;
+      wineLoadController.current?.abort();
+      const controller = new AbortController();
+      wineLoadController.current = controller;
+      let timedOut = false;
+      const deadline = window.setTimeout(() => { timedOut = true; controller.abort(); }, 10000);
+      const isCurrent = () => currentOwner.current === ownerId && wineLoadController.current === controller
+        && (!controller.signal.aborted || timedOut);
 	    setLoading(true);
       setWineLoadFailed(false);
 	    try {
-	      let query = supabase.from("user_wines").select("*").eq("user_id", user!.id);
+	      let query = supabase.from("user_wines").select("*").eq("user_id", ownerId);
       
       // Filter based on status
       if (statusFilter === 'favorites') {
@@ -419,17 +436,19 @@ const MyWines = () => {
         query = query.not("rating", "is", null);
       }
       
-      const { data, error } = await query.order("created_at", { ascending: false });
+      const { data, error } = await query.order("created_at", { ascending: false }).abortSignal(controller.signal);
 
+      if (!isCurrent()) return;
       if (error) throw error;
       setWines(((data as UserWine[]) || []).map(normalizeUserWine));
       void loadSectionCounts();
     } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error loading wines:", error);
       setWineLoadFailed(true);
-      toast.error("Error al cargar tus vinos");
     } finally {
-	      setLoading(false);
+        window.clearTimeout(deadline);
+	      if (isCurrent()) setLoading(false);
 	    }
 	  };
 
@@ -733,18 +752,23 @@ const MyWines = () => {
   };
 
   const handleToggleFavorite = async (wineId: string, currentFavorite: boolean) => {
+    const ownerId = user?.id;
+    if (!ownerId) return;
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("user_wines")
         .update({ is_favorite: !currentFavorite })
         .eq("id", wineId)
-        .eq("user_id", user!.id);
+        .eq("user_id", ownerId).select('id').single();
 
+      if (currentOwner.current !== ownerId) return;
       if (error) throw error;
+      if (!data?.id) throw new Error('Favorite update not confirmed');
 
       toast.success(currentFavorite ? "Eliminado de Favoritos" : "Añadido a Mis vinos > Favoritos");
       loadWines();
     } catch (error) {
+      if (currentOwner.current !== ownerId) return;
       console.error("Error toggling favorite:", error);
       toast.error("Error al actualizar favorito");
     }
@@ -1457,7 +1481,7 @@ const MyWines = () => {
 
                 {/* Wine Collection Grid */}
                 {wineLoadFailed ? (
-                  <div role="alert" className="space-y-3 border-y border-amber-200 py-6">
+                  <div ref={wineLoadErrorRef} role="alert" className="space-y-3 border-y border-amber-200 py-6">
                     <h2 className="font-semibold text-slate-950">No hemos podido cargar tus vinos</h2>
                     <p className="text-sm text-slate-600">Tus datos no se han borrado. Comprueba la conexión y vuelve a intentarlo.</p>
                     <Button variant="outline" className="min-h-11" onClick={() => void loadWines()}>Reintentar</Button>

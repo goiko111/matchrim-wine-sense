@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, assignment02 complete
+
+1. First-use/tutorial and visible-notice milestone closed locally. Do not repeat its25 UI cases or the previous39 by inertia. See `docs/MATCHRIM_ONBOARDING_NOTICES_2026-10-11.md` and assignment02 log.
+2. Local candidate80 is unsigned, not installed/submitted. Preserve79/78 and all frozen evidence. No authorized production, push, invitation or vision call in this assignment.
+3. Wait for an authorized next milestone or the existing live/catalog/hosted-account/physical/distribution gates. Real user outcomes, canonical sensory coverage and Apple invitation remain unverified; compiled UI tests do not close them.
+
 ## Current delta: 2026-10-11, local79 candidate
 
 1. Local queue checkpoints completed: dense crop/cost contract, literal menu dedup/food evidence, shared learned profile, same-scan food save/isolation. Do not repeat completed UI suites by inertia.

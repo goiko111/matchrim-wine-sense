@@ -122,7 +122,9 @@ const Index = () => {
         setCodeProfile(localProfile);
         setActiveProfile(localProfile);
         setLearningInfo(null);
-        setSavedWines([]);
+        setSavedWines(((userWinesError ? [] : userWines) || []).map((wine) => ({
+          name: wine.name, producer: wine.producer, vintage: wine.vintage,
+        })));
         setSavedWineOwnerId(user.id);
         setHasQuizResults(Boolean(localProfile));
       }
@@ -180,6 +182,8 @@ const Index = () => {
 
   return (
     <NativeAppHome
+      onboardingReady={!authLoading && savedWineOwnerId === (user?.id ?? 'anonymous')}
+      hasSavedWines={savedWineOwnerId === user?.id && savedWines.length > 0}
       hasQuizResults={hasQuizResults}
       matchrimCode={homeMatchrimCode}
       loadingCode={loadingHomeProfile}

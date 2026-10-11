@@ -1,0 +1,71 @@
+{
+  "scope": "Local onboarding storage contracts",
+  "results": [
+    {
+      "name": "new owner has no completion",
+      "passed": true
+    },
+    {
+      "name": "verified experience bypasses automatic guide",
+      "passed": true
+    },
+    {
+      "name": "own voluntary skip survives",
+      "passed": true
+    },
+    {
+      "name": "account A completion never suppresses B",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "anonymous completion never suppresses account",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "logout never inherits account completion",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "switch back preserves own preference",
+      "passed": true
+    },
+    {
+      "name": "legacy global state kept but not assigned to an account",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "malformed does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "primitive does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "missing result does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "invalid result does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "future version does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "recognized old scoped skip preserved without rewrite",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\ntrue !== false\n"
+    },
+    {
+      "name": "events bounded and owner-separated after corrupt history",
+      "passed": false,
+      "error": "SyntaxError: Expected property name or '}' in JSON at position 1"
+    }
+  ]
+}

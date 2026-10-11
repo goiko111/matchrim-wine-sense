@@ -188,4 +188,10 @@ function useToast() {
   }
 }
 
-export { useToast, toast }
+const clearToasts = () => {
+  toastTimeouts.forEach(clearTimeout)
+  toastTimeouts.clear()
+  dispatch({ type: 'REMOVE_TOAST' })
+}
+
+export { useToast, toast, clearToasts }

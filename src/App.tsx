@@ -2,7 +2,7 @@
 import { lazy, Suspense, type ReactNode } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from '@/components/ui/toaster';
+import AccountNotifications from '@/components/AccountNotifications';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { AppErrorBoundary } from '@/components/AppErrorBoundary';
@@ -95,7 +95,7 @@ function AppRoutes() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
-        <Toaster />
+        <AccountNotifications />
       </div>
     </AppErrorBoundary>
   );

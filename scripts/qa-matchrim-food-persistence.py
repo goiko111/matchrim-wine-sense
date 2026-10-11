@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--url', default='http://127.0.0.1:4435')
 parser.add_argument('--image', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
+parser.add_argument('--cases', help='Optional comma-separated focused cases')
 args = parser.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
 uid = '00000000-0000-4000-8000-000000000079'
@@ -28,6 +29,7 @@ with sync_playwright() as pw:
     browser = pw.chromium.launch(headless=True, executable_path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
     try:
         for case in ['wishlist-favorite', 'favorite-first', 'failed-update-retry', 'unconfirmed-update-retry', 'pending-save', 'signout-result', 'signout-pending-scan']:
+            if args.cases and case not in args.cases.split(','): continue
             context = browser.new_context(viewport={'width': 393, 'height': 852}, is_mobile=True, has_touch=True)
             context.add_init_script('''
                 window.CapacitorCustomPlatform={name:'ios'};
@@ -105,6 +107,7 @@ with sync_playwright() as pw:
                     if case == 'pending-save':
                         page.wait_for_timeout(100)
                         assert fav.is_disabled(), 'second mutation allowed during save'
+                        assert not page.locator('[data-sonner-toast]').filter(has_text='guardado en Quiero Probar').count(), 'success before save confirmation'
                         assert page.get_by_role('button', name='Elegir otra imagen', exact=True).is_disabled()
                         for route, payload in held:
                             route.fulfill(content_type='application/json', body=json.dumps(payload))
@@ -114,6 +117,7 @@ with sync_playwright() as pw:
                         fav.click()
                         if case in ['failed-update-retry', 'unconfirmed-update-retry']:
                             page.get_by_text('No se pudo guardar la recomendación', exact=True).wait_for()
+                            assert not page.locator('[data-sonner-toast]').filter(has_text='No se pudo guardar').count(), 'duplicate error toast and persistent alert'
                             page.wait_for_timeout(100)
                             box = page.get_by_role('alert').filter(has_text='No se pudo guardar').bounding_box()
                             assert box and box['y'] >= 0 and box['y'] + box['height'] < 700, 'save error hidden by navigation'

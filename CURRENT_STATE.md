@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, onboarding/notices / local80
+
+- Assignment02 complete: new authenticated users no longer bypass the optional guide; valid state/events are owner-scoped, legacy global keys preserved without unverified attribution. Returning quiz/saved-wine experience, skip/reopen/account transitions and truthful six-step content verified.
+- Sonner now mounted once; notices cleared on owner changes; persistent errors not duplicated. Bodega load has10second timeout/retry and ignores stale account results; favourite success requires returned-row confirmation.
+-25/25 focused UI +3/3 affected food-notice cases +5/5 compiled-preview subset,15/15 storage contracts, release/typecheck/web/iOS build PASS. Lint0 errors/107 inherited warnings. Portrait/landscape135% CSS text, keyboard/reduced-motion captures inspected; not physical accessibility certification.
+- Unsigned simulator80 compiled with guide enabled, not installed or uploaded.79/78 preserved, no production/push/vision calls or Apple action. Report: [MATCHRIM_ONBOARDING_NOTICES_2026-10-11.md](docs/MATCHRIM_ONBOARDING_NOTICES_2026-10-11.md). Remaining live/data/physical/distribution gates unchanged.
+
 ## Latest checkpoint: 2026-10-11, local79 persistence
 
 - Same-scan food suggestion wishlist/favourite now uses one row, owner-scoped updates, serialized saves and confirmed success. Sign-out clears results and aborts pending scan; errors visible above navigation.
