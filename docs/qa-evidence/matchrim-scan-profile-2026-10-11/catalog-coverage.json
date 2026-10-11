@@ -1,0 +1,52 @@
+{
+  "scope": "Read-only recorded response audit. Rows may repeat; not a census of production catalog.",
+  "remote_calls": 0,
+  "traces": [
+    {
+      "scene": "commons-116700257-etiqueta",
+      "trace_sha256": "f5d3b68162752e8f5e33ae9fd77e4be5ecd6f3fa9e46f4c3fb54f91f540fc70a",
+      "calls": 3,
+      "rows": 2,
+      "rows_with_id": 0,
+      "rows_with_sensory": 0
+    },
+    {
+      "scene": "commons-148028485-etiqueta",
+      "trace_sha256": "8966687cc7abccc13a76788a1618378fccdae9d2628c887e8a1f972fd37150f0",
+      "calls": 1,
+      "rows": 25,
+      "rows_with_id": 20,
+      "rows_with_sensory": 0
+    },
+    {
+      "scene": "commons-159930620-etiqueta",
+      "trace_sha256": "19376b274bead30087a0e63ffe8c9353a5f83d4ad05fd30bab6d7832e98abd08",
+      "calls": 3,
+      "rows": 15,
+      "rows_with_id": 0,
+      "rows_with_sensory": 0
+    },
+    {
+      "scene": "commons-94131711-etiqueta",
+      "trace_sha256": "c247a92fe9809df4e371fa09f3b7cfb60487f24f369117a0eea9570ee1666f95",
+      "calls": 18,
+      "rows": 95,
+      "rows_with_id": 40,
+      "rows_with_sensory": 0
+    },
+    {
+      "scene": "multibottle-fridge-etiqueta",
+      "trace_sha256": "5ecaa4849a4c4190e8a0437d036c05ec3e3ae0d041f4a2901d148712a3033d61",
+      "calls": 1,
+      "rows": 1,
+      "rows_with_id": 0,
+      "rows_with_sensory": 0
+    }
+  ],
+  "totals": {
+    "calls": 26,
+    "rows": 138,
+    "rows_with_id": 60,
+    "rows_with_sensory": 0
+  }
+}

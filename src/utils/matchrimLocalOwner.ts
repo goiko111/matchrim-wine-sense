@@ -11,6 +11,12 @@ export const reconcileMatchrimLocalOwner = (userId: string | null, signedOut = f
     // Never silently import another account's cached taste or scan history.
     if (signedOut || (owner !== null && owner !== next) || (owner === null && userId)) {
       PRIVATE_KEYS.forEach(key => localStorage.removeItem(key));
+      const feedbackKeys: string[] = [];
+      for (let index = 0; index < localStorage.length; index += 1) {
+        const key = localStorage.key(index);
+        if (key?.startsWith('matchrim.affinity_feedback.')) feedbackKeys.push(key);
+      }
+      feedbackKeys.forEach(key => localStorage.removeItem(key));
       if (typeof window !== 'undefined') window.dispatchEvent(new Event('matchrim:scan-history-updated'));
     }
     localStorage.setItem(OWNER_KEY, next);

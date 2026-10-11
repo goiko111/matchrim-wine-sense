@@ -7,8 +7,10 @@ import {
   type AiRimContextInput,
 } from '@/utils/aiRimContextGuide';
 import { readStoredMatchrimProfile } from '@/utils/wineAffinityExplanation';
+import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 
 interface AiRimContextGuideProps extends AiRimContextInput {
+  profile?: MatchrimProfileLike | null;
   primaryAction?: { label: string; onClick: () => void } | null;
   secondaryAction?: { label: string; onClick: () => void } | null;
 }
@@ -16,10 +18,11 @@ interface AiRimContextGuideProps extends AiRimContextInput {
 export const AiRimContextGuide = ({
   primaryAction,
   secondaryAction,
+  profile,
   ...input
 }: AiRimContextGuideProps) => {
   const titleId = useId();
-  const guidance = buildAiRimContextGuidance(input, readStoredMatchrimProfile());
+  const guidance = buildAiRimContextGuidance(input, profile === undefined ? readStoredMatchrimProfile() : profile);
   const toneClass = guidance.tone === 'caution'
     ? 'border-amber-300 bg-amber-50 text-amber-950'
     : guidance.tone === 'positive'

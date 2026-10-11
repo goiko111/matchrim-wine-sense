@@ -35,6 +35,8 @@ import { formatScanPrice, normalizeScanCurrency, singlePriceCurrency } from '@/u
 import { clusterOverlayPins } from "@/utils/overlayPins";
 import { applyMenuWineEvidence } from '@/utils/scanWineEvidence';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
+import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
+import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { mapWithConcurrency } from '@/utils/multiWineScan';
 import {
   normalizeMenuAffinity,
@@ -90,14 +92,6 @@ interface WineMenuScannerProps {
   onScanComplete?: (winesDetected: number) => void;
 }
 
-interface MatchrimProfilePayload {
-  potente: number;
-  acidez: number;
-  dulce: number;
-  tanico: number;
-  afrutado: number;
-}
-
 type ScannedWineSortMode = 'compatibility' | 'price-asc' | 'price-desc' | 'name';
 
 const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
@@ -133,35 +127,6 @@ const normalizeAttributesTo5 = (attributes: ScannedWine['atributos']) => {
 
   if (Object.values(normalized).some((value) => value === null)) return null;
   return normalized as NonNullable<ScannedWine['atributos']>;
-};
-
-const normalizeProfileValue = (value: unknown) => {
-  const numeric = optionalScanNumber(value);
-  if (numeric === null) return null;
-  return Math.max(1, Math.min(5, Math.round(numeric)));
-};
-
-const readStoredMatchrimProfile = (): MatchrimProfilePayload | null => {
-  try {
-    const rawProfile = localStorage.getItem('matchrim_quiz_result');
-    if (!rawProfile) return null;
-
-    const parsed = JSON.parse(rawProfile) as Partial<Record<keyof MatchrimProfilePayload, unknown>>;
-    const potente = normalizeProfileValue(parsed.potente);
-    const acidez = normalizeProfileValue(parsed.acidez);
-    const dulce = normalizeProfileValue(parsed.dulce);
-    const tanico = normalizeProfileValue(parsed.tanico);
-    const afrutado = normalizeProfileValue(parsed.afrutado);
-
-    if (potente === null || acidez === null || dulce === null || tanico === null || afrutado === null) {
-      return null;
-    }
-
-    return { potente, acidez, dulce, tanico, afrutado };
-  } catch (error) {
-    console.warn('Could not read stored Matchrim profile for wine menu scan:', error);
-    return null;
-  }
 };
 
 const normalizePositionConfidence = (value: unknown) => {
@@ -249,7 +214,7 @@ const calculateWineSimilarity = (source: ScannedWine, candidate: ScannedWine) =>
   return Math.round(score / signals);
 };
 
-export const WineMenuScanner = ({
+const WineMenuScannerSession = ({
   restaurantName,
   matchrimCode,
   restaurantSessionId,
@@ -266,6 +231,7 @@ export const WineMenuScanner = ({
   const [savingWineKey, setSavingWineKey] = useState<string | null>(null);
   const [savedWineKeys, setSavedWineKeys] = useState<Set<string>>(new Set());
   const [hasProfile, setHasProfile] = useState(false);
+  const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
   const [convertingPdf, setConvertingPdf] = useState(false);
   const [scanSortMode, setScanSortMode] = useState<ScannedWineSortMode>('compatibility');
@@ -287,6 +253,18 @@ export const WineMenuScanner = ({
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const scanAbortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    scanAbortRef.current?.abort();
+    setScannedWines([]);
+    setPreview(null);
+    setSelectedPinIndex(null);
+    setSavedWineKeys(new Set());
+    setScanProfile(null);
+    setHasProfile(false);
+    setLoading(false);
+    return () => { scanAbortRef.current?.abort(); };
+  }, [user?.id]);
 
   const scannedWineTypes = useMemo(
     () => Array.from(new Set(scannedWines.map((wine) => formatWineType(wine.tipo)))).sort(),
@@ -550,6 +528,10 @@ export const WineMenuScanner = ({
         return;
       }
       setScanPhase('ocr');
+      const profileSnapshot = await loadMatchrimScanProfile(user?.id ?? null, controller.signal);
+      if (controller.signal.aborted) return;
+      const profile = profileSnapshot.profile;
+      setScanProfile(profileSnapshot);
 
       const invokeScan = async (tile: MenuScanTile, tileImage: string, attempt = 1): Promise<WineMenuScanResponse> => {
 	        try {
@@ -557,7 +539,7 @@ export const WineMenuScanner = ({
 	            image: tileImage,
 	            qa_fixture_name: `${file.name}:${tile.id}`,
 	            scan_region: tile,
-	            matchrimProfile: readStoredMatchrimProfile(),
+	            matchrimProfile: profile,
 	            pairingDishName: pairingDishName || null,
 	            similarWineName: similarWineName || null,
 	          }, controller.signal);
@@ -630,7 +612,6 @@ export const WineMenuScanner = ({
         };
       }
 
-      const profile = readStoredMatchrimProfile();
       setScanPhase('ranking');
       const normalizedWines = await mapWithConcurrency(
         (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : []).filter(isWineMenuItem).map(normalizeScannedWine),
@@ -656,7 +637,7 @@ export const WineMenuScanner = ({
 	          ]);
 	        }
         setScannedWines(normalizedWines);
-        setHasProfile(Boolean(profile) || !!data.has_profile);
+        setHasProfile(Boolean(profile));
         onScanComplete?.(normalizedWines.length);
         trackAppEvent("wine_menu_scan_completed", {
           userId: user?.id,
@@ -715,7 +696,7 @@ export const WineMenuScanner = ({
       setScanFeedback(`${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
       toast.error(message);
     } finally {
-      setLoading(false);
+      if (scanAbortRef.current === controller) setLoading(false);
     }
   };
 
@@ -725,6 +706,7 @@ export const WineMenuScanner = ({
     setScannedWines([]);
     setSavedWineKeys(new Set());
     setHasProfile(false);
+    setScanProfile(null);
     setFileType(null);
     setConvertingPdf(false);
     setScanSortMode('compatibility');
@@ -1136,6 +1118,7 @@ export const WineMenuScanner = ({
               <p className="mt-1 text-sm text-muted-foreground">
                 Revisa nombre, añada y precio antes de guardar. La carta puede tener errores de lectura.
               </p>
+              {scanProfile && <p className="mt-2 text-sm text-stone-600" data-testid="scan-profile-source">{scanProfile.note}</p>}
             </div>
             <div className="flex flex-wrap gap-2">
               {!hasProfile && (
@@ -1714,6 +1697,7 @@ export const WineMenuScanner = ({
 
 		                  <div className="mt-4">
 		                    <AffinityExplanation
+                          profile={scanProfile?.profile ?? null}
 		                      wineKey={`${wine.nombre}-${wine.productor ?? ''}-${wine.anada ?? 'nv'}`}
 		                      score={wine.compatibilidad}
 		                      identificationConfidence={wine.confidence}
@@ -1896,6 +1880,7 @@ export const WineMenuScanner = ({
 			                </div>
 			                <div className="mb-4">
 			                  <AiRimContextGuide
+                            profile={scanProfile?.profile ?? null}
 			                    context="menu"
 			                    name={selectedPinWine.nombre}
 			                    identityConfidence={selectedPinWine.confidence}
@@ -1907,6 +1892,7 @@ export const WineMenuScanner = ({
 			                  />
 			                </div>
 			                <AffinityExplanation
+                          profile={scanProfile?.profile ?? null}
 	                  wineKey={`${selectedPinWine.nombre}-${selectedPinWine.productor ?? ''}-${selectedPinWine.anada ?? 'nv'}`}
 	                  score={selectedPinWine.compatibilidad}
 	                  identificationConfidence={selectedPinWine.confidence}
@@ -1934,6 +1920,11 @@ export const WineMenuScanner = ({
 	      </Drawer>
     </div>
   );
+};
+
+export const WineMenuScanner = (props: WineMenuScannerProps = {}) => {
+  const { user } = useAuth();
+  return <WineMenuScannerSession key={user?.id ?? 'anonymous'} {...props} />;
 };
 
 export default WineMenuScanner;

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { Capacitor } from '@capacitor/core';
 import {
   AlertTriangle,
@@ -34,6 +34,8 @@ import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
 import { trackAppEvent } from '@/lib/analytics';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
+import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
+import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import {
   EdgeFunctionError,
   invokeWithEdgeFunctionRetry,
@@ -45,9 +47,6 @@ import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
 import { clusterOverlayPins } from '@/utils/overlayPins';
-import {
-  readStoredMatchrimProfile,
-} from '@/utils/wineAffinityExplanation';
 import {
   buildWineDetectionTiles,
   confirmWineCandidateIdentity,
@@ -88,11 +87,12 @@ interface MultiWineLabelScannerProps {
   }) => void | Promise<void>;
 }
 
-type ScanPhase = 'idle' | 'quality' | 'detecting' | 'analyzing' | 'ready' | 'cancelled' | 'error';
+type ScanPhase = 'idle' | 'quality' | 'profile' | 'detecting' | 'analyzing' | 'ready' | 'cancelled' | 'error';
 type NativeResultView = 'scene' | 'wines' | 'compare';
 
 interface ScanPerformance {
   qualityMs: number;
+  profileMs: number;
   detectionMs: number;
   analysisMs: number;
   totalMs: number;
@@ -107,6 +107,7 @@ interface ScanPerformance {
 const PHASE_LABELS: Record<ScanPhase, string> = {
   idle: 'Lista para escanear',
   quality: 'Comprobando imagen',
+  profile: 'Cargando tu perfil',
   detecting: 'Localizando botellas y etiquetas',
   analyzing: 'Leyendo cada región por separado',
   ready: 'Lote listo para revisar',
@@ -149,11 +150,12 @@ const userFacingScanError = (error: unknown) => {
   return message || 'No se pudo completar el análisis. La foto sigue lista para reintentar.';
 };
 
-export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScannerProps) => {
+const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScannerProps) => {
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
   const [preview, setPreview] = useState<string | null>(null);
   const [quality, setQuality] = useState<ImageQualityReport | null>(null);
+  const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);
   const [regions, setRegions] = useState<ScanRegion[]>([]);
   const [coverage, setCoverage] = useState<ScanCoverage | null>(null);
   const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
@@ -169,6 +171,19 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
   const abortRef = useRef<AbortController | null>(null);
   const lastFileRef = useRef<File | null>(null);
   const preparedSizeRef = useRef<{ width: number; height: number } | null>(null);
+  const scanProfileRef = useRef<ScanProfileSnapshot | null>(null);
+
+  useEffect(() => {
+    abortRef.current?.abort();
+    setRegions([]);
+    setPreview(null);
+    setSelectedRegionId(null);
+    setScanProfile(null);
+    scanProfileRef.current = null;
+    lastFileRef.current = null;
+    setPhase('idle');
+    return () => { abortRef.current?.abort(); };
+  }, [user?.id]);
 
   const selectedRegion = regions.find((region) => region.id === selectedRegionId) ?? null;
   const selectedCandidate = selectedRegion ? getSelectedCandidate(selectedRegion) : null;
@@ -193,10 +208,10 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
     return (b.candidate.affinity ?? -1) - (a.candidate.affinity ?? -1)
       || b.candidate.confidence - a.candidate.confidence;
   }), [duplicateGroups, regions]);
-  const loading = phase === 'quality' || phase === 'detecting' || phase === 'analyzing';
+  const loading = phase === 'quality' || phase === 'profile' || phase === 'detecting' || phase === 'analyzing';
   const progress = phase === 'quality'
     ? 8
-    : phase === 'detecting'
+    : phase === 'profile' || phase === 'detecting'
       ? 24
       : phase === 'analyzing'
         ? 24 + Math.round(analysisProgress * 0.72)
@@ -241,7 +256,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       };
     }
 
-    return applyScanWineEvidence(enriched, readStoredMatchrimProfile(), catalogMatch?.wine);
+    return applyScanWineEvidence(enriched, scanProfileRef.current?.profile ?? null, catalogMatch?.wine);
   };
 
   const analyzeRegion = async (
@@ -350,6 +365,12 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
         return;
       }
 
+      setPhase('profile');
+      const profileSnapshot = await loadMatchrimScanProfile(user?.id ?? null, controller.signal);
+      if (controller.signal.aborted) return;
+      scanProfileRef.current = profileSnapshot;
+      setScanProfile(profileSnapshot);
+      const profileFinishedAt = globalThis.performance.now();
       setPhase('detecting');
       const detectImage = async (image: string, tileId: string) => {
         detectionCalls += 1;
@@ -443,7 +464,8 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       setRegions(analyzed);
       const scanPerformance = {
         qualityMs: Math.round(qualityFinishedAt - scanStartedAt),
-        detectionMs: Math.round(detectionFinishedAt - qualityFinishedAt),
+        profileMs: Math.round(profileFinishedAt - qualityFinishedAt),
+        detectionMs: Math.round(detectionFinishedAt - profileFinishedAt),
         analysisMs: Math.round(analysisFinishedAt - detectionFinishedAt),
         totalMs: Math.round(analysisFinishedAt - scanStartedAt),
         concurrency,
@@ -462,6 +484,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
           recognized: summarizeScanRegions(analyzed).recognized,
           uncertain: summarizeScanRegions(analyzed).uncertain,
           quality_ms: scanPerformance.qualityMs,
+          profile_ms: scanPerformance.profileMs,
           detection_ms: scanPerformance.detectionMs,
           analysis_ms: scanPerformance.analysisMs,
           total_ms: scanPerformance.totalMs,
@@ -888,6 +911,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
               </div>
 
               <div hidden={isNative && nativeResultView !== 'wines'} className="space-y-4">
+              {scanProfile && <p className="text-sm text-stone-600" data-testid="scan-profile-source">{scanProfile.note}</p>}
               <div className="matchrim-surface divide-y divide-stone-100 overflow-hidden rounded-lg">
                 {rankedGroups.map((group, index) => {
                   const identityConfirmed = group.regionIds.some((id) => (
@@ -974,6 +998,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                 {selectedRegion.candidates.length === 0 ? (
                   <div className="space-y-4">
                     {selectedRegion.status !== 'deferred' && <AiRimContextGuide
+                      profile={scanProfile?.profile ?? null}
                       context="label"
                       name={null}
                       identityConfidence={0}
@@ -1073,6 +1098,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                         )}
 
                         <AiRimContextGuide
+                          profile={scanProfile?.profile ?? null}
                           context="label"
                           name={selectedCandidate.name}
                           identityConfidence={selectedCandidate.confidence}
@@ -1097,6 +1123,7 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
                         )}
 
                         <AffinityExplanation
+                          profile={scanProfile?.profile ?? null}
                           wineKey={selectedCandidate.id}
                           score={selectedCandidate.affinity}
                           identificationConfidence={selectedCandidate.confidence}
@@ -1132,4 +1159,9 @@ export const MultiWineLabelScanner = ({ onExtractComplete }: MultiWineLabelScann
       </Drawer>
     </div>
   );
+};
+
+export const MultiWineLabelScanner = (props: MultiWineLabelScannerProps) => {
+  const { user } = useAuth();
+  return <MultiWineLabelScannerSession key={user?.id ?? 'anonymous'} {...props} />;
 };

@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, profile parity
+
+1. Shared scan profile and explanation inputs now verified locally; catalog sensory coverage/provenance remains a real-data gate (zero complete sensory sheets in138 recorded rows).
+2. Check food suggestion wishlist/favorite persistence and account transitions in fully intercepted local QA. No real account creation or writes.
+3. Unsigned simulator79 compiles; physical/live recognition, signing and distribution gates remain separate. No publication or invitation action within the local assignment.
+
 ## Current delta: 2026-10-11, menu/food checkpoint
 
 1. Menu duplicate and false food-personalization client gates now pass; actual food OCR omissions remain unverified. Do not deploy the prepared backend candidate or consume vision calls in this assignment.

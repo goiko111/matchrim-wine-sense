@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, profile parity / local79
+
+- Label/menu use the same owner-scoped learned snapshot for scoring and explanation. Five displayed weights now match the existing equal-weight calculation. Auth failures cannot reuse stale local quiz; five-second profile timeout, account-state and feedback isolation verified.
+-8/8 controlled mobile cases including landscape135% CSS text, full release contracts, typecheck/lint/web build PASS. Unsigned simulator79 compiled, not installed/uploaded. Baseline78 preserved.
+- Recorded catalog audit:26 responses/138 possibly repeated rows/60 ids/zero complete sensory sheets. This is a response-contract gap, not a production catalog census. No remote calls.
+- Report: [MATCHRIM_SCAN_PROFILE_PARITY_2026-10-11.md](docs/MATCHRIM_SCAN_PROFILE_PARITY_2026-10-11.md). Next: uncovered food recommendation persistence/isolation. TestFlight invitation still unsent.
+
 ## Latest checkpoint: 2026-10-11, menu/food evidence
 
 - First-menu replay17 ->16 rows, literal Laurent Perriere Ultra preserved; no invented Brut or disputed affinity. Different cuvees/vintages/producers/disjoint rows remain distinct.

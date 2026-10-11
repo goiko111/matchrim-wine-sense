@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Check, CircleHelp, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   buildDetailedAffinityExplanation,
   readStoredMatchrimProfile,
@@ -15,6 +17,7 @@ interface AffinityExplanationProps {
   attributes?: WineAttributeInput | null;
   sensorySource?: AffinityDataSource;
   compact?: boolean;
+  profile?: MatchrimProfileLike | null;
 }
 
 const SOURCE_LABELS: Record<AffinityDataSource, string> = {
@@ -48,17 +51,21 @@ export const AffinityExplanation = ({
   attributes,
   sensorySource = 'inference',
   compact = false,
+  profile,
 }: AffinityExplanationProps) => {
-  const [feedback, setFeedback] = useState<Record<string, FeedbackValue>>(() => readStoredFeedback(wineKey));
+  const { user } = useAuth();
+  const feedbackKey = `${user?.id ?? 'anonymous'}:${wineKey}`;
+  const [storedFeedback, setStoredFeedback] = useState(() => ({ key: feedbackKey, values: readStoredFeedback(feedbackKey) }));
+  const feedback = storedFeedback.key === feedbackKey ? storedFeedback.values : {};
   const explanation = useMemo(() => buildDetailedAffinityExplanation(
-    readStoredMatchrimProfile(),
+    profile === undefined ? readStoredMatchrimProfile() : profile,
     attributes,
     { score, identificationConfidence, sensorySource },
-  ), [attributes, identificationConfidence, score, sensorySource]);
+  ), [attributes, identificationConfidence, score, sensorySource, profile]);
 
   useEffect(() => {
-    setFeedback(readStoredFeedback(wineKey));
-  }, [wineKey]);
+    setStoredFeedback({ key: feedbackKey, values: readStoredFeedback(feedbackKey) });
+  }, [feedbackKey]);
 
   if (!explanation) {
     return (
@@ -74,9 +81,9 @@ export const AffinityExplanation = ({
 
   const storeFeedback = (dimension: string, value: FeedbackValue) => {
     const next = { ...feedback, [dimension]: value };
-    setFeedback(next);
+    setStoredFeedback({ key: feedbackKey, values: next });
     try {
-      window.localStorage.setItem(`matchrim.affinity_feedback.${wineKey}`, JSON.stringify(next));
+      window.localStorage.setItem(`matchrim.affinity_feedback.${feedbackKey}`, JSON.stringify(next));
     } catch (error) {
       console.warn('[affinity] Could not persist feedback:', error);
     }
@@ -96,9 +103,15 @@ export const AffinityExplanation = ({
               <span className="ml-1 text-white/65">afinidad</span>
             </div>
           )}
-          {explanation.scoreRange && <div className="text-white/65">Rango {explanation.scoreRange.min}-{explanation.scoreRange.max}%</div>}
+          {explanation.scoreRange && <div className="text-white/65">Rango orientativo {explanation.scoreRange.min}-{explanation.scoreRange.max}%</div>}
         </div>
       </div>
+
+      {explanation.score !== null && sensorySource === 'catalog' && (
+        <p className="text-xs leading-5 text-stone-600">
+          Cinco factores con el mismo peso: potencia, acidez, dulzor, tanino y fruta. El cálculo usa su distancia conjunta y un ajuste conservador; no suma los porcentajes de las barras. El rango es orientativo, no un intervalo estadístico ni una probabilidad de acierto.
+        </p>
+      )}
 
       <div className="matchrim-data-rail grid grid-cols-2 gap-3 rounded-lg px-2 py-3 text-center text-xs text-slate-500">
         <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.identificationConfidence * 100)}%</span>Señal de identidad</div>
@@ -131,7 +144,7 @@ export const AffinityExplanation = ({
               </div>
               {!compact && (
                 <div className="mt-1 text-[11px] text-slate-500">
-                  {dimension.profileValue === null ? 'Tu perfil sin dato' : `Tu perfil ${dimension.profileValue.toFixed(1)}`} · vino {dimension.wineValue.toFixed(1)} · peso máximo {Math.round(dimension.weight * 100)}% · {SOURCE_LABELS[dimension.source]}
+                  {dimension.profileValue === null ? 'Tu perfil sin dato' : `Tu perfil ${dimension.profileValue.toFixed(1)}`} · vino {dimension.wineValue.toFixed(1)} · {dimension.weight > 0 ? `peso ${Math.round(dimension.weight * 100)}%` : 'dato adicional, sin peso en el cálculo'} · {SOURCE_LABELS[dimension.source]}
                 </div>
               )}
             </div>

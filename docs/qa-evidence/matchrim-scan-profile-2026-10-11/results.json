@@ -1,0 +1,224 @@
+{
+  "scope": "Synthetic account/profile/catalog UI parity; no remote requests or real users.",
+  "remote_calls": 0,
+  "scanner_parity": true,
+  "detail_parity": true,
+  "details": {
+    "etiqueta": [
+      "Potencia\nTu perfil 4.8 \u00b7 vino 5.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo",
+      "Acidez\nTu perfil 3.9 \u00b7 vino 4.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo",
+      "Dulzor\nTu perfil 1.2 \u00b7 vino 1.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo",
+      "Tanino\nTu perfil 3.9 \u00b7 vino 4.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo",
+      "Fruta\nTu perfil 4.8 \u00b7 vino 5.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo"
+    ],
+    "carta-vinos": [
+      "Potencia\nTu perfil 4.8 \u00b7 vino 5.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo",
+      "Acidez\nTu perfil 3.9 \u00b7 vino 4.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo",
+      "Dulzor\nTu perfil 1.2 \u00b7 vino 1.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo",
+      "Tanino\nTu perfil 3.9 \u00b7 vino 4.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo",
+      "Fruta\nTu perfil 4.8 \u00b7 vino 5.0 \u00b7 peso 20% \u00b7 ficha de cat\u00e1logo"
+    ]
+  },
+  "results": [
+    {
+      "scenario": "learned",
+      "mode": "etiqueta",
+      "passed": true,
+      "score": "89%",
+      "elapsed_seconds": 0.46,
+      "profile_reads": [
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "user_wines",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "scenario": "learned",
+      "mode": "carta-vinos",
+      "passed": true,
+      "score": "89%",
+      "elapsed_seconds": 0.21,
+      "profile_reads": [
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "user_wines",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "scenario": "training-unavailable",
+      "mode": "etiqueta",
+      "passed": true,
+      "score": "57%",
+      "elapsed_seconds": 5.52,
+      "profile_reads": [
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "user_wines",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "user_wines",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "user_wines",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "scenario": "training-unavailable",
+      "mode": "carta-vinos",
+      "passed": true,
+      "score": "57%",
+      "elapsed_seconds": 5.44,
+      "profile_reads": [
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "user_wines",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "user_wines",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "user_wines",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "scenario": "profile-unavailable",
+      "mode": "etiqueta",
+      "passed": true,
+      "score": "-",
+      "elapsed_seconds": 5.55,
+      "profile_reads": [
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "scenario": "profile-unavailable",
+      "mode": "carta-vinos",
+      "passed": true,
+      "score": "-",
+      "elapsed_seconds": 5.45,
+      "profile_reads": [
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        },
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "scenario": "profile-stalled",
+      "mode": "etiqueta",
+      "passed": true,
+      "score": "-",
+      "elapsed_seconds": 5.57,
+      "profile_reads": [
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "scenario": "profile-stalled",
+      "mode": "carta-vinos",
+      "passed": true,
+      "score": "-",
+      "elapsed_seconds": 5.45,
+      "profile_reads": [
+        {
+          "table": "quiz_results",
+          "owner": [
+            "eq.00000000-0000-4000-8000-000000000078"
+          ]
+        }
+      ],
+      "errors": []
+    }
+  ]
+}
