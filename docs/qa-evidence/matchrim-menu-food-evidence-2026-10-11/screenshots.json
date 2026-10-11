@@ -1,0 +1,14 @@
+[
+  {
+    "file": "wine-menu-portrait.png",
+    "sha256": "0f6357f5a5bceebea9390372fcd26825c0c40f65d00bec8922f573f48f529d64"
+  },
+  {
+    "file": "food-legacy-portrait.png",
+    "sha256": "ec90e5ef2b826e1027801f52b572255aec741082fd265d8fc16646f4a111a8bd"
+  },
+  {
+    "file": "food-partial-landscape.png",
+    "sha256": "aa2218987289484da9d7d5e854ac5afbe99e03cc888c1d31d726c3dca3eab276"
+  }
+]

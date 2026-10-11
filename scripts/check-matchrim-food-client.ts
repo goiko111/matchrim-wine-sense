@@ -21,7 +21,9 @@ for (const invalid of [null, {}, { ...valid, dishes: null }, { ...valid, dishes:
   { ...valid, dishes: [{ ...valid.dishes[0], recomendaciones: null }] }]) {
   assert.throws(() => parseFoodScanResponse(invalid));
 }
-for (const match of [-1, 101, NaN, Infinity, null, '', '85']) {
+assert.equal(parseFoodScanResponse(valid).dishes[0].match, null);
+assert.equal(parseFoodScanResponse(valid).dishes[0].recomendaciones[0].match, null);
+for (const match of [-1, 101, NaN, Infinity, '', '85']) {
   assert.throws(() => parseFoodScanResponse({ ...valid, dishes: [{ ...valid.dishes[0], match }] }));
   assert.throws(() => parseFoodScanResponse({ ...valid, dishes: [{ ...valid.dishes[0],
     recomendaciones: [{ ...valid.dishes[0].recomendaciones[0], match }],

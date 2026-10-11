@@ -195,6 +195,18 @@ const hasConflictingVariant = (left: MenuScanWine, right: MenuScanWine) => {
 const sourceHeading = (wine: MenuScanWine) => normalizeText((wine.texto_fuente || '')
   .split(/\r?\n|\b(?:zona|zone|uva|grapes?|crianza|aging)\s*[:/]/i)[0]);
 
+const overlappingLiteralRow = (left: MenuScanWine, right: MenuScanWine) => {
+  const a = left.posicion;
+  const b = right.posicion;
+  if (!a || !b) return false;
+  const ax = percentage(a.x), ay = percentage(a.y), aw = percentage(a.width), ah = percentage(a.height);
+  const bx = percentage(b.x), by = percentage(b.y), bw = percentage(b.width), bh = percentage(b.height);
+  if (ax === null || ay === null || !aw || !ah || bx === null || by === null || !bw || !bh) return false;
+  const horizontal = Math.max(0, Math.min(ax + aw, bx + bw) - Math.max(ax, bx)) / Math.min(aw, bw);
+  const vertical = Math.max(0, Math.min(ay + ah, by + bh) - Math.max(ay, by)) / Math.min(ah, bh);
+  return horizontal >= 0.6 && vertical >= 0.6;
+};
+
 const sameLiteralSourceRow = (left: MenuScanWine, right: MenuScanWine) => {
   const heading = sourceHeading(left);
   const a = positionAnchor(left);
@@ -205,7 +217,8 @@ const sameLiteralSourceRow = (left: MenuScanWine, right: MenuScanWine) => {
     && Boolean(producer && producer === normalizeText(right.productor))
     && !(left.anada && right.anada && left.anada !== right.anada)
     && !(left.tipo && right.tipo && left.tipo !== right.tipo)
-    && Boolean(a && b && Math.abs(a.x - b.x) <= 25 && Math.abs(a.y - b.y) <= 2.5);
+    && (Boolean(a && b && Math.abs(a.x - b.x) <= 25 && Math.abs(a.y - b.y) <= 2.5)
+      || overlappingLiteralRow(left, right));
 };
 
 const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {

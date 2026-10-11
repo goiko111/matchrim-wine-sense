@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, menu/food evidence
+
+- First-menu replay17 ->16 rows, literal Laurent Perriere Ultra preserved; no invented Brut or disputed affinity. Different cuvees/vintages/producers/disjoint rows remain distinct.
+- Food style/dish percentages and unsupported personalized food claims withheld. Coverage survives parsing; uncertain styles cannot save numerical affinity/sensory sheets. Backend candidate prompt/null handling corrected locally, NOT deployed.
+-6/6 new mobile cases +10/10 food regression, full release contracts, typecheck/focused lint/build PASS. No new OCR or human preference metrics. Actual BBQ omissions remain.
+- Report: [MATCHRIM_MENU_FOOD_EVIDENCE_2026-10-11.md](docs/MATCHRIM_MENU_FOOD_EVIDENCE_2026-10-11.md). Next: catalog sensory provenance and learned-profile parity. No Apple action/remote calls/publication; baseline78 binary preserved.
+
 ## Latest checkpoint: 2026-10-11, dense-scene local gate
 
 - On baseline5431cff: corrected clipped box/crop geometry; native-pixel/legibility/contrast gate;12 automatic regions and24 client Edge attempts per batch. Deferred regions stay reviewable, separate from failed recognition. Only selected outline drawn.

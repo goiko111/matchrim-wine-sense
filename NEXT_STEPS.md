@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, menu/food checkpoint
+
+1. Menu duplicate and false food-personalization client gates now pass; actual food OCR omissions remain unverified. Do not deploy the prepared backend candidate or consume vision calls in this assignment.
+2. Next: catalog sensory provenance/coverage and learned-profile input parity, then uncovered account-local persistence/isolation. Preserve all baseline artifacts.
+3. Final combined source needs native build and separate live/physical release gates. No Apple invitation/upload/publication in the current local scope.
+
 ## Current local assignment: 2026-10-11, dense gate checkpoint
 
 1. Continue partial/full wine-menu duplicates and food-vs-wine preference separation using recorded responses; then catalog sensory coverage/profile parity.

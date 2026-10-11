@@ -1,0 +1,98 @@
+{
+  "scope": "Offline recorded menu/food regression. External requests are always intercepted.",
+  "remote_calls": 0,
+  "results": [
+    {
+      "scenario": "wine-menu",
+      "orientation": "portrait",
+      "passed": true,
+      "errors": [],
+      "intercepted_calls": [
+        {
+          "endpoint": "scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "endpoint": "scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "endpoint": "scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "endpoint": "scan-wine-menu",
+          "tile": "right-focus"
+        }
+      ]
+    },
+    {
+      "scenario": "wine-menu",
+      "orientation": "landscape",
+      "passed": true,
+      "errors": [],
+      "intercepted_calls": [
+        {
+          "endpoint": "scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "endpoint": "scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "endpoint": "scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "endpoint": "scan-wine-menu",
+          "tile": "right-focus"
+        }
+      ]
+    },
+    {
+      "scenario": "food-legacy",
+      "orientation": "portrait",
+      "passed": true,
+      "errors": [],
+      "intercepted_calls": [
+        {
+          "endpoint": "scan-food-pairing"
+        }
+      ]
+    },
+    {
+      "scenario": "food-legacy",
+      "orientation": "landscape",
+      "passed": true,
+      "errors": [],
+      "intercepted_calls": [
+        {
+          "endpoint": "scan-food-pairing"
+        }
+      ]
+    },
+    {
+      "scenario": "food-partial",
+      "orientation": "portrait",
+      "passed": true,
+      "errors": [],
+      "intercepted_calls": [
+        {
+          "endpoint": "scan-food-pairing"
+        }
+      ]
+    },
+    {
+      "scenario": "food-partial",
+      "orientation": "landscape",
+      "passed": true,
+      "errors": [],
+      "intercepted_calls": [
+        {
+          "endpoint": "scan-food-pairing"
+        }
+      ]
+    }
+  ]
+}

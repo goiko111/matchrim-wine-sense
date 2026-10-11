@@ -7,7 +7,7 @@ export type FoodRecommendation = {
   nombre: string;
   tipo: string | null;
   uvas: string[];
-  match: number;
+  match: null;
   razon: string;
   atributos: Record<string, unknown> | null;
 };
@@ -15,7 +15,7 @@ export type FoodRecommendation = {
 export type FoodDish = {
   nombre: string;
   categoria: string | null;
-  match: number;
+  match: null;
   razon: string;
   recomendaciones: FoodRecommendation[];
   source_order: number;
@@ -44,13 +44,13 @@ const normalizeKey = (value: string) => value
   .trim();
 
 const toCount = (value: unknown): number | null => {
-  const numeric = Number(value);
-  return Number.isFinite(numeric) && numeric >= 0 ? Math.round(numeric) : null;
+  const numeric = optionalScanNumber(value);
+  return numeric !== null && numeric >= 0 ? Math.round(numeric) : null;
 };
 
 const toConfidence = (value: unknown): number | null => {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return null;
+  const numeric = optionalScanNumber(value);
+  if (numeric === null || numeric < 0 || numeric > 100) return null;
   const percent = numeric <= 1 ? numeric * 100 : numeric;
   return clamp(Math.round(percent), 0, 100);
 };
@@ -60,8 +60,8 @@ const normalizeSensoryAttributes = (value: unknown): Record<string, number | nul
   const source = value as RawRecord;
   const keys = ["potencia", "acidez", "dulzura", "taninos", "afrutado"];
   const normalized = Object.fromEntries(keys.map((key) => {
-    const numeric = Number(source[key]);
-    if (!Number.isFinite(numeric)) return [key, null];
+    const numeric = optionalScanNumber(source[key]);
+    if (numeric === null || numeric <= 0) return [key, null];
     const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
     return [key, clamp(Math.round(scaled), 1, 5)];
   }));
@@ -94,7 +94,7 @@ const cloneRecommendation = (raw: unknown): FoodRecommendation | null => {
     nombre,
     tipo: source.tipo ? String(source.tipo) : null,
     uvas: Array.isArray(source.uvas) ? source.uvas.map(String).filter(Boolean) : [],
-    match: clamp(Math.round(Number(source.match) || 0), 0, 100),
+    match: null,
     razon: source.razon ? String(source.razon) : "",
     atributos: normalizeSensoryAttributes(source.atributos),
   };
@@ -126,9 +126,9 @@ export const normalizeFoodScan = (
       expanded.push({
         nombre,
         categoria: source.categoria ? String(source.categoria) : null,
-        match: clamp(Math.round(Number(source.match) || 0), 0, 100),
-        razon: source.razon ? String(source.razon) : "",
-        recomendaciones: recommendations,
+        match: null,
+        razon: names.length === 1 && source.razon ? String(source.razon) : "",
+        recomendaciones: names.length === 1 ? recommendations : [],
         source_order: toCount(source.source_order) ?? index + 1,
         source_text: source.source_text ? String(source.source_text) : sourceName,
         confidence: toConfidence(source.confidence),
@@ -179,3 +179,4 @@ export const normalizeFoodScan = (
     },
   };
 };
+import { optionalScanNumber } from '../_shared/matchrim-scan-values.ts';

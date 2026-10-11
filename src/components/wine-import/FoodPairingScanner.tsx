@@ -41,19 +41,6 @@ const processingSteps: Record<FoodScanMode, string[]> = {
   dish: ["Analizando el plato...", "Leyendo textura e intensidad...", "Buscando vinos que encajen contigo..."],
 };
 
-const getMatchTone = (match: number) => {
-  if (match >= 80) return "text-green-700";
-  if (match >= 65) return "text-amber-700";
-  return "text-red-800";
-};
-
-const getPairingDecision = (match: number) => {
-  if (match >= 80) return "Muy buen camino";
-  if (match >= 65) return "Buena opción";
-  if (match >= 50) return "Con matices";
-  return "Difícil para tu perfil";
-};
-
 export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockMode = false }: FoodPairingScannerProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -227,7 +214,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           status: "wishlist",
           is_favorite: favorite,
           matchrim_affinity: recommendation.match,
-          sensory_attributes: (recommendation.atributos || null) as Json,
+          sensory_attributes: null,
           use_for_profile_training: false,
           consumption_place: restaurantName || null,
           consumption_place_type: restaurantName ? "restaurant" : null,
@@ -237,6 +224,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
             dish_name: dish.nombre,
             dish_category: dish.categoria,
             dish_match: dish.match,
+            evidence: 'unverified_style_suggestion',
           } as Json,
         });
 
@@ -421,19 +409,19 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
               <div>
                 <h3 className="font-semibold text-slate-950">Resultado</h3>
                 <p className="mt-1 text-sm leading-6 text-slate-600">{result.summary}</p>
-                {!result.has_profile && (
-                  <p className="mt-2 text-sm text-amber-700">
-                    Completa el test Matchrim para ordenar estas recomendaciones por tu gusto real.
-                  </p>
+                <p className="mt-2 text-sm text-amber-800">Tus gustos en vino no determinan tus preferencias de comida.</p>
+                {result.coverage?.estimated_visible_dishes != null && (
+                  <p className="mt-2 text-sm text-stone-600">El detector estima {result.coverage.estimated_visible_dishes} platos visibles; ha devuelto {result.dishes.length}.</p>
                 )}
+                {result.coverage?.truncated && <p className="mt-2 font-medium text-amber-800">Lectura parcial. Faltan platos por revisar.</p>}
               </div>
             </div>
           </div>
 
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
-            <p className="font-semibold">Cómo leer estos porcentajes</p>
+            <p className="font-semibold">Maridajes orientativos, sin puntuación personal</p>
             <p className="mt-1">
-              El porcentaje del plato mide lo fácil que es maridarlo con tu perfil. El porcentaje de cada recomendación mide el encaje entre esa idea de vino, el plato y tu Matchrim.
+              Faltan una botella identificada y sus datos sensoriales para calcular afinidad. No se han evaluado tus gustos de comida, alergias ni restricciones dietéticas.
             </p>
             <p className="mt-1">
               Si no hemos escaneado una carta de vinos concreta, estas tarjetas son ideas de estilo, uva o región. Para convertirlas en una botella real del restaurante, escanea su carta de vinos.
@@ -448,11 +436,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                     {dish.categoria}
                   </Badge>
                   <h3 className="text-lg font-bold leading-tight text-slate-950">{dish.nombre}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{dish.razon}</p>
-                </div>
-                <div className="shrink-0 text-right">
-                  <div className={`text-2xl font-bold ${getMatchTone(dish.match)}`}>{dish.match}%</div>
-                  <p className="text-xs font-medium uppercase text-slate-400">maridaje</p>
+                  {dish.source_text && <p className="mt-2 text-sm leading-6 text-slate-600">Lectura: {dish.source_text}</p>}
                 </div>
               </div>
 
@@ -467,7 +451,6 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                   const favoriteSaveKey = `favorite-${dish.nombre}-${recommendation.nombre}-${recommendationIndex}`;
                   const isSaved = savedKeys.has(saveKey);
                   const isFavoriteSaved = savedKeys.has(favoriteSaveKey);
-                  const recommendationDecision = getPairingDecision(recommendation.match);
 
                   return (
                     <div
@@ -480,9 +463,6 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
 	                            <Badge variant="outline" className="border-amber-200 bg-white text-amber-950">
 	                              Idea de vino
 	                            </Badge>
-	                            <span className={`text-xs font-semibold ${getMatchTone(recommendation.match)}`}>
-	                              {recommendationDecision}
-	                            </span>
 	                          </div>
 	                          <h4 className="font-semibold text-slate-950">{recommendation.nombre}</h4>
 	                          <div className="mt-2 flex flex-wrap gap-2">
@@ -492,13 +472,10 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                             ))}
                           </div>
                         </div>
-                        <span className={`shrink-0 text-lg font-bold ${getMatchTone(recommendation.match)}`}>
-                          {recommendation.match}%
-                          <span className="block text-right text-[10px] font-medium uppercase text-slate-400">idea + plato</span>
-                        </span>
                       </div>
 
-	                      <p className="mt-3 text-sm leading-6 text-slate-600">{recommendation.razon}</p>
+	                      <p className="mt-3 text-xs font-semibold text-stone-600">Hipótesis de maridaje del modelo</p>
+	                      <p className="mt-1 text-sm leading-6 text-slate-600">{recommendation.razon}</p>
 	                      <p className="mt-2 rounded-md border border-stone-200 bg-white p-2 text-xs leading-5 text-slate-500">
 	                        Esto todavía no es una botella concreta: úsalo como dirección de búsqueda o escanea la carta de vinos para elegir el vino real del restaurante.
 	                      </p>
