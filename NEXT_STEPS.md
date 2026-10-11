@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-11, assignment04 complete
+
+1. Rating/training/delete lifetime and response-confirmation checkpoint closed locally.54 unique intercepted UI cases; see `docs/MATCHRIM_BODEGA_ACTIONS_2026-10-11.md`. No actual server persistence or user outcome certification.
+2. Broader enlarged-text landscape clipping remains in scan/search actions, learning CTA and contextual aiRIM buttons. Purchase and other mutation modules are not audited by this scope. Keep these separate from the completed three-action fix.
+3. Wait for the next authorized scope. Hosted returned-row/RLS behavior, server concurrency, live canonical data/recognition, physical accessibility and distribution remain external/separate gates. Preserve unsigned80 and28 vision calls; no native number, push or Apple action for this checkpoint.
+
 ## Current delta: 2026-10-11, assignment03 complete
 
 1. Bodega read/favorite lifetime checkpoint closed locally; see `docs/MATCHRIM_BODEGA_GENERATIONS_2026-10-11.md`. Do not repeat unrelated completed suites.

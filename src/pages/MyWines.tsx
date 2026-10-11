@@ -19,6 +19,7 @@ import type { Json } from "@/integrations/supabase/types";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
+import { confirmsWineMutation } from '@/utils/matchrimWineMutation';
 import { toast } from "sonner";
 import {
   Wine,
@@ -228,6 +229,8 @@ const MyWinesForOwner = () => {
   const ownerLifetime = useRef({ active: false, generation: 0 });
   const pendingFavorites = useRef(new Set<string>());
   const [savingFavorites, setSavingFavorites] = useState<Set<string>>(new Set());
+  const pendingWineActions = useRef(new Set<string>());
+  const [savingWineActions, setSavingWineActions] = useState<Set<string>>(new Set());
   const wineLoadErrorRef = useRef<HTMLDivElement>(null);
   const currentOwner = useRef(user?.id);
   currentOwner.current = user?.id;
@@ -825,7 +828,26 @@ const MyWinesForOwner = () => {
     }
   };
 
+  const beginWineAction = (wineId: string) => {
+    const ownerId = user?.id;
+    if (!ownerId || !ownerLifetime.current.active || pendingWineActions.current.has(wineId)) return null;
+    const generation = ownerLifetime.current.generation;
+    const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+      && currentOwner.current === ownerId;
+    pendingWineActions.current.add(wineId);
+    setSavingWineActions(new Set(pendingWineActions.current));
+    return {
+      ownerId,
+      isCurrent,
+      finish: () => {
+        pendingWineActions.current.delete(wineId);
+        if (isCurrent()) setSavingWineActions(new Set(pendingWineActions.current));
+      },
+    };
+  };
+
   const handleToggleProfileTraining = async (wineId: string, nextValue: boolean) => {
+    if (!ownerLifetime.current.active) return;
     const wine = wines.find((item) => item.id === wineId);
 
     if (!wine?.rating) {
@@ -838,14 +860,21 @@ const MyWinesForOwner = () => {
       return;
     }
 
+    const action = beginWineAction(wineId);
+    if (!action) return;
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("user_wines")
         .update({ use_for_profile_training: nextValue })
         .eq("id", wineId)
-        .eq("user_id", user!.id);
+        .eq("user_id", action.ownerId)
+        .select('id, use_for_profile_training').single();
 
+      if (!action.isCurrent()) return;
       if (error) throw error;
+      if (!confirmsWineMutation(data, wineId, { use_for_profile_training: nextValue })) {
+        throw new Error('Training update not confirmed');
+      }
 
       setWines((currentWines) =>
         currentWines.map((item) =>
@@ -856,19 +885,29 @@ const MyWinesForOwner = () => {
 	      toast.success(nextValue ? "Este vino volverá a afinar tu perfil" : "Este vino ya no entrena tu perfil");
 	      loadLearningWines();
 	    } catch (error) {
+      if (!action.isCurrent()) return;
       console.error("Error toggling profile training:", error);
-      toast.error("No se pudo actualizar el entrenamiento del perfil");
+      toast.error("No se pudo confirmar el cambio de entrenamiento del perfil");
+    } finally {
+      action.finish();
     }
   };
 
-  const pendingRatings = useRef(new Set<string>());
   const handleRating = async (wineId: string, rating: 'love' | 'ok' | 'not_for_me' | null) => {
-    if (pendingRatings.current.has(wineId)) return;
-    pendingRatings.current.add(wineId);
+    const action = beginWineAction(wineId);
+    if (!action) return;
     try {
       const wine = wines.find(w => w.id === wineId);
+      if (!wine) throw new Error('Wine unavailable for rating');
+      const hasSensoryAttributes = Boolean(normalizeSensoryAttributesTo5(wine.sensory_attributes));
       
-      const updateData: any = { rating, use_for_profile_training: rating !== null };
+      const updateData: {
+        rating: typeof rating;
+        use_for_profile_training: boolean;
+        status?: 'tasted';
+        consumption_date?: string;
+        quantity?: number;
+      } = { rating, use_for_profile_training: rating !== null };
       
       if (rating && wine?.status === 'wishlist') {
         updateData.status = 'tasted';
@@ -884,33 +923,38 @@ const MyWinesForOwner = () => {
         }
       }
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("user_wines")
         .update(updateData)
         .eq("id", wineId)
-        .eq("user_id", user!.id);
+        .eq("user_id", action.ownerId)
+        .select('id, rating, use_for_profile_training, status, quantity, consumption_date').single();
 
+      if (!action.isCurrent()) return;
       if (error) throw error;
+      if (!confirmsWineMutation(data, wineId, updateData)) throw new Error('Rating update not confirmed');
 
       const message = wine?.status === 'collection' && !wine.rating
         ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' y movido a Ya Probados'}`
-        : wine?.status === 'wishlist'
-          ? 'Vino movido a Ya Probados y usado para afinar tu perfil'
+        : rating && wine.status === 'wishlist'
+          ? 'Vino movido a Ya Probados'
           : "Valoración guardada";
       
-      toast.success(message);
+      toast.success(rating && !hasSensoryAttributes
+        ? `${message}. Faltan atributos sensoriales para afinar tu perfil.`
+        : message);
       trackAppEvent("wine_rating_added", {
-        userId: user!.id,
+        userId: action.ownerId,
         metadata: {
           wine_id: wineId,
           rating,
           previous_status: wine?.status || null,
-          has_sensory_attributes: Boolean(wine?.sensory_attributes),
+          has_sensory_attributes: hasSensoryAttributes,
         },
       });
-      if (wine?.sensory_attributes) {
+      if (hasSensoryAttributes) {
         trackAppEvent("profile_learning_updated", {
-          userId: user!.id,
+          userId: action.ownerId,
           metadata: {
             wine_id: wineId,
             rating,
@@ -927,35 +971,48 @@ const MyWinesForOwner = () => {
           body: { wine_id: wineId }
         })
         .then(({ error }) => {
-          if (error) {
+          if (action.isCurrent() && error) {
             console.error("Error recalculating affinity after rating:", error);
           }
         });
 
 	      await loadWines();
+	      if (!action.isCurrent()) return;
 	      await loadLearningWines();
     } catch (error) {
+      if (!action.isCurrent()) return;
       console.error("Error rating wine:", error);
-      toast.error("Error al guardar valoración");
+      toast.error("No se pudo confirmar la valoración");
     } finally {
-      pendingRatings.current.delete(wineId);
+      action.finish();
     }
   };
 
   const handleDeleteWine = async (id: string) => {
-    if (!confirm("¿Estás seguro de eliminar este vino?")) return;
+    const action = beginWineAction(id);
+    if (!action) return;
+    if (!confirm("¿Estás seguro de eliminar este vino?")) {
+      action.finish();
+      return;
+    }
 
     try {
-      const { error } = await supabase.from("user_wines").delete().eq("id", id).eq("user_id", user!.id);
+      const { data, error } = await supabase.from("user_wines").delete().eq("id", id)
+        .eq("user_id", action.ownerId).select('id').single();
 
+      if (!action.isCurrent()) return;
       if (error) throw error;
+      if (!confirmsWineMutation(data, id)) throw new Error('Wine deletion not confirmed');
 
 	      toast.success("Vino eliminado");
 	      loadWines();
 	      loadLearningWines();
 	    } catch (error) {
+      if (!action.isCurrent()) return;
       console.error("Error deleting wine:", error);
-      toast.error("Error al eliminar el vino");
+      toast.error("No se pudo confirmar la eliminación del vino");
+    } finally {
+      action.finish();
     }
   };
 
@@ -1652,6 +1709,8 @@ const MyWinesForOwner = () => {
                                 size="icon"
                                 className="h-11 w-11 shrink-0"
                                 aria-label={`Eliminar ${wine.name}`}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
                                 onClick={() => handleDeleteWine(wine.id)}
                               >
                                 <Trash2 className="h-4 w-4 text-destructive" />
@@ -1786,6 +1845,8 @@ const MyWinesForOwner = () => {
                                     checked={Boolean(wine.use_for_profile_training)}
                                     onCheckedChange={(checked) => handleToggleProfileTraining(wine.id, checked)}
                                     aria-label={`Usar ${wine.name} para entrenar perfil`}
+                                    disabled={savingWineActions.has(wine.id)}
+                                    aria-busy={savingWineActions.has(wine.id)}
                                   />
                                 ) : (
                                   <Badge variant="outline">Sin atributos</Badge>
@@ -1796,37 +1857,43 @@ const MyWinesForOwner = () => {
 
                           {/* Rating Buttons - move wishlist wines to tasted and train the profile */}
                           {wine.rating && (
-                            <Button variant="ghost" className="min-h-11 text-slate-600" onClick={() => handleRating(wine.id, null)}>
+                            <Button variant="ghost" className="min-h-11 text-slate-600" disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => handleRating(wine.id, null)}>
                               Quitar valoración
                             </Button>
                           )}
                           {(wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
-                            <div className="flex gap-2 pt-2">
+                            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,6.5rem),1fr))] gap-2 pt-2">
                               <Button
                                 variant={wine.rating === 'love' ? 'default' : 'outline'}
                                 size="sm"
-                                className="min-w-0 flex-1 text-xs sm:text-sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'love')}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <ThumbsUp className="h-3.5 w-3.5 mr-1" />
+                                <ThumbsUp className="mr-1 h-3.5 w-3.5 shrink-0" />
                                 Me encanta
                               </Button>
                               <Button
                                 variant={wine.rating === 'ok' ? 'default' : 'outline'}
                                 size="sm"
-                                className="min-w-0 flex-1 text-xs sm:text-sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'ok')}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <Meh className="h-3.5 w-3.5 mr-1" />
+                                <Meh className="mr-1 h-3.5 w-3.5 shrink-0" />
                                 Correcto
                               </Button>
                               <Button
                                 variant={wine.rating === 'not_for_me' ? 'default' : 'outline'}
                                 size="sm"
-                                className="min-w-0 flex-1 text-xs sm:text-sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'not_for_me')}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <ThumbsDown className="h-3.5 w-3.5 mr-1" />
+                                <ThumbsDown className="mr-1 h-3.5 w-3.5 shrink-0" />
                                 No va
                               </Button>
                             </div>

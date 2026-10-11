@@ -1,0 +1,28 @@
+{
+  "scope": "controlled UI, no real accounts or server writes",
+  "uniqueNewCases": 54,
+  "executions": [
+    {
+      "run": "after",
+      "passed": 44
+    },
+    {
+      "run": "policy-layout",
+      "passed": 7
+    },
+    {
+      "run": "late-errors",
+      "passed": 6
+    },
+    {
+      "run": "visual-final",
+      "passed": 3
+    },
+    {
+      "run": "portrait-final",
+      "passed": 1
+    }
+  ],
+  "affectedExisting": 1,
+  "responseContracts": 18
+}

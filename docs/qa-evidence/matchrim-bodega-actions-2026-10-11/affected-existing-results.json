@@ -1,0 +1,39 @@
+{
+  "scope": "local intercepted UI, not real accounts/server writes",
+  "ignoreReadAbort": false,
+  "results": [
+    {
+      "case": "same-owner-learning",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "main"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "counts"
+        },
+        {
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "other"
+        },
+        {
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "kind": "learning"
+        }
+      ],
+      "pageErrors": []
+    }
+  ]
+}

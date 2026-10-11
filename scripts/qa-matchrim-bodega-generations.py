@@ -74,7 +74,7 @@ with sync_playwright() as pw:
                     if case.startswith('favorite-'):
                         held.append((route, {'id': 'wine-0'}, 'favorite'))
                         return
-                    return reply(route, {'id': 'wine-0'})
+                    return reply(route, {**req.post_data_json, 'id': 'wine-0'})
                 key = (uid, kind)
                 read_counts[key] = read_counts.get(key, 0) + 1
                 data = [wine(uid)] if uid in [A, B] else []

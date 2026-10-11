@@ -1,0 +1,328 @@
+{
+  "scope": "local intercepted UI only; no real writes/Edge calls/accounts",
+  "landscapeEnlargedText": true,
+  "results": [
+    {
+      "case": "training:empty",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "*"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "status": [
+              "eq.wishlist"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "id,name,rating,sensory_attributes,use_for_profile_training,grape_varieties,status,created_at"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "rating": [
+              "not.is.null"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "id,status,rating,is_favorite"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "id": [
+              "eq.wine-0"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "select": [
+              "id,use_for_profile_training"
+            ]
+          },
+          "body": {
+            "use_for_profile_training": true
+          }
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "delete:empty",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "*"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "status": [
+              "eq.wishlist"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "id,name,rating,sensory_attributes,use_for_profile_training,grape_varieties,status,created_at"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "rating": [
+              "not.is.null"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "id,status,rating,is_favorite"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "DELETE",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "id": [
+              "eq.wine-0"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "select": [
+              "id"
+            ]
+          },
+          "body": null
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "case": "rating:missing-attrs",
+      "passed": true,
+      "failures": [],
+      "requests": [
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "*"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "status": [
+              "eq.wishlist"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "id,name,rating,sensory_attributes,use_for_profile_training,grape_varieties,status,created_at"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "rating": [
+              "not.is.null"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "id,status,rating,is_favorite"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "PATCH",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "id": [
+              "eq.wine-0"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "select": [
+              "id,rating,use_for_profile_training,status,quantity,consumption_date"
+            ]
+          },
+          "body": {
+            "rating": "love",
+            "use_for_profile_training": true,
+            "status": "tasted",
+            "consumption_date": "2026-10-11T15:20:40.747Z"
+          }
+        },
+        {
+          "path": "/functions/v1/calculate-wine-affinity",
+          "method": "POST"
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "*"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "status": [
+              "eq.wishlist"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "*"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "rating": [
+              "not.is.null"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "id,name,rating,sensory_attributes,use_for_profile_training,grape_varieties,status,created_at"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "rating": [
+              "not.is.null"
+            ],
+            "order": [
+              "created_at.desc"
+            ]
+          },
+          "body": null
+        },
+        {
+          "path": "/rest/v1/user_wines",
+          "method": "GET",
+          "owner": "00000000-0000-4000-8000-000000000080",
+          "query": {
+            "select": [
+              "id,status,rating,is_favorite"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ]
+          },
+          "body": null
+        }
+      ],
+      "pageErrors": []
+    }
+  ]
+}

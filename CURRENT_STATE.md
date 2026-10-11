@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-11, Bodega rating/training/delete
+
+- Assignment04: three action lifetimes now reject obsolete completions, serialize pending per-wine actions and require affected-row/field confirmation. No empty-response success. Explicit rating/consumption policy retained; missing attributes no longer claimed as training.
+-54 unique controlled UI scenarios,18 new response contracts,28 pure training checks, learning checks and one affected previous read case PASS. Typecheck/lint0 errors/106 inherited warnings/web build PASS. Rating-button text overlap fixed; broader landscape panel clipping remains documented, not approved.
+- Source-only; no native rebuild or push/deploy/Apple/invitation/vision. Existing unsigned80 lacks both recent Bodega source deltas. Corpus, ledgers and28 calls preserved.
+- Report: [MATCHRIM_BODEGA_ACTIONS_2026-10-11.md](docs/MATCHRIM_BODEGA_ACTIONS_2026-10-11.md). Purchase/other modules, hosted RLS/persistence and server exactly-once are outside this local certification.
+
 ## Latest checkpoint: 2026-10-11, Bodega account lifetimes
 
 - Assignment03 closes a specific gap left by474d496: section counts/learning now reject late responses, account-keyed state resets on owner changes, and pending favorites cannot toast/refresh after unmount or A -> B -> A. Double-submit blocked within the mounted view.

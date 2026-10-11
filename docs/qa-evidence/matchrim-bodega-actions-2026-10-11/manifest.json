@@ -1,0 +1,105 @@
+{
+  "scope": "controlled UI, no real accounts or server writes",
+  "files": [
+    {
+      "file": "summary.json",
+      "source": "summary.json",
+      "sha256": "02e1f2e761bedef478c4ffcb1385011eddbdb362283a8818017e6fcb367d044d"
+    },
+    {
+      "file": "before-results.json",
+      "source": "before/results.json",
+      "sha256": "0eb8bcc985a658fa6b940cfa75c039e5e92ec5bfbbb3fdb3ea87a50b2055df77"
+    },
+    {
+      "file": "after-results.json",
+      "source": "after/results.json",
+      "sha256": "e5e2ebc4e98c7144de5f4df953c7ac7652b278b67fabbec2bea5700d9867706d"
+    },
+    {
+      "file": "policy-layout-results.json",
+      "source": "policy-layout/results.json",
+      "sha256": "5f7ab3c9b39421c1cd16c6cd672a71e502baaa6e5fe5747c40b655f91a9b68c8"
+    },
+    {
+      "file": "late-errors-results.json",
+      "source": "late-errors/results.json",
+      "sha256": "54382b7ea09f1f8411f5e47a38cf1e0530186738dacfe744914d1b541f87adb6"
+    },
+    {
+      "file": "visual-final-results.json",
+      "source": "visual-final/results.json",
+      "sha256": "0b4e2f4aa9f61857bd46f617189540886d1bb678048bdc0d3b96a7d296338e4c"
+    },
+    {
+      "file": "portrait-final-results.json",
+      "source": "portrait-final/results.json",
+      "sha256": "b6edc73409d9e4e9c5dff3c1ee253138cdeaa57b93ffde12a71b2097b4d593ae"
+    },
+    {
+      "file": "affected-existing-results.json",
+      "source": "affected-existing/results.json",
+      "sha256": "78fcfbdb17ae6fe57f4ce467aae54551ff2639f6003e2562f31787d2081d7c46"
+    },
+    {
+      "file": "confirmation-contract.json",
+      "source": "confirmation-contract.json",
+      "sha256": "027c73958a4bb7c64a5c12334528b5690d7c35bb756141801bbc6f69b83eb755"
+    },
+    {
+      "file": "before-rating-aba.png",
+      "source": "before/rating-aba.png",
+      "sha256": "b6b56d4b3ab4fa6ebbcc15a5f787acf584a45d90e6405f88828092a06f1b8701"
+    },
+    {
+      "file": "before-training-empty.png",
+      "source": "before/training-empty.png",
+      "sha256": "931bd698bc60db6da77f8f243b8d90f3c384191587735132c4aba941c54c3015"
+    },
+    {
+      "file": "after-rating-aba.png",
+      "source": "after/rating-aba.png",
+      "sha256": "874d4dc948c01a562c4ab59883739606e92b7aedcb8b6203275667c4fae3188f"
+    },
+    {
+      "file": "after-delete-aba.png",
+      "source": "after/delete-aba.png",
+      "sha256": "9ad964ce52e2d8adb4f32b9cd7e05bdbd750cb81317d4dfe978519badbf06692"
+    },
+    {
+      "file": "policy-layout-rating-missing-attrs.png",
+      "source": "policy-layout/rating-missing-attrs.png",
+      "sha256": "70e45fe2ae643209b3eef5ea1b6c7accf8521296b1e3afabf36c63d89aa56f22"
+    },
+    {
+      "file": "visual-final-rating-missing-attrs.png",
+      "source": "visual-final/rating-missing-attrs.png",
+      "sha256": "6aad07936a2c8da26094016c9b787edd487708674feeb0156226de9d3a40561c"
+    },
+    {
+      "file": "visual-final-delete-empty.png",
+      "source": "visual-final/delete-empty.png",
+      "sha256": "5799499a25915ded6ada01f083e493b2fbb57aa6b03e4fb8a869652e225f1f7a"
+    },
+    {
+      "file": "portrait-final-rating-missing-attrs.png",
+      "source": "portrait-final/rating-missing-attrs.png",
+      "sha256": "d439705b5198a22c70a069b1d4b3c3254e593adc8b3b9dfe8c5fc5e3b55989a9"
+    },
+    {
+      "file": "lint.log",
+      "source": "lint.log",
+      "sha256": "2acde2bd4dccb26add313aee58c20599316f2ccad6e37f65e23421f2bd249d30"
+    },
+    {
+      "file": "typecheck.log",
+      "source": "typecheck.log",
+      "sha256": "e38c26b5e7b0982ac7fdacb4832749746b5c3c678e6de661d1a003afe6ce9d6d"
+    },
+    {
+      "file": "build.log",
+      "source": "build.log",
+      "sha256": "520efc524ee0a55bf30b7ab00d92b052e3d4c3ae53346b9b891e162e9997bf11"
+    }
+  ]
+}
