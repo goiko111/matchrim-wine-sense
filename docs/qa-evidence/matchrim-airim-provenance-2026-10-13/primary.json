@@ -1,0 +1,27 @@
+{
+  "scope": "Only09: two local menu UI orientations of the existing04/08 scene/contract, not users, new OCR, native QA or catalog linkage. First after run is a wording-stage repeat, not additional primary contexts.",
+  "helperSha256": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+  "contexts": 2,
+  "passed": 2,
+  "checks": 20,
+  "checksPassed": 20,
+  "counters": [
+    {
+      "case": "portrait",
+      "ocr": 1,
+      "canonical": 1,
+      "base": 1
+    },
+    {
+      "case": "landscape",
+      "ocr": 1,
+      "canonical": 1,
+      "base": 1
+    }
+  ],
+  "contracts": 78,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0
+}

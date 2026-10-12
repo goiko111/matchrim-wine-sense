@@ -1,0 +1,241 @@
+{
+  "baseline": "a533e0d4d689fb245ec91ad0bb2f93796018e4cc",
+  "stages": [
+    {
+      "path": "src/utils/aiRimContextGuide.ts",
+      "before": "f99a162dc202338bc6601ea7fb5637b490f7cde74b2e2218b7c8ea9986e191f0",
+      "after": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+      "protected": false
+    },
+    {
+      "path": "scripts/check-matchrim-airim-provenance-oct13.ts",
+      "before": null,
+      "after": "e16c26dbc15867429e0490d1988f774b123004bb8b89cd64cb1dcfda6167fca3",
+      "protected": false
+    },
+    {
+      "path": "scripts/qa-matchrim-airim-provenance-oct13.py",
+      "before": null,
+      "after": "66073450b8cecb387a48c1a398568c6557f2b5d3f81fb64ff2a3f7d74d1b2dda",
+      "protected": false
+    },
+    {
+      "path": "scripts/package-matchrim-airim-provenance-oct13.mjs",
+      "before": null,
+      "after": "d68f07172092773acabe8d7456f85c623b499d175618769ec41c1084b4d3d452",
+      "protected": false
+    },
+    {
+      "path": "src/components/AiRimContextGuide.tsx",
+      "before": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0",
+      "after": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0",
+      "protected": true
+    },
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "before": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+      "after": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+      "protected": true
+    },
+    {
+      "path": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "before": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11",
+      "after": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuAffinityPresentation.ts",
+      "before": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+      "after": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuWineSave.ts",
+      "before": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "after": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuWineActions.ts",
+      "before": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "after": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanProfile.ts",
+      "before": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+      "after": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+      "protected": true
+    },
+    {
+      "path": "src/services/matchrimScanProfile.ts",
+      "before": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+      "after": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuProfileRecovery.ts",
+      "before": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+      "after": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "before": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "after": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanConfidence.ts",
+      "before": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+      "after": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+      "protected": true
+    },
+    {
+      "path": "src/utils/multiWineScan.ts",
+      "before": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d",
+      "after": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineAffinityExplanation.ts",
+      "before": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+      "after": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+      "protected": true
+    },
+    {
+      "path": "src/utils/matchrimLearning.ts",
+      "before": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1",
+      "after": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1",
+      "protected": true
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "before": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "after": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "protected": true
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "before": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "after": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "before": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "after": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "before": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "after": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "protected": true
+    },
+    {
+      "path": "src/components/AffinityExplanation.tsx",
+      "before": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e",
+      "after": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e",
+      "protected": true
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-scan-values.ts",
+      "before": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e",
+      "after": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e",
+      "protected": true
+    }
+  ],
+  "protectedEvidence": [
+    {
+      "name": "matchrim-menu-save-2026-10-12",
+      "sha256": "eff0a00ddfb9905d179d4dec4e733783d34d745e3177dc04f35281a57e57a017",
+      "entries": 289,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-actions-2026-10-12",
+      "sha256": "efd6ac617fe306e72a5f974667cb613333e275241ed48dc4d601a65fe8decc21",
+      "entries": 126,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-affinity-status-2026-10-12",
+      "sha256": "3ed4c29f190ad577337f06315e83ca89ec676bd26a2277796e207926b0b8c378",
+      "entries": 91,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-profile-retry-2026-10-13",
+      "sha256": "30237ea6bfe06c19d79f62b44527560cb4d2c74d271e17267313a7412eb6c0fe",
+      "entries": 112,
+      "unchanged": true
+    }
+  ],
+  "observations": {
+    "before": {
+      "helperSha256": "f99a162dc202338bc6601ea7fb5637b490f7cde74b2e2218b7c8ea9986e191f0",
+      "contexts": 2,
+      "passed": 0,
+      "checks": 20,
+      "checksPassed": 14,
+      "counters": [
+        {
+          "case": "portrait",
+          "ocr": 1,
+          "canonical": 1,
+          "base": 1
+        },
+        {
+          "case": "landscape",
+          "ocr": 1,
+          "canonical": 1,
+          "base": 1
+        }
+      ]
+    },
+    "after": {
+      "helperSha256": "b89b2778127afc602299a0e40bb3c2c661803bba0db906e742c441b6f2c51ab7",
+      "contexts": 2,
+      "passed": 2,
+      "checks": 20,
+      "checksPassed": 20,
+      "counters": [
+        {
+          "case": "portrait",
+          "ocr": 1,
+          "canonical": 1,
+          "base": 1
+        },
+        {
+          "case": "landscape",
+          "ocr": 1,
+          "canonical": 1,
+          "base": 1
+        }
+      ]
+    },
+    "after-final": {
+      "helperSha256": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+      "contexts": 2,
+      "passed": 2,
+      "checks": 20,
+      "checksPassed": 20,
+      "counters": [
+        {
+          "case": "portrait",
+          "ocr": 1,
+          "canonical": 1,
+          "base": 1
+        },
+        {
+          "case": "landscape",
+          "ocr": 1,
+          "canonical": 1,
+          "base": 1
+        }
+      ]
+    }
+  },
+  "intermediateNote": "First wording patch UI source identified by receipt hash; full intermediate helper snapshot not retained. Final wording uses cosecha; final helper snapshot and receipt agree."
+}

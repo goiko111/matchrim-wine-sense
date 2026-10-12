@@ -1,0 +1,12 @@
+{
+  "scope": "Only09 guide language: same existing scene/contract, invalid fake auth and SDK read-only interception.",
+  "hashes": {
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "src/utils/aiRimContextGuide.ts": "b89b2778127afc602299a0e40bb3c2c661803bba0db906e742c441b6f2c51ab7",
+    "src/components/wine-import/WineMenuScanner.tsx": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d"
+  },
+  "fixture": "Existing04 syntheticBOTH and one image, not fresh recognition; high signal/inference, no matched catalog, no profile-positive UI data.",
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0
+}

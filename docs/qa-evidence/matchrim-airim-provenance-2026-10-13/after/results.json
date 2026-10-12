@@ -1,0 +1,194 @@
+{
+  "scope": "Only09 guide language: same existing scene/contract, invalid fake auth and SDK read-only interception.",
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realAccounts": 0,
+  "results": [
+    {
+      "case": "portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "High inference signal is not confirmed identity",
+          "passed": true,
+          "detail": "AIRIM · GUÍA CONTEXTUAL\nCandidato de lectura; afinidad pendiente\n\nLa lectura propone Barbaresco Marchesi di Barolo. Esta guia no verifica la botella ni la annada. Faltan datos sensoriales o un perfil Matchrim suficiente para justificar una puntuacion.\n\nSenal estimada de lectura 88%\nLa senal no equivale a verificacion canonica o humana\nSin desglose sensorial defendible\n\nSiguiente paso: Contrasta nombre, productor y annada; la afinidad requiere una ficha y un perfil suficientes.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo."
+        },
+        {
+          "name": "Guide explicitly presents a reading/candidate",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Guide explains non-proof of bottle/vintage",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Affinity remains pending, no invented personal score",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Guide has an accessible section heading",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Guide text fits without overlap",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Language causes no extra OCR/canonical/profile read",
+          "passed": true,
+          "detail": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "name": "No DB/feedback/history/profile/stock writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Every nonlocal request intercepted",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime errors or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "observed": "AIRIM · GUÍA CONTEXTUAL\nCandidato de lectura; afinidad pendiente\n\nLa lectura propone Barbaresco Marchesi di Barolo. Esta guia no verifica la botella ni la annada. Faltan datos sensoriales o un perfil Matchrim suficiente para justificar una puntuacion.\n\nSenal estimada de lectura 88%\nLa senal no equivale a verificacion canonica o humana\nSin desglose sensorial defendible\n\nSiguiente paso: Contrasta nombre, productor y annada; la afinidad requiere una ficha y un perfil suficientes.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.",
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "High inference signal is not confirmed identity",
+          "passed": true,
+          "detail": "AIRIM · GUÍA CONTEXTUAL\nCandidato de lectura; afinidad pendiente\n\nLa lectura propone Barbaresco Marchesi di Barolo. Esta guia no verifica la botella ni la annada. Faltan datos sensoriales o un perfil Matchrim suficiente para justificar una puntuacion.\n\nSenal estimada de lectura 88%\nLa senal no equivale a verificacion canonica o humana\nSin desglose sensorial defendible\n\nSiguiente paso: Contrasta nombre, productor y annada; la afinidad requiere una ficha y un perfil suficientes.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo."
+        },
+        {
+          "name": "Guide explicitly presents a reading/candidate",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Guide explains non-proof of bottle/vintage",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Affinity remains pending, no invented personal score",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Guide has an accessible section heading",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Guide text fits without overlap",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Language causes no extra OCR/canonical/profile read",
+          "passed": true,
+          "detail": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "name": "No DB/feedback/history/profile/stock writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Every nonlocal request intercepted",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime errors or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "observed": "AIRIM · GUÍA CONTEXTUAL\nCandidato de lectura; afinidad pendiente\n\nLa lectura propone Barbaresco Marchesi di Barolo. Esta guia no verifica la botella ni la annada. Faltan datos sensoriales o un perfil Matchrim suficiente para justificar una puntuacion.\n\nSenal estimada de lectura 88%\nLa senal no equivale a verificacion canonica o humana\nSin desglose sensorial defendible\n\nSiguiente paso: Contrasta nombre, productor y annada; la afinidad requiere una ficha y un perfil suficientes.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.",
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

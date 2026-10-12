@@ -32,32 +32,35 @@ export const buildAiRimContextGuidance = (
   input: AiRimContextInput,
   profile: MatchrimProfileLike | null | undefined,
 ): AiRimContextGuidance => {
-  const identityConfidence = Math.max(0, Math.min(1, input.identityConfidence ?? 0));
+  const identityConfidence = typeof input.identityConfidence === 'number' && Number.isFinite(input.identityConfidence)
+    ? Math.max(0, Math.min(1, input.identityConfidence)) : 0;
+  const hasAffinity = typeof input.affinity === 'number' && Number.isFinite(input.affinity)
+    && input.affinity >= 0 && input.affinity <= 100;
   const uncertainty = input.uncertaintyReasons?.filter(Boolean) ?? [];
 
-  if (!input.name || identityConfidence < 0.35) {
+  if (!input.name?.trim() || identityConfidence < 0.35) {
     return {
-      title: 'Primero, una identidad verificable',
-      summary: 'No hay texto suficiente para defender un vino concreto. No voy a convertir este recorte en una recomendacion inventada.',
-      evidence: ['Identidad sin confirmar', 'Afinidad no calculable sin una referencia o ficha sensorial'],
-      nextStep: 'Reanaliza la region o escribe solo la identidad que puedas confirmar.',
+      title: 'Primero, una lectura suficiente',
+      summary: 'Esta guia no tiene evidencia suficiente para proponer una referencia fiable de este recorte. No la convierte en una recomendacion.',
+      evidence: ['Lectura sin respaldo suficiente', 'Sin datos de verificacion de botella o cosecha en esta guia'],
+      nextStep: 'Revisa el recorte y transcribe solo el texto legible; escribir un nombre no verifica la botella.',
       tone: 'caution',
     };
   }
 
   if (identityConfidence < 0.72 || uncertainty.length > 0) {
     return {
-      title: 'Confirma antes de elegir',
-      summary: `${input.name} es un candidato, no una identidad cerrada. ${uncertainty[0] ?? 'La evidencia visual todavia es parcial.'}`,
+      title: 'Revisa el candidato antes de elegir',
+      summary: `${input.name} es la referencia propuesta por la lectura, no una verificacion de botella o cosecha. ${uncertainty[0] ?? 'La evidencia visual todavia es parcial.'}`,
       evidence: [
-        `Senal de identidad ${confidencePercent(identityConfidence)}%`,
-        input.affinity == null
+        `Senal estimada de lectura ${confidencePercent(identityConfidence)}%; no acredita la botella`,
+        !hasAffinity
           ? 'Afinidad pendiente'
           : `La afinidad de ${Math.round(input.affinity)}% describe este candidato provisional`,
       ],
       nextStep: input.hasAlternatives
-        ? 'Compara el texto visible con los candidatos o confirma manualmente el correcto.'
-        : 'Confirma la identidad o vuelve a analizar el recorte.',
+        ? 'Contrasta nombre, productor y cosecha en la imagen con los candidatos.'
+        : 'Revisa nombre, productor y cosecha o vuelve a analizar el recorte.',
       tone: 'caution',
     };
   }
@@ -68,14 +71,14 @@ export const buildAiRimContextGuidance = (
     sensorySource: input.sensorySource ?? 'inference',
   });
 
-  if (!explanation || input.affinity == null) {
+  if (!explanation || !hasAffinity) {
     return {
-      title: 'Identidad lista; afinidad pendiente',
-      summary: `${input.name} esta confirmado, pero faltan datos sensoriales o un perfil Matchrim suficiente para justificar una puntuacion.`,
-      evidence: [`Senal de identidad ${confidencePercent(identityConfidence)}%`, 'Sin desglose sensorial defendible'],
+      title: 'Candidato de lectura; afinidad pendiente',
+      summary: `La lectura propone ${input.name}. Esta guia no verifica la botella ni la cosecha. Faltan datos sensoriales o un perfil Matchrim suficiente para justificar una puntuacion.`,
+      evidence: [`Senal estimada de lectura ${confidencePercent(identityConfidence)}%`, 'La senal no equivale a verificacion canonica o humana', 'Sin desglose sensorial defendible'],
       nextStep: input.hasAlternatives
         ? 'Puedes comparar identidad, precio y servicio sin inventar afinidad.'
-        : 'Completa la ficha sensorial o el perfil antes de pedir una recomendacion personal.',
+        : 'Contrasta nombre, productor y cosecha; la afinidad requiere una ficha y un perfil suficientes.',
       tone: 'neutral',
     };
   }
@@ -92,15 +95,16 @@ export const buildAiRimContextGuidance = (
     : `${contextLead}, el resultado depende del equilibrio general y no de una sola dimension.`;
 
   return {
-    title: explanation.adventure === 'exploratorio' ? 'Buena opcion para explorar' : 'Por que puede encajar',
-    summary,
+    title: explanation.adventure === 'exploratorio' ? 'Candidato para explorar' : 'Por que este candidato puede encajar',
+    summary: `${summary} La guia describe este candidato; no verifica la botella ni la cosecha.`,
     evidence: [
       `Afinidad orientativa ${explanation.scoreRange?.min ?? Math.round(input.affinity)}-${explanation.scoreRange?.max ?? Math.round(input.affinity)}%`,
       `Respaldo ${explanation.confidenceLabel}; falta ${explanation.missingData[0] ?? 'ningun dato critico declarado'}`,
+      'La confianza o la fuente sensorial no acreditan por si solas la identidad fisica',
     ],
     nextStep: input.hasAlternatives
-      ? 'Comparala con una opcion mas segura antes de cerrar la decision.'
-      : 'Revisa el desglose y marca que dimension acerto o fallo.',
+      ? 'Contrasta el candidato con el texto y la cosecha; despues compara el desglose con otra opcion.'
+      : 'Contrasta nombre, productor y cosecha antes de usar el desglose de este candidato.',
     tone: 'positive',
   };
 };

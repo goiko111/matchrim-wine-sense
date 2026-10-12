@@ -1,0 +1,326 @@
+{
+  "scope": "Only09 guide language, negative provenance, absent/invalid input, pure mathematical compatibility and three consumers. Mathematical profile/attributes are not users, catalog linkage, physical identity or provider accuracy.",
+  "baseline": "a533e0d4d689fb245ec91ad0bb2f93796018e4cc",
+  "checks": [
+    {
+      "name": "Non-authoritative confidence absent",
+      "passed": true
+    },
+    {
+      "name": "Non-authoritative confidence null",
+      "passed": true
+    },
+    {
+      "name": "Non-authoritative confidence NaN",
+      "passed": true
+    },
+    {
+      "name": "Non-authoritative confidence Infinity",
+      "passed": true
+    },
+    {
+      "name": "Non-authoritative confidence negative Infinity",
+      "passed": true
+    },
+    {
+      "name": "Non-authoritative confidence low",
+      "passed": true
+    },
+    {
+      "name": "Absent/blank name undefined",
+      "passed": true
+    },
+    {
+      "name": "Absent/blank name null",
+      "passed": true
+    },
+    {
+      "name": "Absent/blank name ",
+      "passed": true
+    },
+    {
+      "name": "Absent/blank name    ",
+      "passed": true
+    },
+    {
+      "name": "Valid confidence 0.35 does not confirm identity",
+      "passed": true
+    },
+    {
+      "name": "Valid confidence 0.71 does not confirm identity",
+      "passed": true
+    },
+    {
+      "name": "Valid confidence 0.72 does not confirm identity",
+      "passed": true
+    },
+    {
+      "name": "Valid confidence 0.88 does not confirm identity",
+      "passed": true
+    },
+    {
+      "name": "Valid confidence 1 does not confirm identity",
+      "passed": true
+    },
+    {
+      "name": "Sensory source alone label is not a linked sheet",
+      "passed": true
+    },
+    {
+      "name": "Sensory source alone catalog is not a linked sheet",
+      "passed": true
+    },
+    {
+      "name": "Sensory source alone inference is not a linked sheet",
+      "passed": true
+    },
+    {
+      "name": "Sensory source alone preference is not a linked sheet",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {}",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {\"canonicalId\":null}",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {\"canonicalId\":\"typed-only\",\"source\":\"catalog\"}",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {\"source\":\"manual\",\"status\":\"recognized\",\"evidence\":[\"Identidad confirmada manualmente por el usuario\"]}",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {\"provenance\":null}",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {\"provenance\":\"invalid\"}",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {\"provenance\":{\"canonicalId\":\"incomplete\"}}",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {\"humanConfirmed\":true}",
+      "passed": true
+    },
+    {
+      "name": "Absent/invalid/incomplete undeclared provenance {\"confirmedAt\":\"not-an-event\"}",
+      "passed": true
+    },
+    {
+      "name": "Profile alone cannot establish physical or canonical identity",
+      "passed": true
+    },
+    {
+      "name": "Attributes alone cannot create a personal recommendation",
+      "passed": true
+    },
+    {
+      "name": "Incomplete attributes with mathematical profile remain pending",
+      "passed": true
+    },
+    {
+      "name": "Invalid/absent affinity undefined does not display a score",
+      "passed": true
+    },
+    {
+      "name": "Invalid/absent affinity null does not display a score",
+      "passed": true
+    },
+    {
+      "name": "Invalid/absent affinity NaN does not display a score",
+      "passed": true
+    },
+    {
+      "name": "Invalid/absent affinity Infinity does not display a score",
+      "passed": true
+    },
+    {
+      "name": "Invalid/absent affinity -Infinity does not display a score",
+      "passed": true
+    },
+    {
+      "name": "Invalid/absent affinity -1 does not display a score",
+      "passed": true
+    },
+    {
+      "name": "Invalid/absent affinity 101 does not display a score",
+      "passed": true
+    },
+    {
+      "name": "Doubt retained in label without verification",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical label score 0 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical label score 30 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical label score 55 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical label score 70 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical label score 85 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical label score 100 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with label in label still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with catalog in label still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with inference in label still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with preference in label still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Doubt retained in menu without verification",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical menu score 0 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical menu score 30 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical menu score 55 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical menu score 70 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical menu score 85 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical menu score 100 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with label in menu still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with catalog in menu still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with inference in menu still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with preference in menu still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Doubt retained in comparison without verification",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical comparison score 0 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical comparison score 30 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical comparison score 55 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical comparison score 70 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical comparison score 85 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Pure mathematical comparison score 100 preserves range and evidence",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with label in comparison still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with catalog in comparison still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with inference in comparison still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Complete mathematical input with preference in comparison still does not prove identity",
+      "passed": true
+    },
+    {
+      "name": "Inputs are not mutated; no flag or authority added",
+      "passed": true
+    },
+    {
+      "name": "Consumer/component byte-compatible: src/components/AiRimContextGuide.tsx",
+      "passed": true
+    },
+    {
+      "name": "Consumer/component byte-compatible: src/components/wine-import/WineMenuScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Consumer/component byte-compatible: src/components/wine-import/MultiWineLabelScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Exactly three active guide callsites retain explicit loaded profile/null",
+      "passed": true
+    },
+    {
+      "name": "Existing input contract adds no synthetic authority prop",
+      "passed": true
+    },
+    {
+      "name": "Shared explanation call and inputs unchanged",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/utils/aiRimContextGuide.ts": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+    "src/components/AiRimContextGuide.tsx": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0",
+    "src/components/wine-import/WineMenuScanner.tsx": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+    "src/components/wine-import/MultiWineLabelScanner.tsx": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11",
+    "src/utils/wineAffinityExplanation.ts": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+    "scripts/check-matchrim-airim-provenance-oct13.ts": "e16c26dbc15867429e0490d1988f774b123004bb8b89cd64cb1dcfda6167fca3"
+  }
+}
