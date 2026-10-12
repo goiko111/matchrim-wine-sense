@@ -37,6 +37,7 @@ import { applyMenuWineEvidence, menuWinePriceEvidence, updateMenuWineEvidence } 
 import { confirmsMenuInsert, menuFinancialPrice, menuPriceSnapshot, menuSaveEvidence } from '@/utils/menuWineSave';
 import { labelInsertErrorResult } from '@/utils/labelScanSave';
 import { confirmsMenuAction, menuCardIdentity, menuIntentChanges, type SavedMenuCard } from '@/utils/menuWineActions';
+import { presentMenuAffinity } from '@/utils/menuAffinityPresentation';
 import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat } from '@/utils/wineComparison';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
@@ -822,40 +823,29 @@ const WineMenuScannerSession = ({
     return <AlertCircle className="h-5 w-5 text-red-600" />;
   };
 
-  const getWineDecision = (score?: number | null) => {
-    if (typeof score !== 'number') {
-      return {
-        label: "Sin encaje",
-        description: "Falta perfil o datos suficientes para ordenar este vino.",
-        className: "border-stone-200 bg-stone-50 text-stone-700",
-      };
-    }
-    if (score >= 85) {
-      return {
-        label: "Pediría",
-        description: "Prioridad alta para tu perfil Matchrim.",
-        className: "border-green-200 bg-green-50 text-green-900",
-      };
-    }
-    if (score >= 70) {
-      return {
-        label: "Buen candidato",
-        description: "Encaja bien, revisa precio y estilo antes de elegir.",
-        className: "border-amber-200 bg-amber-50 text-amber-950",
-      };
-    }
-    if (score >= 55) {
-      return {
-        label: "Con matices",
-        description: "Puede gustarte si quieres algo menos evidente.",
-        className: "border-orange-200 bg-orange-50 text-orange-950",
-      };
-    }
-    return {
-      label: "No priorizaría",
-      description: "No parece la mejor opción de esta carta para ti.",
-      className: "border-red-200 bg-red-50 text-red-950",
-    };
+  const getWineDecision = (wine: ScannedWine) => presentMenuAffinity(
+    wine.compatibilidad, wine.affinity_calibrated === true && Boolean(scanProfile?.profile),
+    scanProfile?.source === 'unavailable' ? scanProfile.note : wine.razon,
+  );
+  const selectedPinDecision = selectedPinWine ? getWineDecision(selectedPinWine) : null;
+  const renderWineAffinityExplanation = (wine: ScannedWine) => {
+    const decision = getWineDecision(wine);
+    return decision.state === 'pending' ? (
+      <div role="status" aria-label={`Estado de afinidad de ${wine.nombre}`} className="matchrim-soft-surface rounded-lg p-3 text-sm text-stone-600">
+        <p className="font-medium text-stone-800">Afinidad pendiente</p>
+        <p className="mt-1 leading-5">{decision.description}</p>
+        <p className="mt-1 leading-5">No es un resultado negativo ni significa que este vino no te guste.</p>
+      </div>
+    ) : (
+      <AffinityExplanation
+        profile={scanProfile?.profile ?? null}
+        wineKey={`${wine.nombre}-${wine.productor ?? ''}-${wine.anada ?? 'nv'}`}
+        score={decision.score}
+        identificationConfidence={wine.confidence}
+        attributes={wine.atributos}
+        sensorySource={wine.sensorySource ?? 'inference'}
+      />
+    );
   };
 
   const saveScannedWine = async (wine: ScannedWine, index: number, status: 'wishlist' | 'tasted', favorite = false) => {
@@ -1243,7 +1233,7 @@ const WineMenuScannerSession = ({
               {!hasProfile && (
                 <Badge variant="outline" className="gap-1">
                   <AlertCircle className="h-3 w-3" />
-                  Completa el quiz Matchrim para ver compatibilidades
+                  Afinidad pendiente: perfil no disponible
                 </Badge>
               )}
               {fileType === 'pdf' && (
@@ -1568,7 +1558,9 @@ const WineMenuScannerSession = ({
                           <span className={`block whitespace-normal break-words text-xs ${wine.precio_manual_pendiente ? 'font-medium text-amber-800' : 'text-slate-500'}`}>{listPriceText(wine, index)}</span>
 		                    </span>
 		                    <span className="shrink-0 text-right">
-		                      {typeof wine.compatibilidad === 'number' && <span className="block text-lg font-bold text-red-900">≈{wine.compatibilidad}%</span>}
+		                      {getWineDecision(wine).score !== null
+                            ? <span className="block text-lg font-bold text-red-900">≈{getWineDecision(wine).score}%</span>
+                            : <span className="block text-xs text-stone-600">Afinidad pendiente</span>}
 		                      <span className="block text-[11px] text-slate-500">Identidad {getConfidenceBand(wine.confidence)}</span>
 		                    </span>
 		                  </button>
@@ -1593,7 +1585,7 @@ const WineMenuScannerSession = ({
 			                  const wishlistSaveKey = `wishlist-${wine.nombre}-${index}`;
 			                  const tastedSaveKey = `tasted-${wine.nombre}-${index}`;
 			                  const favoriteSaveKey = `favorite-${wine.nombre}-${index}`;
-			                  const wineDecision = getWineDecision(wine.compatibilidad);
+			                  const wineDecision = getWineDecision(wine);
 
 			                return (
 			                  <div key={`${wine.nombre}-${index}-actions`}>
@@ -1630,9 +1622,9 @@ const WineMenuScannerSession = ({
 	                            {wineDecision.label}
 	                          </Badge>
 	                        </div>
-	                        {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
+                        {wineDecision.score !== null && (
                           <div className="shrink-0 rounded-md bg-white px-3 py-2 text-center text-red-950">
-                            <div className="text-2xl font-bold leading-none">≈{wine.compatibilidad}%</div>
+                            <div className="text-2xl font-bold leading-none">≈{wineDecision.score}%</div>
 	                            <div className="mt-1 text-[10px] font-semibold uppercase text-red-900/70">Encaje</div>
 	                          </div>
 	                        )}
@@ -1793,15 +1785,15 @@ const WineMenuScannerSession = ({
 
 	                    </div>
 
-	                    {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
+	                    {wineDecision.score !== null && (
 	                      <div className="matchrim-soft-surface flex flex-col justify-center gap-3 rounded-lg p-4 lg:min-w-[170px]">
                           <div className="flex items-center gap-2">
-                            {getCompatibilityIcon(wine.compatibilidad)}
+                            {getCompatibilityIcon(wineDecision.score)}
                             <span className="text-sm font-semibold">Encaje conmigo</span>
                           </div>
                           <div>
-                            <div className="text-3xl font-bold">≈{wine.compatibilidad}%</div>
-                            <div className={`mt-2 h-2 w-full rounded-full ${getCompatibilityColor(wine.compatibilidad)}`} />
+                            <div className="text-3xl font-bold">≈{wineDecision.score}%</div>
+                            <div className={`mt-2 h-2 w-full rounded-full ${getCompatibilityColor(wineDecision.score)}`} />
                           </div>
                           <p className="text-xs leading-5 text-muted-foreground">
                             Calculado contra tu perfil Matchrim, no contra popularidad general.
@@ -1811,14 +1803,7 @@ const WineMenuScannerSession = ({
 	                  </div>
 
 		                  <div className="mt-4">
-		                    <AffinityExplanation
-                          profile={scanProfile?.profile ?? null}
-		                      wineKey={`${wine.nombre}-${wine.productor ?? ''}-${wine.anada ?? 'nv'}`}
-		                      score={wine.compatibilidad}
-		                      identificationConfidence={wine.confidence}
-		                      attributes={wine.atributos}
-		                      sensorySource={wine.sensorySource ?? 'inference'}
-		                    />
+		                    {renderWineAffinityExplanation(wine)}
 		                  </div>
 
 	                  {similarWines.length > 0 && (
@@ -1834,9 +1819,9 @@ const WineMenuScannerSession = ({
 	                          >
 	                            <div className="flex items-start justify-between gap-2">
 	                              <span className="font-medium text-red-950">{similarWine.nombre}</span>
-	                              {similarWine.compatibilidad !== null && similarWine.compatibilidad !== undefined && (
+		                              {getWineDecision(similarWine).score !== null && (
 	                                <Badge className="shrink-0 bg-red-800 hover:bg-red-800">
-	                                  ≈{similarWine.compatibilidad}%
+		                                  ≈{getWineDecision(similarWine).score}%
 	                                </Badge>
 	                              )}
 	                            </div>
@@ -1918,7 +1903,7 @@ const WineMenuScannerSession = ({
 	                      onClick={() => openAiRimForWine(wine)}
 	                    >
 	                      <Sparkles className="h-4 w-4" />
-		                      ¿Por qué encaja?
+                          Consultar afinidad
 		                    </Button>
 		                  </div>
                     </div>
@@ -1981,7 +1966,7 @@ const WineMenuScannerSession = ({
 	              </DrawerHeader>
 	              <div className="overflow-y-auto p-4">
 	                <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
-	                  <div><div className="text-xl font-bold text-red-900">{selectedPinWine.compatibilidad == null ? '-' : `≈${selectedPinWine.compatibilidad}%`}</div><div className="text-xs text-slate-500">Afinidad estimada</div></div>
+	                  <div><div className="text-xl font-bold text-red-900">{selectedPinDecision?.score == null ? '-' : `≈${selectedPinDecision.score}%`}</div><div className="text-xs text-slate-500">{selectedPinDecision?.state === 'pending' ? 'Afinidad pendiente' : 'Afinidad estimada'}</div></div>
 	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>
 	                  <div><div className="truncate text-sm font-bold capitalize text-slate-900">{selectedPinWine.tipo || '-'}</div><div className="text-xs text-slate-500">Tipo</div></div>
 	                </div>
@@ -2005,21 +1990,14 @@ const WineMenuScannerSession = ({
 			                    context="menu"
 			                    name={selectedPinWine.nombre}
 			                    identityConfidence={selectedPinWine.confidence}
-			                    affinity={selectedPinWine.compatibilidad}
+			                    affinity={selectedPinDecision?.score ?? null}
 			                    attributes={selectedPinWine.atributos}
 			                    sensorySource={selectedPinWine.sensorySource ?? 'inference'}
 			                    uncertaintyReasons={selectedPinWine.dudas}
 			                    hasAlternatives={scannedWines.length > 1}
 			                  />
 			                </div>
-			                <AffinityExplanation
-                          profile={scanProfile?.profile ?? null}
-	                  wineKey={`${selectedPinWine.nombre}-${selectedPinWine.productor ?? ''}-${selectedPinWine.anada ?? 'nv'}`}
-	                  score={selectedPinWine.compatibilidad}
-	                  identificationConfidence={selectedPinWine.confidence}
-	                  attributes={selectedPinWine.atributos}
-	                  sensorySource={selectedPinWine.sensorySource ?? 'inference'}
-	                />
+	                {renderWineAffinityExplanation(selectedPinWine)}
 	              </div>
 	              <DrawerFooter className="border-t border-stone-200 bg-white">
 	                <div className="grid grid-cols-2 gap-2">

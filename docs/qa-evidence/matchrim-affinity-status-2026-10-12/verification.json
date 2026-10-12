@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "name": "typecheck-scoped",
+      "command": [
+        "npx",
+        "tsc",
+        "--project",
+        "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-affinity-status-20261012/tsconfig-scoped.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "lint-scoped",
+      "command": [
+        "npx",
+        "eslint",
+        "src/components/wine-import/WineMenuScanner.tsx",
+        "src/utils/menuAffinityPresentation.ts",
+        "scripts/check-matchrim-affinity-status-oct12.ts"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "fullSuite": false,
+  "webBuild": false,
+  "nativeBuild": false
+}

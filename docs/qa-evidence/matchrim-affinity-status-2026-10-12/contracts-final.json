@@ -1,0 +1,142 @@
+{
+  "scope": "Only07 direct mathematical presentation controls + active wrapper/AST boundaries. True-calibrated controls are not real profiles/catalog sheets/new recommendations or OCR metrics.",
+  "checks": [
+    {
+      "name": "Finite calibrated mathematical control 0 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 30 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 54 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 54.9 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 55 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 69 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 70 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 84 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 85 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "Finite calibrated mathematical control 100 preserves old classification and value",
+      "passed": true
+    },
+    {
+      "name": "missing abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "null abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "NaN abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "positive Infinity abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "negative Infinity abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "negative abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "over100 abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "string71 abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "empty string abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "boolean abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "object abstains, never absent-as-zero",
+      "passed": true
+    },
+    {
+      "name": "Uncalibrated 0 is pending, not negative or positive",
+      "passed": true
+    },
+    {
+      "name": "Uncalibrated 30 is pending, not negative or positive",
+      "passed": true
+    },
+    {
+      "name": "Uncalibrated 71 is pending, not negative or positive",
+      "passed": true
+    },
+    {
+      "name": "Uncalibrated 100 is pending, not negative or positive",
+      "passed": true
+    },
+    {
+      "name": "Known unavailable cause is preserved verbatim, without blaming quiz",
+      "passed": true
+    },
+    {
+      "name": "A low real mathematical value differs from absence",
+      "passed": true
+    },
+    {
+      "name": "Active wrapper missing profile withholds even a marked mathematical number",
+      "passed": true
+    },
+    {
+      "name": "Protected06/normalization initializer saveScannedWine unchanged",
+      "passed": true
+    },
+    {
+      "name": "Protected06/normalization initializer updateScannedWine unchanged",
+      "passed": true
+    },
+    {
+      "name": "Protected06/normalization initializer resetSaveBatch unchanged",
+      "passed": true
+    },
+    {
+      "name": "Protected06/normalization initializer normalizeScannedWine unchanged",
+      "passed": true
+    },
+    {
+      "name": "Protected06/normalization initializer getSimilarWines unchanged",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "4b04cfdd521c5750f13e14dce22270952a42137ac4849ae2ae0fc82c1ce8a80e",
+    "src/utils/menuAffinityPresentation.ts": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+    "scripts/check-matchrim-affinity-status-oct12.ts": "a9aa0ba4728e627a641f170bca415d7843664673ad182c389d6f59f0d0a6761a"
+  }
+}

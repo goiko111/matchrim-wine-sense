@@ -1,0 +1,57 @@
+{
+  "scope": "One existing scene/negative contract with explicit variants; not users/OCR/persistence/new real affinity",
+  "runs": [
+    {
+      "name": "before",
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 22,
+      "checksPassed": 12,
+      "runtimeErrors": 0,
+      "console": []
+    },
+    {
+      "name": "after",
+      "contexts": 12,
+      "contextsPassed": 12,
+      "checks": 134,
+      "checksPassed": 134,
+      "runtimeErrors": 0,
+      "console": [
+        {
+          "case": "profile-error:portrait",
+          "messages": [
+            "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+          ]
+        },
+        {
+          "case": "profile-error:landscape",
+          "messages": [
+            "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "after-visual",
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 26,
+      "checksPassed": 26,
+      "runtimeErrors": 0,
+      "console": []
+    },
+    {
+      "name": "final-visual",
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 28,
+      "checksPassed": 28,
+      "runtimeErrors": 0,
+      "console": []
+    }
+  ],
+  "contracts": 33,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0
+}

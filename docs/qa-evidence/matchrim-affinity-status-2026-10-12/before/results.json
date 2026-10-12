@@ -1,0 +1,302 @@
+{
+  "scope": "Only07 active affinity missing-vs-negative presentation, readonly intercepted replay, no new real recommendations.",
+  "realAccounts": 0,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "results": [
+    {
+      "case": "null:portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "No missing/inference result appears as rejection",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Badge/card explicitly pending, not absent-as-zero",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Explanation is explicit and consistent with pending",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Profile unavailable cause remains honest",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Price provenance unchanged in readonly result",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selected detail says pending without an estimated number",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Accessible pending explanation is present in detail",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Detail fits mobile viewport width",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No profile/rating/wine/history/feedback write on presentation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 3,
+            "fulfilled": 3
+          }
+        },
+        {
+          "name": "No runtime exception",
+          "passed": true,
+          "detail": []
+        }
+      ],
+      "failures": [
+        "No missing/inference result appears as rejection",
+        "Badge/card explicitly pending, not absent-as-zero",
+        "Explanation is explicit and consistent with pending",
+        "Selected detail says pending without an estimated number",
+        "Accessible pending explanation is present in detail"
+      ],
+      "observed": {
+        "list": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nCopa 25,00 € · Botella 25,00 €\nIdentidad alta",
+        "card": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo\n\nMarchesi di Barolo\n\nSin encaje\n\nPiamonte · Italia\n\nEditar\nPiamonte\nItalia\nTinto\n25,00 €\nVariedades: Nebbiolo\n\nSin encaje\n\nFalta perfil o datos suficientes para ordenar este vino.\n\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\n¿Por qué encaja?",
+        "drawer": "1. Barbaresco Marchesi di Barolo\n\nMarchesi di Barolo · Piamonte · 25,00 €\n\n-\nAfinidad estimada\nAlta\nSeñal de identidad\nTinto\nTipo\n\nTexto visible: Barbaresco Marchesi di Barolo 25\n\nDatos inferidos: region, pais, uvas\n\nAIRIM · GUÍA CONTEXTUAL\nIdentidad lista; afinidad pendiente\n\nBarbaresco Marchesi di Barolo esta confirmado, pero faltan datos sensoriales o un perfil Matchrim suficiente para justificar una puntuacion.\n\nSenal de identidad 88%\nSin desglose sensorial defendible\n\nSiguiente paso: Completa la ficha sensorial o el perfil antes de pedir una recomendacion personal.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.\n\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nAnterior\nSiguiente"
+      },
+      "rawResponse": {
+        "nombre": "Barbaresco Marchesi di Barolo",
+        "productor": "Marchesi di Barolo",
+        "anada": null,
+        "region": "Piamonte",
+        "pais": "Italia",
+        "precio": 25,
+        "moneda": "EUR",
+        "precios": {
+          "copa": 25,
+          "botella": 25
+        },
+        "servicio": "ambos",
+        "seccion": "Premium Red / Tinto",
+        "confidence": 0.88,
+        "texto_fuente": "Barbaresco Marchesi di Barolo 25",
+        "dudas": [],
+        "campos_inferidos": [
+          "region",
+          "pais",
+          "uvas"
+        ],
+        "tipo": "tinto",
+        "uvas": [
+          "Nebbiolo"
+        ],
+        "descripcion": null,
+        "posicion": {
+          "x": 19.1,
+          "y": 32.5,
+          "width": 64.9,
+          "height": 2.2,
+          "confidence": 0.9
+        },
+        "atributos": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "compatibilidad": null,
+        "razon": "Alta acidez y taninos, coincide con potencia deseada y bajo dulzor.",
+        "affinity_calibrated": true
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "null:landscape",
+      "passed": false,
+      "checks": [
+        {
+          "name": "No missing/inference result appears as rejection",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Badge/card explicitly pending, not absent-as-zero",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Explanation is explicit and consistent with pending",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Profile unavailable cause remains honest",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Price provenance unchanged in readonly result",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selected detail says pending without an estimated number",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Accessible pending explanation is present in detail",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Detail fits mobile viewport width",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No profile/rating/wine/history/feedback write on presentation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 3,
+            "fulfilled": 3
+          }
+        },
+        {
+          "name": "No runtime exception",
+          "passed": true,
+          "detail": []
+        }
+      ],
+      "failures": [
+        "No missing/inference result appears as rejection",
+        "Badge/card explicitly pending, not absent-as-zero",
+        "Explanation is explicit and consistent with pending",
+        "Selected detail says pending without an estimated number",
+        "Accessible pending explanation is present in detail"
+      ],
+      "observed": {
+        "list": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nCopa 25,00 € · Botella 25,00 €\nIdentidad alta",
+        "card": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo\n\nMarchesi di Barolo\n\nSin encaje\n\nPiamonte · Italia\n\nEditar\nPiamonte\nItalia\nTinto\n25,00 €\nVariedades: Nebbiolo\n\nSin encaje\n\nFalta perfil o datos suficientes para ordenar este vino.\n\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\n¿Por qué encaja?",
+        "drawer": "1. Barbaresco Marchesi di Barolo\n\nMarchesi di Barolo · Piamonte · 25,00 €\n\n-\nAfinidad estimada\nAlta\nSeñal de identidad\nTinto\nTipo\n\nTexto visible: Barbaresco Marchesi di Barolo 25\n\nDatos inferidos: region, pais, uvas\n\nAIRIM · GUÍA CONTEXTUAL\nIdentidad lista; afinidad pendiente\n\nBarbaresco Marchesi di Barolo esta confirmado, pero faltan datos sensoriales o un perfil Matchrim suficiente para justificar una puntuacion.\n\nSenal de identidad 88%\nSin desglose sensorial defendible\n\nSiguiente paso: Completa la ficha sensorial o el perfil antes de pedir una recomendacion personal.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.\n\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nAnterior\nSiguiente"
+      },
+      "rawResponse": {
+        "nombre": "Barbaresco Marchesi di Barolo",
+        "productor": "Marchesi di Barolo",
+        "anada": null,
+        "region": "Piamonte",
+        "pais": "Italia",
+        "precio": 25,
+        "moneda": "EUR",
+        "precios": {
+          "copa": 25,
+          "botella": 25
+        },
+        "servicio": "ambos",
+        "seccion": "Premium Red / Tinto",
+        "confidence": 0.88,
+        "texto_fuente": "Barbaresco Marchesi di Barolo 25",
+        "dudas": [],
+        "campos_inferidos": [
+          "region",
+          "pais",
+          "uvas"
+        ],
+        "tipo": "tinto",
+        "uvas": [
+          "Nebbiolo"
+        ],
+        "descripcion": null,
+        "posicion": {
+          "x": 19.1,
+          "y": 32.5,
+          "width": 64.9,
+          "height": 2.2,
+          "confidence": 0.9
+        },
+        "atributos": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "compatibilidad": null,
+        "razon": "Alta acidez y taninos, coincide con potencia deseada y bajo dulzor.",
+        "affinity_calibrated": true
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

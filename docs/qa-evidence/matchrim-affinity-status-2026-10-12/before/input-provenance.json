@@ -1,0 +1,11 @@
+{
+  "scope": "Only07 active affinity missing-vs-negative presentation, readonly intercepted replay, no new real recommendations.",
+  "hashes": {
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "src/components/wine-import/WineMenuScanner.tsx": "a1f0e716e8028fb39c7563c3070e0f0a003dff8d2ab518c890f2ccc0e21c0e1a"
+  },
+  "source": "One existing image and04 syntheticBOTH contract. Variant inputs are explicit negative contracts, not extracted truth. No positive profile/catalog injected. No users/persistence/RLS/physical iOS claims.",
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0
+}

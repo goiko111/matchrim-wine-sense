@@ -1,0 +1,36 @@
+import { supabase } from '@/integrations/supabase/client';
+import { readStoredMatchrimProfile } from '@/utils/wineAffinityExplanation';
+import { resolveScanProfile } from '@/utils/scanProfile';
+import type { TrainableWine } from '@/utils/matchrimLearning';
+
+export const loadMatchrimScanProfile = async (ownerId: string | null, signal: AbortSignal) => {
+  const request = new AbortController();
+  const abort = () => request.abort();
+  signal.addEventListener('abort', abort, { once: true });
+  if (signal.aborted) request.abort();
+  const timeout = setTimeout(abort, 5000);
+  try {
+    return await resolveScanProfile(
+  ownerId, ownerId ? null : readStoredMatchrimProfile(), {
+    base: async () => {
+      const { data, error } = await supabase.from('quiz_results')
+        .select('potente, acidez, dulce, tanico, afrutado').eq('user_id', ownerId!)
+        .order('created_at', { ascending: false }).limit(1).abortSignal(request.signal).maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    training: async () => {
+      const { data, error } = await supabase.from('user_wines')
+        .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+        .eq('user_id', ownerId!).eq('use_for_profile_training', true)
+        .not('rating', 'is', null).not('sensory_attributes', 'is', null).abortSignal(request.signal);
+      if (error) throw error;
+      return (data ?? []) as TrainableWine[];
+    },
+  }, signal,
+    );
+  } finally {
+    clearTimeout(timeout);
+    signal.removeEventListener('abort', abort);
+  }
+};
