@@ -1,0 +1,13 @@
+{
+  "scope": "Only06 changes, not previous suites/builds",
+  "checks": [
+    {"command": "npx tsx scripts/check-matchrim-menu-actions-oct12.ts <artifact06>", "exitCode": 0, "passed": 27, "total": 27},
+    {"command": "npx eslint src/components/wine-import/WineMenuScanner.tsx src/utils/menuWineActions.ts scripts/check-matchrim-menu-actions-oct12.ts", "exitCode": 0, "stdout": "", "stderr": ""},
+    {"command": "npx tsc --project <artifact06>/tsconfig-scoped.json", "exitCode": 0, "stdout": "", "stderr": "", "note": "Initial narrow config omitted existing vite-env.d.ts, producing ambient asset/ImportMeta errors. Added that existing declaration as root; no source/dependency changes for this correction."}
+  ],
+  "fullSuitesRerun": false,
+  "webBuildRerun": false,
+  "nativeBuild": false,
+  "remoteAppCalls": 0,
+  "paidCalls": 0
+}

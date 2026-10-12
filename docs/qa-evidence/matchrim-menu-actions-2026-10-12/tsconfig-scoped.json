@@ -1,0 +1,9 @@
+{
+  "extends": "/Users/GOIKO/2matchrim76-recognition-20261008/tsconfig.app.json",
+  "include": [],
+  "files": [
+    "/Users/GOIKO/2matchrim76-recognition-20261008/src/vite-env.d.ts",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/src/utils/menuWineActions.ts",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/src/components/wine-import/WineMenuScanner.tsx"
+  ]
+}

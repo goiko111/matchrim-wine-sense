@@ -1,0 +1,77 @@
+{
+  "baseline": "9469921d260bf8d88f91a7e313a926358efdc397",
+  "stages": [
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "before": "1944b506f304b51d5de3ef48c0385cfe5cbe97f6b1da2b966b1a86b5d350baa4",
+      "after": "a1f0e716e8028fb39c7563c3070e0f0a003dff8d2ab518c890f2ccc0e21c0e1a",
+      "protected": false
+    },
+    {
+      "path": "src/utils/menuWineActions.ts",
+      "before": null,
+      "after": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "protected": false
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-actions-oct12.py",
+      "before": null,
+      "after": "512d8b49c8308364f42e049ff687a39a033675c99b089157087c932ba953819f",
+      "protected": false
+    },
+    {
+      "path": "scripts/check-matchrim-menu-actions-oct12.ts",
+      "before": null,
+      "after": "ff881c1e8eab5ef51f7ccc69c7d2a88fe1cec220784135f1d18de60071d17619",
+      "protected": false
+    },
+    {
+      "path": "scripts/package-matchrim-menu-actions-oct12.mjs",
+      "before": null,
+      "after": "1a1f9cf7f45f7605280ff52eb987552973c3a0bed398c22c96466dd301d79cc9",
+      "protected": false
+    },
+    {
+      "path": "src/utils/menuWineSave.ts",
+      "before": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "after": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "before": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "after": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "protected": true
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "before": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "after": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "protected": true
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "before": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "after": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "before": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "after": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "before": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "after": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "protected": true
+    }
+  ],
+  "protected05Manifest": {
+    "sha256": "eff0a00ddfb9905d179d4dec4e733783d34d745e3177dc04f35281a57e57a017",
+    "entries": 289,
+    "unchanged": true
+  },
+  "caveat": "Intermediate after-first source is identified by receipt hash, not a full source snapshot. Main after and after-batch share current product source. Original batch failures are retained; same file did not initiate a new batch, corrected fixture selects identical bytes under a different File name."
+}

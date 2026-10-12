@@ -1,0 +1,352 @@
+{
+  "scope": "Task06 only: successive menu-card intents, isolated invalid auth and SDK memory, no hosted persistence.",
+  "realAccounts": 0,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "results": [
+    {
+      "case": "sequence:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "favorites has the exact single recorded06 row",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "favorites controls reachable above bar",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "favorites has one pending rating declaration",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "tasted has the exact single recorded06 row",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "tasted controls reachable above bar",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "tasted has one pending rating declaration",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Readback proof makes no mutation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Readback proof has no egress",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Readback proof has no exceptions/overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "mutations": [],
+      "rows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "created_at": "2026-10-12T00:00:00Z",
+          "rating": null,
+          "quantity": null,
+          "image_url": null,
+          "personal_note": null,
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "tasted",
+          "is_favorite": true,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 25,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": true,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "sequence:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "favorites has the exact single recorded06 row",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "favorites controls reachable above bar",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "favorites has one pending rating declaration",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "tasted has the exact single recorded06 row",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "tasted controls reachable above bar",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "tasted has one pending rating declaration",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Readback proof makes no mutation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Readback proof has no egress",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Readback proof has no exceptions/overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "mutations": [],
+      "rows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "created_at": "2026-10-12T00:00:00Z",
+          "rating": null,
+          "quantity": null,
+          "image_url": null,
+          "personal_note": null,
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "tasted",
+          "is_favorite": true,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 25,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": true,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

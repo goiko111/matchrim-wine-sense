@@ -1,0 +1,13 @@
+{
+  "scope": "Task06 only: successive menu-card intents, isolated invalid auth and SDK memory, no hosted persistence.",
+  "sourceHashes": {
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "src/components/wine-import/WineMenuScanner.tsx": "a1f0e716e8028fb39c7563c3070e0f0a003dff8d2ab518c890f2ccc0e21c0e1a",
+    "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-menu-actions-20261012/after/results.json": "fd21de1d6c9986dc7ee45c23e9b81afd59dac1b47fdba3f9cadec4ef59bc4d4f"
+  },
+  "data": "Existing04 synthetic BOTH contract, one recorded image; not fresh extraction/catalog/profile/user",
+  "invalidSignature": true,
+  "remoteAppCalls": 0,
+  "paidCalls": 0
+}
