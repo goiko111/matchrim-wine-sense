@@ -1,0 +1,5645 @@
+{
+  "scope": "Local authenticated carta-save -> Bodega price provenance; fail-closed egress, no real account/write.",
+  "auth": "synthetic-invalid-signature; no real signup/user",
+  "storage": "discarded in-memory SDK intentions, not hosted persistence",
+  "realRemoteCalls": 0,
+  "paidCalls": 0,
+  "results": [
+    {
+      "case": "both-wishlist:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 35,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 35,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-wishlist:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 35,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 35,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-favorite:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 35,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": true,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 35,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": true,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-favorite:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 35,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": true,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 35,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": true,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-tasted:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 35,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": true
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Declared tasted is not positive feedback or profile learning",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Saved intent visible in actual Bodega section without invented rating",
+        "Bodega exposes price provenance",
+        "Declared tasted is not positive feedback or profile learning"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "tasted",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": true,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 35,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "tasted",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": true,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-tasted:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 35,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": true
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Declared tasted is not positive feedback or profile learning",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Saved intent visible in actual Bodega section without invented rating",
+        "Bodega exposes price provenance",
+        "Declared tasted is not positive feedback or profile learning"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "tasted",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": true,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 35,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "tasted",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": true,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "cup-eur:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 12,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 9,
+            "fulfilled": 9,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Lugana Allegrini",
+            "producer": "Allegrini",
+            "vintage": null,
+            "region": "Lugana",
+            "country": "Italia",
+            "grape_varieties": [
+              "Turbiana"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 12,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 12,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Lugana Allegrini",
+          "producer": "Allegrini",
+          "vintage": null,
+          "region": "Lugana",
+          "country": "Italia",
+          "grape_varieties": [
+            "Turbiana"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 3,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 1,
+            "afrutado": 4
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 12,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 12,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "cup-eur:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 12,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 9,
+            "fulfilled": 9,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Lugana Allegrini",
+            "producer": "Allegrini",
+            "vintage": null,
+            "region": "Lugana",
+            "country": "Italia",
+            "grape_varieties": [
+              "Turbiana"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 4
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 12,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 12,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Lugana Allegrini",
+          "producer": "Allegrini",
+          "vintage": null,
+          "region": "Lugana",
+          "country": "Italia",
+          "grape_varieties": [
+            "Turbiana"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 3,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 1,
+            "afrutado": 4
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 12,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 12,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "bottle-eur:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": 25,
+            "expected": 25
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 25,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 25,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "bottle-eur:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": 25,
+            "expected": 25
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 25,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 25,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "bottle-gbp:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 5,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barolo Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 5,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "GBP"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barolo Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 5,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "GBP"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "bottle-gbp:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 5,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barolo Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 5,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "GBP"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barolo Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 5,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "GBP"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "currency-null:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 4
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Barbaresco",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 4
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": null
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Barbaresco",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 4
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": null
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "currency-null:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 4
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Barbaresco",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 4
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": null
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Barbaresco",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 4
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": null
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "unknown:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 9,
+            "fulfilled": 9,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Laurent Perriere Ultra",
+            "producer": "Laurent Perrier",
+            "vintage": null,
+            "region": "Champagne",
+            "country": "Francia",
+            "grape_varieties": [
+              "Pinot Noir",
+              "Chardonnay"
+            ],
+            "tasting_notes": "6 años sobre lías.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": null
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Laurent Perriere Ultra",
+          "producer": "Laurent Perrier",
+          "vintage": null,
+          "region": "Champagne",
+          "country": "Francia",
+          "grape_varieties": [
+            "Pinot Noir",
+            "Chardonnay"
+          ],
+          "tasting_notes": "6 años sobre lías.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 3,
+            "acidez": 5,
+            "dulzura": 1,
+            "taninos": 1,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": null
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "unknown:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 9,
+            "fulfilled": 9,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Laurent Perriere Ultra",
+            "producer": "Laurent Perrier",
+            "vintage": null,
+            "region": "Champagne",
+            "country": "Francia",
+            "grape_varieties": [
+              "Pinot Noir",
+              "Chardonnay"
+            ],
+            "tasting_notes": "6 años sobre lías.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": null
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Laurent Perriere Ultra",
+          "producer": "Laurent Perrier",
+          "vintage": null,
+          "region": "Champagne",
+          "country": "Francia",
+          "grape_varieties": [
+            "Pinot Noir",
+            "Chardonnay"
+          ],
+          "tasting_notes": "6 años sobre lías.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 3,
+            "acidez": 5,
+            "dulzura": 1,
+            "taninos": 1,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": null
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "inferred:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 9,
+            "fulfilled": 9,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Laurent Perriere Ultra",
+            "producer": "Laurent Perrier",
+            "vintage": null,
+            "region": "Champagne",
+            "country": "Francia",
+            "grape_varieties": [
+              "Pinot Noir",
+              "Chardonnay"
+            ],
+            "tasting_notes": "6 años sobre lías.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": null
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Laurent Perriere Ultra",
+          "producer": "Laurent Perrier",
+          "vintage": null,
+          "region": "Champagne",
+          "country": "Francia",
+          "grape_varieties": [
+            "Pinot Noir",
+            "Chardonnay"
+          ],
+          "tasting_notes": "6 años sobre lías.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 3,
+            "acidez": 5,
+            "dulzura": 1,
+            "taninos": 1,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": null
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "inferred:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 9,
+            "fulfilled": 9,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Laurent Perriere Ultra",
+            "producer": "Laurent Perrier",
+            "vintage": null,
+            "region": "Champagne",
+            "country": "Francia",
+            "grape_varieties": [
+              "Pinot Noir",
+              "Chardonnay"
+            ],
+            "tasting_notes": "6 años sobre lías.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 3,
+              "acidez": 5,
+              "dulzura": 1,
+              "taninos": 1,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": null
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Laurent Perriere Ultra",
+          "producer": "Laurent Perrier",
+          "vintage": null,
+          "region": "Champagne",
+          "country": "Francia",
+          "grape_varieties": [
+            "Pinot Noir",
+            "Chardonnay"
+          ],
+          "tasting_notes": "6 años sobre lías.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 3,
+            "acidez": 5,
+            "dulzura": 1,
+            "taninos": 1,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": null
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "denied:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": 25,
+            "expected": 25
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Unconfirmed/rejected representation not labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Rejected intention creates no mock row",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 25,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+        "Error saving scanned wine: {code: 23514, message: Synthetic check rejection}"
+      ]
+    },
+    {
+      "case": "denied:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": 25,
+            "expected": 25
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Unconfirmed/rejected representation not labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Rejected intention creates no mock row",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 25,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+        "Error saving scanned wine: {code: 23514, message: Synthetic check rejection}"
+      ]
+    },
+    {
+      "case": "empty:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": 25,
+            "expected": 25
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Unconfirmed/rejected representation not labelled saved",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Ambiguous representation exposes abstention",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Unconfirmed/rejected representation not labelled saved",
+        "Ambiguous representation exposes abstention",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 25,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 25,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "empty:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": 25,
+            "expected": 25
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Unconfirmed/rejected representation not labelled saved",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Ambiguous representation exposes abstention",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Unconfirmed/rejected representation not labelled saved",
+        "Ambiguous representation exposes abstention",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 25,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 25,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "corrupt:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 35,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Unconfirmed/rejected representation not labelled saved",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Ambiguous representation exposes abstention",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Unconfirmed/rejected representation not labelled saved",
+        "Ambiguous representation exposes abstention",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 35,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "corrupt:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": false,
+          "detail": {
+            "actual": 35,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": false,
+          "detail": {
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Unconfirmed/rejected representation not labelled saved",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Ambiguous representation exposes abstention",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Unconfirmed/rejected representation not labelled saved",
+        "Ambiguous representation exposes abstention",
+        "Bodega exposes price provenance"
+      ],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": {
+              "potencia": 4,
+              "acidez": 4,
+              "dulzura": 1,
+              "taninos": 5,
+              "afrutado": 3
+            },
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 35,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR"
+            }
+          },
+          "query": {},
+          "prefer": null,
+          "accept": "*/*"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 4,
+            "dulzura": 1,
+            "taninos": 5,
+            "afrutado": 3
+          },
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "legacy:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "fulfilled": 4,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Bodega exposes price provenance"
+      ],
+      "writes": [],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": null,
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "legacy:landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "fulfilled": 4,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Bodega exposes price provenance"
+      ],
+      "writes": [],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": null,
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

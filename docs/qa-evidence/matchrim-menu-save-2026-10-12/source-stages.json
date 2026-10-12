@@ -1,0 +1,150 @@
+{
+  "baseline": "829b67511d0f61b4fddb7f67e43835c892e87d17",
+  "sources": [
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "snapshotPath": "sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "baselineSnapshotPath": "baseline-sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "beforeSha256": "6c161d04f51ba10a75ee4ac6677c7b973663494f6fe7e321fc3fb003c0a56a28",
+      "afterSha256": "1944b506f304b51d5de3ef48c0385cfe5cbe97f6b1da2b966b1a86b5d350baa4",
+      "protected": false,
+      "unchanged": false
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "snapshotPath": "sources/src/pages/MyWines.tsx.txt",
+      "baselineSnapshotPath": "baseline-sources/src/pages/MyWines.tsx.txt",
+      "beforeSha256": "d94f8a69d9d59556b390738c2d4b26942087f33fc2eef5b531ae0417cb949392",
+      "afterSha256": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "protected": false,
+      "unchanged": false
+    },
+    {
+      "path": "src/utils/menuWineSave.ts",
+      "snapshotPath": "sources/src/utils/menuWineSave.ts.txt",
+      "baselineSnapshotPath": null,
+      "beforeSha256": null,
+      "afterSha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "protected": false,
+      "unchanged": false
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "snapshotPath": "sources/src/contexts/AuthContext.tsx.txt",
+      "baselineSnapshotPath": "baseline-sources/src/contexts/AuthContext.tsx.txt",
+      "beforeSha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "afterSha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "protected": true,
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "snapshotPath": "sources/src/utils/scanWineEvidence.ts.txt",
+      "baselineSnapshotPath": "baseline-sources/src/utils/scanWineEvidence.ts.txt",
+      "beforeSha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "afterSha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "protected": true,
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "snapshotPath": "sources/src/utils/wineMenuScan.ts.txt",
+      "baselineSnapshotPath": "baseline-sources/src/utils/wineMenuScan.ts.txt",
+      "beforeSha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "afterSha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "protected": true,
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "snapshotPath": "sources/src/utils/wineComparison.ts.txt",
+      "baselineSnapshotPath": "baseline-sources/src/utils/wineComparison.ts.txt",
+      "beforeSha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "afterSha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "protected": true,
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/scanMoney.ts",
+      "snapshotPath": "sources/src/utils/scanMoney.ts.txt",
+      "baselineSnapshotPath": "baseline-sources/src/utils/scanMoney.ts.txt",
+      "beforeSha256": "db8e16051dd214d3de8cae63970dcaf207c99da3b5a3e8053a7a2be1c0e8bc85",
+      "afterSha256": "db8e16051dd214d3de8cae63970dcaf207c99da3b5a3e8053a7a2be1c0e8bc85",
+      "protected": true,
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/labelScanSave.ts",
+      "snapshotPath": "sources/src/utils/labelScanSave.ts.txt",
+      "baselineSnapshotPath": "baseline-sources/src/utils/labelScanSave.ts.txt",
+      "beforeSha256": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77",
+      "afterSha256": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77",
+      "protected": true,
+      "unchanged": true
+    },
+    {
+      "path": "scripts/check-matchrim-menu-save-oct12.ts",
+      "snapshotPath": "sources/scripts/check-matchrim-menu-save-oct12.ts.txt",
+      "baselineSnapshotPath": null,
+      "beforeSha256": null,
+      "afterSha256": "afa5aba5763fc295c3b96af72ada334f448a8a88a216272b07c14907eba0ace0",
+      "protected": false,
+      "unchanged": false
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-save-oct12.py",
+      "snapshotPath": "sources/scripts/qa-matchrim-menu-save-oct12.py.txt",
+      "baselineSnapshotPath": null,
+      "beforeSha256": null,
+      "afterSha256": "734d5953b4ecfe92fc529260f6d282c44c2e021b5b5c88f25b225713553a898e",
+      "protected": false,
+      "unchanged": false
+    },
+    {
+      "path": "scripts/package-matchrim-menu-save-oct12.mjs",
+      "snapshotPath": "sources/scripts/package-matchrim-menu-save-oct12.mjs.txt",
+      "baselineSnapshotPath": null,
+      "beforeSha256": null,
+      "afterSha256": "ea6f731d0b776f4d079af24eeacd9c3a07cf72b7de3c0788ededfe1b5faa71c9",
+      "protected": false,
+      "unchanged": false
+    },
+    {
+      "path": "scripts/verify-matchrim-menu-save-oct12.mjs",
+      "snapshotPath": "sources/scripts/verify-matchrim-menu-save-oct12.mjs.txt",
+      "baselineSnapshotPath": null,
+      "beforeSha256": null,
+      "afterSha256": "ff4bc1130b1a6d900ba9e6b545d4da56240eab61dceeff481ac7f9f8a2f68292",
+      "protected": false,
+      "unchanged": false
+    }
+  ],
+  "protectedReaderFunctions": [
+    {
+      "name": "beginWineAction",
+      "sha256": "eb4b895c3b1cd385c0dce7881c05eaa16abca0db086ad93d297c42d757676b1d",
+      "unchanged": true
+    },
+    {
+      "name": "handleToggleFavorite",
+      "sha256": "f6f42b9d02e1e6ace4e310323ade6f9683cf66e9f128376e77ef43478b289718",
+      "unchanged": true
+    },
+    {
+      "name": "handleToggleProfileTraining",
+      "sha256": "cdcb94c86aca3f11d0555301b179cb143d7d2922bbf535fe05ba1a4c06decf9f",
+      "unchanged": true
+    },
+    {
+      "name": "handleDeleteWine",
+      "sha256": "0bef609598c8323347b80e7b4bcc589e8762211f5feaf7c88dc836696f80ff3b",
+      "unchanged": true
+    },
+    {
+      "name": "owner-lifetime-and-load-controllers",
+      "sha256": "b8fe0e58bec3347ea3968bf6e75bb88c558c2e9a26520d7e7a83e841e2b6c0b0",
+      "unchanged": true
+    }
+  ],
+  "caveat": "No hosted RLS or session certification. Original before harness had fewer checks; final harness adds overlap/repeat/bottom-action checks and four single-format contexts. Intermediate product hashes are in pure receipts."
+}

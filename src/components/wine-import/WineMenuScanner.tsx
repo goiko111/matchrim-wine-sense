@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { optionalScanNumber, normalizeScanSensoryValue } from '../../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,8 @@ import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { formatScanPrice, normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
 import { clusterOverlayPins } from "@/utils/overlayPins";
 import { applyMenuWineEvidence, menuWinePriceEvidence, updateMenuWineEvidence } from '@/utils/scanWineEvidence';
+import { confirmsMenuInsert, menuFinancialPrice, menuPriceSnapshot, menuSaveEvidence } from '@/utils/menuWineSave';
+import { labelInsertErrorResult } from '@/utils/labelScanSave';
 import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat } from '@/utils/wineComparison';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
@@ -231,6 +233,7 @@ const WineMenuScannerSession = ({
   const [scannedWines, setScannedWines] = useState<ScannedWine[]>([]);
   const [savingWineKey, setSavingWineKey] = useState<string | null>(null);
   const [savedWineKeys, setSavedWineKeys] = useState<Set<string>>(new Set());
+  const [unconfirmedWineIndexes, setUnconfirmedWineIndexes] = useState<Set<number>>(new Set());
   const [hasProfile, setHasProfile] = useState(false);
   const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
@@ -254,6 +257,25 @@ const WineMenuScannerSession = ({
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const scanAbortRef = useRef<AbortController | null>(null);
+  const saveLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
+  const savingRef = useRef(false);
+  const unconfirmedRef = useRef(new Set<number>());
+
+  useLayoutEffect(() => {
+    saveLifetime.current = { active: true, generation: saveLifetime.current.generation + 1, ownerId: user?.id };
+    savingRef.current = false;
+    unconfirmedRef.current.clear();
+    return () => { saveLifetime.current.active = false; saveLifetime.current.generation += 1; };
+  }, [user?.id]);
+
+  const resetSaveBatch = () => {
+    saveLifetime.current.generation += 1;
+    savingRef.current = false;
+    unconfirmedRef.current.clear();
+    setSavingWineKey(null);
+    setSavedWineKeys(new Set());
+    setUnconfirmedWineIndexes(new Set());
+  };
 
   useEffect(() => {
     scanAbortRef.current?.abort();
@@ -261,6 +283,7 @@ const WineMenuScannerSession = ({
     setPreview(null);
     setSelectedPinIndex(null);
     setSavedWineKeys(new Set());
+    setUnconfirmedWineIndexes(new Set());
     setScanProfile(null);
     setHasProfile(false);
     setLoading(false);
@@ -450,6 +473,7 @@ const WineMenuScannerSession = ({
     }
 
     // Activar loader inmediatamente
+    resetSaveBatch();
     setLoading(true);
     setScannedWines([]);
     setScanFeedback(null);
@@ -733,6 +757,7 @@ const WineMenuScannerSession = ({
 
   const clearScan = () => {
     scanAbortRef.current?.abort();
+    resetSaveBatch();
     setPreview(null);
     setScannedWines([]);
     setSavedWineKeys(new Set());
@@ -822,15 +847,25 @@ const WineMenuScannerSession = ({
     }
 
     const saveKey = `${favorite ? 'favorite' : status}-${wine.nombre}-${index}`;
+    if (savingRef.current || unconfirmedRef.current.has(index) || savedWineKeys.has(saveKey)) return;
+    const ownerId = user.id;
+    const generation = saveLifetime.current.generation;
+    const isCurrent = () => saveLifetime.current.active && saveLifetime.current.generation === generation
+      && saveLifetime.current.ownerId === ownerId;
+    const markUnconfirmed = () => {
+      unconfirmedRef.current.add(index);
+      setUnconfirmedWineIndexes(new Set(unconfirmedRef.current));
+      toast.warning('Guardado sin confirmar. Revisa Bodega antes de repetirlo.');
+    };
+    savingRef.current = true;
     setSavingWineKey(saveKey);
 
     try {
       const sensoryAttributes = normalizeAttributesTo5(wine.atributos);
-
-      const { error } = await supabase
-        .from("user_wines")
-        .insert({
-          user_id: user.id,
+      const evidence = menuSaveEvidence(wine, sensoryAttributes as Json);
+      const priceSnapshot = menuPriceSnapshot(wine);
+      const payload = {
+          user_id: ownerId,
           name: wine.nombre,
           producer: wine.productor || null,
           vintage: wine.anada || null,
@@ -840,12 +875,12 @@ const WineMenuScannerSession = ({
           tasting_notes: wine.descripcion || wine.razon || null,
           status,
           is_favorite: favorite,
-          matchrim_affinity: wine.compatibilidad || null,
-          sensory_attributes: sensoryAttributes as Json,
-          use_for_profile_training: status === 'tasted' && Boolean(sensoryAttributes),
+          matchrim_affinity: evidence.matchrim_affinity,
+          sensory_attributes: evidence.sensory_attributes,
+          use_for_profile_training: false,
           consumption_place: restaurantName || null,
           consumption_place_type: restaurantName ? "restaurant" : null,
-          price: normalizeScanCurrency(wine.moneda) === 'EUR' ? wine.precio ?? null : null,
+          price: menuFinancialPrice(priceSnapshot),
           place_details: {
             source: "menu_scanner",
             restaurant_session_id: restaurantSessionId || null,
@@ -854,10 +889,19 @@ const WineMenuScannerSession = ({
             similar_wine_name: similarWineName || null,
             scanned_price: wine.precio ?? null,
             scanned_currency: normalizeScanCurrency(wine.moneda),
+            menu_price_snapshot: priceSnapshot,
+            menu_wine_evidence: evidence.trace,
           } as Json,
-        });
-
-      if (error) throw error;
+        };
+      const { data, error } = await supabase.from("user_wines").insert(payload)
+        .select('id, user_id, name, producer, vintage, status, is_favorite, price, place_details, sensory_attributes, matchrim_affinity, use_for_profile_training').single();
+      if (!isCurrent()) return;
+      if (error) {
+        if (labelInsertErrorResult(error).status === 'rejected') toast.error('No se pudo guardar el vino');
+        else markUnconfirmed();
+        return;
+      }
+      if (!confirmsMenuInsert(data, payload)) { markUnconfirmed(); return; }
 
       setSavedWineKeys((currentKeys) => new Set(currentKeys).add(saveKey));
       trackAppEvent("wine_saved", {
@@ -866,7 +910,7 @@ const WineMenuScannerSession = ({
           source: "menu_scanner",
           status,
           wine_name: wine.nombre,
-          match: wine.compatibilidad || null,
+          match: evidence.matchrim_affinity,
           restaurant_name: restaurantName || null,
         },
       });
@@ -878,10 +922,11 @@ const WineMenuScannerSession = ({
           : `${wine.nombre} guardado en Ya Probados. Puntúalo para afinar tu Matchrim`
       );
     } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error saving scanned wine:", error);
-      toast.error("No se pudo guardar el vino");
+      markUnconfirmed();
     } finally {
-      setSavingWineKey(null);
+      if (isCurrent()) { savingRef.current = false; setSavingWineKey(null); }
     }
   };
 
@@ -1761,10 +1806,13 @@ const WineMenuScannerSession = ({
 	                    </div>
 		          )}
 
+                        {unconfirmedWineIndexes.has(index) && (
+                          <p role="status" className="mt-4 text-sm text-amber-900">Guardado sin confirmar. Revisa Bodega antes de repetirlo.</p>
+                        )}
 			                  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
 		                    <Button
 		                      onClick={() => saveWineToWishlist(wine, index)}
-		                      disabled={savingWineKey === wishlistSaveKey || savedWineKeys.has(wishlistSaveKey)}
+		                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || savedWineKeys.has(wishlistSaveKey)}
 		                      variant="outline"
 		                      className="gap-2"
 		                    >
@@ -1779,7 +1827,7 @@ const WineMenuScannerSession = ({
 		                    </Button>
 			                    <Button
 			                      onClick={() => saveWineAsTasted(wine, index)}
-			                      disabled={savingWineKey === tastedSaveKey || savedWineKeys.has(tastedSaveKey)}
+			                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || savedWineKeys.has(tastedSaveKey)}
 			                      variant="outline"
 		                      className="gap-2"
 		                    >
@@ -1794,7 +1842,7 @@ const WineMenuScannerSession = ({
 			                    </Button>
 			                    <Button
 			                      onClick={() => saveWineAsFavorite(wine, index)}
-			                      disabled={savingWineKey === favoriteSaveKey || savedWineKeys.has(favoriteSaveKey)}
+			                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || savedWineKeys.has(favoriteSaveKey)}
 			                      variant="outline"
 			                      className="gap-2"
 			                    >

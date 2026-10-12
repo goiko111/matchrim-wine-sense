@@ -20,6 +20,7 @@ import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 import { confirmsWineMutation } from '@/utils/matchrimWineMutation';
+import { hasStoredMenuCatalogEvidence, readMenuPrice } from '@/utils/menuWineSave';
 import { toast } from "sonner";
 import {
   Wine,
@@ -80,6 +81,7 @@ interface UserWine {
   quantity: number | null;
   price: number | null;
   place_details: Json | null;
+  menu_price_view?: ReturnType<typeof readMenuPrice>;
 }
 
 interface LearningWine {
@@ -91,6 +93,7 @@ interface LearningWine {
   grape_varieties: string[] | null;
   status: 'collection' | 'wishlist' | 'tasted';
   created_at: string;
+  place_details: Json | null;
 }
 
 interface ExtractedWineData {
@@ -192,11 +195,22 @@ const normalizeAffinity = (value: unknown) => {
   return Math.max(0, Math.min(100, Math.round(numeric)));
 };
 
-const normalizeUserWine = (wine: UserWine): UserWine => ({
-  ...wine,
-  matchrim_affinity: normalizeAffinity(wine.matchrim_affinity),
-  sensory_attributes: normalizeSensoryAttributesTo5(wine.sensory_attributes),
-});
+const normalizeUserWine = (wine: UserWine): UserWine => {
+  const menuPrice = readMenuPrice(wine.place_details, wine.price);
+  const catalog = !menuPrice || hasStoredMenuCatalogEvidence(wine.place_details);
+  const trace = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
+    ? wine.place_details.menu_wine_evidence : null;
+  const calibrated = !menuPrice || (trace && typeof trace === 'object' && !Array.isArray(trace) && trace.affinity_calibrated === true);
+  const sensory = catalog ? normalizeSensoryAttributesTo5(wine.sensory_attributes) : null;
+  return {
+    ...wine,
+    price: menuPrice ? menuPrice.price : wine.price,
+    menu_price_view: menuPrice,
+    matchrim_affinity: catalog && calibrated && (!menuPrice || sensory) ? normalizeAffinity(wine.matchrim_affinity) : null,
+    sensory_attributes: sensory,
+    use_for_profile_training: wine.use_for_profile_training && catalog && (!menuPrice || wine.rating !== null),
+  };
+};
 
 const getStoredAffinityTrace = (wine: UserWine) => {
   if (!wine.place_details || typeof wine.place_details !== 'object' || Array.isArray(wine.place_details)) return null;
@@ -430,7 +444,7 @@ const MyWinesForOwner = () => {
       setSectionCounts({
         collection: rows.filter((wine) => wine.status === 'collection').length,
         wishlist: rows.filter((wine) => wine.status === 'wishlist').length,
-        tasted: rows.filter((wine) => Boolean(wine.rating)).length,
+        tasted: rows.filter((wine) => wine.status === 'tasted' || Boolean(wine.rating)).length,
         favorites: rows.filter((wine) => Boolean(wine.is_favorite)).length,
         rejected: rows.filter((wine) => wine.rating === 'not_for_me').length,
       });
@@ -469,8 +483,8 @@ const MyWinesForOwner = () => {
       } else if (statusFilter === 'wishlist') {
         query = query.eq("status", "wishlist");
       } else if (statusFilter === 'tasted') {
-        // Ya Probados shows all wines with a rating, regardless of status
-        query = query.not("rating", "is", null);
+        // A tasted declaration remains visible without inventing a rating.
+        query = query.or('status.eq.tasted,rating.not.is.null');
       }
       
       const { data, error } = await query.order("created_at", { ascending: false }).abortSignal(controller.signal);
@@ -501,7 +515,7 @@ const MyWinesForOwner = () => {
 	    try {
 	      const { data, error } = await supabase
 	        .from("user_wines")
-	        .select("id, name, rating, sensory_attributes, use_for_profile_training, grape_varieties, status, created_at")
+	        .select("id, name, rating, sensory_attributes, use_for_profile_training, grape_varieties, status, created_at, place_details")
 	        .eq("user_id", user.id)
 	        .not("rating", "is", null)
 	        .order("created_at", { ascending: false })
@@ -511,7 +525,10 @@ const MyWinesForOwner = () => {
 	      if (error) throw error;
 	      setLearningWines(((data as LearningWine[]) || []).map((wine) => ({
 	        ...wine,
-	        sensory_attributes: normalizeSensoryAttributesTo5(wine.sensory_attributes),
+	        sensory_attributes: readMenuPrice(wine.place_details, null) && !hasStoredMenuCatalogEvidence(wine.place_details)
+            ? null : normalizeSensoryAttributesTo5(wine.sensory_attributes),
+	        use_for_profile_training: wine.use_for_profile_training && (!readMenuPrice(wine.place_details, null)
+            || hasStoredMenuCatalogEvidence(wine.place_details)),
 	      })));
 	    } catch (error) {
         if (!isCurrent()) return;
@@ -907,7 +924,7 @@ const MyWinesForOwner = () => {
         status?: 'tasted';
         consumption_date?: string;
         quantity?: number;
-      } = { rating, use_for_profile_training: rating !== null };
+      } = { rating, use_for_profile_training: rating !== null && (!readMenuPrice(wine.place_details, wine.price) || hasSensoryAttributes) };
       
       if (rating && wine?.status === 'wishlist') {
         updateData.status = 'tasted';
@@ -1719,6 +1736,16 @@ const MyWinesForOwner = () => {
                           </div>
                         </CardHeader>
                         <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
+                          {wine.menu_price_view && (
+                            <div role="group" aria-label={`Precio de carta de ${wine.name}`} className="space-y-1 border-l-2 border-slate-200 pl-3 text-sm">
+                              {wine.menu_price_view.lines.map((line, index) => (
+                                <p key={index} className="break-words text-slate-600">{line}</p>
+                              ))}
+                            </div>
+                          )}
+                          {wine.status === 'tasted' && !wine.rating && (
+                            <p className="text-sm text-slate-600">Pendiente de valoración</p>
+                          )}
                           {/* Quantity for collection items */}
                           {wine.status === 'collection' && wine.quantity !== null && (
                             <div className="flex flex-wrap items-center justify-between gap-2 text-sm">

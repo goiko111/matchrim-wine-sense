@@ -1,0 +1,11 @@
+{
+  "scope": "One existing image/recorded and03/04 synthetic contract data. EUR/GBP/BOTH are synthetic as before, never fresh extraction. Fake local auth signature invalid, no signup/real profile/catalog-positive fixture. MemoryPOST/GET is not hosted persistence.",
+  "inputHashes": {
+    "docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5",
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "qa/fixtures/menu-food-evidence-oct8.json": "c5cc2a486254a38155ff88b6d5dad08b2328ba053034a28e8e0ea89f244ea6e3",
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194"
+  },
+  "fixtureOwner": "00000000-0000-4000-8000-000000000080",
+  "remoteCalls": 0
+}

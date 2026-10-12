@@ -1,0 +1,11 @@
+# MATCHRIM-HOY-20261012-05
+
+Baseline829b67511d0f61b4fddb7f67e43835c892e87d17 clean. Active /escanear/carta-vinos -> pages/Scan -> components/ScanHub -> WineMenuScannerSession.saveScannedWine -> user_wines SDK intent; Bodega /my-wines/:section -> MyWinesForOwner.loadWines/normalizeUserWine/cards. No other pages/ScanHub or helper-only substitute.
+
+Source save SHA to record before edits; coordinator supplied payload-only proof6c161d04f51b of synthetic BOTH/EUR manual35 with read25/25 and pending=true. Local UI must reproduce this, not claim remote write. Existing04 BOTH and03 money contracts/original fixture and same JPEG only. No positive user/profile/catalog sheet or new amount/source/model. Fake auth is a discarded local fixture with invalid signature, not a registration or real human.
+
+Expected: financial scalar must not inherit ambiguous/inferred/missing-currency/cop/other-currency amount; existing JSONplace_details retains current raw amount/currency/per-service readings/manual pending/origin. Known single-bottle EUR can remain eligible under explicit source contract, not independently verified purchase/OCR. Bodega reader exposes pending/provenance and refuses legacy/tampered scalar promotion. No new columns/migration/service/RLS.
+
+Source gaps: genericEURprice current save; JSONdrops unit/prices/manual/pending; inferred model sensory sheet stored and tasted marked trainable; Bodega currently has no price provenance display. status=tasted with rating=null is excluded by current YaProbados query/count; do not invent positive rating to make it visible. Minimum payload/consumer/readback/error gates only, preserving other owner/rating guards.
+
+Authenticated isolated native-shim browser393x852/852x393, intercepted before any navigation/session seed, analytics/service workers off. Close nonlocal WebSockets if available; ledger of all intercepted outbound intentions. SDKPOST/GETmemory and JSONfixtures are not hosted persistence or ownership/RLS certification. QA wishlist/favorite/tasted and price units/currencies/pending/legacy/error cases. Zero actual remote/profile learning/writes/accounts/paid28calls, Apple/native/globalSDK/HOME/phone/push/deploy/TestFlight. Prior inputs/evidence/holdouts/ledgers and commons-355816 exclusion intact. Deadline13Oct06:00Z; stop at genuine external gate, no invented data/permissions.

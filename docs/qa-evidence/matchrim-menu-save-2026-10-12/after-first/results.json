@@ -1,0 +1,1550 @@
+{
+  "scope": "Local authenticated carta-save -> Bodega price provenance; fail-closed egress, no real account/write.",
+  "auth": "synthetic-invalid-signature; no real signup/user",
+  "storage": "discarded in-memory SDK intentions, not hosted persistence",
+  "realRemoteCalls": 0,
+  "paidCalls": 0,
+  "results": [
+    {
+      "case": "both-wishlist:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": true,
+          "detail": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          }
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": true,
+          "detail": {
+            "sensory_attributes": null,
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Pending or legacy amount remains visibly unconfirmed",
+          "passed": true,
+          "detail": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €"
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR",
+              "menu_price_snapshot": {
+                "version": 1,
+                "raw_amount": 35,
+                "raw_currency": "EUR",
+                "currency": "EUR",
+                "service": "ambos",
+                "prices": {
+                  "copa": 25,
+                  "botella": 25,
+                  "llevar": null
+                },
+                "origin": "manual",
+                "manual_pending": true,
+                "inferred_service": false,
+                "inferred_price": false,
+                "inferred_currency": false,
+                "identity_confirmed": true,
+                "source_text": "Barbaresco Marchesi di Barolo 25"
+              },
+              "menu_wine_evidence": {
+                "version": 1,
+                "canonical_id": null,
+                "sensory_source": "inference",
+                "identity_confirmed": true,
+                "affinity_calibrated": false
+              }
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,price,place_details,sensory_attributes,matchrim_affinity,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 25,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": true,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-tasted:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": true,
+          "detail": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          }
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": true,
+          "detail": {
+            "sensory_attributes": null,
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Pending or legacy amount remains visibly unconfirmed",
+          "passed": true,
+          "detail": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €"
+        },
+        {
+          "name": "Declared tasted is not positive feedback or profile learning",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "tasted",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR",
+              "menu_price_snapshot": {
+                "version": 1,
+                "raw_amount": 35,
+                "raw_currency": "EUR",
+                "currency": "EUR",
+                "service": "ambos",
+                "prices": {
+                  "copa": 25,
+                  "botella": 25,
+                  "llevar": null
+                },
+                "origin": "manual",
+                "manual_pending": true,
+                "inferred_service": false,
+                "inferred_price": false,
+                "inferred_currency": false,
+                "identity_confirmed": true,
+                "source_text": "Barbaresco Marchesi di Barolo 25"
+              },
+              "menu_wine_evidence": {
+                "version": 1,
+                "canonical_id": null,
+                "sensory_source": "inference",
+                "identity_confirmed": true,
+                "affinity_calibrated": false
+              }
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,price,place_details,sensory_attributes,matchrim_affinity,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "tasted",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 25,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": true,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "bottle-eur:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": 25,
+            "expected": 25
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": true,
+          "detail": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          }
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": true,
+          "detail": {
+            "sensory_attributes": null,
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Confirmed representation labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Pending or legacy amount remains visibly unconfirmed",
+          "passed": true,
+          "detail": "Carta: 25,00 €\n\nPor botella\n\nBotella: 25,00 €"
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 25,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": "EUR",
+              "menu_price_snapshot": {
+                "version": 1,
+                "raw_amount": 25,
+                "raw_currency": "EUR",
+                "currency": "EUR",
+                "service": "botella",
+                "prices": {
+                  "copa": null,
+                  "botella": 25,
+                  "llevar": null
+                },
+                "origin": "scan",
+                "manual_pending": false,
+                "inferred_service": false,
+                "inferred_price": false,
+                "inferred_currency": false,
+                "identity_confirmed": true,
+                "source_text": "Barbaresco Marchesi di Barolo 25"
+              },
+              "menu_wine_evidence": {
+                "version": 1,
+                "canonical_id": null,
+                "sensory_source": "inference",
+                "identity_confirmed": true,
+                "affinity_calibrated": false
+              }
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,price,place_details,sensory_attributes,matchrim_affinity,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 25,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "botella",
+              "prices": {
+                "copa": null,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "empty:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": 25,
+            "expected": 25
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": true,
+          "detail": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          }
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": true,
+          "detail": {
+            "sensory_attributes": null,
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Unconfirmed/rejected representation not labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Ambiguous representation exposes abstention",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Pending or legacy amount remains visibly unconfirmed",
+          "passed": true,
+          "detail": "Carta: 25,00 €\n\nPor botella\n\nBotella: 25,00 €"
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": 25,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 25,
+              "scanned_currency": "EUR",
+              "menu_price_snapshot": {
+                "version": 1,
+                "raw_amount": 25,
+                "raw_currency": "EUR",
+                "currency": "EUR",
+                "service": "botella",
+                "prices": {
+                  "copa": null,
+                  "botella": 25,
+                  "llevar": null
+                },
+                "origin": "scan",
+                "manual_pending": false,
+                "inferred_service": false,
+                "inferred_price": false,
+                "inferred_currency": false,
+                "identity_confirmed": true,
+                "source_text": "Barbaresco Marchesi di Barolo 25"
+              },
+              "menu_wine_evidence": {
+                "version": 1,
+                "canonical_id": null,
+                "sensory_source": "inference",
+                "identity_confirmed": true,
+                "affinity_calibrated": false
+              }
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,price,place_details,sensory_attributes,matchrim_affinity,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 25,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "botella",
+              "prices": {
+                "copa": null,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "corrupt:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "One isolated SDK insert intention",
+          "passed": true,
+          "detail": 1
+        },
+        {
+          "name": "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+          "passed": true,
+          "detail": {
+            "actual": null,
+            "expected": null
+          }
+        },
+        {
+          "name": "Price snapshot carries origin/unit/pending and per-service raw readings",
+          "passed": true,
+          "detail": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          }
+        },
+        {
+          "name": "No inferred ficha/affinity/training from save intent",
+          "passed": true,
+          "detail": {
+            "sensory_attributes": null,
+            "matchrim_affinity": null,
+            "use_for_profile_training": false
+          }
+        },
+        {
+          "name": "Unconfirmed/rejected representation not labelled saved",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Ambiguous representation exposes abstention",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Pending or legacy amount remains visibly unconfirmed",
+          "passed": true,
+          "detail": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €\n\nPrecio guardado incoherente, sin confirmar"
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 8,
+            "fulfilled": 8,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "writes": [
+        {
+          "payload": {
+            "user_id": "00000000-0000-4000-8000-000000000080",
+            "name": "Barbaresco Marchesi di Barolo",
+            "producer": "Marchesi di Barolo",
+            "vintage": null,
+            "region": "Piamonte",
+            "country": "Italia",
+            "grape_varieties": [
+              "Nebbiolo"
+            ],
+            "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+            "status": "wishlist",
+            "is_favorite": false,
+            "matchrim_affinity": null,
+            "sensory_attributes": null,
+            "use_for_profile_training": false,
+            "consumption_place": null,
+            "consumption_place_type": null,
+            "price": null,
+            "place_details": {
+              "source": "menu_scanner",
+              "restaurant_session_id": null,
+              "matchrim_code": null,
+              "pairing_dish_name": null,
+              "similar_wine_name": null,
+              "scanned_price": 35,
+              "scanned_currency": "EUR",
+              "menu_price_snapshot": {
+                "version": 1,
+                "raw_amount": 35,
+                "raw_currency": "EUR",
+                "currency": "EUR",
+                "service": "ambos",
+                "prices": {
+                  "copa": 25,
+                  "botella": 25,
+                  "llevar": null
+                },
+                "origin": "manual",
+                "manual_pending": true,
+                "inferred_service": false,
+                "inferred_price": false,
+                "inferred_currency": false,
+                "identity_confirmed": true,
+                "source_text": "Barbaresco Marchesi di Barolo 25"
+              },
+              "menu_wine_evidence": {
+                "version": 1,
+                "canonical_id": null,
+                "sensory_source": "inference",
+                "identity_confirmed": true,
+                "affinity_calibrated": false
+              }
+            }
+          },
+          "query": {
+            "select": [
+              "id,user_id,name,producer,vintage,status,is_favorite,price,place_details,sensory_attributes,matchrim_affinity,use_for_profile_training"
+            ]
+          },
+          "prefer": "return=representation",
+          "accept": "application/vnd.pgrst.object+json"
+        }
+      ],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 25,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": true,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        },
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "legacy:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Saved intent visible in actual Bodega section without invented rating",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bodega exposes price provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Pending or legacy amount remains visibly unconfirmed",
+          "passed": true,
+          "detail": "Lectura anterior: 35,00 €\n\nFormato y origen pendientes de confirmar"
+        },
+        {
+          "name": "No hosted egress: every nonlocal HTTP request intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "fulfilled": 4,
+            "blockedSockets": 0
+          }
+        },
+        {
+          "name": "No additional writes/training/events outside requested insert",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No app runtime error",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No mobile page-width overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "writes": [],
+      "mockRows": [
+        {
+          "id": "10000000-0000-4000-8000-000000000001",
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "created_at": "2026-10-12T00:00:00Z",
+          "image_url": null,
+          "rating": null,
+          "personal_note": null,
+          "quantity": null,
+          "alcohol_content": null,
+          "consumption_date": null,
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": null,
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "price": 35,
+          "place_details": {
+            "source": "menu_scanner",
+            "scanned_price": 35,
+            "scanned_currency": "EUR"
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

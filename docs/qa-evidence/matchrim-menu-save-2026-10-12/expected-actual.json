@@ -1,0 +1,3034 @@
+[
+  {
+    "case": "both-wishlist:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "both-wishlist:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "both-favorite:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": true,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": true,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "both-favorite:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": true,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": true,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "both-tasted:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "tasted",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": true,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Saved intent visible in actual Bodega section without invented rating",
+        "Bodega exposes price provenance",
+        "Declared tasted is not positive feedback or profile learning"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "tasted",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "both-tasted:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "tasted",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": true,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Saved intent visible in actual Bodega section without invented rating",
+        "Bodega exposes price provenance",
+        "Declared tasted is not positive feedback or profile learning"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "tasted",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "cup-eur:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Lugana Allegrini",
+        "producer": "Allegrini",
+        "vintage": null,
+        "region": "Lugana",
+        "country": "Italia",
+        "grape_varieties": [
+          "Turbiana"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 3,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 1,
+          "afrutado": 4
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 12,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 12,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Lugana Allegrini",
+        "producer": "Allegrini",
+        "vintage": null,
+        "region": "Lugana",
+        "country": "Italia",
+        "grape_varieties": [
+          "Turbiana"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 12,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 12,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "copa",
+            "prices": {
+              "copa": 12,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": false,
+            "source_text": "Lugana Allegrini C/copa 12"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": false,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Carta · Copa: 12,00 €\n\nIdentidad del vino pendiente de verificar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "cup-eur:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Lugana Allegrini",
+        "producer": "Allegrini",
+        "vintage": null,
+        "region": "Lugana",
+        "country": "Italia",
+        "grape_varieties": [
+          "Turbiana"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 3,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 1,
+          "afrutado": 4
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 12,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 12,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Lugana Allegrini",
+        "producer": "Allegrini",
+        "vintage": null,
+        "region": "Lugana",
+        "country": "Italia",
+        "grape_varieties": [
+          "Turbiana"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 12,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 12,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "copa",
+            "prices": {
+              "copa": 12,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": false,
+            "source_text": "Lugana Allegrini C/copa 12"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": false,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Carta · Copa: 12,00 €\n\nIdentidad del vino pendiente de verificar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "bottle-eur:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": "Carta · Botella: 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "bottle-eur:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": "Carta · Botella: 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "bottle-gbp:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barolo Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 5,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "GBP"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barolo Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "GBP",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "GBP",
+            "currency": "GBP",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 35,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barolo Marchesi di Barolo 35"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Carta · Botella: 35,00 GBP",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "bottle-gbp:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barolo Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 5,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "GBP"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barolo Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "GBP",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "GBP",
+            "currency": "GBP",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 35,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barolo Marchesi di Barolo 35"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Carta · Botella: 35,00 GBP",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "currency-null:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Barbaresco",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 4
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Barbaresco",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null,
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": null,
+            "currency": null,
+            "service": "copa",
+            "prices": {
+              "copa": 25,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Carta · Copa: 25.00 · moneda pendiente",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "currency-null:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Barbaresco",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 4
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Barbaresco",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null,
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": null,
+            "currency": null,
+            "service": "copa",
+            "prices": {
+              "copa": 25,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Carta · Copa: 25.00 · moneda pendiente",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "unknown:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Laurent Perriere Ultra",
+        "producer": "Laurent Perrier",
+        "vintage": null,
+        "region": "Champagne",
+        "country": "Francia",
+        "grape_varieties": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "tasting_notes": "6 años sobre lías.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 3,
+          "acidez": 5,
+          "dulzura": 1,
+          "taninos": 1,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Laurent Perriere Ultra",
+        "producer": "Laurent Perrier",
+        "vintage": null,
+        "region": "Champagne",
+        "country": "Francia",
+        "grape_varieties": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "tasting_notes": "6 años sobre lías.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null,
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": null,
+            "currency": null,
+            "service": null,
+            "prices": {
+              "copa": null,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": false,
+            "source_text": "Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": false,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 25.00 · moneda pendiente\n\nFormato pendiente; importe sin asignar\n\nIdentidad del vino pendiente de verificar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "unknown:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Laurent Perriere Ultra",
+        "producer": "Laurent Perrier",
+        "vintage": null,
+        "region": "Champagne",
+        "country": "Francia",
+        "grape_varieties": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "tasting_notes": "6 años sobre lías.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 3,
+          "acidez": 5,
+          "dulzura": 1,
+          "taninos": 1,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Laurent Perriere Ultra",
+        "producer": "Laurent Perrier",
+        "vintage": null,
+        "region": "Champagne",
+        "country": "Francia",
+        "grape_varieties": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "tasting_notes": "6 años sobre lías.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null,
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": null,
+            "currency": null,
+            "service": null,
+            "prices": {
+              "copa": null,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": false,
+            "source_text": "Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": false,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 25.00 · moneda pendiente\n\nFormato pendiente; importe sin asignar\n\nIdentidad del vino pendiente de verificar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "inferred:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Laurent Perriere Ultra",
+        "producer": "Laurent Perrier",
+        "vintage": null,
+        "region": "Champagne",
+        "country": "Francia",
+        "grape_varieties": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "tasting_notes": "6 años sobre lías.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 3,
+          "acidez": 5,
+          "dulzura": 1,
+          "taninos": 1,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Laurent Perriere Ultra",
+        "producer": "Laurent Perrier",
+        "vintage": null,
+        "region": "Champagne",
+        "country": "Francia",
+        "grape_varieties": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "tasting_notes": "6 años sobre lías.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null,
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": null,
+            "currency": null,
+            "service": "copa",
+            "prices": {
+              "copa": 12,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": true,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": false,
+            "source_text": "Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": false,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 25.00 · moneda pendiente\n\nFormato pendiente; importe sin asignar\n\nCopa (dato inferido): 12.00 · moneda pendiente\n\nIdentidad del vino pendiente de verificar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "inferred:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Laurent Perriere Ultra",
+        "producer": "Laurent Perrier",
+        "vintage": null,
+        "region": "Champagne",
+        "country": "Francia",
+        "grape_varieties": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "tasting_notes": "6 años sobre lías.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 3,
+          "acidez": 5,
+          "dulzura": 1,
+          "taninos": 1,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Laurent Perriere Ultra",
+        "producer": "Laurent Perrier",
+        "vintage": null,
+        "region": "Champagne",
+        "country": "Francia",
+        "grape_varieties": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "tasting_notes": "6 años sobre lías.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": null,
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": null,
+            "currency": null,
+            "service": "copa",
+            "prices": {
+              "copa": 12,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": true,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": false,
+            "source_text": "Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": false,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 25.00 · moneda pendiente\n\nFormato pendiente; importe sin asignar\n\nCopa (dato inferido): 12.00 · moneda pendiente\n\nIdentidad del vino pendiente de verificar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "denied:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": null,
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "denied:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": null,
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "empty:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Unconfirmed/rejected representation not labelled saved",
+        "Ambiguous representation exposes abstention",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": "Carta · Botella: 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "empty:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": null,
+      "failures": [
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Unconfirmed/rejected representation not labelled saved",
+        "Ambiguous representation exposes abstention",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 25,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 25,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": 25,
+      "reader": "Carta · Botella: 25,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "corrupt:portrait",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Unconfirmed/rejected representation not labelled saved",
+        "Ambiguous representation exposes abstention",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €\n\nPrecio guardado incoherente, sin confirmar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "corrupt:landscape",
+    "before": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR"
+        }
+      },
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "No ambiguous/cop/foreign/unknown amount promoted to financial scalar",
+        "Price snapshot carries origin/unit/pending and per-service raw readings",
+        "No inferred ficha/affinity/training from save intent",
+        "Unconfirmed/rejected representation not labelled saved",
+        "Ambiguous representation exposes abstention",
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "ambos",
+            "prices": {
+              "copa": 25,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": true,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual: 35,00 €\n\nFormato pendiente; importe sin asignar\n\nCopa (lectura de carta): 25,00 €\n\nBotella (lectura de carta): 25,00 €\n\nPrecio guardado incoherente, sin confirmar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "legacy:portrait",
+    "before": {
+      "payload": null,
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": null,
+      "expectedFinancial": null,
+      "reader": "Lectura anterior: 35,00 €\n\nFormato y origen pendientes de confirmar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "legacy:landscape",
+    "before": {
+      "payload": null,
+      "expectedFinancial": null,
+      "reader": null,
+      "failures": [
+        "Bodega exposes price provenance"
+      ],
+      "passed": false
+    },
+    "after": {
+      "payload": null,
+      "expectedFinancial": null,
+      "reader": "Lectura anterior: 35,00 €\n\nFormato y origen pendientes de confirmar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "bottle-manual:portrait",
+    "before": null,
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 35,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": 35,
+      "reader": "Manual · Botella: 35,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "bottle-manual:landscape",
+    "before": null,
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Barbaresco Marchesi di Barolo",
+        "producer": "Marchesi di Barolo",
+        "vintage": null,
+        "region": "Piamonte",
+        "country": "Italia",
+        "grape_varieties": [
+          "Nebbiolo"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": 35,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 35,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 35,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "botella",
+            "prices": {
+              "copa": null,
+              "botella": 35,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": true,
+            "source_text": "Barbaresco Marchesi di Barolo 25"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": true,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": 35,
+      "reader": "Manual · Botella: 35,00 €",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "cup-manual:portrait",
+    "before": null,
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Lugana Allegrini",
+        "producer": "Allegrini",
+        "vintage": null,
+        "region": "Lugana",
+        "country": "Italia",
+        "grape_varieties": [
+          "Turbiana"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 15,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 15,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "copa",
+            "prices": {
+              "copa": 15,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": false,
+            "source_text": "Lugana Allegrini C/copa 12"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": false,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual · Copa: 15,00 €\n\nIdentidad del vino pendiente de verificar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  },
+  {
+    "case": "cup-manual:landscape",
+    "before": null,
+    "after": {
+      "payload": {
+        "user_id": "00000000-0000-4000-8000-000000000080",
+        "name": "Lugana Allegrini",
+        "producer": "Allegrini",
+        "vintage": null,
+        "region": "Lugana",
+        "country": "Italia",
+        "grape_varieties": [
+          "Turbiana"
+        ],
+        "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+        "status": "wishlist",
+        "is_favorite": false,
+        "matchrim_affinity": null,
+        "sensory_attributes": null,
+        "use_for_profile_training": false,
+        "consumption_place": null,
+        "consumption_place_type": null,
+        "price": null,
+        "place_details": {
+          "source": "menu_scanner",
+          "restaurant_session_id": null,
+          "matchrim_code": null,
+          "pairing_dish_name": null,
+          "similar_wine_name": null,
+          "scanned_price": 15,
+          "scanned_currency": "EUR",
+          "menu_price_snapshot": {
+            "version": 1,
+            "raw_amount": 15,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "service": "copa",
+            "prices": {
+              "copa": 15,
+              "botella": null,
+              "llevar": null
+            },
+            "origin": "manual",
+            "manual_pending": false,
+            "inferred_service": false,
+            "inferred_price": false,
+            "inferred_currency": false,
+            "identity_confirmed": false,
+            "source_text": "Lugana Allegrini C/copa 12"
+          },
+          "menu_wine_evidence": {
+            "version": 1,
+            "canonical_id": null,
+            "sensory_source": "inference",
+            "identity_confirmed": false,
+            "affinity_calibrated": false
+          }
+        }
+      },
+      "expectedFinancial": null,
+      "reader": "Manual · Copa: 15,00 €\n\nIdentidad del vino pendiente de verificar",
+      "failures": [],
+      "passed": true
+    },
+    "independentOCR": false,
+    "realUser": false,
+    "realPersistence": false
+  }
+]

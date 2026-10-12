@@ -1,0 +1,203 @@
+{
+  "scope": "Pure price/metadata/negative provenance/confirmation contracts. Existing replay and synthetic units/currencies, no OCR/new catalog-positive fiche/profile/account.",
+  "sourceHashes": {
+    "src/utils/menuWineSave.ts": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+    "src/components/wine-import/WineMenuScanner.tsx": "1944b506f304b51d5de3ef48c0385cfe5cbe97f6b1da2b966b1a86b5d350baa4",
+    "src/pages/MyWines.tsx": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+    "docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5"
+  },
+  "checks": [
+    {
+      "name": "Manual35 remains pending and never reassigns read25 to both services",
+      "passed": true
+    },
+    {
+      "name": "Explicit EUR bottle25 is eligible, without treating it as purchase",
+      "passed": true
+    },
+    {
+      "name": "Known manual bottle updates only bottle amount and keeps manual provenance",
+      "passed": true
+    },
+    {
+      "name": "Known manual cup never becomes bottle scalar",
+      "passed": true
+    },
+    {
+      "name": "EUR copa is not a financial bottle amount",
+      "passed": true
+    },
+    {
+      "name": "GBP bottle does not convert into EUR",
+      "passed": true
+    },
+    {
+      "name": "Unknown currency is not implicitly EUR",
+      "passed": true
+    },
+    {
+      "name": "Unsupported raw currency is retained but not financial",
+      "passed": true
+    },
+    {
+      "name": "Missing price remains null, not zero",
+      "passed": true
+    },
+    {
+      "name": "An explicitly read zero differs from missing data",
+      "passed": true
+    },
+    {
+      "name": "servicio inference cannot become a financial scalar",
+      "passed": true
+    },
+    {
+      "name": "precio inference cannot become a financial scalar",
+      "passed": true
+    },
+    {
+      "name": "precios inference cannot become a financial scalar",
+      "passed": true
+    },
+    {
+      "name": "moneda inference cannot become a financial scalar",
+      "passed": true
+    },
+    {
+      "name": "nombre inference cannot become a financial scalar",
+      "passed": true
+    },
+    {
+      "name": "productor inference cannot become a financial scalar",
+      "passed": true
+    },
+    {
+      "name": "Conflicting generic and bottle amounts abstain",
+      "passed": true
+    },
+    {
+      "name": "Negative amount is not a valid scalar",
+      "passed": true
+    },
+    {
+      "name": "Unknown identity keeps attachment pending",
+      "passed": true
+    },
+    {
+      "name": "Model affinity and attributes cannot self-certify catalog evidence",
+      "passed": true
+    },
+    {
+      "name": "Catalog marker without sensory sheet still abstains",
+      "passed": true
+    },
+    {
+      "name": "JSON round-trip preserves per-service prices/pending/raw amount",
+      "passed": true
+    },
+    {
+      "name": "Tampered scalar35 is masked and visibly incoherent",
+      "passed": true
+    },
+    {
+      "name": "Legacy source lacking unit/provenance never restores scalar35",
+      "passed": true
+    },
+    {
+      "name": "Non-menu purchase metadata remains outside this adapter",
+      "passed": true
+    },
+    {
+      "name": "Single-unit amount is not repeated in reader",
+      "passed": true
+    },
+    {
+      "name": "Unallocated both-format generic reading remains pending",
+      "passed": true
+    },
+    {
+      "name": "Malformed version snapshot cannot promote finance",
+      "passed": true
+    },
+    {
+      "name": "Malformed null-as-zero snapshot cannot promote finance",
+      "passed": true
+    },
+    {
+      "name": "Malformed unknown-unit snapshot cannot promote finance",
+      "passed": true
+    },
+    {
+      "name": "Malformed currency-mismatch snapshot cannot promote finance",
+      "passed": true
+    },
+    {
+      "name": "Malformed pending-type snapshot cannot promote finance",
+      "passed": true
+    },
+    {
+      "name": "Malformed missing-per-service snapshot cannot promote finance",
+      "passed": true
+    },
+    {
+      "name": "Malformed NaN-price snapshot cannot promote finance",
+      "passed": true
+    },
+    {
+      "name": "No unknown/legacy trace becomes verified catalog",
+      "passed": true
+    },
+    {
+      "name": "Insert representation is confirmed only with matching identity/owner/provenance",
+      "passed": true
+    },
+    {
+      "name": "JSONB key order does not cause false rejection",
+      "passed": true
+    },
+    {
+      "name": "Mismatched owner readback is not a save receipt",
+      "passed": true
+    },
+    {
+      "name": "Mismatched identity readback is not a save receipt",
+      "passed": true
+    },
+    {
+      "name": "Mismatched scalar readback is not a save receipt",
+      "passed": true
+    },
+    {
+      "name": "Mismatched training readback is not a save receipt",
+      "passed": true
+    },
+    {
+      "name": "Mismatched model-score readback is not a save receipt",
+      "passed": true
+    },
+    {
+      "name": "Mismatched missing-snapshot readback is not a save receipt",
+      "passed": true
+    },
+    {
+      "name": "Mismatched lost-pending readback is not a save receipt",
+      "passed": true
+    },
+    {
+      "name": "Empty/array representation does not certify save",
+      "passed": true
+    },
+    {
+      "name": "Active Bodega legacy reader masks model ficha, score and training",
+      "passed": true
+    },
+    {
+      "name": "Active Bodega keeps original inconsistency warning after masking scalar",
+      "passed": true
+    },
+    {
+      "name": "Active Bodega leaves non-menu monetary amounts unchanged",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "scope": "Local invalid-signature auth/HTTP+WS interception/in-memory readback; not users/OCR/persistence/RLS",
+  "realRemoteCalls": 0,
+  "paidCalls": 0,
+  "runs": [
+    {
+      "directory": "before",
+      "contexts": 26,
+      "passed": 0,
+      "checks": 280,
+      "checksPassed": 186,
+      "writes": 24,
+      "runtimeErrors": 0,
+      "console": [
+        {
+          "case": "denied:portrait",
+          "messages": [
+            "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+            "Error saving scanned wine: {code: 23514, message: Synthetic check rejection}"
+          ]
+        },
+        {
+          "case": "denied:landscape",
+          "messages": [
+            "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+            "Error saving scanned wine: {code: 23514, message: Synthetic check rejection}"
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "after-first",
+      "contexts": 6,
+      "passed": 6,
+      "checks": 70,
+      "checksPassed": 70,
+      "writes": 5,
+      "runtimeErrors": 0,
+      "console": []
+    },
+    {
+      "directory": "after",
+      "contexts": 26,
+      "passed": 26,
+      "checks": 340,
+      "checksPassed": 340,
+      "writes": 24,
+      "runtimeErrors": 0,
+      "console": [
+        {
+          "case": "denied:portrait",
+          "messages": [
+            "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+          ]
+        },
+        {
+          "case": "denied:landscape",
+          "messages": [
+            "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "after-final",
+      "contexts": 26,
+      "passed": 26,
+      "checks": 364,
+      "checksPassed": 364,
+      "writes": 24,
+      "runtimeErrors": 0,
+      "console": [
+        {
+          "case": "denied:portrait",
+          "messages": [
+            "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+          ]
+        },
+        {
+          "case": "denied:landscape",
+          "messages": [
+            "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "after-single-formats",
+      "contexts": 4,
+      "passed": 4,
+      "checks": 56,
+      "checksPassed": 56,
+      "writes": 4,
+      "runtimeErrors": 0,
+      "console": []
+    }
+  ],
+  "primary": [
+    "after-final",
+    "after-single-formats"
+  ],
+  "pure": 48
+}

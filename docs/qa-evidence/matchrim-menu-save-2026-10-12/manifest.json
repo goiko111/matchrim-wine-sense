@@ -1,0 +1,1162 @@
+{
+  "algorithm": "sha256",
+  "entries": [
+    {
+      "path": "after-final/both-favorite-landscape-bottom-viewport.png",
+      "sha256": "7b4e49d09fac41082308ad99fa0dd5a346f6bb02612595f2e0b9c24cb3c58f02"
+    },
+    {
+      "path": "after-final/both-favorite-landscape-card.png",
+      "sha256": "fe22f4a022c31d8d4f964417ee7255fd7fdfb3b78563b3b59dd8394693ce2947"
+    },
+    {
+      "path": "after-final/both-favorite-landscape-read.png",
+      "sha256": "2e4caa422b6cd7d6d20764bcb982e23a8e3dd55230f024938382700d30912d34"
+    },
+    {
+      "path": "after-final/both-favorite-landscape-save.png",
+      "sha256": "b63cd180cbee3f7002585b155b7a77290f5601017151f60084fce4f6b12995ce"
+    },
+    {
+      "path": "after-final/both-favorite-portrait-bottom-viewport.png",
+      "sha256": "95e497eaaa2ab5be15850f547307863ea45fa68870cdf800892df5569413c2e6"
+    },
+    {
+      "path": "after-final/both-favorite-portrait-card.png",
+      "sha256": "a82ceacd3e5f9cea56ae0192e1e1633fe9e3e8d016de2f0e8d24f1298ac82702"
+    },
+    {
+      "path": "after-final/both-favorite-portrait-read.png",
+      "sha256": "249f790d324a1cae1b4b2594b2c7b5a45e1feb2b0b764b2f7d5a71aaff10d755"
+    },
+    {
+      "path": "after-final/both-favorite-portrait-save.png",
+      "sha256": "3858287060055b8c240f53aac0ec8586355fdd981c87036f5e240551a16b97ac"
+    },
+    {
+      "path": "after-final/both-tasted-landscape-bottom-viewport.png",
+      "sha256": "00a21708c310e60b8575c8c6c88c748af7785a4ed78d88f4a19828ffedc4da39"
+    },
+    {
+      "path": "after-final/both-tasted-landscape-card.png",
+      "sha256": "90447010b2f74f1c68db4c8a812897d95edb38692300a8df81d192a9f9698eb7"
+    },
+    {
+      "path": "after-final/both-tasted-landscape-read.png",
+      "sha256": "2e4caa422b6cd7d6d20764bcb982e23a8e3dd55230f024938382700d30912d34"
+    },
+    {
+      "path": "after-final/both-tasted-landscape-save.png",
+      "sha256": "6b4eaa52568aa3fc8c60b2442c0ca4fd295d0a82656287ce75374e57c9f0f717"
+    },
+    {
+      "path": "after-final/both-tasted-portrait-bottom-viewport.png",
+      "sha256": "810c9bd26f488008dd38fa2a96c585ebc3cdaf2cace124f4c6f3bfe5fb11620e"
+    },
+    {
+      "path": "after-final/both-tasted-portrait-card.png",
+      "sha256": "31948c0f34b34667b67547eb11eafbb8ebd26f78f9ccd859f8513a1ae5190989"
+    },
+    {
+      "path": "after-final/both-tasted-portrait-read.png",
+      "sha256": "249f790d324a1cae1b4b2594b2c7b5a45e1feb2b0b764b2f7d5a71aaff10d755"
+    },
+    {
+      "path": "after-final/both-tasted-portrait-save.png",
+      "sha256": "247b0d7a34d8cfd62e3a591c21394408e44e11b79569b1044c09b2a0ecbd2ff7"
+    },
+    {
+      "path": "after-final/both-wishlist-landscape-bottom-viewport.png",
+      "sha256": "a931921c0eccc8993d28c60ecfac016b190a33b2c857d69a5b5206b3d492ba4a"
+    },
+    {
+      "path": "after-final/both-wishlist-landscape-card.png",
+      "sha256": "4982a1ca42b10e992e9c32d87aeb352dd318ca0067b4d879c90a8c29e9095dbb"
+    },
+    {
+      "path": "after-final/both-wishlist-landscape-read.png",
+      "sha256": "2e4caa422b6cd7d6d20764bcb982e23a8e3dd55230f024938382700d30912d34"
+    },
+    {
+      "path": "after-final/both-wishlist-landscape-save.png",
+      "sha256": "d6c74f84a93d5a073f44fe91530adfaa09a8d819ac75fad3431868a241d556f7"
+    },
+    {
+      "path": "after-final/both-wishlist-portrait-bottom-viewport.png",
+      "sha256": "0434ff4cc1e57912f21abb778daca3e585cf3782a1c2c835e3bf68f16597c095"
+    },
+    {
+      "path": "after-final/both-wishlist-portrait-card.png",
+      "sha256": "a1a94f36d531199a839863f9012175cb56607976659fb2b2650cda3c51f6959e"
+    },
+    {
+      "path": "after-final/both-wishlist-portrait-read.png",
+      "sha256": "249f790d324a1cae1b4b2594b2c7b5a45e1feb2b0b764b2f7d5a71aaff10d755"
+    },
+    {
+      "path": "after-final/both-wishlist-portrait-save.png",
+      "sha256": "2bf1c9bde7c67ed8da72c3171fe4d18c7b7e814ddf31b2b7ad8f8af46991dccc"
+    },
+    {
+      "path": "after-final/bottle-eur-landscape-bottom-viewport.png",
+      "sha256": "df4fbfdacb02a75a0b02f0ea369e224e70c397c43a051500cb4844e90451ddb4"
+    },
+    {
+      "path": "after-final/bottle-eur-landscape-card.png",
+      "sha256": "8b74c1736b97fb25d7ffc41ca9fde58aada71db70cadc1f1f5a2f2b6053443c0"
+    },
+    {
+      "path": "after-final/bottle-eur-landscape-read.png",
+      "sha256": "db03bb1faa5255d8f917afc7b1bec7a126d22fe6a7f0fa61ebfca3f88644e7bc"
+    },
+    {
+      "path": "after-final/bottle-eur-landscape-save.png",
+      "sha256": "f7629027c187d5b6752f9766e43de0be7def9e3d1edd0440b007ccf0559d3949"
+    },
+    {
+      "path": "after-final/bottle-eur-portrait-bottom-viewport.png",
+      "sha256": "0ea57f417add47e66f887d975cd59dd566d3e39c23b6b684f7ad455b5e5611c8"
+    },
+    {
+      "path": "after-final/bottle-eur-portrait-card.png",
+      "sha256": "298642264e84db00b6022b03f89959ffcab80d8a1956d8b6e5c6a765f3511815"
+    },
+    {
+      "path": "after-final/bottle-eur-portrait-read.png",
+      "sha256": "0d582b82aca3c6de17b51ca4a00d282abfd81a1cfea82f9b73f2af4c894affaf"
+    },
+    {
+      "path": "after-final/bottle-eur-portrait-save.png",
+      "sha256": "f86f0ff8deadc48b995217b5d8f242fa57e2c932c5e2929efa4799a8d096844f"
+    },
+    {
+      "path": "after-final/bottle-gbp-landscape-bottom-viewport.png",
+      "sha256": "1885c479f32ff47f074203a60aa4dcef8045c5c27935270489e5712345960655"
+    },
+    {
+      "path": "after-final/bottle-gbp-landscape-card.png",
+      "sha256": "8f67fda3cf04fb78c5de6b8cfa1854cb07c4ccd864ee3f9909beef846f2a42b9"
+    },
+    {
+      "path": "after-final/bottle-gbp-landscape-read.png",
+      "sha256": "e973243274693fa725eebcc02a7559c07cd89397d5961a4e3ef11493e10a31a6"
+    },
+    {
+      "path": "after-final/bottle-gbp-landscape-save.png",
+      "sha256": "ee2c7476a089ced3b845e4c0991b66e2f7ed20e7d2b9a4727925ce5df2656e1e"
+    },
+    {
+      "path": "after-final/bottle-gbp-portrait-bottom-viewport.png",
+      "sha256": "81d65393e568ff3cc1f39807b9adb29b333044e4d2d0ac8ef479c7f192208ed4"
+    },
+    {
+      "path": "after-final/bottle-gbp-portrait-card.png",
+      "sha256": "891f12654f6516fc50cd24c41a8a3b0e130e0f671362e9a9ed2995d3077a1079"
+    },
+    {
+      "path": "after-final/bottle-gbp-portrait-read.png",
+      "sha256": "48e126afe777775eb554ec05293a3ee0110edfb03f9a57fe46f1fc4e14970903"
+    },
+    {
+      "path": "after-final/bottle-gbp-portrait-save.png",
+      "sha256": "80adb98c53ee09676c57db37ff7d0aa1653b7974dfde85f939139387b3755bd5"
+    },
+    {
+      "path": "after-final/corrupt-landscape-bottom-viewport.png",
+      "sha256": "bd118e9ca8d4f2499930db109026a4b61eb4aac5403b8e712f2224217ebf7465"
+    },
+    {
+      "path": "after-final/corrupt-landscape-card.png",
+      "sha256": "4d47b025a227b5cd269f9b0cce27cfbfaf39bc7f16a7948bd77f873cc703b7d2"
+    },
+    {
+      "path": "after-final/corrupt-landscape-read.png",
+      "sha256": "77ff921b94e88721a5bfe0f4c0ba117d9c3d96404690dce319cacf190ea9f23b"
+    },
+    {
+      "path": "after-final/corrupt-landscape-save.png",
+      "sha256": "ceb81e4fdbbeff0b99717460b8e0cc37464c4a57b7261aacdf231d52f921efd0"
+    },
+    {
+      "path": "after-final/corrupt-portrait-bottom-viewport.png",
+      "sha256": "456c57fc055ee006c4dae4187502bbc10f2eb31cfbb192d9d66e73a0e9e6c36f"
+    },
+    {
+      "path": "after-final/corrupt-portrait-card.png",
+      "sha256": "14602268761c0cb598c60185f77d60fd4e6ad685f5dbc9b963aef3d1573941e6"
+    },
+    {
+      "path": "after-final/corrupt-portrait-read.png",
+      "sha256": "53125dcfc8c20d4766e6b3dbb0ee6ed950bd73e21910ae617d98d05654974aff"
+    },
+    {
+      "path": "after-final/corrupt-portrait-save.png",
+      "sha256": "0f66b3c2ff2833e91659d2ed16390715f7c45cf37f521c96440e843e7fa1ea7e"
+    },
+    {
+      "path": "after-final/cup-eur-landscape-bottom-viewport.png",
+      "sha256": "1ca90e23e8df84eb360cf1d3ac8f467565fd74e5299746e2d9fadd42c1db3a59"
+    },
+    {
+      "path": "after-final/cup-eur-landscape-card.png",
+      "sha256": "cbbaaea2c24f6365bf138c9990e1e706eb870bb3a6e8c5cd54dde2e4d3b20b9d"
+    },
+    {
+      "path": "after-final/cup-eur-landscape-read.png",
+      "sha256": "8d7bf1236275279ee29402d6a3a7d549fb413232bae854cbe388ff70b37fc682"
+    },
+    {
+      "path": "after-final/cup-eur-landscape-save.png",
+      "sha256": "5ac18d265584eb680d857e45d139d51c7c94848650dabe1e6e38a8b3124a3a67"
+    },
+    {
+      "path": "after-final/cup-eur-portrait-bottom-viewport.png",
+      "sha256": "fd652943fe5526fefecf6fafed33ff6895483109bc09ebdfd61fd1c18307bfb5"
+    },
+    {
+      "path": "after-final/cup-eur-portrait-card.png",
+      "sha256": "c26a09ce0aa4933aaea795cc12d2daa0ff84217452466948bc33badfdc59dce0"
+    },
+    {
+      "path": "after-final/cup-eur-portrait-read.png",
+      "sha256": "d29deb4b19d8b2f1c7f51a92902cc9158acd12898e9216874d3fac3b42fbb1a8"
+    },
+    {
+      "path": "after-final/cup-eur-portrait-save.png",
+      "sha256": "50d1fa1e838cc267192469245a672375fab42a87abdace0d835e7c6d0358c5be"
+    },
+    {
+      "path": "after-final/currency-null-landscape-bottom-viewport.png",
+      "sha256": "bc40fdf6e26c9c0086038dc513b3a9ee29f638bb83a02d83f0f500ec4546235e"
+    },
+    {
+      "path": "after-final/currency-null-landscape-card.png",
+      "sha256": "a2f52813cbb8f616bacb6095c0c1833c04e2d97b92c57e1942020f8f38eb8ec3"
+    },
+    {
+      "path": "after-final/currency-null-landscape-read.png",
+      "sha256": "3532cff62ce6484f8aa51735eaed73cdf9a8c1979f0bd2bf4d13836f018dd833"
+    },
+    {
+      "path": "after-final/currency-null-landscape-save.png",
+      "sha256": "824a385b0d28d74036570c199f267a49e91459f093f66a321f35e493ac3a0ec9"
+    },
+    {
+      "path": "after-final/currency-null-portrait-bottom-viewport.png",
+      "sha256": "62e6dfad1977e401501399ef467ab1a2fbc6082a60d895105d61d4a6c980e41e"
+    },
+    {
+      "path": "after-final/currency-null-portrait-card.png",
+      "sha256": "ca37ef92b22433f663bbe0f1744b9f729d09131903d5d392699adb84d5d00b71"
+    },
+    {
+      "path": "after-final/currency-null-portrait-read.png",
+      "sha256": "082bb0428da6b71cc71952251dd09c88dd24d48c1913c6fd44879f59041b1a60"
+    },
+    {
+      "path": "after-final/currency-null-portrait-save.png",
+      "sha256": "1bef926e3c402131d80d3e63b5fb38a835f79155f8bff47a2dcba9d8d2956555"
+    },
+    {
+      "path": "after-final/denied-landscape-save.png",
+      "sha256": "8dd53eb0943ad55fd4871b5062cfb83ff8540ed1eeb742fecf8574dbcb90d26a"
+    },
+    {
+      "path": "after-final/denied-portrait-save.png",
+      "sha256": "226e39ca76d9bbc5287a85bf8b3cb8d77068a721ab0b7e7a696c32229c5a2f41"
+    },
+    {
+      "path": "after-final/empty-landscape-bottom-viewport.png",
+      "sha256": "df4fbfdacb02a75a0b02f0ea369e224e70c397c43a051500cb4844e90451ddb4"
+    },
+    {
+      "path": "after-final/empty-landscape-card.png",
+      "sha256": "8b74c1736b97fb25d7ffc41ca9fde58aada71db70cadc1f1f5a2f2b6053443c0"
+    },
+    {
+      "path": "after-final/empty-landscape-read.png",
+      "sha256": "db03bb1faa5255d8f917afc7b1bec7a126d22fe6a7f0fa61ebfca3f88644e7bc"
+    },
+    {
+      "path": "after-final/empty-landscape-save.png",
+      "sha256": "4004b490fd32a45b4b4a32db43a9a67cfb3e601c3aa66163bda62c0191619c13"
+    },
+    {
+      "path": "after-final/empty-portrait-bottom-viewport.png",
+      "sha256": "0ea57f417add47e66f887d975cd59dd566d3e39c23b6b684f7ad455b5e5611c8"
+    },
+    {
+      "path": "after-final/empty-portrait-card.png",
+      "sha256": "298642264e84db00b6022b03f89959ffcab80d8a1956d8b6e5c6a765f3511815"
+    },
+    {
+      "path": "after-final/empty-portrait-read.png",
+      "sha256": "0d582b82aca3c6de17b51ca4a00d282abfd81a1cfea82f9b73f2af4c894affaf"
+    },
+    {
+      "path": "after-final/empty-portrait-save.png",
+      "sha256": "808979f27955883fcaa6fb946824b735b41805bae9a1ae6703cf4d1a1b2f51aa"
+    },
+    {
+      "path": "after-final/inferred-landscape-bottom-viewport.png",
+      "sha256": "20892c5078114402c7430dfc54956db7cb9ce6413eb3e15fe1ae8ae2db2cea68"
+    },
+    {
+      "path": "after-final/inferred-landscape-card.png",
+      "sha256": "f0d42efd148b7d13ccd901b4c4a008d76163f81f28430ff17a7bcd8428b81f6c"
+    },
+    {
+      "path": "after-final/inferred-landscape-read.png",
+      "sha256": "6d3726cf0cb922698ebca6a903b253c617dd57f43bc841b76d3438376982e7f4"
+    },
+    {
+      "path": "after-final/inferred-landscape-save.png",
+      "sha256": "0d97896f3f86d34c1498e1ccc66809bf16a3cc11868d327f914730d185c6e78b"
+    },
+    {
+      "path": "after-final/inferred-portrait-bottom-viewport.png",
+      "sha256": "5d43fae2924402cb3c163ce08146836f04af10c2282c01d84178fb737283a892"
+    },
+    {
+      "path": "after-final/inferred-portrait-card.png",
+      "sha256": "28ebe3666841cb31391dc4fba3df2e9ca96ed9929b49120966c25784ed714a41"
+    },
+    {
+      "path": "after-final/inferred-portrait-read.png",
+      "sha256": "fc6eaa3ac0201a6e1ca6b848e00a9b7d1608fac2ad17a221c27cf9ac1a71f4ae"
+    },
+    {
+      "path": "after-final/inferred-portrait-save.png",
+      "sha256": "cb9bd99b38b71a4f4e4f5037ff790e7209bb8b8a817791462142f865cac33522"
+    },
+    {
+      "path": "after-final/input-provenance.json",
+      "sha256": "197cc491ee5dacdba327635d914aeb8764225bd12ecc05b88e1acff87b06b5b5"
+    },
+    {
+      "path": "after-final/legacy-landscape-bottom-viewport.png",
+      "sha256": "c13d7bea45ae2f1f382485a518af2c2bb9e84a5eae27444951a7168c2602b75c"
+    },
+    {
+      "path": "after-final/legacy-landscape-card.png",
+      "sha256": "171f1639d06ee9b157572f828e3f6999809e593427519075e6c698c597aa1abd"
+    },
+    {
+      "path": "after-final/legacy-landscape-read.png",
+      "sha256": "1dceb33496bf9507c0ee15d975215ac7dc304091b205a22b53fca13d68ed01a1"
+    },
+    {
+      "path": "after-final/legacy-portrait-bottom-viewport.png",
+      "sha256": "86467c02b33e50a78a21a605111f532af74306108eab65cb5996f27230c0bcc7"
+    },
+    {
+      "path": "after-final/legacy-portrait-card.png",
+      "sha256": "5d6dff636c6fd1cc6c66fe0676e9a715557c5d7b6c8c60c45b90b9ae8bc5478c"
+    },
+    {
+      "path": "after-final/legacy-portrait-read.png",
+      "sha256": "8b1d71004da8972f65c0a6932be2696d2351de44a3a219b7036b5e5c12f58907"
+    },
+    {
+      "path": "after-final/results.json",
+      "sha256": "b6fd87e0dca32024a42b022c873995329c5bb691bfbbff26c5c59eadf69161d3"
+    },
+    {
+      "path": "after-final/unknown-landscape-bottom-viewport.png",
+      "sha256": "13b63eb43de25929f8b09003172f1d79fbc075e864106115e39e3cff4bcf7307"
+    },
+    {
+      "path": "after-final/unknown-landscape-card.png",
+      "sha256": "35abec9f1d84411f9444a28cc1f00000e2087e2328e73278e6f43cf2b9f24796"
+    },
+    {
+      "path": "after-final/unknown-landscape-read.png",
+      "sha256": "e97fb144ed2352e4175315ae3ca2be8a707b0182883ffc4a5576d31c06a1dfa2"
+    },
+    {
+      "path": "after-final/unknown-landscape-save.png",
+      "sha256": "0d97896f3f86d34c1498e1ccc66809bf16a3cc11868d327f914730d185c6e78b"
+    },
+    {
+      "path": "after-final/unknown-portrait-bottom-viewport.png",
+      "sha256": "12aa69f9551c9eabd05da710c766425cb3763b3e75de19930353f5ee6080f76e"
+    },
+    {
+      "path": "after-final/unknown-portrait-card.png",
+      "sha256": "fb5ab73c6f716ff65c4cc8d7c9dd9f974f5e3bc684d7720def0696c1108b0388"
+    },
+    {
+      "path": "after-final/unknown-portrait-read.png",
+      "sha256": "a964e95a08fc2e4079d57b8a824aeda86f23587e4531d42dbeb2a1e50a753c83"
+    },
+    {
+      "path": "after-final/unknown-portrait-save.png",
+      "sha256": "b2f3f63592bae9c8aaf3d0bcce7726cba0f779696d769e531b08cde30aa76304"
+    },
+    {
+      "path": "after-first/both-tasted-portrait-card.png",
+      "sha256": "31948c0f34b34667b67547eb11eafbb8ebd26f78f9ccd859f8513a1ae5190989"
+    },
+    {
+      "path": "after-first/both-tasted-portrait-read.png",
+      "sha256": "249f790d324a1cae1b4b2594b2c7b5a45e1feb2b0b764b2f7d5a71aaff10d755"
+    },
+    {
+      "path": "after-first/both-tasted-portrait-save.png",
+      "sha256": "247b0d7a34d8cfd62e3a591c21394408e44e11b79569b1044c09b2a0ecbd2ff7"
+    },
+    {
+      "path": "after-first/both-wishlist-portrait-card.png",
+      "sha256": "a1a94f36d531199a839863f9012175cb56607976659fb2b2650cda3c51f6959e"
+    },
+    {
+      "path": "after-first/both-wishlist-portrait-read.png",
+      "sha256": "249f790d324a1cae1b4b2594b2c7b5a45e1feb2b0b764b2f7d5a71aaff10d755"
+    },
+    {
+      "path": "after-first/both-wishlist-portrait-save.png",
+      "sha256": "2bf1c9bde7c67ed8da72c3171fe4d18c7b7e814ddf31b2b7ad8f8af46991dccc"
+    },
+    {
+      "path": "after-first/bottle-eur-portrait-card.png",
+      "sha256": "453ed781109a63dbece6a59bd7e28bca2e066f25bbac98c4a960e1f2aa1cbaed"
+    },
+    {
+      "path": "after-first/bottle-eur-portrait-read.png",
+      "sha256": "35d785a6b05bcf1226ea83130359509c7ed1d960bc8fdbbfd2207636ce8b8aae"
+    },
+    {
+      "path": "after-first/bottle-eur-portrait-save.png",
+      "sha256": "f86f0ff8deadc48b995217b5d8f242fa57e2c932c5e2929efa4799a8d096844f"
+    },
+    {
+      "path": "after-first/corrupt-portrait-card.png",
+      "sha256": "14602268761c0cb598c60185f77d60fd4e6ad685f5dbc9b963aef3d1573941e6"
+    },
+    {
+      "path": "after-first/corrupt-portrait-read.png",
+      "sha256": "53125dcfc8c20d4766e6b3dbb0ee6ed950bd73e21910ae617d98d05654974aff"
+    },
+    {
+      "path": "after-first/corrupt-portrait-save.png",
+      "sha256": "0f66b3c2ff2833e91659d2ed16390715f7c45cf37f521c96440e843e7fa1ea7e"
+    },
+    {
+      "path": "after-first/empty-portrait-card.png",
+      "sha256": "453ed781109a63dbece6a59bd7e28bca2e066f25bbac98c4a960e1f2aa1cbaed"
+    },
+    {
+      "path": "after-first/empty-portrait-read.png",
+      "sha256": "35d785a6b05bcf1226ea83130359509c7ed1d960bc8fdbbfd2207636ce8b8aae"
+    },
+    {
+      "path": "after-first/empty-portrait-save.png",
+      "sha256": "808979f27955883fcaa6fb946824b735b41805bae9a1ae6703cf4d1a1b2f51aa"
+    },
+    {
+      "path": "after-first/input-provenance.json",
+      "sha256": "197cc491ee5dacdba327635d914aeb8764225bd12ecc05b88e1acff87b06b5b5"
+    },
+    {
+      "path": "after-first/legacy-portrait-card.png",
+      "sha256": "5d6dff636c6fd1cc6c66fe0676e9a715557c5d7b6c8c60c45b90b9ae8bc5478c"
+    },
+    {
+      "path": "after-first/legacy-portrait-read.png",
+      "sha256": "8b1d71004da8972f65c0a6932be2696d2351de44a3a219b7036b5e5c12f58907"
+    },
+    {
+      "path": "after-first/results.json",
+      "sha256": "8975ea64d04e260c33d294161071977673be99083dc3686890918aabd803c964"
+    },
+    {
+      "path": "after-single-formats/bottle-manual-landscape-bottom-viewport.png",
+      "sha256": "a8d4204960a05213fd054dba8a13904303911d7f6bb9d2d7a2a814f4fb12d68a"
+    },
+    {
+      "path": "after-single-formats/bottle-manual-landscape-card.png",
+      "sha256": "e76e919846ed54685560aaf9eb178811eaaaa5864f189d25e93b360f7efb140c"
+    },
+    {
+      "path": "after-single-formats/bottle-manual-landscape-read.png",
+      "sha256": "9c710bc35dc1cd72508e1a08ab6ac81b55718ca423036d02643081720b33fe77"
+    },
+    {
+      "path": "after-single-formats/bottle-manual-landscape-save.png",
+      "sha256": "e8f5d74cfb36addaf9832a4117544d04eda7398b6a1c1c9564cb2f029f4def38"
+    },
+    {
+      "path": "after-single-formats/bottle-manual-portrait-bottom-viewport.png",
+      "sha256": "34e7094e6c90d858aefb61dad0c2a39a086393ce70e464f532dc651adeb1c63f"
+    },
+    {
+      "path": "after-single-formats/bottle-manual-portrait-card.png",
+      "sha256": "5a3073c3a54e0df07ecb36da04093874195e977c7f14d23d6ba61e1c6a0543c4"
+    },
+    {
+      "path": "after-single-formats/bottle-manual-portrait-read.png",
+      "sha256": "1cdfb904725b27c3beb87979b20f1e6dd673079b655e3fa6f5bd534cfb6d8fbf"
+    },
+    {
+      "path": "after-single-formats/bottle-manual-portrait-save.png",
+      "sha256": "2d9d64c3dfb11968f86ec03fd2d11919df6f98575ef22d81706423cb2c1114e7"
+    },
+    {
+      "path": "after-single-formats/cup-manual-landscape-bottom-viewport.png",
+      "sha256": "5e5f03182f092af790292268d534dfb1186dbba920a7a2ee332fa113e05c193a"
+    },
+    {
+      "path": "after-single-formats/cup-manual-landscape-card.png",
+      "sha256": "a9d7cbe5765b0380718ab8e4f607a7c4ec5131f82a5e0ea6a684e11c01cdef6c"
+    },
+    {
+      "path": "after-single-formats/cup-manual-landscape-read.png",
+      "sha256": "e3f624043531a3a607ff6250431edfbc1ab3bddecfb33c57371dc4c2fae7bd58"
+    },
+    {
+      "path": "after-single-formats/cup-manual-landscape-save.png",
+      "sha256": "850c5d6d61ac2fc5c71beb77dfcee911979f5aa539fdc7c281dacc726b7243b7"
+    },
+    {
+      "path": "after-single-formats/cup-manual-portrait-bottom-viewport.png",
+      "sha256": "c8324910ed457b10ed99dd331a0b4398cc591d45eb20c5454575e335bc3f785c"
+    },
+    {
+      "path": "after-single-formats/cup-manual-portrait-card.png",
+      "sha256": "550dd7d4cfb39f9e5aa5c2dd64dc92167046d49e16920879e35ab2b8d54f5f43"
+    },
+    {
+      "path": "after-single-formats/cup-manual-portrait-read.png",
+      "sha256": "9860683f46df801ed434fc9c03742f51e3c785ee0eb3f78fd2325060cf9a5e36"
+    },
+    {
+      "path": "after-single-formats/cup-manual-portrait-save.png",
+      "sha256": "9523970056680d0bfc127e8280895f651ad530fcde16e6663f840da889095f58"
+    },
+    {
+      "path": "after-single-formats/input-provenance.json",
+      "sha256": "197cc491ee5dacdba327635d914aeb8764225bd12ecc05b88e1acff87b06b5b5"
+    },
+    {
+      "path": "after-single-formats/results.json",
+      "sha256": "6649f67e260638f71ff735a04a2f16d5ea40a2db3ceb6c2cd8ede011374aa2ce"
+    },
+    {
+      "path": "after/both-favorite-landscape-card.png",
+      "sha256": "fe22f4a022c31d8d4f964417ee7255fd7fdfb3b78563b3b59dd8394693ce2947"
+    },
+    {
+      "path": "after/both-favorite-landscape-read.png",
+      "sha256": "2e4caa422b6cd7d6d20764bcb982e23a8e3dd55230f024938382700d30912d34"
+    },
+    {
+      "path": "after/both-favorite-landscape-save.png",
+      "sha256": "b63cd180cbee3f7002585b155b7a77290f5601017151f60084fce4f6b12995ce"
+    },
+    {
+      "path": "after/both-favorite-portrait-card.png",
+      "sha256": "a82ceacd3e5f9cea56ae0192e1e1633fe9e3e8d016de2f0e8d24f1298ac82702"
+    },
+    {
+      "path": "after/both-favorite-portrait-read.png",
+      "sha256": "249f790d324a1cae1b4b2594b2c7b5a45e1feb2b0b764b2f7d5a71aaff10d755"
+    },
+    {
+      "path": "after/both-favorite-portrait-save.png",
+      "sha256": "3858287060055b8c240f53aac0ec8586355fdd981c87036f5e240551a16b97ac"
+    },
+    {
+      "path": "after/both-tasted-landscape-card.png",
+      "sha256": "90447010b2f74f1c68db4c8a812897d95edb38692300a8df81d192a9f9698eb7"
+    },
+    {
+      "path": "after/both-tasted-landscape-read.png",
+      "sha256": "2e4caa422b6cd7d6d20764bcb982e23a8e3dd55230f024938382700d30912d34"
+    },
+    {
+      "path": "after/both-tasted-landscape-save.png",
+      "sha256": "6b4eaa52568aa3fc8c60b2442c0ca4fd295d0a82656287ce75374e57c9f0f717"
+    },
+    {
+      "path": "after/both-tasted-portrait-card.png",
+      "sha256": "31948c0f34b34667b67547eb11eafbb8ebd26f78f9ccd859f8513a1ae5190989"
+    },
+    {
+      "path": "after/both-tasted-portrait-read.png",
+      "sha256": "249f790d324a1cae1b4b2594b2c7b5a45e1feb2b0b764b2f7d5a71aaff10d755"
+    },
+    {
+      "path": "after/both-tasted-portrait-save.png",
+      "sha256": "247b0d7a34d8cfd62e3a591c21394408e44e11b79569b1044c09b2a0ecbd2ff7"
+    },
+    {
+      "path": "after/both-wishlist-landscape-card.png",
+      "sha256": "4982a1ca42b10e992e9c32d87aeb352dd318ca0067b4d879c90a8c29e9095dbb"
+    },
+    {
+      "path": "after/both-wishlist-landscape-read.png",
+      "sha256": "2e4caa422b6cd7d6d20764bcb982e23a8e3dd55230f024938382700d30912d34"
+    },
+    {
+      "path": "after/both-wishlist-landscape-save.png",
+      "sha256": "d6c74f84a93d5a073f44fe91530adfaa09a8d819ac75fad3431868a241d556f7"
+    },
+    {
+      "path": "after/both-wishlist-portrait-card.png",
+      "sha256": "a1a94f36d531199a839863f9012175cb56607976659fb2b2650cda3c51f6959e"
+    },
+    {
+      "path": "after/both-wishlist-portrait-read.png",
+      "sha256": "249f790d324a1cae1b4b2594b2c7b5a45e1feb2b0b764b2f7d5a71aaff10d755"
+    },
+    {
+      "path": "after/both-wishlist-portrait-save.png",
+      "sha256": "2bf1c9bde7c67ed8da72c3171fe4d18c7b7e814ddf31b2b7ad8f8af46991dccc"
+    },
+    {
+      "path": "after/bottle-eur-landscape-card.png",
+      "sha256": "23704d071922332fc7e7388605ca56afbab0734cd9c64de4581cda768047a888"
+    },
+    {
+      "path": "after/bottle-eur-landscape-read.png",
+      "sha256": "c9d4f96c1cc125745591bd43185c88639863b1793665a75cf9208301f757aabc"
+    },
+    {
+      "path": "after/bottle-eur-landscape-save.png",
+      "sha256": "f7629027c187d5b6752f9766e43de0be7def9e3d1edd0440b007ccf0559d3949"
+    },
+    {
+      "path": "after/bottle-eur-portrait-card.png",
+      "sha256": "453ed781109a63dbece6a59bd7e28bca2e066f25bbac98c4a960e1f2aa1cbaed"
+    },
+    {
+      "path": "after/bottle-eur-portrait-read.png",
+      "sha256": "35d785a6b05bcf1226ea83130359509c7ed1d960bc8fdbbfd2207636ce8b8aae"
+    },
+    {
+      "path": "after/bottle-eur-portrait-save.png",
+      "sha256": "f86f0ff8deadc48b995217b5d8f242fa57e2c932c5e2929efa4799a8d096844f"
+    },
+    {
+      "path": "after/bottle-gbp-landscape-card.png",
+      "sha256": "f1ccd01cda70475c68e081827090c992b1f097d48bd70decca071d7209f05f8a"
+    },
+    {
+      "path": "after/bottle-gbp-landscape-read.png",
+      "sha256": "8e9afe470bc714c20608287dbc17e742ddc292a904abf40c7670a42a02bf5137"
+    },
+    {
+      "path": "after/bottle-gbp-landscape-save.png",
+      "sha256": "ee2c7476a089ced3b845e4c0991b66e2f7ed20e7d2b9a4727925ce5df2656e1e"
+    },
+    {
+      "path": "after/bottle-gbp-portrait-card.png",
+      "sha256": "ec98e13f6e85be07bf0ec4a7a62b4de6ebd62c67fd841dbca7ac84a07f9d46a9"
+    },
+    {
+      "path": "after/bottle-gbp-portrait-read.png",
+      "sha256": "f4ccf82f2236f4a6d6e7af51bc04c6d5b174f8010e6d764066591003eccc7ab6"
+    },
+    {
+      "path": "after/bottle-gbp-portrait-save.png",
+      "sha256": "80adb98c53ee09676c57db37ff7d0aa1653b7974dfde85f939139387b3755bd5"
+    },
+    {
+      "path": "after/corrupt-landscape-card.png",
+      "sha256": "4d47b025a227b5cd269f9b0cce27cfbfaf39bc7f16a7948bd77f873cc703b7d2"
+    },
+    {
+      "path": "after/corrupt-landscape-read.png",
+      "sha256": "77ff921b94e88721a5bfe0f4c0ba117d9c3d96404690dce319cacf190ea9f23b"
+    },
+    {
+      "path": "after/corrupt-landscape-save.png",
+      "sha256": "ceb81e4fdbbeff0b99717460b8e0cc37464c4a57b7261aacdf231d52f921efd0"
+    },
+    {
+      "path": "after/corrupt-portrait-card.png",
+      "sha256": "14602268761c0cb598c60185f77d60fd4e6ad685f5dbc9b963aef3d1573941e6"
+    },
+    {
+      "path": "after/corrupt-portrait-read.png",
+      "sha256": "53125dcfc8c20d4766e6b3dbb0ee6ed950bd73e21910ae617d98d05654974aff"
+    },
+    {
+      "path": "after/corrupt-portrait-save.png",
+      "sha256": "0f66b3c2ff2833e91659d2ed16390715f7c45cf37f521c96440e843e7fa1ea7e"
+    },
+    {
+      "path": "after/cup-eur-landscape-card.png",
+      "sha256": "f9369d2b8112ec6fa75cd9b109ae1cc5249032cf215e3e4d00cf5806fe34e28d"
+    },
+    {
+      "path": "after/cup-eur-landscape-read.png",
+      "sha256": "c334e92ac0a334f690a5a9db410d11f0ddcf6a0d80bb4349cf5b5fd084387f5d"
+    },
+    {
+      "path": "after/cup-eur-landscape-save.png",
+      "sha256": "5ac18d265584eb680d857e45d139d51c7c94848650dabe1e6e38a8b3124a3a67"
+    },
+    {
+      "path": "after/cup-eur-portrait-card.png",
+      "sha256": "0187059c49885538d48c1a97368cbdf33774190fb8c8c1b5ecfca5cef42fdce8"
+    },
+    {
+      "path": "after/cup-eur-portrait-read.png",
+      "sha256": "c8e1a254dddedc8f38919f18af346fc868b925dd2e8ccc0692590d14cabe5d3a"
+    },
+    {
+      "path": "after/cup-eur-portrait-save.png",
+      "sha256": "50d1fa1e838cc267192469245a672375fab42a87abdace0d835e7c6d0358c5be"
+    },
+    {
+      "path": "after/currency-null-landscape-card.png",
+      "sha256": "d267b2616aaef70e98fa7052bba26b25b5f7c597da44083f6690edc13f219e59"
+    },
+    {
+      "path": "after/currency-null-landscape-read.png",
+      "sha256": "1e2f9d27a6e44a2c4d9beffe70e77a07714ea3cd77bac28ae18bac7c66e105f0"
+    },
+    {
+      "path": "after/currency-null-landscape-save.png",
+      "sha256": "824a385b0d28d74036570c199f267a49e91459f093f66a321f35e493ac3a0ec9"
+    },
+    {
+      "path": "after/currency-null-portrait-card.png",
+      "sha256": "e3c4b88eac073677e2ab9e2e98ad351c5465be8872bdeb94ad593ceb325b1007"
+    },
+    {
+      "path": "after/currency-null-portrait-read.png",
+      "sha256": "a8f7275c79bed93baeabbe6dcff31d3108cb02a7f668482a65c3c6d3f5618a11"
+    },
+    {
+      "path": "after/currency-null-portrait-save.png",
+      "sha256": "1bef926e3c402131d80d3e63b5fb38a835f79155f8bff47a2dcba9d8d2956555"
+    },
+    {
+      "path": "after/denied-landscape-save.png",
+      "sha256": "d144e5250ff07f5f8aaad8eb2e408b1c5a847a652b3e048681c341147855ad15"
+    },
+    {
+      "path": "after/denied-portrait-save.png",
+      "sha256": "226e39ca76d9bbc5287a85bf8b3cb8d77068a721ab0b7e7a696c32229c5a2f41"
+    },
+    {
+      "path": "after/empty-landscape-card.png",
+      "sha256": "23704d071922332fc7e7388605ca56afbab0734cd9c64de4581cda768047a888"
+    },
+    {
+      "path": "after/empty-landscape-read.png",
+      "sha256": "c9d4f96c1cc125745591bd43185c88639863b1793665a75cf9208301f757aabc"
+    },
+    {
+      "path": "after/empty-landscape-save.png",
+      "sha256": "4004b490fd32a45b4b4a32db43a9a67cfb3e601c3aa66163bda62c0191619c13"
+    },
+    {
+      "path": "after/empty-portrait-card.png",
+      "sha256": "453ed781109a63dbece6a59bd7e28bca2e066f25bbac98c4a960e1f2aa1cbaed"
+    },
+    {
+      "path": "after/empty-portrait-read.png",
+      "sha256": "35d785a6b05bcf1226ea83130359509c7ed1d960bc8fdbbfd2207636ce8b8aae"
+    },
+    {
+      "path": "after/empty-portrait-save.png",
+      "sha256": "808979f27955883fcaa6fb946824b735b41805bae9a1ae6703cf4d1a1b2f51aa"
+    },
+    {
+      "path": "after/inferred-landscape-card.png",
+      "sha256": "298a3d23b682ec42cfe3eaf1f4c8c2a106ef4702c36543abe149a4ec935c6294"
+    },
+    {
+      "path": "after/inferred-landscape-read.png",
+      "sha256": "9914aa20f3f30b6757ed5043203669979c2685d362d7c50c17758c79863942b3"
+    },
+    {
+      "path": "after/inferred-landscape-save.png",
+      "sha256": "0d97896f3f86d34c1498e1ccc66809bf16a3cc11868d327f914730d185c6e78b"
+    },
+    {
+      "path": "after/inferred-portrait-card.png",
+      "sha256": "df0c29ea8c26838f6d5ecab821600aec17b12b072a2c602f011f6a9362157149"
+    },
+    {
+      "path": "after/inferred-portrait-read.png",
+      "sha256": "c969aee1c28815b6b1766d1bbea265f29c7dd3056c39d829511506603d92b31a"
+    },
+    {
+      "path": "after/inferred-portrait-save.png",
+      "sha256": "941006315cbf33315ed02414d3496f3940d49794ce53b31062ddc203432dec5c"
+    },
+    {
+      "path": "after/input-provenance.json",
+      "sha256": "197cc491ee5dacdba327635d914aeb8764225bd12ecc05b88e1acff87b06b5b5"
+    },
+    {
+      "path": "after/legacy-landscape-card.png",
+      "sha256": "171f1639d06ee9b157572f828e3f6999809e593427519075e6c698c597aa1abd"
+    },
+    {
+      "path": "after/legacy-landscape-read.png",
+      "sha256": "1dceb33496bf9507c0ee15d975215ac7dc304091b205a22b53fca13d68ed01a1"
+    },
+    {
+      "path": "after/legacy-portrait-card.png",
+      "sha256": "5d6dff636c6fd1cc6c66fe0676e9a715557c5d7b6c8c60c45b90b9ae8bc5478c"
+    },
+    {
+      "path": "after/legacy-portrait-read.png",
+      "sha256": "8b1d71004da8972f65c0a6932be2696d2351de44a3a219b7036b5e5c12f58907"
+    },
+    {
+      "path": "after/results.json",
+      "sha256": "919e49b7cf0051e499db7667e45550bb6d6ed467773fab8141bfaba23b7bc001"
+    },
+    {
+      "path": "after/unknown-landscape-card.png",
+      "sha256": "35abec9f1d84411f9444a28cc1f00000e2087e2328e73278e6f43cf2b9f24796"
+    },
+    {
+      "path": "after/unknown-landscape-read.png",
+      "sha256": "e97fb144ed2352e4175315ae3ca2be8a707b0182883ffc4a5576d31c06a1dfa2"
+    },
+    {
+      "path": "after/unknown-landscape-save.png",
+      "sha256": "0d97896f3f86d34c1498e1ccc66809bf16a3cc11868d327f914730d185c6e78b"
+    },
+    {
+      "path": "after/unknown-portrait-card.png",
+      "sha256": "fb5ab73c6f716ff65c4cc8d7c9dd9f974f5e3bc684d7720def0696c1108b0388"
+    },
+    {
+      "path": "after/unknown-portrait-read.png",
+      "sha256": "a964e95a08fc2e4079d57b8a824aeda86f23587e4531d42dbeb2a1e50a753c83"
+    },
+    {
+      "path": "after/unknown-portrait-save.png",
+      "sha256": "b545646d70d3b40522ce4dbcd5cba204f2b61ec39d6f4f2221c1bc2ea0cbe5c7"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "sha256": "6c161d04f51ba10a75ee4ac6677c7b973663494f6fe7e321fc3fb003c0a56a28"
+    },
+    {
+      "path": "baseline-sources/src/contexts/AuthContext.tsx.txt",
+      "sha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863"
+    },
+    {
+      "path": "baseline-sources/src/pages/MyWines.tsx.txt",
+      "sha256": "d94f8a69d9d59556b390738c2d4b26942087f33fc2eef5b531ae0417cb949392"
+    },
+    {
+      "path": "baseline-sources/src/utils/labelScanSave.ts.txt",
+      "sha256": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanMoney.ts.txt",
+      "sha256": "db8e16051dd214d3de8cae63970dcaf207c99da3b5a3e8053a7a2be1c0e8bc85"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanWineEvidence.ts.txt",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineComparison.ts.txt",
+      "sha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineMenuScan.ts.txt",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "before/both-favorite-landscape-card.png",
+      "sha256": "6c8bedb269471987e241a1485934b490e7aed0f79fa9471f385015dcf0c70d98"
+    },
+    {
+      "path": "before/both-favorite-landscape-save.png",
+      "sha256": "b63cd180cbee3f7002585b155b7a77290f5601017151f60084fce4f6b12995ce"
+    },
+    {
+      "path": "before/both-favorite-portrait-card.png",
+      "sha256": "a4581b4dec4370fc0ebd66b108b2f289cf19e965d08e53679868c2636e6a6242"
+    },
+    {
+      "path": "before/both-favorite-portrait-save.png",
+      "sha256": "3858287060055b8c240f53aac0ec8586355fdd981c87036f5e240551a16b97ac"
+    },
+    {
+      "path": "before/both-tasted-landscape-save.png",
+      "sha256": "6b4eaa52568aa3fc8c60b2442c0ca4fd295d0a82656287ce75374e57c9f0f717"
+    },
+    {
+      "path": "before/both-tasted-portrait-save.png",
+      "sha256": "247b0d7a34d8cfd62e3a591c21394408e44e11b79569b1044c09b2a0ecbd2ff7"
+    },
+    {
+      "path": "before/both-wishlist-landscape-card.png",
+      "sha256": "cec7322a52bd48911cfe995a2709cd99e534bf19284c719558ea7db5b803c38c"
+    },
+    {
+      "path": "before/both-wishlist-landscape-save.png",
+      "sha256": "d6c74f84a93d5a073f44fe91530adfaa09a8d819ac75fad3431868a241d556f7"
+    },
+    {
+      "path": "before/both-wishlist-portrait-card.png",
+      "sha256": "be8a8cf4c9b9f09dfa5ec7f18a9bf6279b7d44fec6d0176c81ba3d394c8c6105"
+    },
+    {
+      "path": "before/both-wishlist-portrait-save.png",
+      "sha256": "2bf1c9bde7c67ed8da72c3171fe4d18c7b7e814ddf31b2b7ad8f8af46991dccc"
+    },
+    {
+      "path": "before/bottle-eur-landscape-card.png",
+      "sha256": "cec7322a52bd48911cfe995a2709cd99e534bf19284c719558ea7db5b803c38c"
+    },
+    {
+      "path": "before/bottle-eur-landscape-save.png",
+      "sha256": "f7629027c187d5b6752f9766e43de0be7def9e3d1edd0440b007ccf0559d3949"
+    },
+    {
+      "path": "before/bottle-eur-portrait-card.png",
+      "sha256": "be8a8cf4c9b9f09dfa5ec7f18a9bf6279b7d44fec6d0176c81ba3d394c8c6105"
+    },
+    {
+      "path": "before/bottle-eur-portrait-save.png",
+      "sha256": "f86f0ff8deadc48b995217b5d8f242fa57e2c932c5e2929efa4799a8d096844f"
+    },
+    {
+      "path": "before/bottle-gbp-landscape-card.png",
+      "sha256": "fc4f34cb8a5699f18d719f64d4e3610aaccb045e6d68ca008538873cc82d35fd"
+    },
+    {
+      "path": "before/bottle-gbp-landscape-save.png",
+      "sha256": "ee2c7476a089ced3b845e4c0991b66e2f7ed20e7d2b9a4727925ce5df2656e1e"
+    },
+    {
+      "path": "before/bottle-gbp-portrait-card.png",
+      "sha256": "084b0f8d8742c8c73c85242fe18c338bc496c29eee4101fe72faa5229be4b9a1"
+    },
+    {
+      "path": "before/bottle-gbp-portrait-save.png",
+      "sha256": "80adb98c53ee09676c57db37ff7d0aa1653b7974dfde85f939139387b3755bd5"
+    },
+    {
+      "path": "before/corrupt-landscape-card.png",
+      "sha256": "cec7322a52bd48911cfe995a2709cd99e534bf19284c719558ea7db5b803c38c"
+    },
+    {
+      "path": "before/corrupt-landscape-save.png",
+      "sha256": "d6c74f84a93d5a073f44fe91530adfaa09a8d819ac75fad3431868a241d556f7"
+    },
+    {
+      "path": "before/corrupt-portrait-card.png",
+      "sha256": "be8a8cf4c9b9f09dfa5ec7f18a9bf6279b7d44fec6d0176c81ba3d394c8c6105"
+    },
+    {
+      "path": "before/corrupt-portrait-save.png",
+      "sha256": "2bf1c9bde7c67ed8da72c3171fe4d18c7b7e814ddf31b2b7ad8f8af46991dccc"
+    },
+    {
+      "path": "before/cup-eur-landscape-card.png",
+      "sha256": "50137e5be0abdf34205b78bf7dda6d119ce3ae51a5ed425cebe39531ef7fa159"
+    },
+    {
+      "path": "before/cup-eur-landscape-save.png",
+      "sha256": "5ac18d265584eb680d857e45d139d51c7c94848650dabe1e6e38a8b3124a3a67"
+    },
+    {
+      "path": "before/cup-eur-portrait-card.png",
+      "sha256": "5f2db32a6ba5b1c940aeefd52c44efd83278f49502e51c7a406ed5415469a5a2"
+    },
+    {
+      "path": "before/cup-eur-portrait-save.png",
+      "sha256": "50d1fa1e838cc267192469245a672375fab42a87abdace0d835e7c6d0358c5be"
+    },
+    {
+      "path": "before/currency-null-landscape-card.png",
+      "sha256": "f5467c3f22c951aaf4f43b815fcf7f2f12ea182c1254bdeb1a930affdcac26f2"
+    },
+    {
+      "path": "before/currency-null-landscape-save.png",
+      "sha256": "824a385b0d28d74036570c199f267a49e91459f093f66a321f35e493ac3a0ec9"
+    },
+    {
+      "path": "before/currency-null-portrait-card.png",
+      "sha256": "b054323031882578fc7e6ab473a9914a41e48222a71514c63850418524e7fb54"
+    },
+    {
+      "path": "before/currency-null-portrait-save.png",
+      "sha256": "1bef926e3c402131d80d3e63b5fb38a835f79155f8bff47a2dcba9d8d2956555"
+    },
+    {
+      "path": "before/denied-landscape-save.png",
+      "sha256": "d144e5250ff07f5f8aaad8eb2e408b1c5a847a652b3e048681c341147855ad15"
+    },
+    {
+      "path": "before/denied-portrait-save.png",
+      "sha256": "226e39ca76d9bbc5287a85bf8b3cb8d77068a721ab0b7e7a696c32229c5a2f41"
+    },
+    {
+      "path": "before/empty-landscape-card.png",
+      "sha256": "cec7322a52bd48911cfe995a2709cd99e534bf19284c719558ea7db5b803c38c"
+    },
+    {
+      "path": "before/empty-landscape-save.png",
+      "sha256": "f7629027c187d5b6752f9766e43de0be7def9e3d1edd0440b007ccf0559d3949"
+    },
+    {
+      "path": "before/empty-portrait-card.png",
+      "sha256": "be8a8cf4c9b9f09dfa5ec7f18a9bf6279b7d44fec6d0176c81ba3d394c8c6105"
+    },
+    {
+      "path": "before/empty-portrait-save.png",
+      "sha256": "f86f0ff8deadc48b995217b5d8f242fa57e2c932c5e2929efa4799a8d096844f"
+    },
+    {
+      "path": "before/inferred-landscape-card.png",
+      "sha256": "bacb8cd0772ffde9bce3a1c39194642860026a68cdd3e498f2a739d01a7bff00"
+    },
+    {
+      "path": "before/inferred-landscape-save.png",
+      "sha256": "0d97896f3f86d34c1498e1ccc66809bf16a3cc11868d327f914730d185c6e78b"
+    },
+    {
+      "path": "before/inferred-portrait-card.png",
+      "sha256": "95e6f9536b2c1dde2f6829c9be26a97b37d680e0fa3694ada6708bffb9da7388"
+    },
+    {
+      "path": "before/inferred-portrait-save.png",
+      "sha256": "cb9bd99b38b71a4f4e4f5037ff790e7209bb8b8a817791462142f865cac33522"
+    },
+    {
+      "path": "before/input-provenance.json",
+      "sha256": "197cc491ee5dacdba327635d914aeb8764225bd12ecc05b88e1acff87b06b5b5"
+    },
+    {
+      "path": "before/legacy-landscape-card.png",
+      "sha256": "cec7322a52bd48911cfe995a2709cd99e534bf19284c719558ea7db5b803c38c"
+    },
+    {
+      "path": "before/legacy-portrait-card.png",
+      "sha256": "be8a8cf4c9b9f09dfa5ec7f18a9bf6279b7d44fec6d0176c81ba3d394c8c6105"
+    },
+    {
+      "path": "before/results.json",
+      "sha256": "9ece556692315fdd57a39e5582afa24fa2b9f0f9f1ed8d82480a6f5115de666d"
+    },
+    {
+      "path": "before/unknown-landscape-card.png",
+      "sha256": "bacb8cd0772ffde9bce3a1c39194642860026a68cdd3e498f2a739d01a7bff00"
+    },
+    {
+      "path": "before/unknown-landscape-save.png",
+      "sha256": "0d97896f3f86d34c1498e1ccc66809bf16a3cc11868d327f914730d185c6e78b"
+    },
+    {
+      "path": "before/unknown-portrait-card.png",
+      "sha256": "95e6f9536b2c1dde2f6829c9be26a97b37d680e0fa3694ada6708bffb9da7388"
+    },
+    {
+      "path": "before/unknown-portrait-save.png",
+      "sha256": "b2f3f63592bae9c8aaf3d0bcce7726cba0f779696d769e531b08cde30aa76304"
+    },
+    {
+      "path": "checkpoint05.md",
+      "sha256": "eae36b027e8bb22fe99c42182624815cf067cafff164502dcfb323b2e382870a"
+    },
+    {
+      "path": "denominators.json",
+      "sha256": "b4a6945ebb7ed925ef5c39397404daa07ef8b5e9a8bd8c50ecbba02cbb90e2e2"
+    },
+    {
+      "path": "expected-actual.json",
+      "sha256": "c62d6288259ca9e525997a7ceabeb7c45bbe607b3760c9262ee24cbdc7350538"
+    },
+    {
+      "path": "pure-complete.json",
+      "sha256": "f28beeb2dcf6d1dbf4d540639a9ce529505e6fd75395d9a50a066bdfd919db0b"
+    },
+    {
+      "path": "pure-contracts.json",
+      "sha256": "d8e558e0413cf61877f12413f637c35aa6815248dc7c269ffbe6c2e75d8e33d7"
+    },
+    {
+      "path": "pure-final.json",
+      "sha256": "d4656e7d723d2b71be04adfe205cedc33d55f1007feec00bcc6719e74423c5cc"
+    },
+    {
+      "path": "source-stages.json",
+      "sha256": "c0032f05a43678614216c4443fc8e1673f9344fcc8a1eb8d07d926e23641f57f"
+    },
+    {
+      "path": "sources/scripts/check-matchrim-menu-save-oct12.ts.txt",
+      "sha256": "afa5aba5763fc295c3b96af72ada334f448a8a88a216272b07c14907eba0ace0"
+    },
+    {
+      "path": "sources/scripts/package-matchrim-menu-save-oct12.mjs.txt",
+      "sha256": "ea6f731d0b776f4d079af24eeacd9c3a07cf72b7de3c0788ededfe1b5faa71c9"
+    },
+    {
+      "path": "sources/scripts/qa-matchrim-menu-save-oct12.py.txt",
+      "sha256": "734d5953b4ecfe92fc529260f6d282c44c2e021b5b5c88f25b225713553a898e"
+    },
+    {
+      "path": "sources/scripts/verify-matchrim-menu-save-oct12.mjs.txt",
+      "sha256": "ff4bc1130b1a6d900ba9e6b545d4da56240eab61dceeff481ac7f9f8a2f68292"
+    },
+    {
+      "path": "sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "sha256": "1944b506f304b51d5de3ef48c0385cfe5cbe97f6b1da2b966b1a86b5d350baa4"
+    },
+    {
+      "path": "sources/src/contexts/AuthContext.tsx.txt",
+      "sha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863"
+    },
+    {
+      "path": "sources/src/pages/MyWines.tsx.txt",
+      "sha256": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad"
+    },
+    {
+      "path": "sources/src/utils/labelScanSave.ts.txt",
+      "sha256": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77"
+    },
+    {
+      "path": "sources/src/utils/menuWineSave.ts.txt",
+      "sha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859"
+    },
+    {
+      "path": "sources/src/utils/scanMoney.ts.txt",
+      "sha256": "db8e16051dd214d3de8cae63970dcaf207c99da3b5a3e8053a7a2be1c0e8bc85"
+    },
+    {
+      "path": "sources/src/utils/scanWineEvidence.ts.txt",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "sources/src/utils/wineComparison.ts.txt",
+      "sha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "sources/src/utils/wineMenuScan.ts.txt",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "verification/build.log",
+      "sha256": "99d1dc9718dd00b4b06776f367552f8c5d86e4b8a8744a4c0b072fbd2c13ece9"
+    },
+    {
+      "path": "verification/lint.log",
+      "sha256": "2e4bd7a5903ff7583c53ecc9e3db309803cf690d8aa2a0de702003665f7d57d3"
+    },
+    {
+      "path": "verification/typecheck.log",
+      "sha256": "e38c26b5e7b0982ac7fdacb4832749746b5c3c678e6de661d1a003afe6ce9d6d"
+    },
+    {
+      "path": "verification/verification.json",
+      "sha256": "c3bb800173968b65c4f795333748d59dc06e87f8960c55e8087827c07de88510"
+    }
+  ],
+  "captures": 247
+}
