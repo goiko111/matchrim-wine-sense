@@ -1,0 +1,45 @@
+{
+  "started": "2026-10-12T09:15:38.515Z",
+  "finished": "2026-10-12T09:15:39.188Z",
+  "exitCode": 0,
+  "signal": null,
+  "error": null,
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "<NATIVE_QA>/offline.sb",
+    "/usr/bin/xcrun",
+    "simctl",
+    "--set",
+    "<NATIVE_QA>/qa-device-set",
+    "list",
+    "runtimes",
+    "--json"
+  ],
+  "runtimes": [
+    {
+      "name": "iOS 18.6",
+      "version": "18.6",
+      "build": "22G86",
+      "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-18-6",
+      "available": true,
+      "availabilityError": null
+    },
+    {
+      "name": "iOS 26.0",
+      "version": "26.0.1",
+      "build": "23A8464",
+      "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-0",
+      "available": true,
+      "availabilityError": null
+    }
+  ],
+  "qaStateFilesAfter": [],
+  "privateHomeClientReadWriteDenied": true,
+  "publicRuntimeWritesDenied": true,
+  "internetDenied": true,
+  "initializationScope": "Client explicitly targets QA state. Out-of-process CoreSimulator service initialization cannot be certified by client sandbox alone; do not relax limits if logs reveal real HOME use.",
+  "buildAttempted": false,
+  "installLaunchOrBootAttempted": false,
+  "destinationEligibilityProven": false
+}

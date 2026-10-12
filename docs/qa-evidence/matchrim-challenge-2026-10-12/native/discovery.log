@@ -1,0 +1,24 @@
+{
+  "scope": "Condensed runtime availability; supported device-type metadata omitted, raw local log preserved",
+  "rawLocalLogSha256": "563aab921fd0cc9bc563cb174b8fb0f966d6b4b2998fcfd5cb90fb025e356ca4",
+  "exitCode": 0,
+  "runtimes": [
+    {
+      "name": "iOS 18.6",
+      "version": "18.6",
+      "build": "22G86",
+      "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-18-6",
+      "available": true,
+      "availabilityError": null
+    },
+    {
+      "name": "iOS 26.0",
+      "version": "26.0.1",
+      "build": "23A8464",
+      "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-0",
+      "available": true,
+      "availabilityError": null
+    }
+  ],
+  "stderrObserved": false
+}

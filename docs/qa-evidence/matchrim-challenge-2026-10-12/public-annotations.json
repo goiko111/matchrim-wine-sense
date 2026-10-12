@@ -1,0 +1,241 @@
+{
+  "dataset_id": "matchrim-oct12-separate-challenge",
+  "annotation_status": "agent_visual_review_before_app_result_not_independent_human_ground_truth",
+  "coordinate_system": "pixel xywh in source image, approximate contours with 6px uncertainty; model proposals are not observed",
+  "policy": "Null means unknown. Scene titles/captions are provenance, never substitute for visible label evidence. No sensory attributes inferred. No paid model result seen.",
+  "scenes": [
+    {
+      "id": "oct12-public-2",
+      "width": 3024,
+      "height": 2988,
+      "physical_bottles": {
+        "count": 1,
+        "truncated": true
+      },
+      "canonical_unique_references": null,
+      "objects": [
+        {
+          "id": "label01",
+          "box": [
+            270,
+            91,
+            2260,
+            2830
+          ],
+          "object_type": "label",
+          "legibility": "good",
+          "literal": [
+            "SAINTE MAGDE...",
+            "Cotes de Provence",
+            "2018",
+            "FAMILLE SACK-ZAFIROPULO"
+          ],
+          "producer": "Famille Sack-Zafiropulo",
+          "cuvee": null,
+          "vintage": 2018,
+          "format_ml": null
+        }
+      ],
+      "disagreements": [
+        "Full Sainte Magdeleine name appears in file caption, but label right edge is cut. Caption is not OCR ground truth."
+      ]
+    },
+    {
+      "id": "oct12-public-3",
+      "width": 1619,
+      "height": 699,
+      "physical_bottles": {
+        "count": 4,
+        "truncated": true
+      },
+      "literal_distinct_references": 4,
+      "canonical_unique_references": null,
+      "objects": [
+        {
+          "id": "h01",
+          "box": [
+            54,
+            0,
+            382,
+            656
+          ],
+          "object_type": "label",
+          "legibility": "good",
+          "literal": [
+            "GEWURZTRAMINER HUGEL",
+            "ALSACE"
+          ],
+          "producer": "Hugel et Fils",
+          "cuvee": "Gewurztraminer",
+          "vintage": null,
+          "format_ml": 750
+        },
+        {
+          "id": "h02",
+          "box": [
+            435,
+            0,
+            393,
+            664
+          ],
+          "object_type": "label",
+          "legibility": "good",
+          "literal": [
+            "PINOT GRIS",
+            "TRADITION HUGEL"
+          ],
+          "producer": "Hugel et Fils",
+          "cuvee": "Pinot Gris Tradition",
+          "vintage": null,
+          "format_ml": null
+        },
+        {
+          "id": "h03",
+          "box": [
+            831,
+            0,
+            408,
+            699
+          ],
+          "object_type": "label",
+          "legibility": "good",
+          "literal": [
+            "JUBILEE HUGEL",
+            "RIESLING"
+          ],
+          "producer": "Hugel et Fils",
+          "cuvee": "Riesling Jubilee",
+          "vintage": null,
+          "format_ml": null
+        },
+        {
+          "id": "h04",
+          "box": [
+            1238,
+            0,
+            339,
+            699
+          ],
+          "object_type": "label",
+          "legibility": "good",
+          "literal": [
+            "VENDANGE TARDIVE",
+            "GEWURZTRAMINER HUGEL"
+          ],
+          "producer": "Hugel et Fils",
+          "cuvee": "Gewurztraminer Vendange Tardive",
+          "vintage": null,
+          "format_ml": null
+        }
+      ],
+      "disagreements": [
+        "1639 and1989 appear in heraldic anniversary text, not demonstrated harvest years."
+      ]
+    },
+    {
+      "id": "oct12-public-5",
+      "width": 2012,
+      "height": 5689,
+      "physical_bottles": {
+        "count": 1
+      },
+      "grape_wine_count": 0,
+      "canonical_unique_references": 0,
+      "objects": [
+        {
+          "id": "a01",
+          "box": [
+            339,
+            211,
+            1308,
+            5300
+          ],
+          "object_type": "bottle",
+          "legibility": "good",
+          "literal": [
+            "APEROL",
+            "APERITIVO",
+            "DAL1919",
+            "F.LLI BARBIERI"
+          ],
+          "producer": "Fratelli Barbieri",
+          "cuvee": null,
+          "vintage": null,
+          "format_ml": null,
+          "expected_category": "not_wine"
+        }
+      ],
+      "disagreements": [
+        "1919 is brand history, not wine vintage.70cl supplied by caption is not used as visible-image evidence."
+      ]
+    },
+    {
+      "id": "oct12-public-1",
+      "width": 2048,
+      "height": 1536,
+      "physical_bottles": {
+        "exact": null,
+        "status": "dense occlusion requires independent instance annotation"
+      },
+      "canonical_unique_references": null,
+      "objects": [
+        {
+          "id": "shop-readable-left",
+          "box": [
+            1340,
+            90,
+            225,
+            1446
+          ],
+          "legibility": "limited",
+          "literal": [
+            "Un bout de chenin",
+            "2005",
+            "Anjou"
+          ],
+          "producer": null,
+          "cuvee": "Un bout de chenin",
+          "vintage": 2005,
+          "format_ml": null
+        },
+        {
+          "id": "shop-readable-right",
+          "box": [
+            1570,
+            60,
+            352,
+            1476
+          ],
+          "legibility": "limited",
+          "literal": [
+            "Un bout de chenin",
+            "2005",
+            "Anjou"
+          ],
+          "producer": null,
+          "cuvee": "Un bout de chenin",
+          "vintage": 2005,
+          "format_ml": null
+        }
+      ],
+      "disagreements": [
+        "Two duplicate literal references visible, but total physical count and other producer/years unresolved. Partial annotation is not a two-bottle scene assertion."
+      ]
+    },
+    {
+      "id": "commons-7478099",
+      "scope": "reuse prior structural annotation; no new model result",
+      "physical_bottles": {
+        "count": 0
+      },
+      "document": "historical laminated wine list",
+      "canonical_unique_references": null,
+      "checks": [
+        "separate spirits from wines",
+        "preserve historical currency; no EUR inference",
+        "partial/full view consistent",
+        "do not count printed rows as physical bottles"
+      ]
+    }
+  ]
+}

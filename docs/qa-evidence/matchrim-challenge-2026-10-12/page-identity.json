@@ -1,0 +1,35 @@
+{
+  "transport": "curl public metadata; initial Node transport429",
+  "pages": [
+    {
+      "page_id": 7140926,
+      "title": "File:Four Hugel bottle labels.jpg",
+      "original_url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Four_Hugel_bottle_labels.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license": "CC BY-SA 3.0"
+    },
+    {
+      "page_id": 7478099,
+      "title": "File:Laminated Wine List.jpg",
+      "original_url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Laminated_Wine_List.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license": "CC BY-SA 2.0"
+    },
+    {
+      "page_id": 24904782,
+      "title": "File:Wine shop.jpg",
+      "original_url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Wine_shop.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license": "Public domain"
+    },
+    {
+      "page_id": 128255729,
+      "title": "File:Wine Label - Front of Bottle - Sainte Magdeleine - Cotes de Provence - 2018.jpg",
+      "original_url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Wine_Label_-_Front_of_Bottle_-_Sainte_Magdeleine_-_Cotes_de_Provence_-_2018.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "page_id": 170458144,
+      "title": "File:Aperol 001 2025 06 08.jpg",
+      "original_url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Aperol_001_2025_06_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license": "CC BY-SA 4.0"
+    }
+  ]
+}

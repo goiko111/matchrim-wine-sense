@@ -1,0 +1,17 @@
+{
+  "privateMediaOmitted": true,
+  "id": "owner-shelf",
+  "physicalBottles": {
+    "count": 28,
+    "rows": [
+      10,
+      7,
+      6,
+      5
+    ],
+    "status": "agent_count_requires_independent_review"
+  },
+  "canonicalUniqueReferences": null,
+  "independentHumanAnnotation": false,
+  "fullAnnotationSha256": "257587d96322e7b7a93fcef3543338ee9b3ce15c8c87eadcb6813620c6be5808"
+}

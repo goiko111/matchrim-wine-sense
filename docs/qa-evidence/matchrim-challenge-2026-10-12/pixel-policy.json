@@ -1,0 +1,395 @@
+[
+  {
+    "scene": "oct12-public-1",
+    "sourcePixels": {
+      "width": 2048,
+      "height": 1536,
+      "megapixels": 3.1,
+      "brightness": 40,
+      "contrast": 48,
+      "sharpness": 42.6,
+      "status": "warning",
+      "warnings": [
+        "La foto esta oscura; algunas etiquetas pueden quedar dudosas."
+      ]
+    },
+    "preparedSize": {
+      "width": 2048,
+      "height": 1536
+    },
+    "rejected": false,
+    "annotatedProposals": 2,
+    "retainedByNormalizer": 2,
+    "automatic": 2,
+    "deferred": [],
+    "crops": [
+      {
+        "id": "shop-readable-left",
+        "geometry": {
+          "pixels": {
+            "x": 1340,
+            "y": 90,
+            "width": 225,
+            "height": 1446
+          },
+          "sourceBox": {
+            "x": 65.4296875,
+            "y": 5.859375,
+            "width": 10.986328125,
+            "height": 94.140625
+          }
+        },
+        "quality": {
+          "brightness": 44,
+          "contrast": 45,
+          "sharpness": 23.3
+        }
+      },
+      {
+        "id": "shop-readable-right",
+        "geometry": {
+          "pixels": {
+            "x": 1570,
+            "y": 60,
+            "width": 352,
+            "height": 1476
+          },
+          "sourceBox": {
+            "x": 76.66015625,
+            "y": 3.90625,
+            "width": 17.1875,
+            "height": 96.09375
+          }
+        },
+        "quality": {
+          "brightness": 37,
+          "contrast": 47,
+          "sharpness": 21.3
+        }
+      }
+    ],
+    "method": "Real pixel preparation and annotation-fed geometry/policy; detection precision/recall unknown"
+  },
+  {
+    "scene": "oct12-public-2",
+    "sourcePixels": {
+      "width": 3024,
+      "height": 2988,
+      "megapixels": 9,
+      "brightness": 149,
+      "contrast": 75,
+      "sharpness": 43,
+      "status": "good",
+      "warnings": []
+    },
+    "preparedSize": {
+      "width": 2400,
+      "height": 2371
+    },
+    "rejected": false,
+    "annotatedProposals": 1,
+    "retainedByNormalizer": 1,
+    "automatic": 1,
+    "deferred": [],
+    "crops": [
+      {
+        "id": "label01",
+        "geometry": {
+          "pixels": {
+            "x": 214,
+            "y": 72,
+            "width": 1794,
+            "height": 2246
+          },
+          "sourceBox": {
+            "x": 8.916666666666668,
+            "y": 3.036693378321383,
+            "width": 74.75,
+            "height": 94.72796288485871
+          }
+        },
+        "quality": {
+          "brightness": 183,
+          "contrast": 59,
+          "sharpness": 49.6
+        }
+      }
+    ],
+    "method": "Real pixel preparation and annotation-fed geometry/policy; detection precision/recall unknown"
+  },
+  {
+    "scene": "oct12-public-3",
+    "sourcePixels": {
+      "width": 1619,
+      "height": 699,
+      "megapixels": 1.1,
+      "brightness": 122,
+      "contrast": 62,
+      "sharpness": 55.7,
+      "status": "warning",
+      "warnings": [
+        "Resolucion limitada para leer texto pequeno."
+      ]
+    },
+    "preparedSize": {
+      "width": 1619,
+      "height": 699
+    },
+    "rejected": false,
+    "annotatedProposals": 4,
+    "retainedByNormalizer": 4,
+    "automatic": 4,
+    "deferred": [],
+    "crops": [
+      {
+        "id": "h01",
+        "geometry": {
+          "pixels": {
+            "x": 54,
+            "y": 0,
+            "width": 383,
+            "height": 657
+          },
+          "sourceBox": {
+            "x": 3.3353922174181596,
+            "y": 0,
+            "width": 23.656578134651017,
+            "height": 93.99141630901288
+          }
+        },
+        "quality": {
+          "brightness": 120,
+          "contrast": 65,
+          "sharpness": 41.5
+        }
+      },
+      {
+        "id": "h02",
+        "geometry": {
+          "pixels": {
+            "x": 435,
+            "y": 0,
+            "width": 393,
+            "height": 664
+          },
+          "sourceBox": {
+            "x": 26.868437306979615,
+            "y": 0,
+            "width": 24.274243360098826,
+            "height": 94.9928469241774
+          }
+        },
+        "quality": {
+          "brightness": 109,
+          "contrast": 64,
+          "sharpness": 48.8
+        }
+      },
+      {
+        "id": "h03",
+        "geometry": {
+          "pixels": {
+            "x": 831,
+            "y": 0,
+            "width": 409,
+            "height": 699
+          },
+          "sourceBox": {
+            "x": 51.32798023471279,
+            "y": 0,
+            "width": 25.262507720815318,
+            "height": 100
+          }
+        },
+        "quality": {
+          "brightness": 117,
+          "contrast": 56,
+          "sharpness": 43.6
+        }
+      },
+      {
+        "id": "h04",
+        "geometry": {
+          "pixels": {
+            "x": 1238,
+            "y": 0,
+            "width": 340,
+            "height": 699
+          },
+          "sourceBox": {
+            "x": 76.46695491043855,
+            "y": 0,
+            "width": 21.000617665225448,
+            "height": 100
+          }
+        },
+        "quality": {
+          "brightness": 119,
+          "contrast": 55,
+          "sharpness": 52.4
+        }
+      }
+    ],
+    "method": "Real pixel preparation and annotation-fed geometry/policy; detection precision/recall unknown"
+  },
+  {
+    "scene": "commons-7478099",
+    "sourcePixels": {
+      "width": 1920,
+      "height": 2560,
+      "megapixels": 4.9,
+      "brightness": 141,
+      "contrast": 70,
+      "sharpness": 24.1,
+      "status": "good",
+      "warnings": []
+    },
+    "preparedSize": {
+      "width": 1800,
+      "height": 2400
+    },
+    "rejected": false,
+    "annotatedProposals": 0,
+    "retainedByNormalizer": 0,
+    "automatic": 0,
+    "deferred": [],
+    "crops": [],
+    "method": "Real pixel preparation and annotation-fed geometry/policy; detection precision/recall unknown"
+  },
+  {
+    "scene": "oct12-public-5",
+    "sourcePixels": {
+      "width": 2012,
+      "height": 5689,
+      "megapixels": 11.4,
+      "brightness": 181,
+      "contrast": 79,
+      "sharpness": 34.9,
+      "status": "good",
+      "warnings": []
+    },
+    "preparedSize": {
+      "width": 849,
+      "height": 2400
+    },
+    "rejected": false,
+    "annotatedProposals": 1,
+    "retainedByNormalizer": 1,
+    "automatic": 1,
+    "deferred": [],
+    "crops": [
+      {
+        "id": "a01",
+        "geometry": {
+          "pixels": {
+            "x": 143,
+            "y": 89,
+            "width": 552,
+            "height": 2236
+          },
+          "sourceBox": {
+            "x": 16.843345111896348,
+            "y": 3.7083333333333335,
+            "width": 65.01766784452296,
+            "height": 93.16666666666666
+          }
+        },
+        "quality": {
+          "brightness": 142,
+          "contrast": 76,
+          "sharpness": 45.1
+        }
+      }
+    ],
+    "method": "Real pixel preparation and annotation-fed geometry/policy; detection precision/recall unknown"
+  },
+  {
+    "scene": "owner-shelf",
+    "sourcePixels": {
+      "width": 1600,
+      "height": 1200,
+      "megapixels": 1.9,
+      "brightness": 101,
+      "contrast": 56,
+      "sharpness": 44.7,
+      "status": "good",
+      "warnings": []
+    },
+    "preparedSize": {
+      "width": 1600,
+      "height": 1200
+    },
+    "rejected": false,
+    "annotatedProposals": 28,
+    "retainedByNormalizer": 28,
+    "automatic": 12,
+    "deferred": [
+      {
+        "index": 13,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 14,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 15,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 16,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 17,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 18,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 19,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 20,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 21,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 22,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 23,
+        "reason": "automatic_limit"
+      },
+      {
+        "index": 24,
+        "reason": "legibility"
+      },
+      {
+        "index": 25,
+        "reason": "legibility"
+      },
+      {
+        "index": 26,
+        "reason": "resolution"
+      },
+      {
+        "index": 27,
+        "reason": "resolution"
+      },
+      {
+        "index": 28,
+        "reason": "resolution"
+      }
+    ],
+    "method": "Real pixel preparation and annotation-fed geometry/policy; detection precision/recall unknown",
+    "privateGeometryOmitted": true
+  }
+]

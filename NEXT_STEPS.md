@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-12, challenge first block
+
+1. Local classification/negative explanation and edge-object retention fixed and verified on frozen challenge inputs. Do not treat annotated synthetic proposals as new vision accuracy or rerun unchanged earlier suites.
+2. Obtain current coordinated paid-call cap before any live recognition; historic28 calls remain unused. Preserve source groups, private-image rights and commons-355816 remote exclusion. Independent human canonical/instance annotation and sensory/human affinity evidence remain.
+3. Native runtimes18.6/26.0.1 now report available, but isolated Xcode still lists no eligible Simulator destination. Reconcile scheme/device-set eligibility without real HOME or downloads before any integrated build; no blind exit70 retry. Prior80 lacks recent source, no TestFlight change.
+4. Use [function coverage](docs/MATCHRIM_CHALLENGE_COVERAGE_2026-10-12.md) to choose next measured delta. Hosted persistence/RLS, physical accessibility/performance and distribution/invitation remain separate gates. First block complete, not global product approval.
+
 ## Current delta: 2026-10-11, static native discovery diagnosis
 
 1. Assignment12 delivered two metadata-only probes. No explicit target exclusion; SDK18.5 and runtime packages18.6/26.0.1 exist. Isolated registry absent; registration/availability/compatibility cause not proven.

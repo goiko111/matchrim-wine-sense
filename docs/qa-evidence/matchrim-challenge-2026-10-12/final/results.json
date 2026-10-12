@@ -1,0 +1,282 @@
+{
+  "paidCalls": 0,
+  "remoteAppCalls": 0,
+  "results": [
+    {
+      "scene": "oct12-public-5",
+      "orientation": "portrait",
+      "passed": true,
+      "failures": [],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        }
+      ],
+      "errors": [],
+      "geometry": {
+        "innerWidth": 393,
+        "scrollWidth": 393
+      },
+      "testKind": "intercepted annotated proposals and synthetic candidates; no model result"
+    },
+    {
+      "scene": "oct12-public-5",
+      "orientation": "landscape",
+      "passed": true,
+      "failures": [],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        }
+      ],
+      "errors": [],
+      "geometry": {
+        "innerWidth": 852,
+        "scrollWidth": 852
+      },
+      "testKind": "intercepted annotated proposals and synthetic candidates; no model result"
+    },
+    {
+      "scene": "oct12-public-3",
+      "orientation": "portrait",
+      "passed": true,
+      "failures": [],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 2
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 3
+        },
+        {
+          "endpoint": "search-wines",
+          "region": null
+        },
+        {
+          "endpoint": "search-wines",
+          "region": null
+        },
+        {
+          "endpoint": "search-wines",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 4
+        },
+        {
+          "endpoint": "search-wines",
+          "region": null
+        }
+      ],
+      "errors": [],
+      "geometry": {
+        "innerWidth": 393,
+        "scrollWidth": 393
+      },
+      "testKind": "intercepted annotated proposals and synthetic candidates; no model result"
+    },
+    {
+      "scene": "oct12-public-3",
+      "orientation": "landscape",
+      "passed": true,
+      "failures": [],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 2
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 3
+        },
+        {
+          "endpoint": "search-wines",
+          "region": null
+        },
+        {
+          "endpoint": "search-wines",
+          "region": null
+        },
+        {
+          "endpoint": "search-wines",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 4
+        },
+        {
+          "endpoint": "search-wines",
+          "region": null
+        }
+      ],
+      "errors": [],
+      "geometry": {
+        "innerWidth": 852,
+        "scrollWidth": 852
+      },
+      "testKind": "intercepted annotated proposals and synthetic candidates; no model result"
+    },
+    {
+      "scene": "owner-shelf",
+      "orientation": "portrait",
+      "passed": true,
+      "failures": [],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 3
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 11
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 2
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 4
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 5
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 6
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 7
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 8
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 9
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 10
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 12
+        }
+      ],
+      "errors": [],
+      "geometry": {
+        "innerWidth": 393,
+        "scrollWidth": 393
+      },
+      "testKind": "intercepted annotated proposals and synthetic candidates; no model result"
+    },
+    {
+      "scene": "owner-shelf",
+      "orientation": "landscape",
+      "passed": true,
+      "failures": [],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 3
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 11
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 2
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 4
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 5
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 6
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 7
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 8
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 9
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 10
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 12
+        }
+      ],
+      "errors": [],
+      "geometry": {
+        "innerWidth": 852,
+        "scrollWidth": 852
+      },
+      "testKind": "intercepted annotated proposals and synthetic candidates; no model result"
+    }
+  ]
+}

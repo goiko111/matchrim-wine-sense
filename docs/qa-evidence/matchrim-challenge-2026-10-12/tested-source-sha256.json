@@ -1,0 +1,7 @@
+{
+  "src/utils/wineCategory.ts": "5e05f018390c284feb661a155aeff70e35e86cfc285fe32d802d1b589a4a0ad9",
+  "src/utils/multiWineScan.ts": "4881b71dad89980522a0f1c0396084cd980aeae6eaea82d550490e29ef89ec0c",
+  "src/components/wine-import/MultiWineLabelScanner.tsx": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11",
+  "scripts/check-matchrim-challenge-oct12.ts": "1ccb236fa92f93b28905410f03662c15e0193bdea40d99125b2e4856fe7408c3",
+  "scripts/qa-matchrim-challenge-oct12.py": "d52c2de1f9ddfc2625e98f80e6cd36182ed2fbb86b7493d0e898efcdd20c15f3"
+}

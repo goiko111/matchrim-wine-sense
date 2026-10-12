@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-12, new challenge and local corrections
+
+- Today's first block:5 new independent scenes(1 private/4 licensed public), historical menu reused,3,157,055bytes public downloads.114 prior entries/89 hashes plus page identity checked. Visual reference frozen before app results; owner original unchanged. Full private material outside Git/bundle.
+- Aperol excluded from wine candidate/catalog/affinity path, accurate other-beverage explanation; aiRIM insufficient-text contradiction removed. Explicit edge bottle now retained28 vs27, deferred by pixel floor without added OCR.15 contracts/affected dense+multi regressions/6 unique intercepted mobile cases plus2 copy repeats PASS. Real pixel/crop prep for6 inputs; typecheck/lint0errors106warnings/web build PASS.
+- Native runtime availability query succeeds18.6/26.0.1 but Xcode still has no eligible destination. No compile/install/launch/version change. No new model recognition/human outcomes/hosted writes.28 calls untouched; current cap needed before paid work.
+- Report: [MATCHRIM_CHALLENGE_2026-10-12.md](docs/MATCHRIM_CHALLENGE_2026-10-12.md); [function coverage](docs/MATCHRIM_CHALLENGE_COVERAGE_2026-10-12.md). Source corrections local only, no push/deploy/TestFlight/invitation. Prior80 remains incomplete.
+
 ## Latest checkpoint: 2026-10-11, native discovery read-only
 
 - Assignment12: two static metadata probes exit0, unchanged sandbox/isolated HOME. No explicit source target restriction; deployment14.0 valid for SDK18.5. Public runtimes18.6 and26.0.1 readable; host minimums satisfied, but registration/eligibility not proven. Isolated CoreSimulator/device registry absent. Supports discovery/registration hypothesis, not a proven cause.

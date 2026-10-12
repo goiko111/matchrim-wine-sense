@@ -107,7 +107,7 @@ const PHASE_LABELS: Record<ScanPhase, string> = {
 const statusLabel = (region: ScanRegion) => {
   if (region.status === 'recognized') return 'Reconocido';
   if (region.status === 'uncertain') return 'Dudoso';
-  if (region.status === 'unrecognized') return 'Sin reconocer';
+  if (region.status === 'unrecognized') return region.fallback?.code === 'not_wine' ? 'Otra bebida' : 'Sin reconocer';
   if (region.status === 'discarded') return 'Descartado';
   if (region.status === 'deferred') return 'Sin analizar';
   if (region.status === 'analyzing') return 'Analizando';
@@ -1057,7 +1057,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
                 {selectedRegion.candidates.length === 0 ? (
                   <div className="space-y-4">
-                    {selectedRegion.status !== 'deferred' && <AiRimContextGuide
+                    {selectedRegion.status !== 'deferred' && selectedRegion.fallback?.code !== 'not_wine' && <AiRimContextGuide
                       profile={scanProfile?.profile ?? null}
                       context="label"
                       name={null}

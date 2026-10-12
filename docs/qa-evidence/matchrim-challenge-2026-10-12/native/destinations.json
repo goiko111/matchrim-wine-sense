@@ -1,0 +1,29 @@
+{
+  "exitCode": 0,
+  "signal": null,
+  "error": null,
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "<NATIVE_QA>/offline.sb",
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
+    "-workspace",
+    "ios/App/App.xcworkspace",
+    "-scheme",
+    "App",
+    "-configuration",
+    "Debug",
+    "-sdk",
+    "iphonesimulator",
+    "-showdestinations",
+    "-disableAutomaticPackageResolution",
+    "-skipPackageUpdates",
+    "-onlyUsePackageVersionsFromResolvedFile"
+  ],
+  "usesCopy11ConfigurationOnly": true,
+  "noBuild": true,
+  "availableSimulatorSection": false,
+  "missing18_5Reported": true,
+  "realHomeUseReported": false,
+  "initializationObserved": "Tool output and explicitly isolated QA directories only; out-of-process service caches not inspected"
+}

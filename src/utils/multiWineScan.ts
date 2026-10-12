@@ -110,7 +110,7 @@ export const normalizeConfidence = (value: unknown, fallback = 0): number => {
   return clamp(numeric > 1 ? numeric / 100 : numeric, 0, 1);
 };
 
-export const normalizeBox = (value: unknown): NormalizedBox | null => {
+export const normalizeBox = (value: unknown, minimumDimension = 2): NormalizedBox | null => {
   const raw = asRecord(value);
   if (!raw) return null;
 
@@ -129,7 +129,8 @@ export const normalizeBox = (value: unknown): NormalizedBox | null => {
 
   normalized.width = Math.min(normalized.width, 100 - normalized.x);
   normalized.height = Math.min(normalized.height, 100 - normalized.y);
-  if (normalized.width < 2 || normalized.height < 2) return null;
+  if (normalized.width <= 0 || normalized.height <= 0
+    || normalized.width < minimumDimension || normalized.height < minimumDimension) return null;
   return normalized;
 };
 
@@ -225,8 +226,13 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
 
   const normalized = rawRegions.flatMap((value, sourceIndex) => {
     const raw = asRecord(value);
-    const box = normalizeBox(raw?.box ?? raw?.bbox ?? raw?.bounding_box ?? raw);
-    if (!raw || !box || isEdgeSliver(box)) return [];
+    const rawBox = raw?.box ?? raw?.bbox ?? raw?.bounding_box ?? raw;
+    const clippedBottle = raw?.object_type === 'bottle' ? normalizeBox(rawBox, 0) : null;
+    const touchesEdge = clippedBottle && (clippedBottle.x === 0 || clippedBottle.y === 0
+      || clippedBottle.x + clippedBottle.width === 100 || clippedBottle.y + clippedBottle.height === 100);
+    // Keep explicitly detected edge bottles for pixel preflight, not automatic OCR.
+    const box = normalizeBox(rawBox) ?? (touchesEdge ? clippedBottle : null);
+    if (!raw || !box || (isEdgeSliver(box) && raw.object_type !== 'bottle')) return [];
 
     const qualityRaw = asRecord(raw.quality) ?? {};
     const quality: RegionQuality = {

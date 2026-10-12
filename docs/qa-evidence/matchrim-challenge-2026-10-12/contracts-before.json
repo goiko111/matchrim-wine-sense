@@ -1,0 +1,54 @@
+{
+  "scope": "Local category/deduplication contract delta, no vision accuracy claim",
+  "checks": [
+    {
+      "name": "Aperol visible identity is a non-wine negative",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "Conflicting wine type cannot override the explicit non-wine identity",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "No negative candidate reaches wine scoring",
+      "passed": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     affinity: null,\n+     affinityConfidence: null,\n+     affinityReason: 'Afinidad pendiente de una ficha sensorial verificada.',\n+     alcohol: null,\n+     confidence: 0.99,\n+     country: null,\n+     evidence: [\n+       'APEROL',\n+       'APERITIVO',\n+       'DAL 1919'\n+     ],\n+     grapes: [],\n+     id: 'a01-candidate-1',\n+     inferredFields: [],\n+     name: 'Aperol',\n+     producer: 'Fratelli Barbieri',\n+     region: null,\n+     sensoryAttributes: null,\n+     sensorySource: 'inference',\n+     source: 'label',\n+     uncertaintyReasons: [],\n+     vintage: null\n+   }\n+ ]\n- []"
+    },
+    {
+      "name": "Negative explains no wine affinity",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'not_wine'"
+    },
+    {
+      "name": "Word boundaries retain similarly spelled wine names",
+      "passed": true
+    },
+    {
+      "name": "Serving a wine as an aperitif does not exclude it",
+      "passed": true
+    },
+    {
+      "name": "Existing spirits category remains excluded",
+      "passed": true
+    },
+    {
+      "name": "Tasting evidence does not become beverage classification",
+      "passed": true
+    },
+    {
+      "name": "Four literal Hugel references stay distinct",
+      "passed": true
+    },
+    {
+      "name": "A repeated identical reference counts two bottles in one group",
+      "passed": true
+    },
+    {
+      "name": "No numeric affinity is inferred from the label-only contracts",
+      "passed": true
+    }
+  ],
+  "passed": false
+}

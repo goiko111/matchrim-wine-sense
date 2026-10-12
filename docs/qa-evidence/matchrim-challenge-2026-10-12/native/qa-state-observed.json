@@ -1,0 +1,17 @@
+{
+  "afterQueries": [
+    "qa-home/.swiftpm/cache",
+    "qa-home/.swiftpm/configuration",
+    "qa-home/.swiftpm/security",
+    "qa-home/Library/Caches/org.swift.swiftpm/package-collection.db",
+    "qa-home/Library/Caches/org.swift.swiftpm/package-collection.db-shm",
+    "qa-home/Library/Caches/org.swift.swiftpm/package-collection.db-wal",
+    "qa-home/Library/Developer/Xcode/DerivedData/App-fpdthpscrcuacuhbsvgnzmixcmrs/Logs/Build/LogStoreManifest.plist",
+    "qa-home/Library/Developer/Xcode/DerivedData/App-fpdthpscrcuacuhbsvgnzmixcmrs/Logs/Launch/LogStoreManifest.plist",
+    "qa-home/Library/Developer/Xcode/DerivedData/App-fpdthpscrcuacuhbsvgnzmixcmrs/Logs/Localization/LogStoreManifest.plist",
+    "qa-home/Library/Developer/Xcode/DerivedData/App-fpdthpscrcuacuhbsvgnzmixcmrs/Logs/Package/LogStoreManifest.plist",
+    "qa-home/Library/Developer/Xcode/DerivedData/App-fpdthpscrcuacuhbsvgnzmixcmrs/Logs/Test/LogStoreManifest.plist",
+    "tmp/_Users_GOIKO_Documents_Codex_2026-07-26_tarea-recuperada-desde-anclados-nombre-original-8_artifacts_matchrim-challenge-20261012_native_qa-home_.swiftpm.lock"
+  ],
+  "scope": "Only explicitly allocated QA directories observed; no original HOME inspection, out-of-process service caches not measured"
+}
