@@ -1,0 +1,75 @@
+{
+  "scope": "Local category/deduplication contract delta, no vision accuracy claim",
+  "checks": [
+    {
+      "name": "Aperol visible identity is a non-wine negative",
+      "passed": true
+    },
+    {
+      "name": "Conflicting wine type cannot override the explicit non-wine identity",
+      "passed": true
+    },
+    {
+      "name": "No negative candidate reaches wine scoring",
+      "passed": true
+    },
+    {
+      "name": "Negative explains no wine affinity",
+      "passed": true
+    },
+    {
+      "name": "Explicit non-wine fallback keeps its classification without candidates",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'unknown'\n- 'not_wine'"
+    },
+    {
+      "name": "Unknown fallback remains uncertain",
+      "passed": true
+    },
+    {
+      "name": "Word boundaries retain similarly spelled wine names",
+      "passed": true
+    },
+    {
+      "name": "Serving a wine as an aperitif does not exclude it",
+      "passed": true
+    },
+    {
+      "name": "Existing spirits category remains excluded",
+      "passed": true
+    },
+    {
+      "name": "Tasting evidence does not become beverage classification",
+      "passed": true
+    },
+    {
+      "name": "Four literal Hugel references stay distinct",
+      "passed": true
+    },
+    {
+      "name": "A repeated identical reference counts two bottles in one group",
+      "passed": true
+    },
+    {
+      "name": "No numeric affinity is inferred from the label-only contracts",
+      "passed": true
+    },
+    {
+      "name": "Explicit edge bottle is retained but cannot consume automatic OCR",
+      "passed": true
+    },
+    {
+      "name": "Unclassified and label slivers retain the existing exclusion",
+      "passed": true
+    },
+    {
+      "name": "Tiny interior proposals do not bypass the percentage gate",
+      "passed": true
+    },
+    {
+      "name": "Zero-area clipped box remains invalid even at zero minimum",
+      "passed": true
+    }
+  ],
+  "passed": false
+}

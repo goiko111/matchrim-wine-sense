@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-12, explicit negative contract
+
+- Follow-up to240c208: an explicit not_wine fallback without candidates no longer becomes unknown. Reproduced16/17 contract baseline and2 failed UI variants;17/17 contracts and2/2 new intercepted response-shape cases now PASS. Unknown codes remain uncertain. Total8 unique browser cases across today's two deltas, not8 scenes/users.
+- Typecheck/lint0errors106warnings/web build PASS; prior corpus/35 evidence files/geometry/native/source contracts preserved. No paid/real vision, new scene, backend, build iOS, distribution or push.28 calls unchanged and Xcode no eligible destination remains.
+- Report: [MATCHRIM_NOT_WINE_CONTRACT_2026-10-12.md](docs/MATCHRIM_NOT_WINE_CONTRACT_2026-10-12.md). Bounded local classification block completed; whole-product gates stay open.
+
 ## Latest checkpoint: 2026-10-12, new challenge and local corrections
 
 - Today's first block:5 new independent scenes(1 private/4 licensed public), historical menu reused,3,157,055bytes public downloads.114 prior entries/89 hashes plus page identity checked. Visual reference frozen before app results; owner original unchanged. Full private material outside Git/bundle.

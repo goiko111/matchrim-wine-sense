@@ -1,5 +1,11 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-12, explicit negative contract closed
+
+1. Candidate-name and explicit fallback non-wine paths now explain exclusions consistently.17 contracts and8 unique intercepted browser cases across today's two commits; no new model accuracy/human outcome claim.
+2. Preserve frozen5-new/1-reused scene corpus, private owner media, prior35 evidence hashes and current source. Further vision needs current paid cap;28 historic calls unspent by this lane.
+3. Native eligibility, independent canonical annotation, verified sensory/affinity outcomes, hosted/physical and distribution gates remain as documented. Choose next measured work from the function matrix; no automatic publish or blind native compile.
+
 ## Current delta: 2026-10-12, challenge first block
 
 1. Local classification/negative explanation and edge-object retention fixed and verified on frozen challenge inputs. Do not treat annotated synthetic proposals as new vision accuracy or rerun unchanged earlier suites.

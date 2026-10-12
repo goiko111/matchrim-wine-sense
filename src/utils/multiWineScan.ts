@@ -512,12 +512,14 @@ export const normalizeRecognitionFallback = (payload: unknown): RegionRecognitio
   const raw = asRecord(root?.fallback);
   if (!raw) return null;
   const rawCode = textValue(raw.code);
-  const code: RegionRecognitionFallbackCode = rawCode === 'insufficient_visible_text' || rawCode === 'ungrounded_identity'
+  const code: RegionRecognitionFallbackCode = rawCode === 'not_wine' || rawCode === 'insufficient_visible_text' || rawCode === 'ungrounded_identity'
     ? rawCode
     : 'unknown';
-  const defaultMessage = code === 'insufficient_visible_text'
-    ? 'No hay texto legible suficiente para identificar este vino.'
-    : 'No hay evidencia visible suficiente para confirmar una identidad.';
+  const defaultMessage = code === 'not_wine'
+    ? 'La referencia leida corresponde a otra bebida, no a un vino. No se calcula afinidad.'
+    : code === 'insufficient_visible_text'
+      ? 'No hay texto legible suficiente para identificar este vino.'
+      : 'No hay evidencia visible suficiente para confirmar una identidad.';
 
   return {
     code,

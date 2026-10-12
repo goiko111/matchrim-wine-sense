@@ -10,3 +10,7 @@ Baseline61a91f3 clean. Additional Oct12 local implementation/QA lane; original a
 - Report `docs/MATCHRIM_CHALLENGE_2026-10-12.md`, per-function matrix `docs/MATCHRIM_CHALLENGE_COVERAGE_2026-10-12.md` and portable evidence `docs/qa-evidence/matchrim-challenge-2026-10-12/`.
 
 Next substantive gates: current paid-call cap before live frozen-corpus recognition; independent canonical/count annotation; sensory/human recommendation evidence; isolated Xcode destination eligibility. Prior80 not current combined source. No production/backend/push/deploy/Apple/TestFlight/invitation or new accounts/keys/agreements.
+
+## Follow-Up Contract
+
+Explicit not_wine fallback without candidates was downgraded to unknown. New baseline16/17 contracts and2 UI variants fail; corrected enum/default message yields17/17 and2/2 PASS. Unknown future codes preserved. Adds2 distinct response variants to total8 unique browser cases across two commits, not more scenes/users. Original35 evidence hashes immutable; separate explicit-negative evidence and3 tested-source hashes. No corpus/pixel/native/paid rerun. See `docs/MATCHRIM_NOT_WINE_CONTRACT_2026-10-12.md`.

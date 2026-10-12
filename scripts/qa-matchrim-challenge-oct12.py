@@ -12,6 +12,7 @@ p.add_argument('--corpus', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--cases', choices=['negative', 'all'], default='all')
 p.add_argument('--pixels', action='store_true')
+p.add_argument('--explicit-negative', action='store_true', help='Contract variant: no candidates, explicit not_wine fallback')
 args = p.parse_args(); args.output.mkdir(parents=True, exist_ok=True)
 annotations = json.loads((args.corpus / 'annotations.json').read_text())
 sources = json.loads((args.corpus / 'sources.json').read_text())
@@ -41,7 +42,7 @@ with sync_playwright() as pw:
                 if endpoint.startswith('detect-wine-regions'):
                     payload = {'regions': [{'object_type': o.get('object_type', 'bottle'), 'box': dict(zip(['x','y','width','height'], [o['box'][0]/scene['width']*100,o['box'][1]/scene['height']*100,o['box'][2]/scene['width']*100,o['box'][3]/scene['height']*100])), 'confidence': .9, 'quality': {'glare':'medium','occlusion':o.get('occlusion','low'),'legibility':o['legibility']}} for o in objects], 'coverage': {'status':'reported_complete','estimated_visible_objects':len(objects),'confidence':.9}}
                 elif endpoint.startswith('analyze-wine-region'):
-                    if name == 'oct12-public-5': payload = {'candidates':[{'name':'Aperol','producer':'Fratelli Barbieri','type':'aperitivo','confidence':.99,'evidence':['APEROL','APERITIVO','DAL 1919']}]}
+                    if name == 'oct12-public-5': payload = {'candidates':[], 'fallback':{'code':'not_wine'}} if args.explicit_negative else {'candidates':[{'name':'Aperol','producer':'Fratelli Barbieri','type':'aperitivo','confidence':.99,'evidence':['APEROL','APERITIVO','DAL 1919']}]}
                     elif name == 'oct12-public-3':
                         o = objects[(body.get('region_index') or 1)-1]
                         payload = {'candidates':[{'name':o['cuvee']+' Hugel','producer':o['producer'],'confidence':.9,'evidence':o['literal'],'vintage':None}]}

@@ -1,0 +1,46 @@
+{
+  "paidCalls": 0,
+  "remoteAppCalls": 0,
+  "results": [
+    {
+      "scene": "oct12-public-5",
+      "orientation": "portrait",
+      "passed": false,
+      "error": "Locator.wait_for: Timeout 2000ms exceeded.\nCall log:\n  - waiting for get_by_text(\"La referencia leida corresponde a otra bebida, no a un vino. No se calcula afinidad.\", exact=True).last to be visible\n",
+      "failures": [
+        "Non-wine state not described accurately"
+      ],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        }
+      ],
+      "errors": []
+    },
+    {
+      "scene": "oct12-public-5",
+      "orientation": "landscape",
+      "passed": false,
+      "error": "Locator.wait_for: Timeout 2000ms exceeded.\nCall log:\n  - waiting for get_by_text(\"La referencia leida corresponde a otra bebida, no a un vino. No se calcula afinidad.\", exact=True).last to be visible\n",
+      "failures": [
+        "Non-wine state not described accurately"
+      ],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

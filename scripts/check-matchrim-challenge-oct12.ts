@@ -14,6 +14,12 @@ check('Aperol visible identity is a non-wine negative', () => assert.equal(isNon
 check('Conflicting wine type cannot override the explicit non-wine identity', () => assert.equal(isNonWineIdentity('APEROL', 'vino'), true));
 check('No negative candidate reaches wine scoring', () => assert.deepEqual(normalizeWineCandidates(negative, 'a01'), []));
 check('Negative explains no wine affinity', () => assert.equal(normalizeRecognitionFallback(negative)?.code, 'not_wine'));
+check('Explicit non-wine fallback keeps its classification without candidates', () => {
+  const fallback = normalizeRecognitionFallback({ candidates: [], fallback: { code: 'not_wine' } });
+  assert.equal(fallback?.code, 'not_wine');
+  assert.ok(fallback?.message.includes('No se calcula afinidad'));
+});
+check('Unknown fallback remains uncertain', () => assert.equal(normalizeRecognitionFallback({ fallback: { code: 'future_code' } })?.code, 'unknown'));
 check('Word boundaries retain similarly spelled wine names', () => assert.equal(isNonWineIdentity('Aperolia Rosso', 'vino'), false));
 check('Serving a wine as an aperitif does not exclude it', () => assert.equal(isNonWineIdentity('Hugel Gewurztraminer', 'vino de aperitivo'), false));
 check('Existing spirits category remains excluded', () => assert.equal(isNonWineIdentity('Scotch Whisky'), true));

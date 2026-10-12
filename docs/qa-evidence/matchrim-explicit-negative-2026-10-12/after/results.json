@@ -1,0 +1,50 @@
+{
+  "paidCalls": 0,
+  "remoteAppCalls": 0,
+  "results": [
+    {
+      "scene": "oct12-public-5",
+      "orientation": "portrait",
+      "passed": true,
+      "failures": [],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        }
+      ],
+      "errors": [],
+      "geometry": {
+        "innerWidth": 393,
+        "scrollWidth": 393
+      },
+      "testKind": "intercepted annotated proposals and synthetic candidates; no model result"
+    },
+    {
+      "scene": "oct12-public-5",
+      "orientation": "landscape",
+      "passed": true,
+      "failures": [],
+      "calls": [
+        {
+          "endpoint": "detect-wine-regions",
+          "region": null
+        },
+        {
+          "endpoint": "analyze-wine-region",
+          "region": 1
+        }
+      ],
+      "errors": [],
+      "geometry": {
+        "innerWidth": 852,
+        "scrollWidth": 852
+      },
+      "testKind": "intercepted annotated proposals and synthetic candidates; no model result"
+    }
+  ]
+}
