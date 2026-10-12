@@ -33,7 +33,7 @@ import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { formatScanPrice, normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
 import { clusterOverlayPins } from "@/utils/overlayPins";
-import { applyMenuWineEvidence } from '@/utils/scanWineEvidence';
+import { applyMenuWineEvidence, updateMenuWineEvidence } from '@/utils/scanWineEvidence';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
@@ -730,7 +730,7 @@ const WineMenuScannerSession = ({
   const updateScannedWine = (index: number, updates: Partial<ScannedWine>) => {
     setScannedWines((currentWines) =>
       currentWines.map((wine, wineIndex) =>
-        wineIndex === index ? { ...wine, ...updates } : wine
+        wineIndex === index ? updateMenuWineEvidence(wine, updates) : wine
       )
     );
   };
@@ -1310,24 +1310,25 @@ const WineMenuScannerSession = ({
 
               <WineComparisonWorkspace
                 wines={scannedWines.map((wine, index) => ({
-                  id: `${index}-${wine.nombre}-${wine.productor ?? ''}`,
+                  id: `menu-row-${index}`,
                   name: wine.nombre,
                   producer: wine.productor,
                   region: wine.region,
                   affinity: wine.compatibilidad,
                   confidence: wine.confidence,
                   identityConfirmed: isMenuIdentityConfirmed(wine),
-                  prices: wine.precios ? { glass: wine.precios.copa, bottle: wine.precios.botella } : null,
+                  prices: wine.precios && !wine.campos_inferidos?.includes('servicio')
+                    ? { glass: wine.precios.copa, bottle: wine.precios.botella } : null,
                   price: wine.precio,
                   currency: wine.moneda,
-                  service: wine.servicio === 'copa'
+                  service: wine.campos_inferidos?.includes('servicio') ? null : wine.servicio === 'copa'
                     ? 'glass'
                     : wine.servicio === 'botella'
                       ? 'bottle'
                       : wine.servicio === 'ambos'
                         ? 'both'
                         : null,
-                  attributes: wine.atributos ? {
+                  attributes: wine.sensorySource === 'catalog' && isMenuIdentityConfirmed(wine) && wine.atributos ? {
                     body: wine.atributos.potencia,
                     acidity: wine.atributos.acidez,
                     sweetness: wine.atributos.dulzura,

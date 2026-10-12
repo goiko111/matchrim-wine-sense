@@ -1,0 +1,89 @@
+{
+  "scope": "Focused manual-price delta on frozen menu; synthetic EUR, recorded amounts only.",
+  "paidCalls": 0,
+  "realAppRemoteCalls": 0,
+  "results": [
+    {
+      "orientation": "portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Manual25 bottle price replaces old35 in comparison",
+          "passed": true
+        },
+        {
+          "name": "Price edit preserves two selected references",
+          "passed": true
+        },
+        {
+          "name": "No remote requests/storage learning/write/error from edit",
+          "passed": true
+        },
+        {
+          "name": "No horizontal overflow",
+          "passed": true
+        }
+      ],
+      "prices": [
+        "25,00 €",
+        "25,00 €"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "orientation": "landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Manual25 bottle price replaces old35 in comparison",
+          "passed": true
+        },
+        {
+          "name": "Price edit preserves two selected references",
+          "passed": true
+        },
+        {
+          "name": "No remote requests/storage learning/write/error from edit",
+          "passed": true
+        },
+        {
+          "name": "No horizontal overflow",
+          "passed": true
+        }
+      ],
+      "prices": [
+        "25,00 €",
+        "25,00 €"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

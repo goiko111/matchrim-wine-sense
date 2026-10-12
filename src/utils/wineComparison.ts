@@ -58,17 +58,28 @@ const normalizedConfidence = (value: number | null | undefined) => {
   return Math.max(0, Math.min(1, numeric > 1 ? numeric / 100 : numeric));
 };
 
+export const wineComparisonPriceFormat = (wines: ComparableWine[], format: WineServiceFormat): 'glass' | 'bottle' | null => {
+  if (format !== 'any') return format;
+  const shared = wines[0]?.service;
+  return (shared === 'glass' || shared === 'bottle') && wines.every((wine) => wine.service === shared)
+    ? shared : null;
+};
+
+export const wineComparisonPrice = (wine: ComparableWine, format: WineServiceFormat) => format === 'any'
+  ? finiteNumber(wine.price)
+  : finiteNumber(wine.prices?.[format]) ?? (wine.service === format ? finiteNumber(wine.price) : null);
+
 const supportsFormat = (wine: ComparableWine, format: WineServiceFormat) => {
   if (format === 'any') return true;
   if (!wine.service) return null;
   return wine.service === 'both' || wine.service === format;
 };
 
-const getConstraintStatus = (wine: ComparableWine, context: WineComparisonContext) => {
+const getConstraintStatus = (wine: ComparableWine, context: WineComparisonContext, priceFormat: 'glass' | 'bottle' | null) => {
   const price = finiteNumber(wine.price);
   const budgetStatus = context.budget === null
     ? true
-    : price === null || !normalizeScanCurrency(context.budgetCurrency)
+    : price === null || !priceFormat || !normalizeScanCurrency(context.budgetCurrency)
       || normalizeScanCurrency(wine.currency) !== normalizeScanCurrency(context.budgetCurrency)
       ? null
       : price <= context.budget;
@@ -79,17 +90,14 @@ const getConstraintStatus = (wine: ComparableWine, context: WineComparisonContex
   return 'confirmed' as const;
 };
 
-const buildAssessment = (wine: ComparableWine, context: WineComparisonContext): WineComparisonAssessment => {
-  // A glass budget must use the glass price, not a bottle price on the same row.
-  if (context.serviceFormat !== 'any') {
-    wine = { ...wine, price: finiteNumber(wine.prices?.[context.serviceFormat])
-      ?? (wine.service === context.serviceFormat ? finiteNumber(wine.price) : null) };
-  }
+const buildAssessment = (wine: ComparableWine, context: WineComparisonContext, priceFormat: 'glass' | 'bottle' | null): WineComparisonAssessment => {
+  // A budget/value comparison needs one serving unit, never a glass-to-bottle ratio.
+  if (priceFormat) wine = { ...wine, price: wineComparisonPrice(wine, priceFormat) };
   const affinity = finiteNumber(wine.affinity);
   const confidence = normalizedConfidence(wine.confidence);
   const price = finiteNumber(wine.price);
   const formatSupport = supportsFormat(wine, context.serviceFormat);
-  const constraintStatus = getConstraintStatus(wine, context);
+  const constraintStatus = getConstraintStatus(wine, context, priceFormat);
   const comparableCurrency = Boolean(normalizeScanCurrency(context.budgetCurrency)
     && normalizeScanCurrency(wine.currency) === normalizeScanCurrency(context.budgetCurrency));
   const reasons: string[] = [];
@@ -99,7 +107,7 @@ const buildAssessment = (wine: ComparableWine, context: WineComparisonContext): 
   if (confidence !== null && confidence >= 0.72) {
     reasons.push(`Identidad con ${Math.round(confidence * 100)}% de confianza`);
   }
-  if (context.budget !== null && price !== null && comparableCurrency && price <= context.budget) {
+  if (context.budget !== null && priceFormat && price !== null && comparableCurrency && price <= context.budget) {
     reasons.push(`Dentro del presupuesto: ${formatScanPrice(price, wine.currency)}`);
   }
   if (context.serviceFormat !== 'any' && formatSupport === true) {
@@ -110,9 +118,10 @@ const buildAssessment = (wine: ComparableWine, context: WineComparisonContext): 
   if (confidence === null) cautions.push('Confianza de identidad no disponible');
   else if (confidence < 0.72) cautions.push(`Identidad dudosa: ${Math.round(confidence * 100)}% de confianza`);
   if (wine.identityConfirmed === false) cautions.push('Identidad provisional: confirma la etiqueta antes de elegir');
+  if (!priceFormat && (context.budget !== null || context.priority === 'value')) cautions.push('Formato del precio sin confirmar; copa y botella no son equivalentes');
   if (context.budget !== null && price === null) cautions.push('Precio no leído; presupuesto sin verificar');
   if (context.budget !== null && price !== null && !comparableCurrency) cautions.push('Moneda distinta o desconocida; presupuesto sin verificar');
-  if (context.budget !== null && price !== null && comparableCurrency && price > context.budget) {
+  if (context.budget !== null && priceFormat && price !== null && comparableCurrency && price > context.budget) {
     cautions.push(`Supera el presupuesto en ${formatScanPrice(price - context.budget, wine.currency)}`);
   }
   if (context.serviceFormat !== 'any' && formatSupport === null) cautions.push('Formato de servicio no confirmado');
@@ -178,9 +187,10 @@ export const buildWineComparisonDecision = (
     unknown: 1,
     outside: 2,
   };
-  const valueCurrency = singlePriceCurrency(wines);
-  const ordered = wines
-    .map((wine) => buildAssessment(wine, context))
+  const priceFormat = wineComparisonPriceFormat(wines, context.serviceFormat);
+  const assessed = wines.map((wine) => buildAssessment(wine, context, priceFormat));
+  const valueCurrency = priceFormat ? singlePriceCurrency(assessed.map(({ wine }) => wine)) : null;
+  const ordered = assessed
     .sort((left, right) => (
       statusOrder[left.constraintStatus] - statusOrder[right.constraintStatus]
       || identityReadiness(left) - identityReadiness(right)

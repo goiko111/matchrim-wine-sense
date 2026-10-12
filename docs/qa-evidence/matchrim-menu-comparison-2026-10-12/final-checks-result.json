@@ -1,0 +1,22 @@
+[
+  {
+    "command": "./node_modules/.bin/tsx scripts/check-matchrim-menu-comparison-oct12.ts",
+    "exitCode": 0,
+    "elapsedMs": 198
+  },
+  {
+    "command": "npm run typecheck",
+    "exitCode": 0,
+    "elapsedMs": 4869
+  },
+  {
+    "command": "./node_modules/.bin/eslint src/utils/scanWineEvidence.ts scripts/check-matchrim-menu-comparison-oct12.ts",
+    "exitCode": 0,
+    "elapsedMs": 507
+  },
+  {
+    "command": "npm run build",
+    "exitCode": 0,
+    "elapsedMs": 6210
+  }
+]

@@ -1,0 +1,2564 @@
+{
+  "scope": "Active wine-list comparison; recorded responses plus explicit synthetic money contracts.",
+  "realPhotographedScenes": 1,
+  "recordedReplayVariants": 1,
+  "syntheticContractVariants": 3,
+  "paidCalls": 0,
+  "realAppRemoteCalls": 0,
+  "results": [
+    {
+      "case": "recorded-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual active route",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Merged row/reference choices, not physical bottles",
+          "passed": true,
+          "detail": 16
+        },
+        {
+          "name": "Literal partial/full duplicate is one Ultra reference",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select two menu references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "No unverified affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No inferred numeric sensory sheet in comparator",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four complete/partial references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Removal and reselection",
+          "passed": true,
+          "detail": [
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Real mode transition preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No implicit currency inferred from Spanish menu",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Source numbers remain currency-pending",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25.00 · moneda pendiente",
+              "35.00 · moneda pendiente",
+              "Sin precio",
+              "12.00 · moneda pendiente"
+            ],
+            "service": [
+              "Copa",
+              "Copa",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Inferred service does not become confirmed availability",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25.00 · moneda pendiente",
+              "35.00 · moneda pendiente",
+              "Sin precio",
+              "12.00 · moneda pendiente"
+            ],
+            "service": [
+              "Copa",
+              "Copa",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity stays selected",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Edited identity no longer borrows old confirmation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited identity does not inherit model confidence",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini",
+              "Barolo"
+            ],
+            "prices": [
+              "25.00 · moneda pendiente",
+              "Sin precio",
+              "12.00 · moneda pendiente",
+              "35.00 · moneda pendiente"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Copa",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "55%",
+              "55%",
+              "-"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity has no affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Editor/list return keeps selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No database mutations",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No mobile horizontal expansion",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        },
+        {
+          "name": "No console or runtime errors",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "right-focus"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "recorded-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual active route",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Merged row/reference choices, not physical bottles",
+          "passed": true,
+          "detail": 16
+        },
+        {
+          "name": "Literal partial/full duplicate is one Ultra reference",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select two menu references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "No unverified affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No inferred numeric sensory sheet in comparator",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four complete/partial references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Removal and reselection",
+          "passed": true,
+          "detail": [
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Real mode transition preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No implicit currency inferred from Spanish menu",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Source numbers remain currency-pending",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25.00 · moneda pendiente",
+              "35.00 · moneda pendiente",
+              "Sin precio",
+              "12.00 · moneda pendiente"
+            ],
+            "service": [
+              "Copa",
+              "Copa",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Inferred service does not become confirmed availability",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25.00 · moneda pendiente",
+              "35.00 · moneda pendiente",
+              "Sin precio",
+              "12.00 · moneda pendiente"
+            ],
+            "service": [
+              "Copa",
+              "Copa",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity stays selected",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Edited identity no longer borrows old confirmation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited identity does not inherit model confidence",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini",
+              "Barolo"
+            ],
+            "prices": [
+              "25.00 · moneda pendiente",
+              "Sin precio",
+              "12.00 · moneda pendiente",
+              "35.00 · moneda pendiente"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Copa",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "55%",
+              "55%",
+              "-"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity has no affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Editor/list return keeps selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No database mutations",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No mobile horizontal expansion",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        },
+        {
+          "name": "No console or runtime errors",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "right-focus"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "units-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual active route",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Merged row/reference choices, not physical bottles",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Literal partial/full duplicate is one Ultra reference",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select two menu references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "No unverified affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No inferred numeric sensory sheet in comparator",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four complete/partial references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Removal and reselection",
+          "passed": true,
+          "detail": [
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Real mode transition preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Mixed/unknown units cannot verify one generic budget",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 €",
+              "Sin precio",
+              "12,00 €"
+            ],
+            "service": [
+              "Botella",
+              "Botella",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Value cannot be claimed without affinity and common unit",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit bottle budget uses bottle prices only",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Glass price not relabelled as bottle",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Barolo Marchesi di Barolo",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25,00 €",
+              "Sin precio",
+              "35,00 €",
+              "Sin precio"
+            ],
+            "service": [
+              "Botella",
+              "Sin confirmar",
+              "Botella",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "55%",
+              "88%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Bottle price not relabelled as glass",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Unknown service/price remains unknown",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity stays selected",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Edited identity no longer borrows old confirmation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited identity does not inherit model confidence",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "-"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity has no affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Editor/list return keeps selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No database mutations",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No mobile horizontal expansion",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        },
+        {
+          "name": "No console or runtime errors",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "units-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual active route",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Merged row/reference choices, not physical bottles",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Literal partial/full duplicate is one Ultra reference",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select two menu references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "No unverified affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No inferred numeric sensory sheet in comparator",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four complete/partial references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Removal and reselection",
+          "passed": true,
+          "detail": [
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Real mode transition preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Mixed/unknown units cannot verify one generic budget",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 €",
+              "Sin precio",
+              "12,00 €"
+            ],
+            "service": [
+              "Botella",
+              "Botella",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Value cannot be claimed without affinity and common unit",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit bottle budget uses bottle prices only",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Glass price not relabelled as bottle",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Barolo Marchesi di Barolo",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25,00 €",
+              "Sin precio",
+              "35,00 €",
+              "Sin precio"
+            ],
+            "service": [
+              "Botella",
+              "Sin confirmar",
+              "Botella",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "55%",
+              "88%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Bottle price not relabelled as glass",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Unknown service/price remains unknown",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity stays selected",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Edited identity no longer borrows old confirmation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited identity does not inherit model confidence",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "-"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity has no affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Editor/list return keeps selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No database mutations",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No mobile horizontal expansion",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        },
+        {
+          "name": "No console or runtime errors",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "currencies-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual active route",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Merged row/reference choices, not physical bottles",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Literal partial/full duplicate is one Ultra reference",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select two menu references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "No unverified affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No inferred numeric sensory sheet in comparator",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four complete/partial references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Removal and reselection",
+          "passed": true,
+          "detail": [
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Real mode transition preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Distinct currencies disable budget, no conversion",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 GBP"
+            ],
+            "service": [
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Distinct currencies disable value ordering",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Both currency literals retained",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 GBP"
+            ],
+            "service": [
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity stays selected",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Edited identity no longer borrows old confirmation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited identity does not inherit model confidence",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 GBP",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Botella",
+              "Botella",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "-",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity has no affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Editor/list return keeps selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No database mutations",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No mobile horizontal expansion",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        },
+        {
+          "name": "No console or runtime errors",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "currencies-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual active route",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Merged row/reference choices, not physical bottles",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Literal partial/full duplicate is one Ultra reference",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select two menu references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "No unverified affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No inferred numeric sensory sheet in comparator",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four complete/partial references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Removal and reselection",
+          "passed": true,
+          "detail": [
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Real mode transition preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Distinct currencies disable budget, no conversion",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 GBP"
+            ],
+            "service": [
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Distinct currencies disable value ordering",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Both currency literals retained",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 GBP"
+            ],
+            "service": [
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity stays selected",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Edited identity no longer borrows old confirmation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited identity does not inherit model confidence",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 GBP",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Botella",
+              "Botella",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "-",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity has no affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Editor/list return keeps selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No database mutations",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No mobile horizontal expansion",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        },
+        {
+          "name": "No console or runtime errors",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "prices-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual active route",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Merged row/reference choices, not physical bottles",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Literal partial/full duplicate is one Ultra reference",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select two menu references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "No unverified affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No inferred numeric sensory sheet in comparator",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four complete/partial references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Removal and reselection",
+          "passed": true,
+          "detail": [
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Real mode transition preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Mixed/unknown units cannot verify one generic budget",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "Sin precio",
+              "Sin precio",
+              "Sin precio",
+              "12,00 €"
+            ],
+            "service": [
+              "Botella",
+              "Botella",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Value cannot be claimed without affinity and common unit",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Per-bottle prices survive absent generic price",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 €"
+            ],
+            "service": [
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Explicit bottle budget uses bottle prices only",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Glass price not relabelled as bottle",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Barolo Marchesi di Barolo",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25,00 €",
+              "Sin precio",
+              "35,00 €",
+              "Sin precio"
+            ],
+            "service": [
+              "Botella",
+              "Sin confirmar",
+              "Botella",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "55%",
+              "88%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Bottle price not relabelled as glass",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Unknown service/price remains unknown",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity stays selected",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Edited identity no longer borrows old confirmation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited identity does not inherit model confidence",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "-"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity has no affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Editor/list return keeps selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No database mutations",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No mobile horizontal expansion",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        },
+        {
+          "name": "No console or runtime errors",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "prices-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual active route",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Merged row/reference choices, not physical bottles",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Literal partial/full duplicate is one Ultra reference",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select two menu references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "No unverified affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No inferred numeric sensory sheet in comparator",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four complete/partial references",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Removal and reselection",
+          "passed": true,
+          "detail": [
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Real mode transition preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Mixed/unknown units cannot verify one generic budget",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "Sin precio",
+              "Sin precio",
+              "Sin precio",
+              "12,00 €"
+            ],
+            "service": [
+              "Botella",
+              "Botella",
+              "Sin confirmar",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%",
+              "55%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Value cannot be claimed without affinity and common unit",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Per-bottle prices survive absent generic price",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "25,00 €",
+              "35,00 €"
+            ],
+            "service": [
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Explicit bottle budget uses bottle prices only",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Glass price not relabelled as bottle",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Barbaresco Marchesi di Barolo",
+              "Laurent Perriere Ultra",
+              "Barolo Marchesi di Barolo",
+              "Lugana Allegrini"
+            ],
+            "prices": [
+              "25,00 €",
+              "Sin precio",
+              "35,00 €",
+              "Sin precio"
+            ],
+            "service": [
+              "Botella",
+              "Sin confirmar",
+              "Botella",
+              "Copa"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "88%",
+              "55%",
+              "88%",
+              "55%"
+            ]
+          }
+        },
+        {
+          "name": "Bottle price not relabelled as glass",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Unknown service/price remains unknown",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo Marchesi di Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "88%"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity stays selected",
+          "passed": true,
+          "detail": [
+            "Comparar Lugana Allegrini",
+            "Comparar Barbaresco Marchesi di Barolo",
+            "Comparar Barolo",
+            "Comparar Laurent Perriere Ultra"
+          ]
+        },
+        {
+          "name": "Edited identity no longer borrows old confirmation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited identity does not inherit model confidence",
+          "passed": true,
+          "detail": {
+            "names": [
+              "Lugana Allegrini",
+              "Laurent Perriere Ultra",
+              "Barbaresco Marchesi di Barolo",
+              "Barolo"
+            ],
+            "prices": [
+              "12,00 €",
+              "Sin precio",
+              "Sin precio",
+              "Sin precio"
+            ],
+            "service": [
+              "Copa",
+              "Sin confirmar",
+              "Botella",
+              "Botella"
+            ],
+            "affinity": [
+              "-",
+              "-",
+              "-",
+              "-"
+            ],
+            "confidence": [
+              "55%",
+              "55%",
+              "88%",
+              "-"
+            ]
+          }
+        },
+        {
+          "name": "Edited identity has no affinity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Editor/list return keeps selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison/edit changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No database mutations",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No mobile horizontal expansion",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        },
+        {
+          "name": "No console or runtime errors",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    }
+  ]
+}

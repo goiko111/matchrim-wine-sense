@@ -63,3 +63,26 @@ export const applyMenuWineEvidence = (wine: MenuScanWine, profile: MatchrimProfi
     razon: grounded.affinityReason,
   };
 };
+
+export const updateMenuWineEvidence = (wine: MenuScanWine, updates: Partial<MenuScanWine>): MenuScanWine => {
+  const edited = { ...wine, ...updates };
+  if ('precio' in updates && updates.precio !== wine.precio
+    && !wine.campos_inferidos?.includes('servicio')
+    && (wine.servicio === 'copa' || wine.servicio === 'botella')) {
+    edited.precios = { ...wine.precios, [wine.servicio]: updates.precio ?? null };
+  }
+  const identityChanged = (['nombre', 'productor', 'anada', 'region', 'pais', 'tipo', 'uvas'] as const)
+    .some((field) => field in updates && JSON.stringify(updates[field]) !== JSON.stringify(wine[field]));
+  if (!identityChanged) return edited;
+  return {
+    ...edited,
+    canonicalId: null,
+    sensorySource: 'inference',
+    atributos: null,
+    compatibilidad: null,
+    affinity_calibrated: false,
+    confidence: null,
+    razon: 'Identidad editada manualmente; ficha y afinidad pendientes de verificar.',
+    dudas: Array.from(new Set([...(wine.dudas ?? []), 'Identidad editada manualmente; confianza pendiente de verificar.'])),
+  };
+};

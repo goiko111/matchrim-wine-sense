@@ -1,0 +1,32 @@
+{
+  "baseline": "b8f0999f7c7b70b9836fb5f071870771bf05f5ba",
+  "scope": "Local active carta; one frozen image, recorded replay and explicit synthetic contract variants; no fresh vision/human/hosted/native evidence",
+  "mainBefore": {
+    "contexts": 8,
+    "passed": 0,
+    "assertions": 190,
+    "failedAssertions": 52
+  },
+  "mainAfter": {
+    "contexts": 8,
+    "passed": 8,
+    "assertions": 190,
+    "failedAssertions": 0
+  },
+  "priceEditBefore": {
+    "contexts": 2,
+    "passed": 0,
+    "assertions": 8,
+    "failedAssertions": 2
+  },
+  "priceEditAfter": {
+    "contexts": 2,
+    "passed": 2,
+    "assertions": 8,
+    "failedAssertions": 0
+  },
+  "paidCalls": 0,
+  "realAppRemoteCalls": 0,
+  "nativeBuild": null,
+  "uploadedBuild": null
+}

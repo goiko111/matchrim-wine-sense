@@ -1,0 +1,395 @@
+{
+  "scope": "Comparator captures/receipts only; no new owner original, private annotation, credentials or account data",
+  "files": [
+    {
+      "path": "after-eight-tested-source.json",
+      "bytes": 888,
+      "sha256": "7a241c9f891fa23491dc699a68270ae5e6fe325db00d82b6ea6fcfe17b90bf2e"
+    },
+    {
+      "path": "after/currencies-landscape-corrected.png",
+      "bytes": 89621,
+      "sha256": "0554ab4c9b50aa6f5af9ba1690d92422c5a89357b1c3ee11a500729fdb2ac00b"
+    },
+    {
+      "path": "after/currencies-landscape-money.png",
+      "bytes": 96349,
+      "sha256": "dc8f38b98c6abef8fd715a5166cc903134529a81865b4be33df2386a412ac158"
+    },
+    {
+      "path": "after/currencies-landscape-viewport.png",
+      "bytes": 36188,
+      "sha256": "ccc0fa2a1293910f745b1f09bedc840e51bfd0662b1a6b3c83cd24cffe621d9d"
+    },
+    {
+      "path": "after/currencies-portrait-corrected.png",
+      "bytes": 111323,
+      "sha256": "869ba9038fc7d5803ec366f56265257fd049385418d1c76c6b4d5bc32c566b5d"
+    },
+    {
+      "path": "after/currencies-portrait-money.png",
+      "bytes": 107288,
+      "sha256": "7de9be744f8ca65128de0318db8e64b4b3cff865ff59fec7ebb1bac4c1846a57"
+    },
+    {
+      "path": "after/currencies-portrait-viewport.png",
+      "bytes": 60995,
+      "sha256": "09b61110d5764491a259cccca7fc673c3e7611d79dc581c92ed8ab5a795491cf"
+    },
+    {
+      "path": "after/prices-landscape-corrected.png",
+      "bytes": 101504,
+      "sha256": "216c90142ee7746b5885bd5eeb52cc7a7e4df69bfc343626c902d4e341a46746"
+    },
+    {
+      "path": "after/prices-landscape-money.png",
+      "bytes": 106500,
+      "sha256": "ae1342b1b7d66c41e4061a34a3c74e6224c2d43a5745132e3c029430531dec50"
+    },
+    {
+      "path": "after/prices-landscape-viewport.png",
+      "bytes": 50350,
+      "sha256": "91307b398d1c8f130bca7c0f53c6faf017bf3118cd4aceedcbe395cc5a4a5773"
+    },
+    {
+      "path": "after/prices-portrait-corrected.png",
+      "bytes": 130173,
+      "sha256": "db8f81c4c84fd672e31f090a3b77d47eef0c5e44c9bf3d9250305b3dfc0fd1c6"
+    },
+    {
+      "path": "after/prices-portrait-money.png",
+      "bytes": 127612,
+      "sha256": "d58a0d213bf6674514cce8bc8eb1943eebeb1f28172ebb3cbcd65b70afbbefd7"
+    },
+    {
+      "path": "after/prices-portrait-viewport.png",
+      "bytes": 60995,
+      "sha256": "09b61110d5764491a259cccca7fc673c3e7611d79dc581c92ed8ab5a795491cf"
+    },
+    {
+      "path": "after/recorded-landscape-corrected.png",
+      "bytes": 153667,
+      "sha256": "7d93eaf38d70e456bfe4c3ec51e31792b9d6dd0cb26035a4f64c2083eb4813ad"
+    },
+    {
+      "path": "after/recorded-landscape-money.png",
+      "bytes": 156895,
+      "sha256": "6b70dff1aa425d4b04b600fe07e75945fff79b1412c4e40665bfe4e70b010e96"
+    },
+    {
+      "path": "after/recorded-landscape-viewport.png",
+      "bytes": 54826,
+      "sha256": "bd7c2d2fd09d771356d9448d76125cbc13587919456207797ba10b538a9a6305"
+    },
+    {
+      "path": "after/recorded-portrait-corrected.png",
+      "bytes": 179578,
+      "sha256": "e2d726f8a73b94672b7aead91819e74aa3296cc73e54266163376e9e2188fc0d"
+    },
+    {
+      "path": "after/recorded-portrait-money.png",
+      "bytes": 175733,
+      "sha256": "608f46d770959b564f1d78cacd306f4be89f92fb33a9d58c527a66e5d3b63194"
+    },
+    {
+      "path": "after/recorded-portrait-viewport.png",
+      "bytes": 64486,
+      "sha256": "763952d426589a873f1bd4fd22a2dfae02c7a731641d20d66f163c3d20cc4e58"
+    },
+    {
+      "path": "after/response-provenance.json",
+      "bytes": 17247,
+      "sha256": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5"
+    },
+    {
+      "path": "after/results.json",
+      "bytes": 66206,
+      "sha256": "bba0f7c9cee17535dc4ada85d57624c98613e0671ffedcfa64cbd23781ab38d3"
+    },
+    {
+      "path": "after/units-landscape-corrected.png",
+      "bytes": 101504,
+      "sha256": "216c90142ee7746b5885bd5eeb52cc7a7e4df69bfc343626c902d4e341a46746"
+    },
+    {
+      "path": "after/units-landscape-money.png",
+      "bytes": 106500,
+      "sha256": "ae1342b1b7d66c41e4061a34a3c74e6224c2d43a5745132e3c029430531dec50"
+    },
+    {
+      "path": "after/units-landscape-viewport.png",
+      "bytes": 36188,
+      "sha256": "ccc0fa2a1293910f745b1f09bedc840e51bfd0662b1a6b3c83cd24cffe621d9d"
+    },
+    {
+      "path": "after/units-portrait-corrected.png",
+      "bytes": 130173,
+      "sha256": "db8f81c4c84fd672e31f090a3b77d47eef0c5e44c9bf3d9250305b3dfc0fd1c6"
+    },
+    {
+      "path": "after/units-portrait-money.png",
+      "bytes": 127612,
+      "sha256": "d58a0d213bf6674514cce8bc8eb1943eebeb1f28172ebb3cbcd65b70afbbefd7"
+    },
+    {
+      "path": "after/units-portrait-viewport.png",
+      "bytes": 60995,
+      "sha256": "09b61110d5764491a259cccca7fc673c3e7611d79dc581c92ed8ab5a795491cf"
+    },
+    {
+      "path": "before-complete/currencies-landscape-corrected.png",
+      "bytes": 98060,
+      "sha256": "6bde5653f6bd1f79317b7ef434d1ab2b166d96afbba2122a391e8a59901ed72b"
+    },
+    {
+      "path": "before-complete/currencies-landscape-money.png",
+      "bytes": 109071,
+      "sha256": "af1cc198153eaeb80736cd7b60a03f37810ec67fb2f894cea2d879c9969e14e0"
+    },
+    {
+      "path": "before-complete/currencies-landscape-viewport.png",
+      "bytes": 39839,
+      "sha256": "cb18e9fe234996b1563810decd7c65eb7f4010c221bfaa2ed61c3828d8d177bc"
+    },
+    {
+      "path": "before-complete/currencies-portrait-corrected.png",
+      "bytes": 110429,
+      "sha256": "3cad21730a67a759176dfd3b55a3684c7d7ce8b6b83308953c6de47f83fd0531"
+    },
+    {
+      "path": "before-complete/currencies-portrait-money.png",
+      "bytes": 123925,
+      "sha256": "09829c66143b1edd9828254911f654c2429ba54fbab5ae26a223c3ed49da972e"
+    },
+    {
+      "path": "before-complete/currencies-portrait-viewport.png",
+      "bytes": 59954,
+      "sha256": "37cd51eb7731ded761c6429080e327d9b84905b6b79c9ed221a448234e45f746"
+    },
+    {
+      "path": "before-complete/prices-landscape-corrected.png",
+      "bytes": 112004,
+      "sha256": "5878f7b0537874556f7ad2de0f4029a549f988d4d5280bac0ca4415056d845df"
+    },
+    {
+      "path": "before-complete/prices-landscape-money.png",
+      "bytes": 120040,
+      "sha256": "195b32370393187ebda5ded4fc691f29ecee0ebcfe52c9174cd6d5c02399e64a"
+    },
+    {
+      "path": "before-complete/prices-landscape-viewport.png",
+      "bytes": 39839,
+      "sha256": "cb18e9fe234996b1563810decd7c65eb7f4010c221bfaa2ed61c3828d8d177bc"
+    },
+    {
+      "path": "before-complete/prices-portrait-corrected.png",
+      "bytes": 127317,
+      "sha256": "52c62020fdf462279bdef44550f3f140cb624bf551c16819e07201712486a6e5"
+    },
+    {
+      "path": "before-complete/prices-portrait-money.png",
+      "bytes": 144279,
+      "sha256": "df5888cbc4ea4ddc77ec941f5292ebe97fc17016efa52fd0985c93c89f87a4d2"
+    },
+    {
+      "path": "before-complete/prices-portrait-viewport.png",
+      "bytes": 59954,
+      "sha256": "37cd51eb7731ded761c6429080e327d9b84905b6b79c9ed221a448234e45f746"
+    },
+    {
+      "path": "before-complete/recorded-landscape-corrected.png",
+      "bytes": 156726,
+      "sha256": "5eabf4cdcf6d17ff10447b522e1d24726111e1b65dd4eb4b44aa95d4cee36658"
+    },
+    {
+      "path": "before-complete/recorded-landscape-money.png",
+      "bytes": 167598,
+      "sha256": "4f7fbba9328083a8ccae6faaa5530d5327cbcb43fd606011a6d150440e785e1e"
+    },
+    {
+      "path": "before-complete/recorded-landscape-viewport.png",
+      "bytes": 54826,
+      "sha256": "bd7c2d2fd09d771356d9448d76125cbc13587919456207797ba10b538a9a6305"
+    },
+    {
+      "path": "before-complete/recorded-portrait-corrected.png",
+      "bytes": 174251,
+      "sha256": "2527739e39b753917a1148088afb3489d8a34bc6fa4c5836af6c6d086b65d553"
+    },
+    {
+      "path": "before-complete/recorded-portrait-money.png",
+      "bytes": 187665,
+      "sha256": "49a6fb641daacfb52ad07b258dcf720d58163c4832e5d4cd5228f00ea0293a8c"
+    },
+    {
+      "path": "before-complete/recorded-portrait-viewport.png",
+      "bytes": 68435,
+      "sha256": "4c91672c172c4e53bd4d70e8ae497366a1b4e691626340ded2eaac10b2c0bae3"
+    },
+    {
+      "path": "before-complete/response-provenance.json",
+      "bytes": 17247,
+      "sha256": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5"
+    },
+    {
+      "path": "before-complete/results.json",
+      "bytes": 68006,
+      "sha256": "b0e518ed3b40d8a231ea2a9c35baf0c726aa9a9653ab7aeacdddf8606ea2fcb3"
+    },
+    {
+      "path": "before-complete/units-landscape-corrected.png",
+      "bytes": 112004,
+      "sha256": "5878f7b0537874556f7ad2de0f4029a549f988d4d5280bac0ca4415056d845df"
+    },
+    {
+      "path": "before-complete/units-landscape-money.png",
+      "bytes": 120040,
+      "sha256": "195b32370393187ebda5ded4fc691f29ecee0ebcfe52c9174cd6d5c02399e64a"
+    },
+    {
+      "path": "before-complete/units-landscape-viewport.png",
+      "bytes": 39839,
+      "sha256": "cb18e9fe234996b1563810decd7c65eb7f4010c221bfaa2ed61c3828d8d177bc"
+    },
+    {
+      "path": "before-complete/units-portrait-corrected.png",
+      "bytes": 127317,
+      "sha256": "52c62020fdf462279bdef44550f3f140cb624bf551c16819e07201712486a6e5"
+    },
+    {
+      "path": "before-complete/units-portrait-money.png",
+      "bytes": 144279,
+      "sha256": "df5888cbc4ea4ddc77ec941f5292ebe97fc17016efa52fd0985c93c89f87a4d2"
+    },
+    {
+      "path": "before-complete/units-portrait-viewport.png",
+      "bytes": 59797,
+      "sha256": "371da97b0968e40dcb1f0f39c531296adce05e0192e23eb78c8b6bfb7917d4b2"
+    },
+    {
+      "path": "build.log",
+      "bytes": 12564,
+      "sha256": "ca701dea6f2f19f44730bcd4b32de5053a301ccb9606f0de9c5f9ea72a1e5864"
+    },
+    {
+      "path": "checkpoint03.md",
+      "bytes": 2012,
+      "sha256": "0d1b93690b8ff27577976002fc024404801f75f7333d02dc1ead28df83369011"
+    },
+    {
+      "path": "checks-result.json",
+      "bytes": 252,
+      "sha256": "a6387332e2ef6f8530260bee61e21e0fc936f8c6436738d5ed5fc5f029fdc497"
+    },
+    {
+      "path": "contracts-after.json",
+      "bytes": 915,
+      "sha256": "54f8a7ac00fffc32a2ede74ba5339361cd16174324ede786bb17b0480ef36c45"
+    },
+    {
+      "path": "contracts-before.json",
+      "bytes": 1462,
+      "sha256": "106f9901cd4c91681adc02e09db7e7f5752542e8c4e0cd8208debc23889f9bcf"
+    },
+    {
+      "path": "contracts-final.json",
+      "bytes": 1684,
+      "sha256": "0e3453155b22a447ed8554f56b8f3343b570cc7d0ad22c287aa0e277cf399e9c"
+    },
+    {
+      "path": "contracts-price-final.json",
+      "bytes": 1791,
+      "sha256": "0d8973eaf88427edb3e026f4df2e835b7fdd0938522a4b20485e982e7f96fc1c"
+    },
+    {
+      "path": "existing-comparator-contracts.json",
+      "bytes": 208,
+      "sha256": "12118f27bb5affe3537b623cb3dc9e595f5ee98ff7f7631cfaf61680d7b8967b"
+    },
+    {
+      "path": "final-build.log",
+      "bytes": 12564,
+      "sha256": "aeba399c4ef70fa3b18cc57bcf260d98f019584c981469b8423a751f62708a39"
+    },
+    {
+      "path": "final-checks-result.json",
+      "bytes": 482,
+      "sha256": "a4735417eaa2ba241f951134a16f7bdf5dbbb8e467610c689bfd72dcc8620130"
+    },
+    {
+      "path": "final-lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-typecheck.log",
+      "bytes": 77,
+      "sha256": "e38c26b5e7b0982ac7fdacb4832749746b5c3c678e6de661d1a003afe6ce9d6d"
+    },
+    {
+      "path": "initial-incomplete-baseline.json",
+      "bytes": 31313,
+      "sha256": "e29ca892f878a19a2bd6a39d0acdcd7280ea3236d75c5700ae65645dd9788990"
+    },
+    {
+      "path": "lint.log",
+      "bytes": 17144,
+      "sha256": "2acde2bd4dccb26add313aee58c20599316f2ccad6e37f65e23421f2bd249d30"
+    },
+    {
+      "path": "price-edit-after/landscape.png",
+      "bytes": 72384,
+      "sha256": "97a412507779cccb7bfef6eee2b73e562ca4356e6325c00768ec9d5d24e5d743"
+    },
+    {
+      "path": "price-edit-after/portrait.png",
+      "bytes": 69975,
+      "sha256": "b4dc204f7d5f1c8baee8adc03a193abd0c9c7a7f463c1c52a05442409d719c22"
+    },
+    {
+      "path": "price-edit-after/results.json",
+      "bytes": 2053,
+      "sha256": "dc58b6cfc4c394a79d42842e85385e75c5cd3de60e1c7f45a2c848f637a604e6"
+    },
+    {
+      "path": "price-edit-before/landscape.png",
+      "bytes": 72411,
+      "sha256": "6e27a5d4d75ece4c8442d0144862e3afde4e6cc3b24118e95a8edffa4b0b4dc0"
+    },
+    {
+      "path": "price-edit-before/portrait.png",
+      "bytes": 69987,
+      "sha256": "d3eb183f0a780db558c143c9c5f789c62748dd562524d3bd3985c1552ac584eb"
+    },
+    {
+      "path": "price-edit-before/results.json",
+      "bytes": 2057,
+      "sha256": "0653b5544eefc8c223a2a66f74b99b25a0a8c78278d62bd2b01383e4481f1825"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 746,
+      "sha256": "6b361e865c0730f287b803717fa4ce4166b3607295f613741bdd562c8becad83"
+    },
+    {
+      "path": "test-delta-lint-result.json",
+      "bytes": 124,
+      "sha256": "b5f8ddeabb8a31c0bc359b0451e7c310d21ec76e193e038be59db5615ea53524"
+    },
+    {
+      "path": "test-delta-lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tested-source-sha256.json",
+      "bytes": 2329,
+      "sha256": "ff49c1b5235b6dedb5392d5bc3f13cc3a636ac443cb8b2e6d19b98c5dab8da62"
+    },
+    {
+      "path": "typecheck.log",
+      "bytes": 77,
+      "sha256": "e38c26b5e7b0982ac7fdacb4832749746b5c3c678e6de661d1a003afe6ce9d6d"
+    }
+  ]
+}

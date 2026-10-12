@@ -1,0 +1,7 @@
+{
+  "scope": "Existing comparator block only, extracted via TypeScript AST; no unrelated scanner suites",
+  "source": "scripts/check-multi-wine-scan.ts",
+  "assertions": 16,
+  "exitCode": 0,
+  "output": ""
+}

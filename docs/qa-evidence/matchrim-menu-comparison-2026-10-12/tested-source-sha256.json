@@ -1,0 +1,51 @@
+{
+  "baseline": "b8f0999f7c7b70b9836fb5f071870771bf05f5ba",
+  "scope": "Final source; after-eight-tested-source.json identifies exact prior eight-context stage, followed by branch-only manual-price correction and focused2-context QA",
+  "files": [
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "baselineSha256": "c1ba13f169791640227362d06d1dc130653d501efa2024e15d093bf10a341da5",
+      "finalSha256": "e69603426e56a73eec0c7da62a6dedc51ffdb21e9349023cfdf2727afef8586f"
+    },
+    {
+      "path": "src/components/wine-import/WineComparisonWorkspace.tsx",
+      "baselineSha256": "a137eda34ecc2fcae65134c3b947203942660cef7b14fb3120c9b565cdbb1674",
+      "finalSha256": "3ad78bc71b9b30436d87c26b300d8b26fe20ec0f53e45480b9b2430d9504e548"
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "baselineSha256": "6026376e40d9900fdff18ece11b4d7b82c253f5eca8c6b789b42853ae41ddd7d",
+      "finalSha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "baselineSha256": "3f31e5775f2b999be4777304adc88d42e445e252219f50c9f519f87a26c85592",
+      "finalSha256": "a7cda4777758ec8084c0fe51fc8953e359e6ba079843648661e1e29488eeb5c0"
+    },
+    {
+      "path": "scripts/check-multi-wine-scan.ts",
+      "baselineSha256": "1588ee506a6979a7e749ab45a49a0fe22643d5a88a650e537bafd7e604525e1f",
+      "finalSha256": "bc1f2cc4f65d6ba046b4300c24aa05575c50911e2dab8f7aaf9c9956939a81b4"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-comparison-oct12.ts",
+      "baselineSha256": null,
+      "finalSha256": "942a401c9493057da2a8e7791ab383ad638337e1a68665b4b4a9f467bf2b782b"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-comparison-oct12.py",
+      "baselineSha256": null,
+      "finalSha256": "34a061fc1d80c0bf4ea7dba1aecb9f7d0ff469f38eec0798aec022c72f6bc9f9"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-price-edit-oct12.py",
+      "baselineSha256": null,
+      "finalSha256": "f2ef73f1107a0912005ad73f0b5484eac5a7ddde6934ccc1f0867df276856eb6"
+    },
+    {
+      "path": "qa/fixtures/menu-food-evidence-oct8.json",
+      "baselineSha256": "c5cc2a486254a38155ff88b6d5dad08b2328ba053034a28e8e0ea89f244ea6e3",
+      "finalSha256": "c5cc2a486254a38155ff88b6d5dad08b2328ba053034a28e8e0ea89f244ea6e3"
+    }
+  ]
+}

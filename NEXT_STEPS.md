@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-12, carta comparator closed
+
+1. Active carta comparison covers selection2/4 and manual identity/price correction, unknown/inferred service, format prices and currency isolation.10 local contexts/198 checks;17 new pure checks and16 affected existing comparator assertions PASS. Do not rerun02 or unrelated green suites.
+2. Next measured local gap: list-level Precio menor/mayor/value/filter policy outside comparator, plus ambiguous both/unknown-format price editing. Preserve provenance rather than inferring a serving unit. See [carta comparator report](docs/MATCHRIM_MENU_COMPARISON_2026-10-12.md).
+3. This is recorded/intercepted/synthetic client evidence, not fresh OCR, canonical price/source validation, positive personalized value, real users, hosted persistence or physical accessibility. Keep those release gates separate.
+4. No paid/native/Apple/invitation/push/deploy/upload or corpus/ledger action in03. Existing Apple handoff is unchanged and not re-asked;28 historical calls and native binaries remain preserved.
+
 ## Current delta: 2026-10-12, active comparator closed
 
 1. Four-label comparator selection/tab persistence, complete names, duplicates, five/six boundary and partial-only abstention pass5/5 local contexts. Do not replay unchanged green suites; this is intercepted client QA, not live vision or human recommendation evidence.

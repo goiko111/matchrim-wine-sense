@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-12, active carta comparator
+
+- Stable row ids across manual identity edits; obsolete confidence/catalog/affinity/sensory metadata invalidated. Inferred service/format prices and noncatalog sensory numbers withheld. Unit/currency gates use effective per-format prices; no glass/bottle ratio or currency conversion, no value without affinity.
+- Main0/8 with52 failed assertions ->8/8 and190/190. Focused stale manual-price correction0/2 ->2/2 and8/8; explicit known single-service amounts synchronize. Total10 contexts/198 checks,52 captures, one existing photo/replay plus synthetic boundary variants, not recognition/users/taste evidence.
+- Final17 new pure checks and16 affected existing comparator assertions PASS. Typecheck/full lint0errors106warnings; follow-up typecheck/focused lint/build exit0,6.210s. No new comparison/edit requests/storage/writes/errors, production/native/Apple/push/deploy/version/upload or paid calls;28 preserved.
+- Report: [MATCHRIM_MENU_COMPARISON_2026-10-12.md](docs/MATCHRIM_MENU_COMPARISON_2026-10-12.md). Next local gap is list-level price/value/filter policy outside comparator; real canonical/source/sensory/human/hosted/physical/native/distribution gates stay open.
+
 ## Latest checkpoint: 2026-10-12, active comparator
 
 - Preserved edited selection across tabs, including one-wine abstention; full long names wrap and partial references expose unconfirmed status before selection. Same-producer distinct wines and exact duplicate region count remain correct.

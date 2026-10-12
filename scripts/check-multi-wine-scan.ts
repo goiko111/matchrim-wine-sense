@@ -1031,8 +1031,8 @@ const valueDecision = buildWineComparisonDecision(comparisonWines, {
   budget: null,
   serviceFormat: 'any',
 });
-assert.equal(valueDecision.primary?.wine.id, 'c');
-assert.equal(valueDecision.actionability, 'ready');
+assert.equal(valueDecision.actionability, 'provisional', 'glass and bottle prices cannot yield a shared value ratio');
+assert.ok(valueDecision.ordered.every((entry) => entry.cautions.some((note) => note.includes('Formato del precio'))));
 
 const provisionalDecision = buildWineComparisonDecision([
   comparisonWines[0],

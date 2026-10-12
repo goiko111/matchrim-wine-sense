@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   buildWineComparisonDecision,
+  wineComparisonPrice,
+  wineComparisonPriceFormat,
   type ComparableWine,
   type WineDecisionMode,
   type WineDecisionPriority,
@@ -56,7 +58,8 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
   const [priority, setPriority] = useState<WineDecisionPriority>('affinity');
   const [budget, setBudget] = useState('');
   const [serviceFormat, setServiceFormat] = useState<WineServiceFormat>('any');
-  const hasPrices = wines.some((wine) => typeof wine.price === 'number');
+  const hasPrices = wines.some((wine) => [wine.price, wine.prices?.glass, wine.prices?.bottle]
+    .some((price) => typeof price === 'number' && Number.isFinite(price)));
   const hasServiceFormats = wines.some((wine) => wine.service);
   const hasAffinities = wines.some((wine) => typeof wine.affinity === 'number' && Number.isFinite(wine.affinity));
 
@@ -80,7 +83,10 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     [selectedIds, wines],
   );
   const numericBudget = budget.trim() && Number.isFinite(Number(budget)) ? Number(budget) : null;
-  const priceCurrency = singlePriceCurrency(selectedWines);
+  const priceFormat = wineComparisonPriceFormat(selectedWines, mode === 'service' ? serviceFormat : 'any');
+  const priceCurrency = priceFormat ? singlePriceCurrency(selectedWines.map((wine) => ({
+    price: wineComparisonPrice(wine, priceFormat), currency: wine.currency,
+  }))) : null;
   const decision = useMemo(() => buildWineComparisonDecision(selectedWines, {
     mode,
     priority,
@@ -171,14 +177,14 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 <SelectContent>
                   <SelectItem value="affinity" disabled={!hasAffinities}>Mayor afinidad</SelectItem>
                   <SelectItem value="certainty">Identidad más segura</SelectItem>
-                  <SelectItem value="value" disabled={!hasPrices || !priceCurrency}>Mejor valor</SelectItem>
+                  <SelectItem value="value" disabled={!hasAffinities || !hasPrices || !priceCurrency}>Mejor valor</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {hasPrices && (
               <div>
-                <Label htmlFor="comparison-budget">Presupuesto máximo{priceCurrency ? ` (${priceCurrency})` : ' (moneda pendiente)'}</Label>
+                <Label htmlFor="comparison-budget">Presupuesto máximo{priceCurrency ? ` (${priceCurrency})` : priceFormat ? ' (moneda pendiente)' : ' (formato pendiente)'}</Label>
                 <div className="relative mt-2">
                   <Coins className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
                   <Input id="comparison-budget" inputMode="decimal" value={budget} disabled={!priceCurrency} onChange={(event) => setBudget(event.target.value)} className="min-h-11 pl-9" placeholder="Sin límite" />

@@ -1,0 +1,25 @@
+{
+  "scope": "Exact sources for eight full menu UI contexts before focused manual-price follow-up",
+  "files": [
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "sha256": "e69603426e56a73eec0c7da62a6dedc51ffdb21e9349023cfdf2727afef8586f"
+    },
+    {
+      "path": "src/components/wine-import/WineComparisonWorkspace.tsx",
+      "sha256": "3ad78bc71b9b30436d87c26b300d8b26fe20ec0f53e45480b9b2430d9504e548"
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "sha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "sha256": "0dd729080c497ca247e29ea6a209c67ed77b2edbc98f9366d817a4f6f10e2be2"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-comparison-oct12.py",
+      "sha256": "34a061fc1d80c0bf4ea7dba1aecb9f7d0ff469f38eec0798aec022c72f6bc9f9"
+    }
+  ]
+}

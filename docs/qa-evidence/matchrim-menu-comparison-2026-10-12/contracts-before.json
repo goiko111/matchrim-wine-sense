@@ -1,0 +1,41 @@
+{
+  "scope": "Synthetic price-boundary contracts; amounts reused from recorded menu, no profile/sensory evidence",
+  "checks": [
+    {
+      "name": "Mixed serving units cannot verify a shared generic budget",
+      "passed": false,
+      "error": "The expression evaluated to a falsy value:\n\n  wine('bottle', 'bottle', 25)\n"
+    },
+    {
+      "name": "Mixed serving units do not claim within budget",
+      "passed": false,
+      "error": "The expression evaluated to a falsy value:\n\n  check('Mixed serving units cannot verify a shared generic budget', () => assert.ok(ambiguous.ordered.every((w) => w.constraintStatus === 'unknown')))\n"
+    },
+    {
+      "name": "Mixed-unit budget choice remains provisional",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'ready'\n- 'provisional'"
+    },
+    {
+      "name": "Unknown serving unit cannot complete shared price basis",
+      "passed": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.equal(ambiguous.actionability, 'provisional')\n"
+    },
+    {
+      "name": "Known same-format prices remain usable",
+      "passed": true
+    },
+    {
+      "name": "Explicit glass selection never borrows bottle price",
+      "passed": true
+    },
+    {
+      "name": "Explicit glass price remains12",
+      "passed": true
+    },
+    {
+      "name": "Distinct currency never completes EUR budget",
+      "passed": true
+    }
+  ]
+}
