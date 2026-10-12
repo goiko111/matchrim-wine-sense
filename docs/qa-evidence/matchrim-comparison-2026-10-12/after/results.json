@@ -1,0 +1,964 @@
+{
+  "scope": "Active comparator QA on frozen Hugel image; synthetic response variants, zero live vision.",
+  "realPhotographedScenes": 1,
+  "actualPhotographedLabels": 4,
+  "syntheticResponseVariants": 3,
+  "paidCalls": 0,
+  "realAppRemoteCalls": 0,
+  "results": [
+    {
+      "case": "basic-portrait",
+      "passed": true,
+      "failures": [],
+      "steps": [
+        {
+          "name": "Active comparison offers expected references",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Select two actual literal references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel"
+          ]
+        },
+        {
+          "name": "No affinity number generated",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Affinity priority disabled without data",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four distinct same-producer references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Withdraw to one shows abstention",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited one-item selection survives tab switch",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel"
+          ]
+        },
+        {
+          "name": "Reselect four after returning",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Choice tile has at least44px target",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Full choice tile responds to touch",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Longest literal remains fully visible",
+          "passed": true,
+          "detail": {
+            "width": 273,
+            "scrollWidth": 273,
+            "whiteSpace": "normal",
+            "textOverflow": "clip",
+            "text": "Gewurztraminer Vendange Tardive Hugel"
+          }
+        },
+        {
+          "name": "No page horizontal expansion",
+          "passed": true,
+          "detail": {
+            "innerWidth": 393,
+            "scrollWidth": 393
+          }
+        },
+        {
+          "name": "Comparison sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No save/training/database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "detail": {
+            "runtime": [],
+            "console": []
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "basic-landscape",
+      "passed": true,
+      "failures": [],
+      "steps": [
+        {
+          "name": "Active comparison offers expected references",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Select two actual literal references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel"
+          ]
+        },
+        {
+          "name": "No affinity number generated",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Affinity priority disabled without data",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four distinct same-producer references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Withdraw to one shows abstention",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited one-item selection survives tab switch",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel"
+          ]
+        },
+        {
+          "name": "Reselect four after returning",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Choice tile has at least44px target",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Full choice tile responds to touch",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Longest literal remains fully visible",
+          "passed": true,
+          "detail": {
+            "width": 327,
+            "scrollWidth": 327,
+            "whiteSpace": "normal",
+            "textOverflow": "clip",
+            "text": "Gewurztraminer Vendange Tardive Hugel"
+          }
+        },
+        {
+          "name": "No page horizontal expansion",
+          "passed": true,
+          "detail": {
+            "innerWidth": 852,
+            "scrollWidth": 852
+          }
+        },
+        {
+          "name": "Comparison sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No save/training/database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "detail": {
+            "runtime": [],
+            "console": []
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "duplicate-portrait",
+      "passed": true,
+      "failures": [],
+      "steps": [
+        {
+          "name": "Exact duplicate retains region count",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Active comparison offers expected references",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Select two actual literal references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel"
+          ]
+        },
+        {
+          "name": "No affinity number generated",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Affinity priority disabled without data",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four distinct same-producer references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Withdraw to one shows abstention",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited one-item selection survives tab switch",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel"
+          ]
+        },
+        {
+          "name": "Reselect four after returning",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Choice tile has at least44px target",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Full choice tile responds to touch",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Longest literal remains fully visible",
+          "passed": true,
+          "detail": {
+            "width": 273,
+            "scrollWidth": 273,
+            "whiteSpace": "normal",
+            "textOverflow": "clip",
+            "text": "Gewurztraminer Vendange Tardive Hugel"
+          }
+        },
+        {
+          "name": "No page horizontal expansion",
+          "passed": true,
+          "detail": {
+            "innerWidth": 393,
+            "scrollWidth": 393
+          }
+        },
+        {
+          "name": "Comparison sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No save/training/database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "detail": {
+            "runtime": [],
+            "console": []
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "boundary-portrait",
+      "passed": true,
+      "failures": [],
+      "steps": [
+        {
+          "name": "Active comparison offers expected references",
+          "passed": true,
+          "detail": 6
+        },
+        {
+          "name": "Select two actual literal references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel"
+          ]
+        },
+        {
+          "name": "No affinity number generated",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Affinity priority disabled without data",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four distinct same-producer references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Withdraw to one shows abstention",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited one-item selection survives tab switch",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel"
+          ]
+        },
+        {
+          "name": "Reselect four after returning",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Choice tile has at least44px target",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Full choice tile responds to touch",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Partial references labelled before selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Partial status exposed through accessible description",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Five-reference limit reached",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Sixth entry disabled at five",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Removal frees a slot for sixth candidate",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Partial-only choice remains provisional",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Partial-only affinity unavailable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Longest literal remains fully visible",
+          "passed": true,
+          "detail": {
+            "width": 273,
+            "scrollWidth": 273,
+            "whiteSpace": "normal",
+            "textOverflow": "clip",
+            "text": "Gewurztraminer Vendange Tardive Hugel"
+          }
+        },
+        {
+          "name": "No page horizontal expansion",
+          "passed": true,
+          "detail": {
+            "innerWidth": 393,
+            "scrollWidth": 393
+          }
+        },
+        {
+          "name": "Comparison sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No save/training/database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "detail": {
+            "runtime": [],
+            "console": []
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "boundary-landscape",
+      "passed": true,
+      "failures": [],
+      "steps": [
+        {
+          "name": "Active comparison offers expected references",
+          "passed": true,
+          "detail": 6
+        },
+        {
+          "name": "Select two actual literal references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel"
+          ]
+        },
+        {
+          "name": "No affinity number generated",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Affinity priority disabled without data",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Select four distinct same-producer references",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Withdraw to one shows abstention",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Edited one-item selection survives tab switch",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel"
+          ]
+        },
+        {
+          "name": "Reselect four after returning",
+          "passed": true,
+          "detail": [
+            "Comparar Gewurztraminer Hugel",
+            "Comparar Pinot Gris Tradition Hugel",
+            "Comparar Riesling Jubilee Hugel",
+            "Comparar Gewurztraminer Vendange Tardive Hugel"
+          ]
+        },
+        {
+          "name": "Choice tile has at least44px target",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Full choice tile responds to touch",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Partial references labelled before selection",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Partial status exposed through accessible description",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Five-reference limit reached",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Sixth entry disabled at five",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Removal frees a slot for sixth candidate",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Partial-only choice remains provisional",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Partial-only affinity unavailable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Longest literal remains fully visible",
+          "passed": true,
+          "detail": {
+            "width": 327,
+            "scrollWidth": 327,
+            "whiteSpace": "normal",
+            "textOverflow": "clip",
+            "text": "Gewurztraminer Vendange Tardive Hugel"
+          }
+        },
+        {
+          "name": "No page horizontal expansion",
+          "passed": true,
+          "detail": {
+            "innerWidth": 852,
+            "scrollWidth": 852
+          }
+        },
+        {
+          "name": "Comparison sends no new requests",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Comparison changes no storage or learning keys",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No save/training/database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "detail": {
+            "runtime": [],
+            "console": []
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "comparisonNewRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "consoleErrors": []
+    }
+  ]
+}

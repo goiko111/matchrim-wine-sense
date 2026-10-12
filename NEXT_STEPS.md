@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-12, active comparator closed
+
+1. Four-label comparator selection/tab persistence, complete names, duplicates, five/six boundary and partial-only abstention pass5/5 local contexts. Do not replay unchanged green suites; this is intercepted client QA, not live vision or human recommendation evidence.
+2. Next measured local boundary: active wine-list comparator with complete/partial rows, price currency, copa/botella/unknown format and manual identity correction. This label-only fixture has no price/format data. See [comparator evidence](docs/MATCHRIM_COMPARISON_2026-10-12.md).
+3. Preserve all frozen/private inputs, prior ledgers/28 calls, commons-355816 exclusion and previous native binaries. Live canonical/sensory/human, hosted/physical, native destination and release gates remain open.
+4. Separate requested tester invitation remains unsent: existing App Store Connect tab needs owner login before latest eligible external build can be read back. No admin/internal access or automatic new upload.
+
 ## Current delta: 2026-10-12, explicit negative contract closed
 
 1. Candidate-name and explicit fallback non-wine paths now explain exclusions consistently.17 contracts and8 unique intercepted browser cases across today's two commits; no new model accuracy/human outcome claim.

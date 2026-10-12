@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Coins, BriefcaseBusiness, Scale, ShieldCheck, UserRound } from 'lucide-react';
 import { formatScanPrice, singlePriceCurrency } from '@/utils/scanMoney';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -49,6 +49,7 @@ const AttributeValue = ({ value }: { value: number | null | undefined }) => {
 };
 
 export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps) => {
+  const comparisonId = useId();
   const [selectedIds, setSelectedIds] = useState<string[]>(() => wines.slice(0, 3).map((wine) => wine.id));
   const selectionEditedRef = useRef(false);
   const [mode, setMode] = useState<WineDecisionMode>('personal');
@@ -63,7 +64,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     setSelectedIds((current) => {
       const available = current.filter((id) => wines.some((wine) => wine.id === id)).slice(0, 5);
       if (!selectionEditedRef.current) return wines.slice(0, 3).map((wine) => wine.id);
-      return available.length >= 2 ? available : wines.slice(0, 3).map((wine) => wine.id);
+      return available;
     });
   }, [wines]);
 
@@ -115,18 +116,20 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
       </div>
 
       <div className="mt-4 grid min-w-0 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {wines.map((wine) => {
+        {wines.map((wine, index) => {
           const selected = selectedIds.includes(wine.id);
           const disabled = !selected && selectedIds.length >= 5;
+          const identityDescriptionId = `${comparisonId}-identity-${index}`;
           return (
             <label
               key={wine.id}
               className={`matchrim-pressable flex min-h-14 min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-md border px-3 py-2 ${selected ? 'border-red-800 bg-red-50' : 'border-stone-200 bg-white'} ${disabled ? 'opacity-50' : ''}`}
             >
-              <Checkbox checked={selected} disabled={disabled} onCheckedChange={() => toggleWine(wine.id)} aria-label={`Comparar ${wine.name}`} />
+              <Checkbox checked={selected} disabled={disabled} onCheckedChange={() => toggleWine(wine.id)} aria-label={`Comparar ${wine.name}`} aria-describedby={wine.identityConfirmed === false ? identityDescriptionId : undefined} />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-slate-950">{wine.name}</span>
-                <span className="block truncate text-xs text-slate-500">{wine.producer || wine.region || 'Identidad parcial'}</span>
+                <span className="block whitespace-normal break-words text-sm font-semibold text-slate-950">{wine.name}</span>
+                <span className="block whitespace-normal break-words text-xs text-slate-500">{wine.producer || wine.region || 'Identidad parcial'}</span>
+                {wine.identityConfirmed === false && <span id={identityDescriptionId} className="block text-xs font-medium text-amber-800">Referencia por confirmar</span>}
               </span>
               {wine.affinity != null && <span className="shrink-0 text-sm font-bold text-red-900">{Math.round(wine.affinity)}%</span>}
             </label>

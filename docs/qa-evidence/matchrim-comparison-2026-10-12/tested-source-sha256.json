@@ -1,0 +1,29 @@
+{
+  "baseline": "93ac4f8f2eb8b4fe55ee9d322d0f626ee3305be8",
+  "files": [
+    {
+      "path": "src/components/wine-import/WineComparisonWorkspace.tsx",
+      "baselineSha256": "9f169e48ddc5eeae2d6a6c21abc931f340a34256ffa2ea8886198eaacea589f8",
+      "testedSha256": "a137eda34ecc2fcae65134c3b947203942660cef7b14fb3120c9b565cdbb1674",
+      "changed": true
+    },
+    {
+      "path": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "baselineSha256": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11",
+      "testedSha256": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11",
+      "changed": false
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "baselineSha256": "6026376e40d9900fdff18ece11b4d7b82c253f5eca8c6b789b42853ae41ddd7d",
+      "testedSha256": "6026376e40d9900fdff18ece11b4d7b82c253f5eca8c6b789b42853ae41ddd7d",
+      "changed": false
+    },
+    {
+      "path": "scripts/qa-matchrim-comparison-oct12.py",
+      "baselineSha256": null,
+      "testedSha256": "3d94fa72f6205bf62aea3723121f81a554e4b25a457b02c5b42001e269075497",
+      "changed": true
+    }
+  ]
+}

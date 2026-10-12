@@ -1,0 +1,167 @@
+{
+  "scope": "Four real photographed labels. Duplicate/partial candidates and five/six grid proposals are synthetic comparator stress responses, not extra photographed bottles or vision outputs.",
+  "sourceSha256": "e75177af42a27bfcb280fde79b43037bb98dcfff006a2a9ed099427a4debace2",
+  "annotationSha256": "257587d96322e7b7a93fcef3543338ee9b3ce15c8c87eadcb6813620c6be5808",
+  "variants": {
+    "basic": [
+      {
+        "name": "Gewurztraminer Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "GEWURZTRAMINER HUGEL",
+          "ALSACE"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Pinot Gris Tradition Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "PINOT GRIS",
+          "TRADITION HUGEL"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Riesling Jubilee Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "JUBILEE HUGEL",
+          "RIESLING"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Gewurztraminer Vendange Tardive Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "VENDANGE TARDIVE",
+          "GEWURZTRAMINER HUGEL"
+        ],
+        "vintage": null
+      }
+    ],
+    "duplicate": [
+      {
+        "name": "Gewurztraminer Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "GEWURZTRAMINER HUGEL",
+          "ALSACE"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Pinot Gris Tradition Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "PINOT GRIS",
+          "TRADITION HUGEL"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Riesling Jubilee Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "JUBILEE HUGEL",
+          "RIESLING"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Gewurztraminer Vendange Tardive Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "VENDANGE TARDIVE",
+          "GEWURZTRAMINER HUGEL"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Gewurztraminer Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "GEWURZTRAMINER HUGEL",
+          "ALSACE"
+        ],
+        "vintage": null
+      }
+    ],
+    "boundary": [
+      {
+        "name": "Gewurztraminer Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "GEWURZTRAMINER HUGEL",
+          "ALSACE"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Pinot Gris Tradition Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "PINOT GRIS",
+          "TRADITION HUGEL"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Riesling Jubilee Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "JUBILEE HUGEL",
+          "RIESLING"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Gewurztraminer Vendange Tardive Hugel",
+        "producer": "Hugel et Fils",
+        "confidence": 0.9,
+        "evidence": [
+          "VENDANGE TARDIVE",
+          "GEWURZTRAMINER HUGEL"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Pinot Gris",
+        "producer": "Hugel et Fils",
+        "confidence": 0.55,
+        "evidence": [
+          "PINOT GRIS"
+        ],
+        "uncertainty_reasons": [
+          "Lectura parcial del rótulo; referencia por confirmar"
+        ],
+        "vintage": null
+      },
+      {
+        "name": "Vendange Tardive",
+        "producer": "Hugel et Fils",
+        "confidence": 0.55,
+        "evidence": [
+          "VENDANGE TARDIVE"
+        ],
+        "uncertainty_reasons": [
+          "Lectura parcial del rótulo; referencia por confirmar"
+        ],
+        "vintage": null
+      }
+    ]
+  }
+}

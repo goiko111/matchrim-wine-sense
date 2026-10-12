@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-12, active comparator
+
+- Preserved edited selection across tabs, including one-wine abstention; full long names wrap and partial references expose unconfirmed status before selection. Same-producer distinct wines and exact duplicate region count remain correct.
+- Baseline0/5 contexts with8 failures; final5/5 and95/95 checks (81 repeated plus14 touch/partial-description additions) using one frozen Hugel image/four physical labels, three synthetic response variants and two mobile orientations. No numeric affinity without profile/sensory data, comparison requests/storage changes/writes or console errors.
+- Typecheck no diagnostics/lint0errors106warnings/web build exit0 in6.341s. No new recognition/human/hosted/native approval, corpus/ledger changes, push/deploy/version/upload. Prior80 incomplete;28 calls preserved.
+- Report: [MATCHRIM_COMPARISON_2026-10-12.md](docs/MATCHRIM_COMPARISON_2026-10-12.md). Separate human tester-invitation request checked: Apple login still required, invitation NOT sent, latest external build unverified.
+
 ## Latest checkpoint: 2026-10-12, explicit negative contract
 
 - Follow-up to240c208: an explicit not_wine fallback without candidates no longer becomes unknown. Reproduced16/17 contract baseline and2 failed UI variants;17/17 contracts and2/2 new intercepted response-shape cases now PASS. Unknown codes remain uncertain. Total8 unique browser cases across today's two deltas, not8 scenes/users.

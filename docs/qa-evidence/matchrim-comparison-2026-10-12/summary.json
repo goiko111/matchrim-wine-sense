@@ -1,0 +1,24 @@
+{
+  "baseline": "93ac4f8f2eb8b4fe55ee9d322d0f626ee3305be8",
+  "scope": "Local active comparator; synthetic responses on one frozen licensed Hugel image; no new vision or human outcomes",
+  "before": {
+    "contexts": 5,
+    "passed": 0,
+    "checks": 81,
+    "failedChecks": 8
+  },
+  "after": {
+    "contexts": 5,
+    "passed": 5,
+    "checks": 95,
+    "failedChecks": 0
+  },
+  "realPhotographedScenes": 1,
+  "actualPhotographedLabels": 4,
+  "syntheticResponseVariants": 3,
+  "mobileContexts": 5,
+  "paidCalls": 0,
+  "realAppRemoteCalls": 0,
+  "nativeBuild": null,
+  "uploadedBuild": null
+}
