@@ -1,0 +1,12 @@
+[
+  {
+    "command": "./node_modules/.bin/eslint src/components/wine-import/WineMenuScanner.tsx",
+    "exitCode": 0,
+    "elapsedMs": 724
+  },
+  {
+    "command": "npm run build",
+    "exitCode": 0,
+    "elapsedMs": 6426
+  }
+]

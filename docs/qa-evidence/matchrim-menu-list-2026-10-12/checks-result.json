@@ -1,0 +1,17 @@
+[
+  {
+    "command": "npm run typecheck",
+    "exitCode": 0,
+    "elapsedMs": 5361
+  },
+  {
+    "command": "npm run lint",
+    "exitCode": 0,
+    "elapsedMs": 2600
+  },
+  {
+    "command": "npm run build",
+    "exitCode": 0,
+    "elapsedMs": 6991
+  }
+]

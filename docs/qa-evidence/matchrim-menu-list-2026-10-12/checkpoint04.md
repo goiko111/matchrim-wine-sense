@@ -1,0 +1,11 @@
+# MATCHRIM-HOY-20261012-04
+
+Baseline72854aff092bd39727a1f4df1705d49a857b40fb, clean. Active /escanear/carta-vinos -> pages/Scan -> components/wine-import/ScanHub -> WineMenuScannerSession. Targets: visibleScannedWines, menuDecision.value, #scan-service/#scan-sort/#scan-max-price, real list rows and editor; not other pages/ScanHub or helper-only QA.
+
+Existing03 response-provenance.json units/prices/currencies contracts plus original first-menu recorded responses, same frozen IMG_7547 JPEG and trace. No new prices/year/profile/sensory sheet, scene/download, provider output or canonical truth. EUR/GBP stay explicitly synthetic; original replay moneda=null. Keep duplicate literal/partial rows from recorded replay,34 reading instances/16 merged rows, not physical bottle counts.
+
+Expected before edits: Copa/Botella filters use explicit per-format amount; Todos cannot enable monetary sort/max/value without common unit/currency. Currency/format null or inferred remain pending; max not applied after basis changes. Missing generic amount must not lose known format price. Display sorting leaves base-index and comparison selection unchanged. Editing unknown/inferred/both format must not silently retain old service amount as corrected or assign to both units; pending manual-price provenance is acceptable, no artificial selector unless needed. Identity evidence still invalidated by03.
+
+Hypotheses from source: list uses generic wine.precio and whole-menu currency even after service filter; inferred service passes availability filter; sort/max labels can remain active while basis becomes unknown; manual ambiguous price has no provenance flag and old service amounts persist. Reproduce on new local UI paths before minimum product change. Reuse03 price semantics, not new model/resolver.
+
+Only393x852/852x393 isolated browser/native shim; intercept before goto, analytics/service workers off, no profile/catalog-positive fixtures. Pure contracts supplement actual active-list QA. Zero remote/paid/writes/learning/new corpus/ledger/reset/native/phone/Apple/invite/TestFlight/production/push/deploy; preserve all prior evidence/holdouts,28 calls and commons-355816 exclusion. Deadline today23:59Madrid, no artificial activity.

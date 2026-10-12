@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-12, carta list price boundary closed
+
+1. Chosen/common price unit, eligible-row currency, asc/desc/max, value-source guard and ambiguous manual amounts verified in active list.14 final contexts166 assertions,15 active-factory contracts; existing03/earlier green suites not replayed. Source stages distinguish shared-control and render-copy follow-ups.
+2. Next measured local boundary: saveScannedWine/Bodega generic EUR-price payload versus pending/manual/unit provenance. No persistence/writes/learning were approved by this list-only block; do not lose pending-unit status when leaving the scan. A way to resolve pending manual units and numeric edge validation remain separate.
+3. Actual OCR/canonical/column/price-service ground truth, trusted sensory/human outcome, hosted/physical/native/release gates remain. Frozen input/holdouts/ledgers, commons-355816 exclusion and28 calls unchanged; no new paid call/reset/publication/phone/Apple/invite/upload.
+4. Preserve prior evidence and separate Apple handoff, no repeated login question or assumed permissions. See [list price report](docs/MATCHRIM_MENU_LIST_PRICES_2026-10-12.md).
+
 ## Current delta: 2026-10-12, carta comparator closed
 
 1. Active carta comparison covers selection2/4 and manual identity/price correction, unknown/inferred service, format prices and currency isolation.10 local contexts/198 checks;17 new pure checks and16 affected existing comparator assertions PASS. Do not rerun02 or unrelated green suites.

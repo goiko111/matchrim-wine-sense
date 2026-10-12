@@ -1,0 +1,51 @@
+{
+  "baseline": "72854aff092bd39727a1f4df1705d49a857b40fb",
+  "scope": "Final source; explicit first-after/final-main snapshots precede control/copy-only changes. Comparator price resolver unchanged; no03 suite replay",
+  "files": [
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "baselineSha256": "e69603426e56a73eec0c7da62a6dedc51ffdb21e9349023cfdf2727afef8586f",
+      "finalSha256": "6c161d04f51ba10a75ee4ac6677c7b973663494f6fe7e321fc3fb003c0a56a28"
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "baselineSha256": "a7cda4777758ec8084c0fe51fc8953e359e6ba079843648661e1e29488eeb5c0",
+      "finalSha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "baselineSha256": "35faacedbff4d5e0ec3ea2b97394bea49ecb42edfaab0f39e49d133847ac6d02",
+      "finalSha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "baselineSha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "finalSha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-list-oct12.ts",
+      "baselineSha256": null,
+      "finalSha256": "71254f6cef3981c930bff3b6221c59fd3ecdf872161dbceddd2476bc8d51c7f0"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-list-oct12.py",
+      "baselineSha256": null,
+      "finalSha256": "b87d58a41599c9fecbaf7ab8a807259b8c111703ebab29d9f7038bfc5bbef153"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-value-panel-oct12.py",
+      "baselineSha256": null,
+      "finalSha256": "e59a8891e7bb41c941c5a6199ff2aab87e616fe3f39968672407ccc25ea4a258"
+    },
+    {
+      "path": "qa/fixtures/menu-food-evidence-oct8.json",
+      "baselineSha256": "c5cc2a486254a38155ff88b6d5dad08b2328ba053034a28e8e0ea89f244ea6e3",
+      "finalSha256": "c5cc2a486254a38155ff88b6d5dad08b2328ba053034a28e8e0ea89f244ea6e3"
+    },
+    {
+      "path": "docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json",
+      "baselineSha256": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5",
+      "finalSha256": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5"
+    }
+  ]
+}

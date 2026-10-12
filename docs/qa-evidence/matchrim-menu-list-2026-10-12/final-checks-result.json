@@ -1,0 +1,22 @@
+[
+  {
+    "command": "./node_modules/.bin/tsx scripts/check-matchrim-menu-list-oct12.ts",
+    "exitCode": 0,
+    "elapsedMs": 648
+  },
+  {
+    "command": "npm run typecheck",
+    "exitCode": 0,
+    "elapsedMs": 5036
+  },
+  {
+    "command": "./node_modules/.bin/eslint src/components/wine-import/WineMenuScanner.tsx",
+    "exitCode": 0,
+    "elapsedMs": 666
+  },
+  {
+    "command": "npm run build",
+    "exitCode": 0,
+    "elapsedMs": 6611
+  }
+]

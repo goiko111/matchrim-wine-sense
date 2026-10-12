@@ -1,0 +1,78 @@
+{
+  "scope": "Actual active list/value hook factories extracted with TypeScript AST; positions ignored in pure tests. Recorded model affinity is negative input, never catalog-positive evidence.",
+  "source": "src/components/wine-import/WineMenuScanner.tsx",
+  "sourceSha256": "e69603426e56a73eec0c7da62a6dedc51ffdb21e9349023cfdf2727afef8586f",
+  "checks": [
+    {
+      "name": "Active bottle max uses explicit25/35 despite generic null",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'Barbaresco Marchesi di Barolo'"
+    },
+    {
+      "name": "Active bottle descending uses35 before25",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Barbaresco Marchesi di Barolo|Barolo Marchesi di Barolo'\n- 'Barolo Marchesi di Barolo|Barbaresco Marchesi di Barolo'"
+    },
+    {
+      "name": "Mixed/unknown all-format list lacks monetary basis",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n\n'EUR' !== null\n"
+    },
+    {
+      "name": "Filtered EUR copa need not borrow GBP bottle currency",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n\nnull !== 'EUR'\n"
+    },
+    {
+      "name": "Mixed bottle currencies stay incompatible",
+      "passed": true
+    },
+    {
+      "name": "Model score is not trusted catalog affinity for menu value",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ {\n+   index: 1,\n+   score: 71,\n+   wine: {\n+     affinity_calibrated: true,\n+     anada: null,\n+     atributos: {\n+       acidez: 4,\n+       afrutado: 3,\n+       dulzura: 1,\n+       potencia: 4,\n+       taninos: 5\n+     },\n+     campos_inferidos: [\n+       'region',\n+       'pais',\n+       'uvas'\n+     ],\n+     compatibilidad: 71,\n+     confidence: 0.88,\n+     descripcion: null,\n+     dudas: [],\n+     moneda: 'EUR',\n+     nombre: 'Barbaresco Marchesi di Barolo',\n+     pais: 'Italia',\n+     posicion: {\n+       confidence: 0.9,\n+       height: 2.2,\n+       width: 64.9,\n+       x: 19.1,\n+       y: 32.5\n+     },\n+     precio: 25,\n+     precios: {\n+       botella: 25,\n+       copa: null,\n+       llevar: null\n+     },\n+     productor: 'Marchesi di Barolo',\n+     razon: 'Alta acidez y taninos, coincide con potencia deseada y bajo dulzor.',\n+     region: 'Piamonte',\n+     seccion: 'Premium Red / Tinto',\n+     servicio: 'botella',\n+     texto_fuente: 'Barbaresco Marchesi di Barolo 25',\n+     tipo: 'tinto',\n+     uvas: [\n+       'Nebbiolo'\n+     ]\n+   }\n+ }\n- null"
+    },
+    {
+      "name": "both manual amount is pending, not assigned a guessed unit",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- true"
+    },
+    {
+      "name": "both manual amount has explicit provenance",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'manual'"
+    },
+    {
+      "name": "both read service prices are not overwritten",
+      "passed": true
+    },
+    {
+      "name": "unknown manual amount is pending, not assigned a guessed unit",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- true"
+    },
+    {
+      "name": "unknown manual amount has explicit provenance",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'manual'"
+    },
+    {
+      "name": "unknown read service prices are not overwritten",
+      "passed": true
+    },
+    {
+      "name": "inferred manual amount is pending, not assigned a guessed unit",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- true"
+    },
+    {
+      "name": "inferred manual amount has explicit provenance",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'manual'"
+    },
+    {
+      "name": "inferred read service prices are not overwritten",
+      "passed": true
+    }
+  ]
+}

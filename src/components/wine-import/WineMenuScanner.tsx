@@ -33,7 +33,8 @@ import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { formatScanPrice, normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
 import { clusterOverlayPins } from "@/utils/overlayPins";
-import { applyMenuWineEvidence, updateMenuWineEvidence } from '@/utils/scanWineEvidence';
+import { applyMenuWineEvidence, menuWinePriceEvidence, updateMenuWineEvidence } from '@/utils/scanWineEvidence';
+import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat } from '@/utils/wineComparison';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
@@ -275,7 +276,29 @@ const WineMenuScannerSession = ({
     [scannedWines]
   );
   const selectedPinWine = selectedPinIndex === null ? null : scannedWines[selectedPinIndex] ?? null;
-  const menuCurrency = singlePriceCurrency(scannedWines.map((wine) => ({ price: wine.precio, currency: wine.moneda })));
+  const requestedServiceFormat: WineServiceFormat = scanServiceFilter === 'copa' ? 'glass'
+    : scanServiceFilter === 'botella' ? 'bottle' : 'any';
+  const priceEligibleWines = useMemo(() => scannedWines
+    .map((wine, index) => ({ wine, index, priceEvidence: {
+      id: `menu-row-${index}`, name: wine.nombre, ...menuWinePriceEvidence(wine),
+    } }))
+    .filter(({ wine }) => scanTypeFilter === 'all' || formatWineType(wine.tipo) === scanTypeFilter)
+    .filter(({ wine }) => scanRegionFilter === 'all' || wine.region === scanRegionFilter)
+    .filter(({ priceEvidence }) => requestedServiceFormat === 'any' || priceEvidence.service === requestedServiceFormat || priceEvidence.service === 'both')
+    .filter(({ wine }) => scanMinScore === 'all' || (wine.compatibilidad ?? -1) >= Number(scanMinScore))
+    .filter(({ wine }) => scanMinConfidence === 'all' || (wine.confidence ?? 0) >= Number(scanMinConfidence)),
+  [requestedServiceFormat, scanMinConfidence, scanMinScore, scanRegionFilter, scanTypeFilter, scannedWines]);
+  const listPriceFormat = wineComparisonPriceFormat(priceEligibleWines.map(({ priceEvidence }) => priceEvidence), requestedServiceFormat);
+  const menuPriceRows = priceEligibleWines.map((row) => ({
+    ...row, price: listPriceFormat ? wineComparisonPrice(row.priceEvidence, listPriceFormat) : null,
+    currency: row.priceEvidence.currency,
+  }));
+  const menuCurrency = listPriceFormat ? singlePriceCurrency(menuPriceRows) : null;
+
+  useEffect(() => { setScanMaxPrice(''); }, [listPriceFormat, menuCurrency]);
+  useEffect(() => {
+    if (!menuCurrency && (scanSortMode === 'price-asc' || scanSortMode === 'price-desc')) setScanSortMode('name');
+  }, [menuCurrency, scanSortMode]);
   const menuPinClusters = useMemo(() => clusterOverlayPins(
     scannedWines.flatMap((wine, index) => {
       const position = getWinePosition(wine);
@@ -301,10 +324,16 @@ const WineMenuScannerSession = ({
     const best = scored[0] ?? null;
     const secondaries = scored.slice(1, 3);
     const safeAlternative = scored[1] ?? null;
+    const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice) : null;
     const value = scored
-      .filter(({ wine, score }) => menuCurrency && wine.moneda === menuCurrency
-        && typeof wine.precio === 'number' && wine.precio > 0 && score >= 60)
-      .sort((a, b) => (b.score / Math.max(b.wine.precio ?? 1, 1)) - (a.score / Math.max(a.wine.precio ?? 1, 1)))[0] ?? null;
+      .map((entry) => ({ ...entry, price: menuPriceRows.find((row) => row.index === entry.index)?.price ?? null }))
+      .filter((entry): entry is typeof entry & { price: number } => Boolean(
+        listPriceFormat && menuCurrency && entry.wine.moneda === menuCurrency
+        && entry.wine.sensorySource === 'catalog' && entry.wine.canonicalId && entry.wine.affinity_calibrated === true
+        && typeof entry.price === 'number' && entry.price > 0 && (maxPrice === null || entry.price <= maxPrice)
+        && Number.isFinite(entry.score) && entry.score >= 60,
+      ))
+      .sort((a, b) => (b.score / b.price) - (a.score / a.price))[0] ?? null;
     const adventurous = scored.find(({ score }, index) => index > 0 && score >= 60 && score < 75) ?? scored[2] ?? null;
     const caution = [...scored].reverse().find(({ score }) => score < 60) ?? null;
     const anchored = scannedWines.filter((wine) => getWinePosition(wine) && wine.compatibilidad != null).length;
@@ -322,28 +351,19 @@ const WineMenuScannerSession = ({
       highMatches,
       mediumMatches,
     };
-  }, [scannedWines, menuCurrency]);
+  }, [scannedWines, menuCurrency, listPriceFormat, menuPriceRows, scanMaxPrice]);
 
   const visibleScannedWines = useMemo(() => {
-    const maxPrice = parseNullableNumber(scanMaxPrice);
+    const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice) : null;
 
-    return scannedWines
-      .map((wine, index) => ({ wine, index }))
-      .filter(({ wine }) => scanTypeFilter === 'all' || formatWineType(wine.tipo) === scanTypeFilter)
-      .filter(({ wine }) => scanRegionFilter === 'all' || wine.region === scanRegionFilter)
-      .filter(({ wine }) => scanServiceFilter === 'all' || wine.servicio === scanServiceFilter || wine.servicio === 'ambos')
-      .filter(({ wine }) => scanMinScore === 'all' || (wine.compatibilidad ?? -1) >= Number(scanMinScore))
-      .filter(({ wine }) => scanMinConfidence === 'all' || (wine.confidence ?? 0) >= Number(scanMinConfidence))
-      .filter(({ wine }) => maxPrice === null || (menuCurrency && wine.moneda === menuCurrency
-        && typeof wine.precio === 'number' && wine.precio <= maxPrice))
+    return menuPriceRows
+      .filter(({ price, currency }) => maxPrice === null || (currency === menuCurrency && price !== null && price <= maxPrice))
       .sort((a, b) => {
-        if (scanSortMode === 'price-asc' && menuCurrency) {
-          return (a.wine.moneda === menuCurrency ? a.wine.precio ?? Infinity : Infinity)
-            - (b.wine.moneda === menuCurrency ? b.wine.precio ?? Infinity : Infinity);
-        }
-        if (scanSortMode === 'price-desc' && menuCurrency) {
-          return (b.wine.moneda === menuCurrency ? b.wine.precio ?? -Infinity : -Infinity)
-            - (a.wine.moneda === menuCurrency ? a.wine.precio ?? -Infinity : -Infinity);
+        if ((scanSortMode === 'price-asc' || scanSortMode === 'price-desc') && menuCurrency) {
+          const left = a.currency === menuCurrency ? a.price : null;
+          const right = b.currency === menuCurrency ? b.price : null;
+          if (left === null || right === null) return left === right ? 0 : left === null ? 1 : -1;
+          return scanSortMode === 'price-asc' ? left - right : right - left;
         }
         if (scanSortMode === 'name') {
           return a.wine.nombre.localeCompare(b.wine.nombre, 'es');
@@ -351,14 +371,25 @@ const WineMenuScannerSession = ({
 
         return (b.wine.compatibilidad ?? -1) - (a.wine.compatibilidad ?? -1);
       });
-  }, [scanMaxPrice, scanMinConfidence, scanMinScore, scanRegionFilter, scanServiceFilter, scanSortMode, scanTypeFilter, scannedWines, menuCurrency]);
+  }, [scanMaxPrice, scanSortMode, menuPriceRows, menuCurrency]);
+
+  const listPriceText = (wine: ScannedWine, index: number) => {
+    if (wine.precio_manual_pendiente) return `Precio manual ${formatPrice(wine.precio, wine.moneda) ?? 'sin importe'} · formato pendiente`;
+    const evidence = { id: `menu-row-${index}`, name: wine.nombre, ...menuWinePriceEvidence(wine) };
+    const prefix = wine.precio_origen === 'manual' ? 'Precio manual · ' : '';
+    if (listPriceFormat) return prefix + (formatPrice(wineComparisonPrice(evidence, listPriceFormat), evidence.currency) ?? 'Precio pendiente');
+    const byFormat = (['glass', 'bottle'] as const).flatMap((format) => {
+      const amount = formatPrice(wineComparisonPrice(evidence, format), evidence.currency);
+      return amount ? [`${format === 'glass' ? 'Copa' : 'Botella'} ${amount}`] : [];
+    });
+    return prefix + (byFormat.join(' · ') || (formatPrice(evidence.price, evidence.currency)
+      ? `${formatPrice(evidence.price, evidence.currency)} · formato pendiente` : 'Precio pendiente'));
+  };
 
   useEffect(() => {
     if (loading || scannedWines.length === 0) return;
 
-    window.setTimeout(() => {
-      resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 120);
+    resultsRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
   }, [loading, scannedWines.length]);
 
   const dishContext = pairingDishName?.trim() || '';
@@ -1233,12 +1264,12 @@ const WineMenuScannerSession = ({
 		                      >
 		                        <span className="block break-words font-semibold leading-tight">{value.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-stone-500">
-		                          {[formatPrice(value.wine.precio, value.wine.moneda), `${value.score}%`].filter(Boolean).join(' · ')}
+                          {[formatPrice(value.price, value.wine.moneda), `${value.score}%`].filter(Boolean).join(' · ')}
 		                        </span>
 		                      </button>
 		                    );
 		                  })() : (
-		                    <p className="text-sm text-stone-600">No hay precio fiable suficiente para decidir por valor.</p>
+		                    <p className="text-sm text-stone-600">Falta afinidad acreditada o precio comparable por formato y moneda.</p>
 		                  )}
 		                </div>
 
@@ -1311,23 +1342,13 @@ const WineMenuScannerSession = ({
               <WineComparisonWorkspace
                 wines={scannedWines.map((wine, index) => ({
                   id: `menu-row-${index}`,
+                  ...menuWinePriceEvidence(wine),
                   name: wine.nombre,
                   producer: wine.productor,
                   region: wine.region,
                   affinity: wine.compatibilidad,
                   confidence: wine.confidence,
                   identityConfirmed: isMenuIdentityConfirmed(wine),
-                  prices: wine.precios && !wine.campos_inferidos?.includes('servicio')
-                    ? { glass: wine.precios.copa, bottle: wine.precios.botella } : null,
-                  price: wine.precio,
-                  currency: wine.moneda,
-                  service: wine.campos_inferidos?.includes('servicio') ? null : wine.servicio === 'copa'
-                    ? 'glass'
-                    : wine.servicio === 'botella'
-                      ? 'bottle'
-                      : wine.servicio === 'ambos'
-                        ? 'both'
-                        : null,
                   attributes: wine.sensorySource === 'catalog' && isMenuIdentityConfirmed(wine) && wine.atributos ? {
                     body: wine.atributos.potencia,
                     acidity: wine.atributos.acidez,
@@ -1380,7 +1401,10 @@ const WineMenuScannerSession = ({
 	              </div>
 	              <div className="space-y-2">
 	                <Label htmlFor="scan-service">Servicio</Label>
-	                <Select value={scanServiceFilter} onValueChange={setScanServiceFilter}>
+	                <Select value={scanServiceFilter} onValueChange={(value) => {
+                    setScanMaxPrice('');
+                    setScanServiceFilter(value);
+                  }}>
 	                  <SelectTrigger id="scan-service"><SelectValue /></SelectTrigger>
 	                  <SelectContent>
 	                    <SelectItem value="all">Copa o botella</SelectItem>
@@ -1414,10 +1438,10 @@ const WineMenuScannerSession = ({
 	                </Select>
 	              </div>
 	              <div className="space-y-2">
-                <Label htmlFor="scan-max-price">Precio máximo{menuCurrency ? ` (${menuCurrency})` : ' (moneda pendiente)'}</Label>
+                <Label htmlFor="scan-max-price">Precio máximo{menuCurrency ? ` (${menuCurrency})` : listPriceFormat ? ' (moneda pendiente)' : ' (formato pendiente)'}</Label>
                 <Input
                   id="scan-max-price"
-                  value={scanMaxPrice}
+                  value={menuCurrency ? scanMaxPrice : ''}
                   disabled={!menuCurrency}
                   onChange={(event) => setScanMaxPrice(event.target.value)}
                   inputMode="decimal"
@@ -1431,7 +1455,7 @@ const WineMenuScannerSession = ({
 		            <div className="matchrim-surface overflow-hidden rounded-lg bg-white">
 		              <div className="flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2">
 		                <h3 className="font-semibold text-slate-950">Lista de la carta</h3>
-		                <span className="text-xs text-slate-500">{visibleScannedWines.length} resultados</span>
+		                <span className="text-xs text-slate-500">{visibleScannedWines.length} {visibleScannedWines.length === 1 ? 'resultado' : 'resultados'}</span>
 		              </div>
 		              <div className="divide-y divide-stone-100">
 	                        {visibleScannedWines.map(({ wine, index }) => (
@@ -1447,12 +1471,13 @@ const WineMenuScannerSession = ({
 		                  >
 	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
 		                    <span className="min-w-0 flex-1">
-	                      <span className="block truncate font-semibold text-slate-950">
+	                      <span className="block whitespace-normal break-words font-semibold text-slate-950">
                             {wine.nombre}{wine.anada ? ` ${wine.anada}` : ''}
                           </span>
-		                      <span className="block truncate text-xs text-slate-500">
-		                        {[wine.productor, wine.region, wine.servicio, formatPrice(wine.precio, wine.moneda)].filter(Boolean).join(' · ') || 'Datos por revisar'}
+		                      <span className="block whitespace-normal break-words text-xs text-slate-500">
+		                        {[wine.productor, wine.region, wine.campos_inferidos?.includes('servicio') ? 'Servicio sin confirmar' : wine.servicio].filter(Boolean).join(' · ') || 'Datos por revisar'}
 		                      </span>
+                          <span className={`block whitespace-normal break-words text-xs ${wine.precio_manual_pendiente ? 'font-medium text-amber-800' : 'text-slate-500'}`}>{listPriceText(wine, index)}</span>
 		                    </span>
 		                    <span className="shrink-0 text-right">
 		                      {typeof wine.compatibilidad === 'number' && <span className="block text-lg font-bold text-red-900">≈{wine.compatibilidad}%</span>}
@@ -1607,6 +1632,7 @@ const WineMenuScannerSession = ({
                                 inputMode="decimal"
                                 onChange={(event) => updateScannedWine(index, { precio: parseNullableNumber(event.target.value) })}
                               />
+                              {wine.precio_manual_pendiente && <p role="status" className="text-xs font-medium text-amber-800">Precio manual pendiente de formato: {formatPrice(wine.precio, wine.moneda) ?? 'sin importe'}</p>}
                             </div>
                             <div className="space-y-1.5">
                               <Label htmlFor={`scan-currency-${index}`}>Moneda</Label>

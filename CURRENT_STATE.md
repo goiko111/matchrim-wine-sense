@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-12, active carta list prices
+
+- List uses effective chosen/common service prices and eligible-row currency, not generic amount/whole-menu currency. Safe asc/desc/max/value; unsupported basis resets cap/order. Shared03 adapter semantics, inferred service exclusion and pending manual-price provenance. No FX/volume conversion or implicit EUR.
+- Main0/12 with30 failed assertions ->12/12,160/160; focused honest value panel2/2,6 checks; final14 contexts166 assertions and15 active-factory contracts. One frozen scene/replay and explicit synthetic money/service variants, no new OCR/users/taste outcome. Delayed-scroll dropdown race and transient cap fixed locally.
+- Typecheck/full lint0errors106warnings/build pass; follow-up scoped receipts and source stages; final copy-only lint/build exit0,6.426s. No main extra requests/storage/learning/write/errors or horizontal overflow; no physical/native certification.
+- Report: [MATCHRIM_MENU_LIST_PRICES_2026-10-12.md](docs/MATCHRIM_MENU_LIST_PRICES_2026-10-12.md). Next local gap: price/unit/provenance through scan-save/Bodega and resolving pending units.28 calls, corpora/ledgers and separate Apple/native/live/hosted/human gates preserved; no publication/upload/push.
+
 ## Latest checkpoint: 2026-10-12, active carta comparator
 
 - Stable row ids across manual identity edits; obsolete confidence/catalog/affinity/sensory metadata invalidated. Inferred service/format prices and noncatalog sensory numbers withheld. Unit/currency gates use effective per-format prices; no glass/bottle ratio or currency conversion, no value without affinity.

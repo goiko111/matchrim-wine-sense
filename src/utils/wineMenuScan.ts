@@ -21,6 +21,8 @@ export interface MenuScanWine {
   region: string | null;
   pais: string | null;
   precio: number | null;
+  precio_origen?: 'manual';
+  precio_manual_pendiente?: boolean;
   moneda?: string | null;
   tipo: string;
   descripcion: string | null;

@@ -1,0 +1,35 @@
+{
+  "baseline": "72854aff092bd39727a1f4df1705d49a857b40fb",
+  "scope": "One active list price delta; one existing image, replay and synthetic contract data, not fresh OCR/human/native/hosted evidence",
+  "mainBefore": {
+    "contexts": 12,
+    "passed": 0,
+    "assertions": 160,
+    "failedAssertions": 30
+  },
+  "mainFinal": {
+    "contexts": 12,
+    "passed": 12,
+    "assertions": 160,
+    "failedAssertions": 0
+  },
+  "valueCauseBefore": {
+    "contexts": 2,
+    "passed": 0,
+    "assertions": 6,
+    "failedAssertions": 2
+  },
+  "valueCauseFinal": {
+    "contexts": 2,
+    "passed": 2,
+    "assertions": 6,
+    "failedAssertions": 0
+  },
+  "finalUniqueContexts": 14,
+  "finalAssertions": 166,
+  "pureFinalChecks": 15,
+  "paidCalls": 0,
+  "realAppRemoteCalls": 0,
+  "nativeBuild": null,
+  "uploadedBuild": null
+}

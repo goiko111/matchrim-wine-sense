@@ -1,0 +1,215 @@
+{
+  "scope": "Reuse03 contracts and original recorded responses. EUR/GBP in bank are synthetic, not extracted. Amounts25/35 for manual edits already exist in recorded rows. Both contract explicitly combines recorded full:5 copa25 and bottom:1 botella25 for the same named row; this is not the actual merged replay or verified availability. No new source or model output.",
+  "sha256": {
+    "fixture": "c5cc2a486254a38155ff88b6d5dad08b2328ba053034a28e8e0ea89f244ea6e3",
+    "bank": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5",
+    "image": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194"
+  },
+  "recordedVersion": "scan-wine-menu-2026-10-05-no-placeholder-v9",
+  "caseSources": {
+    "recorded": "recorded full/bottom/top/right-focus",
+    "prices": "03:prices",
+    "currencies": "03:currencies",
+    "both": "synthetic both contract combining recorded full:5/bottom:1 within03:units",
+    "unknown": "03:units Laurent Perriere Ultra",
+    "inferred": "recorded merged Laurent Perriere Ultra"
+  },
+  "bothContract": {
+    "vinos": [
+      {
+        "nombre": "Lugana Allegrini",
+        "productor": "Allegrini",
+        "anada": null,
+        "region": "Lugana",
+        "pais": "Italia",
+        "precio": 12,
+        "moneda": "EUR",
+        "precios": {
+          "copa": 12,
+          "botella": null,
+          "llevar": null
+        },
+        "servicio": "copa",
+        "seccion": "Premium White / Blanco",
+        "confidence": 0.55,
+        "texto_fuente": "Lugana Allegrini C/copa 12",
+        "dudas": [],
+        "campos_inferidos": [
+          "productor",
+          "region",
+          "pais",
+          "tipo"
+        ],
+        "tipo": "blanco",
+        "uvas": [
+          "Turbiana"
+        ],
+        "descripcion": null,
+        "posicion": {
+          "x": 20.3,
+          "y": 42.6,
+          "width": 59.4,
+          "height": 2.2,
+          "confidence": 0.95
+        },
+        "atributos": {
+          "potencia": 3,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 1,
+          "afrutado": 4
+        },
+        "compatibilidad": 71,
+        "razon": "Buen equilibrio de acidez y afrutado, con potencia media, aunque el perfil busca más potencia.",
+        "affinity_calibrated": true
+      },
+      {
+        "nombre": "Barbaresco Marchesi di Barolo",
+        "productor": "Marchesi di Barolo",
+        "anada": null,
+        "region": "Piamonte",
+        "pais": "Italia",
+        "precio": 25,
+        "moneda": "EUR",
+        "precios": {
+          "copa": 25,
+          "botella": 25
+        },
+        "servicio": "ambos",
+        "seccion": "Premium Red / Tinto",
+        "confidence": 0.88,
+        "texto_fuente": "Barbaresco Marchesi di Barolo 25",
+        "dudas": [],
+        "campos_inferidos": [
+          "region",
+          "pais",
+          "uvas"
+        ],
+        "tipo": "tinto",
+        "uvas": [
+          "Nebbiolo"
+        ],
+        "descripcion": null,
+        "posicion": {
+          "x": 19.1,
+          "y": 32.5,
+          "width": 64.9,
+          "height": 2.2,
+          "confidence": 0.9
+        },
+        "atributos": {
+          "potencia": 4,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "compatibilidad": 71,
+        "razon": "Alta acidez y taninos, coincide con potencia deseada y bajo dulzor.",
+        "affinity_calibrated": true
+      },
+      {
+        "nombre": "Barolo Marchesi di Barolo",
+        "productor": "Marchesi di Barolo",
+        "anada": null,
+        "region": "Piamonte",
+        "pais": "Italia",
+        "precio": 35,
+        "moneda": "EUR",
+        "precios": {
+          "copa": null,
+          "botella": 35,
+          "llevar": null
+        },
+        "servicio": "botella",
+        "seccion": "Premium Red / Tinto",
+        "confidence": 0.88,
+        "texto_fuente": "Barolo Marchesi di Barolo 35",
+        "dudas": [],
+        "campos_inferidos": [
+          "region",
+          "pais",
+          "uvas"
+        ],
+        "tipo": "tinto",
+        "uvas": [
+          "Nebbiolo"
+        ],
+        "descripcion": null,
+        "posicion": {
+          "x": 19.1,
+          "y": 36.4,
+          "width": 64.9,
+          "height": 2.2,
+          "confidence": 0.9
+        },
+        "atributos": {
+          "potencia": 5,
+          "acidez": 4,
+          "dulzura": 1,
+          "taninos": 5,
+          "afrutado": 3
+        },
+        "compatibilidad": 69,
+        "razon": "Potencia, acidez y taninos altos, bajo dulzor, excelente compatibilidad con el perfil.",
+        "affinity_calibrated": true
+      },
+      {
+        "nombre": "Laurent Perriere Ultra",
+        "productor": "Laurent Perrier",
+        "anada": null,
+        "region": "Champagne",
+        "pais": "Francia",
+        "precio": null,
+        "moneda": null,
+        "precios": {
+          "copa": null,
+          "botella": null,
+          "llevar": null
+        },
+        "servicio": null,
+        "seccion": "Espumosos/Cha",
+        "confidence": 0.55,
+        "texto_fuente": "Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr",
+        "dudas": [
+          "precio"
+        ],
+        "campos_inferidos": [
+          "productor",
+          "tipo",
+          "uvas",
+          "descripcion"
+        ],
+        "tipo": "espumoso",
+        "uvas": [
+          "Pinot Noir",
+          "Chardonnay"
+        ],
+        "descripcion": "6 años sobre lías.",
+        "posicion": {
+          "x": 80.9,
+          "y": 22.8,
+          "width": 17.5,
+          "height": 7.3,
+          "confidence": 0.7
+        },
+        "atributos": {
+          "potencia": 3,
+          "acidez": 5,
+          "dulzura": 1,
+          "taninos": 1,
+          "afrutado": 3
+        },
+        "compatibilidad": 67,
+        "razon": "Alta acidez y baja dulzura coinciden, pero busca más potencia y taninos.",
+        "affinity_calibrated": true
+      }
+    ],
+    "layout": "rows",
+    "coverage": {
+      "status": "reported_complete",
+      "extracted_wines": 4,
+      "estimated_visible_wines": 4
+    }
+  }
+}

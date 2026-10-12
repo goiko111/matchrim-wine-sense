@@ -1,6 +1,7 @@
 import type { WineCandidate } from './multiWineScan';
 import type { MenuScanWine } from './wineMenuScan';
 import type { MatchrimProfileLike } from './matchrimPassport';
+import type { ComparableWine } from './wineComparison';
 import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
 import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 import { isNonWineIdentity } from './wineCategory';
@@ -66,10 +67,14 @@ export const applyMenuWineEvidence = (wine: MenuScanWine, profile: MatchrimProfi
 
 export const updateMenuWineEvidence = (wine: MenuScanWine, updates: Partial<MenuScanWine>): MenuScanWine => {
   const edited = { ...wine, ...updates };
-  if ('precio' in updates && updates.precio !== wine.precio
-    && !wine.campos_inferidos?.includes('servicio')
-    && (wine.servicio === 'copa' || wine.servicio === 'botella')) {
-    edited.precios = { ...wine.precios, [wine.servicio]: updates.precio ?? null };
+  if ('precio' in updates && updates.precio !== wine.precio) {
+    edited.precio_origen = 'manual';
+    const singleFormat = !wine.campos_inferidos?.includes('servicio')
+      && (wine.servicio === 'copa' || wine.servicio === 'botella');
+    edited.precio_manual_pendiente = !singleFormat;
+    if (singleFormat && (wine.servicio === 'copa' || wine.servicio === 'botella')) {
+      edited.precios = { ...wine.precios, [wine.servicio]: updates.precio ?? null };
+    }
   }
   const identityChanged = (['nombre', 'productor', 'anada', 'region', 'pais', 'tipo', 'uvas'] as const)
     .some((field) => field in updates && JSON.stringify(updates[field]) !== JSON.stringify(wine[field]));
@@ -84,5 +89,18 @@ export const updateMenuWineEvidence = (wine: MenuScanWine, updates: Partial<Menu
     confidence: null,
     razon: 'Identidad editada manualmente; ficha y afinidad pendientes de verificar.',
     dudas: Array.from(new Set([...(wine.dudas ?? []), 'Identidad editada manualmente; confianza pendiente de verificar.'])),
+  };
+};
+
+export const menuWinePriceEvidence = (wine: MenuScanWine): Pick<ComparableWine, 'price' | 'currency' | 'prices' | 'service'> => {
+  const inferredService = wine.campos_inferidos?.includes('servicio');
+  const pending = wine.precio_manual_pendiente === true;
+  return {
+    price: pending ? null : wine.precio,
+    currency: wine.moneda,
+    prices: !pending && !inferredService && wine.precios
+      ? { glass: wine.precios.copa, bottle: wine.precios.botella } : null,
+    service: inferredService ? null : wine.servicio === 'copa' ? 'glass'
+      : wine.servicio === 'botella' ? 'bottle' : wine.servicio === 'ambos' ? 'both' : null,
   };
 };

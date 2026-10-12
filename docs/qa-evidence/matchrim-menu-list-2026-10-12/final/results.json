@@ -1,0 +1,1650 @@
+{
+  "scope": "Active menu-list price/service delta; one frozen image, no remote calls or new recognition.",
+  "sceneCount": 1,
+  "newScenes": 0,
+  "newProviderOutputs": 0,
+  "paidCalls": 0,
+  "realAppRemoteCalls": 0,
+  "results": [
+    {
+      "case": "recorded-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 16
+        },
+        {
+          "name": "Literal duplicate/partial Ultra remains one list row",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Recorded currency stays unknown",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Inferred copa availability is not admitted",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini",
+            "Greco di tufo Terredora di Paolo",
+            "Quater vitis Firriato",
+            "Poully fume blanc Reverdy y fils",
+            "Amarone",
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo",
+            "Dolcetto d'alba Elio Grasso",
+            "Bricco dell'uccellone Barbera",
+            "Nebbiolo Nino Negri"
+          ]
+        },
+        {
+          "name": "Copa filter does not infer EUR",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bottle filter also leaves currency unknown",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "right-focus"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "recorded-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 16
+        },
+        {
+          "name": "Literal duplicate/partial Ultra remains one list row",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Recorded currency stays unknown",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Inferred copa availability is not admitted",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini",
+            "Greco di tufo Terredora di Paolo",
+            "Quater vitis Firriato",
+            "Poully fume blanc Reverdy y fils",
+            "Amarone",
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo",
+            "Dolcetto d'alba Elio Grasso",
+            "Bricco dell'uccellone Barbera",
+            "Nebbiolo Nino Negri"
+          ]
+        },
+        {
+          "name": "Copa filter does not infer EUR",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bottle filter also leaves currency unknown",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "right-focus"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "prices-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "All mixed/unknown units disable monetary decisions",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bottle rows selected by actual service",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Known format prices displayed despite absent generic price",
+          "passed": true,
+          "detail": [
+            "2\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · botella\n25,00 €\nIdentidad alta",
+            "3\nBarolo Marchesi di Barolo\nMarchesi di Barolo · Piamonte · botella\n35,00 €\nIdentidad alta"
+          ]
+        },
+        {
+          "name": "Explicit bottle price sorting enabled",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bottle ascending order uses25 then35",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Bottle descending order uses35 then25",
+          "passed": true,
+          "detail": [
+            "Barolo Marchesi di Barolo",
+            "Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Bottle maximum30 retains known25 only",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Copa filter does not borrow bottle price",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini"
+          ]
+        },
+        {
+          "name": "All resets unsupported cap rather than hiding unknown rows",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo",
+            "Laurent Perriere Ultra",
+            "Lugana Allegrini"
+          ]
+        },
+        {
+          "name": "All no longer claims price sorting",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "prices-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "All mixed/unknown units disable monetary decisions",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bottle rows selected by actual service",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Known format prices displayed despite absent generic price",
+          "passed": true,
+          "detail": [
+            "2\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · botella\n25,00 €\nIdentidad alta",
+            "3\nBarolo Marchesi di Barolo\nMarchesi di Barolo · Piamonte · botella\n35,00 €\nIdentidad alta"
+          ]
+        },
+        {
+          "name": "Explicit bottle price sorting enabled",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Bottle ascending order uses25 then35",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Bottle descending order uses35 then25",
+          "passed": true,
+          "detail": [
+            "Barolo Marchesi di Barolo",
+            "Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Bottle maximum30 retains known25 only",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Copa filter does not borrow bottle price",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini"
+          ]
+        },
+        {
+          "name": "All resets unsupported cap rather than hiding unknown rows",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini",
+            "Barbaresco Marchesi di Barolo",
+            "Laurent Perriere Ultra",
+            "Lugana Allegrini"
+          ]
+        },
+        {
+          "name": "All no longer claims price sorting",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "currencies-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Eligible EUR copa subset can use its own currency",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini"
+          ]
+        },
+        {
+          "name": "Eligible copa price cap keeps12",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini"
+          ]
+        },
+        {
+          "name": "EUR and GBP bottle prices cannot be ordered or capped together",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Currency change clears previous cap and restores both rows",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Both currency literals retained without conversion",
+          "passed": true,
+          "detail": [
+            "2\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · botella\n25,00 €\nIdentidad alta",
+            "3\nBarolo Marchesi di Barolo\nMarchesi di Barolo · Piamonte · botella\n35,00 GBP\nIdentidad alta"
+          ]
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "currencies-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Eligible EUR copa subset can use its own currency",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini"
+          ]
+        },
+        {
+          "name": "Eligible copa price cap keeps12",
+          "passed": true,
+          "detail": [
+            "Lugana Allegrini"
+          ]
+        },
+        {
+          "name": "EUR and GBP bottle prices cannot be ordered or capped together",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Currency change clears previous cap and restores both rows",
+          "passed": true,
+          "detail": [
+            "Barbaresco Marchesi di Barolo",
+            "Barolo Marchesi di Barolo"
+          ]
+        },
+        {
+          "name": "Both currency literals retained without conversion",
+          "passed": true,
+          "detail": [
+            "2\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · botella\n25,00 €\nIdentidad alta",
+            "3\nBarolo Marchesi di Barolo\nMarchesi di Barolo · Piamonte · botella\n35,00 GBP\nIdentidad alta"
+          ]
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Ambiguous manual amount visibly pending format",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "List distinguishes pending manual amount from read unit price",
+          "passed": true,
+          "detail": "2\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nIdentidad alta"
+        },
+        {
+          "name": "Pending manual edit cannot silently use old bottle amount",
+          "passed": true,
+          "detail": [
+            "Sin precio",
+            "35,00 €",
+            "Sin precio"
+          ]
+        },
+        {
+          "name": "Price edit preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Ambiguous manual amount visibly pending format",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "List distinguishes pending manual amount from read unit price",
+          "passed": true,
+          "detail": "2\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nIdentidad alta"
+        },
+        {
+          "name": "Pending manual edit cannot silently use old bottle amount",
+          "passed": true,
+          "detail": [
+            "Sin precio",
+            "35,00 €",
+            "Sin precio"
+          ]
+        },
+        {
+          "name": "Price edit preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "unknown-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Ambiguous manual amount visibly pending format",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "List distinguishes pending manual amount from read unit price",
+          "passed": true,
+          "detail": "4\nLaurent Perriere Ultra\nLaurent Perrier · Champagne\nPrecio manual 25.00 · moneda pendiente · formato pendiente\nIdentidad baja"
+        },
+        {
+          "name": "Pending manual edit cannot silently use old bottle amount",
+          "passed": true,
+          "detail": [
+            "25,00 €",
+            "35,00 €",
+            "Sin precio",
+            "Sin precio"
+          ]
+        },
+        {
+          "name": "Price edit preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "unknown-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 4
+        },
+        {
+          "name": "Ambiguous manual amount visibly pending format",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "List distinguishes pending manual amount from read unit price",
+          "passed": true,
+          "detail": "4\nLaurent Perriere Ultra\nLaurent Perrier · Champagne\nPrecio manual 25.00 · moneda pendiente · formato pendiente\nIdentidad baja"
+        },
+        {
+          "name": "Pending manual edit cannot silently use old bottle amount",
+          "passed": true,
+          "detail": [
+            "25,00 €",
+            "35,00 €",
+            "Sin precio",
+            "Sin precio"
+          ]
+        },
+        {
+          "name": "Price edit preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "inferred-portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 16
+        },
+        {
+          "name": "Ambiguous manual amount visibly pending format",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "List distinguishes pending manual amount from read unit price",
+          "passed": true,
+          "detail": "12\nLaurent Perriere Ultra\nLaurent Perrier · Champagne · Servicio sin confirmar\nPrecio manual 25.00 · moneda pendiente · formato pendiente\nIdentidad baja"
+        },
+        {
+          "name": "Pending manual edit cannot silently use old bottle amount",
+          "passed": true,
+          "detail": [
+            "Sin precio",
+            "Sin precio",
+            "Sin precio",
+            "Sin precio"
+          ]
+        },
+        {
+          "name": "Price edit preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 393,
+            "scroll": 393
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "right-focus"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "inferred-landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Actual list route and reference count",
+          "passed": true,
+          "detail": 16
+        },
+        {
+          "name": "Ambiguous manual amount visibly pending format",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "List distinguishes pending manual amount from read unit price",
+          "passed": true,
+          "detail": "12\nLaurent Perriere Ultra\nLaurent Perrier · Champagne · Servicio sin confirmar\nPrecio manual 25.00 · moneda pendiente · formato pendiente\nIdentidad baja"
+        },
+        {
+          "name": "Pending manual edit cannot silently use old bottle amount",
+          "passed": true,
+          "detail": [
+            "Sin precio",
+            "Sin precio",
+            "Sin precio",
+            "Sin precio"
+          ]
+        },
+        {
+          "name": "Price edit preserves selected rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves base comparison order unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Display filter/sort leaves selected references unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Remaining rows preserve original indexes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated list affinity or value winner",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No extra requests, storage/learning or database write",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No console/runtime error",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "No horizontal mobile overflow",
+          "passed": true,
+          "detail": {
+            "width": 852,
+            "scroll": 852
+          }
+        }
+      ],
+      "failures": [],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "top"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "bottom"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "tile": "right-focus"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "tile": "full"
+        }
+      ],
+      "newRequests": 0,
+      "storageBefore": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "storageAfter": {
+        "keys": [
+          "matchrim.local_profile_owner.v1",
+          "matchrim.onboarding.v2:anonymous",
+          "matchrim.scan_privacy_notice.v2"
+        ],
+        "sha256": "3c92b259eb7ad5e8e30ce97a0b6b35eb0198a6318710fcfa2a224c70b2e2b6b1"
+      },
+      "errors": [],
+      "console": []
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "scope": "Exact source for first04 after run: nine complete contexts pass, two dropdown timing failures and one transient cap assertion; before local control-follow-up",
+  "files": [
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "sha256": "7d4d4b3f700363dc27a0d58dd5612334741bc6458f468dc1d7a91c54c397f3b6"
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-list-oct12.py",
+      "sha256": "b87d58a41599c9fecbaf7ab8a807259b8c111703ebab29d9f7038bfc5bbef153"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-list-oct12.ts",
+      "sha256": "71254f6cef3981c930bff3b6221c59fd3ecdf872161dbceddd2476bc8d51c7f0"
+    }
+  ]
+}

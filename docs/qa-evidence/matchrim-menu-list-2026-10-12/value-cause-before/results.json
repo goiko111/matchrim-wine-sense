@@ -1,0 +1,89 @@
+{
+  "scope": "Focused real value-panel abstention DOM check; synthetic03 prices, no positive catalog/profile.",
+  "paidCalls": 0,
+  "realAppRemoteCalls": 0,
+  "results": [
+    {
+      "orientation": "portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "Real value panel contains no winner button",
+          "passed": true
+        },
+        {
+          "name": "Real value panel names missing affinity or comparable price",
+          "passed": false
+        },
+        {
+          "name": "No runtime/console error or database mutation",
+          "passed": true
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "orientation": "landscape",
+      "passed": false,
+      "steps": [
+        {
+          "name": "Real value panel contains no winner button",
+          "passed": true
+        },
+        {
+          "name": "Real value panel names missing affinity or comparable price",
+          "passed": false
+        },
+        {
+          "name": "No runtime/console error or database mutation",
+          "passed": true
+        }
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}
