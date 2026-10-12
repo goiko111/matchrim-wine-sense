@@ -1,0 +1,211 @@
+
+> vite_react_shadcn_ts@0.0.0 lint
+> eslint .
+
+
+/Users/GOIKO/2matchrim76-recognition-20261008/scripts/seed-matchrim-qa-cohort.ts
+  161:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  228:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/CSVImporter.tsx
+  102:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/QuizResults.tsx
+  276:36  warning  Unexpected any. Specify a different type                                                                               @typescript-eslint/no-explicit-any
+  702:47  warning  Unexpected any. Specify a different type                                                                               @typescript-eslint/no-explicit-any
+  732:6   warning  React Hook useEffect has a missing dependency: 'getCountryFromWine'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/WineDetailsDialog.tsx
+  102:6  warning  React Hook useEffect has a missing dependency: 'fetchWineDetails'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/WineStylesCSVImporter.tsx
+  134:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/admin/AdminAnalytics.tsx
+  11:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  14:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  95:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/admin/AdminMetrics.tsx
+  103:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  114:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  228:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  355:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/csv/DataManagement.tsx
+  67:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/data-viewer/DataExporter.tsx
+   16:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   20:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   22:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   27:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   46:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   94:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  138:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  141:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  175:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  178:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  196:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/data-viewer/MatchrimProfilesTable.tsx
+  72:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/data-viewer/WineStylesTable.tsx
+  68:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/ui/badge.tsx
+  36:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/ui/button.tsx
+  56:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/ui/form.tsx
+  168:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/ui/navigation-menu.tsx
+  119:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/ui/sidebar.tsx
+  760:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/ui/sonner.tsx
+  29:19  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/ui/toggle.tsx
+  43:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/wine-import/LocationSelector.tsx
+   16:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   29:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   30:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   33:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/wine-import/PurchaseInfoSelector.tsx
+   33:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   34:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   35:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  135:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/components/wine-import/ScanHub.tsx
+  38:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/contexts/AuthContext.tsx
+   13:104  warning  Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+   14:65   warning  Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+   16:54   warning  Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+   21:14   warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  114:21   warning  Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+  157:21   warning  Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+  184:21   warning  Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+  203:21   warning  Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/data/quizData.ts
+  459:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  459:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/hooks/useQuizResults.ts
+  193:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/hooks/useRegistrationData.ts
+  178:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/i18n/index.tsx
+  210:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  223:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/pages/MyWines.tsx
+   78:23  warning  Unexpected any. Specify a different type                                                                              @typescript-eslint/no-explicit-any
+   91:23  warning  Unexpected any. Specify a different type                                                                              @typescript-eslint/no-explicit-any
+  294:52  warning  Unexpected any. Specify a different type                                                                              @typescript-eslint/no-explicit-any
+  346:7   warning  React Hook useEffect has a missing dependency: 'loadWines'. Either include it or remove the dependency array          react-hooks/exhaustive-deps
+  352:7   warning  React Hook useEffect has a missing dependency: 'loadLearningWines'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  361:6   warning  React Hook useEffect has a missing dependency: 'applyFilters'. Either include it or remove the dependency array       react-hooks/exhaustive-deps
+  560:41  warning  Unexpected any. Specify a different type                                                                              @typescript-eslint/no-explicit-any
+  617:50  warning  Unexpected any. Specify a different type                                                                              @typescript-eslint/no-explicit-any
+  747:23  warning  Unexpected any. Specify a different type                                                                              @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/pages/WineImport.tsx
+  18:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/pages/WineStyleDetail.tsx
+  85:6  warning  React Hook useEffect has a missing dependency: 'fetchWineStyle'. Either include it or remove the dependency array          react-hooks/exhaustive-deps
+  91:6  warning  React Hook useEffect has a missing dependency: 'fetchStyleCombinations'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/utils/wineRecommendations.ts
+  74:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/src/utils/winerimDataAggregation.ts
+  25:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/analyze-distributor-prices/index.ts
+  103:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  121:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/analyze-restaurant-prices/index.ts
+  107:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  125:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/detect-location/index.ts
+  42:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-distributor-ocr/index.ts
+  119:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-distributor-pdf/index.ts
+  86:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-distributor-text/index.ts
+  88:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-restaurant-ocr/index.ts
+  120:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-restaurant-pdf/index.ts
+  93:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-restaurant-text/index.ts
+  87:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-wine-label-ocr/index.ts
+  183:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-wines-ocr/index.ts
+   98:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  128:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-wines-pdf/index.ts
+  111:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/extract-wines-text/index.ts
+  105:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/scan-food-pairing/index.ts
+  34:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/search-places/index.ts
+  42:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/send-auth-email/index.ts
+  229:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/wine-details/index.ts
+  156:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/GOIKO/2matchrim76-recognition-20261008/supabase/functions/wine-search/index.ts
+   39:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  207:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  270:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  328:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  358:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 106 problems (0 errors, 106 warnings)
+
