@@ -1,0 +1,236 @@
+{
+  "scope": "Only08 explicit profile retry, one existing scene, invalid local auth/SDK interception; zero hosted writes/OCR rerun.",
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realAccounts": 0,
+  "results": [
+    {
+      "case": "recover:portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 1,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 3,
+            "terminal": 3
+          }
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Known base read failure is distinct from absence",
+        "Explicit profile-only retry available"
+      ],
+      "counters": {
+        "base": 1,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            1165083
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ]
+    },
+    {
+      "case": "recover:landscape",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 1,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 3,
+            "terminal": 3
+          }
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Known base read failure is distinct from absence",
+        "Explicit profile-only retry available"
+      ],
+      "counters": {
+        "base": 1,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            1165083
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ]
+    }
+  ]
+}

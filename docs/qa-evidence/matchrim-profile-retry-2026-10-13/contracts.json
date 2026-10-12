@@ -1,0 +1,120 @@
+{
+  "scope": "Only08 pure profile payload/math-sheet controls and active callback ref contract. No real human profile/catalog approval. Actual06 returned ID is replayed only in a simulated ref ledger; UI never inserts to prove it.",
+  "checks": [
+    {
+      "name": "Base failure is not absence; private details do not surface",
+      "passed": true
+    },
+    {
+      "name": "Known timer timeout differs from unspecified failure",
+      "passed": true
+    },
+    {
+      "name": "Successful no-row response is missing, not transient failure",
+      "passed": true
+    },
+    {
+      "name": "Invalid incomplete profile is neither ready nor retryable error",
+      "passed": true
+    },
+    {
+      "name": "Invalid zero profile is neither ready nor retryable error",
+      "passed": true
+    },
+    {
+      "name": "Invalid nonfinite profile is neither ready nor retryable error",
+      "passed": true
+    },
+    {
+      "name": "Invalid string profile is neither ready nor retryable error",
+      "passed": true
+    },
+    {
+      "name": "Valid mathematical payload stays ready/unchanged, not human persona",
+      "passed": true
+    },
+    {
+      "name": "Training failed preserves quiz, not learned samples",
+      "passed": true
+    },
+    {
+      "name": "Training timeout preserves quiz, not learned samples",
+      "passed": true
+    },
+    {
+      "name": "Anonymous missing data never reads/claims an account",
+      "passed": true
+    },
+    {
+      "name": "Outer cancellation propagates abort, not retryable error",
+      "passed": true
+    },
+    {
+      "name": "Recovered mathematical profile cannot promote model attributes/raw score",
+      "passed": true
+    },
+    {
+      "name": "Already-grounded mathematical sheet uses only existing local calculation",
+      "passed": true
+    },
+    {
+      "name": "Missing retained-sheet evidence stays pending: canonicalId",
+      "passed": true
+    },
+    {
+      "name": "Missing retained-sheet evidence stays pending: sensorySource",
+      "passed": true
+    },
+    {
+      "name": "Missing retained-sheet evidence stays pending: atributos",
+      "passed": true
+    },
+    {
+      "name": "Missing retained-sheet evidence stays pending: confidence",
+      "passed": true
+    },
+    {
+      "name": "Refresh changes only three affinity fields, not image boxes/prices/identity",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer unchanged: saveScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer unchanged: updateScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer unchanged: resetSaveBatch",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer unchanged: normalizeScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer unchanged: getWineDecision",
+      "passed": true
+    },
+    {
+      "name": "Active callback doubleclick makes one read, retains actual06 ID in simulated ref",
+      "passed": true
+    },
+    {
+      "name": "Retry never resets ledger/scans/refetches canonical/writes SDK",
+      "passed": true
+    },
+    {
+      "name": "New valid selection invalidates retry before batch reset",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+    "src/utils/scanProfile.ts": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+    "src/services/matchrimScanProfile.ts": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+    "src/utils/menuProfileRecovery.ts": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+    "scripts/check-matchrim-profile-retry-oct13.ts": "20bd81b96f1233461c1a1bf43075dbe5c1e8244174dd670705c81751522e6ae0"
+  }
+}

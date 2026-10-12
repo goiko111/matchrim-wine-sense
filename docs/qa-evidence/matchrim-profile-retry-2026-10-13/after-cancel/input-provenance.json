@@ -1,0 +1,13 @@
+{
+  "scope": "Only08 explicit profile retry, one existing scene, invalid local auth/SDK interception; zero hosted writes/OCR rerun.",
+  "hashes": {
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "src/components/wine-import/WineMenuScanner.tsx": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+    "src/utils/scanProfile.ts": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+    "src/services/matchrimScanProfile.ts": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150"
+  },
+  "data": "One existing image and04 syntheticBOTH. No profile-positive UI fixture. Null200 is absence, not recovery of a real human profile.",
+  "remoteAppCalls": 0,
+  "paidCalls": 0
+}

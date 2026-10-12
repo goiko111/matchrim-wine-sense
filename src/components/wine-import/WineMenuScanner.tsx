@@ -20,7 +20,7 @@ import {
 import { AffinityExplanation } from "@/components/AffinityExplanation";
 import { AiRimContextGuide } from "@/components/AiRimContextGuide";
 import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
@@ -42,6 +42,8 @@ import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat 
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
+import { canRetryScanProfile } from '@/utils/scanProfile';
+import { refreshMenuProfileAffinity } from '@/utils/menuProfileRecovery';
 import { mapWithConcurrency } from '@/utils/multiWineScan';
 import {
   normalizeMenuAffinity,
@@ -239,6 +241,7 @@ const WineMenuScannerSession = ({
   const [identityHoldIndexes, setIdentityHoldIndexes] = useState<Set<number>>(new Set());
   const [hasProfile, setHasProfile] = useState(false);
   const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);
+  const [retryingProfile, setRetryingProfile] = useState(false);
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
   const [convertingPdf, setConvertingPdf] = useState(false);
   const [scanSortMode, setScanSortMode] = useState<ScannedWineSortMode>('compatibility');
@@ -266,6 +269,24 @@ const WineMenuScannerSession = ({
   const savedCardsRef = useRef(new Map<number, SavedMenuCard>());
   const pendingIdentitiesRef = useRef(new Map<number, string>());
   const identityHoldsRef = useRef(new Set<number>());
+  const profileRetryRef = useRef<AbortController | null>(null);
+  const profileRetryLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
+
+  const invalidateProfileRetry = () => {
+    profileRetryLifetime.current.generation += 1;
+    profileRetryRef.current?.abort();
+    profileRetryRef.current = null;
+    setRetryingProfile(false);
+  };
+
+  useLayoutEffect(() => {
+    profileRetryLifetime.current = { active: true, generation: profileRetryLifetime.current.generation + 1, ownerId: user?.id };
+    return () => {
+      profileRetryLifetime.current.active = false;
+      profileRetryLifetime.current.generation += 1;
+      profileRetryRef.current?.abort();
+    };
+  }, [user?.id]);
 
   useLayoutEffect(() => {
     saveLifetime.current = { active: true, generation: saveLifetime.current.generation + 1, ownerId: user?.id };
@@ -487,6 +508,7 @@ const WineMenuScannerSession = ({
     }
 
     // Activar loader inmediatamente
+    invalidateProfileRetry();
     resetSaveBatch();
     setLoading(true);
     setScannedWines([]);
@@ -770,6 +792,7 @@ const WineMenuScannerSession = ({
   };
 
   const clearScan = () => {
+    invalidateProfileRetry();
     scanAbortRef.current?.abort();
     resetSaveBatch();
     setPreview(null);
@@ -826,6 +849,44 @@ const WineMenuScannerSession = ({
   const getWineDecision = (wine: ScannedWine) => presentMenuAffinity(
     wine.compatibilidad, wine.affinity_calibrated === true && Boolean(scanProfile?.profile),
     scanProfile?.source === 'unavailable' ? scanProfile.note : wine.razon,
+  );
+  const retryScanProfile = async () => {
+    const ownerId = user?.id;
+    if (!ownerId || loading || !scannedWines.length || profileRetryRef.current || !canRetryScanProfile(scanProfile)) return;
+    const controller = new AbortController();
+    profileRetryRef.current = controller;
+    const generation = profileRetryLifetime.current.generation;
+    const isCurrent = () => profileRetryLifetime.current.active && profileRetryLifetime.current.generation === generation
+      && profileRetryLifetime.current.ownerId === ownerId && profileRetryRef.current === controller && !controller.signal.aborted;
+    setRetryingProfile(true);
+    try {
+      const snapshot = await loadMatchrimScanProfile(ownerId, controller.signal);
+      if (!isCurrent()) return;
+      setScanProfile(snapshot);
+      setHasProfile(Boolean(snapshot.profile));
+      setScannedWines((current) => current.map((wine) => refreshMenuProfileAffinity(wine, snapshot.profile)));
+    } catch {
+      if (!isCurrent()) return;
+      setScanProfile({ profile: null, source: 'unavailable', samples: null, status: 'base-error', note: 'No se pudo cargar tu perfil; afinidad pendiente.' });
+      setHasProfile(false);
+      setScannedWines((current) => current.map((wine) => refreshMenuProfileAffinity(wine, null)));
+    } finally {
+      if (isCurrent()) { profileRetryRef.current = null; setRetryingProfile(false); }
+    }
+  };
+  const renderProfileRecovery = () => scanProfile && (
+    <div role="status" aria-label="Estado del perfil del escáner" data-testid="scan-profile-recovery" className="mt-2 space-y-2 text-sm text-stone-600">
+      <p data-testid="scan-profile-source">{retryingProfile ? 'Cargando perfil...' : scanProfile.note}</p>
+      {user && canRetryScanProfile(scanProfile) && (
+        <div className="flex flex-wrap items-center gap-2">
+          <Button type="button" variant="outline" className="min-h-11 gap-2" disabled={retryingProfile} onClick={retryScanProfile}>
+            {retryingProfile ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            Reintentar perfil
+          </Button>
+          {retryingProfile && <Button type="button" variant="ghost" size="icon" className="h-11 w-11" aria-label="Cancelar carga del perfil" title="Cancelar carga del perfil" onClick={invalidateProfileRetry}><X className="h-4 w-4" /></Button>}
+        </div>
+      )}
+    </div>
   );
   const selectedPinDecision = selectedPinWine ? getWineDecision(selectedPinWine) : null;
   const renderWineAffinityExplanation = (wine: ScannedWine) => {
@@ -1227,7 +1288,7 @@ const WineMenuScannerSession = ({
               <p className="mt-1 text-sm text-muted-foreground">
                 Revisa nombre, añada y precio antes de guardar. La carta puede tener errores de lectura.
               </p>
-              {scanProfile && <p className="mt-2 text-sm text-stone-600" data-testid="scan-profile-source">{scanProfile.note}</p>}
+              {renderProfileRecovery()}
             </div>
             <div className="flex flex-wrap gap-2">
               {!hasProfile && (
@@ -1947,7 +2008,9 @@ const WineMenuScannerSession = ({
 	        </div>
 	      )}
 
-	      <Drawer open={selectedPinIndex !== null} onOpenChange={(open) => !open && setSelectedPinIndex(null)}>
+	      <Drawer open={selectedPinIndex !== null} onOpenChange={(open) => {
+          if (!open) { if (profileRetryRef.current) invalidateProfileRetry(); setSelectedPinIndex(null); }
+        }}>
 	        <DrawerContent className="max-h-[88vh] border-stone-200 bg-stone-50">
 	          {selectedPinWine && selectedPinIndex !== null && (
 	            <>
@@ -1964,7 +2027,8 @@ const WineMenuScannerSession = ({
 	                  </DrawerClose>
 	                </div>
 	              </DrawerHeader>
-	              <div className="overflow-y-auto p-4">
+              <div className="overflow-y-auto p-4">
+                {renderProfileRecovery()}
 	                <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
 	                  <div><div className="text-xl font-bold text-red-900">{selectedPinDecision?.score == null ? '-' : `≈${selectedPinDecision.score}%`}</div><div className="text-xs text-slate-500">{selectedPinDecision?.state === 'pending' ? 'Afinidad pendiente' : 'Afinidad estimada'}</div></div>
 	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>

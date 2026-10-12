@@ -1,0 +1,3118 @@
+{
+  "scope": "Only08 intercepted fake-auth one-scene variations, not users/recognition/persistence; saved ID is ref contract not UI insert",
+  "contexts": 18,
+  "contextsPassed": 18,
+  "checks": 226,
+  "checksPassed": 226,
+  "contracts": 27,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "cases": [
+    {
+      "case": "recover:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Valid absence replaces failure, not fabricated profile",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Absence is not a transient error with endless retry",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [],
+      "replyErrors": []
+    },
+    {
+      "case": "recover:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Valid absence replaces failure, not fabricated profile",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Absence is not a transient error with endless retry",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [],
+      "replyErrors": []
+    },
+    {
+      "case": "persistent:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Failure/timeout remains honest and manually retryable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No automatic loop while failure persists",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [],
+      "replyErrors": []
+    },
+    {
+      "case": "persistent:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Failure/timeout remains honest and manually retryable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No automatic loop while failure persists",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [],
+      "replyErrors": []
+    },
+    {
+      "case": "doubleclick:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Valid absence replaces failure, not fabricated profile",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Absence is not a transient error with endless retry",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [],
+      "replyErrors": []
+    },
+    {
+      "case": "doubleclick:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Valid absence replaces failure, not fabricated profile",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Absence is not a transient error with endless retry",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [],
+      "replyErrors": []
+    },
+    {
+      "case": "close:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Cancelled/closed retry does not publish late absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "close:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Cancelled/closed retry does not publish late absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "owner:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Stale context has no previous wine profile publication",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "owner:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Stale context has no previous wine profile publication",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "clear:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Stale context has no previous wine profile publication",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "clear:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Stale context has no previous wine profile publication",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "timeout:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Failure/timeout remains honest and manually retryable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No automatic loop while failure persists",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "timeout:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Failure/timeout remains honest and manually retryable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No automatic loop while failure persists",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "cancel:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Cancelled/closed retry does not publish late absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "cancel:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Cancelled/closed retry does not publish late absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Selection and wine identity remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Image bytes, manual pending price, count and original list remain unchanged",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        },
+        {
+          "stage": "after-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "unmount:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Stale context has no previous wine profile publication",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    },
+    {
+      "case": "unmount:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Known base read failure is distinct from absence",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Explicit profile-only retry available",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Exactly one new base read, no parallel click or automatic retry",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Pending retry is observable",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Stale context has no previous wine profile publication",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Retry does not invoke OCR/canonical/vision again",
+          "passed": true,
+          "detail": {
+            "base": 2,
+            "ocr": 1,
+            "canonical": 1
+          }
+        },
+        {
+          "name": "Owner-explicit GET only for profile reads",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No DB/feedback/history/profile writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal requests locally terminal/intercepted",
+          "passed": true,
+          "detail": {
+            "seen": 4,
+            "terminal": 4
+          }
+        },
+        {
+          "name": "Any failed fixture reply corresponds to observed client abort, not egress failure",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "No runtime exception or mobile overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "counters": {
+        "base": 2,
+        "ocr": 1,
+        "canonical": 1
+      },
+      "snapshots": [
+        {
+          "stage": "before-retry",
+          "row": "1\nBarbaresco Marchesi di Barolo\nMarchesi di Barolo · Piamonte · ambos\nPrecio manual 35,00 € · formato pendiente\nAfinidad pendiente\nIdentidad alta",
+          "name": "Barbaresco Marchesi di Barolo",
+          "price": "35",
+          "image": [
+            "076e3836d9abb3a319e6a15698c63105982602bf56d9ce4b0ca665eae13728f3"
+          ],
+          "ocr": 1,
+          "canonical": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "query": {}
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "query": {}
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "query": {
+            "select": [
+              "potente,acidez,dulce,tanico,afrutado"
+            ],
+            "user_id": [
+              "eq.00000000-0000-4000-8000-000000000080"
+            ],
+            "order": [
+              "created_at.desc"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "clientAborted": [
+        "https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/quiz_results?select=potente%2Cacidez%2Cdulce%2Ctanico%2Cafrutado&user_id=eq.00000000-0000-4000-8000-000000000080&order=created_at.desc&limit=1"
+      ],
+      "replyErrors": []
+    }
+  ]
+}

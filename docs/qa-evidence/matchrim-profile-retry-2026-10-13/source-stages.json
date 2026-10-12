@@ -1,0 +1,144 @@
+{
+  "baseline": "301d078854d3e1594645d76f1fb24dea61eb0be7",
+  "stages": [
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "before": "4b04cfdd521c5750f13e14dce22270952a42137ac4849ae2ae0fc82c1ce8a80e",
+      "after": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+      "protected": false
+    },
+    {
+      "path": "src/utils/scanProfile.ts",
+      "before": "321de8b21cec93e6500aa3804225911e1035283df55e565c33d715bf4f248d4d",
+      "after": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+      "protected": false
+    },
+    {
+      "path": "src/services/matchrimScanProfile.ts",
+      "before": "70121f6a835a98299b8d0cb95c2b3167f8865233d88a3916987ae2ab8fa02633",
+      "after": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+      "protected": false
+    },
+    {
+      "path": "src/utils/menuProfileRecovery.ts",
+      "before": null,
+      "after": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+      "protected": false
+    },
+    {
+      "path": "scripts/check-matchrim-profile-retry-oct13.ts",
+      "before": null,
+      "after": "20bd81b96f1233461c1a1bf43075dbe5c1e8244174dd670705c81751522e6ae0",
+      "protected": false
+    },
+    {
+      "path": "scripts/qa-matchrim-profile-retry-oct13.py",
+      "before": null,
+      "after": "e3ad6afa7b226404943b5e561952e312887ebf8b35c037888da0b37a8aadd46c",
+      "protected": false
+    },
+    {
+      "path": "scripts/package-matchrim-profile-retry-oct13.mjs",
+      "before": null,
+      "after": "36a09a83b60cf39bf990175a77549a5682868a85e7326602bc1a8859ad44c7af",
+      "protected": false
+    },
+    {
+      "path": "src/utils/menuAffinityPresentation.ts",
+      "before": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+      "after": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuWineSave.ts",
+      "before": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "after": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuWineActions.ts",
+      "before": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "after": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "before": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "after": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanConfidence.ts",
+      "before": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+      "after": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineAffinityExplanation.ts",
+      "before": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+      "after": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+      "protected": true
+    },
+    {
+      "path": "src/utils/matchrimLearning.ts",
+      "before": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1",
+      "after": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1",
+      "protected": true
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "before": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "after": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "protected": true
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "before": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "after": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "before": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "after": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "before": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "after": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "protected": true
+    },
+    {
+      "path": "src/components/AffinityExplanation.tsx",
+      "before": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e",
+      "after": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e",
+      "protected": true
+    }
+  ],
+  "queriesUnchanged": [
+    "supabase.from('quiz_results')\n        .select('potente, acidez, dulce, tanico, afrutado').eq('user_id', ownerId!)\n        .order('created_at', { ascending: false }).limit(1).abortSignal(request.signal).maybeSingle()",
+    "supabase.from('user_wines')\n        .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')\n        .eq('user_id', ownerId!).eq('use_for_profile_training', true)\n        .not('rating', 'is', null).not('sensory_attributes', 'is', null).abortSignal(request.signal)"
+  ],
+  "protectedEvidence": [
+    {
+      "name": "matchrim-menu-save-2026-10-12",
+      "sha256": "eff0a00ddfb9905d179d4dec4e733783d34d745e3177dc04f35281a57e57a017",
+      "entries": 289,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-actions-2026-10-12",
+      "sha256": "efd6ac617fe306e72a5f974667cb613333e275241ed48dc4d601a65fe8decc21",
+      "entries": 126,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-affinity-status-2026-10-12",
+      "sha256": "3ed4c29f190ad577337f06315e83ca89ec676bd26a2277796e207926b0b8c378",
+      "entries": 91,
+      "unchanged": true
+    }
+  ],
+  "note": "Cancelled-response fixture originally omitted cancel hold; only those2 cases rerun. Initial Home unmount triggered unrelated destination quiz read3; final selector unmount has2. No new image/OCR for proving newbatch; clear/lifecycle contract only. Earlier source stages identified by receipt hashes; full intermediate snapshots not retained."
+}
