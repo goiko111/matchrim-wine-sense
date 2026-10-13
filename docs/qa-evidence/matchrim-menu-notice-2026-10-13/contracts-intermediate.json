@@ -1,0 +1,163 @@
+{
+  "scope": "Only10 owned notice callback/refs/AST controls, no real owner switch, PDF render, persistence or provider QA. Owner instance control does not certify the global account-change queue; that component remains unchanged.",
+  "baseline": "0156df365f3e547d303d5cc25bb9fc841d30a98d",
+  "checks": [
+    {
+      "name": "Exact own ID dismissed and nulled: menu-detection-1",
+      "passed": true
+    },
+    {
+      "name": "Exact own ID dismissed and nulled: 17",
+      "passed": true
+    },
+    {
+      "name": "Absent ID never calls global dismiss, but invalidates pending publication",
+      "passed": true
+    },
+    {
+      "name": "Current mounted selection publishes exactly the owned success",
+      "passed": true
+    },
+    {
+      "name": "Old async/PDF notice cannot appear after open",
+      "passed": true
+    },
+    {
+      "name": "Old async/PDF notice cannot appear after clear/newbatch",
+      "passed": true
+    },
+    {
+      "name": "Old async/PDF notice cannot appear after unmount/owner",
+      "passed": true
+    },
+    {
+      "name": "Only new generation may publish after new batch, then stale completion cannot replace it",
+      "passed": true
+    },
+    {
+      "name": "Aborted scan cannot publish owned notice",
+      "passed": true
+    },
+    {
+      "name": "Replaced controller cannot publish owned notice",
+      "passed": true
+    },
+    {
+      "name": "Unmount cleanup makes inactive and dismisses only captured own notice",
+      "passed": true
+    },
+    {
+      "name": "Old owner instance cleanup cannot dismiss new owner instance notice",
+      "passed": true
+    },
+    {
+      "name": "Opening detail retains exact highlight and selected index order",
+      "passed": true
+    },
+    {
+      "name": "All non-null selection setters go through the one dismissal-aware opener",
+      "passed": true
+    },
+    {
+      "name": "Lifecycle cleanup is owner keyed without changing existing hooks",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer saveScannedWine remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer updateScannedWine remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer resetSaveBatch remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer retryScanProfile remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer invalidateProfileRetry remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer getWineDecision remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer normalizeScannedWine remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer getSimilarWines remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Protected initializer menuDecision remains byte-identical",
+      "passed": true
+    },
+    {
+      "name": "All other nested initializers unchanged, no added writer/scoring/query",
+      "passed": true
+    },
+    {
+      "name": "Removing only notice metadata leaves openWineDetail algorithm unchanged",
+      "passed": true
+    },
+    {
+      "name": "Removing only notice metadata leaves handleFileSelect algorithm unchanged",
+      "passed": true
+    },
+    {
+      "name": "Removing only notice metadata leaves convertPdfToImage algorithm unchanged",
+      "passed": true
+    },
+    {
+      "name": "Removing only notice metadata leaves processFile algorithm unchanged",
+      "passed": true
+    },
+    {
+      "name": "Removing only notice metadata leaves clearScan algorithm unchanged",
+      "passed": true
+    },
+    {
+      "name": "Other toast calls are byte-identical; only one exact-ID dismiss added",
+      "passed": true
+    },
+    {
+      "name": "Count is a polite atomic live status, without changing result text",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/AccountNotifications.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/sonner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/drawer.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/aiRimContextGuide.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "40e4b65fbe618160ebfb4aa6991e30e28c05ae0f72836263642a75984d4b2b56",
+    "src/components/AccountNotifications.tsx": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf",
+    "src/components/ui/sonner.tsx": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de",
+    "src/components/ui/drawer.tsx": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+    "src/utils/aiRimContextGuide.ts": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+    "src/utils/wineAffinityExplanation.ts": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+    "scripts/check-matchrim-menu-notice-oct13.ts": "222387092e2f7afbff490ec349b942c14e538315c9c4fe6de2eec892b9cee3c7"
+  }
+}

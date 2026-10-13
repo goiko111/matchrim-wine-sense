@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { optionalScanNumber, normalizeScanSensoryValue } from '../../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -271,6 +271,23 @@ const WineMenuScannerSession = ({
   const identityHoldsRef = useRef(new Set<number>());
   const profileRetryRef = useRef<AbortController | null>(null);
   const profileRetryLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
+  const detectionNoticeRef = useRef({ active: false, generation: 0, id: null as string | number | null });
+
+  const dismissDetectionNotice = useCallback(() => {
+    const id = detectionNoticeRef.current.id;
+    detectionNoticeRef.current.id = null;
+    detectionNoticeRef.current.generation += 1;
+    if (id !== null) toast.dismiss(id);
+  }, []);
+
+  useLayoutEffect(() => {
+    const notice = detectionNoticeRef.current;
+    notice.active = true;
+    return () => {
+      notice.active = false;
+      dismissDetectionNotice();
+    };
+  }, [user?.id, dismissDetectionNotice]);
 
   const invalidateProfileRetry = () => {
     profileRetryLifetime.current.generation += 1;
@@ -478,6 +495,7 @@ const WineMenuScannerSession = ({
       .slice(0, 2);
 
   const openWineDetail = (index: number) => {
+    dismissDetectionNotice();
     setHighlightedWineIndex(index);
     setSelectedPinIndex(index);
   };
@@ -508,6 +526,8 @@ const WineMenuScannerSession = ({
     }
 
     // Activar loader inmediatamente
+    dismissDetectionNotice();
+    const noticeGeneration = detectionNoticeRef.current.generation;
     invalidateProfileRetry();
     resetSaveBatch();
     setLoading(true);
@@ -528,18 +548,18 @@ const WineMenuScannerSession = ({
     if (isPDF) {
       setConvertingPdf(true);
       setPreview(null); // Limpiar preview anterior
-      await convertPdfToImage(file);
+      await convertPdfToImage(file, noticeGeneration);
     } else {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-      await processFile(file, 'image');
+      await processFile(file, 'image', noticeGeneration);
     }
   };
 
-  const convertPdfToImage = async (file: File) => {
+  const convertPdfToImage = async (file: File, noticeGeneration: number) => {
     try {
       toast.info("Convirtiendo PDF a imagen...");
       
@@ -577,7 +597,7 @@ const WineMenuScannerSession = ({
         
         // Crear un archivo temporal con la imagen
         const imageFile = new File([blob], 'pdf-page.jpg', { type: 'image/jpeg' });
-        await processFile(imageFile, 'image');
+        await processFile(imageFile, 'image', noticeGeneration);
       };
       reader.readAsDataURL(blob);
       
@@ -589,7 +609,7 @@ const WineMenuScannerSession = ({
     }
   };
 
-  const processFile = async (file: File, type: 'image' | 'pdf') => {
+  const processFile = async (file: File, type: 'image' | 'pdf', noticeGeneration: number) => {
     // Mantener el loader activo durante todo el proceso real
     setLoading(true);
     setScannedWines([]);
@@ -755,7 +775,10 @@ const WineMenuScannerSession = ({
           }
         }
 
-        toast.success(`✨ ${normalizedWines.length} vinos detectados en la carta`);
+        if (detectionNoticeRef.current.active && detectionNoticeRef.current.generation === noticeGeneration
+          && scanAbortRef.current === controller && !controller.signal.aborted) {
+          detectionNoticeRef.current.id = toast.success(`✨ ${normalizedWines.length} vinos detectados en la carta`);
+        }
       } else {
         setScannedWines([]);
         setScanFeedback(data?.vinos?.length
@@ -792,6 +815,7 @@ const WineMenuScannerSession = ({
   };
 
   const clearScan = () => {
+    dismissDetectionNotice();
     invalidateProfileRetry();
     scanAbortRef.current?.abort();
     resetSaveBatch();
@@ -1594,7 +1618,7 @@ const WineMenuScannerSession = ({
 		            <div className="matchrim-surface overflow-hidden rounded-lg bg-white">
 		              <div className="flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2">
 		                <h3 className="font-semibold text-slate-950">Lista de la carta</h3>
-		                <span className="text-xs text-slate-500">{visibleScannedWines.length} {visibleScannedWines.length === 1 ? 'resultado' : 'resultados'}</span>
+		                <span role="status" aria-live="polite" aria-atomic="true" className="text-xs text-slate-500">{visibleScannedWines.length} {visibleScannedWines.length === 1 ? 'resultado' : 'resultados'}</span>
 		              </div>
 		              <div className="divide-y divide-stone-100">
 	                        {visibleScannedWines.map(({ wine, index }) => (
@@ -1603,10 +1627,7 @@ const WineMenuScannerSession = ({
 		                    type="button"
 		                    aria-label={`Abrir vino ${index + 1}: ${wine.nombre}`}
 		                    className={`matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
-		                    onClick={() => {
-		                      setHighlightedWineIndex(index);
-		                      setSelectedPinIndex(index);
-		                    }}
+		                    onClick={() => openWineDetail(index)}
 		                  >
 	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
 		                    <span className="min-w-0 flex-1">
@@ -2067,13 +2088,11 @@ const WineMenuScannerSession = ({
 	                <div className="grid grid-cols-2 gap-2">
 	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex === 0} onClick={() => {
 	                    const next = Math.max(0, selectedPinIndex - 1);
-	                    setSelectedPinIndex(next);
-	                    setHighlightedWineIndex(next);
+	                    openWineDetail(next);
 	                  }}><ChevronLeft className="h-4 w-4" /> Anterior</Button>
 	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={() => {
 	                    const next = Math.min(scannedWines.length - 1, selectedPinIndex + 1);
-	                    setSelectedPinIndex(next);
-	                    setHighlightedWineIndex(next);
+	                    openWineDetail(next);
 	                  }}>Siguiente <ChevronRight className="h-4 w-4" /></Button>
 	                </div>
 	              </DrawerFooter>

@@ -1,0 +1,656 @@
+{
+  "scope": "Only10 owned menu detection notice: existing scene/contract, local replay, no real recognition.",
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realAccounts": 0,
+  "results": [
+    {
+      "case": "portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Measured during original TTL, never waiting for expiry",
+          "passed": true,
+          "detail": 607.6000000014901
+        },
+        {
+          "name": "Own detection notice does not overlap header",
+          "passed": true,
+          "detail": {
+            "toast": {
+              "x": 16,
+              "y": 12,
+              "width": 361,
+              "height": 76,
+              "top": 12,
+              "bottom": 88,
+              "left": 16,
+              "right": 377
+            },
+            "toastVisible": true,
+            "toastRemoved": "false",
+            "header": {
+              "x": 1,
+              "y": 125.69490814208984,
+              "width": 391,
+              "height": 77.00000762939453,
+              "top": 125.69490814208984,
+              "bottom": 202.69491577148438,
+              "left": 1,
+              "right": 392
+            },
+            "title": {
+              "x": 17,
+              "y": 141.69491577148438,
+              "width": 259.03125,
+              "height": 18,
+              "top": 141.69491577148438,
+              "bottom": 159.69491577148438,
+              "left": 17,
+              "right": 276.03125
+            },
+            "close": {
+              "x": 332,
+              "y": 141.69491577148438,
+              "width": 44,
+              "height": 44,
+              "top": 141.69491577148438,
+              "bottom": 185.69491577148438,
+              "left": 332,
+              "right": 376
+            },
+            "headerOverlap": 0,
+            "titleOverlap": 0,
+            "titleHit": {
+              "x": 146.515625,
+              "y": 150.69491577148438,
+              "reaches": true,
+              "tag": "H2",
+              "label": null
+            },
+            "closeHit": {
+              "x": 354,
+              "y": 163.69491577148438,
+              "reaches": true,
+              "tag": "BUTTON",
+              "label": "Cerrar detalle"
+            },
+            "toastAge": 607.6000000014901,
+            "focus": {
+              "inDialog": false,
+              "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+              "tag": "BUTTON"
+            }
+          }
+        },
+        {
+          "name": "Title and close center hit-tests reach their actual controls",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Close receives keyboard focus",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Tab remains inside open drawer",
+          "passed": true,
+          "detail": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          }
+        },
+        {
+          "name": "Close works without force",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "List result feedback remains",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Escape closes second existing path without force",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Open/dismiss caused no extra OCR/catalog/profile reads",
+          "passed": true,
+          "detail": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "name": "No REST or other writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal HTTP/WS intercepted",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/console errors or horizontal overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "observations": {
+        "historyBefore": [
+          {
+            "id": 1,
+            "title": "✨ 1 vinos detectados en la carta",
+            "type": "success"
+          }
+        ],
+        "row": {
+          "toast": {
+            "x": 16,
+            "y": 12,
+            "width": 361,
+            "height": 76,
+            "top": 12,
+            "bottom": 88,
+            "left": 16,
+            "right": 377
+          },
+          "toastVisible": true,
+          "toastRemoved": "false",
+          "header": {
+            "x": 1,
+            "y": 125.69490814208984,
+            "width": 391,
+            "height": 77.00000762939453,
+            "top": 125.69490814208984,
+            "bottom": 202.69491577148438,
+            "left": 1,
+            "right": 392
+          },
+          "title": {
+            "x": 17,
+            "y": 141.69491577148438,
+            "width": 259.03125,
+            "height": 18,
+            "top": 141.69491577148438,
+            "bottom": 159.69491577148438,
+            "left": 17,
+            "right": 276.03125
+          },
+          "close": {
+            "x": 332,
+            "y": 141.69491577148438,
+            "width": 44,
+            "height": 44,
+            "top": 141.69491577148438,
+            "bottom": 185.69491577148438,
+            "left": 332,
+            "right": 376
+          },
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": {
+            "x": 146.515625,
+            "y": 150.69491577148438,
+            "reaches": true,
+            "tag": "H2",
+            "label": null
+          },
+          "closeHit": {
+            "x": 354,
+            "y": 163.69491577148438,
+            "reaches": true,
+            "tag": "BUTTON",
+            "label": "Cerrar detalle"
+          },
+          "toastAge": 607.6000000014901,
+          "focus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          }
+        },
+        "dismissAfterRow": [],
+        "tabFocus": {
+          "inDialog": true,
+          "label": "Cerrar detalle",
+          "tag": "BUTTON"
+        },
+        "pinButtons": [
+          "Vino 1: Barbaresco Marchesi di Barolo",
+          "Abrir vino 1: Barbaresco Marchesi di Barolo"
+        ],
+        "secondPath": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+        "second": {
+          "toast": {
+            "x": 16,
+            "y": 12,
+            "width": 361,
+            "height": 76,
+            "top": 12,
+            "bottom": 88,
+            "left": 16,
+            "right": 377
+          },
+          "toastVisible": true,
+          "toastRemoved": "false",
+          "header": {
+            "x": 1,
+            "y": 125.69634246826172,
+            "width": 391,
+            "height": 77.00000762939453,
+            "top": 125.69634246826172,
+            "bottom": 202.69635009765625,
+            "left": 1,
+            "right": 392
+          },
+          "title": {
+            "x": 17,
+            "y": 141.69635009765625,
+            "width": 259.03125,
+            "height": 18,
+            "top": 141.69635009765625,
+            "bottom": 159.69635009765625,
+            "left": 17,
+            "right": 276.03125
+          },
+          "close": {
+            "x": 332,
+            "y": 141.69635009765625,
+            "width": 44,
+            "height": 44,
+            "top": 141.69635009765625,
+            "bottom": 185.69635009765625,
+            "left": 332,
+            "right": 376
+          },
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": {
+            "x": 146.515625,
+            "y": 150.69635009765625,
+            "reaches": true,
+            "tag": "H2",
+            "label": null
+          },
+          "closeHit": {
+            "x": 354,
+            "y": 163.69635009765625,
+            "reaches": true,
+            "tag": "BUTTON",
+            "label": "Cerrar detalle"
+          },
+          "toastAge": 2014.3999999985099,
+          "focus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          }
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "landscape",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Measured during original TTL, never waiting for expiry",
+          "passed": true,
+          "detail": 585
+        },
+        {
+          "name": "Own detection notice does not overlap header",
+          "passed": false,
+          "detail": {
+            "toast": {
+              "x": 248,
+              "y": 12,
+              "width": 356,
+              "height": 76,
+              "top": 12,
+              "bottom": 88,
+              "left": 248,
+              "right": 604
+            },
+            "toastVisible": true,
+            "toastRemoved": "false",
+            "header": {
+              "x": 1,
+              "y": 66.89218139648438,
+              "width": 850,
+              "height": 77,
+              "top": 66.89218139648438,
+              "bottom": 143.89218139648438,
+              "left": 1,
+              "right": 851
+            },
+            "title": {
+              "x": 17,
+              "y": 82.89218139648438,
+              "width": 259.03125,
+              "height": 18,
+              "top": 82.89218139648438,
+              "bottom": 100.89218139648438,
+              "left": 17,
+              "right": 276.03125
+            },
+            "close": {
+              "x": 791,
+              "y": 82.89218139648438,
+              "width": 44,
+              "height": 44,
+              "top": 82.89218139648438,
+              "bottom": 126.89218139648438,
+              "left": 791,
+              "right": 835
+            },
+            "headerOverlap": 7514.3834228515625,
+            "titleOverlap": 143.17854022979736,
+            "titleHit": {
+              "x": 146.515625,
+              "y": 91.89218139648438,
+              "reaches": true,
+              "tag": "H2",
+              "label": null
+            },
+            "closeHit": {
+              "x": 813,
+              "y": 104.89218139648438,
+              "reaches": true,
+              "tag": "BUTTON",
+              "label": "Cerrar detalle"
+            },
+            "toastAge": 585,
+            "focus": {
+              "inDialog": false,
+              "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+              "tag": "BUTTON"
+            }
+          }
+        },
+        {
+          "name": "Title and close center hit-tests reach their actual controls",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Close receives keyboard focus",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Tab remains inside open drawer",
+          "passed": true,
+          "detail": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          }
+        },
+        {
+          "name": "Close works without force",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "List result feedback remains",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Escape closes second existing path without force",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Open/dismiss caused no extra OCR/catalog/profile reads",
+          "passed": true,
+          "detail": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "name": "No REST or other writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All nonlocal HTTP/WS intercepted",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/console errors or horizontal overflow",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Own detection notice does not overlap header"
+      ],
+      "observations": {
+        "historyBefore": [
+          {
+            "id": 1,
+            "title": "✨ 1 vinos detectados en la carta",
+            "type": "success"
+          }
+        ],
+        "row": {
+          "toast": {
+            "x": 248,
+            "y": 12,
+            "width": 356,
+            "height": 76,
+            "top": 12,
+            "bottom": 88,
+            "left": 248,
+            "right": 604
+          },
+          "toastVisible": true,
+          "toastRemoved": "false",
+          "header": {
+            "x": 1,
+            "y": 66.89218139648438,
+            "width": 850,
+            "height": 77,
+            "top": 66.89218139648438,
+            "bottom": 143.89218139648438,
+            "left": 1,
+            "right": 851
+          },
+          "title": {
+            "x": 17,
+            "y": 82.89218139648438,
+            "width": 259.03125,
+            "height": 18,
+            "top": 82.89218139648438,
+            "bottom": 100.89218139648438,
+            "left": 17,
+            "right": 276.03125
+          },
+          "close": {
+            "x": 791,
+            "y": 82.89218139648438,
+            "width": 44,
+            "height": 44,
+            "top": 82.89218139648438,
+            "bottom": 126.89218139648438,
+            "left": 791,
+            "right": 835
+          },
+          "headerOverlap": 7514.3834228515625,
+          "titleOverlap": 143.17854022979736,
+          "titleHit": {
+            "x": 146.515625,
+            "y": 91.89218139648438,
+            "reaches": true,
+            "tag": "H2",
+            "label": null
+          },
+          "closeHit": {
+            "x": 813,
+            "y": 104.89218139648438,
+            "reaches": true,
+            "tag": "BUTTON",
+            "label": "Cerrar detalle"
+          },
+          "toastAge": 585,
+          "focus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          }
+        },
+        "dismissAfterRow": [],
+        "tabFocus": {
+          "inDialog": true,
+          "label": "Cerrar detalle",
+          "tag": "BUTTON"
+        },
+        "pinButtons": [
+          "Vino 1: Barbaresco Marchesi di Barolo",
+          "Abrir vino 1: Barbaresco Marchesi di Barolo"
+        ],
+        "secondPath": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+        "second": {
+          "toast": {
+            "x": 248,
+            "y": 12,
+            "width": 356,
+            "height": 76,
+            "top": 12,
+            "bottom": 88,
+            "left": 248,
+            "right": 604
+          },
+          "toastVisible": true,
+          "toastRemoved": "false",
+          "header": {
+            "x": 1,
+            "y": 66.89100646972656,
+            "width": 850,
+            "height": 77,
+            "top": 66.89100646972656,
+            "bottom": 143.89100646972656,
+            "left": 1,
+            "right": 851
+          },
+          "title": {
+            "x": 17,
+            "y": 82.89100646972656,
+            "width": 259.03125,
+            "height": 18,
+            "top": 82.89100646972656,
+            "bottom": 100.89100646972656,
+            "left": 17,
+            "right": 276.03125
+          },
+          "close": {
+            "x": 791,
+            "y": 82.89100646972656,
+            "width": 44,
+            "height": 44,
+            "top": 82.89100646972656,
+            "bottom": 126.89100646972656,
+            "left": 791,
+            "right": 835
+          },
+          "headerOverlap": 7514.801696777344,
+          "titleOverlap": 143.2114748954773,
+          "titleHit": {
+            "x": 146.515625,
+            "y": 91.89100646972656,
+            "reaches": true,
+            "tag": "H2",
+            "label": null
+          },
+          "closeHit": {
+            "x": 813,
+            "y": 104.89100646972656,
+            "reaches": true,
+            "tag": "BUTTON",
+            "label": "Cerrar detalle"
+          },
+          "toastAge": 1985.5,
+          "focus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          }
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

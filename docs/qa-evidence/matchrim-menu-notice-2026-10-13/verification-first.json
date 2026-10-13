@@ -1,0 +1,7 @@
+{
+  "scope": "First10 scoped verification metadata; raw terminal output not retained as separate log files.",
+  "contracts": {"exitCode": 1, "passed": 36, "total": 37, "cause": "Harness compared entire modified WineMenuScannerSession container as unchanged. Corrected to nested initializers plus five explicit AST-normalized functions; failed receipt contracts.json retained."},
+  "typecheck": {"exitCode": 2, "cause": "Scoped config outside repo did not resolve installed Node type declarations for new contract script; added explicit existing local typeRoots/types. Also consequent assert narrowing diagnostic."},
+  "lint": {"exitCode": 0, "warnings": 1, "cause": "Hook ref cleanup warning; captured notice ref object within owned lifecycle effect. No global lint suppression."},
+  "ui": {"rowContexts": 2, "pinContexts": 2, "checksPassed": 60, "checks": 60, "note": "Intermediate product stage. Final lifecycle object capture requires final current-source receipts, not reclassified as extra people."}
+}

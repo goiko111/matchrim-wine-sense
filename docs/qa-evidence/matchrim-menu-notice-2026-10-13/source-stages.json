@@ -1,0 +1,539 @@
+{
+  "baseline": "0156df365f3e547d303d5cc25bb9fc841d30a98d",
+  "stages": [
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "before": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+      "after": "5f634746587b1520015985e5c0437a51637845f6ec4061b0815166c4a4051ffd",
+      "protected": false
+    },
+    {
+      "path": "scripts/check-matchrim-menu-notice-oct13.ts",
+      "before": null,
+      "after": "222387092e2f7afbff490ec349b942c14e538315c9c4fe6de2eec892b9cee3c7",
+      "protected": false
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-notice-oct13.py",
+      "before": null,
+      "after": "ec63d67765632b8d162c2641978976755a4062374d5a440e9124ea748c29c267",
+      "protected": false
+    },
+    {
+      "path": "scripts/package-matchrim-menu-notice-oct13.mjs",
+      "before": null,
+      "after": "8e0b2a89066056a7b23beebd3bd235adeb6be442f199275f2b1d7a45a734484e",
+      "protected": false
+    },
+    {
+      "path": "src/components/AccountNotifications.tsx",
+      "before": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf",
+      "after": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf",
+      "protected": true
+    },
+    {
+      "path": "src/components/ui/sonner.tsx",
+      "before": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de",
+      "after": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de",
+      "protected": true
+    },
+    {
+      "path": "src/components/ui/drawer.tsx",
+      "before": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+      "after": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+      "protected": true
+    },
+    {
+      "path": "src/utils/aiRimContextGuide.ts",
+      "before": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+      "after": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+      "protected": true
+    },
+    {
+      "path": "src/components/AiRimContextGuide.tsx",
+      "before": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0",
+      "after": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0",
+      "protected": true
+    },
+    {
+      "path": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "before": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11",
+      "after": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuAffinityPresentation.ts",
+      "before": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+      "after": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuWineSave.ts",
+      "before": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "after": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuWineActions.ts",
+      "before": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "after": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanProfile.ts",
+      "before": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+      "after": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+      "protected": true
+    },
+    {
+      "path": "src/services/matchrimScanProfile.ts",
+      "before": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+      "after": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+      "protected": true
+    },
+    {
+      "path": "src/utils/menuProfileRecovery.ts",
+      "before": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+      "after": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "before": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "after": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "protected": true
+    },
+    {
+      "path": "src/utils/scanConfidence.ts",
+      "before": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+      "after": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+      "protected": true
+    },
+    {
+      "path": "src/utils/multiWineScan.ts",
+      "before": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d",
+      "after": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineAffinityExplanation.ts",
+      "before": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+      "after": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+      "protected": true
+    },
+    {
+      "path": "src/utils/matchrimLearning.ts",
+      "before": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1",
+      "after": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1",
+      "protected": true
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "before": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "after": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "protected": true
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "before": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "after": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "before": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "after": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "protected": true
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "before": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "after": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "protected": true
+    },
+    {
+      "path": "src/components/AffinityExplanation.tsx",
+      "before": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e",
+      "after": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e",
+      "protected": true
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-scan-values.ts",
+      "before": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e",
+      "after": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e",
+      "protected": true
+    }
+  ],
+  "protectedEvidence": [
+    {
+      "name": "matchrim-menu-save-2026-10-12",
+      "sha256": "eff0a00ddfb9905d179d4dec4e733783d34d745e3177dc04f35281a57e57a017",
+      "entries": 289,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-actions-2026-10-12",
+      "sha256": "efd6ac617fe306e72a5f974667cb613333e275241ed48dc4d601a65fe8decc21",
+      "entries": 126,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-affinity-status-2026-10-12",
+      "sha256": "3ed4c29f190ad577337f06315e83ca89ec676bd26a2277796e207926b0b8c378",
+      "entries": 91,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-profile-retry-2026-10-13",
+      "sha256": "30237ea6bfe06c19d79f62b44527560cb4d2c74d271e17267313a7412eb6c0fe",
+      "entries": 112,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-airim-provenance-2026-10-13",
+      "sha256": "e54ac9c6350a1469beb00793cdbba05a4f74ff9aea1f6477e4e9a07046cc097f",
+      "entries": 75,
+      "unchanged": true
+    }
+  ],
+  "observations": {
+    "before": {
+      "scannerSha256": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+      "contexts": 2,
+      "contextsPassed": 1,
+      "checks": 24,
+      "checksPassed": 23,
+      "geometry": [
+        {
+          "case": "portrait",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 607.6000000014901,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "case": "landscape",
+          "headerOverlap": 7514.3834228515625,
+          "titleOverlap": 143.17854022979736,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 585,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        }
+      ]
+    },
+    "after": {
+      "scannerSha256": "40e4b65fbe618160ebfb4aa6991e30e28c05ae0f72836263642a75984d4b2b56",
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 30,
+      "checksPassed": 30,
+      "geometry": [
+        {
+          "case": "portrait",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 611.5999999977648,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [
+            {
+              "args": [
+                1
+              ],
+              "at": 1710.3999999985099
+            }
+          ],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "case": "landscape",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 587.8000000007451,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [
+            {
+              "args": [
+                1
+              ],
+              "at": 1058.800000000745
+            }
+          ],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        }
+      ]
+    },
+    "after-pin": {
+      "scannerSha256": "40e4b65fbe618160ebfb4aa6991e30e28c05ae0f72836263642a75984d4b2b56",
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 30,
+      "checksPassed": 30,
+      "geometry": [
+        {
+          "case": "pin:portrait",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 610.3999999985099,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [
+            {
+              "args": [
+                1
+              ],
+              "at": 1762.699999999255
+            }
+          ],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "case": "pin:landscape",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 604.8999999985099,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [
+            {
+              "args": [
+                1
+              ],
+              "at": 1072.800000000745
+            }
+          ],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        }
+      ]
+    },
+    "after-final": {
+      "scannerSha256": "5f634746587b1520015985e5c0437a51637845f6ec4061b0815166c4a4051ffd",
+      "contexts": 4,
+      "contextsPassed": 4,
+      "checks": 60,
+      "checksPassed": 60,
+      "geometry": [
+        {
+          "case": "row:portrait",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 611.1999999992549,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [
+            {
+              "args": [
+                1
+              ],
+              "at": 1774.300000000745
+            }
+          ],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "case": "row:landscape",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 569,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [
+            {
+              "args": [
+                1
+              ],
+              "at": 1044.1000000014901
+            }
+          ],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "case": "pin:portrait",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 594.3000000007451,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [
+            {
+              "args": [
+                1
+              ],
+              "at": 1063.7999999970198
+            }
+          ],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        },
+        {
+          "case": "pin:landscape",
+          "headerOverlap": 0,
+          "titleOverlap": 0,
+          "titleHit": true,
+          "closeHit": true,
+          "toastAgeMs": 571.8000000007451,
+          "initialFocus": {
+            "inDialog": false,
+            "label": "Vino 1: Barbaresco Marchesi di Barolo",
+            "tag": "BUTTON"
+          },
+          "tabFocus": {
+            "inDialog": true,
+            "label": "Cerrar detalle",
+            "tag": "BUTTON"
+          },
+          "dismissAudit": [
+            {
+              "args": [
+                1
+              ],
+              "at": 1044.1000000014901
+            }
+          ],
+          "counters": {
+            "ocr": 1,
+            "canonical": 1,
+            "base": 1
+          }
+        }
+      ]
+    }
+  },
+  "installedTypes": {
+    "path": "node_modules/sonner/dist/index.d.ts",
+    "sha256": "bd8545e4b9d04073306186b84b75159735d59e1dd5b8a6b6c14a2e6bce5a9e67",
+    "version": "1.5.0"
+  },
+  "note": "Intermediate product identified by source receipts, full intermediate snapshot not retained. Final hook captures same ref object to remove lint warning. Before second path fell back to row; final pins use exact existing Vino1 selector. Four-context Chrome close was delayed, eventually exited0 with receipts; no rerun needed."
+}

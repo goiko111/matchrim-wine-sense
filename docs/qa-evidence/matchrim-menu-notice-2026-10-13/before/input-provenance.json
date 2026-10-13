@@ -1,0 +1,13 @@
+{
+  "scope": "Only10 owned menu detection notice: existing scene/contract, local replay, no real recognition.",
+  "hashes": {
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "src/components/wine-import/WineMenuScanner.tsx": "1009420d5a1db8bcc043f832b2f7f028fb2e0bcaf9566cf5601c25eef172e92d",
+    "src/components/AccountNotifications.tsx": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf"
+  },
+  "fixture": "Existing04/08/09 BOTH contract and image, no positive profile/catalog or fresh OCR.",
+  "before": true,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0
+}

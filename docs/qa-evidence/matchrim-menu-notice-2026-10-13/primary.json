@@ -1,0 +1,139 @@
+{
+  "scope": "Only10: row/pin x two mobile orientations, same local replay, not four people/new scenes. Foreign warning is explicit synthetic queue control. Lifecycle/PDF/owner controls are pure refs/AST, not real PDF or account-switch UI. Initial focus is recorded, Tab checked after explicit close focus, not automatic screen-reader focus certification.",
+  "scannerSha256": "5f634746587b1520015985e5c0437a51637845f6ec4061b0815166c4a4051ffd",
+  "contexts": 4,
+  "contextsPassed": 4,
+  "checks": 60,
+  "checksPassed": 60,
+  "geometry": [
+    {
+      "case": "row:portrait",
+      "headerOverlap": 0,
+      "titleOverlap": 0,
+      "titleHit": true,
+      "closeHit": true,
+      "toastAgeMs": 611.1999999992549,
+      "initialFocus": {
+        "inDialog": false,
+        "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+        "tag": "BUTTON"
+      },
+      "tabFocus": {
+        "inDialog": true,
+        "label": "Cerrar detalle",
+        "tag": "BUTTON"
+      },
+      "dismissAudit": [
+        {
+          "args": [
+            1
+          ],
+          "at": 1774.300000000745
+        }
+      ],
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "row:landscape",
+      "headerOverlap": 0,
+      "titleOverlap": 0,
+      "titleHit": true,
+      "closeHit": true,
+      "toastAgeMs": 569,
+      "initialFocus": {
+        "inDialog": false,
+        "label": "Abrir vino 1: Barbaresco Marchesi di Barolo",
+        "tag": "BUTTON"
+      },
+      "tabFocus": {
+        "inDialog": true,
+        "label": "Cerrar detalle",
+        "tag": "BUTTON"
+      },
+      "dismissAudit": [
+        {
+          "args": [
+            1
+          ],
+          "at": 1044.1000000014901
+        }
+      ],
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "pin:portrait",
+      "headerOverlap": 0,
+      "titleOverlap": 0,
+      "titleHit": true,
+      "closeHit": true,
+      "toastAgeMs": 594.3000000007451,
+      "initialFocus": {
+        "inDialog": false,
+        "label": "Vino 1: Barbaresco Marchesi di Barolo",
+        "tag": "BUTTON"
+      },
+      "tabFocus": {
+        "inDialog": true,
+        "label": "Cerrar detalle",
+        "tag": "BUTTON"
+      },
+      "dismissAudit": [
+        {
+          "args": [
+            1
+          ],
+          "at": 1063.7999999970198
+        }
+      ],
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "pin:landscape",
+      "headerOverlap": 0,
+      "titleOverlap": 0,
+      "titleHit": true,
+      "closeHit": true,
+      "toastAgeMs": 571.8000000007451,
+      "initialFocus": {
+        "inDialog": false,
+        "label": "Vino 1: Barbaresco Marchesi di Barolo",
+        "tag": "BUTTON"
+      },
+      "tabFocus": {
+        "inDialog": true,
+        "label": "Cerrar detalle",
+        "tag": "BUTTON"
+      },
+      "dismissAudit": [
+        {
+          "args": [
+            1
+          ],
+          "at": 1044.1000000014901
+        }
+      ],
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    }
+  ],
+  "contracts": 37,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0
+}
