@@ -1,0 +1,830 @@
+{
+  "scope": "Only14 local pending-cancel/retry exact path on4 keyboard/touch x orientations. One existing scene/file, not people, OS/iOS chooser or vision. Physical selection/camera gates remain. Product unchanged. Initial aborted attempt1/0/1; retry3/2/1; total4/2/2, no old replay or new-request increments from late response/error.",
+  "contexts": 4,
+  "contextsPassed": 4,
+  "checks": 72,
+  "checksPassed": 72,
+  "physicalSameFileCertification": false,
+  "cases": [
+    {
+      "case": "keyboard-portrait",
+      "releaseKind": "response",
+      "controlsAfterCancel": [
+        {
+          "label": "Volver a tipos de escaneo",
+          "disabled": false
+        },
+        {
+          "label": "Quitar carta",
+          "disabled": false
+        },
+        {
+          "label": "Reintentar foto",
+          "disabled": false
+        }
+      ],
+      "chooserBefore": [
+        {
+          "value": "",
+          "disabled": false,
+          "files": []
+        },
+        {
+          "value": "",
+          "disabled": false,
+          "files": []
+        }
+      ],
+      "selections": [
+        {
+          "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+          "sourceSHA": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+          "info": {
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "disabled": true,
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          }
+        },
+        {
+          "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+          "sourceSHA": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+          "info": {
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "disabled": true,
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          }
+        }
+      ],
+      "selectionEvents": [
+        {
+          "kind": "input",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "change",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "input",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "change",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        }
+      ],
+      "abortedRequest": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "failure": "net::ERR_ABORTED",
+          "attemptAtFailure": 1
+        }
+      ],
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true,
+          "note": "Protocol acceptance does not mean aborted fetch delivered to app"
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true,
+          "note": "Protocol acceptance does not mean aborted fetch delivered to app"
+        }
+      ],
+      "oldReleaseUI": {
+        "buttons": [
+          {
+            "label": "Volver a tipos de escaneo",
+            "disabled": false
+          },
+          {
+            "label": "Cancelar análisis",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": true,
+            "accept": "image/*,application/pdf",
+            "capture": null,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": true,
+            "accept": "image/*",
+            "capture": "environment",
+            "value": "",
+            "files": []
+          }
+        ],
+        "rows": [],
+        "cancelVisible": true,
+        "cancelFeedback": false,
+        "loadingText": [
+          "Leyendo secciones, líneas y precios..."
+        ],
+        "successNotice": false,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Leyend"
+        },
+        "document": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "finalRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "countsByAttempt": {
+        "1": {
+          "ocr": 1,
+          "canonical": 0,
+          "base": 1
+        },
+        "2": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        }
+      }
+    },
+    {
+      "case": "keyboard-landscape",
+      "releaseKind": "error",
+      "controlsAfterCancel": [
+        {
+          "label": "Quitar carta",
+          "disabled": false
+        },
+        {
+          "label": "Reintentar foto",
+          "disabled": false
+        }
+      ],
+      "chooserBefore": [
+        {
+          "value": "",
+          "disabled": false,
+          "files": []
+        },
+        {
+          "value": "",
+          "disabled": false,
+          "files": []
+        }
+      ],
+      "selections": [
+        {
+          "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+          "sourceSHA": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+          "info": {
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "disabled": true,
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          }
+        },
+        {
+          "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+          "sourceSHA": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+          "info": {
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "disabled": true,
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          }
+        }
+      ],
+      "selectionEvents": [
+        {
+          "kind": "input",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "change",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "input",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "change",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        }
+      ],
+      "abortedRequest": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "failure": "net::ERR_ABORTED",
+          "attemptAtFailure": 1
+        }
+      ],
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true,
+          "note": "Protocol acceptance does not mean aborted fetch delivered to app"
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true,
+          "note": "Protocol acceptance does not mean aborted fetch delivered to app"
+        }
+      ],
+      "oldReleaseUI": {
+        "buttons": [
+          {
+            "label": "Cancelar análisis",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": true,
+            "accept": "image/*,application/pdf",
+            "capture": null,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": true,
+            "accept": "image/*",
+            "capture": "environment",
+            "value": "",
+            "files": []
+          }
+        ],
+        "rows": [],
+        "cancelVisible": true,
+        "cancelFeedback": false,
+        "loadingText": [
+          "Leyendo secciones, líneas y precios..."
+        ],
+        "successNotice": false,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Leyend"
+        },
+        "document": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "finalRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "countsByAttempt": {
+        "1": {
+          "ocr": 1,
+          "canonical": 0,
+          "base": 1
+        },
+        "2": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        }
+      }
+    },
+    {
+      "case": "touch-portrait",
+      "releaseKind": "response",
+      "controlsAfterCancel": [
+        {
+          "label": "Volver a tipos de escaneo",
+          "disabled": false
+        },
+        {
+          "label": "Quitar carta",
+          "disabled": false
+        },
+        {
+          "label": "Reintentar foto",
+          "disabled": false
+        }
+      ],
+      "chooserBefore": [
+        {
+          "value": "",
+          "disabled": false,
+          "files": []
+        },
+        {
+          "value": "",
+          "disabled": false,
+          "files": []
+        }
+      ],
+      "selections": [
+        {
+          "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+          "sourceSHA": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+          "info": {
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "disabled": true,
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          }
+        },
+        {
+          "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+          "sourceSHA": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+          "info": {
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "disabled": true,
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          }
+        }
+      ],
+      "selectionEvents": [
+        {
+          "kind": "input",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "change",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "input",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "change",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        }
+      ],
+      "abortedRequest": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "failure": "net::ERR_ABORTED",
+          "attemptAtFailure": 1
+        }
+      ],
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true,
+          "note": "Protocol acceptance does not mean aborted fetch delivered to app"
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true,
+          "note": "Protocol acceptance does not mean aborted fetch delivered to app"
+        }
+      ],
+      "oldReleaseUI": {
+        "buttons": [
+          {
+            "label": "Volver a tipos de escaneo",
+            "disabled": false
+          },
+          {
+            "label": "Cancelar análisis",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": true,
+            "accept": "image/*,application/pdf",
+            "capture": null,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": true,
+            "accept": "image/*",
+            "capture": "environment",
+            "value": "",
+            "files": []
+          }
+        ],
+        "rows": [],
+        "cancelVisible": true,
+        "cancelFeedback": false,
+        "loadingText": [
+          "Leyendo secciones, líneas y precios..."
+        ],
+        "successNotice": false,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Leyend"
+        },
+        "document": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "finalRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "countsByAttempt": {
+        "1": {
+          "ocr": 1,
+          "canonical": 0,
+          "base": 1
+        },
+        "2": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        }
+      }
+    },
+    {
+      "case": "touch-landscape",
+      "releaseKind": "error",
+      "controlsAfterCancel": [
+        {
+          "label": "Quitar carta",
+          "disabled": false
+        },
+        {
+          "label": "Reintentar foto",
+          "disabled": false
+        }
+      ],
+      "chooserBefore": [
+        {
+          "value": "",
+          "disabled": false,
+          "files": []
+        },
+        {
+          "value": "",
+          "disabled": false,
+          "files": []
+        }
+      ],
+      "selections": [
+        {
+          "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+          "sourceSHA": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+          "info": {
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "disabled": true,
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          }
+        },
+        {
+          "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+          "sourceSHA": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+          "info": {
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "disabled": true,
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          }
+        }
+      ],
+      "selectionEvents": [
+        {
+          "kind": "input",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "change",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "input",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        },
+        {
+          "kind": "change",
+          "isTrusted": true,
+          "value": "C:\\fakepath\\IMG_7547 2.jpg",
+          "files": [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        }
+      ],
+      "abortedRequest": [
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu",
+          "failure": "net::ERR_ABORTED",
+          "attemptAtFailure": 1
+        }
+      ],
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true,
+          "note": "Protocol acceptance does not mean aborted fetch delivered to app"
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true,
+          "note": "Protocol acceptance does not mean aborted fetch delivered to app"
+        }
+      ],
+      "oldReleaseUI": {
+        "buttons": [
+          {
+            "label": "Cancelar análisis",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": true,
+            "accept": "image/*,application/pdf",
+            "capture": null,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": true,
+            "accept": "image/*",
+            "capture": "environment",
+            "value": "",
+            "files": []
+          }
+        ],
+        "rows": [],
+        "cancelVisible": true,
+        "cancelFeedback": false,
+        "loadingText": [
+          "Leyendo secciones, líneas y precios..."
+        ],
+        "successNotice": false,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Leyend"
+        },
+        "document": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "finalRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "countsByAttempt": {
+        "1": {
+          "ocr": 1,
+          "canonical": 0,
+          "base": 1
+        },
+        "2": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        }
+      }
+    }
+  ],
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0
+}

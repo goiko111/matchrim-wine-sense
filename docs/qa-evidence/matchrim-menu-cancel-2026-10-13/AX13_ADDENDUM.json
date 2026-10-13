@@ -1,0 +1,146 @@
+{
+  "source": "docs/qa-evidence/matchrim-menu-reading-2026-10-13/before/results.json",
+  "sourceSha256": "79a264d89cd646ede1c9f1bcc2aa0ae130db6b273fb64dec12cc0a40a23ca918",
+  "rerun": false,
+  "correctedInterpretation": "Initial before body focus names empty; focused body names contain computed existing content in all8 readings. Generic/absence of explicit label is not universally empty name or certified reader failure. Supersedes broad empty-focused-name interpretation in13 notes; immutable13 evidence preserved.",
+  "initial": [
+    {
+      "case": "row-portrait",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "",
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "row-landscape",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "",
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "cluster-portrait",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "",
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "cluster-landscape",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "",
+          "ignored": false
+        }
+      ]
+    }
+  ],
+  "focused": [
+    {
+      "case": "row-portrait",
+      "state": "original",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "Estado del perfil del escáner - Afinidad pendiente Alta Señal de identidad Tinto Tipo Texto visible: Barbaresco Marchesi di Barolo 25 Datos inferidos: region, pais, uvas Candidato de lectura; afinidad pendiente Estado de afinidad de Barbaresco Marchesi di Barolo",
+          "nameLength": 262,
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "row-portrait",
+      "state": "changed",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "Estado del perfil del escáner - Afinidad pendiente Baja Señal de identidad Blanco Tipo Texto visible: Lugana Allegrini C/copa 12 Datos inferidos: productor, region, pais, tipo Revisa el candidato antes de elegir Estado de afinidad de Lugana Allegrini",
+          "nameLength": 250,
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "row-landscape",
+      "state": "original",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "Estado del perfil del escáner - Afinidad pendiente Alta Señal de identidad Tinto Tipo Texto visible: Barbaresco Marchesi di Barolo 25 Datos inferidos: region, pais, uvas Candidato de lectura; afinidad pendiente Estado de afinidad de Barbaresco Marchesi di Barolo",
+          "nameLength": 262,
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "row-landscape",
+      "state": "changed",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "Estado del perfil del escáner - Afinidad pendiente Baja Señal de identidad Blanco Tipo Texto visible: Lugana Allegrini C/copa 12 Datos inferidos: productor, region, pais, tipo Revisa el candidato antes de elegir Estado de afinidad de Lugana Allegrini",
+          "nameLength": 250,
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "cluster-portrait",
+      "state": "original",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "Estado del perfil del escáner - Afinidad pendiente Baja Señal de identidad Espumoso Tipo 6 años sobre lías. Texto visible: Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr Dudas: precio Datos inferidos: productor, tipo, uvas, descripcion Revisa el candidato antes de elegir Estado de afinidad de Laurent Perriere Ultra",
+          "nameLength": 368,
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "cluster-portrait",
+      "state": "changed",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "Estado del perfil del escáner - Afinidad pendiente Alta Señal de identidad Tinto Tipo Texto visible: Barolo Marchesi di Barolo 35 Datos inferidos: region, pais, uvas Candidato de lectura; afinidad pendiente Estado de afinidad de Barolo Marchesi di Barolo",
+          "nameLength": 254,
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "cluster-landscape",
+      "state": "original",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "Estado del perfil del escáner - Afinidad pendiente Baja Señal de identidad Espumoso Tipo 6 años sobre lías. Texto visible: Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr Dudas: precio Datos inferidos: productor, tipo, uvas, descripcion Revisa el candidato antes de elegir Estado de afinidad de Laurent Perriere Ultra",
+          "nameLength": 368,
+          "ignored": false
+        }
+      ]
+    },
+    {
+      "case": "cluster-landscape",
+      "state": "changed",
+      "nodes": [
+        {
+          "role": "generic",
+          "name": "Estado del perfil del escáner - Afinidad pendiente Alta Señal de identidad Tinto Tipo Texto visible: Barolo Marchesi di Barolo 35 Datos inferidos: region, pais, uvas Candidato de lectura; afinidad pendiente Estado de afinidad de Barolo Marchesi di Barolo",
+          "nameLength": 254,
+          "ignored": false
+        }
+      ]
+    }
+  ]
+}

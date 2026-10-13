@@ -1,0 +1,17 @@
+{
+  "scope": "Only14 real UI cancel pending menu OCR and same exact file retry via standard filechooser; local automation, not OS/iOS.",
+  "hashes": {
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "src/components/wine-import/WineMenuScanner.tsx": "799cad0234299a39e9ce09ce8a4aa1e1bbb356716bde2fa439bebf2e3490b962"
+  },
+  "sameSourceFile": {
+    "path": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+    "basename": "IMG_7547 2.jpg",
+    "MIME": "image/jpeg",
+    "sha256": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "size": 2303531,
+    "mtimeNs": 1791448774457260522
+  },
+  "selection": "Standard page.expect_file_chooser -> FileChooser.set_files(exact same Path), after visible UI reset. No file payload/new name/manual event/value mutation. Automation does not certify physical OS/iOS picker."
+}

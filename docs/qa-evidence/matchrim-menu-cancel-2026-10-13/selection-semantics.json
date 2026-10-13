@@ -1,0 +1,22 @@
+{
+  "playwrightVersion": "1.55.0",
+  "API": "UI button => standard expect_file_chooser => FileChooser.set_files(exact Path)",
+  "localPathBackend": "ElementHandle _setInputFiles localPaths branch => Chromium DOM.setFileInputFiles",
+  "filePayloadBranchUsed": false,
+  "manualDispatchOrInputValueMutation": false,
+  "trustedEventsObserved": true,
+  "physicalCertification": false,
+  "limitation": "Browser protocol selection can generate input/change events even when isTrustedtrue. Empty input after actual QuitarCarta => same exact path is observed, not OS/iOS chooser behavior or direct same-file reselect without clear. No camera retry/permission tested.",
+  "tooling": [
+    {
+      "source": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim73-qa-20261007/.venv/lib/python3.12/site-packages/playwright/driver/package/lib/server/dom.js",
+      "snapshot": "installed-tooling/playwright-dom.js.txt",
+      "sha256": "6743dbbcdb70721ab6c183a730bbb39d41e0def19ca7b2fe0b614df9603e9e41"
+    },
+    {
+      "source": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim73-qa-20261007/.venv/lib/python3.12/site-packages/playwright/driver/package/lib/server/chromium/crPage.js",
+      "snapshot": "installed-tooling/playwright-chromium-page.js.txt",
+      "sha256": "1ec312b2b870dd8699914f64bafcdf6c3b0e72f24939edb71c032ec4f4da101a"
+    }
+  ]
+}
