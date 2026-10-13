@@ -67,7 +67,11 @@ export const applyMenuWineEvidence = (wine: MenuScanWine, profile: MatchrimProfi
 
 export const updateMenuWineEvidence = (wine: MenuScanWine, updates: Partial<MenuScanWine>): MenuScanWine => {
   const edited = { ...wine, ...updates };
-  if ('precio' in updates && updates.precio !== wine.precio) {
+  if ('moneda' in updates && updates.moneda !== wine.moneda && !updates.precio_manual_asignacion) {
+    delete edited.precio_manual_asignacion;
+  }
+  if ('precio' in updates && updates.precio !== wine.precio && !updates.precio_manual_asignacion) {
+    delete edited.precio_manual_asignacion;
     edited.precio_origen = 'manual';
     const singleFormat = !wine.campos_inferidos?.includes('servicio')
       && (wine.servicio === 'copa' || wine.servicio === 'botella');
@@ -95,6 +99,19 @@ export const updateMenuWineEvidence = (wine: MenuScanWine, updates: Partial<Menu
 export const menuWinePriceEvidence = (wine: MenuScanWine): Pick<ComparableWine, 'price' | 'currency' | 'prices' | 'service'> => {
   const inferredService = wine.campos_inferidos?.includes('servicio');
   const pending = wine.precio_manual_pendiente === true;
+  const manual = wine.precio_manual_asignacion;
+  if (manual && !pending) {
+    const inferredPrice = (wine.campos_inferidos ?? []).some((field) => /^(precio|precios|moneda)$/.test(field));
+    return {
+      price: null, currency: manual.currency,
+      prices: {
+        glass: manual.prices.copa ?? (!inferredService && !inferredPrice ? wine.precios?.copa : null),
+        bottle: manual.prices.botella ?? (!inferredService && !inferredPrice ? wine.precios?.botella : null),
+      },
+      service: inferredService ? null : wine.servicio === 'copa' ? 'glass'
+        : wine.servicio === 'botella' ? 'bottle' : wine.servicio === 'ambos' ? 'both' : null,
+    };
+  }
   return {
     price: pending ? null : wine.precio,
     currency: wine.moneda,

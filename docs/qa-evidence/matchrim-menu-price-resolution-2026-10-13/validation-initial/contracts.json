@@ -1,0 +1,498 @@
+{
+  "scope": "Synthetic price/provenance contracts; not human preference or wine recognition",
+  "checks": [
+    {
+      "name": "Strict draft accepts \"0\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \"35,50\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \"35.50\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \" 12 \"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \"00012\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \"1000000000\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \" \" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"-1\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"+1\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1e3\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"Infinity\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"NaN\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1,2.3\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1.234\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1 000\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"12,\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \".5\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1000000001\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Manual bottle keeps actual service and original cup",
+      "passed": true
+    },
+    {
+      "name": "Manual review never mutates source object",
+      "passed": true
+    },
+    {
+      "name": "Manual price leaves identity, confidence, attributes and affinity byte-equivalent",
+      "passed": true
+    },
+    {
+      "name": "Comparator receives unit prices, never unallocated generic scalar",
+      "passed": true
+    },
+    {
+      "name": "EUR to GBP removes unselected amount without FX and keeps original trace",
+      "passed": true
+    },
+    {
+      "name": "Two explicit manual formats preserve both without scan-source mislabelling",
+      "passed": true
+    },
+    {
+      "name": "Currency switch does not carry previous manual amounts as new currency",
+      "passed": true
+    },
+    {
+      "name": "Explicit bottle price does not upgrade service ambos",
+      "passed": true
+    },
+    {
+      "name": "Explicit bottle price does not upgrade service copa",
+      "passed": true
+    },
+    {
+      "name": "Explicit bottle price does not upgrade service botella",
+      "passed": true
+    },
+    {
+      "name": "Explicit bottle price does not upgrade service null",
+      "passed": true
+    },
+    {
+      "name": "Manual unit does not certify inferred servicio or other price",
+      "passed": true
+    },
+    {
+      "name": "Manual unit does not certify inferred precios or other price",
+      "passed": true
+    },
+    {
+      "name": "Manual unit does not certify inferred precio or other price",
+      "passed": true
+    },
+    {
+      "name": "Manual unit does not certify inferred moneda or other price",
+      "passed": true
+    },
+    {
+      "name": "Manual price is not catalog evidence or preference learning",
+      "passed": true
+    },
+    {
+      "name": "Snapshot JSON roundtrip preserves manual bottle 0 and original trace",
+      "passed": true
+    },
+    {
+      "name": "Snapshot JSON roundtrip preserves manual bottle 12 and original trace",
+      "passed": true
+    },
+    {
+      "name": "Snapshot JSON roundtrip preserves manual bottle 35.5 and original trace",
+      "passed": true
+    },
+    {
+      "name": "Foreign manual amount and original EUR remain visibly distinct",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"amount\":36}",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"currency\":\"GBP\"}",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"format\":\"copa\"}",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"prices\":{\"copa\":null,\"botella\":36}}",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"original\":{\"amount\":25,\"raw_currency\":\"EUR\",\"currency\":\"GBP\",\"prices\":{\"copa\":12,\"botella\":25,\"llevar\":null},\"origin\":\"scan\",\"inferred\":false}}",
+      "passed": true
+    },
+    {
+      "name": "Generic legacy price update invalidates explicit manual assignment",
+      "passed": true
+    },
+    {
+      "name": "Generic legacy currency update invalidates explicit manual assignment",
+      "passed": true
+    },
+    {
+      "name": "Read cup availability cannot certify manually assigned bottle availability",
+      "passed": true
+    },
+    {
+      "name": "A prior known legacy manual price retains manual provenance on the other unit",
+      "passed": true
+    },
+    {
+      "name": "Invalid direct manual input rejects before state update: NaN",
+      "passed": true
+    },
+    {
+      "name": "Invalid direct manual input rejects before state update: Infinity",
+      "passed": true
+    },
+    {
+      "name": "Invalid direct manual input rejects before state update: -1",
+      "passed": true
+    },
+    {
+      "name": "Invalid direct manual input rejects before state update: 1000000001",
+      "passed": true
+    },
+    {
+      "name": "Invalid direct manual input rejects before state update: 35",
+      "passed": true
+    },
+    {
+      "name": "Invalid direct manual input rejects before state update: null",
+      "passed": true
+    },
+    {
+      "name": "Provider cannot self-certify a manual price origin",
+      "passed": true
+    },
+    {
+      "name": "Identity edit still invalidates affinity instead of borrowing price confidence",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot output remains additive only when explicit review exists",
+      "passed": true
+    },
+    {
+      "name": "Insert receipt rejects stripped manual metadata",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 0",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 1",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 2",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 3",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 4",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 5",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 6",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 7",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 8",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 9",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 10",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 11",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 12",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 13",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 14",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 15",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 16",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 17",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 18",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 19",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 20",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 21",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 22",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 23",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 24",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 25",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 26",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 27",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 28",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 29",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 30",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 31",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 32",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 33",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 34",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 35",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 36",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 37",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 38",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 39",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 40",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 41",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 42",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 43",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 44",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot and reader parity 45",
+      "passed": true
+    },
+    {
+      "name": "Protected price-lane initializer unchanged: saveScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected price-lane initializer unchanged: updateScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected price-lane initializer unchanged: resetSaveBatch",
+      "passed": true
+    },
+    {
+      "name": "Protected price-lane initializer unchanged: normalizeScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected price-lane initializer unchanged: getWineDecision",
+      "passed": true
+    },
+    {
+      "name": "Protected price-lane initializer unchanged: getSimilarWines",
+      "passed": true
+    },
+    {
+      "name": "Protected price-lane initializer unchanged: menuDecision",
+      "passed": true
+    },
+    {
+      "name": "Protected price-lane initializer unchanged: retryScanProfile",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/wineComparison.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/components/AffinityExplanation.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/components/wine-import/WineComparisonWorkspace.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/components/wine-import/MultiWineLabelScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/multiWineScan.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/menuWineActions.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/imageAnalysis.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/integrations/supabase/client.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/integrations/supabase/types.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: supabase/functions/search-wines/index.ts",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

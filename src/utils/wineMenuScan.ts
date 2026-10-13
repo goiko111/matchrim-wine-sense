@@ -12,6 +12,21 @@ export interface MenuScanPosition {
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { normalizeScanPrice, resolveScanCurrency } from './scanMoney';
 
+export interface MenuManualPriceAssignment {
+  format: 'copa' | 'botella';
+  amount: number;
+  currency: string;
+  prices: { copa: number | null; botella: number | null };
+  original: {
+    amount: number | null;
+    raw_currency: string | null;
+    currency: string | null;
+    prices: { copa: number | null; botella: number | null; llevar: number | null };
+    origin: 'manual' | 'scan';
+    inferred: boolean;
+  };
+}
+
 export interface MenuScanWine {
   canonicalId?: string | null;
   sensorySource?: 'catalog' | 'inference';
@@ -23,6 +38,7 @@ export interface MenuScanWine {
   precio: number | null;
   precio_origen?: 'manual';
   precio_manual_pendiente?: boolean;
+  precio_manual_asignacion?: MenuManualPriceAssignment;
   moneda?: string | null;
   tipo: string;
   descripcion: string | null;

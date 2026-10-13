@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-13, explicit menu price review closed
+
+1. Preserve the40-context/710-check price evidence and optional v1 assignment metadata. Do not replay this as new OCR, real users, hosted persistence or native accessibility.
+2. Close newly observed menu-style suggestions using photo-inferred attributes or unknown types as numeric similarity. Require grounded sensory evidence and explain the boundary separately from personalized affinity.
+3. Cloud memory/label-keyboard changes remain independent; integrate only reviewed commits with compatibility gates. No production or native/distribution action from this local two-hour continuation.
+4. Canonical ground truth, human recommendation outcomes, hosted ownership, physical accessibility and release-signing gates remain open. No new budget consumption or dataset regeneration.
+
 ## Current delta: 2026-10-12, carta list price boundary closed
 
 1. Chosen/common price unit, eligible-row currency, asc/desc/max, value-source guard and ambiguous manual amounts verified in active list.14 final contexts166 assertions,15 active-factory contracts; existing03/earlier green suites not replayed. Source stages distinguish shared-control and render-copy follow-ups.

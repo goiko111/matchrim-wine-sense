@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-13, explicit menu price review
+
+- Draft amount/currency/unit with Apply/Discard, comma decimal validation, per-unit manual origin and preserved original readings. No currency conversion or availability inference; saved/uncertain pricing cannot silently overwrite Bodega metadata.
+- Final40/40 local contexts710/710 checks,123 contracts including46 legacy parity cases. Existing save/list/comparison/actions contracts and release/typecheck/lint/build pass; lint0errors106 inherited warnings.2130 older evidence entries unchanged.
+- [Price-resolution report](docs/MATCHRIM_MENU_PRICE_RESOLUTION_2026-10-13.md). Local candidate only, no push/deploy/provider/native/Apple/TestFlight. Cloud owns memory and label-detail keyboard; next local observed defect is inferred menu-style percentages, not new recognition evaluation.
+
 ## Latest checkpoint: 2026-10-12, active carta list prices
 
 - List uses effective chosen/common service prices and eligible-row currency, not generic amount/whole-menu currency. Safe asc/desc/max/value; unsupported basis resets cap/order. Shared03 adapter semantics, inferred service exclusion and pending manual-price provenance. No FX/volume conversion or implicit EUR.

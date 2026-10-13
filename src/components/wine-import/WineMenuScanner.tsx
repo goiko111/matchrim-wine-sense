@@ -20,6 +20,8 @@ import {
 import { AffinityExplanation } from "@/components/AffinityExplanation";
 import { AiRimContextGuide } from "@/components/AiRimContextGuide";
 import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
+import { MenuPriceEditor } from '@/components/wine-import/MenuPriceEditor';
+import { clearMenuManualPriceOrigin, manualMenuPriceLines } from '@/utils/menuPriceReview';
 import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
@@ -481,6 +483,16 @@ const WineMenuScannerSession = ({
   const listPriceText = (wine: ScannedWine, index: number) => {
     if (wine.precio_manual_pendiente) return `Precio manual ${formatPrice(wine.precio, wine.moneda) ?? 'sin importe'} · formato pendiente`;
     const evidence = { id: `menu-row-${index}`, name: wine.nombre, ...menuWinePriceEvidence(wine) };
+    if (wine.precio_manual_asignacion) {
+      const manual = wine.precio_manual_asignacion;
+      const byFormat = (['glass', 'bottle'] as const).flatMap((format) => {
+        if (listPriceFormat && listPriceFormat !== format) return [];
+        const amount = formatPrice(wineComparisonPrice(evidence, format), evidence.currency);
+        const unit = format === 'glass' ? 'copa' : 'botella';
+        return amount ? [`${manual.prices[unit] !== null ? 'Manual' : 'Carta'} · ${unit === 'copa' ? 'Copa' : 'Botella'} ${amount}`] : [];
+      });
+      return byFormat.join(' · ') || 'Precio pendiente';
+    }
     const prefix = wine.precio_origen === 'manual' ? 'Precio manual · ' : '';
     if (listPriceFormat) return prefix + (formatPrice(wineComparisonPrice(evidence, listPriceFormat), evidence.currency) ?? 'Precio pendiente');
     const byFormat = (['glass', 'bottle'] as const).flatMap((format) => {
@@ -762,7 +774,8 @@ const WineMenuScannerSession = ({
 
       setScanPhase('ranking');
       const normalizedWines = await mapWithConcurrency(
-        (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : []).filter(isWineMenuItem).map(normalizeScannedWine),
+        (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : [])
+          .filter(isWineMenuItem).map(clearMenuManualPriceOrigin).map(normalizeScannedWine),
         3,
         async (wine) => {
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
@@ -1829,26 +1842,10 @@ const WineMenuScannerSession = ({
                                 onChange={(event) => updateScannedWine(index, { tipo: event.target.value })}
                               />
                             </div>
-                            <div className="space-y-1.5">
-                              <Label htmlFor={`scan-price-${index}`}>Precio</Label>
-                              <Input
-                                id={`scan-price-${index}`}
-                                value={wine.precio?.toString() || ''}
-                                inputMode="decimal"
-                                onChange={(event) => updateScannedWine(index, { precio: parseNullableNumber(event.target.value) })}
-                              />
-                              {wine.precio_manual_pendiente && <p role="status" className="text-xs font-medium text-amber-800">Precio manual pendiente de formato: {formatPrice(wine.precio, wine.moneda) ?? 'sin importe'}</p>}
-                            </div>
-                            <div className="space-y-1.5">
-                              <Label htmlFor={`scan-currency-${index}`}>Moneda</Label>
-                              <Select value={wine.moneda || 'unknown'} onValueChange={(value) => updateScannedWine(index, { moneda: value === 'unknown' ? null : value })}>
-                                <SelectTrigger id={`scan-currency-${index}`}><SelectValue /></SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="unknown">Sin confirmar</SelectItem>
-                                  {['EUR', 'GBP', 'USD', 'CHF', 'CAD', 'AUD', 'NZD', 'JPY', 'CNY', 'SEK', 'NOK', 'DKK'].map((currency) => <SelectItem key={currency} value={currency}>{currency}</SelectItem>)}
-                                </SelectContent>
-                              </Select>
-                            </div>
+                            <MenuPriceEditor wine={wine} index={index}
+                              locked={Boolean(savedCardsRef.current.has(index) || pendingIdentitiesRef.current.has(index)
+                                || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savingWineKey)}
+                              onApply={(updated) => updateScannedWine(index, updated)} />
                             <div className="space-y-1.5 md:col-span-2">
                               <Label htmlFor={`scan-grapes-${index}`}>Uvas</Label>
                               <Input
@@ -1883,9 +1880,9 @@ const WineMenuScannerSession = ({
                           <Badge variant="outline">{wine.pais}</Badge>
                         )}
                         <Badge variant="secondary" className="capitalize">{wine.tipo}</Badge>
-                        {wine.precio && (
+                        {wine.precio !== null && (
                           <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">
-                            {formatPrice(wine.precio, wine.moneda)}
+                            {wine.precio_manual_asignacion ? manualMenuPriceLines(wine).join(' · ') : formatPrice(wine.precio, wine.moneda)}
                           </Badge>
                         )}
                       </div>

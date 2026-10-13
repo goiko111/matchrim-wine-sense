@@ -1,0 +1,69 @@
+{
+  "scope": "Visible local menu price review. Frozen synthetic wine contracts on public food pixels; no recognition claim.",
+  "stage": "after",
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "a906de394bf35baae9200c7d4eb55927b5f570256f8a02534bbf84ed92545664",
+    "src/components/wine-import/MenuPriceEditor.tsx": "e46d1bfb91ecee7e3c23c2600ba44ab69f581f47e3969561fba2f1bba0373cef",
+    "src/utils/menuPriceReview.ts": "7db317e6b2de91e544afee579b8376d2a938b31a8bf11d4d6636ed671b58d4ec",
+    "src/utils/menuWineSave.ts": "4f836dab79ac1f98e59e44a93d93879ad41b8084259922e22b6fc262be913ec0",
+    "src/utils/scanWineEvidence.ts": "70d03273fc9696ff89813f2499aed90f28c1490f44dd117023d10370726e0858",
+    "src/utils/wineMenuScan.ts": "3b5462175913b92424b50405f5393e185531893d15387676fd52485975027c2a",
+    "scripts/qa-matchrim-menu-price-resolution-oct13.py": "1ca5659eb898f72107726834db243b040807958f53d556014927c830a65b9bba"
+  },
+  "elapsedSeconds": 10.038,
+  "realRemoteCalls": 0,
+  "paidCalls": 0,
+  "hostedWrites": 0,
+  "realUsers": 0,
+  "inputHashes": {
+    "docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5",
+    "qa-fixtures/food-menu/commons-restaurant-menu-2026-08-25-2000.jpg": "9980c5e6b9d5e52f1783e2f26d1a97e22c0c2e1556e9e72919dd26fc34ece9a9"
+  },
+  "results": [
+    {
+      "case": "keyboard:portrait",
+      "passed": false,
+      "exception": "Page.wait_for_function: Timeout 7000ms exceeded.",
+      "focus": {
+        "active": {
+          "id": "scan-price-format-0",
+          "role": "combobox",
+          "tag": "BUTTON",
+          "text": "Botella"
+        },
+        "options": []
+      },
+      "steps": [
+        {
+          "name": "Keyboard reaches labelled format trigger",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Keyboard selects bottle without touching hidden state",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

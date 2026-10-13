@@ -1,0 +1,236 @@
+{
+  "scope": "Visible local menu price review. Frozen synthetic wine contracts on public food pixels; no recognition claim.",
+  "stage": "before",
+  "realRemoteCalls": 0,
+  "paidCalls": 0,
+  "hostedWrites": 0,
+  "realUsers": 0,
+  "inputHashes": {
+    "docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5",
+    "qa-fixtures/food-menu/commons-restaurant-menu-2026-08-25-2000.jpg": "9980c5e6b9d5e52f1783e2f26d1a97e22c0c2e1556e9e72919dd26fc34ece9a9"
+  },
+  "results": [
+    {
+      "case": "both-bottle:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "Explicit format and apply controls exist",
+          "passed": false,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Decimal and zero edit retain entered amount",
+          "passed": true,
+          "actual": "35",
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 3,
+            "fulfilled": 3
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "comma:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "Explicit format and apply controls exist",
+          "passed": false,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Decimal and zero edit retain entered amount",
+          "passed": false,
+          "actual": "",
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 3,
+            "fulfilled": 3
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "zero:portrait",
+      "passed": false,
+      "steps": [
+        {
+          "name": "Explicit format and apply controls exist",
+          "passed": false,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Decimal and zero edit retain entered amount",
+          "passed": true,
+          "actual": "0",
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 3,
+            "fulfilled": 3
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

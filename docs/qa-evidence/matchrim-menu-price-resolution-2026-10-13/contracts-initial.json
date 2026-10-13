@@ -1,0 +1,199 @@
+{
+  "scope": "Synthetic price/provenance contracts; not human preference or wine recognition",
+  "checks": [
+    {
+      "name": "Strict draft accepts \"0\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \"35,50\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \"35.50\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \" 12 \"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \"00012\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft accepts \"1000000000\"",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \" \" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"-1\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"+1\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1e3\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"Infinity\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"NaN\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1,2.3\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1.234\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1 000\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"12,\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \".5\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Strict draft rejects \"1000000001\" without zero coercion",
+      "passed": true
+    },
+    {
+      "name": "Manual bottle keeps actual service and original cup",
+      "passed": true
+    },
+    {
+      "name": "Manual review never mutates source object",
+      "passed": true
+    },
+    {
+      "name": "Manual price leaves identity, confidence, attributes and affinity byte-equivalent",
+      "passed": true
+    },
+    {
+      "name": "Comparator receives unit prices, never unallocated generic scalar",
+      "passed": true
+    },
+    {
+      "name": "EUR to GBP removes unselected amount without FX and keeps original trace",
+      "passed": true
+    },
+    {
+      "name": "Two explicit manual formats preserve both without scan-source mislabelling",
+      "passed": true
+    },
+    {
+      "name": "Currency switch does not carry previous manual amounts as new currency",
+      "passed": true
+    },
+    {
+      "name": "Explicit bottle price does not upgrade service ambos",
+      "passed": true
+    },
+    {
+      "name": "Explicit bottle price does not upgrade service copa",
+      "passed": true
+    },
+    {
+      "name": "Explicit bottle price does not upgrade service botella",
+      "passed": true
+    },
+    {
+      "name": "Explicit bottle price does not upgrade service null",
+      "passed": true
+    },
+    {
+      "name": "Manual unit does not certify inferred servicio or other price",
+      "passed": true
+    },
+    {
+      "name": "Manual unit does not certify inferred precios or other price",
+      "passed": true
+    },
+    {
+      "name": "Manual unit does not certify inferred precio or other price",
+      "passed": true
+    },
+    {
+      "name": "Manual unit does not certify inferred moneda or other price",
+      "passed": true
+    },
+    {
+      "name": "Manual price is not catalog evidence or preference learning",
+      "passed": true
+    },
+    {
+      "name": "Snapshot JSON roundtrip preserves manual bottle 0 and original trace",
+      "passed": true
+    },
+    {
+      "name": "Snapshot JSON roundtrip preserves manual bottle 12 and original trace",
+      "passed": true
+    },
+    {
+      "name": "Snapshot JSON roundtrip preserves manual bottle 35.5 and original trace",
+      "passed": true
+    },
+    {
+      "name": "Foreign manual amount and original EUR remain visibly distinct",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  JSON.parse(JSON.stringify(menuPriceSnapshot(wine)))\n"
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"amount\":36}",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"currency\":\"GBP\"}",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"format\":\"copa\"}",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"prices\":{\"copa\":null,\"botella\":36}}",
+      "passed": true
+    },
+    {
+      "name": "Malformed manual contract abstains: {\"original\":{\"amount\":25,\"raw_currency\":\"EUR\",\"currency\":\"GBP\",\"prices\":{\"copa\":12,\"botella\":25,\"llevar\":null},\"origin\":\"scan\",\"inferred\":false}}",
+      "passed": true
+    },
+    {
+      "name": "Generic legacy price update invalidates explicit manual assignment",
+      "passed": true
+    },
+    {
+      "name": "Identity edit still invalidates affinity instead of borrowing price confidence",
+      "passed": true
+    },
+    {
+      "name": "Legacy snapshot output remains additive only when explicit review exists",
+      "passed": true
+    },
+    {
+      "name": "Insert receipt rejects stripped manual metadata",
+      "passed": true
+    }
+  ],
+  "passed": false
+}

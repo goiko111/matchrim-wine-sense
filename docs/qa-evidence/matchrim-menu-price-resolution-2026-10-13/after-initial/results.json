@@ -1,0 +1,2368 @@
+{
+  "scope": "Visible local menu price review. Frozen synthetic wine contracts on public food pixels; no recognition claim.",
+  "stage": "after",
+  "realRemoteCalls": 0,
+  "paidCalls": 0,
+  "hostedWrites": 0,
+  "realUsers": 0,
+  "inputHashes": {
+    "docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5",
+    "qa-fixtures/food-menu/commons-restaurant-menu-2026-08-25-2000.jpg": "9980c5e6b9d5e52f1783e2f26d1a97e22c0c2e1556e9e72919dd26fc34ece9a9"
+  },
+  "results": [
+    {
+      "case": "both-bottle:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Local confirmation names unit and amount",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": "ambos",
+          "expected": "ambos"
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Assignment survives save with explicit amount/unit/currency",
+          "passed": true,
+          "actual": {
+            "format": "botella",
+            "amount": 35,
+            "currency": "EUR",
+            "prices": {
+              "copa": null,
+              "botella": 35
+            },
+            "original": {
+              "amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "inferred": false
+            }
+          },
+          "expected": null
+        },
+        {
+          "name": "Original read currency/prices survive as evidence",
+          "passed": true,
+          "actual": {
+            "amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "prices": {
+              "copa": 12,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "inferred": false
+          },
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Carta · Copa: 12,00 €\n\nManual · Botella: 35,00 €\n\nLectura anterior · Botella: 25,00 €",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 12,
+                "botella": 35,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25",
+              "manual_assignment": {
+                "format": "botella",
+                "amount": 35,
+                "currency": "EUR",
+                "prices": {
+                  "copa": null,
+                  "botella": 35
+                },
+                "original": {
+                  "amount": 25,
+                  "raw_currency": "EUR",
+                  "currency": "EUR",
+                  "prices": {
+                    "copa": 12,
+                    "botella": 25,
+                    "llevar": null
+                  },
+                  "origin": "scan",
+                  "inferred": false
+                }
+              }
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "both-cup:landscape",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Local confirmation names unit and amount",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": "ambos",
+          "expected": "ambos"
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Assignment survives save with explicit amount/unit/currency",
+          "passed": true,
+          "actual": {
+            "format": "copa",
+            "amount": 15,
+            "currency": "EUR",
+            "prices": {
+              "copa": 15,
+              "botella": null
+            },
+            "original": {
+              "amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "inferred": false
+            }
+          },
+          "expected": null
+        },
+        {
+          "name": "Original read currency/prices survive as evidence",
+          "passed": true,
+          "actual": {
+            "amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "prices": {
+              "copa": 12,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "inferred": false
+          },
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Manual · Copa: 15,00 €\n\nCarta · Botella: 25,00 €\n\nLectura anterior · Copa: 12,00 €",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 15,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 15,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 15,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25",
+              "manual_assignment": {
+                "format": "copa",
+                "amount": 15,
+                "currency": "EUR",
+                "prices": {
+                  "copa": 15,
+                  "botella": null
+                },
+                "original": {
+                  "amount": 25,
+                  "raw_currency": "EUR",
+                  "currency": "EUR",
+                  "prices": {
+                    "copa": 12,
+                    "botella": 25,
+                    "llevar": null
+                  },
+                  "origin": "scan",
+                  "inferred": false
+                }
+              }
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "currency:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Local confirmation names unit and amount",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": "ambos",
+          "expected": "ambos"
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Assignment survives save with explicit amount/unit/currency",
+          "passed": true,
+          "actual": {
+            "format": "botella",
+            "amount": 35,
+            "currency": "GBP",
+            "prices": {
+              "copa": null,
+              "botella": 35
+            },
+            "original": {
+              "amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "inferred": false
+            }
+          },
+          "expected": null
+        },
+        {
+          "name": "Original read currency/prices survive as evidence",
+          "passed": true,
+          "actual": {
+            "amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "prices": {
+              "copa": 12,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "inferred": false
+          },
+          "expected": null
+        },
+        {
+          "name": "Other unit not reinterpreted as GBP",
+          "passed": true,
+          "actual": {
+            "copa": null,
+            "botella": 35,
+            "llevar": null
+          },
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Manual · Botella: 35,00 GBP\n\nLectura anterior · Copa: 12,00 €\n\nLectura anterior · Botella: 25,00 €",
+          "expected": null
+        },
+        {
+          "name": "Original EUR and manual GBP distinguishable without conversion",
+          "passed": true,
+          "actual": "Manual · Botella: 35,00 GBP\n\nLectura anterior · Copa: 12,00 €\n\nLectura anterior · Botella: 25,00 €",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "GBP",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "GBP",
+              "currency": "GBP",
+              "service": "ambos",
+              "prices": {
+                "copa": null,
+                "botella": 35,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25",
+              "manual_assignment": {
+                "format": "botella",
+                "amount": 35,
+                "currency": "GBP",
+                "prices": {
+                  "copa": null,
+                  "botella": 35
+                },
+                "original": {
+                  "amount": 25,
+                  "raw_currency": "EUR",
+                  "currency": "EUR",
+                  "prices": {
+                    "copa": 12,
+                    "botella": 25,
+                    "llevar": null
+                  },
+                  "origin": "scan",
+                  "inferred": false
+                }
+              }
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "zero:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Local confirmation names unit and amount",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": "ambos",
+          "expected": "ambos"
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Assignment survives save with explicit amount/unit/currency",
+          "passed": true,
+          "actual": {
+            "format": "botella",
+            "amount": 0,
+            "currency": "EUR",
+            "prices": {
+              "copa": null,
+              "botella": 0
+            },
+            "original": {
+              "amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "inferred": false
+            }
+          },
+          "expected": null
+        },
+        {
+          "name": "Original read currency/prices survive as evidence",
+          "passed": true,
+          "actual": {
+            "amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "prices": {
+              "copa": 12,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "inferred": false
+          },
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Carta · Copa: 12,00 €\n\nManual · Botella: 0,00 €\n\nLectura anterior · Botella: 25,00 €",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 0,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 0,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 12,
+                "botella": 0,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25",
+              "manual_assignment": {
+                "format": "botella",
+                "amount": 0,
+                "currency": "EUR",
+                "prices": {
+                  "copa": null,
+                  "botella": 0
+                },
+                "original": {
+                  "amount": 25,
+                  "raw_currency": "EUR",
+                  "currency": "EUR",
+                  "prices": {
+                    "copa": 12,
+                    "botella": 25,
+                    "llevar": null
+                  },
+                  "origin": "scan",
+                  "inferred": false
+                }
+              }
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "comma:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Local confirmation names unit and amount",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": "ambos",
+          "expected": "ambos"
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Assignment survives save with explicit amount/unit/currency",
+          "passed": true,
+          "actual": {
+            "format": "botella",
+            "amount": 35.5,
+            "currency": "EUR",
+            "prices": {
+              "copa": null,
+              "botella": 35.5
+            },
+            "original": {
+              "amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "inferred": false
+            }
+          },
+          "expected": null
+        },
+        {
+          "name": "Original read currency/prices survive as evidence",
+          "passed": true,
+          "actual": {
+            "amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "prices": {
+              "copa": 12,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "inferred": false
+          },
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Carta · Copa: 12,00 €\n\nManual · Botella: 35,50 €\n\nLectura anterior · Botella: 25,00 €",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35.5,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35.5,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 12,
+                "botella": 35.5,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25",
+              "manual_assignment": {
+                "format": "botella",
+                "amount": 35.5,
+                "currency": "EUR",
+                "prices": {
+                  "copa": null,
+                  "botella": 35.5
+                },
+                "original": {
+                  "amount": 25,
+                  "raw_currency": "EUR",
+                  "currency": "EUR",
+                  "prices": {
+                    "copa": 12,
+                    "botella": 25,
+                    "llevar": null
+                  },
+                  "origin": "scan",
+                  "inferred": false
+                }
+              }
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "invalid:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Invalid draft blocks apply: -1",
+          "passed": true,
+          "actual": "-1",
+          "expected": null
+        },
+        {
+          "name": "Invalid draft blocks apply: 1e3",
+          "passed": true,
+          "actual": "1e3",
+          "expected": null
+        },
+        {
+          "name": "Invalid draft blocks apply: 1,2.3",
+          "passed": true,
+          "actual": "1,2.3",
+          "expected": null
+        },
+        {
+          "name": "Invalid draft blocks apply: Infinity",
+          "passed": true,
+          "actual": "Infinity",
+          "expected": null
+        },
+        {
+          "name": "Invalid draft blocks apply: ",
+          "passed": true,
+          "actual": "",
+          "expected": null
+        },
+        {
+          "name": "Local confirmation names unit and amount",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": "ambos",
+          "expected": "ambos"
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Assignment survives save with explicit amount/unit/currency",
+          "passed": true,
+          "actual": {
+            "format": "botella",
+            "amount": 35,
+            "currency": "EUR",
+            "prices": {
+              "copa": null,
+              "botella": 35
+            },
+            "original": {
+              "amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "inferred": false
+            }
+          },
+          "expected": null
+        },
+        {
+          "name": "Original read currency/prices survive as evidence",
+          "passed": true,
+          "actual": {
+            "amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "prices": {
+              "copa": 12,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "inferred": false
+          },
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Carta · Copa: 12,00 €\n\nManual · Botella: 35,00 €\n\nLectura anterior · Botella: 25,00 €",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 12,
+                "botella": 35,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25",
+              "manual_assignment": {
+                "format": "botella",
+                "amount": 35,
+                "currency": "EUR",
+                "prices": {
+                  "copa": null,
+                  "botella": 35
+                },
+                "original": {
+                  "amount": 25,
+                  "raw_currency": "EUR",
+                  "currency": "EUR",
+                  "prices": {
+                    "copa": 12,
+                    "botella": 25,
+                    "llevar": null
+                  },
+                  "origin": "scan",
+                  "inferred": false
+                }
+              }
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "cancel:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Discard restores original price draft",
+          "passed": true,
+          "actual": "25",
+          "expected": "25"
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": "ambos",
+          "expected": "ambos"
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Discard does not mutate scan or attach manual assignment",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Carta: 25,00 €\n\nImporte general pendiente de asignar a un formato\n\nCopa: 12,00 €\n\nBotella: 25,00 €",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "unknown:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Local confirmation names unit and amount",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Assignment survives save with explicit amount/unit/currency",
+          "passed": true,
+          "actual": {
+            "format": "botella",
+            "amount": 35,
+            "currency": "EUR",
+            "prices": {
+              "copa": null,
+              "botella": 35
+            },
+            "original": {
+              "amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "inferred": false
+            }
+          },
+          "expected": null
+        },
+        {
+          "name": "Original read currency/prices survive as evidence",
+          "passed": true,
+          "actual": {
+            "amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "prices": {
+              "copa": 12,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "inferred": false
+          },
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Carta · Copa: 12,00 €\n\nManual · Botella: 35,00 €\n\nLectura anterior · Botella: 25,00 €\n\nDisponibilidad por copa o botella pendiente de confirmar",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": null,
+              "prices": {
+                "copa": 12,
+                "botella": 35,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25",
+              "manual_assignment": {
+                "format": "botella",
+                "amount": 35,
+                "currency": "EUR",
+                "prices": {
+                  "copa": null,
+                  "botella": 35
+                },
+                "original": {
+                  "amount": 25,
+                  "raw_currency": "EUR",
+                  "currency": "EUR",
+                  "prices": {
+                    "copa": 12,
+                    "botella": 25,
+                    "llevar": null
+                  },
+                  "origin": "scan",
+                  "inferred": false
+                }
+              }
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "inferred:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Local confirmation names unit and amount",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "One intercepted insert, no live mutation",
+          "passed": true,
+          "actual": 1,
+          "expected": 1
+        },
+        {
+          "name": "Original service availability preserved",
+          "passed": true,
+          "actual": "ambos",
+          "expected": "ambos"
+        },
+        {
+          "name": "No opaque affinity or learning from price",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Both/unknown/inferred pricing not promoted to EUR bottle scalar",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Assignment survives save with explicit amount/unit/currency",
+          "passed": true,
+          "actual": {
+            "format": "botella",
+            "amount": 35,
+            "currency": "EUR",
+            "prices": {
+              "copa": null,
+              "botella": 35
+            },
+            "original": {
+              "amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "inferred": true
+            }
+          },
+          "expected": null
+        },
+        {
+          "name": "Original read currency/prices survive as evidence",
+          "passed": true,
+          "actual": {
+            "amount": 25,
+            "raw_currency": "EUR",
+            "currency": "EUR",
+            "prices": {
+              "copa": 12,
+              "botella": 25,
+              "llevar": null
+            },
+            "origin": "scan",
+            "inferred": true
+          },
+          "expected": null
+        },
+        {
+          "name": "Bodega preserves explicit manual provenance",
+          "passed": true,
+          "actual": "Carta · Copa (sin confirmar): 12,00 €\n\nManual · Botella: 35,00 €\n\nLectura anterior · Botella (sin confirmar): 25,00 €\n\nDisponibilidad por copa o botella pendiente de confirmar\n\nOtras lecturas de precio o moneda pendientes de confirmar",
+          "expected": null
+        },
+        {
+          "name": "Readable price lines stay within their group",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 8,
+            "fulfilled": 8
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 35,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 35,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 12,
+                "botella": 35,
+                "llevar": null
+              },
+              "origin": "manual",
+              "manual_pending": false,
+              "inferred_service": true,
+              "inferred_price": true,
+              "inferred_currency": true,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25",
+              "manual_assignment": {
+                "format": "botella",
+                "amount": 35,
+                "currency": "EUR",
+                "prices": {
+                  "copa": null,
+                  "botella": 35
+                },
+                "original": {
+                  "amount": 25,
+                  "raw_currency": "EUR",
+                  "currency": "EUR",
+                  "prices": {
+                    "copa": 12,
+                    "botella": 25,
+                    "llevar": null
+                  },
+                  "origin": "scan",
+                  "inferred": true
+                }
+              }
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_roles"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        },
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "saved:portrait",
+      "passed": true,
+      "steps": [
+        {
+          "name": "Stored pricing is not silently editable",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No extra insert or update after saved price review",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No horizontal page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "All nonlocal HTTP fulfilled locally",
+          "passed": true,
+          "actual": {
+            "seen": 4,
+            "fulfilled": 4
+          },
+          "expected": null
+        },
+        {
+          "name": "No runtime exceptions",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No unexpected hosted writes",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "writes": [
+        {
+          "user_id": "00000000-0000-4000-8000-000000000080",
+          "name": "Barbaresco Marchesi di Barolo",
+          "producer": "Marchesi di Barolo",
+          "vintage": null,
+          "region": "Piamonte",
+          "country": "Italia",
+          "grape_varieties": [
+            "Nebbiolo"
+          ],
+          "tasting_notes": "Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.",
+          "status": "wishlist",
+          "is_favorite": false,
+          "matchrim_affinity": null,
+          "sensory_attributes": null,
+          "use_for_profile_training": false,
+          "consumption_place": null,
+          "consumption_place_type": null,
+          "price": null,
+          "place_details": {
+            "source": "menu_scanner",
+            "restaurant_session_id": null,
+            "matchrim_code": null,
+            "pairing_dish_name": null,
+            "similar_wine_name": null,
+            "scanned_price": 25,
+            "scanned_currency": "EUR",
+            "menu_price_snapshot": {
+              "version": 1,
+              "raw_amount": 25,
+              "raw_currency": "EUR",
+              "currency": "EUR",
+              "service": "ambos",
+              "prices": {
+                "copa": 12,
+                "botella": 25,
+                "llevar": null
+              },
+              "origin": "scan",
+              "manual_pending": false,
+              "inferred_service": false,
+              "inferred_price": false,
+              "inferred_currency": false,
+              "identity_confirmed": true,
+              "source_text": "Barbaresco Marchesi di Barolo 25"
+            },
+            "menu_wine_evidence": {
+              "version": 1,
+              "canonical_id": null,
+              "sensory_source": "inference",
+              "identity_confirmed": true,
+              "affinity_calibrated": false
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/user_wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}
