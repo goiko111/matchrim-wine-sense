@@ -56,7 +56,7 @@ final class MatchrimCandidateUITests: XCTestCase {
         let mode = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Etiqueta de vino")).firstMatch
         XCTAssertTrue(mode.waitForExistence(timeout: 10))
         mode.tap()
-        let consent = app.switches["He leido el aviso de privacidad del escaner"]
+        let consent = app.switches["He leído el aviso de privacidad del escáner"]
         if consent.waitForExistence(timeout: 2) {
             if consent.value as? String == "0" { consent.tap() }
             app.buttons["Entiendo y continuar"].tap()
@@ -98,6 +98,8 @@ final class MatchrimCandidateUITests: XCTestCase {
 
     @MainActor
     func testColdLaunchesAndSafeArea() throws {
+        let firstUse = launch()
+        firstUse.terminate()
         var maximum = 0.0
         var samples: [Double] = []
         for _ in 0..<5 {

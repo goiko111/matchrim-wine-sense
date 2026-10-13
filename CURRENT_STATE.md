@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-13, uploaded beta81
+
+- Explicit owner authorization to upload the incomplete current product. Apple accepted1.0(81) at13:49:44 Europe/Madrid; Upload succeeded / Uploaded package is processing / export exit0. Build81 includes local product through86418ed plus QA guard reconciliation54ffa3c, not cloud patch3845c72.
+- Release/price123/style94/precision180/typecheck/lint/build PASS; lint0errors106warnings. Native6/6 on a fresh iPhone16Pro/iOS26.0.1 simulator, max cold launch2.936725s; strict signature/profile/resources156/156. Existing production endpoints, published web and owner phone unchanged.
+- External-compatible export, no public App Store submission. Browser Apple sign-in still required to verify availability/group assignment and send the requested external invitation; invitation NOT sent. Recognition/human/hosted/physical/memory gates remain open.
+- [Beta81 receipt and evidence](docs/MATCHRIM_81_TESTFLIGHT_2026-10-13.md). Do not upload81 again. QA harness now handles first-use guide and current accented privacy name; earlier failed attempts preserved.
+
 ## Latest checkpoint: 2026-10-13, local two-hour candidate
 
 - Explicit price provenance, grounded style similarity, continuous identity typing and clipped-text/44px/mobile reflow implemented. Currency precision now exact; invalid legacy amounts stay pending and out of budgets/finance, without FX.

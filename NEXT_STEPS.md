@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-13, beta81 uploaded
+
+1. Preserve uploaded81 and local source/evidence; do not reupload or renumber it. Apple accepted13:49:44 Europe/Madrid; processing/individual availability not yet read back.
+2. Complete the pending owner Apple browser sign-in, verify build81, post honest beta notes/group assignment and send the already requested external tester invitation. Tester identity remains in the private local receipt; not an internal/admin account, and NOT invited yet.
+3. Continue cloud-patch integration separately from the uploaded immutable binary, checking scanner/pins/comparator compatibility and native regressions before another candidate. Published web/backend remain unchanged.
+4. Real dense identity/coverage, catalog sensory/human outcomes, hosted persistence/ownership and physical accessibility/memory remain independent unresolved quality gates. Beta upload does not close them or increase a measured product percentage.
+
 ## Current delta: 2026-10-13, local candidate ready for combined review
 
 1. Preserve this candidate and three evidence packs; source-stage quantum distinction is explicit. No additional corpus/model calls or source resets.
