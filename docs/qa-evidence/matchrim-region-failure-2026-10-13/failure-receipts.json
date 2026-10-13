@@ -1,0 +1,13 @@
+{
+  "commands": [
+    {"name": "region failure baseline", "command": "with_server.py on4467 -- qa-matchrim-region-failure-oct13.py --output failure-before", "exitCode": 1, "checks": "76/104"},
+    {"name": "region failure first fix", "command": "with_server.py on4467 -- qa-matchrim-region-failure-oct13.py --output failure-after-first", "exitCode": 0, "checks": "104/104"},
+    {"name": "region failure final visual fix", "command": "with_server.py on4467 -- qa-matchrim-region-failure-oct13.py --output failure-after", "exitCode": 0, "checks": "112/112", "extension": "8 extra first-viewport error visibility assertions"},
+    {"name": "safe error/source contracts", "command": "tsx scripts/check-matchrim-region-failure-oct13.ts failure-contracts.json", "exitCode": 0, "checks": "98/98"},
+    {"name": "app typecheck", "command": "npm run typecheck", "exitCode": 0},
+    {"name": "tooling typecheck", "command": "tsc --noEmit --project failure-tooling.json", "exitCode": 0},
+    {"name": "scoped lint", "command": "eslint MultiWineLabelScanner.tsx regionAnalysisError.ts check-matchrim-region-failure-oct13.ts --format json", "exitCode": 0, "errors": 0, "warnings": 0},
+    {"name": "web build first", "command": "npm run build", "exitCode": 0, "modules": 3635, "seconds": 6.52},
+    {"name": "web build final", "command": "npm run build", "exitCode": 0, "modules": 3635}
+  ]
+}

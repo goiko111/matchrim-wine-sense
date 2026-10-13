@@ -48,6 +48,7 @@ import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
 import { clusterOverlayPins } from '@/utils/overlayPins';
 import { formatScanRegionProgress, summarizeScanRegionProgress } from '@/utils/scanRegionProgress';
+import { regionAnalysisErrorMessage } from '@/utils/regionAnalysisError';
 import {
   buildWineDetectionTiles,
   confirmWineCandidateIdentity,
@@ -106,6 +107,7 @@ const PHASE_LABELS: Record<ScanPhase, string> = {
 };
 
 const statusLabel = (region: ScanRegion) => {
+  if (region.error) return 'Error de análisis';
   if (region.status === 'recognized') return 'Reconocido';
   if (region.status === 'uncertain') return 'Dudoso';
   if (region.status === 'unrecognized') return region.fallback?.code === 'not_wine' ? 'Otra bebida' : 'Sin reconocer';
@@ -336,7 +338,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         status: 'unrecognized' as const,
         deferral: null,
         fallback: null,
-        error: error instanceof Error ? error.message : 'No se pudo analizar la región',
+        error: regionAnalysisErrorMessage(error, navigator.onLine),
       };
     }
   };
@@ -608,6 +610,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         ...current,
         selectedCandidateId: candidateId,
         status: candidate ? determineRegionStatus([candidate]) : 'unrecognized',
+        error: null,
+        fallback: null,
       };
     });
   };
@@ -617,6 +621,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     updateRegion(selectedRegion.id, (current) => ({
       ...current,
       status: 'recognized',
+      error: null,
+      fallback: null,
       candidates: current.candidates.map((candidate) => candidate.id === selectedCandidate.id
         ? confirmWineCandidateIdentity(candidate)
         : candidate),
@@ -629,6 +635,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     updateRegion(selectedRegion.id, (current) => ({
       ...current,
       status: 'recognized',
+      error: null,
+      fallback: null,
       candidates: current.candidates.map((candidate) => candidate.id === selectedCandidate.id
         ? correctWineCandidateIdentity(candidate, patch)
         : candidate),
@@ -1059,13 +1067,21 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     Análisis del lote en curso. Las identidades aún pueden cambiar.
                   </p>
                 )}
+                {selectedRegion.error && selectedRegion.candidates.length > 0 && (
+                  <div role="alert" data-testid="region-analysis-error" className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
+                    <p className="font-semibold">Error de análisis</p>
+                    <p className="mt-1">{selectedRegion.error}</p>
+                    <p className="mt-1">Resultado anterior: este intento no ha podido actualizar la identificación ni la afinidad.</p>
+                  </div>
+                )}
+
                 {selectedRegion.cropDataUrl && (
                   <img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} className="max-h-48 w-full rounded-lg bg-black object-contain" />
                 )}
 
                 {selectedRegion.candidates.length === 0 ? (
                   <div className="space-y-4">
-                    {selectedRegion.status !== 'deferred' && selectedRegion.fallback?.code !== 'not_wine' && <AiRimContextGuide
+                    {!selectedRegion.error && selectedRegion.status !== 'deferred' && selectedRegion.fallback?.code !== 'not_wine' && <AiRimContextGuide
                       profile={scanProfile?.profile ?? null}
                       context="label"
                       name={null}
@@ -1074,9 +1090,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       attributes={null}
                       primaryAction={regionActionsLocked ? null : { label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }}
                     />}
-                      <div className={`rounded-lg border-l-4 px-3 py-3 text-sm ${selectedRegion.status === 'deferred' ? 'border-stone-400 bg-stone-100 text-stone-900' : 'border-red-700 bg-red-50 text-red-950'}`}>
-                      <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> {selectedRegion.status === 'deferred' ? 'Región sin analizar' : 'Sin identidad fiable'}</div>
-                      <p className="mt-1">{selectedRegion.deferral?.message ?? selectedRegion.fallback?.message ?? 'No hay evidencia visual suficiente para asignar un vino.'}</p>
+                      <div role={selectedRegion.error ? 'alert' : undefined} data-testid={selectedRegion.error ? 'region-analysis-error' : undefined} className={`rounded-lg border-l-4 px-3 py-3 text-sm ${selectedRegion.status === 'deferred' ? 'border-stone-400 bg-stone-100 text-stone-900' : 'border-red-700 bg-red-50 text-red-950'}`}>
+                      <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> {selectedRegion.error ? 'Error de análisis' : selectedRegion.status === 'deferred' ? 'Región sin analizar' : 'Sin identidad fiable'}</div>
+                      <p className="mt-1">{selectedRegion.error ?? selectedRegion.deferral?.message ?? selectedRegion.fallback?.message ?? 'No hay evidencia visual suficiente para asignar un vino.'}</p>
                       <p className="mt-1 font-medium">No se asignara una identidad ni una afinidad inventadas.</p>
                       {selectedRegion.fallback?.suggestedActions.length ? (
                         <ul className="mt-2 list-disc space-y-1 pl-5">

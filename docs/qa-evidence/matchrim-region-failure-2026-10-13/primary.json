@@ -1,0 +1,36 @@
+{
+  "baseline": "485a2dc7fa0ea457cd026ba796796c4e58309d5a",
+  "ui": {
+    "failure-before": {
+      "contexts": 8,
+      "contextsPassed": 0,
+      "checks": 104,
+      "checksPassed": 76
+    },
+    "failure-after-first": {
+      "contexts": 8,
+      "contextsPassed": 8,
+      "checks": 104,
+      "checksPassed": 104
+    },
+    "failure-after": {
+      "contexts": 8,
+      "contextsPassed": 8,
+      "checks": 112,
+      "checksPassed": 112
+    }
+  },
+  "codeChecks": 98,
+  "protectedSources": 46,
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "scope": "Eight affected browser error/recovery routes on one existing CC0 food-menu canary and exact local vision responses. HTTP400/429 and transport failures are deliberate protocol faults, not live provider results. No corpus/model/profile regeneration.",
+  "behavior": "Failure is not unreadability. Previous candidates retained and marked not updated. Safe message does not expose raw provider detail. Explicit edit clears stale failure; region-only retry follows unchanged budgets.",
+  "detectorScoringQueriesCropsUnchanged": true,
+  "unrelatedPriorSuitesRerun": false,
+  "nativeBuild": false,
+  "deploy": false,
+  "physicalVoiceOverCertification": false
+}
