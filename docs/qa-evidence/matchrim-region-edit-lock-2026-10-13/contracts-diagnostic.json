@@ -1,0 +1,629 @@
+{
+  "baseline": "bc94dad29d05785e57b1b44af7f9e92b719c7e17",
+  "scope": "Execute only extracted source action guards with synthetic controls; no React/model/user fixture. Complete module normalized AST and source byte protection.",
+  "actorVectors": 80,
+  "changes": {
+    "derivedLock": 1,
+    "guards": 5,
+    "disabled": 8,
+    "guideConditions": 3,
+    "notice": 1
+  },
+  "checks": [
+    {
+      "name": "Exactly five real source handlers extracted, no component initialization",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "discardSelected guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "selectCandidate guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "confirmSelectedCandidate guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "editCandidate guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":false,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":false,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":false,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":false,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":true,\"batch\":false,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":true,\"batch\":false,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":true,\"batch\":true,\"region\":false,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":false}",
+      "passed": true
+    },
+    {
+      "name": "identifySelectedManually guard {\"loading\":true,\"batch\":true,\"region\":true,\"candidate\":true}",
+      "passed": true
+    },
+    {
+      "name": "Complete scanner AST restored after exact region-action delta removal",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: First normalized difference at 52493: {\"after\":\"\\\"min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4\\\">\\n                \\n                {selectedRegion.cropDataUrl && (<img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion\",\"before\":\"\\\"min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4\\\">\\n                {selectedRegion.cropDataUrl && (<img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} classNa\"}"
+    },
+    {
+      "name": "Exactly one lock, five handler guards, eight disabled controls, three guide conditions, one status",
+      "passed": true
+    },
+    {
+      "name": "Protected source package-lock.json",
+      "passed": true
+    },
+    {
+      "name": "Protected source package.json",
+      "passed": true
+    },
+    {
+      "name": "Protected source qa-fixtures/food-menu/ground-truth.json",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/App.css",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/AccountNotifications.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/AffinityExplanation.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/AiRimContextGuide.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/WineStylesCSVImporter.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/csv/ImportProgress.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/drawer.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/progress.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/sonner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/wine-import/FoodPairingScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/wine-import/WineLabelOCRImport.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/wine-import/WineMenuScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/contexts/AuthContext.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/index.css",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/pages/MyWines.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/pages/Profile.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/services/matchrimScanProfile.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/services/winerimApi.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/aiRimContextGuide.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/edgeFunctionResilience.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/imageAnalysis.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/imageCropGeometry.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/invokeEdgeFunction.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/labelScanSave.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/matchrimEdgeRouting.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/matchrimLearning.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/matchrimQaMode.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuAffinityPresentation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuCatalogAwait.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuProfileRecovery.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuWineActions.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuWineSave.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/multiWineScan.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanAnalysisPolicy.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanConfidence.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanHistory.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanProfile.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanRegionProgress.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanWineEvidence.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/wineComparison.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/wineMenuScan.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source supabase/functions/_shared/matchrim-scan-values.ts",
+      "passed": true
+    }
+  ],
+  "protectedPaths": [
+    "package-lock.json",
+    "package.json",
+    "qa-fixtures/food-menu/ground-truth.json",
+    "src/App.css",
+    "src/components/AccountNotifications.tsx",
+    "src/components/AffinityExplanation.tsx",
+    "src/components/AiRimContextGuide.tsx",
+    "src/components/WineStylesCSVImporter.tsx",
+    "src/components/csv/ImportProgress.tsx",
+    "src/components/ui/drawer.tsx",
+    "src/components/ui/progress.tsx",
+    "src/components/ui/sonner.tsx",
+    "src/components/wine-import/FoodPairingScanner.tsx",
+    "src/components/wine-import/WineLabelOCRImport.tsx",
+    "src/components/wine-import/WineMenuScanner.tsx",
+    "src/contexts/AuthContext.tsx",
+    "src/index.css",
+    "src/pages/MyWines.tsx",
+    "src/pages/Profile.tsx",
+    "src/services/matchrimScanProfile.ts",
+    "src/services/winerimApi.ts",
+    "src/utils/aiRimContextGuide.ts",
+    "src/utils/edgeFunctionResilience.ts",
+    "src/utils/imageAnalysis.ts",
+    "src/utils/imageCropGeometry.ts",
+    "src/utils/invokeEdgeFunction.ts",
+    "src/utils/labelScanSave.ts",
+    "src/utils/matchrimEdgeRouting.ts",
+    "src/utils/matchrimLearning.ts",
+    "src/utils/matchrimQaMode.ts",
+    "src/utils/menuAffinityPresentation.ts",
+    "src/utils/menuCatalogAwait.ts",
+    "src/utils/menuProfileRecovery.ts",
+    "src/utils/menuWineActions.ts",
+    "src/utils/menuWineSave.ts",
+    "src/utils/multiWineScan.ts",
+    "src/utils/scanAnalysisPolicy.ts",
+    "src/utils/scanConfidence.ts",
+    "src/utils/scanHistory.ts",
+    "src/utils/scanProfile.ts",
+    "src/utils/scanRegionProgress.ts",
+    "src/utils/scanWineEvidence.ts",
+    "src/utils/wineAffinityExplanation.ts",
+    "src/utils/wineComparison.ts",
+    "src/utils/wineMenuScan.ts",
+    "supabase/functions/_shared/matchrim-scan-values.ts"
+  ],
+  "hashes": {
+    "src/components/wine-import/MultiWineLabelScanner.tsx": "e4697d0591da393125f0d58c578382f4097a7a8a7f1f56591ae9a42ff26fde38",
+    "scripts/check-matchrim-region-edit-lock-oct13.ts": "a6e54b8f3d800a9aa4f7851e45dc985f8f45d29bc22d36379393d0aa51e3bd05",
+    "package-lock.json": "63e1487bad0a4c04c683eac7469ee0b524df02eade26dc045f6abb0dea058100",
+    "package.json": "0779780511c27eb157f72ae7874407f2e6926ba46741024129bc79ad181636c0",
+    "qa-fixtures/food-menu/ground-truth.json": "2bc521b8f9dc6a426699ea34c29d3a7230716146922d19a9d9499234d68fafd0",
+    "src/App.css": "97f0dc31307f14f0d1f3cd6acce4813e7e1ab7c4c18fa71156ce9cf03334f774",
+    "src/components/AccountNotifications.tsx": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf",
+    "src/components/AffinityExplanation.tsx": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e",
+    "src/components/AiRimContextGuide.tsx": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0",
+    "src/components/WineStylesCSVImporter.tsx": "d60fdc453d434613757130de9d4f93ea87bbe0effcaa273285bc0a98c0a2321a",
+    "src/components/csv/ImportProgress.tsx": "a5aaf50eca11e3738357581ba11d02db5179da7f506c1a9cedf435ee1c769884",
+    "src/components/ui/drawer.tsx": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+    "src/components/ui/progress.tsx": "133482fd377928e0aeecbd8451f26c11ed890e88e19d68cef6d6187b6a843957",
+    "src/components/ui/sonner.tsx": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de",
+    "src/components/wine-import/FoodPairingScanner.tsx": "22dc6203f8bfe8a8005d6dd77a4e8a214756f8a9fffa30c6cb108344b12a20bf",
+    "src/components/wine-import/WineLabelOCRImport.tsx": "84c5e7929005a2bc534ecb4ae361a1cb278c1fe0b518f5285591a63aa65ca011",
+    "src/components/wine-import/WineMenuScanner.tsx": "58fa342fa3bb71c51512b6558fb56b29b10bf56b3d5a0131a0c5dd94fac1c105",
+    "src/contexts/AuthContext.tsx": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+    "src/index.css": "7ce1983b00924fb7321c4bfbd352571629c76b2a0654b41f5baeeeee8ad4ab0d",
+    "src/pages/MyWines.tsx": "4af402783a7cfa9dcaa4058f4d64d883b4d92259829509096b50b267471c3509",
+    "src/pages/Profile.tsx": "ffe1ee613f1794e65ab1cdec43809d8a95145fdf7c071611cf7c6c85f0c8e1b5",
+    "src/services/matchrimScanProfile.ts": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+    "src/services/winerimApi.ts": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec",
+    "src/utils/aiRimContextGuide.ts": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+    "src/utils/edgeFunctionResilience.ts": "bf44f1ba94f0845bdd0ecf10c49497f81dfa76c5d47e150967a8dc279253d1a4",
+    "src/utils/imageAnalysis.ts": "d39e1b5d10cf1ec754ea6fdfe9d52efc990a210afa30670b4925c5ec792a2d17",
+    "src/utils/imageCropGeometry.ts": "903ddfb08ccdc61d654a676dc1f9d0cb7694d5c23b60cb6a534e1229ef14b32c",
+    "src/utils/invokeEdgeFunction.ts": "59c726c28df3ae956c1182be6cd0282e3826ed56749ace9cbb0d61939e8fee07",
+    "src/utils/labelScanSave.ts": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77",
+    "src/utils/matchrimEdgeRouting.ts": "b6dd06419f4f227564213c5c7048acf74bb89b4354fb0553aa7e80405c23e08e",
+    "src/utils/matchrimLearning.ts": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1",
+    "src/utils/matchrimQaMode.ts": "505e61634ed4a91d84519f24ec835390393188c77baebfaf17d1251f486a1b6e",
+    "src/utils/menuAffinityPresentation.ts": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+    "src/utils/menuCatalogAwait.ts": "79174879adf7eed910a07e3aafc0f5ce24eb4c6490a1581402c87ce567422b2a",
+    "src/utils/menuProfileRecovery.ts": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+    "src/utils/menuWineActions.ts": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+    "src/utils/menuWineSave.ts": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+    "src/utils/multiWineScan.ts": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d",
+    "src/utils/scanAnalysisPolicy.ts": "a5c573239fc8d40c714f8aedb96966f78f7dec79879a893f462e8980e739bdaa",
+    "src/utils/scanConfidence.ts": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+    "src/utils/scanHistory.ts": "bfc0e0d12813733ff2b20a195af0d132ccb4c65accbbbc127496b805b17b9067",
+    "src/utils/scanProfile.ts": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+    "src/utils/scanRegionProgress.ts": "54bb10070a469f29aaec3f57451fe399fc48a28266a0daa3739a4229460eff45",
+    "src/utils/scanWineEvidence.ts": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+    "src/utils/wineAffinityExplanation.ts": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+    "src/utils/wineComparison.ts": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+    "src/utils/wineMenuScan.ts": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+    "supabase/functions/_shared/matchrim-scan-values.ts": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e"
+  }
+}

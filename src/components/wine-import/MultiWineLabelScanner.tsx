@@ -218,6 +218,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       || b.candidate.confidence - a.candidate.confidence;
   }), [duplicateGroups, regions]);
   const loading = phase === 'quality' || phase === 'profile' || phase === 'detecting' || phase === 'analyzing';
+  const regionActionsLocked = batchLocked || loading;
   const progress = phase === 'quality'
     ? 8
     : phase === 'profile' || phase === 'detecting'
@@ -594,13 +595,13 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const discardSelected = () => {
-    if (batchRef.current || !selectedRegion) return;
+    if (batchRef.current || loading || !selectedRegion) return;
     updateRegion(selectedRegion.id, (current) => ({ ...current, status: 'discarded' }));
     setSelectedRegionId(null);
   };
 
   const selectCandidate = (candidateId: string) => {
-    if (batchRef.current || !selectedRegion) return;
+    if (batchRef.current || loading || !selectedRegion) return;
     updateRegion(selectedRegion.id, (current) => {
       const candidate = current.candidates.find((item) => item.id === candidateId);
       return {
@@ -612,7 +613,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const confirmSelectedCandidate = () => {
-    if (batchRef.current || !selectedRegion || !selectedCandidate) return;
+    if (batchRef.current || loading || !selectedRegion || !selectedCandidate) return;
     updateRegion(selectedRegion.id, (current) => ({
       ...current,
       status: 'recognized',
@@ -624,7 +625,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const editCandidate = (patch: Pick<Partial<WineCandidate>, 'name' | 'producer'>) => {
-    if (batchRef.current || !selectedRegion || !selectedCandidate) return;
+    if (batchRef.current || loading || !selectedRegion || !selectedCandidate) return;
     updateRegion(selectedRegion.id, (current) => ({
       ...current,
       status: 'recognized',
@@ -636,7 +637,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
   const identifySelectedManually = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (batchRef.current || !selectedRegion) return;
+    if (batchRef.current || loading || !selectedRegion) return;
     const formData = new FormData(event.currentTarget);
     const name = String(formData.get('manual-wine-name') ?? '').trim();
     const producer = String(formData.get('manual-wine-producer') ?? '').trim();
@@ -1053,6 +1054,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               </DrawerHeader>
 
               <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4">
+                {loading && (
+                  <p role="status" className="text-sm text-slate-600" data-testid="region-analysis-lock">
+                    Análisis del lote en curso. Las identidades aún pueden cambiar.
+                  </p>
+                )}
                 {selectedRegion.cropDataUrl && (
                   <img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} className="max-h-48 w-full rounded-lg bg-black object-contain" />
                 )}
@@ -1066,7 +1072,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       identityConfidence={0}
                       affinity={null}
                       attributes={null}
-                      primaryAction={batchLocked ? null : { label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }}
+                      primaryAction={regionActionsLocked ? null : { label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }}
                     />}
                       <div className={`rounded-lg border-l-4 px-3 py-3 text-sm ${selectedRegion.status === 'deferred' ? 'border-stone-400 bg-stone-100 text-stone-900' : 'border-red-700 bg-red-50 text-red-950'}`}>
                       <div className="flex items-center gap-2 font-semibold"><CircleHelp className="h-4 w-4" /> {selectedRegion.status === 'deferred' ? 'Región sin analizar' : 'Sin identidad fiable'}</div>
@@ -1087,14 +1093,14 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       <div className="grid gap-3 sm:grid-cols-2">
                         <label className="text-sm font-medium text-slate-800">
                           Vino
-                          <Input name="manual-wine-name" disabled={batchLocked} className="mt-1 min-h-11" autoComplete="off" required />
+                          <Input name="manual-wine-name" disabled={regionActionsLocked} className="mt-1 min-h-11" autoComplete="off" required />
                         </label>
                         <label className="text-sm font-medium text-slate-800">
                           Bodega (opcional)
-                          <Input name="manual-wine-producer" disabled={batchLocked} className="mt-1 min-h-11" autoComplete="off" />
+                          <Input name="manual-wine-producer" disabled={regionActionsLocked} className="mt-1 min-h-11" autoComplete="off" />
                         </label>
                       </div>
-                      <Button type="submit" disabled={batchLocked} className="min-h-11 gap-2"><Check className="h-4 w-4" /> Aplicar identidad manual</Button>
+                      <Button type="submit" disabled={regionActionsLocked} className="min-h-11 gap-2"><Check className="h-4 w-4" /> Aplicar identidad manual</Button>
                     </form>
                   </div>
                 ) : (
@@ -1110,7 +1116,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                               type="button"
                               className={`matchrim-pressable flex min-h-14 w-full items-center gap-3 px-3 py-2 text-left ${active ? 'bg-red-50' : 'bg-white'}`}
                               onClick={() => selectCandidate(candidate.id)}
-                              disabled={batchLocked}
+                              disabled={regionActionsLocked}
                               aria-pressed={active}
                             >
                               <span className="text-xs font-bold text-red-900">{index + 1}</span>
@@ -1135,11 +1141,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         <div className="grid gap-3 sm:grid-cols-2">
                           <label className="text-sm font-medium text-slate-800">
                             Vino
-                            <Input disabled={batchLocked} className="mt-1 min-h-11" value={selectedCandidate.name} onChange={(event) => editCandidate({ name: event.target.value })} />
+                            <Input disabled={regionActionsLocked} className="mt-1 min-h-11" value={selectedCandidate.name} onChange={(event) => editCandidate({ name: event.target.value })} />
                           </label>
                           <label className="text-sm font-medium text-slate-800">
                             Bodega
-                            <Input disabled={batchLocked} className="mt-1 min-h-11" value={selectedCandidate.producer ?? ''} onChange={(event) => editCandidate({ producer: event.target.value || null })} />
+                            <Input disabled={regionActionsLocked} className="mt-1 min-h-11" value={selectedCandidate.producer ?? ''} onChange={(event) => editCandidate({ producer: event.target.value || null })} />
                           </label>
                         </div>
 
@@ -1170,10 +1176,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           sensorySource={selectedCandidate.sensorySource ?? 'inference'}
                           uncertaintyReasons={selectedCandidate.uncertaintyReasons}
                           hasAlternatives={selectedRegion.candidates.length > 1 || duplicateGroups.length > 1}
-                          primaryAction={!batchLocked && selectedRegion.status === 'uncertain'
+                          primaryAction={!regionActionsLocked && selectedRegion.status === 'uncertain'
                             ? { label: 'Confirmar este candidato', onClick: confirmSelectedCandidate }
                             : null}
-                          secondaryAction={!batchLocked && selectedRegion.status === 'uncertain'
+                          secondaryAction={!regionActionsLocked && selectedRegion.status === 'uncertain'
                             ? { label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }
                             : null}
                         />
@@ -1207,10 +1213,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
                     Siguiente <ChevronRight className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" disabled={batchLocked} className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={() => void reanalyzeSelected()}>
+                  <Button type="button" variant="outline" disabled={regionActionsLocked} className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={() => void reanalyzeSelected()}>
                     <RefreshCw className="h-4 w-4" /> Reanalizar
                   </Button>
-                  <Button type="button" variant="outline" disabled={batchLocked} className="matchrim-pressable min-h-11 gap-2 bg-white text-red-800" onClick={discardSelected}>
+                  <Button type="button" variant="outline" disabled={regionActionsLocked} className="matchrim-pressable min-h-11 gap-2 bg-white text-red-800" onClick={discardSelected}>
                     <Trash2 className="h-4 w-4" /> Descartar
                   </Button>
                 </div>

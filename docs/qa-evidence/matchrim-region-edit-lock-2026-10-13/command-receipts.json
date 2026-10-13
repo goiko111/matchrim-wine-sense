@@ -1,0 +1,17 @@
+{
+  "scope": "Observed local commands; no publication or unrelated suite reruns",
+  "commands": [
+    {"name": "initial before UI", "command": "with_server.py on4466 -- qa-matchrim-region-edit-lock-oct13.py --output before", "exitCode": 1, "checks": "36/60", "harnessIssue": "Sampled drawer at200ms during entrance animation; mutation loss still reproduced"},
+    {"name": "settled before UI", "command": "with_server.py on4466 -- qa-matchrim-region-edit-lock-oct13.py --output before-final", "exitCode": 1, "checks": "44/60", "expectedBaselineDefect": true, "lostManualAndDiscardDecisions": true},
+    {"name": "initial after UI", "command": "with_server.py on4466 -- qa-matchrim-region-edit-lock-oct13.py --output after", "exitCode": 0, "checks": "60/60"},
+    {"name": "extended after UI", "command": "with_server.py on4466 -- qa-matchrim-region-edit-lock-oct13.py --output after-final", "exitCode": 0, "checks": "94/94", "cases": 6, "extension": "Two post-cancel manual correction/late-result routes; four affected routes repeated"},
+    {"name": "initial code contracts", "command": "tsx scripts/check-matchrim-region-edit-lock-oct13.ts contracts.json", "exitCode": 1, "checks": "127/129", "harnessIssue": "Notice lookup selected ancestor expression instead of loading expression"},
+    {"name": "intermediate code contracts", "command": "tsx scripts/check-matchrim-region-edit-lock-oct13.ts contracts.json", "exitCode": 1, "checks": "128/129", "harnessIssue": "Removing JSX notice leaves one blank line"},
+    {"name": "diagnostic code contracts", "command": "tsx scripts/check-matchrim-region-edit-lock-oct13.ts contracts.json", "exitCode": 1, "checks": "128/129", "harnessIssue": "Confirmed blank-line-only first difference at52493"},
+    {"name": "final code contracts", "command": "tsx scripts/check-matchrim-region-edit-lock-oct13.ts contracts.json", "exitCode": 0, "checks": "129/129", "actorVectors": 80},
+    {"name": "app typecheck", "command": "npm run typecheck", "exitCode": 0},
+    {"name": "tooling typecheck", "command": "tsc --noEmit --project tsconfig-tooling.json", "exitCode": 0},
+    {"name": "scoped lint", "command": "eslint src/components/wine-import/MultiWineLabelScanner.tsx scripts/check-matchrim-region-edit-lock-oct13.ts --format json", "exitCode": 0, "errors": 0, "warnings": 0},
+    {"name": "web build", "command": "npm run build", "exitCode": 0, "modules": 3634, "seconds": 6.69, "warnings": ["Existing Browserslist data age24months", "Existing chunks>500kB"]}
+  ]
+}

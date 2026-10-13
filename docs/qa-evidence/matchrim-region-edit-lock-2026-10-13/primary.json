@@ -1,0 +1,43 @@
+{
+  "baseline": "bc94dad29d05785e57b1b44af7f9e92b719c7e17",
+  "ui": {
+    "before": {
+      "contexts": 4,
+      "contextsPassed": 0,
+      "checks": 60,
+      "checksPassed": 36
+    },
+    "before-final": {
+      "contexts": 4,
+      "contextsPassed": 0,
+      "checks": 60,
+      "checksPassed": 44
+    },
+    "after": {
+      "contexts": 4,
+      "contextsPassed": 4,
+      "checks": 60,
+      "checksPassed": 60
+    },
+    "after-final": {
+      "contexts": 6,
+      "contextsPassed": 6,
+      "checks": 94,
+      "checksPassed": 94
+    }
+  },
+  "codeChecks": 129,
+  "syntheticActorVectors": 80,
+  "protectedSources": 46,
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "scope": "Six unique affected browser routes on one existing CC0 food-menu canary and exact local response contract; four repeated while adding cancellation cases, not extra users/scenes. Source guard actors are synthetic, not profiles or recommendations.",
+  "behavior": "Inspection/navigation/close remain available; region mutations wait until ready or canceled. Post-ready corrections/discards persist; late canceled catalog data does not overwrite manual correction.",
+  "detectorScoringQueriesCropsUnchanged": true,
+  "unrelatedPriorSuitesRerun": false,
+  "nativeBuild": false,
+  "deploy": false,
+  "physicalVoiceOverCertification": false
+}
