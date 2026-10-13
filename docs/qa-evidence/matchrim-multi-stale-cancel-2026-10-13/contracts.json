@@ -1,0 +1,227 @@
+{
+  "scope": "Only16 current-controller phase publisher, private synthetic actors and complete module AST/protected consumers/cleanup. No vision/profile/canonical positives/provider/native/unmount expansion.",
+  "baseline": "9fa4fca45b08cf2aec11098446806c2c5e7b2aed",
+  "checks": [
+    {
+      "name": "Current A cancellation still publishes cancelled",
+      "passed": true
+    },
+    {
+      "name": "Late cancelled A cannot publish into current B",
+      "passed": true
+    },
+    {
+      "name": "Null current controller cannot publish obsolete phase",
+      "passed": true
+    },
+    {
+      "name": "Distinct controller identity cannot be treated as current",
+      "passed": true
+    },
+    {
+      "name": "Plain error object is not reclassified as DOM AbortError",
+      "passed": true
+    },
+    {
+      "name": "Non-abort DOMException does not enter cancellation publisher",
+      "passed": true
+    },
+    {
+      "name": "Repeated A late completions ignored while current B may cancel normally",
+      "passed": true
+    },
+    {
+      "name": "Removing only current-controller guard restores entire old module AST",
+      "passed": true
+    },
+    {
+      "name": "All existing effect/cleanup and owner-key lifetimes byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Existing consumer enrichCandidate byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Existing consumer analyzeRegion byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Existing consumer cancelScan byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Existing consumer resetScan byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Existing consumer retryScan byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Existing consumer reanalyzeSelected byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Existing consumer handleFileSelect byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Existing consumer confirmBatch byte-identical",
+      "passed": true
+    },
+    {
+      "name": "All imports unchanged, no await wrapper or new helper",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/services/winerimApi.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/invokeEdgeFunction.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanAnalysisPolicy.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/multiWineScan.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanWineEvidence.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/imageAnalysis.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/imageCropGeometry.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanConfidence.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/edgeFunctionResilience.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/matchrimQaMode.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/matchrimEdgeRouting.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/services/matchrimScanProfile.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanProfile.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/scanHistory.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/labelScanSave.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/progress.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/drawer.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/wine-import/WineMenuScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuCatalogAwait.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuProfileRecovery.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuWineActions.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuWineSave.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/aiRimContextGuide.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source package.json",
+      "passed": true
+    },
+    {
+      "name": "Protected source package-lock.json",
+      "passed": true
+    },
+    {
+      "name": "Protected source scripts/qa-multi-wine-ui.py",
+      "passed": true
+    },
+    {
+      "name": "Protected source scripts/qa-matchrim-label-save.py",
+      "passed": true
+    },
+    {
+      "name": "Protected source qa-fixtures/food-menu/ground-truth.json",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/components/wine-import/MultiWineLabelScanner.tsx": "67574e822d8f78d440422c285f9b5e217ec24e76e0adf899563234f55430e172",
+    "src/services/winerimApi.ts": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec",
+    "src/utils/invokeEdgeFunction.ts": "59c726c28df3ae956c1182be6cd0282e3826ed56749ace9cbb0d61939e8fee07",
+    "src/utils/scanAnalysisPolicy.ts": "a5c573239fc8d40c714f8aedb96966f78f7dec79879a893f462e8980e739bdaa",
+    "src/utils/multiWineScan.ts": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d",
+    "src/utils/scanWineEvidence.ts": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+    "src/utils/imageAnalysis.ts": "d39e1b5d10cf1ec754ea6fdfe9d52efc990a210afa30670b4925c5ec792a2d17",
+    "src/utils/imageCropGeometry.ts": "903ddfb08ccdc61d654a676dc1f9d0cb7694d5c23b60cb6a534e1229ef14b32c",
+    "src/utils/scanConfidence.ts": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+    "src/utils/edgeFunctionResilience.ts": "bf44f1ba94f0845bdd0ecf10c49497f81dfa76c5d47e150967a8dc279253d1a4",
+    "src/utils/matchrimQaMode.ts": "505e61634ed4a91d84519f24ec835390393188c77baebfaf17d1251f486a1b6e",
+    "src/utils/matchrimEdgeRouting.ts": "b6dd06419f4f227564213c5c7048acf74bb89b4354fb0553aa7e80405c23e08e",
+    "src/utils/wineAffinityExplanation.ts": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+    "src/services/matchrimScanProfile.ts": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+    "src/utils/scanProfile.ts": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+    "src/utils/scanHistory.ts": "bfc0e0d12813733ff2b20a195af0d132ccb4c65accbbbc127496b805b17b9067",
+    "src/utils/labelScanSave.ts": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77",
+    "src/components/ui/progress.tsx": "a9a11c717e8830b1106a598977513990497203c5971d892e1d5f0a730220f9d2",
+    "src/components/ui/drawer.tsx": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+    "src/components/wine-import/WineMenuScanner.tsx": "58fa342fa3bb71c51512b6558fb56b29b10bf56b3d5a0131a0c5dd94fac1c105",
+    "src/utils/menuCatalogAwait.ts": "79174879adf7eed910a07e3aafc0f5ce24eb4c6490a1581402c87ce567422b2a",
+    "src/utils/menuProfileRecovery.ts": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+    "src/utils/menuWineActions.ts": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+    "src/utils/menuWineSave.ts": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+    "src/utils/aiRimContextGuide.ts": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+    "package.json": "0779780511c27eb157f72ae7874407f2e6926ba46741024129bc79ad181636c0",
+    "package-lock.json": "63e1487bad0a4c04c683eac7469ee0b524df02eade26dc045f6abb0dea058100",
+    "scripts/qa-multi-wine-ui.py": "f2aa2924e48c8c2f6f0cbe45011e6ef92bda3cb17be14a645659b70a0343ae40",
+    "scripts/qa-matchrim-label-save.py": "0946df7ab3e96dbcf0a97010c0780c14ca028c86772d6751f9d378c857858571",
+    "qa-fixtures/food-menu/ground-truth.json": "2bc521b8f9dc6a426699ea34c29d3a7230716146922d19a9d9499234d68fafd0",
+    "scripts/check-matchrim-multi-stale-cancel-oct13.ts": "a17884219b58e95153f8360addfe45d82d2c8506659e798eac793c8f4fcecefb"
+  }
+}

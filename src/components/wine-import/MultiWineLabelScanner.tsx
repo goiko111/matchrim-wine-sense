@@ -510,7 +510,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       });
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
-        setPhase('cancelled');
+        if (abortRef.current === controller) setPhase('cancelled');
         return;
       }
       console.error('[multi-label] Scan failed:', error);

@@ -1,0 +1,18 @@
+{
+  "scope": "Only16 multivino A-cancel/B-reentry stale catalog completion: local existing response contract, not vision.",
+  "hashes": {
+    "qa-fixtures/food-menu/commons-restaurant-menu-2026-08-25-2000.jpg": "9980c5e6b9d5e52f1783e2f26d1a97e22c0c2e1556e9e72919dd26fc34ece9a9",
+    "qa-fixtures/food-menu/ground-truth.json": "2bc521b8f9dc6a426699ea34c29d3a7230716146922d19a9d9499234d68fafd0",
+    "scripts/qa-multi-wine-ui.py": "f2aa2924e48c8c2f6f0cbe45011e6ef92bda3cb17be14a645659b70a0343ae40",
+    "src/components/wine-import/MultiWineLabelScanner.tsx": "67574e822d8f78d440422c285f9b5e217ec24e76e0adf899563234f55430e172",
+    "src/services/winerimApi.ts": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec",
+    "src/utils/invokeEdgeFunction.ts": "59c726c28df3ae956c1182be6cd0282e3826ed56749ace9cbb0d61939e8fee07"
+  },
+  "responsePayloadSha256": "883e66d2b5c3009115308bbf5fe0e088a73a6fcc940638048a53a45bdf209bd6",
+  "responseReuse": "AST FunctionDef candidate/function_response only; no source import/entrypoint/materialization/download. Complete deterministic payloads unchanged.",
+  "imageScope": "Existing CC0 restaurant food menu used only for real client preprocessing/crop/lifecycle. No five-bottle recognition/ground-truth/recall claim.",
+  "samePath": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-fixtures/food-menu/commons-restaurant-menu-2026-08-25-2000.jpg",
+  "fixtureFlag": false,
+  "profile": "GET null, no positive profile",
+  "selection": "Real Cancelar/Cerrar analisis/Elegir de galeria and standard FileChooser exact Path. Not OS/iOS chooser certification."
+}

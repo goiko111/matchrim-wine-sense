@@ -1,0 +1,728 @@
+{
+  "baseline": "9fa4fca45b08cf2aec11098446806c2c5e7b2aed",
+  "uiStages": {
+    "before": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 20
+    },
+    "before-complete": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 20
+    },
+    "before-final": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 22
+    },
+    "after": {
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 24,
+      "checksPassed": 24
+    }
+  },
+  "pureChecks": 47,
+  "frozenRequests": [
+    {
+      "case": "keyboard-portrait",
+      "actualInputHashesAndQueryBodiesFrozen": true,
+      "functionRequestsPerRoute": 16,
+      "countsByAttempt": {
+        "1": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        },
+        "2": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        }
+      }
+    },
+    {
+      "case": "touch-landscape",
+      "actualInputHashesAndQueryBodiesFrozen": true,
+      "functionRequestsPerRoute": 16,
+      "countsByAttempt": {
+        "1": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        },
+        "2": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        }
+      }
+    }
+  ],
+  "scope": "Exact existing MULTI deterministic contract and CC0 food-menu canary; not photo of5bottles, canonical wine ground-truth, precision/recall or user simulation.",
+  "cases": [
+    {
+      "case": "keyboard-portrait",
+      "aCancelledWithCatalogHeld": {
+        "phase": [
+          "Análisis cancelado"
+        ],
+        "cancelVisible": false,
+        "closeVisible": true,
+        "progress": [],
+        "regionPins": [
+          {
+            "testId": "region-pin-1",
+            "label": "Región 1, Analizando"
+          },
+          {
+            "testId": "region-pin-2",
+            "label": "Región 2, Dudoso"
+          },
+          {
+            "testId": "region-pin-3",
+            "label": "Región 3, Analizando"
+          },
+          {
+            "testId": "region-pin-4",
+            "label": "Región 4, Analizando"
+          },
+          {
+            "testId": "region-pin-5",
+            "label": "Región 5, Sin analizar"
+          }
+        ],
+        "candidateRows": [
+          "Abrir detalle de Marques de Riscal Reserva"
+        ],
+        "performance": null,
+        "notices": [],
+        "inputs": [
+          {
+            "value": "",
+            "files": []
+          },
+          {
+            "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+            "files": [
+              {
+                "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                "type": "image/jpeg",
+                "size": 1041114,
+                "lastModified": 1791448775318
+              }
+            ]
+          }
+        ],
+        "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nAnálisis cancelado\n3 MP · brillo 138 · contraste 45\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+        "width": {
+          "inner": 393,
+          "scroll": 393
+        }
+      },
+      "samePathSelections": [
+        [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ]
+      ],
+      "newPending": {
+        "phase": [
+          "Leyendo cada región por separado"
+        ],
+        "cancelVisible": true,
+        "closeVisible": false,
+        "progress": [
+          {
+            "now": null,
+            "max": "100",
+            "indicator": "translateX(-58%)"
+          }
+        ],
+        "regionPins": [
+          {
+            "testId": "region-pin-1",
+            "label": "Región 1, Analizando"
+          },
+          {
+            "testId": "region-pin-2",
+            "label": "Región 2, Dudoso"
+          },
+          {
+            "testId": "region-pin-3",
+            "label": "Región 3, Analizando"
+          },
+          {
+            "testId": "region-pin-4",
+            "label": "Región 4, Analizando"
+          },
+          {
+            "testId": "region-pin-5",
+            "label": "Región 5, Sin analizar"
+          }
+        ],
+        "candidateRows": [
+          "Abrir detalle de Marques de Riscal Reserva"
+        ],
+        "performance": null,
+        "notices": [],
+        "inputs": [
+          {
+            "value": "",
+            "files": []
+          },
+          {
+            "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+            "files": [
+              {
+                "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                "type": "image/jpeg",
+                "size": 1041114,
+                "lastModified": 1791448775318
+              }
+            ]
+          }
+        ],
+        "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLeyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n2 de 5 regiones · 3 en paralelo\nCancelar\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+        "width": {
+          "inner": 393,
+          "scroll": 393
+        }
+      },
+      "afterOldCompletion": {
+        "phase": [
+          "Leyendo cada región por separado"
+        ],
+        "cancelVisible": true,
+        "closeVisible": false,
+        "progress": [
+          {
+            "now": null,
+            "max": "100",
+            "indicator": "translateX(-58%)"
+          }
+        ],
+        "regionPins": [
+          {
+            "testId": "region-pin-1",
+            "label": "Región 1, Analizando"
+          },
+          {
+            "testId": "region-pin-2",
+            "label": "Región 2, Dudoso"
+          },
+          {
+            "testId": "region-pin-3",
+            "label": "Región 3, Analizando"
+          },
+          {
+            "testId": "region-pin-4",
+            "label": "Región 4, Analizando"
+          },
+          {
+            "testId": "region-pin-5",
+            "label": "Región 5, Sin analizar"
+          }
+        ],
+        "candidateRows": [
+          "Abrir detalle de Marques de Riscal Reserva"
+        ],
+        "performance": null,
+        "notices": [],
+        "inputs": [
+          {
+            "value": "",
+            "files": []
+          },
+          {
+            "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+            "files": [
+              {
+                "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                "type": "image/jpeg",
+                "size": 1041114,
+                "lastModified": 1791448775318
+              }
+            ]
+          }
+        ],
+        "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLeyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n2 de 5 regiones · 3 en paralelo\nCancelar\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+        "width": {
+          "inner": 393,
+          "scroll": 393
+        }
+      },
+      "final": {
+        "phase": [
+          "Lote listo para revisar"
+        ],
+        "cancelVisible": false,
+        "closeVisible": true,
+        "progress": [
+          {
+            "now": null,
+            "max": "100",
+            "indicator": "translateX(0%)"
+          }
+        ],
+        "regionPins": [
+          {
+            "testId": "region-pin-1",
+            "label": "Región 1, Reconocido"
+          },
+          {
+            "testId": "region-pin-2",
+            "label": "Región 2, Dudoso"
+          },
+          {
+            "testId": "region-pin-3",
+            "label": "Región 3, Reconocido"
+          },
+          {
+            "testId": "region-pin-4",
+            "label": "Región 4, Reconocido"
+          },
+          {
+            "testId": "region-pin-5",
+            "label": "Región 5, Sin analizar"
+          }
+        ],
+        "candidateRows": [
+          "Abrir detalle de Muga Reserva",
+          "Abrir detalle de Baron Saint George Grand Vin de Bordeaux",
+          "Abrir detalle de Marques de Riscal Reserva"
+        ],
+        "performance": "5 regiones en 2.5 s",
+        "notices": [],
+        "inputs": [
+          {
+            "value": "",
+            "files": []
+          },
+          {
+            "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+            "files": [
+              {
+                "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                "type": "image/jpeg",
+                "size": 1041114,
+                "lastModified": 1791448775318
+              }
+            ]
+          }
+        ],
+        "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n3 MP · brillo 138 · contraste 45\n5 regiones en 2.5 s\n1\n2\n3\n4\n5\nEscena\nVinos (3)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n3\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+        "width": {
+          "inner": 393,
+          "scroll": 393
+        }
+      },
+      "countsByAttempt": {
+        "1": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        },
+        "2": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        }
+      },
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        }
+      ],
+      "warnings": [],
+      "expected503ConsoleControl": [],
+      "requestFailures": []
+    },
+    {
+      "case": "touch-landscape",
+      "aCancelledWithCatalogHeld": {
+        "phase": [
+          "Análisis cancelado"
+        ],
+        "cancelVisible": false,
+        "closeVisible": true,
+        "progress": [],
+        "regionPins": [
+          {
+            "testId": "region-pin-1",
+            "label": "Región 1, Analizando"
+          },
+          {
+            "testId": "region-pin-2",
+            "label": "Región 2, Dudoso"
+          },
+          {
+            "testId": "region-pin-3",
+            "label": "Región 3, Analizando"
+          },
+          {
+            "testId": "region-pin-4",
+            "label": "Región 4, Analizando"
+          },
+          {
+            "testId": "region-pin-5",
+            "label": "Región 5, Sin analizar"
+          }
+        ],
+        "candidateRows": [
+          "Abrir detalle de Marques de Riscal Reserva"
+        ],
+        "performance": null,
+        "notices": [],
+        "inputs": [
+          {
+            "value": "",
+            "files": []
+          },
+          {
+            "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+            "files": [
+              {
+                "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                "type": "image/jpeg",
+                "size": 1041114,
+                "lastModified": 1791448775318
+              }
+            ]
+          }
+        ],
+        "bodyText": "Análisis cancelado\n3 MP · brillo 138 · contraste 45\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\n1\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+        "width": {
+          "inner": 852,
+          "scroll": 852
+        }
+      },
+      "samePathSelections": [
+        [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ]
+      ],
+      "newPending": {
+        "phase": [
+          "Leyendo cada región por separado"
+        ],
+        "cancelVisible": true,
+        "closeVisible": false,
+        "progress": [
+          {
+            "now": null,
+            "max": "100",
+            "indicator": "translateX(-58%)"
+          }
+        ],
+        "regionPins": [
+          {
+            "testId": "region-pin-1",
+            "label": "Región 1, Analizando"
+          },
+          {
+            "testId": "region-pin-2",
+            "label": "Región 2, Dudoso"
+          },
+          {
+            "testId": "region-pin-3",
+            "label": "Región 3, Analizando"
+          },
+          {
+            "testId": "region-pin-4",
+            "label": "Región 4, Analizando"
+          },
+          {
+            "testId": "region-pin-5",
+            "label": "Región 5, Sin analizar"
+          }
+        ],
+        "candidateRows": [
+          "Abrir detalle de Marques de Riscal Reserva"
+        ],
+        "performance": null,
+        "notices": [],
+        "inputs": [
+          {
+            "value": "",
+            "files": []
+          },
+          {
+            "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+            "files": [
+              {
+                "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                "type": "image/jpeg",
+                "size": 1041114,
+                "lastModified": 1791448775318
+              }
+            ]
+          }
+        ],
+        "bodyText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n2 de 5 regiones · 3 en paralelo\nCancelar\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\n1\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+        "width": {
+          "inner": 852,
+          "scroll": 852
+        }
+      },
+      "afterOldCompletion": {
+        "phase": [
+          "Leyendo cada región por separado"
+        ],
+        "cancelVisible": true,
+        "closeVisible": false,
+        "progress": [
+          {
+            "now": null,
+            "max": "100",
+            "indicator": "translateX(-58%)"
+          }
+        ],
+        "regionPins": [
+          {
+            "testId": "region-pin-1",
+            "label": "Región 1, Analizando"
+          },
+          {
+            "testId": "region-pin-2",
+            "label": "Región 2, Dudoso"
+          },
+          {
+            "testId": "region-pin-3",
+            "label": "Región 3, Analizando"
+          },
+          {
+            "testId": "region-pin-4",
+            "label": "Región 4, Analizando"
+          },
+          {
+            "testId": "region-pin-5",
+            "label": "Región 5, Sin analizar"
+          }
+        ],
+        "candidateRows": [
+          "Abrir detalle de Marques de Riscal Reserva"
+        ],
+        "performance": null,
+        "notices": [],
+        "inputs": [
+          {
+            "value": "",
+            "files": []
+          },
+          {
+            "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+            "files": [
+              {
+                "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                "type": "image/jpeg",
+                "size": 1041114,
+                "lastModified": 1791448775318
+              }
+            ]
+          }
+        ],
+        "bodyText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n2 de 5 regiones · 3 en paralelo\nCancelar\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\n1\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+        "width": {
+          "inner": 852,
+          "scroll": 852
+        }
+      },
+      "final": {
+        "phase": [
+          "Lote listo para revisar"
+        ],
+        "cancelVisible": false,
+        "closeVisible": true,
+        "progress": [
+          {
+            "now": null,
+            "max": "100",
+            "indicator": "translateX(0%)"
+          }
+        ],
+        "regionPins": [
+          {
+            "testId": "region-pin-1",
+            "label": "Región 1, Reconocido"
+          },
+          {
+            "testId": "region-pin-2",
+            "label": "Región 2, Dudoso"
+          },
+          {
+            "testId": "region-pin-3",
+            "label": "Región 3, Reconocido"
+          },
+          {
+            "testId": "region-pin-4",
+            "label": "Región 4, Reconocido"
+          },
+          {
+            "testId": "region-pin-5",
+            "label": "Región 5, Sin analizar"
+          }
+        ],
+        "candidateRows": [
+          "Abrir detalle de Muga Reserva",
+          "Abrir detalle de Baron Saint George Grand Vin de Bordeaux",
+          "Abrir detalle de Marques de Riscal Reserva"
+        ],
+        "performance": "5 regiones en 2.5 s",
+        "notices": [],
+        "inputs": [
+          {
+            "value": "",
+            "files": []
+          },
+          {
+            "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+            "files": [
+              {
+                "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                "type": "image/jpeg",
+                "size": 1041114,
+                "lastModified": 1791448775318
+              }
+            ]
+          }
+        ],
+        "bodyText": "Lote listo para revisar\n3 MP · brillo 138 · contraste 45\n5 regiones en 2.5 s\n1\n2\n3\n4\n5\nEscena\nVinos (3)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n3\nReconocidos\n1\nDudosos\n0\nSin reconocer\n3\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+        "width": {
+          "inner": 852,
+          "scroll": 852
+        }
+      },
+      "countsByAttempt": {
+        "1": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        },
+        "2": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        }
+      },
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        }
+      ],
+      "warnings": [
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>"
+      ],
+      "expected503ConsoleControl": [
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ],
+      "requestFailures": []
+    }
+  ],
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "paidCalls": 0,
+  "realAccounts": 0,
+  "embeddedFixtureFlag": false,
+  "realVisionRecognition": false,
+  "physicalSameFileCertification": false,
+  "catalogRequestCancellation": false,
+  "providerAbortOrCostSavings": false,
+  "realLearnedProfile": false,
+  "newEvidenceNotImplemented": "Existing shared Progress visually determinate target but ARIA aria-valuenow null in pending and ready snapshots. Source consumes value without passing it to Radix Root. Separate scoped accessibility candidate, not physical reader failure or part16 patch; initial test expectation corrected, data retained. Immediate ready screenshot can show visual transition still running despite inline target100%."
+}

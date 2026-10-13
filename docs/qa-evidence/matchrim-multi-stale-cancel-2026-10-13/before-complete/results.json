@@ -1,0 +1,1961 @@
+{
+  "scope": "Only16 multivino A-cancel/B-reentry stale catalog completion: local existing response contract, not vision.",
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "paidCalls": 0,
+  "realAccounts": 0,
+  "results": [
+    {
+      "case": "keyboard-portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Embedded fixture flag false and profile not preseeded",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "A legitimately analyzing with actual held catalog requests",
+          "passed": true,
+          "detail": {
+            "counts": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            },
+            "held": 3
+          }
+        },
+        {
+          "name": "A current cancel immediately recovers while its lookup remains held",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Real close/gallery exact-path reentry without input mutation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "B reaches same legitimate pending plan as A",
+          "passed": true,
+          "detail": {
+            "1": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            },
+            "2": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            }
+          }
+        },
+        {
+          "name": "Old completion cannot mark B cancelled or change its loader/progress/notice",
+          "passed": false,
+          "detail": {
+            "before": {
+              "phase": [
+                "Leyendo cada región por separado"
+              ],
+              "cancelVisible": true,
+              "closeVisible": false,
+              "progress": [
+                {
+                  "now": null,
+                  "max": "100",
+                  "indicator": "translateX(-58%)"
+                }
+              ],
+              "performance": null,
+              "notices": []
+            },
+            "after": {
+              "phase": [
+                "Análisis cancelado"
+              ],
+              "cancelVisible": false,
+              "closeVisible": true,
+              "progress": [],
+              "performance": null,
+              "notices": []
+            }
+          }
+        },
+        {
+          "name": "Old completion does not mutate B regions or candidates",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Old completion starts no extra calls",
+          "passed": true,
+          "detail": {
+            "1": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            },
+            "2": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            }
+          }
+        },
+        {
+          "name": "Only B own completions publish ready and return controls",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Local operation plan frozen across before/after",
+          "passed": false,
+          "detail": {
+            "1": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            },
+            "2": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            }
+          }
+        },
+        {
+          "name": "No unexpected runtime/console/overflow errors",
+          "passed": true,
+          "detail": {
+            "warnings": [],
+            "console": []
+          }
+        },
+        {
+          "name": "All HTTP/WS intercepted, no REST writes/accounts/provider calls",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Old completion cannot mark B cancelled or change its loader/progress/notice",
+        "Local operation plan frozen across before/after"
+      ],
+      "observations": {
+        "tabTraces": [
+          [
+            {
+              "tag": "BUTTON",
+              "label": "Volver a tipos de escaneo"
+            },
+            {
+              "tag": "BUTTON",
+              "label": "Hacer foto"
+            },
+            {
+              "tag": "BUTTON",
+              "label": "Elegir de galería"
+            }
+          ],
+          [
+            {
+              "tag": "BUTTON",
+              "label": "Cancelar"
+            }
+          ],
+          [
+            {
+              "tag": "BUTTON",
+              "label": "Cerrar análisis"
+            }
+          ],
+          [
+            {
+              "tag": "BUTTON",
+              "label": "Hacer foto"
+            },
+            {
+              "tag": "BUTTON",
+              "label": "Elegir de galería"
+            }
+          ]
+        ],
+        "chooserBefore": [
+          {
+            "value": "",
+            "files": 0
+          },
+          {
+            "value": "",
+            "files": 0
+          }
+        ],
+        "selections": [
+          [
+            {
+              "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+              "type": "image/jpeg",
+              "size": 1041114,
+              "lastModified": 1791448775318
+            }
+          ],
+          [
+            {
+              "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+              "type": "image/jpeg",
+              "size": 1041114,
+              "lastModified": 1791448775318
+            }
+          ]
+        ],
+        "aPending": {
+          "phase": [
+            "Leyendo cada región por separado"
+          ],
+          "cancelVisible": true,
+          "closeVisible": false,
+          "progress": [
+            {
+              "now": null,
+              "max": "100",
+              "indicator": "translateX(-58%)"
+            }
+          ],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Analizando"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Analizando"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Analizando"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLeyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n2 de 5 regiones · 3 en paralelo\nCancelar\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 393,
+            "scroll": 393
+          }
+        },
+        "aCancelled": {
+          "phase": [
+            "Análisis cancelado"
+          ],
+          "cancelVisible": false,
+          "closeVisible": true,
+          "progress": [],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Analizando"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Analizando"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Analizando"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nAnálisis cancelado\n3 MP · brillo 138 · contraste 45\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 393,
+            "scroll": 393
+          }
+        },
+        "reset": {
+          "phase": [],
+          "cancelVisible": false,
+          "closeVisible": false,
+          "progress": [],
+          "regionPins": [],
+          "candidateRows": [],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "",
+              "files": []
+            }
+          ],
+          "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nFotografía las botellas\n\nPuede haber una o varias. Revisarás cada identidad antes de confirmar.\n\nHacer foto\nElegir de galería\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 393,
+            "scroll": 393
+          }
+        },
+        "bPending": {
+          "phase": [
+            "Leyendo cada región por separado"
+          ],
+          "cancelVisible": true,
+          "closeVisible": false,
+          "progress": [
+            {
+              "now": null,
+              "max": "100",
+              "indicator": "translateX(-58%)"
+            }
+          ],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Analizando"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Analizando"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Analizando"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLeyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n2 de 5 regiones · 3 en paralelo\nCancelar\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 393,
+            "scroll": 393
+          }
+        },
+        "afterOld": {
+          "phase": [
+            "Análisis cancelado"
+          ],
+          "cancelVisible": false,
+          "closeVisible": true,
+          "progress": [],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Analizando"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Analizando"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Analizando"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nAnálisis cancelado\n3 MP · brillo 138 · contraste 45\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 393,
+            "scroll": 393
+          }
+        },
+        "final": {
+          "phase": [
+            "Lote listo para revisar"
+          ],
+          "cancelVisible": false,
+          "closeVisible": true,
+          "progress": [
+            {
+              "now": null,
+              "max": "100",
+              "indicator": "translateX(0%)"
+            }
+          ],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Reconocido"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Reconocido"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Reconocido"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Muga Reserva",
+            "Abrir detalle de Baron Saint George Grand Vin de Bordeaux",
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": "5 regiones en 2.5 s",
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Escáner Matchrim\nEtiqueta de vino\n\nIdentifica una etiqueta o varias botellas sin mezclarlas.\n\nLote listo para revisar\n3 MP · brillo 138 · contraste 45\n5 regiones en 2.5 s\n1\n2\n3\n4\n5\nEscena\nVinos (3)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n3\nReconocidos\n1\nDudosos\n0\nSin reconocer\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 393,
+            "scroll": 393
+          }
+        },
+        "expected503ConsoleControl": []
+      },
+      "countsByAttempt": {
+        "1": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        },
+        "2": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        }
+      },
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "attempt": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/detect-wine-regions",
+          "attempt": 1,
+          "requestBodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "dataUrlSha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 1,
+          "requestBodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "dataUrlSha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 1,
+          "requestBodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "dataUrlSha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 1,
+          "requestBodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "dataUrlSha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 1,
+          "requestBodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 1,
+          "requestBodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "dataUrlSha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 1,
+          "requestBodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 1,
+          "requestBodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "attempt": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/detect-wine-regions",
+          "attempt": 2,
+          "requestBodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "dataUrlSha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 2,
+          "requestBodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "dataUrlSha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 2,
+          "requestBodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "dataUrlSha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 2,
+          "requestBodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "dataUrlSha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 2,
+          "requestBodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "dataUrlSha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 2,
+          "requestBodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 2,
+          "requestBodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 2,
+          "requestBodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "requestFailures": [],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [],
+      "warnings": []
+    },
+    {
+      "case": "touch-landscape",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Embedded fixture flag false and profile not preseeded",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "A legitimately analyzing with actual held catalog requests",
+          "passed": true,
+          "detail": {
+            "counts": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            },
+            "held": 3
+          }
+        },
+        {
+          "name": "A current cancel immediately recovers while its lookup remains held",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Real close/gallery exact-path reentry without input mutation",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "B reaches same legitimate pending plan as A",
+          "passed": true,
+          "detail": {
+            "1": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            },
+            "2": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            }
+          }
+        },
+        {
+          "name": "Old completion cannot mark B cancelled or change its loader/progress/notice",
+          "passed": false,
+          "detail": {
+            "before": {
+              "phase": [
+                "Leyendo cada región por separado"
+              ],
+              "cancelVisible": true,
+              "closeVisible": false,
+              "progress": [
+                {
+                  "now": null,
+                  "max": "100",
+                  "indicator": "translateX(-58%)"
+                }
+              ],
+              "performance": null,
+              "notices": []
+            },
+            "after": {
+              "phase": [
+                "Análisis cancelado"
+              ],
+              "cancelVisible": false,
+              "closeVisible": true,
+              "progress": [],
+              "performance": null,
+              "notices": []
+            }
+          }
+        },
+        {
+          "name": "Old completion does not mutate B regions or candidates",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Old completion starts no extra calls",
+          "passed": true,
+          "detail": {
+            "1": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            },
+            "2": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            }
+          }
+        },
+        {
+          "name": "Only B own completions publish ready and return controls",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Local operation plan frozen across before/after",
+          "passed": false,
+          "detail": {
+            "1": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            },
+            "2": {
+              "detect": 1,
+              "analyze": 4,
+              "search": 3,
+              "profile": 1
+            }
+          }
+        },
+        {
+          "name": "No unexpected runtime/console/overflow errors",
+          "passed": true,
+          "detail": {
+            "warnings": [
+              "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+              "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+              "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>"
+            ],
+            "console": [
+              "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+              "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+              "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+            ]
+          }
+        },
+        {
+          "name": "All HTTP/WS intercepted, no REST writes/accounts/provider calls",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [
+        "Old completion cannot mark B cancelled or change its loader/progress/notice",
+        "Local operation plan frozen across before/after"
+      ],
+      "observations": {
+        "chooserBefore": [
+          {
+            "value": "",
+            "files": 0
+          },
+          {
+            "value": "",
+            "files": 0
+          }
+        ],
+        "selections": [
+          [
+            {
+              "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+              "type": "image/jpeg",
+              "size": 1041114,
+              "lastModified": 1791448775318
+            }
+          ],
+          [
+            {
+              "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+              "type": "image/jpeg",
+              "size": 1041114,
+              "lastModified": 1791448775318
+            }
+          ]
+        ],
+        "aPending": {
+          "phase": [
+            "Leyendo cada región por separado"
+          ],
+          "cancelVisible": true,
+          "closeVisible": false,
+          "progress": [
+            {
+              "now": null,
+              "max": "100",
+              "indicator": "translateX(-58%)"
+            }
+          ],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Analizando"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Analizando"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Analizando"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n2 de 5 regiones · 3 en paralelo\nCancelar\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\n1\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 852,
+            "scroll": 852
+          }
+        },
+        "aCancelled": {
+          "phase": [
+            "Análisis cancelado"
+          ],
+          "cancelVisible": false,
+          "closeVisible": true,
+          "progress": [],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Analizando"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Analizando"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Analizando"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Análisis cancelado\n3 MP · brillo 138 · contraste 45\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\n1\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 852,
+            "scroll": 852
+          }
+        },
+        "reset": {
+          "phase": [],
+          "cancelVisible": false,
+          "closeVisible": false,
+          "progress": [],
+          "regionPins": [],
+          "candidateRows": [],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "",
+              "files": []
+            }
+          ],
+          "bodyText": "Fotografía las botellas\n\nPuede haber una o varias. Revisarás cada identidad antes de confirmar.\n\nHacer foto\nElegir de galería\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 852,
+            "scroll": 852
+          }
+        },
+        "bPending": {
+          "phase": [
+            "Leyendo cada región por separado"
+          ],
+          "cancelVisible": true,
+          "closeVisible": false,
+          "progress": [
+            {
+              "now": null,
+              "max": "100",
+              "indicator": "translateX(-58%)"
+            }
+          ],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Analizando"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Analizando"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Analizando"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n2 de 5 regiones · 3 en paralelo\nCancelar\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\n1\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 852,
+            "scroll": 852
+          }
+        },
+        "afterOld": {
+          "phase": [
+            "Análisis cancelado"
+          ],
+          "cancelVisible": false,
+          "closeVisible": true,
+          "progress": [],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Analizando"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Analizando"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Analizando"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": null,
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Análisis cancelado\n3 MP · brillo 138 · contraste 45\n2\n5\nEscena\nVinos (1)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n0\nReconocidos\n1\nDudosos\n0\nSin reconocer\n1\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 852,
+            "scroll": 852
+          }
+        },
+        "final": {
+          "phase": [
+            "Lote listo para revisar"
+          ],
+          "cancelVisible": false,
+          "closeVisible": true,
+          "progress": [
+            {
+              "now": null,
+              "max": "100",
+              "indicator": "translateX(0%)"
+            }
+          ],
+          "regionPins": [
+            {
+              "testId": "region-pin-1",
+              "label": "Región 1, Reconocido"
+            },
+            {
+              "testId": "region-pin-2",
+              "label": "Región 2, Dudoso"
+            },
+            {
+              "testId": "region-pin-3",
+              "label": "Región 3, Reconocido"
+            },
+            {
+              "testId": "region-pin-4",
+              "label": "Región 4, Reconocido"
+            },
+            {
+              "testId": "region-pin-5",
+              "label": "Región 5, Sin analizar"
+            }
+          ],
+          "candidateRows": [
+            "Abrir detalle de Muga Reserva",
+            "Abrir detalle de Baron Saint George Grand Vin de Bordeaux",
+            "Abrir detalle de Marques de Riscal Reserva"
+          ],
+          "performance": "5 regiones en 2.5 s",
+          "notices": [],
+          "inputs": [
+            {
+              "value": "",
+              "files": []
+            },
+            {
+              "value": "C:\\fakepath\\commons-restaurant-menu-2026-08-25-2000.jpg",
+              "files": [
+                {
+                  "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+                  "type": "image/jpeg",
+                  "size": 1041114,
+                  "lastModified": 1791448775318
+                }
+              ]
+            }
+          ],
+          "bodyText": "Lote listo para revisar\n3 MP · brillo 138 · contraste 45\n5 regiones en 2.5 s\n1\n2\n3\n4\n5\nEscena\nVinos (3)\nComparar\n1 regiones sin analizar. Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.\n3\nReconocidos\n1\nDudosos\n0\nSin reconocer\n3\nReferencias\n5\nRegiones\nCobertura sin verificar\n\n5 regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.\n\nDetalles de la detección\nInicio\naiRIM\nEscanear\nBodega\nPerfil",
+          "width": {
+            "inner": 852,
+            "scroll": 852
+          }
+        },
+        "expected503ConsoleControl": [
+          "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+          "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+          "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+        ]
+      },
+      "countsByAttempt": {
+        "1": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        },
+        "2": {
+          "detect": 1,
+          "analyze": 4,
+          "search": 3,
+          "profile": 1
+        }
+      },
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "attempt": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/detect-wine-regions",
+          "attempt": 1,
+          "requestBodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "dataUrlSha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 1,
+          "requestBodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "dataUrlSha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 1,
+          "requestBodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "dataUrlSha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 1,
+          "requestBodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "dataUrlSha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 1,
+          "requestBodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 1,
+          "requestBodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "dataUrlSha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 1,
+          "requestBodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 1,
+          "requestBodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "attempt": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/detect-wine-regions",
+          "attempt": 2,
+          "requestBodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "dataUrlSha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 2,
+          "requestBodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "dataUrlSha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 2,
+          "requestBodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "dataUrlSha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 2,
+          "requestBodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "dataUrlSha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/analyze-wine-region",
+          "attempt": 2,
+          "requestBodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "dataUrlSha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 2,
+          "requestBodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 2,
+          "requestBodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attempt": 2,
+          "requestBodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "requestFailures": [],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": [
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ],
+      "warnings": [
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>"
+      ]
+    }
+  ]
+}

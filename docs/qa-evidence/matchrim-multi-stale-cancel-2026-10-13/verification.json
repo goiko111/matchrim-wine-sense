@@ -1,0 +1,63 @@
+{
+  "commands": {
+    "contracts": {
+      "command": [
+        "./node_modules/.bin/tsx",
+        "scripts/check-matchrim-multi-stale-cancel-oct13.ts",
+        "docs/qa-evidence/matchrim-multi-stale-cancel-2026-10-13/contracts.json"
+      ],
+      "exitCode": 0
+    },
+    "typecheck": {
+      "command": [
+        "./node_modules/.bin/tsc",
+        "--noEmit",
+        "--project",
+        "docs/qa-evidence/matchrim-multi-stale-cancel-2026-10-13/tsconfig-scoped.json"
+      ],
+      "exitCode": 0
+    },
+    "lint": {
+      "command": [
+        "./node_modules/.bin/eslint",
+        "src/components/wine-import/MultiWineLabelScanner.tsx",
+        "scripts/check-matchrim-multi-stale-cancel-oct13.ts",
+        "scripts/package-matchrim-multi-stale-cancel-oct13.mjs"
+      ],
+      "exitCode": 0
+    }
+  },
+  "uiStages": {
+    "before": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 20
+    },
+    "before-complete": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 20
+    },
+    "before-final": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 22
+    },
+    "after": {
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 24,
+      "checksPassed": 24
+    }
+  },
+  "pureChecks": 47,
+  "pureChecksPassed": 47,
+  "fullSuites": false,
+  "priorGreenSuitesRerun": false,
+  "webBuild": false,
+  "nativeBuild": false,
+  "scope": "Only16 local guard, two UI routes and focused controller/complete AST/protected-source checks. Not vision/provider/native/production certification."
+}
