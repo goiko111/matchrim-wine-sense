@@ -16,7 +16,7 @@ const ImportProgress: React.FC<ImportProgressProps> = ({ isLoading, progress }) 
         <span>Importando...</span>
         <span>{Math.round(progress)}%</span>
       </div>
-      <Progress value={progress} />
+      <Progress value={progress} aria-label="Progreso de importacion CSV" />
     </div>
   );
 };

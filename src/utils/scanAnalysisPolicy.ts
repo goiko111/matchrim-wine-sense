@@ -1,0 +1,68 @@
+import { getCropGeometry } from './imageCropGeometry';
+import { prioritizeRegionsForAnalysis, type ScanRegion } from './multiWineScan';
+
+export const MAX_AUTOMATIC_REGION_ANALYSES = 12;
+export const MAX_SCAN_EDGE_REQUESTS = 24;
+export const MAX_MANUAL_REGION_REQUESTS = 4;
+
+export type RegionDeferral = {
+  code: 'resolution' | 'legibility' | 'exposure' | 'automatic_limit' | 'request_limit';
+  message: string;
+};
+
+export const regionPreflight = (region: ScanRegion, width: number, height: number, manual = false): RegionDeferral | null => {
+  const { pixels } = getCropGeometry(width, height, region.box);
+  // Operational floor, not a calibrated probability of readable text. Never upscale to pass.
+  if (Math.min(pixels.width, pixels.height) < 64) return {
+    code: 'resolution', message: 'La etiqueta ocupa muy pocos píxeles. Haz una foto más cercana de esta zona.',
+  };
+  if (!manual && region.quality.legibility === 'poor') return {
+    code: 'legibility', message: 'El detector indica texto poco legible. Revisa el recorte o toma otra foto antes de analizarlo.',
+  };
+  return null;
+};
+
+export const cropQualityDeferral = (quality: { brightness: number | null; contrast: number | null }): RegionDeferral | null => (
+  (quality.brightness !== null && (quality.brightness < 12 || quality.brightness > 248))
+  || (quality.contrast !== null && quality.contrast < 8)
+    ? { code: 'exposure', message: 'El recorte no tiene suficiente luz o contraste. Acerca la cámara y evita reflejos.' }
+    : null
+);
+
+export const deferRegion = (region: ScanRegion, deferral: RegionDeferral): ScanRegion => ({
+  ...region, status: 'deferred', deferral, candidates: [], selectedCandidateId: null, error: null, fallback: null,
+});
+
+export const planRegionAnalysis = (regions: ScanRegion[], width: number, height: number) => {
+  const automatic: ScanRegion[] = [];
+  const deferred: ScanRegion[] = [];
+  for (const region of prioritizeRegionsForAnalysis(regions)) {
+    const reason = regionPreflight(region, width, height)
+      ?? (automatic.length >= MAX_AUTOMATIC_REGION_ANALYSES ? {
+        code: 'automatic_limit' as const,
+        message: 'Pendiente de análisis: este lote analiza hasta 12 regiones automáticamente. Puedes analizar esta región por separado.',
+      } : null);
+    if (reason) deferred.push(deferRegion(region, reason));
+    else automatic.push(region);
+  }
+  return { automatic, deferred };
+};
+
+export class ScanRequestLimitError extends Error {
+  constructor() { super('Se alcanzó el límite de solicitudes de este lote.'); }
+}
+
+export const createScanRequestBudget = (limit = MAX_SCAN_EDGE_REQUESTS) => {
+  if (!Number.isInteger(limit) || limit < 0) throw new Error('Invalid request limit');
+  let used = 0;
+  return {
+    get used() { return used; },
+    get remaining() { return limit - used; },
+    reserve(signal: AbortSignal) {
+      if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+      if (used >= limit) throw new ScanRequestLimitError();
+      used += 1;
+    },
+  };
+};
+export type ScanRequestBudget = ReturnType<typeof createScanRequestBudget>;

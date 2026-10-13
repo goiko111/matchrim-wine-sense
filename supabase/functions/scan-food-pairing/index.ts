@@ -8,7 +8,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const FUNCTION_VERSION = 'scan-food-pairing-2026-09-29-complete-menu-candidate-v2';
+const FUNCTION_VERSION = 'scan-food-pairing-2026-10-11-evidence-candidate-v3';
 
 type MatchrimProfile = {
   potente: number;
@@ -149,10 +149,10 @@ Responde EXCLUSIVAMENTE en JSON válido con esta forma:
       "source_order": 1,
       "source_text": "texto exacto leído en la carta",
       "confidence": 0-100,
-      "match": 0-100,
-      "razon": "por qué este plato encaja con el usuario",
+      "match": null,
+      "razon": "características culinarias visibles o inferidas; nunca preferencias del usuario",
       "recomendaciones": [
-        { "nombre": "vino", "tipo": "Tinto|Blanco|...", "uvas": ["..."], "match": 0-100, "razon": "...", "atributos": { "potencia": 1-5, "acidez": 1-5, "dulzura": 1-5, "taninos": 1-5, "afrutado": 1-5 } }
+        { "nombre": "estilo de vino orientativo", "tipo": "Tinto|Blanco|...", "uvas": ["..."], "match": null, "razon": "hipótesis de maridaje plato-vino, no preferencia alimentaria", "atributos": { "potencia": 1-5, "acidez": 1-5, "dulzura": 1-5, "taninos": 1-5, "afrutado": 1-5 } }
       ]
     }
   ]
@@ -160,7 +160,10 @@ Responde EXCLUSIVAMENTE en JSON válido con esta forma:
 
 REGLAS ESTRICTAS:
 - Atributos sensoriales SIEMPRE enteros del 1 al 5 (NUNCA 6,7,8,9,10).
-- match es 0-100.
+- match siempre null: una idea de estilo no es una botella con ficha sensorial verificada. No inventes porcentajes.
+- El perfil Matchrim describe preferencias de VINO, no de comida. No deduzcas gustos por postres, picante, carne ni restricciones alimentarias. Vino seco no implica rechazo del azúcar en la comida.
+- La extracción es independiente del perfil: incluye TODOS los platos, guarniciones, postres y opciones legibles. No omitas platos por su supuesto encaje personal. Conserva alternativas y tamaños sin convertir ingredientes en platos nuevos.
+- El resumen describe solo lo leído y sus límites, nunca lo que supuestamente quiere comer el usuario. Las razones son hipótesis de maridaje, no hechos sobre ingredientes no visibles o gustos personales.
 - ${mode === "menu"
     ? `Cuenta primero todas las líneas de platos legibles y devuelve una fila por cada plato, en el orden y sección originales, hasta un máximo técnico de ${maxDishes}.`
     : "Devuelve exactamente el plato visible cuando sea legible."}

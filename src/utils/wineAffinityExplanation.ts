@@ -195,13 +195,14 @@ export interface DetailedAffinityExplanation {
 }
 
 const DIMENSION_WEIGHTS: Record<DetailedAttributeKey, number> = {
-  potente: 0.18,
-  acidez: 0.18,
-  dulce: 0.12,
-  tanico: 0.17,
-  afrutado: 0.15,
-  madera: 0.1,
-  intensidad: 0.1,
+  // The scanner's Euclidean calculation treats its five core axes equally.
+  potente: 0.2,
+  acidez: 0.2,
+  dulce: 0.2,
+  tanico: 0.2,
+  afrutado: 0.2,
+  madera: 0,
+  intensidad: 0,
 };
 
 const confidenceLabel = (confidence: number): DetailedAffinityExplanation['confidenceLabel'] => {

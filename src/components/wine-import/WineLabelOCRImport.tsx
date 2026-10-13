@@ -551,7 +551,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
                     {extractedWine.matchrim_affinity}%
                   </span>
                 </div>
-                <Progress value={extractedWine.matchrim_affinity} className="h-2" />
+                <Progress value={extractedWine.matchrim_affinity} role="meter" aria-label="Afinidad orientativa del candidato" className="h-2" />
                 {extractedWine.affinity_reason && (
                   <p className="mt-2 text-sm text-muted-foreground">{extractedWine.affinity_reason}</p>
                 )}

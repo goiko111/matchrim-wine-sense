@@ -41,26 +41,19 @@ const processingSteps: Record<FoodScanMode, string[]> = {
   dish: ["Analizando el plato...", "Leyendo textura e intensidad...", "Buscando vinos que encajen contigo..."],
 };
 
-const getMatchTone = (match: number) => {
-  if (match >= 80) return "text-green-700";
-  if (match >= 65) return "text-amber-700";
-  return "text-red-800";
+export const FoodPairingScanner = (props: FoodPairingScannerProps) => {
+  const { user } = useAuth();
+  return <FoodPairingScannerSession key={JSON.stringify([user?.id ?? 'anonymous', props.initialMode, props.restaurantName])} {...props} />;
 };
 
-const getPairingDecision = (match: number) => {
-  if (match >= 80) return "Muy buen camino";
-  if (match >= 65) return "Buena opción";
-  if (match >= 50) return "Con matices";
-  return "Difícil para tu perfil";
-};
-
-export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockMode = false }: FoodPairingScannerProps) => {
+const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockMode = false }: FoodPairingScannerProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const errorRef = useRef<HTMLDivElement>(null);
+  const saveErrorRef = useRef<HTMLParagraphElement>(null);
   const [mode, setMode] = useState<FoodScanMode>(initialMode);
   const [loading, setLoading] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
@@ -69,14 +62,19 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
   const [result, setResult] = useState<FoodScanResult | null>(null);
   const [savingKey, setSavingKey] = useState<string | null>(null);
   const [savedKeys, setSavedKeys] = useState<Set<string>>(new Set());
+  const [saveError, setSaveError] = useState<{ rowKey: string; message: string } | null>(null);
+  const savedRows = useRef(new Map<string, string>());
+  const savingRef = useRef(false);
+  const mountedRef = useRef(true);
+  const scanController = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    setMode(initialMode);
-    setScanError(null);
-    setResult(null);
-    setPreview(null);
-    setSavedKeys(new Set());
-  }, [initialMode]);
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      scanController.current?.abort();
+    };
+  }, []);
 
   useEffect(() => {
     if (!loading) {
@@ -103,12 +101,21 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     if (scanError && !loading) errorRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
   }, [scanError, loading]);
 
+  useEffect(() => {
+    if (saveError) saveErrorRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [saveError]);
+
   const selectMode = (nextMode: FoodScanMode) => {
+    if (savingRef.current) return;
+    scanController.current?.abort();
+    setLoading(false);
     setScanError(null);
     setMode(nextMode);
     setResult(null);
     setPreview(null);
     setSavedKeys(new Set());
+    setSaveError(null);
+    savedRows.current.clear();
     trackAppEvent("scan_option_selected", {
       userId: user?.id,
       metadata: { option: nextMode === "menu" ? "food_menu" : "dish_photo" },
@@ -120,7 +127,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     source: "camera" | "file"
   ) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file || savingRef.current) return;
 
     const isImage = file.type.startsWith("image/");
     const isPdf = file.type === "application/pdf";
@@ -141,10 +148,16 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     setScanError(null);
     setResult(null);
     setSavedKeys(new Set());
+    setSaveError(null);
+    savedRows.current.clear();
+    scanController.current?.abort();
+    const controller = new AbortController();
+    scanController.current = controller;
 
     try {
       const imageFile = isPdf ? await convertPdfFirstPageToImageFile(file, "menu-page.jpg") : file;
       const { dataUrl: image } = await prepareImageForAnalysis(imageFile);
+      if (controller.signal.aborted) return;
       setPreview(image);
       trackAppEvent("food_scan_started", {
         userId: user?.id,
@@ -158,8 +171,10 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
 
       const { data, error } = await supabase.functions.invoke("scan-food-pairing", {
         body: { image, mode, restaurantName, matchrimProfile: readMatchrimLocalProfile() },
+        signal: controller.signal,
       });
 
+      if (controller.signal.aborted) return;
       if (error) throw error;
 
       const scanResult = parseFoodScanResponse(data);
@@ -183,6 +198,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
         toast.info("No he podido detectar platos claros. Prueba con una foto más cercana.");
       }
     } catch (error) {
+      if (controller.signal.aborted) return;
       if (error instanceof FoodScanResponseError) console.warn("Invalid food scan response");
       else console.error("Error scanning food pairing:", error);
       const message = error instanceof Error ? error.message : "No se pudo analizar la imagen";
@@ -191,16 +207,18 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
         userId: user?.id,
         metadata: { mode, error: message },
       });
-      toast.error(message);
     } finally {
-      setLoading(false);
-      if (event.target) event.target.value = "";
+      if (!controller.signal.aborted) {
+        setLoading(false);
+        if (event.target) event.target.value = "";
+      }
     }
   };
 
   const saveRecommendation = async (
     dish: FoodDishResult,
     recommendation: FoodWineRecommendation,
+    dishIndex: number,
     recommendationIndex: number,
     favorite = false
   ) => {
@@ -209,11 +227,19 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
       return;
     }
 
-    const saveKey = `${favorite ? "favorite" : "wishlist"}-${dish.nombre}-${recommendation.nombre}-${recommendationIndex}`;
+    const rowKey = `${dishIndex}-${recommendationIndex}`;
+    const saveKey = `${favorite ? "favorite" : "wishlist"}-${rowKey}`;
+    if (savingRef.current || savedKeys.has(saveKey)) return;
+    savingRef.current = true;
+    setSaveError(null);
     setSavingKey(saveKey);
 
     try {
-      const { error } = await supabase
+      const existingId = savedRows.current.get(rowKey);
+      // A favourite is a flag on the same saved idea, not a second wine.
+      const mutation = existingId
+        ? supabase.from("user_wines").update({ is_favorite: true }).eq('id', existingId).eq('user_id', user.id)
+        : supabase
         .from("user_wines")
         .insert({
           user_id: user.id,
@@ -227,7 +253,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           status: "wishlist",
           is_favorite: favorite,
           matchrim_affinity: recommendation.match,
-          sensory_attributes: (recommendation.atributos || null) as Json,
+          sensory_attributes: null,
           use_for_profile_training: false,
           consumption_place: restaurantName || null,
           consumption_place_type: restaurantName ? "restaurant" : null,
@@ -237,12 +263,17 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
             dish_name: dish.nombre,
             dish_category: dish.categoria,
             dish_match: dish.match,
+            evidence: 'unverified_style_suggestion',
           } as Json,
         });
+      const { data, error } = await mutation.select('id').single();
 
       if (error) throw error;
+      if (!data?.id) throw new Error('Saved recommendation not confirmed');
+      if (!mountedRef.current) return;
+      savedRows.current.set(rowKey, data.id);
 
-      setSavedKeys((current) => new Set(current).add(saveKey));
+      setSavedKeys((current) => new Set(current).add(`wishlist-${rowKey}`).add(saveKey));
       trackAppEvent("wine_saved", {
         userId: user.id,
         metadata: {
@@ -259,18 +290,25 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           : `${recommendation.nombre} guardado en Quiero Probar`
       );
     } catch (error) {
+      if (!mountedRef.current) return;
       console.error("Error saving food recommendation:", error);
-      toast.error("No se pudo guardar la recomendación");
+      setSaveError({ rowKey, message: "No se pudo guardar la recomendación" });
     } finally {
-      setSavingKey(null);
+      savingRef.current = false;
+      if (mountedRef.current) setSavingKey(null);
     }
   };
 
   const clearScan = () => {
+    if (savingRef.current) return;
+    scanController.current?.abort();
+    setLoading(false);
     setScanError(null);
     setPreview(null);
     setResult(null);
     setSavedKeys(new Set());
+    setSaveError(null);
+    savedRows.current.clear();
   };
 
   const currentStep = processingSteps[mode][stepIndex];
@@ -284,6 +322,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
             variant={mode === "menu" ? "default" : "ghost"}
             className={mode === "menu" ? "bg-red-900 hover:bg-red-950" : "text-slate-700"}
             onClick={() => selectMode("menu")}
+            disabled={Boolean(savingKey)}
           >
             <BookOpen className="mr-2 h-4 w-4" />
             Menú
@@ -293,6 +332,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
             variant={mode === "dish" ? "default" : "ghost"}
             className={mode === "dish" ? "bg-red-900 hover:bg-red-950" : "text-slate-700"}
             onClick={() => selectMode("dish")}
+            disabled={Boolean(savingKey)}
           >
             <ChefHat className="mr-2 h-4 w-4" />
             Plato
@@ -323,7 +363,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           accept={mode === "menu" ? "image/*,application/pdf" : "image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"}
           onChange={(event) => handleFileSelect(event, "file")}
           className="hidden"
-          disabled={loading}
+          disabled={loading || Boolean(savingKey)}
         />
         <input
           ref={cameraInputRef}
@@ -332,7 +372,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
           capture="environment"
           onChange={(event) => handleFileSelect(event, "camera")}
           className="hidden"
-          disabled={loading}
+          disabled={loading || Boolean(savingKey)}
         />
         {preview ? (
           <div className="space-y-4">
@@ -351,6 +391,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                   title="Elegir otra imagen"
                   className="absolute right-3 top-3 h-11 w-11 rounded-md"
                   onClick={clearScan}
+                  disabled={Boolean(savingKey)}
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -363,7 +404,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                   <Loader2 className="h-5 w-5 animate-spin" />
                   <span className="font-medium">{currentStep}</span>
                 </div>
-                <Progress value={((stepIndex + 1) / processingSteps[mode].length) * 100} className="h-2" />
+                <Progress value={((stepIndex + 1) / processingSteps[mode].length) * 100} aria-label="Progreso del análisis de comida" className="h-2" />
               </div>
             )}
           </div>
@@ -421,19 +462,19 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
               <div>
                 <h3 className="font-semibold text-slate-950">Resultado</h3>
                 <p className="mt-1 text-sm leading-6 text-slate-600">{result.summary}</p>
-                {!result.has_profile && (
-                  <p className="mt-2 text-sm text-amber-700">
-                    Completa el test Matchrim para ordenar estas recomendaciones por tu gusto real.
-                  </p>
+                <p className="mt-2 text-sm text-amber-800">Tus gustos en vino no determinan tus preferencias de comida.</p>
+                {result.coverage?.estimated_visible_dishes != null && (
+                  <p className="mt-2 text-sm text-stone-600">El detector estima {result.coverage.estimated_visible_dishes} platos visibles; ha devuelto {result.dishes.length}.</p>
                 )}
+                {result.coverage?.truncated && <p className="mt-2 font-medium text-amber-800">Lectura parcial. Faltan platos por revisar.</p>}
               </div>
             </div>
           </div>
 
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
-            <p className="font-semibold">Cómo leer estos porcentajes</p>
+            <p className="font-semibold">Maridajes orientativos, sin puntuación personal</p>
             <p className="mt-1">
-              El porcentaje del plato mide lo fácil que es maridarlo con tu perfil. El porcentaje de cada recomendación mide el encaje entre esa idea de vino, el plato y tu Matchrim.
+              Faltan una botella identificada y sus datos sensoriales para calcular afinidad. No se han evaluado tus gustos de comida, alergias ni restricciones dietéticas.
             </p>
             <p className="mt-1">
               Si no hemos escaneado una carta de vinos concreta, estas tarjetas son ideas de estilo, uva o región. Para convertirlas en una botella real del restaurante, escanea su carta de vinos.
@@ -448,11 +489,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                     {dish.categoria}
                   </Badge>
                   <h3 className="text-lg font-bold leading-tight text-slate-950">{dish.nombre}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{dish.razon}</p>
-                </div>
-                <div className="shrink-0 text-right">
-                  <div className={`text-2xl font-bold ${getMatchTone(dish.match)}`}>{dish.match}%</div>
-                  <p className="text-xs font-medium uppercase text-slate-400">maridaje</p>
+                  {dish.source_text && <p className="mt-2 text-sm leading-6 text-slate-600">Lectura: {dish.source_text}</p>}
                 </div>
               </div>
 
@@ -463,11 +500,10 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                 </div>
 
                 {dish.recomendaciones.map((recommendation, recommendationIndex) => {
-                  const saveKey = `wishlist-${dish.nombre}-${recommendation.nombre}-${recommendationIndex}`;
-                  const favoriteSaveKey = `favorite-${dish.nombre}-${recommendation.nombre}-${recommendationIndex}`;
+                  const saveKey = `wishlist-${dishIndex}-${recommendationIndex}`;
+                  const favoriteSaveKey = `favorite-${dishIndex}-${recommendationIndex}`;
                   const isSaved = savedKeys.has(saveKey);
                   const isFavoriteSaved = savedKeys.has(favoriteSaveKey);
-                  const recommendationDecision = getPairingDecision(recommendation.match);
 
                   return (
                     <div
@@ -480,9 +516,6 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
 	                            <Badge variant="outline" className="border-amber-200 bg-white text-amber-950">
 	                              Idea de vino
 	                            </Badge>
-	                            <span className={`text-xs font-semibold ${getMatchTone(recommendation.match)}`}>
-	                              {recommendationDecision}
-	                            </span>
 	                          </div>
 	                          <h4 className="font-semibold text-slate-950">{recommendation.nombre}</h4>
 	                          <div className="mt-2 flex flex-wrap gap-2">
@@ -492,13 +525,10 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                             ))}
                           </div>
                         </div>
-                        <span className={`shrink-0 text-lg font-bold ${getMatchTone(recommendation.match)}`}>
-                          {recommendation.match}%
-                          <span className="block text-right text-[10px] font-medium uppercase text-slate-400">idea + plato</span>
-                        </span>
                       </div>
 
-	                      <p className="mt-3 text-sm leading-6 text-slate-600">{recommendation.razon}</p>
+	                      <p className="mt-3 text-xs font-semibold text-stone-600">Hipótesis de maridaje del modelo</p>
+	                      <p className="mt-1 text-sm leading-6 text-slate-600">{recommendation.razon}</p>
 	                      <p className="mt-2 rounded-md border border-stone-200 bg-white p-2 text-xs leading-5 text-slate-500">
 	                        Esto todavía no es una botella concreta: úsalo como dirección de búsqueda o escanea la carta de vinos para elegir el vino real del restaurante.
 	                      </p>
@@ -508,8 +538,8 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                           type="button"
                           variant={isSaved ? "secondary" : "outline"}
                           className="gap-2"
-                          disabled={isSaved || savingKey === saveKey}
-                          onClick={() => saveRecommendation(dish, recommendation, recommendationIndex)}
+                          disabled={isSaved || Boolean(savingKey)}
+                          onClick={() => saveRecommendation(dish, recommendation, dishIndex, recommendationIndex)}
                         >
                           {isSaved ? (
                             <CheckCircle className="h-4 w-4 text-green-700" />
@@ -524,8 +554,8 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                           type="button"
                           variant={isFavoriteSaved ? "secondary" : "outline"}
                           className="gap-2"
-                          disabled={isFavoriteSaved || savingKey === favoriteSaveKey}
-                          onClick={() => saveRecommendation(dish, recommendation, recommendationIndex, true)}
+                          disabled={isFavoriteSaved || Boolean(savingKey)}
+                          onClick={() => saveRecommendation(dish, recommendation, dishIndex, recommendationIndex, true)}
                         >
                           {isFavoriteSaved ? (
                             <CheckCircle className="h-4 w-4 text-green-700" />
@@ -546,6 +576,9 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
                           Preguntar a aiRIM
                         </Button>
                       </div>
+                      {saveError?.rowKey === `${dishIndex}-${recommendationIndex}` && (
+                        <p ref={saveErrorRef} role="alert" className="mt-2 text-sm text-red-800">{saveError.message}</p>
+                      )}
                     </div>
                   );
                 })}

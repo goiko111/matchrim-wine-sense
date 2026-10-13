@@ -1,6 +1,8 @@
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { hasSpecificWineIdentity } from '../../supabase/functions/_shared/matchrim-menu-grounding';
 import { isNonWineIdentity } from './wineCategory';
+import type { CropGeometry } from './imageCropGeometry';
+import type { RegionDeferral } from './scanAnalysisPolicy';
 
 export type ScanRegionStatus =
   | 'pending'
@@ -8,6 +10,7 @@ export type ScanRegionStatus =
   | 'recognized'
   | 'uncertain'
   | 'unrecognized'
+  | 'deferred'
   | 'discarded';
 
 export interface NormalizedBox {
@@ -66,6 +69,8 @@ export interface WineCandidate {
 }
 
 export interface ScanRegion {
+  deferral?: RegionDeferral | null;
+  cropGeometry?: CropGeometry;
   id: string;
   index: number;
   objectType: 'bottle' | 'label' | null;
@@ -105,26 +110,27 @@ export const normalizeConfidence = (value: unknown, fallback = 0): number => {
   return clamp(numeric > 1 ? numeric / 100 : numeric, 0, 1);
 };
 
-export const normalizeBox = (value: unknown): NormalizedBox | null => {
+export const normalizeBox = (value: unknown, minimumDimension = 2): NormalizedBox | null => {
   const raw = asRecord(value);
   if (!raw) return null;
 
-  const x = Number(raw.x ?? raw.left);
-  const y = Number(raw.y ?? raw.top);
-  const width = Number(raw.width ?? raw.w);
-  const height = Number(raw.height ?? raw.h);
-  if (![x, y, width, height].every(Number.isFinite)) return null;
+  const x = optionalScanNumber(raw.x ?? raw.left);
+  const y = optionalScanNumber(raw.y ?? raw.top);
+  const width = optionalScanNumber(raw.width ?? raw.w);
+  const height = optionalScanNumber(raw.height ?? raw.h);
+  if (x === null || y === null || width === null || height === null || width <= 0 || height <= 0) return null;
 
   const normalized = {
     x: clamp(x, 0, 100),
     y: clamp(y, 0, 100),
-    width: clamp(width, 0, 100),
-    height: clamp(height, 0, 100),
+    width: clamp(x + width, 0, 100) - clamp(x, 0, 100),
+    height: clamp(y + height, 0, 100) - clamp(y, 0, 100),
   };
 
   normalized.width = Math.min(normalized.width, 100 - normalized.x);
   normalized.height = Math.min(normalized.height, 100 - normalized.y);
-  if (normalized.width < 2 || normalized.height < 2) return null;
+  if (normalized.width <= 0 || normalized.height <= 0
+    || normalized.width < minimumDimension || normalized.height < minimumDimension) return null;
   return normalized;
 };
 
@@ -220,8 +226,13 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
 
   const normalized = rawRegions.flatMap((value, sourceIndex) => {
     const raw = asRecord(value);
-    const box = normalizeBox(raw?.box ?? raw?.bbox ?? raw?.bounding_box ?? raw);
-    if (!raw || !box || isEdgeSliver(box)) return [];
+    const rawBox = raw?.box ?? raw?.bbox ?? raw?.bounding_box ?? raw;
+    const clippedBottle = raw?.object_type === 'bottle' ? normalizeBox(rawBox, 0) : null;
+    const touchesEdge = clippedBottle && (clippedBottle.x === 0 || clippedBottle.y === 0
+      || clippedBottle.x + clippedBottle.width === 100 || clippedBottle.y + clippedBottle.height === 100);
+    // Keep explicitly detected edge bottles for pixel preflight, not automatic OCR.
+    const box = normalizeBox(rawBox) ?? (touchesEdge ? clippedBottle : null);
+    if (!raw || !box || (isEdgeSliver(box) && raw.object_type !== 'bottle')) return [];
 
     const qualityRaw = asRecord(raw.quality) ?? {};
     const quality: RegionQuality = {
@@ -501,12 +512,14 @@ export const normalizeRecognitionFallback = (payload: unknown): RegionRecognitio
   const raw = asRecord(root?.fallback);
   if (!raw) return null;
   const rawCode = textValue(raw.code);
-  const code: RegionRecognitionFallbackCode = rawCode === 'insufficient_visible_text' || rawCode === 'ungrounded_identity'
+  const code: RegionRecognitionFallbackCode = rawCode === 'not_wine' || rawCode === 'insufficient_visible_text' || rawCode === 'ungrounded_identity'
     ? rawCode
     : 'unknown';
-  const defaultMessage = code === 'insufficient_visible_text'
-    ? 'No hay texto legible suficiente para identificar este vino.'
-    : 'No hay evidencia visible suficiente para confirmar una identidad.';
+  const defaultMessage = code === 'not_wine'
+    ? 'La referencia leida corresponde a otra bebida, no a un vino. No se calcula afinidad.'
+    : code === 'insufficient_visible_text'
+      ? 'No hay texto legible suficiente para identificar este vino.'
+      : 'No hay evidencia visible suficiente para confirmar una identidad.';
 
   return {
     code,
@@ -687,6 +700,7 @@ export const getConfirmableWineGroups = (regions: ScanRegion[]) => (
 export const confirmWineCandidateIdentity = (candidate: WineCandidate): WineCandidate => ({
   ...candidate,
   confidence: 1,
+  source: 'manual',
   evidence: Array.from(new Set([...candidate.evidence, 'Identidad confirmada manualmente por el usuario'])),
   uncertaintyReasons: [],
 });
@@ -716,6 +730,7 @@ export const correctWineCandidateIdentity = (
 });
 
 export const summarizeScanRegions = (regions: ScanRegion[]) => ({
+  deferred: regions.filter((region) => region.status === 'deferred').length,
   recognized: regions.filter((region) => region.status === 'recognized').length,
   uncertain: regions.filter((region) => region.status === 'uncertain').length,
   unrecognized: regions.filter((region) => region.status === 'unrecognized').length,

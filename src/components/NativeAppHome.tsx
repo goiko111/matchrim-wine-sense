@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -37,6 +37,8 @@ type HomeLearningInfo = {
 };
 
 interface NativeAppHomeProps {
+  onboardingReady?: boolean;
+  hasSavedWines?: boolean;
   hasQuizResults: boolean;
   matchrimCode?: string;
   loadingCode?: boolean;
@@ -65,6 +67,8 @@ const formatScanTime = (timestamp: number) => {
 };
 
 const NativeAppHome = ({
+  onboardingReady = true,
+  hasSavedWines = false,
   hasQuizResults,
   matchrimCode = '',
   loadingCode = false,
@@ -78,17 +82,19 @@ const NativeAppHome = ({
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
   const hasCode = hasQuizResults && Boolean(matchrimCode);
-  const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory().slice(0, 3));
+  const ownerId = user?.id ?? null;
+  const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory(ownerId).slice(0, 3));
 
-  useEffect(() => {
-    const refresh = () => setRecentScans(getScanHistory().slice(0, 3));
+  useLayoutEffect(() => {
+    const refresh = () => setRecentScans(getScanHistory(ownerId).slice(0, 3));
+    refresh();
     window.addEventListener(SCAN_HISTORY_UPDATED_EVENT, refresh);
     window.addEventListener('storage', refresh);
     return () => {
       window.removeEventListener(SCAN_HISTORY_UPDATED_EVENT, refresh);
       window.removeEventListener('storage', refresh);
     };
-  }, []);
+  }, [ownerId]);
 
   const openProfile = () => {
     navigate(user ? '/profile' : buildAuthRedirectPath('/profile'));
@@ -111,7 +117,8 @@ const NativeAppHome = ({
       <main className="matchrim-native-home-main matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(7.5rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
         {isNative && import.meta.env.VITE_MATCHRIM_NATIVE_GUIDE_ENABLED === 'true' && (
           <div className="flex justify-end">
-            <MatchrimQuickGuide existing={Boolean(user || hasQuizResults || recentScans.length)} />
+            <MatchrimQuickGuide key={user?.id ?? 'anonymous'} ownerId={user?.id ?? null} ready={onboardingReady}
+              existing={Boolean(hasQuizResults || hasSavedWines || recentScans.length)} />
           </div>
         )}
         <div className="flex min-h-12 items-center justify-between gap-3">

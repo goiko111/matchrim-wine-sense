@@ -1,0 +1,41 @@
+import { cpSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { dirname, join, relative } from 'node:path';
+import { spawnSync } from 'node:child_process';
+const input = process.argv[2];
+if (!input) throw new Error('Pass task06 artifact directory');
+const output = 'docs/qa-evidence/matchrim-menu-actions-2026-10-12';
+mkdirSync(output, { recursive: true });
+for (const name of ['before', 'after-first', 'after', 'after-batch', 'readback-visual', 'checkpoint06.md', 'contracts.json', 'tsconfig-scoped.json', 'validation06.json']) cpSync(join(input, name), join(output, name), { recursive: true });
+const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const baseline = '9469921d260bf8d88f91a7e313a926358efdc397';
+const protectedFiles = ['src/utils/menuWineSave.ts', 'src/utils/scanWineEvidence.ts', 'src/pages/MyWines.tsx', 'src/contexts/AuthContext.tsx', 'src/utils/wineMenuScan.ts', 'src/utils/wineComparison.ts'];
+const files = ['src/components/wine-import/WineMenuScanner.tsx', 'src/utils/menuWineActions.ts', 'scripts/qa-matchrim-menu-actions-oct12.py', 'scripts/check-matchrim-menu-actions-oct12.ts', 'scripts/package-matchrim-menu-actions-oct12.mjs', ...protectedFiles];
+const stages = [];
+for (const path of files) {
+  const before = spawnSync('git', ['show', `${baseline}:${path}`]);
+  const current = readFileSync(path);
+  if (protectedFiles.includes(path) && (before.status !== 0 || sha(before.stdout) !== sha(current))) throw new Error(`Protected05 source drift: ${path}`);
+  const currentPath = join(output, 'sources', path + '.txt'); mkdirSync(dirname(currentPath), { recursive: true }); writeFileSync(currentPath, current);
+  if (before.status === 0) { const old = join(output, 'baseline-sources', path + '.txt'); mkdirSync(dirname(old), { recursive: true }); writeFileSync(old, before.stdout); }
+  stages.push({ path, before: before.status === 0 ? sha(before.stdout) : null, after: sha(current), protected: protectedFiles.includes(path) });
+}
+const oldManifestPath = 'docs/qa-evidence/matchrim-menu-save-2026-10-12/manifest.json';
+const oldManifestBytes = readFileSync(oldManifestPath);
+const committedManifest = spawnSync('git', ['show', `${baseline}:${oldManifestPath}`]);
+if (sha(oldManifestBytes) !== sha(committedManifest.stdout)) throw new Error('Protected05 manifest changed');
+const oldManifest = JSON.parse(oldManifestBytes);
+for (const entry of oldManifest.entries) if (sha(readFileSync(join(dirname(oldManifestPath), entry.path))) !== entry.sha256) throw new Error('Protected05 evidence changed: ' + entry.path);
+const tests = JSON.parse(readFileSync(join(input, 'contracts.json')));
+for (const [path, hash] of Object.entries(tests.sourceHashes)) if (sha(readFileSync(path)) !== hash) throw new Error('Contract source drift: ' + path);
+writeFileSync(join(output, 'source-stages.json'), JSON.stringify({ baseline, stages, protected05Manifest: { sha256: sha(oldManifestBytes), entries: oldManifest.entries.length, unchanged: true }, caveat: 'Intermediate after-first source is identified by receipt hash, not a full source snapshot. Main after and after-batch share current product source. Original batch failures are retained; same file did not initiate a new batch, corrected fixture selects identical bytes under a different File name.' }, null, 2) + '\n');
+const first = JSON.parse(readFileSync(join(output, 'after/results.json'))).results;
+const batch = JSON.parse(readFileSync(join(output, 'after-batch/results.json'))).results;
+const primary = [...first.filter((row) => !row.case.startsWith('batch:')), ...batch];
+const checks = primary.flatMap((row) => row.checks);
+writeFileSync(join(output, 'primary.json'), JSON.stringify({ scope: 'Only06 local SDK in-memory invalid-signature scenes; not real users/OCR/persistence/RLS', contexts: primary.length, passed: primary.filter((row) => row.passed).length, checks: checks.length, checksPassed: checks.filter((row) => row.passed).length, contracts: tests.checks.length, realRemoteAppCalls: 0, paidCalls: 0, cases: primary.map((row) => ({ case: row.case, passed: row.passed, mutations: row.mutations.map((m) => ({ method: m.method, query: m.query, payload: m.payload, rowId: m.stored.id })), final: row.rows.map((r) => ({ id: r.id, owner: r.user_id, status: r.status, favorite: r.is_favorite, rating: r.rating })), checks: row.checks, failures: row.failures })) }, null, 2) + '\n');
+const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]);
+const entries = walk(output).filter((path) => !path.endsWith('/manifest.json')).sort().map((path) => ({ path: relative(output, path), sha256: sha(readFileSync(path)) }));
+const primaryCaptures = entries.filter((e) => e.path.endsWith('.png') && ((e.path.startsWith('after/') && !e.path.split('/')[1].startsWith('batch-')) || e.path.startsWith('after-batch/') || e.path.startsWith('readback-visual/'))).length;
+writeFileSync(join(output, 'manifest.json'), JSON.stringify({ entries, captures: entries.filter((e) => e.path.endsWith('.png')).length, primaryCaptures }, null, 2) + '\n');
+console.log(JSON.stringify({ contexts: primary.length, passed: primary.filter((row) => row.passed).length, checks: checks.length, contracts: tests.checks.length, entries: entries.length, captures: entries.filter((e) => e.path.endsWith('.png')).length, primaryCaptures, protected05Entries: oldManifest.entries.length }));

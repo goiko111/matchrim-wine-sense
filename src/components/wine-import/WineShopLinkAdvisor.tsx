@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,7 +8,8 @@ import { Loader2, Sparkles, ShoppingBag, Wine } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
-import { recordScanHistory } from "@/utils/scanHistory";
+import { recordOwnedScanHistory } from "@/utils/scanHistory";
+import { isMatchrimLocalOwner } from "@/utils/matchrimLocalOwner";
 import { trackAppEvent } from "@/lib/analytics";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -38,21 +39,40 @@ const EXAMPLES = [
   "Quiero una botella un poco más atrevida para aprender, sin pasarme de 30€.",
 ];
 
-export const WineShopLinkAdvisor = () => {
+const WineShopLinkAdvisorSession = () => {
   const { user } = useAuth();
   const [intent, setIntent] = useState("");
   const [url, setUrl] = useState("");
   const [budget, setBudget] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AdvisorResponse | null>(null);
+  const lifetimeRef = useRef({ active: false, generation: 0 });
+  const pendingRef = useRef(false);
+
+  useLayoutEffect(() => {
+    const lifetime = lifetimeRef.current;
+    lifetime.active = true;
+    lifetime.generation += 1;
+    return () => {
+      lifetime.active = false;
+      lifetime.generation += 1;
+    };
+  }, [user?.id]);
 
   const canSubmit = useMemo(() => intent.trim().length > 0 || url.trim().length > 0, [intent, url]);
 
   const handleSubmit = async () => {
+    if (pendingRef.current) return;
+    const ownerId = user?.id ?? null;
+    const generation = lifetimeRef.current.generation;
+    const isCurrent = () => lifetimeRef.current.active
+      && lifetimeRef.current.generation === generation && isMatchrimLocalOwner(ownerId);
+    if (!isCurrent()) return;
     if (!canSubmit) {
       toast.error("Escribe qué buscas o pega un enlace opcional");
       return;
     }
+    pendingRef.current = true;
     setLoading(true);
     setResult(null);
     try {
@@ -65,6 +85,7 @@ export const WineShopLinkAdvisor = () => {
           matchrimProfile,
         },
       });
+      if (!isCurrent()) return;
       if (error) throw error;
       const payload = data as AdvisorResponse | { error?: string };
       if (payload && "error" in payload && payload.error) {
@@ -74,7 +95,7 @@ export const WineShopLinkAdvisor = () => {
       setResult(advisor);
 
       const titleSource = advisor.recomendaciones?.[0]?.nombre?.trim() || intent.trim() || "consulta";
-      recordScanHistory({
+      recordOwnedScanHistory({ ownerId, isCurrent }, {
         type: "shop-link",
         title: `Encontrar vino: ${titleSource.slice(0, 60)}`,
         subtitle: advisor.summary?.slice(0, 90) ?? null,
@@ -90,27 +111,31 @@ export const WineShopLinkAdvisor = () => {
         metadata: { has_url: Boolean(url.trim()), has_intent: Boolean(intent.trim()) },
       });
     } catch (err) {
+      if (!isCurrent()) return;
       console.error("analyze-shop-link error", err);
       const msg = (err as Error).message || "No se pudo analizar tu petición";
       toast.error(msg);
     } finally {
-      setLoading(false);
+      if (isCurrent()) {
+        pendingRef.current = false;
+        setLoading(false);
+      }
     }
   };
 
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ShoppingBag className="h-5 w-5 text-red-900" />
+      <Card className="min-w-0 [overflow-wrap:anywhere]">
+        <CardHeader className="p-3 sm:p-6">
+          <CardTitle className="flex min-w-0 items-start gap-2 tracking-normal">
+            <ShoppingBag className="h-5 w-5 shrink-0 text-red-900" />
             Encontrar vino
           </CardTitle>
           <CardDescription>
             Haz una pregunta abierta o pega una tienda. Matchrim no vende vino: te ayuda a decidir qué botella buscaría para ti.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-3 pt-0 sm:p-6 sm:pt-0">
           <div className="space-y-2">
             <Label htmlFor="shop-intent">Qué quieres encontrar</Label>
             <Textarea
@@ -126,9 +151,9 @@ export const WineShopLinkAdvisor = () => {
                   key={ex}
                   type="button"
                   onClick={() => setIntent(ex)}
-                  className="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs text-slate-700 hover:border-red-200 hover:bg-red-50"
+                  className="min-h-11 w-full min-w-0 whitespace-normal rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-left text-xs leading-5 text-slate-700 hover:border-red-200 hover:bg-red-50"
                 >
-                  {ex.length > 60 ? ex.slice(0, 60) + "…" : ex}
+                  {ex}
                 </button>
               ))}
             </div>
@@ -139,6 +164,7 @@ export const WineShopLinkAdvisor = () => {
               <Label htmlFor="shop-url">Enlace de tienda o búsqueda opcional</Label>
               <Input
                 id="shop-url"
+                className="min-h-11 min-w-0"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://…"
@@ -149,6 +175,7 @@ export const WineShopLinkAdvisor = () => {
               <Label htmlFor="shop-budget">Presupuesto (opcional)</Label>
               <Input
                 id="shop-budget"
+                className="min-h-11 min-w-0"
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
                 placeholder="Ej.: hasta 20€"
@@ -159,7 +186,7 @@ export const WineShopLinkAdvisor = () => {
           <Button
             onClick={handleSubmit}
             disabled={loading || !canSubmit}
-            className="w-full gap-2 bg-red-900 hover:bg-red-950"
+            className="h-auto min-h-11 w-full flex-wrap gap-2 whitespace-normal bg-red-900 py-2 hover:bg-red-950"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
             {loading ? "Buscando…" : "Encontrar mi vino"}
@@ -208,6 +235,11 @@ export const WineShopLinkAdvisor = () => {
       )}
     </div>
   );
+};
+
+export const WineShopLinkAdvisor = () => {
+  const { user } = useAuth();
+  return <WineShopLinkAdvisorSession key={user?.id ?? 'anonymous'} />;
 };
 
 export default WineShopLinkAdvisor;

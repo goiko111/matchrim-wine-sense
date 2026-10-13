@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { optionalScanNumber, normalizeScanSensoryValue } from '../../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ import {
 import { AffinityExplanation } from "@/components/AffinityExplanation";
 import { AiRimContextGuide } from "@/components/AiRimContextGuide";
 import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
@@ -33,8 +33,18 @@ import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { formatScanPrice, normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
 import { clusterOverlayPins } from "@/utils/overlayPins";
-import { applyMenuWineEvidence } from '@/utils/scanWineEvidence';
+import { applyMenuWineEvidence, menuWinePriceEvidence, updateMenuWineEvidence } from '@/utils/scanWineEvidence';
+import { confirmsMenuInsert, menuFinancialPrice, menuPriceSnapshot, menuSaveEvidence } from '@/utils/menuWineSave';
+import { labelInsertErrorResult } from '@/utils/labelScanSave';
+import { confirmsMenuAction, menuCardIdentity, menuIntentChanges, type SavedMenuCard } from '@/utils/menuWineActions';
+import { presentMenuAffinity } from '@/utils/menuAffinityPresentation';
+import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat } from '@/utils/wineComparison';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
+import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
+import { awaitMenuCatalog } from '@/utils/menuCatalogAwait';
+import type { ScanProfileSnapshot } from '@/utils/scanProfile';
+import { canRetryScanProfile } from '@/utils/scanProfile';
+import { refreshMenuProfileAffinity } from '@/utils/menuProfileRecovery';
 import { mapWithConcurrency } from '@/utils/multiWineScan';
 import {
   normalizeMenuAffinity,
@@ -90,14 +100,6 @@ interface WineMenuScannerProps {
   onScanComplete?: (winesDetected: number) => void;
 }
 
-interface MatchrimProfilePayload {
-  potente: number;
-  acidez: number;
-  dulce: number;
-  tanico: number;
-  afrutado: number;
-}
-
 type ScannedWineSortMode = 'compatibility' | 'price-asc' | 'price-desc' | 'name';
 
 const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
@@ -133,35 +135,6 @@ const normalizeAttributesTo5 = (attributes: ScannedWine['atributos']) => {
 
   if (Object.values(normalized).some((value) => value === null)) return null;
   return normalized as NonNullable<ScannedWine['atributos']>;
-};
-
-const normalizeProfileValue = (value: unknown) => {
-  const numeric = optionalScanNumber(value);
-  if (numeric === null) return null;
-  return Math.max(1, Math.min(5, Math.round(numeric)));
-};
-
-const readStoredMatchrimProfile = (): MatchrimProfilePayload | null => {
-  try {
-    const rawProfile = localStorage.getItem('matchrim_quiz_result');
-    if (!rawProfile) return null;
-
-    const parsed = JSON.parse(rawProfile) as Partial<Record<keyof MatchrimProfilePayload, unknown>>;
-    const potente = normalizeProfileValue(parsed.potente);
-    const acidez = normalizeProfileValue(parsed.acidez);
-    const dulce = normalizeProfileValue(parsed.dulce);
-    const tanico = normalizeProfileValue(parsed.tanico);
-    const afrutado = normalizeProfileValue(parsed.afrutado);
-
-    if (potente === null || acidez === null || dulce === null || tanico === null || afrutado === null) {
-      return null;
-    }
-
-    return { potente, acidez, dulce, tanico, afrutado };
-  } catch (error) {
-    console.warn('Could not read stored Matchrim profile for wine menu scan:', error);
-    return null;
-  }
 };
 
 const normalizePositionConfidence = (value: unknown) => {
@@ -249,7 +222,7 @@ const calculateWineSimilarity = (source: ScannedWine, candidate: ScannedWine) =>
   return Math.round(score / signals);
 };
 
-export const WineMenuScanner = ({
+const WineMenuScannerSession = ({
   restaurantName,
   matchrimCode,
   restaurantSessionId,
@@ -265,7 +238,11 @@ export const WineMenuScanner = ({
   const [scannedWines, setScannedWines] = useState<ScannedWine[]>([]);
   const [savingWineKey, setSavingWineKey] = useState<string | null>(null);
   const [savedWineKeys, setSavedWineKeys] = useState<Set<string>>(new Set());
+  const [unconfirmedWineIndexes, setUnconfirmedWineIndexes] = useState<Set<number>>(new Set());
+  const [identityHoldIndexes, setIdentityHoldIndexes] = useState<Set<number>>(new Set());
   const [hasProfile, setHasProfile] = useState(false);
+  const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);
+  const [retryingProfile, setRetryingProfile] = useState(false);
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
   const [convertingPdf, setConvertingPdf] = useState(false);
   const [scanSortMode, setScanSortMode] = useState<ScannedWineSortMode>('compatibility');
@@ -285,8 +262,115 @@ export const WineMenuScanner = ({
   const [selectedPinIndex, setSelectedPinIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const detailPreviousRef = useRef<HTMLButtonElement>(null);
+  const detailNextRef = useRef<HTMLButtonElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const scanAbortRef = useRef<AbortController | null>(null);
+  const saveLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
+  const savingRef = useRef(false);
+  const unconfirmedRef = useRef(new Set<number>());
+  const savedCardsRef = useRef(new Map<number, SavedMenuCard>());
+  const pendingIdentitiesRef = useRef(new Map<number, string>());
+  const identityHoldsRef = useRef(new Set<number>());
+  const profileRetryRef = useRef<AbortController | null>(null);
+  const profileRetryLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
+  const detectionNoticeRef = useRef({ active: false, generation: 0, id: null as string | number | null });
+  const detailFocusRef = useRef({ active: false, open: false, generation: 0, opener: null as HTMLElement | null });
+
+  const invalidateDetailFocus = useCallback(() => {
+    const focus = detailFocusRef.current;
+    focus.generation += 1;
+    focus.opener = null;
+    focus.open = false;
+  }, []);
+
+  useLayoutEffect(() => {
+    const focus = detailFocusRef.current;
+    focus.active = true;
+    return () => {
+      focus.active = false;
+      invalidateDetailFocus();
+    };
+  }, [user?.id, invalidateDetailFocus]);
+
+  const detailFocusGeneration = detailFocusRef.current.generation;
+  const restoreDetailFocus = (event: Event) => {
+    event.preventDefault();
+    const focus = detailFocusRef.current;
+    if (!focus.active || focus.open || focus.generation !== detailFocusGeneration) return;
+    const opener = focus.opener;
+    focus.opener = null;
+    if (opener?.isConnected) opener.focus({ preventScroll: true });
+  };
+
+  const dismissDetectionNotice = useCallback(() => {
+    const id = detectionNoticeRef.current.id;
+    detectionNoticeRef.current.id = null;
+    detectionNoticeRef.current.generation += 1;
+    if (id !== null) toast.dismiss(id);
+  }, []);
+
+  useLayoutEffect(() => {
+    const notice = detectionNoticeRef.current;
+    notice.active = true;
+    return () => {
+      notice.active = false;
+      dismissDetectionNotice();
+    };
+  }, [user?.id, dismissDetectionNotice]);
+
+  const invalidateProfileRetry = () => {
+    profileRetryLifetime.current.generation += 1;
+    profileRetryRef.current?.abort();
+    profileRetryRef.current = null;
+    setRetryingProfile(false);
+  };
+
+  useLayoutEffect(() => {
+    profileRetryLifetime.current = { active: true, generation: profileRetryLifetime.current.generation + 1, ownerId: user?.id };
+    return () => {
+      profileRetryLifetime.current.active = false;
+      profileRetryLifetime.current.generation += 1;
+      profileRetryRef.current?.abort();
+    };
+  }, [user?.id]);
+
+  useLayoutEffect(() => {
+    saveLifetime.current = { active: true, generation: saveLifetime.current.generation + 1, ownerId: user?.id };
+    savingRef.current = false;
+    unconfirmedRef.current.clear();
+    savedCardsRef.current.clear();
+    pendingIdentitiesRef.current.clear();
+    identityHoldsRef.current.clear();
+    return () => { saveLifetime.current.active = false; saveLifetime.current.generation += 1; };
+  }, [user?.id]);
+
+  const resetSaveBatch = () => {
+    saveLifetime.current.generation += 1;
+    savingRef.current = false;
+    unconfirmedRef.current.clear();
+    savedCardsRef.current.clear();
+    pendingIdentitiesRef.current.clear();
+    identityHoldsRef.current.clear();
+    setSavingWineKey(null);
+    setSavedWineKeys(new Set());
+    setUnconfirmedWineIndexes(new Set());
+    setIdentityHoldIndexes(new Set());
+  };
+
+  useEffect(() => {
+    scanAbortRef.current?.abort();
+    setScannedWines([]);
+    setPreview(null);
+    setSelectedPinIndex(null);
+    setSavedWineKeys(new Set());
+    setUnconfirmedWineIndexes(new Set());
+    setIdentityHoldIndexes(new Set());
+    setScanProfile(null);
+    setHasProfile(false);
+    setLoading(false);
+    return () => { scanAbortRef.current?.abort(); };
+  }, [user?.id]);
 
   const scannedWineTypes = useMemo(
     () => Array.from(new Set(scannedWines.map((wine) => formatWineType(wine.tipo)))).sort(),
@@ -297,7 +381,29 @@ export const WineMenuScanner = ({
     [scannedWines]
   );
   const selectedPinWine = selectedPinIndex === null ? null : scannedWines[selectedPinIndex] ?? null;
-  const menuCurrency = singlePriceCurrency(scannedWines.map((wine) => ({ price: wine.precio, currency: wine.moneda })));
+  const requestedServiceFormat: WineServiceFormat = scanServiceFilter === 'copa' ? 'glass'
+    : scanServiceFilter === 'botella' ? 'bottle' : 'any';
+  const priceEligibleWines = useMemo(() => scannedWines
+    .map((wine, index) => ({ wine, index, priceEvidence: {
+      id: `menu-row-${index}`, name: wine.nombre, ...menuWinePriceEvidence(wine),
+    } }))
+    .filter(({ wine }) => scanTypeFilter === 'all' || formatWineType(wine.tipo) === scanTypeFilter)
+    .filter(({ wine }) => scanRegionFilter === 'all' || wine.region === scanRegionFilter)
+    .filter(({ priceEvidence }) => requestedServiceFormat === 'any' || priceEvidence.service === requestedServiceFormat || priceEvidence.service === 'both')
+    .filter(({ wine }) => scanMinScore === 'all' || (wine.compatibilidad ?? -1) >= Number(scanMinScore))
+    .filter(({ wine }) => scanMinConfidence === 'all' || (wine.confidence ?? 0) >= Number(scanMinConfidence)),
+  [requestedServiceFormat, scanMinConfidence, scanMinScore, scanRegionFilter, scanTypeFilter, scannedWines]);
+  const listPriceFormat = wineComparisonPriceFormat(priceEligibleWines.map(({ priceEvidence }) => priceEvidence), requestedServiceFormat);
+  const menuPriceRows = priceEligibleWines.map((row) => ({
+    ...row, price: listPriceFormat ? wineComparisonPrice(row.priceEvidence, listPriceFormat) : null,
+    currency: row.priceEvidence.currency,
+  }));
+  const menuCurrency = listPriceFormat ? singlePriceCurrency(menuPriceRows) : null;
+
+  useEffect(() => { setScanMaxPrice(''); }, [listPriceFormat, menuCurrency]);
+  useEffect(() => {
+    if (!menuCurrency && (scanSortMode === 'price-asc' || scanSortMode === 'price-desc')) setScanSortMode('name');
+  }, [menuCurrency, scanSortMode]);
   const menuPinClusters = useMemo(() => clusterOverlayPins(
     scannedWines.flatMap((wine, index) => {
       const position = getWinePosition(wine);
@@ -323,10 +429,16 @@ export const WineMenuScanner = ({
     const best = scored[0] ?? null;
     const secondaries = scored.slice(1, 3);
     const safeAlternative = scored[1] ?? null;
+    const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice) : null;
     const value = scored
-      .filter(({ wine, score }) => menuCurrency && wine.moneda === menuCurrency
-        && typeof wine.precio === 'number' && wine.precio > 0 && score >= 60)
-      .sort((a, b) => (b.score / Math.max(b.wine.precio ?? 1, 1)) - (a.score / Math.max(a.wine.precio ?? 1, 1)))[0] ?? null;
+      .map((entry) => ({ ...entry, price: menuPriceRows.find((row) => row.index === entry.index)?.price ?? null }))
+      .filter((entry): entry is typeof entry & { price: number } => Boolean(
+        listPriceFormat && menuCurrency && entry.wine.moneda === menuCurrency
+        && entry.wine.sensorySource === 'catalog' && entry.wine.canonicalId && entry.wine.affinity_calibrated === true
+        && typeof entry.price === 'number' && entry.price > 0 && (maxPrice === null || entry.price <= maxPrice)
+        && Number.isFinite(entry.score) && entry.score >= 60,
+      ))
+      .sort((a, b) => (b.score / b.price) - (a.score / a.price))[0] ?? null;
     const adventurous = scored.find(({ score }, index) => index > 0 && score >= 60 && score < 75) ?? scored[2] ?? null;
     const caution = [...scored].reverse().find(({ score }) => score < 60) ?? null;
     const anchored = scannedWines.filter((wine) => getWinePosition(wine) && wine.compatibilidad != null).length;
@@ -344,28 +456,19 @@ export const WineMenuScanner = ({
       highMatches,
       mediumMatches,
     };
-  }, [scannedWines, menuCurrency]);
+  }, [scannedWines, menuCurrency, listPriceFormat, menuPriceRows, scanMaxPrice]);
 
   const visibleScannedWines = useMemo(() => {
-    const maxPrice = parseNullableNumber(scanMaxPrice);
+    const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice) : null;
 
-    return scannedWines
-      .map((wine, index) => ({ wine, index }))
-      .filter(({ wine }) => scanTypeFilter === 'all' || formatWineType(wine.tipo) === scanTypeFilter)
-      .filter(({ wine }) => scanRegionFilter === 'all' || wine.region === scanRegionFilter)
-      .filter(({ wine }) => scanServiceFilter === 'all' || wine.servicio === scanServiceFilter || wine.servicio === 'ambos')
-      .filter(({ wine }) => scanMinScore === 'all' || (wine.compatibilidad ?? -1) >= Number(scanMinScore))
-      .filter(({ wine }) => scanMinConfidence === 'all' || (wine.confidence ?? 0) >= Number(scanMinConfidence))
-      .filter(({ wine }) => maxPrice === null || (menuCurrency && wine.moneda === menuCurrency
-        && typeof wine.precio === 'number' && wine.precio <= maxPrice))
+    return menuPriceRows
+      .filter(({ price, currency }) => maxPrice === null || (currency === menuCurrency && price !== null && price <= maxPrice))
       .sort((a, b) => {
-        if (scanSortMode === 'price-asc' && menuCurrency) {
-          return (a.wine.moneda === menuCurrency ? a.wine.precio ?? Infinity : Infinity)
-            - (b.wine.moneda === menuCurrency ? b.wine.precio ?? Infinity : Infinity);
-        }
-        if (scanSortMode === 'price-desc' && menuCurrency) {
-          return (b.wine.moneda === menuCurrency ? b.wine.precio ?? -Infinity : -Infinity)
-            - (a.wine.moneda === menuCurrency ? a.wine.precio ?? -Infinity : -Infinity);
+        if ((scanSortMode === 'price-asc' || scanSortMode === 'price-desc') && menuCurrency) {
+          const left = a.currency === menuCurrency ? a.price : null;
+          const right = b.currency === menuCurrency ? b.price : null;
+          if (left === null || right === null) return left === right ? 0 : left === null ? 1 : -1;
+          return scanSortMode === 'price-asc' ? left - right : right - left;
         }
         if (scanSortMode === 'name') {
           return a.wine.nombre.localeCompare(b.wine.nombre, 'es');
@@ -373,14 +476,25 @@ export const WineMenuScanner = ({
 
         return (b.wine.compatibilidad ?? -1) - (a.wine.compatibilidad ?? -1);
       });
-  }, [scanMaxPrice, scanMinConfidence, scanMinScore, scanRegionFilter, scanServiceFilter, scanSortMode, scanTypeFilter, scannedWines, menuCurrency]);
+  }, [scanMaxPrice, scanSortMode, menuPriceRows, menuCurrency]);
+
+  const listPriceText = (wine: ScannedWine, index: number) => {
+    if (wine.precio_manual_pendiente) return `Precio manual ${formatPrice(wine.precio, wine.moneda) ?? 'sin importe'} · formato pendiente`;
+    const evidence = { id: `menu-row-${index}`, name: wine.nombre, ...menuWinePriceEvidence(wine) };
+    const prefix = wine.precio_origen === 'manual' ? 'Precio manual · ' : '';
+    if (listPriceFormat) return prefix + (formatPrice(wineComparisonPrice(evidence, listPriceFormat), evidence.currency) ?? 'Precio pendiente');
+    const byFormat = (['glass', 'bottle'] as const).flatMap((format) => {
+      const amount = formatPrice(wineComparisonPrice(evidence, format), evidence.currency);
+      return amount ? [`${format === 'glass' ? 'Copa' : 'Botella'} ${amount}`] : [];
+    });
+    return prefix + (byFormat.join(' · ') || (formatPrice(evidence.price, evidence.currency)
+      ? `${formatPrice(evidence.price, evidence.currency)} · formato pendiente` : 'Precio pendiente'));
+  };
 
   useEffect(() => {
     if (loading || scannedWines.length === 0) return;
 
-    window.setTimeout(() => {
-      resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 120);
+    resultsRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
   }, [loading, scannedWines.length]);
 
   const dishContext = pairingDishName?.trim() || '';
@@ -410,7 +524,14 @@ export const WineMenuScanner = ({
       })
       .slice(0, 2);
 
-  const openWineDetail = (index: number) => {
+  const openWineDetail = (index: number, opener?: HTMLElement) => {
+    const focus = detailFocusRef.current;
+    if (focus.active && !focus.open) {
+      focus.generation += 1;
+      focus.opener = opener ?? null;
+      focus.open = true;
+    }
+    dismissDetectionNotice();
     setHighlightedWineIndex(index);
     setSelectedPinIndex(index);
   };
@@ -441,6 +562,11 @@ export const WineMenuScanner = ({
     }
 
     // Activar loader inmediatamente
+    invalidateDetailFocus();
+    dismissDetectionNotice();
+    const noticeGeneration = detectionNoticeRef.current.generation;
+    invalidateProfileRetry();
+    resetSaveBatch();
     setLoading(true);
     setScannedWines([]);
     setScanFeedback(null);
@@ -459,18 +585,18 @@ export const WineMenuScanner = ({
     if (isPDF) {
       setConvertingPdf(true);
       setPreview(null); // Limpiar preview anterior
-      await convertPdfToImage(file);
+      await convertPdfToImage(file, noticeGeneration);
     } else {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-      await processFile(file, 'image');
+      await processFile(file, 'image', noticeGeneration);
     }
   };
 
-  const convertPdfToImage = async (file: File) => {
+  const convertPdfToImage = async (file: File, noticeGeneration: number) => {
     try {
       toast.info("Convirtiendo PDF a imagen...");
       
@@ -508,7 +634,7 @@ export const WineMenuScanner = ({
         
         // Crear un archivo temporal con la imagen
         const imageFile = new File([blob], 'pdf-page.jpg', { type: 'image/jpeg' });
-        await processFile(imageFile, 'image');
+        await processFile(imageFile, 'image', noticeGeneration);
       };
       reader.readAsDataURL(blob);
       
@@ -520,7 +646,7 @@ export const WineMenuScanner = ({
     }
   };
 
-  const processFile = async (file: File, type: 'image' | 'pdf') => {
+  const processFile = async (file: File, type: 'image' | 'pdf', noticeGeneration: number) => {
     // Mantener el loader activo durante todo el proceso real
     setLoading(true);
     setScannedWines([]);
@@ -550,6 +676,10 @@ export const WineMenuScanner = ({
         return;
       }
       setScanPhase('ocr');
+      const profileSnapshot = await loadMatchrimScanProfile(user?.id ?? null, controller.signal);
+      if (controller.signal.aborted) return;
+      const profile = profileSnapshot.profile;
+      setScanProfile(profileSnapshot);
 
       const invokeScan = async (tile: MenuScanTile, tileImage: string, attempt = 1): Promise<WineMenuScanResponse> => {
 	        try {
@@ -557,7 +687,7 @@ export const WineMenuScanner = ({
 	            image: tileImage,
 	            qa_fixture_name: `${file.name}:${tile.id}`,
 	            scan_region: tile,
-	            matchrimProfile: readStoredMatchrimProfile(),
+	            matchrimProfile: profile,
 	            pairingDishName: pairingDishName || null,
 	            similarWineName: similarWineName || null,
 	          }, controller.signal);
@@ -630,7 +760,6 @@ export const WineMenuScanner = ({
         };
       }
 
-      const profile = readStoredMatchrimProfile();
       setScanPhase('ranking');
       const normalizedWines = await mapWithConcurrency(
         (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : []).filter(isWineMenuItem).map(normalizeScannedWine),
@@ -638,7 +767,10 @@ export const WineMenuScanner = ({
         async (wine) => {
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
           const catalog = !isMatchrimFixtureQaEnabled && isMenuIdentityConfirmed(wine)
-            ? await findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada })
+            ? await awaitMenuCatalog(
+              () => findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada }),
+              controller.signal,
+            )
             : null;
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
           return applyMenuWineEvidence(wine, profile, catalog?.wine);
@@ -656,7 +788,7 @@ export const WineMenuScanner = ({
 	          ]);
 	        }
         setScannedWines(normalizedWines);
-        setHasProfile(Boolean(profile) || !!data.has_profile);
+        setHasProfile(Boolean(profile));
         onScanComplete?.(normalizedWines.length);
         trackAppEvent("wine_menu_scan_completed", {
           userId: user?.id,
@@ -683,7 +815,10 @@ export const WineMenuScanner = ({
           }
         }
 
-        toast.success(`✨ ${normalizedWines.length} vinos detectados en la carta`);
+        if (detectionNoticeRef.current.active && detectionNoticeRef.current.generation === noticeGeneration
+          && scanAbortRef.current === controller && !controller.signal.aborted) {
+          detectionNoticeRef.current.id = toast.success(`✨ ${normalizedWines.length} vinos detectados en la carta`);
+        }
       } else {
         setScannedWines([]);
         setScanFeedback(data?.vinos?.length
@@ -693,7 +828,9 @@ export const WineMenuScanner = ({
       }
     } catch (error) {
 	    if (error instanceof DOMException && error.name === 'AbortError') {
-      setScanFeedback('Análisis cancelado. Puedes reintentarlo con la misma imagen o elegir otra.');
+      if (scanAbortRef.current === controller) {
+        setScanFeedback('Análisis cancelado. Puedes reintentarlo con la misma imagen o elegir otra.');
+      }
 	      return;
 	    }
       console.error('Error processing file:', error);
@@ -715,16 +852,21 @@ export const WineMenuScanner = ({
       setScanFeedback(`${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
       toast.error(message);
     } finally {
-      setLoading(false);
+      if (scanAbortRef.current === controller) setLoading(false);
     }
   };
 
   const clearScan = () => {
+    invalidateDetailFocus();
+    dismissDetectionNotice();
+    invalidateProfileRetry();
     scanAbortRef.current?.abort();
+    resetSaveBatch();
     setPreview(null);
     setScannedWines([]);
     setSavedWineKeys(new Set());
     setHasProfile(false);
+    setScanProfile(null);
     setFileType(null);
     setConvertingPdf(false);
     setScanSortMode('compatibility');
@@ -746,9 +888,15 @@ export const WineMenuScanner = ({
   };
 
   const updateScannedWine = (index: number, updates: Partial<ScannedWine>) => {
+    const boundIdentity = savedCardsRef.current.get(index)?.identity ?? pendingIdentitiesRef.current.get(index);
+    const currentWine = scannedWines[index];
+    if (boundIdentity && currentWine && menuCardIdentity({ ...currentWine, ...updates }) !== boundIdentity) {
+      identityHoldsRef.current.add(index);
+      setIdentityHoldIndexes(new Set(identityHoldsRef.current));
+    }
     setScannedWines((currentWines) =>
       currentWines.map((wine, wineIndex) =>
-        wineIndex === index ? { ...wine, ...updates } : wine
+        wineIndex === index ? updateMenuWineEvidence(wine, updates) : wine
       )
     );
   };
@@ -765,40 +913,67 @@ export const WineMenuScanner = ({
     return <AlertCircle className="h-5 w-5 text-red-600" />;
   };
 
-  const getWineDecision = (score?: number | null) => {
-    if (typeof score !== 'number') {
-      return {
-        label: "Sin encaje",
-        description: "Falta perfil o datos suficientes para ordenar este vino.",
-        className: "border-stone-200 bg-stone-50 text-stone-700",
-      };
+  const getWineDecision = (wine: ScannedWine) => presentMenuAffinity(
+    wine.compatibilidad, wine.affinity_calibrated === true && Boolean(scanProfile?.profile),
+    scanProfile?.source === 'unavailable' ? scanProfile.note : wine.razon,
+  );
+  const retryScanProfile = async () => {
+    const ownerId = user?.id;
+    if (!ownerId || loading || !scannedWines.length || profileRetryRef.current || !canRetryScanProfile(scanProfile)) return;
+    const controller = new AbortController();
+    profileRetryRef.current = controller;
+    const generation = profileRetryLifetime.current.generation;
+    const isCurrent = () => profileRetryLifetime.current.active && profileRetryLifetime.current.generation === generation
+      && profileRetryLifetime.current.ownerId === ownerId && profileRetryRef.current === controller && !controller.signal.aborted;
+    setRetryingProfile(true);
+    try {
+      const snapshot = await loadMatchrimScanProfile(ownerId, controller.signal);
+      if (!isCurrent()) return;
+      setScanProfile(snapshot);
+      setHasProfile(Boolean(snapshot.profile));
+      setScannedWines((current) => current.map((wine) => refreshMenuProfileAffinity(wine, snapshot.profile)));
+    } catch {
+      if (!isCurrent()) return;
+      setScanProfile({ profile: null, source: 'unavailable', samples: null, status: 'base-error', note: 'No se pudo cargar tu perfil; afinidad pendiente.' });
+      setHasProfile(false);
+      setScannedWines((current) => current.map((wine) => refreshMenuProfileAffinity(wine, null)));
+    } finally {
+      if (isCurrent()) { profileRetryRef.current = null; setRetryingProfile(false); }
     }
-    if (score >= 85) {
-      return {
-        label: "Pediría",
-        description: "Prioridad alta para tu perfil Matchrim.",
-        className: "border-green-200 bg-green-50 text-green-900",
-      };
-    }
-    if (score >= 70) {
-      return {
-        label: "Buen candidato",
-        description: "Encaja bien, revisa precio y estilo antes de elegir.",
-        className: "border-amber-200 bg-amber-50 text-amber-950",
-      };
-    }
-    if (score >= 55) {
-      return {
-        label: "Con matices",
-        description: "Puede gustarte si quieres algo menos evidente.",
-        className: "border-orange-200 bg-orange-50 text-orange-950",
-      };
-    }
-    return {
-      label: "No priorizaría",
-      description: "No parece la mejor opción de esta carta para ti.",
-      className: "border-red-200 bg-red-50 text-red-950",
-    };
+  };
+  const renderProfileRecovery = () => scanProfile && (
+    <div role="status" aria-label="Estado del perfil del escáner" data-testid="scan-profile-recovery" className="mt-2 space-y-2 text-sm text-stone-600">
+      <p data-testid="scan-profile-source">{retryingProfile ? 'Cargando perfil...' : scanProfile.note}</p>
+      {user && canRetryScanProfile(scanProfile) && (
+        <div className="flex flex-wrap items-center gap-2">
+          <Button type="button" variant="outline" className="min-h-11 gap-2" disabled={retryingProfile} onClick={retryScanProfile}>
+            {retryingProfile ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            Reintentar perfil
+          </Button>
+          {retryingProfile && <Button type="button" variant="ghost" size="icon" className="h-11 w-11" aria-label="Cancelar carga del perfil" title="Cancelar carga del perfil" onClick={invalidateProfileRetry}><X className="h-4 w-4" /></Button>}
+        </div>
+      )}
+    </div>
+  );
+  const selectedPinDecision = selectedPinWine ? getWineDecision(selectedPinWine) : null;
+  const renderWineAffinityExplanation = (wine: ScannedWine) => {
+    const decision = getWineDecision(wine);
+    return decision.state === 'pending' ? (
+      <div role="status" aria-label={`Estado de afinidad de ${wine.nombre}`} className="matchrim-soft-surface rounded-lg p-3 text-sm text-stone-600">
+        <p className="font-medium text-stone-800">Afinidad pendiente</p>
+        <p className="mt-1 leading-5">{decision.description}</p>
+        <p className="mt-1 leading-5">No es un resultado negativo ni significa que este vino no te guste.</p>
+      </div>
+    ) : (
+      <AffinityExplanation
+        profile={scanProfile?.profile ?? null}
+        wineKey={`${wine.nombre}-${wine.productor ?? ''}-${wine.anada ?? 'nv'}`}
+        score={decision.score}
+        identificationConfidence={wine.confidence}
+        attributes={wine.atributos}
+        sensorySource={wine.sensorySource ?? 'inference'}
+      />
+    );
   };
 
   const saveScannedWine = async (wine: ScannedWine, index: number, status: 'wishlist' | 'tasted', favorite = false) => {
@@ -809,15 +984,27 @@ export const WineMenuScanner = ({
     }
 
     const saveKey = `${favorite ? 'favorite' : status}-${wine.nombre}-${index}`;
+    if (savingRef.current || unconfirmedRef.current.has(index) || identityHoldsRef.current.has(index) || savedWineKeys.has(saveKey)) return;
+    const ownerId = user.id;
+    const generation = saveLifetime.current.generation;
+    const isCurrent = () => saveLifetime.current.active && saveLifetime.current.generation === generation
+      && saveLifetime.current.ownerId === ownerId;
+    const markUnconfirmed = () => {
+      unconfirmedRef.current.add(index);
+      setUnconfirmedWineIndexes(new Set(unconfirmedRef.current));
+      toast.warning('Guardado sin confirmar. Revisa Bodega antes de repetirlo.');
+    };
+    savingRef.current = true;
+    const identity = menuCardIdentity(wine);
+    pendingIdentitiesRef.current.set(index, identity);
     setSavingWineKey(saveKey);
 
     try {
       const sensoryAttributes = normalizeAttributesTo5(wine.atributos);
-
-      const { error } = await supabase
-        .from("user_wines")
-        .insert({
-          user_id: user.id,
+      const evidence = menuSaveEvidence(wine, sensoryAttributes as Json);
+      const priceSnapshot = menuPriceSnapshot(wine);
+      const draftPayload = {
+          user_id: ownerId,
           name: wine.nombre,
           producer: wine.productor || null,
           vintage: wine.anada || null,
@@ -827,12 +1014,12 @@ export const WineMenuScanner = ({
           tasting_notes: wine.descripcion || wine.razon || null,
           status,
           is_favorite: favorite,
-          matchrim_affinity: wine.compatibilidad || null,
-          sensory_attributes: sensoryAttributes as Json,
-          use_for_profile_training: status === 'tasted' && Boolean(sensoryAttributes),
+          matchrim_affinity: evidence.matchrim_affinity,
+          sensory_attributes: evidence.sensory_attributes,
+          use_for_profile_training: false,
           consumption_place: restaurantName || null,
           consumption_place_type: restaurantName ? "restaurant" : null,
-          price: normalizeScanCurrency(wine.moneda) === 'EUR' ? wine.precio ?? null : null,
+          price: menuFinancialPrice(priceSnapshot),
           place_details: {
             source: "menu_scanner",
             restaurant_session_id: restaurantSessionId || null,
@@ -841,34 +1028,66 @@ export const WineMenuScanner = ({
             similar_wine_name: similarWineName || null,
             scanned_price: wine.precio ?? null,
             scanned_currency: normalizeScanCurrency(wine.moneda),
+            menu_price_snapshot: priceSnapshot,
+            menu_wine_evidence: evidence.trace,
           } as Json,
-        });
+        };
+      const saved = savedCardsRef.current.get(index);
+      if (saved && (saved.ownerId !== ownerId || saved.identity !== identity)) {
+        identityHoldsRef.current.add(index);
+        setIdentityHoldIndexes(new Set(identityHoldsRef.current));
+        return;
+      }
+      const changes = saved ? menuIntentChanges(saved, status, favorite) : null;
+      if (saved && Object.keys(changes).length === 0) {
+        setSavedWineKeys((keys) => new Set(keys).add(saveKey));
+        return;
+      }
+      const payload = saved ? { ...saved.payload, ...changes } : draftPayload;
+      const query = saved
+        ? supabase.from("user_wines").update(changes).eq('id', saved.rowId).eq('user_id', ownerId)
+        : supabase.from("user_wines").insert(draftPayload);
+      const { data, error } = await query
+        .select('id, user_id, name, producer, vintage, status, is_favorite, rating, price, place_details, sensory_attributes, matchrim_affinity, use_for_profile_training').single();
+      if (!isCurrent()) return;
+      if (error) {
+        if (labelInsertErrorResult(error).status === 'rejected') toast.error('No se pudo guardar el vino');
+        else markUnconfirmed();
+        return;
+      }
+      if (!(saved ? confirmsMenuAction(data, payload, saved.rowId) : confirmsMenuInsert(data, payload)) || data.rating !== null) { markUnconfirmed(); return; }
+      savedCardsRef.current.set(index, { rowId: data.id, ownerId, identity, payload });
+      if (identityHoldsRef.current.has(index)) return;
 
-      if (error) throw error;
-
-      setSavedWineKeys((currentKeys) => new Set(currentKeys).add(saveKey));
+      setSavedWineKeys((currentKeys) => {
+        const keys = new Set(currentKeys).add(`wishlist-${wine.nombre}-${index}`);
+        if (payload.status === 'tasted') keys.add(`tasted-${wine.nombre}-${index}`);
+        if (payload.is_favorite) keys.add(`favorite-${wine.nombre}-${index}`);
+        return keys;
+      });
       trackAppEvent("wine_saved", {
         userId: user.id,
         metadata: {
           source: "menu_scanner",
-          status,
+          status: payload.status,
           wine_name: wine.nombre,
-          match: wine.compatibilidad || null,
+          match: payload.matchrim_affinity,
           restaurant_name: restaurantName || null,
         },
       });
       toast.success(
-        favorite
+        payload.is_favorite && payload.status !== 'tasted'
           ? `${wine.nombre} guardado en Quiero Probar y Favoritos`
-          : status === 'wishlist'
+          : payload.status === 'wishlist'
           ? `${wine.nombre} guardado en Quiero Probar`
           : `${wine.nombre} guardado en Ya Probados. Puntúalo para afinar tu Matchrim`
       );
     } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error saving scanned wine:", error);
-      toast.error("No se pudo guardar el vino");
+      markUnconfirmed();
     } finally {
-      setSavingWineKey(null);
+      if (isCurrent()) { pendingIdentitiesRef.current.delete(index); savingRef.current = false; setSavingWineKey(null); }
     }
   };
 
@@ -961,7 +1180,7 @@ export const WineMenuScanner = ({
 			                                ? `Grupo de ${cluster.items.length} vinos: ${names}`
 			                                : `Vino ${first.index + 1}: ${first.wine.nombre}`}
 			                              data-testid={clustered ? `wine-pin-cluster-${first.index + 1}` : `wine-pin-${first.index + 1}`}
-			                              onClick={() => openWineDetail(first.index)}
+			                              onClick={(event) => openWineDetail(first.index, event.currentTarget)}
 			                            >
 			                              <span className={`flex h-7 min-w-7 items-center justify-center rounded-full px-1 text-[11px] font-bold shadow ring-1 ring-white ${
 			                                active ? 'bg-amber-400 text-stone-950' : 'bg-stone-950 text-white'
@@ -1136,12 +1355,13 @@ export const WineMenuScanner = ({
               <p className="mt-1 text-sm text-muted-foreground">
                 Revisa nombre, añada y precio antes de guardar. La carta puede tener errores de lectura.
               </p>
+              {renderProfileRecovery()}
             </div>
             <div className="flex flex-wrap gap-2">
               {!hasProfile && (
                 <Badge variant="outline" className="gap-1">
                   <AlertCircle className="h-3 w-3" />
-                  Completa el quiz Matchrim para ver compatibilidades
+                  Afinidad pendiente: perfil no disponible
                 </Badge>
               )}
               {fileType === 'pdf' && (
@@ -1182,7 +1402,7 @@ export const WineMenuScanner = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${best.wine.nombre}, ${best.score}% de encaje`}
 		                        className="min-w-0 w-full space-y-2 text-left"
-		                        onClick={() => openWineDetail(best.index)}
+		                        onClick={(event) => openWineDetail(best.index, event.currentTarget)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
@@ -1218,7 +1438,7 @@ export const WineMenuScanner = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${safe.wine.nombre}, ${safe.score}% de encaje`}
 		                        className="flex min-w-0 w-full items-center justify-between gap-3 rounded-md border border-amber-200 bg-white px-3 py-2 text-left"
-		                        onClick={() => openWineDetail(safe.index)}
+		                        onClick={(event) => openWineDetail(safe.index, event.currentTarget)}
 		                      >
 		                        <span className="min-w-0">
 		                          <span className="block break-words text-sm font-semibold leading-tight text-amber-950">{safe.wine.nombre}</span>
@@ -1246,16 +1466,16 @@ export const WineMenuScanner = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${value.wine.nombre}, ${value.score}% de encaje`}
 		                        className="matchrim-pressable min-w-0 w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
-		                        onClick={() => openWineDetail(value.index)}
+		                        onClick={(event) => openWineDetail(value.index, event.currentTarget)}
 		                      >
 		                        <span className="block break-words font-semibold leading-tight">{value.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-stone-500">
-		                          {[formatPrice(value.wine.precio, value.wine.moneda), `${value.score}%`].filter(Boolean).join(' · ')}
+                          {[formatPrice(value.price, value.wine.moneda), `${value.score}%`].filter(Boolean).join(' · ')}
 		                        </span>
 		                      </button>
 		                    );
 		                  })() : (
-		                    <p className="text-sm text-stone-600">No hay precio fiable suficiente para decidir por valor.</p>
+		                    <p className="text-sm text-stone-600">Falta afinidad acreditada o precio comparable por formato y moneda.</p>
 		                  )}
 		                </div>
 
@@ -1271,7 +1491,7 @@ export const WineMenuScanner = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${adventurous.wine.nombre}, ${adventurous.score}% de encaje`}
 		                        className="matchrim-pressable min-w-0 w-full rounded-md border border-orange-200 bg-white p-3 text-left"
-		                        onClick={() => openWineDetail(adventurous.index)}
+		                        onClick={(event) => openWineDetail(adventurous.index, event.currentTarget)}
 		                      >
 		                        <span className="block break-words text-sm font-semibold leading-tight text-orange-950">{adventurous.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-orange-900/70">
@@ -1296,7 +1516,7 @@ export const WineMenuScanner = ({
 	                        type="button"
 	                        aria-label={`Ver detalle de ${caution.wine.nombre}, ${caution.score}% de encaje`}
 	                        className="min-w-0 w-full space-y-2 text-left"
-	                        onClick={() => openWineDetail(caution.index)}
+	                        onClick={(event) => openWineDetail(caution.index, event.currentTarget)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
@@ -1327,24 +1547,15 @@ export const WineMenuScanner = ({
 
               <WineComparisonWorkspace
                 wines={scannedWines.map((wine, index) => ({
-                  id: `${index}-${wine.nombre}-${wine.productor ?? ''}`,
+                  id: `menu-row-${index}`,
+                  ...menuWinePriceEvidence(wine),
                   name: wine.nombre,
                   producer: wine.productor,
                   region: wine.region,
                   affinity: wine.compatibilidad,
                   confidence: wine.confidence,
                   identityConfirmed: isMenuIdentityConfirmed(wine),
-                  prices: wine.precios ? { glass: wine.precios.copa, bottle: wine.precios.botella } : null,
-                  price: wine.precio,
-                  currency: wine.moneda,
-                  service: wine.servicio === 'copa'
-                    ? 'glass'
-                    : wine.servicio === 'botella'
-                      ? 'bottle'
-                      : wine.servicio === 'ambos'
-                        ? 'both'
-                        : null,
-                  attributes: wine.atributos ? {
+                  attributes: wine.sensorySource === 'catalog' && isMenuIdentityConfirmed(wine) && wine.atributos ? {
                     body: wine.atributos.potencia,
                     acidity: wine.atributos.acidez,
                     sweetness: wine.atributos.dulzura,
@@ -1396,7 +1607,10 @@ export const WineMenuScanner = ({
 	              </div>
 	              <div className="space-y-2">
 	                <Label htmlFor="scan-service">Servicio</Label>
-	                <Select value={scanServiceFilter} onValueChange={setScanServiceFilter}>
+	                <Select value={scanServiceFilter} onValueChange={(value) => {
+                    setScanMaxPrice('');
+                    setScanServiceFilter(value);
+                  }}>
 	                  <SelectTrigger id="scan-service"><SelectValue /></SelectTrigger>
 	                  <SelectContent>
 	                    <SelectItem value="all">Copa o botella</SelectItem>
@@ -1430,10 +1644,10 @@ export const WineMenuScanner = ({
 	                </Select>
 	              </div>
 	              <div className="space-y-2">
-                <Label htmlFor="scan-max-price">Precio máximo{menuCurrency ? ` (${menuCurrency})` : ' (moneda pendiente)'}</Label>
+                <Label htmlFor="scan-max-price">Precio máximo{menuCurrency ? ` (${menuCurrency})` : listPriceFormat ? ' (moneda pendiente)' : ' (formato pendiente)'}</Label>
                 <Input
                   id="scan-max-price"
-                  value={scanMaxPrice}
+                  value={menuCurrency ? scanMaxPrice : ''}
                   disabled={!menuCurrency}
                   onChange={(event) => setScanMaxPrice(event.target.value)}
                   inputMode="decimal"
@@ -1447,7 +1661,7 @@ export const WineMenuScanner = ({
 		            <div className="matchrim-surface overflow-hidden rounded-lg bg-white">
 		              <div className="flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2">
 		                <h3 className="font-semibold text-slate-950">Lista de la carta</h3>
-		                <span className="text-xs text-slate-500">{visibleScannedWines.length} resultados</span>
+		                <span role="status" aria-live="polite" aria-atomic="true" className="text-xs text-slate-500">{visibleScannedWines.length} {visibleScannedWines.length === 1 ? 'resultado' : 'resultados'}</span>
 		              </div>
 		              <div className="divide-y divide-stone-100">
 	                        {visibleScannedWines.map(({ wine, index }) => (
@@ -1456,22 +1670,22 @@ export const WineMenuScanner = ({
 		                    type="button"
 		                    aria-label={`Abrir vino ${index + 1}: ${wine.nombre}`}
 		                    className={`matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
-		                    onClick={() => {
-		                      setHighlightedWineIndex(index);
-		                      setSelectedPinIndex(index);
-		                    }}
+		                    onClick={(event) => openWineDetail(index, event.currentTarget)}
 		                  >
 	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
 		                    <span className="min-w-0 flex-1">
-	                      <span className="block truncate font-semibold text-slate-950">
+	                      <span className="block whitespace-normal break-words font-semibold text-slate-950">
                             {wine.nombre}{wine.anada ? ` ${wine.anada}` : ''}
                           </span>
-		                      <span className="block truncate text-xs text-slate-500">
-		                        {[wine.productor, wine.region, wine.servicio, formatPrice(wine.precio, wine.moneda)].filter(Boolean).join(' · ') || 'Datos por revisar'}
+		                      <span className="block whitespace-normal break-words text-xs text-slate-500">
+		                        {[wine.productor, wine.region, wine.campos_inferidos?.includes('servicio') ? 'Servicio sin confirmar' : wine.servicio].filter(Boolean).join(' · ') || 'Datos por revisar'}
 		                      </span>
+                          <span className={`block whitespace-normal break-words text-xs ${wine.precio_manual_pendiente ? 'font-medium text-amber-800' : 'text-slate-500'}`}>{listPriceText(wine, index)}</span>
 		                    </span>
 		                    <span className="shrink-0 text-right">
-		                      {typeof wine.compatibilidad === 'number' && <span className="block text-lg font-bold text-red-900">≈{wine.compatibilidad}%</span>}
+		                      {getWineDecision(wine).score !== null
+                            ? <span className="block text-lg font-bold text-red-900">≈{getWineDecision(wine).score}%</span>
+                            : <span className="block text-xs text-stone-600">Afinidad pendiente</span>}
 		                      <span className="block text-[11px] text-slate-500">Identidad {getConfidenceBand(wine.confidence)}</span>
 		                    </span>
 		                  </button>
@@ -1496,7 +1710,7 @@ export const WineMenuScanner = ({
 			                  const wishlistSaveKey = `wishlist-${wine.nombre}-${index}`;
 			                  const tastedSaveKey = `tasted-${wine.nombre}-${index}`;
 			                  const favoriteSaveKey = `favorite-${wine.nombre}-${index}`;
-			                  const wineDecision = getWineDecision(wine.compatibilidad);
+			                  const wineDecision = getWineDecision(wine);
 
 			                return (
 			                  <div key={`${wine.nombre}-${index}-actions`}>
@@ -1533,9 +1747,9 @@ export const WineMenuScanner = ({
 	                            {wineDecision.label}
 	                          </Badge>
 	                        </div>
-	                        {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
+                        {wineDecision.score !== null && (
                           <div className="shrink-0 rounded-md bg-white px-3 py-2 text-center text-red-950">
-                            <div className="text-2xl font-bold leading-none">≈{wine.compatibilidad}%</div>
+                            <div className="text-2xl font-bold leading-none">≈{wineDecision.score}%</div>
 	                            <div className="mt-1 text-[10px] font-semibold uppercase text-red-900/70">Encaje</div>
 	                          </div>
 	                        )}
@@ -1623,6 +1837,7 @@ export const WineMenuScanner = ({
                                 inputMode="decimal"
                                 onChange={(event) => updateScannedWine(index, { precio: parseNullableNumber(event.target.value) })}
                               />
+                              {wine.precio_manual_pendiente && <p role="status" className="text-xs font-medium text-amber-800">Precio manual pendiente de formato: {formatPrice(wine.precio, wine.moneda) ?? 'sin importe'}</p>}
                             </div>
                             <div className="space-y-1.5">
                               <Label htmlFor={`scan-currency-${index}`}>Moneda</Label>
@@ -1695,15 +1910,15 @@ export const WineMenuScanner = ({
 
 	                    </div>
 
-	                    {wine.compatibilidad !== null && wine.compatibilidad !== undefined && (
+	                    {wineDecision.score !== null && (
 	                      <div className="matchrim-soft-surface flex flex-col justify-center gap-3 rounded-lg p-4 lg:min-w-[170px]">
                           <div className="flex items-center gap-2">
-                            {getCompatibilityIcon(wine.compatibilidad)}
+                            {getCompatibilityIcon(wineDecision.score)}
                             <span className="text-sm font-semibold">Encaje conmigo</span>
                           </div>
                           <div>
-                            <div className="text-3xl font-bold">≈{wine.compatibilidad}%</div>
-                            <div className={`mt-2 h-2 w-full rounded-full ${getCompatibilityColor(wine.compatibilidad)}`} />
+                            <div className="text-3xl font-bold">≈{wineDecision.score}%</div>
+                            <div className={`mt-2 h-2 w-full rounded-full ${getCompatibilityColor(wineDecision.score)}`} />
                           </div>
                           <p className="text-xs leading-5 text-muted-foreground">
                             Calculado contra tu perfil Matchrim, no contra popularidad general.
@@ -1713,13 +1928,7 @@ export const WineMenuScanner = ({
 	                  </div>
 
 		                  <div className="mt-4">
-		                    <AffinityExplanation
-		                      wineKey={`${wine.nombre}-${wine.productor ?? ''}-${wine.anada ?? 'nv'}`}
-		                      score={wine.compatibilidad}
-		                      identificationConfidence={wine.confidence}
-		                      attributes={wine.atributos}
-		                      sensorySource={wine.sensorySource ?? 'inference'}
-		                    />
+		                    {renderWineAffinityExplanation(wine)}
 		                  </div>
 
 	                  {similarWines.length > 0 && (
@@ -1731,13 +1940,13 @@ export const WineMenuScanner = ({
 	                            key={`${similarWine.nombre}-${similarIndex}-similar`}
 	                            type="button"
 	                            className="matchrim-pressable rounded-md border bg-white p-3 text-left text-sm shadow-sm hover:border-red-300 hover:bg-red-50"
-		                            onClick={() => openWineDetail(similarIndex)}
+		                            onClick={(event) => openWineDetail(similarIndex, event.currentTarget)}
 	                          >
 	                            <div className="flex items-start justify-between gap-2">
 	                              <span className="font-medium text-red-950">{similarWine.nombre}</span>
-	                              {similarWine.compatibilidad !== null && similarWine.compatibilidad !== undefined && (
+		                              {getWineDecision(similarWine).score !== null && (
 	                                <Badge className="shrink-0 bg-red-800 hover:bg-red-800">
-	                                  ≈{similarWine.compatibilidad}%
+		                                  ≈{getWineDecision(similarWine).score}%
 	                                </Badge>
 	                              )}
 	                            </div>
@@ -1750,10 +1959,16 @@ export const WineMenuScanner = ({
 	                    </div>
 		          )}
 
+                        {unconfirmedWineIndexes.has(index) && (
+                          <p role="status" className="mt-4 text-sm text-amber-900">Guardado sin confirmar. Revisa Bodega antes de repetirlo.</p>
+                        )}
+                        {identityHoldIndexes.has(index) && (
+                          <p role="status" className="mt-4 text-sm text-amber-900">Identidad editada; el guardado anterior no se modifica. Revisa la identificación en Bodega.</p>
+                        )}
 			                  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
 		                    <Button
 		                      onClick={() => saveWineToWishlist(wine, index)}
-		                      disabled={savingWineKey === wishlistSaveKey || savedWineKeys.has(wishlistSaveKey)}
+		                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(wishlistSaveKey)}
 		                      variant="outline"
 		                      className="gap-2"
 		                    >
@@ -1768,7 +1983,7 @@ export const WineMenuScanner = ({
 		                    </Button>
 			                    <Button
 			                      onClick={() => saveWineAsTasted(wine, index)}
-			                      disabled={savingWineKey === tastedSaveKey || savedWineKeys.has(tastedSaveKey)}
+			                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(tastedSaveKey)}
 			                      variant="outline"
 		                      className="gap-2"
 		                    >
@@ -1783,7 +1998,7 @@ export const WineMenuScanner = ({
 			                    </Button>
 			                    <Button
 			                      onClick={() => saveWineAsFavorite(wine, index)}
-			                      disabled={savingWineKey === favoriteSaveKey || savedWineKeys.has(favoriteSaveKey)}
+			                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(favoriteSaveKey)}
 			                      variant="outline"
 			                      className="gap-2"
 			                    >
@@ -1800,7 +2015,7 @@ export const WineMenuScanner = ({
                           type="button"
                           variant="outline"
                           className="gap-2"
-                          onClick={() => openWineDetail(similarWines[0]?.index ?? index)}
+                          onClick={(event) => openWineDetail(similarWines[0]?.index ?? index, event.currentTarget)}
                           disabled={similarWines.length === 0}
                         >
 	                          <ScanLine className="h-4 w-4" />
@@ -1813,7 +2028,7 @@ export const WineMenuScanner = ({
 	                      onClick={() => openAiRimForWine(wine)}
 	                    >
 	                      <Sparkles className="h-4 w-4" />
-		                      ¿Por qué encaja?
+                          Consultar afinidad
 		                    </Button>
 		                  </div>
                     </div>
@@ -1857,8 +2072,10 @@ export const WineMenuScanner = ({
 	        </div>
 	      )}
 
-	      <Drawer open={selectedPinIndex !== null} onOpenChange={(open) => !open && setSelectedPinIndex(null)}>
-	        <DrawerContent className="max-h-[88vh] border-stone-200 bg-stone-50">
+	      <Drawer autoFocus open={selectedPinIndex !== null} onOpenChange={(open) => {
+          if (!open) { detailFocusRef.current.open = false; if (profileRetryRef.current) invalidateProfileRetry(); setSelectedPinIndex(null); }
+        }}>
+	        <DrawerContent onCloseAutoFocus={restoreDetailFocus} className="max-h-[88vh] border-stone-200 bg-stone-50">
 	          {selectedPinWine && selectedPinIndex !== null && (
 	            <>
 	              <DrawerHeader className="border-b border-stone-200 bg-white text-left">
@@ -1874,9 +2091,10 @@ export const WineMenuScanner = ({
 	                  </DrawerClose>
 	                </div>
 	              </DrawerHeader>
-	              <div className="overflow-y-auto p-4">
+              <div className="overflow-y-auto p-4">
+                {renderProfileRecovery()}
 	                <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
-	                  <div><div className="text-xl font-bold text-red-900">{selectedPinWine.compatibilidad == null ? '-' : `≈${selectedPinWine.compatibilidad}%`}</div><div className="text-xs text-slate-500">Afinidad estimada</div></div>
+	                  <div><div className="text-xl font-bold text-red-900">{selectedPinDecision?.score == null ? '-' : `≈${selectedPinDecision.score}%`}</div><div className="text-xs text-slate-500">{selectedPinDecision?.state === 'pending' ? 'Afinidad pendiente' : 'Afinidad estimada'}</div></div>
 	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>
 	                  <div><div className="truncate text-sm font-bold capitalize text-slate-900">{selectedPinWine.tipo || '-'}</div><div className="text-xs text-slate-500">Tipo</div></div>
 	                </div>
@@ -1896,35 +2114,34 @@ export const WineMenuScanner = ({
 			                </div>
 			                <div className="mb-4">
 			                  <AiRimContextGuide
+                            profile={scanProfile?.profile ?? null}
 			                    context="menu"
 			                    name={selectedPinWine.nombre}
 			                    identityConfidence={selectedPinWine.confidence}
-			                    affinity={selectedPinWine.compatibilidad}
+			                    affinity={selectedPinDecision?.score ?? null}
 			                    attributes={selectedPinWine.atributos}
 			                    sensorySource={selectedPinWine.sensorySource ?? 'inference'}
 			                    uncertaintyReasons={selectedPinWine.dudas}
 			                    hasAlternatives={scannedWines.length > 1}
 			                  />
 			                </div>
-			                <AffinityExplanation
-	                  wineKey={`${selectedPinWine.nombre}-${selectedPinWine.productor ?? ''}-${selectedPinWine.anada ?? 'nv'}`}
-	                  score={selectedPinWine.compatibilidad}
-	                  identificationConfidence={selectedPinWine.confidence}
-	                  attributes={selectedPinWine.atributos}
-	                  sensorySource={selectedPinWine.sensorySource ?? 'inference'}
-	                />
+	                {renderWineAffinityExplanation(selectedPinWine)}
 	              </div>
 	              <DrawerFooter className="border-t border-stone-200 bg-white">
 	                <div className="grid grid-cols-2 gap-2">
-	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex === 0} onClick={() => {
+	                  <Button ref={detailPreviousRef} type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex === 0} onClick={(event) => {
 	                    const next = Math.max(0, selectedPinIndex - 1);
-	                    setSelectedPinIndex(next);
-	                    setHighlightedWineIndex(next);
+                      if (next === 0 && document.activeElement === event.currentTarget) {
+                        detailNextRef.current?.focus({ preventScroll: true });
+                      }
+	                    openWineDetail(next);
 	                  }}><ChevronLeft className="h-4 w-4" /> Anterior</Button>
-	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={() => {
+	                  <Button ref={detailNextRef} type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={(event) => {
 	                    const next = Math.min(scannedWines.length - 1, selectedPinIndex + 1);
-	                    setSelectedPinIndex(next);
-	                    setHighlightedWineIndex(next);
+                      if (next === scannedWines.length - 1 && document.activeElement === event.currentTarget) {
+                        detailPreviousRef.current?.focus({ preventScroll: true });
+                      }
+	                    openWineDetail(next);
 	                  }}>Siguiente <ChevronRight className="h-4 w-4" /></Button>
 	                </div>
 	              </DrawerFooter>
@@ -1934,6 +2151,11 @@ export const WineMenuScanner = ({
 	      </Drawer>
     </div>
   );
+};
+
+export const WineMenuScanner = (props: WineMenuScannerProps = {}) => {
+  const { user } = useAuth();
+  return <WineMenuScannerSession key={user?.id ?? 'anonymous'} {...props} />;
 };
 
 export default WineMenuScanner;

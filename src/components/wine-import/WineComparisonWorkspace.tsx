@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Coins, BriefcaseBusiness, Scale, ShieldCheck, UserRound } from 'lucide-react';
 import { formatScanPrice, singlePriceCurrency } from '@/utils/scanMoney';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   buildWineComparisonDecision,
+  wineComparisonPrice,
+  wineComparisonPriceFormat,
   type ComparableWine,
   type WineDecisionMode,
   type WineDecisionPriority,
@@ -49,13 +51,15 @@ const AttributeValue = ({ value }: { value: number | null | undefined }) => {
 };
 
 export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps) => {
+  const comparisonId = useId();
   const [selectedIds, setSelectedIds] = useState<string[]>(() => wines.slice(0, 3).map((wine) => wine.id));
   const selectionEditedRef = useRef(false);
   const [mode, setMode] = useState<WineDecisionMode>('personal');
   const [priority, setPriority] = useState<WineDecisionPriority>('affinity');
   const [budget, setBudget] = useState('');
   const [serviceFormat, setServiceFormat] = useState<WineServiceFormat>('any');
-  const hasPrices = wines.some((wine) => typeof wine.price === 'number');
+  const hasPrices = wines.some((wine) => [wine.price, wine.prices?.glass, wine.prices?.bottle]
+    .some((price) => typeof price === 'number' && Number.isFinite(price)));
   const hasServiceFormats = wines.some((wine) => wine.service);
   const hasAffinities = wines.some((wine) => typeof wine.affinity === 'number' && Number.isFinite(wine.affinity));
 
@@ -63,7 +67,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     setSelectedIds((current) => {
       const available = current.filter((id) => wines.some((wine) => wine.id === id)).slice(0, 5);
       if (!selectionEditedRef.current) return wines.slice(0, 3).map((wine) => wine.id);
-      return available.length >= 2 ? available : wines.slice(0, 3).map((wine) => wine.id);
+      return available;
     });
   }, [wines]);
 
@@ -79,7 +83,10 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     [selectedIds, wines],
   );
   const numericBudget = budget.trim() && Number.isFinite(Number(budget)) ? Number(budget) : null;
-  const priceCurrency = singlePriceCurrency(selectedWines);
+  const priceFormat = wineComparisonPriceFormat(selectedWines, mode === 'service' ? serviceFormat : 'any');
+  const priceCurrency = priceFormat ? singlePriceCurrency(selectedWines.map((wine) => ({
+    price: wineComparisonPrice(wine, priceFormat), currency: wine.currency,
+  }))) : null;
   const decision = useMemo(() => buildWineComparisonDecision(selectedWines, {
     mode,
     priority,
@@ -115,18 +122,20 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
       </div>
 
       <div className="mt-4 grid min-w-0 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {wines.map((wine) => {
+        {wines.map((wine, index) => {
           const selected = selectedIds.includes(wine.id);
           const disabled = !selected && selectedIds.length >= 5;
+          const identityDescriptionId = `${comparisonId}-identity-${index}`;
           return (
             <label
               key={wine.id}
               className={`matchrim-pressable flex min-h-14 min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-md border px-3 py-2 ${selected ? 'border-red-800 bg-red-50' : 'border-stone-200 bg-white'} ${disabled ? 'opacity-50' : ''}`}
             >
-              <Checkbox checked={selected} disabled={disabled} onCheckedChange={() => toggleWine(wine.id)} aria-label={`Comparar ${wine.name}`} />
+              <Checkbox checked={selected} disabled={disabled} onCheckedChange={() => toggleWine(wine.id)} aria-label={`Comparar ${wine.name}`} aria-describedby={wine.identityConfirmed === false ? identityDescriptionId : undefined} />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-slate-950">{wine.name}</span>
-                <span className="block truncate text-xs text-slate-500">{wine.producer || wine.region || 'Identidad parcial'}</span>
+                <span className="block whitespace-normal break-words text-sm font-semibold text-slate-950">{wine.name}</span>
+                <span className="block whitespace-normal break-words text-xs text-slate-500">{wine.producer || wine.region || 'Identidad parcial'}</span>
+                {wine.identityConfirmed === false && <span id={identityDescriptionId} className="block text-xs font-medium text-amber-800">Referencia por confirmar</span>}
               </span>
               {wine.affinity != null && <span className="shrink-0 text-sm font-bold text-red-900">{Math.round(wine.affinity)}%</span>}
             </label>
@@ -168,14 +177,14 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 <SelectContent>
                   <SelectItem value="affinity" disabled={!hasAffinities}>Mayor afinidad</SelectItem>
                   <SelectItem value="certainty">Identidad más segura</SelectItem>
-                  <SelectItem value="value" disabled={!hasPrices || !priceCurrency}>Mejor valor</SelectItem>
+                  <SelectItem value="value" disabled={!hasAffinities || !hasPrices || !priceCurrency}>Mejor valor</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {hasPrices && (
               <div>
-                <Label htmlFor="comparison-budget">Presupuesto máximo{priceCurrency ? ` (${priceCurrency})` : ' (moneda pendiente)'}</Label>
+                <Label htmlFor="comparison-budget">Presupuesto máximo{priceCurrency ? ` (${priceCurrency})` : priceFormat ? ' (moneda pendiente)' : ' (formato pendiente)'}</Label>
                 <div className="relative mt-2">
                   <Coins className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
                   <Input id="comparison-budget" inputMode="decimal" value={budget} disabled={!priceCurrency} onChange={(event) => setBudget(event.target.value)} className="min-h-11 pl-9" placeholder="Sin límite" />
@@ -230,7 +239,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               </thead>
               <tbody className="divide-y divide-stone-100">
                 <tr><th className="px-2 py-2 text-left font-medium">Afinidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.affinity == null ? '-' : `${Math.round(wine.affinity)}%`}</td>)}</tr>
-                <tr><th className="px-2 py-2 text-left font-medium">Confianza de identidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.confidence == null ? '-' : `${Math.round((wine.confidence > 1 ? wine.confidence / 100 : wine.confidence) * 100)}%`}</td>)}</tr>
+                <tr><th className="px-2 py-2 text-left font-medium">Confianza de identidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.identityReviewedByUser ? 'Revisada por ti' : wine.confidence == null ? '-' : `${Math.round((wine.confidence > 1 ? wine.confidence / 100 : wine.confidence) * 100)}%`}</td>)}</tr>
                 {hasPrices && <tr><th className="px-2 py-2 text-left font-medium">Precio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatPrice(wine)}</td>)}</tr>}
                 {hasServiceFormats && <tr><th className="px-2 py-2 text-left font-medium">Servicio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatService(wine.service)}</td>)}</tr>}
                 {attributeLabels.map(([key, label]) => decision.ordered.some(({ wine }) => wine.attributes?.[key] != null) && (

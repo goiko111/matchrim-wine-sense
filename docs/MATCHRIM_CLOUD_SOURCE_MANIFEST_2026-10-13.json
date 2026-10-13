@@ -1,0 +1,2397 @@
+{
+  "localProductSourceCommit": "3e75f30abc79c6262f96b06515437aec1e728a90",
+  "publicParent": "5431cffeb76b56bc8a57118d8f9679906c44430e",
+  "branch": "codex/matchrim-cloud-20261013-3e75f30",
+  "scope": "Current source plus tests and explicit public-safe text only; not full local history or private evidence",
+  "included": [
+    {
+      "path": "docs/MATCHRIM_CHALLENGE_COVERAGE_2026-10-12.md",
+      "sha256": "0ec26739d88056baaa34b9e86eefff0bbf93388d6a905f7c0f70b1ddb3d688e1",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/MATCHRIM_HOUR_2026-10-13.md",
+      "sha256": "b136207de55e33fb5c584001c1905d357ed1e3121998fd75f273897a32581963",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/MATCHRIM_MANUAL_PROVENANCE_2026-10-13.md",
+      "sha256": "b4c67fdc0b3332ca3895ce69075be3708ed2f1fb566754bb7b059629ce3c9351",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/MATCHRIM_SECOND_HOUR_2026-10-13.md",
+      "sha256": "b3d31363e842b78686af636956166c681e0525854ab34a5d256d2c095cdabac3",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/qa-evidence/matchrim-manual-provenance-2026-10-13/source-stages.json",
+      "sha256": "e923bbc7b307bb4ea7a927c526c904a3d228b99f0c207332ce889abbb1ddf67b",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/qa-evidence/matchrim-region-failure-2026-10-13/failure-before/scan-response-payloads.json",
+      "sha256": "0f308a1b6a62cde32b7a44fa053001d9c424239d6f10991b92dafa98be16186e",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/qa-evidence/matchrim-second-hour-2026-10-13/contracts.json",
+      "sha256": "41b66c05710498e6ace35c10d82cbe514f736a7d4894942fa008d281a1fd995e",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/qa-evidence/matchrim-second-hour-2026-10-13/memory-final/document-listeners.json",
+      "sha256": "eb94bb487ef3308b87859d4587f4726e6b5b817b8c00466fc1882d3800053ec8",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/qa-evidence/matchrim-second-hour-2026-10-13/memory-final/final-post-gc.json",
+      "sha256": "78f2e764f3765ad9f00e6777589c92c2f3ccbed776f0637f0da4952253cd5288",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/qa-evidence/matchrim-second-hour-2026-10-13/memory-final/results.json",
+      "sha256": "357117532ef9b6d7f779ee97822f4c056ddad62ff4e913ca9cd32d0027d192a9",
+      "mode": "100644"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "ff054bdf17737ea2fd4a03481bca0e9287608c147b7698febd193feeaf87081a",
+      "mode": "100644"
+    },
+    {
+      "path": "package.json",
+      "sha256": "a04164a9fb5e924297ecdc64ef3110070f2b7339c99e827f6b112ca839f1f4db",
+      "mode": "100644"
+    },
+    {
+      "path": "qa/fixtures/dense-scan-oct8.json",
+      "sha256": "6e0daef7ca998fa01832cd2c2e37d897594f074a5374bb365cc973a655d71030",
+      "mode": "100644"
+    },
+    {
+      "path": "qa/fixtures/menu-food-evidence-oct8.json",
+      "sha256": "c5cc2a486254a38155ff88b6d5dad08b2328ba053034a28e8e0ea89f244ea6e3",
+      "mode": "100644"
+    },
+    {
+      "path": "qa/ground-truth/matchrim-oct12-challenge-sources.json",
+      "sha256": "08af64e331ef2d74b55e2a6e9448991653f37640592d125288b73765585d0c0a",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/audit-matchrim-recorded-catalog.ts",
+      "sha256": "4ff59bc603387364418933654cc2c0fa6db36d758c7a563c1772043f259535a1",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-integral-regressions.ts",
+      "sha256": "67248bcf02fc4f9ef485da0714a2ec37554ff22ee3a73b21e8a22a9d4b8bfe19",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-affinity-status-oct12.ts",
+      "sha256": "a9aa0ba4728e627a641f170bca415d7843664673ad182c389d6f59f0d0a6761a",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-airim-provenance-oct13.ts",
+      "sha256": "e16c26dbc15867429e0490d1988f774b123004bb8b89cd64cb1dcfda6167fca3",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-challenge-oct12.ts",
+      "sha256": "8f6aceb57a60ee55071d5e0b54afe7688e2fb23856c13519b9005b2052fb7724",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-dense-gate.ts",
+      "sha256": "9b602328114e27d6953a433772192b91acdc0c9f936cedce0731625714378f11",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-food-client.ts",
+      "sha256": "028ef2d54cd0bfb5606ed2f7a11d043aaf80f47db97ebee0d48d63b0e7dd1a4f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-history-owner.ts",
+      "sha256": "d8622177de854b117aa1908fdba55658c6d8b49d4eb546be3c1dcfcbd0b75863",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-label-save.ts",
+      "sha256": "b2414b7ade1759b6e7b1be4c2405c2deb09c1b599ffbfa7ff4e8a68c98e81e4b",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-manual-provenance-oct13.ts",
+      "sha256": "defe1bd4ab36bfa751e63df1aba68c1540687229d221c911cbb9f1cfc79e1272",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-actions-oct12.ts",
+      "sha256": "ff881c1e8eab5ef51f7ccc69c7d2a88fe1cec220784135f1d18de60071d17619",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-comparison-oct12.ts",
+      "sha256": "942a401c9493057da2a8e7791ab383ad638337e1a68665b4b4a9f467bf2b782b",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-focus-oct13.ts",
+      "sha256": "4bbe33e012151a6e6ea2b9ca09ac1956290adcb8d44384182deb1d3f46dd515f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-food-evidence.ts",
+      "sha256": "7b5672f56ba7bc9e4a2073f63d05fba0decb0179739b044afa80b0e92ded9ec5",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-list-oct12.ts",
+      "sha256": "71254f6cef3981c930bff3b6221c59fd3ecdf872161dbceddd2476bc8d51c7f0",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-navigation-oct13.ts",
+      "sha256": "82dc566c81f5d91601e0e1ff808965e8b9910e9869428b7ceb5809494f001c1f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-notice-oct13.ts",
+      "sha256": "222387092e2f7afbff490ec349b942c14e538315c9c4fe6de2eec892b9cee3c7",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-ranking-cancel-oct13.ts",
+      "sha256": "18c9e01d8c1fd0fa4d5fff24dc78fb17063af33ef91ddfabe589ee83660845cc",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-menu-save-oct12.ts",
+      "sha256": "afa5aba5763fc295c3b96af72ada334f448a8a88a216272b07c14907eba0ace0",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-multi-stale-cancel-oct13.ts",
+      "sha256": "a17884219b58e95153f8360addfe45d82d2c8506659e798eac793c8f4fcecefb",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-onboarding-owner.ts",
+      "sha256": "41d98481eb75073d0bc075552dd7ee75637ca9531c806bb693ada61e3361d544",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-profile-retry-oct13.ts",
+      "sha256": "20bd81b96f1233461c1a1bf43075dbe5c1e8244174dd670705c81751522e6ae0",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-progress-a11y-oct13.ts",
+      "sha256": "17ad06c7ed2ff81229b89aba881a3cc11f7e4a67fff92fe59d2854afbb0034b4",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-region-counter-oct13.ts",
+      "sha256": "3ce141fbdd8756df5677b02338d748183bc8d219ddece3d69bf520a57e298164",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-region-edit-lock-oct13.ts",
+      "sha256": "7e1bac4edd08a213515b5e6e7f6f5493432f51859c169ebc88b22b14bbe24d3b",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-region-failure-oct13.ts",
+      "sha256": "47da6680b071dd301f3d381ca121887d9e0e948d2252b1cfdc98a84db9f961fb",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-scan-profile.ts",
+      "sha256": "bb892887ad1187e0f7340fa2e4d90ac3d5155ebe11e7b09e1613ae8ec6697c7b",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-second-hour-oct13.ts",
+      "sha256": "88bb84584c20e3cdcd7f29a50688f1a05b85722249630c02d59728ac4a314c8b",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-matchrim-wine-mutation.ts",
+      "sha256": "7469f7e7c8f6534c5b69501c47b27dbcbf2b8ee47104b59a8444b7af2b7081fa",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-multi-wine-scan.ts",
+      "sha256": "e920b4c195be18f4ec118dc9075a9d3e2d56f7b52f020c4e86c4336b840bb607",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/fixtures-matchrim-progress-a11y-oct13.tsx",
+      "sha256": "be2cc7180d1f509837f6c67e67b07a7345598354d4ffdce9a4f313cd7d143fca",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/inspect-matchrim-heap-oct13.mjs",
+      "sha256": "1fbf9a371ea5d939fe536c4cdec27771d8b34ed745cd9af4e2ab7dbbf724be8c",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-affinity-status-oct12.mjs",
+      "sha256": "57ed7f9570c9a5f4d790ab3d0c73bf269ac431b1a2003a8acfb26a04c14765c8",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-airim-provenance-oct13.mjs",
+      "sha256": "d68f07172092773acabe8d7456f85c623b499d175618769ec41c1084b4d3d452",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-hour-soak-oct13.mjs",
+      "sha256": "6b5a3626a28fbdd6a22e390706b8e7497165d0924dd1b1664f2eeef5718b3990",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-manual-provenance-oct13.mjs",
+      "sha256": "764189a8f73e619e3dda421c74acbd068c192045ed85df3b1e75bee425938c9d",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-menu-actions-oct12.mjs",
+      "sha256": "1a1f9cf7f45f7605280ff52eb987552973c3a0bed398c22c96466dd301d79cc9",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-menu-cancel-oct13.mjs",
+      "sha256": "c1cb5f83dcdd99cb509acbb297b74335203e1bfe9f0a4424ff9898699524aef7",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-menu-focus-oct13.mjs",
+      "sha256": "dda50c811ac9dd6acb109a4f2bcd81d323e0d750212192f8903c4ff697764c4b",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-menu-navigation-oct13.mjs",
+      "sha256": "a0c9327b9539c43d4344d0321eced1885449fbd252dc8641c175e665ae811b20",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-menu-notice-oct13.mjs",
+      "sha256": "8e0b2a89066056a7b23beebd3bd235adeb6be442f199275f2b1d7a45a734484e",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-menu-ranking-cancel-oct13.mjs",
+      "sha256": "1f1cb4d865df85deb386ceb5ec4336c16f01deea6221433f6cfba62f5663ae5b",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-menu-reading-oct13.mjs",
+      "sha256": "0f1ac8a8ab0b9030780b52965bbd64d094bdde1416f8279175114744cee13a55",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-menu-save-oct12.mjs",
+      "sha256": "ea6f731d0b776f4d079af24eeacd9c3a07cf72b7de3c0788ededfe1b5faa71c9",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-multi-stale-cancel-oct13.mjs",
+      "sha256": "d37a4bc5a59ca322921b6c4aac2b11387278e2696051bb7bb3351b93198e31ad",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-profile-retry-oct13.mjs",
+      "sha256": "36a09a83b60cf39bf990175a77549a5682868a85e7326602bc1a8859ad44c7af",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-progress-a11y-oct13.mjs",
+      "sha256": "34be711ba6d14d50ba6f095b9bb9689e30f42abf96ca73977b71b6ae14638b3f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-region-counter-oct13.mjs",
+      "sha256": "3e0efa1d1ff96d104d7f68f12467ffd3257e490f7ba2074950ea568897757e2a",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-region-edit-lock-oct13.mjs",
+      "sha256": "ab27ed05a7a94c7acfd031b5449d80dbd14cec810c18367505e5e63132779043",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-region-failure-oct13.mjs",
+      "sha256": "b79dda10b95ae6f8b4823d1886a280ebc1b2e129f21944ff0234263083feebde",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/package-matchrim-second-hour-oct13.mjs",
+      "sha256": "df05688ed32fa37b9f41d27e8846a725e9165833d907fa7a94f9d948206b1bbd",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-affinity-status-oct12.py",
+      "sha256": "336c08b877229031e3428a8e101c86acf5aa0a69e49a5b6513bab08c2fe38a54",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-airim-provenance-oct13.py",
+      "sha256": "66073450b8cecb387a48c1a398568c6557f2b5d3f81fb64ff2a3f7d74d1b2dda",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-bodega-actions.py",
+      "sha256": "b86585d08f1235f19424f4d13cf023d9fd331da7f5a033bc1d6eaebdc2f1039d",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-bodega-generations.py",
+      "sha256": "61616c3214c99ece99af00ad817a4a242358ab6c149f599fe6b43763e0cb9889",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-bodega-legibility.py",
+      "sha256": "cb52a5ccf3b30289caaac6614f1efd0a0e632f0317dc84535fb257a633be16ad",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-bottom-nav.py",
+      "sha256": "e3d6f3d2ad5876562f8cbb8bff6415597c499bb2f765c55452c1940f348a490d",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-challenge-oct12.py",
+      "sha256": "9165cbc41d10a7562f8acffe8e36095abb8ab607d6e4b3cd64ac487cf860c33d",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-comparison-oct12.py",
+      "sha256": "3d94fa72f6205bf62aea3723121f81a554e4b25a457b02c5b42001e269075497",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-dense-policy.py",
+      "sha256": "b938f36b4259cd87bca19ecf78ccec642ad92a31dbeae500679ab4a5b7a71193",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-food-persistence.py",
+      "sha256": "61980de6f1083aa31ca12e31b1c39235cd879f6ee2e011dd343f6d6bb9d743ef",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-history-owner.py",
+      "sha256": "265064facffcacbcee2d6934ae322389d6e30811b1e2655caa96a71368c0e20e",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-hour-soak-oct13.py",
+      "sha256": "3cfa4723ffe36968070a4d5e5841b27efc9381d3aa581910437363268c4aeacb",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-identity-notice-oct13.py",
+      "sha256": "c08c7e94a56613c3cdeaf4459ade728bba2179ef79c4d756271f55180c268cb0",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-image-recovery-oct13.py",
+      "sha256": "2c323e197e38e2b85d7e21cdae6af4452e5040dd4da408b34a85ace79b879e8f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-label-save.py",
+      "sha256": "0946df7ab3e96dbcf0a97010c0780c14ca028c86772d6751f9d378c857858571",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-manual-provenance-oct13.py",
+      "sha256": "485216c2016b3cedbbafb4a05a6b7fb82461464d59a87572c1d117782deb165e",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-memory-oct13.py",
+      "sha256": "bf20bdcfab5e8074dc1bdf1178931ece86bfba1a1bfd10268f224e855769c3eb",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-actions-oct12.py",
+      "sha256": "512d8b49c8308364f42e049ff687a39a033675c99b089157087c932ba953819f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-cancel-oct13.py",
+      "sha256": "94c4b8603525a6bd7bbbc9458435875e529cf8c68e9775e02703b4821d06d0b2",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-comparison-oct12.py",
+      "sha256": "34a061fc1d80c0bf4ea7dba1aecb9f7d0ff469f38eec0798aec022c72f6bc9f9",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-focus-oct13.py",
+      "sha256": "21717e1f89d0d24f8f0716b8ec5b809685fad08e75f9391b553da52655ee87da",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-food-evidence.py",
+      "sha256": "2fd044a7dbc2b6d37deb60f2962bd2560a40c811a0ae5c8e4af49cbc8be9555d",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-list-oct12.py",
+      "sha256": "b87d58a41599c9fecbaf7ab8a807259b8c111703ebab29d9f7038bfc5bbef153",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-navigation-oct13.py",
+      "sha256": "318d67eb8daf820f54de3fc324f07bf1414335f54708bda6a208160dfb4de33e",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-notice-oct13.py",
+      "sha256": "ec63d67765632b8d162c2641978976755a4062374d5a440e9124ea748c29c267",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-price-edit-oct12.py",
+      "sha256": "f2ef73f1107a0912005ad73f0b5484eac5a7ddde6934ccc1f0867df276856eb6",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-ranking-cancel-oct13.py",
+      "sha256": "41bd615278e1858d0397ef619eec6489ff0c392241bb075b9f68fb0cb1c0c8cf",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-reading-oct13.py",
+      "sha256": "8caad29f8d99ebd1e36ebfa167bc1ab2dd0f6c1ad6b85949146186b968c61880",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-save-oct12.py",
+      "sha256": "734d5953b4ecfe92fc529260f6d282c44c2e021b5b5c88f25b225713553a898e",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-menu-value-panel-oct12.py",
+      "sha256": "e59a8891e7bb41c941c5a6199ff2aab87e616fe3f39968672407ccc25ea4a258",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-multi-stale-cancel-oct13.py",
+      "sha256": "a3c9aa38b4f1016016c807658e0fc3237200179de9be62582465860bc77893ce",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-notifications-oct13.py",
+      "sha256": "3ccb760cc077441ee97ff0344bca0bf407cb717da62b4ec76ab8ad5687b4bb14",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-onboarding-notices.py",
+      "sha256": "690ad0a978fb00131db8cfb3569339197421fb1a73ce6cb186c3a7a36f4a7f25",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-profile-retry-oct13.py",
+      "sha256": "e3ad6afa7b226404943b5e561952e312887ebf8b35c037888da0b37a8aadd46c",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-progress-a11y-oct13.py",
+      "sha256": "420dbf08c996a6599c3700530c4d53451e9f68f6381235316582eae0f4316267",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-region-counter-oct13.py",
+      "sha256": "56f0050bcbb84710138c6ed0b9fa2b543a10dc1e14d09aef9697317fcf9a54cf",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-region-edit-lock-oct13.py",
+      "sha256": "a261906a7b0dbbcee8de118384978aad7f34ff7b9cac06da84d8d2a608826cdd",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-region-failure-oct13.py",
+      "sha256": "ba93d8e11e20687047e0d47a9b1b7a4b0ca0522e698ceeecaf2b1a76aebd47d0",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-scan-profile.py",
+      "sha256": "c8ed0e718a59898d69605ba123f32c790c0137bf6e8a5363d750ae6f0f52da10",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-matchrim-shop-examples.py",
+      "sha256": "bd8153912637f5c786960a3bc0b80fce8bcf8774f6ad6914654eb08af913c34f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-pages/notifications.html",
+      "sha256": "ede2f40a173d16d5294f84132ba81cfa9eca170a438faebdd94d6ca42288a022",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa-pages/notifications.tsx",
+      "sha256": "ed0542d0cf0e1ae55c9b77a8cc6e392f9354d3a5993a550ffff0955a97e9600f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/qa_matchrim_reflow.py",
+      "sha256": "a1e1ce6a5e0327fcc65000355225b6c31bba466a0a5d8c701b38cda05f77e366",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/replay-matchrim-dense-policy.ts",
+      "sha256": "e239f7e6ea81e3d51dc49f8dc5dd3dee6f4ffdcff70e95680b2c683fb935938f",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/verify-matchrim-menu-save-oct12.mjs",
+      "sha256": "ff4bc1130b1a6d900ba9e6b545d4da56240eab61dceeff481ac7f9f8a2f68292",
+      "mode": "100644"
+    },
+    {
+      "path": "src/App.css",
+      "sha256": "97f0dc31307f14f0d1f3cd6acce4813e7e1ab7c4c18fa71156ce9cf03334f774",
+      "mode": "100644"
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "e2aa116e4fd71c0d98ad6f455f75cdc1bba5cf33185f85d6948a3cb3dcaaa031",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/AccountNotifications.tsx",
+      "sha256": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/AffinityExplanation.tsx",
+      "sha256": "6eec193c82956516ce676ecebd94d043808abc684fcfdee743abf09336b6eaea",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/AiRimContextGuide.tsx",
+      "sha256": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/AppNav.tsx",
+      "sha256": "f7fd7cf4893dc3f0966e511e4a338014054d34cdffe7b96d30044c733fd29dff",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/MatchrimQuickGuide.tsx",
+      "sha256": "61157f58c0b5c2120e9ce9c590a0900432ddc50d3c2ece8c8677066d8c233a2f",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/MobileBottomNav.tsx",
+      "sha256": "25df32af51b1f1458c4667e72acdde3055e3bf645628bffa91eac3632a2a5098",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/NativeAppHome.tsx",
+      "sha256": "4dda60ddbdf5df3941d207e277bb724536e0e3f356e73f70be646cea102c43c9",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/WineStylesCSVImporter.tsx",
+      "sha256": "d60fdc453d434613757130de9d4f93ea87bbe0effcaa273285bc0a98c0a2321a",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/csv/ImportProgress.tsx",
+      "sha256": "a5aaf50eca11e3738357581ba11d02db5179da7f506c1a9cedf435ee1c769884",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/ui/progress.tsx",
+      "sha256": "133482fd377928e0aeecbd8451f26c11ed890e88e19d68cef6d6187b6a843957",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/ui/sonner.tsx",
+      "sha256": "4c5e443dc1e9ecc5541b77415f4a57a041c513cfdbcb276a35bffdf74a9e31b0",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/wine-import/FoodPairingScanner.tsx",
+      "sha256": "22dc6203f8bfe8a8005d6dd77a4e8a214756f8a9fffa30c6cb108344b12a20bf",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "sha256": "a9987201e6da81906b0cd0ae8200b5761343f587f335e3639bbd6f926bb73cd7",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/wine-import/ScanHub.tsx",
+      "sha256": "c6c134dc89edf005a7b425bff03211f5176a02d6d8c2a44c0f26d400b975cea7",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/wine-import/WineComparisonWorkspace.tsx",
+      "sha256": "c1a50371899e7b85e5c8d5f61d50afcf29e78a761f60129841d71e97ed74f3af",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/wine-import/WineLabelOCRImport.tsx",
+      "sha256": "84c5e7929005a2bc534ecb4ae361a1cb278c1fe0b518f5285591a63aa65ca011",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "sha256": "58fa342fa3bb71c51512b6558fb56b29b10bf56b3d5a0131a0c5dd94fac1c105",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/wine-import/WineSearchBar.tsx",
+      "sha256": "692dd0e5b7be560b884893d6918169201862fafdbd159fc50c004180e0846e8a",
+      "mode": "100644"
+    },
+    {
+      "path": "src/components/wine-import/WineShopLinkAdvisor.tsx",
+      "sha256": "a7b9ddd9db73b93bd20b229ccb388efe46d75319ded8d723150fd1933ed60471",
+      "mode": "100644"
+    },
+    {
+      "path": "src/hooks/use-toast.ts",
+      "sha256": "41f30a9b67bde6fe86ff558fa6e13c490adc513d60b0769654e932ff00d24d1f",
+      "mode": "100644"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "7ce1983b00924fb7321c4bfbd352571629c76b2a0654b41f5baeeeee8ad4ab0d",
+      "mode": "100644"
+    },
+    {
+      "path": "src/pages/Index.tsx",
+      "sha256": "03cb9671f47ded95a3142ed8dfed29473172bc4d7a5f283a94e7187aa1a1276f",
+      "mode": "100644"
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "sha256": "4af402783a7cfa9dcaa4058f4d64d883b4d92259829509096b50b267471c3509",
+      "mode": "100644"
+    },
+    {
+      "path": "src/pages/Profile.tsx",
+      "sha256": "ffe1ee613f1794e65ab1cdec43809d8a95145fdf7c071611cf7c6c85f0c8e1b5",
+      "mode": "100644"
+    },
+    {
+      "path": "src/pages/Scan.tsx",
+      "sha256": "1ed3750319b6c08baf5b92dbab3870d7714e152f36fee1bc65526760699f96fe",
+      "mode": "100644"
+    },
+    {
+      "path": "src/services/matchrimScanProfile.ts",
+      "sha256": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/aiRimContextGuide.ts",
+      "sha256": "bab1cd5948327c7d7c99d0626bf152ad27e6388fbaff6a83125cda6c090c5d4e",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/foodScanResponse.ts",
+      "sha256": "f8543e0005ad4f86914dd7ee8dc5525aae77c9824deca47fbe345f4b31594ceb",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/imageAnalysis.ts",
+      "sha256": "201c2ecef29f41ea2059f0fc7f9d7be5c7eb00798426feb16a1ccf7887a2d22a",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/imageCropGeometry.ts",
+      "sha256": "903ddfb08ccdc61d654a676dc1f9d0cb7694d5c23b60cb6a534e1229ef14b32c",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/labelScanSave.ts",
+      "sha256": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/manualWineIdentityNotice.ts",
+      "sha256": "4e9bcdafde90470fd41621aa70702754d59758831371506c4472386014344514",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/matchrimLocalOwner.ts",
+      "sha256": "c5cc357cd552a2d0e406eadb4606468bf2f3492cf43ae632f52fa6ac7eb00a81",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/matchrimOnboarding.ts",
+      "sha256": "282eb8822a70b8d801e29a94ee2748af4c4758fa5927e3f68588a1b7d709d949",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/matchrimWineMutation.ts",
+      "sha256": "561562f040eab9819e6fe49aa9fce146ddb810aed3d157a7aced1be7fa577a5d",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/menuAffinityPresentation.ts",
+      "sha256": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/menuCatalogAwait.ts",
+      "sha256": "79174879adf7eed910a07e3aafc0f5ce24eb4c6490a1581402c87ce567422b2a",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/menuProfileRecovery.ts",
+      "sha256": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/menuWineActions.ts",
+      "sha256": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/menuWineSave.ts",
+      "sha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/multiWineScan.ts",
+      "sha256": "66b909fd4e5232dd83ee1395601aa87da130b2fb1b39f20f702aea294f66ea54",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/regionAnalysisError.ts",
+      "sha256": "126c4380ea24feac97e9ec3167e22e98d2c9bbc41ce55fef1caa121195ae7852",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/scanAnalysisPolicy.ts",
+      "sha256": "a5c573239fc8d40c714f8aedb96966f78f7dec79879a893f462e8980e739bdaa",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/scanHistory.ts",
+      "sha256": "bfc0e0d12813733ff2b20a195af0d132ccb4c65accbbbc127496b805b17b9067",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/scanProfile.ts",
+      "sha256": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/scanRegionProgress.ts",
+      "sha256": "bf508ec8095c49dcca1c7045ca88e6aab9b1734962b59ddd959b827ac862ee44",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/wineAffinityExplanation.ts",
+      "sha256": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/wineCategory.ts",
+      "sha256": "5e05f018390c284feb661a155aeff70e35e86cfc285fe32d802d1b589a4a0ad9",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "sha256": "1c1c9ddc300da666fe8e585c6be268f3b89571e7518882165261fa949c2cb82a",
+      "mode": "100644"
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "mode": "100644"
+    },
+    {
+      "path": "supabase/functions/scan-food-pairing/contract.ts",
+      "sha256": "3b1c1f623667b253983868015e2071e65bef4257568202cce66af8f3b630ed92",
+      "mode": "100644"
+    },
+    {
+      "path": "supabase/functions/scan-food-pairing/index.ts",
+      "sha256": "c867bebe4211985e22ca0eb160d80acbe4cb685b05517422d256f55787ff0bab",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/MATCHRIM_CLOUD_HANDOFF_2026-10-13.md",
+      "sha256": "5898d150d24458df7692d58e100bd8ea12ffbbeb4623d536e5cb912e10eb318a",
+      "mode": "100644"
+    }
+  ],
+  "excludedCount": 2722,
+  "productSourceFingerprints": [
+    {
+      "path": "capacitor.config.ts",
+      "sha256": "9daf4ba62346396da535644dfa9e1eb23dc570c0983e65fa4f9fc8e0ffa2bd86"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "ff054bdf17737ea2fd4a03481bca0e9287608c147b7698febd193feeaf87081a"
+    },
+    {
+      "path": "package.json",
+      "sha256": "a04164a9fb5e924297ecdc64ef3110070f2b7339c99e827f6b112ca839f1f4db"
+    },
+    {
+      "path": "src/App.css",
+      "sha256": "97f0dc31307f14f0d1f3cd6acce4813e7e1ab7c4c18fa71156ce9cf03334f774"
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "e2aa116e4fd71c0d98ad6f455f75cdc1bba5cf33185f85d6948a3cb3dcaaa031"
+    },
+    {
+      "path": "src/assets/hero-blanco-vital.jpg",
+      "sha256": "cc02a6aa76cd5856c9425cc1fcf4370d69ab4692ca0bd627c7294ae743a5c0b5"
+    },
+    {
+      "path": "src/assets/hero-burbuja-fresca.jpg",
+      "sha256": "7018ccaf2c39cd7ccd941ac3bdd9d76c6645f66a70992c5912141c42cbec43cf"
+    },
+    {
+      "path": "src/assets/hero-tinto-versatil.jpg",
+      "sha256": "b4d2432e4c215d8a888aa50ccad83e636c0b1578c548daf3622c2590cc2d50da"
+    },
+    {
+      "path": "src/assets/quiz/question-1-kiwi.jpg",
+      "sha256": "08a2f477c03182470130fcdcc473580b852f451f982f9dc41d10f9896cfee1ea"
+    },
+    {
+      "path": "src/assets/quiz/question-1-pimiento.jpg",
+      "sha256": "0a7468b1e3bbc50135773724900809d9d36cc4a758a101791bf635c0db94233d"
+    },
+    {
+      "path": "src/assets/quiz/question-10-almendras.jpg",
+      "sha256": "2c4ff930c88ce85192b3123686217056ed2277da6419b978f1befa479ebd6eba"
+    },
+    {
+      "path": "src/assets/quiz/question-10-vainilla.jpg",
+      "sha256": "a7cd8a927d69c75700ffc1c4d344731836d94eecc60bcbbfc8f27f3a25fc98d7"
+    },
+    {
+      "path": "src/assets/quiz/question-11-anis.jpg",
+      "sha256": "4dea1e80258fb2610d807c93fe64f0d895ae95987d016fd2635961030d070cb8"
+    },
+    {
+      "path": "src/assets/quiz/question-11-canela.jpg",
+      "sha256": "ce4b351dd8e78e20a6edd962444cd8b0bcf123c186fde957be3e8e41b5011d4d"
+    },
+    {
+      "path": "src/assets/quiz/question-12-avellanas-tostadas.jpg",
+      "sha256": "6f92114a25800dd1ea861cd679221037e8e1f341db91f1ba029f789d421c9869"
+    },
+    {
+      "path": "src/assets/quiz/question-12-bombones.jpg",
+      "sha256": "6948e4230c3602a158125d1e90939bc5636c3724b3d1efe45c5a8ea9adeeb09c"
+    },
+    {
+      "path": "src/assets/quiz/question-12-cafe-dulce.jpg",
+      "sha256": "d3d88d5ac26b4f70ff04f779d4c6924c8e167501d7ecf3b0f36614254f1b73f7"
+    },
+    {
+      "path": "src/assets/quiz/question-13-limon.jpg",
+      "sha256": "93d43ae842912ba08cf9133cc0b02c4ec3d876ea48ae670633e0d11dd3c21e33"
+    },
+    {
+      "path": "src/assets/quiz/question-13-menta.jpg",
+      "sha256": "c6a47265e17ae4a6970d0a76a37642ef4b60a22469a30e09cc641d8d58440cea"
+    },
+    {
+      "path": "src/assets/quiz/question-13-vainilla.jpg",
+      "sha256": "9f424cd500dedf2fd13e333f680d828481bfbd5ad0e85bf3d29c67074fe509cb"
+    },
+    {
+      "path": "src/assets/quiz/question-14-cafe-con-leche.jpg",
+      "sha256": "28440572b74ddc6f1d7b7d3f6797a3bfe209601a7c59d334ecedb2a6eecfeba3"
+    },
+    {
+      "path": "src/assets/quiz/question-14-melocotones.jpg",
+      "sha256": "c80aeac84869f4026eb97f4b7f2e01b1c9d8befc4aab2c13f4f55fcac5f9dd59"
+    },
+    {
+      "path": "src/assets/quiz/question-14-platano.jpg",
+      "sha256": "ace3b029b6a2d8cd9dbc3bb4568361a9622d44f27bb9ca3552b77e224a66ba1d"
+    },
+    {
+      "path": "src/assets/quiz/question-15-hierbabuena.jpg",
+      "sha256": "1006004e2e26b949201fe8a3081ab41d94ccf5963740f70786a30555f5995b8f"
+    },
+    {
+      "path": "src/assets/quiz/question-15-marisco.jpg",
+      "sha256": "035ce4e0e9ae0e41022092cd172755001ecbd27b3a270d8812df37a68b1e95e9"
+    },
+    {
+      "path": "src/assets/quiz/question-15-pescado-blanco.jpg",
+      "sha256": "1b28a818c1a16184f8f829b3886dbefec149e632bcea6a4eca9ff6e49554b199"
+    },
+    {
+      "path": "src/assets/quiz/question-16-encurtidos.jpg",
+      "sha256": "1250874d983b58a8d12349a4a63839a510a1314f7d8cbaa9734853de34b56dfc"
+    },
+    {
+      "path": "src/assets/quiz/question-16-mango.jpg",
+      "sha256": "7069d21d53aaa8601536b3d990852fa90c3b6926f03f717a78fdf297849242be"
+    },
+    {
+      "path": "src/assets/quiz/question-16-vinagre.jpg",
+      "sha256": "beb068056a6a159b5ed373383f6ff2f53170528ccd2ca302f095aae820b20e3d"
+    },
+    {
+      "path": "src/assets/quiz/question-17-marisco.jpg",
+      "sha256": "f3062805fabcd00bf5ad1a7bd895bdf1fcbabcc2bd9b0785bc6bbfe6168f1515"
+    },
+    {
+      "path": "src/assets/quiz/question-17-mostaza.jpg",
+      "sha256": "fdcb0812afda18689ac8fb689a91b6afa4c0c689474be38e20c2db7253f85bc7"
+    },
+    {
+      "path": "src/assets/quiz/question-17-salsas-acidas.jpg",
+      "sha256": "d26cd4f7ffcc2aaada7c762e8c6f12c08ff90dfd192e62b10e7ecf9c36f70374"
+    },
+    {
+      "path": "src/assets/quiz/question-18-encurtidos.jpg",
+      "sha256": "22f5b4d8c03b1c42af2a5b217c3d3913e99866bc4240ed09d97d5f1f515daf22"
+    },
+    {
+      "path": "src/assets/quiz/question-18-gominolas.jpg",
+      "sha256": "807726353a8385f999694099343e9e9ae8fbb7e073ebf4702a45c182a0cb0cd0"
+    },
+    {
+      "path": "src/assets/quiz/question-18-mermeladas.jpg",
+      "sha256": "6013a60429255119ea2b827156a61c177723e8f2122cb7d85ea5fe8558c18090"
+    },
+    {
+      "path": "src/assets/quiz/question-19-curry.jpg",
+      "sha256": "fc8e4d0fdc01ab7399de19e10651434b60c3750c54536d2aff841ab8fc4aae27"
+    },
+    {
+      "path": "src/assets/quiz/question-19-hierbas.jpg",
+      "sha256": "863cb3f88d2fc897ccf75efb73b253e4778466275a41783f2b196577c47daead"
+    },
+    {
+      "path": "src/assets/quiz/question-2-cayena.jpg",
+      "sha256": "ceab1f2be457be3f96a217c431c976bef3b5af254080118d307b2a28ba6f6fad"
+    },
+    {
+      "path": "src/assets/quiz/question-2-cuero.jpg",
+      "sha256": "af23c7fa462b8e2325e00f268ab5fd8e8a1d15052f950cc19af19886f00b8217"
+    },
+    {
+      "path": "src/assets/quiz/question-2-tierra.jpg",
+      "sha256": "888776ca3ba143361fc73734ebf61b4c036d6dc5714688dc4f0248e269acab0b"
+    },
+    {
+      "path": "src/assets/quiz/question-20-avellanas.jpg",
+      "sha256": "785c81c61dc3961ab05686245f7eaf729cd8a4baebab01b4440673ce3203bc47"
+    },
+    {
+      "path": "src/assets/quiz/question-20-caramelos-limon.jpg",
+      "sha256": "22ac73e85f58c5e6d31aef7e9b86a85be30c23a7a80df05101760e056d07e5a8"
+    },
+    {
+      "path": "src/assets/quiz/question-3-fresas.jpg",
+      "sha256": "c9f00f5fbe76594ca3c0c061412716251ea65f92aa005028b0b6f7a724351f57"
+    },
+    {
+      "path": "src/assets/quiz/question-3-tomates.jpg",
+      "sha256": "5062f4b3179fe53354149ae54fc7760e2a40ca421ffd5d436e7ee59d3dd4db0a"
+    },
+    {
+      "path": "src/assets/quiz/question-4-pimiento-rojo.jpg",
+      "sha256": "6281e467bf71957da7932b8e0879b7a86d5e561bae86fb5746076fa2fd4f84ce"
+    },
+    {
+      "path": "src/assets/quiz/question-4-puro.jpg",
+      "sha256": "8a2e94705645afcc0e7a9b3a4f3d5691ef322cd26d59152d1661ddece6131c0a"
+    },
+    {
+      "path": "src/assets/quiz/question-4-regaliz.jpg",
+      "sha256": "02aa2082f5decaead517da9323683fef536ad86a13fda8e0e87e28820e381d97"
+    },
+    {
+      "path": "src/assets/quiz/question-5-cuero.jpg",
+      "sha256": "519d0073a93d686e942c9f13080bfba445b89f569fef658ef92761c3a27b8e5f"
+    },
+    {
+      "path": "src/assets/quiz/question-5-manzanas-verdes.jpg",
+      "sha256": "8df18506ceeda33ec5f21444bb71cfa475866a039f81c755baee3904cfcc9942"
+    },
+    {
+      "path": "src/assets/quiz/question-5-queso-cabra.jpg",
+      "sha256": "f141955158d44a38015bdd76afdcd5fe466bb678e9300c872883c1579a80a536"
+    },
+    {
+      "path": "src/assets/quiz/question-6-aceitunas.jpg",
+      "sha256": "748a1deb43219afc0ab1e7307ab8984b5ccbe453e5e2650daab9bc566f5bf68b"
+    },
+    {
+      "path": "src/assets/quiz/question-6-berenjenas.jpg",
+      "sha256": "36c7b49c59509dc8f56389154a39e491b18123fdf5627c4db0f0ec4e8cd334df"
+    },
+    {
+      "path": "src/assets/quiz/question-6-queso-azul.jpg",
+      "sha256": "72d0fd3b83c5bcf6de4ec1e2256cd9b19544cace02617928e930def48635db2d"
+    },
+    {
+      "path": "src/assets/quiz/question-7-champinones.jpg",
+      "sha256": "742d2ada7487b7a206343191fd8c7f483a0c3b74a2c9a4bd34e745504a1922f0"
+    },
+    {
+      "path": "src/assets/quiz/question-7-pepinillos.jpg",
+      "sha256": "3db7ad07f08e9b29e8512c2d4883c9d0d25de102d1efda2522fc299f1cce40ee"
+    },
+    {
+      "path": "src/assets/quiz/question-7-trufas.jpg",
+      "sha256": "993194a682dc56d1a83cb8b44a1352f147a043949a4ca9eb0e1daeb1a1fd1ea3"
+    },
+    {
+      "path": "src/assets/quiz/question-8-datiles.jpg",
+      "sha256": "456e39c522afb16afcbbb18cf669c2ec9105307d66dc4d5b659277ba28a37fb9"
+    },
+    {
+      "path": "src/assets/quiz/question-8-pasas.jpg",
+      "sha256": "844e0ceda18b0ce709a72e158351b11b2b7fe1bdd4c2443a757923e8ac0ca248"
+    },
+    {
+      "path": "src/assets/quiz/question-9-cafe.jpg",
+      "sha256": "8e6fb937d33826e3cdc28ba5a7fe1b973b4b3a62373c007cf3d1f90bea2dcc3a"
+    },
+    {
+      "path": "src/assets/quiz/question-9-espresso.jpg",
+      "sha256": "2db5db43b331537ef10ba404a36ab1899d11ce8324b33c4a623fb60a51cf527c"
+    },
+    {
+      "path": "src/assets/wine-bottle-placeholder.png",
+      "sha256": "ddce92a0e7d491de7ec1a0f04a4aacfbd7e6bbe5abf8a95d4dd870bed4f77d1b"
+    },
+    {
+      "path": "src/components/AIChatInterface.tsx",
+      "sha256": "a78fb9fa9c9e873245a8614c90f063ed06c59af6f48c3de669a212138bed7e44"
+    },
+    {
+      "path": "src/components/AccountNotifications.tsx",
+      "sha256": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf"
+    },
+    {
+      "path": "src/components/AffinityExplanation.tsx",
+      "sha256": "6eec193c82956516ce676ecebd94d043808abc684fcfdee743abf09336b6eaea"
+    },
+    {
+      "path": "src/components/AiRimContextGuide.tsx",
+      "sha256": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0"
+    },
+    {
+      "path": "src/components/AiRimConversation.tsx",
+      "sha256": "4351bf7b8959b580200f50f3ed29d8e2fc8357e95a5fea5b8adbfe7378355665"
+    },
+    {
+      "path": "src/components/AiRimMark.tsx",
+      "sha256": "fff9a8a11f0232cfdba4850e5518f974ec7e3fa603063d0629bc5c673d4ef412"
+    },
+    {
+      "path": "src/components/AppErrorBoundary.tsx",
+      "sha256": "c07477625351be84de5e44168472724683b4400c74ddc4ec3dec8792a990cf9d"
+    },
+    {
+      "path": "src/components/AppNav.tsx",
+      "sha256": "f7fd7cf4893dc3f0966e511e4a338014054d34cdffe7b96d30044c733fd29dff"
+    },
+    {
+      "path": "src/components/CSVImporter.tsx",
+      "sha256": "7de5396e12594c31ac1f209f375e53a0b43d6ec78c6efc8380b37cb1be870480"
+    },
+    {
+      "path": "src/components/DataStats.tsx",
+      "sha256": "b10eb48e0d59de2e33e11ff5629a704a71bc69c00ff5979bff35555a84fe1c8f"
+    },
+    {
+      "path": "src/components/DishRecommendationCard.tsx",
+      "sha256": "c7576be65679d133616373b76daa10b0d44bceb41f3131f7a4d11765d1193a07"
+    },
+    {
+      "path": "src/components/GrapeCard.tsx",
+      "sha256": "e9f76614e0fcefc0f0bced44406ab249f12cb04dc96fe5f41ab3dc46ced87509"
+    },
+    {
+      "path": "src/components/Header.tsx",
+      "sha256": "9c1c84e21e3bf7929abe717b4902663f77e311358f76787603e20b93905a3a86"
+    },
+    {
+      "path": "src/components/LanguageSwitcher.tsx",
+      "sha256": "a47cbe0570fa030c9705ed0417037cf857cff9a97de94a89d93cacf34a302316"
+    },
+    {
+      "path": "src/components/MatchrimFunction.tsx",
+      "sha256": "ce5d8a745754764c9df3344a7d6b0fba7b2a6abefa73f27b76136214eeb768d4"
+    },
+    {
+      "path": "src/components/MatchrimMenu.tsx",
+      "sha256": "a5bceae6b66150ab1b93c3b18b33ba490ad1e6a263b8db7730c9f92ad2237c99"
+    },
+    {
+      "path": "src/components/MatchrimPassport.tsx",
+      "sha256": "1cea27eb1d4d3824393a29138e3d6a122cc59685a6d5a2032d8ef41ff9e1cc31"
+    },
+    {
+      "path": "src/components/MatchrimQuickGuide.tsx",
+      "sha256": "61157f58c0b5c2120e9ce9c590a0900432ddc50d3c2ece8c8677066d8c233a2f"
+    },
+    {
+      "path": "src/components/MatchrimWelcome.tsx",
+      "sha256": "6c6283343ce5b2b710294ebf9bbd776c4af965b605f19f8e44558ddf75a31b53"
+    },
+    {
+      "path": "src/components/MobileBottomNav.tsx",
+      "sha256": "25df32af51b1f1458c4667e72acdde3055e3bf645628bffa91eac3632a2a5098"
+    },
+    {
+      "path": "src/components/NativeAccountActions.tsx",
+      "sha256": "a36e1e671fd876cc070dbe154429e6a9d21a7edf0d5a379566f8a2a984bedc43"
+    },
+    {
+      "path": "src/components/NativeAppHome.tsx",
+      "sha256": "4dda60ddbdf5df3941d207e277bb724536e0e3f356e73f70be646cea102c43c9"
+    },
+    {
+      "path": "src/components/PairingAnalysisCard.tsx",
+      "sha256": "9f0668f92c2835c87748761b99f73c6ee09a2b3cd638542b623c1d7b822a6c72"
+    },
+    {
+      "path": "src/components/PairingScoreCard.tsx",
+      "sha256": "d05583457c559fee1d8695af77618b4c3678425f08d7515f94138f73875a2e87"
+    },
+    {
+      "path": "src/components/QuizIntro.tsx",
+      "sha256": "ca358fceccec620efc111e288721c22ce0b34510cff8d609dd958e835519594a"
+    },
+    {
+      "path": "src/components/QuizQuestion.tsx",
+      "sha256": "b753e7c66bfe8e415d230a674a7d6fbcf2dd0ecedd81d3bbd663fdb0681acd66"
+    },
+    {
+      "path": "src/components/QuizResults.tsx",
+      "sha256": "d907c20a590f22c5f9c8de867d78c5449c74e4be23fe1032a3156a7a27323908"
+    },
+    {
+      "path": "src/components/RegionCard.tsx",
+      "sha256": "dcd5cd7bf1da7ad47825248ab5028f61715c8215e6cbcc4d8a0f2db1f4c2e783"
+    },
+    {
+      "path": "src/components/RegionMap.tsx",
+      "sha256": "6a85e9a346f746061665a34283d933a80f403c6dce08bd45fd50ee4336376233"
+    },
+    {
+      "path": "src/components/ScanPrivacyGate.tsx",
+      "sha256": "81cc9130e37a3cff11243b7653e474597a63f3bc939683bcbf91603f35195753"
+    },
+    {
+      "path": "src/components/SpecialMomentsFlow.tsx",
+      "sha256": "3644c3666c294efcd8f3a9dcd8cf7b9e403cc03b3087d2c4049b1581347f7229"
+    },
+    {
+      "path": "src/components/WineAnalysisCard.tsx",
+      "sha256": "bb465054ffc9a657153acfc7022e7c1e42fe9696da5b783804c76c41c12f88f9"
+    },
+    {
+      "path": "src/components/WineCard.tsx",
+      "sha256": "1eb6ac4caa64fe4509ffda6437d4d9483db906621a1ffe0851259ecd400535eb"
+    },
+    {
+      "path": "src/components/WineDetailsDialog.tsx",
+      "sha256": "503e16b1af18c2d82918b87d9802208fbe0ee35266c4dee4ddea25dfbc467a94"
+    },
+    {
+      "path": "src/components/WineRecommendationCard.tsx",
+      "sha256": "65c7e43fe6a36d82faeff449f63c1927aae0095935e38a972815d7be6c5298de"
+    },
+    {
+      "path": "src/components/WineStylesCSVImporter.tsx",
+      "sha256": "d60fdc453d434613757130de9d4f93ea87bbe0effcaa273285bc0a98c0a2321a"
+    },
+    {
+      "path": "src/components/admin/AdminAccountDeletionRequests.tsx",
+      "sha256": "54544ab49e3b3deeebdad068404b75201d021401bff42b1779bbdf187aea2a88"
+    },
+    {
+      "path": "src/components/admin/AdminAnalytics.tsx",
+      "sha256": "a9a121e94cadc189dc615e49a3578d0a5802fe48de8ca11f35ff2912186d99dc"
+    },
+    {
+      "path": "src/components/admin/AdminDashboard.tsx",
+      "sha256": "a77c2aac73b14a5a89586fec4e8df8cdfb7236810533df454b018e6517553713"
+    },
+    {
+      "path": "src/components/admin/AdminData.tsx",
+      "sha256": "faf377e5826476e6e22bb4dce1e3dae8f1a5eeaf85819be8f7b24ed751b7e52a"
+    },
+    {
+      "path": "src/components/admin/AdminMetrics.tsx",
+      "sha256": "a5ccd4f885271480ef01d37648cddfad543cf336c0265016fdb598721fcbc981"
+    },
+    {
+      "path": "src/components/admin/AdminRestaurantDemand.tsx",
+      "sha256": "5c528cf6789ab06683a7b162eb7b09f9da99f122f96170fb54cbdaf00df302eb"
+    },
+    {
+      "path": "src/components/admin/AdminUsers.tsx",
+      "sha256": "d5df845488ae5add47e856f2f3bf27763b0b4ebc79835e46b6cb14bf4813cece"
+    },
+    {
+      "path": "src/components/csv/CSVPreview.tsx",
+      "sha256": "ebce94af7c0cc3403755c61e9288401a7ac5b84f4e9431eba6fe95380d1f39af"
+    },
+    {
+      "path": "src/components/csv/CSVUpload.tsx",
+      "sha256": "999bc48edb917612aa5df8d9851776d39efbe565b96893395516655d66e35410"
+    },
+    {
+      "path": "src/components/csv/DataManagement.tsx",
+      "sha256": "a5a4301a4da2f1d82a2e914f8a02da52ccbf11773fcc4713ae9f1bd16aaa0073"
+    },
+    {
+      "path": "src/components/csv/ImportProgress.tsx",
+      "sha256": "a5aaf50eca11e3738357581ba11d02db5179da7f506c1a9cedf435ee1c769884"
+    },
+    {
+      "path": "src/components/csv/ImportResults.tsx",
+      "sha256": "ce551b660eff4f1e437f6b827bdd5521e01fa2c7da41765c659af757d79a0095"
+    },
+    {
+      "path": "src/components/data-viewer/DataExporter.tsx",
+      "sha256": "c939a4af3180612d24d57d65a7233927a80c7591de7c8fbf8cec37f6db52a9ac"
+    },
+    {
+      "path": "src/components/data-viewer/DataViewerTabs.tsx",
+      "sha256": "7fa560cc073e86690b965db46d2e991d58246c2c275c8a8ea321b24e14301b5c"
+    },
+    {
+      "path": "src/components/data-viewer/MatchrimProfilesTable.tsx",
+      "sha256": "2c83aae32631b29d7d4b8d316bba4ff0f2343af389832e9c58805e0cdedbb0ca"
+    },
+    {
+      "path": "src/components/data-viewer/WineStylesTable.tsx",
+      "sha256": "78b5c94fb220280656aae03253a5e1b8994b43b545467519a3f555248b514bb2"
+    },
+    {
+      "path": "src/components/data-viewer/WinesTable.tsx",
+      "sha256": "d3c7940f22901da0f736ef683f3fca5de5cbef8fc61ca0673de076cad6090ad8"
+    },
+    {
+      "path": "src/components/registration/BasicInfoStep.tsx",
+      "sha256": "53df5bf02b66d972de349d508433467907cb8159b314dae6e650aeb50c810839"
+    },
+    {
+      "path": "src/components/registration/ConsentStep.tsx",
+      "sha256": "83c2cff1e641f7668e0d4335eaf8bd32442f55d772c86fa88fb9677bb83f0a98"
+    },
+    {
+      "path": "src/components/registration/DietaryStep.tsx",
+      "sha256": "ef900629a949f320996403fb7d8a06afb644292a9cd9c9f00fb84c6b94f3dc89"
+    },
+    {
+      "path": "src/components/registration/ExperienceStep.tsx",
+      "sha256": "ac64483d6670a9dbeb017c4e19a62d0e8d31b1449f03061eb32bf1f79e610a07"
+    },
+    {
+      "path": "src/components/registration/FinalStep.tsx",
+      "sha256": "dfedbd85d9a51bae67667eadb8da9804ac0b47328213bb7e21914cd1a4f02c64"
+    },
+    {
+      "path": "src/components/registration/PreferencesStep.tsx",
+      "sha256": "7e8ac3432abcd53e185fe28e857142b35b5076fc032f41c45e00361bfb576cef"
+    },
+    {
+      "path": "src/components/registration/TastePreferencesStep.tsx",
+      "sha256": "09e87d215d35b59ea8810a3421a3d0079e220d97fd75910848032fc80906b6d6"
+    },
+    {
+      "path": "src/components/registration/WinePreferencesStep.tsx",
+      "sha256": "f8dec966ad8cc058f87b2807a78bcf3d8ef696035e0f1daa01ba2f541e1f830a"
+    },
+    {
+      "path": "src/components/ui/accordion.tsx",
+      "sha256": "6b84cb28b5c8e2129d854cffb8c5ba0161758d577db6db30a380cf593a8c0705"
+    },
+    {
+      "path": "src/components/ui/alert-dialog.tsx",
+      "sha256": "3cac920601856b7ef66b44ead800f9beb49cb7a7bd17fdb18c511c457cee49b4"
+    },
+    {
+      "path": "src/components/ui/alert.tsx",
+      "sha256": "ed78a053a9db783f48d5dfab7398b630f87c17ed2e237b6f30a3eb153675960c"
+    },
+    {
+      "path": "src/components/ui/aspect-ratio.tsx",
+      "sha256": "08b0aa0b05efc573c7d63363c03e83d4b101bfeb54140764e96ddea30659cfcc"
+    },
+    {
+      "path": "src/components/ui/avatar.tsx",
+      "sha256": "fb33bc4865b74d1f0239b1782dbdc4cc2d38690ba6e245e9e3b024c256b14c2b"
+    },
+    {
+      "path": "src/components/ui/badge.tsx",
+      "sha256": "db977d821af56ae3fb7952182d9c0a076a10c75c38bc2d2b000827e720423d32"
+    },
+    {
+      "path": "src/components/ui/breadcrumb.tsx",
+      "sha256": "abb80a6662087bdb01a70e731bd4e140bc37ae45c4ca39c268e1327cec3aedcf"
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "sha256": "415ccc47cf69a2a87db699cc6da7f1fdcb799a1f40dab3a6220d91ac8da8abbe"
+    },
+    {
+      "path": "src/components/ui/calendar.tsx",
+      "sha256": "212fea734954d87c7f932a98aa2b5805a75e4501be431e6a09c8e8d209174677"
+    },
+    {
+      "path": "src/components/ui/card.tsx",
+      "sha256": "8bad317eca5b74899d868688a339a16f54995e36810c0fdfe214c057755535e0"
+    },
+    {
+      "path": "src/components/ui/carousel.tsx",
+      "sha256": "5a4ff73c804e86c873382da80c453f1399006326ef042fb984c24162ec86666e"
+    },
+    {
+      "path": "src/components/ui/chart.tsx",
+      "sha256": "f5165c9a1c2a74597731eb620208406bef38a86735c376f2c4c09073f40643c4"
+    },
+    {
+      "path": "src/components/ui/checkbox.tsx",
+      "sha256": "60a0084cbdfcb96e54c9f6438e9066dfe7ed0a7e421b33985d5eb57975d110a4"
+    },
+    {
+      "path": "src/components/ui/collapsible.tsx",
+      "sha256": "6f5be8ba164c177759bf63cc25ad4d49391f162f6784ba624d72e5d5c0c0dde2"
+    },
+    {
+      "path": "src/components/ui/command.tsx",
+      "sha256": "ec99d91e0022b78dfa8e8404394ca4fdc7618b635f209afacc1920d58805170a"
+    },
+    {
+      "path": "src/components/ui/context-menu.tsx",
+      "sha256": "83de8ae175e3a154960abf1bc92e1032d13e42b02b4aa4469929fa46cdec42a4"
+    },
+    {
+      "path": "src/components/ui/dialog.tsx",
+      "sha256": "27f3faad6d4ef2168889c0ed091db17a8c49ed7e1f5a2b3e83aa6f1725770c21"
+    },
+    {
+      "path": "src/components/ui/drawer.tsx",
+      "sha256": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b"
+    },
+    {
+      "path": "src/components/ui/dropdown-menu.tsx",
+      "sha256": "042132f5ee2e5297488441fc7bd0e343393e3150be516110a8e3337196515b61"
+    },
+    {
+      "path": "src/components/ui/form.tsx",
+      "sha256": "ecd23ee5851218879bdc33e8474c1298ed724fdbafb276e6e3a819b9681abc5b"
+    },
+    {
+      "path": "src/components/ui/hover-card.tsx",
+      "sha256": "f877605d6ca646301df880f38796980bd62594cd3d0089c689e17399fbf0cb14"
+    },
+    {
+      "path": "src/components/ui/input-otp.tsx",
+      "sha256": "b06b6294edee39d817586b3cf4766de1720b06e184624d45d2bfd0f38d2a5e72"
+    },
+    {
+      "path": "src/components/ui/input.tsx",
+      "sha256": "b326e2af874b14aa2ac18096ddbec512c6258f3fafc20ba6c8262818d48e6a5b"
+    },
+    {
+      "path": "src/components/ui/label.tsx",
+      "sha256": "e69cfc27d78c9ef31b248ab8ea4fa54327c1038843f70efb5cd85d54c0bf1e0e"
+    },
+    {
+      "path": "src/components/ui/menubar.tsx",
+      "sha256": "dcf6ae1f54565c610fa5c80ed58550fe28e75c236592d21e655da1357ef10e5a"
+    },
+    {
+      "path": "src/components/ui/navigation-menu.tsx",
+      "sha256": "c07f503f41162b190bef100ba0ad31a8eaa9c790f3f782ba7df220e26f23b93a"
+    },
+    {
+      "path": "src/components/ui/pagination.tsx",
+      "sha256": "6d66283fc04f3901772f15f3108bda732efc75ce878e0d8ecf8f9fc3b0c63c26"
+    },
+    {
+      "path": "src/components/ui/popover.tsx",
+      "sha256": "d86882a36b2b0f92a0031f20814f6b9137b5ca484816776495ffb763fd5b0219"
+    },
+    {
+      "path": "src/components/ui/progress.tsx",
+      "sha256": "133482fd377928e0aeecbd8451f26c11ed890e88e19d68cef6d6187b6a843957"
+    },
+    {
+      "path": "src/components/ui/radio-group.tsx",
+      "sha256": "74f87531da1fde8d3c07dbd7b380ee6508a70d5c0af1c22e2d2c33d66cc79f10"
+    },
+    {
+      "path": "src/components/ui/resizable.tsx",
+      "sha256": "be7df63b7584141a34dcf86648e2528bbd56125661ef0f31850bb961a8e6f9a3"
+    },
+    {
+      "path": "src/components/ui/scroll-area.tsx",
+      "sha256": "d7d02600effca55d0dcadce8c09c97ebddda3a19c5fa1d52dc9f6f727b26c6b1"
+    },
+    {
+      "path": "src/components/ui/select.tsx",
+      "sha256": "779226bcf9db1de4b1337647d517555c0584d5492c932f420e18688bf0c0aab4"
+    },
+    {
+      "path": "src/components/ui/separator.tsx",
+      "sha256": "c956c4cca4b8442fa9314d6079b9f975e1ee39d5804aaf2966990f6258ac342a"
+    },
+    {
+      "path": "src/components/ui/sheet.tsx",
+      "sha256": "a4292e4b2ab39bd9c1149523543244453ba931161c78dd2474a31590f131102c"
+    },
+    {
+      "path": "src/components/ui/sidebar.tsx",
+      "sha256": "6eabbce16735706d4172f546f33a944520419f9750b9a1e4a7e8e7c0b5765ebb"
+    },
+    {
+      "path": "src/components/ui/skeleton.tsx",
+      "sha256": "a72a9d8fc1c1999b5411a33391c5e70048863c5865629077280e943ca85689a8"
+    },
+    {
+      "path": "src/components/ui/slider.tsx",
+      "sha256": "61e959d046f72e295d73a822b9afc7cc87ec6d1007905f2572e6117d7b2067b6"
+    },
+    {
+      "path": "src/components/ui/sonner.tsx",
+      "sha256": "4c5e443dc1e9ecc5541b77415f4a57a041c513cfdbcb276a35bffdf74a9e31b0"
+    },
+    {
+      "path": "src/components/ui/switch.tsx",
+      "sha256": "bd29ce723e952bc7f8fab367320347ca82fbb933f4da9872c7120d6765662ebe"
+    },
+    {
+      "path": "src/components/ui/table.tsx",
+      "sha256": "1da243956282c040db49d5718d2f0093a705fbbdfa3a25f51c1a31a069c45093"
+    },
+    {
+      "path": "src/components/ui/tabs.tsx",
+      "sha256": "d9958fd005db42bcca4f2c12ede63500e74f1a9bd82ddc3a6bf6fcb369706f07"
+    },
+    {
+      "path": "src/components/ui/textarea.tsx",
+      "sha256": "1dcb6000137f7e75e534e6a7d49a3fb65b9ba84d553c261970c503b17e216ccb"
+    },
+    {
+      "path": "src/components/ui/toast.tsx",
+      "sha256": "99f9f4a3e897f71d89b01c6772b2f5db51b888cecb2c8214fb2c2dbb2b3e6356"
+    },
+    {
+      "path": "src/components/ui/toaster.tsx",
+      "sha256": "1348f1a1f9820e2f1394b93cecc156a7e22f03636ab9270753985549aae2be74"
+    },
+    {
+      "path": "src/components/ui/toggle-group.tsx",
+      "sha256": "11592e3f7673ef518e2f82b939dc4752fe5ef7953f487f35595931c3d16fc37d"
+    },
+    {
+      "path": "src/components/ui/toggle.tsx",
+      "sha256": "44b2261c0779ea69bc5e14efc6b2756c1469165b2c445cb3c6c52f98d9c23571"
+    },
+    {
+      "path": "src/components/ui/tooltip.tsx",
+      "sha256": "955e81c757a7cf51e1dc591d663c797b5ef8f0bb5fcc26778ca673e2284686cd"
+    },
+    {
+      "path": "src/components/ui/use-toast.ts",
+      "sha256": "d48c4c490e5101aa42ceed9b8ca49642d66152ba11daf7ee6c29bee0f5172c37"
+    },
+    {
+      "path": "src/components/wine-import/CSVImport.tsx",
+      "sha256": "c464fea1480ef674376065520819f8d4cff73298296ced7491d65ab8d382fde5"
+    },
+    {
+      "path": "src/components/wine-import/DistributorCSVImport.tsx",
+      "sha256": "650c7aef4bec75d330007c9e766eded24caefe020949fa0abbc91319eceab212"
+    },
+    {
+      "path": "src/components/wine-import/DistributorImport.tsx",
+      "sha256": "2248310e789771ce400f1b5df3ca5f51d1061bebd08c9c6f1e8ed8c97975a9b6"
+    },
+    {
+      "path": "src/components/wine-import/DistributorOCRImport.tsx",
+      "sha256": "ba0aaa6c40e1e399bd46efc2a3e4023d1fd0e1ccba0eb375cd4122987685b51d"
+    },
+    {
+      "path": "src/components/wine-import/DistributorPDFImport.tsx",
+      "sha256": "af92545a3c9c78bda625b2fa39d2ee62c49da9d4606166ef23f6c80bcf96c722"
+    },
+    {
+      "path": "src/components/wine-import/DistributorTextImport.tsx",
+      "sha256": "e5642863b7a585a010f20e6754d8efe2463a1ddd376c95924292181399eae143"
+    },
+    {
+      "path": "src/components/wine-import/FoodPairingScanner.tsx",
+      "sha256": "22dc6203f8bfe8a8005d6dd77a4e8a214756f8a9fffa30c6cb108344b12a20bf"
+    },
+    {
+      "path": "src/components/wine-import/ImageOCRImport.tsx",
+      "sha256": "86f4fef87d744ea0c7cbc0817b3fc7c3185867797e3ad6d9eec2d228561b9b31"
+    },
+    {
+      "path": "src/components/wine-import/LocationSelector.tsx",
+      "sha256": "7f8a6bd4303d420d303320f996c1b33c925aad1eac2ed1c10e3e7aed782fdb80"
+    },
+    {
+      "path": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "sha256": "a9987201e6da81906b0cd0ae8200b5761343f587f335e3639bbd6f926bb73cd7"
+    },
+    {
+      "path": "src/components/wine-import/PDFImport.tsx",
+      "sha256": "1a18e2d7634f0fdf6d8691a36e335fab9bb454eefdee1c5619fd4abcf0b979da"
+    },
+    {
+      "path": "src/components/wine-import/PurchaseInfoSelector.tsx",
+      "sha256": "a1db4ed79be2b0d41713d64fb495ed7e14404836cf25aab110e405be78ed2bb2"
+    },
+    {
+      "path": "src/components/wine-import/RestaurantCSVImport.tsx",
+      "sha256": "458b452011740825c5bbbcfd1dde505e6d02f86673f5648c1d24a004879a1215"
+    },
+    {
+      "path": "src/components/wine-import/RestaurantImport.tsx",
+      "sha256": "575b2ba54426498cf598e4b95bc2682e98dc7ce1ca99df85909f6c8d839076fc"
+    },
+    {
+      "path": "src/components/wine-import/RestaurantOCRImport.tsx",
+      "sha256": "cb831e4fcb09a18e2611249a9cbcbd5d87e0474ea2f2533b0a9d10a6e46a2258"
+    },
+    {
+      "path": "src/components/wine-import/RestaurantPDFImport.tsx",
+      "sha256": "96e2c59d70bb26dd30b9e480dc372d73c72dea27254223d089a2494f58fdfb18"
+    },
+    {
+      "path": "src/components/wine-import/RestaurantTextImport.tsx",
+      "sha256": "e1fe87c819f1dd703af857f3a5e59dbd557074f6a6c1d518577f1119c091f1a0"
+    },
+    {
+      "path": "src/components/wine-import/ScanHub.tsx",
+      "sha256": "c6c134dc89edf005a7b425bff03211f5176a02d6d8c2a44c0f26d400b975cea7"
+    },
+    {
+      "path": "src/components/wine-import/TextImport.tsx",
+      "sha256": "663e134557bf238608ced8aa224a4aec060d6cc84ab4d9c8371e8c399bab0506"
+    },
+    {
+      "path": "src/components/wine-import/WineComparisonWorkspace.tsx",
+      "sha256": "c1a50371899e7b85e5c8d5f61d50afcf29e78a761f60129841d71e97ed74f3af"
+    },
+    {
+      "path": "src/components/wine-import/WineImporter.tsx",
+      "sha256": "01293350083d9ac397ea7fb094ab972ba1ab2a7043d9f1c8639343dc6b556734"
+    },
+    {
+      "path": "src/components/wine-import/WineLabelOCRImport.tsx",
+      "sha256": "84c5e7929005a2bc534ecb4ae361a1cb278c1fe0b518f5285591a63aa65ca011"
+    },
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "sha256": "58fa342fa3bb71c51512b6558fb56b29b10bf56b3d5a0131a0c5dd94fac1c105"
+    },
+    {
+      "path": "src/components/wine-import/WineSearchBar.tsx",
+      "sha256": "692dd0e5b7be560b884893d6918169201862fafdbd159fc50c004180e0846e8a"
+    },
+    {
+      "path": "src/components/wine-import/WineShopLinkAdvisor.tsx",
+      "sha256": "a7b9ddd9db73b93bd20b229ccb388efe46d75319ded8d723150fd1933ed60471"
+    },
+    {
+      "path": "src/components/wine-styles/SensoryCalculator.tsx",
+      "sha256": "e2278a9355981a89dfcebbb766e6a52e23711b5b7e20be2ee485b63e5cc8b18c"
+    },
+    {
+      "path": "src/components/wine-styles/WineStylesGrid.tsx",
+      "sha256": "afffc51c46a9dc8c2172717db89fccee37fa42a74d1038fa19bd21afc7b3bc27"
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "sha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863"
+    },
+    {
+      "path": "src/data/quizData.ts",
+      "sha256": "9adf01e4cc82b765508845fec214f48007475dbf3b6d709f76d314eccb9a7485"
+    },
+    {
+      "path": "src/hooks/use-mobile.tsx",
+      "sha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b"
+    },
+    {
+      "path": "src/hooks/use-toast.ts",
+      "sha256": "41f30a9b67bde6fe86ff558fa6e13c490adc513d60b0769654e932ff00d24d1f"
+    },
+    {
+      "path": "src/hooks/useIsAdmin.ts",
+      "sha256": "90e5057922e5309c1bfff80c7cde7025d330b3a93b64d149cdcd667491d85f4c"
+    },
+    {
+      "path": "src/hooks/useQuizResults.ts",
+      "sha256": "46324715a6f91b5f15bdef88f613f54f6d376fcd4b3ca919d72c2f4c2bd140ab"
+    },
+    {
+      "path": "src/hooks/useRegistrationData.ts",
+      "sha256": "81b89541eb0044f1af5c22961cd25eb1dc05713ca8bbf9d24b48c3cb3ea790c6"
+    },
+    {
+      "path": "src/i18n/index.tsx",
+      "sha256": "b1638b61faa791ac4f470f9742ac8d15f51411496ef4c6cc078e732d9c9473a1"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "7ce1983b00924fb7321c4bfbd352571629c76b2a0654b41f5baeeeee8ad4ab0d"
+    },
+    {
+      "path": "src/integrations/supabase/client.ts",
+      "sha256": "be31106d72f9fa8ae03215552bdd9fbcac4c02d2ab760ebc0b38725ebab8f5dc"
+    },
+    {
+      "path": "src/integrations/supabase/types.ts",
+      "sha256": "afa1c6a6e48823ad79525a3e402413e87775f103e4f0efd9b09f13624cbbfcb9"
+    },
+    {
+      "path": "src/lib/aiRimStream.ts",
+      "sha256": "e2b2ebf72dbab2b43a51a07823009b02aa9ae26ac42efec43ad3a50722fd1656"
+    },
+    {
+      "path": "src/lib/analytics.ts",
+      "sha256": "b02e097bec7ae13362de76c9cb0c60e8527f8e60b0412b68e066401d5cf6b54a"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "sha256": "7c8c3dfc0cdd370d44932828eb067ef771c8fe7996693221d5d4b90af6d54f2d"
+    },
+    {
+      "path": "src/lib/winerimClassifier.ts",
+      "sha256": "e60ce668ac05e5e631266dbc500bb73ac5e9e85df1db4ceaddf785af1b5681c0"
+    },
+    {
+      "path": "src/main.tsx",
+      "sha256": "98a0a0acc6288fc150b27c2f321fdf5e0052042c0a965dc79517eed3513ea8ee"
+    },
+    {
+      "path": "src/pages/AccountDeletion.tsx",
+      "sha256": "885d5f314bdda2c0c4f5e5ac46752694c3a50eed463e987868da8546beea83d0"
+    },
+    {
+      "path": "src/pages/Admin.tsx",
+      "sha256": "9040de11a2ac5d982d97f1020b944839397d43a20a2416acbf569dd6f95b9bf2"
+    },
+    {
+      "path": "src/pages/Auth.tsx",
+      "sha256": "997810059e4006d4bfc260e7cca6c56042a934445163693115a3be1148ef8fc7"
+    },
+    {
+      "path": "src/pages/DataViewer.tsx",
+      "sha256": "7eba3c73d3e5e47cb0a5333feef9a3a8f86ffb14a03cdcf9aff7fad676b9979d"
+    },
+    {
+      "path": "src/pages/ForgotPassword.tsx",
+      "sha256": "2c5f053bc2a9375d03df37f6b328aa12b4d126e657353e4040c29d8dbf3758fb"
+    },
+    {
+      "path": "src/pages/ImportCSV.tsx",
+      "sha256": "39c1bf6175eae2d2cec3fdba2465e27b85412ffbd4a7c2d828a9ed089c855a06"
+    },
+    {
+      "path": "src/pages/Index.tsx",
+      "sha256": "03cb9671f47ded95a3142ed8dfed29473172bc4d7a5f283a94e7187aa1a1276f"
+    },
+    {
+      "path": "src/pages/LiquidIntelligence.tsx",
+      "sha256": "d47286c74c841b88eb012fa730bbd33b64605cfa60f39f339f5962cbebf5119a"
+    },
+    {
+      "path": "src/pages/Matchrim.tsx",
+      "sha256": "caf69496b0402adecdc40d52c40a6705250acacda205bfad4123d6ccdc6ede50"
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "sha256": "4af402783a7cfa9dcaa4058f4d64d883b4d92259829509096b50b267471c3509"
+    },
+    {
+      "path": "src/pages/NotFound.tsx",
+      "sha256": "a932dd5daa6c08a61c63b3738322ae45fc9e3935e6fcbb178ccfaad5455aa058"
+    },
+    {
+      "path": "src/pages/PrivacyPolicy.tsx",
+      "sha256": "ac35ed55d35ef1af82a2f1dbd74bd168392e96bec5a95c2445db7adc4bc1fc6b"
+    },
+    {
+      "path": "src/pages/Profile.tsx",
+      "sha256": "ffe1ee613f1794e65ab1cdec43809d8a95145fdf7c071611cf7c6c85f0c8e1b5"
+    },
+    {
+      "path": "src/pages/Registration.tsx",
+      "sha256": "9618c565f027c0dafb75c925c732b598ba7319a3343daf65d054317528be1934"
+    },
+    {
+      "path": "src/pages/ResetPassword.tsx",
+      "sha256": "62ed125e78c2679855e5f08af002d09f3cdfe1971e2cc02051ce4c318f5fb1fb"
+    },
+    {
+      "path": "src/pages/Scan.tsx",
+      "sha256": "1ed3750319b6c08baf5b92dbab3870d7714e152f36fee1bc65526760699f96fe"
+    },
+    {
+      "path": "src/pages/ScanHub.tsx",
+      "sha256": "3bbca3534343b78b494f8d9be71e5bd379faaa16db7a11173281d7fa1985cd0f"
+    },
+    {
+      "path": "src/pages/Terms.tsx",
+      "sha256": "6d5ec1bc749b391b543cb20102b6c7f798a7e5b5c18e6efa6c13b3fbbfa77a23"
+    },
+    {
+      "path": "src/pages/UseMatchrim.tsx",
+      "sha256": "bf6652c3b7a0f874099f5e545e3e9424d97f470e328ae4a07345282f36616ce3"
+    },
+    {
+      "path": "src/pages/WineDetail.tsx",
+      "sha256": "64638ef23ab44acc7466a4bc68236f7b23c446e0d5fbb2b8d53242945c4feb1c"
+    },
+    {
+      "path": "src/pages/WineImport.tsx",
+      "sha256": "16c3d8dcf215e776d00c603b83fc0d2e631a5f7f06c9395c50132b0edc4993a3"
+    },
+    {
+      "path": "src/pages/WineSearch.tsx",
+      "sha256": "3ec9f3a7d2f952d6e50375d89917b64748e4a0bdf5bf5b4be3608896891a3c71"
+    },
+    {
+      "path": "src/pages/WineStyleDetail.tsx",
+      "sha256": "3946f2652f06832534542f27be4ee16cbd4ed32dd664cbfa3d44e2ae4148f877"
+    },
+    {
+      "path": "src/pages/WineStyles.tsx",
+      "sha256": "972093157a3a5495b0917fffe8d25ed292ffc77cbcea1727b9a9c1b40ca043cc"
+    },
+    {
+      "path": "src/services/csvImport.ts",
+      "sha256": "a9355dd510a92732e0ca49f86f5b8e22714ac35f0a6f43a0c2dd8dc67023b3eb"
+    },
+    {
+      "path": "src/services/matchrimScanProfile.ts",
+      "sha256": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150"
+    },
+    {
+      "path": "src/services/winerimApi.ts",
+      "sha256": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec"
+    },
+    {
+      "path": "src/types/csv.ts",
+      "sha256": "86a17f969a7bbb0f9387a5ee68a157328f3e17a281eacf785b0b454a48c21810"
+    },
+    {
+      "path": "src/utils/aiRimContextGuide.ts",
+      "sha256": "bab1cd5948327c7d7c99d0626bf152ad27e6388fbaff6a83125cda6c090c5d4e"
+    },
+    {
+      "path": "src/utils/aiRimGrounding.ts",
+      "sha256": "0befaa522fb0bb8a3397e676c3ef1a1cff4d028b7f4c0f860ce884f43b99a4f6"
+    },
+    {
+      "path": "src/utils/authRedirect.ts",
+      "sha256": "e1877402863051fb798fac2857d5e566d475a96cd8137c14184257318fb6892c"
+    },
+    {
+      "path": "src/utils/csvParser.ts",
+      "sha256": "31b083b8a712ce392f20cace89e5952d5dd43aa88468a6c6c62d3521f16a08f0"
+    },
+    {
+      "path": "src/utils/csvValidation.ts",
+      "sha256": "12aba9042420cc912c602e9dc758138f43e5d727ce9b611b435acec4d4d8c4f9"
+    },
+    {
+      "path": "src/utils/edgeFunctionResilience.ts",
+      "sha256": "bf44f1ba94f0845bdd0ecf10c49497f81dfa76c5d47e150967a8dc279253d1a4"
+    },
+    {
+      "path": "src/utils/foodScanResponse.ts",
+      "sha256": "f8543e0005ad4f86914dd7ee8dc5525aae77c9824deca47fbe345f4b31594ceb"
+    },
+    {
+      "path": "src/utils/hostedScanAffinity.ts",
+      "sha256": "7126faed9b27d0d0e211565d5404253082f0eff1485d588d4477d6421d4c24b3"
+    },
+    {
+      "path": "src/utils/imageAnalysis.ts",
+      "sha256": "201c2ecef29f41ea2059f0fc7f9d7be5c7eb00798426feb16a1ccf7887a2d22a"
+    },
+    {
+      "path": "src/utils/imageCropGeometry.ts",
+      "sha256": "903ddfb08ccdc61d654a676dc1f9d0cb7694d5c23b60cb6a534e1229ef14b32c"
+    },
+    {
+      "path": "src/utils/invokeEdgeFunction.ts",
+      "sha256": "59c726c28df3ae956c1182be6cd0282e3826ed56749ace9cbb0d61939e8fee07"
+    },
+    {
+      "path": "src/utils/labelScanSave.ts",
+      "sha256": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77"
+    },
+    {
+      "path": "src/utils/manualWineIdentityNotice.ts",
+      "sha256": "4e9bcdafde90470fd41621aa70702754d59758831371506c4472386014344514"
+    },
+    {
+      "path": "src/utils/matchrimAffinityCalibration.ts",
+      "sha256": "489c2e7f4359b5f5165394d0b31cc580af0721734b2a26c38991556723d21687"
+    },
+    {
+      "path": "src/utils/matchrimEdgeRouting.ts",
+      "sha256": "b6dd06419f4f227564213c5c7048acf74bb89b4354fb0553aa7e80405c23e08e"
+    },
+    {
+      "path": "src/utils/matchrimLearning.ts",
+      "sha256": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1"
+    },
+    {
+      "path": "src/utils/matchrimLocalOwner.ts",
+      "sha256": "c5cc357cd552a2d0e406eadb4606468bf2f3492cf43ae632f52fa6ac7eb00a81"
+    },
+    {
+      "path": "src/utils/matchrimLocalProfile.ts",
+      "sha256": "080e866581bdc831342195317add5279b232e362a88c07148fb403b108b188d7"
+    },
+    {
+      "path": "src/utils/matchrimLocalQr.ts",
+      "sha256": "c0229d5914c4bf1ef02175f9fcf142256d26caf67448887489c89020bc5866a6"
+    },
+    {
+      "path": "src/utils/matchrimOnboarding.ts",
+      "sha256": "282eb8822a70b8d801e29a94ee2748af4c4758fa5927e3f68588a1b7d709d949"
+    },
+    {
+      "path": "src/utils/matchrimPassport.ts",
+      "sha256": "850c049253d145a3691033ca5f3a5fbb4ce6307b9001aaaa5a8d362960e149fb"
+    },
+    {
+      "path": "src/utils/matchrimQaFixtures.ts",
+      "sha256": "672f7907c2c5002422ec124556f67bae4ef5bbc350733df006244c9d00e278a1"
+    },
+    {
+      "path": "src/utils/matchrimQaMode.ts",
+      "sha256": "505e61634ed4a91d84519f24ec835390393188c77baebfaf17d1251f486a1b6e"
+    },
+    {
+      "path": "src/utils/matchrimRecommendations.ts",
+      "sha256": "c688495d82ec1681f4191f06bc19a81567cb2e71635a598429db40a37e4f15ae"
+    },
+    {
+      "path": "src/utils/matchrimWineMutation.ts",
+      "sha256": "561562f040eab9819e6fe49aa9fce146ddb810aed3d157a7aced1be7fa577a5d"
+    },
+    {
+      "path": "src/utils/menuAffinityPresentation.ts",
+      "sha256": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0"
+    },
+    {
+      "path": "src/utils/menuCatalogAwait.ts",
+      "sha256": "79174879adf7eed910a07e3aafc0f5ce24eb4c6490a1581402c87ce567422b2a"
+    },
+    {
+      "path": "src/utils/menuProfileRecovery.ts",
+      "sha256": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1"
+    },
+    {
+      "path": "src/utils/menuWineActions.ts",
+      "sha256": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1"
+    },
+    {
+      "path": "src/utils/menuWineSave.ts",
+      "sha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859"
+    },
+    {
+      "path": "src/utils/multiWineScan.ts",
+      "sha256": "66b909fd4e5232dd83ee1395601aa87da130b2fb1b39f20f702aea294f66ea54"
+    },
+    {
+      "path": "src/utils/navigation.ts",
+      "sha256": "c6f21cd030b6aa75751eecfe737953fd762f9640b9a74273f6a16b8083cb848d"
+    },
+    {
+      "path": "src/utils/overlayPins.ts",
+      "sha256": "9d7428062f0bd4c57a280573a30552d24f492c1654c0364dbf462543da9baa47"
+    },
+    {
+      "path": "src/utils/pdfToImage.ts",
+      "sha256": "e3939315efc0c6c2435a963d23c1c53a771bfe4c313668707bd80ef241591d64"
+    },
+    {
+      "path": "src/utils/profileUtils.ts",
+      "sha256": "a2c722460c21ba8734371ad634e4eed8ec898d79c30d05d74df4a1a9e444606f"
+    },
+    {
+      "path": "src/utils/regionAnalysisError.ts",
+      "sha256": "126c4380ea24feac97e9ec3167e22e98d2c9bbc41ce55fef1caa121195ae7852"
+    },
+    {
+      "path": "src/utils/scanAnalysisPolicy.ts",
+      "sha256": "a5c573239fc8d40c714f8aedb96966f78f7dec79879a893f462e8980e739bdaa"
+    },
+    {
+      "path": "src/utils/scanConfidence.ts",
+      "sha256": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079"
+    },
+    {
+      "path": "src/utils/scanHistory.ts",
+      "sha256": "bfc0e0d12813733ff2b20a195af0d132ccb4c65accbbbc127496b805b17b9067"
+    },
+    {
+      "path": "src/utils/scanMoney.ts",
+      "sha256": "db8e16051dd214d3de8cae63970dcaf207c99da3b5a3e8053a7a2be1c0e8bc85"
+    },
+    {
+      "path": "src/utils/scanProfile.ts",
+      "sha256": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf"
+    },
+    {
+      "path": "src/utils/scanRegionProgress.ts",
+      "sha256": "bf508ec8095c49dcca1c7045ca88e6aab9b1734962b59ddd959b827ac862ee44"
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "src/utils/sensoryNormalize.ts",
+      "sha256": "2834bd57557bba582a933ae18c3aba0214c47a219806c2679c61d44a67151a73"
+    },
+    {
+      "path": "src/utils/wineAffinityExplanation.ts",
+      "sha256": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313"
+    },
+    {
+      "path": "src/utils/wineCategory.ts",
+      "sha256": "5e05f018390c284feb661a155aeff70e35e86cfc285fe32d802d1b589a4a0ad9"
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "sha256": "1c1c9ddc300da666fe8e585c6be268f3b89571e7518882165261fa949c2cb82a"
+    },
+    {
+      "path": "src/utils/wineFormatters.ts",
+      "sha256": "d12cb45f89b8f99cd52ffa0486d9d2cc288b8c171bef2cc9bc83b4588aec9915"
+    },
+    {
+      "path": "src/utils/wineMenuGrounding.ts",
+      "sha256": "99cbfebd6aecc391fcc7fae73349569de6c06d57384a1147914a5b0aa945585e"
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "src/utils/wineRecommendations.ts",
+      "sha256": "b76af4739062a31c678a28b3ad44eeccb8fe4e314e54fb17b5af542c7bc4b156"
+    },
+    {
+      "path": "src/utils/wineStyleUtils.ts",
+      "sha256": "4ca76e1ca16a6bd0085b8c26c945da7be3f184dd92b23ca76c3a37faf76f6450"
+    },
+    {
+      "path": "src/utils/winerimDataAggregation.ts",
+      "sha256": "86508baac098a3e849928df23e92ad31c640a1187ade8a7e0c353654bc978134"
+    },
+    {
+      "path": "src/utils/winerimLabelIdentity.ts",
+      "sha256": "5c0926ab2ba2d6c2ec8ee13487b62cffaa146b4e27379e2a0995afda72216f33"
+    },
+    {
+      "path": "src/utils/winerimPrice.ts",
+      "sha256": "334b49f4c0cc2da9814b62ab6187b0fc042f1fab8ed813ef55c3bc36bc494e24"
+    },
+    {
+      "path": "src/vendor/qrcode-generator/THIRD_PARTY.md",
+      "sha256": "4d5a6ea547585adeded57edf9dbac732d75d38b175fbae87ebfb01e827c85d66"
+    },
+    {
+      "path": "src/vendor/qrcode-generator/qrcode.d.mts",
+      "sha256": "7200202a0dce41ec5b7c1c1c811f97d51d7b7a448fdd7a57f66a6e329f23962c"
+    },
+    {
+      "path": "src/vendor/qrcode-generator/qrcode.mjs",
+      "sha256": "ea91d7118a5395289170da848b7c6758b996163bfbccf312591ab65a4911b7c0"
+    },
+    {
+      "path": "src/vite-env.d.ts",
+      "sha256": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    },
+    {
+      "path": "supabase/config.toml",
+      "sha256": "c110494a02c188300f98b539ac5025398a6f7bad40e6c06ebdcf527dd7b3d6f9"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-affinity.ts",
+      "sha256": "0ff3b9f0280ee0d7726e688c1f4a43251be04430d72a8029e3fad5080f5753cf"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-ai-provider.ts",
+      "sha256": "96aed0439a6a35009940e7409f65965c8e0aba1ad15315abe96d3e6492f6c86f"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-catalog-search-v75.ts",
+      "sha256": "4e4e6d5a9ea710c8bc2a1525a7fb2e09629495f52a0fd81e4b810fa1fa5e5507"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-catalog-search.ts",
+      "sha256": "4e4e6d5a9ea710c8bc2a1525a7fb2e09629495f52a0fd81e4b810fa1fa5e5507"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-learning.ts",
+      "sha256": "a7e0aee78f58fe7d823b2e69c614f1ebaaf1e0dec028dc3e83fe5815492d8e39"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-menu-grounding.ts",
+      "sha256": "eaf48ca880a5a89af8730e9c6d727040ce68ae4daa83bbc7420d5512c5bb3268"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-scan-money.ts",
+      "sha256": "f424363915be583e19ac4bd51445f340d8f7fdf75382162ffb5b78bf3dbf53e5"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-scan-values.ts",
+      "sha256": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e"
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-training-evidence.ts",
+      "sha256": "dabfbb5960b296689c3928daf2f4efb6131f7d0d61b6cc215410d4bbd1a1183f"
+    },
+    {
+      "path": "supabase/functions/ai-wine-chat/index.ts",
+      "sha256": "3ec96d4108be5a135212c555e30b629e654d05374e0aee879514dbacd589f0ce"
+    },
+    {
+      "path": "supabase/functions/analyze-distributor-prices/index.ts",
+      "sha256": "6f97419bbbb88846b193daf17221422b8b591be2e0c7dc059a5db747f172ff4d"
+    },
+    {
+      "path": "supabase/functions/analyze-restaurant-prices/index.ts",
+      "sha256": "d404b2c2b7683ca9b84a2b31dfe53ddd58faa06ed3b9a90c142ce3227b0a5300"
+    },
+    {
+      "path": "supabase/functions/analyze-shop-link/index.ts",
+      "sha256": "79065888b36d466eea5030bcfd2ad51dc213c712ab4525baa18e74e2353a6d25"
+    },
+    {
+      "path": "supabase/functions/analyze-wine-region/grounding.ts",
+      "sha256": "9721b7acc1a91c5d877bcdb69b8f3400b9eea83f062baad5e0c323565fe02ffd"
+    },
+    {
+      "path": "supabase/functions/analyze-wine-region/index.ts",
+      "sha256": "618c23dcf2d108378c45387901152fc09ce1cbf1c5b1273d8b14c1c27322a4bb"
+    },
+    {
+      "path": "supabase/functions/calculate-wine-affinity/index.ts",
+      "sha256": "4d4b5f528d540e63bdf2d466b1d5c7a3f67568a6db3491c1b2b7e6c319ec6232"
+    },
+    {
+      "path": "supabase/functions/detect-location/index.ts",
+      "sha256": "5bfda51000f5152c4c7b2440e715b5ba627a563ca2d5672994c0848d02b6a01f"
+    },
+    {
+      "path": "supabase/functions/detect-wine-regions/index.ts",
+      "sha256": "2e6e20289a10dceed64f8aa1955e9a5c9a574c907b597ce5bb99cd5f78ff7bef"
+    },
+    {
+      "path": "supabase/functions/extract-distributor-ocr/index.ts",
+      "sha256": "20a95833480f07ece0fb2df0449e0210accaa7cff61092f1fc088e885e11f804"
+    },
+    {
+      "path": "supabase/functions/extract-distributor-pdf/index.ts",
+      "sha256": "2bcac0387433f238ac07adaaa8cee801915caece46c7bf31f823cc241fd4e534"
+    },
+    {
+      "path": "supabase/functions/extract-distributor-text/index.ts",
+      "sha256": "17ca4d8ae4f1edd11337f77baaabf4e859740c0e2b19e2f403a097752f25c930"
+    },
+    {
+      "path": "supabase/functions/extract-restaurant-ocr/index.ts",
+      "sha256": "fe1fda33333345cb6ae81f1eef710a0b32aee66917c7cdafdf4201c715c923e4"
+    },
+    {
+      "path": "supabase/functions/extract-restaurant-pdf/index.ts",
+      "sha256": "36b7936474f94f79c8988a5ef4bf1355c52b8f081038a4d1b2ab3941942e3e76"
+    },
+    {
+      "path": "supabase/functions/extract-restaurant-text/index.ts",
+      "sha256": "eebcc8abcbd03475ecd9ebf100144b8c6da25bf88638763b789cf285342310ca"
+    },
+    {
+      "path": "supabase/functions/extract-wine-label-ocr/index.ts",
+      "sha256": "ee194bcb971f35b299c2deb1e826cac712878f2296477b6bfd6ad5021147d6c8"
+    },
+    {
+      "path": "supabase/functions/extract-wines-ocr/index.ts",
+      "sha256": "ea255c6068da8a9a30a18e7370dac8fb950e4c20b4c6f72a8e8ba3e30eabbbfb"
+    },
+    {
+      "path": "supabase/functions/extract-wines-pdf/index.ts",
+      "sha256": "ad7a8eaf6e5c4376384ca358d6c742f8eed5d99cb69dafdbc50dfae49a455db4"
+    },
+    {
+      "path": "supabase/functions/extract-wines-text/index.ts",
+      "sha256": "65856f36867fc259ed88b985a9f8c2f996e49e7fb18206122eee04e430026858"
+    },
+    {
+      "path": "supabase/functions/matchrim-recommendations/index.ts",
+      "sha256": "c15ad6734c6e7e11c456456c8c0628852773dafcb044401b42c5849f57554b13"
+    },
+    {
+      "path": "supabase/functions/scan-food-pairing/contract.ts",
+      "sha256": "3b1c1f623667b253983868015e2071e65bef4257568202cce66af8f3b630ed92"
+    },
+    {
+      "path": "supabase/functions/scan-food-pairing/index.ts",
+      "sha256": "c867bebe4211985e22ca0eb160d80acbe4cb685b05517422d256f55787ff0bab"
+    },
+    {
+      "path": "supabase/functions/scan-wine-menu/index.ts",
+      "sha256": "0e8f686752e942b458f674f8c0d0760f1b306ee443c8ef4563658f41893d165e"
+    },
+    {
+      "path": "supabase/functions/search-places/index.ts",
+      "sha256": "0bd45316a6a46ed25967b3981b4e607ef452fce32b6ee9c64e26f188745a41eb"
+    },
+    {
+      "path": "supabase/functions/search-wine-image/index.ts",
+      "sha256": "9e5aa4b76447c83f435d04f85b2492f1dea3c3d3241c88c854a341a6ddb41eb5"
+    },
+    {
+      "path": "supabase/functions/search-wines-v75/index.ts",
+      "sha256": "6e8c91054148a147ea2c550fe1c055e957303634208c8d328e848661b165a62a"
+    },
+    {
+      "path": "supabase/functions/search-wines/index.ts",
+      "sha256": "67416c318afb4ff7b83264a381c405403b623732806e2eade2326b64b132cc35"
+    },
+    {
+      "path": "supabase/functions/send-auth-email/deno.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "supabase/functions/send-auth-email/index.ts",
+      "sha256": "295e1923619e6667d7217166e73bc4cf8c597d154feca9ed11b61a55e601c80a"
+    },
+    {
+      "path": "supabase/functions/wine-details/index.ts",
+      "sha256": "d0ba0a7fbb1b47f3697194a67e7b82f29a8a640d6b013791c4991c23a49beb7c"
+    },
+    {
+      "path": "supabase/functions/wine-search/index.ts",
+      "sha256": "4566b39a8f581f537baf9e989946a9a68bcaaae3988b755700ceb2020ff79610"
+    },
+    {
+      "path": "supabase/functions/winerim-wines/index.ts",
+      "sha256": "0e821dda362838a02e756f0fc3e9f9068987154fc0db9e54f942ca85e33e4910"
+    },
+    {
+      "path": "supabase/migrations/20250626125457-56335cb1-fcd2-4da0-b747-71625f5aed92.sql",
+      "sha256": "6dae6dd08cbb9c18529616f376d650b9c4ffed1b64ede99cdd882d7f088481e5"
+    },
+    {
+      "path": "supabase/migrations/20250626140902-59a3cd89-0090-451d-a25f-5b2c226e0fd7.sql",
+      "sha256": "81055e9a66e472e41b00c3284f6a089d2dde2ebbbba78931e81e5518d2bfc3e5"
+    },
+    {
+      "path": "supabase/migrations/20250627092711-f99b3090-5495-45cb-92a2-66cf49331b51.sql",
+      "sha256": "13416f63776495e6d49b422e5614bf15ae5dff65a4eee349cb2a5a916ea523f0"
+    },
+    {
+      "path": "supabase/migrations/20250627112943-cb6df20a-5a5c-4a8f-a011-254ec87d8953.sql",
+      "sha256": "8aa544e45971786d1e3a495f618163757dbd960a4f78bc07d2b409be5ec5acb3"
+    },
+    {
+      "path": "supabase/migrations/20250627113347-2bf51596-db62-48d6-a8c5-df6ac4cc943c.sql",
+      "sha256": "d5be9246e48faea5fc7d743c04b47b4f58e3cda87d80ea2efed81d2586deb123"
+    },
+    {
+      "path": "supabase/migrations/20250627120016-fb369dd9-0812-4121-8b26-40486e545a05.sql",
+      "sha256": "0b964c76e5df71b67f995f7096a74a8030b9c97fbc2c1280f8a0f9b385051569"
+    },
+    {
+      "path": "supabase/migrations/20250627121333-fd2c0237-6310-4c53-ae38-a288dbb3a3ec.sql",
+      "sha256": "34a24557546f0cd3ff36ad63120933339640547625c8132852389c1a157688b9"
+    },
+    {
+      "path": "supabase/migrations/20250628170107-3e74ca65-69f6-4831-bdd0-a170ad6ab77e.sql",
+      "sha256": "7113831a4d6bc06ef7b3e15c2ef82c2ff50e5482e7b6c9bbe7bac7c4de592333"
+    },
+    {
+      "path": "supabase/migrations/20250701040120-f4193956-b0e1-4667-98b9-505864d45f9f.sql",
+      "sha256": "a74fbee8cd38b88822a7b9b5e1a429fdc20c2c2435482fb21ab1ea94cc102462"
+    },
+    {
+      "path": "supabase/migrations/20250701050443-25bf6d64-e589-4955-9029-6f3238ba3478.sql",
+      "sha256": "694681cc4e7e421da78f526367ee5e1d27c3e983a7cf73595771f7501a7b04c5"
+    },
+    {
+      "path": "supabase/migrations/20250701153150-5532161e-8b76-46b3-a01d-44753bea82eb.sql",
+      "sha256": "7ca823535da6f0817064b0b6e912a294e4caa62673b7b5cc074259584b1ab096"
+    },
+    {
+      "path": "supabase/migrations/20250703132523-26c9e365-6ffe-43aa-9925-af2540caec25.sql",
+      "sha256": "9230ee5d7e855f05b58dd311cd0b525b3b088a1c8c441e16e4a84e545ec2664c"
+    },
+    {
+      "path": "supabase/migrations/20250703135928-d2376b97-a337-411e-a829-823d736b454c.sql",
+      "sha256": "f7fa69c0b0592314c1fe8b63e4c42b2b11d426b810b41778e2ce231a8379c54c"
+    },
+    {
+      "path": "supabase/migrations/20250703140200-5a62e198-ea23-4abd-bcf1-918ed45f20c2.sql",
+      "sha256": "572ce12f9f82ca68eca4e4a53d3bd47d24ecdf79162dfa4f0198221430266562"
+    },
+    {
+      "path": "supabase/migrations/20250703140727-8b7cf0b5-eb56-46ff-a9ad-2da38d1212c8.sql",
+      "sha256": "ce56a4d14d30e59f8ab20418e491c8324d98e3d41b118d210067e44bf1e6ee47"
+    },
+    {
+      "path": "supabase/migrations/20250704101501-3f863277-47d5-4e30-93ce-c876c8aa63ca.sql",
+      "sha256": "de0b106524886eff5d05b01b3616584ba4df85ea373a7a24c5ab9a24a650ad36"
+    },
+    {
+      "path": "supabase/migrations/20250704110350-ef4324f0-8cec-4e25-ac00-b22c511872e7.sql",
+      "sha256": "70df4e1b6817430bee0772f2230536be5c8b036b9e592fd4fc22f3915238fd78"
+    },
+    {
+      "path": "supabase/migrations/20250704110407-7db27d2d-dce8-4b08-bd50-7c7c0b392c91.sql",
+      "sha256": "6b6144ddb22eb89348b6aaff1a03a024b3a1c619e45201d73f016dedf8e08557"
+    },
+    {
+      "path": "supabase/migrations/20250918041615_74fb7d51-06a9-4aab-9a08-22cb1f3ba897.sql",
+      "sha256": "cb48cda1aeb542c5112dbea5dbd793e4dc56fad331496cff878b71487dff702a"
+    },
+    {
+      "path": "supabase/migrations/20251027124639_2c93d30b-e647-4475-b3cf-7e18f64d4b1b.sql",
+      "sha256": "d05582e92b3ade9f6c871d2743c9109b8c275b7cf7bedcd5b2baf47abe8bece9"
+    },
+    {
+      "path": "supabase/migrations/20251027132521_18d842fd-0cb6-41e4-90bc-cb100157d850.sql",
+      "sha256": "15ba5ad207a345f4dc81d3654fe940debc986a791bec796333c94144d5a5dd26"
+    },
+    {
+      "path": "supabase/migrations/20251103125110_a437ee8f-dca7-43a0-b53c-146220a19b51.sql",
+      "sha256": "95a30b384f910664b67d987e30219d9f2949cc02fc07852ce9e2a0275cd12787"
+    },
+    {
+      "path": "supabase/migrations/20251104061733_1b9244be-2da7-4935-a6a9-e72e16199907.sql",
+      "sha256": "867ac69e0de5ae181234d0312078d037fce2be7ba868b6b4cd6a49c91f530a40"
+    },
+    {
+      "path": "supabase/migrations/20251104062909_62c2aa04-c448-469d-9204-3fac0c4cce78.sql",
+      "sha256": "c55dde8acb8e0e7fa3582e63abb6a912774da49601e654dc11d8bbc790ff3e26"
+    },
+    {
+      "path": "supabase/migrations/20251106151752_c85a5e63-d404-4527-9148-be3db845d121.sql",
+      "sha256": "a9c9459f9fd71d247af328e48e0b8f7d400eef867b527c0181c24e504ff1ef8b"
+    },
+    {
+      "path": "supabase/migrations/20251107091627_a28fd64c-46ed-4756-b406-6805e730f35b.sql",
+      "sha256": "e75aae21896af37cbfa4d9c30f1c0892705c0509f3d45d92da6328942791ed6f"
+    },
+    {
+      "path": "supabase/migrations/20251107093903_28a32d0e-b78e-4906-b5f1-eff66444c43f.sql",
+      "sha256": "6f7d62f96d1e2a66bfb182838ad2a01d8a2946f286b80c1e8b93e3d33caa579f"
+    },
+    {
+      "path": "supabase/migrations/20260326053133_6e1801f2-f181-45fd-9412-83abc13bdbc2.sql",
+      "sha256": "82a7e0941d78589945491d274716428ad2c062cbc69823f5946a1c5c900c9780"
+    },
+    {
+      "path": "supabase/migrations/20260604070000_create_liquid_intelligence_queries.sql",
+      "sha256": "7219bd02ba14e08cb831214f6a9c632ce495a169fe7d9729db3c4df8d7c48169"
+    },
+    {
+      "path": "supabase/migrations/20260608090000_winerim_v4_1_classifier.sql",
+      "sha256": "985de322945fb4197fa023295b8a35fe5914a2b8bfae25f99cd322e9d911ad18"
+    },
+    {
+      "path": "supabase/migrations/20260608100000_harden_security_policies.sql",
+      "sha256": "f48680606c516331e91a6867b1e6bff5f38e0fc1e965d6fd107c59fef16485af"
+    },
+    {
+      "path": "supabase/migrations/20260608110000_create_matchrim_restaurant_sessions.sql",
+      "sha256": "4d4bc310a1eefc3955c800a991c1844dc89273df21e3cab044bbb4d7f75092ab"
+    },
+    {
+      "path": "supabase/migrations/20260609024534_4871f375-d82f-4c00-bcc4-6ab705dc532b.sql",
+      "sha256": "bfeab760237235aa402833d8419efc0555ae2c132c6c9503b45daa0def9c22b6"
+    },
+    {
+      "path": "supabase/migrations/20260609081813_d3f32056-50df-4793-bf3a-4662886939d6.sql",
+      "sha256": "ec83694be1583ab7cb6c8a837e26b844fe748e372669b514319d2b832f36377b"
+    },
+    {
+      "path": "supabase/migrations/20260609120000_create_account_deletion_requests.sql",
+      "sha256": "dfee008ade1ceb7662d760f6584a82cce0da57c6b6894a4aa8c60eb844405fb7"
+    },
+    {
+      "path": "supabase/migrations/20260610104500_fix_account_deletion_request_policies.sql",
+      "sha256": "c20d59c803ac7b3e1aaac24aeefafcd9e5573580dc014f59911c6faebfee2363"
+    },
+    {
+      "path": "supabase/migrations/20260610110429_f496f621-320a-4d63-80b5-1ef72a744f85.sql",
+      "sha256": "d7f553e0851d0b4fcbafa6a1090cc072948d6f1610bff541158476bcbec7cf98"
+    },
+    {
+      "path": "supabase/migrations/20260611140847_b45644d3-8c88-409d-84e4-b76c814c1143.sql",
+      "sha256": "4deaeaab843f23bd9ced11e8e408d74b09bf81645f6a8c490128bbc455bf6b5c"
+    },
+    {
+      "path": "supabase/migrations/20260615043623_bdefc029-536e-4e17-9514-777ea551385d.sql",
+      "sha256": "60046e973de2cf6a228994497feef51891ea8146af8d0085b38abe1bc104d630"
+    },
+    {
+      "path": "supabase/migrations/20260622045359_1ffa3391-fa3d-4550-b2fd-3544c2557ec9.sql",
+      "sha256": "5309cb08432ec32d5c3722e00d219a2adf088718f8325ad612f4b6a166f381b9"
+    },
+    {
+      "path": "supabase/migrations/20260929040430_matchrim_user_wines_canonical_identity.sql",
+      "sha256": "05882b0aec4dc47c2537a2b66724d2b0dc4d33a4076a169350cca237482ad68f"
+    },
+    {
+      "path": "supabase/migrations/20261005062000_restaurant_signal_consent.sql",
+      "sha256": "6a330dd5a3b3b2d3d50a6e5b9c43ad8f966c0a98495d6601c9234d045f79efd3"
+    },
+    {
+      "path": "tsconfig.app.json",
+      "sha256": "b358b1b595f2c31d2d4461046fa57ae416283072909bcfa13feb14d41124978c"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "74e962686f891ab9e535d8f9fcea9fd4166f4a73bf99f0001c126457d184159c"
+    }
+  ],
+  "photosTransferred": 0,
+  "rawHeapSnapshotsTransferred": 0,
+  "deploy": false
+}

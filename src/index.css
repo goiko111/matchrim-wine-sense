@@ -49,6 +49,38 @@ body {
   pointer-events: none;
 }
 
+[data-sonner-toaster].matchrim-notices[data-y-position="top"] {
+  top: calc(var(--matchrim-safe-top) + 12px);
+}
+
+[data-sonner-toaster].matchrim-notices [data-sonner-toast] {
+  font-size: 0.875rem;
+  max-height: calc(100dvh - var(--matchrim-safe-top) - var(--matchrim-safe-bottom) - 8rem);
+  overflow-y: auto;
+}
+
+[data-sonner-toaster].matchrim-notices [data-close-button] {
+  min-width: 44px;
+  min-height: 44px;
+  position: static;
+  transform: none;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matchrim-quick-guide[data-state] {
+    animation: none !important;
+    transition: none !important;
+  }
+  [data-sonner-toaster].matchrim-notices [data-sonner-toast] {
+    transition: none;
+  }
+}
+
+.matchrim-quick-guide {
+  transition-property: none;
+}
+
 .matchrim-accessibility-text .affinity-dimension-row {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
@@ -119,7 +151,7 @@ body {
   }
 
   html.matchrim-native-platform .matchrim-native-tab-bar > div {
-    height: 3.5rem;
+    min-height: 3.5rem;
   }
 
   html.matchrim-native-platform .matchrim-native-tab-bar a {

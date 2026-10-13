@@ -808,7 +808,7 @@ const Profile = () => {
                           <span>Confianza</span>
                           <span>{learnedProfile.confidence}%</span>
                         </div>
-                        <Progress value={learnedProfile.confidence} className="h-2" />
+                        <Progress value={learnedProfile.confidence} role="meter" aria-label="Confianza del perfil aprendido" className="h-2" />
                       </div>
                     </div>
                   </CardContent>

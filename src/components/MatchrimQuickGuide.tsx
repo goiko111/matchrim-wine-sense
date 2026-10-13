@@ -4,46 +4,57 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { finishMatchrimOnboarding, recordOnboardingEvent, shouldShowMatchrimOnboarding } from '@/utils/matchrimOnboarding';
+import { MAX_AUTOMATIC_REGION_ANALYSES } from '@/utils/scanAnalysisPolicy';
 
 const steps = [
   { title: '¿Qué tienes delante?', text: 'Una botella, varias etiquetas o una carta. Si prefieres empezar por un plato, ve a aiRIM.' },
-  { title: 'Revisa cada etiqueta', text: 'Toca un número para revisar el vino. Corrige el nombre, descarta objetos o acerca solo la zona que no se lea. En una carta, comprueba también añada, precio y copa o botella.' },
-  { title: 'Lee las tres señales', text: 'La detección localiza una etiqueta. La identidad indica cuánto sabemos de su nombre. La afinidad compara sus datos con tu perfil y tiene su propio respaldo. Sin datos suficientes, queda pendiente.' },
-  { title: 'Guardar no es puntuar', text: 'Guarda lo que quieras recordar en Bodega. Puntúa cuando lo hayas probado y elige si esa valoración puede ajustar tu perfil. Editar o borrar una valoración cambia esa evidencia.' },
-  { title: 'Compara antes de elegir', text: 'Elige de dos a cinco vinos y revisa coincidencias, posibles fricciones y datos faltantes. Añade plato y presupuesto; un precio sin moneda o un dato inferido necesita revisión.' },
+  { title: 'Revisa cada etiqueta', text: `Toca un número para revisar o corregir el vino. Se analizan hasta ${MAX_AUTOMATIC_REGION_ANALYSES} regiones automáticamente; otras quedan aplazadas por límite o calidad. Acerca una zona o analízala por separado. Detectar una región no significa haberla analizado ni identificado.` },
+  { title: 'Lee las tres señales', text: 'Detección, identidad y afinidad son señales distintas. Sin ficha sensorial suficiente, puedes reconocer y revisar vinos sin porcentaje. La afinidad compara datos del vino con tu perfil; si falta evidencia, queda pendiente.' },
+  { title: 'Guardar no es puntuar', text: 'Espera la confirmación de guardado antes de darlo por hecho. Si falla, revisa el aviso y reintenta. Puntúa cuando lo hayas probado y elige si esa valoración puede ajustar tu perfil. Favorito destaca el vino ya guardado.' },
+  { title: 'Compara antes de elegir', text: 'Elige de dos a cinco vinos y revisa coincidencias, fricciones y datos faltantes. Comprueba añada, precio y copa o botella. Las ideas para platos son hipótesis de maridaje: tus gustos en vino no determinan tus preferencias de comida.' },
   { title: 'Vuelve a tu selección', text: 'En Bodega tienes tus vinos probados y pendientes. aiRIM está en el menú principal: lleva allí tu plato, ocasión y presupuesto. Puedes reabrir esta guía desde Ayuda.' },
 ];
 
-export default function MatchrimQuickGuide({ existing }: { existing: boolean }) {
+export default function MatchrimQuickGuide({ existing, ownerId = null, ready = true }: { existing: boolean; ownerId?: string | null; ready?: boolean }) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(() => shouldShowMatchrimOnboarding(existing));
+  const [open, setOpen] = useState(false);
+  const decidedRef = useRef(false);
   const [step, setStep] = useState(0);
   const [target, setTarget] = useState('/escanear/etiqueta');
   const [started, setStarted] = useState(false);
   const [exampleName, setExampleName] = useState('Vino de ejemplo');
   const [exampleConfirmed, setExampleConfirmed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const helpRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!ready || decidedRef.current) return;
+    decidedRef.current = true;
+    setOpen(shouldShowMatchrimOnboarding(existing, ownerId));
+  }, [ready, existing, ownerId]);
   useEffect(() => { contentRef.current?.scrollTo({ top: 0 }); }, [step, open]);
   const close = () => {
-    finishMatchrimOnboarding('skipped');
-    recordOnboardingEvent('skipped', step);
+    decidedRef.current = true;
+    finishMatchrimOnboarding('skipped', ownerId);
+    recordOnboardingEvent('skipped', step, ownerId);
     setOpen(false);
   };
   const complete = (route: string) => {
-    finishMatchrimOnboarding('completed');
-    recordOnboardingEvent('completed', step);
+    finishMatchrimOnboarding('completed', ownerId);
+    recordOnboardingEvent('completed', step, ownerId);
     setOpen(false);
     navigate(route);
   };
   return (
     <>
-      <Button variant="ghost" className="min-h-11 gap-2 text-slate-700" onClick={() => {
-        setStep(0); setExampleConfirmed(false); setExampleName('Vino de ejemplo'); setOpen(true); recordOnboardingEvent('reopened', 0);
+      <Button ref={helpRef} variant="ghost" className="min-h-11 gap-2 text-slate-700" onClick={() => {
+        decidedRef.current = true;
+        setStep(0); setExampleConfirmed(false); setExampleName('Vino de ejemplo'); setOpen(true); recordOnboardingEvent('reopened', 0, ownerId);
       }} aria-label="Ayuda: abrir guía de Matchrim"><CircleHelp className="h-5 w-5" />Ayuda</Button>
       <Dialog open={open} onOpenChange={(value) => { if (!value) close(); }}>
         <DialogContent
           className="matchrim-quick-guide flex w-[calc(100%_-_2rem)] max-w-md max-h-[calc(100dvh_-_8rem)] flex-col overflow-hidden rounded-lg p-6 motion-reduce:animate-none [&>button:last-child]:h-11 [&>button:last-child]:w-11 [&>button:last-child]:right-1 [&>button:last-child]:top-1"
-          onOpenAutoFocus={() => { if (!started) { recordOnboardingEvent('started', 0); setStarted(true); } }}
+          onOpenAutoFocus={() => { if (!started) { recordOnboardingEvent('started', 0, ownerId); setStarted(true); } }}
+          onCloseAutoFocus={(event) => { event.preventDefault(); helpRef.current?.focus(); }}
         >
           <p className="text-sm font-semibold text-red-800" role="status" aria-live="polite">Matchrim · {step + 1} de {steps.length}</p>
           <div ref={contentRef} className="min-h-0 space-y-4 overflow-y-auto overscroll-contain" data-testid="matchrim-guide-content">
@@ -79,7 +90,7 @@ export default function MatchrimQuickGuide({ existing }: { existing: boolean }) 
               {step > 0 && <Button variant="outline" size="icon" className="h-11 w-11" aria-label="Paso anterior" title="Anterior" onClick={() => setStep(step - 1)}><ArrowLeft className="h-4 w-4" /></Button>}
               <Button className="min-h-11 gap-2 bg-red-900 hover:bg-red-950" onClick={() => {
                 if (step === steps.length - 1) complete(target);
-                else { setStep(step + 1); recordOnboardingEvent('step', step + 1); }
+                else { setStep(step + 1); recordOnboardingEvent('step', step + 1, ownerId); }
               }}>{step === steps.length - 1 ? 'Empezar' : 'Continuar'}<ArrowRight className="h-4 w-4" /></Button>
             </div>
           </div>

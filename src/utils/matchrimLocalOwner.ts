@@ -4,6 +4,15 @@ const PRIVATE_KEYS = [
   'matchrim.scan_history.v1',
 ];
 
+// Local cache ownership only; this is not server authorization.
+export const isMatchrimLocalOwner = (userId: string | null): boolean => {
+  try {
+    return localStorage.getItem(OWNER_KEY) === (userId || 'anonymous');
+  } catch {
+    return false;
+  }
+};
+
 export const reconcileMatchrimLocalOwner = (userId: string | null, signedOut = false) => {
   try {
     const owner = localStorage.getItem(OWNER_KEY);
@@ -11,6 +20,12 @@ export const reconcileMatchrimLocalOwner = (userId: string | null, signedOut = f
     // Never silently import another account's cached taste or scan history.
     if (signedOut || (owner !== null && owner !== next) || (owner === null && userId)) {
       PRIVATE_KEYS.forEach(key => localStorage.removeItem(key));
+      const feedbackKeys: string[] = [];
+      for (let index = 0; index < localStorage.length; index += 1) {
+        const key = localStorage.key(index);
+        if (key?.startsWith('matchrim.affinity_feedback.')) feedbackKeys.push(key);
+      }
+      feedbackKeys.forEach(key => localStorage.removeItem(key));
       if (typeof window !== 'undefined') window.dispatchEvent(new Event('matchrim:scan-history-updated'));
     }
     localStorage.setItem(OWNER_KEY, next);

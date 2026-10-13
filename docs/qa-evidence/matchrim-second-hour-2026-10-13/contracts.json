@@ -1,0 +1,294 @@
+{
+  "scope": "Local caption and immutable scoring/provenance contracts; synthetic numeric cases, not human preference or model evidence",
+  "baseline": "3ad38f28badb59c03a1217c0ed1deb1a1581421a",
+  "checks": [
+    {
+      "name": "No valid affinity remains pending: undefined",
+      "passed": true
+    },
+    {
+      "name": "No valid affinity remains pending: null",
+      "passed": true
+    },
+    {
+      "name": "No valid affinity remains pending: NaN",
+      "passed": true
+    },
+    {
+      "name": "No valid affinity remains pending: Infinity",
+      "passed": true
+    },
+    {
+      "name": "No valid affinity remains pending: -1",
+      "passed": true
+    },
+    {
+      "name": "No valid affinity remains pending: 101",
+      "passed": true
+    },
+    {
+      "name": "Existing finite affinity is preserved, not pending: 0",
+      "passed": true
+    },
+    {
+      "name": "Existing finite affinity is preserved, not pending: 1",
+      "passed": true
+    },
+    {
+      "name": "Existing finite affinity is preserved, not pending: 82",
+      "passed": true
+    },
+    {
+      "name": "Existing finite affinity is preserved, not pending: 100",
+      "passed": true
+    },
+    {
+      "name": "Confirmation retains synthetic prior affinity and describes it truthfully: null",
+      "passed": true
+    },
+    {
+      "name": "Confirmation retains synthetic prior affinity and describes it truthfully: 0",
+      "passed": true
+    },
+    {
+      "name": "Confirmation retains synthetic prior affinity and describes it truthfully: 82",
+      "passed": true
+    },
+    {
+      "name": "Correction clears prior score and notice becomes pending",
+      "passed": true
+    },
+    {
+      "name": "Typed local image error: read",
+      "passed": true
+    },
+    {
+      "name": "Typed local image error: decode",
+      "passed": true
+    },
+    {
+      "name": "Typed local image error: prepare",
+      "passed": true
+    },
+    {
+      "name": "Dependency lock changes only Sonner, with exact publication integrity",
+      "passed": true
+    },
+    {
+      "name": "Installed document listener cleanup uses matching target",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/App.css",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/AccountNotifications.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/AiRimContextGuide.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/WineStylesCSVImporter.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/csv/ImportProgress.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/ui/drawer.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/ui/progress.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/wine-import/FoodPairingScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/wine-import/WineLabelOCRImport.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/wine-import/WineMenuScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/contexts/AuthContext.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/index.css",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/pages/MyWines.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/pages/Profile.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/services/matchrimScanProfile.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/services/winerimApi.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/edgeFunctionResilience.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/imageCropGeometry.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/invokeEdgeFunction.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/labelScanSave.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/matchrimEdgeRouting.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/matchrimLearning.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/matchrimQaMode.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/menuAffinityPresentation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/menuCatalogAwait.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/menuProfileRecovery.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/menuWineActions.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/menuWineSave.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/regionAnalysisError.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/scanAnalysisPolicy.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/scanConfidence.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/scanHistory.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/scanProfile.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/scanWineEvidence.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/wineMenuScan.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/multiWineScan.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/scanRegionProgress.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/aiRimContextGuide.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/utils/wineComparison.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/AffinityExplanation.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source remains unchanged: src/components/wine-import/WineComparisonWorkspace.tsx",
+      "passed": true
+    }
+  ],
+  "protectedPaths": [
+    "src/App.css",
+    "src/components/AccountNotifications.tsx",
+    "src/components/AiRimContextGuide.tsx",
+    "src/components/WineStylesCSVImporter.tsx",
+    "src/components/csv/ImportProgress.tsx",
+    "src/components/ui/drawer.tsx",
+    "src/components/ui/progress.tsx",
+    "src/components/wine-import/FoodPairingScanner.tsx",
+    "src/components/wine-import/WineLabelOCRImport.tsx",
+    "src/components/wine-import/WineMenuScanner.tsx",
+    "src/contexts/AuthContext.tsx",
+    "src/index.css",
+    "src/pages/MyWines.tsx",
+    "src/pages/Profile.tsx",
+    "src/services/matchrimScanProfile.ts",
+    "src/services/winerimApi.ts",
+    "src/utils/edgeFunctionResilience.ts",
+    "src/utils/imageCropGeometry.ts",
+    "src/utils/invokeEdgeFunction.ts",
+    "src/utils/labelScanSave.ts",
+    "src/utils/matchrimEdgeRouting.ts",
+    "src/utils/matchrimLearning.ts",
+    "src/utils/matchrimQaMode.ts",
+    "src/utils/menuAffinityPresentation.ts",
+    "src/utils/menuCatalogAwait.ts",
+    "src/utils/menuProfileRecovery.ts",
+    "src/utils/menuWineActions.ts",
+    "src/utils/menuWineSave.ts",
+    "src/utils/regionAnalysisError.ts",
+    "src/utils/scanAnalysisPolicy.ts",
+    "src/utils/scanConfidence.ts",
+    "src/utils/scanHistory.ts",
+    "src/utils/scanProfile.ts",
+    "src/utils/scanWineEvidence.ts",
+    "src/utils/wineAffinityExplanation.ts",
+    "src/utils/wineMenuScan.ts",
+    "src/utils/multiWineScan.ts",
+    "src/utils/scanRegionProgress.ts",
+    "src/utils/aiRimContextGuide.ts",
+    "src/utils/wineComparison.ts",
+    "src/components/AffinityExplanation.tsx",
+    "src/components/wine-import/WineComparisonWorkspace.tsx"
+  ]
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AppNav from "@/components/AppNav";
@@ -19,6 +19,8 @@ import type { Json } from "@/integrations/supabase/types";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
+import { confirmsWineMutation } from '@/utils/matchrimWineMutation';
+import { hasStoredMenuCatalogEvidence, readMenuPrice } from '@/utils/menuWineSave';
 import { toast } from "sonner";
 import {
   Wine,
@@ -79,6 +81,7 @@ interface UserWine {
   quantity: number | null;
   price: number | null;
   place_details: Json | null;
+  menu_price_view?: ReturnType<typeof readMenuPrice>;
 }
 
 interface LearningWine {
@@ -90,6 +93,7 @@ interface LearningWine {
   grape_varieties: string[] | null;
   status: 'collection' | 'wishlist' | 'tasted';
   created_at: string;
+  place_details: Json | null;
 }
 
 interface ExtractedWineData {
@@ -191,11 +195,22 @@ const normalizeAffinity = (value: unknown) => {
   return Math.max(0, Math.min(100, Math.round(numeric)));
 };
 
-const normalizeUserWine = (wine: UserWine): UserWine => ({
-  ...wine,
-  matchrim_affinity: normalizeAffinity(wine.matchrim_affinity),
-  sensory_attributes: normalizeSensoryAttributesTo5(wine.sensory_attributes),
-});
+const normalizeUserWine = (wine: UserWine): UserWine => {
+  const menuPrice = readMenuPrice(wine.place_details, wine.price);
+  const catalog = !menuPrice || hasStoredMenuCatalogEvidence(wine.place_details);
+  const trace = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
+    ? wine.place_details.menu_wine_evidence : null;
+  const calibrated = !menuPrice || (trace && typeof trace === 'object' && !Array.isArray(trace) && trace.affinity_calibrated === true);
+  const sensory = catalog ? normalizeSensoryAttributesTo5(wine.sensory_attributes) : null;
+  return {
+    ...wine,
+    price: menuPrice ? menuPrice.price : wine.price,
+    menu_price_view: menuPrice,
+    matchrim_affinity: catalog && calibrated && (!menuPrice || sensory) ? normalizeAffinity(wine.matchrim_affinity) : null,
+    sensory_attributes: sensory,
+    use_for_profile_training: wine.use_for_profile_training && catalog && (!menuPrice || wine.rating !== null),
+  };
+};
 
 const getStoredAffinityTrace = (wine: UserWine) => {
   if (!wine.place_details || typeof wine.place_details !== 'object' || Array.isArray(wine.place_details)) return null;
@@ -210,7 +225,7 @@ const getStoredAffinityTrace = (wine: UserWine) => {
   };
 };
 
-const MyWines = () => {
+const MyWinesForOwner = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -222,6 +237,32 @@ const MyWines = () => {
   const [filteredWines, setFilteredWines] = useState<UserWine[]>([]);
   const [loading, setLoading] = useState(true);
   const [wineLoadFailed, setWineLoadFailed] = useState(false);
+  const wineLoadController = useRef<AbortController | null>(null);
+  const countLoadController = useRef<AbortController | null>(null);
+  const learningLoadController = useRef<AbortController | null>(null);
+  const ownerLifetime = useRef({ active: false, generation: 0 });
+  const pendingFavorites = useRef(new Set<string>());
+  const [savingFavorites, setSavingFavorites] = useState<Set<string>>(new Set());
+  const pendingWineActions = useRef(new Set<string>());
+  const [savingWineActions, setSavingWineActions] = useState<Set<string>>(new Set());
+  const wineLoadErrorRef = useRef<HTMLDivElement>(null);
+  const currentOwner = useRef(user?.id);
+  currentOwner.current = user?.id;
+  useLayoutEffect(() => {
+    const lifetime = ownerLifetime.current;
+    lifetime.active = true;
+    lifetime.generation += 1;
+    return () => {
+      lifetime.active = false;
+      lifetime.generation += 1;
+      wineLoadController.current?.abort();
+      countLoadController.current?.abort();
+      learningLoadController.current?.abort();
+    };
+  }, []);
+  useEffect(() => {
+    if (wineLoadFailed && !loading) wineLoadErrorRef.current?.scrollIntoView({ block: 'center', behavior: 'instant' });
+  }, [wineLoadFailed, loading]);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -298,11 +339,16 @@ const MyWines = () => {
 	      return;
 	    }
 	    loadWines();
+	    return () => {
+        wineLoadController.current?.abort();
+        countLoadController.current?.abort();
+      };
 	  }, [authLoading, user, navigate, statusFilter]);
 
 	  useEffect(() => {
 	    if (authLoading || !user) return;
 	    loadLearningWines();
+	    return () => { learningLoadController.current?.abort(); };
 	  }, [authLoading, user]);
 
   useEffect(() => {
@@ -376,34 +422,56 @@ const MyWines = () => {
   };
 
   const loadSectionCounts = async () => {
-    if (!user) return;
+    if (!user || !ownerLifetime.current.active) return;
+    const generation = ownerLifetime.current.generation;
+    countLoadController.current?.abort();
+    const controller = new AbortController();
+    countLoadController.current = controller;
+    const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+      && countLoadController.current === controller && !controller.signal.aborted;
 
     try {
       const { data, error } = await supabase
         .from("user_wines")
         .select("id, status, rating, is_favorite")
-        .eq("user_id", user.id);
+        .eq("user_id", user.id)
+        .abortSignal(controller.signal);
 
+      if (!isCurrent()) return;
       if (error) throw error;
 
       const rows = ((data as WineSectionCountRow[]) || []);
       setSectionCounts({
         collection: rows.filter((wine) => wine.status === 'collection').length,
         wishlist: rows.filter((wine) => wine.status === 'wishlist').length,
-        tasted: rows.filter((wine) => Boolean(wine.rating)).length,
+        tasted: rows.filter((wine) => wine.status === 'tasted' || Boolean(wine.rating)).length,
         favorites: rows.filter((wine) => Boolean(wine.is_favorite)).length,
         rejected: rows.filter((wine) => wine.rating === 'not_for_me').length,
       });
     } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error loading wine section counts:", error);
     }
   };
 
 	  const loadWines = async () => {
+	    const ownerId = user?.id;
+      if (!ownerId || !ownerLifetime.current.active) return;
+      const generation = ownerLifetime.current.generation;
+      wineLoadController.current?.abort();
+      // Counts belong to the latest list refresh, even while that list is pending.
+      countLoadController.current?.abort();
+      const controller = new AbortController();
+      wineLoadController.current = controller;
+      let timedOut = false;
+      const deadline = window.setTimeout(() => { timedOut = true; controller.abort(); }, 10000);
+      const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+        && currentOwner.current === ownerId && wineLoadController.current === controller
+        && (!controller.signal.aborted || timedOut);
 	    setLoading(true);
       setWineLoadFailed(false);
 	    try {
-	      let query = supabase.from("user_wines").select("*").eq("user_id", user!.id);
+	      let query = supabase.from("user_wines").select("*").eq("user_id", ownerId);
       
       // Filter based on status
       if (statusFilter === 'favorites') {
@@ -415,41 +483,55 @@ const MyWines = () => {
       } else if (statusFilter === 'wishlist') {
         query = query.eq("status", "wishlist");
       } else if (statusFilter === 'tasted') {
-        // Ya Probados shows all wines with a rating, regardless of status
-        query = query.not("rating", "is", null);
+        // A tasted declaration remains visible without inventing a rating.
+        query = query.or('status.eq.tasted,rating.not.is.null');
       }
       
-      const { data, error } = await query.order("created_at", { ascending: false });
+      const { data, error } = await query.order("created_at", { ascending: false }).abortSignal(controller.signal);
 
+      if (!isCurrent()) return;
       if (error) throw error;
       setWines(((data as UserWine[]) || []).map(normalizeUserWine));
       void loadSectionCounts();
     } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error loading wines:", error);
       setWineLoadFailed(true);
-      toast.error("Error al cargar tus vinos");
     } finally {
-	      setLoading(false);
+        window.clearTimeout(deadline);
+	      if (isCurrent()) setLoading(false);
 	    }
 	  };
 
 	  const loadLearningWines = async () => {
-	    if (!user) return;
+	    if (!user || !ownerLifetime.current.active) return;
+      const generation = ownerLifetime.current.generation;
+      learningLoadController.current?.abort();
+      const controller = new AbortController();
+      learningLoadController.current = controller;
+      const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+        && learningLoadController.current === controller && !controller.signal.aborted;
 
 	    try {
 	      const { data, error } = await supabase
 	        .from("user_wines")
-	        .select("id, name, rating, sensory_attributes, use_for_profile_training, grape_varieties, status, created_at")
+	        .select("id, name, rating, sensory_attributes, use_for_profile_training, grape_varieties, status, created_at, place_details")
 	        .eq("user_id", user.id)
 	        .not("rating", "is", null)
-	        .order("created_at", { ascending: false });
+	        .order("created_at", { ascending: false })
+          .abortSignal(controller.signal);
 
+	      if (!isCurrent()) return;
 	      if (error) throw error;
 	      setLearningWines(((data as LearningWine[]) || []).map((wine) => ({
 	        ...wine,
-	        sensory_attributes: normalizeSensoryAttributesTo5(wine.sensory_attributes),
+	        sensory_attributes: readMenuPrice(wine.place_details, null) && !hasStoredMenuCatalogEvidence(wine.place_details)
+            ? null : normalizeSensoryAttributesTo5(wine.sensory_attributes),
+	        use_for_profile_training: wine.use_for_profile_training && (!readMenuPrice(wine.place_details, null)
+            || hasStoredMenuCatalogEvidence(wine.place_details)),
 	      })));
 	    } catch (error) {
+        if (!isCurrent()) return;
 	      console.error("Error loading learning wines:", error);
 	    }
 	  };
@@ -733,24 +815,56 @@ const MyWines = () => {
   };
 
   const handleToggleFavorite = async (wineId: string, currentFavorite: boolean) => {
+    const ownerId = user?.id;
+    if (!ownerId || !ownerLifetime.current.active || pendingFavorites.current.has(wineId)) return;
+    const generation = ownerLifetime.current.generation;
+    const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+      && currentOwner.current === ownerId;
+    pendingFavorites.current.add(wineId);
+    setSavingFavorites(new Set(pendingFavorites.current));
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("user_wines")
         .update({ is_favorite: !currentFavorite })
         .eq("id", wineId)
-        .eq("user_id", user!.id);
+        .eq("user_id", ownerId).select('id').single();
 
+      if (!isCurrent()) return;
       if (error) throw error;
+      if (!data?.id) throw new Error('Favorite update not confirmed');
 
       toast.success(currentFavorite ? "Eliminado de Favoritos" : "Añadido a Mis vinos > Favoritos");
       loadWines();
     } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error toggling favorite:", error);
       toast.error("Error al actualizar favorito");
+    } finally {
+      pendingFavorites.current.delete(wineId);
+      if (isCurrent()) setSavingFavorites(new Set(pendingFavorites.current));
     }
   };
 
+  const beginWineAction = (wineId: string) => {
+    const ownerId = user?.id;
+    if (!ownerId || !ownerLifetime.current.active || pendingWineActions.current.has(wineId)) return null;
+    const generation = ownerLifetime.current.generation;
+    const isCurrent = () => ownerLifetime.current.active && ownerLifetime.current.generation === generation
+      && currentOwner.current === ownerId;
+    pendingWineActions.current.add(wineId);
+    setSavingWineActions(new Set(pendingWineActions.current));
+    return {
+      ownerId,
+      isCurrent,
+      finish: () => {
+        pendingWineActions.current.delete(wineId);
+        if (isCurrent()) setSavingWineActions(new Set(pendingWineActions.current));
+      },
+    };
+  };
+
   const handleToggleProfileTraining = async (wineId: string, nextValue: boolean) => {
+    if (!ownerLifetime.current.active) return;
     const wine = wines.find((item) => item.id === wineId);
 
     if (!wine?.rating) {
@@ -763,14 +877,21 @@ const MyWines = () => {
       return;
     }
 
+    const action = beginWineAction(wineId);
+    if (!action) return;
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("user_wines")
         .update({ use_for_profile_training: nextValue })
         .eq("id", wineId)
-        .eq("user_id", user!.id);
+        .eq("user_id", action.ownerId)
+        .select('id, use_for_profile_training').single();
 
+      if (!action.isCurrent()) return;
       if (error) throw error;
+      if (!confirmsWineMutation(data, wineId, { use_for_profile_training: nextValue })) {
+        throw new Error('Training update not confirmed');
+      }
 
       setWines((currentWines) =>
         currentWines.map((item) =>
@@ -781,19 +902,29 @@ const MyWines = () => {
 	      toast.success(nextValue ? "Este vino volverá a afinar tu perfil" : "Este vino ya no entrena tu perfil");
 	      loadLearningWines();
 	    } catch (error) {
+      if (!action.isCurrent()) return;
       console.error("Error toggling profile training:", error);
-      toast.error("No se pudo actualizar el entrenamiento del perfil");
+      toast.error("No se pudo confirmar el cambio de entrenamiento del perfil");
+    } finally {
+      action.finish();
     }
   };
 
-  const pendingRatings = useRef(new Set<string>());
   const handleRating = async (wineId: string, rating: 'love' | 'ok' | 'not_for_me' | null) => {
-    if (pendingRatings.current.has(wineId)) return;
-    pendingRatings.current.add(wineId);
+    const action = beginWineAction(wineId);
+    if (!action) return;
     try {
       const wine = wines.find(w => w.id === wineId);
+      if (!wine) throw new Error('Wine unavailable for rating');
+      const hasSensoryAttributes = Boolean(normalizeSensoryAttributesTo5(wine.sensory_attributes));
       
-      const updateData: any = { rating, use_for_profile_training: rating !== null };
+      const updateData: {
+        rating: typeof rating;
+        use_for_profile_training: boolean;
+        status?: 'tasted';
+        consumption_date?: string;
+        quantity?: number;
+      } = { rating, use_for_profile_training: rating !== null && (!readMenuPrice(wine.place_details, wine.price) || hasSensoryAttributes) };
       
       if (rating && wine?.status === 'wishlist') {
         updateData.status = 'tasted';
@@ -809,33 +940,38 @@ const MyWines = () => {
         }
       }
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("user_wines")
         .update(updateData)
         .eq("id", wineId)
-        .eq("user_id", user!.id);
+        .eq("user_id", action.ownerId)
+        .select('id, rating, use_for_profile_training, status, quantity, consumption_date').single();
 
+      if (!action.isCurrent()) return;
       if (error) throw error;
+      if (!confirmsWineMutation(data, wineId, updateData)) throw new Error('Rating update not confirmed');
 
       const message = wine?.status === 'collection' && !wine.rating
         ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' y movido a Ya Probados'}`
-        : wine?.status === 'wishlist'
-          ? 'Vino movido a Ya Probados y usado para afinar tu perfil'
+        : rating && wine.status === 'wishlist'
+          ? 'Vino movido a Ya Probados'
           : "Valoración guardada";
       
-      toast.success(message);
+      toast.success(rating && !hasSensoryAttributes
+        ? `${message}. Faltan atributos sensoriales para afinar tu perfil.`
+        : message);
       trackAppEvent("wine_rating_added", {
-        userId: user!.id,
+        userId: action.ownerId,
         metadata: {
           wine_id: wineId,
           rating,
           previous_status: wine?.status || null,
-          has_sensory_attributes: Boolean(wine?.sensory_attributes),
+          has_sensory_attributes: hasSensoryAttributes,
         },
       });
-      if (wine?.sensory_attributes) {
+      if (hasSensoryAttributes) {
         trackAppEvent("profile_learning_updated", {
-          userId: user!.id,
+          userId: action.ownerId,
           metadata: {
             wine_id: wineId,
             rating,
@@ -852,35 +988,48 @@ const MyWines = () => {
           body: { wine_id: wineId }
         })
         .then(({ error }) => {
-          if (error) {
+          if (action.isCurrent() && error) {
             console.error("Error recalculating affinity after rating:", error);
           }
         });
 
 	      await loadWines();
+	      if (!action.isCurrent()) return;
 	      await loadLearningWines();
     } catch (error) {
+      if (!action.isCurrent()) return;
       console.error("Error rating wine:", error);
-      toast.error("Error al guardar valoración");
+      toast.error("No se pudo confirmar la valoración");
     } finally {
-      pendingRatings.current.delete(wineId);
+      action.finish();
     }
   };
 
   const handleDeleteWine = async (id: string) => {
-    if (!confirm("¿Estás seguro de eliminar este vino?")) return;
+    const action = beginWineAction(id);
+    if (!action) return;
+    if (!confirm("¿Estás seguro de eliminar este vino?")) {
+      action.finish();
+      return;
+    }
 
     try {
-      const { error } = await supabase.from("user_wines").delete().eq("id", id).eq("user_id", user!.id);
+      const { data, error } = await supabase.from("user_wines").delete().eq("id", id)
+        .eq("user_id", action.ownerId).select('id').single();
 
+      if (!action.isCurrent()) return;
       if (error) throw error;
+      if (!confirmsWineMutation(data, id)) throw new Error('Wine deletion not confirmed');
 
 	      toast.success("Vino eliminado");
 	      loadWines();
 	      loadLearningWines();
 	    } catch (error) {
+      if (!action.isCurrent()) return;
       console.error("Error deleting wine:", error);
-      toast.error("Error al eliminar el vino");
+      toast.error("No se pudo confirmar la eliminación del vino");
+    } finally {
+      action.finish();
     }
   };
 
@@ -1125,7 +1274,7 @@ const MyWines = () => {
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
       <AppNav />
 
-      <main className="matchrim-native-page-top matchrim-native-page-x mx-auto max-w-7xl pb-8">
+      <main className="matchrim-native-page-top matchrim-native-page-x mx-auto max-w-7xl pb-8 [overflow-wrap:anywhere]">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">Mis Vinos</h1>
           <p className="text-muted-foreground">
@@ -1135,8 +1284,8 @@ const MyWines = () => {
 
         <div className="space-y-6">
           <Card className="border-red-100 bg-white">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex flex-wrap items-center gap-2">
                 <Plus className="h-5 w-5 text-red-900" />
                 Añadir o encontrar vinos
               </CardTitle>
@@ -1144,15 +1293,15 @@ const MyWines = () => {
                 Elige una acción. Favoritos es una vista transversal: un vino puede seguir en Bodega, Quiero Probar o Ya Probados y aparecer también en Favoritos.
               </CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-3 md:grid-cols-4">
+            <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3 p-4 pt-0 sm:p-6 sm:pt-0">
               <Button
                 type="button"
                 variant="outline"
-                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                className="matchrim-pressable h-auto min-h-11 min-w-0 justify-start gap-3 whitespace-normal p-4 text-left"
                 onClick={() => navigate('/escanear/etiqueta')}
               >
                 <ScanLine className="h-5 w-5 shrink-0 text-red-900" />
-                <span>
+                <span className="min-w-0 break-words">
                   <span className="block font-semibold">Escanear etiqueta</span>
                   <span className="block text-xs font-normal text-muted-foreground">Identificar y guardar</span>
                 </span>
@@ -1160,11 +1309,11 @@ const MyWines = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                className="matchrim-pressable h-auto min-h-11 min-w-0 justify-start gap-3 whitespace-normal p-4 text-left"
                 onClick={() => navigate('/escanear/carta-vinos')}
               >
                 <Search className="h-5 w-5 shrink-0 text-red-900" />
-                <span>
+                <span className="min-w-0 break-words">
                   <span className="block font-semibold">Escanear carta</span>
                   <span className="block text-xs font-normal text-muted-foreground">Encontrar candidatos</span>
                 </span>
@@ -1172,18 +1321,18 @@ const MyWines = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="matchrim-pressable h-auto justify-start gap-3 p-4 text-left"
+                className="matchrim-pressable h-auto min-h-11 min-w-0 justify-start gap-3 whitespace-normal p-4 text-left"
                 onClick={() => navigate('/my-wines/add')}
               >
                 <Plus className="h-5 w-5 shrink-0 text-red-900" />
-                  <span>
+                  <span className="min-w-0 break-words">
                     <span className="block font-semibold">Añadir manualmente</span>
                     <span className="block text-xs font-normal text-muted-foreground">Buscar, validar o completar</span>
                   </span>
                 </Button>
-              <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
-                <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
-                  <Search className="h-4 w-4 text-red-900" />
+              <div className="min-w-0 rounded-lg border border-stone-200 bg-stone-50 p-2 sm:p-4 [&_input]:pl-8 [&_input]:pr-8">
+                <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-semibold">
+                  <Search className="h-4 w-4 shrink-0 text-red-900" />
                   Buscar catálogo
                 </div>
                 <WineSearchBar onSelectWine={handleSearchWineSelect} />
@@ -1193,13 +1342,13 @@ const MyWines = () => {
 
           <Card className="border-red-100 bg-white">
             <CardContent className="p-4 sm:p-5">
-              <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr]">
-                <div className="rounded-lg border border-red-100 bg-red-50/70 p-4 sm:p-5">
-                  <div className="flex items-start gap-3">
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+                <div className="min-w-0 rounded-lg border border-red-100 bg-red-50/70 p-4 sm:p-5">
+                  <div className="flex flex-wrap items-start gap-3">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-white text-red-900 shadow-sm">
                       <ActiveSectionIcon className="h-5 w-5" />
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-[1_1_10rem]">
                       <p className="text-xs font-semibold uppercase text-red-900/70">
                         {activeSectionCopy[statusFilter].kicker}
                       </p>
@@ -1215,7 +1364,7 @@ const MyWines = () => {
                   <div className="mt-4 flex flex-col gap-2 sm:flex-row">
                     <Button
                       type="button"
-                      className="matchrim-pressable gap-2 bg-red-800 hover:bg-red-900"
+                      className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-2 whitespace-normal bg-red-800 hover:bg-red-900"
                       onClick={activeSectionCopy[statusFilter].onAction}
                     >
                       <ActiveSectionIcon className="h-4 w-4" />
@@ -1224,7 +1373,7 @@ const MyWines = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="matchrim-pressable gap-2 bg-white"
+                      className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-2 whitespace-normal bg-white"
                       onClick={() => navigate('/escanear')}
                     >
                       <ScanLine className="h-4 w-4" />
@@ -1233,7 +1382,7 @@ const MyWines = () => {
                   </div>
                 </div>
 
-                <div className="grid gap-2 sm:grid-cols-5 lg:grid-cols-1">
+                <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-5 lg:grid-cols-1">
                   {sectionCards.map((item) => {
                     const SectionIcon = item.icon;
                     const isActive = item.section === statusFilter;
@@ -1243,7 +1392,7 @@ const MyWines = () => {
                         key={item.section}
                         type="button"
                         onClick={() => navigateToWineSection(item.section)}
-                        className={`matchrim-pressable flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors ${
+                        className={`matchrim-pressable flex min-h-16 min-w-0 flex-wrap items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors ${
                           isActive
                             ? 'border-red-900 bg-red-950 text-white shadow-sm'
                             : 'border-stone-200 bg-white text-foreground hover:border-red-200 hover:bg-red-50/50'
@@ -1254,9 +1403,9 @@ const MyWines = () => {
                         }`}>
                           <SectionIcon className="h-4 w-4" />
                         </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-semibold">{item.label}</span>
-                          <span className={`block truncate text-xs ${
+                        <span className="min-w-0 flex-[1_1_8rem]">
+                          <span className="block text-sm font-semibold">{item.label}</span>
+                          <span className={`block text-xs ${
                             isActive ? 'text-white/70' : 'text-muted-foreground'
                           }`}>
                             {item.helper}
@@ -1276,8 +1425,8 @@ const MyWines = () => {
           </Card>
 
 		            <Card className="overflow-hidden border-red-100 bg-white">
-	              <CardHeader className="border-b bg-red-950 text-white">
-	                <CardTitle className="flex items-center gap-2">
+	              <CardHeader className="border-b bg-red-950 p-4 text-white sm:p-6">
+	                <CardTitle className="flex flex-wrap items-center gap-2">
 	                  <Sparkles className="h-5 w-5" />
 	                  Así aprende tu Matchrim
 	                </CardTitle>
@@ -1285,10 +1434,10 @@ const MyWines = () => {
 	                  Tus valoraciones afinan el perfil: “me encanta” acerca tus recomendaciones a ese vino, “no va” las aleja y “correcto” pesa menos.
 	                </CardDescription>
 	              </CardHeader>
-	              <CardContent className="grid gap-3 p-4 md:grid-cols-4">
+	              <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3 p-4">
 	                <div className="rounded-lg border bg-muted/30 p-4">
 	                  <p className="text-xs font-semibold uppercase text-muted-foreground">Señales útiles</p>
-	                  <div className="mt-2 flex items-end gap-2">
+	                  <div className="mt-2 flex flex-wrap items-end gap-2">
 	                    <span className="text-3xl font-bold">{learningStats.trainingCount}</span>
 	                    <span className="pb-1 text-sm text-muted-foreground">entrenando</span>
 	                  </div>
@@ -1327,7 +1476,7 @@ const MyWines = () => {
 	                      <p className="text-sm text-muted-foreground">Necesito vinos con atributos 1-5.</p>
 	                    )}
 	                  </div>
-	                  <Progress value={learningStats.confidence} className="mt-3 h-2" />
+	                  <Progress value={learningStats.confidence} role="meter" aria-label="Confianza del aprendizaje de gustos" className="mt-3 h-2" />
 	                </div>
 
 	                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
@@ -1336,10 +1485,10 @@ const MyWines = () => {
 	                  <Button
 	                    variant="outline"
 	                    size="sm"
-	                    className="mt-3 gap-2 border-amber-300 bg-white text-amber-950"
+	                    className="mt-3 h-auto min-h-11 max-w-full gap-2 whitespace-normal border-amber-300 bg-white py-2 text-amber-950"
 	                    onClick={() => navigateToWineSection('wishlist')}
 	                  >
-	                    <Heart className="h-4 w-4" />
+	                    <Heart className="h-4 w-4 shrink-0" />
 	                    Puntuar pendientes
 	                  </Button>
 	                </div>
@@ -1353,36 +1502,36 @@ const MyWines = () => {
                 setFilterType('all');
               }}
             >
-              <TabsList className="grid h-auto w-full grid-cols-2 sm:grid-cols-5">
-                <TabsTrigger value="collection" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+              <TabsList className="grid h-auto w-full grid-cols-[repeat(auto-fit,minmax(min(100%,8rem),1fr))]">
+                <TabsTrigger value="collection" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Wine className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Mi Bodega</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Vinos que tengo</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="wishlist" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                <TabsTrigger value="wishlist" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Heart className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Quiero Probar</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Lista de deseos</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="tasted" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                <TabsTrigger value="tasted" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Star className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Ya Probados</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Puntúa y entrena</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="favorites" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                <TabsTrigger value="favorites" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Heart className="h-4 w-4 fill-current" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>Favoritos</span>
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Tus marcados</span>
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="rejected" className="min-h-14 gap-1 px-1 sm:gap-2 sm:px-3">
+                <TabsTrigger value="rejected" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <ThumbsDown className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
                     <span>No repetir</span>
@@ -1432,7 +1581,7 @@ const MyWines = () => {
                 <div className="flex items-center gap-2">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" className="gap-2">
+                      <Button variant="outline" size="sm" className="min-h-11 gap-2">
                         <Filter className="h-4 w-4" />
                         Filtros
                       </Button>
@@ -1457,7 +1606,7 @@ const MyWines = () => {
 
                 {/* Wine Collection Grid */}
                 {wineLoadFailed ? (
-                  <div role="alert" className="space-y-3 border-y border-amber-200 py-6">
+                  <div ref={wineLoadErrorRef} role="alert" className="space-y-3 border-y border-amber-200 py-6">
                     <h2 className="font-semibold text-slate-950">No hemos podido cargar tus vinos</h2>
                     <p className="text-sm text-slate-600">Tus datos no se han borrado. Comprueba la conexión y vuelve a intentarlo.</p>
                     <Button variant="outline" className="min-h-11" onClick={() => void loadWines()}>Reintentar</Button>
@@ -1549,23 +1698,25 @@ const MyWines = () => {
                           </div>
                         )}
                         
-                        <CardHeader>
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex-1 min-w-0">
-                              <CardTitle className="text-lg truncate flex items-center gap-2">
+                        <CardHeader className="p-4 sm:p-6">
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div className="min-w-0 flex-[1_1_8rem]">
+                              <CardTitle className="flex flex-wrap items-center gap-2 text-lg">
                                 {wine.name}
                                 {getRatingIcon(wine.rating)}
                               </CardTitle>
                               {wine.producer && (
-                                <CardDescription className="truncate">{wine.producer}</CardDescription>
+                                <CardDescription>{wine.producer}</CardDescription>
                               )}
                             </div>
-                            <div className="flex gap-1">
+                            <div className="flex flex-wrap gap-1">
                               <Button
                                 variant="ghost"
                                 size="icon"
                                 className="h-11 w-11 shrink-0"
                                 aria-label={wine.is_favorite ? `Quitar ${wine.name} de favoritos` : `Guardar ${wine.name} en favoritos`}
+                                disabled={savingFavorites.has(wine.id)}
+                                aria-busy={savingFavorites.has(wine.id)}
                                 onClick={() => handleToggleFavorite(wine.id, wine.is_favorite)}
                               >
                                 <Heart className={`h-4 w-4 ${wine.is_favorite ? 'fill-red-500 text-red-500' : ''}`} />
@@ -1575,6 +1726,8 @@ const MyWines = () => {
                                 size="icon"
                                 className="h-11 w-11 shrink-0"
                                 aria-label={`Eliminar ${wine.name}`}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
                                 onClick={() => handleDeleteWine(wine.id)}
                               >
                                 <Trash2 className="h-4 w-4 text-destructive" />
@@ -1582,10 +1735,20 @@ const MyWines = () => {
                             </div>
                           </div>
                         </CardHeader>
-                        <CardContent className="space-y-3">
+                        <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
+                          {wine.menu_price_view && (
+                            <div role="group" aria-label={`Precio de carta de ${wine.name}`} className="space-y-1 border-l-2 border-slate-200 pl-3 text-sm">
+                              {wine.menu_price_view.lines.map((line, index) => (
+                                <p key={index} className="break-words text-slate-600">{line}</p>
+                              ))}
+                            </div>
+                          )}
+                          {wine.status === 'tasted' && !wine.rating && (
+                            <p className="text-sm text-slate-600">Pendiente de valoración</p>
+                          )}
                           {/* Quantity for collection items */}
                           {wine.status === 'collection' && wine.quantity !== null && (
-                            <div className="flex items-center justify-between text-sm">
+                            <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
                               <span className="text-muted-foreground">Stock en bodega</span>
                               <Badge variant={wine.quantity > 0 ? 'default' : 'secondary'}>
                                 {wine.quantity} {wine.quantity === 1 ? 'botella' : 'botellas'}
@@ -1602,7 +1765,7 @@ const MyWines = () => {
                                   {wine.matchrim_affinity}%
                                 </span>
                               </div>
-                              <Progress value={wine.matchrim_affinity} className="h-2" />
+                              <Progress value={wine.matchrim_affinity} role="meter" aria-label={`Afinidad orientativa de ${wine.name}`} className="h-2" />
                               <span className="text-xs text-slate-500">Afinidad orientativa</span>
                               {getStoredAffinityTrace(wine) && (
                                 <span className="block text-xs text-slate-500">
@@ -1667,25 +1830,25 @@ const MyWines = () => {
 	                            </p>
 	                          )}
 
-	                          <div className="grid gap-2 pt-2 sm:grid-cols-2">
+	                          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-2 pt-2">
 	                            <Button
 	                              type="button"
 	                              variant="outline"
 	                              size="sm"
-	                              className="gap-2"
+	                              className="h-auto min-h-11 min-w-0 gap-2 whitespace-normal py-2"
 	                              onClick={() => askAiRimAboutWine(wine, 'fit')}
 	                            >
-	                              <Sparkles className="h-4 w-4" />
+	                              <Sparkles className="h-4 w-4 shrink-0" />
 	                              ¿Por qué encaja?
 	                            </Button>
 	                            <Button
 	                              type="button"
 	                              variant="outline"
 	                              size="sm"
-	                              className="gap-2"
+	                              className="h-auto min-h-11 min-w-0 gap-2 whitespace-normal py-2"
 	                              onClick={() => askAiRimAboutWine(wine, 'similar')}
 	                            >
-	                              <ScanLine className="h-4 w-4" />
+	                              <ScanLine className="h-4 w-4 shrink-0" />
 	                              Buscar parecido
 	                            </Button>
 	                          </div>
@@ -1709,6 +1872,8 @@ const MyWines = () => {
                                     checked={Boolean(wine.use_for_profile_training)}
                                     onCheckedChange={(checked) => handleToggleProfileTraining(wine.id, checked)}
                                     aria-label={`Usar ${wine.name} para entrenar perfil`}
+                                    disabled={savingWineActions.has(wine.id)}
+                                    aria-busy={savingWineActions.has(wine.id)}
                                   />
                                 ) : (
                                   <Badge variant="outline">Sin atributos</Badge>
@@ -1719,37 +1884,43 @@ const MyWines = () => {
 
                           {/* Rating Buttons - move wishlist wines to tasted and train the profile */}
                           {wine.rating && (
-                            <Button variant="ghost" className="min-h-11 text-slate-600" onClick={() => handleRating(wine.id, null)}>
+                            <Button variant="ghost" className="min-h-11 text-slate-600" disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => handleRating(wine.id, null)}>
                               Quitar valoración
                             </Button>
                           )}
                           {(wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
-                            <div className="flex gap-2 pt-2">
+                            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,6.5rem),1fr))] gap-2 pt-2">
                               <Button
                                 variant={wine.rating === 'love' ? 'default' : 'outline'}
                                 size="sm"
-                                className="min-w-0 flex-1 text-xs sm:text-sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'love')}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <ThumbsUp className="h-3.5 w-3.5 mr-1" />
+                                <ThumbsUp className="mr-1 h-3.5 w-3.5 shrink-0" />
                                 Me encanta
                               </Button>
                               <Button
                                 variant={wine.rating === 'ok' ? 'default' : 'outline'}
                                 size="sm"
-                                className="min-w-0 flex-1 text-xs sm:text-sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'ok')}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <Meh className="h-3.5 w-3.5 mr-1" />
+                                <Meh className="mr-1 h-3.5 w-3.5 shrink-0" />
                                 Correcto
                               </Button>
                               <Button
                                 variant={wine.rating === 'not_for_me' ? 'default' : 'outline'}
                                 size="sm"
-                                className="min-w-0 flex-1 text-xs sm:text-sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'not_for_me')}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <ThumbsDown className="h-3.5 w-3.5 mr-1" />
+                                <ThumbsDown className="mr-1 h-3.5 w-3.5 shrink-0" />
                                 No va
                               </Button>
                             </div>
@@ -2045,6 +2216,12 @@ const MyWines = () => {
       </main>
     </div>
   );
+};
+
+// A new account gets a fresh view and lifetime, including an A -> B -> A return.
+const MyWines = () => {
+  const { user } = useAuth();
+  return <MyWinesForOwner key={user?.id ?? 'anonymous'} />;
 };
 
 export default MyWines;

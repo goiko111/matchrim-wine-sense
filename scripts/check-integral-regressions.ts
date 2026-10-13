@@ -29,7 +29,7 @@ assert.equal(shouldShowMatchrimOnboarding(false), true);
 finishMatchrimOnboarding('skipped');
 assert.equal(shouldShowMatchrimOnboarding(false), false);
 for (let i = 0; i < 60; i++) recordOnboardingEvent('step', i % 3);
-assert.equal(JSON.parse(storage.get('matchrim.onboarding.local-events.v1')!).length, 30);
+assert.equal(JSON.parse(storage.get('matchrim.onboarding.local-events.v2:anonymous')!).length, 30);
 const base = { potente: 3, acidez: 3, dulce: 3, tanico: 3, afrutado: 3 };
 const attrs = { potencia: 4, acidez: 4, dulzura: 1, taninos: 3, afrutado: 4 };
 assert.equal(buildDetailedAffinityExplanation({ ...base, acidez: null } as never, attrs), null);
