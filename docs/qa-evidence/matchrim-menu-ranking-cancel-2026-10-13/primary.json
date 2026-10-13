@@ -1,0 +1,889 @@
+{
+  "baseline": "1c8c8805a368c211895b89e69c0f3313befbd771",
+  "uiStages": {
+    "before": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 22
+    },
+    "before-complete": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 22
+    },
+    "after": {
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 24,
+      "checksPassed": 24
+    }
+  },
+  "pureChecks": 25,
+  "cases": [
+    {
+      "case": "keyboard-portrait",
+      "uiRecoveryMs": 2.5,
+      "samplesWhileCatalogHeld": [
+        {
+          "targetMs": 100,
+          "elapsedMs": 101.30000000447035,
+          "state": {
+            "at": 1921.9000000059605,
+            "cancelAt": 1820.6000000014901,
+            "recoveryAt": 1823.1000000014901,
+            "phase": [],
+            "cancelVisible": false,
+            "feedback": true,
+            "rows": [],
+            "buttons": [
+              {
+                "label": "Volver a tipos de escaneo",
+                "disabled": false
+              },
+              {
+                "label": "Quitar carta",
+                "disabled": false
+              },
+              {
+                "label": "Reintentar foto",
+                "disabled": false
+              }
+            ],
+            "inputs": [
+              {
+                "disabled": false,
+                "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                "files": [
+                  {
+                    "name": "IMG_7547 2.jpg",
+                    "type": "image/jpeg",
+                    "size": 2303531,
+                    "lastModified": 1791448774457
+                  }
+                ]
+              },
+              {
+                "disabled": false,
+                "value": "",
+                "files": []
+              }
+            ],
+            "successNotice": false,
+            "active": {
+              "tag": "BODY",
+              "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.No ha "
+            }
+          }
+        },
+        {
+          "targetMs": 1000,
+          "elapsedMs": 1002.5,
+          "state": {
+            "at": 2823.10000000149,
+            "cancelAt": 1820.6000000014901,
+            "recoveryAt": 1823.1000000014901,
+            "phase": [],
+            "cancelVisible": false,
+            "feedback": true,
+            "rows": [],
+            "buttons": [
+              {
+                "label": "Volver a tipos de escaneo",
+                "disabled": false
+              },
+              {
+                "label": "Quitar carta",
+                "disabled": false
+              },
+              {
+                "label": "Reintentar foto",
+                "disabled": false
+              }
+            ],
+            "inputs": [
+              {
+                "disabled": false,
+                "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                "files": [
+                  {
+                    "name": "IMG_7547 2.jpg",
+                    "type": "image/jpeg",
+                    "size": 2303531,
+                    "lastModified": 1791448774457
+                  }
+                ]
+              },
+              {
+                "disabled": false,
+                "value": "",
+                "files": []
+              }
+            ],
+            "successNotice": false,
+            "active": {
+              "tag": "BODY",
+              "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.No ha "
+            }
+          }
+        },
+        {
+          "targetMs": 2000,
+          "elapsedMs": 2005.5,
+          "state": {
+            "at": 3826.10000000149,
+            "cancelAt": 1820.6000000014901,
+            "recoveryAt": 1823.1000000014901,
+            "phase": [],
+            "cancelVisible": false,
+            "feedback": true,
+            "rows": [],
+            "buttons": [
+              {
+                "label": "Volver a tipos de escaneo",
+                "disabled": false
+              },
+              {
+                "label": "Quitar carta",
+                "disabled": false
+              },
+              {
+                "label": "Reintentar foto",
+                "disabled": false
+              }
+            ],
+            "inputs": [
+              {
+                "disabled": false,
+                "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                "files": [
+                  {
+                    "name": "IMG_7547 2.jpg",
+                    "type": "image/jpeg",
+                    "size": 2303531,
+                    "lastModified": 1791448774457
+                  }
+                ]
+              },
+              {
+                "disabled": false,
+                "value": "",
+                "files": []
+              }
+            ],
+            "successNotice": false,
+            "active": {
+              "tag": "BODY",
+              "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.No ha "
+            }
+          }
+        }
+      ],
+      "oldReleaseNeededForUI": false,
+      "countsByAttempt": {
+        "1": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        },
+        "2": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        }
+      },
+      "requestFailures": [],
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        }
+      ],
+      "warnings": [],
+      "expected503ConsoleControl": [],
+      "newRankingPending": {
+        "at": 4250.4000000059605,
+        "cancelAt": 1820.6000000014901,
+        "recoveryAt": 1823.1000000014901,
+        "phase": [
+          "Ordenando resultados..."
+        ],
+        "cancelVisible": true,
+        "feedback": false,
+        "rows": [],
+        "buttons": [
+          {
+            "label": "Volver a tipos de escaneo",
+            "disabled": false
+          },
+          {
+            "label": "Cancelar análisis",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": true,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": true,
+            "value": "",
+            "files": []
+          }
+        ],
+        "successNotice": false,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+        }
+      },
+      "afterOldLateCompletion": {
+        "at": 5658.60000000149,
+        "cancelAt": 1820.6000000014901,
+        "recoveryAt": 1823.1000000014901,
+        "phase": [
+          "Ordenando resultados..."
+        ],
+        "cancelVisible": true,
+        "feedback": false,
+        "rows": [],
+        "buttons": [
+          {
+            "label": "Volver a tipos de escaneo",
+            "disabled": false
+          },
+          {
+            "label": "Cancelar análisis",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": true,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": true,
+            "value": "",
+            "files": []
+          }
+        ],
+        "successNotice": false,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+        }
+      },
+      "final": {
+        "at": 5790.5,
+        "cancelAt": 1820.6000000014901,
+        "recoveryAt": 1823.1000000014901,
+        "phase": [],
+        "cancelVisible": false,
+        "feedback": false,
+        "rows": [
+          "Abrir vino 1: Lugana Allegrini",
+          "Abrir vino 2: Barbaresco Marchesi di Barolo",
+          "Abrir vino 3: Barolo Marchesi di Barolo",
+          "Abrir vino 4: Laurent Perriere Ultra"
+        ],
+        "buttons": [
+          {
+            "label": "Volver a tipos de escaneo",
+            "disabled": false
+          },
+          {
+            "label": "Vino 1: Lugana Allegrini",
+            "disabled": false
+          },
+          {
+            "label": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Alejar carta",
+            "disabled": true
+          },
+          {
+            "label": "Acercar carta",
+            "disabled": false
+          },
+          {
+            "label": "Quitar carta",
+            "disabled": false
+          },
+          {
+            "label": "Comparar Lugana Allegrini",
+            "disabled": false
+          },
+          {
+            "label": "Comparar Barbaresco Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Comparar Barolo Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Comparar Laurent Perriere Ultra",
+            "disabled": false
+          },
+          {
+            "label": "Para mí",
+            "disabled": false
+          },
+          {
+            "label": "Servicio",
+            "disabled": false
+          },
+          {
+            "label": "Identidad más segura",
+            "disabled": false
+          },
+          {
+            "label": "Mejor match",
+            "disabled": false
+          },
+          {
+            "label": "Todos los tipos",
+            "disabled": false
+          },
+          {
+            "label": "Todas las regiones",
+            "disabled": false
+          },
+          {
+            "label": "Copa o botella",
+            "disabled": false
+          },
+          {
+            "label": "Cualquier afinidad",
+            "disabled": false
+          },
+          {
+            "label": "Cualquier confianza",
+            "disabled": false
+          },
+          {
+            "label": "Abrir vino 1: Lugana Allegrini",
+            "disabled": false
+          },
+          {
+            "label": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Abrir vino 3: Barolo Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Abrir vino 4: Laurent Perriere Ultra",
+            "disabled": false
+          },
+          {
+            "label": "2. Barbaresco Marchesi di BaroloMarchesi di BaroloEditar y guardar",
+            "disabled": false
+          },
+          {
+            "label": "3. Barolo Marchesi di BaroloMarchesi di BaroloEditar y guardar",
+            "disabled": false
+          },
+          {
+            "label": "4. Laurent Perriere UltraLaurent PerrierEditar y guardar",
+            "disabled": false
+          },
+          {
+            "label": "Close toast",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": false,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": false,
+            "value": "",
+            "files": []
+          }
+        ],
+        "successNotice": true,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.1+3100"
+        }
+      }
+    },
+    {
+      "case": "touch-landscape",
+      "uiRecoveryMs": 2.7999999970197678,
+      "samplesWhileCatalogHeld": [
+        {
+          "targetMs": 100,
+          "elapsedMs": 102,
+          "state": {
+            "at": 1258.8999999985099,
+            "cancelAt": 1156.8999999985099,
+            "recoveryAt": 1159.6999999955297,
+            "phase": [],
+            "cancelVisible": false,
+            "feedback": true,
+            "rows": [],
+            "buttons": [
+              {
+                "label": "Quitar carta",
+                "disabled": false
+              },
+              {
+                "label": "Reintentar foto",
+                "disabled": false
+              }
+            ],
+            "inputs": [
+              {
+                "disabled": false,
+                "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                "files": [
+                  {
+                    "name": "IMG_7547 2.jpg",
+                    "type": "image/jpeg",
+                    "size": 2303531,
+                    "lastModified": 1791448774457
+                  }
+                ]
+              },
+              {
+                "disabled": false,
+                "value": "",
+                "files": []
+              }
+            ],
+            "successNotice": false,
+            "active": {
+              "tag": "BODY",
+              "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.No ha "
+            }
+          }
+        },
+        {
+          "targetMs": 1000,
+          "elapsedMs": 1004.3999999985099,
+          "state": {
+            "at": 2161.2999999970198,
+            "cancelAt": 1156.8999999985099,
+            "recoveryAt": 1159.6999999955297,
+            "phase": [],
+            "cancelVisible": false,
+            "feedback": true,
+            "rows": [],
+            "buttons": [
+              {
+                "label": "Quitar carta",
+                "disabled": false
+              },
+              {
+                "label": "Reintentar foto",
+                "disabled": false
+              }
+            ],
+            "inputs": [
+              {
+                "disabled": false,
+                "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                "files": [
+                  {
+                    "name": "IMG_7547 2.jpg",
+                    "type": "image/jpeg",
+                    "size": 2303531,
+                    "lastModified": 1791448774457
+                  }
+                ]
+              },
+              {
+                "disabled": false,
+                "value": "",
+                "files": []
+              }
+            ],
+            "successNotice": false,
+            "active": {
+              "tag": "BODY",
+              "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.No ha "
+            }
+          }
+        },
+        {
+          "targetMs": 2000,
+          "elapsedMs": 2005.3999999985099,
+          "state": {
+            "at": 3162.2999999970198,
+            "cancelAt": 1156.8999999985099,
+            "recoveryAt": 1159.6999999955297,
+            "phase": [],
+            "cancelVisible": false,
+            "feedback": true,
+            "rows": [],
+            "buttons": [
+              {
+                "label": "Quitar carta",
+                "disabled": false
+              },
+              {
+                "label": "Reintentar foto",
+                "disabled": false
+              }
+            ],
+            "inputs": [
+              {
+                "disabled": false,
+                "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                "files": [
+                  {
+                    "name": "IMG_7547 2.jpg",
+                    "type": "image/jpeg",
+                    "size": 2303531,
+                    "lastModified": 1791448774457
+                  }
+                ]
+              },
+              {
+                "disabled": false,
+                "value": "",
+                "files": []
+              }
+            ],
+            "successNotice": false,
+            "active": {
+              "tag": "BODY",
+              "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.No ha "
+            }
+          }
+        }
+      ],
+      "oldReleaseNeededForUI": false,
+      "countsByAttempt": {
+        "1": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        },
+        "2": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        }
+      },
+      "requestFailures": [],
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        }
+      ],
+      "warnings": [
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>"
+      ],
+      "expected503ConsoleControl": [
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ],
+      "newRankingPending": {
+        "at": 3653.7999999970198,
+        "cancelAt": 1156.8999999985099,
+        "recoveryAt": 1159.6999999955297,
+        "phase": [
+          "Ordenando resultados..."
+        ],
+        "cancelVisible": true,
+        "feedback": false,
+        "rows": [],
+        "buttons": [
+          {
+            "label": "Cancelar análisis",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": true,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": true,
+            "value": "",
+            "files": []
+          }
+        ],
+        "successNotice": false,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+        }
+      },
+      "afterOldLateCompletion": {
+        "at": 5063,
+        "cancelAt": 1156.8999999985099,
+        "recoveryAt": 1159.6999999955297,
+        "phase": [
+          "Ordenando resultados..."
+        ],
+        "cancelVisible": true,
+        "feedback": false,
+        "rows": [],
+        "buttons": [
+          {
+            "label": "Cancelar análisis",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": true,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": true,
+            "value": "",
+            "files": []
+          }
+        ],
+        "successNotice": false,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+        }
+      },
+      "final": {
+        "at": 5176.79999999702,
+        "cancelAt": 1156.8999999985099,
+        "recoveryAt": 1159.6999999955297,
+        "phase": [],
+        "cancelVisible": false,
+        "feedback": false,
+        "rows": [
+          "Abrir vino 1: Lugana Allegrini",
+          "Abrir vino 2: Barbaresco Marchesi di Barolo",
+          "Abrir vino 3: Barolo Marchesi di Barolo",
+          "Abrir vino 4: Laurent Perriere Ultra"
+        ],
+        "buttons": [
+          {
+            "label": "Vino 1: Lugana Allegrini",
+            "disabled": false
+          },
+          {
+            "label": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Alejar carta",
+            "disabled": true
+          },
+          {
+            "label": "Acercar carta",
+            "disabled": false
+          },
+          {
+            "label": "Quitar carta",
+            "disabled": false
+          },
+          {
+            "label": "Comparar Lugana Allegrini",
+            "disabled": false
+          },
+          {
+            "label": "Comparar Barbaresco Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Comparar Barolo Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Comparar Laurent Perriere Ultra",
+            "disabled": false
+          },
+          {
+            "label": "Para mí",
+            "disabled": false
+          },
+          {
+            "label": "Servicio",
+            "disabled": false
+          },
+          {
+            "label": "Identidad más segura",
+            "disabled": false
+          },
+          {
+            "label": "Mejor match",
+            "disabled": false
+          },
+          {
+            "label": "Todos los tipos",
+            "disabled": false
+          },
+          {
+            "label": "Todas las regiones",
+            "disabled": false
+          },
+          {
+            "label": "Copa o botella",
+            "disabled": false
+          },
+          {
+            "label": "Cualquier afinidad",
+            "disabled": false
+          },
+          {
+            "label": "Cualquier confianza",
+            "disabled": false
+          },
+          {
+            "label": "Abrir vino 1: Lugana Allegrini",
+            "disabled": false
+          },
+          {
+            "label": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Abrir vino 3: Barolo Marchesi di Barolo",
+            "disabled": false
+          },
+          {
+            "label": "Abrir vino 4: Laurent Perriere Ultra",
+            "disabled": false
+          },
+          {
+            "label": "2. Barbaresco Marchesi di BaroloMarchesi di BaroloEditar y guardar",
+            "disabled": false
+          },
+          {
+            "label": "3. Barolo Marchesi di BaroloMarchesi di BaroloEditar y guardar",
+            "disabled": false
+          },
+          {
+            "label": "4. Laurent Perriere UltraLaurent PerrierEditar y guardar",
+            "disabled": false
+          },
+          {
+            "label": "Close toast",
+            "disabled": false
+          }
+        ],
+        "inputs": [
+          {
+            "disabled": false,
+            "value": "C:\\fakepath\\IMG_7547 2.jpg",
+            "files": [
+              {
+                "name": "IMG_7547 2.jpg",
+                "type": "image/jpeg",
+                "size": 2303531,
+                "lastModified": 1791448774457
+              }
+            ]
+          },
+          {
+            "disabled": false,
+            "value": "",
+            "files": []
+          }
+        ],
+        "successNotice": true,
+        "active": {
+          "tag": "BODY",
+          "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.1+3100"
+        }
+      }
+    }
+  ],
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "scope": "One existing scene and exact unchanged four-candidate BOTH replay, two browser input/orientation routes, not humans or real recognition.",
+  "catalogRequestCancellation": false,
+  "serverProviderCancellation": false,
+  "costSavingsClaim": false,
+  "localRecoveryLatencyIsProductionSLA": false,
+  "physicalSameFileCertification": false,
+  "profile": "Local GET null; no learned positive profile/score/canonical identification generated."
+}

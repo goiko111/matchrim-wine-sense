@@ -1,0 +1,58 @@
+{
+  "commands": {
+    "contracts": {
+      "command": [
+        "./node_modules/.bin/tsx",
+        "scripts/check-matchrim-menu-ranking-cancel-oct13.ts",
+        "docs/qa-evidence/matchrim-menu-ranking-cancel-2026-10-13/contracts.json"
+      ],
+      "exitCode": 0
+    },
+    "typecheck": {
+      "command": [
+        "./node_modules/.bin/tsc",
+        "--noEmit",
+        "--project",
+        "docs/qa-evidence/matchrim-menu-ranking-cancel-2026-10-13/tsconfig-scoped.json"
+      ],
+      "exitCode": 0
+    },
+    "lint": {
+      "command": [
+        "./node_modules/.bin/eslint",
+        "src/components/wine-import/WineMenuScanner.tsx",
+        "src/utils/menuCatalogAwait.ts",
+        "scripts/check-matchrim-menu-ranking-cancel-oct13.ts",
+        "scripts/package-matchrim-menu-ranking-cancel-oct13.mjs"
+      ],
+      "exitCode": 0
+    }
+  },
+  "uiStages": {
+    "before": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 22
+    },
+    "before-complete": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 24,
+      "checksPassed": 22
+    },
+    "after": {
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 24,
+      "checksPassed": 24
+    }
+  },
+  "pureChecks": 25,
+  "pureChecksPassed": 25,
+  "fullSuites": false,
+  "webBuild": false,
+  "nativeBuild": false,
+  "previousSuitesRerun": false,
+  "scope": "Scoped local change checks only. No current full-app, recognition-provider, Apple/iOS or production certification."
+}

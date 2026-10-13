@@ -41,6 +41,7 @@ import { presentMenuAffinity } from '@/utils/menuAffinityPresentation';
 import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat } from '@/utils/wineComparison';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
+import { awaitMenuCatalog } from '@/utils/menuCatalogAwait';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { canRetryScanProfile } from '@/utils/scanProfile';
 import { refreshMenuProfileAffinity } from '@/utils/menuProfileRecovery';
@@ -766,7 +767,10 @@ const WineMenuScannerSession = ({
         async (wine) => {
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
           const catalog = !isMatchrimFixtureQaEnabled && isMenuIdentityConfirmed(wine)
-            ? await findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada })
+            ? await awaitMenuCatalog(
+              () => findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada }),
+              controller.signal,
+            )
             : null;
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
           return applyMenuWineEvidence(wine, profile, catalog?.wine);
@@ -824,7 +828,9 @@ const WineMenuScannerSession = ({
       }
     } catch (error) {
 	    if (error instanceof DOMException && error.name === 'AbortError') {
-      setScanFeedback('Análisis cancelado. Puedes reintentarlo con la misma imagen o elegir otra.');
+      if (scanAbortRef.current === controller) {
+        setScanFeedback('Análisis cancelado. Puedes reintentarlo con la misma imagen o elegir otra.');
+      }
 	      return;
 	    }
       console.error('Error processing file:', error);

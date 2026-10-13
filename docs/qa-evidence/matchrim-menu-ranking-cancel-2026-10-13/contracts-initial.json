@@ -1,0 +1,120 @@
+{
+  "scope": "Only15 pure local await ownership/cleanup/result/error controls and scanner AST/current-controller feedback. Background operation deliberately remains running; no SDK/provider/query/RLS change, server abort or cost claim; no users/real canonical/profile.",
+  "baseline": "1c8c8805a368c211895b89e69c0f3313befbd771",
+  "checks": [
+    {
+      "name": "Success preserves exact result without changing background operation",
+      "passed": true
+    },
+    {
+      "name": "Null lookup result remains null",
+      "passed": true
+    },
+    {
+      "name": "Underlying rejection remains exact error when not cancelled",
+      "passed": true
+    },
+    {
+      "name": "Synchronous factory throw rejects and removes listener",
+      "passed": true
+    },
+    {
+      "name": "Pre-aborted signal starts no lookup or listener",
+      "passed": true
+    },
+    {
+      "name": "Pending local wait rejects on abort without resolving underlying lookup",
+      "passed": true
+    },
+    {
+      "name": "Late result cannot turn cancelled wrapper into success",
+      "passed": true
+    },
+    {
+      "name": "Late rejection is consumed after local cancellation, not unhandled",
+      "passed": true
+    },
+    {
+      "name": "Synchronous abort during factory is not overwritten by later result",
+      "passed": true
+    },
+    {
+      "name": "Abort after successful completion cannot change result or repeat cleanup",
+      "passed": true
+    },
+    {
+      "name": "Repeated abort has single rejection and cleanup",
+      "passed": true
+    },
+    {
+      "name": "Abort feedback only from current controller=true",
+      "passed": true
+    },
+    {
+      "name": "Abort feedback only from current controller=false",
+      "passed": true
+    },
+    {
+      "name": "Canonical lookup expression and argument shape remain identical",
+      "passed": true
+    },
+    {
+      "name": "All existing effects and cancellation/focus lifetimes unchanged",
+      "passed": true
+    },
+    {
+      "name": "Every existing nested initializer outside processFile byte-identical",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: normalizedWines\n+ actual - expected ... Lines skipped\n\n  'await mapWithConcurrency(\\n' +\n    '        (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : []).filter(isWineMenuItem).map(normalizeScannedWine),\\n' +\n...\n    \"          if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');\\n\" +\n    '          const catalog = !isMatchrimFixtureQaEnabled && isMenuIdentityConfirmed(wine)\\n' +\n+   '            ? await awaitMenuCatalog(\\n' +\n+   '              () => findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada }),\\n' +\n+   '              controller.signal,\\n' +\n+   '            )\\n' +\n-   '            ? await findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada })\\n' +\n    '            : null;\\n' +\n...\n    '          return applyMenuWineEvidence(wine, profile, catalog?.wine);\\n' +\n    '        },\\n' +\n    '      )'"
+    },
+    {
+      "name": "Removing only local wait wrapper and abort-publish guard leaves complete old process AST",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/services/winerimApi.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/invokeEdgeFunction.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/drawer.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/aiRimContextGuide.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/services/matchrimScanProfile.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuProfileRecovery.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuWineActions.ts",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "58fa342fa3bb71c51512b6558fb56b29b10bf56b3d5a0131a0c5dd94fac1c105",
+    "src/utils/menuCatalogAwait.ts": "79174879adf7eed910a07e3aafc0f5ce24eb4c6490a1581402c87ce567422b2a",
+    "src/services/winerimApi.ts": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec",
+    "src/utils/invokeEdgeFunction.ts": "59c726c28df3ae956c1182be6cd0282e3826ed56749ace9cbb0d61939e8fee07",
+    "src/components/ui/drawer.tsx": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+    "src/utils/aiRimContextGuide.ts": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+    "src/utils/wineAffinityExplanation.ts": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+    "src/services/matchrimScanProfile.ts": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+    "src/utils/menuProfileRecovery.ts": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+    "src/utils/menuWineActions.ts": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+    "scripts/check-matchrim-menu-ranking-cancel-oct13.ts": "432b2cb9eb6331a4fb665a348b61026e2af3508c7175b83991aedaa3a7f8c866"
+  }
+}

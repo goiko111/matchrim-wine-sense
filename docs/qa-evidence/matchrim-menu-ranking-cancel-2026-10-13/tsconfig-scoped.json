@@ -1,0 +1,11 @@
+{
+  "extends": "/Users/GOIKO/2matchrim76-recognition-20261008/tsconfig.app.json",
+  "compilerOptions": {"types": ["node"], "typeRoots": ["/Users/GOIKO/2matchrim76-recognition-20261008/node_modules/@types"]},
+  "include": [],
+  "files": [
+    "/Users/GOIKO/2matchrim76-recognition-20261008/src/vite-env.d.ts",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/src/utils/menuCatalogAwait.ts",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/src/components/wine-import/WineMenuScanner.tsx",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/scripts/check-matchrim-menu-ranking-cancel-oct13.ts"
+  ]
+}

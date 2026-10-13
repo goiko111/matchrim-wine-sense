@@ -1,0 +1,811 @@
+import { QuizResult } from '@/data/quizData';
+import { supabase } from '@/integrations/supabase/client';
+import { clasificarVino, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
+import { buildMatchrimAffinityCalibration, MATCHRIM_AFFINITY_MODEL } from '@/utils/matchrimAffinityCalibration';
+import { normalizeMatchrimProfileForClassifier } from '@/utils/matchrimPassport';
+import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch, hasAmbiguousCanonicalMatches } from '@/utils/winerimLabelIdentity';
+import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
+import { normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
+import { isNonWineIdentity } from '@/utils/wineCategory';
+
+const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
+const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
+const WINERIM_DIRECT_FALLBACK_ENABLED = import.meta.env.VITE_WINERIM_DIRECT_FALLBACK === 'true';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+export interface WinerimWine {
+  id: string | number;
+  name: string;
+  subname?: string | null;
+  slugname?: string;
+  winery?: string;
+  region?: string;
+  country?: string;
+  type?: string;
+  vintage?: number | string;
+  photo?: string;
+  section?: string | null;
+  grapes?: string[];
+  tastingAttributes?: {
+    power: number;
+    acidity: number;
+    fruity: number;
+    sweetness: number;
+    tannin: number;
+  } | null;
+  prices?: Array<{
+    price: number;
+    currency: string | { name: string; symbol: string };
+    kind: 'glass' | 'bottle' | 'unknown';
+    isKindInferred?: boolean;
+    label?: string;
+  }>;
+}
+
+export interface WinerimWineWithMatch extends WinerimWine {
+  matchPercentage: number;
+  rawMatchPercentage?: number;
+  affinityConfidence?: number;
+  affinityModel?: typeof MATCHRIM_AFFINITY_MODEL | 'raw-v1';
+  matchSource?: 'winerim-api' | 'style-range';
+  styleName?: PublicWineStyle;
+}
+
+export interface WinerimWineResultsMeta {
+  totalCount: number;
+  displayedCount: number;
+  directCount: number;
+  styleRangeCount: number;
+  searchLevel?: number;
+  primaryStyle?: PublicWineStyle;
+  isGlobalRecommendations: boolean;
+}
+
+type RawWinerimWine = Record<string, unknown>;
+type RawTastingAttributes = Record<string, unknown>;
+
+export interface WineMatchingResponse {
+  results?: RawWinerimWine[];
+  wines?: RawWinerimWine[] | { home?: RawWinerimWine[]; detail?: RawWinerimWine[] };
+  data?: RawWinerimWine[] | { results?: RawWinerimWine[]; wines?: RawWinerimWine[] };
+  count?: number;
+  total?: number;
+  totalCount?: number;
+  total_count?: number;
+  searchLevel?: number;
+  page?: number;
+  limit?: number;
+}
+
+export interface FetchWinerimWinesOptions {
+  restaurantUuid?: string;
+  matchrimCode?: string;
+  affinityCalibrationConfidence?: number | null;
+  signal?: AbortSignal;
+}
+
+type WinerimRequestPayload = {
+  endpoint: 'match' | 'wines';
+  restaurantUuid: string;
+  matchrimCode?: string;
+  profile?: QuizResult;
+  page?: number;
+  limit?: number;
+};
+
+const winerimWineResultsMeta = new WeakMap<WinerimWineWithMatch[], WinerimWineResultsMeta>();
+
+export const getWinerimWineResultsMeta = (wines: WinerimWineWithMatch[]) =>
+  winerimWineResultsMeta.get(wines) || null;
+
+const textFromUnknown = (value: unknown) => (
+  typeof value === 'string' || typeof value === 'number' ? String(value) : ''
+);
+
+const normalizeCurrency = (value: unknown): NonNullable<WinerimWine['prices']>[number]['currency'] => {
+  if (typeof value === 'string' && value.trim()) return value;
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const record = value as Record<string, unknown>;
+    if (typeof record.name === 'string' && typeof record.symbol === 'string') {
+      return { name: record.name, symbol: record.symbol };
+    }
+  }
+  return '€';
+};
+
+const inferPriceKind = (raw: RawWinerimWine, numericPrice: number) => {
+  const label = [
+    raw.label,
+    raw.name,
+    raw.title,
+    raw.tipo,
+    raw.type,
+    raw.kind,
+    raw.price_type,
+    raw.priceType,
+    raw.tipo_precio,
+    raw.formato_precio,
+    raw.format,
+    raw.formato,
+    raw.unit,
+    raw.unidad,
+    raw.description,
+    raw.descripcion,
+  ].map(textFromUnknown).find((text) => text.trim().length > 0);
+
+  const sourceText = [
+    label,
+    raw.presentation,
+    raw.presentacion,
+    raw.size,
+    raw.volume,
+    raw.volumen,
+  ].map(textFromUnknown).join(' ').toLowerCase();
+
+  if (/\b(copa|glass|by glass|wineglass)\b/.test(sourceText)) {
+    return { kind: 'glass' as const, isKindInferred: false, label };
+  }
+
+  if (/\b(botella|bottle|magnum|750|75cl|0\.75|75 cl)\b/.test(sourceText)) {
+    return { kind: 'bottle' as const, isKindInferred: false, label };
+  }
+
+  if (numericPrice > 0) {
+    return {
+      kind: numericPrice <= 14 ? ('glass' as const) : ('bottle' as const),
+      isKindInferred: true,
+      label,
+    };
+  }
+
+  return { kind: 'unknown' as const, isKindInferred: false, label };
+};
+
+const normalizePrice = (rawWine: RawWinerimWine) => {
+  if (Array.isArray(rawWine.prices)) {
+    const prices = rawWine.prices
+      .flatMap<NonNullable<WinerimWine['prices']>[number]>((rawPrice) => {
+        const priceRecord = asRecord(rawPrice);
+        if (!priceRecord) return [];
+
+        const numericPrice = Number(priceRecord.price ?? priceRecord.precio);
+        if (!Number.isFinite(numericPrice)) return [];
+        const priceKind = inferPriceKind({ ...rawWine, ...priceRecord }, numericPrice);
+
+        return [{
+          price: numericPrice,
+          currency: normalizeCurrency(priceRecord.currency ?? priceRecord.moneda),
+          kind: priceKind.kind,
+          isKindInferred: priceKind.isKindInferred,
+          label: priceKind.label,
+        }];
+      });
+
+    return prices.length > 0 ? prices : undefined;
+  }
+
+  const price = rawWine.price ?? rawWine.precio;
+  if (price == null) return undefined;
+  const numericPrice = Number(price);
+  if (!Number.isFinite(numericPrice)) return undefined;
+  const priceKind = inferPriceKind(rawWine, numericPrice);
+
+  return [{
+    price: numericPrice,
+    currency: normalizeCurrency(rawWine.currency ?? rawWine.moneda),
+    kind: priceKind.kind,
+    isKindInferred: priceKind.isKindInferred,
+    label: priceKind.label,
+  }];
+};
+
+const asRecord = (value: unknown): RawTastingAttributes | null => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  return value as RawTastingAttributes;
+};
+
+const normalizeAttributeTo5 = (value: unknown) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
+  return Math.max(1, Math.min(5, Math.round(scaled)));
+};
+
+const normalizeTastingAttributes = (rawWine: RawWinerimWine) => {
+  const attrs = asRecord(rawWine.tastingAttributes || rawWine.tasting_attributes || rawWine.atributos);
+  if (!attrs) return null;
+
+  const normalized = {
+    power: normalizeAttributeTo5(attrs.power ?? attrs.potencia),
+    acidity: normalizeAttributeTo5(attrs.acidity ?? attrs.acidez),
+    fruity: normalizeAttributeTo5(attrs.fruity ?? attrs.afrutado),
+    sweetness: normalizeAttributeTo5(attrs.sweetness ?? attrs.dulzura ?? attrs.dulce),
+    tannin: normalizeAttributeTo5(attrs.tannin ?? attrs.taninos ?? attrs.tanico),
+  };
+
+  if (Object.values(normalized).some((value) => value === null)) return null;
+  return normalized as NonNullable<WinerimWine['tastingAttributes']>;
+};
+
+const normalizeWineId = (rawWine: RawWinerimWine, index: number) => {
+  const id = rawWine.id ?? rawWine.uuid ?? rawWine.wine_id ?? rawWine.wineId;
+  if (typeof id === 'string' && id.trim()) return id;
+  if (typeof id === 'number' && Number.isFinite(id)) return id;
+  return `winerim-${index + 1}`;
+};
+
+const normalizeMatchPercentage = (rawWine: RawWinerimWine) => {
+  const rawValue =
+    rawWine.matchPercentage ??
+    rawWine.match_percentage ??
+    rawWine.compatibility ??
+    rawWine.compatibility_score ??
+    rawWine.compatibilidad ??
+    rawWine.match ??
+    0;
+
+  const numeric = Number(rawValue);
+  if (!Number.isFinite(numeric)) return 0;
+  if (numeric > 0 && numeric <= 1) return Math.round(numeric * 100);
+  if (numeric > 1 && numeric <= 10) return Math.round(numeric * 10);
+  return Math.max(0, Math.min(100, Math.round(numeric)));
+};
+
+const stringValue = (value: unknown) => typeof value === 'string' ? value : undefined;
+const normalizeGrapes = (value: unknown): string[] | undefined => {
+  if (!Array.isArray(value)) return undefined;
+
+  const grapes = value
+    .flat(Number.POSITIVE_INFINITY)
+    .filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+    .map((item) => item.trim());
+
+  return grapes.length > 0 ? Array.from(new Set(grapes)) : undefined;
+};
+
+const normalizeWinerimWine = (rawWine: RawWinerimWine, index: number): WinerimWineWithMatch => ({
+  id: normalizeWineId(rawWine, index),
+  name: stringValue(rawWine.name) ?? stringValue(rawWine.nombre) ?? 'Vino sin nombre',
+  subname: stringValue(rawWine.subname) ?? stringValue(rawWine.subtitle) ?? stringValue(rawWine.subtitulo) ?? null,
+  slugname: stringValue(rawWine.slugname) ?? stringValue(rawWine.slug),
+  winery: stringValue(rawWine.winery) ?? stringValue(rawWine.producer) ?? stringValue(rawWine.productor) ?? stringValue(rawWine.bodega),
+  region: stringValue(rawWine.region),
+  country: stringValue(rawWine.country) ?? stringValue(rawWine.pais),
+  type: stringValue(rawWine.type) ?? stringValue(rawWine.tipo),
+  photo: stringValue(rawWine.photo) ?? stringValue(rawWine.image) ?? stringValue(rawWine.image_url),
+  section: stringValue(rawWine.section) ?? stringValue(rawWine.seccion) ?? null,
+  vintage: typeof rawWine.vintage === 'number' || typeof rawWine.vintage === 'string'
+    ? rawWine.vintage
+    : typeof rawWine.anada === 'number' || typeof rawWine.anada === 'string'
+      ? rawWine.anada
+      : undefined,
+  grapes: normalizeGrapes(rawWine.grapes) ?? normalizeGrapes(rawWine.uvas) ?? normalizeGrapes(rawWine.grape_varieties),
+  tastingAttributes: normalizeTastingAttributes(rawWine),
+  prices: normalizePrice(rawWine),
+  matchPercentage: normalizeMatchPercentage(rawWine),
+});
+
+const extractWineResults = (data: WineMatchingResponse): RawWinerimWine[] => {
+  if (Array.isArray(data.results)) return data.results;
+  if (Array.isArray(data.wines)) return data.wines;
+  if (data.wines && !Array.isArray(data.wines)) {
+    if (Array.isArray(data.wines.detail)) return data.wines.detail;
+    if (Array.isArray(data.wines.home)) return data.wines.home;
+  }
+  if (Array.isArray(data.data)) return data.data;
+  if (data.data && Array.isArray(data.data.results)) return data.data.results;
+  if (data.data && Array.isArray(data.data.wines)) return data.data.wines;
+  return [];
+};
+
+const extractTotalCount = (data: WineMatchingResponse, fallback: number) => {
+  const rawCount = data.count ?? data.totalCount ?? data.total_count ?? data.total;
+  const numeric = Number(rawCount);
+  return Number.isFinite(numeric) ? Math.max(0, Math.round(numeric)) : fallback;
+};
+
+const calculateProfileMatchPercentage = (quizResult: QuizResult, wine: WinerimWineWithMatch) => {
+  const attrs = wine.tastingAttributes;
+  if (!attrs) return wine.matchPercentage || 0;
+
+  const weightedScore =
+    Math.max(0, 1 - Math.abs(quizResult.potente - attrs.power) / 5) * 0.25 +
+    Math.max(0, 1 - Math.abs(quizResult.acidez - attrs.acidity) / 5) * 0.20 +
+    Math.max(0, 1 - Math.abs(quizResult.dulce - attrs.sweetness) / 5) * 0.20 +
+    Math.max(0, 1 - Math.abs(quizResult.tanico - attrs.tannin) / 5) * 0.20 +
+    Math.max(0, 1 - Math.abs(quizResult.afrutado - attrs.fruity) / 5) * 0.15;
+
+  return Math.max(0, Math.min(100, Math.round(weightedScore * 100)));
+};
+
+const classifyWineByV41Style = (wine: WinerimWineWithMatch): PublicWineStyle | null => {
+  const attrs = wine.tastingAttributes;
+  if (!attrs || !wine.type) return null;
+
+  try {
+    const classification = clasificarVino(
+      attrs.power,
+      attrs.acidity,
+      attrs.sweetness,
+      attrs.tannin,
+      attrs.fruity,
+      wine.type,
+    );
+
+    return classification.estiloFinal === 'Sin encaje por tipo' ? null : classification.estiloFinal;
+  } catch (error) {
+    return null;
+  }
+};
+
+const mergeUniqueWines = (wines: WinerimWineWithMatch[]) => {
+  const byId = new Map<string | number, WinerimWineWithMatch>();
+
+  wines.forEach((wine) => {
+    const previous = byId.get(wine.id);
+    if (!previous) {
+      byId.set(wine.id, wine);
+      return;
+    }
+
+    byId.set(wine.id, {
+      ...previous,
+      ...wine,
+      matchPercentage: Math.max(previous.matchPercentage, wine.matchPercentage),
+      matchSource: previous.matchSource === 'winerim-api' ? previous.matchSource : wine.matchSource,
+      styleName: previous.styleName || wine.styleName,
+    });
+  });
+
+  return Array.from(byId.values()).sort((a, b) =>
+    b.matchPercentage - a.matchPercentage ||
+    String(a.name).localeCompare(String(b.name), 'es')
+  );
+};
+
+const fetchRestaurantWinesPage = async (
+  restaurantUuid: string,
+  page: number,
+  limit: number,
+  signal?: AbortSignal,
+) => {
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+
+  return invokeWinerimEndpoint({
+    endpoint: 'wines',
+    restaurantUuid,
+    page,
+    limit,
+  }, signal);
+};
+
+const buildDirectWinerimUrl = (payload: WinerimRequestPayload) => {
+  const params = new URLSearchParams();
+  const endpoint = payload.endpoint === 'wines' ? 'wines' : 'match';
+
+  if (endpoint === 'match') {
+    const profile = payload.profile;
+    if (!profile) throw new Error('Complete Matchrim profile is required');
+
+    params.set('userPower', String(profile.potente));
+    params.set('userAcidity', String(profile.acidez));
+    params.set('userFruity', String(profile.afrutado));
+    params.set('userSweetness', String(profile.dulce));
+    params.set('userTannin', String(profile.tanico));
+
+    if (payload.matchrimCode?.trim()) {
+      params.set('matchrimCode', payload.matchrimCode.trim());
+    }
+  } else {
+    params.set('page', String(Math.max(1, Math.round(payload.page || 1))));
+    params.set('limit', String(Math.min(250, Math.max(1, Math.round(payload.limit || 100)))));
+  }
+
+  const path = endpoint === 'match' ? 'wines/match' : 'wines';
+  const baseUrl = WINERIM_API_URL.replace(/\/$/, '');
+  return `${baseUrl}/api/v1/restaurant/${encodeURIComponent(payload.restaurantUuid)}/${path}?${params}`;
+};
+
+const fetchDirectWinerimEndpoint = async (
+  payload: WinerimRequestPayload,
+  signal?: AbortSignal,
+): Promise<WineMatchingResponse> => {
+  const response = await fetch(buildDirectWinerimUrl(payload), {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+    signal,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => '');
+    throw new Error(`Winerim API responded ${response.status}${errorText ? `: ${errorText}` : ''}`);
+  }
+
+  return response.json() as Promise<WineMatchingResponse>;
+};
+
+const invokeWinerimEndpoint = async (
+  payload: WinerimRequestPayload,
+  signal?: AbortSignal,
+): Promise<WineMatchingResponse> => {
+  try {
+    const { data, error } = await supabase.functions.invoke('winerim-wines', { body: payload });
+    if (error) throw error;
+    return (data || {}) as WineMatchingResponse;
+  } catch (error) {
+    if (WINERIM_DIRECT_FALLBACK_ENABLED) {
+      console.warn('⚠️ [Winerim] Edge Function no disponible; usando API directa:', error);
+      return fetchDirectWinerimEndpoint(payload, signal);
+    }
+
+    console.warn('⚠️ [Winerim] Edge Function no disponible:', error);
+    throw new Error('No se pudo conectar con Winerim. Falta desplegar la función winerim-wines en Supabase.');
+  }
+};
+
+const isFallbackRestaurantUuid = (restaurantUuid: string) =>
+  restaurantUuid === '00000000-0000-0000-0000-000000000001';
+
+const invokeMatchrimRecommendations = async (
+  profile: QuizResult,
+  signal?: AbortSignal,
+): Promise<WineMatchingResponse> => {
+  if (!SUPABASE_URL) throw new Error('Supabase URL not configured');
+
+  const params = new URLSearchParams({
+    power: String(profile.potente),
+    acidity: String(profile.acidez),
+    sweetness: String(profile.dulce),
+    tannin: String(profile.tanico),
+    fruity: String(profile.afrutado),
+  });
+
+  const response = await fetch(`${SUPABASE_URL.replace(/\/$/, '')}/functions/v1/matchrim-recommendations?${params}`, {
+    method: 'GET',
+    signal,
+    headers: {
+      Accept: 'application/json',
+      ...(SUPABASE_PUBLISHABLE_KEY
+        ? {
+            apikey: SUPABASE_PUBLISHABLE_KEY,
+            Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+          }
+        : {}),
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => '');
+    throw new Error(`Matchrim recommendations proxy responded ${response.status}${errorText ? `: ${errorText}` : ''}`);
+  }
+
+  return response.json() as Promise<WineMatchingResponse>;
+};
+
+const fetchStyleRangeWines = async (
+  quizResult: QuizResult,
+  restaurantUuid: string,
+  primaryStyle: PublicWineStyle,
+  signal?: AbortSignal,
+) => {
+  const pageSize = 200;
+  const maxPages = 1;
+  const targetStyleMatches = 40;
+  const styleMatches: WinerimWineWithMatch[] = [];
+
+  for (let page = 1; page <= maxPages && styleMatches.length < targetStyleMatches; page += 1) {
+    const data = await fetchRestaurantWinesPage(restaurantUuid, page, pageSize, signal);
+    const pageWines = extractWineResults(data).map(normalizeWinerimWine);
+
+    pageWines.forEach((wine) => {
+      const styleName = classifyWineByV41Style(wine);
+      if (styleName !== primaryStyle) return;
+
+      styleMatches.push({
+        ...wine,
+        matchPercentage: calculateProfileMatchPercentage(quizResult, wine),
+        matchSource: 'style-range',
+        styleName,
+      });
+    });
+
+    if (pageWines.length < pageSize) break;
+  }
+
+  return styleMatches;
+};
+
+/**
+ * Fetch wines matching user taste profile
+ * Uses backend progressive tolerance search (31 configurations)
+ * Returns wines already sorted by match percentage
+ */
+export const fetchWinesByAttributes = async (
+  quizResult: QuizResult,
+  options: FetchWinerimWinesOptions = {}
+): Promise<WinerimWineWithMatch[]> => {
+  const normalizedProfile = normalizeMatchrimProfileForClassifier(quizResult);
+  const restaurantUuid = options.restaurantUuid?.trim() || WINERIM_RESTAURANT_UUID;
+  const useGlobalRecommendations = !options.restaurantUuid?.trim() || isFallbackRestaurantUuid(restaurantUuid);
+
+  if (!restaurantUuid && !useGlobalRecommendations) {
+    throw new Error('Winerim API not configured');
+  }
+
+  console.log('🔍 [Winerim] Buscando vinos con backend matching');
+  console.log('📊 [Winerim] Perfil del usuario:', quizResult);
+
+  if (options.signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+
+  const responseData = useGlobalRecommendations
+    ? await invokeMatchrimRecommendations(normalizedProfile, options.signal)
+    : await invokeWinerimEndpoint({
+        endpoint: 'match',
+        restaurantUuid,
+        matchrimCode: options.matchrimCode,
+        profile: normalizedProfile,
+      }, options.signal);
+  const directResults = extractWineResults(responseData)
+    .map(normalizeWinerimWine)
+    .map((wine) => ({
+      ...wine,
+      matchSource: 'winerim-api' as const,
+      styleName: classifyWineByV41Style(wine) || undefined,
+    }));
+
+  const [primaryStyle] = suggestWineStylesForProfile({
+    potente: normalizedProfile.potente,
+    acidez: normalizedProfile.acidez,
+    dulce: normalizedProfile.dulce,
+    tanico: normalizedProfile.tanico,
+    afrutado: normalizedProfile.afrutado,
+  }, 1);
+
+  let styleRangeResults: WinerimWineWithMatch[] = [];
+
+  if (!useGlobalRecommendations) {
+    try {
+      styleRangeResults = await fetchStyleRangeWines(normalizedProfile, restaurantUuid, primaryStyle, options.signal);
+    } catch (error) {
+      console.warn('⚠️ [Winerim] No se pudo ampliar por rango de estilo:', error);
+    }
+  }
+
+  const mergedResults = mergeUniqueWines([...directResults, ...styleRangeResults]);
+  const results = mergedResults.map((wine) => {
+    const rawMatchPercentage = wine.matchPercentage;
+    if (options.affinityCalibrationConfidence === null || options.affinityCalibrationConfidence === undefined) {
+      return {
+        ...wine,
+        rawMatchPercentage,
+        affinityModel: 'raw-v1' as const,
+      };
+    }
+
+    const calibrated = buildMatchrimAffinityCalibration(
+      rawMatchPercentage,
+      options.affinityCalibrationConfidence,
+    );
+    return {
+      ...wine,
+      matchPercentage: calibrated.affinity,
+      rawMatchPercentage: calibrated.rawAffinity,
+      affinityConfidence: calibrated.learningConfidence,
+      affinityModel: calibrated.model,
+    };
+  });
+  const totalCount = extractTotalCount(responseData, directResults.length);
+
+  winerimWineResultsMeta.set(results, {
+    totalCount,
+    displayedCount: results.length,
+    directCount: directResults.length,
+    styleRangeCount: styleRangeResults.length,
+    searchLevel: responseData.searchLevel,
+    primaryStyle,
+    isGlobalRecommendations: useGlobalRecommendations,
+  });
+
+  console.log(`✅ [Winerim] Encontrados ${totalCount} compatibles totales; mostrando ${results.length} (${directResults.length} directos, ${styleRangeResults.length} del rango ${primaryStyle})`);
+
+  return results;
+};
+
+// ---------------------------------------------------------------------------
+// Winerim Library helpers (public ficha URLs + label lookup)
+// ---------------------------------------------------------------------------
+
+const WINERIM_STORE_URL =
+  import.meta.env.VITE_WINERIM_STORE_URL ||
+  import.meta.env.VITE_WINERIM_APP_URL ||
+  'https://winerim.wine';
+
+export const generateWinerimSlug = (name: string, vintage?: number | string | null): string => {
+  const base = (name || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .split(/\s+/)
+    .map((word) => (word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : ''))
+    .join('-')
+    .replace(/[^a-zA-Z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .trim();
+
+  return vintage ? `${base}_${vintage}` : base;
+};
+
+/**
+ * Build a public URL to the wine's Winerim Library ficha
+ * (e.g. https://web.winerim.com/the-library/wines/<id>/<slug>).
+ */
+export const buildWinerimWineUrl = (wine: Pick<WinerimWine, 'id' | 'name' | 'slugname' | 'vintage'>): string => {
+  const slug = wine.slugname || generateWinerimSlug(wine.name, wine.vintage);
+  const base = WINERIM_STORE_URL.replace(/\/$/, '');
+  return `${base}/the-library/wines/${wine.id}/${slug}`;
+};
+
+// ---------------------------------------------------------------------------
+// Label → Winerim Library lookup
+// ---------------------------------------------------------------------------
+
+export interface WinerimLabelLookupInput {
+  name: string;
+  producer?: string | null;
+  vintage?: number | string | null;
+  region?: string | null;
+  country?: string | null;
+}
+
+export interface WinerimLabelLookupResult {
+  wine: WinerimWine;
+  confidence: number;
+  restaurantUuid?: string | null;
+}
+
+const normalizeForMatch = (value: unknown): string =>
+  typeof value === 'string'
+    ? value
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim()
+    : '';
+
+const tokenSet = (value: string): Set<string> =>
+  new Set(value.split(' ').filter((token) => token.length >= 2));
+
+const jaccard = (a: Set<string>, b: Set<string>): number => {
+  if (!a.size || !b.size) return 0;
+  let inter = 0;
+  a.forEach((token) => {
+    if (b.has(token)) inter += 1;
+  });
+  const union = a.size + b.size - inter;
+  return union === 0 ? 0 : inter / union;
+};
+
+interface RawSearchWine {
+  id?: string | number;
+  name?: string;
+  producer?: string | null;
+  region?: string | null;
+  country?: string | null;
+  vintage?: number | string | null;
+  slugname?: string | null;
+  slug?: string | null;
+  photo?: string | null;
+  image_url?: string | null;
+  grape_varieties?: string[] | null;
+  tipo?: string | null;
+  tasting_attributes?: WinerimWine['tastingAttributes'];
+  tastingAttributes?: WinerimWine['tastingAttributes'];
+}
+
+const scoreCandidate = (input: WinerimLabelLookupInput, candidate: RawSearchWine): number => {
+  const nameScore = jaccard(
+    tokenSet(normalizeForMatch(input.name)),
+    tokenSet(normalizeForMatch(candidate.name)),
+  );
+  if (nameScore === 0) return 0;
+
+  const producerScore = input.producer && candidate.producer
+    ? jaccard(tokenSet(normalizeForMatch(input.producer)), tokenSet(normalizeForMatch(candidate.producer)))
+    : 0;
+
+  const regionScore = input.region && candidate.region
+    ? jaccard(tokenSet(normalizeForMatch(input.region)), tokenSet(normalizeForMatch(candidate.region)))
+    : 0;
+
+  let vintageBoost = 0;
+  if (input.vintage && candidate.vintage) {
+    const a = String(input.vintage).replace(/\D/g, '');
+    const b = String(candidate.vintage).replace(/\D/g, '');
+    if (a && b && a === b) vintageBoost = 0.1;
+  }
+
+  // Weighted blend: name dominates, producer/region reinforce, vintage as tiebreaker.
+  const blended = nameScore * 0.6 + producerScore * 0.3 + regionScore * 0.1 + vintageBoost;
+  return Math.max(0, Math.min(1, blended));
+};
+
+/**
+ * Search the Winerim wines catalog for a match to a scanned label.
+ * Returns the best candidate above a minimum confidence threshold, or null.
+ */
+export const findWinerimWineForLabel = async (
+  input: WinerimLabelLookupInput,
+): Promise<WinerimLabelLookupResult | null> => {
+  const trimmedName = (input.name || '').trim();
+  if (trimmedName.length < 2) return null;
+
+  const query = canonicalLabelSearchQuery(input);
+
+  try {
+    const { data, error } = await supabase.functions.invoke(resolveMatchrimEdgeFunctionName('search-wines', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
+      body: { query, limit: 20 },
+    });
+    if (error) throw error;
+
+    const candidates: RawSearchWine[] = Array.isArray((data as { wines?: RawSearchWine[] })?.wines)
+      ? (data as { wines: RawSearchWine[] }).wines
+      : [];
+
+    if (!candidates.length) return null;
+    if (hasAmbiguousCanonicalMatches(input, candidates.filter((candidate) => candidate.id && !isNonWineIdentity(candidate.name, candidate.tipo)))) return null;
+
+    let best: { candidate: RawSearchWine; score: number } | null = null;
+    for (const candidate of candidates) {
+      if (!candidate?.id || !candidate?.name) continue;
+      if (isNonWineIdentity(candidate.name, candidate.tipo)) continue;
+      if (!isSafeCanonicalLabelMatch(input, candidate)) continue;
+      const score = scoreCandidate(input, candidate);
+      if (!best || score > best.score) {
+        best = { candidate, score };
+      }
+    }
+
+    if (!best || best.score < 0.45) return null;
+
+    const sensory = normalizeWineAttributesForInsight(best.candidate.tastingAttributes ?? best.candidate.tasting_attributes);
+    const wine: WinerimWine = {
+      id: best.candidate.id!,
+      name: best.candidate.name!,
+      slugname: best.candidate.slugname || best.candidate.slug || undefined,
+      winery: best.candidate.producer || undefined,
+      region: best.candidate.region || undefined,
+      country: best.candidate.country || undefined,
+      vintage: best.candidate.vintage ?? undefined,
+      photo: best.candidate.photo || best.candidate.image_url || undefined,
+      type: best.candidate.tipo || undefined,
+      grapes: Array.isArray(best.candidate.grape_varieties) ? best.candidate.grape_varieties : undefined,
+      tastingAttributes: sensory ? {
+        power: sensory.potente, acidity: sensory.acidez, sweetness: sensory.dulce,
+        tannin: sensory.tanico, fruity: sensory.afrutado,
+      } : null,
+    };
+
+    return {
+      wine,
+      confidence: Math.round(best.score * 100) / 100,
+      restaurantUuid: null,
+    };
+  } catch (error) {
+    console.warn('[Winerim] findWinerimWineForLabel failed:', error);
+    return null;
+  }
+};
+
+/**
+ * Convenience wrapper used by scanners: look up a wine and, if found, also
+ * return its Winerim Library URL ready to open in a new tab.
+ */
+export const lookupOfficialWinerimWine = async (
+  input: WinerimLabelLookupInput,
+): Promise<(WinerimLabelLookupResult & { url: string }) | null> => {
+  const result = await findWinerimWineForLabel(input);
+  if (!result) return null;
+  return { ...result, url: buildWinerimWineUrl(result.wine) };
+};

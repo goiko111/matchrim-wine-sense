@@ -1,0 +1,12 @@
+{
+  "scope": "Only15 owned UI await cancellation in ranking while canonical requests stay pending; local replay, not server cancellation.",
+  "hashes": {
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "src/components/wine-import/WineMenuScanner.tsx": "58fa342fa3bb71c51512b6558fb56b29b10bf56b3d5a0131a0c5dd94fac1c105",
+    "src/services/winerimApi.ts": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec"
+  },
+  "samePath": "/Users/GOIKO/2matchrim76-recognition-20261008/docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg",
+  "selection": "Real SubirArchivo button + standard nativeCDP FileChooser, exact same file after QuitarCarta. Not OS/iOS proof.",
+  "requestSetup": "All3 OCR replay calls complete. Actual2 canonical calls held; no pipeline/fixtureflag/positive catalog changes."
+}

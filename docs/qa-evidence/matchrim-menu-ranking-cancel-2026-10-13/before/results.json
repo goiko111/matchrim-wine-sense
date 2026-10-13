@@ -1,0 +1,1805 @@
+{
+  "scope": "Only15 owned UI await cancellation in ranking while canonical requests stay pending; local replay, not server cancellation.",
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realAccounts": 0,
+  "results": [
+    {
+      "case": "keyboard-portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Actually reached ranking with two held catalog requests",
+          "passed": true,
+          "detail": {
+            "ocr": 3,
+            "canonical": 2,
+            "base": 1
+          }
+        },
+        {
+          "name": "UI recovers while catalog still held, measured bounded window not published SLA",
+          "passed": false,
+          "detail": [
+            {
+              "targetMs": 100,
+              "elapsedMs": 104.29999999701977,
+              "state": {
+                "at": 1912,
+                "cancelAt": 1807.7000000029802,
+                "phase": [
+                  "Ordenando resultados..."
+                ],
+                "cancelVisible": true,
+                "feedback": false,
+                "rows": [],
+                "buttons": [
+                  {
+                    "label": "Volver a tipos de escaneo",
+                    "disabled": false
+                  },
+                  {
+                    "label": "Cancelar análisis",
+                    "disabled": false
+                  }
+                ],
+                "inputs": [
+                  {
+                    "disabled": true,
+                    "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                    "files": [
+                      {
+                        "name": "IMG_7547 2.jpg",
+                        "type": "image/jpeg",
+                        "size": 2303531,
+                        "lastModified": 1791448774457
+                      }
+                    ]
+                  },
+                  {
+                    "disabled": true,
+                    "value": "",
+                    "files": []
+                  }
+                ],
+                "successNotice": false,
+                "active": {
+                  "tag": "BUTTON",
+                  "label": "Cancelar análisis"
+                }
+              }
+            },
+            {
+              "targetMs": 1000,
+              "elapsedMs": 1008.5,
+              "state": {
+                "at": 2816.2000000029802,
+                "cancelAt": 1807.7000000029802,
+                "phase": [
+                  "Ordenando resultados..."
+                ],
+                "cancelVisible": true,
+                "feedback": false,
+                "rows": [],
+                "buttons": [
+                  {
+                    "label": "Volver a tipos de escaneo",
+                    "disabled": false
+                  },
+                  {
+                    "label": "Cancelar análisis",
+                    "disabled": false
+                  }
+                ],
+                "inputs": [
+                  {
+                    "disabled": true,
+                    "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                    "files": [
+                      {
+                        "name": "IMG_7547 2.jpg",
+                        "type": "image/jpeg",
+                        "size": 2303531,
+                        "lastModified": 1791448774457
+                      }
+                    ]
+                  },
+                  {
+                    "disabled": true,
+                    "value": "",
+                    "files": []
+                  }
+                ],
+                "successNotice": false,
+                "active": {
+                  "tag": "BUTTON",
+                  "label": "Cancelar análisis"
+                }
+              }
+            },
+            {
+              "targetMs": 2000,
+              "elapsedMs": 2004.0,
+              "state": {
+                "at": 3811.7000000029802,
+                "cancelAt": 1807.7000000029802,
+                "phase": [
+                  "Ordenando resultados..."
+                ],
+                "cancelVisible": true,
+                "feedback": false,
+                "rows": [],
+                "buttons": [
+                  {
+                    "label": "Volver a tipos de escaneo",
+                    "disabled": false
+                  },
+                  {
+                    "label": "Cancelar análisis",
+                    "disabled": false
+                  }
+                ],
+                "inputs": [
+                  {
+                    "disabled": true,
+                    "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                    "files": [
+                      {
+                        "name": "IMG_7547 2.jpg",
+                        "type": "image/jpeg",
+                        "size": 2303531,
+                        "lastModified": 1791448774457
+                      }
+                    ]
+                  },
+                  {
+                    "disabled": true,
+                    "value": "",
+                    "files": []
+                  }
+                ],
+                "successNotice": false,
+                "active": {
+                  "tag": "BUTTON",
+                  "label": "Cancelar análisis"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "No results/success/extra calls before any catalog release",
+          "passed": true,
+          "detail": {
+            "ocr": 3,
+            "canonical": 2,
+            "base": 1
+          }
+        },
+        {
+          "name": "Catalogue network cancellation is separately observed, not claimed",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "Visible UI exact-file retry starts new ranking, no stale feedback",
+          "passed": true,
+          "detail": {
+            "ocr": 3,
+            "canonical": 2,
+            "base": 1
+          }
+        },
+        {
+          "name": "Old completed lookups cannot replace new loader/results/feedback",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Old completions cause no extra canonical/OCR/profile calls",
+          "passed": true,
+          "detail": {
+            "1": {
+              "ocr": 3,
+              "canonical": 2,
+              "base": 1
+            },
+            "2": {
+              "ocr": 3,
+              "canonical": 2,
+              "base": 1
+            }
+          }
+        },
+        {
+          "name": "New attempt alone publishes four existing candidate rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Final loader/input recovery normal",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No REST/history/profile/stock/feedback writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Every nonlocal request/WS intercepted including pending canonical",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/unexpected console/mobile overflow errors",
+          "passed": true,
+          "detail": {
+            "warnings": [],
+            "console": []
+          }
+        }
+      ],
+      "failures": [
+        "UI recovers while catalog still held, measured bounded window not published SLA"
+      ],
+      "observations": {
+        "tabTraces": [
+          [
+            {
+              "tag": "BUTTON",
+              "label": "Volver a tipos de escaneo"
+            },
+            {
+              "tag": "BUTTON",
+              "label": "Hacer foto"
+            },
+            {
+              "tag": "BUTTON",
+              "label": "Subir archivo"
+            }
+          ],
+          [
+            {
+              "tag": "BUTTON",
+              "label": "Cancelar análisis"
+            }
+          ],
+          [
+            {
+              "tag": "BUTTON",
+              "label": "Quitar carta"
+            }
+          ],
+          [
+            {
+              "tag": "BUTTON",
+              "label": "Hacer foto"
+            },
+            {
+              "tag": "BUTTON",
+              "label": "Subir archivo"
+            }
+          ]
+        ],
+        "chooserBefore": [
+          {
+            "disabled": false,
+            "value": "",
+            "files": []
+          },
+          {
+            "disabled": false,
+            "value": "",
+            "files": []
+          }
+        ],
+        "files": [
+          [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ],
+          [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        ],
+        "rankingBeforeCancel": {
+          "at": 1715.5,
+          "cancelAt": null,
+          "phase": [
+            "Ordenando resultados..."
+          ],
+          "cancelVisible": true,
+          "feedback": false,
+          "rows": [],
+          "buttons": [
+            {
+              "label": "Volver a tipos de escaneo",
+              "disabled": false
+            },
+            {
+              "label": "Cancelar análisis",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": true,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": true,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": false,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+          }
+        },
+        "cancelSamplesWhileCatalogHeld": [
+          {
+            "targetMs": 100,
+            "elapsedMs": 104.29999999701977,
+            "state": {
+              "at": 1912,
+              "cancelAt": 1807.7000000029802,
+              "phase": [
+                "Ordenando resultados..."
+              ],
+              "cancelVisible": true,
+              "feedback": false,
+              "rows": [],
+              "buttons": [
+                {
+                  "label": "Volver a tipos de escaneo",
+                  "disabled": false
+                },
+                {
+                  "label": "Cancelar análisis",
+                  "disabled": false
+                }
+              ],
+              "inputs": [
+                {
+                  "disabled": true,
+                  "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                  "files": [
+                    {
+                      "name": "IMG_7547 2.jpg",
+                      "type": "image/jpeg",
+                      "size": 2303531,
+                      "lastModified": 1791448774457
+                    }
+                  ]
+                },
+                {
+                  "disabled": true,
+                  "value": "",
+                  "files": []
+                }
+              ],
+              "successNotice": false,
+              "active": {
+                "tag": "BUTTON",
+                "label": "Cancelar análisis"
+              }
+            }
+          },
+          {
+            "targetMs": 1000,
+            "elapsedMs": 1008.5,
+            "state": {
+              "at": 2816.2000000029802,
+              "cancelAt": 1807.7000000029802,
+              "phase": [
+                "Ordenando resultados..."
+              ],
+              "cancelVisible": true,
+              "feedback": false,
+              "rows": [],
+              "buttons": [
+                {
+                  "label": "Volver a tipos de escaneo",
+                  "disabled": false
+                },
+                {
+                  "label": "Cancelar análisis",
+                  "disabled": false
+                }
+              ],
+              "inputs": [
+                {
+                  "disabled": true,
+                  "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                  "files": [
+                    {
+                      "name": "IMG_7547 2.jpg",
+                      "type": "image/jpeg",
+                      "size": 2303531,
+                      "lastModified": 1791448774457
+                    }
+                  ]
+                },
+                {
+                  "disabled": true,
+                  "value": "",
+                  "files": []
+                }
+              ],
+              "successNotice": false,
+              "active": {
+                "tag": "BUTTON",
+                "label": "Cancelar análisis"
+              }
+            }
+          },
+          {
+            "targetMs": 2000,
+            "elapsedMs": 2004.0,
+            "state": {
+              "at": 3811.7000000029802,
+              "cancelAt": 1807.7000000029802,
+              "phase": [
+                "Ordenando resultados..."
+              ],
+              "cancelVisible": true,
+              "feedback": false,
+              "rows": [],
+              "buttons": [
+                {
+                  "label": "Volver a tipos de escaneo",
+                  "disabled": false
+                },
+                {
+                  "label": "Cancelar análisis",
+                  "disabled": false
+                }
+              ],
+              "inputs": [
+                {
+                  "disabled": true,
+                  "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                  "files": [
+                    {
+                      "name": "IMG_7547 2.jpg",
+                      "type": "image/jpeg",
+                      "size": 2303531,
+                      "lastModified": 1791448774457
+                    }
+                  ]
+                },
+                {
+                  "disabled": true,
+                  "value": "",
+                  "files": []
+                }
+              ],
+              "successNotice": false,
+              "active": {
+                "tag": "BUTTON",
+                "label": "Cancelar análisis"
+              }
+            }
+          }
+        ],
+        "recoveredWithoutCatalogRelease": false,
+        "oldReleaseNeededForUI": true,
+        "recoveredAfterForcedOldRelease": {
+          "at": 3891.7000000029802,
+          "cancelAt": 1807.7000000029802,
+          "phase": [],
+          "cancelVisible": false,
+          "feedback": true,
+          "rows": [],
+          "buttons": [
+            {
+              "label": "Volver a tipos de escaneo",
+              "disabled": false
+            },
+            {
+              "label": "Quitar carta",
+              "disabled": false
+            },
+            {
+              "label": "Reintentar foto",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": false,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": false,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": false,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.No ha "
+          }
+        },
+        "newRankingPending": {
+          "at": 4237.60000000149,
+          "cancelAt": 1807.7000000029802,
+          "phase": [
+            "Ordenando resultados..."
+          ],
+          "cancelVisible": true,
+          "feedback": false,
+          "rows": [],
+          "buttons": [
+            {
+              "label": "Volver a tipos de escaneo",
+              "disabled": false
+            },
+            {
+              "label": "Cancelar análisis",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": true,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": true,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": false,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+          }
+        },
+        "afterOldLateCompletion": {
+          "at": 5640.89999999851,
+          "cancelAt": 1807.7000000029802,
+          "phase": [
+            "Ordenando resultados..."
+          ],
+          "cancelVisible": true,
+          "feedback": false,
+          "rows": [],
+          "buttons": [
+            {
+              "label": "Volver a tipos de escaneo",
+              "disabled": false
+            },
+            {
+              "label": "Cancelar análisis",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": true,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": true,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": false,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+          }
+        },
+        "final": {
+          "at": 5773.79999999702,
+          "cancelAt": 1807.7000000029802,
+          "phase": [],
+          "cancelVisible": false,
+          "feedback": false,
+          "rows": [
+            "Abrir vino 1: Lugana Allegrini",
+            "Abrir vino 2: Barbaresco Marchesi di Barolo",
+            "Abrir vino 3: Barolo Marchesi di Barolo",
+            "Abrir vino 4: Laurent Perriere Ultra"
+          ],
+          "buttons": [
+            {
+              "label": "Volver a tipos de escaneo",
+              "disabled": false
+            },
+            {
+              "label": "Vino 1: Lugana Allegrini",
+              "disabled": false
+            },
+            {
+              "label": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Alejar carta",
+              "disabled": true
+            },
+            {
+              "label": "Acercar carta",
+              "disabled": false
+            },
+            {
+              "label": "Quitar carta",
+              "disabled": false
+            },
+            {
+              "label": "Comparar Lugana Allegrini",
+              "disabled": false
+            },
+            {
+              "label": "Comparar Barbaresco Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Comparar Barolo Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Comparar Laurent Perriere Ultra",
+              "disabled": false
+            },
+            {
+              "label": "Para mí",
+              "disabled": false
+            },
+            {
+              "label": "Servicio",
+              "disabled": false
+            },
+            {
+              "label": "Identidad más segura",
+              "disabled": false
+            },
+            {
+              "label": "Mejor match",
+              "disabled": false
+            },
+            {
+              "label": "Todos los tipos",
+              "disabled": false
+            },
+            {
+              "label": "Todas las regiones",
+              "disabled": false
+            },
+            {
+              "label": "Copa o botella",
+              "disabled": false
+            },
+            {
+              "label": "Cualquier afinidad",
+              "disabled": false
+            },
+            {
+              "label": "Cualquier confianza",
+              "disabled": false
+            },
+            {
+              "label": "Abrir vino 1: Lugana Allegrini",
+              "disabled": false
+            },
+            {
+              "label": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Abrir vino 3: Barolo Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Abrir vino 4: Laurent Perriere Ultra",
+              "disabled": false
+            },
+            {
+              "label": "2. Barbaresco Marchesi di BaroloMarchesi di BaroloEditar y guardar",
+              "disabled": false
+            },
+            {
+              "label": "3. Barolo Marchesi di BaroloMarchesi di BaroloEditar y guardar",
+              "disabled": false
+            },
+            {
+              "label": "4. Laurent Perriere UltraLaurent PerrierEditar y guardar",
+              "disabled": false
+            },
+            {
+              "label": "Close toast",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": false,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": false,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": true,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.1+3100"
+          }
+        },
+        "expected503ConsoleControl": [],
+        "events": [
+          {
+            "key": "Tab",
+            "tag": "BODY",
+            "label": null
+          },
+          {
+            "key": "Tab",
+            "tag": "BUTTON",
+            "label": "Volver a tipos de escaneo"
+          },
+          {
+            "key": "Tab",
+            "tag": "BUTTON",
+            "label": null
+          },
+          {
+            "key": "Enter",
+            "tag": "BUTTON",
+            "label": null
+          },
+          {
+            "key": "Tab",
+            "tag": "BODY",
+            "label": null
+          },
+          {
+            "key": "Enter",
+            "tag": "BUTTON",
+            "label": null
+          },
+          {
+            "key": "Tab",
+            "tag": "BODY",
+            "label": null
+          },
+          {
+            "key": "Enter",
+            "tag": "BUTTON",
+            "label": "Quitar carta"
+          },
+          {
+            "key": "Tab",
+            "tag": "BODY",
+            "label": null
+          },
+          {
+            "key": "Tab",
+            "tag": "BUTTON",
+            "label": null
+          },
+          {
+            "key": "Enter",
+            "tag": "BUTTON",
+            "label": null
+          }
+        ]
+      },
+      "countsByAttempt": {
+        "1": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        },
+        "2": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        }
+      },
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        }
+      ],
+      "requestFailures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attemptAtArrival": 2
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "warnings": [],
+      "console": []
+    },
+    {
+      "case": "touch-landscape",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Actually reached ranking with two held catalog requests",
+          "passed": true,
+          "detail": {
+            "ocr": 3,
+            "canonical": 2,
+            "base": 1
+          }
+        },
+        {
+          "name": "UI recovers while catalog still held, measured bounded window not published SLA",
+          "passed": false,
+          "detail": [
+            {
+              "targetMs": 100,
+              "elapsedMs": 104.0,
+              "state": {
+                "at": 1262.5,
+                "cancelAt": 1158.5,
+                "phase": [
+                  "Ordenando resultados..."
+                ],
+                "cancelVisible": true,
+                "feedback": false,
+                "rows": [],
+                "buttons": [
+                  {
+                    "label": "Cancelar análisis",
+                    "disabled": false
+                  }
+                ],
+                "inputs": [
+                  {
+                    "disabled": true,
+                    "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                    "files": [
+                      {
+                        "name": "IMG_7547 2.jpg",
+                        "type": "image/jpeg",
+                        "size": 2303531,
+                        "lastModified": 1791448774457
+                      }
+                    ]
+                  },
+                  {
+                    "disabled": true,
+                    "value": "",
+                    "files": []
+                  }
+                ],
+                "successNotice": false,
+                "active": {
+                  "tag": "BUTTON",
+                  "label": "Cancelar análisis"
+                }
+              }
+            },
+            {
+              "targetMs": 1000,
+              "elapsedMs": 1005.2999999970198,
+              "state": {
+                "at": 2163.7999999970198,
+                "cancelAt": 1158.5,
+                "phase": [
+                  "Ordenando resultados..."
+                ],
+                "cancelVisible": true,
+                "feedback": false,
+                "rows": [],
+                "buttons": [
+                  {
+                    "label": "Cancelar análisis",
+                    "disabled": false
+                  }
+                ],
+                "inputs": [
+                  {
+                    "disabled": true,
+                    "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                    "files": [
+                      {
+                        "name": "IMG_7547 2.jpg",
+                        "type": "image/jpeg",
+                        "size": 2303531,
+                        "lastModified": 1791448774457
+                      }
+                    ]
+                  },
+                  {
+                    "disabled": true,
+                    "value": "",
+                    "files": []
+                  }
+                ],
+                "successNotice": false,
+                "active": {
+                  "tag": "BUTTON",
+                  "label": "Cancelar análisis"
+                }
+              }
+            },
+            {
+              "targetMs": 2000,
+              "elapsedMs": 2006.7999999970198,
+              "state": {
+                "at": 3165.2999999970198,
+                "cancelAt": 1158.5,
+                "phase": [
+                  "Ordenando resultados..."
+                ],
+                "cancelVisible": true,
+                "feedback": false,
+                "rows": [],
+                "buttons": [
+                  {
+                    "label": "Cancelar análisis",
+                    "disabled": false
+                  }
+                ],
+                "inputs": [
+                  {
+                    "disabled": true,
+                    "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                    "files": [
+                      {
+                        "name": "IMG_7547 2.jpg",
+                        "type": "image/jpeg",
+                        "size": 2303531,
+                        "lastModified": 1791448774457
+                      }
+                    ]
+                  },
+                  {
+                    "disabled": true,
+                    "value": "",
+                    "files": []
+                  }
+                ],
+                "successNotice": false,
+                "active": {
+                  "tag": "BUTTON",
+                  "label": "Cancelar análisis"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "No results/success/extra calls before any catalog release",
+          "passed": true,
+          "detail": {
+            "ocr": 3,
+            "canonical": 2,
+            "base": 1
+          }
+        },
+        {
+          "name": "Catalogue network cancellation is separately observed, not claimed",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "Visible UI exact-file retry starts new ranking, no stale feedback",
+          "passed": true,
+          "detail": {
+            "ocr": 3,
+            "canonical": 2,
+            "base": 1
+          }
+        },
+        {
+          "name": "Old completed lookups cannot replace new loader/results/feedback",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Old completions cause no extra canonical/OCR/profile calls",
+          "passed": true,
+          "detail": {
+            "1": {
+              "ocr": 3,
+              "canonical": 2,
+              "base": 1
+            },
+            "2": {
+              "ocr": 3,
+              "canonical": 2,
+              "base": 1
+            }
+          }
+        },
+        {
+          "name": "New attempt alone publishes four existing candidate rows",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Final loader/input recovery normal",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No REST/history/profile/stock/feedback writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Every nonlocal request/WS intercepted including pending canonical",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime/unexpected console/mobile overflow errors",
+          "passed": true,
+          "detail": {
+            "warnings": [
+              "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+              "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>"
+            ],
+            "console": [
+              "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+              "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+            ]
+          }
+        }
+      ],
+      "failures": [
+        "UI recovers while catalog still held, measured bounded window not published SLA"
+      ],
+      "observations": {
+        "chooserBefore": [
+          {
+            "disabled": false,
+            "value": "",
+            "files": []
+          },
+          {
+            "disabled": false,
+            "value": "",
+            "files": []
+          }
+        ],
+        "files": [
+          [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ],
+          [
+            {
+              "name": "IMG_7547 2.jpg",
+              "type": "image/jpeg",
+              "size": 2303531,
+              "lastModified": 1791448774457
+            }
+          ]
+        ],
+        "rankingBeforeCancel": {
+          "at": 1048.7999999970198,
+          "cancelAt": null,
+          "phase": [
+            "Ordenando resultados..."
+          ],
+          "cancelVisible": true,
+          "feedback": false,
+          "rows": [],
+          "buttons": [
+            {
+              "label": "Cancelar análisis",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": true,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": true,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": false,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+          }
+        },
+        "cancelSamplesWhileCatalogHeld": [
+          {
+            "targetMs": 100,
+            "elapsedMs": 104.0,
+            "state": {
+              "at": 1262.5,
+              "cancelAt": 1158.5,
+              "phase": [
+                "Ordenando resultados..."
+              ],
+              "cancelVisible": true,
+              "feedback": false,
+              "rows": [],
+              "buttons": [
+                {
+                  "label": "Cancelar análisis",
+                  "disabled": false
+                }
+              ],
+              "inputs": [
+                {
+                  "disabled": true,
+                  "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                  "files": [
+                    {
+                      "name": "IMG_7547 2.jpg",
+                      "type": "image/jpeg",
+                      "size": 2303531,
+                      "lastModified": 1791448774457
+                    }
+                  ]
+                },
+                {
+                  "disabled": true,
+                  "value": "",
+                  "files": []
+                }
+              ],
+              "successNotice": false,
+              "active": {
+                "tag": "BUTTON",
+                "label": "Cancelar análisis"
+              }
+            }
+          },
+          {
+            "targetMs": 1000,
+            "elapsedMs": 1005.2999999970198,
+            "state": {
+              "at": 2163.7999999970198,
+              "cancelAt": 1158.5,
+              "phase": [
+                "Ordenando resultados..."
+              ],
+              "cancelVisible": true,
+              "feedback": false,
+              "rows": [],
+              "buttons": [
+                {
+                  "label": "Cancelar análisis",
+                  "disabled": false
+                }
+              ],
+              "inputs": [
+                {
+                  "disabled": true,
+                  "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                  "files": [
+                    {
+                      "name": "IMG_7547 2.jpg",
+                      "type": "image/jpeg",
+                      "size": 2303531,
+                      "lastModified": 1791448774457
+                    }
+                  ]
+                },
+                {
+                  "disabled": true,
+                  "value": "",
+                  "files": []
+                }
+              ],
+              "successNotice": false,
+              "active": {
+                "tag": "BUTTON",
+                "label": "Cancelar análisis"
+              }
+            }
+          },
+          {
+            "targetMs": 2000,
+            "elapsedMs": 2006.7999999970198,
+            "state": {
+              "at": 3165.2999999970198,
+              "cancelAt": 1158.5,
+              "phase": [
+                "Ordenando resultados..."
+              ],
+              "cancelVisible": true,
+              "feedback": false,
+              "rows": [],
+              "buttons": [
+                {
+                  "label": "Cancelar análisis",
+                  "disabled": false
+                }
+              ],
+              "inputs": [
+                {
+                  "disabled": true,
+                  "value": "C:\\fakepath\\IMG_7547 2.jpg",
+                  "files": [
+                    {
+                      "name": "IMG_7547 2.jpg",
+                      "type": "image/jpeg",
+                      "size": 2303531,
+                      "lastModified": 1791448774457
+                    }
+                  ]
+                },
+                {
+                  "disabled": true,
+                  "value": "",
+                  "files": []
+                }
+              ],
+              "successNotice": false,
+              "active": {
+                "tag": "BUTTON",
+                "label": "Cancelar análisis"
+              }
+            }
+          }
+        ],
+        "recoveredWithoutCatalogRelease": false,
+        "oldReleaseNeededForUI": true,
+        "recoveredAfterForcedOldRelease": {
+          "at": 3251.7999999970198,
+          "cancelAt": 1158.5,
+          "phase": [],
+          "cancelVisible": false,
+          "feedback": true,
+          "rows": [],
+          "buttons": [
+            {
+              "label": "Quitar carta",
+              "disabled": false
+            },
+            {
+              "label": "Reintentar foto",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": false,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": false,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": false,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.No ha "
+          }
+        },
+        "newRankingPending": {
+          "at": 3654.0999999940395,
+          "cancelAt": 1158.5,
+          "phase": [
+            "Ordenando resultados..."
+          ],
+          "cancelVisible": true,
+          "feedback": false,
+          "rows": [],
+          "buttons": [
+            {
+              "label": "Cancelar análisis",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": true,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": true,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": false,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+          }
+        },
+        "afterOldLateCompletion": {
+          "at": 5059.39999999851,
+          "cancelAt": 1158.5,
+          "phase": [
+            "Ordenando resultados..."
+          ],
+          "cancelVisible": true,
+          "feedback": false,
+          "rows": [],
+          "buttons": [
+            {
+              "label": "Cancelar análisis",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": true,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": true,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": false,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.Ordena"
+          }
+        },
+        "final": {
+          "at": 5187.89999999851,
+          "cancelAt": 1158.5,
+          "phase": [],
+          "cancelVisible": false,
+          "feedback": false,
+          "rows": [
+            "Abrir vino 1: Lugana Allegrini",
+            "Abrir vino 2: Barbaresco Marchesi di Barolo",
+            "Abrir vino 3: Barolo Marchesi di Barolo",
+            "Abrir vino 4: Laurent Perriere Ultra"
+          ],
+          "buttons": [
+            {
+              "label": "Vino 1: Lugana Allegrini",
+              "disabled": false
+            },
+            {
+              "label": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Alejar carta",
+              "disabled": true
+            },
+            {
+              "label": "Acercar carta",
+              "disabled": false
+            },
+            {
+              "label": "Quitar carta",
+              "disabled": false
+            },
+            {
+              "label": "Comparar Lugana Allegrini",
+              "disabled": false
+            },
+            {
+              "label": "Comparar Barbaresco Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Comparar Barolo Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Comparar Laurent Perriere Ultra",
+              "disabled": false
+            },
+            {
+              "label": "Para mí",
+              "disabled": false
+            },
+            {
+              "label": "Servicio",
+              "disabled": false
+            },
+            {
+              "label": "Identidad más segura",
+              "disabled": false
+            },
+            {
+              "label": "Mejor match",
+              "disabled": false
+            },
+            {
+              "label": "Todos los tipos",
+              "disabled": false
+            },
+            {
+              "label": "Todas las regiones",
+              "disabled": false
+            },
+            {
+              "label": "Copa o botella",
+              "disabled": false
+            },
+            {
+              "label": "Cualquier afinidad",
+              "disabled": false
+            },
+            {
+              "label": "Cualquier confianza",
+              "disabled": false
+            },
+            {
+              "label": "Abrir vino 1: Lugana Allegrini",
+              "disabled": false
+            },
+            {
+              "label": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Abrir vino 3: Barolo Marchesi di Barolo",
+              "disabled": false
+            },
+            {
+              "label": "Abrir vino 4: Laurent Perriere Ultra",
+              "disabled": false
+            },
+            {
+              "label": "2. Barbaresco Marchesi di BaroloMarchesi di BaroloEditar y guardar",
+              "disabled": false
+            },
+            {
+              "label": "3. Barolo Marchesi di BaroloMarchesi di BaroloEditar y guardar",
+              "disabled": false
+            },
+            {
+              "label": "4. Laurent Perriere UltraLaurent PerrierEditar y guardar",
+              "disabled": false
+            },
+            {
+              "label": "Close toast",
+              "disabled": false
+            }
+          ],
+          "inputs": [
+            {
+              "disabled": false,
+              "value": "C:\\fakepath\\IMG_7547 2.jpg",
+              "files": [
+                {
+                  "name": "IMG_7547 2.jpg",
+                  "type": "image/jpeg",
+                  "size": 2303531,
+                  "lastModified": 1791448774457
+                }
+              ]
+            },
+            {
+              "disabled": false,
+              "value": "",
+              "files": []
+            }
+          ],
+          "successNotice": true,
+          "active": {
+            "tag": "BODY",
+            "label": "Escáner MatchrimCarta de vinosSube la carta y te digo qué pediría primero.1+3100"
+          }
+        },
+        "expected503ConsoleControl": [
+          "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+          "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+        ],
+        "events": []
+      },
+      "countsByAttempt": {
+        "1": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        },
+        "2": {
+          "ocr": 3,
+          "canonical": 2,
+          "base": 1
+        }
+      },
+      "releases": [
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 1,
+          "status": 503,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        },
+        {
+          "attempt": 2,
+          "status": 200,
+          "acceptedByTool": true
+        }
+      ],
+      "requestFailures": [],
+      "requests": [
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attemptAtArrival": 1
+        },
+        {
+          "method": "GET",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/rest/v1/quiz_results",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/scan-wine-menu",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attemptAtArrival": 2
+        },
+        {
+          "method": "POST",
+          "host": "cbjynrbvrhcmpaojmqdp.supabase.co",
+          "path": "/functions/v1/search-wines",
+          "attemptAtArrival": 2
+        }
+      ],
+      "socketAudit": [
+        {
+          "host": "127.0.0.1",
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "warnings": [
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>",
+        "[Winerim] findWinerimWineForLabel failed: FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (<URL>\n    at Generator.next (<anonymous>)\n    at fulfilled (<URL>"
+      ],
+      "console": [
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    }
+  ]
+}
