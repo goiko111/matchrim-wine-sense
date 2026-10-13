@@ -1,0 +1,14 @@
+{
+  "productCodeChanged": false,
+  "newLocalUI": {
+    "contexts": 4,
+    "checks": 116,
+    "passed": 116,
+    "exitCode": 0
+  },
+  "frontendLint": "not rerun: product unchanged",
+  "frontendTypecheck": "not rerun: product unchanged",
+  "fullSuites": false,
+  "webBuild": false,
+  "nativeBuild": false
+}

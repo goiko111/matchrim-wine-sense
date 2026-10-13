@@ -1,0 +1,1263 @@
+{
+  "scope": "Only13 four actual native-key reading routes / one existing scene, two reading states each. No fake focus/scroll assignments/wheel/scrollIntoView/text/DOM handler injection. All8 states overflow, no N-A exercised. Not people/groundtruth/native/VoiceOver. Product unchanged after passing baseline.",
+  "contexts": 4,
+  "contextsPassed": 4,
+  "checks": 116,
+  "checksPassed": 116,
+  "readingStates": 8,
+  "notApplicable": 0,
+  "cases": [
+    {
+      "case": "row-portrait",
+      "trigger": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+      "inputMethod": "Tab+Enter",
+      "initialAX": {
+        "available": true,
+        "nodes": [
+          {
+            "role": "generic",
+            "name": "",
+            "ignored": false,
+            "properties": []
+          }
+        ]
+      },
+      "notApplicable": [],
+      "readings": [
+        {
+          "state": "original",
+          "index": 1,
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "initialBody": {
+            "scrollHeight": 778,
+            "clientHeight": 572,
+            "scrollTop": 0,
+            "max": 206,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.046875,
+              "width": 391,
+              "height": 571.953125,
+              "top": 202.046875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "finalBody": {
+            "scrollHeight": 778,
+            "clientHeight": 572,
+            "scrollTop": 205,
+            "max": 206,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.046875,
+              "width": 391,
+              "height": 571.953125,
+              "top": 202.046875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "document": {
+            "x": 0,
+            "y": 3250
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 705.546875,
+              "width": 333,
+              "height": 40,
+              "top": 705.546875,
+              "bottom": 745.546875,
+              "left": 30,
+              "right": 363
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          },
+          "ax": {
+            "available": true,
+            "nodes": [
+              {
+                "role": "generic",
+                "name": "Estado del perfil del escáner - Afinidad pendiente Alta Señal de identidad Tinto Tipo Texto visible: Barbaresco Marchesi di Barolo 25 Datos inferidos: region, pais, uvas Candidato de lectura; afinidad pendiente Estado de afinidad de Barbaresco Marchesi di Barolo",
+                "ignored": false,
+                "properties": [
+                  {
+                    "name": "focused",
+                    "value": {
+                      "type": "booleanOrUndefined",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "state": "changed",
+          "index": 0,
+          "title": "1. Lugana Allegrini",
+          "initialBody": {
+            "scrollHeight": 718,
+            "clientHeight": 571,
+            "scrollTop": 147,
+            "max": 147,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.546875,
+              "width": 391,
+              "height": 571.453125,
+              "top": 202.546875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "finalBody": {
+            "scrollHeight": 718,
+            "clientHeight": 571,
+            "scrollTop": 146,
+            "max": 147,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.546875,
+              "width": 391,
+              "height": 571.453125,
+              "top": 202.546875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "document": {
+            "x": 0,
+            "y": 3250
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 705.046875,
+              "width": 333,
+              "height": 40,
+              "top": 705.046875,
+              "bottom": 745.046875,
+              "left": 30,
+              "right": 363
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          },
+          "ax": {
+            "available": true,
+            "nodes": [
+              {
+                "role": "generic",
+                "name": "Estado del perfil del escáner - Afinidad pendiente Baja Señal de identidad Blanco Tipo Texto visible: Lugana Allegrini C/copa 12 Datos inferidos: productor, region, pais, tipo Revisa el candidato antes de elegir Estado de afinidad de Lugana Allegrini",
+                "ignored": false,
+                "properties": [
+                  {
+                    "name": "focused",
+                    "value": {
+                      "type": "booleanOrUndefined",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "shiftExit": {
+        "tag": "BUTTON",
+        "label": "Cerrar detalle",
+        "role": null,
+        "text": "",
+        "disabled": false
+      },
+      "tabExit": {
+        "tag": "BUTTON",
+        "label": null,
+        "role": null,
+        "text": "Anterior",
+        "disabled": false
+      },
+      "change": {
+        "before": {
+          "index": 1,
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "role": null,
+            "text": "Anterior",
+            "disabled": false
+          },
+          "inDialog": true,
+          "bodyFocused": false,
+          "document": {
+            "x": 0,
+            "y": 3250
+          },
+          "body": {
+            "scrollHeight": 778,
+            "clientHeight": 572,
+            "scrollTop": 205,
+            "max": 206,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.046875,
+              "width": 391,
+              "height": 571.953125,
+              "top": 202.046875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 705.546875,
+              "width": 333,
+              "height": 40,
+              "top": 705.546875,
+              "bottom": 745.546875,
+              "left": 30,
+              "right": 363
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          }
+        },
+        "after": {
+          "index": 0,
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "role": null,
+            "text": "Siguiente",
+            "disabled": false
+          },
+          "inDialog": true,
+          "bodyFocused": false,
+          "document": {
+            "x": 0,
+            "y": 3250
+          },
+          "body": {
+            "scrollHeight": 718,
+            "clientHeight": 571,
+            "scrollTop": 147,
+            "max": 147,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.546875,
+              "width": 391,
+              "height": 571.453125,
+              "top": 202.546875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 704.046875,
+              "width": 333,
+              "height": 40,
+              "top": 704.046875,
+              "bottom": 744.046875,
+              "left": 30,
+              "right": 363
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          }
+        }
+      },
+      "returnedEscape": true,
+      "returnedClose": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-landscape",
+      "trigger": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+      "inputMethod": "Tab+Enter",
+      "initialAX": {
+        "available": true,
+        "nodes": [
+          {
+            "role": "generic",
+            "name": "",
+            "ignored": false,
+            "properties": []
+          }
+        ]
+      },
+      "notApplicable": [],
+      "readings": [
+        {
+          "state": "original",
+          "index": 1,
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "initialBody": {
+            "scrollHeight": 573,
+            "clientHeight": 172,
+            "scrollTop": 0,
+            "max": 401,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.234375,
+              "width": 850,
+              "height": 171.765625,
+              "top": 143.234375,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "finalBody": {
+            "scrollHeight": 573,
+            "clientHeight": 172,
+            "scrollTop": 401,
+            "max": 401,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.234375,
+              "width": 850,
+              "height": 171.765625,
+              "top": 143.234375,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "document": {
+            "x": 0,
+            "y": 2246
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 266.234375,
+              "width": 792,
+              "height": 20,
+              "top": 266.234375,
+              "bottom": 286.234375,
+              "left": 30,
+              "right": 822
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          },
+          "ax": {
+            "available": true,
+            "nodes": [
+              {
+                "role": "generic",
+                "name": "Estado del perfil del escáner - Afinidad pendiente Alta Señal de identidad Tinto Tipo Texto visible: Barbaresco Marchesi di Barolo 25 Datos inferidos: region, pais, uvas Candidato de lectura; afinidad pendiente Estado de afinidad de Barbaresco Marchesi di Barolo",
+                "ignored": false,
+                "properties": [
+                  {
+                    "name": "focused",
+                    "value": {
+                      "type": "booleanOrUndefined",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "state": "changed",
+          "index": 0,
+          "title": "1. Lugana Allegrini",
+          "initialBody": {
+            "scrollHeight": 553,
+            "clientHeight": 172,
+            "scrollTop": 381,
+            "max": 381,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.3125,
+              "width": 850,
+              "height": 171.6875,
+              "top": 143.3125,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "finalBody": {
+            "scrollHeight": 553,
+            "clientHeight": 172,
+            "scrollTop": 381,
+            "max": 381,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.3125,
+              "width": 850,
+              "height": 171.6875,
+              "top": 143.3125,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "document": {
+            "x": 0,
+            "y": 2246
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 266.3125,
+              "width": 792,
+              "height": 20,
+              "top": 266.3125,
+              "bottom": 286.3125,
+              "left": 30,
+              "right": 822
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          },
+          "ax": {
+            "available": true,
+            "nodes": [
+              {
+                "role": "generic",
+                "name": "Estado del perfil del escáner - Afinidad pendiente Baja Señal de identidad Blanco Tipo Texto visible: Lugana Allegrini C/copa 12 Datos inferidos: productor, region, pais, tipo Revisa el candidato antes de elegir Estado de afinidad de Lugana Allegrini",
+                "ignored": false,
+                "properties": [
+                  {
+                    "name": "focused",
+                    "value": {
+                      "type": "booleanOrUndefined",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "shiftExit": {
+        "tag": "BUTTON",
+        "label": "Cerrar detalle",
+        "role": null,
+        "text": "",
+        "disabled": false
+      },
+      "tabExit": {
+        "tag": "BUTTON",
+        "label": null,
+        "role": null,
+        "text": "Anterior",
+        "disabled": false
+      },
+      "change": {
+        "before": {
+          "index": 1,
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "role": null,
+            "text": "Anterior",
+            "disabled": false
+          },
+          "inDialog": true,
+          "bodyFocused": false,
+          "document": {
+            "x": 0,
+            "y": 2246
+          },
+          "body": {
+            "scrollHeight": 573,
+            "clientHeight": 172,
+            "scrollTop": 401,
+            "max": 401,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.234375,
+              "width": 850,
+              "height": 171.765625,
+              "top": 143.234375,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 266.234375,
+              "width": 792,
+              "height": 20,
+              "top": 266.234375,
+              "bottom": 286.234375,
+              "left": 30,
+              "right": 822
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          }
+        },
+        "after": {
+          "index": 0,
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "role": null,
+            "text": "Siguiente",
+            "disabled": false
+          },
+          "inDialog": true,
+          "bodyFocused": false,
+          "document": {
+            "x": 0,
+            "y": 2246
+          },
+          "body": {
+            "scrollHeight": 553,
+            "clientHeight": 172,
+            "scrollTop": 381,
+            "max": 381,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.3125,
+              "width": 850,
+              "height": 171.6875,
+              "top": 143.3125,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 266.3125,
+              "width": 792,
+              "height": 20,
+              "top": 266.3125,
+              "bottom": 286.3125,
+              "left": 30,
+              "right": 822
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          }
+        }
+      },
+      "returnedEscape": true,
+      "returnedClose": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "cluster-portrait",
+      "trigger": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+      "inputMethod": "Tab+Space",
+      "initialAX": {
+        "available": true,
+        "nodes": [
+          {
+            "role": "generic",
+            "name": "",
+            "ignored": false,
+            "properties": []
+          }
+        ]
+      },
+      "notApplicable": [],
+      "readings": [
+        {
+          "state": "original",
+          "index": 3,
+          "title": "4. Laurent Perriere Ultra",
+          "initialBody": {
+            "scrollHeight": 802,
+            "clientHeight": 572,
+            "scrollTop": 0,
+            "max": 230,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 201.859375,
+              "width": 391,
+              "height": 572.140625,
+              "top": 201.859375,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "finalBody": {
+            "scrollHeight": 802,
+            "clientHeight": 572,
+            "scrollTop": 229,
+            "max": 230,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 201.859375,
+              "width": 391,
+              "height": 572.140625,
+              "top": 201.859375,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "document": {
+            "x": 0,
+            "y": 0
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 705.359375,
+              "width": 333,
+              "height": 40,
+              "top": 705.359375,
+              "bottom": 745.359375,
+              "left": 30,
+              "right": 363
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          },
+          "ax": {
+            "available": true,
+            "nodes": [
+              {
+                "role": "generic",
+                "name": "Estado del perfil del escáner - Afinidad pendiente Baja Señal de identidad Espumoso Tipo 6 años sobre lías. Texto visible: Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr Dudas: precio Datos inferidos: productor, tipo, uvas, descripcion Revisa el candidato antes de elegir Estado de afinidad de Laurent Perriere Ultra",
+                "ignored": false,
+                "properties": [
+                  {
+                    "name": "focused",
+                    "value": {
+                      "type": "booleanOrUndefined",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "state": "changed",
+          "index": 2,
+          "title": "3. Barolo Marchesi di Barolo",
+          "initialBody": {
+            "scrollHeight": 778,
+            "clientHeight": 572,
+            "scrollTop": 189,
+            "max": 206,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.046875,
+              "width": 391,
+              "height": 571.953125,
+              "top": 202.046875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "finalBody": {
+            "scrollHeight": 778,
+            "clientHeight": 572,
+            "scrollTop": 205,
+            "max": 206,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.046875,
+              "width": 391,
+              "height": 571.953125,
+              "top": 202.046875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "document": {
+            "x": 0,
+            "y": 0
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 705.546875,
+              "width": 333,
+              "height": 40,
+              "top": 705.546875,
+              "bottom": 745.546875,
+              "left": 30,
+              "right": 363
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          },
+          "ax": {
+            "available": true,
+            "nodes": [
+              {
+                "role": "generic",
+                "name": "Estado del perfil del escáner - Afinidad pendiente Alta Señal de identidad Tinto Tipo Texto visible: Barolo Marchesi di Barolo 35 Datos inferidos: region, pais, uvas Candidato de lectura; afinidad pendiente Estado de afinidad de Barolo Marchesi di Barolo",
+                "ignored": false,
+                "properties": [
+                  {
+                    "name": "focused",
+                    "value": {
+                      "type": "booleanOrUndefined",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "shiftExit": {
+        "tag": "BUTTON",
+        "label": "Cerrar detalle",
+        "role": null,
+        "text": "",
+        "disabled": false
+      },
+      "tabExit": {
+        "tag": "BUTTON",
+        "label": null,
+        "role": null,
+        "text": "Anterior",
+        "disabled": false
+      },
+      "change": {
+        "before": {
+          "index": 3,
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "role": null,
+            "text": "Anterior",
+            "disabled": false
+          },
+          "inDialog": true,
+          "bodyFocused": false,
+          "document": {
+            "x": 0,
+            "y": 0
+          },
+          "body": {
+            "scrollHeight": 802,
+            "clientHeight": 572,
+            "scrollTop": 229,
+            "max": 230,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 201.859375,
+              "width": 391,
+              "height": 572.140625,
+              "top": 201.859375,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 705.359375,
+              "width": 333,
+              "height": 40,
+              "top": 705.359375,
+              "bottom": 745.359375,
+              "left": 30,
+              "right": 363
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          }
+        },
+        "after": {
+          "index": 2,
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "role": null,
+            "text": "Anterior",
+            "disabled": false
+          },
+          "inDialog": true,
+          "bodyFocused": false,
+          "document": {
+            "x": 0,
+            "y": 0
+          },
+          "body": {
+            "scrollHeight": 778,
+            "clientHeight": 572,
+            "scrollTop": 189,
+            "max": 206,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 202.046875,
+              "width": 391,
+              "height": 571.953125,
+              "top": 202.046875,
+              "bottom": 774,
+              "left": 1,
+              "right": 392
+            }
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 721.546875,
+              "width": 333,
+              "height": 40,
+              "top": 721.546875,
+              "bottom": 761.546875,
+              "left": 30,
+              "right": 363
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          }
+        }
+      },
+      "returnedEscape": true,
+      "returnedClose": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "cluster-landscape",
+      "trigger": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+      "inputMethod": "Tab+Space",
+      "initialAX": {
+        "available": true,
+        "nodes": [
+          {
+            "role": "generic",
+            "name": "",
+            "ignored": false,
+            "properties": []
+          }
+        ]
+      },
+      "notApplicable": [],
+      "readings": [
+        {
+          "state": "original",
+          "index": 3,
+          "title": "4. Laurent Perriere Ultra",
+          "initialBody": {
+            "scrollHeight": 597,
+            "clientHeight": 172,
+            "scrollTop": 0,
+            "max": 425,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.15625,
+              "width": 850,
+              "height": 171.84375,
+              "top": 143.15625,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "finalBody": {
+            "scrollHeight": 597,
+            "clientHeight": 172,
+            "scrollTop": 425,
+            "max": 425,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.15625,
+              "width": 850,
+              "height": 171.84375,
+              "top": 143.15625,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "document": {
+            "x": 0,
+            "y": 0
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 266.15625,
+              "width": 792,
+              "height": 20,
+              "top": 266.15625,
+              "bottom": 286.15625,
+              "left": 30,
+              "right": 822
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          },
+          "ax": {
+            "available": true,
+            "nodes": [
+              {
+                "role": "generic",
+                "name": "Estado del perfil del escáner - Afinidad pendiente Baja Señal de identidad Espumoso Tipo 6 años sobre lías. Texto visible: Laurent Perriere Ultra Zona/zone: Champagne Uva/grapes: Pinot noir, cha Crianza/aging: 6 años sobr Dudas: precio Datos inferidos: productor, tipo, uvas, descripcion Revisa el candidato antes de elegir Estado de afinidad de Laurent Perriere Ultra",
+                "ignored": false,
+                "properties": [
+                  {
+                    "name": "focused",
+                    "value": {
+                      "type": "booleanOrUndefined",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "state": "changed",
+          "index": 2,
+          "title": "3. Barolo Marchesi di Barolo",
+          "initialBody": {
+            "scrollHeight": 573,
+            "clientHeight": 172,
+            "scrollTop": 401,
+            "max": 401,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.234375,
+              "width": 850,
+              "height": 171.765625,
+              "top": 143.234375,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "finalBody": {
+            "scrollHeight": 573,
+            "clientHeight": 172,
+            "scrollTop": 401,
+            "max": 401,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.234375,
+              "width": 850,
+              "height": 171.765625,
+              "top": 143.234375,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "document": {
+            "x": 0,
+            "y": 0
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 266.234375,
+              "width": 792,
+              "height": 20,
+              "top": 266.234375,
+              "bottom": 286.234375,
+              "left": 30,
+              "right": 822
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          },
+          "ax": {
+            "available": true,
+            "nodes": [
+              {
+                "role": "generic",
+                "name": "Estado del perfil del escáner - Afinidad pendiente Alta Señal de identidad Tinto Tipo Texto visible: Barolo Marchesi di Barolo 35 Datos inferidos: region, pais, uvas Candidato de lectura; afinidad pendiente Estado de afinidad de Barolo Marchesi di Barolo",
+                "ignored": false,
+                "properties": [
+                  {
+                    "name": "focused",
+                    "value": {
+                      "type": "booleanOrUndefined",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "shiftExit": {
+        "tag": "BUTTON",
+        "label": "Cerrar detalle",
+        "role": null,
+        "text": "",
+        "disabled": false
+      },
+      "tabExit": {
+        "tag": "BUTTON",
+        "label": null,
+        "role": null,
+        "text": "Anterior",
+        "disabled": false
+      },
+      "change": {
+        "before": {
+          "index": 3,
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "role": null,
+            "text": "Anterior",
+            "disabled": false
+          },
+          "inDialog": true,
+          "bodyFocused": false,
+          "document": {
+            "x": 0,
+            "y": 0
+          },
+          "body": {
+            "scrollHeight": 597,
+            "clientHeight": 172,
+            "scrollTop": 425,
+            "max": 425,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.15625,
+              "width": 850,
+              "height": 171.84375,
+              "top": 143.15625,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 266.15625,
+              "width": 792,
+              "height": 20,
+              "top": 266.15625,
+              "bottom": 286.15625,
+              "left": 30,
+              "right": 822
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          }
+        },
+        "after": {
+          "index": 2,
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "role": null,
+            "text": "Anterior",
+            "disabled": false
+          },
+          "inDialog": true,
+          "bodyFocused": false,
+          "document": {
+            "x": 0,
+            "y": 0
+          },
+          "body": {
+            "scrollHeight": 573,
+            "clientHeight": 172,
+            "scrollTop": 401,
+            "max": 401,
+            "overflow": true,
+            "tabIndex": -1,
+            "role": null,
+            "label": null,
+            "rect": {
+              "x": 1,
+              "y": 143.234375,
+              "width": 850,
+              "height": 171.765625,
+              "top": 143.234375,
+              "bottom": 315,
+              "left": 1,
+              "right": 851
+            }
+          },
+          "fragment": {
+            "text": "No es un resultado negativo ni significa que este vino no te guste.",
+            "rect": {
+              "x": 30,
+              "y": 266.234375,
+              "width": 792,
+              "height": 20,
+              "top": 266.234375,
+              "bottom": 286.234375,
+              "left": 30,
+              "right": 822
+            },
+            "fullyVisible": true,
+            "hitReachable": true
+          }
+        }
+      },
+      "returnedEscape": true,
+      "returnedClose": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    }
+  ],
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0
+}
