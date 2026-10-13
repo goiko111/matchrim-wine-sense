@@ -32,6 +32,8 @@ with sync_playwright() as pw:
    else:
     for index in [1,2,3,4,5]:
      open_label_region(page,index);check('Original region remains reachable '+str(index),page.get_by_role('dialog').get_by_role('heading').first.inner_text().startswith('Región '+str(index)+':'));page.get_by_role('dialog').get_by_role('button',name='Cerrar',exact=True).click();expect(page.get_by_role('dialog')).to_be_hidden()
+   expect(page.locator('[data-vaul-overlay]')).to_have_count(0)
+   check('Closed drawer backdrop is removed before final capture',page.locator('[data-vaul-overlay]').count()==0)
    check('Grouping does not call OCR/catalog again',len(f.requests)==before_calls)
    check('Image data URL pixels remain exact across layout changes',image.get_attribute('src')==before_src)
    check('No runtime/observer errors and frozen sources',not f.errors and f.finish()['sourcesUnchanged'],f.errors)

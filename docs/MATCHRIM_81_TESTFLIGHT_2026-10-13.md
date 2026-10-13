@@ -1,5 +1,7 @@
 # Matchrim 1.0 (81): beta upload
 
+Follow-up13October: authenticated Apple readback reports81 processed/assigned and installed on the owner's iPhone. Build test notes are saved. The external invitation remains unsent because mandatory review phone/demo-account fields are blank, not because Apple login is still missing. Private form and installation screenshots are retained outside Git. Correction to the original matrix below: the retained81 lint receipt actually contains107 warnings (including the QA-component Fast Refresh warning); candidate82 removes that diagnostic warning and reports106. See `MATCHRIM_82_CLOUD_INTEGRATION_2026-10-13.md`.
+
 The owner explicitly authorized uploading the current incomplete product to TestFlight and adding the previously requested external tester. This supersedes the administrative upload hold for this beta only, not the remaining recognition, personalized-recommendation, hosted-persistence or physical-QA findings. Public web and backend deployments remain unchanged.
 
 ## Distribution Receipt
@@ -28,7 +30,7 @@ The independent cloud patch `3845c72` is **not integrated** into this beta. Prev
 | Grounded style contracts | All94 pass, price-only guards reconciled | 94/94 |
 | Currency precision contracts | All180 pass | 180/180 |
 | Typecheck | No errors | PASS |
-| Full lint | No errors; inherited warnings disclosed | 0 errors / 106 warnings |
+| Full lint | No errors; warnings disclosed | 0 errors / 107 warnings, including1 QA-component warning |
 | Production web build/native copy | No fixtures; exact resource hashes | 146/146 resources match |
 | Simulator compile | Current source, build81 | PASS |
 | Native installed-app tests | Navigation/aiRIM, scan modes, launch/safe areas, gallery return, rotation/background, basic accessibility | 6/6, 0 failures, 0 skipped |

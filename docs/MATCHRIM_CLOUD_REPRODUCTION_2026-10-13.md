@@ -1,5 +1,9 @@
 # Reproducción cloud de Matchrim
 
+## Integracion local posterior
+
+El documento siguiente describe el carril cloud original. El gate integrado local ahora verifica tambien la baseline aprobada81 `89d478d6a391c4594fa09d815bb6546fb874231b` para conservar precios/afinidad y añade85 contratos de integracion. Esa revision debe estar disponible: no se puede presentar su ausencia en otro checkout como un resultado verde. El manifiesto cloud original permanece byte-identico. El rerun local usa Chrome154/Playwright1.55, no el runtime153/1.58 original; véase `MATCHRIM_82_CLOUD_INTEGRATION_2026-10-13.md`.
+
 Baseline obligatoria: `0c1a29728fb2f6b7f033b7d5e68bc8ea8e5335b1`, rama de traspaso `codex/matchrim-cloud-20261013-3e75f30`. Sus 387 fingerprints corresponden a la fuente local `3e75f30abc79c6262f96b06515437aec1e728a90`; ese objeto Git local y los 42 commits históricos no se presuponen disponibles. El manifiesto original no se modifica.
 
 ## Runtime explícito

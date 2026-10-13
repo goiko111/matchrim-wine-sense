@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-13, cloud integration / candidate82
+
+- Reviewed cloud patch integrated with local81 pricing/style in bda5241; canonical/scoring/price/save invariants retained.425 web checks, focused110price/82style,85 new integration contracts,30 retention cycles and final release/cloud/typecheck/lint PASS. Final lint0errors106warnings. Focused overlay22 follows an early capture taken during drawer close; not an additional22 unique product cases.
+- Signed/exported1.0(82) candidate,146 resources and156 signature/profile checks, native simulator6/6, max cold launch2.949565s. NOT uploaded. Published web/backend and owner app unchanged; local isolated preview4482 available without real backend.
+- Apple readback:81 installed on owner phone, notes saved. External invitation remains UNSENT: prepared review form lacks owner phone/dedicated Matchrim review account. Apple login is now available. CoreDevice phone lookup fails and Xcode has no physical destination; physical QA not approved.
+- [Integration82/evidence/gates](docs/MATCHRIM_82_CLOUD_INTEGRATION_2026-10-13.md). Provider/human/hosted/native-memory gates remain; no calls/quota reset or public source push.81 lint historical receipt corrected to107, not106.
+
 ## Latest checkpoint: 2026-10-13, uploaded beta81
 
 - Explicit owner authorization to upload the incomplete current product. Apple accepted1.0(81) at13:49:44 Europe/Madrid; Upload succeeded / Uploaded package is processing / export exit0. Build81 includes local product through86418ed plus QA guard reconciliation54ffa3c, not cloud patch3845c72.

@@ -1,5 +1,13 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-13, integrated candidate82
+
+1. Preserve uploaded81 and signed/exported82 candidate. Cloud integration is complete locally, not another backlog item; do not repeat the passing425-client/price/style/native smoke suites without a new delta.
+2. Finish the prepared Apple external-review fields (owner contact phone and dedicated Matchrim login), verify submission/approval/invitation state. Apple access works and81 installation is read back; the requested external invitation is still UNSENT. No Apple password should be used as an app-review credential.
+3. Resolve physical connectivity: paired listing disagrees with both device lookups; Xcode shows no phone destination. Do not replace owner81 or declare physical QA passed. Native82 simulator/archive/export/signature pass.
+4. Next substantive quality work: independently grounded identity/coverage and sensory/personalized outcomes, current paid-call cap, authenticated hosted ownership/ambiguity and native memory/physical accessibility. The30-cycle CDP retention gate does not certify iOS memory; original600-cloud cycles remain separate.
+5. No automatic82 upload/deploy/public push. Follow the owner quality/distribution gate and prepare a reviewed code-only snapshot before transferring source from this private-evidence parent history.
+
 ## Current delta: 2026-10-13, beta81 uploaded
 
 1. Preserve uploaded81 and local source/evidence; do not reupload or renumber it. Apple accepted13:49:44 Europe/Madrid; processing/individual availability not yet read back.
