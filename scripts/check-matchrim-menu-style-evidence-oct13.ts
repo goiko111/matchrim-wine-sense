@@ -86,6 +86,9 @@ const initializers = (source: string) => {
   visit(tree); return result;
 };
 const baseline = 'ca73c57efa52c205fc173fb69e5f0ac11ae90f7c';
+// The later reviewed currency fix intentionally changed these price-only guards.
+const precisionBaseline = '86418edafd942d21732313d284d8eee9a255d5f4';
+const precisionPaths = new Set(['src/utils/menuPriceReview.ts', 'src/utils/menuWineSave.ts', 'src/utils/scanWineEvidence.ts']);
 const before = initializers(execFileSync('git', ['show', baseline + ':' + activePath], { encoding: 'utf8' }));
 const after = initializers(readFileSync(activePath, 'utf8'));
 const scope = vm.createContext({ menuWineSensorySimilarity, scannedWines: [source, candidate] });
@@ -99,15 +102,18 @@ for (const name of ['saveScannedWine', 'updateScannedWine', 'normalizeScannedWin
   check('Protected active initializer unchanged: ' + name, () => assert.equal(after.get(name), before.get(name)));
 }
 for (const path of ['src/utils/menuPriceReview.ts', 'src/utils/menuWineSave.ts', 'src/utils/scanWineEvidence.ts', 'src/utils/wineMenuScan.ts', 'src/utils/wineAffinityExplanation.ts', 'src/utils/wineComparison.ts', 'src/components/wine-import/WineComparisonWorkspace.tsx', 'src/components/wine-import/MultiWineLabelScanner.tsx']) {
-  check('Protected independent source unchanged: ' + path, () => assert.equal(readFileSync(path, 'utf8'), execFileSync('git', ['show', baseline + ':' + path], { encoding: 'utf8' })));
+  const sourceBaseline = precisionPaths.has(path) ? precisionBaseline : baseline;
+  check('Protected independent source unchanged: ' + path, () => assert.equal(readFileSync(path, 'utf8'), execFileSync('git', ['show', sourceBaseline + ':' + path], { encoding: 'utf8' })));
 }
 const editorPath = 'src/components/wine-import/MenuPriceEditor.tsx';
 const editorBefore = initializers(execFileSync('git', ['show', baseline + ':' + editorPath], { encoding: 'utf8' }));
 const editorAfter = initializers(readFileSync(editorPath, 'utf8'));
+const precisionEditor = initializers(execFileSync('git', ['show', precisionBaseline + ':' + editorPath], { encoding: 'utf8' }));
 for (const name of ['initialFormat', 'parsed', 'ready', 'changedCurrency', 'serviceConflict', 'reset']) {
-  check('Price editor layout change preserves business initializer: ' + name, () => assert.equal(editorAfter.get(name), editorBefore.get(name)));
+  const expected = name === 'parsed' ? precisionEditor : editorBefore;
+  check('Price editor layout change preserves business initializer: ' + name, () => assert.equal(editorAfter.get(name), expected.get(name)));
 }
-const result = { scope: 'Frozen negative contracts plus explicitly synthetic positive math only; no catalog-positive UI injection, provider or human calibration', baseline, checks, allPassed: checks.every(row => row.passed) };
+const result = { scope: 'Frozen negative contracts plus explicitly synthetic positive math only; no catalog-positive UI injection, provider or human calibration', baseline, precisionBaseline, checks, allPassed: checks.every(row => row.passed) };
 if (process.argv[2]) writeFileSync(process.argv[2], JSON.stringify(result, null, 2) + '\n');
 for (const row of checks.filter(row => !row.passed)) console.error(row.name, row.error);
 console.log(`${checks.filter(row => row.passed).length}/${checks.length} menu style evidence checks`);
