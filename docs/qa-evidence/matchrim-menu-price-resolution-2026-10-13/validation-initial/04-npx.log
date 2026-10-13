@@ -1,0 +1,9 @@
+node:fs:448
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open 'docs/qa-evidence/matchrim-menu-price-resolution-2026-10-13/validation/before/results.json'
+    at readFileSync (node:fs:448:20)
+    at <anonymous> (/Users/GOIKO/2matchrim76-recognition-20261008/scripts/check-matchrim-menu-actions-oct12.ts:10:28)
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/m

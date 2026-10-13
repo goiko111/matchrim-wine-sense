@@ -1,0 +1,643 @@
+
+> vite_react_shadcn_ts@0.0.0 test:release
+> npm test && npm run test:identity && tsx scripts/check-matchrim-catalog-handler.ts && tsx scripts/check-matchrim-training-evidence.ts && tsx scripts/check-matchrim-navigation-security.ts && tsx scripts/check-matchrim-food-client.ts && tsx scripts/check-matchrim-wine-mutation.ts && npm run test:onboarding
+
+
+> vite_react_shadcn_ts@0.0.0 test
+> tsx scripts/check-winerim-classifier.ts && tsx scripts/check-matchrim-learning.ts && tsx scripts/check-matchrim-personas.ts && tsx scripts/check-matchrim-year-simulation.ts && tsx scripts/check-matchrim-food-contract.ts && tsx scripts/check-matchrim-bodega-identity.ts && tsx scripts/check-multi-wine-scan.ts && python3 scripts/check-matchrim-e2e-trace.py && python3 scripts/check-matchrim-fridge-scorer.py && python3 scripts/check-matchrim-name-scoring.py && python3 scripts/check-matchrim-ground-truth.py && python3 scripts/check-matchrim-independent-ground-truth.py
+
+Winerim V4.1 classifier checks passed
+Matchrim learning checks passed
+┌─────────┬────────────────────────┬──────────────────┬─────────────────────────┬────────────┬─────────┬────────────┬─────────────────────────┬───────────────────────┐
+│ (index) │ persona                │ before           │ after                   │ afterScore │ samples │ confidence │ savedWine               │ nextAfterSaved        │
+├─────────┼────────────────────────┼──────────────────┼─────────────────────────┼────────────┼─────────┼────────────┼─────────────────────────┼───────────────────────┤
+│ 0       │ 'explorador-atlantico' │ 'blanco-redondo' │ 'rias-baixas-atlantico' │ 83         │ 7       │ 43         │ 'rias-baixas-atlantico' │ 'tinto-frutal-ligero' │
+│ 1       │ 'clasico-estructurado' │ 'blanco-redondo' │ 'rioja-reserva-clasico' │ 81         │ 3       │ 25         │ 'rioja-reserva-clasico' │ 'blanco-redondo'      │
+│ 2       │ 'principiante-frutal'  │ 'blanco-redondo' │ 'tinto-frutal-ligero'   │ 85         │ 3       │ 22         │ 'tinto-frutal-ligero'   │ 'blanco-redondo'      │
+└─────────┴────────────────────────┴──────────────────┴─────────────────────────┴────────────┴─────────┴────────────┴─────────────────────────┴───────────────────────┘
+{
+  "fixtureScope": "synthetic QA only; no production users, ratings or saved wines were read or written",
+  "allPassed": true,
+  "personas": [
+    {
+      "persona": "explorador-atlantico",
+      "before": "blanco-redondo",
+      "after": "rias-baixas-atlantico",
+      "afterScore": 83,
+      "samples": 7,
+      "confidence": 43,
+      "savedWine": "rias-baixas-atlantico",
+      "nextAfterSaved": "tinto-frutal-ligero"
+    },
+    {
+      "persona": "clasico-estructurado",
+      "before": "blanco-redondo",
+      "after": "rioja-reserva-clasico",
+      "afterScore": 81,
+      "samples": 3,
+      "confidence": 25,
+      "savedWine": "rioja-reserva-clasico",
+      "nextAfterSaved": "blanco-redondo"
+    },
+    {
+      "persona": "principiante-frutal",
+      "before": "blanco-redondo",
+      "after": "tinto-frutal-ligero",
+      "afterScore": 85,
+      "samples": 3,
+      "confidence": 22,
+      "savedWine": "tinto-frutal-ligero",
+      "nextAfterSaved": "blanco-redondo"
+    }
+  ],
+  "identityChecks": {
+    "differentVintageRemainsEligible": true,
+    "fullySavedCatalogReturnsEmpty": true,
+    "exhaustedStateVisible": true
+  }
+}
+Matchrim synthetic persona checks passed: learning, isolation, persistence and saved-wine exclusion
+Matchrim year simulation checks passed: 3673 deterministic events
+{
+  "source": "docs/qa-evidence/matchrim-build64-recognition-2026-09-28/food-menu-real-backend.json",
+  "beforeRows": 8,
+  "afterRows": 13,
+  "splitRows": 1,
+  "duplicateRows": 0,
+  "providerRecallUnchangedUntilDeploy": 0.2407
+}
+{
+  "canonical": "vinatondoniareserva|rlopezdeheredia|2012",
+  "exactDuplicateGuard": true,
+  "unknownProducerClientReconciliation": true,
+  "differentVintageRemainsDistinct": true,
+  "migrationApplied": false,
+  "requiredNextEnvironment": "isolated staging with duplicate preflight"
+}
+multi-wine scan checks: ok
+Matchrim E2E trace contract: PASS
+Matchrim fridge scorer contract: PASS
+Matchrim name scoring: PASS (variants distinct, duplicates penalized)
+Matchrim ground-truth manifest checks passed: 30 scenes (5 captures + 25 controlled variants)
+Independent Matchrim ground-truth checks passed: 25 distinct Commons sources (11 single, 6 multi, 5 menu, 3 board)
+Matchrim pilot corpus checks passed: 60 independent sources (36 label/display, 24 menu/board, 8 explicit negatives)
+
+> vite_react_shadcn_ts@0.0.0 test:identity
+> tsx scripts/check-matchrim-identity75.ts && tsx scripts/check-matchrim-edge-routing.ts && tsx scripts/check-matchrim-scan-evidence.ts && tsx scripts/check-matchrim-dense-gate.ts && tsx scripts/check-matchrim-menu-food-evidence.ts && tsx scripts/check-matchrim-scan-profile.ts
+
+{
+  "passed": 47,
+  "failed": 0,
+  "results": [
+    {
+      "name": "category Prosecco is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category Prosecco cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category Prosecco cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category Prosecco Brut is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category Prosecco Brut cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category Prosecco Brut cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category Champagne is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category Champagne cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category Champagne cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category Cava Brut is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category Cava Brut cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category Cava Brut cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category Sauvignon Blanc is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category Sauvignon Blanc cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category Sauvignon Blanc cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category Rioja Crianza is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category Rioja Crianza cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category Rioja Crianza cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category Sangiovese, Canaiolo is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category Sangiovese, Canaiolo cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category Sangiovese, Canaiolo cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category Cab. Sauv., Merlot is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category Cab. Sauv., Merlot cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category Cab. Sauv., Merlot cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category WINE (black cherry and violets) is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category WINE (black cherry and violets) cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category WINE (black cherry and violets) cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "category ROSE (grapefruit and melon) is not a named menu wine",
+      "passed": true
+    },
+    {
+      "name": "category ROSE (grapefruit and melon) cannot resolve canonical catalog identity",
+      "passed": true
+    },
+    {
+      "name": "category ROSE (grapefruit and melon) cannot acquire sensory or affinity values",
+      "passed": true
+    },
+    {
+      "name": "named wine preserved: BIOCA Mencia Seleccion",
+      "passed": true
+    },
+    {
+      "name": "grounded producer preserved: BIOCA Mencia Seleccion",
+      "passed": true
+    },
+    {
+      "name": "named wine preserved: Prosecco",
+      "passed": true
+    },
+    {
+      "name": "grounded producer preserved: Prosecco",
+      "passed": true
+    },
+    {
+      "name": "named wine preserved: Sauvignon Blanc",
+      "passed": true
+    },
+    {
+      "name": "grounded producer preserved: Sauvignon Blanc",
+      "passed": true
+    },
+    {
+      "name": "named wine preserved: Lalama",
+      "passed": true
+    },
+    {
+      "name": "grounded producer preserved: Lalama",
+      "passed": true
+    },
+    {
+      "name": "named wine preserved: 200 Monges",
+      "passed": true
+    },
+    {
+      "name": "grounded producer preserved: 200 Monges",
+      "passed": true
+    },
+    {
+      "name": "named wine preserved: Muga Reserva (2019)",
+      "passed": true
+    },
+    {
+      "name": "grounded producer preserved: Muga Reserva (2019)",
+      "passed": true
+    },
+    {
+      "name": "unseen producer cannot manufacture specific menu identity",
+      "passed": true
+    },
+    {
+      "name": "same brand different cuvee stays rejected",
+      "passed": true
+    },
+    {
+      "name": "catalog name lookup does not require producer in the name column",
+      "passed": true
+    },
+    {
+      "name": "producer still rejects a wrong winery after name-only retrieval",
+      "passed": true
+    },
+    {
+      "name": "canonical query preserves cuvee punctuation and bounds input",
+      "passed": true
+    }
+  ],
+  "providerCalls": 0
+}
+Matchrim edge routing: 58/58 assertions passed
+PASS All three actual non-wine responses rejected before scoring
+PASS Domain gate across menu and catalog: Junmai Ginjo Tokusen
+PASS Domain gate across menu and catalog: ROYAL CASTLE Tequila Gold
+PASS Domain gate across menu and catalog: Baileys The Original Irish Cream
+PASS Domain gate across menu and catalog: Nihonshu Honjozo
+PASS Grape wine remains selectable: Amontillado El Contrabandista
+PASS Grape wine remains selectable: Oloroso Don Nuno
+PASS Grape wine remains selectable: Muga Reserva
+PASS Grape wine remains selectable: Cloudy Bay Sauvignon Blanc
+PASS Spirits in prose do not remove a real wine
+PASS Recorded Mamba aliases group as one candidate reference, not proof of physical count
+PASS Do not erase cuvee qualifier: Mamba Reserva
+PASS Do not erase cuvee qualifier: Mamba Gran Reserva
+PASS Do not erase cuvee qualifier: Mamba Rose
+PASS Do not erase cuvee qualifier: Mamba Brut
+PASS Known vintage and winery conflicts remain separate
+PASS A name shared by two catalog wineries requires disambiguation
+PASS Unknown vintage cannot select one of two catalog vintages arbitrarily
+PASS Repeated catalog rows are not artificial ambiguity
+PASS Vision cannot self-declare verified catalog sensory evidence
+PASS Different photo-inferred attributes produce the same catalog-backed score
+PASS Missing catalog or mismatched vintage does not borrow the photo score
+PASS Recorded menus cannot retain provider percentages without canonical sensory evidence
+{"checks":23,"passed":23,"remoteCalls":0,"scope":"recorded-response and synthetic catalog regression; not new recognition accuracy"}
+Dense gate: boundary, crop, policy, deduplication, budget and cancellation regressions passed
+Recorded menu/food evidence regressions passed
+Scan profile input parity, fallback, cancellation and local feedback isolation PASS (synthetic evidence only)
+{
+  "baseline": false,
+  "scope": "Actual Edge handler with stubbed database/provider; zero remote calls. Production 500 cause not established.",
+  "passed": 14,
+  "failed": 0,
+  "results": [
+    {
+      "name": "invalid input yields 400 before data access: null",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid input yields 400 before data access: []",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid input yields 400 before data access: {\"query\":42}",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid input yields 400 before data access: {\"query\":{}}",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid input yields 400 before data access: {\"query\":\"valid\",\"limit\":-1}",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid input yields 400 before data access: {\"query\":\"valid\",\"limit\":100000}",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid input yields 400 before data access: {\"query\":\"valid\",\"limit\":1.5}",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid input yields 400 before data access: {\"query\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed JSON is a client error",
+      "status": "PASS"
+    },
+    {
+      "name": "unsupported method is rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "short empty lookup does not access catalog",
+      "status": "PASS"
+    },
+    {
+      "name": "punctuated label remains a quoted filter operand",
+      "status": "PASS"
+    },
+    {
+      "name": "catalog failure preserves a valid empty result",
+      "status": "PASS"
+    },
+    {
+      "name": "bounded external failure preserves stored results",
+      "status": "PASS"
+    }
+  ]
+}
+{
+  "baseline": false,
+  "scope": "Pure client and Edge contracts; no account changes or persisted deletion test",
+  "passed": 28,
+  "failed": 0,
+  "results": [
+    {
+      "name": "client: 0 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "client: 1 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "client: 5 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "client: 20 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "client: 50 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "client: saving without a rating does not learn",
+      "status": "PASS"
+    },
+    {
+      "name": "client: withheld or absent consent never becomes training",
+      "status": "PASS"
+    },
+    {
+      "name": "client: the same stored rating is counted once",
+      "status": "PASS"
+    },
+    {
+      "name": "client: later rating removal supersedes older copy in either order",
+      "status": "PASS"
+    },
+    {
+      "name": "client: later consent withdrawal supersedes older copy",
+      "status": "PASS"
+    },
+    {
+      "name": "client: edited rating equals the latest snapshot alone",
+      "status": "PASS"
+    },
+    {
+      "name": "client: ambiguous simultaneous consent conflict fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "client: distinct records/vintages retain their evidence",
+      "status": "PASS"
+    },
+    {
+      "name": "client: empty reset restores onboarding profile",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: 0 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: 1 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: 5 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: 20 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: 50 consenting distinct ratings",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: saving without a rating does not learn",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: withheld or absent consent never becomes training",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: the same stored rating is counted once",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: later rating removal supersedes older copy in either order",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: later consent withdrawal supersedes older copy",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: edited rating equals the latest snapshot alone",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: ambiguous simultaneous consent conflict fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: distinct records/vintages retain their evidence",
+      "status": "PASS"
+    },
+    {
+      "name": "edge: empty reset restores onboarding profile",
+      "status": "PASS"
+    }
+  ]
+}
+{
+  "baseline": false,
+  "passed": 14,
+  "failed": 0,
+  "results": [
+    {
+      "path": "//outside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/\\outside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%5coutside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%2foutside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%252foutside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%255coutside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/\t/outside.invalid",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "javascript:alert(1)",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/%ZZ",
+      "expected": "/",
+      "actual": "/"
+    },
+    {
+      "path": "/profile",
+      "expected": "/profile",
+      "actual": "/profile"
+    },
+    {
+      "path": "/my-wines",
+      "expected": "/my-wines",
+      "actual": "/my-wines"
+    },
+    {
+      "path": "/escanear/carta-vinos?occasion=cena%20en%20casa",
+      "expected": "/escanear/carta-vinos?occasion=cena%20en%20casa",
+      "actual": "/escanear/carta-vinos?occasion=cena%20en%20casa"
+    },
+    {
+      "path": "/matchrim?returnTo=%2Fprofile",
+      "expected": "/matchrim?returnTo=%2Fprofile",
+      "actual": "/matchrim?returnTo=%2Fprofile"
+    },
+    {
+      "path": "/profile#ratings",
+      "expected": "/profile#ratings",
+      "actual": "/profile#ratings"
+    }
+  ]
+}
+Food client response/profile contracts PASS: invalid responses and scores rejected, missing profile preserved
+{"scope":"local mutation response contract, not hosted persistence","passed":18}
+
+> vite_react_shadcn_ts@0.0.0 test:onboarding
+> tsx scripts/check-matchrim-onboarding-owner.ts && tsx scripts/check-integral-regressions.ts
+
+{
+  "scope": "Local onboarding storage contracts",
+  "results": [
+    {
+      "name": "new owner has no completion",
+      "passed": true
+    },
+    {
+      "name": "verified experience bypasses automatic guide",
+      "passed": true
+    },
+    {
+      "name": "own voluntary skip survives",
+      "passed": true
+    },
+    {
+      "name": "account A completion never suppresses B",
+      "passed": true
+    },
+    {
+      "name": "anonymous completion never suppresses account",
+      "passed": true
+    },
+    {
+      "name": "logout never inherits account completion",
+      "passed": true
+    },
+    {
+      "name": "switch back preserves own preference",
+      "passed": true
+    },
+    {
+      "name": "legacy global state kept but not assigned to an account",
+      "passed": true
+    },
+    {
+      "name": "malformed does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "primitive does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "missing result does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "invalid result does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "future version does not certify completion",
+      "passed": true
+    },
+    {
+      "name": "recognized old scoped skip preserved without rewrite",
+      "passed": true
+    },
+    {
+      "name": "events bounded and owner-separated after corrupt history",
+      "passed": true
+    }
+  ]
+}
+Local owner, optional-data affinity, save!=taste, guide version/skip and bounded local measurement regressions PASS

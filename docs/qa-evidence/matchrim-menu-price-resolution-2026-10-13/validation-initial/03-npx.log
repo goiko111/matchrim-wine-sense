@@ -1,0 +1,73 @@
+{
+  "scope": "Synthetic price-boundary contracts; amounts reused from recorded menu, no profile/sensory evidence",
+  "checks": [
+    {
+      "name": "Mixed serving units cannot verify a shared generic budget",
+      "passed": true
+    },
+    {
+      "name": "Mixed serving units do not claim within budget",
+      "passed": true
+    },
+    {
+      "name": "Mixed-unit budget choice remains provisional",
+      "passed": true
+    },
+    {
+      "name": "Unknown serving unit cannot complete shared price basis",
+      "passed": true
+    },
+    {
+      "name": "Known same-format prices remain usable",
+      "passed": true
+    },
+    {
+      "name": "Explicit glass selection never borrows bottle price",
+      "passed": true
+    },
+    {
+      "name": "Explicit glass price remains12",
+      "passed": true
+    },
+    {
+      "name": "Distinct currency never completes EUR budget",
+      "passed": true
+    },
+    {
+      "name": "Manual identity keeps recorded price/service/currency",
+      "passed": true
+    },
+    {
+      "name": "Manual identity clears numeric affinity",
+      "passed": true
+    },
+    {
+      "name": "Manual identity clears model sensory values",
+      "passed": true
+    },
+    {
+      "name": "Manual identity clears confidence/canonical sheet",
+      "passed": true
+    },
+    {
+      "name": "Manual identity remains explicitly pending",
+      "passed": true
+    },
+    {
+      "name": "Unchanged identity is not invalidated",
+      "passed": true
+    },
+    {
+      "name": "Notes editing does not invalidate identity",
+      "passed": true
+    },
+    {
+      "name": "Price editing alone does not invalidate identity",
+      "passed": true
+    },
+    {
+      "name": "Explicit single-format manual price updates that format",
+      "passed": true
+    }
+  ]
+}
