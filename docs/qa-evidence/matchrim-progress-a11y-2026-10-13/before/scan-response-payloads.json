@@ -1,0 +1,279 @@
+{
+  "detect": {
+    "coverage": {
+      "status": "unknown",
+      "detected_objects": 5,
+      "estimated_visible_objects": null,
+      "confidence": null,
+      "notes": [
+        "Fixture de interfaz: no mide recall ni cobertura visual real."
+      ]
+    },
+    "regions": [
+      {
+        "box": {
+          "x": 3,
+          "y": 15,
+          "width": 16,
+          "height": 68
+        },
+        "confidence": 0.94,
+        "quality": {
+          "glare": "medium",
+          "occlusion": "low",
+          "legibility": "good"
+        }
+      },
+      {
+        "box": {
+          "x": 22,
+          "y": 18,
+          "width": 17,
+          "height": 64
+        },
+        "confidence": 0.82,
+        "quality": {
+          "glare": "high",
+          "occlusion": "medium",
+          "legibility": "limited"
+        }
+      },
+      {
+        "box": {
+          "x": 42,
+          "y": 13,
+          "width": 16,
+          "height": 70
+        },
+        "confidence": 0.91,
+        "quality": {
+          "glare": "low",
+          "occlusion": "low",
+          "legibility": "good"
+        }
+      },
+      {
+        "box": {
+          "x": 61,
+          "y": 17,
+          "width": 16,
+          "height": 66
+        },
+        "confidence": 0.86,
+        "quality": {
+          "glare": "medium",
+          "occlusion": "medium",
+          "legibility": "good"
+        }
+      },
+      {
+        "box": {
+          "x": 81,
+          "y": 20,
+          "width": 15,
+          "height": 61
+        },
+        "confidence": 0.63,
+        "quality": {
+          "glare": "high",
+          "occlusion": "high",
+          "legibility": "poor"
+        }
+      }
+    ]
+  },
+  "analyze": {
+    "region-1": {
+      "candidates": [
+        {
+          "name": "Muga Reserva",
+          "producer": "Bodegas Muga",
+          "vintage": 2020,
+          "region": "Rioja",
+          "country": "Espana",
+          "grapes": [
+            "Tempranillo"
+          ],
+          "confidence": 0.91,
+          "source": "label",
+          "evidence": [
+            "Texto visible: Muga Reserva",
+            "Marca visible: Bodegas Muga"
+          ],
+          "uncertainty_reasons": [],
+          "inferred_fields": [
+            "sensory_attributes"
+          ],
+          "affinity": 88,
+          "affinity_confidence": 0.58,
+          "affinity_reason": "Afinidad calculada con atributos sensoriales inferidos.",
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 3,
+            "dulzura": 1,
+            "taninos": 4,
+            "afrutado": 3,
+            "madera": 4,
+            "intensidad": 4
+          }
+        }
+      ]
+    },
+    "region-2": {
+      "candidates": [
+        {
+          "name": "Marques de Riscal Reserva",
+          "producer": "Herederos del Marques de Riscal",
+          "vintage": 2020,
+          "region": "Rioja",
+          "country": "Espana",
+          "grapes": [
+            "Tempranillo"
+          ],
+          "confidence": 0.61,
+          "source": "label",
+          "evidence": [
+            "Texto visible: Marques de Riscal Reserva",
+            "Marca visible: Herederos del Marques de Riscal"
+          ],
+          "uncertainty_reasons": [
+            "Reflejo sobre la palabra central"
+          ],
+          "inferred_fields": [
+            "sensory_attributes"
+          ],
+          "affinity": 76,
+          "affinity_confidence": 0.58,
+          "affinity_reason": "Afinidad calculada con atributos sensoriales inferidos.",
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 3,
+            "dulzura": 1,
+            "taninos": 4,
+            "afrutado": 3,
+            "madera": 4,
+            "intensidad": 4
+          }
+        },
+        {
+          "name": "Marques de Caceres Reserva",
+          "producer": "Marques de Caceres",
+          "vintage": 2020,
+          "region": "Rioja",
+          "country": "Espana",
+          "grapes": [
+            "Tempranillo"
+          ],
+          "confidence": 0.43,
+          "source": "label",
+          "evidence": [
+            "Texto visible: Marques de Caceres Reserva",
+            "Marca visible: Marques de Caceres"
+          ],
+          "uncertainty_reasons": [
+            "Tipografia parcialmente oculta"
+          ],
+          "inferred_fields": [
+            "sensory_attributes"
+          ],
+          "affinity": 71,
+          "affinity_confidence": 0.43,
+          "affinity_reason": "Afinidad calculada con atributos sensoriales inferidos.",
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 3,
+            "dulzura": 1,
+            "taninos": 4,
+            "afrutado": 3,
+            "madera": 4,
+            "intensidad": 4
+          }
+        }
+      ]
+    },
+    "region-3": {
+      "candidates": [
+        {
+          "name": "Baron Saint George Grand Vin de Bordeaux",
+          "producer": "Chateau Saint George",
+          "vintage": 2023,
+          "region": "Rioja",
+          "country": "Espana",
+          "grapes": [
+            "Tempranillo"
+          ],
+          "confidence": 0.86,
+          "source": "label",
+          "evidence": [
+            "Texto visible: Baron Saint George Grand Vin de Bordeaux",
+            "Marca visible: Chateau Saint George"
+          ],
+          "uncertainty_reasons": [],
+          "inferred_fields": [
+            "sensory_attributes"
+          ],
+          "affinity": 83,
+          "affinity_confidence": 0.58,
+          "affinity_reason": "Afinidad calculada con atributos sensoriales inferidos.",
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 3,
+            "dulzura": 1,
+            "taninos": 4,
+            "afrutado": 3,
+            "madera": 4,
+            "intensidad": 4
+          }
+        }
+      ]
+    },
+    "region-4": {
+      "candidates": [
+        {
+          "name": "Muga Reserva",
+          "producer": "Bodegas Muga",
+          "vintage": 2020,
+          "region": "Rioja",
+          "country": "Espana",
+          "grapes": [
+            "Tempranillo"
+          ],
+          "confidence": 0.91,
+          "source": "label",
+          "evidence": [
+            "Texto visible: Muga Reserva",
+            "Marca visible: Bodegas Muga"
+          ],
+          "uncertainty_reasons": [],
+          "inferred_fields": [
+            "sensory_attributes"
+          ],
+          "affinity": 88,
+          "affinity_confidence": 0.58,
+          "affinity_reason": "Afinidad calculada con atributos sensoriales inferidos.",
+          "sensory_attributes": {
+            "potencia": 4,
+            "acidez": 3,
+            "dulzura": 1,
+            "taninos": 4,
+            "afrutado": 3,
+            "madera": 4,
+            "intensidad": 4
+          }
+        }
+      ]
+    },
+    "region-5": {
+      "candidates": [],
+      "recognition_status": "unreadable",
+      "fallback": {
+        "code": "insufficient_visible_text",
+        "message": "No hay texto legible suficiente para identificar este vino.",
+        "suggested_actions": [
+          "Acerca la camara a una sola etiqueta.",
+          "Evita reflejos y enfoca el nombre o la bodega."
+        ]
+      }
+    }
+  }
+}

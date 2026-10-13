@@ -1,0 +1,154 @@
+{
+  "scope": "Isolated actual React/Radix SSR component with primitive numeric inputs, no user/wine/profile/recognition data or mounted app state.",
+  "cases": [
+    {
+      "id": "primitive-0",
+      "role": "progressbar",
+      "name": "Primitiva 0",
+      "expectedNow": 0,
+      "expectedText": "0%",
+      "syntheticPrimitiveValue": 0
+    },
+    {
+      "id": "primitive-24",
+      "role": "progressbar",
+      "name": "Primitiva 24",
+      "expectedNow": 24,
+      "expectedText": "24%",
+      "syntheticPrimitiveValue": 24
+    },
+    {
+      "id": "primitive-42",
+      "role": "progressbar",
+      "name": "Primitiva 42",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "syntheticPrimitiveValue": 42
+    },
+    {
+      "id": "primitive-100",
+      "role": "progressbar",
+      "name": "Primitiva 100",
+      "expectedNow": 100,
+      "expectedText": "100%",
+      "syntheticPrimitiveValue": 100
+    },
+    {
+      "id": "primitive-12.5",
+      "role": "progressbar",
+      "name": "Primitiva 12.5",
+      "expectedNow": 12.5,
+      "expectedText": "13%",
+      "syntheticPrimitiveValue": 12.5
+    },
+    {
+      "id": "unknown-null",
+      "role": "progressbar",
+      "name": "Primitiva desconocida",
+      "expectedNow": null,
+      "expectedText": null,
+      "syntheticPrimitiveValue": null
+    },
+    {
+      "id": "unknown-undefined",
+      "role": "progressbar",
+      "name": "Primitiva sin valor",
+      "expectedNow": null,
+      "expectedText": null,
+      "syntheticPrimitiveValue": null
+    },
+    {
+      "id": "custom-text",
+      "role": "progressbar",
+      "name": "Primitiva con texto",
+      "expectedNow": 30,
+      "expectedText": "30 unidades de prueba",
+      "syntheticPrimitiveValue": 30
+    },
+    {
+      "id": "styles-import",
+      "role": "progressbar",
+      "name": "Progreso de importación de estilos de vino",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "consumer": "src/components/WineStylesCSVImporter.tsx",
+      "syntheticPrimitiveValue": 42
+    },
+    {
+      "id": "csv-import",
+      "role": "progressbar",
+      "name": "Progreso de importacion CSV",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "consumer": "src/components/csv/ImportProgress.tsx",
+      "syntheticPrimitiveValue": 42
+    },
+    {
+      "id": "label-scan",
+      "role": "progressbar",
+      "name": "Progreso estimado del escaneo de etiquetas",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "consumer": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "syntheticPrimitiveValue": 42
+    },
+    {
+      "id": "food-scan",
+      "role": "progressbar",
+      "name": "Progreso del análisis de comida",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "consumer": "src/components/wine-import/FoodPairingScanner.tsx",
+      "syntheticPrimitiveValue": 42
+    },
+    {
+      "id": "profile-confidence",
+      "role": "meter",
+      "name": "Confianza del perfil aprendido",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "consumer": "src/pages/Profile.tsx",
+      "syntheticPrimitiveValue": 42
+    },
+    {
+      "id": "learning-confidence",
+      "role": "meter",
+      "name": "Confianza del aprendizaje de gustos",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "consumer": "src/pages/MyWines.tsx",
+      "syntheticPrimitiveValue": 42
+    },
+    {
+      "id": "stored-affinity",
+      "role": "meter",
+      "name": "Afinidad orientativa de Elemento de prueba",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "consumer": "src/pages/MyWines.tsx",
+      "syntheticPrimitiveValue": 42
+    },
+    {
+      "id": "label-affinity",
+      "role": "meter",
+      "name": "Afinidad orientativa del candidato",
+      "expectedNow": 42,
+      "expectedText": "42%",
+      "consumer": "src/components/wine-import/WineLabelOCRImport.tsx",
+      "syntheticPrimitiveValue": 42
+    }
+  ],
+  "hashes": {
+    "src/components/ui/progress.tsx": "133482fd377928e0aeecbd8451f26c11ed890e88e19d68cef6d6187b6a843957",
+    "src/components/WineStylesCSVImporter.tsx": "d60fdc453d434613757130de9d4f93ea87bbe0effcaa273285bc0a98c0a2321a",
+    "src/components/csv/ImportProgress.tsx": "a5aaf50eca11e3738357581ba11d02db5179da7f506c1a9cedf435ee1c769884",
+    "src/components/wine-import/MultiWineLabelScanner.tsx": "eecf44b4c555980445617c40ee8cc827df8e27c89c2f673923ec0ddae91b1ebe",
+    "src/components/wine-import/FoodPairingScanner.tsx": "22dc6203f8bfe8a8005d6dd77a4e8a214756f8a9fffa30c6cb108344b12a20bf",
+    "src/pages/Profile.tsx": "ffe1ee613f1794e65ab1cdec43809d8a95145fdf7c071611cf7c6c85f0c8e1b5",
+    "src/pages/MyWines.tsx": "4af402783a7cfa9dcaa4058f4d64d883b4d92259829509096b50b267471c3509",
+    "src/components/wine-import/WineLabelOCRImport.tsx": "84c5e7929005a2bc534ecb4ae361a1cb278c1fe0b518f5285591a63aa65ca011",
+    "node_modules/@radix-ui/react-progress/dist/index.mjs": "76f894c18bbdcaaeaea5670426d147b9ee7905db33a9cafae45694d6454146cc"
+  },
+  "htmlSha256": "a64155d14d0af779fc6371d6e06bc56b6ebecb659dc47fa89c2b01b73562aa95",
+  "installedRadixVersion": "1.1.0"
+}

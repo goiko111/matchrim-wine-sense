@@ -1,0 +1,589 @@
+{
+  "scope": "Actual local build from observed npm run build exit0, no native copy/deploy. Compilation alone is not product E2E.",
+  "files": [
+    {
+      "path": "assets/AccountDeletion-BDMEZDT3.js",
+      "sha256": "f8b4617bbd6ee214e436839fc7659b8ee38d421c0fab9e1088026665f76a6eaf"
+    },
+    {
+      "path": "assets/Admin-Dds0Q82b.js",
+      "sha256": "3ce46f50e9e1f3d0c1ec7d7cc3f87cf0438a5780ddec51d937e1b608d5822775"
+    },
+    {
+      "path": "assets/AppNav-p1oxRyEz.js",
+      "sha256": "963e40d3f3d0c6c56dcf9a65f8c8dc70cb2d746a99ad028e850b6b73e2d4043b"
+    },
+    {
+      "path": "assets/Auth-CvMlgNZI.js",
+      "sha256": "81981fedfc804363a6ebb73b02cfbe1d5ae1a639c662bb27a4183495abf60f1b"
+    },
+    {
+      "path": "assets/Combination-1apvUfn8.js",
+      "sha256": "28145d4f60e5f1d4908e1c70b5277d4edc770baadb24e1b5ae6d018c004d5ceb"
+    },
+    {
+      "path": "assets/DataStats-BBQ7TrgU.js",
+      "sha256": "6b4b48fe88c551e0f05a980265a1733e4548d64c8631fae5a052868e67707071"
+    },
+    {
+      "path": "assets/DataViewer-DHGD_2RD.js",
+      "sha256": "a4cd63c5094fd531dc51073af4a0e2e780036c0fea8bd6492445e5be429dccad"
+    },
+    {
+      "path": "assets/DataViewerTabs-BuCD6JPv.js",
+      "sha256": "5f42aed47a16fa2076214baedce3e49544f466e31e4c6bcb10b1d2cd48d6aeea"
+    },
+    {
+      "path": "assets/ForgotPassword-6qQXvCvS.js",
+      "sha256": "2a32164678ffe4a49143e809d18c4129d7c86c7e3938a5312110311eef5604ef"
+    },
+    {
+      "path": "assets/Header-GJsiY6ME.js",
+      "sha256": "447bcd9e701b9bf00b7e215872656841c6fce8d732eed361e87601601a9f8bcb"
+    },
+    {
+      "path": "assets/ImportCSV-CIZmq-SI.js",
+      "sha256": "f447fc56f6e3cfd894025166a98099443f93a156f2e2acc53b65939858889568"
+    },
+    {
+      "path": "assets/Index-DTHpaEvm.js",
+      "sha256": "377cb375bbfe036047db9284793fdae61695cb96064c69f6f0f22d0839a5678f"
+    },
+    {
+      "path": "assets/LanguageSwitcher-BjuVHU6c.js",
+      "sha256": "096e310d22d3267e4e518e1ef9e4bb2392874a6efef7f60fe387d9111689a568"
+    },
+    {
+      "path": "assets/LiquidIntelligence-CQ6Sj9FL.js",
+      "sha256": "38c4627f2124cabd6c9fe9b398b6524b985c340b8ae54b7e55c28610a4ff4846"
+    },
+    {
+      "path": "assets/Matchrim-BIgfhH4J.js",
+      "sha256": "d69758e63b2091d66eceb70ba1529bc6146879bc220f3a704e5abbc92fb827f0"
+    },
+    {
+      "path": "assets/MobileBottomNav-CRDmZPnO.js",
+      "sha256": "6724227b2bcbb6621793dcf085f04c32031991415cd1669ca6119f3e36dabdd8"
+    },
+    {
+      "path": "assets/MyWines-CjfeQ7nw.js",
+      "sha256": "feb235ed1b2d04e588fa16531b30344c7dac77fab03bc898a8e455cce07aa20c"
+    },
+    {
+      "path": "assets/NotFound-ckf_Zvre.js",
+      "sha256": "987ee1ca792fcd5713134674c3c076c912265acfeff5990049eca5e94409ec48"
+    },
+    {
+      "path": "assets/PrivacyPolicy-BGZ5XmSW.js",
+      "sha256": "d71d4491817e807ca16eee59b33f5704b1c8639f0d071ed891a47f2ec66d98c3"
+    },
+    {
+      "path": "assets/Profile-BwFGSoWl.js",
+      "sha256": "49dc2f873dc5b5bba0b0e116f28684a5ab7993af585c9f60c61cbfdfd2853849"
+    },
+    {
+      "path": "assets/RegionMap-BKWjo1HA.css",
+      "sha256": "5f22f7580559f3bc02f8c0b080b3b320e761afb190fa43092a873e14f2fd3f01"
+    },
+    {
+      "path": "assets/RegionMap-BQXGz74h.js",
+      "sha256": "4e04f051021564fc125b7eb1f3a884d63217e238d91cfe5d5f35cd7ab854a7e7"
+    },
+    {
+      "path": "assets/Registration-tmRz598E.js",
+      "sha256": "68bf7297ae71bd69e91038b01a4205fd166f5d0f6ac24fb06c3fd6680c92d83f"
+    },
+    {
+      "path": "assets/ResetPassword-CXJoyaOE.js",
+      "sha256": "1deb9c6b5e8eb98c1450e046818a99d98af4c6d3386b6f8b758fc2136304f83a"
+    },
+    {
+      "path": "assets/Scan-CULlOFFR.js",
+      "sha256": "a088841098fff3a99a1201cbde3f60342ac06cff5796673db71f454e978d52a4"
+    },
+    {
+      "path": "assets/Terms-CgwrrBnT.js",
+      "sha256": "91cca88aafa0b1cfbe2f865594e5925c89373aeddc0ec6a209a279411d04a13c"
+    },
+    {
+      "path": "assets/UseMatchrim-C2UXGL27.js",
+      "sha256": "0d882154c9f9b1abaef6d5d9d9312cfb02b9594c1e72c2cd7b7915b5a877ffaf"
+    },
+    {
+      "path": "assets/WineCard-D8K62slx.js",
+      "sha256": "e5a88a8622f1c8d9a5c38f1ac9cb1651bae50dd320260a313cf4a2b512208f9a"
+    },
+    {
+      "path": "assets/WineDetail-9VbZPl-W.js",
+      "sha256": "91246a8b34e011fcc3b32a274b1022577d6b3f91f0a237967ffe246dccafe402"
+    },
+    {
+      "path": "assets/WineImport-RblUcyDX.js",
+      "sha256": "2159f4090cedbe63541331f4e730c04c872576b2454b522e937befa68f39f238"
+    },
+    {
+      "path": "assets/WineImporter-CO7nzNL9.js",
+      "sha256": "2928ec4a6008b596566f17e7c34691def05083a667e40dbda2b26df6d7be3da1"
+    },
+    {
+      "path": "assets/WineMenuScanner-7AD0P_VV.js",
+      "sha256": "1a6e7d60a895def89d099cb4a2445d85f42f8948eb286f20f60e6b64e897ec25"
+    },
+    {
+      "path": "assets/WineSearch-By1G9YAF.js",
+      "sha256": "37a23cb305b1de76b1a73e68a905491791ad08ebd1c4d33d77af49a82bd80db7"
+    },
+    {
+      "path": "assets/WineStyleDetail-DLtX6Wuc.js",
+      "sha256": "69f38aafb8a7635b39dbd0c1aa98b6010bfffaed0c6d4a0229ff4116dd853b35"
+    },
+    {
+      "path": "assets/WineStyles-BjGlULC8.js",
+      "sha256": "8e50b8302b42740585fabbc751bc38e8affdcb9bc563da2f6e4226e48ffecbc9"
+    },
+    {
+      "path": "assets/alert-Ds_wDfmF.js",
+      "sha256": "fef83a7be554ee8172353bb7f906b73a22f1b649a174b899dc2c45b83dbe38b7"
+    },
+    {
+      "path": "assets/analytics-B1ISGEOO.js",
+      "sha256": "6d9e8cbf020a7e01af206201bf762175d4eb54c8c873b668576b2d56d73c3be5"
+    },
+    {
+      "path": "assets/arrow-left-BsiFPtlR.js",
+      "sha256": "95201a0f6c857e26b56889842a2b1bc97471152bf87f241c3119582dd531f85b"
+    },
+    {
+      "path": "assets/arrow-right-D0Q4tkdE.js",
+      "sha256": "9d618311055df5957f0b1ea1dfa682854998d432649f31b669f2955d1470f5a0"
+    },
+    {
+      "path": "assets/award-DKz24e5X.js",
+      "sha256": "a7f5691e9924314d31e829f0822ee2a71891b15094eb279c9a9cfe611e765945"
+    },
+    {
+      "path": "assets/badge-CutZtW8X.js",
+      "sha256": "c300218a9c46c8fbce024f318738b5e4657def6da5edd3f7273cd02abf10fe2c"
+    },
+    {
+      "path": "assets/bookmark-plus-BCodpift.js",
+      "sha256": "e7cc6117ab66311531ff65e8b6d4b41456b6416a86e82fe355db2f72d380d71b"
+    },
+    {
+      "path": "assets/brain-CeX9ClUM.js",
+      "sha256": "4e409b4e4d1ce7837466deb8883aef44e0f57ee5ec4b965eeb5638f7c311dcd5"
+    },
+    {
+      "path": "assets/building-2-zLCxPpW_.js",
+      "sha256": "186803ffacfaaf4ee132b4ecad18de0fa80997709398717065131258828783be"
+    },
+    {
+      "path": "assets/calendar-CcDlm_sR.js",
+      "sha256": "e3fc1805609463c27c7e081735d90bf9eb1198b2a7c3da43dabb5238c987a9a4"
+    },
+    {
+      "path": "assets/camera-BVS95ahl.js",
+      "sha256": "bca5a3048fba9dde015bb05cf25ef648abfedb2838d9f4e69f9dafbd94b9d36b"
+    },
+    {
+      "path": "assets/checkbox-CV9fvl34.js",
+      "sha256": "fc83d2919a65f28aefb3d28db4a7ca7ab29784a0a9f293785e09017fc048f216"
+    },
+    {
+      "path": "assets/chef-hat-Ci3tD7DC.js",
+      "sha256": "0b24dce072790dc08eb83bda0938ab4bc779741d628697bc237bcf59c94c2968"
+    },
+    {
+      "path": "assets/chevron-left-I61-FJFg.js",
+      "sha256": "8a05d120c695197c11547ec00abe2c50d931eb6b79c772184fc13fa414351ed1"
+    },
+    {
+      "path": "assets/circle-alert-CDdWHjcR.js",
+      "sha256": "12a8ea3134172a3c8022791177426702e3f423bcdcaf7c71496b6fa5ac80f244"
+    },
+    {
+      "path": "assets/circle-check-big-BZ5_8qoS.js",
+      "sha256": "c5b3a7f4e786e0bd433c69bf0eed946f5307135707bf6c5af807a61c341cfd09"
+    },
+    {
+      "path": "assets/circle-x-DX5i3kuj.js",
+      "sha256": "10f1378d00c1c5d910ad73042afeceb848c327ab91fbd25bb744566b1563232d"
+    },
+    {
+      "path": "assets/copy-B7vXPS75.js",
+      "sha256": "e22a39073a297d9070b340793f1743413087e280456a5cb88e10ba1f4ddd756b"
+    },
+    {
+      "path": "assets/dialog-ht2DjMN_.js",
+      "sha256": "a2e2d7e094000ccb23cbe274870a2fd7ed259df6430489a2bd6d8fdddaf7d5c5"
+    },
+    {
+      "path": "assets/dropdown-menu-Du4mitOc.js",
+      "sha256": "4acfbab2a82317963ac1e697f183ec390d6bbdef2b365254bb7674cfade64e65"
+    },
+    {
+      "path": "assets/external-link-B5ziN8K7.js",
+      "sha256": "eb0344ddee8e2b31a3d50bafa576e76803096631ffbcf9357b05c8e7377e2fde"
+    },
+    {
+      "path": "assets/eye-_l8QRYRh.js",
+      "sha256": "638c05f60a2f5fe0dc23a3bf6e1f0e62ca9bd6440ac65267dcb238b5169a0426"
+    },
+    {
+      "path": "assets/eye-off-8cHNCFky.js",
+      "sha256": "dec8efdcef09fb3d8dc081d919225e049a211279cab49176b7ba3c49a1cdd801"
+    },
+    {
+      "path": "assets/file-spreadsheet-8YjTn7Kw.js",
+      "sha256": "d35914a3814b008b6dddcf78387d053b7782082d3c1249a84ded242eb3140031"
+    },
+    {
+      "path": "assets/file-text-lQj2BZAB.js",
+      "sha256": "3fff4e1fffe79017f6fd07c07f67aab2eecd70c622762b8fdf55289998353278"
+    },
+    {
+      "path": "assets/grape-DnyCoVKC.js",
+      "sha256": "b6f8a3c594d4ac55c9871032687e567a4b65ee9aa333db00b2636cb5f79f5c34"
+    },
+    {
+      "path": "assets/heart-B__YTM9Y.js",
+      "sha256": "b1d81015b541f50005ae0b575806f97e26416d840f2957f1c489984a73fcbb1e"
+    },
+    {
+      "path": "assets/hero-tinto-versatil-iLS2Co8t.jpg",
+      "sha256": "b4d2432e4c215d8a888aa50ccad83e636c0b1578c548daf3622c2590cc2d50da"
+    },
+    {
+      "path": "assets/history-BC_9uFgs.js",
+      "sha256": "c1b7cc7a9da977e3be3573349cbfe131b017542a1728f51393fe8fa0a51ee639"
+    },
+    {
+      "path": "assets/index-B0EG3x-p.js",
+      "sha256": "a2d506b8997901ed80c4fe32ec5b92ff37c023eb289830f0ff8a96dc5c89bbcd"
+    },
+    {
+      "path": "assets/index-BIRwLyxr.js",
+      "sha256": "b660547e7f06368c88d8a4b157ee16f6ff0142945c887633d05c6520ad678361"
+    },
+    {
+      "path": "assets/index-BkJ8X903.css",
+      "sha256": "6744cfb7d4fbaff27a183127dd5918de657dbe2e53dfd43390952f9e1e472e90"
+    },
+    {
+      "path": "assets/index-CUdtVpCB.js",
+      "sha256": "142ba450a487c79c720c61a5bc5848c03ebe3a6fa0d901a091351cb462febab0"
+    },
+    {
+      "path": "assets/index-Lqa71Lr7.js",
+      "sha256": "84e2fd32518d6f09cd5432e4905f99b34ce6566b403d8d863f17f7e6d454b399"
+    },
+    {
+      "path": "assets/input-D47WAH3V.js",
+      "sha256": "98cbb7b215b482f7c9e36965c2fae1313fb4f20224632426eb71d5f65b01c296"
+    },
+    {
+      "path": "assets/label-BPT4AnvH.js",
+      "sha256": "d3ab7ac47a764e3dc4b48c2a23799b303fce5cc9fe6025806d2dcfeec7dbe9ac"
+    },
+    {
+      "path": "assets/labelScanSave-DmdGbFRl.js",
+      "sha256": "ddba6b2bc8080db483412772db7e098f6214a4e79433dc27fc32d42b1aaecd7b"
+    },
+    {
+      "path": "assets/lightbulb-ew9KFFKb.js",
+      "sha256": "754c7def4ab3db17b6558676d8539d52fc7b630806fa31fdd8ac4d9a0909fe9a"
+    },
+    {
+      "path": "assets/loader-circle-e2c2hpnS.js",
+      "sha256": "645837fed9cbf3310d609e7c3b643fd1bb747191e1b3a80dc13ff25cd74e2695"
+    },
+    {
+      "path": "assets/mail-CxmjtI7O.js",
+      "sha256": "636e11d1b4c6f46b9673e8cc98728807145fbb55948c563319f1339bbdc950c3"
+    },
+    {
+      "path": "assets/map-pin-DDJvmC1t.js",
+      "sha256": "3ae0a2f1790bc21abfd84cdd02d9797745faa178423df50c1109dd8d77f942c6"
+    },
+    {
+      "path": "assets/matchrim-scan-values-BBMbqQgD.js",
+      "sha256": "fbf6557f81d3ada20c4e00c361760a1d73dbde7adb1fe5b756c59013f955e6a0"
+    },
+    {
+      "path": "assets/matchrimEdgeRouting-DqIvQ_ga.js",
+      "sha256": "c7e5cfb36d89fa4bc4f0bba832529ecae6763e4be265b01a8b1e25cf0650a6b6"
+    },
+    {
+      "path": "assets/matchrimLearning-CBgBs0gv.js",
+      "sha256": "3cd8114ec083e12ec68f99e225fae68f38006a21fdb35db3a752201cf7881523"
+    },
+    {
+      "path": "assets/matchrimLocalProfile-D6qMZE0n.js",
+      "sha256": "579f0cb52b3d050389d2f643b0f5b7df649f3b5d78908c2ebd6ddf2e738e3fbf"
+    },
+    {
+      "path": "assets/matchrimPassport-Ty0ECfyF.js",
+      "sha256": "d26ed68fc3269299d46aa8efd26932f76e9e6dbc92bfa9301f212e680f7b8654"
+    },
+    {
+      "path": "assets/menuWineSave-DlVZGTBD.js",
+      "sha256": "77f2e5c3b28794cab34c7a707abd372df6a4f2e7a8e764363f9f48e1a8f1d1ec"
+    },
+    {
+      "path": "assets/message-circle-ChnMGYVF.js",
+      "sha256": "94269202c911ed6efea35d2f38a731b861607245c4504a48098d8ade9fb63688"
+    },
+    {
+      "path": "assets/multiWineScan-B-tX9EiN.js",
+      "sha256": "f6ebde3ee6aa3af1ff1ae2c45e82b6fc48d43f3f4e9a86b3fa2255698e28282f"
+    },
+    {
+      "path": "assets/navigation-D4bAZ8Pd.js",
+      "sha256": "0faf1f2a79b30e408a89266e0ed34fd2f5786a7fbc319e8e831e322f1c45848a"
+    },
+    {
+      "path": "assets/palette-WEpQwdu9.js",
+      "sha256": "d00f973b8032610bc8d790077b2e61e671f124ae40f785820419dd5536e31dea"
+    },
+    {
+      "path": "assets/pdf-BAFhSO9X.js",
+      "sha256": "7cb6fab443c900993ccdc8c9e264a9db3385eba38dafe897f53175cf173e5b00"
+    },
+    {
+      "path": "assets/pdf.worker-BPDUMpZa.js",
+      "sha256": "942c0a60603524de6e64390aacbcdc45d70dd97173977e7ec0392dc72c5595dc"
+    },
+    {
+      "path": "assets/progress-ukBL_32H.js",
+      "sha256": "0c18d0564c50816aca9ac3241e5c9af3590a1750b13f278f7ff2f10d1c6bdba3"
+    },
+    {
+      "path": "assets/question-11-anis-DbjOcpbt.jpg",
+      "sha256": "4dea1e80258fb2610d807c93fe64f0d895ae95987d016fd2635961030d070cb8"
+    },
+    {
+      "path": "assets/question-12-avellanas-tostadas-BHAXGwcL.jpg",
+      "sha256": "6f92114a25800dd1ea861cd679221037e8e1f341db91f1ba029f789d421c9869"
+    },
+    {
+      "path": "assets/question-13-vainilla-BXzYbYLJ.jpg",
+      "sha256": "9f424cd500dedf2fd13e333f680d828481bfbd5ad0e85bf3d29c67074fe509cb"
+    },
+    {
+      "path": "assets/question-14-cafe-con-leche-CUepAXx1.jpg",
+      "sha256": "28440572b74ddc6f1d7b7d3f6797a3bfe209601a7c59d334ecedb2a6eecfeba3"
+    },
+    {
+      "path": "assets/question-15-hierbabuena-CwLF3tyD.jpg",
+      "sha256": "1006004e2e26b949201fe8a3081ab41d94ccf5963740f70786a30555f5995b8f"
+    },
+    {
+      "path": "assets/question-16-mango-ANSh1N5I.jpg",
+      "sha256": "7069d21d53aaa8601536b3d990852fa90c3b6926f03f717a78fdf297849242be"
+    },
+    {
+      "path": "assets/question-17-marisco-CAUavwGJ.jpg",
+      "sha256": "f3062805fabcd00bf5ad1a7bd895bdf1fcbabcc2bd9b0785bc6bbfe6168f1515"
+    },
+    {
+      "path": "assets/question-18-encurtidos-DW47zXYl.jpg",
+      "sha256": "22f5b4d8c03b1c42af2a5b217c3d3913e99866bc4240ed09d97d5f1f515daf22"
+    },
+    {
+      "path": "assets/question-19-curry-DTf_3pwD.jpg",
+      "sha256": "fc8e4d0fdc01ab7399de19e10651434b60c3750c54536d2aff841ab8fc4aae27"
+    },
+    {
+      "path": "assets/question-2-cayena-BaptgsmZ.jpg",
+      "sha256": "ceab1f2be457be3f96a217c431c976bef3b5af254080118d307b2a28ba6f6fad"
+    },
+    {
+      "path": "assets/question-20-caramelos-limon-Br_srOhs.jpg",
+      "sha256": "22ac73e85f58c5e6d31aef7e9b86a85be30c23a7a80df05101760e056d07e5a8"
+    },
+    {
+      "path": "assets/question-4-pimiento-rojo-DpUlukRl.jpg",
+      "sha256": "6281e467bf71957da7932b8e0879b7a86d5e561bae86fb5746076fa2fd4f84ce"
+    },
+    {
+      "path": "assets/question-5-cuero-DVy29yb0.jpg",
+      "sha256": "519d0073a93d686e942c9f13080bfba445b89f569fef658ef92761c3a27b8e5f"
+    },
+    {
+      "path": "assets/question-5-manzanas-verdes-Dawgo6fi.jpg",
+      "sha256": "8df18506ceeda33ec5f21444bb71cfa475866a039f81c755baee3904cfcc9942"
+    },
+    {
+      "path": "assets/question-6-berenjenas-B_k6J_Vp.jpg",
+      "sha256": "36c7b49c59509dc8f56389154a39e491b18123fdf5627c4db0f0ec4e8cd334df"
+    },
+    {
+      "path": "assets/question-6-queso-azul-B1rPHrw2.jpg",
+      "sha256": "72d0fd3b83c5bcf6de4ec1e2256cd9b19544cace02617928e930def48635db2d"
+    },
+    {
+      "path": "assets/question-7-pepinillos-B6BLwLON.jpg",
+      "sha256": "3db7ad07f08e9b29e8512c2d4883c9d0d25de102d1efda2522fc299f1cce40ee"
+    },
+    {
+      "path": "assets/question-7-trufas-wb9Mws2W.jpg",
+      "sha256": "993194a682dc56d1a83cb8b44a1352f147a043949a4ca9eb0e1daeb1a1fd1ea3"
+    },
+    {
+      "path": "assets/question-8-datiles-DmGm6K6X.jpg",
+      "sha256": "456e39c522afb16afcbbb18cf669c2ec9105307d66dc4d5b659277ba28a37fb9"
+    },
+    {
+      "path": "assets/question-9-espresso-1KgKE-hR.jpg",
+      "sha256": "2db5db43b331537ef10ba404a36ab1899d11ce8324b33c4a623fb60a51cf527c"
+    },
+    {
+      "path": "assets/radio-group-apernEPu.js",
+      "sha256": "9ebc8ebf218976fc408726ce25a2395d49a52298a976a84202c03e8b107a29c0"
+    },
+    {
+      "path": "assets/scale-BEXD4fbq.js",
+      "sha256": "c18293cf8f66cc9ddf51b58e560ddc94f07bc456502fa71c3f9bf17bdf50e2f7"
+    },
+    {
+      "path": "assets/scanAnalysisPolicy-DtwRDKLB.js",
+      "sha256": "61514660691d13c038d543cc18d0dcbf3cf3cd0d7ad8eaed7dd6db58fef0ae3b"
+    },
+    {
+      "path": "assets/scanMoney-CWKU9vkT.js",
+      "sha256": "1f62fd3938f6c6df30c8ec5882ceb92827a17fd096556f273c031beedbab44d6"
+    },
+    {
+      "path": "assets/search-CWPfkJJo.js",
+      "sha256": "187a11c37f6e0b244a2bbe15a5f980b5b38a8816007cc8b0e71397573c971d57"
+    },
+    {
+      "path": "assets/select-C0xSk0ag.js",
+      "sha256": "beb29ca0b6468a7579dbb9b90122f53a854038d26a0cc563c180ee33ed6cf624"
+    },
+    {
+      "path": "assets/separator-scT3GdQw.js",
+      "sha256": "2c55adb6042b9ce436640add1026c3ef3ddef59a0a07377e9781bb74fa5a80ff"
+    },
+    {
+      "path": "assets/share-2-DW5QDPJA.js",
+      "sha256": "46986ef8fa1a8e97325077c94af5a4dc7410c5f45c9a9d471ada6d851510651e"
+    },
+    {
+      "path": "assets/shield-check-BLKMukkr.js",
+      "sha256": "5ac4b50d0814902e8c0b2fee1b283a528cce7dfcf5f786b5026b40eab2c9caa9"
+    },
+    {
+      "path": "assets/star-D-Jz-0vX.js",
+      "sha256": "e7435d867eeedca1e91d9307e6157f5aae2878ddc77b398f7ad43bdcd1ae7862"
+    },
+    {
+      "path": "assets/sword-BkhsXq2b.js",
+      "sha256": "ef1acb00eaea025702e4d8f4891c0e1f354b2a676587f923ddfab42bd8a8f886"
+    },
+    {
+      "path": "assets/table-IMZdYopC.js",
+      "sha256": "f9d93a932fb4c09b557c60ad0aca679009ee64326ca5b2e37a1cd9302604a207"
+    },
+    {
+      "path": "assets/tabs-ylj8K-HP.js",
+      "sha256": "b4c7832757c2f1d86adc0337ff3118aaef49167800d077aa8f89898631bb8279"
+    },
+    {
+      "path": "assets/target-CEe2cn-1.js",
+      "sha256": "1575370eb7a22f3111ea013928652058deff9255996d56a4be2050f44920f819"
+    },
+    {
+      "path": "assets/textarea-W1V6sYCO.js",
+      "sha256": "aab28e937af6af1a584d5fb32d486b91c49c1f1725e995667044b674ad5d6b75"
+    },
+    {
+      "path": "assets/thermometer-DWOhi_yO.js",
+      "sha256": "c12c80069575a2397d16ac339a55046a1b9d2cfed0260346408adccaa7de626b"
+    },
+    {
+      "path": "assets/thumbs-up-DybuuiWd.js",
+      "sha256": "58c0ea829eb0c6fd1c48738c009c67513f86c2603fd5e153bc6010f6f6418dcd"
+    },
+    {
+      "path": "assets/trash-2-Ca5ywXG_.js",
+      "sha256": "b1c9f9c19a5fe32ab5ed384d70ac58677163ad959bb7f736f0658ae1db375779"
+    },
+    {
+      "path": "assets/trending-down-__UNbUlu.js",
+      "sha256": "b799bb7e52c3485d259e41db0d028647136e3e07f590f37fe92712156e822459"
+    },
+    {
+      "path": "assets/trending-up-C--oCmuT.js",
+      "sha256": "75e9eefe1d83ede7ef51a6ac0017bbc0f12e53814defe225487a3ea9b660c558"
+    },
+    {
+      "path": "assets/users-CmSc6jLY.js",
+      "sha256": "13c1292d8dc9efe6a3e06e92c27e1d2202944833b18843c3d76aca40acd141a3"
+    },
+    {
+      "path": "assets/utensils-D_Hg6iaB.js",
+      "sha256": "4ec15bc4644abd902044f7d5b5a132d4090f820ecd60d87764de2bff647921cd"
+    },
+    {
+      "path": "assets/wine-DCw8nnnE.js",
+      "sha256": "79ceca6b7e94ed862c5286e644d6239165d9920ccff51041cf45e85bb484a8af"
+    },
+    {
+      "path": "assets/wine-bottle-placeholder-C3OB_emv.png",
+      "sha256": "ddce92a0e7d491de7ec1a0f04a4aacfbd7e6bbe5abf8a95d4dd870bed4f77d1b"
+    },
+    {
+      "path": "assets/winerimApi-DOXImXxL.js",
+      "sha256": "bba2cb16c325a4958972d00574a3e6fd095dc0ffdb326dea02ac56e8bc87e9c9"
+    },
+    {
+      "path": "assets/winerimClassifier-Blhw6l7-.js",
+      "sha256": "6aecd079e0b4a7d73212949530a7c57252e9c101a8fd41d24d99d528776f8207"
+    },
+    {
+      "path": "assets/winerimDataAggregation-Cye2Rd2H.js",
+      "sha256": "0fc52281bbda480e34cc639c1315c7662af11e10d58e0ae26ca41b70be4a4cf7"
+    },
+    {
+      "path": "assets/zap-AGySspqC.js",
+      "sha256": "61870b46184f785e34fdd1e98ee13ac1777126e98da4bd6243c1e3aa3ceac23e"
+    },
+    {
+      "path": "favicon.ico",
+      "sha256": "9f081d20c7c14cd4d08271b728d7c62b997d894150915760c222f01285f923ba"
+    },
+    {
+      "path": "index.html",
+      "sha256": "77501d8f5f757b96daa8c9d0d15fc64ad8cd84e109d736b0e2b58b8619351c0e"
+    },
+    {
+      "path": "lovable-uploads/9619b04e-8a8f-4c87-94a5-c676792d96ad.png",
+      "sha256": "b2b83f99cca8b95481b5a7ca302b2e7cdc3da7cd997b023c9de81e48b776f7f3"
+    },
+    {
+      "path": "lovable-uploads/a4fc1eb2-1ed7-4f1d-a8fa-aa5825514114.png",
+      "sha256": "d8b0e5a9fd1786d642338ec05440de977fd064cc7afce420eb8119441ab4811c"
+    },
+    {
+      "path": "lovable-uploads/b9329c73-68b0-4f4a-96a2-c96545694186.png",
+      "sha256": "b2b83f99cca8b95481b5a7ca302b2e7cdc3da7cd997b023c9de81e48b776f7f3"
+    },
+    {
+      "path": "lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png",
+      "sha256": "b2b83f99cca8b95481b5a7ca302b2e7cdc3da7cd997b023c9de81e48b776f7f3"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "sha256": "ad23fcccecc72e1f9e584c1979a5430ee9f0ddf2bc439edab7550bc3e3815da4"
+    },
+    {
+      "path": "placeholder.svg",
+      "sha256": "64badf7aabda0b9630b87020ffb6095cb858ccbcf66b355c2aa08b1063954d3b"
+    },
+    {
+      "path": "robots.txt",
+      "sha256": "a3d27b3ca5ce32341fa9f96f01169b521b1657c05d1860c45d1e53a6258e9e8b"
+    }
+  ]
+}

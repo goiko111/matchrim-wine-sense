@@ -1476,7 +1476,7 @@ const MyWinesForOwner = () => {
 	                      <p className="text-sm text-muted-foreground">Necesito vinos con atributos 1-5.</p>
 	                    )}
 	                  </div>
-	                  <Progress value={learningStats.confidence} className="mt-3 h-2" />
+	                  <Progress value={learningStats.confidence} role="meter" aria-label="Confianza del aprendizaje de gustos" className="mt-3 h-2" />
 	                </div>
 
 	                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
@@ -1765,7 +1765,7 @@ const MyWinesForOwner = () => {
                                   {wine.matchrim_affinity}%
                                 </span>
                               </div>
-                              <Progress value={wine.matchrim_affinity} className="h-2" />
+                              <Progress value={wine.matchrim_affinity} role="meter" aria-label={`Afinidad orientativa de ${wine.name}`} className="h-2" />
                               <span className="text-xs text-slate-500">Afinidad orientativa</span>
                               {getStoredAffinityTrace(wine) && (
                                 <span className="block text-xs text-slate-500">

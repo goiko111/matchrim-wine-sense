@@ -1,0 +1,169 @@
+{
+  "current": [
+    {
+      "path": "src/components/WineStylesCSVImporter.tsx",
+      "line": 134,
+      "column": 21,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 294,
+      "column": 52,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 346,
+      "column": 7,
+      "ruleId": "react-hooks/exhaustive-deps",
+      "severity": 1,
+      "message": "React Hook useEffect has a missing dependency: 'loadWines'. Either include it or remove the dependency array."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 352,
+      "column": 7,
+      "ruleId": "react-hooks/exhaustive-deps",
+      "severity": 1,
+      "message": "React Hook useEffect has a missing dependency: 'loadLearningWines'. Either include it or remove the dependency array."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 361,
+      "column": 6,
+      "ruleId": "react-hooks/exhaustive-deps",
+      "severity": 1,
+      "message": "React Hook useEffect has a missing dependency: 'applyFilters'. Either include it or remove the dependency array."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 560,
+      "column": 41,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 617,
+      "column": 50,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 747,
+      "column": 23,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 78,
+      "column": 23,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 91,
+      "column": 23,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    }
+  ],
+  "baseline": [
+    {
+      "path": "src/components/WineStylesCSVImporter.tsx",
+      "line": 134,
+      "column": 21,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 294,
+      "column": 52,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 346,
+      "column": 7,
+      "ruleId": "react-hooks/exhaustive-deps",
+      "severity": 1,
+      "message": "React Hook useEffect has a missing dependency: 'loadWines'. Either include it or remove the dependency array."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 352,
+      "column": 7,
+      "ruleId": "react-hooks/exhaustive-deps",
+      "severity": 1,
+      "message": "React Hook useEffect has a missing dependency: 'loadLearningWines'. Either include it or remove the dependency array."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 361,
+      "column": 6,
+      "ruleId": "react-hooks/exhaustive-deps",
+      "severity": 1,
+      "message": "React Hook useEffect has a missing dependency: 'applyFilters'. Either include it or remove the dependency array."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 560,
+      "column": 41,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 617,
+      "column": 50,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 747,
+      "column": 23,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 78,
+      "column": 23,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "line": 91,
+      "column": 23,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "severity": 1,
+      "message": "Unexpected any. Specify a different type."
+    }
+  ],
+  "unchanged": true,
+  "errors": 0,
+  "warnings": 10
+}

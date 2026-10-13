@@ -1,0 +1,15 @@
+# Matchrim: continuacion humana, progreso accesible
+
+Solicitud humana "continua" posterior a16. Baseline eac41777fb3817446b4d2c5ce33c7deea6384335 limpio a13Oct03:35Z. Defecto nuevo ya documentado: Progress consume value pero no lo pasa a Radix Root, aria-valuenow null con targetvisual42/100. Raiz SHAa9a11c717e8830b1106a598977513990497203c5971d892e1d5f0a730220f9d2. Dependencia instaladaRadixprogress1.1.0 consultada local; docspublicasRadix yW3Cmeter leidas, sinupgrade.
+
+8usos en7consumidores:4progreso de tareas(multietiqueta/comida/CSV/estilosCSV) y4medicionesestaticas(perfil,aprendizajeBodega,afinidadBodega,afinidadOCR). Scope: forwardingvalue enRoot yARIAlabelcontextual en8usos,rolemeter en4estaticos. No porcentajes/perfil/aprendizaje/scoring/pipeline/queries/canonicalbudget/identity/cancel/guard/style/animacion nuevos. AffinityExplanation custom ya usa meter, protegido. Todosusosactuales escala0-100 sinmaxcustom.
+
+Repro antes deproducto: SSRreal deProgress con16vectoresprimitivos/contextos actuales(42 esnumero de prueba, NOperfil/afinidadaprendida/candidato); HTMLvalidado porDOM/AXChrome aislado portrait393x852/landscape852x393. Flujoapp nuevo, no rerun16: una selecciongaleria de canarioCommonsCC0existente porcontexto, retener GETperfil/deteccion/catalog para ver fases yvalor/nombre accesibles, completar. No repetirA-cancel/B-reentry ni suite15/16.
+
+HTTP/WSinterceptados antesnav/fakeauth, SWblock/analyticsfalse,0egressapp/provider/paid/RESTwrites/cuentas. Contrato MULTI existente exacto por ASTcandidate/function_response, canonicaempty/perfilnull, mismaimagenmenudecomidaSHA9980... como canario NOvision/recall/5botellas. No descargas/datasets nuevos niinyeccionReact/controller/inputreset/eventdispatch. FileChooserestandar porcontrol visible, nolimitacionfisicaOS/iOSresuelta.
+
+VerificarDOMrole/name/min/max/now/text/unknown yAXcomputado; pixelinvariancia componente aislado porque noCSS/stylecambios. PureASTrecuperarmodulos completos retirandosolo atributos añadidos; fuentes de scoring/provider/15/16 guards protegidos. Porcompartido, typecheck completo ybuildweb local, lintalcance ytests nuevos. No native/capcopy/firma/Apple/TestFlight/push/deploy/HOMEprivado/contactos/gasto. Gateinvitationseparado.
+
+Baseline previo aproducto:4contextos,52/116checks. Primitivos22/50 pororientacion: semantica/AX falla para valores conocidos yconsumidores sinnombre/rolecorrecto; casosunknownyvisual/layoutpasan. App4/8 pororientacion:profile24/detect24/analyze42/ready100 visibles sinaria-value/name. Planreal1perfil/1detect/4analyze/3search.0runtime/console/escrituras/remoto. Parche soloRootvalue +8labels +4rolesmeter, ningunCSS/algoritmo/cancel/score.
+
+After4/4contextos116/116checks;2primitivas100checks+2scans16checks. ByteSHA dePNGprimitivas portrait2024cde1... ylandscape506ebdaf... identicosbefore/after; noCSS/redisenyo. AST/proteccion49/49. Fulltypecheck0,buildweb0/Vite5.4.10/3633modulos/6.88s; warningsBrowserslist ychunk>500kB existentes. Lintscope0errores/10warnings any/hooks deWineStylesCSVImporter/MyWines, compararbaselineantesdecommit. Noafterrerun16 ni generaciondataset niNative/deploy.

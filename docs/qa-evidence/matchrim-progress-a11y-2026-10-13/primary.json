@@ -1,0 +1,50 @@
+{
+  "baseline": "eac41777fb3817446b4d2c5ce33c7deea6384335",
+  "ui": {
+    "before": {
+      "contexts": 4,
+      "contextsPassed": 0,
+      "checks": 116,
+      "checksPassed": 52
+    },
+    "after": {
+      "contexts": 4,
+      "contextsPassed": 4,
+      "checks": 116,
+      "checksPassed": 116
+    }
+  },
+  "pixels": [
+    {
+      "orientation": "portrait",
+      "before": "2024cde1ef8449dfaf9f458cf5bcf27b362e30755bb50be63f655a02f3a2fc54",
+      "after": "2024cde1ef8449dfaf9f458cf5bcf27b362e30755bb50be63f655a02f3a2fc54",
+      "identicalPngBytes": true
+    },
+    {
+      "orientation": "landscape",
+      "before": "506ebdafe5567502bdbdc885ccd601d05c0adfcf54feef927915e214330ac395",
+      "after": "506ebdafe5567502bdbdc885ccd601d05c0adfcf54feef927915e214330ac395",
+      "identicalPngBytes": true
+    }
+  ],
+  "pureChecks": 49,
+  "changes": {
+    "rootValue": 1,
+    "consumerNames": 8,
+    "consumerMeters": 4
+  },
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "scope": "16 isolated actual component vectors x2 viewports plus2 client-scans on exact existing local responses and one CC0 food-menu canary. Numerical primitive42 not learned profile or real wine affinity. Browser AX not VoiceOver/hardware certification.",
+  "realVisionRecognition": false,
+  "physicalChooserCertification": false,
+  "staticConsumersFullAccountE2E": false,
+  "classNamesAndVisualTransformsChanged": false,
+  "references": [
+    "https://www.radix-ui.com/primitives/docs/components/progress",
+    "https://www.w3.org/WAI/ARIA/apg/patterns/meter/"
+  ]
+}

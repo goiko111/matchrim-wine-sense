@@ -180,7 +180,7 @@ const WineStylesCSVImporter = () => {
 
         {isProcessing && (
           <div className="space-y-2">
-            <Progress value={progress} />
+            <Progress value={progress} aria-label="Progreso de importación de estilos de vino" />
             <p className="text-sm text-muted-foreground text-center">
               Procesando... {progress}%
             </p>

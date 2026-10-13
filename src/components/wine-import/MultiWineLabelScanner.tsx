@@ -804,7 +804,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             </div>
           </div>
 
-          {(loading || phase === 'ready') && <Progress value={progress} className="h-2" />}
+          {(loading || phase === 'ready') && <Progress value={progress} aria-label="Progreso estimado del escaneo de etiquetas" className="h-2" />}
 
           {quality?.warnings.length ? (
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">

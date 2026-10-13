@@ -404,7 +404,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                   <Loader2 className="h-5 w-5 animate-spin" />
                   <span className="font-medium">{currentStep}</span>
                 </div>
-                <Progress value={((stepIndex + 1) / processingSteps[mode].length) * 100} className="h-2" />
+                <Progress value={((stepIndex + 1) / processingSteps[mode].length) * 100} aria-label="Progreso del análisis de comida" className="h-2" />
               </div>
             )}
           </div>

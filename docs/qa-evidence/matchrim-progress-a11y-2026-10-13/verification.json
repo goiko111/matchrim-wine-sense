@@ -1,0 +1,79 @@
+{
+  "observedCommands": {
+    "scope": "Observed command results from this human-requested local continuation, not reconstructed verbatim logs.",
+    "repository": "/Users/GOIKO/2matchrim76-recognition-20261008",
+    "commands": {
+      "fullTypecheck": {
+        "command": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "execSession": 67116,
+        "exitCode": 0,
+        "observedOutput": "tsc -p tsconfig.app.json --noEmit; no diagnostics"
+      },
+      "webBuild": {
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "execSession": 58468,
+        "exitCode": 0,
+        "viteVersion": "5.4.10",
+        "modulesTransformed": 3633,
+        "reportedDurationSeconds": 6.88,
+        "observedWarnings": [
+          "Browserslist caniuse-lite data24months old",
+          "Chunks larger than500kB after minification"
+        ],
+        "artifact": "Existing local dist output; hash manifest captured by packaging, not copied to native or deployed"
+      },
+      "scopedLintInitial": {
+        "exitCode": 0,
+        "errors": 0,
+        "warnings": 10,
+        "scope": "Changed8 source files and new generator/AST test. Existing any/hook dependency warnings in WineStylesCSVImporter/MyWines; baseline parity independently checked during packaging."
+      }
+    },
+    "noPublish": true,
+    "nativeBuild": false,
+    "priorSuitesRerun": false
+  },
+  "ui": {
+    "before": {
+      "contexts": 4,
+      "contextsPassed": 0,
+      "checks": 116,
+      "checksPassed": 52
+    },
+    "after": {
+      "contexts": 4,
+      "contextsPassed": 4,
+      "checks": 116,
+      "checksPassed": 116
+    }
+  },
+  "pureChecks": 49,
+  "pureChecksPassed": 49,
+  "toolingTypecheck": {
+    "command": [
+      "./node_modules/.bin/tsc",
+      "--noEmit",
+      "--project",
+      "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-progress-a11y-20261013/tsconfig-tooling.json"
+    ],
+    "observedExitCode": 0
+  },
+  "lint": {
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 10,
+    "baselineParity": true
+  },
+  "previousSuitesRerun": false,
+  "fullRecognitionE2E": false,
+  "nativeBuild": false,
+  "deploy": false
+}

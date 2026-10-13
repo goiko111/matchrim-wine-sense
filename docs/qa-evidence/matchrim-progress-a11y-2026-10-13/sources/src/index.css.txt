@@ -1,0 +1,501 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  --matchrim-native-safe-top: 0px;
+  --matchrim-native-safe-bottom: 0px;
+  --matchrim-safe-top: max(env(safe-area-inset-top, 0px), var(--matchrim-native-safe-top));
+  --matchrim-safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--matchrim-native-safe-bottom));
+  --matchrim-safe-left: env(safe-area-inset-left, 0px);
+  --matchrim-safe-right: env(safe-area-inset-right, 0px);
+  min-height: 100%;
+  background: hsl(var(--background));
+}
+
+html.matchrim-native-platform {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.matchrim-native-platform .matchrim-native-display-title {
+  font-size: min(2rem, 42px);
+}
+
+html.matchrim-native-platform .matchrim-native-scan-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-scan-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body,
+#root,
+.App {
+  min-height: 100dvh;
+}
+
+body {
+  margin: 0;
+}
+
+.matchrim-safe-area-top-guard {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  height: var(--matchrim-safe-top);
+  background: hsl(var(--background));
+  pointer-events: none;
+}
+
+[data-sonner-toaster].matchrim-notices[data-y-position="top"] {
+  top: calc(var(--matchrim-safe-top) + 12px);
+}
+
+[data-sonner-toaster].matchrim-notices [data-sonner-toast] {
+  font-size: 0.875rem;
+  max-height: calc(100dvh - var(--matchrim-safe-top) - var(--matchrim-safe-bottom) - 8rem);
+  overflow-y: auto;
+}
+
+[data-sonner-toaster].matchrim-notices [data-close-button] {
+  min-width: 44px;
+  min-height: 44px;
+  position: static;
+  transform: none;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matchrim-quick-guide[data-state] {
+    animation: none !important;
+    transition: none !important;
+  }
+  [data-sonner-toaster].matchrim-notices [data-sonner-toast] {
+    transition: none;
+  }
+}
+
+.matchrim-quick-guide {
+  transition-property: none;
+}
+
+.matchrim-accessibility-text .affinity-dimension-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 0.75rem;
+  row-gap: 0.5rem;
+}
+
+.matchrim-accessibility-text .affinity-dimension-detail {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.matchrim-accessibility-text .affinity-dimension-feedback {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .matchrim-quick-guide {
+    width: calc(100vw - 2rem - var(--matchrim-safe-left) - var(--matchrim-safe-right));
+    max-width: 44rem;
+    max-height: calc(100dvh - 1rem - var(--matchrim-safe-top) - var(--matchrim-safe-bottom));
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .matchrim-quick-guide [data-testid="matchrim-guide-content"] {
+    min-height: 3rem;
+    flex: 1 1 auto;
+  }
+
+  .matchrim-guide-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .matchrim-guide-primary {
+    display: contents;
+  }
+
+  .matchrim-guide-footer > button {
+    margin-top: 0;
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main,
+  html.matchrim-native-platform .matchrim-native-airim-main {
+    max-width: 54rem;
+    padding-top: calc(0.5rem + var(--matchrim-safe-top));
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main > div:first-child {
+    min-height: 2.5rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main > section,
+  html.matchrim-native-platform .matchrim-native-airim-main > section {
+    margin-top: 1rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main [aria-labelledby="home-decision-title"] > div {
+    grid-template-columns: repeat(2, minmax(14rem, 1fr));
+  }
+
+  html.matchrim-native-platform .matchrim-native-home-main [aria-labelledby="home-decision-title"] button {
+    min-height: 8rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-tab-bar > div {
+    min-height: 3.5rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-tab-bar a {
+    min-height: 3rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-tab-bar .matchrim-native-scan-tab {
+    min-height: 0;
+    gap: 0.125rem;
+  }
+
+  html.matchrim-native-platform .matchrim-native-scan-tab-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .scan-page-main {
+    padding-top: 0.75rem;
+    padding-bottom: 2rem;
+  }
+
+  .scan-page-back {
+    margin-bottom: 0.5rem;
+  }
+
+  .scan-page-heading {
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  html.matchrim-native-platform .scan-page-heading {
+    display: none;
+  }
+
+  .scan-page-heading h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .scan-page-heading p {
+    margin-top: 0;
+    line-height: 1.25rem;
+  }
+
+  .scan-upload-empty {
+    padding: 1rem;
+  }
+
+  html.matchrim-native-platform .scan-upload-empty {
+    display: grid;
+    width: calc(100vw - 3rem - var(--matchrim-safe-left) - var(--matchrim-safe-right));
+    max-width: calc(100vw - 3rem - var(--matchrim-safe-left) - var(--matchrim-safe-right));
+    grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: 1rem;
+  }
+
+  html.matchrim-native-platform .scan-upload-empty > *,
+  html.matchrim-native-platform .scan-upload-actions,
+  html.matchrim-native-platform .scan-upload-actions button {
+    min-width: 0;
+  }
+
+  html.matchrim-native-platform .scan-upload-actions button {
+    width: 100%;
+    max-width: 100%;
+    min-height: 3rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    white-space: normal;
+    line-height: 1.15;
+  }
+
+  .scan-upload-empty-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .scan-upload-empty h2 {
+    margin-top: 0.5rem;
+  }
+
+  .scan-upload-empty p {
+    margin-top: 0.25rem;
+    line-height: 1.25rem;
+  }
+
+  .scan-upload-actions {
+    margin-top: 0.75rem;
+  }
+
+  html.matchrim-native-platform .scan-upload-actions {
+    display: contents;
+  }
+}
+ 
+@layer base {
+:root {
+    --background: 210 20% 98%;
+    --foreground: 224 71.4% 4.1%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+ 
+    --primary: 344 76% 24%; /* Winerim burgundy, slightly calmer for UI */
+    --primary-foreground: 210 20% 98%;
+    --primary-variant: 348 56% 32%;
+    --primary-light: 350 34% 89%;
+ 
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+ 
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+ 
+    --accent: 43 76% 52%;
+    --accent-foreground: 220.9 39.3% 11%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 343 96% 26%;
+ 
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 224 71.4% 4.1%;
+    --sidebar-primary: 346 83.3% 41%;
+    --sidebar-primary-foreground: 210 20% 98%;
+    --sidebar-accent: 220 14.3% 95.9%;
+    --sidebar-accent-foreground: 220.9 39.3% 11%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 346 83.3% 41%;
+  }
+ 
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+ 
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+ 
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+ 
+    --primary: 346 70% 50.4%;
+    --primary-foreground: 210 20% 98%;
+ 
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
+ 
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+ 
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+ 
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 346 70% 50.4%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Matchrim Design System */
+.winerim-bg {
+  background: linear-gradient(135deg, hsl(344 72% 18%), hsl(24 18% 12%));
+}
+
+.gradient-subtle {
+  background: linear-gradient(180deg, hsl(42 22% 97%), hsl(0 0% 100%));
+}
+
+.shadow-elegant {
+  box-shadow: 0 18px 50px -34px hsl(344 72% 18% / 0.55);
+}
+
+.shadow-glow {
+  box-shadow: 0 20px 60px -40px hsl(43 76% 52% / 0.55);
+}
+
+.transition-smooth {
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.matchrim-app-shell {
+  background: hsl(210 20% 98%);
+  color: hsl(224 71% 7%);
+}
+
+.matchrim-ink-panel {
+  background: hsl(222 24% 12%);
+  color: white;
+}
+
+.matchrim-surface {
+  border: 1px solid hsl(214 18% 89%);
+  background: hsl(0 0% 100%);
+  box-shadow: 0 10px 30px -24px hsl(222 30% 18% / 0.45);
+}
+
+.matchrim-soft-surface {
+  border: 1px solid hsl(214 18% 89%);
+  background: hsl(210 22% 96%);
+}
+
+.matchrim-hairline {
+  border-color: hsl(214 18% 89%);
+}
+
+.matchrim-muted {
+  color: hsl(219 18% 38%);
+}
+
+.matchrim-caption {
+  color: hsl(219 16% 46%);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.matchrim-pressable {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: 160ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.matchrim-pressable:active {
+  transform: scale(0.98);
+}
+
+.matchrim-icon-tile {
+  border: 1px solid hsl(345 28% 90%);
+  background: hsl(346 48% 97%);
+  color: hsl(344 76% 24%);
+}
+
+.matchrim-status-pill {
+  border: 1px solid hsl(214 18% 87%);
+  background: hsl(210 22% 96%);
+  color: hsl(219 24% 25%);
+}
+
+.matchrim-scan-stage {
+  border: 1px solid hsl(24 10% 17%);
+  background:
+    linear-gradient(180deg, hsl(24 12% 8%) 0%, hsl(30 10% 12%) 100%);
+  color: white;
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.08), 0 18px 48px -32px hsl(24 12% 8% / 0.75);
+}
+
+.matchrim-data-rail {
+  border-top: 1px solid hsl(214 18% 88%);
+  border-bottom: 1px solid hsl(214 18% 88%);
+  background: hsl(210 22% 96%);
+}
+
+.matchrim-tab-bar {
+  box-shadow: 0 -10px 30px -24px hsl(222 30% 18% / 0.5);
+}
+
+.matchrim-native-safe-x {
+  padding-left: calc(1rem + var(--matchrim-safe-left));
+  padding-right: calc(1rem + var(--matchrim-safe-right));
+}
+
+.matchrim-native-page-top {
+  padding-top: 2rem;
+}
+
+.matchrim-native-page-x {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+body.has-native-app-nav .matchrim-native-page-top {
+  padding-top: calc(1rem + var(--matchrim-safe-top));
+}
+
+body.has-native-app-nav .matchrim-native-page-x {
+  padding-left: calc(1rem + var(--matchrim-safe-left));
+  padding-right: calc(1rem + var(--matchrim-safe-right));
+}
+
+@media (min-width: 640px) {
+  .matchrim-native-safe-x {
+    padding-left: calc(1.5rem + var(--matchrim-safe-left));
+    padding-right: calc(1.5rem + var(--matchrim-safe-right));
+  }
+
+  body.has-native-app-nav .matchrim-native-page-top {
+    padding-top: calc(2rem + var(--matchrim-safe-top));
+  }
+
+  body.has-native-app-nav .matchrim-native-page-x {
+    padding-left: calc(1.5rem + var(--matchrim-safe-left));
+    padding-right: calc(1.5rem + var(--matchrim-safe-right));
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .matchrim-pressable:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transition-smooth,
+  .matchrim-pressable {
+    transition-duration: 0.01ms;
+  }
+
+  .matchrim-pressable:active,
+  .matchrim-pressable:hover {
+    transform: none;
+  }
+}
+
+/* Radar chart styles */
+.radar-attribute {
+  @apply text-sm font-medium text-gray-700 mb-2;
+}
+
+.radar-bar {
+  @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+}
+
+.radar-fill {
+  @apply h-full bg-primary rounded-full transition-all duration-700 ease-out;
+}
