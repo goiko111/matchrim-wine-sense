@@ -108,6 +108,7 @@ const PHASE_LABELS: Record<ScanPhase, string> = {
 
 const statusLabel = (region: ScanRegion) => {
   if (region.error) return 'Error de análisis';
+  if (region.status === 'recognized' && getSelectedCandidate(region)?.source === 'manual') return 'Identidad manual';
   if (region.status === 'recognized') return 'Reconocido';
   if (region.status === 'uncertain') return 'Dudoso';
   if (region.status === 'unrecognized') return region.fallback?.code === 'not_wine' ? 'Otra bebida' : 'Sin reconocer';
@@ -943,6 +944,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   region: group.candidate.region,
                   affinity: group.candidate.affinity,
                   confidence: group.candidate.confidence,
+                  identityReviewedByUser: group.candidate.source === 'manual',
                   identityConfirmed: group.regionIds.some((id) => regions.some((region) => region.id === id && region.status === 'recognized')),
                   attributes: group.candidate.sensoryAttributes ? {
                     body: group.candidate.sensoryAttributes.potencia,
@@ -984,7 +986,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         {group.count > 1 ? ` · ${group.count} regiones agrupadas` : ''}
                       </span>
                       <span className={`block text-[11px] font-semibold ${identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
-                        {identityConfirmed ? 'Nombre leído · revisa la referencia' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
+                        {group.candidate.source === 'manual' ? 'Identidad confirmada por ti' : identityConfirmed ? 'Nombre leído · revisa la referencia' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
                       </span>
                       {batchLocked && savedIndex >= 0 && (
                         <span className="mt-1 block text-xs font-medium text-slate-700">
@@ -1140,7 +1142,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                                 <span className="block font-semibold text-slate-950">{candidate.name}</span>
                                 <span className="block text-xs text-slate-500">{candidate.producer || 'Bodega no confirmada'}</span>
                               </span>
-                              <span className="shrink-0 text-xs font-semibold text-slate-700">Identidad {Math.round(candidate.confidence * 100)}%</span>
+                              <span className="shrink-0 text-xs font-semibold text-slate-700">{candidate.source === 'manual' ? 'Manual' : `Identidad ${Math.round(candidate.confidence * 100)}%`}</span>
                             </button>
                           );
                         })}
@@ -1167,7 +1169,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
                         <div className="matchrim-data-rail grid grid-cols-3 gap-2 rounded-lg px-2 py-3 text-center text-xs text-slate-500">
                           <div><span className="block text-lg font-bold text-slate-900">{Math.round(selectedRegion.detectionConfidence * 100)}%</span>Detección</div>
-                          <div><span className="block text-lg font-bold text-slate-900">{Math.round(selectedCandidate.confidence * 100)}%</span>Identidad</div>
+                          <div><span className="block text-lg font-bold text-slate-900">{selectedCandidate.source === 'manual' ? 'Por ti' : `${Math.round(selectedCandidate.confidence * 100)}%`}</span>Identidad</div>
                           <div><span className="block text-lg font-bold text-slate-900">{selectedCandidate.affinityConfidence == null ? '-' : `${Math.round(selectedCandidate.affinityConfidence * 100)}%`}</span>Respaldo afinidad</div>
                         </div>
 
@@ -1187,6 +1189,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           context="label"
                           name={selectedCandidate.name}
                           identityConfidence={selectedCandidate.confidence}
+                          identityReviewedByUser={selectedCandidate.source === 'manual'}
                           affinity={selectedCandidate.affinity}
                           attributes={selectedCandidate.sensoryAttributes}
                           sensorySource={selectedCandidate.sensorySource ?? 'inference'}
@@ -1212,6 +1215,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           wineKey={selectedCandidate.id}
                           score={selectedCandidate.affinity}
                           identificationConfidence={selectedCandidate.confidence}
+                          identityReviewedByUser={selectedCandidate.source === 'manual'}
                           attributes={selectedCandidate.sensoryAttributes}
                           sensorySource={selectedCandidate.sensorySource ?? 'inference'}
                         />

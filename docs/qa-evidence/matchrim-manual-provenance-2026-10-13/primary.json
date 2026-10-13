@@ -1,0 +1,36 @@
+{
+  "baseline": "6d9fcad4cf6aa4a936b6c50e056296e0c7b80bf1",
+  "ui": {
+    "manual-before": {
+      "contexts": 6,
+      "contextsPassed": 0,
+      "checks": 66,
+      "checksPassed": 30
+    },
+    "manual-after": {
+      "contexts": 6,
+      "contextsPassed": 6,
+      "checks": 66,
+      "checksPassed": 66
+    },
+    "manual-after-visual": {
+      "contexts": 6,
+      "contextsPassed": 6,
+      "checks": 72,
+      "checksPassed": 72
+    }
+  },
+  "codeChecks": 112,
+  "protectedSources": 42,
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "scope": "Six manual/confirm/edit browser routes x2 orientations, same existing local vision contract/CC0 canary. Confirmation/create/edit are actual UI gestures, not positive model/user data. No corpus or learned-profile regeneration.",
+  "behavior": "Detail/list/aiRIM/comparison label human review; current-outcome counter separates manual and automatic results. Internal confidence1 is still an existing operational human authority, not displayed as model certainty. No affinity/sort/price changes.",
+  "detectorScoringQueriesCropsUnchanged": true,
+  "unrelatedPriorSuitesRerun": false,
+  "nativeBuild": false,
+  "deploy": false,
+  "physicalVoiceOverCertification": false
+}

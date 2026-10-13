@@ -700,6 +700,7 @@ export const getConfirmableWineGroups = (regions: ScanRegion[]) => (
 export const confirmWineCandidateIdentity = (candidate: WineCandidate): WineCandidate => ({
   ...candidate,
   confidence: 1,
+  source: 'manual',
   evidence: Array.from(new Set([...candidate.evidence, 'Identidad confirmada manualmente por el usuario'])),
   uncertaintyReasons: [],
 });

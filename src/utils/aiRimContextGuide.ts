@@ -11,6 +11,7 @@ export interface AiRimContextInput {
   context: 'label' | 'menu' | 'comparison';
   name?: string | null;
   identityConfidence?: number | null;
+  identityReviewedByUser?: boolean;
   affinity?: number | null;
   attributes?: WineAttributeInput | null;
   sensorySource?: AffinityDataSource;
@@ -37,6 +38,14 @@ export const buildAiRimContextGuidance = (
   const hasAffinity = typeof input.affinity === 'number' && Number.isFinite(input.affinity)
     && input.affinity >= 0 && input.affinity <= 100;
   const uncertainty = input.uncertaintyReasons?.filter(Boolean) ?? [];
+
+  if (input.identityReviewedByUser && input.name?.trim()) return {
+    title: 'Identidad revisada por ti',
+    summary: `${input.name} es la referencia que has confirmado o corregido. Esta revision no es una probabilidad de acierto del lector ni verifica por si sola la botella o la cosecha.`,
+    evidence: ['Revision humana, no confianza del modelo', hasAffinity ? `Afinidad orientativa registrada ${Math.round(input.affinity)}%` : 'Afinidad pendiente de ficha sensorial y perfil suficientes'],
+    nextStep: 'La afinidad requiere datos del vino y de tus gustos; confirmar el nombre no los sustituye.',
+    tone: 'neutral',
+  };
 
   if (!input.name?.trim() || identityConfidence < 0.35) {
     return {

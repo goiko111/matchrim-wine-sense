@@ -1,0 +1,13 @@
+{
+  "commands": [
+    {"name": "manual provenance baseline", "command": "with_server.py on4468 -- qa-matchrim-manual-provenance-oct13.py --output manual-before", "exitCode": 1, "checks": "30/66"},
+    {"name": "manual provenance fixed", "command": "with_server.py on4468 -- qa-matchrim-manual-provenance-oct13.py --output manual-after", "exitCode": 0, "checks": "66/66"},
+    {"name": "initial visual extension", "command": "with_server.py on4468 -- qa-matchrim-manual-provenance-oct13.py --output manual-visual-initial", "exitCode": 1, "checks": "60 partial", "harnessIssue": "Tried to scroll hidden desktop table in portrait; three portrait exceptions, three landscape passes"},
+    {"name": "final actual responsive visual extension", "command": "with_server.py on4468 -- qa-matchrim-manual-provenance-oct13.py --output manual-after-visual", "exitCode": 0, "checks": "72/72", "surface": "Portrait visible primary recommendation; landscape visible confidence matrix"},
+    {"name": "manual provenance/source/default parity", "command": "tsx scripts/check-matchrim-manual-provenance-oct13.ts manual-contracts.json", "exitCode": 0, "checks": "112/112"},
+    {"name": "app typecheck", "command": "npm run typecheck", "exitCode": 0},
+    {"name": "tooling typecheck", "command": "tsc --noEmit --project manual-tooling.json", "exitCode": 0},
+    {"name": "scoped lint", "command": "eslint changed7 app files and checker --format json", "exitCode": 0, "errors": 0, "warnings": 0},
+    {"name": "web build", "command": "npm run build", "exitCode": 0, "modules": 3635, "seconds": 6.45}
+  ]
+}

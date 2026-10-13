@@ -14,6 +14,7 @@ interface AffinityExplanationProps {
   wineKey: string;
   score?: number | null;
   identificationConfidence?: number | null;
+  identityReviewedByUser?: boolean;
   attributes?: WineAttributeInput | null;
   sensorySource?: AffinityDataSource;
   compact?: boolean;
@@ -48,6 +49,7 @@ export const AffinityExplanation = ({
   wineKey,
   score,
   identificationConfidence,
+  identityReviewedByUser = false,
   attributes,
   sensorySource = 'inference',
   compact = false,
@@ -114,11 +116,11 @@ export const AffinityExplanation = ({
       )}
 
       <div className="matchrim-data-rail grid grid-cols-2 gap-3 rounded-lg px-2 py-3 text-center text-xs text-slate-500">
-        <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.identificationConfidence * 100)}%</span>Señal de identidad</div>
+        <div><span className="block text-lg font-bold text-slate-900">{identityReviewedByUser ? 'Por ti' : `≈${Math.round(explanation.identificationConfidence * 100)}%`}</span>{identityReviewedByUser ? 'Revisión manual' : 'Señal de identidad'}</div>
         <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.confidence * 100)}%</span>Respaldo de la explicación ({explanation.confidenceLabel})</div>
       </div>
 
-      {explanation.identificationConfidence < 0.72 && (
+      {!identityReviewedByUser && explanation.identificationConfidence < 0.72 && (
         <div role="note" className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-950">
           Identidad sin confirmar. La afinidad describe el candidato visible, no demuestra que la botella sea esa referencia; confirma o corrige antes de decidir.
         </div>

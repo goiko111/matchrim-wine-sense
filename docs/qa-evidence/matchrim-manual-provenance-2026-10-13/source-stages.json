@@ -1,0 +1,366 @@
+{
+  "baseline": "6d9fcad4cf6aa4a936b6c50e056296e0c7b80bf1",
+  "stages": [
+    {
+      "path": "src/utils/multiWineScan.ts",
+      "before": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d",
+      "after": "66b909fd4e5232dd83ee1395601aa87da130b2fb1b39f20f702aea294f66ea54"
+    },
+    {
+      "path": "src/utils/scanRegionProgress.ts",
+      "before": "54bb10070a469f29aaec3f57451fe399fc48a28266a0daa3739a4229460eff45",
+      "after": "bf508ec8095c49dcca1c7045ca88e6aab9b1734962b59ddd959b827ac862ee44"
+    },
+    {
+      "path": "src/utils/aiRimContextGuide.ts",
+      "before": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+      "after": "bab1cd5948327c7d7c99d0626bf152ad27e6388fbaff6a83125cda6c090c5d4e"
+    },
+    {
+      "path": "src/utils/wineComparison.ts",
+      "before": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500",
+      "after": "1c1c9ddc300da666fe8e585c6be268f3b89571e7518882165261fa949c2cb82a"
+    },
+    {
+      "path": "src/components/AffinityExplanation.tsx",
+      "before": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e",
+      "after": "6eec193c82956516ce676ecebd94d043808abc684fcfdee743abf09336b6eaea"
+    },
+    {
+      "path": "src/components/wine-import/WineComparisonWorkspace.tsx",
+      "before": "3ad78bc71b9b30436d87c26b300d8b26fe20ec0f53e45480b9b2430d9504e548",
+      "after": "c1a50371899e7b85e5c8d5f61d50afcf29e78a761f60129841d71e97ed74f3af"
+    },
+    {
+      "path": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "before": "cd42cc9b854e47126c57ab1ace481e1852e77e521e3cc5ace2aa54726c15ca8e",
+      "after": "1332dd857790cf90b0f6bb16a337c8958134b8d76cdd3df526b2d7801b1860ea"
+    },
+    {
+      "path": "scripts/check-matchrim-manual-provenance-oct13.ts",
+      "before": null,
+      "after": "defe1bd4ab36bfa751e63df1aba68c1540687229d221c911cbb9f1cfc79e1272"
+    },
+    {
+      "path": "scripts/qa-matchrim-manual-provenance-oct13.py",
+      "before": null,
+      "after": "485216c2016b3cedbbafb4a05a6b7fb82461464d59a87572c1d117782deb165e"
+    },
+    {
+      "path": "scripts/package-matchrim-manual-provenance-oct13.mjs",
+      "before": null,
+      "after": "764189a8f73e619e3dda421c74acbd068c192045ed85df3b1e75bee425938c9d"
+    }
+  ],
+  "protectedSources": [
+    {
+      "path": "package-lock.json",
+      "sha256": "63e1487bad0a4c04c683eac7469ee0b524df02eade26dc045f6abb0dea058100",
+      "unchanged": true
+    },
+    {
+      "path": "package.json",
+      "sha256": "0779780511c27eb157f72ae7874407f2e6926ba46741024129bc79ad181636c0",
+      "unchanged": true
+    },
+    {
+      "path": "qa-fixtures/food-menu/ground-truth.json",
+      "sha256": "2bc521b8f9dc6a426699ea34c29d3a7230716146922d19a9d9499234d68fafd0",
+      "unchanged": true
+    },
+    {
+      "path": "src/App.css",
+      "sha256": "97f0dc31307f14f0d1f3cd6acce4813e7e1ab7c4c18fa71156ce9cf03334f774",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/AccountNotifications.tsx",
+      "sha256": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/AiRimContextGuide.tsx",
+      "sha256": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/WineStylesCSVImporter.tsx",
+      "sha256": "d60fdc453d434613757130de9d4f93ea87bbe0effcaa273285bc0a98c0a2321a",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/csv/ImportProgress.tsx",
+      "sha256": "a5aaf50eca11e3738357581ba11d02db5179da7f506c1a9cedf435ee1c769884",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/ui/drawer.tsx",
+      "sha256": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/ui/progress.tsx",
+      "sha256": "133482fd377928e0aeecbd8451f26c11ed890e88e19d68cef6d6187b6a843957",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/ui/sonner.tsx",
+      "sha256": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/wine-import/FoodPairingScanner.tsx",
+      "sha256": "22dc6203f8bfe8a8005d6dd77a4e8a214756f8a9fffa30c6cb108344b12a20bf",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/wine-import/WineLabelOCRImport.tsx",
+      "sha256": "84c5e7929005a2bc534ecb4ae361a1cb278c1fe0b518f5285591a63aa65ca011",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/wine-import/WineMenuScanner.tsx",
+      "sha256": "58fa342fa3bb71c51512b6558fb56b29b10bf56b3d5a0131a0c5dd94fac1c105",
+      "unchanged": true
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "sha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863",
+      "unchanged": true
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "7ce1983b00924fb7321c4bfbd352571629c76b2a0654b41f5baeeeee8ad4ab0d",
+      "unchanged": true
+    },
+    {
+      "path": "src/pages/MyWines.tsx",
+      "sha256": "4af402783a7cfa9dcaa4058f4d64d883b4d92259829509096b50b267471c3509",
+      "unchanged": true
+    },
+    {
+      "path": "src/pages/Profile.tsx",
+      "sha256": "ffe1ee613f1794e65ab1cdec43809d8a95145fdf7c071611cf7c6c85f0c8e1b5",
+      "unchanged": true
+    },
+    {
+      "path": "src/services/matchrimScanProfile.ts",
+      "sha256": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150",
+      "unchanged": true
+    },
+    {
+      "path": "src/services/winerimApi.ts",
+      "sha256": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/edgeFunctionResilience.ts",
+      "sha256": "bf44f1ba94f0845bdd0ecf10c49497f81dfa76c5d47e150967a8dc279253d1a4",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/imageAnalysis.ts",
+      "sha256": "d39e1b5d10cf1ec754ea6fdfe9d52efc990a210afa30670b4925c5ec792a2d17",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/imageCropGeometry.ts",
+      "sha256": "903ddfb08ccdc61d654a676dc1f9d0cb7694d5c23b60cb6a534e1229ef14b32c",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/invokeEdgeFunction.ts",
+      "sha256": "59c726c28df3ae956c1182be6cd0282e3826ed56749ace9cbb0d61939e8fee07",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/labelScanSave.ts",
+      "sha256": "7559e488d54512db1253f9ea7c1ba8221273fb847a9c8f62e84bf54b41959d77",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/matchrimEdgeRouting.ts",
+      "sha256": "b6dd06419f4f227564213c5c7048acf74bb89b4354fb0553aa7e80405c23e08e",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/matchrimLearning.ts",
+      "sha256": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/matchrimQaMode.ts",
+      "sha256": "505e61634ed4a91d84519f24ec835390393188c77baebfaf17d1251f486a1b6e",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/menuAffinityPresentation.ts",
+      "sha256": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/menuCatalogAwait.ts",
+      "sha256": "79174879adf7eed910a07e3aafc0f5ce24eb4c6490a1581402c87ce567422b2a",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/menuProfileRecovery.ts",
+      "sha256": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/menuWineActions.ts",
+      "sha256": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/menuWineSave.ts",
+      "sha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/regionAnalysisError.ts",
+      "sha256": "126c4380ea24feac97e9ec3167e22e98d2c9bbc41ce55fef1caa121195ae7852",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/scanAnalysisPolicy.ts",
+      "sha256": "a5c573239fc8d40c714f8aedb96966f78f7dec79879a893f462e8980e739bdaa",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/scanConfidence.ts",
+      "sha256": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/scanHistory.ts",
+      "sha256": "bfc0e0d12813733ff2b20a195af0d132ccb4c65accbbbc127496b805b17b9067",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/scanProfile.ts",
+      "sha256": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/scanWineEvidence.ts",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/wineAffinityExplanation.ts",
+      "sha256": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+      "unchanged": true
+    },
+    {
+      "path": "src/utils/wineMenuScan.ts",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e",
+      "unchanged": true
+    },
+    {
+      "path": "supabase/functions/_shared/matchrim-scan-values.ts",
+      "sha256": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e",
+      "unchanged": true
+    }
+  ],
+  "protectedEvidence": [
+    {
+      "name": "matchrim-menu-save-2026-10-12",
+      "entries": 289,
+      "sha256": "eff0a00ddfb9905d179d4dec4e733783d34d745e3177dc04f35281a57e57a017",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-actions-2026-10-12",
+      "entries": 126,
+      "sha256": "efd6ac617fe306e72a5f974667cb613333e275241ed48dc4d601a65fe8decc21",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-affinity-status-2026-10-12",
+      "entries": 91,
+      "sha256": "3ed4c29f190ad577337f06315e83ca89ec676bd26a2277796e207926b0b8c378",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-profile-retry-2026-10-13",
+      "entries": 112,
+      "sha256": "30237ea6bfe06c19d79f62b44527560cb4d2c74d271e17267313a7412eb6c0fe",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-airim-provenance-2026-10-13",
+      "entries": 75,
+      "sha256": "e54ac9c6350a1469beb00793cdbba05a4f74ff9aea1f6477e4e9a07046cc097f",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-notice-2026-10-13",
+      "entries": 103,
+      "sha256": "e470ac00d52d33fa0a203b1aa86da421ec9cfc349d049e54f2a9e5977c8b2fd1",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-focus-2026-10-13",
+      "entries": 143,
+      "sha256": "ffebea92d20114ae67d42c2ed79705b243490b852b62d9d19c45071908755516",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-navigation-2026-10-13",
+      "entries": 175,
+      "sha256": "bada3f4f240226d776ddc5493610e02e007998bca97e213212b04eb4b5ec9184",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-reading-2026-10-13",
+      "entries": 70,
+      "sha256": "7cf42fd9e9a137b126377804c7e5572f6aa82170e54b0674b4cb63c1c16c6464",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-cancel-2026-10-13",
+      "entries": 80,
+      "sha256": "ecdc8772ea4c60a3b5bbdbc13f49c4ca66dd91d2764f8e0df40a803bbf8580a3",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-ranking-cancel-2026-10-13",
+      "entries": 99,
+      "sha256": "ff48b0e7c422511a6d21579588ac8b1fb8f09bfb1e99d4d5953648c9bde82893",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-multi-stale-cancel-2026-10-13",
+      "entries": 149,
+      "sha256": "23e78b9f80b558c052a822ad75a6cca05b9980e9556d97bbad7b106231dbc5d9",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-progress-a11y-2026-10-13",
+      "entries": 137,
+      "sha256": "4e4d75d083187ce8338d59312f4ded86e9e61ed4f596fe7db803990e185e2985",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-counter-2026-10-13",
+      "entries": 33,
+      "sha256": "34efd883ca24555e667f34413228122570fb20c7a7e5c9edd6d521f0b8f654f2",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-edit-lock-2026-10-13",
+      "entries": 79,
+      "sha256": "b6d36ecc6c289a26a08830cf5c09bddd40c3c7615bb28b9592233d5b6222127d",
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-failure-2026-10-13",
+      "entries": 69,
+      "sha256": "4bc8d64719151d084ce38a1ffc2f0ed0b8735524f45f9db9c862fa13d181c407",
+      "unchanged": true
+    }
+  ],
+  "scope": "Trusted manual identity authority is a separate current-outcome category; UI does not call its operational confidence1 a model probability. Defaults and comparison ordering unchanged."
+}

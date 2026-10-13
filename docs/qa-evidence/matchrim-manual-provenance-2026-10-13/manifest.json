@@ -1,0 +1,441 @@
+{
+  "entries": [
+    {
+      "path": "baseline-sources/src/components/AffinityExplanation.tsx.txt",
+      "sha256": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/MultiWineLabelScanner.tsx.txt",
+      "sha256": "cd42cc9b854e47126c57ab1ace481e1852e77e521e3cc5ace2aa54726c15ca8e"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/WineComparisonWorkspace.tsx.txt",
+      "sha256": "3ad78bc71b9b30436d87c26b300d8b26fe20ec0f53e45480b9b2430d9504e548"
+    },
+    {
+      "path": "baseline-sources/src/utils/aiRimContextGuide.ts.txt",
+      "sha256": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07"
+    },
+    {
+      "path": "baseline-sources/src/utils/multiWineScan.ts.txt",
+      "sha256": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanRegionProgress.ts.txt",
+      "sha256": "54bb10070a469f29aaec3f57451fe399fc48a28266a0daa3739a4229460eff45"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineComparison.ts.txt",
+      "sha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "checkpoint.md",
+      "sha256": "df49fff32e751edca8e594b20aa5aab95d22eb2d9a98f7fa698ed68cf1ca1f4d"
+    },
+    {
+      "path": "lint.json",
+      "sha256": "c93417240dbb6815ca3ddea7ee9eb5d4d17b00afb3915e4b2a2ad356ed603730"
+    },
+    {
+      "path": "manual-after-visual/confirm-landscape-manual-comparison.png",
+      "sha256": "cc2c63e054cf9a192bbde86f612c377cf13fadee6a7542901e1ed8919d9739ff"
+    },
+    {
+      "path": "manual-after-visual/confirm-landscape-manual-detail.png",
+      "sha256": "3864a852bff69ee1bb9b83ca85e025a08e815ffbc5818b0e73e24db0632674e4"
+    },
+    {
+      "path": "manual-after-visual/confirm-landscape-manual-list.png",
+      "sha256": "1dedb27047c6a379d6eda046cd08aa3a7846127120d574ffa60b391239f56639"
+    },
+    {
+      "path": "manual-after-visual/confirm-portrait-exception.png",
+      "sha256": "dda65fcfb512693090191c97475be99e2e7ebe3de5eb80052360791b07b7359c"
+    },
+    {
+      "path": "manual-after-visual/confirm-portrait-manual-comparison.png",
+      "sha256": "e77e56a71311969cc4d53ad14c503bc8bbd62b4e5bb4c717dc7cefe145646c6e"
+    },
+    {
+      "path": "manual-after-visual/confirm-portrait-manual-detail.png",
+      "sha256": "59e1d07f6560a1a3f4ee5e5f8ab10097bde009bcc92529783c8f92e4df576540"
+    },
+    {
+      "path": "manual-after-visual/confirm-portrait-manual-list.png",
+      "sha256": "3c348f9929f4fb528dfd349ec5016658bc8224ef683a88f31b6af1cd9ef198a1"
+    },
+    {
+      "path": "manual-after-visual/edit-landscape-manual-comparison.png",
+      "sha256": "fc0191d5634c60a124326da9faccc5bc2474ef09f688dbd1d9e83baa0c6e4322"
+    },
+    {
+      "path": "manual-after-visual/edit-landscape-manual-detail.png",
+      "sha256": "1dacdc0e488578e16e8e0c5defe5879891b38c0cf7dce8dba679c8e28722acfe"
+    },
+    {
+      "path": "manual-after-visual/edit-landscape-manual-list.png",
+      "sha256": "6786f9afea08b36dd645b5d204c4eedd30b92de5002e0bda82d5bc342d437499"
+    },
+    {
+      "path": "manual-after-visual/edit-portrait-exception.png",
+      "sha256": "22dc207fc4d8d599db53168a49f5893d1ad324dcaf29f38d382c59a030b042cd"
+    },
+    {
+      "path": "manual-after-visual/edit-portrait-manual-comparison.png",
+      "sha256": "b185435ea114343ee1329f2a10391fd2805d8f88d9d9a6b06e05be99c7bde2ab"
+    },
+    {
+      "path": "manual-after-visual/edit-portrait-manual-detail.png",
+      "sha256": "5f1c9838d69fbad12d00a1faeb8405934c1f43c12b199e1228fe7a478031fb2a"
+    },
+    {
+      "path": "manual-after-visual/edit-portrait-manual-list.png",
+      "sha256": "de126cdbd561ce23f5c29f7c2392d20c43f1c1611630c47dd8c2e7e38d8030a6"
+    },
+    {
+      "path": "manual-after-visual/manual-landscape-manual-comparison.png",
+      "sha256": "abaf1832decfa0d642ff89699fb57639ac3b1b8642efa8234e4cf25eaba32b08"
+    },
+    {
+      "path": "manual-after-visual/manual-landscape-manual-detail.png",
+      "sha256": "610b7160ed65dc3eac780ab9aaa9b3d7043267e8d62dd68e1ac13179eec8730d"
+    },
+    {
+      "path": "manual-after-visual/manual-landscape-manual-list.png",
+      "sha256": "17e18cdf5744929c1b2cf104b64c6f7db7786d2262ec6b7db3a4aa854b31f1fd"
+    },
+    {
+      "path": "manual-after-visual/manual-portrait-exception.png",
+      "sha256": "bf5f90451eae6924ef527bd20d5eec56256f332158151557b743f473beb9cdc3"
+    },
+    {
+      "path": "manual-after-visual/manual-portrait-manual-comparison.png",
+      "sha256": "668caed551f6656fbed35be5761549006141ed9a3e4b1b28ee2be4fd5e75fba1"
+    },
+    {
+      "path": "manual-after-visual/manual-portrait-manual-detail.png",
+      "sha256": "0a0f11fcaa6afa34414737db4b97cec64a1bcf251316ebcc1cf3dc8f2eb64c8b"
+    },
+    {
+      "path": "manual-after-visual/manual-portrait-manual-list.png",
+      "sha256": "c6e50a798ac1fe8e635916a78514c9335090167b032f1aac7947b6442d874d5e"
+    },
+    {
+      "path": "manual-after-visual/results.json",
+      "sha256": "6c2131b0ee86a26b43a7d2b72829bcc59a65326f1257a3285bb2f31af6236f08"
+    },
+    {
+      "path": "manual-after-visual/scan-response-payloads.json",
+      "sha256": "0f308a1b6a62cde32b7a44fa053001d9c424239d6f10991b92dafa98be16186e"
+    },
+    {
+      "path": "manual-after/confirm-landscape-manual-comparison.png",
+      "sha256": "105dfb44aa8c2dcbcc2c192606d7becddf8444a08b45fc47d16d78786679b110"
+    },
+    {
+      "path": "manual-after/confirm-landscape-manual-detail.png",
+      "sha256": "3864a852bff69ee1bb9b83ca85e025a08e815ffbc5818b0e73e24db0632674e4"
+    },
+    {
+      "path": "manual-after/confirm-landscape-manual-list.png",
+      "sha256": "1dedb27047c6a379d6eda046cd08aa3a7846127120d574ffa60b391239f56639"
+    },
+    {
+      "path": "manual-after/confirm-portrait-manual-comparison.png",
+      "sha256": "c7c454f34111613537afbc151cb8e923a36a45b9b4c268797d5980f486c75b3f"
+    },
+    {
+      "path": "manual-after/confirm-portrait-manual-detail.png",
+      "sha256": "59e1d07f6560a1a3f4ee5e5f8ab10097bde009bcc92529783c8f92e4df576540"
+    },
+    {
+      "path": "manual-after/confirm-portrait-manual-list.png",
+      "sha256": "3c348f9929f4fb528dfd349ec5016658bc8224ef683a88f31b6af1cd9ef198a1"
+    },
+    {
+      "path": "manual-after/edit-landscape-manual-comparison.png",
+      "sha256": "c93978dbea1abc3363ca991451289d236c3e6fca9a782e5bff8a061fc99036be"
+    },
+    {
+      "path": "manual-after/edit-landscape-manual-detail.png",
+      "sha256": "1dacdc0e488578e16e8e0c5defe5879891b38c0cf7dce8dba679c8e28722acfe"
+    },
+    {
+      "path": "manual-after/edit-landscape-manual-list.png",
+      "sha256": "6786f9afea08b36dd645b5d204c4eedd30b92de5002e0bda82d5bc342d437499"
+    },
+    {
+      "path": "manual-after/edit-portrait-manual-comparison.png",
+      "sha256": "22dc207fc4d8d599db53168a49f5893d1ad324dcaf29f38d382c59a030b042cd"
+    },
+    {
+      "path": "manual-after/edit-portrait-manual-detail.png",
+      "sha256": "5f1c9838d69fbad12d00a1faeb8405934c1f43c12b199e1228fe7a478031fb2a"
+    },
+    {
+      "path": "manual-after/edit-portrait-manual-list.png",
+      "sha256": "de126cdbd561ce23f5c29f7c2392d20c43f1c1611630c47dd8c2e7e38d8030a6"
+    },
+    {
+      "path": "manual-after/manual-landscape-manual-comparison.png",
+      "sha256": "580126f1961dae34b0c716f85fe54f8ee84140c664057dc3c4e8584743f8b262"
+    },
+    {
+      "path": "manual-after/manual-landscape-manual-detail.png",
+      "sha256": "610b7160ed65dc3eac780ab9aaa9b3d7043267e8d62dd68e1ac13179eec8730d"
+    },
+    {
+      "path": "manual-after/manual-landscape-manual-list.png",
+      "sha256": "17e18cdf5744929c1b2cf104b64c6f7db7786d2262ec6b7db3a4aa854b31f1fd"
+    },
+    {
+      "path": "manual-after/manual-portrait-manual-comparison.png",
+      "sha256": "e5155a80c2835e07d6e4827f5444014f2e737a8890ad10d01791eb0ad2ec157d"
+    },
+    {
+      "path": "manual-after/manual-portrait-manual-detail.png",
+      "sha256": "0a0f11fcaa6afa34414737db4b97cec64a1bcf251316ebcc1cf3dc8f2eb64c8b"
+    },
+    {
+      "path": "manual-after/manual-portrait-manual-list.png",
+      "sha256": "1fe6824130226769b618a830d9736cf70e7b9b9c7582f9f9cfb352cc955ab3c7"
+    },
+    {
+      "path": "manual-after/results.json",
+      "sha256": "920cd25311d03ce08fc8a64e508bfad6a2a4471b3c4853d2e3e84bfdea12feb1"
+    },
+    {
+      "path": "manual-after/scan-response-payloads.json",
+      "sha256": "0f308a1b6a62cde32b7a44fa053001d9c424239d6f10991b92dafa98be16186e"
+    },
+    {
+      "path": "manual-before/confirm-landscape-manual-comparison.png",
+      "sha256": "c91a72b2670e2f2003154ba8add9823a6ad195fcde0dec4dcb8bf38103454442"
+    },
+    {
+      "path": "manual-before/confirm-landscape-manual-detail.png",
+      "sha256": "037f0d38e0402603add30c2703ffb4559c9c4ece9ad4663920f8506144631455"
+    },
+    {
+      "path": "manual-before/confirm-landscape-manual-list.png",
+      "sha256": "a6c8f50b674ea51f2e46989bb76c882d6f44a0b8dc761ffa8fcd9b13e776acd5"
+    },
+    {
+      "path": "manual-before/confirm-portrait-manual-comparison.png",
+      "sha256": "d03aeae017c3737683328e24705e3e8ddcf08a9942d9125473864a395aa6779e"
+    },
+    {
+      "path": "manual-before/confirm-portrait-manual-detail.png",
+      "sha256": "a850d8e3fda7b600baca14d7734ddffa38d5af12977b3c996bdeacc667222480"
+    },
+    {
+      "path": "manual-before/confirm-portrait-manual-list.png",
+      "sha256": "8f3e48ab0bdbb93bce15ebb48c2877384c97449af08396deb63e6852e0eec579"
+    },
+    {
+      "path": "manual-before/edit-landscape-manual-comparison.png",
+      "sha256": "693f7c99ca0f689c4674a49e1a8d0c8c2210495401b761e4c0cfb51fd0238134"
+    },
+    {
+      "path": "manual-before/edit-landscape-manual-detail.png",
+      "sha256": "17037efa7644c2c07e0140a70d8027e34ece6a6a854b00a872c1bd3e1f7e99e3"
+    },
+    {
+      "path": "manual-before/edit-landscape-manual-list.png",
+      "sha256": "6b57d24c5a4b2df0267c17746f280bc4c15bc63e01a5dc64754267ce49c7cf2c"
+    },
+    {
+      "path": "manual-before/edit-portrait-manual-comparison.png",
+      "sha256": "aa4c7e61642be7fbd7417ded1a8da956fa6339d2d88a0a816ec51699e3052024"
+    },
+    {
+      "path": "manual-before/edit-portrait-manual-detail.png",
+      "sha256": "8f0069bb7557f7c17f91f7d45b0cd0758a2ef98ea55129d238386d9d68b38092"
+    },
+    {
+      "path": "manual-before/edit-portrait-manual-list.png",
+      "sha256": "43b3f493be769285f37519b12d92ee4aded7679906fac54d29a9e207f25019dc"
+    },
+    {
+      "path": "manual-before/manual-landscape-manual-comparison.png",
+      "sha256": "5ee897423461dfbc7030bb3be8b1ca1bfafe2ff29b2e18e6df96e03a2674629b"
+    },
+    {
+      "path": "manual-before/manual-landscape-manual-detail.png",
+      "sha256": "07bb52a7960a2a7c05a4c8921532e91e963f4cd7f46ab9d340e9795619b535b8"
+    },
+    {
+      "path": "manual-before/manual-landscape-manual-list.png",
+      "sha256": "47bd4a3a1c68ae38e33ec9d468464ed1147452ef77a0167dc070422d98584f28"
+    },
+    {
+      "path": "manual-before/manual-portrait-manual-comparison.png",
+      "sha256": "82836eadc28d98373c853485cf4d92a41cb1d4bf0ed76709c04d8cb508a91df8"
+    },
+    {
+      "path": "manual-before/manual-portrait-manual-detail.png",
+      "sha256": "3b95c1ca1d8ce3e754a9f3a5fac77ed5ba1c3d550683600eef7b5fe8fbdc8381"
+    },
+    {
+      "path": "manual-before/manual-portrait-manual-list.png",
+      "sha256": "fb7cff775c701153a39df11fb9e237b79385bf7e88a66b27df663ed168949cbb"
+    },
+    {
+      "path": "manual-before/results.json",
+      "sha256": "8e2fc17c9b0dbd6b3de92a64febdfe3e5b877d8cc823b0c28e94635fa5b6234b"
+    },
+    {
+      "path": "manual-before/scan-response-payloads.json",
+      "sha256": "0f308a1b6a62cde32b7a44fa053001d9c424239d6f10991b92dafa98be16186e"
+    },
+    {
+      "path": "manual-contracts.json",
+      "sha256": "9eb4067957c5dbb477be3ce98e26ba311b134bf7f3ed481ca38ab2abf3cf6879"
+    },
+    {
+      "path": "manual-receipts.json",
+      "sha256": "4dd93569e191a0583d77793b73336464dd50c418e32eac3562501d96432cd491"
+    },
+    {
+      "path": "manual-tooling.json",
+      "sha256": "0d5d0d9e312548db0a1abb42d8d65df6596ed86c461720f8a1bb735cece1f4f8"
+    },
+    {
+      "path": "manual-visual-initial/confirm-landscape-manual-comparison.png",
+      "sha256": "cc2c63e054cf9a192bbde86f612c377cf13fadee6a7542901e1ed8919d9739ff"
+    },
+    {
+      "path": "manual-visual-initial/confirm-landscape-manual-detail.png",
+      "sha256": "3864a852bff69ee1bb9b83ca85e025a08e815ffbc5818b0e73e24db0632674e4"
+    },
+    {
+      "path": "manual-visual-initial/confirm-landscape-manual-list.png",
+      "sha256": "1dedb27047c6a379d6eda046cd08aa3a7846127120d574ffa60b391239f56639"
+    },
+    {
+      "path": "manual-visual-initial/confirm-portrait-exception.png",
+      "sha256": "dda65fcfb512693090191c97475be99e2e7ebe3de5eb80052360791b07b7359c"
+    },
+    {
+      "path": "manual-visual-initial/confirm-portrait-manual-detail.png",
+      "sha256": "59e1d07f6560a1a3f4ee5e5f8ab10097bde009bcc92529783c8f92e4df576540"
+    },
+    {
+      "path": "manual-visual-initial/confirm-portrait-manual-list.png",
+      "sha256": "3c348f9929f4fb528dfd349ec5016658bc8224ef683a88f31b6af1cd9ef198a1"
+    },
+    {
+      "path": "manual-visual-initial/edit-landscape-manual-comparison.png",
+      "sha256": "fc0191d5634c60a124326da9faccc5bc2474ef09f688dbd1d9e83baa0c6e4322"
+    },
+    {
+      "path": "manual-visual-initial/edit-landscape-manual-detail.png",
+      "sha256": "1dacdc0e488578e16e8e0c5defe5879891b38c0cf7dce8dba679c8e28722acfe"
+    },
+    {
+      "path": "manual-visual-initial/edit-landscape-manual-list.png",
+      "sha256": "6786f9afea08b36dd645b5d204c4eedd30b92de5002e0bda82d5bc342d437499"
+    },
+    {
+      "path": "manual-visual-initial/edit-portrait-exception.png",
+      "sha256": "22dc207fc4d8d599db53168a49f5893d1ad324dcaf29f38d382c59a030b042cd"
+    },
+    {
+      "path": "manual-visual-initial/edit-portrait-manual-detail.png",
+      "sha256": "5f1c9838d69fbad12d00a1faeb8405934c1f43c12b199e1228fe7a478031fb2a"
+    },
+    {
+      "path": "manual-visual-initial/edit-portrait-manual-list.png",
+      "sha256": "de126cdbd561ce23f5c29f7c2392d20c43f1c1611630c47dd8c2e7e38d8030a6"
+    },
+    {
+      "path": "manual-visual-initial/manual-landscape-manual-comparison.png",
+      "sha256": "abaf1832decfa0d642ff89699fb57639ac3b1b8642efa8234e4cf25eaba32b08"
+    },
+    {
+      "path": "manual-visual-initial/manual-landscape-manual-detail.png",
+      "sha256": "610b7160ed65dc3eac780ab9aaa9b3d7043267e8d62dd68e1ac13179eec8730d"
+    },
+    {
+      "path": "manual-visual-initial/manual-landscape-manual-list.png",
+      "sha256": "17e18cdf5744929c1b2cf104b64c6f7db7786d2262ec6b7db3a4aa854b31f1fd"
+    },
+    {
+      "path": "manual-visual-initial/manual-portrait-exception.png",
+      "sha256": "bf5f90451eae6924ef527bd20d5eec56256f332158151557b743f473beb9cdc3"
+    },
+    {
+      "path": "manual-visual-initial/manual-portrait-manual-detail.png",
+      "sha256": "0a0f11fcaa6afa34414737db4b97cec64a1bcf251316ebcc1cf3dc8f2eb64c8b"
+    },
+    {
+      "path": "manual-visual-initial/manual-portrait-manual-list.png",
+      "sha256": "c6e50a798ac1fe8e635916a78514c9335090167b032f1aac7947b6442d874d5e"
+    },
+    {
+      "path": "manual-visual-initial/results.json",
+      "sha256": "48a487232a34a8e9c4b24a850a8b6ffc6753794018fc385956e397de9676227f"
+    },
+    {
+      "path": "manual-visual-initial/scan-response-payloads.json",
+      "sha256": "0f308a1b6a62cde32b7a44fa053001d9c424239d6f10991b92dafa98be16186e"
+    },
+    {
+      "path": "primary.json",
+      "sha256": "ff17f4713cde4d2d9aa0ddffa8a3586627a0517b30456cfc40bb23c94001ee5e"
+    },
+    {
+      "path": "source-stages.json",
+      "sha256": "e923bbc7b307bb4ea7a927c526c904a3d228b99f0c207332ce889abbb1ddf67b"
+    },
+    {
+      "path": "sources/scripts/check-matchrim-manual-provenance-oct13.ts.txt",
+      "sha256": "defe1bd4ab36bfa751e63df1aba68c1540687229d221c911cbb9f1cfc79e1272"
+    },
+    {
+      "path": "sources/scripts/package-matchrim-manual-provenance-oct13.mjs.txt",
+      "sha256": "764189a8f73e619e3dda421c74acbd068c192045ed85df3b1e75bee425938c9d"
+    },
+    {
+      "path": "sources/scripts/qa-matchrim-manual-provenance-oct13.py.txt",
+      "sha256": "485216c2016b3cedbbafb4a05a6b7fb82461464d59a87572c1d117782deb165e"
+    },
+    {
+      "path": "sources/src/components/AffinityExplanation.tsx.txt",
+      "sha256": "6eec193c82956516ce676ecebd94d043808abc684fcfdee743abf09336b6eaea"
+    },
+    {
+      "path": "sources/src/components/wine-import/MultiWineLabelScanner.tsx.txt",
+      "sha256": "1332dd857790cf90b0f6bb16a337c8958134b8d76cdd3df526b2d7801b1860ea"
+    },
+    {
+      "path": "sources/src/components/wine-import/WineComparisonWorkspace.tsx.txt",
+      "sha256": "c1a50371899e7b85e5c8d5f61d50afcf29e78a761f60129841d71e97ed74f3af"
+    },
+    {
+      "path": "sources/src/utils/aiRimContextGuide.ts.txt",
+      "sha256": "bab1cd5948327c7d7c99d0626bf152ad27e6388fbaff6a83125cda6c090c5d4e"
+    },
+    {
+      "path": "sources/src/utils/multiWineScan.ts.txt",
+      "sha256": "66b909fd4e5232dd83ee1395601aa87da130b2fb1b39f20f702aea294f66ea54"
+    },
+    {
+      "path": "sources/src/utils/scanRegionProgress.ts.txt",
+      "sha256": "bf508ec8095c49dcca1c7045ca88e6aab9b1734962b59ddd959b827ac862ee44"
+    },
+    {
+      "path": "sources/src/utils/wineComparison.ts.txt",
+      "sha256": "1c1c9ddc300da666fe8e585c6be268f3b89571e7518882165261fa949c2cb82a"
+    },
+    {
+      "path": "verification.json",
+      "sha256": "6a97caded5565f4387f71d18f325c1facd4682bcdce770b13a686c4d782d4903"
+    },
+    {
+      "path": "web-build-manifest.json",
+      "sha256": "e926c98104b8d070bef87d2c90273a4ba18e930929d6d5e069e13439094a3388"
+    }
+  ],
+  "captures": 75
+}

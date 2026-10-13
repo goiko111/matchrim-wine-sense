@@ -12,6 +12,7 @@ export interface ComparableWine {
   affinity?: number | null;
   confidence?: number | null;
   identityConfirmed?: boolean;
+  identityReviewedByUser?: boolean;
   price?: number | null;
   currency?: string | null;
   prices?: { glass?: number | null; bottle?: number | null } | null;
@@ -104,7 +105,8 @@ const buildAssessment = (wine: ComparableWine, context: WineComparisonContext, p
   const cautions: string[] = [];
 
   if (affinity !== null) reasons.push(`${Math.round(affinity)}% de afinidad registrada`);
-  if (confidence !== null && confidence >= 0.72) {
+  if (wine.identityReviewedByUser) reasons.push('Identidad revisada por ti');
+  else if (confidence !== null && confidence >= 0.72) {
     reasons.push(`Identidad con ${Math.round(confidence * 100)}% de confianza`);
   }
   if (context.budget !== null && priceFormat && price !== null && comparableCurrency && price <= context.budget) {
@@ -115,8 +117,10 @@ const buildAssessment = (wine: ComparableWine, context: WineComparisonContext, p
   }
 
   if (affinity === null) cautions.push('Afinidad no calculada');
-  if (confidence === null) cautions.push('Confianza de identidad no disponible');
-  else if (confidence < 0.72) cautions.push(`Identidad dudosa: ${Math.round(confidence * 100)}% de confianza`);
+  if (!wine.identityReviewedByUser) {
+    if (confidence === null) cautions.push('Confianza de identidad no disponible');
+    else if (confidence < 0.72) cautions.push(`Identidad dudosa: ${Math.round(confidence * 100)}% de confianza`);
+  }
   if (wine.identityConfirmed === false) cautions.push('Identidad provisional: confirma la etiqueta antes de elegir');
   if (!priceFormat && (context.budget !== null || context.priority === 'value')) cautions.push('Formato del precio sin confirmar; copa y botella no son equivalentes');
   if (context.budget !== null && price === null) cautions.push('Precio no leído; presupuesto sin verificar');

@@ -1,0 +1,2073 @@
+{
+  "scope": "Manual identity provenance/counters/detail/list/comparison on existing local client responses.",
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "results": [
+    {
+      "case": "manual-portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Visible gallery exact original and bypass off",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "manual-detail dialog and footer within mobile viewport",
+          "passed": true,
+          "detail": {
+            "x": 0,
+            "y": 0,
+            "right": 393,
+            "bottom": 852
+          }
+        },
+        {
+          "name": "Title attributes human identity, not machine recognition",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated100 percent identity in detail or aiRIM",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "aiRIM names human provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Manual identity is a separate counter category",
+          "passed": true,
+          "detail": "4 analizadas · 1 identidad manual"
+        },
+        {
+          "name": "List does not call manual input a read name",
+          "passed": true,
+          "detail": "1\nReferencia QA manual\nIdentidad parcial\nIdentidad confirmada por ti\n-\nSin datos"
+        },
+        {
+          "name": "Comparison distinguishes manual identity from percentage",
+          "passed": true,
+          "detail": "Confianza de identidadRevisada por ti91%86%"
+        }
+      ],
+      "failures": [
+        "Locator.scroll_into_view_if_needed: Timeout 7498ms exceeded.\nCall log:\n  - attempting scroll into view action\n    2 × waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n    - waiting 20ms\n    2 × waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n      - waiting 100ms\n    14 × waiting for element to be stable\n       - element is not visible\n     - retrying scroll into view action\n       - waiting 500ms\n"
+      ],
+      "observations": {
+        "chooserBefore": {
+          "value": "",
+          "count": 0
+        },
+        "selection": [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        "manual-detail": {
+          "title": "Región 5: Identidad manual",
+          "text": "Región 5: Identidad manual\n\nDetección 63%. La identidad y la afinidad se muestran por separado.\n\nCandidatos\n1\nReferencia QA manual\nBodega no confirmada\nManual\nIdentidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.\nVino\nBodega\n63%\nDetección\nPor ti\nIdentidad\n-\nRespaldo afinidad\nAIRIM · GUÍA CONTEXTUAL\nIdentidad revisada por ti\n\nReferencia QA manual es la referencia que has confirmado o corregido. Esta revision no es una probabilidad de acierto del lector ni verifica por si sola la botella o la cosecha.\n\nRevision humana, no confianza del modelo\nAfinidad pendiente de ficha sensorial y perfil suficientes\n\nSiguiente paso: La afinidad requiere datos del vino y de tus gustos; confirmar el nombre no los sustituye.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.\n\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nAnterior\nSiguiente\nReanalizar\nDescartar\nCerrar",
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "name": "1Referencia QA manualBodega no confirmadaManual",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Referencia QA manual"
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Anterior",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Siguiente",
+              "disabled": true,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Reanalizar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Descartar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Cerrar",
+              "disabled": false,
+              "value": null
+            }
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "right": 393,
+            "bottom": 852
+          },
+          "body": {
+            "height": 550,
+            "scroll": 902
+          },
+          "footer": {
+            "top": 687,
+            "bottom": 783
+          }
+        },
+        "counter": "4 analizadas · 1 identidad manual",
+        "row": "1\nReferencia QA manual\nIdentidad parcial\nIdentidad confirmada por ti\n-\nSin datos",
+        "comparisonIdentity": "Confianza de identidadRevisada por ti91%86%"
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions",
+          "bodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "sha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "sha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "sha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "sha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "sha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "confirm-portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Visible gallery exact original and bypass off",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "manual-detail dialog and footer within mobile viewport",
+          "passed": true,
+          "detail": {
+            "x": 0,
+            "y": 0,
+            "right": 393,
+            "bottom": 852
+          }
+        },
+        {
+          "name": "Title attributes human identity, not machine recognition",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated100 percent identity in detail or aiRIM",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "aiRIM names human provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Manual identity is a separate counter category",
+          "passed": true,
+          "detail": "3 analizadas · 1 identidad manual · 1 sin analizar"
+        },
+        {
+          "name": "List does not call manual input a read name",
+          "passed": true,
+          "detail": "1\nMarques de Riscal Reserva\nHerederos del Marques de Riscal · Rioja\nIdentidad confirmada por ti\n-\nSin datos"
+        },
+        {
+          "name": "Comparison distinguishes manual identity from percentage",
+          "passed": true,
+          "detail": "Confianza de identidadRevisada por ti91%86%"
+        }
+      ],
+      "failures": [
+        "Locator.scroll_into_view_if_needed: Timeout 7498ms exceeded.\nCall log:\n  - attempting scroll into view action\n    2 × waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n    - waiting 20ms\n    2 × waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n      - waiting 100ms\n    14 × waiting for element to be stable\n       - element is not visible\n     - retrying scroll into view action\n       - waiting 500ms\n"
+      ],
+      "observations": {
+        "chooserBefore": {
+          "value": "",
+          "count": 0
+        },
+        "selection": [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        "manual-detail": {
+          "title": "Región 2: Identidad manual",
+          "text": "Región 2: Identidad manual\n\nDetección 94%. La identidad y la afinidad se muestran por separado.\n\nCandidatos\n1\nMarques de Riscal Reserva\nHerederos del Marques de Riscal\nManual\n2\nMarques de Caceres Reserva\nMarques de Caceres\nIdentidad 43%\nIdentidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.\nVino\nBodega\n94%\nDetección\nPor ti\nIdentidad\n-\nRespaldo afinidad\n\nAfinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.\n\nAIRIM · GUÍA CONTEXTUAL\nIdentidad revisada por ti\n\nMarques de Riscal Reserva es la referencia que has confirmado o corregido. Esta revision no es una probabilidad de acierto del lector ni verifica por si sola la botella o la cosecha.\n\nRevision humana, no confianza del modelo\nAfinidad pendiente de ficha sensorial y perfil suficientes\n\nSiguiente paso: La afinidad requiere datos del vino y de tus gustos; confirmar el nombre no los sustituye.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.\n\nEvidencia de identidad\nTexto visible: Marques de Riscal Reserva\nMarca visible: Herederos del Marques de Riscal\nIdentidad confirmada manualmente por el usuario\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nAnterior\nSiguiente\nReanalizar\nDescartar\nCerrar",
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "name": "1Marques de Riscal ReservaHerederos del Marques de RiscalManual",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "2Marques de Caceres ReservaMarques de CaceresIdentidad 43%",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Marques de Riscal Reserva"
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Herederos del Marques de Riscal"
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Anterior",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Siguiente",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Reanalizar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Descartar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Cerrar",
+              "disabled": false,
+              "value": null
+            }
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "right": 393,
+            "bottom": 852
+          },
+          "body": {
+            "height": 552,
+            "scroll": 1387
+          },
+          "footer": {
+            "top": 687,
+            "bottom": 783
+          }
+        },
+        "counter": "3 analizadas · 1 identidad manual · 1 sin analizar",
+        "row": "1\nMarques de Riscal Reserva\nHerederos del Marques de Riscal · Rioja\nIdentidad confirmada por ti\n-\nSin datos",
+        "comparisonIdentity": "Confianza de identidadRevisada por ti91%86%"
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions",
+          "bodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "sha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "sha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "sha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "sha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "sha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "edit-portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Visible gallery exact original and bypass off",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "manual-detail dialog and footer within mobile viewport",
+          "passed": true,
+          "detail": {
+            "x": 0,
+            "y": 0,
+            "right": 393,
+            "bottom": 852
+          }
+        },
+        {
+          "name": "Title attributes human identity, not machine recognition",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated100 percent identity in detail or aiRIM",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "aiRIM names human provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Manual identity is a separate counter category",
+          "passed": true,
+          "detail": "3 analizadas · 1 identidad manual · 1 sin analizar"
+        },
+        {
+          "name": "List does not call manual input a read name",
+          "passed": true,
+          "detail": "1\nReferencia QA editada\nHerederos del Marques de Riscal\nIdentidad confirmada por ti\n-\nSin datos"
+        },
+        {
+          "name": "Comparison distinguishes manual identity from percentage",
+          "passed": true,
+          "detail": "Confianza de identidadRevisada por ti91%86%"
+        }
+      ],
+      "failures": [
+        "Locator.scroll_into_view_if_needed: Timeout 7496ms exceeded.\nCall log:\n  - attempting scroll into view action\n    2 × waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n    - waiting 20ms\n    2 × waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n      - waiting 100ms\n    14 × waiting for element to be stable\n       - element is not visible\n     - retrying scroll into view action\n       - waiting 500ms\n"
+      ],
+      "observations": {
+        "chooserBefore": {
+          "value": "",
+          "count": 0
+        },
+        "selection": [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        "manual-detail": {
+          "title": "Región 2: Identidad manual",
+          "text": "Región 2: Identidad manual\n\nDetección 94%. La identidad y la afinidad se muestran por separado.\n\nCandidatos\n1\nReferencia QA editada\nHerederos del Marques de Riscal\nManual\n2\nMarques de Caceres Reserva\nMarques de Caceres\nIdentidad 43%\nIdentidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.\nVino\nBodega\n94%\nDetección\nPor ti\nIdentidad\n-\nRespaldo afinidad\nAIRIM · GUÍA CONTEXTUAL\nIdentidad revisada por ti\n\nReferencia QA editada es la referencia que has confirmado o corregido. Esta revision no es una probabilidad de acierto del lector ni verifica por si sola la botella o la cosecha.\n\nRevision humana, no confianza del modelo\nAfinidad pendiente de ficha sensorial y perfil suficientes\n\nSiguiente paso: La afinidad requiere datos del vino y de tus gustos; confirmar el nombre no los sustituye.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.\n\nEvidencia de identidad\nIdentidad corregida manualmente por el usuario\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nAnterior\nSiguiente\nReanalizar\nDescartar\nCerrar",
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "name": "1Referencia QA editadaHerederos del Marques de RiscalManual",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "2Marques de Caceres ReservaMarques de CaceresIdentidad 43%",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Referencia QA editada"
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Herederos del Marques de Riscal"
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Anterior",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Siguiente",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Reanalizar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Descartar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Cerrar",
+              "disabled": false,
+              "value": null
+            }
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "right": 393,
+            "bottom": 852
+          },
+          "body": {
+            "height": 552,
+            "scroll": 1251
+          },
+          "footer": {
+            "top": 687,
+            "bottom": 783
+          }
+        },
+        "counter": "3 analizadas · 1 identidad manual · 1 sin analizar",
+        "row": "1\nReferencia QA editada\nHerederos del Marques de Riscal\nIdentidad confirmada por ti\n-\nSin datos",
+        "comparisonIdentity": "Confianza de identidadRevisada por ti91%86%"
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions",
+          "bodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "sha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "sha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "sha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "sha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "sha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "manual-landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Visible gallery exact original and bypass off",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "manual-detail dialog and footer within mobile viewport",
+          "passed": true,
+          "detail": {
+            "x": 0,
+            "y": 0,
+            "right": 852,
+            "bottom": 393
+          }
+        },
+        {
+          "name": "Title attributes human identity, not machine recognition",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated100 percent identity in detail or aiRIM",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "aiRIM names human provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Manual identity is a separate counter category",
+          "passed": true,
+          "detail": "4 analizadas · 1 identidad manual"
+        },
+        {
+          "name": "List does not call manual input a read name",
+          "passed": true,
+          "detail": "1\nReferencia QA manual\nIdentidad parcial\nIdentidad confirmada por ti\n-\nSin datos"
+        },
+        {
+          "name": "Comparison distinguishes manual identity from percentage",
+          "passed": true,
+          "detail": "Confianza de identidad\tRevisada por ti\t91%\t86%"
+        },
+        {
+          "name": "Manual confidence cell visually reachable without overlay",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Scan plan unchanged, no extra request from human correction",
+          "passed": true,
+          "detail": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          }
+        },
+        {
+          "name": "No unexpected runtime/console diagnostics",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "Zero external writes/accounts/paid calls, all HTTP/WS intercepted",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "observations": {
+        "chooserBefore": {
+          "value": "",
+          "count": 0
+        },
+        "selection": [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        "manual-detail": {
+          "title": "Región 5: Identidad manual",
+          "text": "Región 5: Identidad manual\n\nDetección 63%. La identidad y la afinidad se muestran por separado.\n\nCandidatos\n1\nReferencia QA manual\nBodega no confirmada\nManual\nIdentidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.\nVino\nBodega\n63%\nDetección\nPor ti\nIdentidad\n-\nRespaldo afinidad\nAIRIM · GUÍA CONTEXTUAL\nIdentidad revisada por ti\n\nReferencia QA manual es la referencia que has confirmado o corregido. Esta revision no es una probabilidad de acierto del lector ni verifica por si sola la botella o la cosecha.\n\nRevision humana, no confianza del modelo\nAfinidad pendiente de ficha sensorial y perfil suficientes\n\nSiguiente paso: La afinidad requiere datos del vino y de tus gustos; confirmar el nombre no los sustituye.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.\n\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nAnterior\nSiguiente\nReanalizar\nDescartar\nCerrar",
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "name": "1Referencia QA manualBodega no confirmadaManual",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Referencia QA manual"
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Anterior",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Siguiente",
+              "disabled": true,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Reanalizar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Descartar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Cerrar",
+              "disabled": false,
+              "value": null
+            }
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "right": 852,
+            "bottom": 393
+          },
+          "body": {
+            "height": 166,
+            "scroll": 693
+          },
+          "footer": {
+            "top": 280,
+            "bottom": 324
+          }
+        },
+        "counter": "4 analizadas · 1 identidad manual",
+        "row": "1\nReferencia QA manual\nIdentidad parcial\nIdentidad confirmada por ti\n-\nSin datos",
+        "comparisonIdentity": "Confianza de identidad\tRevisada por ti\t91%\t86%"
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions",
+          "bodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "sha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "sha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "sha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "sha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "sha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "confirm-landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Visible gallery exact original and bypass off",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "manual-detail dialog and footer within mobile viewport",
+          "passed": true,
+          "detail": {
+            "x": 0,
+            "y": 0,
+            "right": 852,
+            "bottom": 393
+          }
+        },
+        {
+          "name": "Title attributes human identity, not machine recognition",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated100 percent identity in detail or aiRIM",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "aiRIM names human provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Manual identity is a separate counter category",
+          "passed": true,
+          "detail": "3 analizadas · 1 identidad manual · 1 sin analizar"
+        },
+        {
+          "name": "List does not call manual input a read name",
+          "passed": true,
+          "detail": "1\nMarques de Riscal Reserva\nHerederos del Marques de Riscal · Rioja\nIdentidad confirmada por ti\n-\nSin datos"
+        },
+        {
+          "name": "Comparison distinguishes manual identity from percentage",
+          "passed": true,
+          "detail": "Confianza de identidad\tRevisada por ti\t91%\t86%"
+        },
+        {
+          "name": "Manual confidence cell visually reachable without overlay",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Scan plan unchanged, no extra request from human correction",
+          "passed": true,
+          "detail": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          }
+        },
+        {
+          "name": "No unexpected runtime/console diagnostics",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "Zero external writes/accounts/paid calls, all HTTP/WS intercepted",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "observations": {
+        "chooserBefore": {
+          "value": "",
+          "count": 0
+        },
+        "selection": [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        "manual-detail": {
+          "title": "Región 2: Identidad manual",
+          "text": "Región 2: Identidad manual\n\nDetección 94%. La identidad y la afinidad se muestran por separado.\n\nCandidatos\n1\nMarques de Riscal Reserva\nHerederos del Marques de Riscal\nManual\n2\nMarques de Caceres Reserva\nMarques de Caceres\nIdentidad 43%\nIdentidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.\nVino\nBodega\n94%\nDetección\nPor ti\nIdentidad\n-\nRespaldo afinidad\n\nAfinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.\n\nAIRIM · GUÍA CONTEXTUAL\nIdentidad revisada por ti\n\nMarques de Riscal Reserva es la referencia que has confirmado o corregido. Esta revision no es una probabilidad de acierto del lector ni verifica por si sola la botella o la cosecha.\n\nRevision humana, no confianza del modelo\nAfinidad pendiente de ficha sensorial y perfil suficientes\n\nSiguiente paso: La afinidad requiere datos del vino y de tus gustos; confirmar el nombre no los sustituye.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.\n\nEvidencia de identidad\nTexto visible: Marques de Riscal Reserva\nMarca visible: Herederos del Marques de Riscal\nIdentidad confirmada manualmente por el usuario\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nAnterior\nSiguiente\nReanalizar\nDescartar\nCerrar",
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "name": "1Marques de Riscal ReservaHerederos del Marques de RiscalManual",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "2Marques de Caceres ReservaMarques de CaceresIdentidad 43%",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Marques de Riscal Reserva"
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Herederos del Marques de Riscal"
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Anterior",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Siguiente",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Reanalizar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Descartar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Cerrar",
+              "disabled": false,
+              "value": null
+            }
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "right": 852,
+            "bottom": 393
+          },
+          "body": {
+            "height": 167,
+            "scroll": 1130
+          },
+          "footer": {
+            "top": 280,
+            "bottom": 324
+          }
+        },
+        "counter": "3 analizadas · 1 identidad manual · 1 sin analizar",
+        "row": "1\nMarques de Riscal Reserva\nHerederos del Marques de Riscal · Rioja\nIdentidad confirmada por ti\n-\nSin datos",
+        "comparisonIdentity": "Confianza de identidad\tRevisada por ti\t91%\t86%"
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions",
+          "bodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "sha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "sha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "sha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "sha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "sha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "edit-landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Visible gallery exact original and bypass off",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "manual-detail dialog and footer within mobile viewport",
+          "passed": true,
+          "detail": {
+            "x": 0,
+            "y": 0,
+            "right": 852,
+            "bottom": 393
+          }
+        },
+        {
+          "name": "Title attributes human identity, not machine recognition",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No fabricated100 percent identity in detail or aiRIM",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "aiRIM names human provenance",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Manual identity is a separate counter category",
+          "passed": true,
+          "detail": "3 analizadas · 1 identidad manual · 1 sin analizar"
+        },
+        {
+          "name": "List does not call manual input a read name",
+          "passed": true,
+          "detail": "1\nReferencia QA editada\nHerederos del Marques de Riscal\nIdentidad confirmada por ti\n-\nSin datos"
+        },
+        {
+          "name": "Comparison distinguishes manual identity from percentage",
+          "passed": true,
+          "detail": "Confianza de identidad\tRevisada por ti\t91%\t86%"
+        },
+        {
+          "name": "Manual confidence cell visually reachable without overlay",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Scan plan unchanged, no extra request from human correction",
+          "passed": true,
+          "detail": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          }
+        },
+        {
+          "name": "No unexpected runtime/console diagnostics",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "Zero external writes/accounts/paid calls, all HTTP/WS intercepted",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "observations": {
+        "chooserBefore": {
+          "value": "",
+          "count": 0
+        },
+        "selection": [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        "manual-detail": {
+          "title": "Región 2: Identidad manual",
+          "text": "Región 2: Identidad manual\n\nDetección 94%. La identidad y la afinidad se muestran por separado.\n\nCandidatos\n1\nReferencia QA editada\nHerederos del Marques de Riscal\nManual\n2\nMarques de Caceres Reserva\nMarques de Caceres\nIdentidad 43%\nIdentidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.\nVino\nBodega\n94%\nDetección\nPor ti\nIdentidad\n-\nRespaldo afinidad\nAIRIM · GUÍA CONTEXTUAL\nIdentidad revisada por ti\n\nReferencia QA editada es la referencia que has confirmado o corregido. Esta revision no es una probabilidad de acierto del lector ni verifica por si sola la botella o la cosecha.\n\nRevision humana, no confianza del modelo\nAfinidad pendiente de ficha sensorial y perfil suficientes\n\nSiguiente paso: La afinidad requiere datos del vino y de tus gustos; confirmar el nombre no los sustituye.\n\nEsta guía explica datos existentes; no cambia la identidad ni el cálculo.\n\nEvidencia de identidad\nIdentidad corregida manualmente por el usuario\nAfinidad sin desglose suficiente\n\nFalta un perfil Matchrim local o una ficha sensorial completa. No convierto datos ausentes en precisión aparente.\n\nAnterior\nSiguiente\nReanalizar\nDescartar\nCerrar",
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "name": "1Referencia QA editadaHerederos del Marques de RiscalManual",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "2Marques de Caceres ReservaMarques de CaceresIdentidad 43%",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Referencia QA editada"
+            },
+            {
+              "tag": "INPUT",
+              "name": "",
+              "disabled": false,
+              "value": "Herederos del Marques de Riscal"
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Anterior",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Siguiente",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Reanalizar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Descartar",
+              "disabled": false,
+              "value": null
+            },
+            {
+              "tag": "BUTTON",
+              "name": "Cerrar",
+              "disabled": false,
+              "value": null
+            }
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "right": 852,
+            "bottom": 393
+          },
+          "body": {
+            "height": 167,
+            "scroll": 1018
+          },
+          "footer": {
+            "top": 280,
+            "bottom": 324
+          }
+        },
+        "counter": "3 analizadas · 1 identidad manual · 1 sin analizar",
+        "row": "1\nReferencia QA editada\nHerederos del Marques de Riscal\nIdentidad confirmada por ti\n-\nSin datos",
+        "comparisonIdentity": "Confianza de identidad\tRevisada por ti\t91%\t86%"
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions",
+          "bodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "sha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "sha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "sha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "sha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "sha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}
