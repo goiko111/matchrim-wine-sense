@@ -1,0 +1,23 @@
+{
+  "soak": {
+    "observedExitCode": 0,
+    "seconds": 900,
+    "completedCycles": 358
+  },
+  "coreRegression": {
+    "initialExitCode": 1,
+    "reason": "Two stale pre-existing aiRIM copy assertions; default-output parity against baseline proved unchanged",
+    "finalExitCode": 0,
+    "strengthenedAssertions": true
+  },
+  "coreLint": {
+    "observedExitCode": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "allAppSourceUnchangedDuringSoak": true,
+  "previousEvidenceEntries": 1939,
+  "unrelatedOldSuitesRerun": false,
+  "nativeBuild": false,
+  "deploy": false
+}

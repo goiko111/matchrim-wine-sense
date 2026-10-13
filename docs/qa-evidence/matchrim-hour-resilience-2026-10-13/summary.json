@@ -1,0 +1,125 @@
+{
+  "baseline": "f05cab30cb376c6c6ecdda47e55a2b2d0811cf24",
+  "elapsedSeconds": 900.3248847499999,
+  "cycles": 358,
+  "kinds": {
+    "limit-retry": 120,
+    "cancel-manual-late": 119,
+    "confirm": 119
+  },
+  "requests": {
+    "profile": 358,
+    "detect": 358,
+    "analyze": 1792,
+    "search": 1074
+  },
+  "orientations": {
+    "portrait": 179,
+    "landscape": 179
+  },
+  "heapMiB": {
+    "min": 13.70584487915039,
+    "max": 50.04023742675781,
+    "last": 30.060436248779297
+  },
+  "nodes": {
+    "first": 1145,
+    "last": 38372
+  },
+  "documents": [
+    1
+  ],
+  "protectedEvidence": [
+    {
+      "name": "matchrim-menu-save-2026-10-12",
+      "entries": 289,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-actions-2026-10-12",
+      "entries": 126,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-affinity-status-2026-10-12",
+      "entries": 91,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-profile-retry-2026-10-13",
+      "entries": 112,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-airim-provenance-2026-10-13",
+      "entries": 75,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-notice-2026-10-13",
+      "entries": 103,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-focus-2026-10-13",
+      "entries": 143,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-navigation-2026-10-13",
+      "entries": 175,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-reading-2026-10-13",
+      "entries": 70,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-cancel-2026-10-13",
+      "entries": 80,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-ranking-cancel-2026-10-13",
+      "entries": 99,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-multi-stale-cancel-2026-10-13",
+      "entries": 149,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-progress-a11y-2026-10-13",
+      "entries": 137,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-counter-2026-10-13",
+      "entries": 33,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-edit-lock-2026-10-13",
+      "entries": 79,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-failure-2026-10-13",
+      "entries": 69,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-manual-provenance-2026-10-13",
+      "entries": 109,
+      "unchanged": true
+    }
+  ],
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "memoryLeakCertification": false,
+  "residual": "Node/listener counts grow; no forced-GC or heap-retainer/native memory analysis. Functional lifecycle passes are not leak/model/user certification."
+}

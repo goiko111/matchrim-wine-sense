@@ -840,6 +840,7 @@ assert.equal(getConfirmableWineGroups([
 ]).length, 1, 'uncertain identities must not enter batch confirmation');
 const manuallyConfirmed = confirmWineCandidateIdentity(uncertainDuplicate.candidates[0]);
 assert.equal(manuallyConfirmed.confidence, 1);
+assert.equal(manuallyConfirmed.source, 'manual', 'explicit human review must not masquerade as automatic reading');
 assert.equal(manuallyConfirmed.affinity, 82, 'explicit confirmation keeps the candidate sensory result');
 assert.equal(manuallyConfirmed.uncertaintyReasons.length, 0);
 const manuallyCorrected = correctWineCandidateIdentity(candidates[0], { name: 'Corrected identity' });
@@ -944,7 +945,8 @@ const uncertainGuidance = buildAiRimContextGuidance({
   hasAlternatives: true,
 }, { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 });
 assert.equal(uncertainGuidance.tone, 'caution');
-assert.match(uncertainGuidance.summary, /candidato, no una identidad cerrada/i);
+assert.match(uncertainGuidance.summary, /referencia propuesta por la lectura, no una verificacion de botella o cosecha/i);
+assert.ok(uncertainGuidance.evidence.some((item) => /no acredita la botella/i.test(item)));
 const groundedGuidance = buildAiRimContextGuidance({
   context: 'comparison',
   name: 'Vino confirmado',
@@ -955,7 +957,8 @@ const groundedGuidance = buildAiRimContextGuidance({
   hasAlternatives: true,
 }, { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 });
 assert.equal(groundedGuidance.tone, 'positive');
-assert.match(groundedGuidance.nextStep, /opcion mas segura/i);
+assert.match(groundedGuidance.nextStep, /contrasta.*candidato.*texto.*cosecha.*desglose.*otra opcion/i);
+assert.match(groundedGuidance.summary, /no verifica la botella ni la cosecha/i);
 assert.equal(calculateLocalMatchrimAffinity(
   { potente: 4, acidez: 3, dulce: 1, tanico: 4, afrutado: 3 },
   { potencia: 4, acidez: 3, dulzura: 1, taninos: 4, afrutado: 3 },
