@@ -1,0 +1,1854 @@
+{
+  "scope": "Menu similarity abstention on public pixel canary and frozen synthetic responses. No catalog-positive UI fixture.",
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "6df4a3df77e1c205a6341702e3df3130e4f6c9fb32c74d8af7b5d28fa915e51d",
+    "src/utils/menuWineSave.ts": "6b6ad21c303bf051333fc5a3c2e83bb8a8a2da1f44d066e8817281c7b93c6224",
+    "src/utils/menuPriceReview.ts": "b854d871d2a37fe82b8a05a3907c01bc55137e9a6f35bb7071440ea5c952105a",
+    "scripts/qa-matchrim-menu-style-evidence-oct13.py": "66d664b80debeecd6ab8a59f4aefbf5334a9cbc6104d2ad947e325c518952d1e"
+  },
+  "inputHashes": {
+    "docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5",
+    "qa-fixtures/food-menu/commons-restaurant-menu-2026-08-25-2000.jpg": "9980c5e6b9d5e52f1783e2f26d1a97e22c0c2e1556e9e72919dd26fc34ece9a9"
+  },
+  "paidCalls": 0,
+  "realRemoteAppCalls": 0,
+  "realUsers": 0,
+  "realWrites": 0,
+  "results": [
+    {
+      "case": "zoom:narrow",
+      "passed": true,
+      "checks": [
+        {
+          "name": "No numerical similarity from photo or unknown type",
+          "passed": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Missing sensory origin explicitly explained",
+          "passed": true,
+          "actual": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo\n\nMarchesi di Barolo\n\nAfinidad pendiente\n\nPiamonte · Italia\n\nEditar\nPiamonte\nItalia\nTinto\n25,00 €\nVariedades: Nebbiolo\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nNo es un resultado negativo ni significa que este vino no te guste.\n\nParecidos pendientes: falta la ficha sensorial verificada de este vino.\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\nConsultar afinidad",
+          "expected": null
+        },
+        {
+          "name": "No ungrounded similar-wine navigation",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No provider self-certified affinity99",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Scan references stay individually available",
+          "passed": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "name": "No page width overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Headings and action text fit their own controls, not just page width",
+          "passed": true,
+          "actual": [
+            {
+              "tag": "P",
+              "text": "Ficha de carta",
+              "width": 172,
+              "height": 64,
+              "outside": []
+            },
+            {
+              "tag": "H4",
+              "text": "Barbaresco Marchesi di Barolo",
+              "width": 172,
+              "height": 200,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Marchesi di Barolo",
+              "width": 172,
+              "height": 80,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Piamonte · Italia",
+              "width": 172,
+              "height": 80,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Editar",
+              "width": 168.296875,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 122,
+              "height": 144,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 122,
+              "height": 384,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 122,
+              "height": 120,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 122,
+              "height": 320,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No es un resultado negativo ni significa que este vino no te guste.",
+              "width": 122,
+              "height": 320,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Parecidos pendientes: falta la ficha sensorial verificada de este vino.",
+              "width": 172,
+              "height": 240,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Quiero Probar",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Lo he probado",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Añadir favorito",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Ver parecidos",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Consultar afinidad",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Expanded card controls meet 44px targets",
+          "passed": true,
+          "actual": [
+            {
+              "name": "Editar",
+              "width": 168.296875,
+              "height": 88
+            },
+            {
+              "name": "Quiero Probar",
+              "width": 172,
+              "height": 114
+            },
+            {
+              "name": "Lo he probado",
+              "width": 172,
+              "height": 114
+            },
+            {
+              "name": "Añadir favorito",
+              "width": 172,
+              "height": 114
+            },
+            {
+              "name": "Ver parecidos",
+              "width": 172,
+              "height": 114
+            },
+            {
+              "name": "Consultar afinidad",
+              "width": 172,
+              "height": 114
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Every external HTTP request is locally fulfilled",
+          "passed": true,
+          "actual": {
+            "seen": 4,
+            "fulfilled": 4
+          },
+          "expected": null
+        },
+        {
+          "name": "No SDK REST write or training",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No runtime errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "price-zoom:narrow",
+      "passed": true,
+      "checks": [
+        {
+          "name": "No numerical similarity from photo or unknown type",
+          "passed": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Missing sensory origin explicitly explained",
+          "passed": true,
+          "actual": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo\n\nMarchesi di Barolo\n\nAfinidad pendiente\n\nPiamonte · Italia\n\nCerrar edición\nNombre\nProductor\nAñada\nRegión\nPaís\nTipo\nPrecio de carta\nImporte\nFormato del precio\nBotella\nMoneda\nEUR\n\nEl formato del precio no confirma la disponibilidad por copa o botella.\n\nAplicar precio\nDescartar cambio\n\nUvas\nNotas\nPiamonte\nItalia\nTinto\n25,00 €\nVariedades: Nebbiolo\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nNo es un resultado negativo ni significa que este vino no te guste.\n\nParecidos pendientes: falta la ficha sensorial verificada de este vino.\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\nConsultar afinidad",
+          "expected": null
+        },
+        {
+          "name": "No ungrounded similar-wine navigation",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No provider self-certified affinity99",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Scan references stay individually available",
+          "passed": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "name": "No page width overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Headings and action text fit their own controls, not just page width",
+          "passed": true,
+          "actual": [
+            {
+              "tag": "P",
+              "text": "Ficha de carta",
+              "width": 172,
+              "height": 64,
+              "outside": []
+            },
+            {
+              "tag": "H4",
+              "text": "Barbaresco Marchesi di Barolo",
+              "width": 172,
+              "height": 200,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Marchesi di Barolo",
+              "width": 172,
+              "height": 80,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Piamonte · Italia",
+              "width": 172,
+              "height": 80,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Cerrar edición",
+              "width": 172,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Nombre",
+              "width": 99.5,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Productor",
+              "width": 122.34375,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Añada",
+              "width": 80.3125,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Región",
+              "width": 86.5,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "País",
+              "width": 51.015625,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Tipo",
+              "width": 54.484375,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Importe",
+              "width": 96.5625,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Formato del precio",
+              "width": 146.859375,
+              "height": 81,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Botella",
+              "width": 170,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Moneda",
+              "width": 101.453125,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "EUR",
+              "width": 170,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "El formato del precio no confirma la disponibilidad por copa o botella.",
+              "width": 170,
+              "height": 192,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Aplicar precio",
+              "width": 170,
+              "height": 112,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Descartar cambio",
+              "width": 170,
+              "height": 154,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "",
+              "width": 170,
+              "height": 0,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Uvas",
+              "width": 62.765625,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Notas",
+              "width": 73.578125,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 122,
+              "height": 144,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 122,
+              "height": 384,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 122,
+              "height": 120,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 122,
+              "height": 320,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No es un resultado negativo ni significa que este vino no te guste.",
+              "width": 122,
+              "height": 320,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Parecidos pendientes: falta la ficha sensorial verificada de este vino.",
+              "width": 172,
+              "height": 240,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Quiero Probar",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Lo he probado",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Añadir favorito",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Ver parecidos",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Consultar afinidad",
+              "width": 172,
+              "height": 114,
+              "outside": []
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Expanded card controls meet 44px targets",
+          "passed": true,
+          "actual": [
+            {
+              "name": "Cerrar edición",
+              "width": 172,
+              "height": 88
+            },
+            {
+              "name": "Botella",
+              "width": 170,
+              "height": 88
+            },
+            {
+              "name": "EUR",
+              "width": 170,
+              "height": 88
+            },
+            {
+              "name": "Aplicar precio",
+              "width": 170,
+              "height": 112
+            },
+            {
+              "name": "Descartar cambio",
+              "width": 170,
+              "height": 154
+            },
+            {
+              "name": "Quiero Probar",
+              "width": 172,
+              "height": 114
+            },
+            {
+              "name": "Lo he probado",
+              "width": 172,
+              "height": 114
+            },
+            {
+              "name": "Añadir favorito",
+              "width": 172,
+              "height": 114
+            },
+            {
+              "name": "Ver parecidos",
+              "width": 172,
+              "height": 114
+            },
+            {
+              "name": "Consultar afinidad",
+              "width": 172,
+              "height": 114
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Every external HTTP request is locally fulfilled",
+          "passed": true,
+          "actual": {
+            "seen": 4,
+            "fulfilled": 4
+          },
+          "expected": null
+        },
+        {
+          "name": "No SDK REST write or training",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No runtime errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "price-zoom:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "No numerical similarity from photo or unknown type",
+          "passed": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Missing sensory origin explicitly explained",
+          "passed": true,
+          "actual": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo\n\nMarchesi di Barolo\n\nAfinidad pendiente\n\nPiamonte · Italia\n\nCerrar edición\nNombre\nProductor\nAñada\nRegión\nPaís\nTipo\nPrecio de carta\nImporte\nFormato del precio\nBotella\nMoneda\nEUR\n\nEl formato del precio no confirma la disponibilidad por copa o botella.\n\nAplicar precio\nDescartar cambio\n\nUvas\nNotas\nPiamonte\nItalia\nTinto\n25,00 €\nVariedades: Nebbiolo\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nNo es un resultado negativo ni significa que este vino no te guste.\n\nParecidos pendientes: falta la ficha sensorial verificada de este vino.\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\nConsultar afinidad",
+          "expected": null
+        },
+        {
+          "name": "No ungrounded similar-wine navigation",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No provider self-certified affinity99",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Scan references stay individually available",
+          "passed": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "name": "No page width overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Headings and action text fit their own controls, not just page width",
+          "passed": true,
+          "actual": [
+            {
+              "tag": "P",
+              "text": "Ficha de carta",
+              "width": 561.34375,
+              "height": 32,
+              "outside": []
+            },
+            {
+              "tag": "H4",
+              "text": "Barbaresco Marchesi di Barolo",
+              "width": 561.34375,
+              "height": 50,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Marchesi di Barolo",
+              "width": 561.34375,
+              "height": 40,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Piamonte · Italia",
+              "width": 194.609375,
+              "height": 40,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Cerrar edición",
+              "width": 270.609375,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Nombre",
+              "width": 99.5,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Productor",
+              "width": 122.34375,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Añada",
+              "width": 80.3125,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Región",
+              "width": 86.5,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "País",
+              "width": 51.015625,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Tipo",
+              "width": 54.484375,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Importe",
+              "width": 96.5625,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Formato del precio",
+              "width": 146.859375,
+              "height": 81,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Botella",
+              "width": 164.671875,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Moneda",
+              "width": 101.453125,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "EUR",
+              "width": 164.671875,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "El formato del precio no confirma la disponibilidad por copa o botella.",
+              "width": 542,
+              "height": 64,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Aplicar precio",
+              "width": 230.234375,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Descartar cambio",
+              "width": 281.515625,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "",
+              "width": 542,
+              "height": 0,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Uvas",
+              "width": 62.765625,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Notas",
+              "width": 73.578125,
+              "height": 33,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 558,
+              "height": 48,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 558,
+              "height": 96,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 558,
+              "height": 40,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 558,
+              "height": 80,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No es un resultado negativo ni significa que este vino no te guste.",
+              "width": 558,
+              "height": 80,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Parecidos pendientes: falta la ficha sensorial verificada de este vino.",
+              "width": 608,
+              "height": 80,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Quiero Probar",
+              "width": 296,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Lo he probado",
+              "width": 296,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Añadir favorito",
+              "width": 296,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Ver parecidos",
+              "width": 296,
+              "height": 88,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Consultar afinidad",
+              "width": 296,
+              "height": 114,
+              "outside": []
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Expanded card controls meet 44px targets",
+          "passed": true,
+          "actual": [
+            {
+              "name": "Cerrar edición",
+              "width": 270.609375,
+              "height": 88
+            },
+            {
+              "name": "Botella",
+              "width": 164.671875,
+              "height": 88
+            },
+            {
+              "name": "EUR",
+              "width": 164.671875,
+              "height": 88
+            },
+            {
+              "name": "Aplicar precio",
+              "width": 230.234375,
+              "height": 88
+            },
+            {
+              "name": "Descartar cambio",
+              "width": 281.515625,
+              "height": 88
+            },
+            {
+              "name": "Quiero Probar",
+              "width": 296,
+              "height": 88
+            },
+            {
+              "name": "Lo he probado",
+              "width": 296,
+              "height": 88
+            },
+            {
+              "name": "Añadir favorito",
+              "width": 296,
+              "height": 88
+            },
+            {
+              "name": "Ver parecidos",
+              "width": 296,
+              "height": 88
+            },
+            {
+              "name": "Consultar afinidad",
+              "width": 296,
+              "height": 114
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Every external HTTP request is locally fulfilled",
+          "passed": true,
+          "actual": {
+            "seen": 4,
+            "fulfilled": 4
+          },
+          "expected": null
+        },
+        {
+          "name": "No SDK REST write or training",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No runtime errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "typing:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Sequential identity typing retains every character",
+          "passed": true,
+          "actual": "Barbaresco Marchesi di Barolo Revisado",
+          "expected": "Barbaresco Marchesi di Barolo Revisado"
+        },
+        {
+          "name": "Identity input retains keyboard focus",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No numerical similarity from photo or unknown type",
+          "passed": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Missing sensory origin explicitly explained",
+          "passed": true,
+          "actual": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo Revisado\n\nMarchesi di Barolo\n\nAfinidad pendiente\n\nPiamonte · Italia\n\nCerrar edición\nNombre\nProductor\nAñada\nRegión\nPaís\nTipo\nPrecio de carta\nImporte\nFormato del precio\nBotella\nMoneda\nEUR\n\nEl formato del precio no confirma la disponibilidad por copa o botella.\n\nAplicar precio\nDescartar cambio\n\nUvas\nNotas\nPiamonte\nItalia\nTinto\n25,00 €\nVariedades: Nebbiolo\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nNo es un resultado negativo ni significa que este vino no te guste.\n\nParecidos pendientes: falta la ficha sensorial verificada de este vino.\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\nConsultar afinidad",
+          "expected": null
+        },
+        {
+          "name": "No ungrounded similar-wine navigation",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No provider self-certified affinity99",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Scan references stay individually available",
+          "passed": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "name": "No page width overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Headings and action text fit their own controls, not just page width",
+          "passed": true,
+          "actual": [
+            {
+              "tag": "P",
+              "text": "Ficha de carta",
+              "width": 317,
+              "height": 16,
+              "outside": []
+            },
+            {
+              "tag": "H4",
+              "text": "Barbaresco Marchesi di Barolo Revisado",
+              "width": 317,
+              "height": 50,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Marchesi di Barolo",
+              "width": 317,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Piamonte · Italia",
+              "width": 317,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Cerrar edición",
+              "width": 141.671875,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Nombre",
+              "width": 52.796875,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Productor",
+              "width": 65.96875,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Añada",
+              "width": 41.90625,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Región",
+              "width": 45.484375,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "País",
+              "width": 27.28125,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Tipo",
+              "width": 29.03125,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Importe",
+              "width": 51.640625,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Formato del precio",
+              "width": 124.109375,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Botella",
+              "width": 315,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Moneda",
+              "width": 53.078125,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "EUR",
+              "width": 315,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "El formato del precio no confirma la disponibilidad por copa o botella.",
+              "width": 315,
+              "height": 32,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Aplicar precio",
+              "width": 135.25,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Descartar cambio",
+              "width": 162.921875,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "",
+              "width": 315,
+              "height": 0,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Uvas",
+              "width": 32.78125,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Notas",
+              "width": 38.921875,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 291,
+              "height": 24,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 291,
+              "height": 48,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 291,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 291,
+              "height": 40,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No es un resultado negativo ni significa que este vino no te guste.",
+              "width": 291,
+              "height": 40,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Parecidos pendientes: falta la ficha sensorial verificada de este vino.",
+              "width": 317,
+              "height": 40,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Quiero Probar",
+              "width": 317,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Lo he probado",
+              "width": 317,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Añadir favorito",
+              "width": 317,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Ver parecidos",
+              "width": 317,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Consultar afinidad",
+              "width": 317,
+              "height": 44,
+              "outside": []
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Expanded card controls meet 44px targets",
+          "passed": true,
+          "actual": [
+            {
+              "name": "Cerrar edición",
+              "width": 141.671875,
+              "height": 44
+            },
+            {
+              "name": "Botella",
+              "width": 315,
+              "height": 44
+            },
+            {
+              "name": "EUR",
+              "width": 315,
+              "height": 44
+            },
+            {
+              "name": "Aplicar precio",
+              "width": 135.25,
+              "height": 44
+            },
+            {
+              "name": "Descartar cambio",
+              "width": 162.921875,
+              "height": 44
+            },
+            {
+              "name": "Quiero Probar",
+              "width": 317,
+              "height": 44
+            },
+            {
+              "name": "Lo he probado",
+              "width": 317,
+              "height": 44
+            },
+            {
+              "name": "Añadir favorito",
+              "width": 317,
+              "height": 44
+            },
+            {
+              "name": "Ver parecidos",
+              "width": 317,
+              "height": 44
+            },
+            {
+              "name": "Consultar afinidad",
+              "width": 317,
+              "height": 44
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Every external HTTP request is locally fulfilled",
+          "passed": true,
+          "actual": {
+            "seen": 4,
+            "fulfilled": 4
+          },
+          "expected": null
+        },
+        {
+          "name": "No SDK REST write or training",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No runtime errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "typing:landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Sequential identity typing retains every character",
+          "passed": true,
+          "actual": "Barbaresco Marchesi di Barolo Revisado",
+          "expected": "Barbaresco Marchesi di Barolo Revisado"
+        },
+        {
+          "name": "Identity input retains keyboard focus",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No numerical similarity from photo or unknown type",
+          "passed": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Missing sensory origin explicitly explained",
+          "passed": true,
+          "actual": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo Revisado\n\nMarchesi di Barolo\n\nAfinidad pendiente\n\nPiamonte · Italia\n\nCerrar edición\nNombre\nProductor\nAñada\nRegión\nPaís\nTipo\nPrecio de carta\nImporte\nFormato del precio\nBotella\nMoneda\nEUR\n\nEl formato del precio no confirma la disponibilidad por copa o botella.\n\nAplicar precio\nDescartar cambio\n\nUvas\nNotas\nPiamonte\nItalia\nTinto\n25,00 €\nVariedades: Nebbiolo\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nNo es un resultado negativo ni significa que este vino no te guste.\n\nParecidos pendientes: falta la ficha sensorial verificada de este vino.\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\nConsultar afinidad",
+          "expected": null
+        },
+        {
+          "name": "No ungrounded similar-wine navigation",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No provider self-certified affinity99",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Scan references stay individually available",
+          "passed": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "name": "No page width overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Headings and action text fit their own controls, not just page width",
+          "passed": true,
+          "actual": [
+            {
+              "tag": "P",
+              "text": "Ficha de carta",
+              "width": 375.890625,
+              "height": 16,
+              "outside": []
+            },
+            {
+              "tag": "H4",
+              "text": "Barbaresco Marchesi di Barolo Revisado",
+              "width": 375.890625,
+              "height": 25,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Marchesi di Barolo",
+              "width": 375.890625,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Piamonte · Italia",
+              "width": 105.234375,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Cerrar edición",
+              "width": 141.671875,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Nombre",
+              "width": 52.796875,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Productor",
+              "width": 65.96875,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Añada",
+              "width": 41.90625,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Región",
+              "width": 45.484375,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "País",
+              "width": 27.28125,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Tipo",
+              "width": 29.03125,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Importe",
+              "width": 51.640625,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Formato del precio",
+              "width": 124.109375,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Botella",
+              "width": 223.328125,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Moneda",
+              "width": 53.078125,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "EUR",
+              "width": 223.328125,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "El formato del precio no confirma la disponibilidad por copa o botella.",
+              "width": 694,
+              "height": 16,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Aplicar precio",
+              "width": 135.25,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Descartar cambio",
+              "width": 162.921875,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "",
+              "width": 694,
+              "height": 0,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Uvas",
+              "width": 32.78125,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "LABEL",
+              "text": "Notas",
+              "width": 38.921875,
+              "height": 17,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 702,
+              "height": 24,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 702,
+              "height": 24,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Afinidad pendiente",
+              "width": 702,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No hay un perfil guardado para esta cuenta; afinidad pendiente.",
+              "width": 702,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "No es un resultado negativo ni significa que este vino no te guste.",
+              "width": 702,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "P",
+              "text": "Parecidos pendientes: falta la ficha sensorial verificada de este vino.",
+              "width": 728,
+              "height": 20,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Quiero Probar",
+              "width": 360,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Lo he probado",
+              "width": 360,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Añadir favorito",
+              "width": 360,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Ver parecidos",
+              "width": 360,
+              "height": 44,
+              "outside": []
+            },
+            {
+              "tag": "BUTTON",
+              "text": "Consultar afinidad",
+              "width": 360,
+              "height": 44,
+              "outside": []
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Expanded card controls meet 44px targets",
+          "passed": true,
+          "actual": [
+            {
+              "name": "Cerrar edición",
+              "width": 141.671875,
+              "height": 44
+            },
+            {
+              "name": "Botella",
+              "width": 223.328125,
+              "height": 44
+            },
+            {
+              "name": "EUR",
+              "width": 223.328125,
+              "height": 44
+            },
+            {
+              "name": "Aplicar precio",
+              "width": 135.25,
+              "height": 44
+            },
+            {
+              "name": "Descartar cambio",
+              "width": 162.921875,
+              "height": 44
+            },
+            {
+              "name": "Quiero Probar",
+              "width": 360,
+              "height": 44
+            },
+            {
+              "name": "Lo he probado",
+              "width": 360,
+              "height": 44
+            },
+            {
+              "name": "Añadir favorito",
+              "width": 360,
+              "height": 44
+            },
+            {
+              "name": "Ver parecidos",
+              "width": 360,
+              "height": 44
+            },
+            {
+              "name": "Consultar afinidad",
+              "width": 360,
+              "height": 44
+            }
+          ],
+          "expected": null
+        },
+        {
+          "name": "Every external HTTP request is locally fulfilled",
+          "passed": true,
+          "actual": {
+            "seen": 4,
+            "fulfilled": 4
+          },
+          "expected": null
+        },
+        {
+          "name": "No SDK REST write or training",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No runtime errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

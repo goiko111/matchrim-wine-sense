@@ -1,0 +1,67 @@
+{
+  "scope": "Actual active list/value hook factories extracted with TypeScript AST; positions ignored in pure tests. Recorded model affinity is negative input, never catalog-positive evidence.",
+  "source": "src/components/wine-import/WineMenuScanner.tsx",
+  "sourceSha256": "6df4a3df77e1c205a6341702e3df3130e4f6c9fb32c74d8af7b5d28fa915e51d",
+  "checks": [
+    {
+      "name": "Active bottle max uses explicit25/35 despite generic null",
+      "passed": true
+    },
+    {
+      "name": "Active bottle descending uses35 before25",
+      "passed": true
+    },
+    {
+      "name": "Mixed/unknown all-format list lacks monetary basis",
+      "passed": true
+    },
+    {
+      "name": "Filtered EUR copa need not borrow GBP bottle currency",
+      "passed": true
+    },
+    {
+      "name": "Mixed bottle currencies stay incompatible",
+      "passed": true
+    },
+    {
+      "name": "Model score is not trusted catalog affinity for menu value",
+      "passed": true
+    },
+    {
+      "name": "both manual amount is pending, not assigned a guessed unit",
+      "passed": true
+    },
+    {
+      "name": "both manual amount has explicit provenance",
+      "passed": true
+    },
+    {
+      "name": "both read service prices are not overwritten",
+      "passed": true
+    },
+    {
+      "name": "unknown manual amount is pending, not assigned a guessed unit",
+      "passed": true
+    },
+    {
+      "name": "unknown manual amount has explicit provenance",
+      "passed": true
+    },
+    {
+      "name": "unknown read service prices are not overwritten",
+      "passed": true
+    },
+    {
+      "name": "inferred manual amount is pending, not assigned a guessed unit",
+      "passed": true
+    },
+    {
+      "name": "inferred manual amount has explicit provenance",
+      "passed": true
+    },
+    {
+      "name": "inferred read service prices are not overwritten",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "scope": "Task06 pure intent/identity/readback contracts and active AST boundaries. Existing negative provenance receipt; no new OCR/user/catalog-positive sheet.",
+  "checks": [
+    {
+      "name": "Wishlist favorite changes only favorite, not state/history",
+      "passed": true
+    },
+    {
+      "name": "Favorite to tasted changes only status, never favorite=false",
+      "passed": true
+    },
+    {
+      "name": "Favoriting a tasted declaration never sends wishlist",
+      "passed": true
+    },
+    {
+      "name": "Repeated wishlist intent does not require a mutation",
+      "passed": true
+    },
+    {
+      "name": "Repeated tasted intent does not invent rating/feedback",
+      "passed": true
+    },
+    {
+      "name": "Already favorite intent is an empty delta",
+      "passed": true
+    },
+    {
+      "name": "Exact nombre edit cannot silently retain bound identity",
+      "passed": true
+    },
+    {
+      "name": "Exact productor edit cannot silently retain bound identity",
+      "passed": true
+    },
+    {
+      "name": "Exact anada edit cannot silently retain bound identity",
+      "passed": true
+    },
+    {
+      "name": "Exact region edit cannot silently retain bound identity",
+      "passed": true
+    },
+    {
+      "name": "Exact pais edit cannot silently retain bound identity",
+      "passed": true
+    },
+    {
+      "name": "Exact tipo edit cannot silently retain bound identity",
+      "passed": true
+    },
+    {
+      "name": "Exact uvas edit cannot silently retain bound identity",
+      "passed": true
+    },
+    {
+      "name": "Price is not a global wine-identity key",
+      "passed": true
+    },
+    {
+      "name": "Same ID and frozen metadata confirm only requested combined intention",
+      "passed": true
+    },
+    {
+      "name": "different row representation stays unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "different owner representation stays unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "state loss representation stays unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "favorite loss representation stays unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "rating appeared representation stays unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "training appeared representation stays unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "price overwrite representation stays unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "metadata loss representation stays unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "Missing/array response cannot certify a mutation",
+      "passed": true
+    },
+    {
+      "name": "Active save uses indexed per-card ID ledger, not name dedup",
+      "passed": true
+    },
+    {
+      "name": "Active reset clears bound IDs/pending identity/holds",
+      "passed": true
+    },
+    {
+      "name": "Active follow-up SDK mutation is owner AND exact row constrained",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "06cda0f6158a0f3100cd169d51f157c431cf63baf4fef66bfb6ec0e29d916748",
+    "src/utils/menuWineActions.ts": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+    "scripts/check-matchrim-menu-actions-oct12.ts": "ff881c1e8eab5ef51f7ccc69c7d2a88fe1cec220784135f1d18de60071d17619"
+  }
+}

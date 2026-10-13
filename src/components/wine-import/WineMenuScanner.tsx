@@ -22,6 +22,7 @@ import { AiRimContextGuide } from "@/components/AiRimContextGuide";
 import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
 import { MenuPriceEditor } from '@/components/wine-import/MenuPriceEditor';
 import { clearMenuManualPriceOrigin, manualMenuPriceLines } from '@/utils/menuPriceReview';
+import { menuWineSensorySimilarity, menuWineSimilarityBand, menuWineSimilarityUnavailable } from '@/utils/menuWineSimilarity';
 import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
@@ -188,40 +189,7 @@ const getWinePosition = (wine: ScannedWine) => {
 };
 
 const calculateWineSimilarity = (source: ScannedWine, candidate: ScannedWine) => {
-  let score = 0;
-  let signals = 0;
-
-  if (source.atributos && candidate.atributos) {
-    const distance = Math.sqrt(
-      Math.pow(source.atributos.potencia - candidate.atributos.potencia, 2) +
-      Math.pow(source.atributos.acidez - candidate.atributos.acidez, 2) +
-      Math.pow(source.atributos.dulzura - candidate.atributos.dulzura, 2) +
-      Math.pow(source.atributos.taninos - candidate.atributos.taninos, 2) +
-      Math.pow(source.atributos.afrutado - candidate.atributos.afrutado, 2)
-    );
-    const maxDistance = Math.sqrt(5 * Math.pow(4, 2));
-    score += Math.max(0, 100 - (distance / maxDistance) * 100) * 0.7;
-    signals += 0.7;
-  }
-
-  const sourceType = formatWineType(source.tipo).toLowerCase();
-  const candidateType = formatWineType(candidate.tipo).toLowerCase();
-  if (sourceType && candidateType) {
-    score += (sourceType === candidateType ? 100 : 35) * 0.15;
-    signals += 0.15;
-  }
-
-  const sourceGrapes = new Set((source.uvas || []).map((grape) => grape.toLowerCase()));
-  const candidateGrapes = new Set((candidate.uvas || []).map((grape) => grape.toLowerCase()));
-  if (sourceGrapes.size && candidateGrapes.size) {
-    const overlap = Array.from(sourceGrapes).filter((grape) => candidateGrapes.has(grape)).length;
-    const union = new Set([...sourceGrapes, ...candidateGrapes]).size;
-    score += ((overlap / union) * 100) * 0.15;
-    signals += 0.15;
-  }
-
-  if (signals === 0) return 0;
-  return Math.round(score / signals);
+  return menuWineSensorySimilarity(source, candidate)?.score ?? 0;
 };
 
 const WineMenuScannerSession = ({
@@ -1726,7 +1694,7 @@ const WineMenuScannerSession = ({
 			                  const wineDecision = getWineDecision(wine);
 
 			                return (
-			                  <div key={`${wine.nombre}-${index}-actions`}>
+			                  <div key={`menu-row-${index}-actions`}>
 			                    <button
 			                      type="button"
 			                      className="flex min-h-14 w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-stone-50"
@@ -1741,20 +1709,20 @@ const WineMenuScannerSession = ({
 			                      <span className="shrink-0 text-xs font-medium text-red-900">Editar y guardar</span>
 			                    </button>
 			                    {expandedWineActionsIndex === index && (
-			                    <div id={`wine-actions-${index}`} className="bg-stone-50 p-3">
+			                    <div id={`wine-actions-${index}`} className="bg-stone-50 p-2 sm:p-3">
 			              <Card
 		                className={`overflow-hidden rounded-lg transition ${
 		                  highlightedWineIndex === index ? 'ring-2 ring-red-700 ring-offset-2' : ''
 		                }`}
 	              >
 	                <CardContent className="p-0">
-                    <div className="border-b border-white/10 matchrim-ink-panel px-5 py-4 text-white">
+                    <div className="border-b border-white/10 matchrim-ink-panel px-3 py-4 text-white sm:px-5">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
 	                          <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Ficha de carta</p>
-	                          <h4 className="mt-1 text-xl font-bold leading-tight">{wine.nombre}</h4>
+	                          <h4 className="mt-1 break-words text-xl font-bold leading-tight">{wine.nombre}</h4>
 	                          {wine.productor && (
-	                            <p className="mt-1 truncate text-sm text-white/68">{wine.productor}</p>
+	                            <p className="mt-1 break-words text-sm text-white/68">{wine.productor}</p>
 	                          )}
 	                          <Badge variant="outline" className="mt-3 border-white/15 bg-white/10 text-white">
 	                            {wineDecision.label}
@@ -1768,7 +1736,7 @@ const WineMenuScannerSession = ({
 	                        )}
                       </div>
                     </div>
-                    <div className="p-6">
+                    <div className="p-3 sm:p-6 [&_p]:break-words">
 	                  <div className="flex flex-col gap-4 lg:flex-row">
 	                    {/* Wine Info */}
 	                    <div className="flex-1 space-y-3">
@@ -1782,7 +1750,7 @@ const WineMenuScannerSession = ({
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="gap-2 self-start"
+                          className="h-auto min-h-11 max-w-full gap-2 self-start whitespace-normal [&_svg]:shrink-0"
                           onClick={() => setEditingWineIndex(isEditing ? null : index)}
                         >
                           <Edit3 className="h-4 w-4" />
@@ -1791,7 +1759,7 @@ const WineMenuScannerSession = ({
                       </div>
 
                       {isEditing && (
-                        <div className="matchrim-soft-surface rounded-lg p-4">
+                        <div className="matchrim-soft-surface rounded-lg p-0 sm:p-4">
                           <div className="grid gap-3 md:grid-cols-2">
                             <div className="space-y-1.5 md:col-span-2">
                               <Label htmlFor={`scan-name-${index}`}>Nombre</Label>
@@ -1930,7 +1898,8 @@ const WineMenuScannerSession = ({
 
 	                  {similarWines.length > 0 && (
 	                    <div className="mt-4 rounded-lg border border-red-100 bg-red-50/70 p-3">
-	                      <p className="text-sm font-semibold text-red-950">Si este te gusta, mira también en esta carta</p>
+	                      <p className="text-sm font-semibold text-red-950">Fichas de estilo parecido en esta carta</p>
+                          <p className="mt-1 text-xs text-red-900">Comparación de cinco atributos de fichas Winerim; no es afinidad personal.</p>
 	                      <div className="mt-2 grid gap-2 sm:grid-cols-2">
 	                        {similarWines.map(({ wine: similarWine, index: similarIndex, score }) => (
 	                          <button
@@ -1948,13 +1917,16 @@ const WineMenuScannerSession = ({
 	                              )}
 	                            </div>
 	                            <p className="mt-1 text-xs text-muted-foreground">
-	                              Parecido {score}%{similarWine.tipo ? ` · ${formatWineType(similarWine.tipo)}` : ''}
+                              {menuWineSimilarityBand(score)}
 	                            </p>
 	                          </button>
 	                        ))}
 	                      </div>
 	                    </div>
 		          )}
+                        {similarWines.length === 0 && <p id={`menu-similarity-pending-${index}`} className="mt-4 break-words text-sm text-slate-600">
+                          {menuWineSimilarityUnavailable(wine, scannedWines.filter((_, candidateIndex) => candidateIndex !== index))}
+                        </p>}
 
                         {unconfirmedWineIndexes.has(index) && (
                           <p role="status" className="mt-4 text-sm text-amber-900">Guardado sin confirmar. Revisa Bodega antes de repetirlo.</p>
@@ -1962,7 +1934,7 @@ const WineMenuScannerSession = ({
                         {identityHoldIndexes.has(index) && (
                           <p role="status" className="mt-4 text-sm text-amber-900">Identidad editada; el guardado anterior no se modifica. Revisa la identificación en Bodega.</p>
                         )}
-			                  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+			                  <div className="mt-4 grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5 [&>button]:h-auto [&>button]:min-h-11 [&>button]:whitespace-normal [&>button]:py-2 [&>button_svg]:shrink-0">
 		                    <Button
 		                      onClick={() => saveWineToWishlist(wine, index)}
 		                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(wishlistSaveKey)}
@@ -2014,6 +1986,7 @@ const WineMenuScannerSession = ({
                           className="gap-2"
                           onClick={(event) => openWineDetail(similarWines[0]?.index ?? index, event.currentTarget)}
                           disabled={similarWines.length === 0}
+                          aria-describedby={similarWines.length === 0 ? `menu-similarity-pending-${index}` : undefined}
                         >
 	                          <ScanLine className="h-4 w-4" />
 	                          Ver parecidos

@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-13, style evidence and continuous editing closed
+
+1. Preserve style20/264 and94contract evidence, including previously passing shallow width checks and newly caught clipping/typing failures. No real catalog-positive UI or human taste approval.
+2. Resolve reproduced fractional-JPY rounding at explicit manual-price validation, without FX or silently changing the amount.
+3. Review cloud patch3845c72 separately; no local integration or sum of its425checks into local metrics. Combined scanner/lifecycle/native and memory attribution gates remain open.
+4. Keep recognition/canonical annotation, real human outcomes, hosted ownership and physical/release gates separate. No automatic TestFlight or source-dataset mutation.
+
 ## Current delta: 2026-10-13, explicit menu price review closed
 
 1. Preserve the40-context/710-check price evidence and optional v1 assignment metadata. Do not replay this as new OCR, real users, hosted persistence or native accessibility.

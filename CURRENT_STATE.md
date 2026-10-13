@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-13, grounded menu style and editing reflow
+
+- Removed photo/type-only numeric similarity; verified complete sensory sheets required, qualitative bands separate from personal affinity. Sequential name typing retains focus with stable row key; no identity certification from that edit.
+- Final20/20 local contexts264checks,94style contracts,123price contracts; release/typecheck/lint/build pass,0errors106warnings. Deep visual guards include clipped ancestors,320px/200%,44px and bottom-action reach.2456 prior evidence entries unchanged.
+- [Style and reflow report](docs/MATCHRIM_MENU_STYLE_EVIDENCE_2026-10-13.md). Cloud completed its separate120min/5commits; results not integrated here. Next reproduced local edge: fractional JPY displays rounded. No publication or native/TestFlight change.
+
 ## Latest checkpoint: 2026-10-13, explicit menu price review
 
 - Draft amount/currency/unit with Apply/Discard, comma decimal validation, per-unit manual origin and preserved original readings. No currency conversion or availability inference; saved/uncertain pricing cannot silently overwrite Bodega metadata.

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import type { MenuScanWine } from '@/utils/wineMenuScan';
 import { normalizeScanCurrency } from '@/utils/scanMoney';
 import { manualMenuPriceLines, parseMenuPriceDraft, resolveMenuPriceReview } from '@/utils/menuPriceReview';
@@ -63,12 +64,14 @@ export function MenuPriceEditor({ wine, index, locked, onApply }: {
     {locked ? <p className="text-sm text-slate-600">Precio vinculado al guardado anterior; no se modifica desde esta ficha.</p>
       : <p className="text-xs text-slate-600">El formato del precio no confirma la disponibilidad por copa o botella.</p>}
     <div className="flex flex-wrap gap-2">
-      <Button type="button" className="min-h-11 gap-2 whitespace-normal" disabled={!ready} onClick={() => {
+      <Button type="button" className="h-auto min-h-11 max-w-full gap-[8px] whitespace-normal px-[10px] py-2" disabled={!ready} onClick={() => {
         if (!ready || parsed.amount === null || (format !== 'copa' && format !== 'botella')) return;
         const updated = resolveMenuPriceReview(wine, parsed.amount, format, currency);
         onApply(updated); setTouched(false); setNotice(manualMenuPriceLines(updated).join(' \u00b7 '));
-      }}><Check className="h-4 w-4 shrink-0" />Aplicar precio</Button>
-      <Button type="button" variant="outline" className="min-h-11 gap-2 whitespace-normal" disabled={locked} onClick={reset}><RotateCcw className="h-4 w-4 shrink-0" />Descartar cambio</Button>
+      }}><Check className="h-[20px] w-[20px] shrink-0" /><span className="min-w-0 break-words">Aplicar precio</span></Button>
+      <TooltipProvider><Tooltip><TooltipTrigger asChild>
+        <Button type="button" variant="outline" className="h-11 w-11 shrink-0 p-0" aria-label="Descartar cambio" disabled={locked} onClick={reset}><RotateCcw className="h-[20px] w-[20px]" /></Button>
+      </TooltipTrigger><TooltipContent>Descartar cambio</TooltipContent></Tooltip></TooltipProvider>
     </div>
     <p role="status" aria-live="polite" className="break-words text-sm font-medium text-emerald-800">{notice}</p>
   </fieldset>;

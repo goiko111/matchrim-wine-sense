@@ -1,0 +1,383 @@
+{
+  "scope": "Frozen negative contracts plus explicitly synthetic positive math only; no catalog-positive UI injection, provider or human calibration",
+  "baseline": "ca73c57efa52c205fc173fb69e5f0ac11ae90f7c",
+  "checks": [
+    {
+      "name": "Frozen vision attributes cannot compute style similarity",
+      "passed": true
+    },
+    {
+      "name": "Same inferred type/grapes cannot substitute for missing attributes",
+      "passed": true
+    },
+    {
+      "name": "Unknown types never produce the previous Sin-tipo similarity",
+      "passed": true
+    },
+    {
+      "name": "Provider source/catalog claim is cleared by canonical evidence gate",
+      "passed": true
+    },
+    {
+      "name": "Complete equivalent synthetic sheets compute100, not personal affinity",
+      "passed": true
+    },
+    {
+      "name": "Similarity does not mutate sheets or user/price/affinity evidence",
+      "passed": true
+    },
+    {
+      "name": "Extreme opposite complete sheets have bounded score0",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid potencia=null abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid potencia=undefined abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid potencia=NaN abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid potencia=Infinity abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid potencia=-1 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid potencia=0 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid potencia=6 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid potencia=3 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid acidez=null abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid acidez=undefined abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid acidez=NaN abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid acidez=Infinity abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid acidez=-1 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid acidez=0 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid acidez=6 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid acidez=3 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid dulzura=null abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid dulzura=undefined abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid dulzura=NaN abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid dulzura=Infinity abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid dulzura=-1 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid dulzura=0 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid dulzura=6 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid dulzura=3 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid taninos=null abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid taninos=undefined abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid taninos=NaN abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid taninos=Infinity abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid taninos=-1 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid taninos=0 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid taninos=6 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid taninos=3 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid afrutado=null abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid afrutado=undefined abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid afrutado=NaN abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid afrutado=Infinity abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid afrutado=-1 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid afrutado=0 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid afrutado=6 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Missing/invalid afrutado=3 abstains on either side",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded catalog-source abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded canonical-missing abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded canonical-blank abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded identity-low abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded identity-doubt abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded identity-inferred abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded sheet-missing abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded canonical-number abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded confidence-string abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded confidence-infinite abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Ungrounded confidence-scale abstains, not zero taste match",
+      "passed": true
+    },
+    {
+      "name": "Same known reference is not its own recommendation",
+      "passed": true
+    },
+    {
+      "name": "Unknown vintage does not turn same canonical ID into another reference",
+      "passed": true
+    },
+    {
+      "name": "Explicit different vintages remain separate synthetic references",
+      "passed": true
+    },
+    {
+      "name": "Type/grape guesses cannot inflate verified sensory math",
+      "passed": true
+    },
+    {
+      "name": "Price/currency changes do not recalibrate sensory similarity",
+      "passed": true
+    },
+    {
+      "name": "Manual identity change invalidates similarity with the old sheet",
+      "passed": true
+    },
+    {
+      "name": "Manual price update preserves grounded sensory sheet, not a new sheet",
+      "passed": true
+    },
+    {
+      "name": "Missing source sheet explicitly pending",
+      "passed": true
+    },
+    {
+      "name": "Missing other sheets explicitly pending",
+      "passed": true
+    },
+    {
+      "name": "No qualifying style is different from missing data",
+      "passed": true
+    },
+    {
+      "name": "Qualifying styles are not incorrectly labelled unavailable",
+      "passed": true
+    },
+    {
+      "name": "Qualitative UI bands never emit percentages/probability",
+      "passed": true
+    },
+    {
+      "name": "Actual reachable similarity wrapper invokes evidence gate",
+      "passed": true
+    },
+    {
+      "name": "Actual list excludes missing sheets while preserving real indexes",
+      "passed": true
+    },
+    {
+      "name": "Protected active initializer unchanged: saveScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected active initializer unchanged: updateScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected active initializer unchanged: normalizeScannedWine",
+      "passed": true
+    },
+    {
+      "name": "Protected active initializer unchanged: processFile",
+      "passed": true
+    },
+    {
+      "name": "Protected active initializer unchanged: retryScanProfile",
+      "passed": true
+    },
+    {
+      "name": "Protected active initializer unchanged: listPriceText",
+      "passed": true
+    },
+    {
+      "name": "Protected active initializer unchanged: menuDecision",
+      "passed": true
+    },
+    {
+      "name": "Protected active initializer unchanged: getSimilarWines",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/menuPriceReview.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/menuWineSave.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/scanWineEvidence.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/wineMenuScan.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/utils/wineComparison.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/components/wine-import/WineComparisonWorkspace.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected independent source unchanged: src/components/wine-import/MultiWineLabelScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Price editor layout change preserves business initializer: initialFormat",
+      "passed": true
+    },
+    {
+      "name": "Price editor layout change preserves business initializer: parsed",
+      "passed": true
+    },
+    {
+      "name": "Price editor layout change preserves business initializer: ready",
+      "passed": true
+    },
+    {
+      "name": "Price editor layout change preserves business initializer: changedCurrency",
+      "passed": true
+    },
+    {
+      "name": "Price editor layout change preserves business initializer: serviceConflict",
+      "passed": true
+    },
+    {
+      "name": "Price editor layout change preserves business initializer: reset",
+      "passed": true
+    }
+  ],
+  "allPassed": true
+}

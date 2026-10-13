@@ -1,0 +1,131 @@
+{
+  "baseline": "ca73c57efa52c205fc173fb69e5f0ac11ae90f7c",
+  "primary": {
+    "contexts": 20,
+    "checks": 264,
+    "allPassed": true
+  },
+  "contracts": {
+    "checks": 94,
+    "allPassed": true
+  },
+  "protectedEvidence": [
+    {
+      "name": "matchrim-menu-save-2026-10-12",
+      "entries": 289,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-actions-2026-10-12",
+      "entries": 126,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-affinity-status-2026-10-12",
+      "entries": 91,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-profile-retry-2026-10-13",
+      "entries": 112,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-airim-provenance-2026-10-13",
+      "entries": 75,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-notice-2026-10-13",
+      "entries": 103,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-focus-2026-10-13",
+      "entries": 143,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-navigation-2026-10-13",
+      "entries": 175,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-reading-2026-10-13",
+      "entries": 70,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-cancel-2026-10-13",
+      "entries": 80,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-ranking-cancel-2026-10-13",
+      "entries": 99,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-multi-stale-cancel-2026-10-13",
+      "entries": 149,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-progress-a11y-2026-10-13",
+      "entries": 137,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-counter-2026-10-13",
+      "entries": 33,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-edit-lock-2026-10-13",
+      "entries": 79,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-failure-2026-10-13",
+      "entries": 69,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-manual-provenance-2026-10-13",
+      "entries": 109,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-hour-resilience-2026-10-13",
+      "entries": 32,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-second-hour-2026-10-13",
+      "entries": 159,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-price-resolution-2026-10-13",
+      "entries": 326,
+      "unchanged": true
+    }
+  ],
+  "protectedEntries": 2456,
+  "product": [
+    "src/components/wine-import/WineMenuScanner.tsx",
+    "src/components/wine-import/MenuPriceEditor.tsx",
+    "src/utils/menuWineSimilarity.ts"
+  ],
+  "finalHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "6df4a3df77e1c205a6341702e3df3130e4f6c9fb32c74d8af7b5d28fa915e51d",
+    "src/components/wine-import/MenuPriceEditor.tsx": "eb3dc07a768551d8f7aa8554c93d09cb2dce19e8784cbbae6b42422f87307284",
+    "src/utils/menuWineSimilarity.ts": "86f405f869ea5f6137aa0895e0fabeed0bf56c099956020d56dd522816a5c763"
+  },
+  "realRemoteAppCalls": 0,
+  "realUsers": 0,
+  "hostedWrites": 0,
+  "recognitionCertification": false,
+  "humanPreferenceCertification": false,
+  "nativeAccessibilityCertification": false
+}

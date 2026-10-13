@@ -1,0 +1,213 @@
+{
+  "scope": "Menu similarity abstention on public pixel canary and frozen synthetic responses. No catalog-positive UI fixture.",
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "a906de394bf35baae9200c7d4eb55927b5f570256f8a02534bbf84ed92545664",
+    "src/utils/menuWineSave.ts": "6b6ad21c303bf051333fc5a3c2e83bb8a8a2da1f44d066e8817281c7b93c6224",
+    "src/utils/menuPriceReview.ts": "b854d871d2a37fe82b8a05a3907c01bc55137e9a6f35bb7071440ea5c952105a",
+    "scripts/qa-matchrim-menu-style-evidence-oct13.py": "d45d3002b860ce5f24c582592e34640c16ed0270dd60376d84589465c48dd4f0"
+  },
+  "inputHashes": {
+    "docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json": "f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5",
+    "qa-fixtures/food-menu/commons-restaurant-menu-2026-08-25-2000.jpg": "9980c5e6b9d5e52f1783e2f26d1a97e22c0c2e1556e9e72919dd26fc34ece9a9"
+  },
+  "paidCalls": 0,
+  "realRemoteAppCalls": 0,
+  "realUsers": 0,
+  "realWrites": 0,
+  "results": [
+    {
+      "case": "vision:portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "No numerical similarity from photo or unknown type",
+          "passed": false,
+          "actual": [
+            "Parecido 92%"
+          ],
+          "expected": []
+        },
+        {
+          "name": "Missing sensory origin explicitly explained",
+          "passed": false,
+          "actual": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo\n\nMarchesi di Barolo\n\nAfinidad pendiente\n\nPiamonte · Italia\n\nEditar\nPiamonte\nItalia\nTinto\n25,00 €\nVariedades: Nebbiolo\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nNo es un resultado negativo ni significa que este vino no te guste.\n\nSi este te gusta, mira también en esta carta\n\nBarolo Marchesi di Barolo\n\nParecido 92% · tinto\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\nConsultar afinidad",
+          "expected": null
+        },
+        {
+          "name": "No ungrounded similar-wine navigation",
+          "passed": false,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No provider self-certified affinity99",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Scan references stay individually available",
+          "passed": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "name": "No page width overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Every external HTTP request is locally fulfilled",
+          "passed": true,
+          "actual": {
+            "seen": 4,
+            "fulfilled": 4
+          },
+          "expected": null
+        },
+        {
+          "name": "No SDK REST write or training",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No runtime errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "missing:portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "No numerical similarity from photo or unknown type",
+          "passed": false,
+          "actual": [
+            "Parecido 100%"
+          ],
+          "expected": []
+        },
+        {
+          "name": "Missing sensory origin explicitly explained",
+          "passed": false,
+          "actual": "FICHA DE CARTA\n\nBarbaresco Marchesi di Barolo\n\nMarchesi di Barolo\n\nAfinidad pendiente\n\nPiamonte · Italia\n\nEditar\nPiamonte\nItalia\nTinto\n25,00 €\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nAfinidad pendiente\n\nNo hay un perfil guardado para esta cuenta; afinidad pendiente.\n\nNo es un resultado negativo ni significa que este vino no te guste.\n\nSi este te gusta, mira también en esta carta\n\nBarolo Marchesi di Barolo\n\nParecido 100% · tinto\n\nQuiero Probar\nLo he probado\nAñadir favorito\nVer parecidos\nConsultar afinidad",
+          "expected": null
+        },
+        {
+          "name": "No ungrounded similar-wine navigation",
+          "passed": false,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No provider self-certified affinity99",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Scan references stay individually available",
+          "passed": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "name": "No page width overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Every external HTTP request is locally fulfilled",
+          "passed": true,
+          "actual": {
+            "seen": 4,
+            "fulfilled": 4
+          },
+          "expected": null
+        },
+        {
+          "name": "No SDK REST write or training",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No runtime errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No console errors",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/scan-wine-menu"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines"
+        }
+      ],
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}
