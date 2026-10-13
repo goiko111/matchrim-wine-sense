@@ -5,6 +5,8 @@ import type { ComparableWine } from './wineComparison';
 import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
 import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 import { isNonWineIdentity } from './wineCategory';
+import { isMenuCurrencyAmountValid } from './menuPriceReview';
+import { normalizeScanCurrency } from './scanMoney';
 
 export const MISSING_SCAN_SENSORY = 'Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.';
 
@@ -99,24 +101,26 @@ export const updateMenuWineEvidence = (wine: MenuScanWine, updates: Partial<Menu
 export const menuWinePriceEvidence = (wine: MenuScanWine): Pick<ComparableWine, 'price' | 'currency' | 'prices' | 'service'> => {
   const inferredService = wine.campos_inferidos?.includes('servicio');
   const pending = wine.precio_manual_pendiente === true;
+  const safePrice = (amount: number | null | undefined) => normalizeScanCurrency(wine.moneda)
+    && amount != null && !isMenuCurrencyAmountValid(amount, wine.moneda) ? null : amount;
   const manual = wine.precio_manual_asignacion;
   if (manual && !pending) {
     const inferredPrice = (wine.campos_inferidos ?? []).some((field) => /^(precio|precios|moneda)$/.test(field));
     return {
       price: null, currency: manual.currency,
       prices: {
-        glass: manual.prices.copa ?? (!inferredService && !inferredPrice ? wine.precios?.copa : null),
-        bottle: manual.prices.botella ?? (!inferredService && !inferredPrice ? wine.precios?.botella : null),
+        glass: safePrice(manual.prices.copa ?? (!inferredService && !inferredPrice ? wine.precios?.copa : null)),
+        bottle: safePrice(manual.prices.botella ?? (!inferredService && !inferredPrice ? wine.precios?.botella : null)),
       },
       service: inferredService ? null : wine.servicio === 'copa' ? 'glass'
         : wine.servicio === 'botella' ? 'bottle' : wine.servicio === 'ambos' ? 'both' : null,
     };
   }
   return {
-    price: pending ? null : wine.precio,
+    price: pending ? null : safePrice(wine.precio),
     currency: wine.moneda,
     prices: !pending && !inferredService && wine.precios
-      ? { glass: wine.precios.copa, bottle: wine.precios.botella } : null,
+      ? { glass: safePrice(wine.precios.copa), bottle: safePrice(wine.precios.botella) } : null,
     service: inferredService ? null : wine.servicio === 'copa' ? 'glass'
       : wine.servicio === 'botella' ? 'bottle' : wine.servicio === 'ambos' ? 'both' : null,
   };

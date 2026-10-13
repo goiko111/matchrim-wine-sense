@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current delta: 2026-10-13, local candidate ready for combined review
+
+1. Preserve this candidate and three evidence packs; source-stage quantum distinction is explicit. No additional corpus/model calls or source resets.
+2. Review/integrate cloud patch3845c72, checking scanner lifecycle, overlay grouping and comparison layout against price/focus/reflow/precision changes. Cloud425checks/600cycles are reported, not local combined approval.
+3. Resolve isolated native tooling and produce combined simulator candidate; real camera/permissions/VoiceOver/DynamicType/pressure and hosted/model/human gates remain separate.
+4. TestFlight only after applicable combined-quality gate and verified signing/account/channel. Public web remains unchanged. No fabricated whole-product percentage or human-study conclusion.
+
 ## Current delta: 2026-10-13, style evidence and continuous editing closed
 
 1. Preserve style20/264 and94contract evidence, including previously passing shallow width checks and newly caught clipping/typing failures. No real catalog-positive UI or human taste approval.

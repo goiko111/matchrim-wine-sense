@@ -1,0 +1,1261 @@
+{
+  "entries": [
+    {
+      "path": "app-price-regression/both-bottle-landscape-applied.png",
+      "sha256": "c7ce4b8c5f73e77f224a73c29e2fb6532d5b6e97a4f4b64b395127b3363999b4"
+    },
+    {
+      "path": "app-price-regression/both-bottle-landscape-draft.png",
+      "sha256": "586e014a4f62ed59165875cc069f1fdc64efe950a3a9f96611047f695f3e2289"
+    },
+    {
+      "path": "app-price-regression/both-bottle-landscape-read.png",
+      "sha256": "83da0f70af95db755116f9423e5ccf5a28a423cca8f1fc335c0c8bd3088ad8d4"
+    },
+    {
+      "path": "app-price-regression/both-bottle-landscape-viewport.png",
+      "sha256": "e1e44baafcc8a37e8320defacb370e171e76ab53c958c5161869e84444efcf33"
+    },
+    {
+      "path": "app-price-regression/both-bottle-portrait-applied.png",
+      "sha256": "44409fd4d37efdc93f0ac86f56bb73776896d8a967db5c2957850dd487086045"
+    },
+    {
+      "path": "app-price-regression/both-bottle-portrait-draft.png",
+      "sha256": "f968677c3f27a9101d235d5c472e8888cad7b1facef70d1b22807685579890db"
+    },
+    {
+      "path": "app-price-regression/both-bottle-portrait-read.png",
+      "sha256": "d839cf41de8a3819aa1aa05f890a3145bd706b1a325829c75c44a4219e066947"
+    },
+    {
+      "path": "app-price-regression/both-bottle-portrait-viewport.png",
+      "sha256": "2ba6bbb343f101de629c692946e45068a0e663a665ecd423fd94ad467592a42f"
+    },
+    {
+      "path": "app-price-regression/both-cup-landscape-applied.png",
+      "sha256": "03e4a3a72b7a755236c61559f12088d342a84ed316c1b5bdc12ceb9ca7ebc190"
+    },
+    {
+      "path": "app-price-regression/both-cup-landscape-draft.png",
+      "sha256": "e0d4d2258d488000a05ceacefc2640a3c2a42af84b0fbf4f23d387fc36c5b294"
+    },
+    {
+      "path": "app-price-regression/both-cup-landscape-read.png",
+      "sha256": "20f8acbf748ccb12d47f6c6af189c38d7adacbef6b23d0a15627695bc6f43556"
+    },
+    {
+      "path": "app-price-regression/both-cup-landscape-viewport.png",
+      "sha256": "88418b818e43225b6343637f13e7476927e636b32e6fb00166ee7f0d2191049a"
+    },
+    {
+      "path": "app-price-regression/both-cup-portrait-applied.png",
+      "sha256": "d8358856010ba0bfa7676f858faa8789f49e0cb89db01d3da0158c714f778502"
+    },
+    {
+      "path": "app-price-regression/both-cup-portrait-draft.png",
+      "sha256": "8d7ac91163e19c3e24e884f4443c4d9d7f86672978a631585a30f1d2244d4269"
+    },
+    {
+      "path": "app-price-regression/both-cup-portrait-read.png",
+      "sha256": "97867ce8b84d4f1994255db52e0b012db4b29328747537ca0d0babdd2c012d1f"
+    },
+    {
+      "path": "app-price-regression/both-cup-portrait-viewport.png",
+      "sha256": "9f3c0c8c5a0741310123330820a870485513c259c23a31a7bb18dc863fa27bd6"
+    },
+    {
+      "path": "app-price-regression/bottle-eur-landscape-applied.png",
+      "sha256": "c7ce4b8c5f73e77f224a73c29e2fb6532d5b6e97a4f4b64b395127b3363999b4"
+    },
+    {
+      "path": "app-price-regression/bottle-eur-landscape-draft.png",
+      "sha256": "586e014a4f62ed59165875cc069f1fdc64efe950a3a9f96611047f695f3e2289"
+    },
+    {
+      "path": "app-price-regression/bottle-eur-landscape-read.png",
+      "sha256": "72da6029e592e9d07896b695f450e5da1b7bf49c0ebbaaf0612243e571cc47aa"
+    },
+    {
+      "path": "app-price-regression/bottle-eur-landscape-viewport.png",
+      "sha256": "e1e44baafcc8a37e8320defacb370e171e76ab53c958c5161869e84444efcf33"
+    },
+    {
+      "path": "app-price-regression/bottle-eur-portrait-applied.png",
+      "sha256": "44409fd4d37efdc93f0ac86f56bb73776896d8a967db5c2957850dd487086045"
+    },
+    {
+      "path": "app-price-regression/bottle-eur-portrait-draft.png",
+      "sha256": "f968677c3f27a9101d235d5c472e8888cad7b1facef70d1b22807685579890db"
+    },
+    {
+      "path": "app-price-regression/bottle-eur-portrait-read.png",
+      "sha256": "d9ef7855b1eb6e367a11405713731eb2bafe91c8999bcb57ebc3c3dea24e4ddd"
+    },
+    {
+      "path": "app-price-regression/bottle-eur-portrait-viewport.png",
+      "sha256": "2ba6bbb343f101de629c692946e45068a0e663a665ecd423fd94ad467592a42f"
+    },
+    {
+      "path": "app-price-regression/cancel-landscape-applied.png",
+      "sha256": "ee27f82cb536d7e779501be22026dc5f4cde2ec5c911d3824120a84c7cb576d6"
+    },
+    {
+      "path": "app-price-regression/cancel-landscape-draft.png",
+      "sha256": "586e014a4f62ed59165875cc069f1fdc64efe950a3a9f96611047f695f3e2289"
+    },
+    {
+      "path": "app-price-regression/cancel-landscape-read.png",
+      "sha256": "1afa5735e224c0ba9d3af40b86a866069a9efdd85df72c41aceaaeb96681c661"
+    },
+    {
+      "path": "app-price-regression/cancel-landscape-viewport.png",
+      "sha256": "288c3df1313d47704b5202a42d12c9796fcd29c2ce93942f855c2b14835a8f8d"
+    },
+    {
+      "path": "app-price-regression/cancel-portrait-applied.png",
+      "sha256": "2b2567fe73823885be32fcbbaf9368f6d97306e96483eea3903caa818f8ee1c6"
+    },
+    {
+      "path": "app-price-regression/cancel-portrait-draft.png",
+      "sha256": "f968677c3f27a9101d235d5c472e8888cad7b1facef70d1b22807685579890db"
+    },
+    {
+      "path": "app-price-regression/cancel-portrait-read.png",
+      "sha256": "93c9fd26516bac5289ce1aac013c5acdf9eb5677463bea2b9845062f7961181e"
+    },
+    {
+      "path": "app-price-regression/cancel-portrait-viewport.png",
+      "sha256": "dd17ac67cf0f64acec2d81bb0e021e4489f9694c8e771a80eab824c7794469b9"
+    },
+    {
+      "path": "app-price-regression/comma-landscape-applied.png",
+      "sha256": "74997f82548eeee2b83eb861e8132b2835f7dd0a1b1212f27f32d34be244187c"
+    },
+    {
+      "path": "app-price-regression/comma-landscape-draft.png",
+      "sha256": "86d3db03830e61c8c1b926e78f56b3798c6f7638c33b50988b012da41f173220"
+    },
+    {
+      "path": "app-price-regression/comma-landscape-read.png",
+      "sha256": "999844c4477cc16cc29a4dc7305e3d796867d3014a782d2e502b9b188a9de39c"
+    },
+    {
+      "path": "app-price-regression/comma-landscape-viewport.png",
+      "sha256": "4644ba1b62eecba61b7514d8882fcea7cdcbffeb65571962a6c358b9c2b6be59"
+    },
+    {
+      "path": "app-price-regression/comma-portrait-applied.png",
+      "sha256": "31866bd84f5923c721d692f7c5c555a164a8b6e7cfe2569cde47dac3ace80a0a"
+    },
+    {
+      "path": "app-price-regression/comma-portrait-draft.png",
+      "sha256": "e39abf3a683b2bc3169192ed0139f2b9cb78f5fd8fc5a4b18ed647cf1a16bccc"
+    },
+    {
+      "path": "app-price-regression/comma-portrait-read.png",
+      "sha256": "1a6a75c1c24841688fa5a2f229730b4894647e40e179ac72c48be707b99d019a"
+    },
+    {
+      "path": "app-price-regression/comma-portrait-viewport.png",
+      "sha256": "790dce483a8694e4d169f6e45509c7cd5aa1e7fc9ca2b38312600f28e1329d1a"
+    },
+    {
+      "path": "app-price-regression/compare-landscape-applied.png",
+      "sha256": "02e9d5384ac65418616dcbaf813542fb90ae9e56c4948730a76b3cb6f46d63b6"
+    },
+    {
+      "path": "app-price-regression/compare-landscape-bottle-compare.png",
+      "sha256": "6a9080d23467746e2eb655bd2c50fdc21d0045e3330fdcf0ab1aa90c6c2e41f6"
+    },
+    {
+      "path": "app-price-regression/compare-landscape-cup-compare.png",
+      "sha256": "5327d0537b4869678478cfa5114a138b66b819b547e2f5c2ffe11aa9c1807546"
+    },
+    {
+      "path": "app-price-regression/compare-landscape-draft.png",
+      "sha256": "7a50a630dc0e023548c674cf8f3b701052c41036d4517f60f235c12078071942"
+    },
+    {
+      "path": "app-price-regression/compare-landscape-read.png",
+      "sha256": "83da0f70af95db755116f9423e5ccf5a28a423cca8f1fc335c0c8bd3088ad8d4"
+    },
+    {
+      "path": "app-price-regression/compare-landscape-viewport.png",
+      "sha256": "77e3ff540d0b6384ac3641fb0ab6d536e69d17d9c12f3a8abf0d6e10c64b371f"
+    },
+    {
+      "path": "app-price-regression/compare-portrait-applied.png",
+      "sha256": "9f45c8c99983d6d82d137381a73b992744fe9967cd43edaabb73f4ac5f79217e"
+    },
+    {
+      "path": "app-price-regression/compare-portrait-bottle-compare.png",
+      "sha256": "4becf398b114d08b0fea794334e4d6dc94693c653f3c2baf449a7762d5198749"
+    },
+    {
+      "path": "app-price-regression/compare-portrait-cup-compare.png",
+      "sha256": "afb7461e197ace06d09f17b923f422b1003591e93491a17eed66a83d98a79b9a"
+    },
+    {
+      "path": "app-price-regression/compare-portrait-draft.png",
+      "sha256": "f2e4c1733f6af4bb81d919857167f507bb924a8f2c1af6e54184bc53d20f1a11"
+    },
+    {
+      "path": "app-price-regression/compare-portrait-read.png",
+      "sha256": "d839cf41de8a3819aa1aa05f890a3145bd706b1a325829c75c44a4219e066947"
+    },
+    {
+      "path": "app-price-regression/compare-portrait-viewport.png",
+      "sha256": "9c6e051ece193957c30c8038e28c2859ca289ea78046f5b06b8552f41dace13a"
+    },
+    {
+      "path": "app-price-regression/cup-eur-landscape-applied.png",
+      "sha256": "03e4a3a72b7a755236c61559f12088d342a84ed316c1b5bdc12ceb9ca7ebc190"
+    },
+    {
+      "path": "app-price-regression/cup-eur-landscape-draft.png",
+      "sha256": "e0d4d2258d488000a05ceacefc2640a3c2a42af84b0fbf4f23d387fc36c5b294"
+    },
+    {
+      "path": "app-price-regression/cup-eur-landscape-read.png",
+      "sha256": "bec66aa2eae29a31b1325fb83f19c115d2370b417fa8e0d961bf65de1b16efe0"
+    },
+    {
+      "path": "app-price-regression/cup-eur-landscape-viewport.png",
+      "sha256": "88418b818e43225b6343637f13e7476927e636b32e6fb00166ee7f0d2191049a"
+    },
+    {
+      "path": "app-price-regression/cup-eur-portrait-applied.png",
+      "sha256": "d8358856010ba0bfa7676f858faa8789f49e0cb89db01d3da0158c714f778502"
+    },
+    {
+      "path": "app-price-regression/cup-eur-portrait-draft.png",
+      "sha256": "8d7ac91163e19c3e24e884f4443c4d9d7f86672978a631585a30f1d2244d4269"
+    },
+    {
+      "path": "app-price-regression/cup-eur-portrait-read.png",
+      "sha256": "345e6f721a02e6a63e250211c1ce5443f7db1bc8e2115a81186a81c2198b6d41"
+    },
+    {
+      "path": "app-price-regression/cup-eur-portrait-viewport.png",
+      "sha256": "9f3c0c8c5a0741310123330820a870485513c259c23a31a7bb18dc863fa27bd6"
+    },
+    {
+      "path": "app-price-regression/currency-landscape-applied.png",
+      "sha256": "911715b733621b2b5151efdc1acd3bd874475ae45f017010cfaedbeab7366d67"
+    },
+    {
+      "path": "app-price-regression/currency-landscape-draft.png",
+      "sha256": "13a8361f134c1200461157e886d5dcc7c875f5ce7018dc2d79bf11239f18f1af"
+    },
+    {
+      "path": "app-price-regression/currency-landscape-read.png",
+      "sha256": "0c3119038839e0b348e5033d0afdb2477f4fd7ebe357845730d3119c429ba8ad"
+    },
+    {
+      "path": "app-price-regression/currency-landscape-viewport.png",
+      "sha256": "a75c6a9751dca8f7e85cc80ec9a37ba35bad824c8a6be74c60472a1bec61c284"
+    },
+    {
+      "path": "app-price-regression/currency-portrait-applied.png",
+      "sha256": "51d7ada5f37ded0dba45990fa6be06d92376b9606bca7c3fcbca12602831fac5"
+    },
+    {
+      "path": "app-price-regression/currency-portrait-draft.png",
+      "sha256": "2ee81618d457e50fabe94f88075bf5a0a50c3138dd3f572c6445b863ec7aab4c"
+    },
+    {
+      "path": "app-price-regression/currency-portrait-read.png",
+      "sha256": "8a453038557d1f5b05d55151ab6529dc38f9db7937fe2b7746f2276092d654d4"
+    },
+    {
+      "path": "app-price-regression/currency-portrait-viewport.png",
+      "sha256": "7d7d1fd91615296debca03c796088a753e080f972a7b75076c8dd707307a22ab"
+    },
+    {
+      "path": "app-price-regression/forged-landscape-applied.png",
+      "sha256": "ee27f82cb536d7e779501be22026dc5f4cde2ec5c911d3824120a84c7cb576d6"
+    },
+    {
+      "path": "app-price-regression/forged-landscape-draft.png",
+      "sha256": "586e014a4f62ed59165875cc069f1fdc64efe950a3a9f96611047f695f3e2289"
+    },
+    {
+      "path": "app-price-regression/forged-landscape-read.png",
+      "sha256": "1afa5735e224c0ba9d3af40b86a866069a9efdd85df72c41aceaaeb96681c661"
+    },
+    {
+      "path": "app-price-regression/forged-landscape-viewport.png",
+      "sha256": "288c3df1313d47704b5202a42d12c9796fcd29c2ce93942f855c2b14835a8f8d"
+    },
+    {
+      "path": "app-price-regression/forged-portrait-applied.png",
+      "sha256": "2b2567fe73823885be32fcbbaf9368f6d97306e96483eea3903caa818f8ee1c6"
+    },
+    {
+      "path": "app-price-regression/forged-portrait-draft.png",
+      "sha256": "f968677c3f27a9101d235d5c472e8888cad7b1facef70d1b22807685579890db"
+    },
+    {
+      "path": "app-price-regression/forged-portrait-read.png",
+      "sha256": "93c9fd26516bac5289ce1aac013c5acdf9eb5677463bea2b9845062f7961181e"
+    },
+    {
+      "path": "app-price-regression/forged-portrait-viewport.png",
+      "sha256": "dd17ac67cf0f64acec2d81bb0e021e4489f9694c8e771a80eab824c7794469b9"
+    },
+    {
+      "path": "app-price-regression/inferred-landscape-applied.png",
+      "sha256": "c7ce4b8c5f73e77f224a73c29e2fb6532d5b6e97a4f4b64b395127b3363999b4"
+    },
+    {
+      "path": "app-price-regression/inferred-landscape-draft.png",
+      "sha256": "586e014a4f62ed59165875cc069f1fdc64efe950a3a9f96611047f695f3e2289"
+    },
+    {
+      "path": "app-price-regression/inferred-landscape-read.png",
+      "sha256": "8c0a3738aff0ce6f2cc59cd6b10b08e964be08a35cfe28b908a5a954c85f8245"
+    },
+    {
+      "path": "app-price-regression/inferred-landscape-viewport.png",
+      "sha256": "e1e44baafcc8a37e8320defacb370e171e76ab53c958c5161869e84444efcf33"
+    },
+    {
+      "path": "app-price-regression/inferred-portrait-applied.png",
+      "sha256": "44409fd4d37efdc93f0ac86f56bb73776896d8a967db5c2957850dd487086045"
+    },
+    {
+      "path": "app-price-regression/inferred-portrait-draft.png",
+      "sha256": "f968677c3f27a9101d235d5c472e8888cad7b1facef70d1b22807685579890db"
+    },
+    {
+      "path": "app-price-regression/inferred-portrait-read.png",
+      "sha256": "6876459f1bcd739a77d0bdb3a0ff2ec400abbe1570bd2c9f64bfcb133b247256"
+    },
+    {
+      "path": "app-price-regression/inferred-portrait-viewport.png",
+      "sha256": "2ba6bbb343f101de629c692946e45068a0e663a665ecd423fd94ad467592a42f"
+    },
+    {
+      "path": "app-price-regression/invalid-landscape-applied.png",
+      "sha256": "c7ce4b8c5f73e77f224a73c29e2fb6532d5b6e97a4f4b64b395127b3363999b4"
+    },
+    {
+      "path": "app-price-regression/invalid-landscape-draft.png",
+      "sha256": "629e4686153cbe76fab50ae761b9782c3b153b7c970835727b82305d4ad7d1ea"
+    },
+    {
+      "path": "app-price-regression/invalid-landscape-read.png",
+      "sha256": "83da0f70af95db755116f9423e5ccf5a28a423cca8f1fc335c0c8bd3088ad8d4"
+    },
+    {
+      "path": "app-price-regression/invalid-landscape-viewport.png",
+      "sha256": "e1e44baafcc8a37e8320defacb370e171e76ab53c958c5161869e84444efcf33"
+    },
+    {
+      "path": "app-price-regression/invalid-portrait-applied.png",
+      "sha256": "44409fd4d37efdc93f0ac86f56bb73776896d8a967db5c2957850dd487086045"
+    },
+    {
+      "path": "app-price-regression/invalid-portrait-draft.png",
+      "sha256": "70d212ad74ad5b61a9adae37a756411ae9bb2cee779762fbf56d6b4fd8620f8f"
+    },
+    {
+      "path": "app-price-regression/invalid-portrait-read.png",
+      "sha256": "d839cf41de8a3819aa1aa05f890a3145bd706b1a325829c75c44a4219e066947"
+    },
+    {
+      "path": "app-price-regression/invalid-portrait-viewport.png",
+      "sha256": "2ba6bbb343f101de629c692946e45068a0e663a665ecd423fd94ad467592a42f"
+    },
+    {
+      "path": "app-price-regression/keyboard-landscape-applied.png",
+      "sha256": "c7ce4b8c5f73e77f224a73c29e2fb6532d5b6e97a4f4b64b395127b3363999b4"
+    },
+    {
+      "path": "app-price-regression/keyboard-landscape-draft.png",
+      "sha256": "586e014a4f62ed59165875cc069f1fdc64efe950a3a9f96611047f695f3e2289"
+    },
+    {
+      "path": "app-price-regression/keyboard-landscape-read.png",
+      "sha256": "83da0f70af95db755116f9423e5ccf5a28a423cca8f1fc335c0c8bd3088ad8d4"
+    },
+    {
+      "path": "app-price-regression/keyboard-landscape-viewport.png",
+      "sha256": "e1e44baafcc8a37e8320defacb370e171e76ab53c958c5161869e84444efcf33"
+    },
+    {
+      "path": "app-price-regression/keyboard-portrait-applied.png",
+      "sha256": "44409fd4d37efdc93f0ac86f56bb73776896d8a967db5c2957850dd487086045"
+    },
+    {
+      "path": "app-price-regression/keyboard-portrait-draft.png",
+      "sha256": "f968677c3f27a9101d235d5c472e8888cad7b1facef70d1b22807685579890db"
+    },
+    {
+      "path": "app-price-regression/keyboard-portrait-read.png",
+      "sha256": "d839cf41de8a3819aa1aa05f890a3145bd706b1a325829c75c44a4219e066947"
+    },
+    {
+      "path": "app-price-regression/keyboard-portrait-viewport.png",
+      "sha256": "2ba6bbb343f101de629c692946e45068a0e663a665ecd423fd94ad467592a42f"
+    },
+    {
+      "path": "app-price-regression/missing-landscape-applied.png",
+      "sha256": "c7ce4b8c5f73e77f224a73c29e2fb6532d5b6e97a4f4b64b395127b3363999b4"
+    },
+    {
+      "path": "app-price-regression/missing-landscape-draft.png",
+      "sha256": "13863ce72e62c0320737eef162998a523989d20c0144ce77e68b63856d3c6a20"
+    },
+    {
+      "path": "app-price-regression/missing-landscape-read.png",
+      "sha256": "83da0f70af95db755116f9423e5ccf5a28a423cca8f1fc335c0c8bd3088ad8d4"
+    },
+    {
+      "path": "app-price-regression/missing-landscape-viewport.png",
+      "sha256": "e1e44baafcc8a37e8320defacb370e171e76ab53c958c5161869e84444efcf33"
+    },
+    {
+      "path": "app-price-regression/missing-portrait-applied.png",
+      "sha256": "2ab5666a804c6bc1e6ece7b54865425ab47b1cfc3fc31994663757b621c02925"
+    },
+    {
+      "path": "app-price-regression/missing-portrait-draft.png",
+      "sha256": "480452296ba539244f11d35ef72d88e50a55368d6180b9e4e1bcffdcf51c4983"
+    },
+    {
+      "path": "app-price-regression/missing-portrait-read.png",
+      "sha256": "d839cf41de8a3819aa1aa05f890a3145bd706b1a325829c75c44a4219e066947"
+    },
+    {
+      "path": "app-price-regression/missing-portrait-viewport.png",
+      "sha256": "2ba6bbb343f101de629c692946e45068a0e663a665ecd423fd94ad467592a42f"
+    },
+    {
+      "path": "app-price-regression/multi-format-landscape-applied.png",
+      "sha256": "8d9c52fbd18c4cc383ec614fc3d2d4fccdbddca3ca3737366e1de3c25b99fd44"
+    },
+    {
+      "path": "app-price-regression/multi-format-landscape-draft.png",
+      "sha256": "7a50a630dc0e023548c674cf8f3b701052c41036d4517f60f235c12078071942"
+    },
+    {
+      "path": "app-price-regression/multi-format-landscape-read.png",
+      "sha256": "28a0846cd646b03d658489f01763d732e47648325c9f7a540a77ff1f13793f62"
+    },
+    {
+      "path": "app-price-regression/multi-format-landscape-viewport.png",
+      "sha256": "72ed8c7e179016230149a3c082754f8cf519666b6cf375924e2fdbe54cc25e45"
+    },
+    {
+      "path": "app-price-regression/multi-format-portrait-applied.png",
+      "sha256": "ce0267d9205641fa8bb433323ccc706945bae987a03cd9edbded6e387a7792bf"
+    },
+    {
+      "path": "app-price-regression/multi-format-portrait-draft.png",
+      "sha256": "f2e4c1733f6af4bb81d919857167f507bb924a8f2c1af6e54184bc53d20f1a11"
+    },
+    {
+      "path": "app-price-regression/multi-format-portrait-read.png",
+      "sha256": "e77c40a91a60d213de22feb574057116143a17f4386ac9d8ad44cfa286d0a51a"
+    },
+    {
+      "path": "app-price-regression/multi-format-portrait-viewport.png",
+      "sha256": "286dd24d91ac01551fe972e10ef73c00f275af70e4513839878d5fedc332933c"
+    },
+    {
+      "path": "app-price-regression/results.json",
+      "sha256": "104aee551f9d58e861a34dbcf3d6162b7de68321dfd2287b2b7d4691a1aff67f"
+    },
+    {
+      "path": "app-price-regression/service-conflict-landscape-applied.png",
+      "sha256": "676492434d3bb48aa3b8aff3ba38052738095d94327b6b7edfeb1176daafac24"
+    },
+    {
+      "path": "app-price-regression/service-conflict-landscape-draft.png",
+      "sha256": "f6aadbb3acada6df1709a5ba7e085c2e63684bb6bce2cf8f1443a6a5c709baf1"
+    },
+    {
+      "path": "app-price-regression/service-conflict-landscape-read.png",
+      "sha256": "7ba88c97b843fdcfaff4920cdba34a0e138250e29890be988e62f31f041c5aa3"
+    },
+    {
+      "path": "app-price-regression/service-conflict-landscape-viewport.png",
+      "sha256": "77edbdce81207cd1172c9efc84e6a646839718483f2ed4b3ee714f3c4d97b973"
+    },
+    {
+      "path": "app-price-regression/service-conflict-portrait-applied.png",
+      "sha256": "bf59edbde79a96f88ef7bb2be5419b98b7e38ce1ef94afe1d5e5797dc1e2c9b9"
+    },
+    {
+      "path": "app-price-regression/service-conflict-portrait-draft.png",
+      "sha256": "361fdfdeff711b7a21ad72f0b7d41c36064f1c72f7aed72dbeba177773d0b0b1"
+    },
+    {
+      "path": "app-price-regression/service-conflict-portrait-read.png",
+      "sha256": "d76fa9d27318b7cfe30cd4f1e72ba4c6e91014df6ca07172221a81a8f7e4fad4"
+    },
+    {
+      "path": "app-price-regression/service-conflict-portrait-viewport.png",
+      "sha256": "dd469f4406fd91c052663fd349c9e6b372498f419b0044d5b3ec7d0ad075a487"
+    },
+    {
+      "path": "app-price-regression/unknown-landscape-applied.png",
+      "sha256": "c7ce4b8c5f73e77f224a73c29e2fb6532d5b6e97a4f4b64b395127b3363999b4"
+    },
+    {
+      "path": "app-price-regression/unknown-landscape-draft.png",
+      "sha256": "586e014a4f62ed59165875cc069f1fdc64efe950a3a9f96611047f695f3e2289"
+    },
+    {
+      "path": "app-price-regression/unknown-landscape-read.png",
+      "sha256": "1021a5a89bff689e8aca7db278e8c678273ad4cd5fd5308b422e0c627fb7af40"
+    },
+    {
+      "path": "app-price-regression/unknown-landscape-viewport.png",
+      "sha256": "e1e44baafcc8a37e8320defacb370e171e76ab53c958c5161869e84444efcf33"
+    },
+    {
+      "path": "app-price-regression/unknown-portrait-applied.png",
+      "sha256": "44409fd4d37efdc93f0ac86f56bb73776896d8a967db5c2957850dd487086045"
+    },
+    {
+      "path": "app-price-regression/unknown-portrait-draft.png",
+      "sha256": "7033fb1bb75f9c849ddb01a52674c9829b694c9cce7107b7ea8014a6dadf64eb"
+    },
+    {
+      "path": "app-price-regression/unknown-portrait-read.png",
+      "sha256": "a178ef751530514fb08e9595f2dec44f9cb8bed1646f1126e6888b7819a289d5"
+    },
+    {
+      "path": "app-price-regression/unknown-portrait-viewport.png",
+      "sha256": "2ba6bbb343f101de629c692946e45068a0e663a665ecd423fd94ad467592a42f"
+    },
+    {
+      "path": "app-price-regression/zero-landscape-applied.png",
+      "sha256": "80f5e4f6d456c8a78ca5feea29b44f1d2fe08d4e85f936c18dbecc93ae5d6c68"
+    },
+    {
+      "path": "app-price-regression/zero-landscape-draft.png",
+      "sha256": "d26dc07a02d65177698c667fca5f9cbe3af065ccbd042cae935f76a3af282279"
+    },
+    {
+      "path": "app-price-regression/zero-landscape-read.png",
+      "sha256": "b40c192a792f7e28db3bb48c8ebf2fec8324a26c12897e5dc0fb69bf12346755"
+    },
+    {
+      "path": "app-price-regression/zero-landscape-viewport.png",
+      "sha256": "3af81b4f465257fd14294657a2fac180576249e6e507709a21a2b7825fe68bc9"
+    },
+    {
+      "path": "app-price-regression/zero-portrait-applied.png",
+      "sha256": "b02fbd3144c75e738ec2e34f51c41471fad607b68bf57db7feb180f494e5bf79"
+    },
+    {
+      "path": "app-price-regression/zero-portrait-draft.png",
+      "sha256": "75e2ec591a187fdb43920ca04f8caf53164214c8e0ae5eacf6af2208b29bf72d"
+    },
+    {
+      "path": "app-price-regression/zero-portrait-read.png",
+      "sha256": "f5a9a79cbfe84a61b7ad412e98aaa128f8e7e5b917243f7af5866a6b20bc97ec"
+    },
+    {
+      "path": "app-price-regression/zero-portrait-viewport.png",
+      "sha256": "2f1f94b29314fc378d614dac84e606d93a8a6d8728cbc67bd3b49f863b8ba1df"
+    },
+    {
+      "path": "app-price-regression/zoom-landscape-applied.png",
+      "sha256": "4f9b7306b55d12fc394b6c2c72856af5bfab9efd206d683d49cfb8d9fdc8483e"
+    },
+    {
+      "path": "app-price-regression/zoom-landscape-draft.png",
+      "sha256": "d2f541b117e1a8594dbabb2d1a5f5d0b46bc679d3fd0dbf596c313eb3fcd7978"
+    },
+    {
+      "path": "app-price-regression/zoom-landscape-read.png",
+      "sha256": "83da0f70af95db755116f9423e5ccf5a28a423cca8f1fc335c0c8bd3088ad8d4"
+    },
+    {
+      "path": "app-price-regression/zoom-landscape-viewport.png",
+      "sha256": "b1c705b71fa537f5ea494af8a49c08566f30980172c4e9a485de4d21b8f06898"
+    },
+    {
+      "path": "app-price-regression/zoom-narrow-applied.png",
+      "sha256": "aeab26d48280048478ee935f9b4100b2aba754d19d501238a8421b87e459e8ae"
+    },
+    {
+      "path": "app-price-regression/zoom-narrow-draft.png",
+      "sha256": "c60fb7d60bac6e88909d25233094bfb0e95ac10cd6ae3ee9bead6a3f37ad85cc"
+    },
+    {
+      "path": "app-price-regression/zoom-narrow-read.png",
+      "sha256": "5d2f3c430ecf5aa1ed1ffdc343275965b1c67e2f47efe252e40e4e5add23aab7"
+    },
+    {
+      "path": "app-price-regression/zoom-narrow-viewport.png",
+      "sha256": "7f3d4bda2c573b4405d173fa8697fa9ffebe067013307c86471c7ce4b42cf25e"
+    },
+    {
+      "path": "app-style-regression/forged-landscape-detail.png",
+      "sha256": "760ad21b770cc785f3aacc118f36a97decdb68245304cc4569b675447ab3695d"
+    },
+    {
+      "path": "app-style-regression/forged-landscape-viewport.png",
+      "sha256": "738c15a4fc3f413d5d6b8be3a39961c136044f54640cf7cafe30d2c40ebfce30"
+    },
+    {
+      "path": "app-style-regression/forged-portrait-detail.png",
+      "sha256": "333a0e267f445b1cbf5a45d102b14c599742a1eee8032c3e7eb6c6392404c1d2"
+    },
+    {
+      "path": "app-style-regression/forged-portrait-viewport.png",
+      "sha256": "686fea09680efd9f7fb6247a723b16e265ef89c138f57c2ddb8f973d726bf614"
+    },
+    {
+      "path": "app-style-regression/long-landscape-detail.png",
+      "sha256": "6a6e1e3f06c074149a5c4d646d6eafe2c91e11e23cc14ee89b9b3e5b5aaa0320"
+    },
+    {
+      "path": "app-style-regression/long-landscape-viewport.png",
+      "sha256": "98f9e425242c587491c93dd8c64aa8f9c96ecdb74cd894e1daaf32674a69cac1"
+    },
+    {
+      "path": "app-style-regression/long-portrait-detail.png",
+      "sha256": "b1c928c674ed83ee64e42ba23cc39569ffec9435b64a1816f34fd3b9995c25c5"
+    },
+    {
+      "path": "app-style-regression/long-portrait-viewport.png",
+      "sha256": "590cc96765f133530ce4d5d5bb1845f67a7a9fd1834120e630fc2c470eac348f"
+    },
+    {
+      "path": "app-style-regression/manual-landscape-detail.png",
+      "sha256": "72008800a2a44c6e92d55d9d96dace3696cda6054629e8390c1cbc4d4869cbc8"
+    },
+    {
+      "path": "app-style-regression/manual-landscape-viewport.png",
+      "sha256": "9fe88cf5142bd69427dc46ab798cb308d774899ee396685c24dc3d00b3838420"
+    },
+    {
+      "path": "app-style-regression/manual-portrait-detail.png",
+      "sha256": "82860bc4e72fefcf8ce5fad0b5c86934a880d5231b4f50f8e93e80d343536dd1"
+    },
+    {
+      "path": "app-style-regression/manual-portrait-viewport.png",
+      "sha256": "4bc032307c5a596c8ef9a84e76fb6ff74c9c4501dcfc0f1b39d45f92299521e3"
+    },
+    {
+      "path": "app-style-regression/missing-landscape-detail.png",
+      "sha256": "2f3fd8a4af00da84d800ea8a9c81a2d935a9196eec7685d12bcfa77fbec36dba"
+    },
+    {
+      "path": "app-style-regression/missing-landscape-viewport.png",
+      "sha256": "e4fe926542e2505a418f85c4a7d2ccedf8c810fa6d4bb3a72c9a2061bdcdfa47"
+    },
+    {
+      "path": "app-style-regression/missing-portrait-detail.png",
+      "sha256": "fccbedaae1367b45d3a63e40137a0f4592227e905bd32a1f06bfe841c3f40165"
+    },
+    {
+      "path": "app-style-regression/missing-portrait-viewport.png",
+      "sha256": "6b79d3460373ee65867373cf65fa3905bb57cfc6f4564cfb4bb02aee3a11e67d"
+    },
+    {
+      "path": "app-style-regression/missing-type-landscape-detail.png",
+      "sha256": "2b59d14bc4574f6644209bf1d98d5539f0343e36978c7f600133c9be280066ea"
+    },
+    {
+      "path": "app-style-regression/missing-type-landscape-viewport.png",
+      "sha256": "e4fe926542e2505a418f85c4a7d2ccedf8c810fa6d4bb3a72c9a2061bdcdfa47"
+    },
+    {
+      "path": "app-style-regression/missing-type-portrait-detail.png",
+      "sha256": "81e692ff870b841e4dd1628c7cad604b6aefc901ed1cc7d1c1a2f5c1342a3c35"
+    },
+    {
+      "path": "app-style-regression/missing-type-portrait-viewport.png",
+      "sha256": "6b79d3460373ee65867373cf65fa3905bb57cfc6f4564cfb4bb02aee3a11e67d"
+    },
+    {
+      "path": "app-style-regression/price-zoom-landscape-detail.png",
+      "sha256": "d73d3ef0c1e203c2429f81cf90443e4b984174480a4771cf40c2f25e11a62868"
+    },
+    {
+      "path": "app-style-regression/price-zoom-landscape-price-editor.png",
+      "sha256": "d28c538da91529cd8de023c8293aae732ba752999a84cef441b4b986d59a2250"
+    },
+    {
+      "path": "app-style-regression/price-zoom-landscape-viewport.png",
+      "sha256": "a1d422e5bdf6075bae5e39d4172edd81bad4701b8fb73e3eb0e43ef97bb7baab"
+    },
+    {
+      "path": "app-style-regression/price-zoom-narrow-detail.png",
+      "sha256": "49b374aa8eebfe8378653380f5f6ca05ece158ab87e75a362942ffcc386aceb4"
+    },
+    {
+      "path": "app-style-regression/price-zoom-narrow-price-editor.png",
+      "sha256": "58bbddc49058c7590ff1f919fcd7c3c9ab642494adb976aa431d2a9a314b78df"
+    },
+    {
+      "path": "app-style-regression/price-zoom-narrow-viewport.png",
+      "sha256": "05704caa84214ac78dd0f0fa3a99191cb920f249ddccb18ee13e32212fb2f8a8"
+    },
+    {
+      "path": "app-style-regression/results.json",
+      "sha256": "9ac23a13b197e40416a7db814eb264907dcc0c68feb2917515de8ce1c59d3fa1"
+    },
+    {
+      "path": "app-style-regression/single-landscape-detail.png",
+      "sha256": "b096fe6667a804f79d6cdf9ec37dc0fad893380399bad029b2446058bce3e9d4"
+    },
+    {
+      "path": "app-style-regression/single-landscape-viewport.png",
+      "sha256": "c72cf1d38d326869e68257febbced26bc380d73d143908872357146988da0eeb"
+    },
+    {
+      "path": "app-style-regression/single-portrait-detail.png",
+      "sha256": "3e2972a452baa2bc73576ec748858c48f5e90f9c2dc7031b7bab11f43a1e36f1"
+    },
+    {
+      "path": "app-style-regression/single-portrait-viewport.png",
+      "sha256": "0029138ce55ed66d3f32bb3664a7979023d7fab9d15b6b8b7931a4bdf58f731c"
+    },
+    {
+      "path": "app-style-regression/typing-landscape-detail.png",
+      "sha256": "e1c79509005b57ce193e70d1c6efc5838c18fd287d18973e9278fe126909d177"
+    },
+    {
+      "path": "app-style-regression/typing-landscape-viewport.png",
+      "sha256": "9fe88cf5142bd69427dc46ab798cb308d774899ee396685c24dc3d00b3838420"
+    },
+    {
+      "path": "app-style-regression/typing-portrait-detail.png",
+      "sha256": "508dc9ac34c0b045ccfa1a55a962fc919d8d22ad4e101359d38b97c37fb2a64f"
+    },
+    {
+      "path": "app-style-regression/typing-portrait-viewport.png",
+      "sha256": "af70b1bbbb1a18746aaad937364d7859111f24290d8c1ccbb41292d409adeb01"
+    },
+    {
+      "path": "app-style-regression/vision-landscape-detail.png",
+      "sha256": "760ad21b770cc785f3aacc118f36a97decdb68245304cc4569b675447ab3695d"
+    },
+    {
+      "path": "app-style-regression/vision-landscape-viewport.png",
+      "sha256": "738c15a4fc3f413d5d6b8be3a39961c136044f54640cf7cafe30d2c40ebfce30"
+    },
+    {
+      "path": "app-style-regression/vision-portrait-detail.png",
+      "sha256": "333a0e267f445b1cbf5a45d102b14c599742a1eee8032c3e7eb6c6392404c1d2"
+    },
+    {
+      "path": "app-style-regression/vision-portrait-viewport.png",
+      "sha256": "686fea09680efd9f7fb6247a723b16e265ef89c138f57c2ddb8f973d726bf614"
+    },
+    {
+      "path": "app-style-regression/zoom-landscape-detail.png",
+      "sha256": "c98f05a0985b644ef3547ebe2b469f0d346b100f7eb5911ac2fb389678358431"
+    },
+    {
+      "path": "app-style-regression/zoom-landscape-viewport.png",
+      "sha256": "9119556af7ca44cb9a70c11985edc0e3b936469cd97252c621aea30d55e76aa0"
+    },
+    {
+      "path": "app-style-regression/zoom-narrow-detail.png",
+      "sha256": "3326126774bda4d8983c9e7e11760ce8bd4b62a87ce710d7b2c21843569fbfc7"
+    },
+    {
+      "path": "app-style-regression/zoom-narrow-viewport.png",
+      "sha256": "05704caa84214ac78dd0f0fa3a99191cb920f249ddccb18ee13e32212fb2f8a8"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/MenuPriceEditor.tsx.txt",
+      "sha256": "eb3dc07a768551d8f7aa8554c93d09cb2dce19e8784cbbae6b42422f87307284"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "sha256": "6df4a3df77e1c205a6341702e3df3130e4f6c9fb32c74d8af7b5d28fa915e51d"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuPriceReview.ts.txt",
+      "sha256": "b854d871d2a37fe82b8a05a3907c01bc55137e9a6f35bb7071440ea5c952105a"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuWineSave.ts.txt",
+      "sha256": "6b6ad21c303bf051333fc5a3c2e83bb8a8a2da1f44d066e8817281c7b93c6224"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanWineEvidence.ts.txt",
+      "sha256": "70d03273fc9696ff89813f2499aed90f28c1490f44dd117023d10370726e0858"
+    },
+    {
+      "path": "before/EUR-portrait.png",
+      "sha256": "5b15496203ffae5d7f4a534fd2951394b52faa17fd0471c7115daaaefebbf710"
+    },
+    {
+      "path": "before/GBP-portrait.png",
+      "sha256": "7a9a73e868bf78fe9bb27daefaf4541bb17159cbc70cbe319ae29c75c06bd9d1"
+    },
+    {
+      "path": "before/JPY-landscape.png",
+      "sha256": "7ca238aab3cb10867903acfde6f786b4789ba44dd8e2179169b65d7b94a31403"
+    },
+    {
+      "path": "before/JPY-portrait.png",
+      "sha256": "35b47fc76a90016915ee02226ac74f5161d87f9222f6b40ad0c5286d79102e09"
+    },
+    {
+      "path": "before/results.json",
+      "sha256": "769f9b6487d4c348718e5389810cd8d1faba6d7a558828769937eb9674a05a56"
+    },
+    {
+      "path": "build-files.json",
+      "sha256": "d8c3626ac712e4789f3f2f590e76efbc2e6f26b597cb4a2ce18661fbf5ded12f"
+    },
+    {
+      "path": "contracts-before-quantum.json",
+      "sha256": "178980d8db27baf59dd5f091cae063b0d772d9af808465f3d0ddbbf1dbe820c2"
+    },
+    {
+      "path": "contracts-final.json",
+      "sha256": "f579ded88bc19b2cd025d285a329b7080a60696ab9463c0e57dceedc11c75e85"
+    },
+    {
+      "path": "final-sources/scripts/check-matchrim-price-currency-precision-oct13.ts.txt",
+      "sha256": "881ba3ed2c13383e497084ecaa6379fabfe72042825d6a90a241bbdbe19cb21b"
+    },
+    {
+      "path": "final-sources/scripts/package-matchrim-currency-precision-oct13.mjs.txt",
+      "sha256": "bc24c6386de5f9f42a1af0302bc8102217da9900297927892630bc041f1a895c"
+    },
+    {
+      "path": "final-sources/scripts/qa-matchrim-price-currency-precision-oct13.py.txt",
+      "sha256": "c2219599380a1f5bece433c3b4b845de95d90d09134565ad6dbdeb9a96b371ae"
+    },
+    {
+      "path": "final-sources/scripts/qa-pages/menu-price.html.txt",
+      "sha256": "201f4ad6948a53d205697dea01a408f75548b0e8af43c4a5c2ee618f8475e4ec"
+    },
+    {
+      "path": "final-sources/scripts/qa-pages/menu-price.tsx.txt",
+      "sha256": "32c55d9408facc857a2acaaa24fca0a3652b15dfe04f8ce4b95d99717e6f0237"
+    },
+    {
+      "path": "final-sources/src/components/wine-import/MenuPriceEditor.tsx.txt",
+      "sha256": "19a13cb8c1e2688f69a0888ba27c5819989686fdd8727784fc5f09ca10b8cd63"
+    },
+    {
+      "path": "final-sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "sha256": "3d622493bf1ec0c45869ea3370a19d1f3d7826df57f019887b16544f668807a0"
+    },
+    {
+      "path": "final-sources/src/utils/menuPriceReview.ts.txt",
+      "sha256": "157b1db23859a8f65a685ccfce9cc8694a5a4ebb0545102eba700e323cfec763"
+    },
+    {
+      "path": "final-sources/src/utils/menuWineSave.ts.txt",
+      "sha256": "6562a3a7e4f201e7cc0c403125195308dfdb81b8e642d2e7cb780e25e2ffcb74"
+    },
+    {
+      "path": "final-sources/src/utils/scanWineEvidence.ts.txt",
+      "sha256": "34ac4eabe0f2c8117e8b3912ed0f3b830b9681012572012a0dd12122756c230b"
+    },
+    {
+      "path": "menuPriceReview-before-quantum.ts.txt",
+      "sha256": "17157ba739ba7a7de857a2fc48804ae57a7de8e471b19758f0a4ed2953edd709"
+    },
+    {
+      "path": "price-contracts.json",
+      "sha256": "add470248cde084cdf026879f31cf7a04fab22806eff8d437c52164833a3017c"
+    },
+    {
+      "path": "primary-before-caption-defense/AUD-portrait.png",
+      "sha256": "2c49387b10c49fa9081170565e80ad88d71d7d79488277fcf728e21153ff2451"
+    },
+    {
+      "path": "primary-before-caption-defense/CAD-portrait.png",
+      "sha256": "5090bc00dd590251918e29f8fe0a253ec769f33ff51478957f5b379f14f283fe"
+    },
+    {
+      "path": "primary-before-caption-defense/CHF-portrait.png",
+      "sha256": "16bf5954433f52c573a4e279172217c3ab888aaf8fc3de8237ac9c965d916d6d"
+    },
+    {
+      "path": "primary-before-caption-defense/CNY-portrait.png",
+      "sha256": "22b47b5b81392ddb898f2426503d6bd5f6843c27e351b778f8ce5b7d9f3fc8b3"
+    },
+    {
+      "path": "primary-before-caption-defense/DKK-portrait.png",
+      "sha256": "4be60e27ba4bd22937a22ae2314df217de7ca33283ce4c7da50342611b87dd73"
+    },
+    {
+      "path": "primary-before-caption-defense/EUR-landscape.png",
+      "sha256": "516cbc66c3526d482dfa2dd563b3799cb06774d0150b2da0f367c66f73e9c208"
+    },
+    {
+      "path": "primary-before-caption-defense/EUR-portrait.png",
+      "sha256": "74849adde8464857d06caa16760644aba1a13bb86897670ee1f6da6df99690fa"
+    },
+    {
+      "path": "primary-before-caption-defense/GBP-landscape.png",
+      "sha256": "56b2aba9a93b700942e627348b90c97c202454982cafd3d0cce093c835f0ec50"
+    },
+    {
+      "path": "primary-before-caption-defense/GBP-portrait.png",
+      "sha256": "c3935ef788189dfdefa651c8d2c9310e73d7af81db818bb693e48ffd77f012d2"
+    },
+    {
+      "path": "primary-before-caption-defense/JPY-landscape.png",
+      "sha256": "548f687d77407442f8209285fc6aaeacd8b6c1919f98c7dc784fd083f47fdb79"
+    },
+    {
+      "path": "primary-before-caption-defense/JPY-narrow.png",
+      "sha256": "1f17b8c0de0bd4d68a58630be83631e753fe44b383e471dde4e2b47a753e62cd"
+    },
+    {
+      "path": "primary-before-caption-defense/JPY-portrait.png",
+      "sha256": "3c33b37c9184dfc6e7d9a3fa65862f3a288264d64064e37d49e5a5bcae9fc320"
+    },
+    {
+      "path": "primary-before-caption-defense/NOK-portrait.png",
+      "sha256": "bac179d1c9cdb2aced878e40e014d993b9283c8e02cd5950aaf910959f43d581"
+    },
+    {
+      "path": "primary-before-caption-defense/NZD-portrait.png",
+      "sha256": "68cf6e4e475253b6ae75e01c045fbceab217b4153062bf639b5551e2fd2e1261"
+    },
+    {
+      "path": "primary-before-caption-defense/SEK-portrait.png",
+      "sha256": "73749e2a269a8db16b38b8aa9a69e2f26aef01a08a506d802bd47060eb225858"
+    },
+    {
+      "path": "primary-before-caption-defense/USD-portrait.png",
+      "sha256": "7fda4b281a5fe2dc57aabf8f7ce00a3706475992814d0cbadccc16e7d54d4bc3"
+    },
+    {
+      "path": "primary-before-caption-defense/results.json",
+      "sha256": "e948743eafd4a7450285a1aaed741169776ccddd6fa585d6e6418dad1810ab09"
+    },
+    {
+      "path": "primary-final/AUD-portrait.png",
+      "sha256": "2c49387b10c49fa9081170565e80ad88d71d7d79488277fcf728e21153ff2451"
+    },
+    {
+      "path": "primary-final/CAD-portrait.png",
+      "sha256": "5090bc00dd590251918e29f8fe0a253ec769f33ff51478957f5b379f14f283fe"
+    },
+    {
+      "path": "primary-final/CHF-portrait.png",
+      "sha256": "16bf5954433f52c573a4e279172217c3ab888aaf8fc3de8237ac9c965d916d6d"
+    },
+    {
+      "path": "primary-final/CNY-portrait.png",
+      "sha256": "22b47b5b81392ddb898f2426503d6bd5f6843c27e351b778f8ce5b7d9f3fc8b3"
+    },
+    {
+      "path": "primary-final/DKK-portrait.png",
+      "sha256": "4be60e27ba4bd22937a22ae2314df217de7ca33283ce4c7da50342611b87dd73"
+    },
+    {
+      "path": "primary-final/EUR-landscape.png",
+      "sha256": "5841bd9da243edcf67cf3b8d1d4e30872f6928edb734d27580320fba423ee240"
+    },
+    {
+      "path": "primary-final/EUR-portrait.png",
+      "sha256": "74849adde8464857d06caa16760644aba1a13bb86897670ee1f6da6df99690fa"
+    },
+    {
+      "path": "primary-final/GBP-landscape.png",
+      "sha256": "56b2aba9a93b700942e627348b90c97c202454982cafd3d0cce093c835f0ec50"
+    },
+    {
+      "path": "primary-final/GBP-portrait.png",
+      "sha256": "c3935ef788189dfdefa651c8d2c9310e73d7af81db818bb693e48ffd77f012d2"
+    },
+    {
+      "path": "primary-final/JPY-landscape.png",
+      "sha256": "548f687d77407442f8209285fc6aaeacd8b6c1919f98c7dc784fd083f47fdb79"
+    },
+    {
+      "path": "primary-final/JPY-narrow.png",
+      "sha256": "1f17b8c0de0bd4d68a58630be83631e753fe44b383e471dde4e2b47a753e62cd"
+    },
+    {
+      "path": "primary-final/JPY-portrait.png",
+      "sha256": "3c33b37c9184dfc6e7d9a3fa65862f3a288264d64064e37d49e5a5bcae9fc320"
+    },
+    {
+      "path": "primary-final/NOK-portrait.png",
+      "sha256": "bac179d1c9cdb2aced878e40e014d993b9283c8e02cd5950aaf910959f43d581"
+    },
+    {
+      "path": "primary-final/NZD-portrait.png",
+      "sha256": "68cf6e4e475253b6ae75e01c045fbceab217b4153062bf639b5551e2fd2e1261"
+    },
+    {
+      "path": "primary-final/SEK-portrait.png",
+      "sha256": "73749e2a269a8db16b38b8aa9a69e2f26aef01a08a506d802bd47060eb225858"
+    },
+    {
+      "path": "primary-final/USD-portrait.png",
+      "sha256": "7fda4b281a5fe2dc57aabf8f7ce00a3706475992814d0cbadccc16e7d54d4bc3"
+    },
+    {
+      "path": "primary-final/results.json",
+      "sha256": "3835bd7333bcab56f76044496644a0b16001e3e7bcad408c6c8a264f7da5bf9d"
+    },
+    {
+      "path": "quantum-app-price/both-bottle-portrait-applied.png",
+      "sha256": "44409fd4d37efdc93f0ac86f56bb73776896d8a967db5c2957850dd487086045"
+    },
+    {
+      "path": "quantum-app-price/both-bottle-portrait-draft.png",
+      "sha256": "f968677c3f27a9101d235d5c472e8888cad7b1facef70d1b22807685579890db"
+    },
+    {
+      "path": "quantum-app-price/both-bottle-portrait-read.png",
+      "sha256": "d839cf41de8a3819aa1aa05f890a3145bd706b1a325829c75c44a4219e066947"
+    },
+    {
+      "path": "quantum-app-price/both-bottle-portrait-viewport.png",
+      "sha256": "2ba6bbb343f101de629c692946e45068a0e663a665ecd423fd94ad467592a42f"
+    },
+    {
+      "path": "quantum-app-price/cancel-portrait-applied.png",
+      "sha256": "2b2567fe73823885be32fcbbaf9368f6d97306e96483eea3903caa818f8ee1c6"
+    },
+    {
+      "path": "quantum-app-price/cancel-portrait-draft.png",
+      "sha256": "f968677c3f27a9101d235d5c472e8888cad7b1facef70d1b22807685579890db"
+    },
+    {
+      "path": "quantum-app-price/cancel-portrait-read.png",
+      "sha256": "93c9fd26516bac5289ce1aac013c5acdf9eb5677463bea2b9845062f7961181e"
+    },
+    {
+      "path": "quantum-app-price/cancel-portrait-viewport.png",
+      "sha256": "dd17ac67cf0f64acec2d81bb0e021e4489f9694c8e771a80eab824c7794469b9"
+    },
+    {
+      "path": "quantum-app-price/compare-landscape-applied.png",
+      "sha256": "02e9d5384ac65418616dcbaf813542fb90ae9e56c4948730a76b3cb6f46d63b6"
+    },
+    {
+      "path": "quantum-app-price/compare-landscape-bottle-compare.png",
+      "sha256": "6a9080d23467746e2eb655bd2c50fdc21d0045e3330fdcf0ab1aa90c6c2e41f6"
+    },
+    {
+      "path": "quantum-app-price/compare-landscape-cup-compare.png",
+      "sha256": "5327d0537b4869678478cfa5114a138b66b819b547e2f5c2ffe11aa9c1807546"
+    },
+    {
+      "path": "quantum-app-price/compare-landscape-draft.png",
+      "sha256": "7a50a630dc0e023548c674cf8f3b701052c41036d4517f60f235c12078071942"
+    },
+    {
+      "path": "quantum-app-price/compare-landscape-read.png",
+      "sha256": "83da0f70af95db755116f9423e5ccf5a28a423cca8f1fc335c0c8bd3088ad8d4"
+    },
+    {
+      "path": "quantum-app-price/compare-landscape-viewport.png",
+      "sha256": "77e3ff540d0b6384ac3641fb0ab6d536e69d17d9c12f3a8abf0d6e10c64b371f"
+    },
+    {
+      "path": "quantum-app-price/results.json",
+      "sha256": "892fc1a59c3ebde440d8be2a85dae0a0fa5587e25f7e62fd571095e172562ee2"
+    },
+    {
+      "path": "quantum-app-price/zero-portrait-applied.png",
+      "sha256": "b02fbd3144c75e738ec2e34f51c41471fad607b68bf57db7feb180f494e5bf79"
+    },
+    {
+      "path": "quantum-app-price/zero-portrait-draft.png",
+      "sha256": "75e2ec591a187fdb43920ca04f8caf53164214c8e0ae5eacf6af2208b29bf72d"
+    },
+    {
+      "path": "quantum-app-price/zero-portrait-read.png",
+      "sha256": "f5a9a79cbfe84a61b7ad412e98aaa128f8e7e5b917243f7af5866a6b20bc97ec"
+    },
+    {
+      "path": "quantum-app-price/zero-portrait-viewport.png",
+      "sha256": "2f1f94b29314fc378d614dac84e606d93a8a6d8728cbc67bd3b49f863b8ba1df"
+    },
+    {
+      "path": "quantum-app-style/forged-portrait-detail.png",
+      "sha256": "333a0e267f445b1cbf5a45d102b14c599742a1eee8032c3e7eb6c6392404c1d2"
+    },
+    {
+      "path": "quantum-app-style/forged-portrait-viewport.png",
+      "sha256": "686fea09680efd9f7fb6247a723b16e265ef89c138f57c2ddb8f973d726bf614"
+    },
+    {
+      "path": "quantum-app-style/price-zoom-narrow-detail.png",
+      "sha256": "6c75e3a82cb3085e00a8db543241ad933a0aa5bdb8089fa31f5dcb77ec0a001a"
+    },
+    {
+      "path": "quantum-app-style/price-zoom-narrow-price-editor.png",
+      "sha256": "58bbddc49058c7590ff1f919fcd7c3c9ab642494adb976aa431d2a9a314b78df"
+    },
+    {
+      "path": "quantum-app-style/price-zoom-narrow-viewport.png",
+      "sha256": "05704caa84214ac78dd0f0fa3a99191cb920f249ddccb18ee13e32212fb2f8a8"
+    },
+    {
+      "path": "quantum-app-style/results.json",
+      "sha256": "029286211b15003b567544180b70ba3e9d799513b1ced01b5e7f0d902e7d4326"
+    },
+    {
+      "path": "quantum-app-style/typing-portrait-detail.png",
+      "sha256": "65302825fb8f5eedf5ea4e631e569f7da71f3ebea7c931425dac87f68043c35c"
+    },
+    {
+      "path": "quantum-app-style/typing-portrait-viewport.png",
+      "sha256": "af70b1bbbb1a18746aaad937364d7859111f24290d8c1ccbb41292d409adeb01"
+    },
+    {
+      "path": "quantum-app-style/zoom-narrow-detail.png",
+      "sha256": "3326126774bda4d8983c9e7e11760ce8bd4b62a87ce710d7b2c21843569fbfc7"
+    },
+    {
+      "path": "quantum-app-style/zoom-narrow-viewport.png",
+      "sha256": "05704caa84214ac78dd0f0fa3a99191cb920f249ddccb18ee13e32212fb2f8a8"
+    },
+    {
+      "path": "quantum-final/EUR-portrait.png",
+      "sha256": "74849adde8464857d06caa16760644aba1a13bb86897670ee1f6da6df99690fa"
+    },
+    {
+      "path": "quantum-final/JPY-narrow.png",
+      "sha256": "1f17b8c0de0bd4d68a58630be83631e753fe44b383e471dde4e2b47a753e62cd"
+    },
+    {
+      "path": "quantum-final/JPY-portrait.png",
+      "sha256": "3c33b37c9184dfc6e7d9a3fa65862f3a288264d64064e37d49e5a5bcae9fc320"
+    },
+    {
+      "path": "quantum-final/USD-portrait.png",
+      "sha256": "7fda4b281a5fe2dc57aabf8f7ce00a3706475992814d0cbadccc16e7d54d4bc3"
+    },
+    {
+      "path": "quantum-final/results.json",
+      "sha256": "b7efb20968e192652dec9a218da150e366cc27d53d353ec226211aabcc9fb1ac"
+    },
+    {
+      "path": "summary.json",
+      "sha256": "8debe90035bff3a036d3a17d51e726cad9e2211c81efd71938eda1ff14ffd3af"
+    },
+    {
+      "path": "validation/00-npx.log",
+      "sha256": "5bd91f4ae95c24bcadf2762a51a3693ea3a581f8a15a199c20ea83d331e13bdc"
+    },
+    {
+      "path": "validation/01-npx.log",
+      "sha256": "22e1ab4ca0e132d5e36be9a4f2b9fb1b2a7535dd4e68b221401e5238eacec332"
+    },
+    {
+      "path": "validation/02-npx.log",
+      "sha256": "65396189abd7810f5b79b6582ed2479166f233a8e98f43ba5fe49fc908e2cb00"
+    },
+    {
+      "path": "validation/03-npx.log",
+      "sha256": "0d8973eaf88427edb3e026f4df2e835b7fdd0938522a4b20485e982e7f96fc1c"
+    },
+    {
+      "path": "validation/04-npx.log",
+      "sha256": "f26e767b76bf7fab920014259a03cdc61f2133c0c3520ee3f7d1c2318031a007"
+    },
+    {
+      "path": "validation/05-npm.log",
+      "sha256": "ca639909182236a2d81b4e86966e556d6553b377918edc1d9e8cda4d7b747465"
+    },
+    {
+      "path": "validation/06-npm.log",
+      "sha256": "e38c26b5e7b0982ac7fdacb4832749746b5c3c678e6de661d1a003afe6ce9d6d"
+    },
+    {
+      "path": "validation/07-npm.log",
+      "sha256": "fd68a845a8c86bc7a38d91cadcf45e18049837a59c5e804174f9cd4e5ba7d8f7"
+    },
+    {
+      "path": "validation/08-npm.log",
+      "sha256": "8d30244e0f37d8f1ec547256da07c4dd6e4f2925f385b9d40ac6ce4de69609c7"
+    },
+    {
+      "path": "validation/09-git.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "validation/actions/before/results.json",
+      "sha256": "db18cb6a3705f56a4e127d7923916f17c30e2c2ef46088258769a0c7437f81cd"
+    },
+    {
+      "path": "validation/actions/contracts.json",
+      "sha256": "4eaaf937f5138a84dd58f4b3a1ae403f9a2f4af0f32d69dc3a717663ede0a295"
+    },
+    {
+      "path": "validation/contracts.json",
+      "sha256": "add470248cde084cdf026879f31cf7a04fab22806eff8d437c52164833a3017c"
+    },
+    {
+      "path": "validation/validation.json",
+      "sha256": "b63125183e1c5edf9215da438096194dbcf819de659a6e0a33f6dd184b7b7b15"
+    },
+    {
+      "path": "validation-final/00-npx.log",
+      "sha256": "5bd91f4ae95c24bcadf2762a51a3693ea3a581f8a15a199c20ea83d331e13bdc"
+    },
+    {
+      "path": "validation-final/01-npx.log",
+      "sha256": "22e1ab4ca0e132d5e36be9a4f2b9fb1b2a7535dd4e68b221401e5238eacec332"
+    },
+    {
+      "path": "validation-final/02-npx.log",
+      "sha256": "65396189abd7810f5b79b6582ed2479166f233a8e98f43ba5fe49fc908e2cb00"
+    },
+    {
+      "path": "validation-final/03-npx.log",
+      "sha256": "0d8973eaf88427edb3e026f4df2e835b7fdd0938522a4b20485e982e7f96fc1c"
+    },
+    {
+      "path": "validation-final/04-npx.log",
+      "sha256": "f26e767b76bf7fab920014259a03cdc61f2133c0c3520ee3f7d1c2318031a007"
+    },
+    {
+      "path": "validation-final/05-npm.log",
+      "sha256": "ca639909182236a2d81b4e86966e556d6553b377918edc1d9e8cda4d7b747465"
+    },
+    {
+      "path": "validation-final/06-npm.log",
+      "sha256": "e38c26b5e7b0982ac7fdacb4832749746b5c3c678e6de661d1a003afe6ce9d6d"
+    },
+    {
+      "path": "validation-final/07-npm.log",
+      "sha256": "fd68a845a8c86bc7a38d91cadcf45e18049837a59c5e804174f9cd4e5ba7d8f7"
+    },
+    {
+      "path": "validation-final/08-npm.log",
+      "sha256": "aa8e6c4eecb084646aa093c1304bf0829b79e490fd60374d839869caba60eb5c"
+    },
+    {
+      "path": "validation-final/09-git.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "validation-final/actions/before/results.json",
+      "sha256": "db18cb6a3705f56a4e127d7923916f17c30e2c2ef46088258769a0c7437f81cd"
+    },
+    {
+      "path": "validation-final/actions/contracts.json",
+      "sha256": "4eaaf937f5138a84dd58f4b3a1ae403f9a2f4af0f32d69dc3a717663ede0a295"
+    },
+    {
+      "path": "validation-final/contracts.json",
+      "sha256": "add470248cde084cdf026879f31cf7a04fab22806eff8d437c52164833a3017c"
+    },
+    {
+      "path": "validation-final/validation.json",
+      "sha256": "5a73ffc2ff0f0657a308b82266261264b407c2dbe3b16b6b941e81f7790ee1fc"
+    }
+  ],
+  "captures": 257
+}

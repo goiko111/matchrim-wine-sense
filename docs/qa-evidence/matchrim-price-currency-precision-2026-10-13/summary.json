@@ -1,0 +1,165 @@
+{
+  "baseline": "5b789a75ed636cb224d5f33dd4f4a1da7f9cc919",
+  "gates": {
+    "primary-final": {
+      "contexts": 16,
+      "checks": 131,
+      "allPassed": true
+    },
+    "app-price-regression": {
+      "contexts": 40,
+      "checks": 710,
+      "allPassed": true
+    },
+    "app-style-regression": {
+      "contexts": 20,
+      "checks": 264,
+      "allPassed": true
+    },
+    "quantum-final": {
+      "contexts": 4,
+      "checks": 34,
+      "allPassed": true
+    },
+    "quantum-app-price": {
+      "contexts": 4,
+      "checks": 77,
+      "allPassed": true
+    },
+    "quantum-app-style": {
+      "contexts": 4,
+      "checks": 54,
+      "allPassed": true
+    }
+  },
+  "contracts": 180,
+  "legacyPriceContracts": 123,
+  "product": [
+    "src/utils/menuPriceReview.ts",
+    "src/utils/menuWineSave.ts",
+    "src/utils/scanWineEvidence.ts",
+    "src/components/wine-import/MenuPriceEditor.tsx",
+    "src/components/wine-import/WineMenuScanner.tsx"
+  ],
+  "finalHashes": {
+    "src/utils/menuPriceReview.ts": "157b1db23859a8f65a685ccfce9cc8694a5a4ebb0545102eba700e323cfec763",
+    "src/utils/menuWineSave.ts": "6562a3a7e4f201e7cc0c403125195308dfdb81b8e642d2e7cb780e25e2ffcb74",
+    "src/utils/scanWineEvidence.ts": "34ac4eabe0f2c8117e8b3912ed0f3b830b9681012572012a0dd12122756c230b",
+    "src/components/wine-import/MenuPriceEditor.tsx": "19a13cb8c1e2688f69a0888ba27c5819989686fdd8727784fc5f09ca10b8cd63",
+    "src/components/wine-import/WineMenuScanner.tsx": "3d622493bf1ec0c45869ea3370a19d1f3d7826df57f019887b16544f668807a0"
+  },
+  "protectedEvidence": [
+    {
+      "name": "matchrim-menu-save-2026-10-12",
+      "entries": 289,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-actions-2026-10-12",
+      "entries": 126,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-affinity-status-2026-10-12",
+      "entries": 91,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-profile-retry-2026-10-13",
+      "entries": 112,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-airim-provenance-2026-10-13",
+      "entries": 75,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-notice-2026-10-13",
+      "entries": 103,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-focus-2026-10-13",
+      "entries": 143,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-navigation-2026-10-13",
+      "entries": 175,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-reading-2026-10-13",
+      "entries": 70,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-cancel-2026-10-13",
+      "entries": 80,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-ranking-cancel-2026-10-13",
+      "entries": 99,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-multi-stale-cancel-2026-10-13",
+      "entries": 149,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-progress-a11y-2026-10-13",
+      "entries": 137,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-counter-2026-10-13",
+      "entries": 33,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-edit-lock-2026-10-13",
+      "entries": 79,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-failure-2026-10-13",
+      "entries": 69,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-manual-provenance-2026-10-13",
+      "entries": 109,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-hour-resilience-2026-10-13",
+      "entries": 32,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-second-hour-2026-10-13",
+      "entries": 159,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-price-resolution-2026-10-13",
+      "entries": 326,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-style-evidence-2026-10-13",
+      "entries": 238,
+      "unchanged": true
+    }
+  ],
+  "protectedEntries": 2694,
+  "realRemoteAppCalls": 0,
+  "hostedWrites": 0,
+  "realUsers": 0,
+  "newProviderBenchmark": false,
+  "deployed": false,
+  "nativeBuilt": false
+}

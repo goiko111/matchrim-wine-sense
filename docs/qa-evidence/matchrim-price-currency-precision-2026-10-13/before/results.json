@@ -1,0 +1,511 @@
+{
+  "scope": "Isolated real MenuPriceEditor controls, no App/auth/catalog/provider. Synthetic money values only.",
+  "sourceHashes": {
+    "src/components/wine-import/MenuPriceEditor.tsx": "96e31a246d677a6f5efc9ee10d179e3c237a980e72b88dc368b674cd84c71c7d",
+    "src/utils/menuPriceReview.ts": "b854d871d2a37fe82b8a05a3907c01bc55137e9a6f35bb7071440ea5c952105a",
+    "scripts/qa-pages/menu-price.html": "201f4ad6948a53d205697dea01a408f75548b0e8af43c4a5c2ee618f8475e4ec",
+    "scripts/qa-pages/menu-price.tsx": "32c55d9408facc857a2acaaa24fca0a3652b15dfe04f8ce4b95d99717e6f0237",
+    "scripts/qa-matchrim-price-currency-precision-oct13.py": "0153f9aa4a536b1293c1fd63ffd64e10e913de69de2861fce46df9d0edffa629"
+  },
+  "realAppRemoteCalls": 0,
+  "paidCalls": 0,
+  "realUsers": 0,
+  "results": [
+    {
+      "case": "JPY:portrait",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Fractional JPY cannot silently round on apply",
+          "passed": false,
+          "actual": true,
+          "expected": false
+        },
+        {
+          "name": "Fractional JPY gets an explicit error without erasing draft",
+          "passed": false,
+          "actual": {
+            "value": "1,25",
+            "ariaInvalid": "false"
+          },
+          "expected": null
+        },
+        {
+          "name": "Applied metadata equals visible money, no rounding",
+          "passed": false,
+          "actual": {
+            "amount": 1.25,
+            "visible": "1 JPY"
+          },
+          "expected": "No fractional JPY application"
+        },
+        {
+          "name": "Valid amount/unit/currency explicitly retained",
+          "passed": true,
+          "actual": {
+            "amount": 125,
+            "currency": "JPY"
+          },
+          "expected": {
+            "amount": 125,
+            "currency": "JPY"
+          }
+        },
+        {
+          "name": "No sensory/affinity claims introduced",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Zero is distinct from blank",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Zero explicitly remains zero",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No external request or provider/account dependency",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "actual": {
+            "errors": [],
+            "console": []
+          },
+          "expected": null
+        },
+        {
+          "name": "No page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "requests": [
+        "http://127.0.0.1:4477/scripts/qa-pages/menu-price.html",
+        "http://127.0.0.1:4477/@vite/client",
+        "http://127.0.0.1:4477/scripts/qa-pages/menu-price.tsx",
+        "http://127.0.0.1:4477/@react-refresh",
+        "http://127.0.0.1:4477/node_modules/vite/dist/client/env.mjs",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react-dom_client.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/components/wine-import/MenuPriceEditor.tsx",
+        "http://127.0.0.1:4477/src/utils/scanMoney.ts",
+        "http://127.0.0.1:4477/src/index.css",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-QCHXOAYK.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-WOOG5QLI.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/lucide-react.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/components/ui/button.tsx",
+        "http://127.0.0.1:4477/src/components/ui/input.tsx",
+        "http://127.0.0.1:4477/src/components/ui/label.tsx",
+        "http://127.0.0.1:4477/src/components/ui/select.tsx",
+        "http://127.0.0.1:4477/src/utils/menuPriceReview.ts",
+        "http://127.0.0.1:4477/supabase/functions/_shared/matchrim-scan-money.ts",
+        "http://127.0.0.1:4477/src/lib/utils.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-slot.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/class-variance-authority.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-label.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-select.js?v=0630ace1",
+        "http://127.0.0.1:4477/supabase/functions/_shared/matchrim-scan-values.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-DKHUMOWT.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-KBTYAULA.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-U7P2NEEE.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-H5AYEWDG.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/clsx.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/tailwind-merge.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-VXFDO46R.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-6ZMM2PAV.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-MBBQPERT.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OKX5DAGM.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-SGSAFNPX.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-4MU4PHTW.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OJ2TJDIO.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-3VC6P7WR.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-ZHGN7TRK.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-HUBYRY4A.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-6WBQ3PW6.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-NRN5YYFF.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-BTIBV3P6.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OD433RWB.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-LSQNWB54.js?v=0630ace1"
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "JPY:landscape",
+      "passed": false,
+      "checks": [
+        {
+          "name": "Fractional JPY cannot silently round on apply",
+          "passed": false,
+          "actual": true,
+          "expected": false
+        },
+        {
+          "name": "Fractional JPY gets an explicit error without erasing draft",
+          "passed": false,
+          "actual": {
+            "value": "1,25",
+            "ariaInvalid": "false"
+          },
+          "expected": null
+        },
+        {
+          "name": "Applied metadata equals visible money, no rounding",
+          "passed": false,
+          "actual": {
+            "amount": 1.25,
+            "visible": "1 JPY"
+          },
+          "expected": "No fractional JPY application"
+        },
+        {
+          "name": "Valid amount/unit/currency explicitly retained",
+          "passed": true,
+          "actual": {
+            "amount": 125,
+            "currency": "JPY"
+          },
+          "expected": {
+            "amount": 125,
+            "currency": "JPY"
+          }
+        },
+        {
+          "name": "No sensory/affinity claims introduced",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Zero is distinct from blank",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Zero explicitly remains zero",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No external request or provider/account dependency",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "actual": {
+            "errors": [],
+            "console": []
+          },
+          "expected": null
+        },
+        {
+          "name": "No page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "requests": [
+        "http://127.0.0.1:4477/scripts/qa-pages/menu-price.html",
+        "http://127.0.0.1:4477/@vite/client",
+        "http://127.0.0.1:4477/scripts/qa-pages/menu-price.tsx",
+        "http://127.0.0.1:4477/@react-refresh",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react-dom_client.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/components/wine-import/MenuPriceEditor.tsx",
+        "http://127.0.0.1:4477/src/utils/scanMoney.ts",
+        "http://127.0.0.1:4477/src/index.css",
+        "http://127.0.0.1:4477/node_modules/vite/dist/client/env.mjs",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-QCHXOAYK.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-WOOG5QLI.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/lucide-react.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/components/ui/button.tsx",
+        "http://127.0.0.1:4477/src/components/ui/input.tsx",
+        "http://127.0.0.1:4477/src/components/ui/label.tsx",
+        "http://127.0.0.1:4477/src/components/ui/select.tsx",
+        "http://127.0.0.1:4477/src/utils/menuPriceReview.ts",
+        "http://127.0.0.1:4477/supabase/functions/_shared/matchrim-scan-money.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-slot.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/class-variance-authority.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/lib/utils.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-label.js?v=0630ace1",
+        "http://127.0.0.1:4477/supabase/functions/_shared/matchrim-scan-values.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-select.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-DKHUMOWT.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-KBTYAULA.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-U7P2NEEE.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/clsx.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/tailwind-merge.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-H5AYEWDG.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-VXFDO46R.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-6ZMM2PAV.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-MBBQPERT.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OKX5DAGM.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-SGSAFNPX.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-4MU4PHTW.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OJ2TJDIO.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-3VC6P7WR.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-ZHGN7TRK.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-HUBYRY4A.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-6WBQ3PW6.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-NRN5YYFF.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-BTIBV3P6.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OD433RWB.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-LSQNWB54.js?v=0630ace1"
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "EUR:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Two-decimal currency keeps fractional draft valid",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Valid amount/unit/currency explicitly retained",
+          "passed": true,
+          "actual": {
+            "amount": 1.25,
+            "currency": "EUR"
+          },
+          "expected": {
+            "amount": 1.25,
+            "currency": "EUR"
+          }
+        },
+        {
+          "name": "No sensory/affinity claims introduced",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Zero is distinct from blank",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Zero explicitly remains zero",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No external request or provider/account dependency",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "actual": {
+            "errors": [],
+            "console": []
+          },
+          "expected": null
+        },
+        {
+          "name": "No page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "requests": [
+        "http://127.0.0.1:4477/scripts/qa-pages/menu-price.html",
+        "http://127.0.0.1:4477/@vite/client",
+        "http://127.0.0.1:4477/scripts/qa-pages/menu-price.tsx",
+        "http://127.0.0.1:4477/@react-refresh",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react-dom_client.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/components/wine-import/MenuPriceEditor.tsx",
+        "http://127.0.0.1:4477/src/utils/scanMoney.ts",
+        "http://127.0.0.1:4477/src/index.css",
+        "http://127.0.0.1:4477/node_modules/vite/dist/client/env.mjs",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-QCHXOAYK.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-WOOG5QLI.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/lucide-react.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/components/ui/button.tsx",
+        "http://127.0.0.1:4477/src/components/ui/input.tsx",
+        "http://127.0.0.1:4477/src/components/ui/label.tsx",
+        "http://127.0.0.1:4477/src/components/ui/select.tsx",
+        "http://127.0.0.1:4477/src/utils/menuPriceReview.ts",
+        "http://127.0.0.1:4477/supabase/functions/_shared/matchrim-scan-money.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-slot.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/class-variance-authority.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/lib/utils.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-label.js?v=0630ace1",
+        "http://127.0.0.1:4477/supabase/functions/_shared/matchrim-scan-values.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-select.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-DKHUMOWT.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-KBTYAULA.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-U7P2NEEE.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/clsx.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/tailwind-merge.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-H5AYEWDG.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-VXFDO46R.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-6ZMM2PAV.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-MBBQPERT.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OKX5DAGM.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-SGSAFNPX.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-4MU4PHTW.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OJ2TJDIO.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-3VC6P7WR.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-ZHGN7TRK.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-HUBYRY4A.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-6WBQ3PW6.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-NRN5YYFF.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-BTIBV3P6.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OD433RWB.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-LSQNWB54.js?v=0630ace1"
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "GBP:portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Two-decimal currency keeps fractional draft valid",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Valid amount/unit/currency explicitly retained",
+          "passed": true,
+          "actual": {
+            "amount": 1.25,
+            "currency": "GBP"
+          },
+          "expected": {
+            "amount": 1.25,
+            "currency": "GBP"
+          }
+        },
+        {
+          "name": "No sensory/affinity claims introduced",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Zero is distinct from blank",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Zero explicitly remains zero",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "No external request or provider/account dependency",
+          "passed": true,
+          "actual": [],
+          "expected": null
+        },
+        {
+          "name": "No runtime/console errors",
+          "passed": true,
+          "actual": {
+            "errors": [],
+            "console": []
+          },
+          "expected": null
+        },
+        {
+          "name": "No page overflow",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "requests": [
+        "http://127.0.0.1:4477/scripts/qa-pages/menu-price.html",
+        "http://127.0.0.1:4477/@vite/client",
+        "http://127.0.0.1:4477/scripts/qa-pages/menu-price.tsx",
+        "http://127.0.0.1:4477/@react-refresh",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/react-dom_client.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/components/wine-import/MenuPriceEditor.tsx",
+        "http://127.0.0.1:4477/src/utils/scanMoney.ts",
+        "http://127.0.0.1:4477/src/index.css",
+        "http://127.0.0.1:4477/node_modules/vite/dist/client/env.mjs",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-QCHXOAYK.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-WOOG5QLI.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=0630ace1",
+        "http://127.0.0.1:4477/supabase/functions/_shared/matchrim-scan-money.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/lucide-react.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/components/ui/button.tsx",
+        "http://127.0.0.1:4477/src/components/ui/input.tsx",
+        "http://127.0.0.1:4477/src/components/ui/label.tsx",
+        "http://127.0.0.1:4477/src/components/ui/select.tsx",
+        "http://127.0.0.1:4477/src/utils/menuPriceReview.ts",
+        "http://127.0.0.1:4477/supabase/functions/_shared/matchrim-scan-values.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-slot.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/class-variance-authority.js?v=0630ace1",
+        "http://127.0.0.1:4477/src/lib/utils.ts",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-select.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/@radix-ui_react-label.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-DKHUMOWT.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-KBTYAULA.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-U7P2NEEE.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/clsx.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/tailwind-merge.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-H5AYEWDG.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-VXFDO46R.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-6ZMM2PAV.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-MBBQPERT.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OKX5DAGM.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-SGSAFNPX.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-4MU4PHTW.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OJ2TJDIO.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-3VC6P7WR.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-ZHGN7TRK.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-HUBYRY4A.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-6WBQ3PW6.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-NRN5YYFF.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-BTIBV3P6.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-OD433RWB.js?v=0630ace1",
+        "http://127.0.0.1:4477/node_modules/.vite/deps/chunk-LSQNWB54.js?v=0630ace1"
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

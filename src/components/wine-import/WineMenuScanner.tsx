@@ -21,7 +21,7 @@ import { AffinityExplanation } from "@/components/AffinityExplanation";
 import { AiRimContextGuide } from "@/components/AiRimContextGuide";
 import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
 import { MenuPriceEditor } from '@/components/wine-import/MenuPriceEditor';
-import { clearMenuManualPriceOrigin, manualMenuPriceLines } from '@/utils/menuPriceReview';
+import { clearMenuManualPriceOrigin, formatMenuPriceAmount, manualMenuPriceLines } from '@/utils/menuPriceReview';
 import { menuWineSensorySimilarity, menuWineSimilarityBand, menuWineSimilarityUnavailable } from '@/utils/menuWineSimilarity';
 import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,7 +34,7 @@ import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis } fr
 import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
-import { formatScanPrice, normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
+import { normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
 import { clusterOverlayPins } from "@/utils/overlayPins";
 import { applyMenuWineEvidence, menuWinePriceEvidence, updateMenuWineEvidence } from '@/utils/scanWineEvidence';
 import { confirmsMenuInsert, menuFinancialPrice, menuPriceSnapshot, menuSaveEvidence } from '@/utils/menuWineSave';
@@ -106,7 +106,7 @@ interface WineMenuScannerProps {
 type ScannedWineSortMode = 'compatibility' | 'price-asc' | 'price-desc' | 'name';
 
 const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
-const formatPrice = formatScanPrice;
+const formatPrice = formatMenuPriceAmount;
 
 const parseNullableNumber = (value: string) => {
   if (!value.trim()) return null;

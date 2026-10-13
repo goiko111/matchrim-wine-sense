@@ -1,12 +1,29 @@
 import type { MenuScanWine, MenuManualPriceAssignment } from './wineMenuScan';
 import { formatScanPrice, normalizeScanCurrency, normalizeScanPrice } from './scanMoney';
 
-export const parseMenuPriceDraft = (value: string): { amount: number | null; error: string | null } => {
+export const isMenuCurrencyAmountValid = (amount: unknown, currency: unknown): boolean => {
+  const code = normalizeScanCurrency(currency);
+  if (!code || typeof amount !== 'number' || !Number.isFinite(amount) || amount < 0 || amount > 1_000_000_000) return false;
+  const digits = new Intl.NumberFormat('es-ES', { style: 'currency', currency: code }).resolvedOptions().maximumFractionDigits;
+  if (digits === 0) return Number.isInteger(amount);
+  const scale = 10 ** digits;
+  return Math.round(amount * scale) / scale === amount;
+};
+
+export const formatMenuPriceAmount = (value: unknown, currency: unknown): string | null => {
+  const amount = normalizeScanPrice(value), code = normalizeScanCurrency(currency);
+  if (amount !== null && code && !isMenuCurrencyAmountValid(amount, code)) return `${amount} ${code} \u00b7 precisi\u00f3n pendiente`;
+  return formatScanPrice(value, currency);
+};
+
+export const parseMenuPriceDraft = (value: string, currency?: string | null): { amount: number | null; error: string | null } => {
   const text = value.trim();
   if (!text) return { amount: null, error: 'Indica un importe.' };
   if (!/^\d+(?:[.,]\d{1,2})?$/.test(text)) return { amount: null, error: 'Importe no válido. Usa cero o un número positivo con hasta dos decimales.' };
   const amount = Number(text.replace(',', '.'));
   if (!Number.isFinite(amount) || amount > 1_000_000_000) return { amount: null, error: 'Importe fuera de rango.' };
+  const code = normalizeScanCurrency(currency);
+  if (code && !isMenuCurrencyAmountValid(amount, code)) return { amount: null, error: `${code} requiere un importe entero, sin fracciones.` };
   return { amount, error: null };
 };
 
@@ -25,7 +42,7 @@ export const resolveMenuPriceReview = (
   currency: string,
 ): MenuScanWine => {
   const code = normalizeScanCurrency(currency);
-  if (typeof amount !== 'number' || normalizeScanPrice(amount) === null || amount > 1_000_000_000 || !code
+  if (!isMenuCurrencyAmountValid(amount, code) || !code
     || (format !== 'copa' && format !== 'botella')) throw new Error('Precio manual incompleto o no válido.');
   const previous = wine.precio_manual_asignacion;
   const original = previous?.original ?? {
@@ -56,7 +73,7 @@ export const manualMenuPriceLines = (wine: MenuScanWine): string[] => {
   const manual = wine.precio_manual_asignacion;
   if (!manual) return [];
   return (['copa', 'botella'] as const).flatMap((format) => {
-    const value = formatScanPrice(manual.prices[format], manual.currency);
+    const value = formatMenuPriceAmount(manual.prices[format], manual.currency);
     return value ? [`Manual \u00b7 ${format === 'copa' ? 'Copa' : 'Botella'}: ${value}`] : [];
   });
 };

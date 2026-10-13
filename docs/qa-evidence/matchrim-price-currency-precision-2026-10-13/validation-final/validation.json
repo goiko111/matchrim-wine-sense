@@ -1,0 +1,124 @@
+{
+  "scope": "Local validation receipt. No servers, provider, schema, corpus regeneration or release mutations.",
+  "timeUtc": "2026-10-13T11:05:22.532200+00:00",
+  "allPassed": true,
+  "reusedActionReceipt": {
+    "path": "docs/qa-evidence/matchrim-menu-actions-2026-10-12/before/results.json",
+    "sha256": "db18cb6a3705f56a4e127d7923916f17c30e2c2ef46088258769a0c7437f81cd"
+  },
+  "commands": [
+    {
+      "command": [
+        "npx",
+        "tsx",
+        "scripts/check-matchrim-menu-price-resolution-oct13.ts",
+        "docs/qa-evidence/matchrim-price-currency-precision-2026-10-13/validation-final/contracts.json"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 1.027,
+      "log": "00-npx.log",
+      "sha256": "5bd91f4ae95c24bcadf2762a51a3693ea3a581f8a15a199c20ea83d331e13bdc"
+    },
+    {
+      "command": [
+        "npx",
+        "tsx",
+        "scripts/check-matchrim-menu-save-oct12.ts",
+        "docs/qa-evidence/matchrim-price-currency-precision-2026-10-13/validation-final"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.742,
+      "log": "01-npx.log",
+      "sha256": "22e1ab4ca0e132d5e36be9a4f2b9fb1b2a7535dd4e68b221401e5238eacec332"
+    },
+    {
+      "command": [
+        "npx",
+        "tsx",
+        "scripts/check-matchrim-menu-list-oct12.ts"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.804,
+      "log": "02-npx.log",
+      "sha256": "65396189abd7810f5b79b6582ed2479166f233a8e98f43ba5fe49fc908e2cb00"
+    },
+    {
+      "command": [
+        "npx",
+        "tsx",
+        "scripts/check-matchrim-menu-comparison-oct12.ts"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.317,
+      "log": "03-npx.log",
+      "sha256": "0d8973eaf88427edb3e026f4df2e835b7fdd0938522a4b20485e982e7f96fc1c"
+    },
+    {
+      "command": [
+        "npx",
+        "tsx",
+        "scripts/check-matchrim-menu-actions-oct12.ts",
+        "docs/qa-evidence/matchrim-price-currency-precision-2026-10-13/validation-final/actions"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.733,
+      "log": "04-npx.log",
+      "sha256": "f26e767b76bf7fab920014259a03cdc61f2133c0c3520ee3f7d1c2318031a007"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:release"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 5.552,
+      "log": "05-npm.log",
+      "sha256": "ca639909182236a2d81b4e86966e556d6553b377918edc1d9e8cda4d7b747465"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 5.826,
+      "log": "06-npm.log",
+      "sha256": "e38c26b5e7b0982ac7fdacb4832749746b5c3c678e6de661d1a003afe6ce9d6d"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.952,
+      "log": "07-npm.log",
+      "sha256": "fd68a845a8c86bc7a38d91cadcf45e18049837a59c5e804174f9cd4e5ba7d8f7"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 7.654,
+      "log": "08-npm.log",
+      "sha256": "aa8e6c4eecb084646aa093c1304bf0829b79e490fd60374d839869caba60eb5c"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.023,
+      "log": "09-git.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

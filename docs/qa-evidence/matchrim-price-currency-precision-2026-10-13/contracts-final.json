@@ -1,0 +1,726 @@
+{
+  "scope": "Synthetic monetary precision only; no FX, recognition, humans or hosted data",
+  "checks": [
+    {
+      "name": "Integer 0 valid for EUR",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for EUR",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for EUR",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for EUR",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for EUR",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for EUR",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for EUR",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for EUR",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for EUR",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for EUR",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for EUR",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains EUR without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for GBP",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for GBP",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for GBP",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for GBP",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for GBP",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for GBP",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for GBP",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for GBP",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for GBP",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for GBP",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for GBP",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains GBP without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for USD",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for USD",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for USD",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for USD",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for USD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for USD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for USD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for USD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for USD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for USD",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for USD",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains USD without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for CHF",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for CHF",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for CHF",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for CHF",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for CHF",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for CHF",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for CHF",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for CHF",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for CHF",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for CHF",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for CHF",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains CHF without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for CAD",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for CAD",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for CAD",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for CAD",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for CAD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for CAD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for CAD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for CAD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for CAD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for CAD",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for CAD",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains CAD without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for AUD",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for AUD",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for AUD",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for AUD",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for AUD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for AUD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for AUD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for AUD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for AUD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for AUD",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for AUD",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains AUD without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for NZD",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for NZD",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for NZD",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for NZD",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for NZD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for NZD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for NZD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for NZD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for NZD",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for NZD",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for NZD",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains NZD without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for JPY",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for JPY",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for JPY",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for JPY",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for JPY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for JPY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for JPY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for JPY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for JPY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for JPY",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for JPY",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains JPY without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for CNY",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for CNY",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for CNY",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for CNY",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for CNY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for CNY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for CNY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for CNY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for CNY",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for CNY",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for CNY",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains CNY without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for SEK",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for SEK",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for SEK",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for SEK",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for SEK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for SEK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for SEK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for SEK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for SEK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for SEK",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for SEK",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains SEK without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for NOK",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for NOK",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for NOK",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for NOK",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for NOK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for NOK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for NOK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for NOK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for NOK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for NOK",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for NOK",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains NOK without FX",
+      "passed": true
+    },
+    {
+      "name": "Integer 0 valid for DKK",
+      "passed": true
+    },
+    {
+      "name": "Integer 1 valid for DKK",
+      "passed": true
+    },
+    {
+      "name": "Integer 125 valid for DKK",
+      "passed": true
+    },
+    {
+      "name": "Integer 999999999 valid for DKK",
+      "passed": true
+    },
+    {
+      "name": "Integer 1000000000 valid for DKK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.01 currency-aware for DKK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 0.29 currency-aware for DKK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.01 currency-aware for DKK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 1.25 currency-aware for DKK",
+      "passed": true
+    },
+    {
+      "name": "Fractional 999999999.99 currency-aware for DKK",
+      "passed": true
+    },
+    {
+      "name": "Too many minor units reject for DKK",
+      "passed": true
+    },
+    {
+      "name": "Manual amount explicitly retains DKK without FX",
+      "passed": true
+    },
+    {
+      "name": "Invalid value null rejects for JPY",
+      "passed": true
+    },
+    {
+      "name": "Invalid value undefined rejects for JPY",
+      "passed": true
+    },
+    {
+      "name": "Invalid value 1 rejects for JPY",
+      "passed": true
+    },
+    {
+      "name": "Invalid value NaN rejects for JPY",
+      "passed": true
+    },
+    {
+      "name": "Invalid value Infinity rejects for JPY",
+      "passed": true
+    },
+    {
+      "name": "Invalid value -1 rejects for JPY",
+      "passed": true
+    },
+    {
+      "name": "Invalid value 1000000001 rejects for JPY",
+      "passed": true
+    },
+    {
+      "name": "Invalid value null rejects for EUR",
+      "passed": true
+    },
+    {
+      "name": "Invalid value undefined rejects for EUR",
+      "passed": true
+    },
+    {
+      "name": "Invalid value 1 rejects for EUR",
+      "passed": true
+    },
+    {
+      "name": "Invalid value NaN rejects for EUR",
+      "passed": true
+    },
+    {
+      "name": "Invalid value Infinity rejects for EUR",
+      "passed": true
+    },
+    {
+      "name": "Invalid value -1 rejects for EUR",
+      "passed": true
+    },
+    {
+      "name": "Invalid value 1000000001 rejects for EUR",
+      "passed": true
+    },
+    {
+      "name": "Unknown currency is not EUR",
+      "passed": true
+    },
+    {
+      "name": "Large extra fractions are not mistaken for floating-point noise",
+      "passed": true
+    },
+    {
+      "name": "Arithmetic residue is pending, not silently rounded",
+      "passed": true
+    },
+    {
+      "name": "Decimal draft is preserved but rejected for JPY",
+      "passed": true
+    },
+    {
+      "name": "JPY zero-only fraction has exact integer value",
+      "passed": true
+    },
+    {
+      "name": "Unknown draft currency can wait for explicit selection",
+      "passed": true
+    },
+    {
+      "name": "Direct fractional JPY cannot bypass UI",
+      "passed": true
+    },
+    {
+      "name": "Invalid JPY precision displayed exactly, not rounded",
+      "passed": true
+    },
+    {
+      "name": "Invalid JPY price excluded from comparator",
+      "passed": true
+    },
+    {
+      "name": "Invalid JPY legacy snapshot cannot certify finance or readback",
+      "passed": true
+    },
+    {
+      "name": "Invalid EUR precision displayed exactly, not rounded",
+      "passed": true
+    },
+    {
+      "name": "Invalid EUR price excluded from comparator",
+      "passed": true
+    },
+    {
+      "name": "Invalid EUR legacy snapshot cannot certify finance or readback",
+      "passed": true
+    },
+    {
+      "name": "One invalid service price does not erase valid other unit",
+      "passed": true
+    },
+    {
+      "name": "Tampered fractional manual JPY is not accepted as a verified snapshot",
+      "passed": true
+    },
+    {
+      "name": "Unrelated intelligence/lifecycle source unchanged: src/utils/menuWineSimilarity.ts",
+      "passed": true
+    },
+    {
+      "name": "Unrelated intelligence/lifecycle source unchanged: src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Unrelated intelligence/lifecycle source unchanged: src/utils/wineComparison.ts",
+      "passed": true
+    },
+    {
+      "name": "Unrelated intelligence/lifecycle source unchanged: src/components/wine-import/WineComparisonWorkspace.tsx",
+      "passed": true
+    },
+    {
+      "name": "Unrelated intelligence/lifecycle source unchanged: src/utils/menuWineActions.ts",
+      "passed": true
+    },
+    {
+      "name": "Unrelated intelligence/lifecycle source unchanged: src/components/wine-import/MultiWineLabelScanner.tsx",
+      "passed": true
+    },
+    {
+      "name": "Unrelated intelligence/lifecycle source unchanged: supabase/functions/search-wines/index.ts",
+      "passed": true
+    }
+  ],
+  "allPassed": true
+}

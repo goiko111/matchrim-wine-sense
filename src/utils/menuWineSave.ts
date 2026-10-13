@@ -2,7 +2,8 @@ import { z } from 'zod';
 import type { Json } from '@/integrations/supabase/types';
 import type { MenuScanWine } from './wineMenuScan';
 import { isMenuIdentityConfirmed } from './wineMenuScan';
-import { normalizeScanCurrency, normalizeScanPrice, formatScanPrice } from './scanMoney';
+import { normalizeScanCurrency, normalizeScanPrice } from './scanMoney';
+import { formatMenuPriceAmount as formatScanPrice, isMenuCurrencyAmountValid } from './menuPriceReview';
 import { confirmsWineMutation } from './matchrimWineMutation';
 
 const amount = z.number().finite().nonnegative().nullable();
@@ -14,7 +15,8 @@ const manualAssignmentSchema = z.object({
     prices: unitPrices, origin: z.enum(['manual', 'scan']), inferred: z.boolean() }),
 }).refine((manual) => normalizeScanCurrency(manual.currency) === manual.currency
   && normalizeScanCurrency(manual.original.raw_currency) === manual.original.currency
-  && manual.prices[manual.format] === manual.amount);
+  && manual.prices[manual.format] === manual.amount && isMenuCurrencyAmountValid(manual.amount, manual.currency)
+  && Object.values(manual.prices).every((price) => price === null || isMenuCurrencyAmountValid(price, manual.currency)));
 const priceSnapshotSchema = z.object({
   version: z.literal(1),
   raw_amount: amount,
@@ -76,7 +78,8 @@ export const menuFinancialPrice = (snapshot: MenuPriceSnapshot): number | null =
   if (snapshot.service !== 'botella' || snapshot.currency !== 'EUR' || snapshot.manual_pending
     || snapshot.inferred_service || snapshot.inferred_price || snapshot.inferred_currency || !snapshot.identity_confirmed) return null;
   if (snapshot.raw_amount !== null && snapshot.prices.botella !== null && snapshot.raw_amount !== snapshot.prices.botella) return null;
-  return snapshot.prices.botella ?? snapshot.raw_amount;
+  const value = snapshot.prices.botella ?? snapshot.raw_amount;
+  return isMenuCurrencyAmountValid(value, snapshot.currency) ? value : null;
 };
 
 export const menuSaveEvidence = (wine: MenuScanWine, sensoryAttributes: Json | null) => {
@@ -120,6 +123,8 @@ export const readMenuPrice = (details: unknown, storedPrice: unknown): {
   const snapshot = parsed.data;
   const expected = menuFinancialPrice(snapshot);
   const inconsistent = storedPrice !== expected;
+  const invalidPrecision = Boolean(snapshot.currency) && [snapshot.raw_amount, ...Object.values(snapshot.prices)]
+    .some((price) => price !== null && !isMenuCurrencyAmountValid(price, snapshot.currency));
   if (snapshot.manual_assignment) {
     const manual = snapshot.manual_assignment;
     const serviceConflict = (snapshot.service === 'copa' || snapshot.service === 'botella')
@@ -146,12 +151,12 @@ export const readMenuPrice = (details: unknown, storedPrice: unknown): {
     if (!snapshot.identity_confirmed) lines.push('Identidad del vino pendiente de verificar');
     if (inconsistent) lines.push('Precio guardado incoherente, sin confirmar');
     const pending = snapshot.inferred_service || snapshot.inferred_price || snapshot.inferred_currency
-      || !snapshot.identity_confirmed || !snapshot.service || serviceConflict || inconsistent;
+      || !snapshot.identity_confirmed || !snapshot.service || serviceConflict || inconsistent || invalidPrecision;
     return { price: inconsistent ? null : expected, state: pending ? 'pending' : 'current', lines };
   }
   const pending = snapshot.manual_pending || snapshot.inferred_service || snapshot.inferred_price
     || snapshot.inferred_currency || !snapshot.identity_confirmed || !snapshot.currency || !snapshot.service
-    || (snapshot.service === 'ambos' && snapshot.raw_amount !== null) || inconsistent;
+    || (snapshot.service === 'ambos' && snapshot.raw_amount !== null) || inconsistent || invalidPrecision;
   const lines: string[] = [];
   const raw = formatScanPrice(snapshot.raw_amount, snapshot.currency);
   const singleService = !snapshot.manual_pending && !snapshot.inferred_service

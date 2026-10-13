@@ -19,7 +19,7 @@ export function MenuPriceEditor({ wine, index, locked, onApply }: {
   const [format, setFormat] = useState<string>(initialFormat);
   const [touched, setTouched] = useState(false);
   const [notice, setNotice] = useState('');
-  const parsed = parseMenuPriceDraft(amount);
+  const parsed = parseMenuPriceDraft(amount, currency);
   const ready = !locked && parsed.amount !== null && currency !== 'unknown' && (format === 'copa' || format === 'botella');
   const changedCurrency = currency !== 'unknown' && normalizeScanCurrency(wine.moneda) !== currency;
   const serviceConflict = !wine.campos_inferidos?.includes('servicio') && (wine.servicio === 'copa' || wine.servicio === 'botella')

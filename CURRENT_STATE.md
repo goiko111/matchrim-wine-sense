@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-13, local two-hour candidate
+
+- Explicit price provenance, grounded style similarity, continuous identity typing and clipped-text/44px/mobile reflow implemented. Currency precision now exact; invalid legacy amounts stay pending and out of budgets/finance, without FX.
+- Precision180contracts/123price contracts; full pre-quantum matrices16controls+40price+20style pass, final one-line arithmetic fix followed by12targeted cases165checks. Release/typecheck/lint/build pass,0errors106warnings.2694older entries preserved.
+- [Local continuation report](docs/MATCHRIM_LOCAL_TWO_HOURS_2026-10-13.md). No new native build/version, production, push or TestFlight. Cloud patch3845c72 remains separate; model/human/hosted/physical/native/signing gates open. Time closure recorded only after requested minimum.
+
 ## Latest checkpoint: 2026-10-13, grounded menu style and editing reflow
 
 - Removed photo/type-only numeric similarity; verified complete sensory sheets required, qualitative bands separate from personal affinity. Sequential name typing retains focus with stable row key; no identity certification from that edit.
