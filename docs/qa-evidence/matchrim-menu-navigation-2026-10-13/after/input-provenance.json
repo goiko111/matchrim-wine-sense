@@ -1,0 +1,12 @@
+{
+  "scope": "Only12 multi-fiche navigation on exact existing four-candidate contract; local replay, not people/recognition.",
+  "hashes": {
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "src/components/wine-import/WineMenuScanner.tsx": "799cad0234299a39e9ce09ce8a4aa1e1bbb356716bde2fa439bebf2e3490b962"
+  },
+  "responseSha256": "08b564d3574c47aaf12a735f7391182cdc004ba7174506e1880b317278dc0e91",
+  "contractCandidates": 4,
+  "caseCount": 8,
+  "note": "Entire existing bothContract unchanged; one scene, no additional truth/profile/provider."
+}

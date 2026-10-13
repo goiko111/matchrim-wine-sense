@@ -1,0 +1,1999 @@
+{
+  "scope": "Only12: same existing full four-candidate replay/one image; row/real cluster x keyboard/touch x two orientations. Not8 people or4 physical recognized bottles. Reopen actual singleton pin1; no fabricated coordinates/candidates. No vision/provider/native certification. Initial3/2/1 requests from actual pipeline; no increments by navigation.",
+  "scannerSha256": "799cad0234299a39e9ce09ce8a4aa1e1bbb356716bde2fa439bebf2e3490b962",
+  "contexts": 8,
+  "contextsPassed": 8,
+  "checks": 672,
+  "checksPassed": 672,
+  "cases": [
+    {
+      "case": "row-keyboard-portrait",
+      "originalTrigger": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+      "runtimeRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "runtimePins": [
+        "Vino 1: Lugana Allegrini",
+        "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo"
+      ],
+      "initial": {
+        "index": 1,
+        "title": "2. Barbaresco Marchesi di Barolo",
+        "labelledby": [
+          {
+            "id": "radix-:r1:",
+            "tag": "H2",
+            "label": null,
+            "text": "2. Barbaresco Marchesi di Barolo",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "describedby": [
+          {
+            "id": "radix-:r2:",
+            "tag": "P",
+            "label": null,
+            "text": "Marchesi di Barolo · Piamonte · 25,00 €",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "active": {
+          "tag": "BUTTON",
+          "label": "Cerrar detalle",
+          "text": "",
+          "disabled": false,
+          "connected": true
+        },
+        "inDialog": true,
+        "sameDialog": true,
+        "previous": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Anterior",
+          "disabled": false,
+          "connected": true
+        },
+        "next": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Siguiente",
+          "disabled": false,
+          "connected": true
+        },
+        "hits": {
+          "close": {
+            "reaches": true,
+            "rect": {
+              "x": 332,
+              "y": 141.8228759765625,
+              "width": 44,
+              "height": 44
+            }
+          },
+          "previous": {
+            "reaches": true,
+            "rect": {
+              "x": 17,
+              "y": 791.7760009765625,
+              "width": 175.5,
+              "height": 44
+            }
+          },
+          "next": {
+            "reaches": true,
+            "rect": {
+              "x": 200.5,
+              "y": 791.7760009765625,
+              "width": 175.5,
+              "height": 44
+            }
+          }
+        },
+        "scroll": {
+          "x": 0,
+          "y": 3250
+        },
+        "bodyScroll": 0
+      },
+      "transitions": [
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3250
+          }
+        },
+        {
+          "destination": 3,
+          "direction": "Siguiente",
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3250
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3250
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3250
+          }
+        },
+        {
+          "destination": 0,
+          "direction": "Anterior",
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3250
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Siguiente",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3250
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3250
+          }
+        }
+      ],
+      "originalReturn": true,
+      "alternateReturn": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-keyboard-landscape",
+      "originalTrigger": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+      "runtimeRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "runtimePins": [
+        "Vino 1: Lugana Allegrini",
+        "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo"
+      ],
+      "initial": {
+        "index": 1,
+        "title": "2. Barbaresco Marchesi di Barolo",
+        "labelledby": [
+          {
+            "id": "radix-:r1:",
+            "tag": "H2",
+            "label": null,
+            "text": "2. Barbaresco Marchesi di Barolo",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "describedby": [
+          {
+            "id": "radix-:r2:",
+            "tag": "P",
+            "label": null,
+            "text": "Marchesi di Barolo · Piamonte · 25,00 €",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "active": {
+          "tag": "BUTTON",
+          "label": "Cerrar detalle",
+          "text": "",
+          "disabled": false,
+          "connected": true
+        },
+        "inDialog": true,
+        "sameDialog": true,
+        "previous": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Anterior",
+          "disabled": false,
+          "connected": true
+        },
+        "next": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Siguiente",
+          "disabled": false,
+          "connected": true
+        },
+        "hits": {
+          "close": {
+            "reaches": true,
+            "rect": {
+              "x": 791,
+              "y": 82.8902587890625,
+              "width": 44,
+              "height": 44
+            }
+          },
+          "previous": {
+            "reaches": true,
+            "rect": {
+              "x": 17,
+              "y": 332.6558837890625,
+              "width": 405,
+              "height": 44
+            }
+          },
+          "next": {
+            "reaches": true,
+            "rect": {
+              "x": 430,
+              "y": 332.6558837890625,
+              "width": 405,
+              "height": 44
+            }
+          }
+        },
+        "scroll": {
+          "x": 0,
+          "y": 2246
+        },
+        "bodyScroll": 0
+      },
+      "transitions": [
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2246
+          }
+        },
+        {
+          "destination": 3,
+          "direction": "Siguiente",
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2246
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2246
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2246
+          }
+        },
+        {
+          "destination": 0,
+          "direction": "Anterior",
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2246
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Siguiente",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2246
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2246
+          }
+        }
+      ],
+      "originalReturn": true,
+      "alternateReturn": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-touch-portrait",
+      "originalTrigger": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+      "runtimeRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "runtimePins": [
+        "Vino 1: Lugana Allegrini",
+        "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo"
+      ],
+      "initial": {
+        "index": 1,
+        "title": "2. Barbaresco Marchesi di Barolo",
+        "labelledby": [
+          {
+            "id": "radix-:r1:",
+            "tag": "H2",
+            "label": null,
+            "text": "2. Barbaresco Marchesi di Barolo",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "describedby": [
+          {
+            "id": "radix-:r2:",
+            "tag": "P",
+            "label": null,
+            "text": "Marchesi di Barolo · Piamonte · 25,00 €",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "active": {
+          "tag": "BUTTON",
+          "label": "Cerrar detalle",
+          "text": "",
+          "disabled": false,
+          "connected": true
+        },
+        "inDialog": true,
+        "sameDialog": true,
+        "previous": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Anterior",
+          "disabled": false,
+          "connected": true
+        },
+        "next": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Siguiente",
+          "disabled": false,
+          "connected": true
+        },
+        "hits": {
+          "close": {
+            "reaches": true,
+            "rect": {
+              "x": 332,
+              "y": 141.8197784423828,
+              "width": 44,
+              "height": 44
+            }
+          },
+          "previous": {
+            "reaches": true,
+            "rect": {
+              "x": 17,
+              "y": 791.7728881835938,
+              "width": 175.5,
+              "height": 44
+            }
+          },
+          "next": {
+            "reaches": true,
+            "rect": {
+              "x": 200.5,
+              "y": 791.7728881835938,
+              "width": 175.5,
+              "height": 44
+            }
+          }
+        },
+        "scroll": {
+          "x": 0,
+          "y": 3351
+        },
+        "bodyScroll": 0
+      },
+      "transitions": [
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3351
+          }
+        },
+        {
+          "destination": 3,
+          "direction": "Siguiente",
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3351
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3351
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3351
+          }
+        },
+        {
+          "destination": 0,
+          "direction": "Anterior",
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3351
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Siguiente",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3351
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 3351
+          }
+        }
+      ],
+      "originalReturn": true,
+      "alternateReturn": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-touch-landscape",
+      "originalTrigger": "Abrir vino 2: Barbaresco Marchesi di Barolo",
+      "runtimeRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "runtimePins": [
+        "Vino 1: Lugana Allegrini",
+        "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo"
+      ],
+      "initial": {
+        "index": 1,
+        "title": "2. Barbaresco Marchesi di Barolo",
+        "labelledby": [
+          {
+            "id": "radix-:r1:",
+            "tag": "H2",
+            "label": null,
+            "text": "2. Barbaresco Marchesi di Barolo",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "describedby": [
+          {
+            "id": "radix-:r2:",
+            "tag": "P",
+            "label": null,
+            "text": "Marchesi di Barolo · Piamonte · 25,00 €",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "active": {
+          "tag": "BUTTON",
+          "label": "Cerrar detalle",
+          "text": "",
+          "disabled": false,
+          "connected": true
+        },
+        "inDialog": true,
+        "sameDialog": true,
+        "previous": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Anterior",
+          "disabled": false,
+          "connected": true
+        },
+        "next": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Siguiente",
+          "disabled": false,
+          "connected": true
+        },
+        "hits": {
+          "close": {
+            "reaches": true,
+            "rect": {
+              "x": 791,
+              "y": 82.88973236083984,
+              "width": 44,
+              "height": 44
+            }
+          },
+          "previous": {
+            "reaches": true,
+            "rect": {
+              "x": 17,
+              "y": 332.6553649902344,
+              "width": 405,
+              "height": 44
+            }
+          },
+          "next": {
+            "reaches": true,
+            "rect": {
+              "x": 430,
+              "y": 332.6553649902344,
+              "width": 405,
+              "height": 44
+            }
+          }
+        },
+        "scroll": {
+          "x": 0,
+          "y": 2326
+        },
+        "bodyScroll": 0
+      },
+      "transitions": [
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2326
+          }
+        },
+        {
+          "destination": 3,
+          "direction": "Siguiente",
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2326
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2326
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2326
+          }
+        },
+        {
+          "destination": 0,
+          "direction": "Anterior",
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2326
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Siguiente",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2326
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 2326
+          }
+        }
+      ],
+      "originalReturn": true,
+      "alternateReturn": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "cluster-keyboard-portrait",
+      "originalTrigger": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+      "runtimeRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "runtimePins": [
+        "Vino 1: Lugana Allegrini",
+        "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo"
+      ],
+      "initial": {
+        "index": 3,
+        "title": "4. Laurent Perriere Ultra",
+        "labelledby": [
+          {
+            "id": "radix-:r1:",
+            "tag": "H2",
+            "label": null,
+            "text": "4. Laurent Perriere Ultra",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "describedby": [
+          {
+            "id": "radix-:r2:",
+            "tag": "P",
+            "label": null,
+            "text": "Laurent Perrier · Champagne",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "active": {
+          "tag": "BUTTON",
+          "label": "Cerrar detalle",
+          "text": "",
+          "disabled": false,
+          "connected": true
+        },
+        "inDialog": true,
+        "sameDialog": true,
+        "previous": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Anterior",
+          "disabled": false,
+          "connected": true
+        },
+        "next": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Siguiente",
+          "disabled": true,
+          "connected": true
+        },
+        "hits": {
+          "close": {
+            "reaches": true,
+            "rect": {
+              "x": 332,
+              "y": 141.6312713623047,
+              "width": 44,
+              "height": 44
+            }
+          },
+          "previous": {
+            "reaches": true,
+            "rect": {
+              "x": 17,
+              "y": 791.7719116210938,
+              "width": 175.5,
+              "height": 44
+            }
+          },
+          "next": {
+            "reaches": false,
+            "rect": {
+              "x": 200.5,
+              "y": 791.7719116210938,
+              "width": 175.5,
+              "height": 44
+            }
+          }
+        },
+        "scroll": {
+          "x": 0,
+          "y": 0
+        },
+        "bodyScroll": 0
+      },
+      "transitions": [
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 3,
+          "direction": "Siguiente",
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 0,
+          "direction": "Anterior",
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Siguiente",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "originalReturn": true,
+      "alternateReturn": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "cluster-keyboard-landscape",
+      "originalTrigger": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+      "runtimeRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "runtimePins": [
+        "Vino 1: Lugana Allegrini",
+        "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo"
+      ],
+      "initial": {
+        "index": 3,
+        "title": "4. Laurent Perriere Ultra",
+        "labelledby": [
+          {
+            "id": "radix-:r1:",
+            "tag": "H2",
+            "label": null,
+            "text": "4. Laurent Perriere Ultra",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "describedby": [
+          {
+            "id": "radix-:r2:",
+            "tag": "P",
+            "label": null,
+            "text": "Laurent Perrier · Champagne",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "active": {
+          "tag": "BUTTON",
+          "label": "Cerrar detalle",
+          "text": "",
+          "disabled": false,
+          "connected": true
+        },
+        "inDialog": true,
+        "sameDialog": true,
+        "previous": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Anterior",
+          "disabled": false,
+          "connected": true
+        },
+        "next": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Siguiente",
+          "disabled": true,
+          "connected": true
+        },
+        "hits": {
+          "close": {
+            "reaches": true,
+            "rect": {
+              "x": 791,
+              "y": 82.81288146972656,
+              "width": 44,
+              "height": 44
+            }
+          },
+          "previous": {
+            "reaches": true,
+            "rect": {
+              "x": 17,
+              "y": 332.6566162109375,
+              "width": 405,
+              "height": 44
+            }
+          },
+          "next": {
+            "reaches": false,
+            "rect": {
+              "x": 430,
+              "y": 332.6566162109375,
+              "width": 405,
+              "height": 44
+            }
+          }
+        },
+        "scroll": {
+          "x": 0,
+          "y": 0
+        },
+        "bodyScroll": 0
+      },
+      "transitions": [
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 3,
+          "direction": "Siguiente",
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 0,
+          "direction": "Anterior",
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Siguiente",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "originalReturn": true,
+      "alternateReturn": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "cluster-touch-portrait",
+      "originalTrigger": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+      "runtimeRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "runtimePins": [
+        "Vino 1: Lugana Allegrini",
+        "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo"
+      ],
+      "initial": {
+        "index": 3,
+        "title": "4. Laurent Perriere Ultra",
+        "labelledby": [
+          {
+            "id": "radix-:r1:",
+            "tag": "H2",
+            "label": null,
+            "text": "4. Laurent Perriere Ultra",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "describedby": [
+          {
+            "id": "radix-:r2:",
+            "tag": "P",
+            "label": null,
+            "text": "Laurent Perrier · Champagne",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "active": {
+          "tag": "BUTTON",
+          "label": "Cerrar detalle",
+          "text": "",
+          "disabled": false,
+          "connected": true
+        },
+        "inDialog": true,
+        "sameDialog": true,
+        "previous": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Anterior",
+          "disabled": false,
+          "connected": true
+        },
+        "next": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Siguiente",
+          "disabled": true,
+          "connected": true
+        },
+        "hits": {
+          "close": {
+            "reaches": true,
+            "rect": {
+              "x": 332,
+              "y": 141.63217163085938,
+              "width": 44,
+              "height": 44
+            }
+          },
+          "previous": {
+            "reaches": true,
+            "rect": {
+              "x": 17,
+              "y": 791.7728271484375,
+              "width": 175.5,
+              "height": 44
+            }
+          },
+          "next": {
+            "reaches": false,
+            "rect": {
+              "x": 200.5,
+              "y": 791.7728271484375,
+              "width": 175.5,
+              "height": 44
+            }
+          }
+        },
+        "scroll": {
+          "x": 0,
+          "y": 0
+        },
+        "bodyScroll": 0
+      },
+      "transitions": [
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 3,
+          "direction": "Siguiente",
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 0,
+          "direction": "Anterior",
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Siguiente",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "originalReturn": true,
+      "alternateReturn": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    },
+    {
+      "case": "cluster-touch-landscape",
+      "originalTrigger": "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo",
+      "runtimeRows": [
+        "Abrir vino 1: Lugana Allegrini",
+        "Abrir vino 2: Barbaresco Marchesi di Barolo",
+        "Abrir vino 3: Barolo Marchesi di Barolo",
+        "Abrir vino 4: Laurent Perriere Ultra"
+      ],
+      "runtimePins": [
+        "Vino 1: Lugana Allegrini",
+        "Grupo de 3 vinos: Laurent Perriere Ultra, Barbaresco Marchesi di Barolo, Barolo Marchesi di Barolo"
+      ],
+      "initial": {
+        "index": 3,
+        "title": "4. Laurent Perriere Ultra",
+        "labelledby": [
+          {
+            "id": "radix-:r1:",
+            "tag": "H2",
+            "label": null,
+            "text": "4. Laurent Perriere Ultra",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "describedby": [
+          {
+            "id": "radix-:r2:",
+            "tag": "P",
+            "label": null,
+            "text": "Laurent Perrier · Champagne",
+            "disabled": false,
+            "connected": true
+          }
+        ],
+        "active": {
+          "tag": "BUTTON",
+          "label": "Cerrar detalle",
+          "text": "",
+          "disabled": false,
+          "connected": true
+        },
+        "inDialog": true,
+        "sameDialog": true,
+        "previous": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Anterior",
+          "disabled": false,
+          "connected": true
+        },
+        "next": {
+          "tag": "BUTTON",
+          "label": null,
+          "text": "Siguiente",
+          "disabled": true,
+          "connected": true
+        },
+        "hits": {
+          "close": {
+            "reaches": true,
+            "rect": {
+              "x": 791,
+              "y": 82.81340026855469,
+              "width": 44,
+              "height": 44
+            }
+          },
+          "previous": {
+            "reaches": true,
+            "rect": {
+              "x": 17,
+              "y": 332.65716552734375,
+              "width": 405,
+              "height": 44
+            }
+          },
+          "next": {
+            "reaches": false,
+            "rect": {
+              "x": 430,
+              "y": 332.65716552734375,
+              "width": 405,
+              "height": 44
+            }
+          }
+        },
+        "scroll": {
+          "x": 0,
+          "y": 0
+        },
+        "bodyScroll": 0
+      },
+      "transitions": [
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 3,
+          "direction": "Siguiente",
+          "title": "4. Laurent Perriere Ultra",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Anterior",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Anterior",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Anterior",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 0,
+          "direction": "Anterior",
+          "title": "1. Lugana Allegrini",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 1,
+          "direction": "Siguiente",
+          "title": "2. Barbaresco Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "destination": 2,
+          "direction": "Siguiente",
+          "title": "3. Barolo Marchesi di Barolo",
+          "active": {
+            "tag": "BUTTON",
+            "label": null,
+            "text": "Siguiente",
+            "disabled": false,
+            "connected": true
+          },
+          "inDialog": true,
+          "sameDialog": true,
+          "scroll": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "originalReturn": true,
+      "alternateReturn": true,
+      "counters": {
+        "ocr": 3,
+        "canonical": 2,
+        "base": 1
+      }
+    }
+  ],
+  "contracts": 32,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0
+}

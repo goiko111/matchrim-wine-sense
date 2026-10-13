@@ -1,0 +1,146 @@
+{
+  "scope": "Only12 navigation boundary callbacks/indices/owned focus guards and byte/AST preservation. Fake button/ref objects are pure controls, not DOM/native/users. UI keyboard/touch multi-fiche is separate local replay; no dataset regeneration.",
+  "baseline": "7a3171bb753f0b64a1f5b46813e1c1a7f65f50de",
+  "checks": [
+    {
+      "name": "Anterior index1/length2/ownstrue",
+      "passed": true
+    },
+    {
+      "name": "Anterior index1/length2/ownsfalse",
+      "passed": true
+    },
+    {
+      "name": "Siguiente index0/length2/ownstrue",
+      "passed": true
+    },
+    {
+      "name": "Siguiente index0/length2/ownsfalse",
+      "passed": true
+    },
+    {
+      "name": "Anterior index1/length4/ownstrue",
+      "passed": true
+    },
+    {
+      "name": "Anterior index1/length4/ownsfalse",
+      "passed": true
+    },
+    {
+      "name": "Anterior index2/length4/ownstrue",
+      "passed": true
+    },
+    {
+      "name": "Anterior index2/length4/ownsfalse",
+      "passed": true
+    },
+    {
+      "name": "Anterior index3/length4/ownstrue",
+      "passed": true
+    },
+    {
+      "name": "Anterior index3/length4/ownsfalse",
+      "passed": true
+    },
+    {
+      "name": "Siguiente index0/length4/ownstrue",
+      "passed": true
+    },
+    {
+      "name": "Siguiente index0/length4/ownsfalse",
+      "passed": true
+    },
+    {
+      "name": "Siguiente index1/length4/ownstrue",
+      "passed": true
+    },
+    {
+      "name": "Siguiente index1/length4/ownsfalse",
+      "passed": true
+    },
+    {
+      "name": "Siguiente index2/length4/ownstrue",
+      "passed": true
+    },
+    {
+      "name": "Siguiente index2/length4/ownsfalse",
+      "passed": true
+    },
+    {
+      "name": "Missing opposite ref safe, index selection unchanged: Anterior",
+      "passed": true
+    },
+    {
+      "name": "Missing opposite ref safe, index selection unchanged: Siguiente",
+      "passed": true
+    },
+    {
+      "name": "Anterior callback after stripping only focus guard equals old index algorithm",
+      "passed": true
+    },
+    {
+      "name": "Siguiente callback after stripping only focus guard equals old index algorithm",
+      "passed": true
+    },
+    {
+      "name": "Every existing nested initializer including opener/owner/batch/notice/scoring/query untouched",
+      "passed": true
+    },
+    {
+      "name": "All existing effects unchanged, no async/global focus effect",
+      "passed": true
+    },
+    {
+      "name": "Anterior disabled boundary and all other existing button props unchanged",
+      "passed": true
+    },
+    {
+      "name": "Siguiente disabled boundary and all other existing button props unchanged",
+      "passed": true
+    },
+    {
+      "name": "Complete existing immutable corpus hash, four candidates/layout/coverage unchanged",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/drawer.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/AccountNotifications.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/services/winerimApi.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/aiRimContextGuide.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuWineActions.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuProfileRecovery.ts",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "799cad0234299a39e9ce09ce8a4aa1e1bbb356716bde2fa439bebf2e3490b962",
+    "src/components/ui/drawer.tsx": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+    "src/components/AccountNotifications.tsx": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf",
+    "src/services/winerimApi.ts": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec",
+    "src/utils/aiRimContextGuide.ts": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+    "src/utils/wineAffinityExplanation.ts": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+    "src/utils/menuWineActions.ts": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+    "src/utils/menuProfileRecovery.ts": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "scripts/check-matchrim-menu-navigation-oct13.ts": "82dc566c81f5d91601e0e1ff808965e8b9910e9869428b7ceb5809494f001c1f"
+  }
+}

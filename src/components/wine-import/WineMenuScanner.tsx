@@ -261,6 +261,8 @@ const WineMenuScannerSession = ({
   const [selectedPinIndex, setSelectedPinIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const detailPreviousRef = useRef<HTMLButtonElement>(null);
+  const detailNextRef = useRef<HTMLButtonElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const scanAbortRef = useRef<AbortController | null>(null);
   const saveLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
@@ -2121,12 +2123,18 @@ const WineMenuScannerSession = ({
 	              </div>
 	              <DrawerFooter className="border-t border-stone-200 bg-white">
 	                <div className="grid grid-cols-2 gap-2">
-	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex === 0} onClick={() => {
+	                  <Button ref={detailPreviousRef} type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex === 0} onClick={(event) => {
 	                    const next = Math.max(0, selectedPinIndex - 1);
+                      if (next === 0 && document.activeElement === event.currentTarget) {
+                        detailNextRef.current?.focus({ preventScroll: true });
+                      }
 	                    openWineDetail(next);
 	                  }}><ChevronLeft className="h-4 w-4" /> Anterior</Button>
-	                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={() => {
+	                  <Button ref={detailNextRef} type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={(event) => {
 	                    const next = Math.min(scannedWines.length - 1, selectedPinIndex + 1);
+                      if (next === scannedWines.length - 1 && document.activeElement === event.currentTarget) {
+                        detailPreviousRef.current?.focus({ preventScroll: true });
+                      }
 	                    openWineDetail(next);
 	                  }}>Siguiente <ChevronRight className="h-4 w-4" /></Button>
 	                </div>

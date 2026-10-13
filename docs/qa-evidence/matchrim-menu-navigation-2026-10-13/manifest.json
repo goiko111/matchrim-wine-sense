@@ -1,0 +1,705 @@
+{
+  "entries": [
+    {
+      "path": "after/cluster-keyboard-landscape-boundary-0.png",
+      "sha256": "b9845e139c521531bf6d7c399e171e55d1961d7fc436531e7827211f30e03721"
+    },
+    {
+      "path": "after/cluster-keyboard-landscape-boundary-3.png",
+      "sha256": "71e118a9606b5ea2264348d8e8f9c4123fac813ce1628ff4d11e535f4fd5b175"
+    },
+    {
+      "path": "after/cluster-keyboard-landscape-initial.png",
+      "sha256": "3eeb314f8b42c560b20087dbba07b29339be249bbbe4fb879347185a44797d0d"
+    },
+    {
+      "path": "after/cluster-keyboard-landscape-new-return.png",
+      "sha256": "ae7608053039bcffb4e68c698cb01094652eadcb1592f5da0e5d8a5bd9199302"
+    },
+    {
+      "path": "after/cluster-keyboard-landscape-original-return.png",
+      "sha256": "76cd0c8d0ee07daf1f5c6d99a6da5b6277cc09533363e247d3d44897e2e78cdc"
+    },
+    {
+      "path": "after/cluster-keyboard-portrait-boundary-0.png",
+      "sha256": "956420bb4f5db674a7a617e5560ccec9e72feab22f3c8dbd332334d2cb43a182"
+    },
+    {
+      "path": "after/cluster-keyboard-portrait-boundary-3.png",
+      "sha256": "024c308af548ca0fdd401a74525d72a6d26401d1e3d0a87b4ac6428e3d56ec32"
+    },
+    {
+      "path": "after/cluster-keyboard-portrait-initial.png",
+      "sha256": "3ef3f6fbe98fb1830c32b7f3f5382c29c195b605bb2a3068693c7a2c4df6ece3"
+    },
+    {
+      "path": "after/cluster-keyboard-portrait-new-return.png",
+      "sha256": "3b4ba99cd3642945d19eb12fdae037de17f95538ce1cf43b82d3a57fd89aa5f4"
+    },
+    {
+      "path": "after/cluster-keyboard-portrait-original-return.png",
+      "sha256": "d757af5e338ebf14b0a07a3ef337715b37337db0ad9d11eab3f3f2b583de0e31"
+    },
+    {
+      "path": "after/cluster-touch-landscape-boundary-0.png",
+      "sha256": "1a48b44f40bbbcd48044fd5e35da02cfc879befabcf0621f2a8f9923b51e0fa8"
+    },
+    {
+      "path": "after/cluster-touch-landscape-boundary-3.png",
+      "sha256": "f754ce327abe2af857b57620132a75e0a4234c926aec2bd7559cfb8ce7585b62"
+    },
+    {
+      "path": "after/cluster-touch-landscape-initial.png",
+      "sha256": "74221e466afe7ebffbc49bad655942a91b9d7f4dab584b3c9598af06ffa2961f"
+    },
+    {
+      "path": "after/cluster-touch-landscape-new-return.png",
+      "sha256": "534eb34de9bedf93731b7b056bd897887e459540028a3c4e875429e23a7dfc73"
+    },
+    {
+      "path": "after/cluster-touch-landscape-original-return.png",
+      "sha256": "72c5b33526f9aa328be809109dd34e0d0a0a92d0090800a22e32cc85343d0321"
+    },
+    {
+      "path": "after/cluster-touch-portrait-boundary-0.png",
+      "sha256": "6bdcafcd543721ef4f75cad3ca289e93f977aafde53e3e2c2bd1cd290f213a53"
+    },
+    {
+      "path": "after/cluster-touch-portrait-boundary-3.png",
+      "sha256": "db4ef6204320509c5b2ea7670ea34d11da3c6b017d0a4ca840e7bc0eca2b07fd"
+    },
+    {
+      "path": "after/cluster-touch-portrait-initial.png",
+      "sha256": "112999d60b53180513566e6610baf454cc88259f5351ef0a35eca4fc3efc7da4"
+    },
+    {
+      "path": "after/cluster-touch-portrait-new-return.png",
+      "sha256": "a516abddf94085c6b210298f8fe12302be55723452d70dc8dfb6621a8f4e73c0"
+    },
+    {
+      "path": "after/cluster-touch-portrait-original-return.png",
+      "sha256": "d757af5e338ebf14b0a07a3ef337715b37337db0ad9d11eab3f3f2b583de0e31"
+    },
+    {
+      "path": "after/input-provenance.json",
+      "sha256": "08bcc0f547b50a093cf9a59660429ac37bfbb62da03d6b6c3f398ea3e27818a9"
+    },
+    {
+      "path": "after/results.json",
+      "sha256": "8d7845387cb50ed140f3851ea5c658e92536ffc119bc0c4a4782ab0d4b088c30"
+    },
+    {
+      "path": "after/row-keyboard-landscape-boundary-0.png",
+      "sha256": "ab745767a9aeea34bf6daec0ff7767eca4c7aaab3fbe33695e5814faf1d218c9"
+    },
+    {
+      "path": "after/row-keyboard-landscape-boundary-3.png",
+      "sha256": "6b5184907aed0bfb6a51b89350d6411df7f90c1b37dbc8e67968620cafe1ba64"
+    },
+    {
+      "path": "after/row-keyboard-landscape-initial.png",
+      "sha256": "3009b9bf34e8ecd8e1304545e9da13d3ab0a8d82fd5f5249446f68bf16e5eabc"
+    },
+    {
+      "path": "after/row-keyboard-landscape-new-return.png",
+      "sha256": "7e619902445d6e607bb4be32d5eb1ebf40103991377eb42ef8721e8670868642"
+    },
+    {
+      "path": "after/row-keyboard-landscape-original-return.png",
+      "sha256": "cff9364d71c52e7e1b78c54d3feb4d66a6e1a77c1d98ddd2326a1be94e31ae7a"
+    },
+    {
+      "path": "after/row-keyboard-portrait-boundary-0.png",
+      "sha256": "1e984cbbd424b2228e2c80514e5bd2e7b50ad18ee7a669c4d8a13ca46149e7ae"
+    },
+    {
+      "path": "after/row-keyboard-portrait-boundary-3.png",
+      "sha256": "79fc2f731d710730e800ffcc6f9c331f2dd033e430d4f383897276212e55a294"
+    },
+    {
+      "path": "after/row-keyboard-portrait-initial.png",
+      "sha256": "5ddad4805fc7bc30e5d01f7fc8758dd15b210b4cd0cf54c3b41a508c6c253efa"
+    },
+    {
+      "path": "after/row-keyboard-portrait-new-return.png",
+      "sha256": "3b4ba99cd3642945d19eb12fdae037de17f95538ce1cf43b82d3a57fd89aa5f4"
+    },
+    {
+      "path": "after/row-keyboard-portrait-original-return.png",
+      "sha256": "e6cf76d49ee3eee617b8261ccba7db43e044f208a4ddbd75b71aae5f9ea3bf18"
+    },
+    {
+      "path": "after/row-touch-landscape-boundary-0.png",
+      "sha256": "2c9d3556b9d2c3fe906e266aa5ef1aad466ed97d783e1d6ab0aa3e5a70ab46e5"
+    },
+    {
+      "path": "after/row-touch-landscape-boundary-3.png",
+      "sha256": "4402d7501f63e2e65943dd6f1f25a4e677cfd93ea363b1551d7db5d1541617c6"
+    },
+    {
+      "path": "after/row-touch-landscape-initial.png",
+      "sha256": "77bce2da9445ca7d7d0cd651698e3a704a424072b31404a435d69d5eb681d428"
+    },
+    {
+      "path": "after/row-touch-landscape-new-return.png",
+      "sha256": "534eb34de9bedf93731b7b056bd897887e459540028a3c4e875429e23a7dfc73"
+    },
+    {
+      "path": "after/row-touch-landscape-original-return.png",
+      "sha256": "e8e8f44fef9d2c2eb012ff4c81c8dc3e41d4af6cf54cbd733a8fe986aa466293"
+    },
+    {
+      "path": "after/row-touch-portrait-boundary-0.png",
+      "sha256": "9b3da5d64755e1eb55c769b9b23850c9d62757ba5d16c655c93f888e26a890ff"
+    },
+    {
+      "path": "after/row-touch-portrait-boundary-3.png",
+      "sha256": "e553329fa3aed54f8dbcdcbbc3df0f12175da80b86a9732b65d912725c728d47"
+    },
+    {
+      "path": "after/row-touch-portrait-initial.png",
+      "sha256": "5f5519439de581b28afa4757048784b84313e658e99ba3fb72a741928dc6430b"
+    },
+    {
+      "path": "after/row-touch-portrait-new-return.png",
+      "sha256": "a516abddf94085c6b210298f8fe12302be55723452d70dc8dfb6621a8f4e73c0"
+    },
+    {
+      "path": "after/row-touch-portrait-original-return.png",
+      "sha256": "2dbcb2b952f1110a721a4c18bf8bb4f01fb1f4fbeea56f40f24c86fa9f50d316"
+    },
+    {
+      "path": "baseline-sources/src/components/AccountNotifications.tsx.txt",
+      "sha256": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf"
+    },
+    {
+      "path": "baseline-sources/src/components/AffinityExplanation.tsx.txt",
+      "sha256": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e"
+    },
+    {
+      "path": "baseline-sources/src/components/AiRimContextGuide.tsx.txt",
+      "sha256": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0"
+    },
+    {
+      "path": "baseline-sources/src/components/ui/drawer.tsx.txt",
+      "sha256": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b"
+    },
+    {
+      "path": "baseline-sources/src/components/ui/sonner.tsx.txt",
+      "sha256": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/MultiWineLabelScanner.tsx.txt",
+      "sha256": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "sha256": "b14576042f6f723e62ef6e9fda79ffaa49edff059a1ea12f3dbdbd6a2944dec8"
+    },
+    {
+      "path": "baseline-sources/src/contexts/AuthContext.tsx.txt",
+      "sha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863"
+    },
+    {
+      "path": "baseline-sources/src/pages/MyWines.tsx.txt",
+      "sha256": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad"
+    },
+    {
+      "path": "baseline-sources/src/services/matchrimScanProfile.ts.txt",
+      "sha256": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150"
+    },
+    {
+      "path": "baseline-sources/src/services/winerimApi.ts.txt",
+      "sha256": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec"
+    },
+    {
+      "path": "baseline-sources/src/utils/aiRimContextGuide.ts.txt",
+      "sha256": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07"
+    },
+    {
+      "path": "baseline-sources/src/utils/matchrimLearning.ts.txt",
+      "sha256": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuAffinityPresentation.ts.txt",
+      "sha256": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuProfileRecovery.ts.txt",
+      "sha256": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuWineActions.ts.txt",
+      "sha256": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuWineSave.ts.txt",
+      "sha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859"
+    },
+    {
+      "path": "baseline-sources/src/utils/multiWineScan.ts.txt",
+      "sha256": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanConfidence.ts.txt",
+      "sha256": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanProfile.ts.txt",
+      "sha256": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanWineEvidence.ts.txt",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineAffinityExplanation.ts.txt",
+      "sha256": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineComparison.ts.txt",
+      "sha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineMenuScan.ts.txt",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "baseline-sources/supabase/functions/_shared/matchrim-scan-values.ts.txt",
+      "sha256": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-landscape-boundary-0.png",
+      "sha256": "6ef6174ba86f0cc7056c7e68aaf34d96029b622ad827dee54bff1cd18b5e58fc"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-landscape-boundary-3.png",
+      "sha256": "9faf9aa8a3b98e31af6b573885ef93aa456c9cdefb7a27db6d42d3423d8ec3e2"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-landscape-initial.png",
+      "sha256": "3eeb314f8b42c560b20087dbba07b29339be249bbbe4fb879347185a44797d0d"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-landscape-new-return.png",
+      "sha256": "ae7608053039bcffb4e68c698cb01094652eadcb1592f5da0e5d8a5bd9199302"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-landscape-original-return.png",
+      "sha256": "b7d0c6fdf4dd6532839646e734d4309bda05b2eaf78e77959ca6ce3e97c6732f"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-portrait-boundary-0.png",
+      "sha256": "c41c11e2c0482cf2819b00b9d116ceb934e8db1bfa9457c33ccb0d0f457651cb"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-portrait-boundary-3.png",
+      "sha256": "402ec0fa0355e51b7f5f116d62d696f89d2fe9d91dcfce4be2c3ea8cb23b0f6f"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-portrait-initial.png",
+      "sha256": "061e9e9c17651c958862a67be871907758c413b70daafdab0a702bb0a86da7c2"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-portrait-new-return.png",
+      "sha256": "3b4ba99cd3642945d19eb12fdae037de17f95538ce1cf43b82d3a57fd89aa5f4"
+    },
+    {
+      "path": "before-complete/cluster-keyboard-portrait-original-return.png",
+      "sha256": "6546232e75bcbc0353f1e69c636dff85beb0b953f54ac920931383d82f4db818"
+    },
+    {
+      "path": "before-complete/cluster-touch-landscape-boundary-0.png",
+      "sha256": "1a48b44f40bbbcd48044fd5e35da02cfc879befabcf0621f2a8f9923b51e0fa8"
+    },
+    {
+      "path": "before-complete/cluster-touch-landscape-boundary-3.png",
+      "sha256": "f754ce327abe2af857b57620132a75e0a4234c926aec2bd7559cfb8ce7585b62"
+    },
+    {
+      "path": "before-complete/cluster-touch-landscape-initial.png",
+      "sha256": "74221e466afe7ebffbc49bad655942a91b9d7f4dab584b3c9598af06ffa2961f"
+    },
+    {
+      "path": "before-complete/cluster-touch-landscape-new-return.png",
+      "sha256": "534eb34de9bedf93731b7b056bd897887e459540028a3c4e875429e23a7dfc73"
+    },
+    {
+      "path": "before-complete/cluster-touch-landscape-original-return.png",
+      "sha256": "c3b8c17139407efcfaec351a987a5aed9f21c6358cf479d7e9551d3a7b6860a7"
+    },
+    {
+      "path": "before-complete/cluster-touch-portrait-boundary-0.png",
+      "sha256": "6bdcafcd543721ef4f75cad3ca289e93f977aafde53e3e2c2bd1cd290f213a53"
+    },
+    {
+      "path": "before-complete/cluster-touch-portrait-boundary-3.png",
+      "sha256": "db4ef6204320509c5b2ea7670ea34d11da3c6b017d0a4ca840e7bc0eca2b07fd"
+    },
+    {
+      "path": "before-complete/cluster-touch-portrait-initial.png",
+      "sha256": "20c98bba66caaadf800609bd3bdc9e0c22eb25d522429d734ec5d10301eaee0d"
+    },
+    {
+      "path": "before-complete/cluster-touch-portrait-new-return.png",
+      "sha256": "a516abddf94085c6b210298f8fe12302be55723452d70dc8dfb6621a8f4e73c0"
+    },
+    {
+      "path": "before-complete/cluster-touch-portrait-original-return.png",
+      "sha256": "d757af5e338ebf14b0a07a3ef337715b37337db0ad9d11eab3f3f2b583de0e31"
+    },
+    {
+      "path": "before-complete/input-provenance.json",
+      "sha256": "84d76e9a7cdae0dc84844753d7e589209cfa22f7a37d1c2829545786ceae0910"
+    },
+    {
+      "path": "before-complete/results.json",
+      "sha256": "dad915cfee36dde9539f12c47c8806f95c296d5f754d179a3b6ee19d52ef0d07"
+    },
+    {
+      "path": "before-complete/row-keyboard-landscape-boundary-0.png",
+      "sha256": "606f8ead1cc27f4ae75abd6a4af0c7d600e5e138697d6de00e41b9d2d231657a"
+    },
+    {
+      "path": "before-complete/row-keyboard-landscape-boundary-3.png",
+      "sha256": "f07dd0c08d4890b74f1ce0ef252671bf7991565bad748bda85141c6777953b59"
+    },
+    {
+      "path": "before-complete/row-keyboard-landscape-initial.png",
+      "sha256": "3009b9bf34e8ecd8e1304545e9da13d3ab0a8d82fd5f5249446f68bf16e5eabc"
+    },
+    {
+      "path": "before-complete/row-keyboard-landscape-new-return.png",
+      "sha256": "ae7608053039bcffb4e68c698cb01094652eadcb1592f5da0e5d8a5bd9199302"
+    },
+    {
+      "path": "before-complete/row-keyboard-landscape-original-return.png",
+      "sha256": "ac309424c37f37e07248dd71d4822292e345754d294e108fdf7f05f409c85367"
+    },
+    {
+      "path": "before-complete/row-keyboard-portrait-boundary-0.png",
+      "sha256": "1badeeaec4ed6d20bf381ae4ca978d599fd44b4626828ceb7e3ec11212f0609b"
+    },
+    {
+      "path": "before-complete/row-keyboard-portrait-boundary-3.png",
+      "sha256": "0011b6bdf4f277e6a0bb74df86a19163ecd085926980d64a3b3f0ee44820851d"
+    },
+    {
+      "path": "before-complete/row-keyboard-portrait-initial.png",
+      "sha256": "5ddad4805fc7bc30e5d01f7fc8758dd15b210b4cd0cf54c3b41a508c6c253efa"
+    },
+    {
+      "path": "before-complete/row-keyboard-portrait-new-return.png",
+      "sha256": "3b4ba99cd3642945d19eb12fdae037de17f95538ce1cf43b82d3a57fd89aa5f4"
+    },
+    {
+      "path": "before-complete/row-keyboard-portrait-original-return.png",
+      "sha256": "003a1952c3bb9f15c31fad04c1cbb6c916f66ce30918075e705d9f3d508a4073"
+    },
+    {
+      "path": "before-complete/row-touch-landscape-boundary-0.png",
+      "sha256": "2c9d3556b9d2c3fe906e266aa5ef1aad466ed97d783e1d6ab0aa3e5a70ab46e5"
+    },
+    {
+      "path": "before-complete/row-touch-landscape-boundary-3.png",
+      "sha256": "4402d7501f63e2e65943dd6f1f25a4e677cfd93ea363b1551d7db5d1541617c6"
+    },
+    {
+      "path": "before-complete/row-touch-landscape-initial.png",
+      "sha256": "77bce2da9445ca7d7d0cd651698e3a704a424072b31404a435d69d5eb681d428"
+    },
+    {
+      "path": "before-complete/row-touch-landscape-new-return.png",
+      "sha256": "534eb34de9bedf93731b7b056bd897887e459540028a3c4e875429e23a7dfc73"
+    },
+    {
+      "path": "before-complete/row-touch-landscape-original-return.png",
+      "sha256": "e8e8f44fef9d2c2eb012ff4c81c8dc3e41d4af6cf54cbd733a8fe986aa466293"
+    },
+    {
+      "path": "before-complete/row-touch-portrait-boundary-0.png",
+      "sha256": "9b3da5d64755e1eb55c769b9b23850c9d62757ba5d16c655c93f888e26a890ff"
+    },
+    {
+      "path": "before-complete/row-touch-portrait-boundary-3.png",
+      "sha256": "e553329fa3aed54f8dbcdcbbc3df0f12175da80b86a9732b65d912725c728d47"
+    },
+    {
+      "path": "before-complete/row-touch-portrait-initial.png",
+      "sha256": "516a0074cc1ac3e12ac834fc052469527007261a9a0dd998dff6a2fc4539b531"
+    },
+    {
+      "path": "before-complete/row-touch-portrait-new-return.png",
+      "sha256": "a516abddf94085c6b210298f8fe12302be55723452d70dc8dfb6621a8f4e73c0"
+    },
+    {
+      "path": "before-complete/row-touch-portrait-original-return.png",
+      "sha256": "2dbcb2b952f1110a721a4c18bf8bb4f01fb1f4fbeea56f40f24c86fa9f50d316"
+    },
+    {
+      "path": "before/cluster-keyboard-landscape-exception.png",
+      "sha256": "c737ba6f5ac1fc170d28b46f7c586a1775a7ca2e78e0b82d67f0af394940ef8e"
+    },
+    {
+      "path": "before/cluster-keyboard-portrait-exception.png",
+      "sha256": "3ef3f6fbe98fb1830c32b7f3f5382c29c195b605bb2a3068693c7a2c4df6ece3"
+    },
+    {
+      "path": "before/cluster-touch-landscape-exception.png",
+      "sha256": "091be8c40be0188998985e12a08cedc7451258980b9bd54d1d0390d12ba8df1c"
+    },
+    {
+      "path": "before/cluster-touch-portrait-exception.png",
+      "sha256": "112999d60b53180513566e6610baf454cc88259f5351ef0a35eca4fc3efc7da4"
+    },
+    {
+      "path": "before/input-provenance.json",
+      "sha256": "84d76e9a7cdae0dc84844753d7e589209cfa22f7a37d1c2829545786ceae0910"
+    },
+    {
+      "path": "before/results.json",
+      "sha256": "93c09edff9ddab1a48595e3871b6231556e5c65fb6acf695382f41556b8c3e31"
+    },
+    {
+      "path": "before/row-keyboard-landscape-boundary-0.png",
+      "sha256": "606f8ead1cc27f4ae75abd6a4af0c7d600e5e138697d6de00e41b9d2d231657a"
+    },
+    {
+      "path": "before/row-keyboard-landscape-boundary-3.png",
+      "sha256": "f07dd0c08d4890b74f1ce0ef252671bf7991565bad748bda85141c6777953b59"
+    },
+    {
+      "path": "before/row-keyboard-landscape-exception.png",
+      "sha256": "ac309424c37f37e07248dd71d4822292e345754d294e108fdf7f05f409c85367"
+    },
+    {
+      "path": "before/row-keyboard-landscape-initial.png",
+      "sha256": "3009b9bf34e8ecd8e1304545e9da13d3ab0a8d82fd5f5249446f68bf16e5eabc"
+    },
+    {
+      "path": "before/row-keyboard-landscape-original-return.png",
+      "sha256": "ac309424c37f37e07248dd71d4822292e345754d294e108fdf7f05f409c85367"
+    },
+    {
+      "path": "before/row-keyboard-portrait-boundary-0.png",
+      "sha256": "1badeeaec4ed6d20bf381ae4ca978d599fd44b4626828ceb7e3ec11212f0609b"
+    },
+    {
+      "path": "before/row-keyboard-portrait-boundary-3.png",
+      "sha256": "0011b6bdf4f277e6a0bb74df86a19163ecd085926980d64a3b3f0ee44820851d"
+    },
+    {
+      "path": "before/row-keyboard-portrait-exception.png",
+      "sha256": "003a1952c3bb9f15c31fad04c1cbb6c916f66ce30918075e705d9f3d508a4073"
+    },
+    {
+      "path": "before/row-keyboard-portrait-initial.png",
+      "sha256": "5ddad4805fc7bc30e5d01f7fc8758dd15b210b4cd0cf54c3b41a508c6c253efa"
+    },
+    {
+      "path": "before/row-keyboard-portrait-original-return.png",
+      "sha256": "003a1952c3bb9f15c31fad04c1cbb6c916f66ce30918075e705d9f3d508a4073"
+    },
+    {
+      "path": "before/row-touch-landscape-boundary-0.png",
+      "sha256": "2c9d3556b9d2c3fe906e266aa5ef1aad466ed97d783e1d6ab0aa3e5a70ab46e5"
+    },
+    {
+      "path": "before/row-touch-landscape-boundary-3.png",
+      "sha256": "4402d7501f63e2e65943dd6f1f25a4e677cfd93ea363b1551d7db5d1541617c6"
+    },
+    {
+      "path": "before/row-touch-landscape-exception.png",
+      "sha256": "e8e8f44fef9d2c2eb012ff4c81c8dc3e41d4af6cf54cbd733a8fe986aa466293"
+    },
+    {
+      "path": "before/row-touch-landscape-initial.png",
+      "sha256": "77bce2da9445ca7d7d0cd651698e3a704a424072b31404a435d69d5eb681d428"
+    },
+    {
+      "path": "before/row-touch-landscape-original-return.png",
+      "sha256": "e8e8f44fef9d2c2eb012ff4c81c8dc3e41d4af6cf54cbd733a8fe986aa466293"
+    },
+    {
+      "path": "before/row-touch-portrait-boundary-0.png",
+      "sha256": "9b3da5d64755e1eb55c769b9b23850c9d62757ba5d16c655c93f888e26a890ff"
+    },
+    {
+      "path": "before/row-touch-portrait-boundary-3.png",
+      "sha256": "e553329fa3aed54f8dbcdcbbc3df0f12175da80b86a9732b65d912725c728d47"
+    },
+    {
+      "path": "before/row-touch-portrait-exception.png",
+      "sha256": "2dbcb2b952f1110a721a4c18bf8bb4f01fb1f4fbeea56f40f24c86fa9f50d316"
+    },
+    {
+      "path": "before/row-touch-portrait-initial.png",
+      "sha256": "516a0074cc1ac3e12ac834fc052469527007261a9a0dd998dff6a2fc4539b531"
+    },
+    {
+      "path": "before/row-touch-portrait-original-return.png",
+      "sha256": "2dbcb2b952f1110a721a4c18bf8bb4f01fb1f4fbeea56f40f24c86fa9f50d316"
+    },
+    {
+      "path": "checkpoint12.md",
+      "sha256": "b36f4bc91dc4e14b3d8ec80facd29817cba0c76466077cf8a81d106edf2b07ef"
+    },
+    {
+      "path": "contracts.json",
+      "sha256": "a35dfa1f291554de26e1da0a0923bffa9f04362e5a709a7b4c8f2e92e0e73464"
+    },
+    {
+      "path": "contracts.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contracts.stdout.txt",
+      "sha256": "903d1f99f1525db14ccee130418347f3ad59a8fd12ebbdb4a0e717534f7e373f"
+    },
+    {
+      "path": "lint-scoped.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lint-scoped.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "primary.json",
+      "sha256": "3df6e7867d0e012d9ca7e8de2373237ddece651bbf5a654be84b560bbe37693f"
+    },
+    {
+      "path": "source-stages.json",
+      "sha256": "ae2fe1e6c67c67c00544dfc8db85207615a4272fcd587a0b5731a6bf117e69a5"
+    },
+    {
+      "path": "sources/scripts/check-matchrim-menu-navigation-oct13.ts.txt",
+      "sha256": "82dc566c81f5d91601e0e1ff808965e8b9910e9869428b7ceb5809494f001c1f"
+    },
+    {
+      "path": "sources/scripts/package-matchrim-menu-navigation-oct13.mjs.txt",
+      "sha256": "a0c9327b9539c43d4344d0321eced1885449fbd252dc8641c175e665ae811b20"
+    },
+    {
+      "path": "sources/scripts/qa-matchrim-menu-navigation-oct13.py.txt",
+      "sha256": "318d67eb8daf820f54de3fc324f07bf1414335f54708bda6a208160dfb4de33e"
+    },
+    {
+      "path": "sources/src/components/AccountNotifications.tsx.txt",
+      "sha256": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf"
+    },
+    {
+      "path": "sources/src/components/AffinityExplanation.tsx.txt",
+      "sha256": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e"
+    },
+    {
+      "path": "sources/src/components/AiRimContextGuide.tsx.txt",
+      "sha256": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0"
+    },
+    {
+      "path": "sources/src/components/ui/drawer.tsx.txt",
+      "sha256": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b"
+    },
+    {
+      "path": "sources/src/components/ui/sonner.tsx.txt",
+      "sha256": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de"
+    },
+    {
+      "path": "sources/src/components/wine-import/MultiWineLabelScanner.tsx.txt",
+      "sha256": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11"
+    },
+    {
+      "path": "sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "sha256": "799cad0234299a39e9ce09ce8a4aa1e1bbb356716bde2fa439bebf2e3490b962"
+    },
+    {
+      "path": "sources/src/contexts/AuthContext.tsx.txt",
+      "sha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863"
+    },
+    {
+      "path": "sources/src/pages/MyWines.tsx.txt",
+      "sha256": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad"
+    },
+    {
+      "path": "sources/src/services/matchrimScanProfile.ts.txt",
+      "sha256": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150"
+    },
+    {
+      "path": "sources/src/services/winerimApi.ts.txt",
+      "sha256": "287415857462d68ce80a37b8043bf3f45a1a9c27ae8a13bbef666d62077d67ec"
+    },
+    {
+      "path": "sources/src/utils/aiRimContextGuide.ts.txt",
+      "sha256": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07"
+    },
+    {
+      "path": "sources/src/utils/matchrimLearning.ts.txt",
+      "sha256": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1"
+    },
+    {
+      "path": "sources/src/utils/menuAffinityPresentation.ts.txt",
+      "sha256": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0"
+    },
+    {
+      "path": "sources/src/utils/menuProfileRecovery.ts.txt",
+      "sha256": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1"
+    },
+    {
+      "path": "sources/src/utils/menuWineActions.ts.txt",
+      "sha256": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1"
+    },
+    {
+      "path": "sources/src/utils/menuWineSave.ts.txt",
+      "sha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859"
+    },
+    {
+      "path": "sources/src/utils/multiWineScan.ts.txt",
+      "sha256": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d"
+    },
+    {
+      "path": "sources/src/utils/scanConfidence.ts.txt",
+      "sha256": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079"
+    },
+    {
+      "path": "sources/src/utils/scanProfile.ts.txt",
+      "sha256": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf"
+    },
+    {
+      "path": "sources/src/utils/scanWineEvidence.ts.txt",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "sources/src/utils/wineAffinityExplanation.ts.txt",
+      "sha256": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313"
+    },
+    {
+      "path": "sources/src/utils/wineComparison.ts.txt",
+      "sha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "sources/src/utils/wineMenuScan.ts.txt",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "sources/supabase/functions/_shared/matchrim-scan-values.ts.txt",
+      "sha256": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e"
+    },
+    {
+      "path": "tsconfig-scoped.json",
+      "sha256": "ec749e8d35f9c81b34ffcea812615b65073fcd5d97e4210cf8120c21da3891c0"
+    },
+    {
+      "path": "typecheck-scoped.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "typecheck-scoped.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verification.json",
+      "sha256": "e1c55e06defd081b9ff68918a2090c91fedabb61f321d5dee259555646193600"
+    }
+  ],
+  "captures": 104
+}
