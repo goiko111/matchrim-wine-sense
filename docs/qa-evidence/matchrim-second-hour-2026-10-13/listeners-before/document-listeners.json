@@ -1,0 +1,11 @@
+{
+  "initial": {
+    "keydown": 2,
+    "selectionchange": 1
+  },
+  "finalAfterIdle": {
+    "keydown": 2,
+    "selectionchange": 1,
+    "visibilitychange": 24
+  }
+}

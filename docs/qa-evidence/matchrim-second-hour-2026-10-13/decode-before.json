@@ -1,0 +1,334 @@
+{
+  "scope": "Local HEIC decode/recovery through visible controls; no real recognition or native certification.",
+  "privateEvidenceRoot": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim-second-hour-20261013/decode-before",
+  "cases": [
+    {
+      "case": "gallery-portrait",
+      "checks": [
+        {
+          "name": "Decode error visible in empty upload state",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Correct local decode reason, not network/provider or unreadable identity",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No profile/vision/catalog request before valid image",
+          "passed": true,
+          "detail": {
+            "profile": 0,
+            "detect": 0,
+            "analyze": 0,
+            "search": 0
+          }
+        },
+        {
+          "name": "Retry same selected image available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Discard selected image available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Empty-state horizontal layout contained",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Valid original JPEG recovers after decode error",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No stale decode message in recovered scan",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Recovered reset restores input controls",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All remote calls intercepted before auth; no writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime or unexpected console errors",
+          "passed": true,
+          "detail": [
+            "[multi-label] Scan failed: Error: El dispositivo no puede abrir este formato de imagen\n    at image.onerror (<URL>"
+          ]
+        }
+      ],
+      "failures": [
+        "Decode error visible in empty upload state",
+        "Correct local decode reason, not network/provider or unreadable identity",
+        "Retry same selected image available",
+        "Discard selected image available"
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "runtimeErrors": [],
+      "realRemoteAppCalls": 0,
+      "realWrites": 0
+    },
+    {
+      "case": "camera-portrait",
+      "checks": [
+        {
+          "name": "Decode error visible in empty upload state",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Correct local decode reason, not network/provider or unreadable identity",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No profile/vision/catalog request before valid image",
+          "passed": true,
+          "detail": {
+            "profile": 0,
+            "detect": 0,
+            "analyze": 0,
+            "search": 0
+          }
+        },
+        {
+          "name": "Retry same selected image available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Discard selected image available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Empty-state horizontal layout contained",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Valid original JPEG recovers after decode error",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No stale decode message in recovered scan",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Recovered reset restores input controls",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All remote calls intercepted before auth; no writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime or unexpected console errors",
+          "passed": true,
+          "detail": [
+            "[multi-label] Scan failed: Error: El dispositivo no puede abrir este formato de imagen\n    at image.onerror (<URL>"
+          ]
+        }
+      ],
+      "failures": [
+        "Decode error visible in empty upload state",
+        "Correct local decode reason, not network/provider or unreadable identity",
+        "Retry same selected image available",
+        "Discard selected image available"
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "runtimeErrors": [],
+      "realRemoteAppCalls": 0,
+      "realWrites": 0
+    },
+    {
+      "case": "gallery-landscape",
+      "checks": [
+        {
+          "name": "Decode error visible in empty upload state",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Correct local decode reason, not network/provider or unreadable identity",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No profile/vision/catalog request before valid image",
+          "passed": true,
+          "detail": {
+            "profile": 0,
+            "detect": 0,
+            "analyze": 0,
+            "search": 0
+          }
+        },
+        {
+          "name": "Retry same selected image available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Discard selected image available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Empty-state horizontal layout contained",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Valid original JPEG recovers after decode error",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No stale decode message in recovered scan",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Recovered reset restores input controls",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All remote calls intercepted before auth; no writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime or unexpected console errors",
+          "passed": true,
+          "detail": [
+            "[multi-label] Scan failed: Error: El dispositivo no puede abrir este formato de imagen\n    at image.onerror (<URL>"
+          ]
+        }
+      ],
+      "failures": [
+        "Decode error visible in empty upload state",
+        "Correct local decode reason, not network/provider or unreadable identity",
+        "Retry same selected image available",
+        "Discard selected image available"
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "runtimeErrors": [],
+      "realRemoteAppCalls": 0,
+      "realWrites": 0
+    },
+    {
+      "case": "camera-landscape",
+      "checks": [
+        {
+          "name": "Decode error visible in empty upload state",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Correct local decode reason, not network/provider or unreadable identity",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "No profile/vision/catalog request before valid image",
+          "passed": true,
+          "detail": {
+            "profile": 0,
+            "detect": 0,
+            "analyze": 0,
+            "search": 0
+          }
+        },
+        {
+          "name": "Retry same selected image available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Discard selected image available",
+          "passed": false,
+          "detail": null
+        },
+        {
+          "name": "Empty-state horizontal layout contained",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Valid original JPEG recovers after decode error",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No stale decode message in recovered scan",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "Recovered reset restores input controls",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "All remote calls intercepted before auth; no writes",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "No runtime or unexpected console errors",
+          "passed": true,
+          "detail": [
+            "[multi-label] Scan failed: Error: El dispositivo no puede abrir este formato de imagen\n    at image.onerror (<URL>"
+          ]
+        }
+      ],
+      "failures": [
+        "Decode error visible in empty upload state",
+        "Correct local decode reason, not network/provider or unreadable identity",
+        "Retry same selected image available",
+        "Discard selected image available"
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "runtimeErrors": [],
+      "realRemoteAppCalls": 0,
+      "realWrites": 0
+    }
+  ]
+}

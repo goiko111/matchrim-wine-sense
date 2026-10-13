@@ -1,0 +1,35 @@
+{
+  "scope": "Actual notification component controls and CDP listener cleanup, not full-account or native QA.",
+  "results": [
+    {
+      "orientation": "portrait",
+      "notifications": 25,
+      "initialVisibilityListeners": 0,
+      "activeVisibilityListeners": 0,
+      "finalVisibilityListeners": 0,
+      "touchTarget": {
+        "x": 33,
+        "y": 29,
+        "width": 44,
+        "height": 44
+      },
+      "runtimeErrors": [],
+      "passed": true
+    },
+    {
+      "orientation": "landscape",
+      "notifications": 25,
+      "initialVisibilityListeners": 0,
+      "activeVisibilityListeners": 23,
+      "finalVisibilityListeners": 0,
+      "touchTarget": {
+        "x": 265,
+        "y": 29,
+        "width": 44,
+        "height": 44
+      },
+      "runtimeErrors": [],
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "scope": "Structured Chrome heap, strong edges only; not native memory certification",
+  "counts": {
+    "string:HTMLCanvasElement": 2,
+    "string:HTMLImageElement": 3,
+    "string:FiberNode": 1,
+    "string:HTMLLIElement": 3,
+    "string:FileReader": 2,
+    "object:FiberNode": 968,
+    "object:HTMLLIElement": 5,
+    "closure:FileReader": 1,
+    "closure:HTMLLIElement": 2,
+    "closure:FiberNode": 1,
+    "closure:HTMLImageElement": 2,
+    "object:HTMLImageElement": 2,
+    "object:HTMLCanvasElement": 1,
+    "closure:HTMLCanvasElement": 1,
+    "native:EventListener": 808,
+    "native:V8EventListener": 429
+  },
+  "sampleLiRetainers": [
+    [
+      {
+        "offset": 261204,
+        "type": "object",
+        "name": "HTMLLIElement",
+        "detachedness": 0,
+        "rootPathNotFoundWithinBound": true,
+        "immediateRetainers": [
+          {
+            "offset": 264834,
+            "type": "native",
+            "name": "<li aria-live=\"polite\" aria-atomic=\"true\" role=\"status\" tabindex=\"0\" class=\"group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg\" data-sonner-toast=\"\" data-styled=\"true\" data-mounted=\"true\" data-promise=\"false\" data-removed=\"true\" data-visible=\"false\" data-y-position=\"top\" data-x-position=\"center\" data-index=\"1\" data-front=\"false\" data-swiping=\"false\" data-dismissible=\"true\" data-type=\"success\" data-swipe-out=\"false\" data-expanded=\"false\" style=\"--index: 119; --toasts-before: 119; --z-index: 2; --offset: 10710px; --initial-height: 76px;\">",
+            "detachedness": 2,
+            "edge": "part of key -> value pair in ephemeron table"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "offset": 1035372,
+        "type": "object",
+        "name": "HTMLLIElement",
+        "detachedness": 0
+      },
+      {
+        "offset": 2096310,
+        "type": "native",
+        "name": "blink::HeapHashTableBacking<blink::HashTable<const blink::WrapperTypeInfo *, blink::KeyValuePair<const blink::WrapperTypeInfo *, v8::TracedReference<v8::Object>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<const blink::WrapperTypeInfo *>, blink::HashTraits<v8::TracedReference<v8::Object>>>, blink::HashTraits<const blink::WrapperTypeInfo *>, blink::HeapAllocator>>",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "48"
+        }
+      },
+      {
+        "offset": 2096304,
+        "type": "native",
+        "name": "blink::V8PerContextData",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "1"
+        }
+      },
+      {
+        "offset": 1809618,
+        "type": "native",
+        "name": "blink::ScriptStateImpl",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "1"
+        }
+      },
+      {
+        "offset": 1809360,
+        "type": "synthetic",
+        "name": "C++ Persistent roots",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "blink::ScriptState::ScriptState(v8::Local<v8::Context>, DOMWrapperWorld *, scoped_refptr<scheduler::EventLoop>)@../../third_party/blink/renderer/platform/bindings/script_state.cc:18"
+        }
+      },
+      {
+        "offset": 6,
+        "type": "synthetic",
+        "name": "(GC roots)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "29"
+        }
+      }
+    ],
+    [
+      {
+        "offset": 1448628,
+        "type": "object",
+        "name": "HTMLLIElement",
+        "detachedness": 0
+      },
+      {
+        "offset": 2096334,
+        "type": "native",
+        "name": "blink::HeapHashTableBacking<blink::HashTable<const blink::WrapperTypeInfo *, blink::KeyValuePair<const blink::WrapperTypeInfo *, v8::TracedReference<v8::Object>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<const blink::WrapperTypeInfo *>, blink::HashTraits<v8::TracedReference<v8::Object>>>, blink::HashTraits<const blink::WrapperTypeInfo *>, blink::HeapAllocator>>",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "2"
+        }
+      },
+      {
+        "offset": 2096328,
+        "type": "native",
+        "name": "blink::V8PerContextData",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "1"
+        }
+      },
+      {
+        "offset": 1809444,
+        "type": "native",
+        "name": "blink::ScriptStateImpl",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "1"
+        }
+      },
+      {
+        "offset": 1809360,
+        "type": "synthetic",
+        "name": "C++ Persistent roots",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "blink::ScriptState::ScriptState(v8::Local<v8::Context>, DOMWrapperWorld *, scoped_refptr<scheduler::EventLoop>)@../../third_party/blink/renderer/platform/bindings/script_state.cc:18"
+        }
+      },
+      {
+        "offset": 6,
+        "type": "synthetic",
+        "name": "(GC roots)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "29"
+        }
+      }
+    ]
+  ]
+}

@@ -1,0 +1,1449 @@
+{
+  "scope": "Scanner lifetime diagnostics with explicit CDP GC; not native memory or model QA.",
+  "startedAt": "2026-10-13T06:17:49.037221+00:00",
+  "elapsedSeconds": 121.78758145799657,
+  "requestedSeconds": 120,
+  "gcEvery": 10,
+  "heapSnapshotRequested": true,
+  "sourceHashes": {
+    "src/components/wine-import/MultiWineLabelScanner.tsx": "1332dd857790cf90b0f6bb16a337c8958134b8d76cdd3df526b2d7801b1860ea",
+    "src/utils/multiWineScan.ts": "66b909fd4e5232dd83ee1395601aa87da130b2fb1b39f20f702aea294f66ea54",
+    "src/utils/scanRegionProgress.ts": "bf508ec8095c49dcca1c7045ca88e6aab9b1734962b59ddd959b827ac862ee44",
+    "src/utils/regionAnalysisError.ts": "126c4380ea24feac97e9ec3167e22e98d2c9bbc41ce55fef1caa121195ae7852",
+    "src/utils/aiRimContextGuide.ts": "bab1cd5948327c7d7c99d0626bf152ad27e6388fbaff6a83125cda6c090c5d4e",
+    "src/utils/wineComparison.ts": "1c1c9ddc300da666fe8e585c6be268f3b89571e7518882165261fa949c2cb82a"
+  },
+  "cycles": [
+    {
+      "cycle": 0,
+      "kind": "limit-retry",
+      "orientation": "portrait",
+      "elapsedSeconds": 6.168063874996733,
+      "cycleSeconds": 3.8444357910047984,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 813,
+        "Nodes": 1145,
+        "JSHeapUsedSize": 16510332,
+        "JSHeapTotalSize": 31735808
+      },
+      "liveDomAfterReset": {
+        "nodes": 132,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 1,
+      "kind": "cancel-manual-late",
+      "orientation": "landscape",
+      "elapsedSeconds": 8.100830082999892,
+      "cycleSeconds": 1.9284218329994474,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 778,
+        "Nodes": 1089,
+        "JSHeapUsedSize": 19392908,
+        "JSHeapTotalSize": 31047680
+      },
+      "liveDomAfterReset": {
+        "nodes": 142,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 2,
+      "kind": "confirm",
+      "orientation": "portrait",
+      "elapsedSeconds": 9.815477625001222,
+      "cycleSeconds": 1.710565500005032,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 779,
+        "Nodes": 1264,
+        "JSHeapUsedSize": 15413024,
+        "JSHeapTotalSize": 30785536
+      },
+      "liveDomAfterReset": {
+        "nodes": 152,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 3,
+      "kind": "limit-retry",
+      "orientation": "landscape",
+      "elapsedSeconds": 13.482636417000322,
+      "cycleSeconds": 3.6622454160024063,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 821,
+        "Nodes": 1474,
+        "JSHeapUsedSize": 25366992,
+        "JSHeapTotalSize": 34357248
+      },
+      "liveDomAfterReset": {
+        "nodes": 162,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 4,
+      "kind": "cancel-manual-late",
+      "orientation": "portrait",
+      "elapsedSeconds": 15.351712750001752,
+      "cycleSeconds": 1.8644648750050692,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 779,
+        "Nodes": 1349,
+        "JSHeapUsedSize": 19019592,
+        "JSHeapTotalSize": 34455552
+      },
+      "liveDomAfterReset": {
+        "nodes": 172,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 5,
+      "kind": "confirm",
+      "orientation": "landscape",
+      "elapsedSeconds": 17.116922542001703,
+      "cycleSeconds": 1.761007333996531,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 793,
+        "Nodes": 1583,
+        "JSHeapUsedSize": 22358076,
+        "JSHeapTotalSize": 35241984
+      },
+      "liveDomAfterReset": {
+        "nodes": 182,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 6,
+      "kind": "limit-retry",
+      "orientation": "portrait",
+      "elapsedSeconds": 20.798453707997396,
+      "cycleSeconds": 3.6767316670011496,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 836,
+        "Nodes": 1800,
+        "JSHeapUsedSize": 26532708,
+        "JSHeapTotalSize": 36192256
+      },
+      "liveDomAfterReset": {
+        "nodes": 192,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 7,
+      "kind": "cancel-manual-late",
+      "orientation": "landscape",
+      "elapsedSeconds": 22.722484666999662,
+      "cycleSeconds": 1.9168622079960187,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 794,
+        "Nodes": 1675,
+        "JSHeapUsedSize": 19609044,
+        "JSHeapTotalSize": 36552704
+      },
+      "liveDomAfterReset": {
+        "nodes": 202,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 8,
+      "kind": "confirm",
+      "orientation": "portrait",
+      "elapsedSeconds": 24.45066095799848,
+      "cycleSeconds": 1.7204027910047444,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 800,
+        "Nodes": 1904,
+        "JSHeapUsedSize": 20663512,
+        "JSHeapTotalSize": 37076992
+      },
+      "liveDomAfterReset": {
+        "nodes": 212,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 9,
+      "kind": "limit-retry",
+      "orientation": "landscape",
+      "elapsedSeconds": 28.18369329199777,
+      "cycleSeconds": 3.727485458999581,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 851,
+        "Nodes": 2126,
+        "JSHeapUsedSize": 26972220,
+        "JSHeapTotalSize": 37765120
+      },
+      "liveDomAfterReset": {
+        "nodes": 222,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": {
+        "Documents": 1,
+        "JSEventListeners": 371,
+        "Nodes": 1274,
+        "JSHeapUsedSize": 13221100,
+        "JSHeapTotalSize": 14794752
+      },
+      "passed": true
+    },
+    {
+      "cycle": 10,
+      "kind": "cancel-manual-late",
+      "orientation": "portrait",
+      "elapsedSeconds": 30.101172582995787,
+      "cycleSeconds": 1.912041625000711,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 821,
+        "Nodes": 2009,
+        "JSHeapUsedSize": 15430668,
+        "JSHeapTotalSize": 23969792
+      },
+      "liveDomAfterReset": {
+        "nodes": 232,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 11,
+      "kind": "confirm",
+      "orientation": "landscape",
+      "elapsedSeconds": 31.882929499995953,
+      "cycleSeconds": 1.7739229580038227,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 745,
+        "Nodes": 2201,
+        "JSHeapUsedSize": 15124856,
+        "JSHeapTotalSize": 27377664
+      },
+      "liveDomAfterReset": {
+        "nodes": 242,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 12,
+      "kind": "limit-retry",
+      "orientation": "portrait",
+      "elapsedSeconds": 35.61856983300095,
+      "cycleSeconds": 3.7304005840051104,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 866,
+        "Nodes": 2452,
+        "JSHeapUsedSize": 20945932,
+        "JSHeapTotalSize": 30687232
+      },
+      "liveDomAfterReset": {
+        "nodes": 252,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 13,
+      "kind": "cancel-manual-late",
+      "orientation": "landscape",
+      "elapsedSeconds": 37.51772699999856,
+      "cycleSeconds": 1.890536458005954,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 824,
+        "Nodes": 2327,
+        "JSHeapUsedSize": 20230884,
+        "JSHeapTotalSize": 30785536
+      },
+      "liveDomAfterReset": {
+        "nodes": 262,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 14,
+      "kind": "confirm",
+      "orientation": "portrait",
+      "elapsedSeconds": 39.25123083299695,
+      "cycleSeconds": 1.7243872499966528,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 830,
+        "Nodes": 2556,
+        "JSHeapUsedSize": 21292636,
+        "JSHeapTotalSize": 32358400
+      },
+      "liveDomAfterReset": {
+        "nodes": 272,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 15,
+      "kind": "limit-retry",
+      "orientation": "landscape",
+      "elapsedSeconds": 43.005442125002446,
+      "cycleSeconds": 3.7450035420042695,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 881,
+        "Nodes": 2778,
+        "JSHeapUsedSize": 27652332,
+        "JSHeapTotalSize": 37240832
+      },
+      "liveDomAfterReset": {
+        "nodes": 282,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 16,
+      "kind": "cancel-manual-late",
+      "orientation": "portrait",
+      "elapsedSeconds": 44.885060458000225,
+      "cycleSeconds": 1.8709258329981822,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 839,
+        "Nodes": 2653,
+        "JSHeapUsedSize": 20602280,
+        "JSHeapTotalSize": 37339136
+      },
+      "liveDomAfterReset": {
+        "nodes": 292,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 17,
+      "kind": "confirm",
+      "orientation": "landscape",
+      "elapsedSeconds": 46.65170929199667,
+      "cycleSeconds": 1.7568089159976807,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 845,
+        "Nodes": 2882,
+        "JSHeapUsedSize": 21676852,
+        "JSHeapTotalSize": 37339136
+      },
+      "liveDomAfterReset": {
+        "nodes": 302,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 18,
+      "kind": "limit-retry",
+      "orientation": "portrait",
+      "elapsedSeconds": 50.28442874999746,
+      "cycleSeconds": 3.6215272080007708,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 896,
+        "Nodes": 3104,
+        "JSHeapUsedSize": 27696728,
+        "JSHeapTotalSize": 38027264
+      },
+      "liveDomAfterReset": {
+        "nodes": 312,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 19,
+      "kind": "cancel-manual-late",
+      "orientation": "landscape",
+      "elapsedSeconds": 52.2117028329958,
+      "cycleSeconds": 1.9157049999994342,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 854,
+        "Nodes": 2979,
+        "JSHeapUsedSize": 21046588,
+        "JSHeapTotalSize": 37863424
+      },
+      "liveDomAfterReset": {
+        "nodes": 322,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": {
+        "Documents": 1,
+        "JSEventListeners": 429,
+        "Nodes": 2395,
+        "JSHeapUsedSize": 13749760,
+        "JSHeapTotalSize": 15319040
+      },
+      "passed": true
+    },
+    {
+      "cycle": 20,
+      "kind": "confirm",
+      "orientation": "portrait",
+      "elapsedSeconds": 54.0689987500009,
+      "cycleSeconds": 1.8502391660003923,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 869,
+        "Nodes": 3220,
+        "JSHeapUsedSize": 17657472,
+        "JSHeapTotalSize": 26066944
+      },
+      "liveDomAfterReset": {
+        "nodes": 332,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 21,
+      "kind": "limit-retry",
+      "orientation": "landscape",
+      "elapsedSeconds": 57.88815191699541,
+      "cycleSeconds": 3.8076674999974784,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 795,
+        "Nodes": 3309,
+        "JSHeapUsedSize": 15720768,
+        "JSHeapTotalSize": 34717696
+      },
+      "liveDomAfterReset": {
+        "nodes": 342,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 22,
+      "kind": "cancel-manual-late",
+      "orientation": "portrait",
+      "elapsedSeconds": 59.80759991699597,
+      "cycleSeconds": 1.9074682499995106,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 869,
+        "Nodes": 3305,
+        "JSHeapUsedSize": 21324076,
+        "JSHeapTotalSize": 33144832
+      },
+      "liveDomAfterReset": {
+        "nodes": 352,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 23,
+      "kind": "confirm",
+      "orientation": "landscape",
+      "elapsedSeconds": 61.65030420800031,
+      "cycleSeconds": 1.8232376660016598,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 804,
+        "Nodes": 3504,
+        "JSHeapUsedSize": 15884948,
+        "JSHeapTotalSize": 32882688
+      },
+      "liveDomAfterReset": {
+        "nodes": 362,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 24,
+      "kind": "limit-retry",
+      "orientation": "portrait",
+      "elapsedSeconds": 65.33331429200189,
+      "cycleSeconds": 3.6738341669988586,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 756,
+        "Nodes": 3465,
+        "JSHeapUsedSize": 15259292,
+        "JSHeapTotalSize": 37863424
+      },
+      "liveDomAfterReset": {
+        "nodes": 372,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 25,
+      "kind": "cancel-manual-late",
+      "orientation": "landscape",
+      "elapsedSeconds": 67.24749341700226,
+      "cycleSeconds": 1.9053162089985562,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 884,
+        "Nodes": 3631,
+        "JSHeapUsedSize": 21719432,
+        "JSHeapTotalSize": 37076992
+      },
+      "liveDomAfterReset": {
+        "nodes": 382,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 26,
+      "kind": "confirm",
+      "orientation": "portrait",
+      "elapsedSeconds": 68.96611024999584,
+      "cycleSeconds": 1.7070645000057993,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 889,
+        "Nodes": 3859,
+        "JSHeapUsedSize": 22778432,
+        "JSHeapTotalSize": 37863424
+      },
+      "liveDomAfterReset": {
+        "nodes": 392,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 27,
+      "kind": "limit-retry",
+      "orientation": "landscape",
+      "elapsedSeconds": 72.71791208299692,
+      "cycleSeconds": 3.7388093749977998,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 782,
+        "Nodes": 3950,
+        "JSHeapUsedSize": 15625588,
+        "JSHeapTotalSize": 44154880
+      },
+      "liveDomAfterReset": {
+        "nodes": 402,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 28,
+      "kind": "cancel-manual-late",
+      "orientation": "portrait",
+      "elapsedSeconds": 74.61616741699982,
+      "cycleSeconds": 1.8907884169966565,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 899,
+        "Nodes": 3957,
+        "JSHeapUsedSize": 22060496,
+        "JSHeapTotalSize": 43630592
+      },
+      "liveDomAfterReset": {
+        "nodes": 412,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 29,
+      "kind": "confirm",
+      "orientation": "landscape",
+      "elapsedSeconds": 76.41708654200193,
+      "cycleSeconds": 1.7901198749968898,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 905,
+        "Nodes": 4186,
+        "JSHeapUsedSize": 23179728,
+        "JSHeapTotalSize": 44154880
+      },
+      "liveDomAfterReset": {
+        "nodes": 422,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": {
+        "Documents": 1,
+        "JSEventListeners": 471,
+        "Nodes": 3441,
+        "JSHeapUsedSize": 14245972,
+        "JSHeapTotalSize": 15843328
+      },
+      "passed": true
+    },
+    {
+      "cycle": 30,
+      "kind": "limit-retry",
+      "orientation": "portrait",
+      "elapsedSeconds": 80.13487145800173,
+      "cycleSeconds": 3.7061617920044228,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 913,
+        "Nodes": 4315,
+        "JSHeapUsedSize": 17058312,
+        "JSHeapTotalSize": 29212672
+      },
+      "liveDomAfterReset": {
+        "nodes": 432,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 31,
+      "kind": "cancel-manual-late",
+      "orientation": "landscape",
+      "elapsedSeconds": 82.06594483299705,
+      "cycleSeconds": 1.9224923750007292,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 914,
+        "Nodes": 4283,
+        "JSHeapUsedSize": 16672544,
+        "JSHeapTotalSize": 29736960
+      },
+      "liveDomAfterReset": {
+        "nodes": 442,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 32,
+      "kind": "confirm",
+      "orientation": "portrait",
+      "elapsedSeconds": 83.81753000000026,
+      "cycleSeconds": 1.7365856670003268,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 806,
+        "Nodes": 4479,
+        "JSHeapUsedSize": 15966000,
+        "JSHeapTotalSize": 29999104
+      },
+      "liveDomAfterReset": {
+        "nodes": 452,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 33,
+      "kind": "limit-retry",
+      "orientation": "landscape",
+      "elapsedSeconds": 87.4984883750003,
+      "cycleSeconds": 3.668918000003032,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 812,
+        "Nodes": 4602,
+        "JSHeapUsedSize": 16010828,
+        "JSHeapTotalSize": 37339136
+      },
+      "liveDomAfterReset": {
+        "nodes": 462,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 34,
+      "kind": "cancel-manual-late",
+      "orientation": "portrait",
+      "elapsedSeconds": 89.38367054199625,
+      "cycleSeconds": 1.871301332997973,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 929,
+        "Nodes": 4609,
+        "JSHeapUsedSize": 22776716,
+        "JSHeapTotalSize": 37863424
+      },
+      "liveDomAfterReset": {
+        "nodes": 472,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 35,
+      "kind": "confirm",
+      "orientation": "landscape",
+      "elapsedSeconds": 91.14810662499804,
+      "cycleSeconds": 1.7485331669959123,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 821,
+        "Nodes": 4805,
+        "JSHeapUsedSize": 16180704,
+        "JSHeapTotalSize": 40222720
+      },
+      "liveDomAfterReset": {
+        "nodes": 482,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 36,
+      "kind": "limit-retry",
+      "orientation": "portrait",
+      "elapsedSeconds": 94.83424062500126,
+      "cycleSeconds": 3.673219207994407,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 827,
+        "Nodes": 4928,
+        "JSHeapUsedSize": 16188596,
+        "JSHeapTotalSize": 41271296
+      },
+      "liveDomAfterReset": {
+        "nodes": 492,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 37,
+      "kind": "cancel-manual-late",
+      "orientation": "landscape",
+      "elapsedSeconds": 96.74870208300126,
+      "cycleSeconds": 1.901929250001558,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 944,
+        "Nodes": 4935,
+        "JSHeapUsedSize": 23108792,
+        "JSHeapTotalSize": 40222720
+      },
+      "liveDomAfterReset": {
+        "nodes": 502,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 38,
+      "kind": "confirm",
+      "orientation": "portrait",
+      "elapsedSeconds": 98.48111758299638,
+      "cycleSeconds": 1.7190206669984036,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 958,
+        "Nodes": 5169,
+        "JSHeapUsedSize": 26270476,
+        "JSHeapTotalSize": 41533440
+      },
+      "liveDomAfterReset": {
+        "nodes": 512,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 39,
+      "kind": "limit-retry",
+      "orientation": "landscape",
+      "elapsedSeconds": 102.18452599999728,
+      "cycleSeconds": 3.69094570800371,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 842,
+        "Nodes": 5256,
+        "JSHeapUsedSize": 16338148,
+        "JSHeapTotalSize": 44679168
+      },
+      "liveDomAfterReset": {
+        "nodes": 522,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": {
+        "Documents": 1,
+        "JSEventListeners": 521,
+        "Nodes": 4534,
+        "JSHeapUsedSize": 14573420,
+        "JSHeapTotalSize": 16105472
+      },
+      "passed": true
+    },
+    {
+      "cycle": 40,
+      "kind": "cancel-manual-late",
+      "orientation": "portrait",
+      "elapsedSeconds": 104.18122629199934,
+      "cycleSeconds": 1.9882398750050925,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 912,
+        "Nodes": 5232,
+        "JSHeapUsedSize": 19070012,
+        "JSHeapTotalSize": 23445504
+      },
+      "liveDomAfterReset": {
+        "nodes": 532,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 41,
+      "kind": "confirm",
+      "orientation": "landscape",
+      "elapsedSeconds": 105.98214316699887,
+      "cycleSeconds": 1.786404250000487,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 965,
+        "Nodes": 5490,
+        "JSHeapUsedSize": 18253240,
+        "JSHeapTotalSize": 29999104
+      },
+      "liveDomAfterReset": {
+        "nodes": 542,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 42,
+      "kind": "limit-retry",
+      "orientation": "portrait",
+      "elapsedSeconds": 109.73156858299626,
+      "cycleSeconds": 3.7390315830052714,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 900,
+        "Nodes": 5591,
+        "JSHeapUsedSize": 16801116,
+        "JSHeapTotalSize": 34717696
+      },
+      "liveDomAfterReset": {
+        "nodes": 552,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 43,
+      "kind": "cancel-manual-late",
+      "orientation": "landscape",
+      "elapsedSeconds": 111.8005239999984,
+      "cycleSeconds": 2.0425423339984263,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 974,
+        "Nodes": 5587,
+        "JSHeapUsedSize": 23825880,
+        "JSHeapTotalSize": 33669120
+      },
+      "liveDomAfterReset": {
+        "nodes": 562,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 44,
+      "kind": "confirm",
+      "orientation": "portrait",
+      "elapsedSeconds": 113.63632808299735,
+      "cycleSeconds": 1.8261090829983004,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 980,
+        "Nodes": 5816,
+        "JSHeapUsedSize": 24860564,
+        "JSHeapTotalSize": 35504128
+      },
+      "liveDomAfterReset": {
+        "nodes": 572,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 45,
+      "kind": "limit-retry",
+      "orientation": "landscape",
+      "elapsedSeconds": 117.50724208299653,
+      "cycleSeconds": 3.857792791997781,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 7,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 915,
+        "Nodes": 5917,
+        "JSHeapUsedSize": 16764172,
+        "JSHeapTotalSize": 40222720
+      },
+      "liveDomAfterReset": {
+        "nodes": 582,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 46,
+      "kind": "cancel-manual-late",
+      "orientation": "portrait",
+      "elapsedSeconds": 119.44991599999776,
+      "cycleSeconds": 1.9237643749947893,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 989,
+        "Nodes": 5913,
+        "JSHeapUsedSize": 24247404,
+        "JSHeapTotalSize": 40484864
+      },
+      "liveDomAfterReset": {
+        "nodes": 592,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    },
+    {
+      "cycle": 47,
+      "kind": "confirm",
+      "orientation": "landscape",
+      "elapsedSeconds": 121.21708454199688,
+      "cycleSeconds": 1.7567057909982395,
+      "requests": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "metricsAfterReset": {
+        "Documents": 1,
+        "JSEventListeners": 995,
+        "Nodes": 6142,
+        "JSHeapUsedSize": 25255136,
+        "JSHeapTotalSize": 40747008
+      },
+      "liveDomAfterReset": {
+        "nodes": 602,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "metricsAfterExplicitGc": null,
+      "passed": true
+    }
+  ],
+  "runtimeErrors": [],
+  "expectedBrowserConsole": [
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+    "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+  ],
+  "failure": null,
+  "allExternalRequestsIntercepted": true,
+  "sockets": [
+    {
+      "local": true,
+      "blocked": false
+    }
+  ],
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0
+}

@@ -1,0 +1,139 @@
+{
+  "scope": "Structured Chrome heap, strong edges only; not native memory certification",
+  "counts": {
+    "string:HTMLCanvasElement": 2,
+    "string:HTMLImageElement": 3,
+    "string:FiberNode": 1,
+    "string:HTMLLIElement": 3,
+    "string:FileReader": 2,
+    "object:FiberNode": 582,
+    "closure:FiberNode": 1,
+    "closure:FileReader": 1,
+    "closure:HTMLCanvasElement": 1,
+    "closure:HTMLImageElement": 2,
+    "closure:HTMLLIElement": 2,
+    "object:HTMLLIElement": 2,
+    "object:HTMLImageElement": 2,
+    "object:HTMLCanvasElement": 1,
+    "native:EventListener": 516,
+    "native:V8EventListener": 308
+  },
+  "sampleLiRetainers": [
+    [
+      {
+        "offset": 636366,
+        "type": "object",
+        "name": "HTMLLIElement",
+        "detachedness": 0
+      },
+      {
+        "offset": 1930884,
+        "type": "native",
+        "name": "blink::HeapHashTableBacking<blink::HashTable<const blink::WrapperTypeInfo *, blink::KeyValuePair<const blink::WrapperTypeInfo *, v8::TracedReference<v8::Object>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<const blink::WrapperTypeInfo *>, blink::HashTraits<v8::TracedReference<v8::Object>>>, blink::HashTraits<const blink::WrapperTypeInfo *>, blink::HeapAllocator>>",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "80"
+        }
+      },
+      {
+        "offset": 1930878,
+        "type": "native",
+        "name": "blink::V8PerContextData",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "1"
+        }
+      },
+      {
+        "offset": 1718790,
+        "type": "native",
+        "name": "blink::ScriptStateImpl",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "1"
+        }
+      },
+      {
+        "offset": 1718550,
+        "type": "synthetic",
+        "name": "C++ Persistent roots",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "blink::ScriptState::ScriptState(v8::Local<v8::Context>, DOMWrapperWorld *, scoped_refptr<scheduler::EventLoop>)@../../third_party/blink/renderer/platform/bindings/script_state.cc:18"
+        }
+      },
+      {
+        "offset": 6,
+        "type": "synthetic",
+        "name": "(GC roots)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "29"
+        }
+      }
+    ],
+    [
+      {
+        "offset": 1272054,
+        "type": "object",
+        "name": "HTMLLIElement",
+        "detachedness": 0
+      },
+      {
+        "offset": 1930908,
+        "type": "native",
+        "name": "blink::HeapHashTableBacking<blink::HashTable<const blink::WrapperTypeInfo *, blink::KeyValuePair<const blink::WrapperTypeInfo *, v8::TracedReference<v8::Object>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<const blink::WrapperTypeInfo *>, blink::HashTraits<v8::TracedReference<v8::Object>>>, blink::HashTraits<const blink::WrapperTypeInfo *>, blink::HeapAllocator>>",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "43"
+        }
+      },
+      {
+        "offset": 1930902,
+        "type": "native",
+        "name": "blink::V8PerContextData",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "1"
+        }
+      },
+      {
+        "offset": 1718616,
+        "type": "native",
+        "name": "blink::ScriptStateImpl",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "1"
+        }
+      },
+      {
+        "offset": 1718550,
+        "type": "synthetic",
+        "name": "C++ Persistent roots",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "blink::ScriptState::ScriptState(v8::Local<v8::Context>, DOMWrapperWorld *, scoped_refptr<scheduler::EventLoop>)@../../third_party/blink/renderer/platform/bindings/script_state.cc:18"
+        }
+      },
+      {
+        "offset": 6,
+        "type": "synthetic",
+        "name": "(GC roots)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "29"
+        }
+      }
+    ]
+  ]
+}

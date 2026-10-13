@@ -40,7 +40,7 @@ import {
   EdgeFunctionError,
   invokeWithEdgeFunctionRetry,
 } from '@/utils/edgeFunctionResilience';
-import { cropImageRegion, cropImageRegionWithQuality, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
+import { cropImageRegion, cropImageRegionWithQuality, ImagePreparationError, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
 import { labelCropPadding } from '@/utils/imageCropGeometry';
 import { createScanRequestBudget, cropQualityDeferral, deferRegion, MAX_MANUAL_REGION_REQUESTS, planRegionAnalysis, regionPreflight, ScanRequestLimitError, type ScanRequestBudget } from '@/utils/scanAnalysisPolicy';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
@@ -49,6 +49,7 @@ import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
 import { clusterOverlayPins } from '@/utils/overlayPins';
 import { formatScanRegionProgress, summarizeScanRegionProgress } from '@/utils/scanRegionProgress';
 import { regionAnalysisErrorMessage } from '@/utils/regionAnalysisError';
+import { manualWineIdentityNotice } from '@/utils/manualWineIdentityNotice';
 import {
   buildWineDetectionTiles,
   confirmWineCandidateIdentity,
@@ -127,6 +128,7 @@ const statusClass = (region: ScanRegion) => {
 };
 
 const userFacingScanError = (error: unknown) => {
+  if (error instanceof ImagePreparationError) return error.message;
   if (typeof navigator !== 'undefined' && !navigator.onLine) {
     return 'No hay conexión. Conservamos la foto para que puedas reintentar cuando vuelva la red.';
   }
@@ -515,6 +517,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         },
       });
     } catch (error) {
+      if (abortRef.current !== controller || controller.signal.aborted) return;
       if (error instanceof DOMException && error.name === 'AbortError') {
         if (abortRef.current === controller) setPhase('cancelled');
         return;
@@ -628,7 +631,6 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         ? confirmWineCandidateIdentity(candidate)
         : candidate),
     }));
-    toast.success('Identidad confirmada por el usuario');
   };
 
   const editCandidate = (patch: Pick<Partial<WineCandidate>, 'name' | 'producer'>) => {
@@ -681,7 +683,6 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       fallback: null,
       error: null,
     }));
-    toast.success('Identidad manual aplicada sin estimar afinidad');
   };
 
   const moveSelection = (direction: -1 | 1) => {
@@ -768,13 +769,31 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             </div>
           </div>
           <div className="scan-upload-actions mt-5 grid gap-2 sm:grid-cols-2">
-            <Button type="button" className="matchrim-pressable min-h-12 gap-2 bg-red-900 hover:bg-red-800" onClick={() => cameraInputRef.current?.click()}>
+            <Button type="button" disabled={loading || saving} className="matchrim-pressable min-h-12 gap-2 bg-red-900 hover:bg-red-800" onClick={() => cameraInputRef.current?.click()}>
               <Camera className="h-4 w-4" /> Hacer foto
             </Button>
-            <Button type="button" variant="outline" className="matchrim-pressable min-h-12 gap-2 border-slate-300 bg-white" onClick={() => fileInputRef.current?.click()}>
+            <Button type="button" disabled={loading || saving} variant="outline" className="matchrim-pressable min-h-12 gap-2 border-slate-300 bg-white" onClick={() => fileInputRef.current?.click()}>
               <FolderOpen className="h-4 w-4" /> Elegir de galería
             </Button>
           </div>
+          {loading && (
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <p role="status" className="flex items-center gap-2 text-sm text-slate-700"><Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />{PHASE_LABELS[phase]}</p>
+              <Button type="button" variant="outline" className="min-h-11 gap-2 bg-white" onClick={cancelScan}><X className="h-4 w-4" /> Cancelar</Button>
+            </div>
+          )}
+          {(phase === 'error' || phase === 'cancelled') && (
+            <div role={phase === 'error' ? 'alert' : 'status'} data-testid={phase === 'error' ? 'scan-input-error' : 'scan-input-cancelled'} className="mt-4 rounded-lg border border-slate-300 bg-slate-50 p-3 text-sm text-slate-800">
+              <p className="font-semibold">{phase === 'error' ? 'No se pudo preparar la foto' : PHASE_LABELS.cancelled}</p>
+              {errorMessage && <p className="mt-1 leading-5">{errorMessage}</p>}
+              {lastFileRef.current && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Button type="button" variant="outline" className="min-h-11 gap-2 bg-white" onClick={retryScan}><RefreshCw className="h-4 w-4" /> Reintentar</Button>
+                  <Button type="button" variant="outline" size="icon" className="h-11 w-11 bg-white" onClick={resetScan} aria-label="Descartar imagen"><X className="h-4 w-4" /></Button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       ) : (
         <>
@@ -1152,8 +1171,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     {selectedCandidate && (
                       <>
                         {selectedCandidate.source === 'manual' && (
-                          <div className="rounded-lg border-l-4 border-slate-500 bg-slate-50 px-3 py-2 text-sm text-slate-800">
-                            Identidad introducida manualmente. Afinidad pendiente de datos sensoriales verificables.
+                          <div role="status" data-testid="manual-identity-notice" className="rounded-lg border-l-4 border-slate-500 bg-slate-50 px-3 py-2 text-sm text-slate-800">
+                            {manualWineIdentityNotice(selectedCandidate.affinity)}
                           </div>
                         )}
                         <div className="grid gap-3 sm:grid-cols-2">

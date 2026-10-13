@@ -1,0 +1,317 @@
+{
+  "scope": "Structured Chrome heap, strong edges only; not native memory certification",
+  "counts": {
+    "string:HTMLCanvasElement": 2,
+    "string:HTMLImageElement": 3,
+    "string:FiberNode": 1,
+    "string:HTMLLIElement": 3,
+    "string:FileReader": 2,
+    "closure:HTMLLIElement": 2,
+    "closure:HTMLImageElement": 2,
+    "object:FiberNode": 1587,
+    "object:HTMLLIElement": 50,
+    "closure:FiberNode": 1,
+    "closure:FileReader": 1,
+    "closure:HTMLCanvasElement": 1,
+    "object:HTMLImageElement": 2,
+    "object:HTMLCanvasElement": 1,
+    "native:EventListener": 561,
+    "native:V8EventListener": 356
+  },
+  "sampleLiRetainers": [
+    [
+      {
+        "offset": 718908,
+        "type": "object",
+        "name": "HTMLLIElement",
+        "detachedness": 0
+      },
+      {
+        "offset": 1346094,
+        "type": "native",
+        "name": "<li aria-live=\"polite\" aria-atomic=\"true\" role=\"status\" tabindex=\"0\" class=\"group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg\" data-sonner-toast=\"\" data-styled=\"true\" data-mounted=\"true\" data-promise=\"false\" data-removed=\"false\" data-visible=\"false\" data-y-position=\"top\" data-x-position=\"center\" data-index=\"38\" data-front=\"false\" data-swiping=\"false\" data-dismissible=\"true\" data-type=\"success\" data-swipe-out=\"false\" data-expanded=\"false\">",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "part of key -> value pair in ephemeron table"
+        }
+      },
+      {
+        "offset": 1579920,
+        "type": "native",
+        "name": "<div data-icon=\"\" class=\"\">",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "11"
+        }
+      },
+      {
+        "offset": 1579542,
+        "type": "native",
+        "name": "SVGSVGElement",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "17"
+        }
+      },
+      {
+        "offset": 2014674,
+        "type": "native",
+        "name": "blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::IdentityExtractor, blink::HashTraits<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HashTraits<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HeapAllocator>>",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "69"
+        }
+      },
+      {
+        "offset": 2014668,
+        "type": "native",
+        "name": "blink::SVGDocumentExtensions",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "2"
+        }
+      },
+      {
+        "offset": 540150,
+        "type": "native",
+        "name": "HTMLDocument",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "40"
+        }
+      },
+      {
+        "offset": 22140,
+        "type": "native",
+        "name": "<div role=\"dialog\" id=\"radix-:r0:\" aria-describedby=\"radix-:r2:\" aria-labelledby=\"radix-:r1:\" data-state=\"closed\" data-vaul-drawer-direction=\"bottom\" data-vaul-drawer=\"\" data-vaul-delayed-snap-points=\"false\" data-vaul-snap-points=\"false\" data-vaul-custom-container=\"false\" data-lov-id=\"src/components/wine-import/MultiWineLabelScanner.tsx:1056:8\" data-lov-name=\"DrawerContent\" data-component-path=\"src/components/wine-import/MultiWineLabelScanner.tsx\" data-component-line=\"1056\" data-component-file=\"MultiWineLabelScanner.tsx\" data-component-name=\"DrawerContent\" data-component-content=\"%7B%22className%22%3A%22max-h-%5Bcalc(100dvh-var(--matchrim-safe-top))%5D%20border-stone-200%20bg-stone-50%20pb-%5Bvar(--matchrim-safe-bottom)%5D%22%7D\" class=\"fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]\" tabindex=\"-1\" style=\"pointer-events: auto;\">",
+        "detachedness": 2,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "7"
+        }
+      },
+      {
+        "offset": 66,
+        "type": "synthetic",
+        "name": "(Global handles)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "1 / DevTools console"
+        }
+      },
+      {
+        "offset": 6,
+        "type": "synthetic",
+        "name": "(GC roots)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "10"
+        }
+      }
+    ],
+    [
+      {
+        "offset": 1061808,
+        "type": "object",
+        "name": "HTMLLIElement",
+        "detachedness": 0
+      },
+      {
+        "offset": 1073490,
+        "type": "native",
+        "name": "<li aria-live=\"polite\" aria-atomic=\"true\" role=\"status\" tabindex=\"0\" class=\"group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg\" data-sonner-toast=\"\" data-styled=\"true\" data-mounted=\"true\" data-promise=\"false\" data-removed=\"false\" data-visible=\"false\" data-y-position=\"top\" data-x-position=\"center\" data-index=\"34\" data-front=\"false\" data-swiping=\"false\" data-dismissible=\"true\" data-type=\"success\" data-swipe-out=\"false\" data-expanded=\"false\">",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "part of key -> value pair in ephemeron table"
+        }
+      },
+      {
+        "offset": 1677720,
+        "type": "native",
+        "name": "<div data-icon=\"\" class=\"\">",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "11"
+        }
+      },
+      {
+        "offset": 1677414,
+        "type": "native",
+        "name": "SVGSVGElement",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "17"
+        }
+      },
+      {
+        "offset": 2014674,
+        "type": "native",
+        "name": "blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::IdentityExtractor, blink::HashTraits<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HashTraits<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HeapAllocator>>",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "8"
+        }
+      },
+      {
+        "offset": 2014668,
+        "type": "native",
+        "name": "blink::SVGDocumentExtensions",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "2"
+        }
+      },
+      {
+        "offset": 540150,
+        "type": "native",
+        "name": "HTMLDocument",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "40"
+        }
+      },
+      {
+        "offset": 22140,
+        "type": "native",
+        "name": "<div role=\"dialog\" id=\"radix-:r0:\" aria-describedby=\"radix-:r2:\" aria-labelledby=\"radix-:r1:\" data-state=\"closed\" data-vaul-drawer-direction=\"bottom\" data-vaul-drawer=\"\" data-vaul-delayed-snap-points=\"false\" data-vaul-snap-points=\"false\" data-vaul-custom-container=\"false\" data-lov-id=\"src/components/wine-import/MultiWineLabelScanner.tsx:1056:8\" data-lov-name=\"DrawerContent\" data-component-path=\"src/components/wine-import/MultiWineLabelScanner.tsx\" data-component-line=\"1056\" data-component-file=\"MultiWineLabelScanner.tsx\" data-component-name=\"DrawerContent\" data-component-content=\"%7B%22className%22%3A%22max-h-%5Bcalc(100dvh-var(--matchrim-safe-top))%5D%20border-stone-200%20bg-stone-50%20pb-%5Bvar(--matchrim-safe-bottom)%5D%22%7D\" class=\"fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]\" tabindex=\"-1\" style=\"pointer-events: auto;\">",
+        "detachedness": 2,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "7"
+        }
+      },
+      {
+        "offset": 66,
+        "type": "synthetic",
+        "name": "(Global handles)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "1 / DevTools console"
+        }
+      },
+      {
+        "offset": 6,
+        "type": "synthetic",
+        "name": "(GC roots)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "10"
+        }
+      }
+    ],
+    [
+      {
+        "offset": 1072992,
+        "type": "object",
+        "name": "HTMLLIElement",
+        "detachedness": 0
+      },
+      {
+        "offset": 1137996,
+        "type": "native",
+        "name": "<li aria-live=\"polite\" aria-atomic=\"true\" role=\"status\" tabindex=\"0\" class=\"group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg\" data-sonner-toast=\"\" data-styled=\"true\" data-mounted=\"true\" data-promise=\"false\" data-removed=\"false\" data-visible=\"false\" data-y-position=\"top\" data-x-position=\"center\" data-index=\"32\" data-front=\"false\" data-swiping=\"false\" data-dismissible=\"true\" data-type=\"success\" data-swipe-out=\"false\" data-expanded=\"false\">",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "part of key -> value pair in ephemeron table"
+        }
+      },
+      {
+        "offset": 1133988,
+        "type": "native",
+        "name": "<div data-icon=\"\" class=\"\">",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "11"
+        }
+      },
+      {
+        "offset": 1304262,
+        "type": "native",
+        "name": "SVGSVGElement",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "17"
+        }
+      },
+      {
+        "offset": 2014674,
+        "type": "native",
+        "name": "blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::IdentityExtractor, blink::HashTraits<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HashTraits<cppgc::internal::BasicMember<blink::SVGSVGElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HeapAllocator>>",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "88"
+        }
+      },
+      {
+        "offset": 2014668,
+        "type": "native",
+        "name": "blink::SVGDocumentExtensions",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "2"
+        }
+      },
+      {
+        "offset": 540150,
+        "type": "native",
+        "name": "HTMLDocument",
+        "detachedness": 1,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "40"
+        }
+      },
+      {
+        "offset": 22140,
+        "type": "native",
+        "name": "<div role=\"dialog\" id=\"radix-:r0:\" aria-describedby=\"radix-:r2:\" aria-labelledby=\"radix-:r1:\" data-state=\"closed\" data-vaul-drawer-direction=\"bottom\" data-vaul-drawer=\"\" data-vaul-delayed-snap-points=\"false\" data-vaul-snap-points=\"false\" data-vaul-custom-container=\"false\" data-lov-id=\"src/components/wine-import/MultiWineLabelScanner.tsx:1056:8\" data-lov-name=\"DrawerContent\" data-component-path=\"src/components/wine-import/MultiWineLabelScanner.tsx\" data-component-line=\"1056\" data-component-file=\"MultiWineLabelScanner.tsx\" data-component-name=\"DrawerContent\" data-component-content=\"%7B%22className%22%3A%22max-h-%5Bcalc(100dvh-var(--matchrim-safe-top))%5D%20border-stone-200%20bg-stone-50%20pb-%5Bvar(--matchrim-safe-bottom)%5D%22%7D\" class=\"fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]\" tabindex=\"-1\" style=\"pointer-events: auto;\">",
+        "detachedness": 2,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "7"
+        }
+      },
+      {
+        "offset": 66,
+        "type": "synthetic",
+        "name": "(Global handles)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "internal",
+          "name": "1 / DevTools console"
+        }
+      },
+      {
+        "offset": 6,
+        "type": "synthetic",
+        "name": "(GC roots)",
+        "detachedness": 0,
+        "edgeToPrevious": {
+          "type": "element",
+          "name": "10"
+        }
+      }
+    ]
+  ]
+}

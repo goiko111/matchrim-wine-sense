@@ -19,17 +19,30 @@ export interface PreparedImage {
   quality: ImageQualityReport;
 }
 
+const imagePreparationMessages = {
+  read: 'No se pudo leer la imagen. Elige otra foto o vuelve a capturarla.',
+  decode: 'El dispositivo no puede abrir este formato de imagen. Elige una foto JPEG o PNG.',
+  prepare: 'No se pudo preparar la imagen. Elige otra foto o vuelve a capturarla.',
+} as const;
+
+export class ImagePreparationError extends Error {
+  constructor(readonly code: keyof typeof imagePreparationMessages) {
+    super(imagePreparationMessages[code]);
+    this.name = 'ImagePreparationError';
+  }
+}
+
 const fileToDataUrl = (file: File) => new Promise<string>((resolve, reject) => {
   const reader = new FileReader();
   reader.onload = () => resolve(reader.result as string);
-  reader.onerror = () => reject(reader.error ?? new Error('No se pudo leer la imagen'));
+  reader.onerror = () => reject(new ImagePreparationError('read'));
   reader.readAsDataURL(file);
 });
 
 const loadImage = (dataUrl: string) => new Promise<HTMLImageElement>((resolve, reject) => {
   const image = new Image();
   image.onload = () => resolve(image);
-  image.onerror = () => reject(new Error('El dispositivo no puede abrir este formato de imagen'));
+  image.onerror = () => reject(new ImagePreparationError('decode'));
   image.src = dataUrl;
 });
 
@@ -92,7 +105,7 @@ export const prepareImageForAnalysis = async (file: File, maxDimension = 2400): 
   canvas.width = width;
   canvas.height = height;
   const context = canvas.getContext('2d', { willReadFrequently: true });
-  if (!context) throw new Error('No se pudo preparar la imagen');
+  if (!context) throw new ImagePreparationError('prepare');
   context.imageSmoothingEnabled = true;
   context.imageSmoothingQuality = 'high';
   context.drawImage(image, 0, 0, width, height);

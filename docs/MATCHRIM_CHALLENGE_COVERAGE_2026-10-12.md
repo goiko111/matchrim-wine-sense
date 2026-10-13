@@ -32,3 +32,7 @@ Types are explicit: real pixels/tooling, intercepted client, recorded-response r
 |Native packaging | Real tooling discovery only | Available runtime must yield eligible Xcode destination | No eligible destination/new app; prior80 incomplete |
 
 Baseline intelligence/limitations: [Oct8 real benchmark](MATCHRIM_77_REAL_BENCHMARK_2026-10-08.md). Paid vision must wait for current cap without resetting ledgers. The function matrix is coverage accounting, not a suite-wide PASS or100 simulated real users.
+
+## Additive Oct13 Second-Hour Delta
+
+[Image recovery, human review and memory evidence](MATCHRIM_SECOND_HOUR_2026-10-13.md): local HEIC decode/recovery72/72; human detail/list/comparison96/96; contracts61/61; actual notification component cleanup after50 creations. Scoring, detector and corpus unchanged. Sonner2.0.8 fixes a demonstrated visibilitychange listener defect; manual-identity feedback now stays in the detail without floating notices. Final49-cycle lifecycle passes do not certify the remaining CDP node/listener growth, native memory, real OCR, human recommendation accuracy or TestFlight readiness. Earlier evidence is retained, not silently rerun or replaced.

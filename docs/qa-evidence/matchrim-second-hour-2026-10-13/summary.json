@@ -1,0 +1,413 @@
+{
+  "baseline": "3ad38f28badb59c03a1217c0ed1deb1a1581421a",
+  "gates": {
+    "notice-before": {
+      "passed": 72,
+      "total": 84,
+      "failingCases": 6
+    },
+    "notice-after": {
+      "passed": 52,
+      "total": 54,
+      "failingCases": 6
+    },
+    "notice-final": {
+      "passed": 96,
+      "total": 96,
+      "failingCases": 0
+    },
+    "notifications-final": {
+      "cases": 2,
+      "allPassed": true,
+      "notices": 50
+    },
+    "decode-before": {
+      "passed": 28,
+      "total": 44,
+      "failingCases": 4
+    },
+    "decode-after": {
+      "passed": 72,
+      "total": 72,
+      "failingCases": 0
+    }
+  },
+  "memory": {
+    "memory-baseline": {
+      "cycles": 48,
+      "elapsedSeconds": 121.78758145799657,
+      "heapMiB": {
+        "min": 14.424186706542969,
+        "max": 26.413658142089844,
+        "last": 24.085174560546875
+      },
+      "lastMetricsBeforeGc": {
+        "Documents": 1,
+        "JSEventListeners": 995,
+        "Nodes": 6142,
+        "JSHeapUsedSize": 25255136,
+        "JSHeapTotalSize": 40747008
+      },
+      "lastLiveDom": {
+        "nodes": 602,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0
+      },
+      "finalPostGc": [
+        {
+          "name": "Documents",
+          "value": 1
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 561
+        },
+        {
+          "name": "Nodes",
+          "value": 5397
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 14920572
+        }
+      ],
+      "nativeMemoryCertification": false
+    },
+    "memory-before": {
+      "cycles": 121,
+      "elapsedSeconds": 319.92217462499684,
+      "heapMiB": {
+        "min": 14.170249938964844,
+        "max": 39.534690856933594,
+        "last": 18.953269958496094
+      },
+      "lastMetricsBeforeGc": {
+        "Documents": 1,
+        "JSEventListeners": 1289,
+        "Nodes": 14066,
+        "JSHeapUsedSize": 19873944,
+        "JSHeapTotalSize": 41533440
+      },
+      "lastLiveDom": {
+        "nodes": 1332,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0,
+        "toasts": 121,
+        "visibleToasts": 1
+      },
+      "finalPostGc": [
+        {
+          "name": "Documents",
+          "value": 1
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 808
+        },
+        {
+          "name": "Nodes",
+          "value": 11917
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 14679700
+        }
+      ],
+      "nativeMemoryCertification": false
+    },
+    "listeners-before": {
+      "cycles": 24,
+      "elapsedSeconds": 76.91945983299956,
+      "heapMiB": {
+        "min": 13.707138061523438,
+        "max": 26.40221405029297,
+        "last": 23.367923736572266
+      },
+      "lastMetricsBeforeGc": {
+        "Documents": 1,
+        "JSEventListeners": 883,
+        "Nodes": 3535,
+        "JSHeapUsedSize": 24503044,
+        "JSHeapTotalSize": 33931264
+      },
+      "lastLiveDom": {
+        "nodes": 362,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0,
+        "toasts": 24,
+        "visibleToasts": 1
+      },
+      "finalPostGc": [
+        {
+          "name": "Documents",
+          "value": 1
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 426
+        },
+        {
+          "name": "Nodes",
+          "value": 2600
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 13520464
+        }
+      ],
+      "nativeMemoryCertification": false
+    },
+    "memory-after": {
+      "cycles": 243,
+      "elapsedSeconds": 617.2827579169971,
+      "heapMiB": {
+        "min": 14.08523941040039,
+        "max": 27.24987030029297,
+        "last": 21.753883361816406
+      },
+      "lastMetricsBeforeGc": {
+        "Documents": 1,
+        "JSEventListeners": 1726,
+        "Nodes": 26847,
+        "JSHeapUsedSize": 22810600,
+        "JSHeapTotalSize": 31834112
+      },
+      "lastLiveDom": {
+        "nodes": 132,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0,
+        "toasts": 1,
+        "visibleToasts": 1
+      },
+      "finalPostGc": [
+        {
+          "name": "Documents",
+          "value": 1
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 1292
+        },
+        {
+          "name": "Nodes",
+          "value": 26090
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 16046044
+        }
+      ],
+      "nativeMemoryCertification": false
+    },
+    "console-diagnostic": {
+      "cycles": 24,
+      "elapsedSeconds": 77.22212983300415,
+      "heapMiB": {
+        "min": 14.093620300292969,
+        "max": 26.575687408447266,
+        "last": 15.440338134765625
+      },
+      "lastMetricsBeforeGc": {
+        "Documents": 1,
+        "JSEventListeners": 858,
+        "Nodes": 3488,
+        "JSHeapUsedSize": 16190368,
+        "JSHeapTotalSize": 32620544
+      },
+      "lastLiveDom": {
+        "nodes": 132,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0,
+        "toasts": 1,
+        "visibleToasts": 1
+      },
+      "finalPostGc": [
+        {
+          "name": "Documents",
+          "value": 1
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 416
+        },
+        {
+          "name": "Nodes",
+          "value": 2730
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 13477344
+        }
+      ],
+      "nativeMemoryCertification": false
+    },
+    "memory-final": {
+      "cycles": 49,
+      "elapsedSeconds": 139.95477383300022,
+      "heapMiB": {
+        "min": 13.521064758300781,
+        "max": 26.814571380615234,
+        "last": 25.271568298339844
+      },
+      "lastMetricsBeforeGc": {
+        "Documents": 1,
+        "JSEventListeners": 990,
+        "Nodes": 6255,
+        "JSHeapUsedSize": 26499160,
+        "JSHeapTotalSize": 36192256
+      },
+      "lastLiveDom": {
+        "nodes": 121,
+        "images": 0,
+        "canvases": 0,
+        "dialogs": 0,
+        "toasts": 0,
+        "visibleToasts": 0
+      },
+      "finalPostGc": [
+        {
+          "name": "Documents",
+          "value": 1
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 516
+        },
+        {
+          "name": "Nodes",
+          "value": 5403
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 13853092
+        }
+      ],
+      "nativeMemoryCertification": false
+    }
+  },
+  "contracts": {
+    "passed": 61,
+    "total": 61,
+    "protectedSources": 42
+  },
+  "changed": [
+    "src/components/wine-import/MultiWineLabelScanner.tsx",
+    "src/utils/imageAnalysis.ts",
+    "src/utils/manualWineIdentityNotice.ts",
+    "src/components/ui/sonner.tsx",
+    "package.json",
+    "package-lock.json"
+  ],
+  "finalHashes": {
+    "src/components/wine-import/MultiWineLabelScanner.tsx": "a9987201e6da81906b0cd0ae8200b5761343f587f335e3639bbd6f926bb73cd7",
+    "src/utils/imageAnalysis.ts": "201c2ecef29f41ea2059f0fc7f9d7be5c7eb00798426feb16a1ccf7887a2d22a",
+    "src/utils/manualWineIdentityNotice.ts": "4e9bcdafde90470fd41621aa70702754d59758831371506c4472386014344514",
+    "src/components/ui/sonner.tsx": "4c5e443dc1e9ecc5541b77415f4a57a041c513cfdbcb276a35bffdf74a9e31b0",
+    "package.json": "a04164a9fb5e924297ecdc64ef3110070f2b7339c99e827f6b112ca839f1f4db",
+    "package-lock.json": "ff054bdf17737ea2fd4a03481bca0e9287608c147b7698febd193feeaf87081a"
+  },
+  "protectedEvidence": [
+    {
+      "name": "matchrim-menu-save-2026-10-12",
+      "entries": 289,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-actions-2026-10-12",
+      "entries": 126,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-affinity-status-2026-10-12",
+      "entries": 91,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-profile-retry-2026-10-13",
+      "entries": 112,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-airim-provenance-2026-10-13",
+      "entries": 75,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-notice-2026-10-13",
+      "entries": 103,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-focus-2026-10-13",
+      "entries": 143,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-navigation-2026-10-13",
+      "entries": 175,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-reading-2026-10-13",
+      "entries": 70,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-cancel-2026-10-13",
+      "entries": 80,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-menu-ranking-cancel-2026-10-13",
+      "entries": 99,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-multi-stale-cancel-2026-10-13",
+      "entries": 149,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-progress-a11y-2026-10-13",
+      "entries": 137,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-counter-2026-10-13",
+      "entries": 33,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-edit-lock-2026-10-13",
+      "entries": 79,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-region-failure-2026-10-13",
+      "entries": 69,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-manual-provenance-2026-10-13",
+      "entries": 109,
+      "unchanged": true
+    },
+    {
+      "name": "matchrim-hour-resilience-2026-10-13",
+      "entries": 32,
+      "unchanged": true
+    }
+  ],
+  "protectedEvidenceEntries": 1971,
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "nativeMemoryCertification": false,
+  "recognitionPrecisionCertification": false
+}
