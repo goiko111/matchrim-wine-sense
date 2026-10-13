@@ -166,7 +166,7 @@ const Scan = () => {
                     {ActiveScanIcon && <ActiveScanIcon className="h-4 w-4" />}
                     <span className="text-sm font-semibold">Escáner Matchrim</span>
                   </div>
-                  <h1 className="mt-1 text-[1.75rem] font-bold leading-tight text-slate-950">{activeOption.title}</h1>
+                  <h1 className="mt-1 break-words text-[1.75rem] font-bold leading-tight text-slate-950">{activeOption.title}</h1>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">{activeOption.description}</p>
                 </div>
               </div>

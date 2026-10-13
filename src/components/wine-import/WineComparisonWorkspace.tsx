@@ -112,7 +112,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
   if (wines.length < 2) return null;
 
   return (
-    <section className="matchrim-surface min-w-0 rounded-lg p-4" aria-labelledby="wine-comparison-title">
+    <section className="matchrim-surface min-w-0 break-words rounded-lg p-4" aria-labelledby="wine-comparison-title">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h3 id="wine-comparison-title" className="text-lg font-semibold text-slate-950">Comparar 2–5 vinos</h3>
@@ -150,7 +150,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
           <div className="mt-5 grid gap-4 lg:grid-cols-[auto_minmax(12rem,1fr)_minmax(10rem,0.7fr)]">
             <div>
               <Label className="mb-2 block">Decisión</Label>
-              <div className="inline-flex rounded-md border border-stone-200 bg-stone-100 p-1" role="group" aria-label="Modo de comparación">
+              <div className="inline-flex max-w-full flex-wrap rounded-md border border-stone-200 bg-stone-100 p-1" role="group" aria-label="Modo de comparación">
                 <button
                   type="button"
                   className={`matchrim-pressable flex min-h-11 items-center gap-2 rounded px-3 text-sm font-medium ${mode === 'personal' ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-600'}`}

@@ -1,4 +1,4 @@
-"""Local HEIC decode/recovery through visible controls; no real recognition or native certification."""
+"""Local supplied-image decode/recovery; no real recognition or native certification."""
 import argparse
 import ast
 import base64
@@ -10,11 +10,13 @@ from pathlib import Path
 from types import SimpleNamespace
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
+from qa_matchrim_runtime import add_browser_options, launch_browser, has_label_region
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--url', default='http://127.0.0.1:4471')
-p.add_argument('--unsupported-image', type=Path, default=Path('/Users/GOIKO/Downloads/IMG_7547 2.HEIC'))
+p.add_argument('--unsupported-image', type=Path, required=True, help='Explicit invalid/unsupported image; report its provenance, never substitute for absent owner HEIC evidence')
+add_browser_options(p)
 args = p.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
 root = Path(__file__).resolve().parents[1]
@@ -34,7 +36,7 @@ user = {'id': uid, 'aud': 'authenticated', 'role': 'authenticated', 'email': 'qa
 session = {'user': user, 'access_token': enc({'alg': 'HS256', 'typ': 'JWT'}) + '.' + enc({'sub': uid, 'exp': 1900000000}) + '.' + enc('synthetic-invalid'), 'refresh_token': 'synthetic-invalid', 'expires_at': 1900000000, 'expires_in': 86400, 'token_type': 'bearer'}
 results = []
 with sync_playwright() as pw:
-    browser = pw.chromium.launch(headless=True, executable_path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+    browser = launch_browser(pw, args)
     try:
         for width, height, orientation in [(393, 852, 'portrait'), (852, 393, 'landscape')]:
             for input_kind in ['gallery', 'camera']:
@@ -134,7 +136,7 @@ with sync_playwright() as pw:
                         wait_decode_error(3)
                     select('Elegir de galer\u00eda', photo)
                     page.get_by_text('Lote listo para revisar', exact=True).wait_for(timeout=45000)
-                    check('Valid original JPEG recovers after decode error', page.get_by_test_id('region-pin-2').count() == 1 and page.get_by_test_id('scan-input-error').count() == 0 and counts['detect'] == before_requests['detect'] + 1 and counts['analyze'] == before_requests['analyze'] + 4)
+                    check('Valid original JPEG recovers after decode error', has_label_region(page, 2) and page.get_by_test_id('scan-input-error').count() == 0 and counts['detect'] == before_requests['detect'] + 1 and counts['analyze'] == before_requests['analyze'] + 4)
                     check('No stale decode message in recovered scan', 'El dispositivo no puede abrir este formato de imagen' not in page.locator('main').inner_text())
                     page.screenshot(path=str(args.output / (case + '-recovered.png')))
                     page.get_by_role('button', name='Cerrar an\u00e1lisis', exact=True).tap()

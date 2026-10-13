@@ -35,7 +35,8 @@ import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
-import { clusterOverlayPins } from "@/utils/overlayPins";
+import { clusterScreenOverlayPins } from "@/utils/screenOverlayPins";
+import { useOverlayViewport } from "@/hooks/useOverlayViewport";
 import { applyMenuWineEvidence, menuWinePriceEvidence, updateMenuWineEvidence } from '@/utils/scanWineEvidence';
 import { confirmsMenuInsert, menuFinancialPrice, menuPriceSnapshot, menuSaveEvidence } from '@/utils/menuWineSave';
 import { labelInsertErrorResult } from '@/utils/labelScanSave';
@@ -374,7 +375,8 @@ const WineMenuScannerSession = ({
   useEffect(() => {
     if (!menuCurrency && (scanSortMode === 'price-asc' || scanSortMode === 'price-desc')) setScanSortMode('name');
   }, [menuCurrency, scanSortMode]);
-  const menuPinClusters = useMemo(() => clusterOverlayPins(
+  const overlay = useOverlayViewport(scannedWines.length);
+  const menuPinClusters = useMemo(() => clusterScreenOverlayPins(
     scannedWines.flatMap((wine, index) => {
       const position = getWinePosition(wine);
       return position ? [{
@@ -385,8 +387,8 @@ const WineMenuScannerSession = ({
         value: { wine, index },
       }] : [];
     }),
-    { zoom: imageZoom },
-  ), [imageZoom, scannedWines]);
+    overlay.viewport,
+  ), [overlay.viewport, scannedWines]);
 
   const menuDecision = useMemo(() => {
     if (scannedWines.length === 0) return null;
@@ -567,11 +569,9 @@ const WineMenuScannerSession = ({
       setPreview(null); // Limpiar preview anterior
       await convertPdfToImage(file, noticeGeneration);
     } else {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      // Preparation owns the single read and its preview; a second unguarded
+      // reader could publish the cancelled file after this session ended.
+      setPreview(null);
       await processFile(file, 'image', noticeGeneration);
     }
   };
@@ -638,7 +638,8 @@ const WineMenuScannerSession = ({
 
     try {
       setScanPhase('quality');
-      const prepared = await prepareImageForAnalysis(file);
+      const prepared = await prepareImageForAnalysis(file, 2400, controller.signal);
+      if (scanAbortRef.current !== controller || controller.signal.aborted) return;
       const base64File = prepared.dataUrl;
       setPreview(prepared.dataUrl);
       setMenuQualityWarnings(prepared.quality.warnings);
@@ -702,7 +703,7 @@ const WineMenuScannerSession = ({
       attemptedTileCount += scanTiles.length;
       const settledTiles = await Promise.allSettled(scanTiles.map(async (tile) => ({
         tile,
-        response: await invokeScan(tile, await cropImageRegion(base64File, tile.box, 0, 1800)),
+        response: await invokeScan(tile, await cropImageRegion(base64File, tile.box, 0, 1800, controller.signal)),
       })));
       if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
       successfulTiles.push(...settledTiles.flatMap((result) => result.status === 'fulfilled' ? [result.value] : []));
@@ -721,7 +722,7 @@ const WineMenuScannerSession = ({
         const focusTile = getRightFocusMenuScanTile();
         attemptedTileCount += 1;
         try {
-          const focusImage = await cropImageRegion(base64File, focusTile.box, 0, 1800);
+          const focusImage = await cropImageRegion(base64File, focusTile.box, 0, 1800, controller.signal);
           successfulTiles.push({ tile: focusTile, response: await invokeScan(focusTile, focusImage) });
           data = resolveMenuTileResults(successfulTiles);
         } catch (error) {
@@ -808,6 +809,7 @@ const WineMenuScannerSession = ({
         toast.info("No se encontraron vinos en el documento");
       }
     } catch (error) {
+      if (scanAbortRef.current !== controller) return;
 	    if (error instanceof DOMException && error.name === 'AbortError') {
       if (scanAbortRef.current === controller) {
         setScanFeedback('Análisis cancelado. Puedes reintentarlo con la misma imagen o elegir otra.');
@@ -1137,7 +1139,7 @@ const WineMenuScannerSession = ({
 		                  {preview ? (
 		                    <>
 			                    <div className="overflow-auto rounded-lg bg-black shadow-2xl ring-1 ring-white/10" style={{ maxHeight: '68vh' }}>
-			                      <div className="relative origin-top-left" style={{ width: `${imageZoom * 100}%` }}>
+			                      <div ref={overlay.ref} className="relative origin-top-left" style={{ width: `${imageZoom * 100}%` }}>
 		                        <img
 		                          src={preview}
 		                          alt="Carta con vinos marcados mediante numeros"
@@ -1327,7 +1329,7 @@ const WineMenuScannerSession = ({
 
       {/* Results Section */}
       {scannedWines.length > 0 && (
-        <div ref={resultsRef} className="scroll-mt-24 space-y-4">
+        <div ref={resultsRef} className="scroll-mt-24 space-y-4 break-words">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <h3 className="text-2xl font-bold">
@@ -1372,7 +1374,7 @@ const WineMenuScannerSession = ({
 	              </CardHeader>
 		              <CardContent className="grid gap-3 p-4 md:grid-cols-2">
                 <div className="min-w-0 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-	                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-emerald-900">
+	                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-emerald-900">
 	                    <Trophy className="h-4 w-4" />
 	                    Pediría primero
 	                  </div>
@@ -1408,7 +1410,7 @@ const WineMenuScannerSession = ({
 	                </div>
 
 		                <div className="min-w-0 rounded-md border border-amber-100 bg-amber-50 p-4">
-		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-amber-950">
+		                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-amber-950">
 		                    <Sparkles className="h-4 w-4" />
 		                    Alternativa más segura
 		                  </div>
@@ -1436,7 +1438,7 @@ const WineMenuScannerSession = ({
 		                </div>
 
 		                <div className="min-w-0 rounded-lg border border-stone-200 bg-stone-50 p-4">
-		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-stone-950">
+		                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-stone-950">
 		                    <Target className="h-4 w-4" />
 		                    Mejor calidad/precio para ti
 		                  </div>
@@ -1461,7 +1463,7 @@ const WineMenuScannerSession = ({
 		                </div>
 
 		                <div className="min-w-0 rounded-lg border border-orange-100 bg-orange-50 p-4">
-		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-orange-950">
+		                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-orange-950">
 		                    <AlertCircle className="h-4 w-4" />
 		                    Más arriesgado
 		                  </div>
@@ -1486,7 +1488,7 @@ const WineMenuScannerSession = ({
 		                </div>
 
 		                <div className="min-w-0 rounded-lg border border-red-100 bg-red-50 p-4">
-		                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-red-950">
+		                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-red-950">
 		                    <CircleSlash className="h-4 w-4" />
 		                    No lo pediría para ti
 		                  </div>
@@ -1650,11 +1652,11 @@ const WineMenuScannerSession = ({
 		                    key={`${wine.nombre}-${index}-list-row`}
 		                    type="button"
 		                    aria-label={`Abrir vino ${index + 1}: ${wine.nombre}`}
-		                    className={`matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
+		                    className={`matchrim-pressable flex min-h-16 w-full flex-wrap items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
 		                    onClick={(event) => openWineDetail(index, event.currentTarget)}
 		                  >
 	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
-		                    <span className="min-w-0 flex-1">
+		                    <span className="min-w-[min(6rem,100%)] flex-1">
 	                      <span className="block whitespace-normal break-words font-semibold text-slate-950">
                             {wine.nombre}{wine.anada ? ` ${wine.anada}` : ''}
                           </span>
@@ -2045,10 +2047,10 @@ const WineMenuScannerSession = ({
 	      <Drawer autoFocus open={selectedPinIndex !== null} onOpenChange={(open) => {
           if (!open) { detailFocusRef.current.open = false; if (profileRetryRef.current) invalidateProfileRetry(); setSelectedPinIndex(null); }
         }}>
-	        <DrawerContent onCloseAutoFocus={restoreDetailFocus} className="max-h-[88vh] border-stone-200 bg-stone-50">
+	        <DrawerContent onCloseAutoFocus={restoreDetailFocus} className="w-full min-w-0 max-w-[100vw] max-h-[88vh] border-stone-200 bg-stone-50">
 	          {selectedPinWine && selectedPinIndex !== null && (
 	            <>
-	              <DrawerHeader className="border-b border-stone-200 bg-white text-left">
+	              <DrawerHeader className="min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left">
 	                <div className="flex items-start justify-between gap-3">
 	                  <div className="min-w-0">
 	                    <DrawerTitle>{selectedPinIndex + 1}. {selectedPinWine.nombre}</DrawerTitle>
@@ -2061,7 +2063,7 @@ const WineMenuScannerSession = ({
 	                  </DrawerClose>
 	                </div>
 	              </DrawerHeader>
-              <div className="overflow-y-auto p-4">
+              <div role="region" aria-label="Contenido del vino" tabIndex={0} className="min-h-0 min-w-0 flex-1 overflow-y-auto break-words p-4">
                 {renderProfileRecovery()}
 	                <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
 	                  <div><div className="text-xl font-bold text-red-900">{selectedPinDecision?.score == null ? '-' : `≈${selectedPinDecision.score}%`}</div><div className="text-xs text-slate-500">{selectedPinDecision?.state === 'pending' ? 'Afinidad pendiente' : 'Afinidad estimada'}</div></div>
@@ -2097,16 +2099,16 @@ const WineMenuScannerSession = ({
 			                </div>
 	                {renderWineAffinityExplanation(selectedPinWine)}
 	              </div>
-	              <DrawerFooter className="border-t border-stone-200 bg-white">
+	              <DrawerFooter className="min-w-0 shrink-0 border-t border-stone-200 bg-white">
 	                <div className="grid grid-cols-2 gap-2">
-	                  <Button ref={detailPreviousRef} type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex === 0} onClick={(event) => {
+	                  <Button ref={detailPreviousRef} type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={selectedPinIndex === 0} onClick={(event) => {
 	                    const next = Math.max(0, selectedPinIndex - 1);
                       if (next === 0 && document.activeElement === event.currentTarget) {
                         detailNextRef.current?.focus({ preventScroll: true });
                       }
 	                    openWineDetail(next);
 	                  }}><ChevronLeft className="h-4 w-4" /> Anterior</Button>
-	                  <Button ref={detailNextRef} type="button" variant="outline" className="matchrim-pressable min-h-11 bg-white" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={(event) => {
+	                  <Button ref={detailNextRef} type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={(event) => {
 	                    const next = Math.min(scannedWines.length - 1, selectedPinIndex + 1);
                       if (next === scannedWines.length - 1 && document.activeElement === event.currentTarget) {
                         detailPreviousRef.current?.focus({ preventScroll: true });

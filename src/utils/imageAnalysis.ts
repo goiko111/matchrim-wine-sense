@@ -32,17 +32,58 @@ export class ImagePreparationError extends Error {
   }
 }
 
-const fileToDataUrl = (file: File) => new Promise<string>((resolve, reject) => {
+const throwIfAborted = (signal?: AbortSignal) => {
+  if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+};
+
+const fileToDataUrl = (file: File, signal?: AbortSignal) => new Promise<string>((resolve, reject) => {
+  if (signal?.aborted) {
+    reject(new DOMException('Cancelled', 'AbortError'));
+    return;
+  }
   const reader = new FileReader();
-  reader.onload = () => resolve(reader.result as string);
-  reader.onerror = () => reject(new ImagePreparationError('read'));
-  reader.readAsDataURL(file);
+  const cleanup = () => {
+    reader.onload = null;
+    reader.onerror = null;
+    reader.onabort = null;
+    signal?.removeEventListener('abort', onAbort);
+  };
+  const onAbort = () => {
+    cleanup();
+    if (reader.readyState === FileReader.LOADING) reader.abort();
+    reject(new DOMException('Cancelled', 'AbortError'));
+  };
+  reader.onload = () => {
+    const result = reader.result as string;
+    cleanup();
+    resolve(result);
+  };
+  reader.onerror = () => { cleanup(); reject(new ImagePreparationError('read')); };
+  reader.onabort = () => { cleanup(); reject(new DOMException('Cancelled', 'AbortError')); };
+  signal?.addEventListener('abort', onAbort, { once: true });
+  try { reader.readAsDataURL(file); }
+  catch { cleanup(); reject(new ImagePreparationError('read')); }
 });
 
-const loadImage = (dataUrl: string) => new Promise<HTMLImageElement>((resolve, reject) => {
+const loadImage = (dataUrl: string, signal?: AbortSignal) => new Promise<HTMLImageElement>((resolve, reject) => {
+  if (signal?.aborted) {
+    reject(new DOMException('Cancelled', 'AbortError'));
+    return;
+  }
   const image = new Image();
-  image.onload = () => resolve(image);
-  image.onerror = () => reject(new ImagePreparationError('decode'));
+  const cleanup = () => {
+    image.onload = null;
+    image.onerror = null;
+    signal?.removeEventListener('abort', onAbort);
+  };
+  const onAbort = () => {
+    cleanup();
+    image.removeAttribute('src');
+    reject(new DOMException('Cancelled', 'AbortError'));
+  };
+  image.onload = () => { cleanup(); resolve(image); };
+  image.onerror = () => { cleanup(); reject(new ImagePreparationError('decode')); };
+  signal?.addEventListener('abort', onAbort, { once: true });
   image.src = dataUrl;
 });
 
@@ -95,9 +136,11 @@ export const shouldRejectTextAnalysis = (quality: ImageQualityReport) => (
   && quality.sharpness < 12
 );
 
-export const prepareImageForAnalysis = async (file: File, maxDimension = 2400): Promise<PreparedImage> => {
-  const originalDataUrl = await fileToDataUrl(file);
-  const image = await loadImage(originalDataUrl);
+export const prepareImageForAnalysis = async (file: File, maxDimension = 2400, signal?: AbortSignal): Promise<PreparedImage> => {
+  const originalDataUrl = await fileToDataUrl(file, signal);
+  throwIfAborted(signal);
+  const image = await loadImage(originalDataUrl, signal);
+  throwIfAborted(signal);
   const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
   const width = Math.max(1, Math.round(image.naturalWidth * scale));
   const height = Math.max(1, Math.round(image.naturalHeight * scale));
@@ -148,8 +191,10 @@ export const cropImageRegionWithQuality = async (
   box: NormalizedBox,
   paddingPercent = 2,
   maxDimension = 1600,
+  signal?: AbortSignal,
 ) => {
-  const image = await loadImage(dataUrl);
+  const image = await loadImage(dataUrl, signal);
+  throwIfAborted(signal);
   const geometry = getCropGeometry(image.naturalWidth, image.naturalHeight, box, paddingPercent);
   const { x: sourceX, y: sourceY, width: sourceWidth, height: sourceHeight } = geometry.pixels;
   const scale = Math.min(1, maxDimension / Math.max(sourceWidth, sourceHeight));
@@ -168,6 +213,6 @@ export const cropImageRegionWithQuality = async (
   };
 };
 
-export const cropImageRegion = async (dataUrl: string, box: NormalizedBox, paddingPercent = 2, maxDimension = 1600) => (
-  (await cropImageRegionWithQuality(dataUrl, box, paddingPercent, maxDimension)).dataUrl
+export const cropImageRegion = async (dataUrl: string, box: NormalizedBox, paddingPercent = 2, maxDimension = 1600, signal?: AbortSignal) => (
+  (await cropImageRegionWithQuality(dataUrl, box, paddingPercent, maxDimension, signal)).dataUrl
 );

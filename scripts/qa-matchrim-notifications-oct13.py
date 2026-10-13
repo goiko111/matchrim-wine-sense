@@ -4,15 +4,17 @@ import json
 from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
+from qa_matchrim_runtime import add_browser_options, launch_browser
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--url', default='http://127.0.0.1:4474')
 p.add_argument('--output', type=Path, required=True)
+add_browser_options(p)
 args = p.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
 rows = []
 with sync_playwright() as pw:
-    browser = pw.chromium.launch(headless=True, executable_path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+    browser = launch_browser(pw, args)
     for width, height, orientation in [(393, 852, 'portrait'), (852, 393, 'landscape')]:
         context = browser.new_context(viewport={'width': width, 'height': height}, is_mobile=True, has_touch=True, service_workers='block', reduced_motion='reduce')
         context.route('**/*', lambda r: r.continue_() if urlparse(r.request.url).netloc == urlparse(args.url).netloc else r.abort())

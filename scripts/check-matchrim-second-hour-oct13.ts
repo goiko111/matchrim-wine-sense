@@ -7,6 +7,16 @@ import { ImagePreparationError } from '../src/utils/imageAnalysis';
 
 const output = process.argv[2];
 if (!output) throw Error('Pass local second-hour checks output');
+// This historical gate compares against a Mac-only Git object. The cloud
+// snapshot deliberately does not contain it; absence is a blocked prerequisite,
+// never an application failure and never a green historical rerun.
+try { execFileSync('git', ['cat-file', '-e', '3ad38f28badb59c03a1217c0ed1deb1a1581421a^{commit}'], { stdio: 'ignore' }); }
+catch {
+  writeFileSync(output, JSON.stringify({ status: 'blocked-prerequisite', requiredCommit: '3ad38f28badb59c03a1217c0ed1deb1a1581421a', scope: 'Historical second-hour gate not executed; use npm run test:cloud for the transferred snapshot' }, null, 2) + '\n');
+  console.error('Historical second-hour gate blocked: required local commit is not in this snapshot.');
+  process.exit(2);
+}
+
 const checks: Array<{ name: string; passed: boolean; error?: string }> = [];
 const check = (name: string, run: () => unknown) => {
   try { run(); checks.push({ name, passed: true }); }

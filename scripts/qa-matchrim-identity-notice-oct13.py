@@ -9,10 +9,12 @@ from pathlib import Path
 from types import SimpleNamespace
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
+from qa_matchrim_runtime import add_browser_options, launch_browser, open_label_region
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--url', default='http://127.0.0.1:4468')
+add_browser_options(p)
 args = p.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
 root = Path(__file__).resolve().parents[1]
@@ -32,7 +34,7 @@ user = {'id': uid, 'aud': 'authenticated', 'role': 'authenticated', 'email': 'qa
 session = {'user': user, 'access_token': enc({'alg': 'HS256', 'typ': 'JWT'}) + '.' + enc({'sub': uid, 'exp': 1900000000}) + '.' + enc('synthetic-invalid'), 'refresh_token': 'synthetic-invalid', 'expires_at': 1900000000, 'expires_in': 86400, 'token_type': 'bearer'}
 results = []
 with sync_playwright() as pw:
-    browser = pw.chromium.launch(headless=True, executable_path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+    browser = launch_browser(pw, args)
     try:
         for width, height, orientation in [(393, 852, 'portrait'), (852, 393, 'landscape')]:
             for action in ['manual', 'confirm', 'edit']:
@@ -113,7 +115,7 @@ with sync_playwright() as pw:
                     page.screenshot(path=str(args.output / (case + '-' + stage + '.png')))
 
                 def open_region(index):
-                    page.get_by_test_id('region-pin-' + str(index)).tap()
+                    open_label_region(page, index)
                     page.get_by_role('dialog').wait_for(state='visible')
                     page.wait_for_function('()=>{const d=document.querySelector("[role=dialog]"),r=d?.getBoundingClientRect();return r&&r.top>=-1&&r.bottom<=innerHeight+1;}', timeout=3000)
 

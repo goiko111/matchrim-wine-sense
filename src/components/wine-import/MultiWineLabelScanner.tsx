@@ -46,7 +46,8 @@ import { createScanRequestBudget, cropQualityDeferral, deferRegion, MAX_MANUAL_R
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
-import { clusterOverlayPins } from '@/utils/overlayPins';
+import { clusterScreenOverlayPins } from '@/utils/screenOverlayPins';
+import { useOverlayViewport } from '@/hooks/useOverlayViewport';
 import { formatScanRegionProgress, summarizeScanRegionProgress } from '@/utils/scanRegionProgress';
 import { regionAnalysisErrorMessage } from '@/utils/regionAnalysisError';
 import { manualWineIdentityNotice } from '@/utils/manualWineIdentityNotice';
@@ -204,7 +205,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions), [regions]);
   const savedCount = saveResults.filter((result) => result?.status === 'saved').length;
   const saveFailure = saveResults.find((result) => result && result.status !== 'saved');
-  const regionPinClusters = useMemo(() => clusterOverlayPins(
+  const overlay = useOverlayViewport(regions.length);
+  const regionPinClusters = useMemo(() => clusterScreenOverlayPins(
     regions
       .filter((region) => region.status !== 'discarded')
       .map((region) => ({
@@ -214,7 +216,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         y: Math.max(5, Math.min(95, region.box.y + Math.min(5, region.box.height / 2))),
         value: region,
       })),
-  ), [regions]);
+    overlay.viewport,
+  ), [regions, overlay.viewport]);
   const rankedGroups = useMemo(() => [...duplicateGroups].sort((a, b) => {
     const aRecognized = a.regionIds.some((id) => regions.some((region) => region.id === id && region.status === 'recognized'));
     const bRecognized = b.regionIds.some((id) => regions.some((region) => region.id === id && region.status === 'recognized'));
@@ -285,7 +288,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     updateRegion(region.id, (current) => ({ ...current, status: 'analyzing', error: null, fallback: null, deferral: null }));
     try {
       if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
-      const crop = await cropImageRegionWithQuality(imageDataUrl, region.box, labelCropPadding(region.box));
+      const crop = await cropImageRegionWithQuality(imageDataUrl, region.box, labelCropPadding(region.box), 1600, signal);
       if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
       const cropDataUrl = crop.dataUrl;
       const qualityDeferral = cropQualityDeferral(crop.quality);
@@ -373,10 +376,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
     try {
       setPhase('quality');
-      const prepared = await prepareImageForAnalysis(file);
+      const prepared = await prepareImageForAnalysis(file, 2400, controller.signal);
+      if (abortRef.current !== controller || controller.signal.aborted) return;
       preparedSizeRef.current = { width: prepared.width, height: prepared.height };
       const qualityFinishedAt = globalThis.performance.now();
-      if (controller.signal.aborted) return;
       setPreview(prepared.dataUrl);
       setQuality(prepared.quality);
       if (shouldRejectTextAnalysis(prepared.quality)) {
@@ -429,7 +432,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               return {
                 tile,
                 payload: await detectImage(
-                  await cropImageRegion(prepared.dataUrl, tile.box, 0, 2400),
+                  await cropImageRegion(prepared.dataUrl, tile.box, 0, 2400, controller.signal),
                   tile.id,
                 ),
               };
@@ -849,6 +852,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           )}
 
           <div
+            ref={overlay.ref}
             hidden={isNative && regions.length > 0 && nativeResultView !== 'scene'}
             className="matchrim-scan-stage relative mx-auto overflow-hidden rounded-lg"
             style={{
@@ -896,7 +900,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           {regions.length > 0 && (
             <div className="space-y-4">
               {isNative && (
-                <div className="grid grid-cols-3 rounded-lg bg-slate-100 p-1" role="tablist" aria-label="Vista de resultados">
+                <div className="grid grid-cols-[repeat(auto-fit,minmax(min(6rem,100%),1fr))] rounded-lg bg-slate-100 p-1" role="tablist" aria-label="Vista de resultados">
                   {([
                     ['scene', 'Escena'],
                     ['wines', `Vinos (${rankedGroups.length})`],
@@ -922,7 +926,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <strong>{summary.deferred} regiones sin analizar.</strong> Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.
                 </div>
               )}
-              <div className="matchrim-data-rail grid grid-cols-3 gap-2 rounded-lg px-2 py-3 text-center sm:grid-cols-5">
+              <div className="matchrim-data-rail grid grid-cols-3 gap-2 break-words rounded-lg px-2 py-3 text-center sm:grid-cols-5">
                 <div><div className="text-xl font-bold text-emerald-700">{summary.recognized}</div><div className="text-xs text-slate-500">Reconocidos</div></div>
                 <div><div className="text-xl font-bold text-amber-700">{summary.uncertain}</div><div className="text-xs text-slate-500">Dudosos</div></div>
                 <div><div className="text-xl font-bold text-red-700">{summary.unrecognized}</div><div className="text-xs text-slate-500">Sin reconocer</div></div>
@@ -1072,17 +1076,17 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       )}
 
       <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => !open && setSelectedRegionId(null)}>
-        <DrawerContent className="max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
+        <DrawerContent className="w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
-            <div className="mx-auto flex w-full max-w-2xl min-h-0 flex-1 flex-col">
-              <DrawerHeader className="border-b border-stone-200 bg-white text-left">
+            <div className="mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
+              <DrawerHeader className="min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left">
                 <DrawerTitle>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</DrawerTitle>
                 <DrawerDescription>
                   Detección {Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.
                 </DrawerDescription>
               </DrawerHeader>
 
-              <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4">
+              <div role="region" aria-label={`Contenido de la región ${selectedRegion.index}`} tabIndex={0} className="min-h-0 min-w-0 flex-1 space-y-4 overflow-y-auto break-words px-4 pb-4">
                 {loading && (
                   <p role="status" className="text-sm text-slate-600" data-testid="region-analysis-lock">
                     Análisis del lote en curso. Las identidades aún pueden cambiar.
@@ -1244,18 +1248,18 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 )}
               </div>
 
-              <DrawerFooter className="border-t border-stone-200 bg-white">
+              <DrawerFooter className="min-w-0 shrink-0 border-t border-stone-200 bg-white">
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" disabled={regions.findIndex((region) => region.id === selectedRegion.id) <= 0} onClick={() => moveSelection(-1)}>
+                  <Button type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) <= 0} onClick={() => moveSelection(-1)}>
                     <ChevronLeft className="h-4 w-4" /> Anterior
                   </Button>
-                  <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
+                  <Button type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
                     Siguiente <ChevronRight className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" disabled={regionActionsLocked} className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={() => void reanalyzeSelected()}>
+                  <Button type="button" variant="outline" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={() => void reanalyzeSelected()}>
                     <RefreshCw className="h-4 w-4" /> Reanalizar
                   </Button>
-                  <Button type="button" variant="outline" disabled={regionActionsLocked} className="matchrim-pressable min-h-11 gap-2 bg-white text-red-800" onClick={discardSelected}>
+                  <Button type="button" variant="outline" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2 text-red-800" onClick={discardSelected}>
                     <Trash2 className="h-4 w-4" /> Descartar
                   </Button>
                 </div>
