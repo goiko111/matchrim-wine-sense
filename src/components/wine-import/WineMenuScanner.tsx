@@ -272,6 +272,33 @@ const WineMenuScannerSession = ({
   const profileRetryRef = useRef<AbortController | null>(null);
   const profileRetryLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
   const detectionNoticeRef = useRef({ active: false, generation: 0, id: null as string | number | null });
+  const detailFocusRef = useRef({ active: false, open: false, generation: 0, opener: null as HTMLElement | null });
+
+  const invalidateDetailFocus = useCallback(() => {
+    const focus = detailFocusRef.current;
+    focus.generation += 1;
+    focus.opener = null;
+    focus.open = false;
+  }, []);
+
+  useLayoutEffect(() => {
+    const focus = detailFocusRef.current;
+    focus.active = true;
+    return () => {
+      focus.active = false;
+      invalidateDetailFocus();
+    };
+  }, [user?.id, invalidateDetailFocus]);
+
+  const detailFocusGeneration = detailFocusRef.current.generation;
+  const restoreDetailFocus = (event: Event) => {
+    event.preventDefault();
+    const focus = detailFocusRef.current;
+    if (!focus.active || focus.open || focus.generation !== detailFocusGeneration) return;
+    const opener = focus.opener;
+    focus.opener = null;
+    if (opener?.isConnected) opener.focus({ preventScroll: true });
+  };
 
   const dismissDetectionNotice = useCallback(() => {
     const id = detectionNoticeRef.current.id;
@@ -494,7 +521,13 @@ const WineMenuScannerSession = ({
       })
       .slice(0, 2);
 
-  const openWineDetail = (index: number) => {
+  const openWineDetail = (index: number, opener?: HTMLElement) => {
+    const focus = detailFocusRef.current;
+    if (focus.active && !focus.open) {
+      focus.generation += 1;
+      focus.opener = opener ?? null;
+      focus.open = true;
+    }
     dismissDetectionNotice();
     setHighlightedWineIndex(index);
     setSelectedPinIndex(index);
@@ -526,6 +559,7 @@ const WineMenuScannerSession = ({
     }
 
     // Activar loader inmediatamente
+    invalidateDetailFocus();
     dismissDetectionNotice();
     const noticeGeneration = detectionNoticeRef.current.generation;
     invalidateProfileRetry();
@@ -815,6 +849,7 @@ const WineMenuScannerSession = ({
   };
 
   const clearScan = () => {
+    invalidateDetailFocus();
     dismissDetectionNotice();
     invalidateProfileRetry();
     scanAbortRef.current?.abort();
@@ -1137,7 +1172,7 @@ const WineMenuScannerSession = ({
 			                                ? `Grupo de ${cluster.items.length} vinos: ${names}`
 			                                : `Vino ${first.index + 1}: ${first.wine.nombre}`}
 			                              data-testid={clustered ? `wine-pin-cluster-${first.index + 1}` : `wine-pin-${first.index + 1}`}
-			                              onClick={() => openWineDetail(first.index)}
+			                              onClick={(event) => openWineDetail(first.index, event.currentTarget)}
 			                            >
 			                              <span className={`flex h-7 min-w-7 items-center justify-center rounded-full px-1 text-[11px] font-bold shadow ring-1 ring-white ${
 			                                active ? 'bg-amber-400 text-stone-950' : 'bg-stone-950 text-white'
@@ -1359,7 +1394,7 @@ const WineMenuScannerSession = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${best.wine.nombre}, ${best.score}% de encaje`}
 		                        className="min-w-0 w-full space-y-2 text-left"
-		                        onClick={() => openWineDetail(best.index)}
+		                        onClick={(event) => openWineDetail(best.index, event.currentTarget)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
@@ -1395,7 +1430,7 @@ const WineMenuScannerSession = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${safe.wine.nombre}, ${safe.score}% de encaje`}
 		                        className="flex min-w-0 w-full items-center justify-between gap-3 rounded-md border border-amber-200 bg-white px-3 py-2 text-left"
-		                        onClick={() => openWineDetail(safe.index)}
+		                        onClick={(event) => openWineDetail(safe.index, event.currentTarget)}
 		                      >
 		                        <span className="min-w-0">
 		                          <span className="block break-words text-sm font-semibold leading-tight text-amber-950">{safe.wine.nombre}</span>
@@ -1423,7 +1458,7 @@ const WineMenuScannerSession = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${value.wine.nombre}, ${value.score}% de encaje`}
 		                        className="matchrim-pressable min-w-0 w-full rounded-md border bg-white p-3 text-left text-sm text-stone-950"
-		                        onClick={() => openWineDetail(value.index)}
+		                        onClick={(event) => openWineDetail(value.index, event.currentTarget)}
 		                      >
 		                        <span className="block break-words font-semibold leading-tight">{value.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-stone-500">
@@ -1448,7 +1483,7 @@ const WineMenuScannerSession = ({
 		                        type="button"
 		                        aria-label={`Ver detalle de ${adventurous.wine.nombre}, ${adventurous.score}% de encaje`}
 		                        className="matchrim-pressable min-w-0 w-full rounded-md border border-orange-200 bg-white p-3 text-left"
-		                        onClick={() => openWineDetail(adventurous.index)}
+		                        onClick={(event) => openWineDetail(adventurous.index, event.currentTarget)}
 		                      >
 		                        <span className="block break-words text-sm font-semibold leading-tight text-orange-950">{adventurous.wine.nombre}</span>
 		                        <span className="mt-1 block text-xs text-orange-900/70">
@@ -1473,7 +1508,7 @@ const WineMenuScannerSession = ({
 	                        type="button"
 	                        aria-label={`Ver detalle de ${caution.wine.nombre}, ${caution.score}% de encaje`}
 	                        className="min-w-0 w-full space-y-2 text-left"
-	                        onClick={() => openWineDetail(caution.index)}
+	                        onClick={(event) => openWineDetail(caution.index, event.currentTarget)}
 	                      >
 	                        <div className="flex items-start justify-between gap-3">
 	                          <div className="min-w-0">
@@ -1627,7 +1662,7 @@ const WineMenuScannerSession = ({
 		                    type="button"
 		                    aria-label={`Abrir vino ${index + 1}: ${wine.nombre}`}
 		                    className={`matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
-		                    onClick={() => openWineDetail(index)}
+		                    onClick={(event) => openWineDetail(index, event.currentTarget)}
 		                  >
 	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
 		                    <span className="min-w-0 flex-1">
@@ -1897,7 +1932,7 @@ const WineMenuScannerSession = ({
 	                            key={`${similarWine.nombre}-${similarIndex}-similar`}
 	                            type="button"
 	                            className="matchrim-pressable rounded-md border bg-white p-3 text-left text-sm shadow-sm hover:border-red-300 hover:bg-red-50"
-		                            onClick={() => openWineDetail(similarIndex)}
+		                            onClick={(event) => openWineDetail(similarIndex, event.currentTarget)}
 	                          >
 	                            <div className="flex items-start justify-between gap-2">
 	                              <span className="font-medium text-red-950">{similarWine.nombre}</span>
@@ -1972,7 +2007,7 @@ const WineMenuScannerSession = ({
                           type="button"
                           variant="outline"
                           className="gap-2"
-                          onClick={() => openWineDetail(similarWines[0]?.index ?? index)}
+                          onClick={(event) => openWineDetail(similarWines[0]?.index ?? index, event.currentTarget)}
                           disabled={similarWines.length === 0}
                         >
 	                          <ScanLine className="h-4 w-4" />
@@ -2029,10 +2064,10 @@ const WineMenuScannerSession = ({
 	        </div>
 	      )}
 
-	      <Drawer open={selectedPinIndex !== null} onOpenChange={(open) => {
-          if (!open) { if (profileRetryRef.current) invalidateProfileRetry(); setSelectedPinIndex(null); }
+	      <Drawer autoFocus open={selectedPinIndex !== null} onOpenChange={(open) => {
+          if (!open) { detailFocusRef.current.open = false; if (profileRetryRef.current) invalidateProfileRetry(); setSelectedPinIndex(null); }
         }}>
-	        <DrawerContent className="max-h-[88vh] border-stone-200 bg-stone-50">
+	        <DrawerContent onCloseAutoFocus={restoreDetailFocus} className="max-h-[88vh] border-stone-200 bg-stone-50">
 	          {selectedPinWine && selectedPinIndex !== null && (
 	            <>
 	              <DrawerHeader className="border-b border-stone-200 bg-white text-left">

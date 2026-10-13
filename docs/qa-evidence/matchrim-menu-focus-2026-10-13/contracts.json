@@ -1,0 +1,124 @@
+{
+  "scope": "Only11 pure refs/AST guarding captured trigger, owner/batch/unmount and selection/notice/query boundaries. Simulated target objects are not accounts, DOM, PDF/native or screen-reader certification; automatic entry/return verified separately by actual keyboard/tap UI.",
+  "baseline": "30df48aa21a3771a26c9a03aca63b02e8bb899f0",
+  "checks": [
+    {
+      "name": "Initial open retains exact real trigger and selection values",
+      "passed": true
+    },
+    {
+      "name": "Escape closes and restores exact connected trigger without scroll",
+      "passed": true
+    },
+    {
+      "name": "Close closes and restores exact connected trigger without scroll",
+      "passed": true
+    },
+    {
+      "name": "Content/previous-next opener while already open does not replace trigger or steal focus",
+      "passed": true
+    },
+    {
+      "name": "Restore while modal still open cannot steal user focus",
+      "passed": true
+    },
+    {
+      "name": "clear invalidates old restore callback",
+      "passed": true
+    },
+    {
+      "name": "newbatch invalidates old restore callback",
+      "passed": true
+    },
+    {
+      "name": "unmount/owner invalidates old restore callback",
+      "passed": true
+    },
+    {
+      "name": "Old callback cannot restore a newer closed session",
+      "passed": true
+    },
+    {
+      "name": "Disconnected trigger is not restored",
+      "passed": true
+    },
+    {
+      "name": "Missing trigger never falls back to a foreign activeElement",
+      "passed": true
+    },
+    {
+      "name": "Old owner cleanup cannot touch next keyed instance trigger",
+      "passed": true
+    },
+    {
+      "name": "Inactive old instance cannot retain a new trigger",
+      "passed": true
+    },
+    {
+      "name": "Only instance Root adds autoFocus, Content owns close restoration",
+      "passed": true
+    },
+    {
+      "name": "Every opening button passes its actual currentTarget; existing selection indices unchanged",
+      "passed": true
+    },
+    {
+      "name": "Existing lifecycle hooks including notice10/retry08 unchanged",
+      "passed": true
+    },
+    {
+      "name": "All existing nested initializers outside focus boundary byte-identical",
+      "passed": true
+    },
+    {
+      "name": "Removing only focus metadata leaves openWineDetail behavior unchanged",
+      "passed": true
+    },
+    {
+      "name": "Removing only focus metadata leaves handleFileSelect behavior unchanged",
+      "passed": true
+    },
+    {
+      "name": "Removing only focus metadata leaves clearScan behavior unchanged",
+      "passed": true
+    },
+    {
+      "name": "Existing close selection/retry callback unchanged apart from own open flag",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/ui/drawer.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/components/AccountNotifications.tsx",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/aiRimContextGuide.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/wineAffinityExplanation.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuWineActions.ts",
+      "passed": true
+    },
+    {
+      "name": "Protected source src/utils/menuProfileRecovery.ts",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "src/components/wine-import/WineMenuScanner.tsx": "b14576042f6f723e62ef6e9fda79ffaa49edff059a1ea12f3dbdbd6a2944dec8",
+    "src/components/ui/drawer.tsx": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b",
+    "src/components/AccountNotifications.tsx": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf",
+    "src/utils/aiRimContextGuide.ts": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07",
+    "src/utils/wineAffinityExplanation.ts": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313",
+    "src/utils/menuWineActions.ts": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1",
+    "src/utils/menuProfileRecovery.ts": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1",
+    "scripts/check-matchrim-menu-focus-oct13.ts": "4bbe33e012151a6e6ea2b9ca09ac1956290adcb8d44384182deb1d3f46dd515f"
+  }
+}

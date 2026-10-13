@@ -1,0 +1,577 @@
+{
+  "entries": [
+    {
+      "path": "after/input-provenance.json",
+      "sha256": "6586a95fa71002fd8952312afdeab2736bc9d85c086c424d19ab265d3088090b"
+    },
+    {
+      "path": "after/pin-Enter-landscape-close-return.png",
+      "sha256": "09d2d5432c223e2879abeb7f0a75a8b4de3d739edb160742c1b5c865e1d3a2ff"
+    },
+    {
+      "path": "after/pin-Enter-landscape-escape-return.png",
+      "sha256": "09d2d5432c223e2879abeb7f0a75a8b4de3d739edb160742c1b5c865e1d3a2ff"
+    },
+    {
+      "path": "after/pin-Enter-landscape-opened.png",
+      "sha256": "b50e10a30cf7e3c7c2abb1dee166e09b1c3acefc623a44bbc2f884154ca0b693"
+    },
+    {
+      "path": "after/pin-Enter-portrait-close-return.png",
+      "sha256": "a6212b81b6b18383c4a0e5d3cbf19465cd3fcefbaede1d7a3d9eaf5f461f8df8"
+    },
+    {
+      "path": "after/pin-Enter-portrait-escape-return.png",
+      "sha256": "a6212b81b6b18383c4a0e5d3cbf19465cd3fcefbaede1d7a3d9eaf5f461f8df8"
+    },
+    {
+      "path": "after/pin-Enter-portrait-opened.png",
+      "sha256": "5c94c08671d31f380810e0e8d980e9cf6c815708913ea638b7fca20eab5ba136"
+    },
+    {
+      "path": "after/pin-Space-landscape-close-return.png",
+      "sha256": "09d2d5432c223e2879abeb7f0a75a8b4de3d739edb160742c1b5c865e1d3a2ff"
+    },
+    {
+      "path": "after/pin-Space-landscape-escape-return.png",
+      "sha256": "09d2d5432c223e2879abeb7f0a75a8b4de3d739edb160742c1b5c865e1d3a2ff"
+    },
+    {
+      "path": "after/pin-Space-landscape-opened.png",
+      "sha256": "b50e10a30cf7e3c7c2abb1dee166e09b1c3acefc623a44bbc2f884154ca0b693"
+    },
+    {
+      "path": "after/pin-Space-portrait-close-return.png",
+      "sha256": "a6212b81b6b18383c4a0e5d3cbf19465cd3fcefbaede1d7a3d9eaf5f461f8df8"
+    },
+    {
+      "path": "after/pin-Space-portrait-escape-return.png",
+      "sha256": "a6212b81b6b18383c4a0e5d3cbf19465cd3fcefbaede1d7a3d9eaf5f461f8df8"
+    },
+    {
+      "path": "after/pin-Space-portrait-opened.png",
+      "sha256": "5c94c08671d31f380810e0e8d980e9cf6c815708913ea638b7fca20eab5ba136"
+    },
+    {
+      "path": "after/pin-touch-landscape-close-return.png",
+      "sha256": "09d2d5432c223e2879abeb7f0a75a8b4de3d739edb160742c1b5c865e1d3a2ff"
+    },
+    {
+      "path": "after/pin-touch-landscape-escape-return.png",
+      "sha256": "09d2d5432c223e2879abeb7f0a75a8b4de3d739edb160742c1b5c865e1d3a2ff"
+    },
+    {
+      "path": "after/pin-touch-landscape-opened.png",
+      "sha256": "8b7ef7497ac684b99080e2f39f51110792df7353e3cac2428bd86f19bec70294"
+    },
+    {
+      "path": "after/pin-touch-portrait-close-return.png",
+      "sha256": "a6212b81b6b18383c4a0e5d3cbf19465cd3fcefbaede1d7a3d9eaf5f461f8df8"
+    },
+    {
+      "path": "after/pin-touch-portrait-escape-return.png",
+      "sha256": "a6212b81b6b18383c4a0e5d3cbf19465cd3fcefbaede1d7a3d9eaf5f461f8df8"
+    },
+    {
+      "path": "after/pin-touch-portrait-opened.png",
+      "sha256": "a75b2a2722398522d27be056f0649135b3e81db0a9ea55cb7e62906064e27a3f"
+    },
+    {
+      "path": "after/results.json",
+      "sha256": "ec1c6cf68d927613701cc71e4d66f6708295d311f049a91c98a1ba2815c0d5d8"
+    },
+    {
+      "path": "after/row-Enter-landscape-close-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "after/row-Enter-landscape-escape-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "after/row-Enter-landscape-opened.png",
+      "sha256": "1f803ff4a398eb0fb76c47c31e3d8b4ea001afb9dd1e69f04ce3038793e43154"
+    },
+    {
+      "path": "after/row-Enter-portrait-close-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "after/row-Enter-portrait-escape-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "after/row-Enter-portrait-opened.png",
+      "sha256": "a62fa63548fad7b5ce1db2f0a3e30c6fc6402c58da237891036939a59d230ad1"
+    },
+    {
+      "path": "after/row-Space-landscape-close-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "after/row-Space-landscape-escape-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "after/row-Space-landscape-opened.png",
+      "sha256": "1f803ff4a398eb0fb76c47c31e3d8b4ea001afb9dd1e69f04ce3038793e43154"
+    },
+    {
+      "path": "after/row-Space-portrait-close-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "after/row-Space-portrait-escape-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "after/row-Space-portrait-opened.png",
+      "sha256": "a62fa63548fad7b5ce1db2f0a3e30c6fc6402c58da237891036939a59d230ad1"
+    },
+    {
+      "path": "after/row-touch-landscape-close-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "after/row-touch-landscape-escape-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "after/row-touch-landscape-opened.png",
+      "sha256": "d7b0314671f23093f5d439b53527a31a81c98a45aa09226363b5774ed4389f32"
+    },
+    {
+      "path": "after/row-touch-portrait-close-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "after/row-touch-portrait-escape-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "after/row-touch-portrait-opened.png",
+      "sha256": "2d0d621cea6cef50fa5e4e5a238fff0fda166d7a398a528ef57ef0d84613cefc"
+    },
+    {
+      "path": "baseline-sources/src/components/AccountNotifications.tsx.txt",
+      "sha256": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf"
+    },
+    {
+      "path": "baseline-sources/src/components/AffinityExplanation.tsx.txt",
+      "sha256": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e"
+    },
+    {
+      "path": "baseline-sources/src/components/AiRimContextGuide.tsx.txt",
+      "sha256": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0"
+    },
+    {
+      "path": "baseline-sources/src/components/ui/drawer.tsx.txt",
+      "sha256": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b"
+    },
+    {
+      "path": "baseline-sources/src/components/ui/sonner.tsx.txt",
+      "sha256": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/MultiWineLabelScanner.tsx.txt",
+      "sha256": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "sha256": "5f634746587b1520015985e5c0437a51637845f6ec4061b0815166c4a4051ffd"
+    },
+    {
+      "path": "baseline-sources/src/contexts/AuthContext.tsx.txt",
+      "sha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863"
+    },
+    {
+      "path": "baseline-sources/src/pages/MyWines.tsx.txt",
+      "sha256": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad"
+    },
+    {
+      "path": "baseline-sources/src/services/matchrimScanProfile.ts.txt",
+      "sha256": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150"
+    },
+    {
+      "path": "baseline-sources/src/utils/aiRimContextGuide.ts.txt",
+      "sha256": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07"
+    },
+    {
+      "path": "baseline-sources/src/utils/matchrimLearning.ts.txt",
+      "sha256": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuAffinityPresentation.ts.txt",
+      "sha256": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuProfileRecovery.ts.txt",
+      "sha256": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuWineActions.ts.txt",
+      "sha256": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1"
+    },
+    {
+      "path": "baseline-sources/src/utils/menuWineSave.ts.txt",
+      "sha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859"
+    },
+    {
+      "path": "baseline-sources/src/utils/multiWineScan.ts.txt",
+      "sha256": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanConfidence.ts.txt",
+      "sha256": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanProfile.ts.txt",
+      "sha256": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf"
+    },
+    {
+      "path": "baseline-sources/src/utils/scanWineEvidence.ts.txt",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineAffinityExplanation.ts.txt",
+      "sha256": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineComparison.ts.txt",
+      "sha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "baseline-sources/src/utils/wineMenuScan.ts.txt",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "baseline-sources/supabase/functions/_shared/matchrim-scan-values.ts.txt",
+      "sha256": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e"
+    },
+    {
+      "path": "before/input-provenance.json",
+      "sha256": "c70455a6a371c3dfa512843e1e21c38c20efa535836a7e01dd98d1af18956e19"
+    },
+    {
+      "path": "before/pin-Enter-landscape-close-return.png",
+      "sha256": "7854422ffe09a2689a27fd70e9682fe879ef4f5455d3b40c346089debde319dc"
+    },
+    {
+      "path": "before/pin-Enter-landscape-escape-return.png",
+      "sha256": "3ace82da3cd1471b07e61073f9c3a3c24adc8dd2e123672ae5888ed3984b9c76"
+    },
+    {
+      "path": "before/pin-Enter-landscape-opened.png",
+      "sha256": "8b7ef7497ac684b99080e2f39f51110792df7353e3cac2428bd86f19bec70294"
+    },
+    {
+      "path": "before/pin-Enter-portrait-close-return.png",
+      "sha256": "f856a25fbaa8693afac3fa6238f0cc813a617124febbb1e9e7baaddc5314fd32"
+    },
+    {
+      "path": "before/pin-Enter-portrait-escape-return.png",
+      "sha256": "1cac007e8700b889659730fb934c427ca770cf06672db64fac01da759e196a1c"
+    },
+    {
+      "path": "before/pin-Enter-portrait-opened.png",
+      "sha256": "a75b2a2722398522d27be056f0649135b3e81db0a9ea55cb7e62906064e27a3f"
+    },
+    {
+      "path": "before/pin-Space-landscape-close-return.png",
+      "sha256": "7854422ffe09a2689a27fd70e9682fe879ef4f5455d3b40c346089debde319dc"
+    },
+    {
+      "path": "before/pin-Space-landscape-escape-return.png",
+      "sha256": "3ace82da3cd1471b07e61073f9c3a3c24adc8dd2e123672ae5888ed3984b9c76"
+    },
+    {
+      "path": "before/pin-Space-landscape-opened.png",
+      "sha256": "8b7ef7497ac684b99080e2f39f51110792df7353e3cac2428bd86f19bec70294"
+    },
+    {
+      "path": "before/pin-Space-portrait-close-return.png",
+      "sha256": "f856a25fbaa8693afac3fa6238f0cc813a617124febbb1e9e7baaddc5314fd32"
+    },
+    {
+      "path": "before/pin-Space-portrait-escape-return.png",
+      "sha256": "1cac007e8700b889659730fb934c427ca770cf06672db64fac01da759e196a1c"
+    },
+    {
+      "path": "before/pin-Space-portrait-opened.png",
+      "sha256": "a75b2a2722398522d27be056f0649135b3e81db0a9ea55cb7e62906064e27a3f"
+    },
+    {
+      "path": "before/pin-touch-landscape-close-return.png",
+      "sha256": "a779f98cb264efcbf83fe199d821a9f1a6152fc2994b6f9100a6aca1dfd52cd7"
+    },
+    {
+      "path": "before/pin-touch-landscape-escape-return.png",
+      "sha256": "09d2d5432c223e2879abeb7f0a75a8b4de3d739edb160742c1b5c865e1d3a2ff"
+    },
+    {
+      "path": "before/pin-touch-landscape-opened.png",
+      "sha256": "8b7ef7497ac684b99080e2f39f51110792df7353e3cac2428bd86f19bec70294"
+    },
+    {
+      "path": "before/pin-touch-portrait-close-return.png",
+      "sha256": "c2632411c7884eabed99517319a5c154705456bb446f5f6e1e0c241e883e1686"
+    },
+    {
+      "path": "before/pin-touch-portrait-escape-return.png",
+      "sha256": "1cac007e8700b889659730fb934c427ca770cf06672db64fac01da759e196a1c"
+    },
+    {
+      "path": "before/pin-touch-portrait-opened.png",
+      "sha256": "a75b2a2722398522d27be056f0649135b3e81db0a9ea55cb7e62906064e27a3f"
+    },
+    {
+      "path": "before/results.json",
+      "sha256": "11499f5a1f2ef05b02556b63dd41a7bf6c7050e42c7c99c43841423fca105e30"
+    },
+    {
+      "path": "before/row-Enter-landscape-close-return.png",
+      "sha256": "7854422ffe09a2689a27fd70e9682fe879ef4f5455d3b40c346089debde319dc"
+    },
+    {
+      "path": "before/row-Enter-landscape-escape-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "before/row-Enter-landscape-opened.png",
+      "sha256": "d7b0314671f23093f5d439b53527a31a81c98a45aa09226363b5774ed4389f32"
+    },
+    {
+      "path": "before/row-Enter-portrait-close-return.png",
+      "sha256": "f856a25fbaa8693afac3fa6238f0cc813a617124febbb1e9e7baaddc5314fd32"
+    },
+    {
+      "path": "before/row-Enter-portrait-escape-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "before/row-Enter-portrait-opened.png",
+      "sha256": "2d0d621cea6cef50fa5e4e5a238fff0fda166d7a398a528ef57ef0d84613cefc"
+    },
+    {
+      "path": "before/row-Space-landscape-close-return.png",
+      "sha256": "7854422ffe09a2689a27fd70e9682fe879ef4f5455d3b40c346089debde319dc"
+    },
+    {
+      "path": "before/row-Space-landscape-escape-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "before/row-Space-landscape-opened.png",
+      "sha256": "d7b0314671f23093f5d439b53527a31a81c98a45aa09226363b5774ed4389f32"
+    },
+    {
+      "path": "before/row-Space-portrait-close-return.png",
+      "sha256": "f856a25fbaa8693afac3fa6238f0cc813a617124febbb1e9e7baaddc5314fd32"
+    },
+    {
+      "path": "before/row-Space-portrait-escape-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "before/row-Space-portrait-opened.png",
+      "sha256": "2d0d621cea6cef50fa5e4e5a238fff0fda166d7a398a528ef57ef0d84613cefc"
+    },
+    {
+      "path": "before/row-touch-landscape-close-return.png",
+      "sha256": "7854422ffe09a2689a27fd70e9682fe879ef4f5455d3b40c346089debde319dc"
+    },
+    {
+      "path": "before/row-touch-landscape-escape-return.png",
+      "sha256": "5bb33e796b83daf24db9e4b928b64ac6bb6c3eac700dade9eae8253f0c1fad4f"
+    },
+    {
+      "path": "before/row-touch-landscape-opened.png",
+      "sha256": "d7b0314671f23093f5d439b53527a31a81c98a45aa09226363b5774ed4389f32"
+    },
+    {
+      "path": "before/row-touch-portrait-close-return.png",
+      "sha256": "f856a25fbaa8693afac3fa6238f0cc813a617124febbb1e9e7baaddc5314fd32"
+    },
+    {
+      "path": "before/row-touch-portrait-escape-return.png",
+      "sha256": "bd20b920b311e466dfc2311f9b9e34b39007a6f5d8c095fef8da5fd08c22156e"
+    },
+    {
+      "path": "before/row-touch-portrait-opened.png",
+      "sha256": "2d0d621cea6cef50fa5e4e5a238fff0fda166d7a398a528ef57ef0d84613cefc"
+    },
+    {
+      "path": "checkpoint11.md",
+      "sha256": "0ac036a1fd91b6830c91b06da0c9ef57d84c6916a38f83b8832383aad52e69d5"
+    },
+    {
+      "path": "contracts.json",
+      "sha256": "191d8e94644b56d15a75486d1516a099040da164135d2aca158435a8aa30e445"
+    },
+    {
+      "path": "contracts.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contracts.stdout.txt",
+      "sha256": "f26e767b76bf7fab920014259a03cdc61f2133c0c3520ee3f7d1c2318031a007"
+    },
+    {
+      "path": "installed-sources/node_modules/@radix-ui/react-dialog/dist/index.mjs.txt",
+      "sha256": "a0c8312e14d1e36b1d7d70db40bfbfd5957b865d319340cda4a98cd7cac08494"
+    },
+    {
+      "path": "installed-sources/node_modules/@radix-ui/react-focus-scope/dist/index.mjs.txt",
+      "sha256": "8bfa60a72145d3ce432bf325a6984229bd43e3b8aab2c84b9909a8b53c7c6255"
+    },
+    {
+      "path": "installed-sources/node_modules/vaul/dist/index.d.ts.txt",
+      "sha256": "ad3362b8881ffb0d53ad3dd902f6eba9381f407d5682d354f1a0745d8ae0005e"
+    },
+    {
+      "path": "installed-sources/node_modules/vaul/dist/index.mjs.txt",
+      "sha256": "2a9ae35b02837aa4d6c72e516bef6d362123011e9cd67681cbac7aef2a24505f"
+    },
+    {
+      "path": "lint-scoped.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lint-scoped.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "primary.json",
+      "sha256": "fe7c81536e38c25da8a69ff523a2d962190f8e28ee586040fd4a6c066814ca63"
+    },
+    {
+      "path": "source-stages.json",
+      "sha256": "7ab2660f4fd6fc5f132b7252c43b2104cda204b01a6a7e55fa8b343c4be32ccd"
+    },
+    {
+      "path": "sources/scripts/check-matchrim-menu-focus-oct13.ts.txt",
+      "sha256": "4bbe33e012151a6e6ea2b9ca09ac1956290adcb8d44384182deb1d3f46dd515f"
+    },
+    {
+      "path": "sources/scripts/package-matchrim-menu-focus-oct13.mjs.txt",
+      "sha256": "dda50c811ac9dd6acb109a4f2bcd81d323e0d750212192f8903c4ff697764c4b"
+    },
+    {
+      "path": "sources/scripts/qa-matchrim-menu-focus-oct13.py.txt",
+      "sha256": "21717e1f89d0d24f8f0716b8ec5b809685fad08e75f9391b553da52655ee87da"
+    },
+    {
+      "path": "sources/src/components/AccountNotifications.tsx.txt",
+      "sha256": "2b67b326a5e1b763f838a32a8413bf74c4124bd75c4490c80a06f6aa333c38cf"
+    },
+    {
+      "path": "sources/src/components/AffinityExplanation.tsx.txt",
+      "sha256": "81f34622e18f78da5317b4079495b28d3f390b74d9f3d160d34cfef93725e36e"
+    },
+    {
+      "path": "sources/src/components/AiRimContextGuide.tsx.txt",
+      "sha256": "e2a92d630804fc8367735d3203b1e2c9d3a5cedc57f51c375962e4536fb7a7e0"
+    },
+    {
+      "path": "sources/src/components/ui/drawer.tsx.txt",
+      "sha256": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b"
+    },
+    {
+      "path": "sources/src/components/ui/sonner.tsx.txt",
+      "sha256": "6e4ffdc133896e398b222f113f2bbee62d4615c6dcd92102d73c94138d8ae3de"
+    },
+    {
+      "path": "sources/src/components/wine-import/MultiWineLabelScanner.tsx.txt",
+      "sha256": "4c9111299961a45670dc3628a58e42af5f9a4f091ffdfac9403a1028b6034e11"
+    },
+    {
+      "path": "sources/src/components/wine-import/WineMenuScanner.tsx.txt",
+      "sha256": "b14576042f6f723e62ef6e9fda79ffaa49edff059a1ea12f3dbdbd6a2944dec8"
+    },
+    {
+      "path": "sources/src/contexts/AuthContext.tsx.txt",
+      "sha256": "29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863"
+    },
+    {
+      "path": "sources/src/pages/MyWines.tsx.txt",
+      "sha256": "fdf9db568062610916d40cc57f65c02843fba3f169f77168843d394d8a4d84ad"
+    },
+    {
+      "path": "sources/src/services/matchrimScanProfile.ts.txt",
+      "sha256": "933f84aa61924ddce688b6b79f1fdffeb8d5efba258ee619357a0d03d6f77150"
+    },
+    {
+      "path": "sources/src/utils/aiRimContextGuide.ts.txt",
+      "sha256": "6e9691805f9dacfcb29587efe53c94c854cad5455e42549105db87b8b7aa5b07"
+    },
+    {
+      "path": "sources/src/utils/matchrimLearning.ts.txt",
+      "sha256": "e43b18ac9dd74546a933c3ad5cee86fc735b5e11025216c08a2d92614a3b8ce1"
+    },
+    {
+      "path": "sources/src/utils/menuAffinityPresentation.ts.txt",
+      "sha256": "3cf66008e2ca483f621792f00b4c559afab8311158755dd5be6cb715ff1776f0"
+    },
+    {
+      "path": "sources/src/utils/menuProfileRecovery.ts.txt",
+      "sha256": "ade86287a1849c96399a8b69cad7af66dbabb3fc307e9edc8ae91d3a044163f1"
+    },
+    {
+      "path": "sources/src/utils/menuWineActions.ts.txt",
+      "sha256": "61b193fa4d5f4b826e7692f63a22ff906a8af6a6d0ef52ab493bb03a3ed81bc1"
+    },
+    {
+      "path": "sources/src/utils/menuWineSave.ts.txt",
+      "sha256": "90d8ab6e3470bb372136e9e219821672bfaa541f65d7246879bd638c809ce859"
+    },
+    {
+      "path": "sources/src/utils/multiWineScan.ts.txt",
+      "sha256": "ee9e9898118732dbb22cfa37a53811bae746598b470c841335a54225ecc7eb7d"
+    },
+    {
+      "path": "sources/src/utils/scanConfidence.ts.txt",
+      "sha256": "cda1109176b2dd6893ff30789c0da1fc919b38306842d2625311c9471c1c3079"
+    },
+    {
+      "path": "sources/src/utils/scanProfile.ts.txt",
+      "sha256": "b198e56cfcbdaee2e03a9f9143f6300c799f6aa17a60d06473179fd60d5f6faf"
+    },
+    {
+      "path": "sources/src/utils/scanWineEvidence.ts.txt",
+      "sha256": "5b8e8c306966e2d155b1173d99f7f4a5acb7336a0fe80cc51c2809646ca43f6e"
+    },
+    {
+      "path": "sources/src/utils/wineAffinityExplanation.ts.txt",
+      "sha256": "0ee16a5b31391b2bd9a12da3851c33296c00fe2fa90bd589da89b029b869d313"
+    },
+    {
+      "path": "sources/src/utils/wineComparison.ts.txt",
+      "sha256": "2a1206f7087998e1ba925742352bf98b9ca6b3b691b7dfae9b84161d376d1500"
+    },
+    {
+      "path": "sources/src/utils/wineMenuScan.ts.txt",
+      "sha256": "9883b833262a8d69827e2eed5b31d2d3d6118c2b562fd553027a38a354021b8e"
+    },
+    {
+      "path": "sources/supabase/functions/_shared/matchrim-scan-values.ts.txt",
+      "sha256": "463fcd7fe27bcc148e55ec36dbfa35ebe41e4244dd5c69c408e632178d4b717e"
+    },
+    {
+      "path": "tsconfig-scoped.json",
+      "sha256": "ba36ec6131de35e1908403ed40f833bef5d4be788daee0f8ea6b3fb6ce448546"
+    },
+    {
+      "path": "typecheck-scoped.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "typecheck-scoped.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verification.json",
+      "sha256": "2703f4a64caf1451bbb854df7d0f6d6d6373da91d522faff9870b4348b00ed09"
+    }
+  ],
+  "captures": 72
+}

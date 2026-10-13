@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "name": "contracts",
+      "command": [
+        "node_modules/.bin/tsx",
+        "scripts/check-matchrim-menu-focus-oct13.ts",
+        "docs/qa-evidence/matchrim-menu-focus-2026-10-13/contracts.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "typecheck-scoped",
+      "command": [
+        "node_modules/.bin/tsc",
+        "--project",
+        "docs/qa-evidence/matchrim-menu-focus-2026-10-13/tsconfig-scoped.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "lint-scoped",
+      "command": [
+        "node_modules/.bin/eslint",
+        "src/components/wine-import/WineMenuScanner.tsx",
+        "scripts/check-matchrim-menu-focus-oct13.ts",
+        "scripts/package-matchrim-menu-focus-oct13.mjs"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "fullSuites": false,
+  "webBuild": false,
+  "nativeBuild": false,
+  "coordinatorAcceptance": "pending"
+}

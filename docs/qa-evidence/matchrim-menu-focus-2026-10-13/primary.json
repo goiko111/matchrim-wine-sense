@@ -1,0 +1,711 @@
+{
+  "scope": "Only11: same one-scene local replay, row/pin x Enter/Space/tap x two orientations. Not twelve people/scenes or iOS/VoiceOver; no positive profile/catalog/provider call. Guard tests pure refs, not real owner switch/batch UI. Local result awaits coordinator acceptance.",
+  "scannerSha256": "b14576042f6f723e62ef6e9fda79ffaa49edff059a1ea12f3dbdbd6a2944dec8",
+  "contexts": 12,
+  "contextsPassed": 12,
+  "checks": 192,
+  "checksPassed": 192,
+  "cases": [
+    {
+      "case": "row-Enter-portrait",
+      "method": "Enter",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 1951
+        },
+        "escaped": {
+          "x": 0,
+          "y": 1951
+        },
+        "reopened": {
+          "x": 0,
+          "y": 1951
+        },
+        "closed": {
+          "x": 0,
+          "y": 1951
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-Enter-landscape",
+      "method": "Enter",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 1352
+        },
+        "escaped": {
+          "x": 0,
+          "y": 1352
+        },
+        "reopened": {
+          "x": 0,
+          "y": 1352
+        },
+        "closed": {
+          "x": 0,
+          "y": 1352
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-Space-portrait",
+      "method": "Space",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 1951
+        },
+        "escaped": {
+          "x": 0,
+          "y": 1951
+        },
+        "reopened": {
+          "x": 0,
+          "y": 1951
+        },
+        "closed": {
+          "x": 0,
+          "y": 1951
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-Space-landscape",
+      "method": "Space",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 1352
+        },
+        "escaped": {
+          "x": 0,
+          "y": 1352
+        },
+        "reopened": {
+          "x": 0,
+          "y": 1352
+        },
+        "closed": {
+          "x": 0,
+          "y": 1352
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-touch-portrait",
+      "method": "touch",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 1951
+        },
+        "escaped": {
+          "x": 0,
+          "y": 1951
+        },
+        "reopened": {
+          "x": 0,
+          "y": 1951
+        },
+        "closed": {
+          "x": 0,
+          "y": 1951
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "row-touch-landscape",
+      "method": "touch",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 1352
+        },
+        "escaped": {
+          "x": 0,
+          "y": 1352
+        },
+        "reopened": {
+          "x": 0,
+          "y": 1352
+        },
+        "closed": {
+          "x": 0,
+          "y": 1352
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "pin-Enter-portrait",
+      "method": "Enter",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 0
+        },
+        "escaped": {
+          "x": 0,
+          "y": 0
+        },
+        "reopened": {
+          "x": 0,
+          "y": 0
+        },
+        "closed": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "pin-Enter-landscape",
+      "method": "Enter",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 0
+        },
+        "escaped": {
+          "x": 0,
+          "y": 0
+        },
+        "reopened": {
+          "x": 0,
+          "y": 0
+        },
+        "closed": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "pin-Space-portrait",
+      "method": "Space",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 0
+        },
+        "escaped": {
+          "x": 0,
+          "y": 0
+        },
+        "reopened": {
+          "x": 0,
+          "y": 0
+        },
+        "closed": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "pin-Space-landscape",
+      "method": "Space",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 0
+        },
+        "escaped": {
+          "x": 0,
+          "y": 0
+        },
+        "reopened": {
+          "x": 0,
+          "y": 0
+        },
+        "closed": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "pin-touch-portrait",
+      "method": "touch",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 0
+        },
+        "escaped": {
+          "x": 0,
+          "y": 0
+        },
+        "reopened": {
+          "x": 0,
+          "y": 0
+        },
+        "closed": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    },
+    {
+      "case": "pin-touch-landscape",
+      "method": "touch",
+      "immediate": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "settled": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "inDialog": true,
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "firstShiftTab": {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "Cerrar detalle",
+        "text": "",
+        "connected": true
+      },
+      "escapeReturned": true,
+      "closeReturned": true,
+      "scroll": {
+        "opened": {
+          "x": 0,
+          "y": 0
+        },
+        "escaped": {
+          "x": 0,
+          "y": 0
+        },
+        "reopened": {
+          "x": 0,
+          "y": 0
+        },
+        "closed": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "counters": {
+        "ocr": 1,
+        "canonical": 1,
+        "base": 1
+      }
+    }
+  ],
+  "contracts": 27,
+  "realRemoteAppCalls": 0,
+  "paidCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0
+}

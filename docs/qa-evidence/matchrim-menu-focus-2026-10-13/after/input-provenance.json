@@ -1,0 +1,11 @@
+{
+  "scope": "Only11 actual keyboard/touch focus routes on the existing local menu replay, not native/users/provider QA.",
+  "hashes": {
+    "docs/qa-evidence/matchrim-menu-list-2026-10-12/before-complete/input-provenance.json": "1c6d8bd4e5d9aa392f476a66ba7a86e8c6a055f752110f3bef008450c6de6e9e",
+    "docs/qa-evidence/matchrim-build66-25-persona-2026-10-01/scan-ui/fixtures/IMG_7547 2.jpg": "2b1da6ac2ab548346df754cc67a76b6d7a25cc28efb893564d49b9f7508c4194",
+    "src/components/wine-import/WineMenuScanner.tsx": "b14576042f6f723e62ef6e9fda79ffaa49edff059a1ea12f3dbdbd6a2944dec8",
+    "src/components/ui/drawer.tsx": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b"
+  },
+  "fixture": "Existing04/08/09/10 image and BOTH contract, no new OCR/profile-positive/catalog truth",
+  "cases": "all"
+}
