@@ -1,0 +1,30 @@
+{
+  "baseline": "cdcbbc472c88353768d5a1490038a266bcc9a986",
+  "ui": {
+    "before": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 26,
+      "checksPassed": 16
+    },
+    "after": {
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 26,
+      "checksPassed": 26
+    }
+  },
+  "pureAndProtectionChecks": 128,
+  "stateVectors": 27,
+  "protectedSources": 45,
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "scope": "Two real-client browser gallery scans with exact existing local response stubs. Original CC0 food-menu image only preprocessing canary; not wine identity or recall evidence. Polite DOM status semantics, not VoiceOver/native certification.",
+  "meaning": "Analyzed includes recognized/uncertain/unrecognized outcomes without request error; not identification success. Deferred, failed, queued, active and discarded never inflate it.",
+  "detectorScoringQueriesCropsUnchanged": true,
+  "previousSuitesRerun": false,
+  "nativeBuild": false,
+  "deploy": false
+}

@@ -1,0 +1,137 @@
+{
+  "entries": [
+    {
+      "path": "after/landscape-catalog.png",
+      "sha256": "86aca4d6053b93490d3285f6332badaab61ef1ce407dc270cfa18f29edba855f"
+    },
+    {
+      "path": "after/landscape-queue.png",
+      "sha256": "4dfade9cbceabf0d7781cfa9187b2ab9c1fe416c6cdd025d69621ee002e743fe"
+    },
+    {
+      "path": "after/landscape-ready.png",
+      "sha256": "b3fe464e302353e462f789e03e829eb33ce2153f42d5379fe8945c2ee0664b86"
+    },
+    {
+      "path": "after/portrait-catalog.png",
+      "sha256": "88795f6a23f8bd2ac521289bcef33bdc3d3234d6eff706f9d9ff185ae9111cb1"
+    },
+    {
+      "path": "after/portrait-queue.png",
+      "sha256": "11ee261b70cdd6987e12c6ff78121b522175f7e17a92421e51bda54f47a4e641"
+    },
+    {
+      "path": "after/portrait-ready.png",
+      "sha256": "80c208e078cbc8ae12d2a31b6f646fd43e10d189bbc1888bd2fd7253244c0ce2"
+    },
+    {
+      "path": "after/results.json",
+      "sha256": "00ee9009fcdaf5a269422224539b151de3aaf9519abcbff20a8dfe2d6d296e5b"
+    },
+    {
+      "path": "after/scan-response-payloads.json",
+      "sha256": "0f308a1b6a62cde32b7a44fa053001d9c424239d6f10991b92dafa98be16186e"
+    },
+    {
+      "path": "baseline-sources/src/components/wine-import/MultiWineLabelScanner.tsx.txt",
+      "sha256": "eecf44b4c555980445617c40ee8cc827df8e27c89c2f673923ec0ddae91b1ebe"
+    },
+    {
+      "path": "before/landscape-catalog.png",
+      "sha256": "6402d55978932701565d2b3e4347347d27f888bff6389f2afbff62d31e599e5c"
+    },
+    {
+      "path": "before/landscape-queue.png",
+      "sha256": "a7cd4451822d0d2e8dbc3ceaa747e8058e336ab81227f19c7bdc350ad65eae30"
+    },
+    {
+      "path": "before/landscape-ready.png",
+      "sha256": "5fecc8c05abbd05b6cdd3cea39423edce34c3644589814df9852129eac3a2b8e"
+    },
+    {
+      "path": "before/portrait-catalog.png",
+      "sha256": "b692c21f11c18a4256f1c58c5e6bc6c0ffc6fe6454f30cdd116c4a95c0f3c2be"
+    },
+    {
+      "path": "before/portrait-queue.png",
+      "sha256": "278a47bf7dfa9d7203f436f6b96d7ef47e3d5cacdbb8559982f966e7bc378cce"
+    },
+    {
+      "path": "before/portrait-ready.png",
+      "sha256": "19d2eb1a1d05dfdd3a3ad6508d1c803a4a6a5a4e66d2a3449a44ffcef98a27ce"
+    },
+    {
+      "path": "before/results.json",
+      "sha256": "39ff0097921061ad27611791f5f008bdf5102f9397b2bb8cc80a4d5e15ae53bc"
+    },
+    {
+      "path": "before/scan-response-payloads.json",
+      "sha256": "0f308a1b6a62cde32b7a44fa053001d9c424239d6f10991b92dafa98be16186e"
+    },
+    {
+      "path": "checkpoint.md",
+      "sha256": "42a20b19cd99281345345ed8e26abf5f49b99bf2b54338d79fff0cba7a3bd6d6"
+    },
+    {
+      "path": "command-receipts.json",
+      "sha256": "395dc30a77b7888f8bf6799fa560caf46b3fdf98d0d440428e137c5ff6abb402"
+    },
+    {
+      "path": "contracts-initial.json",
+      "sha256": "3fe1edfe8df49a7edba09b4674168a61e5558d7ad34337653d212d511e6c934f"
+    },
+    {
+      "path": "contracts-intermediate.json",
+      "sha256": "17066285e18e88ceac01e292894f35b56c0952d0f4614de98f78e9f402c2c1b2"
+    },
+    {
+      "path": "contracts.json",
+      "sha256": "1f9ad371b2b4a9a92b94cdd990951860b5721b36398e8cb26013bf6ad0ab2cca"
+    },
+    {
+      "path": "lint.json",
+      "sha256": "0e3f1dd165cd004c799c9f6996fa414cb3d96f263a18983ce4e440eed7df5880"
+    },
+    {
+      "path": "primary.json",
+      "sha256": "2ff7db243f05ece8cedc9db5ca60c3e6eb6ef390d685e70d954cd1fa6e6496ee"
+    },
+    {
+      "path": "source-stages.json",
+      "sha256": "4364bc31493610adc04e12dcedda31b897b22b4fbe751ff6263f6af13b8f3a95"
+    },
+    {
+      "path": "sources/scripts/check-matchrim-region-counter-oct13.ts.txt",
+      "sha256": "3ce141fbdd8756df5677b02338d748183bc8d219ddece3d69bf520a57e298164"
+    },
+    {
+      "path": "sources/scripts/package-matchrim-region-counter-oct13.mjs.txt",
+      "sha256": "3e0efa1d1ff96d104d7f68f12467ffd3257e490f7ba2074950ea568897757e2a"
+    },
+    {
+      "path": "sources/scripts/qa-matchrim-region-counter-oct13.py.txt",
+      "sha256": "56f0050bcbb84710138c6ed0b9fa2b543a10dc1e14d09aef9697317fcf9a54cf"
+    },
+    {
+      "path": "sources/src/components/wine-import/MultiWineLabelScanner.tsx.txt",
+      "sha256": "1fb6109a81d02e135941d4f2d35ea232e1be463f1e12f4d49ca6cd305b370108"
+    },
+    {
+      "path": "sources/src/utils/scanRegionProgress.ts.txt",
+      "sha256": "54bb10070a469f29aaec3f57451fe399fc48a28266a0daa3739a4229460eff45"
+    },
+    {
+      "path": "tsconfig-tooling.json",
+      "sha256": "e6d09c929b6eb081cf45d62df145ad7361aadf7fbd6f2b52ef7f39d843f84932"
+    },
+    {
+      "path": "verification.json",
+      "sha256": "6c8bbad10743efa408482e55d6e9d64035b8190ce60986151cb89d7ac530ac80"
+    },
+    {
+      "path": "web-build-manifest.json",
+      "sha256": "894b0e5add7cf9c5d8295572f39acfd584aaed353359946c7236498be69d9379"
+    }
+  ],
+  "captures": 12
+}

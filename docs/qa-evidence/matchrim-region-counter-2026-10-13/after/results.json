@@ -1,0 +1,1143 @@
+{
+  "scope": "Focused region-counter UI on the existing local-stub scan; not vision/native/human QA.",
+  "realRemoteAppCalls": 0,
+  "realWrites": 0,
+  "realAccounts": 0,
+  "paidCalls": 0,
+  "results": [
+    {
+      "case": "portrait",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Visible gallery and same original file, fixture bypass off",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "queue exact truthful state partition",
+          "passed": true,
+          "detail": {
+            "expected": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+            "actual": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+            "headerText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+            "requestCounts": {
+              "profile": 1,
+              "detect": 1,
+              "analyze": 3,
+              "search": 0
+            },
+            "dom": {
+              "role": "status",
+              "live": null,
+              "rect": {
+                "x": 33,
+                "y": 214,
+                "right": 331.3125,
+                "bottom": 230,
+                "width": 298.3125,
+                "height": 16
+              },
+              "parent": {
+                "x": 33,
+                "right": 331.3125
+              },
+              "width": 298,
+              "client": 298,
+              "text": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar"
+            }
+          }
+        },
+        {
+          "name": "queue mobile counter bounds and wrapping",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 331.3125,
+              "bottom": 230,
+              "width": 298.3125,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 331.3125
+            },
+            "width": 298,
+            "client": 298,
+            "text": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar"
+          }
+        },
+        {
+          "name": "queue polite status semantics",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 331.3125,
+              "bottom": 230,
+              "width": 298.3125,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 331.3125
+            },
+            "width": 298,
+            "client": 298,
+            "text": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar"
+          }
+        },
+        {
+          "name": "catalog exact truthful state partition",
+          "passed": true,
+          "detail": {
+            "expected": "1 analizada · 3 en curso · 1 sin analizar",
+            "actual": "1 analizada · 3 en curso · 1 sin analizar",
+            "headerText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n1 analizada · 3 en curso · 1 sin analizar",
+            "requestCounts": {
+              "profile": 1,
+              "detect": 1,
+              "analyze": 4,
+              "search": 3
+            },
+            "dom": {
+              "role": "status",
+              "live": null,
+              "rect": {
+                "x": 33,
+                "y": 214,
+                "right": 265.65625,
+                "bottom": 230,
+                "width": 232.65625,
+                "height": 16
+              },
+              "parent": {
+                "x": 33,
+                "right": 265.65625
+              },
+              "width": 233,
+              "client": 233,
+              "text": "1 analizada · 3 en curso · 1 sin analizar"
+            }
+          }
+        },
+        {
+          "name": "catalog mobile counter bounds and wrapping",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 265.65625,
+              "bottom": 230,
+              "width": 232.65625,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 265.65625
+            },
+            "width": 233,
+            "client": 233,
+            "text": "1 analizada · 3 en curso · 1 sin analizar"
+          }
+        },
+        {
+          "name": "catalog polite status semantics",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 265.65625,
+              "bottom": 230,
+              "width": 232.65625,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 265.65625
+            },
+            "width": 233,
+            "client": 233,
+            "text": "1 analizada · 3 en curso · 1 sin analizar"
+          }
+        },
+        {
+          "name": "ready exact truthful state partition",
+          "passed": true,
+          "detail": {
+            "expected": "4 analizadas · 1 sin analizar",
+            "actual": "4 analizadas · 1 sin analizar",
+            "headerText": "Lote listo para revisar\n3 MP · brillo 138 · contraste 45\n4 analizadas · 1 sin analizar\n5 regiones en 0.8 s",
+            "requestCounts": {
+              "profile": 1,
+              "detect": 1,
+              "analyze": 4,
+              "search": 3
+            },
+            "dom": {
+              "role": "status",
+              "live": null,
+              "rect": {
+                "x": 33,
+                "y": 214,
+                "right": 207.0625,
+                "bottom": 230,
+                "width": 174.0625,
+                "height": 16
+              },
+              "parent": {
+                "x": 33,
+                "right": 207.0625
+              },
+              "width": 174,
+              "client": 174,
+              "text": "4 analizadas · 1 sin analizar"
+            }
+          }
+        },
+        {
+          "name": "ready mobile counter bounds and wrapping",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 207.0625,
+              "bottom": 230,
+              "width": 174.0625,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 207.0625
+            },
+            "width": 174,
+            "client": 174,
+            "text": "4 analizadas · 1 sin analizar"
+          }
+        },
+        {
+          "name": "ready polite status semantics",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 207.0625,
+              "bottom": 230,
+              "width": 174.0625,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 207.0625
+            },
+            "width": 174,
+            "client": 174,
+            "text": "4 analizadas · 1 sin analizar"
+          }
+        },
+        {
+          "name": "Observed unchanged scan plan, no new retries/calls",
+          "passed": true,
+          "detail": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          }
+        },
+        {
+          "name": "No unexpected console or runtime diagnostics",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "All external HTTP and WS intercepted; zero real writes",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "observations": {
+        "chooserBefore": {
+          "value": "",
+          "count": 0
+        },
+        "selection": [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        "queue": {
+          "expected": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+          "actual": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+          "headerText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+          "requestCounts": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 3,
+            "search": 0
+          },
+          "dom": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 331.3125,
+              "bottom": 230,
+              "width": 298.3125,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 331.3125
+            },
+            "width": 298,
+            "client": 298,
+            "text": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar"
+          }
+        },
+        "catalog": {
+          "expected": "1 analizada · 3 en curso · 1 sin analizar",
+          "actual": "1 analizada · 3 en curso · 1 sin analizar",
+          "headerText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n1 analizada · 3 en curso · 1 sin analizar",
+          "requestCounts": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          },
+          "dom": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 265.65625,
+              "bottom": 230,
+              "width": 232.65625,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 265.65625
+            },
+            "width": 233,
+            "client": 233,
+            "text": "1 analizada · 3 en curso · 1 sin analizar"
+          }
+        },
+        "ready": {
+          "expected": "4 analizadas · 1 sin analizar",
+          "actual": "4 analizadas · 1 sin analizar",
+          "headerText": "Lote listo para revisar\n3 MP · brillo 138 · contraste 45\n4 analizadas · 1 sin analizar\n5 regiones en 0.8 s",
+          "requestCounts": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          },
+          "dom": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 33,
+              "y": 214,
+              "right": 207.0625,
+              "bottom": 230,
+              "width": 174.0625,
+              "height": 16
+            },
+            "parent": {
+              "x": 33,
+              "right": 207.0625
+            },
+            "width": 174,
+            "client": 174,
+            "text": "4 analizadas · 1 sin analizar"
+          }
+        }
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions",
+          "bodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "sha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "sha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "sha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "sha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "sha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    },
+    {
+      "case": "landscape",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Visible gallery and same original file, fixture bypass off",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "queue exact truthful state partition",
+          "passed": true,
+          "detail": {
+            "expected": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+            "actual": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+            "headerText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+            "requestCounts": {
+              "profile": 1,
+              "detect": 1,
+              "analyze": 3,
+              "search": 0
+            },
+            "dom": {
+              "role": "status",
+              "live": null,
+              "rect": {
+                "x": 41,
+                "y": 105,
+                "right": 339.3125,
+                "bottom": 121,
+                "width": 298.3125,
+                "height": 16
+              },
+              "parent": {
+                "x": 41,
+                "right": 339.3125
+              },
+              "width": 298,
+              "client": 298,
+              "text": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar"
+            }
+          }
+        },
+        {
+          "name": "queue mobile counter bounds and wrapping",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 339.3125,
+              "bottom": 121,
+              "width": 298.3125,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 339.3125
+            },
+            "width": 298,
+            "client": 298,
+            "text": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar"
+          }
+        },
+        {
+          "name": "queue polite status semantics",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 339.3125,
+              "bottom": 121,
+              "width": 298.3125,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 339.3125
+            },
+            "width": 298,
+            "client": 298,
+            "text": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar"
+          }
+        },
+        {
+          "name": "catalog exact truthful state partition",
+          "passed": true,
+          "detail": {
+            "expected": "1 analizada · 3 en curso · 1 sin analizar",
+            "actual": "1 analizada · 3 en curso · 1 sin analizar",
+            "headerText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n1 analizada · 3 en curso · 1 sin analizar",
+            "requestCounts": {
+              "profile": 1,
+              "detect": 1,
+              "analyze": 4,
+              "search": 3
+            },
+            "dom": {
+              "role": "status",
+              "live": null,
+              "rect": {
+                "x": 41,
+                "y": 105,
+                "right": 273.65625,
+                "bottom": 121,
+                "width": 232.65625,
+                "height": 16
+              },
+              "parent": {
+                "x": 41,
+                "right": 273.65625
+              },
+              "width": 233,
+              "client": 233,
+              "text": "1 analizada · 3 en curso · 1 sin analizar"
+            }
+          }
+        },
+        {
+          "name": "catalog mobile counter bounds and wrapping",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 273.65625,
+              "bottom": 121,
+              "width": 232.65625,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 273.65625
+            },
+            "width": 233,
+            "client": 233,
+            "text": "1 analizada · 3 en curso · 1 sin analizar"
+          }
+        },
+        {
+          "name": "catalog polite status semantics",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 273.65625,
+              "bottom": 121,
+              "width": 232.65625,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 273.65625
+            },
+            "width": 233,
+            "client": 233,
+            "text": "1 analizada · 3 en curso · 1 sin analizar"
+          }
+        },
+        {
+          "name": "ready exact truthful state partition",
+          "passed": true,
+          "detail": {
+            "expected": "4 analizadas · 1 sin analizar",
+            "actual": "4 analizadas · 1 sin analizar",
+            "headerText": "Lote listo para revisar\n3 MP · brillo 138 · contraste 45\n4 analizadas · 1 sin analizar\n5 regiones en 0.8 s",
+            "requestCounts": {
+              "profile": 1,
+              "detect": 1,
+              "analyze": 4,
+              "search": 3
+            },
+            "dom": {
+              "role": "status",
+              "live": null,
+              "rect": {
+                "x": 41,
+                "y": 105,
+                "right": 215.0625,
+                "bottom": 121,
+                "width": 174.0625,
+                "height": 16
+              },
+              "parent": {
+                "x": 41,
+                "right": 215.0625
+              },
+              "width": 174,
+              "client": 174,
+              "text": "4 analizadas · 1 sin analizar"
+            }
+          }
+        },
+        {
+          "name": "ready mobile counter bounds and wrapping",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 215.0625,
+              "bottom": 121,
+              "width": 174.0625,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 215.0625
+            },
+            "width": 174,
+            "client": 174,
+            "text": "4 analizadas · 1 sin analizar"
+          }
+        },
+        {
+          "name": "ready polite status semantics",
+          "passed": true,
+          "detail": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 215.0625,
+              "bottom": 121,
+              "width": 174.0625,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 215.0625
+            },
+            "width": 174,
+            "client": 174,
+            "text": "4 analizadas · 1 sin analizar"
+          }
+        },
+        {
+          "name": "Observed unchanged scan plan, no new retries/calls",
+          "passed": true,
+          "detail": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          }
+        },
+        {
+          "name": "No unexpected console or runtime diagnostics",
+          "passed": true,
+          "detail": {
+            "errors": [],
+            "console": []
+          }
+        },
+        {
+          "name": "All external HTTP and WS intercepted; zero real writes",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "failures": [],
+      "observations": {
+        "chooserBefore": {
+          "value": "",
+          "count": 0
+        },
+        "selection": [
+          {
+            "name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "type": "image/jpeg",
+            "size": 1041114,
+            "lastModified": 1791448775318
+          }
+        ],
+        "queue": {
+          "expected": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+          "actual": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+          "headerText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n0 analizadas · 3 en curso · 1 en espera · 1 sin analizar",
+          "requestCounts": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 3,
+            "search": 0
+          },
+          "dom": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 339.3125,
+              "bottom": 121,
+              "width": 298.3125,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 339.3125
+            },
+            "width": 298,
+            "client": 298,
+            "text": "0 analizadas · 3 en curso · 1 en espera · 1 sin analizar"
+          }
+        },
+        "catalog": {
+          "expected": "1 analizada · 3 en curso · 1 sin analizar",
+          "actual": "1 analizada · 3 en curso · 1 sin analizar",
+          "headerText": "Leyendo cada región por separado\n3 MP · brillo 138 · contraste 45\n1 analizada · 3 en curso · 1 sin analizar",
+          "requestCounts": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          },
+          "dom": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 273.65625,
+              "bottom": 121,
+              "width": 232.65625,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 273.65625
+            },
+            "width": 233,
+            "client": 233,
+            "text": "1 analizada · 3 en curso · 1 sin analizar"
+          }
+        },
+        "ready": {
+          "expected": "4 analizadas · 1 sin analizar",
+          "actual": "4 analizadas · 1 sin analizar",
+          "headerText": "Lote listo para revisar\n3 MP · brillo 138 · contraste 45\n4 analizadas · 1 sin analizar\n5 regiones en 0.8 s",
+          "requestCounts": {
+            "profile": 1,
+            "detect": 1,
+            "analyze": 4,
+            "search": 3
+          },
+          "dom": {
+            "role": "status",
+            "live": null,
+            "rect": {
+              "x": 41,
+              "y": 105,
+              "right": 215.0625,
+              "bottom": 121,
+              "width": 174.0625,
+              "height": 16
+            },
+            "parent": {
+              "x": 41,
+              "right": 215.0625
+            },
+            "width": 174,
+            "client": 174,
+            "text": "4 analizadas · 1 sin analizar"
+          }
+        }
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/quiz_results"
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/detect-wine-regions",
+          "bodySha256": "f170d6cb509be3756f95f6f004c717f8d2f0282f314f72d92c6dcefea72044f7",
+          "body": {
+            "image": {
+              "sha256": "9fd7c9440c66075a5b25d6f3d8a1d68434ff9d78f6c8e09dff682a33f4ba2b23",
+              "length": 1261027
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg",
+            "detection_tile": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "4c3138c4de033dd714bfaf1e61bd47945325e95b9b67cee75b49894f7dcca783",
+          "body": {
+            "image": {
+              "sha256": "5100d1b742d0ebdf5b37a722a93cfda852dacd36c7239913706eb9815dda7fe4",
+              "length": 163215
+            },
+            "region_id": "region-2",
+            "region_index": 2,
+            "region_box": {
+              "x": 3,
+              "y": 15,
+              "width": 16,
+              "height": 68
+            },
+            "crop_box": {
+              "x": 2,
+              "y": 14.000000000000002,
+              "width": 18,
+              "height": 70
+            },
+            "crop_pixels": {
+              "x": 30,
+              "y": 280,
+              "width": 270,
+              "height": 1400
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ccf3bad07b00bb58ad3d7ae4c920e10fd1e8dd80892db63bbe7dcc852caa51dc",
+          "body": {
+            "image": {
+              "sha256": "67d52de8ed282c8cec2af3e6bb83c6976d3008bb26d2c091d2f159569fb94752",
+              "length": 202991
+            },
+            "region_id": "region-1",
+            "region_index": 1,
+            "region_box": {
+              "x": 42,
+              "y": 13,
+              "width": 16,
+              "height": 70
+            },
+            "crop_box": {
+              "x": 41,
+              "y": 12,
+              "width": 18,
+              "height": 72
+            },
+            "crop_pixels": {
+              "x": 615,
+              "y": 240,
+              "width": 270,
+              "height": 1440
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "f8f2ec0d8a90c34396b63fe444ef645cdff6eee4a03bc03ccdd3b8be9351305e",
+          "body": {
+            "image": {
+              "sha256": "7fc8b12b5badfc133f1958bc07c129d60c47db391c2692cb43b705e95b2b5d54",
+              "length": 164383
+            },
+            "region_id": "region-3",
+            "region_index": 3,
+            "region_box": {
+              "x": 61,
+              "y": 17,
+              "width": 16,
+              "height": 66
+            },
+            "crop_box": {
+              "x": 60,
+              "y": 16,
+              "width": 18,
+              "height": 68
+            },
+            "crop_pixels": {
+              "x": 900,
+              "y": 320,
+              "width": 270,
+              "height": 1360
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/analyze-wine-region",
+          "bodySha256": "ea68cba714788fa69c3d8c9db69600a8f7af6f7fc92dadc39ec77de0b143fefc",
+          "body": {
+            "image": {
+              "sha256": "05512be0bde50a6bc268d592f4d34ebb31bbd4574621d4ab043020765bea4beb",
+              "length": 214275
+            },
+            "region_id": "region-4",
+            "region_index": 4,
+            "region_box": {
+              "x": 22,
+              "y": 18,
+              "width": 17,
+              "height": 64
+            },
+            "crop_box": {
+              "x": 21,
+              "y": 17,
+              "width": 19,
+              "height": 66
+            },
+            "crop_pixels": {
+              "x": 315,
+              "y": 340,
+              "width": 285,
+              "height": 1320
+            },
+            "qa_fixture_name": "commons-restaurant-menu-2026-08-25-2000.jpg"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "56112543ccedc5be0a7aae09a2066e95180e11d281cf63031d4032817952f33c",
+          "body": {
+            "query": "Baron Saint George Grand Vin de Bordeaux",
+            "limit": 20
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/functions/v1/search-wines",
+          "bodySha256": "6c26fe59d468d5ff50b9868d620a481243921bc4992f903b4890dae7fa138c8c",
+          "body": {
+            "query": "Muga Reserva",
+            "limit": 20
+          }
+        }
+      ],
+      "counts": {
+        "profile": 1,
+        "detect": 1,
+        "analyze": 4,
+        "search": 3
+      },
+      "sockets": [
+        {
+          "local": true,
+          "blocked": false
+        }
+      ],
+      "errors": [],
+      "console": []
+    }
+  ]
+}

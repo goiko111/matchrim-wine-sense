@@ -47,6 +47,7 @@ import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
 import { clusterOverlayPins } from '@/utils/overlayPins';
+import { formatScanRegionProgress, summarizeScanRegionProgress } from '@/utils/scanRegionProgress';
 import {
   buildWineDetectionTiles,
   confirmWineCandidateIdentity,
@@ -193,6 +194,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const selectedRegion = regions.find((region) => region.id === selectedRegionId) ?? null;
   const selectedCandidate = selectedRegion ? getSelectedCandidate(selectedRegion) : null;
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
+  const regionProgress = useMemo(() => formatScanRegionProgress(summarizeScanRegionProgress(regions)), [regions]);
   const duplicateGroups = useMemo(() => groupDuplicateWines(regions), [regions]);
   const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions), [regions]);
   const savedCount = saveResults.filter((result) => result?.status === 'saved').length;
@@ -772,9 +774,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               <div className="mt-1 text-xs matchrim-muted">
                 {quality ? `${quality.megapixels} MP · brillo ${quality.brightness ?? '-'} · contraste ${quality.contrast ?? '-'}` : 'Preparando imagen'}
               </div>
-              {phase === 'analyzing' && regions.length > 0 && (
-                <div className="mt-1 text-xs text-slate-600" role="status">
-                  {regions.length - summary.pending} de {regions.length} regiones · {analysisConcurrency} en paralelo
+              {(phase === 'analyzing' || phase === 'ready') && regions.length > 0 && (
+                <div className="mt-1 text-xs text-slate-600" role="status" data-testid="scan-region-progress">
+                  {regionProgress}
                 </div>
               )}
               {phase === 'ready' && scanMetrics && (

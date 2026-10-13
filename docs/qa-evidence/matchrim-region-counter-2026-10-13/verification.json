@@ -1,0 +1,90 @@
+{
+  "observedCommands": {
+    "scope": "Observed local commands, no publication or old suite reruns",
+    "commands": [
+      {
+        "name": "before targeted UI",
+        "command": "with_server.py on4465 -- qa-matchrim-region-counter-oct13.py --output before",
+        "exitCode": 1,
+        "checks": "16/26",
+        "expectedBaselineDefect": true
+      },
+      {
+        "name": "after targeted UI",
+        "command": "with_server.py on4465 -- qa-matchrim-region-counter-oct13.py --output after",
+        "exitCode": 0,
+        "checks": "26/26"
+      },
+      {
+        "name": "initial pure/AST",
+        "command": "tsx scripts/check-matchrim-region-counter-oct13.ts contracts.json",
+        "exitCode": 1,
+        "checks": "127/128",
+        "testIssue": "Cross-source node printed with positions from another source"
+      },
+      {
+        "name": "intermediate pure/AST",
+        "command": "tsx scripts/check-matchrim-region-counter-oct13.ts contracts.json",
+        "exitCode": 1,
+        "checks": "127/128",
+        "testIssue": "Baseline lookup selected nested subtraction instead of outer conditional"
+      },
+      {
+        "name": "final pure/AST",
+        "command": "tsx scripts/check-matchrim-region-counter-oct13.ts contracts.json",
+        "exitCode": 0,
+        "checks": "128/128"
+      },
+      {
+        "name": "app typecheck",
+        "command": "npm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "name": "scoped lint",
+        "command": "eslint src/components/wine-import/MultiWineLabelScanner.tsx src/utils/scanRegionProgress.ts scripts/check-matchrim-region-counter-oct13.ts --format json",
+        "exitCode": 0,
+        "errors": 0,
+        "warnings": 0
+      },
+      {
+        "name": "tooling typecheck",
+        "command": "tsc --noEmit --project tsconfig-tooling.json",
+        "exitCode": 0
+      },
+      {
+        "name": "web build",
+        "command": "npm run build",
+        "exitCode": 0,
+        "modules": 3634,
+        "seconds": 6.85,
+        "warnings": [
+          "Existing Browserslist data age24 months",
+          "Existing chunks larger than500kB"
+        ]
+      }
+    ]
+  },
+  "ui": {
+    "before": {
+      "contexts": 2,
+      "contextsPassed": 0,
+      "checks": 26,
+      "checksPassed": 16
+    },
+    "after": {
+      "contexts": 2,
+      "contextsPassed": 2,
+      "checks": 26,
+      "checksPassed": 26
+    }
+  },
+  "checksPassed": 128,
+  "lint": {
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "priorEvidenceEntries": 1649,
+  "buildFiles": 146
+}
