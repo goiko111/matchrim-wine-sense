@@ -1,5 +1,13 @@
 # Matchrim1.0(82): TestFlight upload and physical monitoring handoff
 
+## Follow-up08:05-08:26: real agent control / keyboard regression
+
+- Owner manual Pariente correction now observed:Manual provenance, stale75% withheld, affinity pending. Owner feedback:undiscoverable editing and bad keyboard position. No verified canonical identity/recommendation outcome from manual entry.
+- Agent taking control now demonstrated via signed Xcode UI tests against running actual82. Focus1/1PASS and Done/restore1/1PASS; Matchrim82/data/current scan preserved, no new vision request. Only existing QA runner rebuilt, no owner-app target replacement/relaunch. iPhone Mirroring did not open a controllable window; cause unknown/no settings bypass.
+- Actual focused field y590 ->-93,keyboard y655,footer moves under status bar. Physical visibility regression executed and FAILED at y-93<55 in7.818s;cleanup Done/text unchanged. Xcode hung after completion, command stopped SIGINT/TERM/statusnull. No overall command PASS; launcher null-to0 bug corrected for future. First restore compile error repaired, all receipts preserved.
+- P1 keyboard/editor gate now explicit and reproducible; app UI code NOT yet corrected/new release NOT generated. Next correction must expose edit action and pass real native visibility/keyboard regression, not only web425/simulator6 prior gate.
+- Private physical-control/CONTROL_QA.md/source/xcresults/geometry/screens; no public evidence/push. Apple all-testers readback has only existing internal accounts, requested external tester absent; invitation UNSENT, owner navigated away from draft review. Do not assume unsaved review-account data persisted.
+
 ## Follow-up07:55-07:58: region detail / narrower invitation gate
 
 - Owner opened region3/Mon Pariente in actual82. Crop contains foreground Pariente and neighboring labels, a cross-bottle contamination risk; no canonical name inferred. UI distinguishes detection95%/identity75%/missing affinity and Dudoso. Portrait content/actions visible without obvious overlap; other sizes/keyboard/actions not approved.

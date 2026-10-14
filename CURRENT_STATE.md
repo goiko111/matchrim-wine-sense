@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-14, physical control demonstrated / P1 keyboard bug
+
+- Owner manual Pariente edit observed:Manual/no old75%/affinity pending. Owner reports poor correction discoverability and keyboard jump; one real qualitative user observation, not synthetic cohort evidence.
+- Agent now controls native82 via Xcode runner:focus1/1PASS,Done/restore1/1PASS without app replacement/relaunch/profile write/new OCR. Actual field y590 ->-93 with keyboard,footer under status bar. Native visibility test executed FAILED7.818s,then post-test Xcode hung/cancelled; no full-command PASS. Tests/source/evidence private physical-control/CONTROL_QA.md.82 binary still installed, no UI/app fix/newrelease yet.
+- Next:P1 explicit edit affordance + keyboard-safe editor and native regression pass; recommendation/detection/physical matrix gates remain. Mirroring free-pointer window unavailable,cause unknown,no restriction bypass. External tester absent from Apple all-testers;invitation UNSENT and pending review dialog no longer open.
+- [Physical-control proof and release state](docs/MATCHRIM_82_TESTFLIGHT_2026-10-14.md). No production/web/backend/upload/push or private media publication.
+
 ## Latest checkpoint: 2026-10-14,82 installed / first physical dense case
 
 -82 now verified installed via CoreDevice and genuine TestFlight screen, Apple login available, instructions Guardado. Internal group assigned, public web/backend unchanged. External invitation UNSENT: phone now filled, only dedicated Matchrim reviewer username/password remain empty in latest82 form.
