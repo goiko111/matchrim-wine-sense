@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-14, 50-account pre-TestFlight QA85
+
+- Local product2ea342f fixes native English-sensory reload/training, continuous Profile/Home parity, invalid sensory/explanation values, legacy evidence binding and real quiz saving feedback. Existing public web behavior, quiz/assets/weights and deployed functions unchanged; shared learner negative guard is source-only, not deployed.
+-50 new isolated staging technical accounts,200 synthetic persisted wine rows,50 actual UI logins/profiles/feedback/reloads; ten deep representatives and ten native cellar paths, with two final-source learning/cold-reopen checks. One actual20-question quiz plus retake;46 accounts now have quiz data, four abstain. This is not50 humans or a taste/year study. Protected6001wines/103quizzes/104profiles retain exact pre/post fingerprints.
+- Final release/cloud/tests/typecheck/build PASS, lint0errors106existing warnings;15 controlled client phase groups/30retention cycles, actual simulator orientation/AX/large-text checks and final simulator/unsigned generic-iOS compile PASS. Native app is isolated version84 rebuilt from the new source, not uploaded85; old production84 IPA lacks these corrections.
+- New real recognition22journeys/18authorized files,138reservedPOSTs: four-menu lexical97.18%precision/100%recall, not canonical/price accuracy; owner cabinet12/60regions analysed and48deferred. Duplicates, unsupported prices, JSON500 and food omissions/semantics remain P1.1637/1638synthetic intelligence checks retain missing-answer P2; independent1401/1401PASS; synthetic top1 worsens44/45->33/45, no human-quality approval.
+- **Release HOLD:** missing staging live AI/food/vision aliases, canonical/sensory/original-fiche coverage and later hardware/human gates stay distinct. No owner-phone operation, production deploy, public push or TestFlight upload. [Full matrix, corrections, provenance and residual](docs/MATCHRIM_85_50_ACCOUNT_QA_2026-10-14.md).
+
 ## Latest checkpoint: 2026-10-14, native84 cellar and restaurant context
 
 - Product598dda8: verified initial/current affinity, immutable history, same native recommendation scorer, exclusion-preserving feedback, rating/stock/consumption separation, safe-area/keyboard form fixes and account-scoped dual restaurant menus. Public web and production functions unchanged.
