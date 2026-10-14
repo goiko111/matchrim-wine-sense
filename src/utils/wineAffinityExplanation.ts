@@ -47,7 +47,7 @@ const clampAttribute = normalizeScanSensoryValue;
 const normalizeProfileAttribute = (value: unknown) => {
   const known = optionalScanNumber(value);
   if (known === null || known < 0) return null;
-  return known === 0 ? 0 : clampAttribute(value);
+  return known <= 5 ? known : clampAttribute(value);
 };
 
 export const normalizeWineAttributesForInsight = (attrs?: WineAttributeInput | null) => {

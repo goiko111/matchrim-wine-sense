@@ -16,6 +16,11 @@ const lowWine = { potencia: 1, acidez: 1, dulzura: 1, taninos: 1, afrutado: 1 };
 const detail = buildDetailedAffinityExplanation(zero, lowWine, { sensorySource: 'catalog' })!;
 assert.ok(detail.dimensions.slice(0, 5).every(dimension => dimension.profileValue === 0));
 assert.notEqual(calculateLocalMatchrimAffinity(zero, lowWine), calculateLocalMatchrimAffinity({ potente: 1, acidez: 1, dulce: 1, tanico: 1, afrutado: 1 }, lowWine));
+const continuous = { potente: .4, acidez: .4, dulce: .4, tanico: .4, afrutado: .4 };
+raw = JSON.stringify(continuous);
+assert.deepEqual(readStoredMatchrimProfile(), continuous, 'Known continuous learned preferences below1 are not raised to1');
+assert.ok(buildDetailedAffinityExplanation(continuous, lowWine, { sensorySource: 'catalog' })!.dimensions.slice(0, 5)
+  .every(dimension => dimension.profileValue === .4));
 for (const owner of [null, 'synthetic-owner']) {
   const result = await resolveScanProfile(owner, zero, { base: async () => zero, training: async () => [] }, signal);
   assert.equal(result.status, 'ready'); assert.deepEqual(result.profile, zero);

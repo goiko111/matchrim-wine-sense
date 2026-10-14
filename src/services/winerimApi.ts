@@ -817,6 +817,7 @@ export const findOriginalWinerimWineForLabel = async (
     const rows = extractWineResults(response).flatMap((raw, index): WinerimWine[] => {
       const officialId = raw.id;
       if ((typeof officialId !== 'string' && typeof officialId !== 'number') || !String(officialId).trim()) return [];
+      if (!stringValue(raw.name)?.trim()) return [];
       const normalized = normalizeWinerimWine(raw, index);
       if (!normalized.slugname?.trim() || !normalized.winery?.trim()) return [];
       const name = normalized.subname && !normalizeForMatch(normalized.name).includes(normalizeForMatch(normalized.subname))
