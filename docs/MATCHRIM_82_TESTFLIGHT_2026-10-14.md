@@ -1,5 +1,12 @@
 # Matchrim1.0(82): TestFlight upload and physical monitoring handoff
 
+## Follow-up07:55-07:58: region detail / narrower invitation gate
+
+- Owner opened region3/Mon Pariente in actual82. Crop contains foreground Pariente and neighboring labels, a cross-bottle contamination risk; no canonical name inferred. UI distinguishes detection95%/identity75%/missing affinity and Dudoso. Portrait content/actions visible without obvious overlap; other sizes/keyboard/actions not approved.
+- Owner asked to edit provisional wine name to Pariente/empty producer.07:58 still unchanged Mon Pariente/75%; correction and stale-confidence invalidation NOT yet physically tested. Code expectation of manual provenance/cleared score is not a QA pass.
+- Contact phone presence now verified in prepared82 Apple review form; value/credentials never read/exported. Only reviewer username/password remain empty; Next disabled, invitation UNSENT. No legal agreement/public/admin access action.
+- Private detail snapshot and expected/actual appended REAL_QA_82.md. Corrected passive log session remains connected; untriaged native signals not product defect counts. No app code/build/web/backend change.
+
 ## Follow-up07:37-07:46: actual82 and first owner-led dense case
 
 - Apple login restored.82 processed, assigned Testers Matchrim internal group; physical CoreDevice and TestFlight screen both confirm installed1.0(82). No app replacement by agent.82 testing instructions saved, official UI Guardado.

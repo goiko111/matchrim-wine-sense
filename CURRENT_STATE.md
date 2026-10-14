@@ -2,10 +2,11 @@
 
 ## Latest checkpoint: 2026-10-14,82 installed / first physical dense case
 
--82 now verified installed via CoreDevice and genuine TestFlight screen, Apple login available, instructions Guardado. Internal group assigned, public web/backend unchanged. External invitation UNSENT: phone and dedicated Matchrim reviewer credentials still missing in latest82 form.
+-82 now verified installed via CoreDevice and genuine TestFlight screen, Apple login available, instructions Guardado. Internal group assigned, public web/backend unchanged. External invitation UNSENT: phone now filled, only dedicated Matchrim reviewer username/password remain empty in latest82 form.
 - Actual owner gallery scan dense display:60regions/48.3s,12analyzed/48deferred,9grouped proposals; readable portrait clusters but lower shelves lack pins. First visible identities partial/unresolved with no numeric affinity. Real input/results, not mock; no precision/recall or intelligence approval. Crop/correction, other photos and remaining physical matrix pending.
 -12 automatic cap is intentional policy; first60 top-sorted cap is a potential spatial-bias regression to reproduce, not yet definitive detector cause. Native logs triaged separately; capture-helper App(Category) counter fixed13/13, raw recount6009headers/17native Error headers/36untriaged signals (not product bug counts). USB disconnects preserved, new scoped passive session; no continuous AI claim.
 - [82 physical observation and Apple gate](docs/MATCHRIM_82_TESTFLIGHT_2026-10-14.md). Private REAL_QA_82.md/screens outside Git. No product edits/deploy/provider benchmark/push during owner tests.
+-07:55-07:58 actual region3 detail opened: crop includes neighboring labels; detection95%/identity75%/affinity missing, Dudoso. Manual provisional Pariente edit requested but not yet applied; portrait observation only, no canonical/keyboard/action QA approval.
 
 ## Latest checkpoint: 2026-10-14, owner readiness / physical connection recovered
 
