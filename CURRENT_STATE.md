@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-14, owner readiness / physical connection recovered
+
+- Device now unlocked; scoped CoreDevice query succeeds, DDI usable. Installed1.0(81), NOT82.82 upload receipt unchanged, no repeat upload or app replacement. TestFlight82 availability still unverified.
+- QuickTime black/legacy screenshotr unavailable; actual Xcode26.0.1 Take Screenshot works. Owner home screen observed07:26/07:27, not app testing. Fresh App-only log session connected until09:24 Europe/Madrid/disconnect, zero app actions; previous session exited07:21 on USB disconnect. No functional QA pass yet, snapshots not continuous video/AI review.
+- Apple web sign-in still requires owner password, draft review not ready; external invitation UNSENT. Owner to install82 via TestFlight/open app and complete Apple sign-in/reviewer fields directly.
+- [Current connection and version evidence](docs/MATCHRIM_82_TESTFLIGHT_2026-10-14.md); private new evidence under session-ready-0724. All recognition/human/hosted/memory gates preserved.
+
 ## Latest checkpoint: 2026-10-14, uploaded beta82 / physical handoff
 
 - Owner explicitly authorized82 upload. Xcode26.0.1 accepted1.0(82) at06:51:38 Europe/Madrid; exit0, Uploaded App, Upload succeeded, processing. Existing signed sourcebda5241/resources unchanged. NOT yet verified available/installed82; no duplicate upload, public web/backend/push or provider benchmark.

@@ -1,5 +1,17 @@
 # Matchrim1.0(82): TestFlight upload and physical monitoring handoff
 
+## Follow-up after owner readiness,07:23-07:28 Europe/Madrid
+
+- Original passive capture exited normally on USB disconnect at05:21:18.680Z (07:21 local), with zero app lines. Do not describe it as still running.
+- Fresh CoreDevice scoped app query succeeds. Installed Matchrim is1.0(81), not82. No replacement/launch or reset performed.
+- Device lockState reports passcodeRequired=false, unlockedSinceBoot=true. DDI reports isUsable=true/contentIsCompatible=true, buildUpdate17A400.
+- New passive App-process capture is connected, private subdirectory `session-ready-0724`, started05:24:19.087Z; maximum until07:24:19.088Z UTC (09:24 local) or disconnect. Still zero app lines/actions when reviewed.
+- QuickTime screen selection still black; legacy idevicescreenshot cannot start screenshotr (Invalid service). Neither is working video evidence.
+- Xcode26.0.1 Devices -> Goiko -> Take Screenshot DOES capture actual iPhone pixels. Captures07:26:19/07:27:50 show the owner home screen, not Matchrim/TestFlight. Do not include unrelated home-screen images in public repository evidence.
+- Monitoring can use actual Xcode snapshots and passive logs during active owner testing. This is sampled visual observation, not a continuous video stream or background AI supervision after turn end.
+- App Store Connect remains at password sign-in. Draft review Next disabled. No new invitation sent, no Apple-processing availability observation, no physical functional test passed yet.
+- Owner asked to open TestFlight/Matchrim and install82 if available, then authenticate prepared Apple tab. Actual82 tests remain pending;81 observations must be separately labeled.
+
 ## Actual release
 
 - Owner explicitly requested candidate82 upload on2026-10-14.
