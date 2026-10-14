@@ -1,5 +1,15 @@
 # Matchrim1.0(82): TestFlight upload and physical monitoring handoff
 
+## Follow-up07:37-07:46: actual82 and first owner-led dense case
+
+- Apple login restored.82 processed, assigned Testers Matchrim internal group; physical CoreDevice and TestFlight screen both confirm installed1.0(82). No app replacement by agent.82 testing instructions saved, official UI Guardado.
+- Owner selected dense display photo in gallery and performed analysis. Actual screen:1.9MP,brightness80,contrast68;60 regions in48.3s,12 analyzed/48 deferred,9 grouped proposals. Not60 verified bottles or9 canonical wines.
+- Portrait clustering is readable without per-bottle score cards, but pins concentrate in top two shelves. First four visible proposals have no affinity (Sin datos); Mon Pariente75% and Jóvenes73% remain partial/uncertain and require crop verification. No recognition/recommendation QA approval or precision/recall claim.
+- Internal policy deliberately caps automatic analyses12. Separate source risk: normalized top-to-bottom regions are capped to first60, potentially biasing lower-shelf coverage; raw payload/ground truth needed for causal attribution. No budget increase/new benchmark/app-source edit during live tests.
+- Logs now contain actual app activity. Collector counter originally missed App(Category)[pid]; raw-log recount6009headers/17native Error headers/36untriaged signals, not product-bug counts. Helper correction13/13utility tests, not13 app cases. New bounded session after USB disconnect; recording is not continuous AI supervision.
+- External invitation still UNSENT: latest82 flow prepared, contact phone/dedicated Matchrim review account missing, Next disabled. Owner asked to fill directly in Apple. Previous81 draft tab closed, no credentials recovered/copied.
+- Private REAL_QA_82.md includes expected/actual, actual screenshots, source risks and remaining cases. Snapshot/diagnostic evidence outside Git; pending detail/correction next, not full physical QA green.
+
 ## Follow-up after owner readiness,07:23-07:28 Europe/Madrid
 
 - Original passive capture exited normally on USB disconnect at05:21:18.680Z (07:21 local), with zero app lines. Do not describe it as still running.
