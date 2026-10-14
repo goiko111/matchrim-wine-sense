@@ -28,6 +28,7 @@ export const parseRetryAfterMs = (value: string | null) => {
 
 export const isRetryableEdgeFunctionError = (error: unknown) => {
   if (error instanceof EdgeFunctionError) {
+    if (isProviderCreditExhausted(error)) return false;
     return error.status === 408
       || error.status === 425
       || error.status === 429
@@ -35,6 +36,10 @@ export const isRetryableEdgeFunctionError = (error: unknown) => {
   }
   return error instanceof TypeError;
 };
+
+export const isProviderCreditExhausted = (error: unknown) => error instanceof EdgeFunctionError
+  && (error.errorCode === 'provider_credit_exhausted'
+    || error.message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes('creditos del proveedor agotados'));
 
 export const edgeFunctionRetryDelay = (error: unknown, attempt: number) => {
   if (error instanceof EdgeFunctionError && error.retryAfterMs !== null) {

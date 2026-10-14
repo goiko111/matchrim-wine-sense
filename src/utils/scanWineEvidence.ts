@@ -7,6 +7,7 @@ import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 import { isNonWineIdentity } from './wineCategory';
 import { isMenuCurrencyAmountValid } from './menuPriceReview';
 import { normalizeScanCurrency } from './scanMoney';
+import { createWinerimOriginalSheet, hasWinerimGeographyConflict } from './winerimOriginalSheet';
 
 export const MISSING_SCAN_SENSORY = 'Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.';
 
@@ -16,6 +17,11 @@ export interface ScanCatalogWine {
   winery?: string;
   type?: string;
   vintage?: string | number;
+  originalSheetUrl?: string;
+  originalSheetSource?: 'winerim-api';
+  region?: string;
+  country?: string;
+  grapes?: string[];
   tastingAttributes?: { power: number; acidity: number; sweetness: number; tannin: number; fruity: number } | null;
 }
 
@@ -27,11 +33,14 @@ export const applyScanWineEvidence = (
   catalog?: ScanCatalogWine | null,
 ): WineCandidate => {
   const pending: WineCandidate = {
-    ...candidate, canonicalId: null, sensorySource: 'inference',
+    ...candidate, canonicalId: null, originalSheet: null, sensorySource: 'inference',
     affinity: null, affinityConfidence: null, affinityReason: MISSING_SCAN_SENSORY,
   };
   if (!catalog || !catalog.id || isNonWineIdentity(candidate.name, catalog.name, catalog.type)
     || !isSafeCanonicalLabelMatch(candidate, { ...catalog, producer: catalog.winery })) return pending;
+  if (candidate.inferredFields.some(field => /^(name|nombre|producer|productor|winery|bodega|vintage|anada|añada|year)$/i.test(field))) return pending;
+  if (hasWinerimGeographyConflict({ region: candidate.inferredFields.includes('region') ? null : candidate.region,
+    country: candidate.inferredFields.some(field => /^(country|pais|país)$/i.test(field)) ? null : candidate.country }, catalog)) return pending;
   // Missing vintages must not silently borrow a vintage-specific sensory sheet.
   if ((candidate.vintage || catalog.vintage) && String(candidate.vintage ?? '') !== String(catalog.vintage ?? '')) return pending;
   const values = normalizeWineAttributesForInsight(catalog.tastingAttributes);
@@ -41,11 +50,11 @@ export const applyScanWineEvidence = (
   } : null;
   const affinity = calculateLocalMatchrimAffinity(profile, sensoryAttributes);
   return {
-    ...pending, canonicalId: String(catalog.id), source: 'catalog', sensorySource: 'catalog',
+    ...pending, canonicalId: String(catalog.id), originalSheet: createWinerimOriginalSheet(catalog), source: 'catalog', sensorySource: 'catalog',
     sensoryAttributes, affinity,
     affinityConfidence: affinity === null ? null : Math.min(candidate.confidence, 0.9),
     affinityReason: affinity !== null
-      ? `Coincidencia sensorial calculada con tu perfil y la ficha Winerim ${catalog.id}; no es una probabilidad de que te guste.`
+      ? `Coincidencia sensorial calculada con tu perfil y la ficha de catálogo ${catalog.id}; no es una probabilidad de que te guste.`
       : !values ? MISSING_SCAN_SENSORY : 'Completa tu perfil de gustos para calcular la afinidad con esta ficha.',
   };
 };
@@ -60,7 +69,7 @@ export const applyMenuWineEvidence = (wine: MenuScanWine, profile: MatchrimProfi
   };
   const grounded = applyScanWineEvidence(candidate, profile, catalog);
   return {
-    ...wine, canonicalId: grounded.canonicalId, sensorySource: grounded.sensorySource,
+    ...wine, canonicalId: grounded.canonicalId, originalSheet: grounded.originalSheet, sensorySource: grounded.sensorySource,
     atributos: grounded.sensorySource === 'catalog' ? grounded.sensoryAttributes as MenuScanWine['atributos'] : wine.atributos,
     compatibilidad: grounded.affinity, affinity_calibrated: grounded.affinity !== null,
     razon: grounded.affinityReason,
@@ -88,6 +97,7 @@ export const updateMenuWineEvidence = (wine: MenuScanWine, updates: Partial<Menu
   return {
     ...edited,
     canonicalId: null,
+    originalSheet: null,
     sensorySource: 'inference',
     atributos: null,
     compatibilidad: null,

@@ -479,7 +479,7 @@ const UseMatchrim = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-950 via-red-900 to-stone-950">
       {user ? <AppNav /> : <Header />}
-      <main className="mx-auto max-w-6xl px-4 py-10">
+      <main className="matchrim-restaurant-main mx-auto max-w-6xl px-4 py-10">
         <div className="mb-8 text-white">
           <Badge className="mb-4 bg-white/15 text-white hover:bg-white/15">
             Modo restaurante

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import QuizIntro from '@/components/QuizIntro';
 import QuizQuestion from '@/components/QuizQuestion';
@@ -16,7 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 
-const Matchrim = () => {
+const MatchrimSession = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
@@ -28,13 +29,18 @@ const Matchrim = () => {
   const [quizResult, setQuizResult] = useState(null);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
+  const isNative = Capacitor.isNativePlatform();
+  const hasStartedQuiz = useRef(false);
+  const nativeSubmissionPending = useRef(false);
 
   // Load saved quiz results on mount
   useEffect(() => {
+    let active = true;
     const loadSavedResults = async () => {
       if (user) {
         // For authenticated users, load from database
         const history = await getQuizHistory();
+        if (!active || hasStartedQuiz.current) return;
         if (history && history.length > 0) {
           const lastResult = history[0];
           setQuizResult({
@@ -61,13 +67,16 @@ const Matchrim = () => {
     };
 
     loadSavedResults();
+    return () => { active = false; };
   }, [user, getQuizHistory]);
 
   const handleStart = () => {
+    hasStartedQuiz.current = true;
     setCurrentStep('quiz');
   };
 
-  const handleAnswer = (value: string) => {
+  const advanceAnswer = (value: string) => {
+    if (isNative && nativeSubmissionPending.current) return;
     const questionId = questions[currentQuestionIndex].id;
     const newAnswers = { ...answers, [questionId]: value };
     setAnswers(newAnswers);
@@ -75,6 +84,7 @@ const Matchrim = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
+      if (isNative) nativeSubmissionPending.current = true;
       // Quiz completed, calculate results
       const result = calculateProfile(newAnswers);
       setQuizResult(result);
@@ -91,6 +101,11 @@ const Matchrim = () => {
     }
   };
 
+  const handleAnswer = (value: string) => {
+    if (!isNative) { advanceAnswer(value); return; }
+    setAnswers(current => ({ ...current, [questions[currentQuestionIndex].id]: value }));
+  };
+
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -102,6 +117,8 @@ const Matchrim = () => {
   };
 
   const handleRestartQuiz = () => {
+    hasStartedQuiz.current = true;
+    nativeSubmissionPending.current = false;
     // Clear localStorage for anonymous users
     if (!user) {
       localStorage.removeItem('matchrim_quiz_result');
@@ -118,6 +135,7 @@ const Matchrim = () => {
 
   // Fetch recommendations when quiz result is available
   useEffect(() => {
+    let active = true;
     const fetchRecommendations = async () => {
       if (!quizResult) return;
 
@@ -135,6 +153,7 @@ const Matchrim = () => {
         const recommendedStyles = generateWineStyles(quizResult);
 
         const wineRecommendations = await getDiverseWineRecommendations(userProfile, 12, recommendedStyles);
+        if (!active) return;
 
         // Convert to the format expected by QuizResults
         const formattedRecommendations = wineRecommendations.map(rec => {
@@ -199,18 +218,18 @@ const Matchrim = () => {
 
         setRecommendations(formattedRecommendations);
       } catch (error) {
-        console.error('Error fetching recommendations:', error);
-        setRecommendations([]);
+        if (active) { console.error('Error fetching recommendations:', error); setRecommendations([]); }
       } finally {
-        setIsLoadingRecommendations(false);
+        if (active) setIsLoadingRecommendations(false);
       }
     };
 
     fetchRecommendations();
+    return () => { active = false; };
   }, [quizResult]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-950">
+    <div className="matchrim-quiz-page min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-950">
       {user && <AppNav />}
       {!user && <MobileBottomNav />}
 
@@ -220,7 +239,7 @@ const Matchrim = () => {
           <Button
             variant="ghost"
             onClick={handleBackToHome}
-            className="text-white hover:bg-white/10"
+            className={isNative ? 'min-h-11 text-slate-700 hover:bg-slate-100' : 'text-white hover:bg-white/10'}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al inicio
@@ -239,6 +258,10 @@ const Matchrim = () => {
             question={questions[currentQuestionIndex]}
             currentAnswer={answers[questions[currentQuestionIndex].id] || ''}
             onAnswer={handleAnswer}
+            onContinue={() => {
+              const answer = answers[questions[currentQuestionIndex].id];
+              if (answer) advanceAnswer(answer);
+            }}
             onPrevious={handlePrevious}
             isFirst={currentQuestionIndex === 0}
             isLast={currentQuestionIndex === questions.length - 1}
@@ -371,6 +394,11 @@ const Matchrim = () => {
       </div>
     </div>
   );
+};
+
+const Matchrim = () => {
+  const { user } = useAuth();
+  return <MatchrimSession key={user?.id ?? 'anonymous'} />;
 };
 
 export default Matchrim;

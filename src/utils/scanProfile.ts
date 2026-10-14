@@ -47,7 +47,7 @@ export const resolveScanProfile = async (
   if (!base) return { profile: null, source: 'unavailable', samples: null, status: 'missing', note: ownerId
     ? 'No hay un perfil guardado para esta cuenta; afinidad pendiente.' : 'No hay un perfil local disponible; afinidad pendiente.' };
   if (!['potente', 'acidez', 'dulce', 'tanico', 'afrutado'].every(key => (
-    typeof base[key] === 'number' && Number.isFinite(base[key]) && base[key] >= 1 && base[key] <= 5
+    typeof base[key] === 'number' && Number.isFinite(base[key]) && base[key] >= 0 && base[key] <= 5
   ))) return { profile: null, source: 'unavailable', samples: null, status: 'invalid', note: 'El perfil disponible est\u00e1 incompleto o contiene datos no v\u00e1lidos; afinidad pendiente.' };
   if (!ownerId) return { profile: { ...base }, source: 'quiz', samples: 0, status: 'ready', note: 'Afinidad basada en tu test local, sin valoraciones de una cuenta.' };
   let training: TrainableWine[];
@@ -62,7 +62,7 @@ export const resolveScanProfile = async (
   return {
     profile: { ...learned.profile }, source: learned.samples > 0 ? 'learned' : 'quiz', samples: learned.samples, status: 'ready',
     note: learned.samples > 0
-      ? `Perfil ajustado con ${learned.samples} valoraciones para este análisis.${learned.calibration.conflicting ? ' Hay señales contradictorias; la recomendación es provisional.' : ''}`
+      ? `Perfil ajustado con ${learned.samples} ${learned.samples === 1 ? 'valoración' : 'valoraciones'} para este análisis.${learned.calibration.conflicting ? ' Hay señales contradictorias; la recomendación es provisional.' : ''}`
       : 'Afinidad basada en tu test; todavía no hay valoraciones utilizables.',
   };
 };

@@ -44,6 +44,8 @@ import { confirmsMenuAction, menuCardIdentity, menuIntentChanges, type SavedMenu
 import { presentMenuAffinity } from '@/utils/menuAffinityPresentation';
 import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat } from '@/utils/wineComparison';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
+import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
+import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import { awaitMenuCatalog } from '@/utils/menuCatalogAwait';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
@@ -2070,6 +2072,12 @@ const WineMenuScannerSession = ({
 	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>
 	                  <div><div className="truncate text-sm font-bold capitalize text-slate-900">{selectedPinWine.tipo || '-'}</div><div className="text-xs text-slate-500">Tipo</div></div>
 	                </div>
+	                <WinerimOriginalSheet sheet={selectedPinWine.originalSheet} />
+                    {!selectedPinWine.originalSheet && selectedPinWine.canonicalId && <WinerimSheetLookup identity={{
+                      name: selectedPinWine.nombre, producer: selectedPinWine.productor, vintage: selectedPinWine.anada,
+                      region: selectedPinWine.campos_inferidos?.includes('region') ? null : selectedPinWine.region,
+                      country: selectedPinWine.campos_inferidos?.some(field => /^(country|pais|país)$/i.test(field)) ? null : selectedPinWine.pais,
+                    }} />}
 	                {selectedPinWine.descripcion && <p className="mb-4 text-sm leading-6 text-slate-600">{selectedPinWine.descripcion}</p>}
 	                <div className="matchrim-soft-surface mb-4 rounded-lg p-3 text-sm text-slate-600">
 	                  {selectedPinWine.texto_fuente ? (

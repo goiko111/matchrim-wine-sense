@@ -1,5 +1,5 @@
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
-import { normalizeScanSensoryValue } from '../../supabase/functions/_shared/matchrim-scan-values';
+import { normalizeScanSensoryValue, optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 
 type AttributeKey = 'potente' | 'acidez' | 'dulce' | 'tanico' | 'afrutado';
 
@@ -44,6 +44,11 @@ const ATTRIBUTE_LABELS: Record<AttributeKey, string> = {
 };
 
 const clampAttribute = normalizeScanSensoryValue;
+const normalizeProfileAttribute = (value: unknown) => {
+  const known = optionalScanNumber(value);
+  if (known === null || known < 0) return null;
+  return known === 0 ? 0 : clampAttribute(value);
+};
 
 export const normalizeWineAttributesForInsight = (attrs?: WineAttributeInput | null) => {
   if (!attrs) return null;
@@ -69,11 +74,11 @@ export const calculateLocalMatchrimAffinity = (
   const wineAttributes = normalizeWineAttributesForInsight(rawWineAttributes);
   if (!wineAttributes) return null;
   const profileValues = {
-    potente: clampAttribute(profile.potente),
-    acidez: clampAttribute(profile.acidez),
-    dulce: clampAttribute(profile.dulce),
-    tanico: clampAttribute(profile.tanico),
-    afrutado: clampAttribute(profile.afrutado),
+    potente: normalizeProfileAttribute(profile.potente),
+    acidez: normalizeProfileAttribute(profile.acidez),
+    dulce: normalizeProfileAttribute(profile.dulce),
+    tanico: normalizeProfileAttribute(profile.tanico),
+    afrutado: normalizeProfileAttribute(profile.afrutado),
   };
   if (Object.values(profileValues).some((value) => value === null)) return null;
   const normalizedProfile = profileValues as Record<AttributeKey, number>;
@@ -116,9 +121,9 @@ export const buildAffinityInsights = (
   if (!wineAttributes) return null;
 
   const keys: AttributeKey[] = ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'];
-  if (keys.some((key) => clampAttribute(profile[key]) === null)) return null;
+  if (keys.some((key) => normalizeProfileAttribute(profile[key]) === null)) return null;
   const insights = keys.map((key) => {
-    const profileValue = clampAttribute(profile[key]) ?? 3;
+    const profileValue = normalizeProfileAttribute(profile[key]) ?? 3;
     const wineValue = wineAttributes[key];
     const delta = Math.abs(profileValue - wineValue);
     const direction = delta <= 0.35
@@ -218,11 +223,11 @@ export const readStoredMatchrimProfile = (): MatchrimProfileLike | null => {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<Record<AttributeKey, unknown>>;
     const profile = {
-      potente: clampAttribute(parsed.potente),
-      acidez: clampAttribute(parsed.acidez),
-      dulce: clampAttribute(parsed.dulce),
-      tanico: clampAttribute(parsed.tanico),
-      afrutado: clampAttribute(parsed.afrutado),
+      potente: normalizeProfileAttribute(parsed.potente),
+      acidez: normalizeProfileAttribute(parsed.acidez),
+      dulce: normalizeProfileAttribute(parsed.dulce),
+      tanico: normalizeProfileAttribute(parsed.tanico),
+      afrutado: normalizeProfileAttribute(parsed.afrutado),
     };
     return Object.values(profile).some((value) => value === null)
       ? null

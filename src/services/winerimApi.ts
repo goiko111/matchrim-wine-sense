@@ -7,6 +7,7 @@ import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch, hasAmbiguousCanon
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 import { normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { isNonWineIdentity } from '@/utils/wineCategory';
+import { hasExactWinerimProducer, hasWinerimGeographyConflict } from '@/utils/winerimOriginalSheet';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
@@ -19,6 +20,8 @@ export interface WinerimWine {
   name: string;
   subname?: string | null;
   slugname?: string;
+  originalSheetUrl?: string;
+  originalSheetSource?: 'winerim-api';
   winery?: string;
   region?: string;
   country?: string;
@@ -550,6 +553,7 @@ export const fetchWinesByAttributes = async (
     .map(normalizeWinerimWine)
     .map((wine) => ({
       ...wine,
+      originalSheetSource: 'winerim-api' as const,
       matchSource: 'winerim-api' as const,
       styleName: classifyWineByV41Style(wine) || undefined,
     }));
@@ -643,7 +647,7 @@ export const generateWinerimSlug = (name: string, vintage?: number | string | nu
 export const buildWinerimWineUrl = (wine: Pick<WinerimWine, 'id' | 'name' | 'slugname' | 'vintage'>): string => {
   const slug = wine.slugname || generateWinerimSlug(wine.name, wine.vintage);
   const base = WINERIM_STORE_URL.replace(/\/$/, '');
-  return `${base}/the-library/wines/${wine.id}/${slug}`;
+  return `${base}/the-library/wines/${encodeURIComponent(String(wine.id))}/${encodeURIComponent(slug)}`;
 };
 
 // ---------------------------------------------------------------------------
@@ -798,6 +802,52 @@ export const findWinerimWineForLabel = async (
   }
 };
 
+let originalLibraryCache: { wines: WinerimWine[]; at: number } | null = null;
+
+// This source is the Winerim API, not search-wines' independent local UUID table.
+// A neutral public query is used only on demand; no personal profile is sent.
+export const findOriginalWinerimWineForLabel = async (
+  input: WinerimLabelLookupInput, signal?: AbortSignal,
+): Promise<WinerimWine | null> => {
+  if ((input.name || '').trim().length < 2 || (input.producer || '').trim().length < 2) return null;
+  let wines: WinerimWine[];
+  if (originalLibraryCache && Date.now() - originalLibraryCache.at < 600000) wines = originalLibraryCache.wines;
+  else {
+    const response = await invokeMatchrimRecommendations({ potente: 3, acidez: 3, dulce: 3, tanico: 3, afrutado: 3 }, signal);
+    const rows = extractWineResults(response).flatMap((raw, index): WinerimWine[] => {
+      const officialId = raw.id;
+      if ((typeof officialId !== 'string' && typeof officialId !== 'number') || !String(officialId).trim()) return [];
+      const normalized = normalizeWinerimWine(raw, index);
+      if (!normalized.slugname?.trim() || !normalized.winery?.trim()) return [];
+      const name = normalized.subname && !normalizeForMatch(normalized.name).includes(normalizeForMatch(normalized.subname))
+        ? `${normalized.name} ${normalized.subname}` : normalized.name;
+      const wine: WinerimWine = { id: officialId, name, slugname: normalized.slugname, winery: normalized.winery,
+        vintage: normalized.vintage, region: normalized.region, country: normalized.country, grapes: normalized.grapes,
+        originalSheetSource: 'winerim-api' };
+      // A recommendation ID/slug is not proof of a working public detail URL.
+      wine.originalSheetUrl = stringValue(raw.publicUrl) || stringValue(raw.public_url);
+      return [wine];
+    });
+    const signatures = new Map<string, Set<string>>();
+    for (const wine of rows) {
+      const id = String(wine.id), signature = JSON.stringify([wine.name, wine.winery, wine.vintage, wine.slugname, wine.region, wine.country]);
+      const variants = signatures.get(id) || new Set<string>();
+      variants.add(signature); signatures.set(id, variants);
+    }
+    wines = rows.filter(wine => signatures.get(String(wine.id))?.size === 1);
+    if (wines.length) originalLibraryCache = { wines, at: Date.now() };
+  }
+  if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+  const matches = wines.filter(wine => wine.originalSheetSource === 'winerim-api'
+    && hasExactWinerimProducer(input.producer, wine.winery)
+    && !hasWinerimGeographyConflict(input, wine)
+    && isSafeCanonicalLabelMatch(input, { name: wine.name, producer: wine.winery, vintage: wine.vintage })
+    && String(input.vintage ?? '') === String(wine.vintage ?? ''));
+  if (hasAmbiguousCanonicalMatches(input, matches.map(wine => ({ name: wine.name, producer: wine.winery, vintage: wine.vintage })))) return null;
+  const ids = new Set(matches.map(wine => String(wine.id)));
+  return ids.size === 1 ? matches[0] : null;
+};
+
 /**
  * Convenience wrapper used by scanners: look up a wine and, if found, also
  * return its Winerim Library URL ready to open in a new tab.
@@ -805,7 +855,7 @@ export const findWinerimWineForLabel = async (
 export const lookupOfficialWinerimWine = async (
   input: WinerimLabelLookupInput,
 ): Promise<(WinerimLabelLookupResult & { url: string }) | null> => {
-  const result = await findWinerimWineForLabel(input);
-  if (!result) return null;
-  return { ...result, url: buildWinerimWineUrl(result.wine) };
+  const wine = await findOriginalWinerimWineForLabel(input);
+  if (!wine?.originalSheetUrl) return null;
+  return { wine, confidence: .9, restaurantUuid: null, url: wine.originalSheetUrl };
 };

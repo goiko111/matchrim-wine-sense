@@ -10,6 +10,7 @@ import {
   Eye,
   FolderOpen,
   Loader2,
+  Pencil,
   RefreshCw,
   ScanLine,
   Trash2,
@@ -17,6 +18,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AffinityExplanation } from '@/components/AffinityExplanation';
+import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
+import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { Button } from '@/components/ui/button';
@@ -39,6 +42,7 @@ import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import {
   EdgeFunctionError,
   invokeWithEdgeFunctionRetry,
+  isProviderCreditExhausted,
 } from '@/utils/edgeFunctionResilience';
 import { cropImageRegion, cropImageRegionWithQuality, ImagePreparationError, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
 import { labelCropPadding } from '@/utils/imageCropGeometry';
@@ -130,6 +134,7 @@ const statusClass = (region: ScanRegion) => {
 
 const userFacingScanError = (error: unknown) => {
   if (error instanceof ImagePreparationError) return error.message;
+  if (isProviderCreditExhausted(error)) return 'La lectura de fotos no está disponible temporalmente. Conservamos la foto para que puedas reintentar más tarde.';
   if (typeof navigator !== 'undefined' && !navigator.onLine) {
     return 'No hay conexión. Conservamos la foto para que puedas reintentar cuando vuelva la red.';
   }
@@ -900,7 +905,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           {regions.length > 0 && (
             <div className="space-y-4">
               {isNative && (
-                <div className="grid grid-cols-[repeat(auto-fit,minmax(min(6rem,100%),1fr))] rounded-lg bg-slate-100 p-1" role="tablist" aria-label="Vista de resultados">
+                <div className="matchrim-result-tabs grid grid-cols-[repeat(auto-fit,minmax(min(6rem,100%),1fr))] rounded-lg bg-slate-100 p-1" role="tablist" aria-label="Vista de resultados">
                   {([
                     ['scene', 'Escena'],
                     ['wines', `Vinos (${rankedGroups.length})`],
@@ -1075,8 +1080,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         </>
       )}
 
-      <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => !open && setSelectedRegionId(null)}>
-        <DrawerContent className="w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
+      <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => !open && setSelectedRegionId(null)} repositionInputs={!isNative} shouldScaleBackground={!isNative}>
+        <DrawerContent className="matchrim-scan-region-sheet w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
             <div className="mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
               <DrawerHeader className="min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left">
@@ -1101,7 +1106,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 )}
 
                 {selectedRegion.cropDataUrl && (
-                  <img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} className="max-h-48 w-full rounded-lg bg-black object-contain" />
+                  <img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} className="matchrim-scan-region-crop max-h-48 w-full rounded-lg bg-black object-contain" />
                 )}
 
                 {selectedRegion.candidates.length === 0 ? (
@@ -1174,6 +1179,17 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
                     {selectedCandidate && (
                       <>
+                        <WinerimOriginalSheet sheet={selectedCandidate.originalSheet} />
+                        {!selectedCandidate.originalSheet && selectedCandidate.canonicalId && <WinerimSheetLookup identity={{
+                          name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage,
+                          region: selectedCandidate.inferredFields.includes('region') ? null : selectedCandidate.region,
+                          country: selectedCandidate.inferredFields.some(field => /^(country|pais|país)$/i.test(field)) ? null : selectedCandidate.country,
+                        }} />}
+                        {isNative && <Button type="button" variant="outline" disabled={regionActionsLocked} className="min-h-11 gap-2" onClick={() => {
+                          const input = document.getElementById('region-wine-name');
+                          input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+                          input?.focus({ preventScroll: true });
+                        }}><Pencil className="h-4 w-4" /> Corregir identificación</Button>}
                         {selectedCandidate.source === 'manual' && (
                           <div role="status" data-testid="manual-identity-notice" className="rounded-lg border-l-4 border-slate-500 bg-slate-50 px-3 py-2 text-sm text-slate-800">
                             {manualWineIdentityNotice(selectedCandidate.affinity)}
@@ -1182,7 +1198,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         <div className="grid gap-3 sm:grid-cols-2">
                           <label className="text-sm font-medium text-slate-800">
                             Vino
-                            <Input disabled={regionActionsLocked} className="mt-1 min-h-11" value={selectedCandidate.name} onChange={(event) => editCandidate({ name: event.target.value })} />
+                            <Input id="region-wine-name" disabled={regionActionsLocked} className="mt-1 min-h-11" value={selectedCandidate.name} onChange={(event) => editCandidate({ name: event.target.value })} />
                           </label>
                           <label className="text-sm font-medium text-slate-800">
                             Bodega
@@ -1249,7 +1265,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               </div>
 
               <DrawerFooter className="min-w-0 shrink-0 border-t border-stone-200 bg-white">
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                <div className="matchrim-region-footer-actions grid grid-cols-2 gap-2 sm:grid-cols-4">
                   <Button type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) <= 0} onClick={() => moveSelection(-1)}>
                     <ChevronLeft className="h-4 w-4" /> Anterior
                   </Button>

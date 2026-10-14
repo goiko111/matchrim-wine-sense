@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { resolve } from 'node:path';
 const baseline=process.env.MATCHRIM_DELTA_BASELINE==='1';
 const root=resolve(baseline?'../../matchrim73-qa-20261007/build-workspace':'.');
@@ -38,5 +39,6 @@ for(const [implementation,calculate] of Object.entries({client:calculateLearnedM
   check('empty reset restores onboarding profile',()=>assert.deepEqual(calculate(base,[]).profile,base));
 }
 const report={baseline,scope:'Pure client and Edge contracts; no account changes or persisted deletion test',passed:results.filter(r=>r.status==='PASS').length,failed:results.filter(r=>r.status==='FAIL').length,results};
-writeFileSync(`../training-${baseline?'baseline':'candidate'}.json`,JSON.stringify(report,null,2));
+if (process.env.MATCHRIM_QA_REPORT_DIR) writeFileSync(join(process.env.MATCHRIM_QA_REPORT_DIR,
+  `training-${baseline?'baseline':'candidate'}.json`), JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));assert.equal(report.failed,0);

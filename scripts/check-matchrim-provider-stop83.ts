@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import { EdgeFunctionError, invokeWithEdgeFunctionRetry, isProviderCreditExhausted, isRetryableEdgeFunctionError } from '../src/utils/edgeFunctionResilience';
+const options = { status: 500, errorCode: null, retryAfterMs: null };
+const exhausted = new EdgeFunctionError('Créditos del proveedor agotados.', options);
+assert.equal(isProviderCreditExhausted(exhausted), true);
+assert.equal(isRetryableEdgeFunctionError(exhausted), false);
+assert.equal(isRetryableEdgeFunctionError(new EdgeFunctionError('Transient upstream failure', options)), true);
+assert.equal(isRetryableEdgeFunctionError(new EdgeFunctionError('Rate limited', { ...options, status: 429 })), true);
+let calls = 0;
+await assert.rejects(invokeWithEdgeFunctionRetry(async () => { calls++; throw exhausted; }, new AbortController().signal), exhausted);
+assert.equal(calls, 1, 'Confirmed provider exhaustion never triggers three automatic retries');
+console.log(JSON.stringify({ scope: 'Synthetic resilience contract for the observed real provider error', requests: calls, automaticRetries: 0, passed: true }));

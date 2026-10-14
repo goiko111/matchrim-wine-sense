@@ -1,5 +1,6 @@
 
-import { lazy, Suspense, type ReactNode } from 'react';
+import { lazy, Suspense, useLayoutEffect, type ReactNode } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AccountNotifications from '@/components/AccountNotifications';
@@ -60,6 +61,11 @@ function AdminOnly({ children }: { children: ReactNode }) {
 function AppRoutes() {
   const location = useLocation();
   const resetKey = `${location.pathname}${location.search}`;
+  useLayoutEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    (document.activeElement as HTMLElement | null)?.blur();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location.pathname]);
 
   return (
     <AppErrorBoundary resetKey={resetKey}>

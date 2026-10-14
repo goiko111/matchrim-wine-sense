@@ -2,5 +2,12 @@
 	"appId": "wine.matchrim.app",
 	"appName": "Matchrim",
 	"webDir": "dist",
-	"packageClassList": []
+	"plugins": {
+		"Keyboard": {
+			"resize": "native"
+		}
+	},
+	"packageClassList": [
+		"KeyboardPlugin"
+	]
 }

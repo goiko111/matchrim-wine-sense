@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { isWineMenuItem } from '../src/utils/wineMenuGrounding';
 import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch } from '../src/utils/winerimLabelIdentity';
 import { normalizeWineCandidates } from '../src/utils/multiWineScan';
@@ -44,6 +45,7 @@ check('canonical query preserves cuvee punctuation and bounds input', () => {
   assert.equal(canonicalLabelSearchQuery({name:'x'.repeat(200)}).length,120);
 });
 const report={passed:results.filter(r=>r.passed).length,failed:results.filter(r=>!r.passed).length,results,providerCalls:0};
-writeFileSync(process.env.MR75_BASELINE ? '../identity75-baseline.json' : '../identity75-regression.json',JSON.stringify(report,null,2));
+if (process.env.MATCHRIM_QA_REPORT_DIR) writeFileSync(join(process.env.MATCHRIM_QA_REPORT_DIR,
+  process.env.MR75_BASELINE ? 'identity75-baseline.json' : 'identity75-regression.json'), JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));
 if(report.failed)process.exitCode=1;

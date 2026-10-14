@@ -18,6 +18,45 @@ html.matchrim-native-platform {
   -webkit-text-size-adjust: 100%;
 }
 
+html.matchrim-native-platform [data-matchrim-button] {
+  min-height: 44px;
+}
+
+html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-native-tab-bar {
+  display: none;
+}
+
+html.matchrim-native-platform .matchrim-result-tabs {
+  position: sticky;
+  top: var(--matchrim-safe-top);
+  z-index: 40;
+}
+
+html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-scan-region-crop {
+  max-height: 4rem;
+}
+
+html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-region-footer-actions {
+  display: none;
+}
+
+html.matchrim-native-platform .matchrim-restaurant-main {
+  padding-top: calc(1rem + var(--matchrim-safe-top));
+  padding-bottom: calc(8rem + var(--matchrim-safe-bottom));
+}
+
+html.matchrim-native-platform .matchrim-quiz-page {
+  background: hsl(var(--background));
+  padding-top: calc(1rem + var(--matchrim-safe-top));
+  padding-bottom: calc(8rem + var(--matchrim-safe-bottom));
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  html.matchrim-native-platform .matchrim-native-quiz-image {
+    max-height: 8rem;
+  }
+}
+
 html.matchrim-native-platform .matchrim-native-display-title {
   font-size: min(2rem, 42px);
 }

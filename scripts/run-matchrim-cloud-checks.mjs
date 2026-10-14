@@ -4,6 +4,9 @@ import { spawnSync } from 'node:child_process';
 const checks = [
   'check-matchrim-identity75.ts', 'check-matchrim-edge-routing.ts',
   'check-matchrim-scan-evidence.ts', 'check-matchrim-dense-gate.ts',
+  'check-matchrim-original-sheet.ts',
+  'check-matchrim-profile-boundaries83.ts',
+  'check-matchrim-provider-stop83.ts',
   'check-matchrim-menu-food-evidence.ts', 'check-matchrim-scan-profile.ts',
   'check-matchrim-onboarding-owner.ts', 'check-integral-regressions.ts',
   'check-matchrim-wine-mutation.ts', 'check-matchrim-history-owner.ts',

@@ -1,4 +1,5 @@
 import type { NormalizedBox } from '@/utils/multiWineScan';
+import type { WinerimOriginalSheet } from './winerimOriginalSheet';
 
 export interface MenuScanPosition {
   x?: number | null;
@@ -29,6 +30,7 @@ export interface MenuManualPriceAssignment {
 
 export interface MenuScanWine {
   canonicalId?: string | null;
+  originalSheet?: WinerimOriginalSheet | null;
   sensorySource?: 'catalog' | 'inference';
   nombre: string;
   productor: string | null;
@@ -93,7 +95,7 @@ export interface MenuTileResult {
 
 export const isMenuIdentityConfirmed = (wine: MenuScanWine) => (wine.confidence ?? 0) >= 0.85
   && !(wine.dudas?.length)
-  && !(wine.campos_inferidos ?? []).some((field) => /^(nombre|name|productor|producer)$/.test(field));
+  && !(wine.campos_inferidos ?? []).some((field) => /^(nombre|name|productor|producer|winery|bodega|anada|añada|vintage|year)$/i.test(field));
 
 const fullTile: MenuScanTile = {
   id: 'full',

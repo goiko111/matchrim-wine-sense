@@ -22,6 +22,7 @@ env = {**os.environ, 'PYTHONDONTWRITEBYTECODE': '1',
        'VITE_APP_ANALYTICS_ENABLED': 'false', 'VITE_MATCHRIM_QA_FIXTURES': 'false',
        'VITE_SUPABASE_URL': 'https://cbjynrbvrhcmpaojmqdp.matchrim-qa.invalid',
        'VITE_SUPABASE_PUBLISHABLE_KEY': 'qa-invalid-never-used-remotely',
+       'VITE_MATCHRIM_SHARE_ORIGIN': 'https://matchrim-wine-sense.lovable.app',
        'VITE_WINERIM_API_URL': 'https://catalog.matchrim-qa.invalid'}
 # QA commands must register HTTP and WS routes before creating/navigating pages.
 # A synthetic hostname is defense in depth, not a substitute for interception.

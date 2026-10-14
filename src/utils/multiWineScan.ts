@@ -3,6 +3,7 @@ import { hasSpecificWineIdentity } from '../../supabase/functions/_shared/matchr
 import { isNonWineIdentity } from './wineCategory';
 import type { CropGeometry } from './imageCropGeometry';
 import type { RegionDeferral } from './scanAnalysisPolicy';
+import type { WinerimOriginalSheet } from './winerimOriginalSheet';
 
 export type ScanRegionStatus =
   | 'pending'
@@ -53,6 +54,7 @@ export interface WineCandidate {
   uncertaintyReasons: string[];
   inferredFields: string[];
   canonicalId?: string | null;
+  originalSheet?: WinerimOriginalSheet | null;
   sensorySource?: 'catalog' | 'inference';
   sensoryAttributes?: {
     potencia?: number | null;
@@ -723,6 +725,7 @@ export const correctWineCandidateIdentity = (
   inferredFields: [],
   sensoryAttributes: null,
   canonicalId: null,
+  originalSheet: null,
   sensorySource: 'inference',
   affinity: null,
   affinityConfidence: null,

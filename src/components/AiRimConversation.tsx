@@ -104,7 +104,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
 
   const memoryLabel = useMemo(() => {
     if (!user) return 'Sin memoria personal';
-    if (learningSamples > 0) return `Perfil + ${learningSamples} valoraciones`;
+    if (learningSamples > 0) return `Perfil + ${learningSamples} ${learningSamples === 1 ? 'valoración' : 'valoraciones'}`;
     if (profileContext) return 'Perfil Matchrim base';
     return 'Perfil aún no disponible';
   }, [learningSamples, profileContext, user]);

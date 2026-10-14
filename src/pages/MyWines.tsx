@@ -22,6 +22,7 @@ import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 import { confirmsWineMutation } from '@/utils/matchrimWineMutation';
 import { hasStoredMenuCatalogEvidence, readMenuPrice } from '@/utils/menuWineSave';
 import { toast } from "sonner";
+import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import {
   Wine,
   Plus,
@@ -1830,6 +1831,7 @@ const MyWinesForOwner = () => {
 	                            </p>
 	                          )}
 
+	                          <WinerimSheetLookup identity={{ name: wine.name, producer: wine.producer, vintage: wine.vintage, region: wine.region, country: wine.country }} />
 	                          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-2 pt-2">
 	                            <Button
 	                              type="button"

@@ -28,6 +28,14 @@ final class MatchrimCandidateUITests: XCTestCase {
     }
 
     @MainActor
+    private func closeSystemKeyboardIntroduction(_ app: XCUIApplication) {
+        let message = app.staticTexts["Type español e inglés"].firstMatch
+        if message.waitForExistence(timeout: 2) && app.buttons["Continue"].exists {
+            app.buttons["Continue"].tap()
+        }
+    }
+
+    @MainActor
     private func waitForStableViewport(_ app: XCUIApplication, landscape: Bool) -> Bool {
         let deadline = Date().addingTimeInterval(10)
         var previous = CGRect.null
@@ -162,5 +170,78 @@ final class MatchrimCandidateUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["¿Qué necesitas decidir?"].waitForExistence(timeout: 10))
         try app.performAccessibilityAudit(for: [.dynamicType, .textClipped])
         capture("candidate-airim-accessibility")
+    }
+
+    @MainActor
+    func testAiRimKeyboardRecovery() throws {
+        let app = launch()
+        app.links["aiRIM"].tap()
+        let heading = app.staticTexts["¿Qué necesitas decidir?"].firstMatch
+        let question = app.textFields["Pregunta para aiRIM"].firstMatch
+        XCTAssertTrue(question.waitForExistence(timeout: 10))
+        question.tap()
+        closeSystemKeyboardIntroduction(app)
+        question.typeText("QA de teclado sin enviar")
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 10))
+        capture("83-airim-keyboard-visible")
+        print("MATCHRIM83_AIRIM_KEYBOARD heading=\(heading.frame) input=\(question.frame) keyboard=\(app.keyboards.firstMatch.frame)")
+        XCTAssertGreaterThanOrEqual(question.frame.minY, 55)
+        XCTAssertLessThanOrEqual(question.frame.maxY, app.keyboards.firstMatch.frame.minY + 1)
+        let dismiss = app.toolbars.buttons.matching(NSPredicate(format: "label IN %@", ["Done", "Listo", "OK", "Hecho", "selected"])).firstMatch
+        if dismiss.exists { dismiss.tap() } else { heading.tap() }
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
+        capture("83-airim-after-keyboard")
+        XCTAssertGreaterThanOrEqual(heading.frame.minY, 55)
+        XCTAssertTrue(app.links["Inicio"].isHittable)
+        app.links["Inicio"].tap()
+    }
+
+    @MainActor
+    func testFixtureManualEditorKeyboard() throws {
+        let app = launch()
+        labelSources(app)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "QA local:")).firstMatch.exists,
+            "This test must run only against the isolated fixture binary, never the owner's TestFlight app")
+        app.buttons["Elegir de galería"].tap()
+        XCTAssertTrue(app.buttons["Photo Library"].waitForExistence(timeout: 10))
+        app.buttons["Photo Library"].tap()
+        let photo = app.images.matching(NSPredicate(format: "identifier == %@ AND (label BEGINSWITH %@ OR label BEGINSWITH %@)", "PXGGridLayout-Info", "Photo,", "Foto,")).firstMatch
+        XCTAssertTrue(photo.waitForExistence(timeout: 15), app.debugDescription)
+        capture("83-fixture-picker-before-selection")
+        photo.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        let choose = app.buttons["PUOneUpBarButtonItemIdentifierAssetExplorerReviewScreenDone"]
+        XCTAssertTrue(choose.waitForExistence(timeout: 10))
+        choose.tap()
+        let ready = app.staticTexts["Lote listo para revisar"].firstMatch
+        XCTAssertTrue(ready.waitForExistence(timeout: 45))
+        let wines = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Vinos (")).firstMatch
+        for _ in 0..<5 { if wines.isHittable { break }; app.swipeUp() }
+        XCTAssertTrue(wines.exists, app.debugDescription)
+        wines.tap()
+        let detail = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Abrir detalle de")).firstMatch
+        for _ in 0..<5 { if detail.isHittable { break }; app.swipeUp() }
+        XCTAssertTrue(detail.waitForExistence(timeout: 10))
+        detail.tap()
+        let edit = app.buttons["Corregir identificación"].firstMatch
+        XCTAssertTrue(edit.waitForExistence(timeout: 10))
+        for _ in 0..<5 { if edit.isHittable { break }; app.swipeUp() }
+        edit.tap()
+        closeSystemKeyboardIntroduction(app)
+        let field = app.textFields["Vino"].firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 10), app.debugDescription)
+        field.typeText(" QA")
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 10))
+        capture("83-manual-editor-keyboard-visible")
+        print("MATCHRIM83_EDITOR_KEYBOARD input=\(field.frame) keyboard=\(app.keyboards.firstMatch.frame)")
+        XCTAssertGreaterThanOrEqual(field.frame.minY, 55)
+        XCTAssertLessThanOrEqual(field.frame.maxY, app.keyboards.firstMatch.frame.minY + 1)
+        let dismiss = app.toolbars.buttons.matching(NSPredicate(format: "label IN %@", ["Done", "Listo", "OK", "Hecho", "selected"])).firstMatch
+        if dismiss.exists { dismiss.tap() } else { app.buttons["Corregir identificación"].tap() }
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
+        capture("83-manual-editor-after-keyboard")
+        let close = app.buttons["Cerrar"].firstMatch
+        XCTAssertTrue(close.isHittable)
+        close.tap()
+        app.links["Inicio"].tap()
     }
 }

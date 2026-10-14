@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Capacitor } from '@capacitor/core';
 import { Button } from "@/components/ui/button";
 
 interface QuizIntroProps {
@@ -8,6 +9,14 @@ interface QuizIntroProps {
 }
 
 const QuizIntro: React.FC<QuizIntroProps> = ({ onStart, returnTo }) => {
+  if (Capacitor.isNativePlatform()) return (
+    <section className="mx-auto flex w-full max-w-2xl flex-col px-4 py-6">
+      <img src="/lovable-uploads/b9329c73-68b0-4f4a-96a2-c96545694186.png" alt="Winerim" className="h-16 w-16 object-contain" />
+      <h1 className="mt-5 text-2xl font-bold text-slate-950">Test de paladar</h1>
+      <p className="mt-2 text-sm text-slate-500">20 preferencias · Perfil inicial orientativo</p>
+      <Button type="button" onClick={onStart} className="mt-7 min-h-12 bg-red-900">Comenzar el test</Button>
+    </section>
+  );
   return (
     <div className="flex flex-col items-center justify-center max-w-3xl mx-auto text-center space-y-8 py-10">
       <div className="flex flex-col items-center mb-4">

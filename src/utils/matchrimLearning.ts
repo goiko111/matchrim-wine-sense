@@ -75,7 +75,7 @@ const normalizeSensoryValue = (value: unknown) => {
   let v = numeric;
   if (v > 10) v = v / 20; // legacy 0-100
   else if (v > 5) v = v / 2; // legacy 0-10
-  return clamp(Math.round(v));
+  return clamp(Math.round(v), 1, 5);
 };
 
 export const scoreMatchrimProfileAgainstSensory = (

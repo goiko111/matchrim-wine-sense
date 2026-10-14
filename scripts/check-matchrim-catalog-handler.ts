@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { resolve } from 'node:path';
 import ts from 'typescript';
 import * as contract from '../supabase/functions/_shared/matchrim-catalog-search';
@@ -33,5 +34,6 @@ await check('punctuated label remains a quoted filter operand',async()=>{
 await check('catalog failure preserves a valid empty result',async()=>{localFailure=true;const r=await handler(request({query:'Valid wine'}));assert.equal(r.status,200);assert.deepEqual((await r.json()).wines,[]);localFailure=false;});
 await check('bounded external failure preserves stored results',async()=>{external=true;const r=await handler(request({query:'Stored wine'}));assert.equal(r.status,200);assert.equal((await r.json()).wines[0].id,'fixture-only');assert.equal(externalCalls,1);external=false;});
 const report={baseline,scope:'Actual Edge handler with stubbed database/provider; zero remote calls. Production 500 cause not established.',passed:results.filter(r=>r.status==='PASS').length,failed:results.filter(r=>r.status==='FAIL').length,results};
-writeFileSync(`../catalog-${baseline?'baseline':'candidate'}.json`,JSON.stringify(report,null,2));
+if (process.env.MATCHRIM_QA_REPORT_DIR) writeFileSync(join(process.env.MATCHRIM_QA_REPORT_DIR,
+  `catalog-${baseline?'baseline':'candidate'}.json`), JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));if(report.failed)process.exitCode=1;

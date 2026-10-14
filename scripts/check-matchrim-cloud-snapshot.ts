@@ -19,10 +19,22 @@ const hash = (data: Buffer) => createHash('sha256').update(data).digest('hex');
 // corpus and hosted functions stay fingerprint protected. The original snapshot
 // is checked for all paths even when a client lifetime is subsequently amended.
 const allowedClientChanges = new Set(['src/components/wine-import/MultiWineLabelScanner.tsx', 'src/utils/imageAnalysis.ts', 'src/components/wine-import/WineMenuScanner.tsx', 'src/pages/Scan.tsx', 'src/components/wine-import/WineComparisonWorkspace.tsx']);
+// Build 83 adds native keyboard/layout, quiz navigation and original-sheet provenance.
+// Retain the historical snapshot proof and fingerprint every unaffected product file.
+const build83Changes = new Set(['package-lock.json', 'capacitor.config.ts', 'src/App.tsx', 'src/main.tsx', 'src/index.css',
+  'src/components/ui/button.tsx', 'src/components/AiRimConversation.tsx', 'src/components/QuizIntro.tsx',
+  'src/components/QuizQuestion.tsx', 'src/pages/Matchrim.tsx', 'src/pages/MyWines.tsx', 'src/pages/UseMatchrim.tsx',
+  'src/services/winerimApi.ts', 'src/utils/multiWineScan.ts', 'src/utils/scanProfile.ts',
+  'src/utils/scanWineEvidence.ts', 'src/utils/wineMenuScan.ts']);
+build83Changes.add('src/utils/matchrimLocalProfile.ts');
+build83Changes.add('src/utils/matchrimLearning.ts');
+build83Changes.add('src/utils/edgeFunctionResilience.ts');
+build83Changes.add('src/components/wine-import/WineLabelOCRImport.tsx');
+build83Changes.add('src/utils/wineAffinityExplanation.ts');
 let immutableCount = 0;
 for (const row of manifest.productSourceFingerprints as Array<{ path: string; sha256: string }>) {
   assert.equal(hash(execFileSync('git', ['show', `${snapshot}:${row.path}`])), row.sha256, `Snapshot hash: ${row.path}`);
-  if (!allowedClientChanges.has(row.path) && row.path !== 'package.json') {
+  if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && row.path !== 'package.json') {
     const expected = localPricePaths.has(row.path)
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256;
     assert.equal(hash(readFileSync(row.path)), expected, `Protected source: ${row.path}`);
@@ -53,7 +65,14 @@ for (const code of ['read', 'decode', 'prepare'] as const) {
   assert.doesNotMatch(error.message, /backend|token|http|provider/i);
 }
 const lock = JSON.parse(readFileSync('package-lock.json', 'utf8'));
+assert.equal(lock.packages['node_modules/@capacitor/keyboard'].version, '7.0.6');
+const previousLock = JSON.parse(execFileSync('git', ['show', 'bda5241:package-lock.json'], { encoding: 'utf8' }));
+const withoutKeyboard = structuredClone(lock);
+delete withoutKeyboard.packages['node_modules/@capacitor/keyboard'];
+delete withoutKeyboard.packages[''].dependencies['@capacitor/keyboard'];
+assert.deepEqual(withoutKeyboard, previousLock, 'Only the official pinned keyboard plugin changes dependencies');
+assert.equal(readFileSync('src/data/quizData.ts', 'utf8'), execFileSync('git', ['show', 'bda5241:src/data/quizData.ts'], { encoding: 'utf8' }), 'Quiz scoring and images unchanged from build 82');
 assert.equal(lock.packages['node_modules/sonner'].version, '2.0.8');
 assert.equal(lock.packages['node_modules/sonner'].integrity, 'sha512-UM/ByIoFra8yzV75n1o0Puu0bw5U/9UNnDacrJNspekBewIfsQ3D6ez1nvlWpt7aTsO6rujQtifBpycwIivqlg==');
 assert.match(readFileSync('node_modules/sonner/dist/index.mjs', 'utf8'), /document\.removeEventListener\('visibilitychange', callback\)/);
-console.log(JSON.stringify({ snapshot, localRelease, localPricePaths: [...localPricePaths], localOnlyPaths, productFingerprints: manifest.productSourceFingerprints.length, immutableCount, syntheticNumericCases: cases.length, scope: 'Original cloud snapshot plus approved local beta price/style integrity; no vision, humans or hosted data' }));
+console.log(JSON.stringify({ snapshot, localRelease, localPricePaths: [...localPricePaths], localOnlyPaths, build83Changes: [...build83Changes], productFingerprints: manifest.productSourceFingerprints.length, immutableCount, syntheticNumericCases: cases.length, scope: 'Original cloud snapshot plus explicit build 83 client changes and unchanged quiz calibration; no vision, humans or hosted data' }));

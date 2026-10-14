@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-14, native remediation / candidate83
+
+- Native keyboard/manual-edit/aiRIM safe areas,44px targets, route scroll, restaurant padding and sticky result tabs implemented. Simulator8/8PASS with actual keyboard/preview OK, inputy330..375above573keyboard; five cold launches max2.930698s. Physical phone still82; fixture simulator is NOT an OCR-accurate release.
+- Native quiz has deliberate next/back, compact decoded images, focus and contrast;20active images/weights unchanged. Owner-keyed session/stale replies fixed; known quiz0 preserved and client learner sensory normalization matches existing Edge. Original Winerim data uses a separate exact/partial API resolver, never local UUID or neutral score; missing original publicURL remains pending, not fabricated.
+- Two ZIPs ingested privately:200unique images,197catalog/3real single-label, no dense/menu/board coverage. Real first canary500/Creditos del proveedor agotados, onePOST then global stop;199unrun, no new accuracy metrics. Offline100synthetic accounts x365days:67ranking improvements/11worse/22same, no human validation or production training.
+- Release/cloud/typecheck/lint and targeted contracts pass; lint106existing warnings.79new UX checks,20original-source/15resolver acceptance/42boundary controls; stable30retention cycles,Nodesrange3/listeners1. Final hardened-source rerun and signed/exported83 pending. Full original public-fiche mapping, quota, physical83 and historical score-model consistency remain distinct gates.
+- Owner requested upload; fresh credit blockage triggered explicit beta-vs-restored-benchmark choice, still unanswered. Published web/backend and owner data unchanged; no upload or public source push. [Remediation, study and release gates](docs/MATCHRIM_83_REMEDIATION_2026-10-14.md). Private photos/study/source receipts are outside Git.
+
 ## Latest checkpoint: 2026-10-14, broad agent-driven physical QA /82 unchanged
 
 -13 distinct native product methods completed,49 private exported screenshots; execution coverage, NOT global QA green. Main navigation, compare2-5/service, profile/history/five cellar lists, five scan modes, camera/gallery open-cancel, restaurant opt-in/privacy and profile memory verified. Three actual cold launches2.370-2.444s. Four pure/recorded suites PASS, not human/vision metrics.

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { resolve } from 'node:path';
 const baseline=process.env.MATCHRIM_DELTA_BASELINE==='1';
 const {getSafeRedirectPath}=await import(resolve(baseline?'../../matchrim73-qa-20261007/build-workspace':'.','src/utils/navigation.ts'));
@@ -7,5 +8,6 @@ const bad=['//outside.invalid','/\\outside.invalid','/%5coutside.invalid','/%2fo
 const good=['/profile','/my-wines','/escanear/carta-vinos?occasion=cena%20en%20casa','/matchrim?returnTo=%2Fprofile','/profile#ratings'];
 const results=[...bad.map(path=>({path,expected:'/'})),...good.map(path=>({path,expected:path}))].map(row=>({...row,actual:getSafeRedirectPath(row.path)}));
 const report={baseline,passed:results.filter(r=>r.actual===r.expected).length,failed:results.filter(r=>r.actual!==r.expected).length,results};
-writeFileSync(`../navigation-${baseline?'baseline':'candidate'}.json`,JSON.stringify(report,null,2));
+if (process.env.MATCHRIM_QA_REPORT_DIR) writeFileSync(join(process.env.MATCHRIM_QA_REPORT_DIR,
+  `navigation-${baseline?'baseline':'candidate'}.json`), JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));assert.equal(report.failed,0);

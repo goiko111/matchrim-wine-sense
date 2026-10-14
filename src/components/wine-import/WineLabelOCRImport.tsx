@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { Capacitor } from '@capacitor/core';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -196,6 +197,8 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
         // Fire-and-forget: lookup the wine in the Winerim Library and, if found,
         // attach the ficha URL to the scan history entry + local card state.
         (async () => {
+          // Native scans use the dedicated official-source resolver, not a local UUID link.
+          if (Capacitor.isNativePlatform()) return;
           try {
             const match = await findWinerimWineForLabel({
               name: wineWithAffinity.nombre,
@@ -389,7 +392,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const winerimFichaUrl = winerimMatch ? buildWinerimWineUrl(winerimMatch.wine) : null;
+  const winerimFichaUrl = !Capacitor.isNativePlatform() && winerimMatch ? buildWinerimWineUrl(winerimMatch.wine) : null;
 
 
   const affinityDecision = typeof extractedWine?.matchrim_affinity === 'number'

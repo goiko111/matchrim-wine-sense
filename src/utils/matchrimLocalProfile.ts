@@ -1,6 +1,6 @@
 // Reads the locally-stored Matchrim quiz result so anonymous users can still
-// get personalized scanner recommendations. Always returns values normalized
-// to integers 1-5 (or null if any axis is missing/invalid).
+// get personalized scanner recommendations. Quiz vectors include zero;
+// legacy positive scales normalize to integers 1-5. Missing/invalid axes fail closed.
 
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 
@@ -12,7 +12,8 @@ const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(ma
 
 const toScale5 = (value: unknown): number | null => {
   const n = optionalScanNumber(value);
-  if (n === null) return null;
+  if (n === null || n < 0) return null;
+  if (n === 0) return 0;
   let v = n;
   if (v > 10) v = v / 20;
   else if (v > 5) v = v / 2;
