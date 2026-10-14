@@ -9,7 +9,7 @@ import { getDiverseWineRecommendations, UserProfile, WineRecommendation } from '
 import { generateWineStyles } from '@/utils/profileUtils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Wine } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Loader2, Wine } from 'lucide-react';
 import AppNav from '@/components/AppNav';
 import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
 import MobileBottomNav from '@/components/MobileBottomNav';
@@ -32,6 +32,13 @@ const MatchrimSession = () => {
   const isNative = Capacitor.isNativePlatform();
   const hasStartedQuiz = useRef(false);
   const nativeSubmissionPending = useRef(false);
+  const [nativeSaveStatus, setNativeSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'unconfirmed'>('idle');
+  const saveLifetime = useRef({ active: true, generation: 0 });
+  useEffect(() => {
+    const lifetime = saveLifetime.current;
+    lifetime.active = true;
+    return () => { lifetime.active = false; lifetime.generation += 1; };
+  }, []);
 
   // Load saved quiz results on mount
   useEffect(() => {
@@ -92,7 +99,17 @@ const MatchrimSession = () => {
 
       // Save results based on user authentication status
       if (user) {
-        saveQuizResult(result, newAnswers);
+        if (!isNative) saveQuizResult(result, newAnswers);
+        else {
+          setNativeSaveStatus('saving');
+          const generation = ++saveLifetime.current.generation;
+          const settle = (confirmed: boolean) => {
+            if (saveLifetime.current.active && saveLifetime.current.generation === generation) {
+              setNativeSaveStatus(confirmed ? 'saved' : 'unconfirmed');
+            }
+          };
+          void saveQuizResult(result, newAnswers).then(id => settle(Boolean(id))).catch(() => settle(false));
+        }
       } else {
         localStorage.setItem('matchrim_quiz_result', JSON.stringify(result));
         localStorage.setItem('matchrim_quiz_answers', JSON.stringify(newAnswers));
@@ -117,6 +134,9 @@ const MatchrimSession = () => {
   };
 
   const handleRestartQuiz = () => {
+    if (isNative && (isSaving || nativeSaveStatus === 'saving')) return;
+    saveLifetime.current.generation += 1;
+    setNativeSaveStatus('idle');
     hasStartedQuiz.current = true;
     nativeSubmissionPending.current = false;
     // Clear localStorage for anonymous users
@@ -272,6 +292,20 @@ const MatchrimSession = () => {
         )}
 
         {currentStep === 'results' && quizResult && (
+          <>
+          {isNative && user && nativeSaveStatus !== 'idle' && <section
+            className="mx-auto mb-5 max-w-2xl border-y border-slate-200 py-3 text-sm text-slate-700"
+            role="status" aria-live="polite" aria-atomic="true" aria-busy={nativeSaveStatus === 'saving'}
+          >
+            <p className="flex items-start gap-2">
+              {nativeSaveStatus === 'saving' && <Loader2 className="mt-0.5 h-4 w-4 shrink-0 animate-spin" aria-hidden="true" />}
+              {nativeSaveStatus === 'saved' && <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" aria-hidden="true" />}
+              {nativeSaveStatus === 'saving' ? 'Guardando tu perfil en la cuenta...'
+                : nativeSaveStatus === 'saved' ? 'Perfil guardado en tu cuenta.'
+                  : 'No hemos podido confirmar el guardado. Revisa tu perfil antes de repetir el test.'}
+            </p>
+            {nativeSaveStatus === 'unconfirmed' && <Button variant="outline" className="mt-3 min-h-11" onClick={() => navigate('/profile')}>Revisar mi perfil</Button>}
+          </section>}
           <QuizResults
             result={quizResult}
             description={getProfileDescription(quizResult)}
@@ -279,7 +313,9 @@ const MatchrimSession = () => {
             onRestart={handleRestartQuiz}
             isLoggedIn={!!user}
             returnTo={returnTo}
+            restartDisabled={isNative && (isSaving || nativeSaveStatus === 'saving')}
           />
+          </>
         )}
 
         {currentStep === 'limit-reached' && (

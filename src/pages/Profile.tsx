@@ -53,19 +53,19 @@ type StyleRangeKey = 'P' | 'A' | 'D' | 'T' | 'Af';
 const MAX_PROFILE_FACET_CARDS = 6;
 const MAX_PROFILE_WINE_CARDS = 3;
 
-const clampProfileValue = (value: unknown, fallback = 3) => {
+const clampProfileValue = (value: unknown, fallback = 3, minimum = 1) => {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) return fallback;
-  return Math.max(1, Math.min(5, numeric));
+  return Math.max(minimum, Math.min(5, numeric));
 };
 
-const normalizeProfileForDisplay = <T extends MatchrimProfileLike>(profile: T): T => ({
+const normalizeProfileForDisplay = <T extends MatchrimProfileLike>(profile: T, preserveQuizRange = false): T => ({
   ...profile,
-  potente: Math.round(clampProfileValue(profile.potente) * 10) / 10,
-  acidez: Math.round(clampProfileValue(profile.acidez) * 10) / 10,
-  dulce: Math.round(clampProfileValue(profile.dulce) * 10) / 10,
-  tanico: Math.round(clampProfileValue(profile.tanico) * 10) / 10,
-  afrutado: Math.round(clampProfileValue(profile.afrutado) * 10) / 10,
+  potente: Math.round(clampProfileValue(profile.potente, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
+  acidez: Math.round(clampProfileValue(profile.acidez, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
+  dulce: Math.round(clampProfileValue(profile.dulce, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
+  tanico: Math.round(clampProfileValue(profile.tanico, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
+  afrutado: Math.round(clampProfileValue(profile.afrutado, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
 });
 
 const normalizeProfileForClassifier = (profile: MatchrimProfileLike): MatchrimProfileLike => ({
@@ -75,6 +75,10 @@ const normalizeProfileForClassifier = (profile: MatchrimProfileLike): MatchrimPr
   tanico: Math.round(clampProfileValue(profile.tanico)),
   afrutado: Math.round(clampProfileValue(profile.afrutado)),
 });
+
+// Native affinity uses the learned vector; web and passport classification keep their legacy rounding.
+const selectProfileWineQuery = (profile: MatchrimProfileLike, native: boolean): MatchrimProfileLike =>
+  native ? profile : normalizeProfileForClassifier(profile);
 
 const getSafeProfileStyles = (profile: MatchrimProfileLike | null): string[] => {
   if (!profile) return [];
@@ -356,15 +360,19 @@ const Profile = () => {
     ? learnedProfile.profile
     : currentProfile;
   const activeDisplayProfile = useMemo(
-    () => activeProfile ? normalizeProfileForDisplay(activeProfile) : null,
+    () => activeProfile ? normalizeProfileForDisplay(activeProfile, Capacitor.isNativePlatform()) : null,
     [activeProfile]
   );
   const activeClassifierProfile = useMemo(
     () => activeProfile ? normalizeProfileForClassifier(activeProfile) : null,
     [activeProfile]
   );
+  const wineQueryProfile = useMemo(
+    () => activeProfile ? selectProfileWineQuery(activeProfile, Capacitor.isNativePlatform()) : null,
+    [activeProfile]
+  );
   const currentDisplayProfile = useMemo(
-    () => currentProfile ? normalizeProfileForDisplay(currentProfile) : null,
+    () => currentProfile ? normalizeProfileForDisplay(currentProfile, Capacitor.isNativePlatform()) : null,
     [currentProfile]
   );
   const passportProfile = useMemo(
@@ -477,7 +485,7 @@ const Profile = () => {
   }, [currentProfile, wineStyles]);
 
   useEffect(() => {
-    if (!activeClassifierProfile) {
+    if (!wineQueryProfile) {
       setProfileWinerimWines([]);
       setProfileWinerimError(null);
       return;
@@ -488,7 +496,7 @@ const Profile = () => {
       setLoadingProfileWinerimWines(true);
       setProfileWinerimError(null);
 
-      fetchWinesByAttributes(activeClassifierProfile, {
+      fetchWinesByAttributes(wineQueryProfile, {
         affinityCalibrationConfidence: learnedProfile?.confidence ?? 0,
       })
         .then((wines) => {
@@ -518,7 +526,7 @@ const Profile = () => {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [activeClassifierProfile, learnedProfile?.confidence, profileWinerimRetryKey]);
+  }, [wineQueryProfile, learnedProfile?.confidence, profileWinerimRetryKey]);
 
   const chartData = currentDisplayProfile && activeDisplayProfile ? [
     { attribute: "Potente", baseValue: currentDisplayProfile.potente, activeValue: activeDisplayProfile.potente },

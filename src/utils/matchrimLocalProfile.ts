@@ -2,7 +2,8 @@
 // get personalized scanner recommendations. Quiz vectors include zero;
 // legacy positive scales normalize to integers 1-5. Missing/invalid axes fail closed.
 
-import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
+import { Capacitor } from '@capacitor/core';
+import { normalizeScanSensoryValue, optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 
 const KEYS = ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'] as const;
 
@@ -20,7 +21,7 @@ const toScale5 = (value: unknown): number | null => {
   return clamp(Math.round(v), 1, 5);
 };
 
-export const readMatchrimLocalProfile = (): MatchrimLocalProfile | null => {
+export const readMatchrimLocalProfile = (preserveContinuous = Capacitor.isNativePlatform()): MatchrimLocalProfile | null => {
   try {
     if (typeof localStorage === 'undefined') return null;
     const raw = localStorage.getItem('matchrim_quiz_result');
@@ -28,7 +29,10 @@ export const readMatchrimLocalProfile = (): MatchrimLocalProfile | null => {
     const parsed = JSON.parse(raw) as Record<string, unknown>;
     const out: Partial<MatchrimLocalProfile> = {};
     for (const k of KEYS) {
-      const v = toScale5(parsed?.[k]);
+      const numeric = optionalScanNumber(parsed?.[k]);
+      const v = preserveContinuous
+        ? numeric === null || numeric < 0 ? null : numeric <= 5 ? numeric : normalizeScanSensoryValue(numeric)
+        : toScale5(parsed?.[k]);
       if (v == null) return null;
       out[k] = v;
     }

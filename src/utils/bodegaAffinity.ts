@@ -5,7 +5,6 @@ import type { MatchrimProfileLike } from './matchrimPassport';
 import type { TrainableWine } from './matchrimLearning';
 import type { WineAttributeInput } from './wineAffinityExplanation';
 import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
-import { hasStoredMenuCatalogEvidence } from './menuWineSave';
 
 export interface CellarAffinityWine {
   name: string;
@@ -62,9 +61,7 @@ export const readCellarSensoryEvidence = (wine: CellarAffinityWine) => {
   const trace = evidenceSchema.safeParse(details?.bodega_sensory_evidence);
   if (trace.success && trace.data.identity_signature === identitySignature(wine)
     && trace.data.attribute_signature === attributesSignature(attributes)) return attributes;
-  if (details && Object.prototype.hasOwnProperty.call(details, 'bodega_sensory_evidence')) return null;
-  // Older menu saves already carry a separate canonical/sensory evidence contract.
-  if (hasStoredMenuCatalogEvidence(wine.place_details)) return attributes;
+  // Legacy menu metadata does not bind identity or attributes; require reverification.
   return null;
 };
 
@@ -79,10 +76,13 @@ export const cellarTrainingRows = (rows: TrainableWine[], strict: boolean): Trai
   if (!strict) return rows;
   return rows.filter(isVerifiedCellarTrainingWine).map(wine => {
     const details = record(record(wine)?.place_details);
+    const attributes = normalizeWineAttributesForInsight(readCellarSensoryEvidence(wine as unknown as CellarAffinityWine))!;
     const raw = details?.matchrim_rating_at;
     const timestamp = typeof raw === 'string' && Number.isFinite(Date.parse(raw)) ? raw : null;
     // Metadata edits are not a new tasting; unknown historic rating dates stay unknown.
-    return { ...wine, created_at: timestamp, updated_at: timestamp };
+    return { ...wine, sensory_attributes: { potencia: attributes.potente, acidez: attributes.acidez,
+      dulzura: attributes.dulce, taninos: attributes.tanico, afrutado: attributes.afrutado },
+      created_at: timestamp, updated_at: timestamp };
   });
 };
 

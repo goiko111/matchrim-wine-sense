@@ -40,6 +40,7 @@ interface QuizResultsProps {
   onRestart: () => void;
   isLoggedIn: boolean;
   returnTo?: string | null;
+  restartDisabled?: boolean;
 }
 
 // Función para generar descripción emocional basada en el radar de atributos
@@ -84,7 +85,7 @@ const generateEmotionalDescription = (result: QuizResult): string => {
   return description;
 };
 
-const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart, isLoggedIn, returnTo }) => {
+const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart, isLoggedIn, returnTo, restartDisabled = false }) => {
   const navigate = useNavigate();
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
@@ -1283,6 +1284,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
         )}
         <Button
           onClick={onRestart}
+          disabled={restartDisabled}
           className="bg-red-700 hover:bg-red-800 text-white flex items-center gap-2"
         >
           Reiniciar Test

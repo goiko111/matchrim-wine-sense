@@ -71,7 +71,7 @@ const clamp = (value: number, min = 0, max = 5) => Math.max(min, Math.min(max, v
 
 const normalizeSensoryValue = (value: unknown) => {
   const numeric = optionalScanNumber(value);
-  if (numeric === null) return null;
+  if (numeric === null || numeric < 0) return null;
   let v = numeric;
   if (v > 10) v = v / 20; // legacy 0-100
   else if (v > 5) v = v / 2; // legacy 0-10

@@ -6,6 +6,7 @@ import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { findOriginalWinerimWineForLabel, findWinerimWineForLabel } from '@/services/winerimApi';
 import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
+import { normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AppNav from "@/components/AppNav";
@@ -186,6 +187,11 @@ const normalizeAttributeTo5 = (value: unknown) => {
 const normalizeSensoryAttributesTo5 = (attributes: unknown) => {
   if (!attributes || typeof attributes !== 'object' || Array.isArray(attributes)) return null;
   const attrs = attributes as Record<string, unknown>;
+  if (Capacitor.isNativePlatform()) {
+    const known = normalizeWineAttributesForInsight(attrs);
+    return known ? { potencia: known.potente, acidez: known.acidez, dulzura: known.dulce,
+      taninos: known.tanico, afrutado: known.afrutado } : null;
+  }
   const normalized = {
     potencia: normalizeAttributeTo5(attrs.potencia),
     acidez: normalizeAttributeTo5(attrs.acidez),

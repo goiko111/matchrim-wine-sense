@@ -36,7 +36,7 @@ const clamp = (value: number, min = 0, max = 5) => Math.max(min, Math.min(max, v
 
 const normalizeSensoryValue = (value: unknown) => {
   const numeric = optionalScanNumber(value);
-  if (numeric === null) return null;
+  if (numeric === null || numeric < 0) return null;
   const scaled = numeric > 10 ? numeric / 20 : numeric > 5 ? numeric / 2 : numeric;
   return clamp(Math.round(scaled), 1, 5);
 };

@@ -37,10 +37,17 @@ const build84Changes = new Set(['src/components/MatchrimFunction.tsx', 'src/comp
   'src/components/wine-import/WineSearchBar.tsx', 'src/pages/LiquidIntelligence.tsx', 'src/pages/Index.tsx',
   'src/pages/Profile.tsx', 'src/services/matchrimScanProfile.ts', 'src/utils/winerimLabelIdentity.ts',
   'src/utils/labelScanSave.ts', 'src/utils/matchrimEdgeRouting.ts', 'src/components/NativeAppHome.tsx']);
+const build85LearningPath = 'supabase/functions/_shared/matchrim-learning.ts';
+const build85Changes = new Set(['src/components/QuizResults.tsx']);
+const priorLearning = execFileSync('git', ['show', `598dda8:${build85LearningPath}`], { encoding: 'utf8' });
+assert.equal(readFileSync(build85LearningPath, 'utf8'), priorLearning.replace(
+  'if (numeric === null) return null;', 'if (numeric === null || numeric < 0) return null;'),
+  'Only the negative-sensory guard changes the shared learner; formulas and weights remain identical');
 let immutableCount = 0;
 for (const row of manifest.productSourceFingerprints as Array<{ path: string; sha256: string }>) {
   assert.equal(hash(execFileSync('git', ['show', `${snapshot}:${row.path}`])), row.sha256, `Snapshot hash: ${row.path}`);
-  if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && !build84Changes.has(row.path) && row.path !== 'package.json') {
+  if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && !build84Changes.has(row.path)
+    && !build85Changes.has(row.path) && row.path !== build85LearningPath && row.path !== 'package.json') {
     const expected = localPricePaths.has(row.path)
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256;
     assert.equal(hash(readFileSync(row.path)), expected, `Protected source: ${row.path}`);

@@ -43,7 +43,10 @@ const ATTRIBUTE_LABELS: Record<AttributeKey, string> = {
   afrutado: 'fruta',
 };
 
-const clampAttribute = normalizeScanSensoryValue;
+const clampAttribute = (value: unknown) => {
+  const numeric = optionalScanNumber(value);
+  return numeric === null || numeric < 0 ? null : normalizeScanSensoryValue(numeric);
+};
 const normalizeProfileAttribute = (value: unknown) => {
   const known = optionalScanNumber(value);
   if (known === null || known < 0) return null;
@@ -258,7 +261,8 @@ export const buildDetailedAffinityExplanation = (
     inference: 0.58,
     preference: 0.9,
   };
-  const identification = Math.max(0, Math.min(1, options.identificationConfidence ?? 0.65));
+  const rawIdentification = options.identificationConfidence ?? 0.65;
+  const identification = Number.isFinite(rawIdentification) ? Math.max(0, Math.min(1, rawIdentification)) : 0;
   const confidence = Math.round(Math.min(identification, sourceReliability[sensorySource]) * 100) / 100;
   const coreDimensions = base.insights.map((insight) => {
     const alignment = Math.round(Math.max(0, 1 - insight.delta / 4) * 100);
@@ -332,7 +336,7 @@ export const buildDetailedAffinityExplanation = (
     .sort((a, b) => (b.delta ?? 0) - (a.delta ?? 0))
     .slice(0, 3)
     .map((dimension) => dimension.text);
-  const score = typeof options.score === 'number'
+  const score = typeof options.score === 'number' && Number.isFinite(options.score)
     ? Math.max(0, Math.min(100, Math.round(options.score)))
     : null;
   const measuredDeltas = dimensions.flatMap((dimension) => dimension.delta === null ? [] : [dimension.delta]);
