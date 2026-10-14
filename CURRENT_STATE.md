@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-14, native84 cellar and restaurant context
+
+- Product598dda8: verified initial/current affinity, immutable history, same native recommendation scorer, exclusion-preserving feedback, rating/stock/consumption separation, safe-area/keyboard form fixes and account-scoped dual restaurant menus. Public web and production functions unchanged.
+- Restored real benchmark200/200 complete:493newPOSTs,94raw recognized/96uncertain/9unrecognized/1deferred, p50=9235ms/p95=16656ms. Zero local canonical links; no full precision/recall/human-affinity approval. Corpus mostly catalog single-bottle shots, not dense/menu/board coverage.
+- Four new real technical QA accounts and195Auth/RLS checks; actual simulator logins/profiles separated. One real saved synthetic wine starts69. Focused UI evolution PASS:76after rating,69on removal/exclusion, edits preserve exclusion,76on re-inclusion/reopen; initial69unchanged.30source contracts/12helpers/10new cellar contracts,15browser phase groups,36restaurant UI checks and final release/typecheck/lint/buildPASS; lint106existing warnings.
+- Three real anonymous restaurant text probes; personal-experience claim found and blocked in final contract. Isolated search-wines-qa84v3, schema matchrim_qa, no old100-account or production changes. Simulator/signed generic-device84QA builds ready; physical82 baseline retained, phone went offline before QA84 install. No TestFlight/publicpush/deploy; [checkpoint and exact gates](docs/MATCHRIM_84_BODEGA_RESTAURANT_QA_2026-10-14.md).
+- Separate production1.0(84) archived/distribution-exported from598dda8,385/385signature/profile/resource checksPASS, SHA7ee6bac87d5fe5ffad3de5ecc9de9c06303b4bc91b1b7419d786c6890f28ca03. Not uploaded/physically approved. Staging simulator is not this production IPA; physical, original-fiche, recognition/human and external-review gates remain distinct.
+
 ## Latest checkpoint: 2026-10-14, native remediation / candidate83
 
 - Native keyboard/manual-edit/aiRIM safe areas,44px targets, route scroll, restaurant padding and sticky result tabs implemented. Simulator8/8PASS with actual keyboard/preview OK, inputy330..375above573keyboard; five cold launches max2.930698s. Physical phone still82; fixture simulator is NOT an OCR-accurate release.
