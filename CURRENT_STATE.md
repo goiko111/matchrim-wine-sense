@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-14, broad agent-driven physical QA /82 unchanged
+
+-13 distinct native product methods completed,49 private exported screenshots; execution coverage, NOT global QA green. Main navigation, compare2-5/service, profile/history/five cellar lists, five scan modes, camera/gallery open-cancel, restaurant opt-in/privacy and profile memory verified. Three actual cold launches2.370-2.444s. Four pure/recorded suites PASS, not human/vision metrics.
+- P1 manual input y-93 remains; new P1 aiRIM back/header y-54/y-32 after keyboard, with one tap opening iOS TestFlight return. P2 food/profile40pt targets, remote result tabs, restaurant safe-top/return-scroll; singular copy P3. No app UI/source fix/newrelease yet.
+- Initial selector/tree/scroll failures are instrument defects, corrected with verified reruns. Landscape actual window did not rotate; cause unknown. Spoken VoiceOver, full large type, remaining real inputs, hosted mutations/resilience and native memory/intelligence gates remain. Passive capture status stale after09:04, not continuous supervision/full console.
+- [Broad physical matrix/findings](docs/MATCHRIM_82_PHYSICAL_BROAD_QA_2026-10-14.md). Owner stored data unchanged;82 still installed. No web/backend/deploy/vision/upload/public push. External invitation still UNSENT; next internal gate is native P1 remediation and focused physical rerun.
+
 ## Latest checkpoint: 2026-10-14, physical control demonstrated / P1 keyboard bug
 
 - Owner manual Pariente edit observed:Manual/no old75%/affinity pending. Owner reports poor correction discoverability and keyboard jump; one real qualitative user observation, not synthetic cohort evidence.

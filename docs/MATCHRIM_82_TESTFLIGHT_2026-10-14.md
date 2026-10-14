@@ -1,5 +1,11 @@
 # Matchrim1.0(82): TestFlight upload and physical monitoring handoff
 
+## Follow-up08:48-09:35: broad agent-driven physical QA
+
+The [new physical matrix](MATCHRIM_82_PHYSICAL_BROAD_QA_2026-10-14.md) supersedes the older pending owner-action descriptions for the cases actually executed.13 native product methods completed;49 private screenshots; main/subsection navigation, compare bounds/service, real profile memory, camera/gallery cancellation, restaurant opt-in/privacy and3 cold launches verified. Not a global QA PASS: manual editor remains failed and aiRIM keyboard/header displacement is newly reproduced. Initial AX/selector/scroll failures are separately documented as instrumental, not app bugs. Landscape not applied by the physical device, cause unknown; remaining recognition/intelligence/mutation/resilience/accessibility/native-memory gates remain.
+
+82 remains installed; no new build/upload, owner stored-data mutation, vision request, web/backend deployment, public push or invitation. Passive capture stopped updating09:04 despite stale running status; do not describe it as ongoing/full console/AI supervision. See private summary-final.json for exact receipts and scope.
+
 ## Follow-up08:05-08:26: real agent control / keyboard regression
 
 - Owner manual Pariente correction now observed:Manual provenance, stale75% withheld, affinity pending. Owner feedback:undiscoverable editing and bad keyboard position. No verified canonical identity/recommendation outcome from manual entry.
