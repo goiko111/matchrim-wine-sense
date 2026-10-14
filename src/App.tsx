@@ -1,7 +1,9 @@
 
-import { lazy, Suspense, useLayoutEffect, type ReactNode } from 'react';
+import { lazy, Suspense, useEffect, useState, useLayoutEffect, type ReactNode } from 'react';
 import { Capacitor } from '@capacitor/core';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { ArrowLeft, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AccountNotifications from '@/components/AccountNotifications';
 import { AuthProvider } from '@/contexts/AuthContext';
@@ -37,6 +39,27 @@ const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 
 function PageFallback() {
+  const isNative = Capacitor.isNativePlatform();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [delayed, setDelayed] = useState(false);
+  useEffect(() => {
+    setDelayed(false);
+    if (!isNative) return;
+    const timer = window.setTimeout(() => setDelayed(true), 10000);
+    return () => window.clearTimeout(timer);
+  }, [isNative, location.pathname, location.search]);
+  if (isNative) return (
+    <main className="matchrim-native-safe-x flex min-h-screen items-center justify-center bg-slate-50 px-5 pt-[var(--matchrim-safe-top)] pb-[var(--matchrim-safe-bottom)]">
+      <div className="w-full max-w-sm space-y-4 text-center">
+        <p role="status" className="text-slate-700">{delayed ? 'Esta pantalla est\u00e1 tardando m\u00e1s de lo esperado.' : 'Cargando Matchrim...'}</p>
+        {delayed && <div className="flex flex-wrap justify-center gap-3">
+          <Button variant="outline" onClick={() => navigate('/', { replace: true })}><ArrowLeft className="mr-2 h-4 w-4" />Inicio</Button>
+          <Button onClick={() => window.location.reload()}><RefreshCw className="mr-2 h-4 w-4" />Reintentar</Button>
+        </div>}
+      </div>
+    </main>
+  );
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20">
       <p className="text-muted-foreground">Cargando Matchrim...</p>

@@ -1,4 +1,11 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { Capacitor } from '@capacitor/core';
+import { CellarWineAffinity } from '@/components/CellarWineAffinity';
+import { cellarAffinityView, makeCellarCatalogEvidence, readCellarInitialAffinity, readCellarSensoryEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
+import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
+import type { ScanProfileSnapshot } from '@/utils/scanProfile';
+import { findOriginalWinerimWineForLabel, findWinerimWineForLabel } from '@/services/winerimApi';
+import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AppNav from "@/components/AppNav";
@@ -42,6 +49,7 @@ import {
   Sparkles,
   CheckCircle,
   AlertCircle,
+  Utensils,
 } from "lucide-react";
 import {
   Dialog,
@@ -202,7 +210,8 @@ const normalizeUserWine = (wine: UserWine): UserWine => {
   const trace = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
     ? wine.place_details.menu_wine_evidence : null;
   const calibrated = !menuPrice || (trace && typeof trace === 'object' && !Array.isArray(trace) && trace.affinity_calibrated === true);
-  const sensory = catalog ? normalizeSensoryAttributesTo5(wine.sensory_attributes) : null;
+  const sensory = catalog && (!Capacitor.isNativePlatform() || readCellarSensoryEvidence(wine))
+    ? normalizeSensoryAttributesTo5(wine.sensory_attributes) : null;
   return {
     ...wine,
     price: menuPrice ? menuPrice.price : wine.price,
@@ -227,6 +236,7 @@ const getStoredAffinityTrace = (wine: UserWine) => {
 };
 
 const MyWinesForOwner = () => {
+  const isNative = Capacitor.isNativePlatform();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -235,6 +245,8 @@ const MyWinesForOwner = () => {
   const initialSection = sectionFromRoute(section);
   const [wines, setWines] = useState<UserWine[]>([]);
   const [learningWines, setLearningWines] = useState<LearningWine[]>([]);
+  const [cellarProfile, setCellarProfile] = useState<ScanProfileSnapshot | null>(null);
+  const cellarProfileController = useRef<AbortController | null>(null);
   const [filteredWines, setFilteredWines] = useState<UserWine[]>([]);
   const [loading, setLoading] = useState(true);
   const [wineLoadFailed, setWineLoadFailed] = useState(false);
@@ -259,6 +271,7 @@ const MyWinesForOwner = () => {
       wineLoadController.current?.abort();
       countLoadController.current?.abort();
       learningLoadController.current?.abort();
+      cellarProfileController.current?.abort();
     };
   }, []);
   useEffect(() => {
@@ -359,7 +372,7 @@ const MyWinesForOwner = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [wines, filterType]);
+  }, [wines, filterType, cellarProfile]);
 
   useEffect(() => {
     if (!showAddDialog) {
@@ -381,7 +394,8 @@ const MyWinesForOwner = () => {
 
     const timeout = window.setTimeout(async () => {
       try {
-        const { data, error } = await supabase.functions.invoke('search-wines', {
+        const { data, error } = await supabase.functions.invoke(isNative
+          ? resolveMatchrimEdgeFunctionName('search-wines', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE) : 'search-wines', {
           body: { query, limit: 6 },
         });
 
@@ -402,7 +416,7 @@ const MyWinesForOwner = () => {
       cancelled = true;
       window.clearTimeout(timeout);
     };
-  }, [formData.name, showAddDialog]);
+  }, [formData.name, showAddDialog, isNative]);
 
   const applyFilters = () => {
     let filtered = [...wines];
@@ -412,14 +426,32 @@ const MyWinesForOwner = () => {
         filtered = filtered.filter(w => w.is_favorite);
         break;
       case 'high_affinity':
-        filtered = filtered.filter(w => w.matchrim_affinity && w.matchrim_affinity >= 70);
-        filtered.sort((a, b) => (b.matchrim_affinity || 0) - (a.matchrim_affinity || 0));
+        filtered = filtered.filter(w => (isNative ? cellarAffinityView(w, cellarProfile).current : w.matchrim_affinity) !== null
+          && (isNative ? cellarAffinityView(w, cellarProfile).current! : w.matchrim_affinity!) >= 70);
+        filtered.sort((a, b) => ((isNative ? cellarAffinityView(b, cellarProfile).current : b.matchrim_affinity) ?? 0)
+          - ((isNative ? cellarAffinityView(a, cellarProfile).current : a.matchrim_affinity) ?? 0));
         break;
       default:
         filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     }
 
     setFilteredWines(filtered);
+  };
+
+  const loadCellarProfile = async () => {
+    const ownerId = user?.id;
+    if (!isNative || !ownerId || !ownerLifetime.current.active) return;
+    cellarProfileController.current?.abort();
+    const controller = new AbortController();
+    cellarProfileController.current = controller;
+    setCellarProfile(null);
+    try {
+      const snapshot = await loadMatchrimScanProfile(ownerId, controller.signal);
+      if (!controller.signal.aborted && ownerLifetime.current.active && currentOwner.current === ownerId
+        && cellarProfileController.current === controller) setCellarProfile(snapshot);
+    } catch (error) {
+      if (!controller.signal.aborted) console.error('Error loading cellar profile:', error);
+    }
   };
 
   const loadSectionCounts = async () => {
@@ -516,7 +548,7 @@ const MyWinesForOwner = () => {
 	    try {
 	      const { data, error } = await supabase
 	        .from("user_wines")
-	        .select("id, name, rating, sensory_attributes, use_for_profile_training, grape_varieties, status, created_at, place_details")
+	        .select("id, name, producer, vintage, region, country, rating, sensory_attributes, use_for_profile_training, grape_varieties, status, created_at, updated_at, place_details")
 	        .eq("user_id", user.id)
 	        .not("rating", "is", null)
 	        .order("created_at", { ascending: false })
@@ -526,7 +558,7 @@ const MyWinesForOwner = () => {
 	      if (error) throw error;
 	      setLearningWines(((data as LearningWine[]) || []).map((wine) => ({
 	        ...wine,
-	        sensory_attributes: readMenuPrice(wine.place_details, null) && !hasStoredMenuCatalogEvidence(wine.place_details)
+	        sensory_attributes: (isNative && !readCellarSensoryEvidence(wine)) || (readMenuPrice(wine.place_details, null) && !hasStoredMenuCatalogEvidence(wine.place_details))
             ? null : normalizeSensoryAttributesTo5(wine.sensory_attributes),
 	        use_for_profile_training: wine.use_for_profile_training && (!readMenuPrice(wine.place_details, null)
             || hasStoredMenuCatalogEvidence(wine.place_details)),
@@ -534,6 +566,8 @@ const MyWinesForOwner = () => {
 	    } catch (error) {
         if (!isCurrent()) return;
 	      console.error("Error loading learning wines:", error);
+	    } finally {
+        if (isCurrent()) void loadCellarProfile();
 	    }
 	  };
 
@@ -628,18 +662,22 @@ const MyWinesForOwner = () => {
     }
 
     setSaving(true);
+    const ownerId = user.id;
+    const generation = ownerLifetime.current.generation;
+    const isCurrent = () => ownerLifetime.current.active && currentOwner.current === ownerId
+      && ownerLifetime.current.generation === generation;
     try {
       const saveStatus: WineStatus = statusFilter === 'favorites' || statusFilter === 'rejected'
         ? 'wishlist'
         : statusFilter;
-      const sensoryAttributes = normalizeSensoryAttributesTo5(extractedData?.sensory_attributes || null);
+      const sensoryAttributes = isNative ? null : normalizeSensoryAttributesTo5(extractedData?.sensory_attributes || null);
       const manualSource = manualWineSelectedFromResults
         ? 'manual_search_result'
         : manualWineNameConfirmed
           ? 'manual_user_verified'
           : 'manual';
       const wineData = {
-        user_id: user.id,
+        user_id: ownerId,
         name: formData.name,
         producer: formData.producer || null,
         vintage: formData.vintage ? parseInt(formData.vintage) : null,
@@ -652,7 +690,7 @@ const MyWinesForOwner = () => {
         tasting_notes: formData.tasting_notes || null,
         personal_note: formData.personal_note || null,
         image_url: extractedImageUrl || null,
-        matchrim_affinity: normalizeAffinity(extractedData?.matchrim_affinity) ?? null,
+        matchrim_affinity: isNative ? null : normalizeAffinity(extractedData?.matchrim_affinity) ?? null,
         sensory_attributes: sensoryAttributes as Json,
         status: saveStatus,
         quantity: saveStatus === 'collection' ? parseInt(formData.quantity) || 1 : null,
@@ -682,10 +720,13 @@ const MyWinesForOwner = () => {
         .select()
         .single();
 
+      if (!isCurrent()) return;
       if (error) throw error;
 
       // Calculate affinity in background
-      if (insertedWine && (saveStatus === 'collection' || saveStatus === 'tasted') && !extractedData?.matchrim_affinity) {
+      if (isNative && insertedWine) {
+        await resolveCellarWine(normalizeUserWine(insertedWine as UserWine), 'saved');
+      } else if (insertedWine && (saveStatus === 'collection' || saveStatus === 'tasted') && !extractedData?.matchrim_affinity) {
         supabase.functions
           .invoke(resolveMatchrimEdgeFunctionName("calculate-wine-affinity", import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
             body: { wine_id: insertedWine.id }
@@ -710,6 +751,7 @@ const MyWinesForOwner = () => {
           });
       }
 
+      if (!isCurrent()) return;
       toast.success("Vino añadido exitosamente");
       trackAppEvent("wine_saved", {
         userId: user.id,
@@ -727,10 +769,11 @@ const MyWinesForOwner = () => {
 	      loadLearningWines();
       if (isAddWineRoute) navigateToWineSection(saveStatus);
 	    } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error saving wine:", error);
       toast.error("Error al guardar el vino");
     } finally {
-      setSaving(false);
+      if (isCurrent()) setSaving(false);
     }
   };
 
@@ -740,13 +783,18 @@ const MyWinesForOwner = () => {
       return;
     }
 
+    const ownerId = user?.id;
+    if (!ownerId || !ownerLifetime.current.active) return;
+    const generation = ownerLifetime.current.generation;
+    const isCurrent = () => ownerLifetime.current.active && currentOwner.current === ownerId
+      && ownerLifetime.current.generation === generation;
     setSaving(true);
     try {
       const saveStatus: WineStatus = statusFilter === 'favorites' || statusFilter === 'rejected'
         ? 'wishlist'
         : statusFilter;
       const wineData: any = {
-        user_id: user!.id,
+        user_id: ownerId,
         name: formData.name,
         producer: formData.producer || null,
         vintage: formData.vintage ? parseInt(formData.vintage) : null,
@@ -775,6 +823,7 @@ const MyWinesForOwner = () => {
 
       const { data: newWine, error } = await supabase.from("user_wines").insert([wineData]).select().single();
 
+      if (!isCurrent()) return;
       if (error) throw error;
 
       toast.success("¡Vino añadido!");
@@ -791,7 +840,9 @@ const MyWinesForOwner = () => {
       if (isAddWineRoute) navigateToWineSection(saveStatus);
 
       // Calculate affinity in background for collection and tasted wines
-      if (newWine && (saveStatus === 'collection' || saveStatus === 'tasted')) {
+      if (isNative && newWine) {
+        await resolveCellarWine(normalizeUserWine(newWine as UserWine), 'saved');
+      } else if (newWine && (saveStatus === 'collection' || saveStatus === 'tasted')) {
         toast.info("Calculando afinidad Matchrim...");
         const { data: affinityData, error: affinityError } = await supabase.functions.invoke(resolveMatchrimEdgeFunctionName('calculate-wine-affinity', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
           body: { wine_id: newWine.id }
@@ -808,10 +859,11 @@ const MyWinesForOwner = () => {
 	      loadWines();
 	      loadLearningWines();
 	    } catch (error) {
+      if (!isCurrent()) return;
       console.error("Error saving wine:", error);
       toast.error("Error al guardar el vino");
     } finally {
-      setSaving(false);
+      if (isCurrent()) setSaving(false);
     }
   };
 
@@ -864,6 +916,63 @@ const MyWinesForOwner = () => {
     };
   };
 
+  const resolveCellarWine = async (wine: UserWine, phase: 'saved' | 'first_verified' = 'first_verified') => {
+    const action = beginWineAction(wine.id);
+    if (!action) return;
+    try {
+      const match = await findWinerimWineForLabel({ name: wine.name, producer: wine.producer,
+        vintage: wine.vintage, region: wine.region });
+      if (!action.isCurrent()) return;
+      let catalog = match?.wine;
+      if (!catalog?.tastingAttributes) catalog = await findOriginalWinerimWineForLabel({
+        name: wine.name, producer: wine.producer, vintage: wine.vintage, region: wine.region, country: wine.country,
+      });
+      if (!action.isCurrent()) return;
+      const grounded = applyScanWineEvidence({ id: wine.id, name: wine.name, producer: wine.producer,
+        vintage: wine.vintage, region: wine.region, country: wine.country, grapes: wine.grape_varieties ?? [],
+        alcohol: wine.alcohol_content, source: 'inference', confidence: 1, evidence: [],
+        uncertaintyReasons: [], inferredFields: [], sensoryAttributes: null }, null, catalog);
+      const attributes = grounded.sensorySource === 'catalog' ? normalizeSensoryAttributesTo5(grounded.sensoryAttributes) : null;
+      const evidence = catalog?.id && attributes ? makeCellarCatalogEvidence(wine, catalog.id, attributes) : null;
+      if (!evidence || !attributes) {
+        toast.info('Vino guardado. No encontramos una ficha sensorial completa y verificable; afinidad pendiente.');
+        return;
+      }
+      const controller = new AbortController();
+      const snapshot = await loadMatchrimScanProfile(action.ownerId, controller.signal);
+      if (!action.isCurrent()) return;
+      const existing = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
+        ? wine.place_details : {};
+      const enriched = { ...wine, sensory_attributes: attributes,
+        place_details: { ...existing, bodega_sensory_evidence: evidence } };
+      const details = withCellarInitialAffinity(enriched, snapshot, phase);
+      const affinity = cellarAffinityView(enriched, snapshot).current;
+      const update = { sensory_attributes: attributes as Json, place_details: details,
+        matchrim_affinity: affinity, use_for_profile_training: Boolean(wine.rating && wine.use_for_profile_training) };
+      const { data, error } = await supabase.from('user_wines').update(update).eq('id', wine.id)
+        .eq('user_id', action.ownerId).select('id, sensory_attributes, place_details, matchrim_affinity, use_for_profile_training').single();
+      if (!action.isCurrent()) return;
+      if (error) throw error;
+      const persisted = { ...enriched, sensory_attributes: data?.sensory_attributes, place_details: data?.place_details };
+      if (!confirmsWineMutation(data, wine.id, { matchrim_affinity: affinity, use_for_profile_training: update.use_for_profile_training })
+        || !readCellarSensoryEvidence(persisted)
+        || JSON.stringify(readCellarInitialAffinity(persisted)) !== JSON.stringify(readCellarInitialAffinity({ ...enriched, place_details: details }))) {
+        throw new Error('Catalog enrichment not confirmed');
+      }
+      setCellarProfile(snapshot);
+      setWines(previous => previous.map(row => row.id === wine.id ? normalizeUserWine({ ...row, ...update }) : row));
+      toast.success(affinity === null ? 'Ficha sensorial verificada. Completa tu test para calcular afinidad.'
+        : `Afinidad ${phase === 'saved' ? 'inicial' : 'actual'}: ${affinity}%`);
+    } catch (error) {
+      if (action.isCurrent()) {
+        console.error('Error verifying cellar sensory record:', error);
+        toast.error('El vino sigue guardado. No se pudo verificar su ficha; puedes reintentarlo.');
+      }
+    } finally {
+      action.finish();
+    }
+  };
+
   const handleToggleProfileTraining = async (wineId: string, nextValue: boolean) => {
     if (!ownerLifetime.current.active) return;
     const wine = wines.find((item) => item.id === wineId);
@@ -881,22 +990,29 @@ const MyWinesForOwner = () => {
     const action = beginWineAction(wineId);
     if (!action) return;
     try {
+      const details = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
+        ? wine.place_details : {};
+      const trainingPolicy = nextValue ? 'included' : 'excluded';
+      const policyUpdate = isNative ? { place_details: { ...details, matchrim_training_policy: trainingPolicy } as Json } : {};
       const { data, error } = await supabase
         .from("user_wines")
-        .update({ use_for_profile_training: nextValue })
+        .update({ use_for_profile_training: nextValue, ...policyUpdate })
         .eq("id", wineId)
         .eq("user_id", action.ownerId)
-        .select('id, use_for_profile_training').single();
+        .select('id, use_for_profile_training, place_details').single();
 
       if (!action.isCurrent()) return;
       if (error) throw error;
       if (!confirmsWineMutation(data, wineId, { use_for_profile_training: nextValue })) {
         throw new Error('Training update not confirmed');
       }
+      const actualPolicy = data.place_details && typeof data.place_details === 'object' && !Array.isArray(data.place_details)
+        ? data.place_details.matchrim_training_policy : null;
+      if (isNative && actualPolicy !== trainingPolicy) throw new Error('Training policy not confirmed');
 
       setWines((currentWines) =>
         currentWines.map((item) =>
-          item.id === wineId ? { ...item, use_for_profile_training: nextValue } : item
+          item.id === wineId ? { ...item, use_for_profile_training: nextValue, ...policyUpdate } : item
         )
       );
 
@@ -918,6 +1034,10 @@ const MyWinesForOwner = () => {
       const wine = wines.find(w => w.id === wineId);
       if (!wine) throw new Error('Wine unavailable for rating');
       const hasSensoryAttributes = Boolean(normalizeSensoryAttributesTo5(wine.sensory_attributes));
+      const priorDetails = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
+        ? wine.place_details : {};
+      const excluded = priorDetails.matchrim_training_policy === 'excluded'
+        || (Boolean(wine.rating) && wine.use_for_profile_training === false && priorDetails.matchrim_training_policy !== 'included');
       
       const updateData: {
         rating: typeof rating;
@@ -925,15 +1045,21 @@ const MyWinesForOwner = () => {
         status?: 'tasted';
         consumption_date?: string;
         quantity?: number;
-      } = { rating, use_for_profile_training: rating !== null && (!readMenuPrice(wine.place_details, wine.price) || hasSensoryAttributes) };
+        place_details?: Json;
+      } = { rating, use_for_profile_training: rating !== null && (isNative ? hasSensoryAttributes && !excluded
+        : !readMenuPrice(wine.place_details, wine.price) || hasSensoryAttributes) };
+      if (isNative) {
+        updateData.place_details = { ...priorDetails, matchrim_rating_at: rating === null ? null : new Date().toISOString(),
+          ...(excluded ? { matchrim_training_policy: 'excluded' } : {}) };
+      }
       
       if (rating && wine?.status === 'wishlist') {
         updateData.status = 'tasted';
-        updateData.consumption_date = new Date().toISOString();
+        if (!isNative) updateData.consumption_date = new Date().toISOString();
       }
 
       // If rating from collection, optionally decrement quantity
-      if (rating && wine?.status === 'collection' && !wine.rating && wine.quantity && wine.quantity > 0) {
+      if (!isNative && rating && wine?.status === 'collection' && !wine.rating && wine.quantity && wine.quantity > 0) {
         updateData.quantity = wine.quantity - 1;
         if (wine.quantity === 1) {
           updateData.status = 'tasted';
@@ -946,13 +1072,20 @@ const MyWinesForOwner = () => {
         .update(updateData)
         .eq("id", wineId)
         .eq("user_id", action.ownerId)
-        .select('id, rating, use_for_profile_training, status, quantity, consumption_date').single();
+        .select('id, rating, use_for_profile_training, status, quantity, consumption_date, place_details').single();
 
       if (!action.isCurrent()) return;
       if (error) throw error;
-      if (!confirmsWineMutation(data, wineId, updateData)) throw new Error('Rating update not confirmed');
+      const { place_details: ratingDetails, ...scalarUpdate } = updateData;
+      const actualDetails = data?.place_details && typeof data.place_details === 'object' && !Array.isArray(data.place_details)
+        ? data.place_details : null;
+      if (!confirmsWineMutation(data, wineId, scalarUpdate)
+        || (ratingDetails && actualDetails?.matchrim_rating_at !== (ratingDetails as Record<string, Json>).matchrim_rating_at)) {
+        throw new Error('Rating update not confirmed');
+      }
 
-      const message = wine?.status === 'collection' && !wine.rating
+      const message = isNative && wine.status === 'collection' ? 'Valoraci\u00f3n guardada; stock sin cambios'
+        : wine?.status === 'collection' && !wine.rating
         ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' y movido a Ya Probados'}`
         : rating && wine.status === 'wishlist'
           ? 'Vino movido a Ya Probados'
@@ -984,7 +1117,7 @@ const MyWinesForOwner = () => {
         navigateToWineSection(rating === 'not_for_me' ? 'rejected' : 'tasted');
       }
 
-      supabase.functions
+      if (!isNative) supabase.functions
         .invoke(resolveMatchrimEdgeFunctionName("calculate-wine-affinity", import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
           body: { wine_id: wineId }
         })
@@ -1086,9 +1219,9 @@ const MyWinesForOwner = () => {
 	    wine.grape_varieties?.join(', '),
 	  ].filter(Boolean).join(' · ');
 
-	  const askAiRimAboutWine = (wine: UserWine, intent: 'fit' | 'similar') => {
+	  const askAiRimAboutWine = (wine: UserWine, intent: 'fit' | 'similar' | 'dish') => {
 	    const winePrompt = encodeURIComponent(buildWinePrompt(wine));
-	    const functionName = intent === 'similar' ? 'similar-wine' : 'wine-fit';
+	    const functionName = intent === 'dish' ? 'dish-for-wine' : intent === 'similar' ? 'similar-wine' : 'wine-fit';
 	    navigate(`/inteligencia-liquida?function=${functionName}&wine=${winePrompt}`);
 	  };
 
@@ -1165,7 +1298,8 @@ const MyWinesForOwner = () => {
     collection: {
       title: 'Mi Bodega',
       kicker: 'Vinos que tienes ahora',
-      detail: 'Aquí viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, pasan a Ya Probados.',
+      detail: isNative ? 'Botellas que tienes en casa o localizadas. Valorar un vino no descuenta botellas: inventario y valoración son datos distintos.'
+        : 'Aquí viven las botellas que tienes en casa o localizadas. Al puntuarlas, si se terminan, pasan a Ya Probados.',
       action: 'Añadir vino',
       icon: Wine,
       onAction: () => navigate('/my-wines/add'),
@@ -1181,7 +1315,8 @@ const MyWinesForOwner = () => {
     tasted: {
       title: 'Ya Probados',
       kicker: 'Historial que enseña a Matchrim',
-      detail: 'Cada valoración aporta señal. Los vinos con atributos 1-5 afinan tus recomendaciones sin cambiar tu código público.',
+      detail: isNative ? 'Tus valoraciones pueden ajustar el perfil si hay una ficha sensorial verificada y permites usarlas. Tu código público no cambia.'
+        : 'Cada valoración aporta señal. Los vinos con atributos 1-5 afinan tus recomendaciones sin cambiar tu código público.',
       action: 'Puntuar pendientes',
       icon: Star,
       onAction: () => navigateToWineSection('wishlist'),
@@ -1197,7 +1332,8 @@ const MyWinesForOwner = () => {
     rejected: {
       title: 'No repetir',
       kicker: 'Señales negativas',
-      detail: 'Los vinos marcados como “No va” ayudan a alejar estilos, uvas y estructuras que no te compensan.',
+      detail: isNative ? 'Vinos que prefieres no repetir. Solo ajustan el perfil cuando hay una ficha sensorial verificada y permites usar esa valoración.'
+        : 'Los vinos marcados como “No va” ayudan a alejar estilos, uvas y estructuras que no te compensan.',
       action: 'Ver Ya Probados',
       icon: ThumbsDown,
       onAction: () => navigateToWineSection('tasted'),
@@ -1464,9 +1600,15 @@ const MyWinesForOwner = () => {
 	                </div>
 
 	                <div className="rounded-lg border bg-muted/30 p-4">
-	                  <p className="text-xs font-semibold uppercase text-muted-foreground">Perfil que aparece</p>
+	                  <p className="text-xs font-semibold uppercase text-muted-foreground">{isNative ? 'Perfil actual' : 'Perfil que aparece'}</p>
 	                  <div className="mt-2 space-y-1">
-	                    {learningStats.dominant.length > 0 ? (
+	                    {isNative ? (cellarProfile?.profile ? (
+                        Object.entries({ Potencia: cellarProfile.profile.potente, Acidez: cellarProfile.profile.acidez,
+                          Dulzor: cellarProfile.profile.dulce, Tanino: cellarProfile.profile.tanico, Fruta: cellarProfile.profile.afrutado })
+                          .map(([label, value]) => <div key={label} className="flex items-center justify-between gap-2 text-sm">
+                            <span className="text-muted-foreground">{label}</span><span className="font-semibold">{value}/5</span>
+                          </div>)
+                      ) : <p className="text-sm text-muted-foreground">{cellarProfile?.note || 'Cargando tu perfil.'}</p>) : learningStats.dominant.length > 0 ? (
 	                      learningStats.dominant.map((item) => (
 	                        <div key={item.key} className="flex items-center justify-between gap-2 text-sm">
 	                          <span className="capitalize text-muted-foreground">{item.label}</span>
@@ -1477,7 +1619,10 @@ const MyWinesForOwner = () => {
 	                      <p className="text-sm text-muted-foreground">Necesito vinos con atributos 1-5.</p>
 	                    )}
 	                  </div>
-	                  <Progress value={learningStats.confidence} role="meter" aria-label="Confianza del aprendizaje de gustos" className="mt-3 h-2" />
+                      {isNative ? (cellarProfile?.confidence != null && <>
+                        <Progress value={cellarProfile.confidence} role="meter" aria-label="Respaldo heurístico del aprendizaje" className="mt-3 h-2" />
+                        <p className="mt-2 text-xs text-muted-foreground">{'Respaldo heur\u00edstico, no precisi\u00f3n medida con usuarios.'}</p>
+                      </>) : <Progress value={learningStats.confidence} role="meter" aria-label="Confianza del aprendizaje de gustos" className="mt-3 h-2" />}
 	                </div>
 
 	                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
@@ -1593,7 +1738,7 @@ const MyWinesForOwner = () => {
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => setFilterType('high_affinity')}>
                         <Star className="h-4 w-4 mr-2" />
-                        Alta Afinidad ({wines.filter(w => w.matchrim_affinity && w.matchrim_affinity >= 70).length})
+                        Alta Afinidad ({wines.filter(w => ((isNative ? cellarAffinityView(w, cellarProfile).current : w.matchrim_affinity) ?? -1) >= 70).length})
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -1758,7 +1903,10 @@ const MyWinesForOwner = () => {
                           )}
 
                           {/* Affinity Score */}
-                          {wine.matchrim_affinity !== null && (
+                          {isNative && <CellarWineAffinity wine={wine} snapshot={cellarProfile}
+                            resolving={savingWineActions.has(wine.id)} onResolve={() => { void resolveCellarWine(wine); }}
+                            onRetryProfile={() => { void loadCellarProfile(); }} />}
+                          {!isNative && wine.matchrim_affinity !== null && (
                             <div className="space-y-1.5">
                               <div className="flex items-center justify-between text-sm">
                                 <span className="text-muted-foreground">Afinidad Matchrim</span>
@@ -1853,6 +2001,11 @@ const MyWinesForOwner = () => {
 	                              <ScanLine className="h-4 w-4 shrink-0" />
 	                              Buscar parecido
 	                            </Button>
+                              {isNative && <Button type="button" variant="outline" size="sm"
+                                className="h-auto min-h-11 min-w-0 gap-2 whitespace-normal py-2"
+                                onClick={() => askAiRimAboutWine(wine, 'dish')}>
+                                <Utensils className="h-4 w-4 shrink-0" />{'Qu\u00e9 comer con este vino'}
+                              </Button>}
 	                          </div>
 
 	                          {wine.rating && (
@@ -1938,7 +2091,9 @@ const MyWinesForOwner = () => {
 
         {/* Purchase Info Dialog */}
         <Dialog open={showPurchaseDialog} onOpenChange={setShowPurchaseDialog}>
-          <DialogContent className="h-[100dvh] max-h-[100dvh] w-screen max-w-none overflow-y-auto rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg">
+          <DialogContent className={isNative
+            ? 'matchrim-native-cellar-dialog left-0 top-0 h-[100dvh] max-h-[100dvh] w-screen min-w-0 max-w-none translate-x-0 translate-y-0 grid-cols-[minmax(0,1fr)] overflow-x-hidden overflow-y-auto rounded-none pb-[calc(1.5rem+var(--matchrim-safe-bottom))] pt-[calc(1.5rem+var(--matchrim-safe-top))] [overflow-wrap:anywhere] [&>button:last-child]:fixed [&>button:last-child]:top-[calc(1rem+var(--matchrim-safe-top))] [&>button:last-child]:flex [&>button:last-child]:h-11 [&>button:last-child]:w-11 [&>button:last-child]:items-center [&>button:last-child]:justify-center [&>button:last-child]:bg-background'
+            : 'h-[100dvh] max-h-[100dvh] w-screen max-w-none overflow-y-auto rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg'}>
             <DialogHeader className="sr-only">
               <DialogTitle>Detalles del vino</DialogTitle>
               <DialogDescription>
@@ -1965,8 +2120,10 @@ const MyWinesForOwner = () => {
           }
           closeAddDialog();
         }}>
-          <DialogContent className="h-[100dvh] max-h-[100dvh] w-screen max-w-none overflow-y-auto rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg">
-            <DialogHeader>
+          <DialogContent className={isNative
+            ? 'matchrim-native-cellar-dialog left-0 top-0 h-[100dvh] max-h-[100dvh] w-screen min-w-0 max-w-none translate-x-0 translate-y-0 grid-cols-[minmax(0,1fr)] overflow-x-hidden overflow-y-auto rounded-none pb-[calc(1.5rem+var(--matchrim-safe-bottom))] pt-[calc(1.5rem+var(--matchrim-safe-top))] [overflow-wrap:anywhere] [&>button:last-child]:fixed [&>button:last-child]:top-[calc(1rem+var(--matchrim-safe-top))] [&>button:last-child]:flex [&>button:last-child]:h-11 [&>button:last-child]:w-11 [&>button:last-child]:items-center [&>button:last-child]:justify-center [&>button:last-child]:bg-background'
+            : 'h-[100dvh] max-h-[100dvh] w-screen max-w-none overflow-y-auto rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg'}>
+            <DialogHeader className={isNative ? 'pr-12' : undefined}>
               <DialogTitle>
                 {extractedData ? "Verificar y Guardar Vino" : "Añadir Vino"}
               </DialogTitle>
@@ -1977,7 +2134,7 @@ const MyWinesForOwner = () => {
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-4 py-4">
+            <div className={isNative ? 'min-w-0 space-y-4 py-4' : 'space-y-4 py-4'}>
               <div className="grid gap-4">
                 <div>
                   <Label htmlFor="name">Nombre del Vino *</Label>
@@ -2173,7 +2330,7 @@ const MyWinesForOwner = () => {
                 )}
               </div>
 
-              <div className="flex justify-end gap-2 pt-4">
+              <div className={isNative ? 'grid min-w-0 gap-2 pt-4' : 'flex justify-end gap-2 pt-4'}>
                 <Button
                   type="button"
                   variant="outline"
@@ -2186,7 +2343,7 @@ const MyWinesForOwner = () => {
                 </Button>
                 
                 {/* Status Selection Buttons */}
-                <div className="flex gap-2">
+                <div className={isNative ? 'grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,6rem),1fr))] gap-2 [&_button]:h-auto [&_button]:min-h-11 [&_button]:whitespace-normal [&_button]:px-2' : 'flex gap-2'}>
                   <Button
                     type="button"
                     variant="outline"

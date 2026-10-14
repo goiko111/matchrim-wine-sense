@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { optionalScanNumber, normalizeScanSensoryValue } from '../../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate } from "react-router-dom";
+import { Capacitor } from '@capacitor/core';
+import { ChefHat } from 'lucide-react';
+import { readRestaurantCarry, restaurantCarryState } from '@/utils/restaurantPairingContext';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -49,6 +52,7 @@ import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import { awaitMenuCatalog } from '@/utils/menuCatalogAwait';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
+import { confirmsCellarSaveEvidence, makeCellarCatalogEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import { canRetryScanProfile } from '@/utils/scanProfile';
 import { refreshMenuProfileAffinity } from '@/utils/menuProfileRecovery';
 import { mapWithConcurrency } from '@/utils/multiWineScan';
@@ -206,6 +210,7 @@ const WineMenuScannerSession = ({
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const isNative = Capacitor.isNativePlatform();
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [scannedWines, setScannedWines] = useState<ScannedWine[]>([]);
@@ -1017,6 +1022,12 @@ const WineMenuScannerSession = ({
             menu_wine_evidence: evidence.trace,
           } as Json,
         };
+      if (isNative && wine.canonicalId && evidence.sensory_attributes) {
+        const catalog = makeCellarCatalogEvidence(draftPayload, wine.canonicalId, sensoryAttributes);
+        if (catalog) draftPayload.place_details = withCellarInitialAffinity({ ...draftPayload,
+          place_details: { ...(draftPayload.place_details as Record<string, Json>), bodega_sensory_evidence: catalog } },
+        scanProfile, 'saved');
+      }
       const saved = savedCardsRef.current.get(index);
       if (saved && (saved.ownerId !== ownerId || saved.identity !== identity)) {
         identityHoldsRef.current.add(index);
@@ -1033,7 +1044,7 @@ const WineMenuScannerSession = ({
         ? supabase.from("user_wines").update(changes).eq('id', saved.rowId).eq('user_id', ownerId)
         : supabase.from("user_wines").insert(draftPayload);
       const { data, error } = await query
-        .select('id, user_id, name, producer, vintage, status, is_favorite, rating, price, place_details, sensory_attributes, matchrim_affinity, use_for_profile_training').single();
+        .select('id, user_id, name, producer, vintage, region, country, status, is_favorite, rating, price, place_details, sensory_attributes, matchrim_affinity, use_for_profile_training').single();
       if (!isCurrent()) return;
       if (error) {
         if (labelInsertErrorResult(error).status === 'rejected') toast.error('No se pudo guardar el vino');
@@ -1041,6 +1052,7 @@ const WineMenuScannerSession = ({
         return;
       }
       if (!(saved ? confirmsMenuAction(data, payload, saved.rowId) : confirmsMenuInsert(data, payload)) || data.rating !== null) { markUnconfirmed(); return; }
+      if (!saved && isNative && !confirmsCellarSaveEvidence(data, payload)) { markUnconfirmed(); return; }
       savedCardsRef.current.set(index, { rowId: data.id, ownerId, identity, payload });
       if (identityHoldsRef.current.has(index)) return;
 
@@ -1343,6 +1355,17 @@ const WineMenuScannerSession = ({
               {renderProfileRecovery()}
             </div>
             <div className="flex flex-wrap gap-2">
+              {isNative && <Button variant="outline" className="min-h-11 whitespace-normal" onClick={() => {
+                const context = readRestaurantCarry(location.state, user?.id ?? null);
+                const wineMenu = scannedWines.map(wine => wine.texto_fuente?.trim()
+                  || [wine.nombre, wine.productor, wine.anada].filter(Boolean).join(' \u00b7 ')).join('\n').slice(0, 12000);
+                navigate(`/inteligencia-liquida?function=${pairingDishName ? 'wine-for-dish' : 'dish-for-wine'}${pairingDishName ? `&dish=${encodeURIComponent(pairingDishName)}` : ''}`, {
+                  state: restaurantCarryState(user?.id ?? null, { ...context, wineMenu,
+                    restaurantName: restaurantName || context.restaurantName }),
+                });
+              }}>
+                <ChefHat className="mr-2 h-4 w-4" />Maridar con la carta de comida
+              </Button>}
               {!hasProfile && (
                 <Badge variant="outline" className="gap-1">
                   <AlertCircle className="h-3 w-3" />

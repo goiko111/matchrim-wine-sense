@@ -11,6 +11,7 @@ import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/mat
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 import AiRimMark from '@/components/AiRimMark';
+import { cellarTrainingRows } from '@/utils/bodegaAffinity';
 
 type ConversationMessage = {
   id: string;
@@ -72,7 +73,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
           .maybeSingle(),
         supabase
           .from('user_wines')
-          .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+          .select('id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
           .eq('user_id', user.id)
           .eq('use_for_profile_training', true)
           .not('rating', 'is', null)
@@ -82,7 +83,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
       if (cancelled || !baseProfile) return;
       const learned = calculateLearnedMatchrimProfile(
         baseProfile as MatchrimProfileLike,
-        (trainingWines || []) as TrainableWine[],
+        cellarTrainingRows((trainingWines || []) as TrainableWine[], isNative),
       );
       const active = learned.samples > 0 ? learned.profile : (baseProfile as MatchrimProfileLike);
       setLearningSamples(learned.samples);
@@ -100,7 +101,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [user, isNative]);
 
   const memoryLabel = useMemo(() => {
     if (!user) return 'Sin memoria personal';

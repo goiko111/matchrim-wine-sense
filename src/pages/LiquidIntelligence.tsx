@@ -1,6 +1,6 @@
 
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
 import { ArrowRight, BrainCircuit, ChefHat, GlassWater, MessageCircle, Sparkles, Utensils } from 'lucide-react';
 import AppNav from '@/components/AppNav';
@@ -11,6 +11,7 @@ import MobileBottomNav from '@/components/MobileBottomNav';
 import AiRimConversation from '@/components/AiRimConversation';
 import { Input } from '@/components/ui/input';
 import AiRimMark from '@/components/AiRimMark';
+import { readRestaurantCarry, restaurantCarryIsForeign } from '@/utils/restaurantPairingContext';
 
 type AppState = 'landing' | 'function' | 'conversation';
 type FunctionType = 'wine-for-dish' | 'dish-for-wine' | 'pairing-check' | 'special-moments';
@@ -18,8 +19,9 @@ type FunctionType = 'wine-for-dish' | 'dish-for-wine' | 'pairing-check' | 'speci
 const VALID_FUNCTIONS: FunctionType[] = ['wine-for-dish', 'dish-for-wine', 'pairing-check', 'special-moments'];
 
 const LiquidIntelligence = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const isNative = Capacitor.isNativePlatform();
   const [searchParams] = useSearchParams();
   const [currentState, setCurrentState] = useState<AppState>('landing');
@@ -28,6 +30,23 @@ const LiquidIntelligence = () => {
   const [initialInput2, setInitialInput2] = useState<string>('');
   const [freeQuestion, setFreeQuestion] = useState('');
   const [conversationQuestion, setConversationQuestion] = useState('');
+  const contextOwner = useRef<{ id: string | null } | null>(null);
+  const restaurantContext = useMemo(() => readRestaurantCarry(location.state, user?.id ?? null), [location.state, user?.id]);
+
+  useEffect(() => {
+    if (loading) return;
+    const ownerId = user?.id ?? null;
+    if (contextOwner.current && contextOwner.current.id !== ownerId) {
+      setCurrentState('landing');
+      setSelectedFunction(null);
+      setInitialInput1('');
+      setInitialInput2('');
+      setFreeQuestion('');
+      setConversationQuestion('');
+      navigate('/inteligencia-liquida', { replace: true, state: null });
+    }
+    contextOwner.current = { id: ownerId };
+  }, [user?.id, loading, navigate]);
 
   useEffect(() => {
     if (!isNative) return;
@@ -35,6 +54,11 @@ const LiquidIntelligence = () => {
   }, [currentState, isNative]);
 
   useEffect(() => {
+    if (loading) return;
+    if (isNative && restaurantCarryIsForeign(location.state, user?.id ?? null)) {
+      navigate('/inteligencia-liquida', { replace: true, state: null });
+      return;
+    }
     const rawFunction = searchParams.get('function');
     const fn = rawFunction as FunctionType | null;
     const wineParam = searchParams.get('wine') || '';
@@ -61,8 +85,13 @@ const LiquidIntelligence = () => {
         setInitialInput1(wineParam);
         setInitialInput2(dishParam);
       }
+    } else {
+      setCurrentState('landing');
+      setSelectedFunction(null);
+      setInitialInput1('');
+      setInitialInput2('');
     }
-  }, [searchParams]);
+  }, [searchParams, loading, location.state, user?.id, isNative, navigate]);
 
   const handleSelectFunction = (functionType: FunctionType) => {
     setSelectedFunction(functionType);
@@ -192,6 +221,7 @@ const LiquidIntelligence = () => {
             onBack={handleBackToMenu}
             initialInput1={initialInput1}
             initialInput2={initialInput2}
+            initialRestaurantContext={isNative ? restaurantContext : undefined}
           />
         );
       default:

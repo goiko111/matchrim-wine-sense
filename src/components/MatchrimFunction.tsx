@@ -1,8 +1,11 @@
 
-import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Send, Loader, Wine, ChefHat, Scale, Sparkles } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
+import { ArrowLeft, Send, Loader, Wine, ChefHat, Scale, Sparkles, ScanLine, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,10 +13,11 @@ import { streamAiRimResponse } from '@/lib/aiRimStream';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
+import { cellarTrainingRows } from '@/utils/bodegaAffinity';
 import WineRecommendationCard from './WineRecommendationCard';
 import DishRecommendationCard from './DishRecommendationCard';
-import PairingScoreCard from './PairingScoreCard';
 import PairingAnalysisCard from './PairingAnalysisCard';
+import { buildRestaurantPairingPrompt, emptyRestaurantContext, parseRestaurantAdvice, restaurantBudgetValid, restaurantCarryState, restaurantScanPath, restaurantSourceLabel, type RestaurantAdvice, type RestaurantPairingContext } from '@/utils/restaurantPairingContext';
 
 interface MatchrimFunctionProps {
   functionType: 'wine-for-dish' | 'dish-for-wine' | 'pairing-check';
@@ -21,6 +25,7 @@ interface MatchrimFunctionProps {
   initialInput1?: string;
   initialInput2?: string;
   autoSubmit?: boolean;
+  initialRestaurantContext?: RestaurantPairingContext;
 }
 
 type ExamplePrompt = {
@@ -29,17 +34,45 @@ type ExamplePrompt = {
   input2?: string;
 };
 
-const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBack, initialInput1, initialInput2, autoSubmit }) => {
+const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBack, initialInput1, initialInput2, initialRestaurantContext }) => {
   const { user } = useAuth();
+  const ownerId = user?.id ?? null;
+  const navigate = useNavigate();
+  const isNative = Capacitor.isNativePlatform();
   const [input1, setInput1] = useState(initialInput1 || '');
   const [input2, setInput2] = useState(initialInput2 || '');
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [profileContext, setProfileContext] = useState<string | null>(null);
+  const [restaurant, setRestaurant] = useState(initialRestaurantContext ?? emptyRestaurantContext());
+  const [advice, setAdvice] = useState<RestaurantAdvice | null>(null);
+  const [requestNotice, setRequestNotice] = useState('');
+  const requestController = useRef<AbortController | null>(null);
+  const requestGeneration = useRef(0);
+  const previousOwner = useRef(user?.id);
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!user) {
+    const ownerChanged = previousOwner.current !== user?.id;
+    previousOwner.current = user?.id;
+    requestGeneration.current += 1;
+    requestController.current?.abort();
+    setInput1(ownerChanged ? '' : initialInput1 ?? '');
+    setInput2(ownerChanged ? '' : initialInput2 ?? '');
+    setRestaurant(ownerChanged ? emptyRestaurantContext() : initialRestaurantContext ?? emptyRestaurantContext());
+    setResult('');
+    setAdvice(null);
+    setRequestNotice('');
+    setIsLoading(false);
+    return () => {
+      requestGeneration.current += 1;
+      requestController.current?.abort();
+    };
+  }, [user?.id, functionType, initialInput1, initialInput2, initialRestaurantContext]);
+
+  useEffect(() => {
+    setProfileContext(null);
+    if (!ownerId) {
       setProfileContext(null);
       return;
     }
@@ -50,7 +83,7 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
       const { data: baseProfile, error: profileError } = await supabase
         .from('quiz_results')
         .select('potente, acidez, dulce, tanico, afrutado')
-        .eq('user_id', user.id)
+        .eq('user_id', ownerId)
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -63,8 +96,8 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
 
       const { data: trainingWines, error: trainingError } = await supabase
         .from('user_wines')
-        .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
-        .eq('user_id', user.id)
+        .select('id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+        .eq('user_id', ownerId)
         .eq('use_for_profile_training', true)
         .not('rating', 'is', null)
         .not('sensory_attributes', 'is', null);
@@ -75,7 +108,7 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
 
       const learned = calculateLearnedMatchrimProfile(
         baseProfile as MatchrimProfileLike,
-        (trainingWines || []) as TrainableWine[]
+        cellarTrainingRows((trainingWines || []) as TrainableWine[], isNative)
       );
       const activeProfile = learned.samples > 0 ? learned.profile : (baseProfile as MatchrimProfileLike);
       const code = generateMatchrimCode(baseProfile as MatchrimProfileLike);
@@ -98,7 +131,7 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [ownerId, isNative]);
 
   const getFunctionConfig = () => {
     switch (functionType) {
@@ -271,12 +304,24 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
   const IconComponent = config.icon;
 
   const applyExample = (example: ExamplePrompt) => {
+    invalidateRequest();
     setInput1(example.input1);
     setInput2(example.input2 || '');
     setResult('');
   };
 
+  const invalidateRequest = () => {
+    requestGeneration.current += 1;
+    requestController.current?.abort();
+    requestController.current = null;
+    setIsLoading(false);
+    setResult('');
+    setAdvice(null);
+    setRequestNotice('');
+  };
+
   const handleSubmit = async () => {
+    if (isLoading) return;
     if (!input1.trim() || (config.showSecondInput && !input2.trim())) {
       toast({
         title: "Campos requeridos",
@@ -286,10 +331,36 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
       return;
     }
 
+    if (isNative && !restaurantBudgetValid(restaurant)) {
+      setRequestNotice('Indica un presupuesto positivo y su moneda.');
+      return;
+    }
+    invalidateRequest();
+    const generation = requestGeneration.current;
+    const controller = new AbortController();
+    requestController.current = controller;
+    const isCurrent = () => requestGeneration.current === generation && !controller.signal.aborted;
     setIsLoading(true);
     setResult('');
 
     try {
+      if (isNative) {
+        const { data, error } = await supabase.functions.invoke('ai-wine-chat', {
+          signal: controller.signal,
+          body: {
+            message: buildRestaurantPairingPrompt(functionType, input1.trim(), input2.trim(), restaurant),
+            context: [profileContext, AIRIM_EVIDENCE_GUARDRAILS].filter(Boolean).join('\n'),
+          },
+        });
+        if (!isCurrent()) return;
+        if (error || !data?.success) throw new Error('Restaurant request failed');
+        try {
+          setAdvice(parseRestaurantAdvice(data.response));
+        } catch {
+          setRequestNotice('La respuesta contiene datos no verificables o un formato no válido. No la he mostrado. Puedes reintentar.');
+        }
+        return;
+      }
       await streamAiRimResponse(
         {
           functionType,
@@ -297,25 +368,40 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           input2: input2.trim() || null,
           context: ['aiRIM - Sistema de maridajes', profileContext, AIRIM_EVIDENCE_GUARDRAILS].filter(Boolean).join('\n'),
         },
-        setResult,
+        (response) => { if (isCurrent()) setResult(response); },
       );
 
     } catch (error) {
-      console.error('Error:', error);
+      if (!isCurrent()) return;
+      console.warn('aiRIM pairing request failed');
       toast({
         title: "Error",
         description: "No se pudo procesar tu consulta. Inténtalo de nuevo.",
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+      if (isCurrent()) {
+        requestController.current = null;
+        setIsLoading(false);
+      }
     }
   };
 
   const handleClear = () => {
+    invalidateRequest();
     setInput1('');
     setInput2('');
     setResult('');
+    setRestaurant(emptyRestaurantContext());
+  };
+
+  const scanForSelection = () => {
+    const target = functionType === 'wine-for-dish' ? 'wine-menu' : 'food-menu';
+    const selection = functionType === 'wine-for-dish' ? { dish: input1 } : { wine: input1, dish: input2 };
+    invalidateRequest();
+    navigate(restaurantScanPath(target, selection, restaurant), {
+      state: restaurantCarryState(user?.id ?? null, restaurant),
+    });
   };
 
   return (
@@ -323,7 +409,7 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
       <div className="flex items-center gap-3">
         <button
           type="button"
-          onClick={onBack}
+          onClick={() => { invalidateRequest(); onBack(); }}
           className="matchrim-pressable flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm"
           aria-label="Volver a aiRIM"
         >
@@ -372,7 +458,7 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           <Input
             id="airim-guided-input-1"
             value={input1}
-            onChange={(e) => setInput1(e.target.value)}
+            onChange={(e) => { invalidateRequest(); setInput1(e.target.value); }}
             placeholder={config.placeholder1}
             className="h-14 w-full rounded-lg border-slate-200 bg-white px-4 text-base shadow-sm focus-visible:ring-red-800"
             disabled={isLoading}
@@ -385,7 +471,7 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
             <Input
               id="airim-guided-input-2"
               value={input2}
-              onChange={(e) => setInput2(e.target.value)}
+              onChange={(e) => { invalidateRequest(); setInput2(e.target.value); }}
               placeholder={config.placeholder2}
               className="h-14 w-full rounded-lg border-slate-200 bg-white px-4 text-base shadow-sm focus-visible:ring-red-800"
               disabled={isLoading}
@@ -393,7 +479,44 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           </div>
         )}
 
-        <div className="flex gap-2">
+        {isNative && (
+          <section className="space-y-3 border-y border-slate-200 py-4 [overflow-wrap:anywhere]" aria-label="Contexto del restaurante">
+            <h2 className="text-base font-semibold text-slate-950">En el restaurante</h2>
+            <label className="block text-sm font-medium text-slate-800">
+              Restaurante (opcional)
+              <Input value={restaurant.restaurantName} maxLength={200} disabled={isLoading} onChange={(event) => { invalidateRequest(); setRestaurant({ ...restaurant, restaurantName: event.target.value }); }} />
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="text-sm font-medium text-slate-800">Presupuesto máximo
+                <Input value={restaurant.budget} inputMode="decimal" maxLength={20} disabled={isLoading} onChange={(event) => { invalidateRequest(); setRestaurant({ ...restaurant, budget: event.target.value }); }} />
+              </label>
+              <label className="text-sm font-medium text-slate-800">Moneda
+                <select aria-label="Moneda" className="h-10 w-full rounded-md border border-slate-200 bg-white px-2" value={restaurant.currency} disabled={isLoading} onChange={(event) => { invalidateRequest(); setRestaurant({ ...restaurant, currency: event.target.value as RestaurantPairingContext['currency'] }); }}>
+                  <option value="">Sin indicar</option>
+                  {['EUR', 'USD', 'GBP', 'CHF', 'MXN', 'JPY'].map((currency) => <option key={currency} value={currency}>{currency}</option>)}
+                </select>
+              </label>
+            </div>
+            <label className="block text-sm font-medium text-slate-800">Servicio solicitado
+              <select aria-label="Servicio solicitado" className="h-10 w-full rounded-md border border-slate-200 bg-white px-2" value={restaurant.service} disabled={isLoading} onChange={(event) => { invalidateRequest(); setRestaurant({ ...restaurant, service: event.target.value as RestaurantPairingContext['service'] }); }}>
+                <option value="any">Sin preferencia</option><option value="glass">Copa</option><option value="bottle">Botella</option>
+              </select>
+            </label>
+            <label className="block text-sm font-medium text-slate-800">Carta de comida (texto aportado)
+              <Textarea value={restaurant.foodMenu} rows={3} maxLength={12000} disabled={isLoading} onChange={(event) => { invalidateRequest(); setRestaurant({ ...restaurant, foodMenu: event.target.value }); }} />
+            </label>
+            <label className="block text-sm font-medium text-slate-800">Carta de vinos (texto aportado)
+              <Textarea value={restaurant.wineMenu} rows={3} maxLength={12000} disabled={isLoading} onChange={(event) => { invalidateRequest(); setRestaurant({ ...restaurant, wineMenu: event.target.value }); }} />
+            </label>
+            <p className="text-sm leading-6 text-amber-900">El texto aportado no confirma stock, precio actual ni servicio por copa. Alergias y restricciones: consulta al restaurante.</p>
+            <Button variant="outline" className="min-h-11 w-full whitespace-normal" disabled={isLoading || !input1.trim() || !restaurantBudgetValid(restaurant)} onClick={scanForSelection}>
+              <ScanLine className="mr-2 h-4 w-4 shrink-0" />
+              {functionType === 'wine-for-dish' ? 'Buscar en la carta de vinos' : 'Buscar plato en el menú'}
+            </Button>
+          </section>
+        )}
+
+        <div className="flex flex-wrap gap-2">
           <Button
             onClick={handleSubmit}
             disabled={isLoading || !input1.trim() || (config.showSecondInput && !input2.trim())}
@@ -411,7 +534,10 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
               </>
             )}
           </Button>
-          {result && (
+          {isNative && isLoading && (
+            <Button variant="outline" className="min-h-12 gap-2" onClick={() => { invalidateRequest(); setRequestNotice('Consulta cancelada. Puedes reintentar.'); }}><X className="h-4 w-4" />Cancelar</Button>
+          )}
+          {(result || (isNative && (advice || input1 || restaurant.foodMenu || restaurant.wineMenu))) && (
             <Button
               onClick={handleClear}
               variant="outline"
@@ -422,6 +548,22 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           )}
         </div>
       </section>
+
+      {isNative && requestNotice && <p role="status" className="mt-4 text-sm text-amber-900">{requestNotice}</p>}
+      {isNative && advice && (
+        <section aria-label="Ideas de maridaje contextual" className="mt-7 space-y-4 [overflow-wrap:anywhere]">
+          <h2 className="text-base font-semibold text-slate-950">Hipótesis de maridaje, sin puntuación personal</h2>
+          {!advice.options.length && <p className="text-sm text-slate-600">No hay una combinación justificable con el contexto aportado.</p>}
+          {advice.options.map((option, index) => (
+            <article key={index} className="border-b border-slate-200 pb-4">
+              <h3 className="font-semibold text-slate-950">{option.wine} con {option.dish}</h3>
+              <p className="mt-1 text-xs text-amber-900">Vino: {restaurantSourceLabel(option.wine, restaurant.wineMenu)}</p>
+              <p className="mt-1 text-xs text-amber-900">Plato: {restaurantSourceLabel(option.dish, restaurant.foodMenu)}</p>
+              <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">{option.reason}</p>
+            </article>
+          ))}
+        </section>
+      )}
 
       {result && (
         <section className="mt-7 space-y-4" aria-label="Recomendación de aiRIM">

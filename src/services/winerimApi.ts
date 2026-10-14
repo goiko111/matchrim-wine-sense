@@ -1,11 +1,12 @@
 import { QuizResult } from '@/data/quizData';
+import { Capacitor } from '@capacitor/core';
 import { supabase } from '@/integrations/supabase/client';
 import { clasificarVino, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
 import { buildMatchrimAffinityCalibration, MATCHRIM_AFFINITY_MODEL } from '@/utils/matchrimAffinityCalibration';
 import { normalizeMatchrimProfileForClassifier } from '@/utils/matchrimPassport';
 import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch, hasAmbiguousCanonicalMatches } from '@/utils/winerimLabelIdentity';
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
-import { normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
+import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { isNonWineIdentity } from '@/utils/wineCategory';
 import { hasExactWinerimProducer, hasWinerimGeographyConflict } from '@/utils/winerimOriginalSheet';
 
@@ -50,7 +51,7 @@ export interface WinerimWineWithMatch extends WinerimWine {
   matchPercentage: number;
   rawMatchPercentage?: number;
   affinityConfidence?: number;
-  affinityModel?: typeof MATCHRIM_AFFINITY_MODEL | 'raw-v1';
+  affinityModel?: typeof MATCHRIM_AFFINITY_MODEL | 'raw-v1' | 'scan-local-l2-v1';
   matchSource?: 'winerim-api' | 'style-range';
   styleName?: PublicWineStyle;
 }
@@ -577,7 +578,13 @@ export const fetchWinesByAttributes = async (
   }
 
   const mergedResults = mergeUniqueWines([...directResults, ...styleRangeResults]);
-  const results = mergedResults.map((wine) => {
+  const scoredResults = mergedResults.map((wine): WinerimWineWithMatch | null => {
+    if (Capacitor.isNativePlatform()) {
+      const score = calculateLocalMatchrimAffinity(quizResult, wine.tastingAttributes);
+      if (score === null) return null;
+      return { ...wine, matchPercentage: score, rawMatchPercentage: undefined, affinityConfidence: undefined,
+        affinityModel: 'scan-local-l2-v1' as const };
+    }
     const rawMatchPercentage = wine.matchPercentage;
     if (options.affinityCalibrationConfidence === null || options.affinityCalibrationConfidence === undefined) {
       return {
@@ -599,6 +606,8 @@ export const fetchWinesByAttributes = async (
       affinityModel: calibrated.model,
     };
   });
+  const results = scoredResults.filter((wine): wine is WinerimWineWithMatch => wine !== null);
+  if (Capacitor.isNativePlatform()) results.sort((left, right) => right.matchPercentage - left.matchPercentage);
   const totalCount = extractTotalCount(responseData, directResults.length);
 
   winerimWineResultsMeta.set(results, {

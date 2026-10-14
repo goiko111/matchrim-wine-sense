@@ -31,10 +31,16 @@ build83Changes.add('src/utils/matchrimLearning.ts');
 build83Changes.add('src/utils/edgeFunctionResilience.ts');
 build83Changes.add('src/components/wine-import/WineLabelOCRImport.tsx');
 build83Changes.add('src/utils/wineAffinityExplanation.ts');
+// Build84's explicitly requested native cellar/restaurant semantics. Historical
+// source fingerprints and every unaffected module remain verified below.
+const build84Changes = new Set(['src/components/MatchrimFunction.tsx', 'src/components/wine-import/FoodPairingScanner.tsx',
+  'src/components/wine-import/WineSearchBar.tsx', 'src/pages/LiquidIntelligence.tsx', 'src/pages/Index.tsx',
+  'src/pages/Profile.tsx', 'src/services/matchrimScanProfile.ts', 'src/utils/winerimLabelIdentity.ts',
+  'src/utils/labelScanSave.ts', 'src/utils/matchrimEdgeRouting.ts', 'src/components/NativeAppHome.tsx']);
 let immutableCount = 0;
 for (const row of manifest.productSourceFingerprints as Array<{ path: string; sha256: string }>) {
   assert.equal(hash(execFileSync('git', ['show', `${snapshot}:${row.path}`])), row.sha256, `Snapshot hash: ${row.path}`);
-  if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && row.path !== 'package.json') {
+  if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && !build84Changes.has(row.path) && row.path !== 'package.json') {
     const expected = localPricePaths.has(row.path)
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256;
     assert.equal(hash(readFileSync(row.path)), expected, `Protected source: ${row.path}`);

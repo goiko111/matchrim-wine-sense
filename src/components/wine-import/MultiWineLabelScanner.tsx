@@ -39,6 +39,7 @@ import { trackAppEvent } from '@/lib/analytics';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
+import { makeCellarCatalogEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import {
   EdgeFunctionError,
   invokeWithEdgeFunctionRetry,
@@ -712,7 +713,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       batchRef.current = {
         ownerId: user?.id ?? null,
         groups,
-        wines: groups.map(({ candidate }) => ({
+        wines: groups.map(({ candidate }) => {
+          const identity = { name: candidate.name, producer: candidate.producer,
+            vintage: candidate.vintage, region: candidate.region, country: candidate.country };
+          const evidence = isNative && candidate.sensorySource === 'catalog' && candidate.canonicalId && candidate.sensoryAttributes
+            ? makeCellarCatalogEvidence(identity, candidate.canonicalId, candidate.sensoryAttributes) : null;
+          const details = evidence ? withCellarInitialAffinity({ ...identity,
+            sensory_attributes: candidate.sensoryAttributes,
+            place_details: { bodega_sensory_evidence: evidence } }, scanProfileRef.current, 'saved') : null;
+          return {
           nombre: candidate.name,
           productor: candidate.producer,
           anada: candidate.vintage,
@@ -724,7 +733,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           matchrim_affinity: candidate.affinity,
           sensory_attributes: candidate.sensoryAttributes,
           affinity_reason: candidate.affinityReason,
-        })),
+          affinity_details: details,
+          };
+        }),
         results: [],
       };
     }

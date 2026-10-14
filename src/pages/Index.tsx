@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
+import { cellarTrainingRows } from '@/utils/bodegaAffinity';
 import { supabase } from '@/integrations/supabase/client';
 import NativeAppHome from '@/components/NativeAppHome';
 import { useAuth } from '@/contexts/AuthContext';
@@ -80,7 +82,7 @@ const Index = () => {
           .maybeSingle(),
         supabase
           .from('user_wines')
-          .select('id, name, producer, vintage, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+          .select('id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
           .eq('user_id', user.id),
       ]);
 
@@ -96,9 +98,9 @@ const Index = () => {
 
       if (data) {
         const wines = (userWines || []) as HomeUserWine[];
-        const trainingWines = wines.filter((wine) => (
+        const trainingWines = cellarTrainingRows(wines.filter((wine) => (
           wine.use_for_profile_training === true && Boolean(wine.rating) && Boolean(wine.sensory_attributes)
-        ));
+        )), Capacitor.isNativePlatform());
         const learned = calculateLearnedMatchrimProfile(data, trainingWines);
         setCodeProfile(data);
         setActiveProfile(learned.samples > 0 ? learned.profile : data);

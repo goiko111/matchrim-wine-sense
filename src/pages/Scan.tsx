@@ -103,7 +103,7 @@ const Scan = () => {
           alcohol_content: wine.alcohol || null,
           tasting_notes: wine.notas_cata || wine.affinity_reason || null,
           image_url: wine.imagen_url || null,
-          matchrim_affinity: wine.matchrim_affinity || null,
+          matchrim_affinity: wine.matchrim_affinity ?? null,
           sensory_attributes: (wine.sensory_attributes || null) as Json,
           status: "wishlist",
           is_favorite: Boolean(wine.is_favorite),
@@ -111,9 +111,11 @@ const Scan = () => {
           place_details: {
             source: "label_scanner",
             affinity_reason: wine.affinity_reason || null,
+            ...(isNative && wine.affinity_details && typeof wine.affinity_details === 'object' && !Array.isArray(wine.affinity_details)
+              ? wine.affinity_details : {}),
           } as Json,
         })
-        .select("id,user_id,name,producer,vintage,status,is_favorite,use_for_profile_training")
+        .select("id,user_id,name,producer,vintage,region,country,status,is_favorite,use_for_profile_training,sensory_attributes,place_details")
         .single();
 
       if (!isCurrent()) return { status: "obsolete" };

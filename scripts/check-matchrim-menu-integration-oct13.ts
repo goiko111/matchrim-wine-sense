@@ -58,7 +58,34 @@ const initializers = (source: string) => {
 };
 const before = initializers(execFileSync('git', ['show', `${release}:${path}`], { encoding: 'utf8' }));
 const after = initializers(readFileSync(path, 'utf8'));
+const withoutNativeCellar84 = (initializer: string) => {
+  const tree = ts.createSourceFile('save-proof.ts', `const proof = ${initializer};`, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const transformed = ts.transform(tree, [context => root => {
+    const visit: ts.Visitor = node => {
+      if (ts.isIfStatement(node) && [
+        'isNative && wine.canonicalId && evidence.sensory_attributes',
+        '!saved && isNative && !confirmsCellarSaveEvidence(data, payload)',
+      ].includes(node.expression.getText(tree))) return undefined;
+      if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === 'select'
+        && node.arguments.length === 1 && ts.isStringLiteral(node.arguments[0])
+        && node.arguments[0].text === 'id, user_id, name, producer, vintage, region, country, status, is_favorite, rating, price, place_details, sensory_attributes, matchrim_affinity, use_for_profile_training') {
+        return ts.factory.updateCallExpression(node, node.expression, node.typeArguments, [ts.factory.createStringLiteral(
+          'id, user_id, name, producer, vintage, status, is_favorite, rating, price, place_details, sensory_attributes, matchrim_affinity, use_for_profile_training', true)]);
+      }
+      return ts.visitEachChild(node, visit, context);
+    };
+    return ts.visitNode(root, visit) as ts.SourceFile;
+  }]);
+  const printed = ts.createPrinter({ removeComments: true }).printFile(transformed.transformed[0]);
+  transformed.dispose(); return printed;
+};
 for (const name of ['saveScannedWine', 'updateScannedWine', 'normalizeScannedWine', 'menuDecision', 'listPriceText', 'calculateWineSimilarity', 'getSimilarWines']) {
-  check(() => { assert.ok(before.get(name), `Missing protected initializer: ${name}`); assert.equal(after.get(name), before.get(name), `Local beta logic preserved: ${name}`); });
+  check(() => {
+    assert.ok(before.get(name), `Missing protected initializer: ${name}`);
+    assert.equal(name === 'saveScannedWine' ? withoutNativeCellar84(after.get(name)!) : after.get(name),
+      name === 'saveScannedWine' ? withoutNativeCellar84(before.get(name)!) : before.get(name), `Local beta logic preserved: ${name}`);
+  });
 }
+check(() => assert.match(after.get('saveScannedWine')!, /withCellarInitialAffinity/));
+check(() => assert.match(after.get('saveScannedWine')!, /confirmsCellarSaveEvidence\(data, payload\)/));
 console.log(JSON.stringify({ checks, release, scope: 'Combined menu price/style/save invariants and synthetic math, not provider recognition, real preferences or hosted writes' }));

@@ -2,6 +2,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { readStoredMatchrimProfile } from '@/utils/wineAffinityExplanation';
 import { resolveScanProfile, ScanProfileReadFailure } from '@/utils/scanProfile';
 import type { TrainableWine } from '@/utils/matchrimLearning';
+import { Capacitor } from '@capacitor/core';
+import { cellarTrainingRows } from '@/utils/bodegaAffinity';
 
 export const loadMatchrimScanProfile = async (ownerId: string | null, signal: AbortSignal) => {
   const request = new AbortController();
@@ -27,11 +29,11 @@ export const loadMatchrimScanProfile = async (ownerId: string | null, signal: Ab
     training: async () => {
       try {
       const { data, error } = await supabase.from('user_wines')
-        .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+        .select('id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
         .eq('user_id', ownerId!).eq('use_for_profile_training', true)
         .not('rating', 'is', null).not('sensory_attributes', 'is', null).abortSignal(request.signal);
       if (error) throw error;
-      return (data ?? []) as TrainableWine[];
+      return cellarTrainingRows((data ?? []) as TrainableWine[], Capacitor.isNativePlatform());
       } catch {
         throw new ScanProfileReadFailure(timedOut ? 'timeout' : 'failed');
       }

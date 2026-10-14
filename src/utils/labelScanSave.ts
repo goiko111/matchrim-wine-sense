@@ -1,5 +1,6 @@
 import type { Json } from '@/integrations/supabase/types';
 import { confirmsWineMutation } from './matchrimWineMutation';
+import { confirmsCellarSaveEvidence } from './bodegaAffinity';
 
 export interface LabelSaveWine {
   nombre: string;
@@ -14,6 +15,7 @@ export interface LabelSaveWine {
   imagen_url?: string | null;
   matchrim_affinity?: number | null;
   sensory_attributes?: Json | null;
+  affinity_details?: Json | null;
   is_favorite?: boolean;
 }
 
@@ -38,7 +40,9 @@ export const confirmedLabelInsertId = (data: unknown, wine: LabelSaveWine, owner
     status: 'wishlist',
     is_favorite: Boolean(wine.is_favorite),
     use_for_profile_training: false,
-  }) ? id : null;
+  }) && confirmsCellarSaveEvidence(data, { name: wine.nombre, producer: wine.productor || null,
+    vintage: wine.anada ?? null, region: wine.region || null, country: wine.pais || null,
+    sensory_attributes: wine.sensory_attributes, place_details: wine.affinity_details }) ? id : null;
 };
 
 // Only explicit input/constraint rejection permits a user-initiated retry.

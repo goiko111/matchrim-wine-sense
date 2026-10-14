@@ -20,6 +20,8 @@ import {
   generateRegionRecommendations
 } from '@/utils/profileUtils';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { Capacitor } from '@capacitor/core';
+import { cellarTrainingRows } from '@/utils/bodegaAffinity';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
@@ -318,27 +320,31 @@ const Profile = () => {
   }, [user]);
 
   useEffect(() => {
+    let cancelled = false;
+    setTrainingWines([]);
     if (!user || !currentProfile) return;
 
     const loadTrainingWines = async () => {
       const { data, error } = await supabase
         .from('user_wines')
-        .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+        .select('id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
         .eq('user_id', user.id)
         .eq('use_for_profile_training', true)
         .not('rating', 'is', null)
         .not('sensory_attributes', 'is', null);
 
+      if (cancelled) return;
       if (error) {
         console.error('Error loading training wines:', error);
         setTrainingWines([]);
         return;
       }
 
-      setTrainingWines((data || []) as TrainableWine[]);
+      setTrainingWines(cellarTrainingRows((data || []) as TrainableWine[], Capacitor.isNativePlatform()));
     };
 
     loadTrainingWines();
+    return () => { cancelled = true; };
   }, [user, currentProfile]);
 
   const learnedProfile = useMemo(

@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Loader2, Wine as WineIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Capacitor } from '@capacitor/core';
+import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 
 interface Wine {
   id: string;
@@ -39,7 +41,8 @@ export const WineSearchBar = ({ onSelectWine }: WineSearchBarProps) => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('search-wines', {
+      const { data, error } = await supabase.functions.invoke(Capacitor.isNativePlatform()
+        ? resolveMatchrimEdgeFunctionName('search-wines', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE) : 'search-wines', {
         body: { query: searchQuery, limit: 10 }
       });
 

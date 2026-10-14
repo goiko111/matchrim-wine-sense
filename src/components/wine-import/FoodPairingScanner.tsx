@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Capacitor } from "@capacitor/core";
 import {
   BookOpen,
   BookmarkPlus,
@@ -17,6 +18,7 @@ import {
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
@@ -27,6 +29,7 @@ import { convertPdfFirstPageToImageFile } from "@/utils/pdfToImage";
 import { prepareImageForAnalysis } from "@/utils/imageAnalysis";
 import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
 import { FoodScanResponseError, parseFoodScanResponse, type FoodScanResult, type FoodDishResult, type FoodWineRecommendation } from "@/utils/foodScanResponse";
+import { readRestaurantCarry, restaurantCarryIsForeign, restaurantCarryState, restaurantScanPath, unsupportedRestaurantClaim } from "@/utils/restaurantPairingContext";
 
 type FoodScanMode = "menu" | "dish";
 
@@ -42,13 +45,22 @@ const processingSteps: Record<FoodScanMode, string[]> = {
 };
 
 export const FoodPairingScanner = (props: FoodPairingScannerProps) => {
-  const { user } = useAuth();
-  return <FoodPairingScannerSession key={JSON.stringify([user?.id ?? 'anonymous', props.initialMode, props.restaurantName])} {...props} />;
+  const { user, loading: authLoading } = useAuth();
+  const location = useLocation();
+  const routeOwner = useRef<{ key: string; owner: string | null } | null>(null);
+  if (!authLoading && (!routeOwner.current || routeOwner.current.key !== location.key)) {
+    routeOwner.current = { key: location.key, owner: user?.id ?? null };
+  }
+  return <FoodPairingScannerSession key={JSON.stringify([user?.id ?? 'anonymous', authLoading, props.initialMode, props.restaurantName, location.key])} {...props} seedFromRoute={!authLoading && routeOwner.current?.owner === (user?.id ?? null) && !restaurantCarryIsForeign(location.state, user?.id ?? null)} />;
 };
 
-const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockMode = false }: FoodPairingScannerProps) => {
+const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockMode = false, seedFromRoute }: FoodPairingScannerProps & { seedFromRoute: boolean }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isNative = Capacitor.isNativePlatform();
+  const carriedContext = readRestaurantCarry(seedFromRoute ? location.state : null, user?.id ?? null);
+  const [selectedWine, setSelectedWine] = useState(isNative && seedFromRoute ? new URLSearchParams(location.search).get('wine') ?? '' : '');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -67,6 +79,10 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
   const savingRef = useRef(false);
   const mountedRef = useRef(true);
   const scanController = useRef<AbortController | null>(null);
+  const resetFileInputs = () => {
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (cameraInputRef.current) cameraInputRef.current.value = '';
+  };
 
   useEffect(() => {
     mountedRef.current = true;
@@ -116,6 +132,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
     setSavedKeys(new Set());
     setSaveError(null);
     savedRows.current.clear();
+    resetFileInputs();
     trackAppEvent("scan_option_selected", {
       userId: user?.id,
       metadata: { option: nextMode === "menu" ? "food_menu" : "dish_photo" },
@@ -127,6 +144,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
     source: "camera" | "file"
   ) => {
     const file = event.target.files?.[0];
+    const input = event.currentTarget;
     if (!file || savingRef.current) return;
 
     const isImage = file.type.startsWith("image/");
@@ -210,7 +228,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
     } finally {
       if (!controller.signal.aborted) {
         setLoading(false);
-        if (event.target) event.target.value = "";
+        input.value = "";
       }
     }
   };
@@ -309,12 +327,42 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
     setSavedKeys(new Set());
     setSaveError(null);
     savedRows.current.clear();
+    resetFileInputs();
+  };
+
+  const contextWithMenu = () => ({
+    ...carriedContext,
+    restaurantName: restaurantName || carriedContext.restaurantName,
+    foodMenu: result?.dishes.map((dish) => dish.source_text || dish.nombre).join('\n').slice(0, 12000) || carriedContext.foodMenu,
+  });
+
+  const findBottle = (dishName?: string) => {
+    const context = contextWithMenu();
+    navigate(restaurantScanPath('wine-menu', { dish: dishName }, context), {
+      state: restaurantCarryState(user?.id ?? null, context),
+    });
+  };
+
+  const askWithMenu = () => {
+    if (!selectedWine.trim() || !result?.dishes.length) return;
+    const query = new URLSearchParams({ function: 'dish-for-wine', wine: selectedWine.trim() });
+    navigate(`/inteligencia-liquida?${query}`, {
+      state: restaurantCarryState(user?.id ?? null, contextWithMenu()),
+    });
   };
 
   const currentStep = processingSteps[mode][stepIndex];
 
   return (
     <div className="space-y-5">
+      {isNative && mode === 'menu' && (
+        <div className="space-y-2 border-b border-stone-200 pb-4 [overflow-wrap:anywhere]">
+          <label htmlFor="restaurant-menu-wine" className="text-sm font-semibold text-slate-800">Vino para este menú</label>
+          <Input id="restaurant-menu-wine" value={selectedWine} maxLength={300} disabled={loading || Boolean(savingKey)} onChange={(event) => setSelectedWine(event.target.value)} />
+          {carriedContext.restaurantName && <p className="text-sm text-slate-600">Restaurante: {carriedContext.restaurantName}</p>}
+          {carriedContext.budget && <p className="text-sm text-slate-600">Límite solicitado: {carriedContext.budget} {carriedContext.currency}; {carriedContext.service === 'glass' ? 'copa' : carriedContext.service === 'bottle' ? 'botella' : 'formato sin indicar'}. Precio y servicio sin confirmar.</p>}
+        </div>
+      )}
       {!lockMode && (
         <div className="grid grid-cols-2 gap-2 rounded-lg border border-stone-200 bg-white p-1">
           <Button
@@ -444,6 +492,10 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
         )}
       </div>
 
+      {isNative && loading && (
+        <Button type="button" variant="outline" className="min-h-11 w-full gap-2" onClick={clearScan}><X className="h-4 w-4" />Cancelar análisis de comida</Button>
+      )}
+
       {scanError && (
         <div ref={errorRef} role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900">
           <p>{scanError}</p>
@@ -456,6 +508,11 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
 
       {result && (
         <div ref={resultRef} className="scroll-mt-24 space-y-4">
+          {isNative && mode === 'menu' && selectedWine.trim() && result.dishes.length > 0 && (
+            <Button type="button" className="min-h-11 w-full gap-2 whitespace-normal bg-red-900 hover:bg-red-950" onClick={askWithMenu}>
+              <Sparkles className="h-4 w-4 shrink-0" />Elegir plato de este menú para mi vino
+            </Button>
+          )}
           <div className="rounded-lg border border-stone-200 bg-white p-4">
             <div className="flex items-start gap-3">
               <Sparkles className="mt-0.5 h-5 w-5 text-red-900" />
@@ -504,6 +561,9 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                   const favoriteSaveKey = `favorite-${dishIndex}-${recommendationIndex}`;
                   const isSaved = savedKeys.has(saveKey);
                   const isFavoriteSaved = savedKeys.has(favoriteSaveKey);
+                  if (isNative && unsupportedRestaurantClaim([recommendation.nombre, recommendation.tipo, ...(recommendation.uvas ?? [])].join('\n'))) {
+                    return <p key={saveKey} className="text-sm text-amber-900">El modelo devolvió una idea con datos no verificables. No la he mostrado.</p>;
+                  }
 
                   return (
                     <div
@@ -528,7 +588,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                       </div>
 
 	                      <p className="mt-3 text-xs font-semibold text-stone-600">Hipótesis de maridaje del modelo</p>
-	                      <p className="mt-1 text-sm leading-6 text-slate-600">{recommendation.razon}</p>
+	                      <p className="mt-1 text-sm leading-6 text-slate-600">{isNative && (unsupportedRestaurantClaim(recommendation.razon) || /\d/.test(recommendation.razon)) ? 'Idea de estilo pendiente de contrastar con la carta de vinos.' : recommendation.razon}</p>
 	                      <p className="mt-2 rounded-md border border-stone-200 bg-white p-2 text-xs leading-5 text-slate-500">
 	                        Esto todavía no es una botella concreta: úsalo como dirección de búsqueda o escanea la carta de vinos para elegir el vino real del restaurante.
 	                      </p>
@@ -570,7 +630,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                           type="button"
                           variant="ghost"
                           className="gap-2"
-                          onClick={() => navigate(`/inteligencia-liquida?function=pairing-check&wine=${encodeURIComponent(recommendation.nombre)}&dish=${encodeURIComponent(dish.nombre)}`)}
+                          onClick={() => navigate(`/inteligencia-liquida?function=pairing-check&wine=${encodeURIComponent(recommendation.nombre)}&dish=${encodeURIComponent(dish.nombre)}`, isNative ? { state: restaurantCarryState(user?.id ?? null, contextWithMenu()) } : undefined)}
                         >
                           <Sparkles className="h-4 w-4" />
                           Preguntar a aiRIM
@@ -585,7 +645,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                 <Button
                   type="button"
                   className="w-full gap-2 bg-red-900 hover:bg-red-950"
-	                  onClick={() => navigate(`/escanear/carta-vinos?dish=${encodeURIComponent(dish.nombre)}`)}
+	                  onClick={() => isNative ? findBottle(dish.nombre) : navigate(`/escanear/carta-vinos?dish=${encodeURIComponent(dish.nombre)}`)}
 	                >
 	                  <ScanLine className="h-4 w-4" />
 	                  Encontrar botella real en la carta
@@ -600,6 +660,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
             className="w-full gap-2 bg-white"
             onClick={() => {
               const firstDishName = result.dishes[0]?.nombre;
+              if (isNative) { findBottle(firstDishName); return; }
               const query = firstDishName ? `?dish=${encodeURIComponent(firstDishName)}` : "";
               navigate(`/escanear/carta-vinos${query}`);
             }}

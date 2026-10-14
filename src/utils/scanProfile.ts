@@ -5,6 +5,7 @@ export interface ScanProfileSnapshot {
   profile: MatchrimProfileLike | null;
   source: 'quiz' | 'learned' | 'unavailable';
   samples: number | null;
+  confidence?: number | null;
   note: string;
   status: 'ready' | 'missing' | 'invalid' | 'base-error' | 'base-timeout' | 'training-error' | 'training-timeout';
 }
@@ -60,7 +61,8 @@ export const resolveScanProfile = async (
   checkAbort();
   const learned = calculateLearnedMatchrimProfile(base, training);
   return {
-    profile: { ...learned.profile }, source: learned.samples > 0 ? 'learned' : 'quiz', samples: learned.samples, status: 'ready',
+    profile: { ...learned.profile }, source: learned.samples > 0 ? 'learned' : 'quiz', samples: learned.samples,
+    confidence: learned.samples > 0 ? learned.confidence : null, status: 'ready',
     note: learned.samples > 0
       ? `Perfil ajustado con ${learned.samples} ${learned.samples === 1 ? 'valoración' : 'valoraciones'} para este análisis.${learned.calibration.conflicting ? ' Hay señales contradictorias; la recomendación es provisional.' : ''}`
       : 'Afinidad basada en tu test; todavía no hay valoraciones utilizables.',

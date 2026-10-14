@@ -335,9 +335,9 @@ const NativeAppHome = ({
                       </span>
                     </span>
                     <span className="shrink-0 text-right">
-                      <span className="block text-lg font-bold text-red-900">{wine.matchPercentage}%</span>
+                      <span className="block text-lg font-bold text-red-900">{'\u2248'}{wine.matchPercentage}%</span>
                       <span className="block text-[10px] font-medium text-slate-500">
-                        {wine.affinityModel === 'confidence-v1' ? 'orientativa' : 'afinidad'}
+                        {wine.affinityModel === 'confidence-v1' || wine.affinityModel === 'scan-local-l2-v1' ? 'orientativa' : 'afinidad'}
                       </span>
                     </span>
                   </button>

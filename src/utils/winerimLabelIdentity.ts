@@ -27,7 +27,7 @@ export const isSafeCanonicalLabelMatch = (input: LabelIdentity, candidate: Label
   const inputProducer = producerWords(input.producer);
   const candidateProducer = producerWords(candidate.producer);
   if (!hasSpecificWineIdentity(input.name || '', input.producer || '')) return false;
-  if (inputProducer.length && (!candidateProducer.length || !inputProducer.every(word => candidateProducer.includes(word)))) return false;
+  if (inputProducer.length && [...new Set(inputProducer)].sort().join(' ') !== [...new Set(candidateProducer)].sort().join(' ')) return false;
   const inputIdentity = new Set([...inputName, ...inputProducer]);
   const candidateIdentity = new Set([...candidateName, ...candidateProducer]);
   // Neither a shared brand nor a matching region can erase a visible cuvee qualifier.
