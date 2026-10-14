@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Latest checkpoint: 2026-10-14, uploaded beta82 / physical handoff
+
+- Owner explicitly authorized82 upload. Xcode26.0.1 accepted1.0(82) at06:51:38 Europe/Madrid; exit0, Uploaded App, Upload succeeded, processing. Existing signed sourcebda5241/resources unchanged. NOT yet verified available/installed82; no duplicate upload, public web/backend/push or provider benchmark.
+- iPhone16ProMax/iOS26.6 USB responds and App-only passive syslog capture connects, bounded until08:52 Europe/Madrid/disconnect. Zero app actions yet; CoreDevice DDI fails because device locked, QuickTime screen black. No physical QA approved or device app replacement. Capture is not continuous AI review.
+- External tester invitation still UNSENT. Browser Apple session expired; login and draft review form handed off. Contact phone and dedicated Matchrim reviewer credentials missing; fill directly in Apple, never chat/Apple password.
+- [Upload82 / connection / exact owner gates](docs/MATCHRIM_82_TESTFLIGHT_2026-10-14.md). Private receipts and14 pending owner-led cases outside Git. Existing integration QA and all recognition/human/hosted/native-memory residuals preserved.
+
 ## Latest checkpoint: 2026-10-13, cloud integration / candidate82
 
 - Reviewed cloud patch integrated with local81 pricing/style in bda5241; canonical/scoring/price/save invariants retained.425 web checks, focused110price/82style,85 new integration contracts,30 retention cycles and final release/cloud/typecheck/lint PASS. Final lint0errors106warnings. Focused overlay22 follows an early capture taken during drawer close; not an additional22 unique product cases.
