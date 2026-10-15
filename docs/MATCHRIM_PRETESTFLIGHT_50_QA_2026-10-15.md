@@ -1,5 +1,10 @@
 # Matchrim: simulator-first 50-account QA delta
 
+Historical baseline below. The later owner instruction authorizes fixes and a
+new TestFlight: see [build85 remediation](MATCHRIM_85_VIDEO_REMEDIATION_2026-10-15.md).
+QA88 reruns the same50 accounts at679PASS/0FAIL without rewriting this baseline
+or its169 failed assertions. Current upload/native state is recorded there.
+
 **Decision: HOLD.** This is QA87 evidence, not an iOS build87 or 50 human testers.
 The latest owner instruction explicitly postpones the phone and TestFlight.
 No physical-device operation, product edit, production deployment, push, tester

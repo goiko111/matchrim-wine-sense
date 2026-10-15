@@ -292,7 +292,7 @@ const SpecialMomentsSession: React.FC<SpecialMomentsFlowProps & { ownerId: strin
             </div>
             <div>
               <h1 className={isNative ? 'text-lg font-bold text-slate-950' : 'text-lg font-bold text-red-900'}>{question.question}</h1>
-              <p className={isNative ? 'text-sm text-slate-500' : 'text-sm text-red-600'}>Pregunta {currentQuestion + 1} de {questions.length}</p>
+              <p className={isNative ? 'text-sm text-slate-500' : 'text-sm text-red-600'}>{`Pregunta ${currentQuestion + 1} de ${questions.length}`}</p>
             </div>
           </div>
         </div>

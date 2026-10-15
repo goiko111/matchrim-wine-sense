@@ -39,6 +39,17 @@ const frame = (text: string) => 'data: ' + JSON.stringify({ choices: [{ delta: {
 const end = 'data: [DONE]\n\n';
 const response = (body: string) => new Response(body, { headers: { 'Content-Type': 'text/event-stream' } });
 const source = readFileSync('src/components/SpecialMomentsFlow.tsx', 'utf8');
+await check('Question counter is one coherent accessible text node', () => {
+  const ast = ts.createSourceFile('SpecialMomentsFlow.tsx', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  let found = false;
+  const visit = (node: ts.Node) => {
+    if (ts.isJsxExpression(node) && node.expression && ts.isTemplateExpression(node.expression)
+      && node.expression.head.text === 'Pregunta ' && node.expression.templateSpans.length === 2) found = true;
+    ts.forEachChild(node, visit);
+  };
+  visit(ast);
+  assert.equal(found, true, 'Avoid four separately spoken WKWebView text fragments');
+});
 await check('Native inert text retains the answer without heading/bold control marks', () => {
   assert.equal(specialMomentPlainText('### 1. Albariño\n\n**Precio aproximado:** 15 € - 20 €\n\n***\n\nConsulta la ficha.'), '1. Albariño\n\nPrecio aproximado: 15 € - 20 €\n\n\n\nConsulta la ficha.');
   for (const text of ['Plain answer', 'C++ 3*2 = 6', '<img src="https://unverified.invalid" onerror="alert(1)">', '[Ficha](https://unverified.invalid)']) {

@@ -1,5 +1,10 @@
 # Matchrim: 50-account QA before TestFlight
 
+Historical QA85 cycle, not the subsequently assembled production build85.
+The later authorized remediation is documented in
+[build85 remediation](MATCHRIM_85_VIDEO_REMEDIATION_2026-10-15.md); it preserves
+the measurements and open recognition/human-outcome limits below.
+
 **Release decision: HOLD.** Functional account coverage is complete in the tested
 environment, but recognition, live staging dependencies and human preference
 quality are not globally approved. No owner phone, TestFlight upload, production
