@@ -8,7 +8,7 @@ import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch, hasAmbiguousCanon
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { isNonWineIdentity } from '@/utils/wineCategory';
-import { hasExactWinerimProducer, hasWinerimGeographyConflict } from '@/utils/winerimOriginalSheet';
+import { hasExactWinerimProducer, hasWinerimGeographyConflict, validateWinerimOriginalSheetUrl } from '@/utils/winerimOriginalSheet';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
@@ -715,6 +715,8 @@ interface RawSearchWine {
   tipo?: string | null;
   tasting_attributes?: WinerimWine['tastingAttributes'];
   tastingAttributes?: WinerimWine['tastingAttributes'];
+  originalSheetSource?: 'winerim-api';
+  originalSheetUrl?: string;
 }
 
 const scoreCandidate = (input: WinerimLabelLookupInput, candidate: RawSearchWine): number => {
@@ -783,6 +785,8 @@ export const findWinerimWineForLabel = async (
     if (!best || best.score < 0.45) return null;
 
     const sensory = normalizeWineAttributesForInsight(best.candidate.tastingAttributes ?? best.candidate.tasting_attributes);
+    const originalUrl = best.candidate.originalSheetSource === 'winerim-api'
+      ? validateWinerimOriginalSheetUrl(best.candidate.id, best.candidate.originalSheetUrl) : null;
     const wine: WinerimWine = {
       id: best.candidate.id!,
       name: best.candidate.name!,
@@ -798,6 +802,7 @@ export const findWinerimWineForLabel = async (
         power: sensory.potente, acidity: sensory.acidez, sweetness: sensory.dulce,
         tannin: sensory.tanico, fruity: sensory.afrutado,
       } : null,
+      ...(originalUrl ? { originalSheetSource: 'winerim-api' as const, originalSheetUrl: originalUrl } : {}),
     };
 
     return {

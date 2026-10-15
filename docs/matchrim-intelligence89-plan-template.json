@@ -1,0 +1,132 @@
+{
+  "version": "intelligence89-v1",
+  "study_id": "REPLACE-STUDY-ID",
+  "evidence_kind": "independent_blind_human",
+  "selection": "predeclared_without_test_outcomes",
+  "cutoff_at": "2026-10-15T00:00:00Z",
+  "minimum_owners": 20,
+  "minimum_training": 3,
+  "minimum_test": 3,
+  "bootstrap_seed": 89,
+  "owners": [
+    {
+      "owner_id": "owner-a",
+      "base_profile": null,
+      "training": [
+        {
+          "item_id": "owner-a-item-0",
+          "owner_id": "owner-a",
+          "wine_group": "REPLACE-STABLE-WINE-FAMILY-0",
+          "feature_source": "unknown",
+          "feature_reference": "",
+          "wine": {
+            "name": "REPLACE-NAME-0",
+            "producer": "REPLACE-PRODUCER-0",
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "sensory_attributes": null,
+            "place_details": {}
+          },
+          "row_id": "owner-a-row-0",
+          "rating": null,
+          "use_for_profile_training": false,
+          "rated_at": "2026-10-14T00:00:00Z",
+          "rating_source": "unknown"
+        },
+        {
+          "item_id": "owner-a-item-1",
+          "owner_id": "owner-a",
+          "wine_group": "REPLACE-STABLE-WINE-FAMILY-1",
+          "feature_source": "unknown",
+          "feature_reference": "",
+          "wine": {
+            "name": "REPLACE-NAME-1",
+            "producer": "REPLACE-PRODUCER-1",
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "sensory_attributes": null,
+            "place_details": {}
+          },
+          "row_id": "owner-a-row-1",
+          "rating": null,
+          "use_for_profile_training": false,
+          "rated_at": "2026-10-14T00:00:00Z",
+          "rating_source": "unknown"
+        },
+        {
+          "item_id": "owner-a-item-2",
+          "owner_id": "owner-a",
+          "wine_group": "REPLACE-STABLE-WINE-FAMILY-2",
+          "feature_source": "unknown",
+          "feature_reference": "",
+          "wine": {
+            "name": "REPLACE-NAME-2",
+            "producer": "REPLACE-PRODUCER-2",
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "sensory_attributes": null,
+            "place_details": {}
+          },
+          "row_id": "owner-a-row-2",
+          "rating": null,
+          "use_for_profile_training": false,
+          "rated_at": "2026-10-14T00:00:00Z",
+          "rating_source": "unknown"
+        }
+      ],
+      "test": [
+        {
+          "item_id": "owner-a-item-3",
+          "owner_id": "owner-a",
+          "wine_group": "REPLACE-STABLE-WINE-FAMILY-3",
+          "feature_source": "unknown",
+          "feature_reference": "",
+          "wine": {
+            "name": "REPLACE-NAME-3",
+            "producer": "REPLACE-PRODUCER-3",
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "sensory_attributes": null,
+            "place_details": {}
+          }
+        },
+        {
+          "item_id": "owner-a-item-4",
+          "owner_id": "owner-a",
+          "wine_group": "REPLACE-STABLE-WINE-FAMILY-4",
+          "feature_source": "unknown",
+          "feature_reference": "",
+          "wine": {
+            "name": "REPLACE-NAME-4",
+            "producer": "REPLACE-PRODUCER-4",
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "sensory_attributes": null,
+            "place_details": {}
+          }
+        },
+        {
+          "item_id": "owner-a-item-5",
+          "owner_id": "owner-a",
+          "wine_group": "REPLACE-STABLE-WINE-FAMILY-5",
+          "feature_source": "unknown",
+          "feature_reference": "",
+          "wine": {
+            "name": "REPLACE-NAME-5",
+            "producer": "REPLACE-PRODUCER-5",
+            "vintage": null,
+            "region": null,
+            "country": null,
+            "sensory_attributes": null,
+            "place_details": {}
+          }
+        }
+      ]
+    }
+  ]
+}

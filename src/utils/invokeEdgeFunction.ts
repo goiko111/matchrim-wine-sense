@@ -35,10 +35,12 @@ export const invokeEdgeFunction = async <ResponseBody>(
 
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const message = typeof payload?.error === 'string' ? payload.error : `Error ${response.status}`;
+    const invalidModel = payload?.error === 'invalid_model_response' && payload?.retryable === false;
+    const message = invalidModel && typeof payload?.message === 'string' ? payload.message
+      : typeof payload?.error === 'string' ? payload.error : `Error ${response.status}`;
     throw new EdgeFunctionError(message, {
       status: response.status,
-      errorCode: response.headers.get('sb-error-code'),
+      errorCode: invalidModel ? 'invalid_model_response' : response.headers.get('sb-error-code'),
       retryAfterMs: parseRetryAfterMs(response.headers.get('retry-after')),
     });
   }

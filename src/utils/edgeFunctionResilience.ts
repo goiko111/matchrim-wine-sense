@@ -28,7 +28,7 @@ export const parseRetryAfterMs = (value: string | null) => {
 
 export const isRetryableEdgeFunctionError = (error: unknown) => {
   if (error instanceof EdgeFunctionError) {
-    if (isProviderCreditExhausted(error)) return false;
+    if (isProviderCreditExhausted(error) || error.errorCode === 'invalid_model_response') return false;
     return error.status === 408
       || error.status === 425
       || error.status === 429

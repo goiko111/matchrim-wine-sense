@@ -1,5 +1,14 @@
 # Matchrim project context
 
+## Latest Source: 2026-10-15, QA89
+
+Same checkout/branch below, baseline `ac6516c`; current remediation prepares local
+1.0(86), isolated staging QA bundle only. Uploaded85 and installed phone82 are
+separate facts. New staged hosted vision/food/catalog aliases do not certify
+production parity. [QA89 evidence and residual](docs/MATCHRIM_PENDING_REMEDIATION_2026-10-15.md)
+supersedes earlier in-progress implementation items, not their frozen datasets
+or unapproved canonical/human/physical gates.
+
 ## Active source reconciliation: 2026-10-15
 
 Current local repository is `/Users/GOIKO/2matchrim76-recognition-20261008`, branch

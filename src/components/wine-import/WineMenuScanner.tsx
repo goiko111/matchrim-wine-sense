@@ -2096,8 +2096,9 @@ const WineMenuScannerSession = ({
 	                  <div><div className="truncate text-sm font-bold capitalize text-slate-900">{selectedPinWine.tipo || '-'}</div><div className="text-xs text-slate-500">Tipo</div></div>
 	                </div>
 	                <WinerimOriginalSheet sheet={selectedPinWine.originalSheet} />
-                    {!selectedPinWine.originalSheet && selectedPinWine.canonicalId && <WinerimSheetLookup identity={{
+                    {!selectedPinWine.originalSheet?.detailVerified && <WinerimSheetLookup identity={{
                       name: selectedPinWine.nombre, producer: selectedPinWine.productor, vintage: selectedPinWine.anada,
+                      inferredFields: selectedPinWine.campos_inferidos,
                       region: selectedPinWine.campos_inferidos?.includes('region') ? null : selectedPinWine.region,
                       country: selectedPinWine.campos_inferidos?.some(field => /^(country|pais|país)$/i.test(field)) ? null : selectedPinWine.pais,
                     }} />}

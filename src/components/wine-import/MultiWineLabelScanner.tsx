@@ -47,7 +47,7 @@ import {
 } from '@/utils/edgeFunctionResilience';
 import { cropImageRegion, cropImageRegionWithQuality, ImagePreparationError, prepareImageForAnalysis, shouldRejectTextAnalysis, type ImageQualityReport } from '@/utils/imageAnalysis';
 import { labelCropPadding } from '@/utils/imageCropGeometry';
-import { createScanRequestBudget, cropQualityDeferral, deferRegion, MAX_MANUAL_REGION_REQUESTS, planRegionAnalysis, regionPreflight, ScanRequestLimitError, type ScanRequestBudget } from '@/utils/scanAnalysisPolicy';
+import { createScanRequestBudget, cropQualityDeferral, deferRegion, MAX_MANUAL_REGION_REQUESTS, planAdditionalRegionAnalysis, planRegionAnalysis, regionPreflight, ScanRequestLimitError, type ScanRequestBudget } from '@/utils/scanAnalysisPolicy';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
@@ -177,6 +177,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const continuationRef = useRef<AbortController | null>(null);
   const lastFileRef = useRef<File | null>(null);
   const preparedSizeRef = useRef<{ width: number; height: number } | null>(null);
   const scanProfileRef = useRef<ScanProfileSnapshot | null>(null);
@@ -207,6 +208,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const selectedCandidate = selectedRegion ? getSelectedCandidate(selectedRegion) : null;
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
   const regionProgress = useMemo(() => formatScanRegionProgress(summarizeScanRegionProgress(regions)), [regions]);
+  const continuationPlan = useMemo(() => preparedSizeRef.current
+    ? planAdditionalRegionAnalysis(regions, preparedSizeRef.current.width, preparedSizeRef.current.height)
+    : { automatic: [], deferred: [] }, [regions]);
   const duplicateGroups = useMemo(() => groupDuplicateWines(regions), [regions]);
   const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions), [regions]);
   const savedCount = saveResults.filter((result) => result?.status === 'saved').length;
@@ -343,7 +347,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') throw error;
       if (error instanceof ScanRequestLimitError) return deferRegion(region, {
-        code: 'request_limit', message: 'Pendiente de análisis: se alcanzó el límite de solicitudes del lote. Puedes analizar esta región por separado.',
+        code: 'request_limit', message: 'Pendiente de análisis: se alcanzó el límite de solicitudes de esta pasada. Puedes continuar con el siguiente lote o revisar esta región.',
       });
       return {
         ...region,
@@ -554,6 +558,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
   const cancelScan = () => {
     abortRef.current?.abort();
+    setRegions((current) => current.map((region) => region.status === 'analyzing'
+      ? { ...region, status: 'pending' as const } : region));
     setPhase('cancelled');
   };
 
@@ -583,6 +589,58 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
   const retryScan = () => {
     if (lastFileRef.current) void startScan(lastFileRef.current);
+  };
+
+  const continueScan = async () => {
+    if (batchRef.current || loading || savingRef.current || continuationRef.current || !preview || !preparedSizeRef.current) return;
+    const plan = planAdditionalRegionAnalysis(regions, preparedSizeRef.current.width, preparedSizeRef.current.height);
+    if (!plan.automatic.length) return;
+    const controller = new AbortController();
+    abortRef.current = controller;
+    continuationRef.current = controller;
+    const budget = createScanRequestBudget();
+    const startedAt = globalThis.performance.now();
+    let completed = 0;
+    let retries = 0;
+    const connection = (navigator as Navigator & {
+      connection?: { effectiveType?: string; saveData?: boolean };
+    }).connection ?? null;
+    const concurrency = getRegionAnalysisConcurrency(plan.automatic.length, connection);
+    setSelectedRegionId(null);
+    setConfirmed(false);
+    setErrorMessage(null);
+    setAnalysisProgress(0);
+    setAnalysisConcurrency(concurrency);
+    setPhase('analyzing');
+    try {
+      const results = await mapWithConcurrency(plan.automatic, concurrency, async (region) => {
+        const result = await analyzeRegion(region, preview, controller.signal, budget, lastFileRef.current?.name, () => { retries += 1; });
+        if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+        completed += 1;
+        setAnalysisProgress(Math.round(completed / plan.automatic.length * 100));
+        updateRegion(region.id, () => result);
+        return result;
+      });
+      if (controller.signal.aborted || abortRef.current !== controller) return;
+      const replacements = new Map([...plan.deferred, ...results].map((region) => [region.id, region]));
+      const merged = regions.map((region) => replacements.get(region.id) ?? region);
+      setRegions(merged);
+      setScanMetrics((current) => current ? { ...current, deferred: summarizeScanRegions(merged).deferred } : null);
+      setPhase('ready');
+    } catch (error) {
+      if (controller.signal.aborted || abortRef.current !== controller) return;
+      setErrorMessage(userFacingScanError(error));
+      setPhase('error');
+    } finally {
+      if (abortRef.current === controller && saveLifetime.current.active) {
+        const elapsed = Math.round(globalThis.performance.now() - startedAt);
+        setScanMetrics((current) => current ? {
+          ...current, analysisMs: current.analysisMs + elapsed, totalMs: current.totalMs + elapsed,
+          retries: current.retries + retries, edgeRequests: current.edgeRequests + budget.used, concurrency,
+        } : null);
+      }
+      if (continuationRef.current === controller) continuationRef.current = null;
+    }
   };
 
   const reanalyzeSelected = async () => {
@@ -754,7 +812,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     recordOwnedScanHistory(historyContext, {
       type: 'label',
       title: `${groups.length} referencia${groups.length === 1 ? '' : 's'} confirmada${groups.length === 1 ? '' : 's'}`,
-      subtitle: `${regions.length} objetos · ${summary.uncertain} dudosos · ${summary.unrecognized} sin reconocer`,
+      subtitle: `${regions.length} objetos · ${summary.uncertain} dudosos · ${summary.unrecognized} sin reconocer${summary.errors ? ` · ${summary.errors} con error tecnico` : ''}`,
       route: '/escanear/etiqueta',
       payload: {
         batch: groups.map((group) => ({ name: group.candidate.name, count: group.count, affinity: group.candidate.affinity ?? null })),
@@ -822,7 +880,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               <div className="mt-1 text-xs matchrim-muted">
                 {quality ? `${quality.megapixels} MP · brillo ${quality.brightness ?? '-'} · contraste ${quality.contrast ?? '-'}` : 'Preparando imagen'}
               </div>
-              {(phase === 'analyzing' || phase === 'ready') && regions.length > 0 && (
+              {(phase === 'analyzing' || phase === 'ready' || phase === 'cancelled') && regions.length > 0 && (
                 <div className="mt-1 text-xs text-slate-600" role="status" data-testid="scan-region-progress">
                   {regionProgress}
                 </div>
@@ -841,7 +899,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <X className="h-4 w-4" /> Cancelar
                 </Button>
               )}
-              {phase === 'error' && lastFileRef.current && (
+              {phase === 'error' && regions.length === 0 && lastFileRef.current && (
                 <Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" onClick={retryScan}>
                   <RefreshCw className="h-4 w-4" /> Reintentar
                 </Button>
@@ -865,6 +923,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
           {errorMessage && (
             <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900">{errorMessage}</div>
+          )}
+
+          {continuationPlan.automatic.length > 0 && !batchLocked && (
+            <div className="flex flex-wrap items-center justify-between gap-3 border-l-4 border-stone-400 bg-stone-50 p-3" data-testid="scan-continue-batch">
+              <p className="text-sm text-stone-800">{continuationPlan.automatic.length + continuationPlan.deferred.length} regiones pendientes de lectura.</p>
+              <Button type="button" variant="outline" disabled={loading || saving} className="min-h-11 max-w-full gap-2 whitespace-normal bg-white" onClick={() => void continueScan()}>
+                <ScanLine aria-hidden="true" className="h-4 w-4 shrink-0" /> {`Analizar siguientes ${continuationPlan.automatic.length}`}
+              </Button>
+            </div>
           )}
 
           <div
@@ -939,7 +1006,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               <div hidden={isNative && nativeResultView !== 'scene'} className="space-y-4">
               {summary.deferred > 0 && (
                 <div className="border-l-4 border-stone-400 bg-stone-50 px-3 py-3 text-sm text-stone-800" data-testid="scan-deferred-summary" role="status">
-                  <strong>{summary.deferred} regiones sin analizar.</strong> Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Revisa una región o toma una foto más cercana.
+                  <strong>{summary.deferred} regiones sin analizar.</strong> Se conservan en la escena y en la lista; no cuentan como vinos sin reconocer. Continúa la lectura pendiente o revisa los recortes con poca calidad.
                 </div>
               )}
               <div className="matchrim-data-rail grid grid-cols-3 gap-2 break-words rounded-lg px-2 py-3 text-center sm:grid-cols-5">
@@ -949,6 +1016,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 <div className="hidden sm:block"><div className="text-xl font-bold text-slate-800">{duplicateGroups.length}</div><div className="text-xs text-slate-500">Referencias</div></div>
                 <div className="hidden sm:block"><div className="text-xl font-bold text-slate-800">{regions.length}</div><div className="text-xs text-slate-500">Regiones</div></div>
               </div>
+
+              {summary.errors > 0 && (
+                <p role="status" className="text-sm text-red-800" data-testid="scan-technical-errors">
+                  {summary.errors} regiones con error técnico. No cuentan como vinos sin reconocer; puedes reintentar cada región.
+                </p>
+              )}
 
               <div className={`rounded-lg border-l-4 px-3 py-3 text-sm ${coverage?.status === 'reported_complete' ? 'border-emerald-600 bg-emerald-50 text-emerald-950' : coverage?.status === 'partial' ? 'border-amber-500 bg-amber-50 text-amber-950' : 'border-slate-400 bg-slate-50 text-slate-800'}`}>
                 <div className="flex items-center gap-2 font-semibold">
@@ -1191,8 +1264,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     {selectedCandidate && (
                       <>
                         <WinerimOriginalSheet sheet={selectedCandidate.originalSheet} />
-                        {!selectedCandidate.originalSheet && selectedCandidate.canonicalId && <WinerimSheetLookup identity={{
+                        {!selectedCandidate.originalSheet?.detailVerified && <WinerimSheetLookup identity={{
                           name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage,
+                          inferredFields: selectedCandidate.inferredFields,
                           region: selectedCandidate.inferredFields.includes('region') ? null : selectedCandidate.region,
                           country: selectedCandidate.inferredFields.some(field => /^(country|pais|país)$/i.test(field)) ? null : selectedCandidate.country,
                         }} />}

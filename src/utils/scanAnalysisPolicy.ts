@@ -40,12 +40,21 @@ export const planRegionAnalysis = (regions: ScanRegion[], width: number, height:
     const reason = regionPreflight(region, width, height)
       ?? (automatic.length >= MAX_AUTOMATIC_REGION_ANALYSES ? {
         code: 'automatic_limit' as const,
-        message: 'Pendiente de análisis: este lote analiza hasta 12 regiones automáticamente. Puedes analizar esta región por separado.',
+        message: 'Pendiente de análisis: la primera pasada lee hasta 12 regiones. Puedes continuar con el siguiente lote o revisar esta región.',
       } : null);
     if (reason) deferred.push(deferRegion(region, reason));
     else automatic.push(region);
   }
   return { automatic, deferred };
+};
+
+export const planAdditionalRegionAnalysis = (regions: ScanRegion[], width: number, height: number) => {
+  // Continue only unattempted work. Errors and low-quality crops need explicit review,
+  // and recognized/manual/discarded regions must never be submitted again as a batch.
+  const pending = regions.filter((region) => region.status === 'pending'
+    || (region.status === 'deferred'
+      && (region.deferral?.code === 'automatic_limit' || region.deferral?.code === 'request_limit')));
+  return planRegionAnalysis(pending, width, height);
 };
 
 export class ScanRequestLimitError extends Error {

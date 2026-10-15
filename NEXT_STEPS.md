@@ -1,5 +1,13 @@
 # Matchrim next steps
 
+## Active Delta: 2026-10-15, QA89 Implemented
+
+1. Preserve uploaded85, isolated candidate86 and all failed/intermediate evidence. Do not repeat the frozen200-image corpus or create another technical cohort as a substitute for human outcomes.
+2. Remaining recognition gate is real data quality: cabinet canonical links still zero, exhaustive source boxes/identities unverified, incomplete vintage/sensory coverage and menu latency/price/availability semantics. Do not loosen identity checks merely to display scores.
+3. Use the new frozen-profile blind workflow with consented independent ratings. The old44/45->33/45 mixed-profile result is not a causal learner regression or real taste validation. See intelligence89 report.
+4. Later physical verification needs the actual next production candidate: camera/permissions, VoiceOver speech, real network and memory/thermal. Owner phone82 was only inventoried here, not upgraded.
+5. After the quality/production-channel gate, archive/sign/export the next production build and verify Apple processing before TestFlight distribution. Never upload the staging QA bundle. Public web remains unchanged. [Implementation/evidence](docs/MATCHRIM_PENDING_REMEDIATION_2026-10-15.md).
+
 ## Active delta: 2026-10-15, QA87 findings before TestFlight
 
 1. Respect latest simulator-only instruction; do not resume the historical QA86 phone lane or upload anything. Preserve QA85 and all real recognition P1 evidence.

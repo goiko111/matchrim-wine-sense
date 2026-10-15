@@ -1,14 +1,17 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
-import { MAX_MENU_DISHES, normalizeFoodScan } from "./contract.ts";
+import { isFoodScanPayload, MAX_MENU_DISHES, MAX_MENU_TILE_DISHES, normalizeFoodScan, parseFoodMenuRegionContext } from "./contract.ts";
 import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from "../_shared/matchrim-learning.ts";
+import { runMatchrimAi } from "../_shared/matchrim-ai-provider.ts";
+import { parseStructuredObject, structuredResponseError, STRUCTURED_RESPONSE_ERROR_STATUS,
+  type StructuredResponseError } from "../_shared/structured-response.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const FUNCTION_VERSION = 'scan-food-pairing-2026-10-11-evidence-candidate-v3';
+const FUNCTION_VERSION = 'scan-food-pairing-2026-10-15-tiled-regions-v8';
 
 type MatchrimProfile = {
   potente: number;
@@ -48,29 +51,40 @@ const buildLearnedProfile = async (
   return calculateEdgeLearnedProfile(baseProfile, data as MatchrimTrainingRow[]);
 };
 
-const tryParseJson = (txt: string): unknown => {
-  try {
-    return JSON.parse(txt);
-  } catch {
-    const m = txt.match(/\{[\s\S]*\}/);
-    if (m) {
-      try { return JSON.parse(m[0]); } catch { /* ignore */ }
-    }
-    return null;
-  }
-};
+const invalidModelResponse = (error: StructuredResponseError) => new Response(JSON.stringify({
+  ...error, dishes: [], scan_version: FUNCTION_VERSION,
+}), { status: STRUCTURED_RESPONSE_ERROR_STATUS,
+  headers: { ...corsHeaders, "Content-Type": "application/json", "sb-error-code": error.error } });
 
-serve(async (req) => {
+const invalidRequest = () => new Response(JSON.stringify({
+  error: "invalid_request", message: "Selecciona una imagen valida y un modo menu o dish.",
+  recoverable: true, retryable: false, dishes: [], scan_version: FUNCTION_VERSION,
+}), { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const body = await req.json();
-    const { image, mode, restaurantName, matchrimProfile } = body ?? {};
-    if (!image || !image.startsWith("data:")) throw new Error("image debe ser data URL");
-    if (mode !== "menu" && mode !== "dish") throw new Error("mode debe ser 'menu' o 'dish'");
+    let body: unknown;
+    try { body = await req.json(); } catch { return invalidRequest(); }
+    if (!body || typeof body !== "object" || Array.isArray(body)) return invalidRequest();
+    const { image, mode, restaurantName, matchrimProfile, scan_region: rawScanRegion } = body as Record<string, unknown>;
+    if (typeof image !== "string" || !image.startsWith("data:")) return invalidRequest();
+    if (mode !== "menu" && mode !== "dish") return invalidRequest();
+    if (restaurantName != null && typeof restaurantName !== "string") return invalidRequest();
+    const scanRegion = parseFoodMenuRegionContext(rawScanRegion);
+    if (rawScanRegion !== undefined && (!scanRegion || mode !== 'menu')) return invalidRequest();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    const configuredProvider = Deno.env.get("MATCHRIM_AI_PROVIDER")?.trim().toLowerCase();
+    const useIndependentProvider = configuredProvider === "anthropic"
+      || (configuredProvider !== "lovable" && Boolean(Deno.env.get("ANTHROPIC_API_KEY")));
+    if (!(useIndependentProvider ? Deno.env.get("ANTHROPIC_API_KEY") : LOVABLE_API_KEY)) {
+      return new Response(JSON.stringify({ error: "provider_not_configured", recoverable: true,
+        retryable: false, dishes: [], scan_version: FUNCTION_VERSION }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     const authHeader = req.headers.get("Authorization") ?? "";
     const supabaseClient = createClient(
@@ -126,40 +140,48 @@ serve(async (req) => {
       ? `Perfil Matchrim del usuario (escala 1-5): potencia=${learnedProfile.potente}, acidez=${learnedProfile.acidez}, dulzura=${learnedProfile.dulce}, taninos=${learnedProfile.tanico}, afrutado=${learnedProfile.afrutado}.`
       : "El usuario no tiene perfil Matchrim. Usa recomendaciones de afinidad clásica.";
 
-    const maxDishes = mode === "menu" ? MAX_MENU_DISHES : 1;
+    const maxDishes = mode === "menu" ? (scanRegion ? MAX_MENU_TILE_DISHES : MAX_MENU_DISHES) : 1;
+    const maxTokens = scanRegion ? 8192 : 16384;
     const restaurantHint = restaurantName ? `Restaurante: ${restaurantName}.` : "";
 
     const prompt = `Eres un sumiller experto. Analiza esta imagen de ${mode === "menu" ? "un menú de comida (lista de platos)" : "un plato de comida"}.
 ${restaurantHint}
 ${profileText}
+${scanRegion ? `Esta imagen es SOLO el recorte ${scanRegion.id} de dos recortes solapados. Lee unicamente sus pixeles, hasta ${maxDishes} platos. No estimes platos del resto de la imagen ni completes lineas cortadas. Todas las cajas son porcentajes de ESTA imagen recibida (recorte), nunca de la imagen completa; el cliente las remapea. Los recuentos de coverage y de sus regiones se refieren SOLO a este recorte. No hay recuentos previos conocidos: usa null cuando no puedas estimarlos, nunca un cero de relleno. Marca truncated si alcanzas el limite o hay lineas cortadas.` : ''}
 
-Responde EXCLUSIVAMENTE en JSON válido con esta forma:
+Responde EXCLUSIVAMENTE en JSON compacto valido, sin indentacion, con esta forma:
 {
   "summary": "resumen breve de lo detectado",
   "coverage": {
     "estimated_visible_dishes": 0,
     "unreadable_dishes": 0,
     "truncated": false,
-    "notes": []
+    "notes": [],
+    "regions": [
+      { "id": "columna-1-seccion-1", "box": { "x": 0, "y": 0, "width": 50, "height": 100 }, "estimated_visible_dishes": 0, "unreadable_dishes": 0, "truncated": false }
+    ]
   },
   "dishes": [
     {
       "nombre": "...",
       "categoria": "entrante|principal|postre|...",
       "source_order": 1,
+      "region_id": "columna-1-seccion-1",
+      "source_box": { "x": 5, "y": 10, "width": 40, "height": 5 },
       "source_text": "texto exacto leído en la carta",
       "confidence": 0-100,
       "match": null,
       "razon": "características culinarias visibles o inferidas; nunca preferencias del usuario",
       "recomendaciones": [
-        { "nombre": "estilo de vino orientativo", "tipo": "Tinto|Blanco|...", "uvas": ["..."], "match": null, "razon": "hipótesis de maridaje plato-vino, no preferencia alimentaria", "atributos": { "potencia": 1-5, "acidez": 1-5, "dulzura": 1-5, "taninos": 1-5, "afrutado": 1-5 } }
+        { "nombre": "estilo de vino orientativo", "tipo": "Tinto|Blanco|...", "uvas": [], "match": null, "razon": "hipotesis breve de maridaje", "atributos": null }
       ]
     }
   ]
 }
 
 REGLAS ESTRICTAS:
-- Atributos sensoriales SIEMPRE enteros del 1 al 5 (NUNCA 6,7,8,9,10).
+- No generes vectores sensoriales de estilos genericos: atributos siempre null. No hay ficha de botella verificada.
+- Resumen de hasta 180 caracteres y cada razon de hasta 90 caracteres. Evita repetir el mismo aviso en cada plato: usa coverage.notes. No reduzcas el inventario para ahorrar texto.
 - match siempre null: una idea de estilo no es una botella con ficha sensorial verificada. No inventes porcentajes.
 - El perfil Matchrim describe preferencias de VINO, no de comida. No deduzcas gustos por postres, picante, carne ni restricciones alimentarias. Vino seco no implica rechazo del azúcar en la comida.
 - La extracción es independiente del perfil: incluye TODOS los platos, guarniciones, postres y opciones legibles. No omitas platos por su supuesto encaje personal. Conserva alternativas y tamaños sin convertir ingredientes en platos nuevos.
@@ -167,72 +189,112 @@ REGLAS ESTRICTAS:
 - ${mode === "menu"
     ? `Cuenta primero todas las líneas de platos legibles y devuelve una fila por cada plato, en el orden y sección originales, hasta un máximo técnico de ${maxDishes}.`
     : "Devuelve exactamente el plato visible cuando sea legible."}
-- NUNCA agrupes varios platos o postres en una misma fila. No uses barras, listas ni nombres compuestos para ahorrar espacio.
+- ${mode === "menu"
+    ? "Antes de proponer vinos, inventaria cada columna, panel y seccion en coverage.regions con un id distinto, box y su recuento local. Recorre cada region de arriba abajo, despues pasa a la siguiente; no unas lineas que solo coinciden en altura entre columnas. Cada plato lleva region_id, source_order local y source_box de su propia linea, incluida dentro de su region. Todas las cajas usan porcentajes de la imagen recibida: x/y esquina superior izquierda, width/height positivos, sin salir de 0..100. Si la imagen recibida es un recorte, no remapees sus cajas a otra imagen. Los numeros del ejemplo son solo formato, no coordenadas a copiar. Revisa tambien guarniciones, salsas y postres legibles; una region sin filas no puede desaparecer del inventario. Los recuentos y cajas son estimaciones tuyas, no precision medida."
+    : "No inventes regiones de carta para una fotografia de un plato."}
+- NUNCA agrupes varios platos o postres en una misma fila para ahorrar espacio. Conserva literalmente una barra o guion cuando pertenezca a un unico nombre o alternativa; no asumas que Poisson-Poulet es un plato o dos sin leer sus lineas y regiones.
+- source_text transcribe solo la linea de ese plato, no texto de otra columna. No completes nombres por conocimiento culinario ni copies un sufijo, salsa o guarnicion a otro plato sin texto que lo apoye.
+- Si excepcionalmente una fila de salida contiene varios platos, incluye source_rows con una entrada por linea leida: {"nombre":"nombre literal", "source_text":"fragmento literal incluido en source_text de la fila", "region_id":"id del inventario", "source_order":1, "source_box":{"x":5,"y":10,"width":40,"height":5}}. Sus cajas deben ser distintas, no solaparse y quedar dentro de sus respectivas regiones y de la fila agregada si tiene caja. No lo uses para alternativas o ingredientes de un solo plato. Sin evidencia suficiente deja la duda en coverage.notes; no repares ni inventes filas. No atribuyas recomendaciones agregadas a cada fragmento.
 - No inventes texto ilegible. Indica confidence bajo, aumenta unreadable_dishes y explica la duda en coverage.notes.
-- Marca coverage.truncated=true cuando estimated_visible_dishes sea mayor que el número de filas devueltas.
+- Marca coverage.truncated=true y el limite local cuando falten filas en cualquier region, haya texto ilegible o estimated_visible_dishes sea mayor que el numero de filas devueltas; no declares cobertura completa por haber llenado una sola columna.
 - 2 recomendaciones de vino por plato.
 - No incluyas texto fuera del JSON.`;
 
-    const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "user",
-            content: [
-              { type: "text", text: prompt },
-              { type: "image_url", image_url: { url: image } },
-            ],
-          },
-        ],
-        max_tokens: 16384,
-      }),
-    });
+    let content: unknown;
+    let provider = "lovable";
+    let model = "google/gemini-2.5-flash";
+    if (useIndependentProvider) {
+      try {
+        const ai = await runMatchrimAi({ prompt, image, maxTokens });
+        if (ai.complete === false) return invalidModelResponse(structuredResponseError('incomplete_response'));
+        content = ai.text;
+        provider = ai.provider;
+        model = ai.model;
+      } catch (error) {
+        if (error instanceof SyntaxError || error instanceof TypeError) {
+          return invalidModelResponse(structuredResponseError("invalid_json"));
+        }
+        console.error("Food AI provider unavailable");
+        return new Response(JSON.stringify({ error: "provider_unavailable", recoverable: true,
+          retryable: false, dishes: [], scan_version: FUNCTION_VERSION }), {
+          status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    } else {
+      const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: [
+            {
+              role: "user",
+              content: [
+                { type: "text", text: prompt },
+                { type: "image_url", image_url: { url: image } },
+              ],
+            },
+          ],
+          max_tokens: maxTokens,
+        }),
+      });
 
-    if (!aiRes.ok) {
-      const errTxt = await aiRes.text();
-      console.error("AI gateway error:", aiRes.status, errTxt);
-      if (aiRes.status === 429) {
-        return new Response(JSON.stringify({ error: "rate_limited" }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+      if (!aiRes.ok) {
+        const errTxt = await aiRes.text();
+        console.error("AI gateway error:", aiRes.status, errTxt);
+        if (aiRes.status === 429) {
+          return new Response(JSON.stringify({ error: "rate_limited" }), {
+            status: 429,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        if (aiRes.status === 402) {
+          return new Response(JSON.stringify({ error: "credits_exhausted" }), {
+            status: 402,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        throw new Error(`AI gateway ${aiRes.status}`);
       }
-      if (aiRes.status === 402) {
-        return new Response(JSON.stringify({ error: "credits_exhausted" }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+
+      const envelope = parseStructuredObject(await aiRes.text());
+      if (!envelope.ok) return invalidModelResponse(envelope.error);
+      const choices = envelope.value.choices;
+      const choice = Array.isArray(choices) && choices.length === 1 ? choices[0] : null;
+      if (!choice || typeof choice !== "object" || Array.isArray(choice)) {
+        return invalidModelResponse(structuredResponseError("invalid_schema"));
       }
-      throw new Error(`AI gateway ${aiRes.status}`);
+      if (choice.finish_reason != null && choice.finish_reason !== "stop") {
+        return invalidModelResponse(structuredResponseError("incomplete_response"));
+      }
+      content = choice.message?.content;
     }
-
-    const aiJson = await aiRes.json();
-    const content = aiJson?.choices?.[0]?.message?.content ?? "";
-    const parsed = tryParseJson(typeof content === "string" ? content : JSON.stringify(content)) as
-      | { summary?: string; coverage?: unknown; dishes?: unknown[] }
-      | null;
+    const parsed = parseStructuredObject(content);
+    if (!parsed.ok) return invalidModelResponse(parsed.error);
+    if (!isFoodScanPayload(parsed.value)) return invalidModelResponse(structuredResponseError("invalid_schema"));
 
     const normalized = normalizeFoodScan(
-      Array.isArray(parsed?.dishes) ? parsed!.dishes! : [],
-      parsed?.coverage,
+      parsed.value.dishes,
+      parsed.value.coverage,
       mode,
+      maxDishes,
     );
 
     return new Response(
       JSON.stringify({
         mode,
-        summary: parsed?.summary ? String(parsed.summary) : "",
+        summary: parsed.value.summary ?? "",
         dishes: normalized.dishes,
         coverage: normalized.coverage,
         has_profile: Boolean(learnedProfile),
         profile_source: profileSource,
         scan_version: FUNCTION_VERSION,
+        ai_provider: provider,
+        ai_model: model,
+        scan_region: scanRegion ?? undefined,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );

@@ -10,6 +10,9 @@ const checks = [
   'check-matchrim-menu-food-evidence.ts', 'check-matchrim-scan-profile.ts',
   'check-matchrim-onboarding-owner.ts', 'check-integral-regressions.ts',
   'check-matchrim-wine-mutation.ts', 'check-matchrim-history-owner.ts',
+  'check-matchrim-continuation89.ts', 'check-matchrim-vision-handler89.ts', 'check-matchrim-provider89.ts',
+  'check-matchrim-structured-response.ts', 'check-matchrim-food-robustness.ts', 'check-matchrim-food-menu-tiles89.ts',
+  'check-matchrim-original-library89.ts', 'check-matchrim-public-catalog-handler89.ts', 'check-matchrim-intelligence89.ts',
   'check-matchrim-label-save.ts', 'check-matchrim-food-client.ts', 'check-matchrim-screen-overlay.ts', 'check-matchrim-menu-integration-oct13.ts',
 ];
 const results = checks.map(file => {

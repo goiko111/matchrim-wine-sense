@@ -859,7 +859,9 @@ assert.deepEqual(summarizeScanRegions([
   makeRegion('r1', 1, 'A', 80),
   { ...makeRegion('r2', 2, 'B', 70), status: 'uncertain' },
   { ...makeRegion('r3', 3, 'C', 60), status: 'unrecognized' },
-]), { recognized: 1, uncertain: 1, unrecognized: 1, discarded: 0, pending: 0, deferred: 0 });
+]), { recognized: 1, uncertain: 1, unrecognized: 1, errors: 0, discarded: 0, pending: 0, deferred: 0 });
+assert.equal(summarizeScanRegions([{ ...makeRegion('error', 4, 'D', 0), status: 'unrecognized', error: 'Typed model failure' }]).unrecognized, 0);
+assert.equal(summarizeScanRegions([{ ...makeRegion('error', 4, 'D', 0), status: 'unrecognized', error: 'Typed model failure' }]).errors, 1);
 
 let active = 0;
 let maxActive = 0;

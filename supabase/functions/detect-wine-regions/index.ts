@@ -1,5 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { runMatchrimAi } from '../_shared/matchrim-ai-provider.ts';
+import { optionalScanNumber } from '../_shared/matchrim-scan-values.ts';
+import { parseStructuredObject, structuredResponseError, STRUCTURED_RESPONSE_ERROR_STATUS } from '../_shared/structured-response.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -7,15 +9,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const DETECTOR_VERSION = 'matchrim-region-detector-v4-candidate';
-
-const parseJsonObject = (raw: string) => {
-  const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-  const first = cleaned.indexOf('{');
-  const last = cleaned.lastIndexOf('}');
-  if (first === -1 || last === -1) throw new Error('El detector no devolvio JSON valido');
-  return JSON.parse(cleaned.slice(first, last + 1)) as Record<string, unknown>;
-};
+const DETECTOR_VERSION = 'matchrim-region-detector-v5-structured-candidate';
 
 const normalizeLevel = (value: unknown, allowed: string[], fallback: string) => {
   const normalized = typeof value === 'string' ? value.toLowerCase().trim() : '';
@@ -26,16 +20,19 @@ const normalizeRegion = (value: unknown, index: number) => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const raw = value as Record<string, unknown>;
   const boxRaw = raw.box && typeof raw.box === 'object' ? raw.box as Record<string, unknown> : raw;
-  const x = Number(boxRaw.x);
-  const y = Number(boxRaw.y);
-  const width = Number(boxRaw.width);
-  const height = Number(boxRaw.height);
-  if (![x, y, width, height].every(Number.isFinite) || width < 2 || height < 2) return null;
+  const x = optionalScanNumber(boxRaw.x);
+  const y = optionalScanNumber(boxRaw.y);
+  const width = optionalScanNumber(boxRaw.width);
+  const height = optionalScanNumber(boxRaw.height);
+  if (x === null || y === null || width === null || height === null || width < 2 || height < 2) return null;
   const quality = raw.quality && typeof raw.quality === 'object'
     ? raw.quality as Record<string, unknown>
     : {};
-  const normalizedX = clamp(x, 0, 98);
-  const normalizedY = clamp(y, 0, 98);
+  const normalizedX = clamp(x, 0, 100);
+  const normalizedY = clamp(y, 0, 100);
+  const clippedWidth = Math.min(100, x + width) - normalizedX;
+  const clippedHeight = Math.min(100, y + height) - normalizedY;
+  if (clippedWidth < 2 || clippedHeight < 2) return null;
 
   return {
     id: `region-${index + 1}`,
@@ -43,8 +40,8 @@ const normalizeRegion = (value: unknown, index: number) => {
     box: {
       x: normalizedX,
       y: normalizedY,
-      width: clamp(width, 2, 100 - normalizedX),
-      height: clamp(height, 2, 100 - normalizedY),
+      width: clippedWidth,
+      height: clippedHeight,
     },
     confidence: clamp(Number(raw.confidence) || 0.5, 0, 1),
     quality: {
@@ -88,9 +85,11 @@ serve(async (request) => {
   if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
-    const body = await request.json();
+    const body = await request.json().catch(() => null);
     const image = typeof body?.image === 'string' ? body.image : '';
-    if (!image.startsWith('data:image/')) throw new Error('Falta una imagen valida');
+    if (!image.startsWith('data:image/')) return new Response(JSON.stringify({ error: 'Falta una imagen valida', regions: [] }), {
+      status: 422, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
 
     const prompt = `Actua solo como detector visual. No identifiques marcas ni nombres de vino.
 
@@ -129,8 +128,17 @@ Responde SOLO JSON:
 }`;
 
     const ai = await runMatchrimAi({ prompt, image, maxTokens: 4096 });
-    const parsed = parseJsonObject(ai.text);
-    const rawRegions = Array.isArray(parsed.regions) ? parsed.regions : [];
+    const decoded = parseStructuredObject(ai.text);
+    if (ai.complete === false || !decoded.ok || !Array.isArray(decoded.value.regions)) {
+      const error = ai.complete === false ? structuredResponseError('incomplete_response')
+        : decoded.ok ? structuredResponseError('invalid_schema') : decoded.error;
+      return new Response(JSON.stringify({ ...error, regions: [], detector_version: DETECTOR_VERSION }), {
+        status: STRUCTURED_RESPONSE_ERROR_STATUS,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'sb-error-code': error.error },
+      });
+    }
+    const parsed = decoded.value;
+    const rawRegions = parsed.regions as unknown[];
     const normalizedRegions = rawRegions.map(normalizeRegion).filter((region): region is NormalizedRegion => Boolean(region));
     const regions = deduplicateRegions(normalizedRegions).slice(0, 30);
     const rawCoverage = parsed.coverage && typeof parsed.coverage === 'object' && !Array.isArray(parsed.coverage)

@@ -29,6 +29,8 @@ import { convertPdfFirstPageToImageFile } from "@/utils/pdfToImage";
 import { prepareImageForAnalysis } from "@/utils/imageAnalysis";
 import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
 import { FoodScanResponseError, parseFoodScanResponse, type FoodScanResult, type FoodDishResult, type FoodWineRecommendation } from "@/utils/foodScanResponse";
+import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
+import { scanFoodMenu89 } from '@/utils/foodMenuScan89';
 import { readRestaurantCarry, restaurantCarryIsForeign, restaurantCarryState, restaurantScanPath, unsupportedRestaurantClaim } from "@/utils/restaurantPairingContext";
 
 type FoodScanMode = "menu" | "dish";
@@ -174,7 +176,8 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
 
     try {
       const imageFile = isPdf ? await convertPdfFirstPageToImageFile(file, "menu-page.jpg") : file;
-      const { dataUrl: image } = await prepareImageForAnalysis(imageFile);
+      if (controller.signal.aborted) return;
+      const { dataUrl: image, width, height } = await prepareImageForAnalysis(imageFile, 2400, controller.signal);
       if (controller.signal.aborted) return;
       setPreview(image);
       trackAppEvent("food_scan_started", {
@@ -187,15 +190,15 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
         },
       });
 
-      const { data, error } = await supabase.functions.invoke("scan-food-pairing", {
-        body: { image, mode, restaurantName, matchrimProfile: readMatchrimLocalProfile() },
-        signal: controller.signal,
-      });
+      const context = { restaurantName, matchrimProfile: readMatchrimLocalProfile() };
+      const scanResult = mode === 'menu'
+        ? await scanFoodMenu89({ image, width, height, signal: controller.signal, context,
+          invoke: (body, signal) => invokeEdgeFunction<unknown>('scan-food-pairing', body, signal) })
+        : parseFoodScanResponse(await invokeEdgeFunction<unknown>('scan-food-pairing',
+          { image, mode, ...context }, controller.signal));
 
-      if (controller.signal.aborted) return;
-      if (error) throw error;
+      if (controller.signal.aborted || !mountedRef.current || scanController.current !== controller) return;
 
-      const scanResult = parseFoodScanResponse(data);
       setResult(scanResult);
       trackAppEvent("food_scan_completed", {
         userId: user?.id,
@@ -523,7 +526,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                 {result.coverage?.estimated_visible_dishes != null && (
                   <p className="mt-2 text-sm text-stone-600">El detector estima {result.coverage.estimated_visible_dishes} platos visibles; ha devuelto {result.dishes.length}.</p>
                 )}
-                {result.coverage?.truncated && <p className="mt-2 font-medium text-amber-800">Lectura parcial. Faltan platos por revisar.</p>}
+                {result.coverage?.truncated && <p className="mt-2 font-medium text-amber-800">Lectura parcial o sin verificar; revisa la carta original.</p>}
               </div>
             </div>
           </div>

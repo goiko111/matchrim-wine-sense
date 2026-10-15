@@ -82,6 +82,8 @@ with sync_playwright() as pw:
    chooser.set_files({'name':name,'mimeType':'image/jpeg','buffer':photo.read_bytes()});chooser.element.dispose()
   try:
    page.goto(a.url+'/escanear/etiqueta',wait_until='networkidle')
+   # Inject image faults only after the lazy scanner/auth shell is actually ready.
+   page.get_by_role('button',name='Elegir de galería',exact=True).wait_for(state='visible',timeout=30000)
    before=counts.copy()
    if scenario=='retry-offline':
     upload('original-public.jpg');page.get_by_text('Lote listo para revisar',exact=True).wait_for(timeout=45000)

@@ -23,4 +23,8 @@ assert.equal(resolveMatchrimEdgeFunctionName('scan-wine-menu-v72', '72'), 'scan-
 checks++;
 assert.equal(resolveMatchrimEdgeFunctionName('search-wines-v75', '75'), 'search-wines-v75');
 checks++;
+for (const name of ['detect-wine-regions', 'analyze-wine-region', 'scan-food-pairing', 'search-wines', 'scan-wine-menu']) {
+  assert.equal(resolveMatchrimEdgeFunctionName(name, 'qa89'), `${name}-qa89`);
+  checks++;
+}
 console.log(`Matchrim edge routing: ${checks}/${checks} assertions passed`);

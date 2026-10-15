@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Active Checkpoint: 2026-10-15, QA89 Remediation / Candidate86
+
+- Continue from `ac6516c`, same repository/branch; do not restart QA85-88 or the200-image corpus. New bounded continuation, strict provider/JSON errors, food crops/source-row conflict handling, separate technical-error totals and original public Library identity/detail lookup implemented. Quiz, taste weights and learner unchanged.
+- Uploaded85 remains unchanged. Local isolated `wine.matchrim.qa89`1.0(86) targets staging only, with no fixtures; production/public web and owner iPhone82 were not replaced. Staging aliases: detector/analyzerv2, foodv5(tiled-v8), public catalogv1, strict wine-menuv1; JWT verification remains enabled. Menu JSON repair is removed only in this new isolated alias.
+- Fresh four original wine-menu pages return10/8/13/32references; no canonical accuracy approval. Dense full r4 attempt60/60 has57validJSON+3typed502, zero500, zero confirmed canonical links. A separate90-request combined rerun exhausts the QA harness budget; its synthetic failures are not provider errors.
+- Three-crop BBQ canary recovers4/4 existing terms in65.361s versus2/4 with clipped two-crop output. Coverage/35raw rows remain unverified, not35confirmed dishes. Blind evaluator76checksPASS exposes a mixed-profile historical metric defect; no human taste evidence exists.
+- Release/types/lint/build and focused checksPASS;106 inherited lint warnings. Controlled browser15/15phase groups and continuation5/5PASS. Native3/3methodsPASS, final-source rotation1/1 and corrected full-screen cellar1/1PASS; final simulator/generic iOS candidate86 compiles. New strict wine-menu hosted canary returns8references/71.771s/9HTTP200, not canonical approval. [QA89 report](docs/MATCHRIM_PENDING_REMEDIATION_2026-10-15.md) retains residual gates and failures. No TestFlight86 or production promotion.
+
 ## Active checkpoint: 2026-10-15, simulator-first 50-account QA87
 
 - Latest owner instruction postpones phone/TestFlight; QA86 physical lane is superseded, not continued. No product edit, physical operation, upload, deploy or push in QA87. Product2ea342f unchanged; existing staging simulator wine.matchrim.qa84 remains1.0(84), not a new87 release.

@@ -1,57 +1,68 @@
 import { useEffect, useRef, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
-import { Loader2, BookOpen } from 'lucide-react';
+import { Loader2, BookOpen, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WinerimOriginalSheet } from './WinerimOriginalSheet';
-import { findOriginalWinerimWineForLabel, type WinerimLabelLookupInput } from '@/services/winerimApi';
-import { createWinerimOriginalSheet, type WinerimOriginalSheet as OriginalSheet } from '@/utils/winerimOriginalSheet';
+import { canLookupWinerimOriginal, lookupWinerimOriginalSheet, type WinerimOriginalIdentity,
+  type WinerimOriginalLookupResult } from '@/utils/winerimOriginalSheet';
 
-export const WinerimSheetLookup = ({ identity }: { identity: WinerimLabelLookupInput }) => {
-  const key = JSON.stringify([identity.name, identity.producer, identity.vintage, identity.region, identity.country]);
-  const generation = useRef(0);
-  const pending = useRef(false);
+const lookupMessages = {
+  'identity-required': 'Ficha pendiente: falta un nombre y una bodega confirmados, o la añada no es válida.',
+  'not-found': 'No se ha podido enlazar esta identidad y añada con una ficha de la Library consultada. No confirma que el vino no exista en Winerim.',
+  ambiguous: 'La consulta no permite identificar una única ficha original. La ficha y sus atributos siguen pendientes de verificar.',
+  incomplete: 'La consulta es incompleta. No se puede verificar una ficha única para esta referencia.',
+  unavailable: 'No se ha podido consultar la ficha original de Winerim. Puedes volver a intentarlo; la identificación y la afinidad no han cambiado.',
+};
+
+const OriginalSheetLookup = ({ identity }: { identity: WinerimOriginalIdentity }) => {
   const controller = useRef<AbortController | null>(null);
+  const mounted = useRef(true);
   const [loading, setLoading] = useState(false);
-  const [searched, setSearched] = useState(false);
-  const [sheet, setSheet] = useState<OriginalSheet | null>(null);
+  const [outcome, setOutcome] = useState<WinerimOriginalLookupResult | null>(null);
   const result = useRef<HTMLDivElement>(null);
-  useEffect(() => { if (sheet) result.current?.focus({ preventScroll: true }); }, [sheet]);
+  const ready = canLookupWinerimOriginal(identity);
+  useEffect(() => { if (outcome?.status === 'verified') result.current?.focus({ preventScroll: true }); }, [outcome]);
   useEffect(() => {
-    generation.current += 1;
-    pending.current = false;
-    setLoading(false);
-    setSearched(false);
-    setSheet(null);
-    return () => { generation.current += 1; controller.current?.abort(); };
-  }, [key]);
-  if (!Capacitor.isNativePlatform()) return null;
+    mounted.current = true;
+    return () => { mounted.current = false; controller.current?.abort(); };
+  }, []);
   const lookup = async () => {
-    if (pending.current) return;
-    pending.current = true;
-    const request = generation.current;
+    if (controller.current || !ready) return;
     const abort = new AbortController();
     controller.current = abort;
     setLoading(true);
+    setOutcome(null);
     try {
-      const match = await findOriginalWinerimWineForLabel(identity, abort.signal);
-      if (request !== generation.current) return;
-      setSheet(match ? createWinerimOriginalSheet(match) : null);
-      setSearched(true);
+      const next = await lookupWinerimOriginalSheet(identity, abort.signal);
+      if (mounted.current && !abort.signal.aborted) setOutcome(next);
     } catch {
-      if (request === generation.current) { setSheet(null); setSearched(true); }
+      if (mounted.current && !abort.signal.aborted) setOutcome({ status: 'unavailable' });
     } finally {
-      if (request === generation.current) { pending.current = false; setLoading(false); }
+      if (mounted.current && controller.current === abort) { controller.current = null; setLoading(false); }
     }
   };
-  if (sheet) return <div ref={result} tabIndex={-1} className="min-w-0 outline-none" aria-label={`Ficha original Winerim: ${sheet.name}`}>
-    <p role="status" className="sr-only">Ficha Winerim verificada para {sheet.name} {sheet.vintage}.</p><WinerimOriginalSheet sheet={sheet} />
+  if (outcome?.status === 'verified') return <div ref={result} tabIndex={-1} className="min-w-0 outline-none" aria-label={`Ficha original Winerim: ${outcome.sheet.name}`}>
+    <p role="status" className="sr-only">Ficha original Winerim verificada para {outcome.sheet.name} {outcome.sheet.vintage}.</p><WinerimOriginalSheet sheet={outcome.sheet} />
   </div>;
+  const status = ready ? outcome?.status : 'identity-required';
   return (
     <div className="min-w-0" aria-busy={loading}>
-      <Button type="button" variant="outline" disabled={loading} aria-label={`Ficha original Winerim: ${identity.name}${identity.vintage ? ` ${identity.vintage}` : ''}`} onClick={() => void lookup()} className="h-auto min-h-11 w-full gap-2 whitespace-normal">
-        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <BookOpen className="h-4 w-4" />} Ficha original Winerim
-      </Button>
-      {searched && <p role="status" className="mt-2 text-xs text-slate-600">No hay una ficha Winerim verificada para esta referencia y añada. Revisa la identificación o vuelve a intentarlo.</p>}
+      <div className="flex min-w-0 items-center gap-2">
+        <Button type="button" variant="outline" disabled={loading || !ready} aria-label={`Ficha original Winerim: ${identity.name}${identity.vintage ? ` ${identity.vintage}` : ''}`} onClick={() => void lookup()} className="h-auto min-h-11 min-w-0 flex-1 gap-2 whitespace-normal break-words">
+          {loading ? <Loader2 aria-hidden="true" className="h-4 w-4 shrink-0 animate-spin" /> : <BookOpen aria-hidden="true" className="h-4 w-4 shrink-0" />} {outcome ? 'Reintentar ficha original Winerim' : 'Ficha original Winerim'}
+        </Button>
+        {loading && <Button type="button" variant="ghost" size="icon" className="h-11 w-11 shrink-0" aria-label="Cancelar búsqueda de ficha" title="Cancelar búsqueda de ficha" onClick={() => {
+          controller.current?.abort(); controller.current = null; setLoading(false);
+        }}><X aria-hidden="true" className="h-4 w-4" /></Button>}
+      </div>
+      {loading && <p role="status" className="mt-2 text-xs text-slate-600">Consultando la ficha original de Winerim...</p>}
+      {status && <p role="status" className="mt-2 text-xs text-slate-600">{lookupMessages[status]}</p>}
     </div>
   );
+};
+
+export const WinerimSheetLookup = ({ identity }: { identity: WinerimOriginalIdentity }) => {
+  if (!Capacitor.isNativePlatform()) return null;
+  const key = JSON.stringify([identity.name, identity.producer, identity.vintage, identity.region, identity.country, identity.inferredFields]);
+  return <OriginalSheetLookup key={key} identity={identity} />;
 };

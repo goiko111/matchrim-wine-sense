@@ -6,6 +6,8 @@ const candidateFunctions = new Set([
 ]);
 
 export const resolveMatchrimEdgeFunctionName = (name: string, release?: string): string => {
+  if (release === 'qa89' && ['detect-wine-regions', 'analyze-wine-region', 'scan-food-pairing', 'scan-wine-menu'].includes(name)) return `${name}-qa89`;
+  if (release === 'qa89' && name === 'search-wines') return 'search-wines-qa89';
   if (release === 'qa84' && name === 'search-wines') return `${name}-qa84`;
   if (release === '75' && name === 'search-wines') return `${name}-v75`;
   if ((release === '73' || release === '75') && name === 'calculate-wine-affinity') return `${name}-v73`;

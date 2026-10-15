@@ -736,7 +736,8 @@ export const summarizeScanRegions = (regions: ScanRegion[]) => ({
   deferred: regions.filter((region) => region.status === 'deferred').length,
   recognized: regions.filter((region) => region.status === 'recognized').length,
   uncertain: regions.filter((region) => region.status === 'uncertain').length,
-  unrecognized: regions.filter((region) => region.status === 'unrecognized').length,
+  unrecognized: regions.filter((region) => region.status === 'unrecognized' && !region.error).length,
+  errors: regions.filter((region) => Boolean(region.error) && region.status !== 'discarded').length,
   discarded: regions.filter((region) => region.status === 'discarded').length,
   pending: regions.filter((region) => region.status === 'pending' || region.status === 'analyzing').length,
 });

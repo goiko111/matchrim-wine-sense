@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.app.json",
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "noEmit": true,
+    "types": ["node", "vite/client"],
+    "baseUrl": "..",
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": [
+    "matchrim-intelligence89.ts", "run-matchrim-intelligence89.ts",
+    "fixtures-matchrim-intelligence89.ts", "diagnose-matchrim-intelligence89.ts",
+    "check-matchrim-intelligence89.ts"
+  ]
+}

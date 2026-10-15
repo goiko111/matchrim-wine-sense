@@ -37,8 +37,12 @@ assert.equal(nullSensory.coverage.estimated_visible_dishes, null);
 assert.equal(nullSensory.dishes[0].match, null);
 assert.equal(nullSensory.dishes[0].recomendaciones[0].match, null);
 const split = normalizeFoodScan([{ nombre: 'Flan / Tarta / Helado', recomendaciones: [{ nombre: 'Vino', match: 99 }] }], {}, 'menu');
-assert.equal(split.dishes.length, 3);
-assert.ok(split.dishes.every(d => d.recomendaciones.length === 0), 'do not clone an aggregate recommendation onto different dishes');
+assert.equal(split.dishes.length, 1, 'Slashes alone cannot establish three physical dish rows');
+assert.equal(split.dishes[0].nombre, 'Flan / Tarta / Helado', 'Preserve the original model assertion without repairing names');
+assert.equal(split.dishes[0].recomendaciones.length, 0, 'Do not attribute an aggregate pairing to an unresolved list of dishes');
+assert.equal(split.coverage.split_rows, 0);
+assert.equal(split.coverage.truncated, true, 'No source rows or boxes means segmentation remains unresolved');
+assert.equal(split.coverage.partial, true);
 const coverage = parseFoodScanResponse({ mode: 'menu', summary: 'All done', dishes: [], has_profile: false,
   coverage: { estimated_visible_dishes: 20, returned_dishes: 0, truncated: true } });
 assert.equal(coverage.coverage?.truncated, true);

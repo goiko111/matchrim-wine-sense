@@ -1,5 +1,18 @@
 # Matchrim decisions log
 
+## 2026-10-15: QA89 Fixes Require Evidence, Not Synthetic Approval
+
+User asks to resolve pending points. Implement bounded per-region continuation,
+strict complete-provider JSON, separate technical failures, bounded real food
+crops and identity-bound original public Library reads in isolated staging.
+Keep production/public web and uploaded85 intact. Central crop on wide food
+photos solves a demonstrated clipped-panel case, not general learned layout.
+Never sum overlapping model counts or promote missing identities/sensory data.
+Keep historical metrics/data unchanged; freeze one profile per blind ranking and
+require independent consented outcomes for human taste claims. Use full-screen
+native captures after proving app-only landscape capture is corrupt in this
+XCTest environment. See QA89 report for exact accepted and residual evidence.
+
 ## 2026-10-15: latest instruction postpones phone and release; QA87 preserves failures
 
 Continue simulator/browser QA using existing50 isolated technical staging accounts,

@@ -8,6 +8,7 @@ export type MatchrimAiResult = {
   text: string;
   provider: 'anthropic' | 'lovable';
   model: string;
+  complete: boolean;
 };
 
 const parseImageDataUrl = (image: string) => {
@@ -55,14 +56,14 @@ const runAnthropic = async ({ prompt, image, maxTokens }: MatchrimAiRequest): Pr
     }),
   });
   if (!response.ok) throw await providerError(response);
-  const data = await response.json() as { content?: Array<{ type?: string; text?: string }> };
+  const data = await response.json() as { content?: Array<{ type?: string; text?: string }>; stop_reason?: string };
   const text = (data.content ?? [])
     .filter((block) => block.type === 'text' && typeof block.text === 'string')
     .map((block) => block.text)
     .join('\n')
     .trim();
   if (!text) throw new Error('Anthropic no devolvió contenido analizable.');
-  return { text, provider: 'anthropic', model };
+  return { text, provider: 'anthropic', model, complete: data.stop_reason === 'end_turn' };
 };
 
 const runLovable = async ({ prompt, image, maxTokens }: MatchrimAiRequest): Promise<MatchrimAiResult> => {
@@ -84,10 +85,10 @@ const runLovable = async ({ prompt, image, maxTokens }: MatchrimAiRequest): Prom
     }),
   });
   if (!response.ok) throw await providerError(response);
-  const data = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
+  const data = await response.json() as { choices?: Array<{ message?: { content?: string }; finish_reason?: string }> };
   const text = data.choices?.[0]?.message?.content?.trim() || '';
   if (!text) throw new Error('Lovable no devolvió contenido analizable.');
-  return { text, provider: 'lovable', model };
+  return { text, provider: 'lovable', model, complete: data.choices?.[0]?.finish_reason === 'stop' };
 };
 
 export const runMatchrimAi = async (request: MatchrimAiRequest): Promise<MatchrimAiResult> => {
