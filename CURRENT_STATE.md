@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Active Window: 2026-10-15, QA90 Local Continuity
+
+- Authorized14:36Z-16:36Z, baseline8f52291. Independent assignment90; no new paid inference, accounts, SQL writes, downloads, deploy/push/publication/TestFlight or physical UI operation.
+- First block creates37 pixel-based white-cabinet label slots without canonical claims and fixes a reproduced cross-shelf explicit-bottle merge. Recorded slot coverage33/37unchanged; two3-shelf joins removed, eight mixed-label proposals still unresolved. Geometry10/provenance40/existing multi-wine/typechecksPASS. Source-only; the existing86 binary still reflects8f52291, not this delta. No new model run or physical/human approval.
+- Continue the distinct red-cabinet source review and test the cap hypothesis against its frozen trace. [QA90 checkpoint](docs/MATCHRIM_CONTINUITY_90_2026-10-15.md); preserve QA89 receipts and all release channels below.
+
 ## Active Checkpoint: 2026-10-15, QA89 Remediation / Candidate86
 
 - Continue from `ac6516c`, same repository/branch; do not restart QA85-88 or the200-image corpus. New bounded continuation, strict provider/JSON errors, food crops/source-row conflict handling, separate technical-error totals and original public Library identity/detail lookup implemented. Quiz, taste weights and learner unchanged.

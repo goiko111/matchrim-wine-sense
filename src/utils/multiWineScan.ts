@@ -276,13 +276,19 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
       return sideBySide || stackedBottles;
     }));
   });
-  const deduplicated: Array<{ region: ScanRegion; members: NormalizedBox[] }> = [];
+  const deduplicated: Array<{ region: ScanRegion; members: NormalizedBox[]; bottles: NormalizedBox[] }> = [];
   [...objects]
     .sort((a, b) => b.detectionConfidence - a.detectionConfidence)
     .forEach((region) => {
       let merged: ScanRegion = region;
       let members = [region.box];
-      const compatibleCluster = (cluster: { members: NormalizedBox[] }) => {
+      let bottles = region.objectType === 'bottle' ? [region.box] : [];
+      const compatibleCluster = (cluster: { members: NormalizedBox[]; bottles: NormalizedBox[] }) => {
+        const proposedBottles = [...bottles, ...cluster.bottles];
+        // A detached label may belong to a bottle; two explicitly reported
+        // bottles on separate shelves cannot be joined by alignment alone.
+        if (proposedBottles.some((left, i) => proposedBottles.slice(i + 1).some((right) =>
+          overlapRatio(left.y, left.height, right.y, right.height) === 0))) return false;
         const proposed = [...members, ...cluster.members];
         const anchor = proposed.reduce((largest, box) => box.width * box.height > largest.width * largest.height ? box : largest);
         return proposed.every((box) => box === anchor || areLikelySamePhysicalDetection(anchor, box));
@@ -292,6 +298,7 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
         const cluster = deduplicated.splice(duplicateIndex, 1)[0];
         const kept = cluster.region;
         members = [...members, ...cluster.members];
+        bottles = [...bottles, ...cluster.bottles];
         const keptArea = kept.box.width * kept.box.height;
         const mergedArea = merged.box.width * merged.box.height;
         const keptLegibility = legibilityPriority[kept.quality.legibility];
@@ -317,7 +324,7 @@ export const normalizeDetectedRegions = (payload: unknown): ScanRegion[] => {
         };
         duplicateIndex = deduplicated.findIndex(compatibleCluster);
       }
-      deduplicated.push({ region: merged, members });
+      deduplicated.push({ region: merged, members, bottles });
     });
 
   return deduplicated
