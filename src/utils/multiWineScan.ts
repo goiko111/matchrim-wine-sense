@@ -660,16 +660,22 @@ const genericWineNameTokens = new Set([
   'wine',
 ]);
 
+const hasWineIdentityConflict = (left: WineCandidate, right: WineCandidate) => {
+  if (left.canonicalId && right.canonicalId && left.canonicalId !== right.canonicalId) return true;
+  if (left.vintage && right.vintage && left.vintage !== right.vintage) return true;
+  const leftProducer = [...identityTokens(left.producer)].filter((token) => !producerStopWords.has(token));
+  const rightProducer = [...identityTokens(right.producer)].filter((token) => !producerStopWords.has(token));
+  return leftProducer.length > 0 && rightProducer.length > 0
+    && leftProducer.filter((token) => rightProducer.includes(token)).length < Math.min(leftProducer.length, rightProducer.length);
+};
+
 export const areLikelyDuplicateWines = (left: WineCandidate, right: WineCandidate) => {
-  if (left.vintage && right.vintage && left.vintage !== right.vintage) return false;
+  if (hasWineIdentityConflict(left, right)) return false;
   const leftName = identityTokens(left.name);
   const rightName = identityTokens(right.name);
   const leftProducer = new Set([...identityTokens(left.producer)].filter((token) => !producerStopWords.has(token)));
   const rightProducer = new Set([...identityTokens(right.producer)].filter((token) => !producerStopWords.has(token)));
   const sharedProducer = [...leftProducer].filter((token) => rightProducer.has(token));
-  if (leftProducer.size && rightProducer.size && sharedProducer.length < Math.min(leftProducer.size, rightProducer.size)) {
-    return false;
-  }
   if ([...leftName].every((token) => rightName.has(token)) && leftName.size === rightName.size) return true;
 
   const sharedName = [...leftName].filter((token) => rightName.has(token));
@@ -697,6 +703,7 @@ export interface DuplicateWineGroup {
 
 export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[] => {
   const groups: DuplicateWineGroup[] = [];
+  const members = new Map<DuplicateWineGroup, WineCandidate[]>();
   regions.forEach((region) => {
     if (region.status === 'discarded' || region.status === 'unrecognized') return;
     const candidate = getSelectedCandidate(region);
@@ -705,6 +712,10 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
     const canGroup = (region.status === 'recognized' || region.status === 'uncertain')
       && candidate.confidence >= 0.5;
     const current = canGroup ? groups.find((group) => {
+      // A stronger but incomplete representative must not bridge conflicting
+      // vintages, producers or canonical records hidden elsewhere in the group.
+      const evidence = members.get(group);
+      if (!evidence || evidence.some((member) => hasWineIdentityConflict(member, candidate))) return false;
       if (buildCanonicalWineKey(group.candidate) === canonicalKey) return true;
       const exactWineName = normalizeIdentity(group.candidate.name) === normalizeIdentity(candidate.name);
       const compatibleVintage = !group.candidate.vintage
@@ -720,16 +731,19 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
         && areLikelyDuplicateWines(group.candidate, candidate);
     }) : null;
     if (current) {
+      members.get(current)!.push(candidate);
       current.regionIds.push(region.id);
       current.count += 1;
       if (candidate.confidence > current.candidate.confidence) current.candidate = candidate;
     } else {
-      groups.push({
+      const group: DuplicateWineGroup = {
         key: canGroup ? canonicalKey : `${canonicalKey}|region:${region.id}`,
         regionIds: [region.id],
         count: 1,
         candidate,
-      });
+      };
+      groups.push(group);
+      if (canGroup) members.set(group, [candidate]);
     }
   });
   return groups.sort((a, b) => {

@@ -161,8 +161,49 @@ Limitations:
 - Canonical wine precision, real taste usefulness and physical device gates stay
   open. Production/public web, installed82, TestFlight85 and staging86 are untouched.
 
+## Block4: Public Catalog Coverage / Nontransitive Deduplication
+
+Free bounded public evidence:
+- Exactly7GET200reads: one observed Library resolver and six unchanged literal
+  queries from the red annotation. No credentials, images, SQL/model calls,
+  retries or pagination. Private`library-coverage-r1.json` preserves responses,
+  hashes, timing and source/review/plan binding.
+- AVAN returns2Avancia wines (not AVAN). Muga returns2Flor de Muga wines, not a
+  validated identity for the photographed red. WHISBA returns0records in this
+  source, not proof of nonexistence. Bosque de Matasnos/Pago de Carraovejas/Corimbo
+  return5/3/2records including distinct cuvees/vintages.
+- All14returned records have structurally valid sensory fields, but none is
+  independently bound to the photographed producer/vintage here. No original
+  detail GET, canonical link or affinity was asserted. Unknown photo vintages
+  cannot borrow2022merely because that is the catalog's year.
+
+Concrete local defect and fix:
+- Duplicate groups retained only their strongest representative. An incomplete
+  high-confidence candidate could replace it and bridge conflicting known
+  vintages/producers/canonical IDs later. Low-confidence first rows could also
+  be absorbed by later eligible rows despite their own grouping ineligibility.
+- Groups now retain private member evidence and reject known conflict with ANY
+  member. Distinct canonical IDs cannot merge even with the same name/producer.
+  Ineligible rows cannot become eligible through input order. Existing supported
+  producer/name aliases remain allowed when evidence does not conflict.
+-18synthetic order permutations reproduce14known-conflict joins before and0after.
+  This is deterministic regression evidence, not14real misidentifications or a
+  new precision/recall metric.174checksPASS, including actual observed public
+  substring/qualifier refusal cases. Existing23scan-evidence checks and multi-wine
+  checksPASS. Types and scoped lintPASS; scorer/learner remain unchanged.
+- Preserve the intermediate over-strict experiment: requiring every member pair
+  to independently prove an alias split the recorded Mamba group (2versus1).
+  The existing test caught it. Final guard checks known contradictions while the
+  established representative alias matcher still supplies positive equivalence;
+  the old regression expectation was not weakened or relabeled.
+
+Reproduction: `scripts/audit-matchrim-library90.ts` requires explicit`--live`,
+reviewed literal indices and a new private output. It refuses completed fragments
+and has a hard7GET/45sbudget. Do not rerun it by default; preserve this observation.
+Local private`audit-dedup-delta.mjs` replays the frozen8ac13a4source and current
+source with hashes, no network. No product catalog threshold was relaxed.
+
 ## Next Block
 
-Bounded public catalog coverage of six unchanged pixel-read names, without photo
-uploads, credentials, canonical assertions, AI requests, retries or pagination;
-then focused dense-scene client and native candidate regression.
+Focused dense-scene client replay and isolated native compilation/visual checks.
+No fresh model call, phone use, live account mutation or distribution action.

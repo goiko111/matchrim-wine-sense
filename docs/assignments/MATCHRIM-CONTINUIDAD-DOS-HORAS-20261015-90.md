@@ -79,3 +79,15 @@ tests and real-versus-fixture boundary. This assignment is not product approval.
   no remote traffic. No model call, SQL write, physical action, deploy or push.
 - Next six literal-only public catalog probes (maximum7GETs) are a separate
   coverage block, not identity proof or permission to spend model quota.
+
+### Block4:15:26Z-15:33Z
+
+-7bounded public GET200reads complete. AVAN->Avancia and Muga->Flor de Muga are
+  search-only false friends; other cuvees/vintages remain distinct.14valid sensory
+  records do not certify any photographed identity.0images/credentials/modelcalls.
+- Fixed representative-only duplicate bridging and low-confidence input-order
+  absorption.18synthetic permutations:14known-conflict joins before,0after;
+ 174assertionsPASS. Existing Mamba alias regression caught an over-strict draft;
+  final contradiction guard retains supported aliases,23scan-evidencePASS.
+- No taste/threshold/data changes, deployment or push. Continue isolated native
+  and client validation, not an automatic new model benchmark.
