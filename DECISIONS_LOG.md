@@ -1,5 +1,35 @@
 # Matchrim decisions log
 
+## 2026-10-15: latest instruction postpones phone and release; QA87 preserves failures
+
+Continue simulator/browser QA using existing50 isolated technical staging accounts,
+not the owner's phone and not another50 human testers. Preserve source/evidence;
+the QA delta does not authorize a production change or TestFlight upload. Actual
+UI/readback produced31visible-profile/score discrepancies and138missing-data
+disclosures; retain them as release failures, not redefine the oracle to get green.
+Only a subsequent bounded correction should change the native presentation.
+
+Real single-image simulator execution, historical response replay, independent
+visible-score arithmetic and human taste outcomes are separate evidence classes.
+The native canary is1uncertain region/0confirmed, not recognition approval. The
+old staging alias blocker is not reasserted as a fresh failed network probe:
+unversioned staging vision is not equivalent to productionv72 without evidence.
+
+## 2026-10-15: QA86 is an audit, not a release or remediation authorization
+
+Use the connected physical iPhone and installed82 as found. Recover the independent
+UI runner only, never substitute local84/QA85 or reset the owner's app/session.
+Read a redacted account/profile/cellar baseline before data actions. Existing QA
+profiles are preferred; changing an owner login or editing original values needs
+an explicit restoration/scope agreement. No remote SQL/API writes, catalog edits,
+communications, purchases, account deletion or new budget.
+
+Record61 bounded route/state cases as PASS/FAIL/BLOCKED/NOT_RUN. Physical UI,
+backend results, controlled fixtures and human taste quality remain distinct.
+An ordinary app canary precedes new scans; a credit/auth/provider block stops
+that branch without loops or quota reset. Preserve all QA85 recognitionP1 issues.
+No source-product fix, deployment, TestFlight upload or public push is implied.
+
 ## 2026-09-28: build 63 remains the rollback point
 
 The pre-change commit `66c01a5` is tagged `matchrim-build63-baseline-20260928`. Build 64 is isolated on `codex/matchrim-learning-airim-qa-20260928`.

@@ -1,5 +1,25 @@
 # Matchrim project context
 
+## Active source reconciliation: 2026-10-15
+
+Current local repository is `/Users/GOIKO/2matchrim76-recognition-20261008`, branch
+`codex/matchrim82-cloud-integration-20261013`, product2ea342f / QA docs9900201.
+The older repository/branch listed below describe the September baseline, not the
+current checkout. Current source and an installed binary are separate facts.
+
+Latest owner instruction supersedes the phone lane: QA87 uses only the existing
+isolated simulator and50 technical staging accounts, before TestFlight. No product
+source changed. Final50-account audit found31rendered-profile/score differences
+and138missing-data disclosures, despite correct prior scorer-callsite checks.
+See docs/MATCHRIM_PRETESTFLIGHT_50_QA_2026-10-15.md; release remains HOLD.
+The following QA86 phone scope is historical, not the current work instruction.
+
+New QA86 is a user-journey audit only: actual connected iPhone16ProMax/iOS26.6
+has Matchrim1.0(82) read back by CoreDevice on15Oct. No app replacement, new
+TestFlight, production deployment or source-product remediation is authorized by
+this audit. QA85's50 technical accounts and22 recognition journeys are not50
+humans, an installed85 or global product approval. See CURRENT_STATE/NEXT_STEPS.
+
 ## Product boundary
 
 Matchrim is the consumer and sommelier decision app for Winerim data. Its core jobs are to scan one or several bottles, labels, printed menus, boards or PDFs; preserve uncertainty; compare wines; and explain affinity without presenting inferred data as fact.

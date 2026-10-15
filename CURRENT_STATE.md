@@ -1,5 +1,21 @@
 # Matchrim current state
 
+## Active checkpoint: 2026-10-15, simulator-first 50-account QA87
+
+- Latest owner instruction postpones phone/TestFlight; QA86 physical lane is superseded, not continued. No product edit, physical operation, upload, deploy or push in QA87. Product2ea342f unchanged; existing staging simulator wine.matchrim.qa84 remains1.0(84), not a new87 release.
+-50 existing isolated technical accounts completed new actual password UI login/profile/four-wine/explanation/readback/logout;200current-affinity checks,62safe abstentions,138numeric/explanation checks.50/50 wine/quiz fingerprints unchanged,0writes/page exceptions,92bounded catalog reads.510PASS/169FAIL:31 visible-profile/score differences across12accounts, maximum9points;138compact missing-data disclosures absent. These are two systematic defects, not169bugs or human taste outcomes.
+- New pixel-backed non-blinded field audit:10/10 readable left menu name/amount pairs;6unsupported amounts among8right output rows whose price column is outside the photo. Four historical-real-response client replays/eight views,25reply deliveries,0horizontal overflow/page exceptions; not fresh OCR. Earlier identity/food/JSONP1 remain.
+- Actual simulator gallery canary after system review OK:1region/11.1s,0recognized/1uncertain, no mocked reply. Installed assets target staging; unversioned vision is not certified production-v72 parity and request count/version were not captured. Earlier picker/oracle development failures remain separate from final measured results.
+- Release HOLD. [QA87 findings, coverage and exact next gate](docs/MATCHRIM_PRETESTFLIGHT_50_QA_2026-10-15.md). No owner action is needed for native graph/disclosure remediation; phone comes later as requested.
+
+## Earlier checkpoint: 2026-10-15, QA86 real iPhone baseline
+
+- New audit-only request; preserve QA85 and open recognitionP1. No app/product fix, TestFlight, public push or production deploy from this request. No parallel agents or physical-UI controller.
+- CoreDevice reads physical iPhone16ProMax/iOS26.6, wired/paired/DDI ready, wine.matchrim.app1.0(82). Owner declaration of connection is now independently verified; failed Mirroring launch did not mean absentUSB.
+- Recovered the independent XCTest runner from saved evidence because old /private/tmp runner was gone. It has one UI-testing target, no app target/dependencies. Baseline snapshot test PASS without cold launch, reset, login/logout, profile writes or recognition. Existing Matchrim instance is running;5 native nav entries observed.
+- Initial frame has an unrelated system interruption, not a Matchrim defect and not publication-safe evidence. Account/environment/profile/Bodega baseline and61-case matrix execution are pending; do not infer permission to mutate the owner's account or claim any scan quota passed.
+- Private protocol/evidence: recovered task `artifacts/matchrim86-physical-userqa-20261015/PROTOCOL.md` and baseline-r1. Next inspect profile/cellar read-only, establish reversible QA account scope, then one ordinary real image canary through app UI before any bounded batch. No API/SQL writes or direct paid calls.
+
 ## Latest checkpoint: 2026-10-14, 50-account pre-TestFlight QA85
 
 - Local product2ea342f fixes native English-sensory reload/training, continuous Profile/Home parity, invalid sensory/explanation values, legacy evidence binding and real quiz saving feedback. Existing public web behavior, quiz/assets/weights and deployed functions unchanged; shared learner negative guard is source-only, not deployed.

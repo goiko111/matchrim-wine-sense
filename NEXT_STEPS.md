@@ -1,5 +1,24 @@
 # Matchrim next steps
 
+## Active delta: 2026-10-15, QA87 findings before TestFlight
+
+1. Respect latest simulator-only instruction; do not resume the historical QA86 phone lane or upload anything. Preserve QA85 and all real recognition P1 evidence.
+2. Fix native Profile chart min1/rounding versus actual0..5 score vector. Final50 UI audit measured31differences/12accounts/max9points; a real active dulzor0 is displayed1. Fix presentation, not taste weights, then rerun affected accounts.
+3. Expose missing wood/intensity and provenance in compact Bodega explanations;138currently omit the disclosure. Preserve valid initial/current histories and safe abstention.
+4. Correct six unsupported cropped-column prices plus old Rose/Costa duplicates, food fusions/omissions and parser failures. Existing field annotation is manual/non-blinded and response replay, not new recognition precision.
+5. Confirm safe live staging/production-version equivalence before broader provider work, then corrected production candidate, later phone gate, separate TestFlight authorization. QA87's one actual simulator image ended1uncertain/0confirmed; no accuracy or paid-call-count claim.
+
+See docs/MATCHRIM_PRETESTFLIGHT_50_QA_2026-10-15.md and private QA87/PER_ACCOUNT.md.
+No new accounts, ratings, quiz rows or wine writes are required for the next fix.
+
+## Active delta: 2026-10-15, physical QA86 before any publication
+
+1. Physical wired iPhone and installed1.0(82) are read back; do not repeat the old absent-device hypothesis or replace82 with local84/QA85. Baseline runner snapshot passed without app relaunch/data mutation.
+2. Finish redacted account/profile/Bodega baseline and visible privacy/limits. Read-only navigation first; owner account switch, retake or original-data edits need an explicit safe scope/restoration agreement. Reuse an existing suitable QA account rather than create a cohort.
+3. Execute the finite61-case matrix in private QA86/PROTOCOL.md: true native controls and ordinary app/backend flows, not yesterday's simulator relabeled as physical. Record conditional/permission/tool gates and exact failures; no all-paths claim.
+4. Use previously supplied pictures/public test material through app UI only. One ordinary image canary before the bounded batch, stop the recognition branch once for credit/provider/auth failure; no direct paid API, quota reset, stress or new plan. Profile learning is not human liking validation.
+5. Finish with evidence and remaining P0/P1/P2, restoring only agreed reversible changes. No source-product fix, new app binary/install, public web/backend deploy, push, Apple/TestFlight/invitation, other agent or supervisor. QA85 corrections and recognition residuals remain separate future work.
+
 ## Current delta: 2026-10-13, integrated candidate82
 
 1. Preserve uploaded81 and signed/exported82 candidate. Cloud integration is complete locally, not another backlog item; do not repeat the passing425-client/price/style/native smoke suites without a new delta.
