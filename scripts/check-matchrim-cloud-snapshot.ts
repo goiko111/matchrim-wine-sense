@@ -39,6 +39,11 @@ const build84Changes = new Set(['src/components/MatchrimFunction.tsx', 'src/comp
   'src/utils/labelScanSave.ts', 'src/utils/matchrimEdgeRouting.ts', 'src/components/NativeAppHome.tsx']);
 const build85LearningPath = 'supabase/functions/_shared/matchrim-learning.ts';
 const build85Changes = new Set(['src/components/QuizResults.tsx']);
+// QA88 repairs the video request lifetime and exposes the existing affinity
+// evidence. Dedicated contract checks cover these explicitly reviewed clients.
+const remediation88Changes = new Set(['src/components/AffinityExplanation.tsx',
+  'src/components/CellarWineAffinity.tsx', 'src/components/SpecialMomentsFlow.tsx',
+  'src/components/WineRecommendationCard.tsx', 'src/lib/aiRimStream.ts']);
 const priorLearning = execFileSync('git', ['show', `598dda8:${build85LearningPath}`], { encoding: 'utf8' });
 assert.equal(readFileSync(build85LearningPath, 'utf8'), priorLearning.replace(
   'if (numeric === null) return null;', 'if (numeric === null || numeric < 0) return null;'),
@@ -47,7 +52,8 @@ let immutableCount = 0;
 for (const row of manifest.productSourceFingerprints as Array<{ path: string; sha256: string }>) {
   assert.equal(hash(execFileSync('git', ['show', `${snapshot}:${row.path}`])), row.sha256, `Snapshot hash: ${row.path}`);
   if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && !build84Changes.has(row.path)
-    && !build85Changes.has(row.path) && row.path !== build85LearningPath && row.path !== 'package.json') {
+    && !build85Changes.has(row.path) && !remediation88Changes.has(row.path)
+    && row.path !== build85LearningPath && row.path !== 'package.json') {
     const expected = localPricePaths.has(row.path)
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256;
     assert.equal(hash(readFileSync(row.path)), expected, `Protected source: ${row.path}`);
@@ -88,4 +94,4 @@ assert.equal(readFileSync('src/data/quizData.ts', 'utf8'), execFileSync('git', [
 assert.equal(lock.packages['node_modules/sonner'].version, '2.0.8');
 assert.equal(lock.packages['node_modules/sonner'].integrity, 'sha512-UM/ByIoFra8yzV75n1o0Puu0bw5U/9UNnDacrJNspekBewIfsQ3D6ez1nvlWpt7aTsO6rujQtifBpycwIivqlg==');
 assert.match(readFileSync('node_modules/sonner/dist/index.mjs', 'utf8'), /document\.removeEventListener\('visibilitychange', callback\)/);
-console.log(JSON.stringify({ snapshot, localRelease, localPricePaths: [...localPricePaths], localOnlyPaths, build83Changes: [...build83Changes], productFingerprints: manifest.productSourceFingerprints.length, immutableCount, syntheticNumericCases: cases.length, scope: 'Original cloud snapshot plus explicit build 83 client changes and unchanged quiz calibration; no vision, humans or hosted data' }));
+console.log(JSON.stringify({ snapshot, localRelease, localPricePaths: [...localPricePaths], localOnlyPaths, build83Changes: [...build83Changes], remediation88Changes: [...remediation88Changes], productFingerprints: manifest.productSourceFingerprints.length, immutableCount, syntheticNumericCases: cases.length, scope: 'Original cloud snapshot plus explicit client remediations and unchanged quiz calibration; no vision, humans or hosted data' }));

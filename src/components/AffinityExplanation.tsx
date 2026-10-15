@@ -15,6 +15,7 @@ interface AffinityExplanationProps {
   score?: number | null;
   identificationConfidence?: number | null;
   identityReviewedByUser?: boolean;
+  catalogIdentityLinked?: boolean;
   attributes?: WineAttributeInput | null;
   sensorySource?: AffinityDataSource;
   compact?: boolean;
@@ -50,6 +51,7 @@ export const AffinityExplanation = ({
   score,
   identificationConfidence,
   identityReviewedByUser = false,
+  catalogIdentityLinked = false,
   attributes,
   sensorySource = 'inference',
   compact = false,
@@ -116,11 +118,11 @@ export const AffinityExplanation = ({
       )}
 
       <div className="matchrim-data-rail grid grid-cols-2 gap-3 rounded-lg px-2 py-3 text-center text-xs text-slate-500">
-        <div><span className="block text-lg font-bold text-slate-900">{identityReviewedByUser ? 'Por ti' : `≈${Math.round(explanation.identificationConfidence * 100)}%`}</span>{identityReviewedByUser ? 'Revisión manual' : 'Señal de identidad'}</div>
-        <div><span className="block text-lg font-bold text-slate-900">≈{Math.round(explanation.confidence * 100)}%</span>Respaldo de la explicación ({explanation.confidenceLabel})</div>
+        <div><span className="block text-lg font-bold text-slate-900">{catalogIdentityLinked ? 'Vinculada' : identityReviewedByUser ? 'Por ti' : `≈${Math.round(explanation.identificationConfidence * 100)}%`}</span>{catalogIdentityLinked ? 'Ficha de catálogo' : identityReviewedByUser ? 'Revisión manual' : 'Señal de identidad'}</div>
+        <div><span className="block text-lg font-bold text-slate-900">{catalogIdentityLinked ? 'Orientativo' : `≈${Math.round(explanation.confidence * 100)}%`}</span>{catalogIdentityLinked ? 'Encaje sensorial, no probabilidad' : `Respaldo de la explicación (${explanation.confidenceLabel})`}</div>
       </div>
 
-      {!identityReviewedByUser && explanation.identificationConfidence < 0.72 && (
+      {!catalogIdentityLinked && !identityReviewedByUser && explanation.identificationConfidence < 0.72 && (
         <div role="note" className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-950">
           Identidad sin confirmar. La afinidad describe el candidato visible, no demuestra que la botella sea esa referencia; confirma o corrige antes de decidir.
         </div>
@@ -205,6 +207,14 @@ export const AffinityExplanation = ({
               </ul>
             ) : <p className="mt-1 text-slate-600">Sin una fricción fuerte en los datos disponibles.</p>}
           </div>
+        </div>
+      )}
+
+      {compact && (
+        <div className="space-y-1 border-t border-stone-200 pt-3 text-xs leading-5 text-slate-600" role="note">
+          <p>Origen: {explanation.sources.map((source) => SOURCE_LABELS[source]).join(' + ')}.</p>
+          <p>Falta: {explanation.missingData.filter((item) => !catalogIdentityLinked || item !== 'identidad del vino confirmada').join(', ') || 'sin datos adicionales registrados'}. Con nuevos datos el orden podría cambiar.</p>
+          <p>El rango es orientativo; no es un intervalo estadístico. Una ficha vinculada no certifica lo que se ha servido en la copa.</p>
         </div>
       )}
 

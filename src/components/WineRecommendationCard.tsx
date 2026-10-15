@@ -19,6 +19,10 @@ interface WineInfo {
 }
 
 const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ response, functionType }) => {
+  if (functionType === 'special-moments' && !response.trim()) {
+    return <p role="alert" className="text-sm text-gray-700">No se recibió una recomendación.</p>;
+  }
+
   const parseWineRecommendations = (text: string): { intro: string; wines: WineInfo[]; conclusion: string } => {
     const wines: WineInfo[] = [];
     let intro = '';
@@ -134,6 +138,10 @@ const WineRecommendationCard: React.FC<WineRecommendationCardProps> = ({ respons
         </div>
 
         <div className="p-6">
+          {functionType === 'special-moments' && !intro && wines.length === 0 && !conclusion && (
+            <p className="whitespace-pre-wrap break-words text-gray-800 leading-relaxed [overflow-wrap:anywhere]">{response}</p>
+          )}
+
           {/* Intro */}
           {intro && (
             <div className="mb-6 p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg border-l-4 border-red-400">

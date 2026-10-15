@@ -52,7 +52,8 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
       </Button>}
       {expanded && view.current !== null && <div className="[&>.matchrim-surface]:border-0 [&>.matchrim-surface]:bg-transparent [&>.matchrim-surface]:p-0 [&>.matchrim-surface]:shadow-none">
         <AffinityExplanation wineKey={`cellar:${wine.id}`} score={view.current}
-          attributes={view.attributes} sensorySource="catalog" profile={snapshot?.profile ?? null} compact />
+          attributes={view.attributes} sensorySource="catalog" profile={snapshot?.profile ?? null}
+          catalogIdentityLinked={Boolean(view.attributes)} compact />
       </div>}
     </section>
   );

@@ -59,14 +59,20 @@ const clampProfileValue = (value: unknown, fallback = 3, minimum = 1) => {
   return Math.max(minimum, Math.min(5, numeric));
 };
 
-const normalizeProfileForDisplay = <T extends MatchrimProfileLike>(profile: T, preserveQuizRange = false): T => ({
-  ...profile,
-  potente: Math.round(clampProfileValue(profile.potente, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
-  acidez: Math.round(clampProfileValue(profile.acidez, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
-  dulce: Math.round(clampProfileValue(profile.dulce, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
-  tanico: Math.round(clampProfileValue(profile.tanico, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
-  afrutado: Math.round(clampProfileValue(profile.afrutado, 3, preserveQuizRange ? 0 : 1) * 10) / 10,
-});
+const normalizeProfileForDisplay = <T extends MatchrimProfileLike>(profile: T, preserveQuizRange = false): T => {
+  const displayValue = (value: unknown) => {
+    const clamped = clampProfileValue(value, 3, preserveQuizRange ? 0 : 1);
+    return preserveQuizRange ? clamped : Math.round(clamped * 10) / 10;
+  };
+  return {
+    ...profile,
+    potente: displayValue(profile.potente),
+    acidez: displayValue(profile.acidez),
+    dulce: displayValue(profile.dulce),
+    tanico: displayValue(profile.tanico),
+    afrutado: displayValue(profile.afrutado),
+  };
+};
 
 const normalizeProfileForClassifier = (profile: MatchrimProfileLike): MatchrimProfileLike => ({
   potente: Math.round(clampProfileValue(profile.potente)),
@@ -241,6 +247,7 @@ interface StyleCardConfig {
 }
 
 const Profile = () => {
+  const isNative = Capacitor.isNativePlatform();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const { getQuizHistory } = useQuizResults();
@@ -852,8 +859,10 @@ const Profile = () => {
                 <div className="mt-3 rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
                   <div className="space-y-4">
                     {chartData.map((item) => {
-                      const activeValue = Math.max(1, Math.min(5, Number(item.activeValue) || 1));
-                      const baseValue = Math.max(1, Math.min(5, Number(item.baseValue) || 1));
+                      const activeValue = isNative ? clampProfileValue(item.activeValue, 0, 0)
+                        : Math.max(1, Math.min(5, Number(item.activeValue) || 1));
+                      const baseValue = isNative ? clampProfileValue(item.baseValue, 0, 0)
+                        : Math.max(1, Math.min(5, Number(item.baseValue) || 1));
                       const activeWidth = `${(activeValue / 5) * 100}%`;
                       const baseWidth = `${(baseValue / 5) * 100}%`;
 

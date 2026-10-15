@@ -31,7 +31,8 @@
     "android:bundle": "npm run build && npx cap sync android && cd android && ./gradlew bundleRelease",
     "android:apk": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease",
     "ios:copy": "npm run build && npx cap copy ios",
-    "test:cloud": "node --import tsx scripts/check-matchrim-cloud-snapshot.ts && node scripts/run-matchrim-cloud-checks.mjs && node --import tsx scripts/check-matchrim-bodega84.ts && node --import tsx scripts/check-matchrim-restaurant84.ts && node --import tsx scripts/check-matchrim-cellar85.ts && node --import tsx scripts/check-matchrim-qa85-intelligence.ts && node --import tsx scripts/check-matchrim-quiz-save85.ts",
+    "test:cloud": "node --import tsx scripts/check-matchrim-cloud-snapshot.ts && node scripts/run-matchrim-cloud-checks.mjs && node --import tsx scripts/check-matchrim-bodega84.ts && node --import tsx scripts/check-matchrim-restaurant84.ts && node --import tsx scripts/check-matchrim-cellar85.ts && node --import tsx scripts/check-matchrim-qa85-intelligence.ts && node --import tsx scripts/check-matchrim-quiz-save85.ts && node --import tsx scripts/check-matchrim-profile88.ts && node --import tsx scripts/check-matchrim-occasion88.ts",
+    "qa:menu88": "node --import tsx scripts/check-matchrim-menu88.ts",
     "qa:cloud": "python3 scripts/qa-matchrim-cloud.py"
   },
   "dependencies": {

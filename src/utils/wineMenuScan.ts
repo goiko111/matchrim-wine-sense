@@ -215,6 +215,97 @@ const hasConflictingVariant = (left: MenuScanWine, right: MenuScanWine) => {
 const sourceHeading = (wine: MenuScanWine) => normalizeText((wine.texto_fuente || '')
   .split(/\r?\n|\b(?:zona|zone|uva|grapes?|crianza|aging)\s*[:/]/i)[0]);
 
+const descriptionField = /\b(?:zona|zone|uva|grapes?|crianza|aging|alcohol|abv)\s*[:/]/i;
+const priceLabel = /\b(?:precio|price|copa|glass|botella|bottle|llevar|takeaway)\b/i;
+const serviceLabels = {
+  copa: /\b(?:copa|glass)\b/i,
+  botella: /\b(?:botella|bottle)\b/i,
+  llevar: /\b(?:llevar|takeaway)\b/i,
+};
+
+const groundMenuPrices = (wine: MenuScanWine, tile: MenuScanTile): MenuScanWine => {
+  const source = wine.texto_fuente ?? '';
+  const descriptionStart = source.search(descriptionField);
+  if (descriptionStart < 0) return wine;
+
+  // A number following grapes/aging is not row-bound price evidence. This is a
+  // consistency check on model text, not independent verification of its digits.
+  const heading = source.slice(0, descriptionStart).trim();
+  const priceLines = source.slice(descriptionStart).split(/\r?\n/).filter((line) => (
+    !descriptionField.test(line)
+    && (priceLabel.test(line) || resolveScanCurrency(null, line) !== null || /[$]/.test(line))
+  ));
+  const boundAmount = (value: unknown, service?: keyof typeof serviceLabels) => {
+    const amount = normalizeScanPrice(value);
+    if (amount === null) return null;
+    const supported = [heading, ...priceLines].some((line) => {
+      if (normalizeText(line) === normalizeText(wine.nombre)) return false;
+      const labels = [...line.matchAll(/\b(?:copa|glass|botella|bottle|llevar|takeaway)\b/gi)];
+      const contexts = service && labels.length ? labels.flatMap((label, index) => serviceLabels[service].test(label[0])
+        ? [line.slice(label.index, labels[index + 1]?.index)] : []) : [line];
+      if (!priceLabel.test(line) && amount === wine.anada) return false;
+      return contexts.some((context) => [...context.matchAll(/\d+(?:[.,]\d+)*/g)].some((match) => (
+        /^\d+(?:[.,]\d+)?$/.test(match[0]) && Number(match[0].replace(',', '.')) === amount
+        && context[(match.index ?? 0) - 1] !== '-'
+        && !/^\s*(?:%|ml\b|cl\b|l\b|a[n\u00f1]os?\b|years?\b|meses?\b|months?\b|abv\b|vol\b)/i.test(context.slice((match.index ?? 0) + match[0].length))
+      )));
+    });
+    return supported ? amount : null;
+  };
+  const precio = boundAmount(wine.precio);
+  const precios = {
+    copa: boundAmount(wine.precios?.copa, 'copa'),
+    botella: boundAmount(wine.precios?.botella, 'botella'),
+    llevar: boundAmount(wine.precios?.llevar, 'llevar'),
+  };
+  const removed = normalizeScanPrice(wine.precio) !== precio
+    || (Object.keys(precios) as Array<keyof typeof precios>).some((key) => normalizeScanPrice(wine.precios?.[key]) !== precios[key]);
+  if (!removed) return wine;
+  return {
+    ...wine, precio, precios,
+    dudas: Array.from(new Set([...(wine.dudas ?? []),
+      `Precio omitido (${tile.id}): el texto no vincula el importe a esta fila y servicio; puede proceder de otra columna. Revisa la carta.`])),
+    campos_inferidos: Array.from(new Set([...(wine.campos_inferidos ?? []), 'precio', 'precios',
+      ...(precio === null && Object.values(precios).every((value) => value === null) ? ['servicio'] : [])])),
+  };
+};
+
+const conflictingMenuIdentity = (left: MenuScanWine, right: MenuScanWine) => Boolean(
+  (left.anada && right.anada && left.anada !== right.anada)
+  || (left.productor && right.productor && normalizeText(left.productor) !== normalizeText(right.productor))
+  || (left.servicio && right.servicio && left.servicio !== 'ambos' && right.servicio !== 'ambos' && left.servicio !== right.servicio)
+);
+
+const sameUncertainSourceRow = (left: MenuScanWine, right: MenuScanWine) => {
+  if (conflictingMenuIdentity(left, right)) return false;
+  const a = sourceHeading(left), b = sourceHeading(right);
+  if (Math.min(a.length, b.length) < 8 || !(a.startsWith(b) || b.startsWith(a))) return false;
+  const names = [normalizeText(left.nombre), normalizeText(right.nombre)];
+  if (a === names[0] && b === names[1]) return false;
+  if (names[0].split(' ').length !== names[1].split(' ').length) return false;
+  const colourNames = names.map((name) => name.replace(/\brose\b/g, 'rosado'));
+  const prefixNames = names[0].startsWith(names[1]) || names[1].startsWith(names[0]);
+  if (names[0] === names[1] || (!prefixNames && colourNames[0] !== colourNames[1])) return false;
+  // Only a visibly incomplete common heading can justify a translation or
+  // expansion. Two separately transcribed complete cuvees remain distinct.
+  const shortHeading = a.length < b.length ? a : b;
+  if (!names.every((name) => name.startsWith(shortHeading) || shortHeading.startsWith(name))
+    || !names.some((name) => name !== shortHeading)) return false;
+  if (hasConflictingVariant(left, right) && colourNames[0] !== colourNames[1]
+    && !names.some((name) => shortHeading.startsWith(name) && name !== shortHeading
+      && !shortHeading.slice(name.length).startsWith(' '))) return false;
+  const uncertainType = [left, right].some((wine) => (wine.campos_inferidos ?? []).includes('tipo'));
+  if (left.tipo && right.tipo && left.tipo !== right.tipo && !uncertainType) return false;
+  if (left.seccion && right.seccion && normalizeText(left.seccion) !== normalizeText(right.seccion)) return false;
+  const leftAnchor = positionAnchor(left), rightAnchor = positionAnchor(right);
+  const aw = percentage(left.posicion?.width), bw = percentage(right.posicion?.width);
+  const ah = percentage(left.posicion?.height), bh = percentage(right.posicion?.height);
+  if (!leftAnchor || !rightAnchor || !aw || !bw || !ah || !bh) return false;
+  const horizontalOverlap = (aw + bw) / 2 - Math.abs(leftAnchor.x - rightAnchor.x);
+  return horizontalOverlap >= Math.min(aw, bw) * 0.6
+    && Math.abs(leftAnchor.y - rightAnchor.y) <= Math.max(ah, bh) * 1.5;
+};
+
 const overlappingLiteralRow = (left: MenuScanWine, right: MenuScanWine) => {
   const a = left.posicion;
   const b = right.posicion;
@@ -242,6 +333,8 @@ const sameLiteralSourceRow = (left: MenuScanWine, right: MenuScanWine) => {
 };
 
 const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
+  if (conflictingMenuIdentity(left, right)) return false;
+  if (sameUncertainSourceRow(left, right)) return true;
   if (sameLiteralSourceRow(left, right)) return true;
   if (hasConflictingVariant(left, right)) return false;
   const normalizedLeftName = normalizeText(left.nombre);
@@ -352,11 +445,14 @@ const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
 };
 
 const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
+  const uncertainSourceRow = sameUncertainSourceRow(left, right);
   const nameDisagreement = normalizeText(left.nombre) !== normalizeText(right.nombre)
-    && sameLiteralSourceRow(left, right);
+    && (sameLiteralSourceRow(left, right) || uncertainSourceRow);
   // A model-expanded name must not outrank the literal line just by confidence.
   const preferred = nameDisagreement
-    ? (sourceHeading(left) === normalizeText(left.nombre) ? left : right)
+    ? (uncertainSourceRow
+      ? (normalizeText(left.nombre).length <= normalizeText(right.nombre).length ? left : right)
+      : (sourceHeading(left) === normalizeText(left.nombre) ? left : right))
     : (right.confidence ?? 0) > (left.confidence ?? 0) ? right : left;
   const fallback = preferred === left ? right : left;
   const conflictingPrice = typeof left.precio === 'number' && typeof right.precio === 'number'
@@ -373,16 +469,19 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
     ...fallback,
     ...preferred,
     ...(nameDisagreement ? {
+      canonicalId: null,
+      originalSheet: null,
+      sensorySource: 'inference' as const,
       confidence: Math.min(left.confidence ?? 0, right.confidence ?? 0),
       compatibilidad: null,
       atributos: null,
       razon: null,
       affinity_calibrated: false,
     } : {}),
-    productor: preferred.productor || fallback.productor,
-    anada: preferred.anada ?? fallback.anada,
-    region: preferred.region || fallback.region,
-    pais: preferred.pais || fallback.pais,
+    productor: uncertainSourceRow ? preferred.productor : preferred.productor || fallback.productor,
+    anada: uncertainSourceRow ? preferred.anada : preferred.anada ?? fallback.anada,
+    region: uncertainSourceRow ? preferred.region : preferred.region || fallback.region,
+    pais: uncertainSourceRow ? preferred.pais : preferred.pais || fallback.pais,
     precio: conflictingPrice || conflictingCurrency ? null : preferred.precio ?? fallback.precio,
     moneda: conflictingCurrency ? null : preferred.moneda ?? fallback.moneda ?? null,
     precios: {
@@ -407,27 +506,37 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
 
 export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanResponse => {
   const wines: MenuScanWine[] = [];
-  results.forEach(({ tile, response }) => {
-    (response.vinos ?? []).map((wine) => mapMenuWineFromTile({
+  const observations = results.flatMap(({ tile, response }) => (response.vinos ?? []).map((wine) => ({
+    tile,
+    wine: mapMenuWineFromTile(groundMenuPrices({
       ...wine,
       precio: normalizeScanPrice(wine.precio),
       moneda: resolveScanCurrency(wine.moneda, wine.texto_fuente, response.moneda),
-    }, tile)).forEach((wine) => {
-      const duplicateIndex = wines.findIndex((existing) => isOverlapDuplicate(existing, wine));
-      const groundedFocusEvidence = Boolean(
-        normalizeText(wine.texto_fuente).length >= 5
-        && tokenOverlap(
-          wine.nombre,
-          wine.texto_fuente ?? '',
-        ) >= 0.4
-      );
-      const isUncorroboratedFocusGuess = tile.id === 'right-focus'
-        && duplicateIndex === -1
-        && ((wine.confidence ?? 0) < 0.4 || !groundedFocusEvidence);
-      if (isUncorroboratedFocusGuess) return;
-      if (duplicateIndex === -1) wines.push(wine);
-      else wines[duplicateIndex] = richerWine(wines[duplicateIndex], wine);
-    });
+    }, tile), tile),
+  })));
+  const ambiguousSourceMatch = (left: MenuScanWine, right: MenuScanWine) => sameUncertainSourceRow(left, right)
+    && observations.some(({ wine: other }) => (
+      (sameUncertainSourceRow(left, other) && !isOverlapDuplicate(right, other))
+      || (sameUncertainSourceRow(right, other) && !isOverlapDuplicate(left, other))
+    ));
+  observations.forEach(({ tile, wine }) => {
+    const duplicates = wines.map((existing, index) => isOverlapDuplicate(existing, wine)
+      && !ambiguousSourceMatch(existing, wine) ? index : -1).filter((index) => index !== -1);
+    // Never resolve an ambiguous truncated heading by the order of results.
+    const duplicateIndex = duplicates.length === 1 ? duplicates[0] : -1;
+    const groundedFocusEvidence = Boolean(
+      normalizeText(wine.texto_fuente).length >= 5
+      && tokenOverlap(
+        wine.nombre,
+        wine.texto_fuente ?? '',
+      ) >= 0.4
+    );
+    const isUncorroboratedFocusGuess = tile.id === 'right-focus'
+      && duplicateIndex === -1
+      && ((wine.confidence ?? 0) < 0.4 || !groundedFocusEvidence);
+    if (isUncorroboratedFocusGuess) return;
+    if (duplicateIndex === -1) wines.push(wine);
+    else wines[duplicateIndex] = richerWine(wines[duplicateIndex], wine);
   });
 
   // A column crop can return the grapes/price from an already captured complete
