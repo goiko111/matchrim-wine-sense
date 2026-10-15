@@ -16,10 +16,35 @@ html {
 html.matchrim-native-platform {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
   -webkit-text-size-adjust: 100%;
+  overflow-wrap: anywhere;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text * {
+  line-height: 1.4;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text :is(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.15;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text [data-matchrim-button] {
+  white-space: normal;
+}
+
+html.matchrim-native-platform .App {
+  overflow-wrap: anywhere;
 }
 
 html.matchrim-native-platform [data-matchrim-button] {
   min-height: 44px;
+  height: auto;
+}
+
+html.matchrim-native-platform input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+html.matchrim-native-platform textarea,
+html.matchrim-native-platform select {
+  min-height: 44px;
+  height: auto;
 }
 
 html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-native-tab-bar {
@@ -30,6 +55,53 @@ html.matchrim-native-platform .matchrim-result-tabs {
   position: sticky;
   top: var(--matchrim-safe-top);
   z-index: 40;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-result-tabs {
+  position: static;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-layout {
+  display: block;
+  overflow-y: auto;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-body {
+  overflow-y: visible;
+}
+
+html.matchrim-native-platform .matchrim-scan-region-sheet h2 {
+  letter-spacing: 0;
+}
+
+html.matchrim-native-platform .matchrim-scan-stage button {
+  width: 44px;
+  height: 44px;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.matchrim-native-platform .matchrim-scan-stage button > span {
+  height: 28px;
+  min-width: 28px;
+  font-size: 12px;
+  line-height: 16px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+html.matchrim-native-platform .matchrim-region-footer-actions {
+  gap: 8px;
+}
+
+html.matchrim-native-platform .matchrim-region-footer-actions button {
+  padding-left: 8px;
+  padding-right: 8px;
+  min-height: 44px;
+}
+
+html.matchrim-native-platform .matchrim-region-footer-actions svg {
+  width: 20px;
+  height: 20px;
 }
 
 html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-scan-region-crop {
@@ -58,7 +130,8 @@ html.matchrim-native-platform .matchrim-quiz-page {
 }
 
 html.matchrim-native-platform .matchrim-native-display-title {
-  font-size: min(2rem, 42px);
+  font-size: 2rem;
+  overflow-wrap: anywhere;
 }
 
 html.matchrim-native-platform .matchrim-native-scan-grid {
@@ -190,21 +263,21 @@ body {
   }
 
   html.matchrim-native-platform .matchrim-native-tab-bar > div {
-    min-height: 3.5rem;
+    min-height: 56px;
   }
 
   html.matchrim-native-platform .matchrim-native-tab-bar a {
-    min-height: 3rem;
+    min-height: 48px;
   }
 
   html.matchrim-native-platform .matchrim-native-tab-bar .matchrim-native-scan-tab {
     min-height: 0;
-    gap: 0.125rem;
+    gap: 2px;
   }
 
   html.matchrim-native-platform .matchrim-native-scan-tab-icon {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 40px;
+    height: 40px;
   }
 
   .scan-page-main {

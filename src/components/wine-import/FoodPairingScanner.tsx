@@ -521,7 +521,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
           <div className="rounded-lg border border-stone-200 bg-white p-4">
             <div className="flex items-start gap-3">
               <Sparkles className="mt-0.5 h-5 w-5 text-red-900" />
-              <div>
+              <div className={isNative ? 'min-w-0 flex-1' : undefined}>
                 <h3 className="font-semibold text-slate-950">Resultado</h3>
                 <p className="mt-1 text-sm leading-6 text-slate-600">{result.summary}</p>
                 <p className="mt-2 text-sm text-amber-800">Tus gustos en vino no determinan tus preferencias de comida.</p>

@@ -91,3 +91,24 @@ tests and real-versus-fixture boundary. This assignment is not product approval.
   final contradiction guard retains supported aliases,23scan-evidencePASS.
 - No taste/threshold/data changes, deployment or push. Continue isolated native
   and client validation, not an automatic new model benchmark.
+
+### Block5:15:33Z-16:20Z
+
+- Isolated native appwine.matchrim.qa90compiled and exercised without phone/live
+  account writes. Found the135%cap and measured WebKit rem line-height inflation
+  at max type. Implemented uncapped user scaling, unitless accessible line height,
+  native-only compact scanner/controls and scrollable manual-review sheet.
+- Frozen-detection/controlled-empty-analysis flows on both original cabinets pass
+ 5layouts/65checks each at intermediate r9, including manual review/continuation.
+  These do not certify OCR, source identities, physical bottle counts or taste.
+- Intermediate native screenshots, animation-oracle errors, sticky-tab/footer
+  defects and first blocked-telemetry build are preserved. Final r13browser37
+  scenarios/491checksPASS; actual native4views/1methodPASS with source parity;
+  final simulator and generic iOS buildsPASS. Six regression/type/lint suitesPASS,
+ 106inherited warnings,0errors. Source stable throughout final gates.
+- Paid/model calls remain0; explicit public catalog probes7GET200only. No phone,
+  new accounts, SQL writes, deployments, push, publication or TestFlight.
+- Remaining recognition/calibration/human/physical/distribution gates are in the
+  final report. Native review/gallery/keyboard was not falsely certified by
+  browser fixtures. No current provider-quota failure or phone-version readback
+  is inferred. Final local commit/receipt and quiet deadline wait follow.

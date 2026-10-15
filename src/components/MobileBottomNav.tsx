@@ -73,9 +73,9 @@ const MobileBottomNav = () => {
       <nav
         ref={navRef}
         aria-label="Navegación principal"
-        className="matchrim-tab-bar matchrim-native-tab-bar fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/90 bg-white/95 pl-[calc(0.5rem+var(--matchrim-safe-left))] pr-[calc(0.5rem+var(--matchrim-safe-right))] pb-[calc(0.35rem+var(--matchrim-safe-bottom))] pt-1.5 backdrop-blur-xl"
+        className="matchrim-tab-bar matchrim-native-tab-bar fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/90 bg-white/95 pl-[calc(8px+var(--matchrim-safe-left))] pr-[calc(8px+var(--matchrim-safe-right))] pb-[calc(6px+var(--matchrim-safe-bottom))] pt-[6px] backdrop-blur-xl"
       >
-        <div className="mx-auto grid min-h-16 max-w-lg grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)] gap-0.5">
+        <div className="mx-auto grid min-h-[64px] max-w-[512px] grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)] gap-[2px]">
           {webNavLinks.map((link) => {
             const Icon = link.icon;
             const isActive = isActivePath(link);
@@ -86,16 +86,16 @@ const MobileBottomNav = () => {
                 to={getLinkTarget(link)}
                 aria-label={link.label}
                 aria-current={isActive ? 'page' : undefined}
-                className={`matchrim-pressable relative flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 text-[0.6875rem] font-semibold leading-tight ${isScan ? 'matchrim-native-scan-tab text-slate-700' : isActive ? 'text-red-900' : 'text-slate-500'}`}
+                className={`matchrim-pressable relative flex min-h-[56px] min-w-0 flex-col items-center justify-center gap-[4px] text-[0.6875rem] font-semibold leading-tight ${isScan ? 'matchrim-native-scan-tab text-slate-700' : isActive ? 'text-red-900' : 'text-slate-500'}`}
               >
                 {isScan ? (
-                  <span className={`matchrim-native-scan-tab-icon flex aspect-square w-12 max-w-full shrink-0 items-center justify-center rounded-full border-4 border-white text-white shadow-[0_10px_26px_-10px_rgba(42,8,19,0.75)] ${isActive ? 'bg-red-900' : 'bg-slate-950'}`}>
-                    <ScanLine className="h-5 w-5" aria-hidden="true" />
+                  <span className={`matchrim-native-scan-tab-icon flex aspect-square w-[48px] max-w-full shrink-0 items-center justify-center rounded-full border-4 border-white text-white shadow-[0_10px_26px_-10px_rgba(42,8,19,0.75)] ${isActive ? 'bg-red-900' : 'bg-slate-950'}`}>
+                    <ScanLine className="h-[20px] w-[20px]" aria-hidden="true" />
                   </span>
                 ) : link.path === '/inteligencia-liquida' ? (
-                  <AiRimMark className="h-[1.35rem] w-[1.35rem]" iconClassName="h-[1.35rem] w-[1.35rem]" />
+                  <AiRimMark className="h-[22px] w-[22px]" iconClassName="h-[22px] w-[22px]" />
                 ) : (
-                  <Icon className="h-[1.35rem] w-[1.35rem]" strokeWidth={isActive ? 2.3 : 1.9} aria-hidden="true" />
+                  <Icon className="h-[22px] w-[22px]" strokeWidth={isActive ? 2.3 : 1.9} aria-hidden="true" />
                 )}
                 <span className="max-w-full whitespace-normal text-center [overflow-wrap:anywhere]" aria-hidden="true">{link.label}</span>
                 {isActive && !isScan && <span className="absolute top-0 h-0.5 w-5 rounded-full bg-red-800" aria-hidden="true" />}

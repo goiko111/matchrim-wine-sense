@@ -157,19 +157,19 @@ const Scan = () => {
                 <button
                   type="button"
                   onClick={() => navigate("/escanear")}
-                  className="scan-page-back matchrim-pressable flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm"
+                  className={`scan-page-back matchrim-pressable flex ${isNative ? 'h-[44px] w-[44px]' : 'h-11 w-11'} shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm`}
                   aria-label="Volver a tipos de escaneo"
                   title="Volver"
                 >
                   <ArrowLeft className="h-5 w-5" />
                 </button>
                 <div className={`min-w-0 flex-1 pt-0.5${activeMode === "shop-link" ? " [overflow-wrap:anywhere]" : ""}`}>
-                  <div className="flex items-center gap-2 text-red-800">
+                  {!isNative && <div className="flex items-center gap-2 text-red-800">
                     {ActiveScanIcon && <ActiveScanIcon className="h-4 w-4" />}
                     <span className="text-sm font-semibold">Escáner Matchrim</span>
-                  </div>
-                  <h1 className="mt-1 break-words text-[1.75rem] font-bold leading-tight text-slate-950">{activeOption.title}</h1>
-                  <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">{activeOption.description}</p>
+                  </div>}
+                  <h1 className={`mt-1 break-words ${isNative ? 'text-xl' : 'text-[1.75rem]'} font-bold leading-tight text-slate-950`}>{activeOption.title}</h1>
+                  {!isNative && <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">{activeOption.description}</p>}
                 </div>
               </div>
             </div>
@@ -198,14 +198,14 @@ const Scan = () => {
         ) : (
           <>
             <div className="mb-6">
-              <div className="flex items-center gap-2 text-red-800">
+              {!isNative && <div className="flex items-center gap-2 text-red-800">
                 <ScanLine className="h-4 w-4" />
                 <span className="text-sm font-semibold">Cámara y galería</span>
-              </div>
-              <h1 className="mt-1 text-[2rem] font-bold leading-tight text-slate-950 [overflow-wrap:anywhere]">Escanear</h1>
-              <p className="mt-2 max-w-2xl text-[15px] leading-6 text-slate-600">
+              </div>}
+              <h1 className={`mt-1 ${isNative ? 'text-2xl' : 'text-[2rem]'} font-bold leading-tight text-slate-950 [overflow-wrap:anywhere]`}>Escanear</h1>
+              {!isNative && <p className="mt-2 max-w-2xl text-[15px] leading-6 text-slate-600">
                 Elige lo que tienes delante. Cada vino se identifica y puntúa por separado.
-              </p>
+              </p>}
             </div>
 
             <ScanHub

@@ -203,7 +203,132 @@ and has a hard7GET/45sbudget. Do not rerun it by default; preserve this observat
 Local private`audit-dedup-delta.mjs` replays the frozen8ac13a4source and current
 source with hashes, no network. No product catalog threshold was relaxed.
 
-## Next Block
+## Block5: Native Type / Dense Review
 
-Focused dense-scene client replay and isolated native compilation/visual checks.
-No fresh model call, phone use, live account mutation or distribution action.
+Reproduced and implemented:
+- The iOS bridge capped every accessibility preference at135%. The new bridge
+  keeps the existing WebKit text-adjust mechanism but removes the upper cap and
+  pins the root declaration to100%, with safe-area updates unchanged. User type
+  preference, not viewport width, controls the scale.
+- A private copied-app diagnostic confirmed WebKit's rem line-height inflation:
+  at312%, root49.92px, one paragraph43.68pxfont/194.688pxlineheight, another
+ 46.8pxfont/233.626pxlineheight. This is measured, not an assumed renderer bug.
+  Accessibility layout now uses unitless line heights. The diagnostic captured
+  style numbers only, no user text; final native inputs remove this instrumentation.
+- Native navigation uses stable physical targets/icons/padding, with labels free
+  to grow/wrap. Web navigation and every non-native CSS rule retain exact AST/CSS
+  equivalence to8f52291. Native scan headings are compact and redundant feature
+  prose is omitted; the public web remains unpublished and unchanged.
+- At extreme text size, sticky result tabs intercepted region60. They become
+  non-sticky in accessibility layout. The region drawer previously left actions
+  below the viewport; its complete content can now scroll. Native footer tools
+  use icons with preserved accessible names/tooltips. Number pins stay44px with
+  stable12px marker text, backed by the fully scaled accessible list.
+- Manual correction buttons wrap; footers and markers no longer inherit expanding
+  rem spacing. No candidate, score, consent, OCR result or request budget changes.
+
+Evidence boundaries:
+- Intermediate actual native tests pass navigation/normal-max type in portrait
+  and landscape, but screenshots exposed poor spacing that the test assertions
+  alone did not catch. Those binaries/screenshots are NOT final visual approval.
+- Red and white original-pixel client flows each pass5layouts/65checks at r9:
+ 320portrait,393portrait,852landscape,200%and312%root-font stress. Recorded real
+  detector replies are reused; analyses are deliberately empty controlled replies.
+  No historical identity is rebound to changed region geometry. These are client
+  allocation/manual-review/continuation tests, not fresh OCR or accuracy metrics.
+- The first drawer-boundary check sampled the entrance animation too early;
+  the oracle now waits for an actually settled viewport-bound sheet. The later
+  sticky-tab and inaccessible-footer failures were genuine product defects and
+  were corrected. All prior failures remain in private r1/r2 outputs.
+- Final implementation also makes the full review scroll region named/focusable
+  for keyboard access. End reaches its footer at200/312%. Native model confidence
+  is explicitly an uncalibrated signal; no threshold or calibration claim changed.
+
+## Final Verification
+
+Source baseline141a01c plus the reviewed native/accessibility delta, no paid run.
+Final browser assets:`web-final-r13`. All earlier outputs remain preserved.
+
+| Gate | Actual | Boundary |
+| --- | --- | --- |
+| Release, cloud contracts, remediation89, scene90, app types, lint |6/6PASS at`gates-r5-final`; source fingerprints unchanged during execution |106inherited warnings,0errors; no hosted benchmark |
+| Scene90 |40provenance +10shelf +322selection +68food +174dedup checks,10native source contractsPASS |Synthetic invariants/frozen source, not human accuracy |
+| Food final |10scenarios,165checksPASS |Original BBQ upload, frozen real3-crop replies and controlled all-blocked case; no fresh OCR |
+| Red dense final |5layouts,77checksPASS |Original pixels + frozen detection; deliberately empty controlled analyses |
+| White dense final |5layouts,77checksPASS |Same explicit boundary; old identity replies never rebound to changed boxes |
+| Detail/comparator/web keyboard |10layouts,130checksPASS |Existing intercepted payloads, not recognition |
+| Profile lifecycle |7controlled scenarios,42checksPASS |No new accounts or remote mutations; not7people |
+| Native actual UI |1XCTest method,4normal/max-type portrait/landscape viewsPASS |Owned iPhone16ProMax simulator only, anonymous offline app; named five44pt targets |
+| Native type pixels |Heading29->92pt frame height, max-type glyphs/spacing visually inspected |Not a font-size probability or full spoken VoiceOver audit |
+| iOS build |Simulator Debug + generic-device ReleasePASS, final r13assets |Unsigned`wine.matchrim.qa90`1.0(86), invalid-only backend; not TestFlight |
+
+The final controlled browser matrix is37scenarios/491checksPASS, source stable.
+New food/dense cases explicitly check console errors as well as page exceptions,
+no unhandled remote operations, horizontal overflow, manual correction, discard,
+bounded continuation,44px nonoverlapping pin targets and keyboard footer access.
+No identities, dietary suitability, stock or score usefulness are certified by
+these controlled responses. No claim is made to have retested all50live accounts.
+
+Native UI was executed on r11. Final r13changes only region-review accessibility
+metadata and uncalibrated-signal wording beyond it. `native90-release-inputs-r2.json`
+verifies exact source parity for AppDelegate,Scan,MobileBottomNav,index.css and the
+XCTest method exercised in native UI. Final r13simulator/generic builds separately
+PASS; the region-review flow itself is validated in the controlled mobile browser,
+not falsely relabeled a native gallery/keyboard E2E.
+
+Private final records:
+-`ui-final/gate.json` and its food/red/white/layout/profile outputs;
+-`gates-r5-final/results.json` and full logs/source hashes;
+-`native90-final-ui.xcresult`, `native90-final-attachments/`;
+-`native90-release-inputs-r2.json`, `native90-release-sim-r2.json`,
+ `native90-release-device-r2.json` and compiler logs;
+- all earlier r1/r2 failures, root-font experiment and private style diagnostics.
+
+Existing channels are not replaced: previously documented physical82, uploaded
+TestFlight85 and staging86 stay separate. The new offline QA90app uses its own
+bundle ID and is deliberately NOT a distribution candidate. No phone control,
+paid/model call, new account/key/service, SQL write, migration, deployment,
+publication, push, external message or TestFlight upload occurred in this window.
+Only7explicit free public catalog GETs were performed, with credentials/images
+omitted. All original images, corpus, quiz, scorer and learner are unchanged.
+
+## Remaining Gates
+
+1. **Recognition release HOLD:** a new approved real-source run is needed on the
+   current geometry/selection source and intended catalog channel. No fresh paid
+   inference was authorized in this window; no provider-quota outage is inferred.
+   The frozen red trace still lacks any covering proposal for14bottom label slots,
+   and red2/white8mixed-label proposals remain. A client fix cannot invent these.
+2. **Independent truth/calibration:** validate the existing corpus and two pixel
+   reviews independently, including canonical name/producer/vintage and exact
+   price/availability rows. Same-agent literal slots are not human ground truth.
+   Canonical precision/recall and confidence calibration remain null/unapproved.
+3. **Taste effectiveness:** independent blinded outcomes remain0. Technical
+   accounts and simulated years do not establish that a person likes a wine.
+   The existing intelligence89freeze/ballot/evaluator workflow stays unchanged.
+4. **Physical gate:** real camera/photos permissions, native region keyboard,
+   spoken VoiceOver, network interruption and memory/thermal need the later
+   coordinated device lane. No current phone version/readback is asserted here.
+5. **Distribution:** after recognition/data and physical gates, approve the exact
+   production function/data channel, sign/export a real-backend candidate and
+   verify Apple processing. Do not upload this offline QA90bundle or claim85/86
+   already contains these new source changes.
+
+No arbitrary completion percentage or full-product acceptance is justified.
+Remaining recognition/human/physical/distribution gates are explicit, not waived.
+
+## Reproduce
+
+```bash
+node scripts/run-matchrim-local-gates90.mjs NEW_PRIVATE_DIRECTORY
+npm run test:scene90
+```
+
+Food/dense UI scripts require explicit loopback URL, original image/SHA, trace,
+browser and new output directory. The private `run-ui-final.mjs` records the exact
+five-command sequence against immutable r13assets, with no remote app traffic.
+Native preparation copies iOS into an isolated directory, changes only its bundle
+ID/display name, embeds the invalid-only preview, and uses existing dependencies
+with Xcode26.0.1. Compiler logs preserve exact simulator/generic commands, signing
+disabled. No installation, secret, deployment or account setup is needed to rerun
+the local contracts. Native source and tested-view parity are hash-bound.

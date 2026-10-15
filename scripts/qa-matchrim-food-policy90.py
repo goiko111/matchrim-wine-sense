@@ -15,7 +15,7 @@ p.add_argument('--url', required=True)
 p.add_argument('--trace', type=Path, required=True)
 p.add_argument('--image', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
-p.add_argument('--only-case', choices=['narrow', 'portrait', 'landscape', 'large-text'])
+p.add_argument('--only-case', choices=['narrow', 'portrait', 'landscape', 'large-text', 'max-text'])
 p.add_argument('--only-scenario', choices=['bbq-replay', 'all-blocked'])
 add_browser_options(p)
 a = p.parse_args()
@@ -54,20 +54,23 @@ with sync_playwright() as pw:
     for scenario in ['bbq-replay', 'all-blocked']:
         if a.only_scenario and scenario != a.only_scenario:
             continue
-        for case, w, h, scale in [('narrow', 320, 568, 1), ('portrait', 393, 852, 1), ('landscape', 852, 393, 1), ('large-text', 393, 852, 2)]:
+        for case, w, h, scale in [('narrow', 320, 568, 1), ('portrait', 393, 852, 1), ('landscape', 852, 393, 1), ('large-text', 393, 852, 2), ('max-text', 393, 852, 3.12)]:
             if a.only_case and case != a.only_case:
                 continue
             fixture = FoodFixture(browser, a.url, scenario, viewport={'width': w, 'height': h}, is_mobile=True, has_touch=True)
             fixture.mobile_surface()
             page = fixture.page()
+            console_errors = []
+            page.on('console', lambda message: console_errors.append(message.text[:1000]) if message.type == 'error' else None)
             checks = []
             observed = {}
             def check(name, ok, actual=None):
                 checks.append({'name': name, 'passed': bool(ok), 'actual': actual})
             try:
                 page.goto(a.url + '/escanear/menu-comida?wine=Wine-for-controlled-context', wait_until='networkidle')
-                if scale == 2:
-                    page.add_style_tag(content='html {font-size:32px !important}')
+                if scale != 1:
+                    page.add_style_tag(content='html {font-size:%spx !important}' % (16 * scale))
+                    page.evaluate('document.documentElement.classList.add("matchrim-accessibility-text")')
                 upload_scan_file(page, 'food', str(a.image))
                 expect(page.get_by_test_id('food-row-0')).to_be_visible(timeout=20000)
                 dish_rows = page.locator('[data-testid^="food-row-"]')
@@ -109,6 +112,7 @@ with sync_playwright() as pw:
                 check('General wine scan remains available without selecting blocked first row', 'Beef+Bologna' not in page.url and 'Beef%20Bologna' not in page.url)
                 check('All remote URLs intercepted and no unknown operations', fixture.finish()['externalIntercepted'] and not fixture.unexpected, fixture.unexpected)
                 check('No browser runtime exceptions', not fixture.errors, fixture.errors)
+                check('No browser console error', not console_errors, console_errors)
             except Exception as error:
                 check('Scenario completed', False, str(error))
                 page.screenshot(path=str(a.output / (scenario + '-' + case + '-failure.png')))

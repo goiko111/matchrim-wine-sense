@@ -1098,7 +1098,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         {group.count > 1 ? ` · ${group.count} regiones agrupadas` : ''}
                       </span>
                       <span className={`block text-[11px] font-semibold ${identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
-                        {group.candidate.source === 'manual' ? 'Identidad confirmada por ti' : identityConfirmed ? 'Nombre leído · revisa la referencia' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
+                        {group.candidate.source === 'manual' ? 'Identidad confirmada por ti' : identityConfirmed ? 'Nombre leído · revisa la referencia' : isNative ? `Por confirmar · señal ${Math.round(group.candidate.confidence * 100)}/100` : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
                       </span>
                       {batchLocked && savedIndex >= 0 && (
                         <span className="mt-1 block text-xs font-medium text-slate-700">
@@ -1167,15 +1167,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => !open && setSelectedRegionId(null)} repositionInputs={!isNative} shouldScaleBackground={!isNative}>
         <DrawerContent className="matchrim-scan-region-sheet w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
-            <div className="mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
+            <div role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
               <DrawerHeader className="min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left">
                 <DrawerTitle>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</DrawerTitle>
                 <DrawerDescription>
-                  Detección {Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.
+                  {isNative ? `Señal detector ${Math.round(selectedRegion.detectionConfidence * 100)}/100` : `Detección ${Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.`}
                 </DrawerDescription>
               </DrawerHeader>
 
-              <div role="region" aria-label={`Contenido de la región ${selectedRegion.index}`} tabIndex={0} className="min-h-0 min-w-0 flex-1 space-y-4 overflow-y-auto break-words px-4 pb-4">
+              <div role="region" aria-label={`Contenido de la región ${selectedRegion.index}`} tabIndex={0} className="matchrim-scan-region-body min-h-0 min-w-0 flex-1 space-y-4 overflow-y-auto break-words px-4 pb-4">
                 {loading && (
                   <p role="status" className="text-sm text-slate-600" data-testid="region-analysis-lock">
                     Análisis del lote en curso. Las identidades aún pueden cambiar.
@@ -1230,7 +1230,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           <Input name="manual-wine-producer" disabled={regionActionsLocked} className="mt-1 min-h-11" autoComplete="off" />
                         </label>
                       </div>
-                      <Button type="submit" disabled={regionActionsLocked} className="min-h-11 gap-2"><Check className="h-4 w-4" /> Aplicar identidad manual</Button>
+                      <Button type="submit" disabled={regionActionsLocked} className={`min-h-11 gap-2${isNative ? ' h-auto max-w-full whitespace-normal' : ''}`}><Check className="h-4 w-4" /> Aplicar identidad manual</Button>
                     </form>
                   </div>
                 ) : (
@@ -1297,6 +1297,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           <div><span className="block text-lg font-bold text-slate-900">{selectedCandidate.affinityConfidence == null ? '-' : `${Math.round(selectedCandidate.affinityConfidence * 100)}%`}</span>Respaldo afinidad</div>
                         </div>
 
+                        {isNative && <p className="text-xs text-stone-600" title="Confianza orientativa, sin validación estadística independiente.">Señales orientativas · sin calibrar</p>}
                         {selectedCandidate.affinityReason && (
                           <p className="text-sm leading-6 text-slate-600">{selectedCandidate.affinityReason}</p>
                         )}
@@ -1350,18 +1351,18 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               </div>
 
               <DrawerFooter className="min-w-0 shrink-0 border-t border-stone-200 bg-white">
-                <div className="matchrim-region-footer-actions grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  <Button type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) <= 0} onClick={() => moveSelection(-1)}>
-                    <ChevronLeft className="h-4 w-4" /> Anterior
+                <div className={`matchrim-region-footer-actions grid ${isNative ? 'grid-cols-4' : 'grid-cols-2 sm:grid-cols-4'} gap-2`}>
+                  <Button type="button" variant="outline" title="Anterior" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) <= 0} onClick={() => moveSelection(-1)}>
+                    <ChevronLeft className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Anterior</span>
                   </Button>
-                  <Button type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
-                    Siguiente <ChevronRight className="h-4 w-4" />
+                  <Button type="button" variant="outline" title="Siguiente" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
+                    <span className={isNative ? 'sr-only' : undefined}>Siguiente</span><ChevronRight className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={() => void reanalyzeSelected()}>
-                    <RefreshCw className="h-4 w-4" /> Reanalizar
+                  <Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={() => void reanalyzeSelected()}>
+                    <RefreshCw className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Reanalizar</span>
                   </Button>
-                  <Button type="button" variant="outline" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2 text-red-800" onClick={discardSelected}>
-                    <Trash2 className="h-4 w-4" /> Descartar
+                  <Button type="button" variant="outline" title="Descartar" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2 text-red-800" onClick={discardSelected}>
+                    <Trash2 className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Descartar</span>
                   </Button>
                 </div>
                 <DrawerClose asChild><Button type="button" variant="secondary" className="min-h-11">Cerrar</Button></DrawerClose>

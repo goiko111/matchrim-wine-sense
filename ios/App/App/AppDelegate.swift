@@ -36,7 +36,7 @@ class MatchrimBridgeViewController: CAPBridgeViewController {
         let standardTraits = UITraitCollection(preferredContentSizeCategory: .large)
         let standardSize = UIFont.preferredFont(forTextStyle: .body, compatibleWith: standardTraits).pointSize
         let preferredSize = UIFont.preferredFont(forTextStyle: .body).pointSize
-        let scale = min(max(preferredSize / standardSize, 0.94), 1.35)
+        let scale = max(preferredSize / standardSize, 0.94)
         let percentage = Int((scale * 100).rounded())
         let usesAccessibilityLayout = scale >= 1.2 ? "true" : "false"
         let safeTop = Int(view.safeAreaInsets.top.rounded(.up))
@@ -45,6 +45,7 @@ class MatchrimBridgeViewController: CAPBridgeViewController {
         webView?.pageZoom = 1
         webView?.evaluateJavaScript(
             "document.documentElement.style.webkitTextSizeAdjust = '\(percentage)%';" +
+            "document.documentElement.style.fontSize = '100%';" +
             "document.documentElement.classList.toggle('matchrim-accessibility-text', \(usesAccessibilityLayout));" +
             "document.documentElement.style.setProperty('--matchrim-native-safe-top', '\(safeTop)px');" +
             "document.documentElement.style.setProperty('--matchrim-native-safe-bottom', '\(safeBottom)px');"

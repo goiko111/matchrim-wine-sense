@@ -53,6 +53,16 @@ const remediation89Changes = new Set(['src/utils/scanAnalysisPolicy.ts', 'src/ut
   'supabase/functions/scan-food-pairing/index.ts', 'supabase/functions/scan-food-pairing/contract.ts',
   'supabase/functions/scan-wine-menu/index.ts',
   'supabase/functions/_shared/matchrim-ai-provider.ts']);
+// QA90 changes only this parser's disclosure count, not schema, scores or data.
+const qa90FoodDisclosure = 'src/utils/foodScanResponse.ts';
+const qa90NativeNavigation = 'src/components/MobileBottomNav.tsx';
+execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-native-type90.ts']);
+const priorFoodResponse = execFileSync('git', ['show', `8f52291:${qa90FoodDisclosure}`], { encoding: 'utf8' });
+const oldFoodSummary = 'summary: `${parsed.data.dishes.length} platos devueltos. La cobertura de la carta no está verificada.`,';
+const newFoodSummary = 'summary: `${parsed.data.dishes.length} lecturas devueltas. La cobertura y disponibilidad no están verificadas.`,';
+assert.equal(priorFoodResponse.split(oldFoodSummary).length, 2, 'Exactly one reviewed summary delta');
+assert.equal(readFileSync(qa90FoodDisclosure, 'utf8'), priorFoodResponse.replace(oldFoodSummary, newFoodSummary),
+  'QA90 retains the full food parser outside its explicit reading/availability disclosure');
 const priorLearning = execFileSync('git', ['show', `598dda8:${build85LearningPath}`], { encoding: 'utf8' });
 assert.equal(readFileSync(build85LearningPath, 'utf8'), priorLearning.replace(
   'if (numeric === null) return null;', 'if (numeric === null || numeric < 0) return null;'),
@@ -62,7 +72,7 @@ for (const row of manifest.productSourceFingerprints as Array<{ path: string; sh
   assert.equal(hash(execFileSync('git', ['show', `${snapshot}:${row.path}`])), row.sha256, `Snapshot hash: ${row.path}`);
   if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && !build84Changes.has(row.path)
     && !build85Changes.has(row.path) && !remediation88Changes.has(row.path) && !remediation89Changes.has(row.path)
-    && row.path !== build85LearningPath && row.path !== 'package.json') {
+    && row.path !== build85LearningPath && row.path !== qa90FoodDisclosure && row.path !== qa90NativeNavigation && row.path !== 'package.json') {
     const expected = localPricePaths.has(row.path)
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256;
     assert.equal(hash(readFileSync(row.path)), expected, `Protected source: ${row.path}`);
