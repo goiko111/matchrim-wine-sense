@@ -351,6 +351,42 @@ export interface ResolvedWineDetection {
 
 export const MAX_REFINED_WINE_REGIONS = 60;
 
+export const selectWineRegionsForBatch = (
+  regions: ScanRegion[],
+  limit = MAX_REFINED_WINE_REGIONS,
+): ScanRegion[] => {
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > MAX_REFINED_WINE_REGIONS) {
+    throw new RangeError('Invalid wine-region batch limit');
+  }
+  if (regions.length <= limit) return regions;
+
+  // A reading-order prefix can discard entire lower shelves. Share the same
+  // bounded batch across occupied cells, preferring reliable evidence per cell.
+  const gridSize = 4;
+  const cells = new Map<number, ScanRegion[]>();
+  for (const region of regions) {
+    const column = Math.min(gridSize - 1, Math.max(0, Math.floor((region.box.x + region.box.width / 2) / 100 * gridSize)));
+    const row = Math.min(gridSize - 1, Math.max(0, Math.floor((region.box.y + region.box.height / 2) / 100 * gridSize)));
+    const key = row * gridSize + column;
+    const cell = cells.get(key) ?? [];
+    cell.push(region);
+    cells.set(key, cell);
+  }
+  const buckets = [...cells].sort(([a], [b]) => a - b).map(([, cell]) => cell.sort((a, b) =>
+    b.detectionConfidence - a.detectionConfidence
+    || legibilityPriority[b.quality.legibility] - legibilityPriority[a.quality.legibility]
+    || a.box.y - b.box.y || a.box.x - b.box.x || a.id.localeCompare(b.id)));
+  const selected: ScanRegion[] = [];
+  for (let round = 0; selected.length < limit; round++) {
+    for (const bucket of buckets) {
+      if (bucket[round]) selected.push(bucket[round]);
+      if (selected.length === limit) break;
+    }
+  }
+  return selected.sort((a, b) => a.box.y - b.box.y || a.box.x - b.box.x)
+    .map((region, index) => ({ ...region, id: `region-${index + 1}`, index: index + 1 }));
+};
+
 const fullDetectionTile: WineDetectionTile = {
   id: 'full',
   box: { x: 0, y: 0, width: 100, height: 100 },
@@ -431,7 +467,7 @@ export const mergeWineDetectionTileResults = (
       quality: region.quality,
     })),
   });
-  const regions = allRegions.slice(0, MAX_REFINED_WINE_REGIONS);
+  const regions = selectWineRegionsForBatch(allRegions);
   const capped = allRegions.length > regions.length;
   const tileCoverage = results.map(({ payload }) => normalizeScanCoverage(payload, normalizeDetectedRegions(payload).length));
   const statuses = tileCoverage.map((item) => item.status);

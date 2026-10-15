@@ -27,12 +27,12 @@ const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
 let externalRequests = 0;
 await page.route('**/*', async (route) => { externalRequests += 1; await route.abort(); });
 try {
-  await page.setContent('<!doctype html><html lang="en"><title>Pixel annotation review</title><body></body></html>');
   const sheets = [];
   for (const shelf of [...new Set(annotation.slots.map((slot) => slot.shelf))]) {
     const slots = annotation.slots.filter((slot) => slot.shelf === shelf);
     for (let start = 0; start < slots.length; start += 6) {
       const subset = slots.slice(start, start + 6);
+      await page.setContent('<!doctype html><html lang="en"><title>Pixel annotation review</title><body></body></html>');
       await page.evaluate(async ({ data, slots, fixture }) => {
         const image = new Image(); image.src = data; await image.decode();
         if (image.naturalWidth !== fixture.width || image.naturalHeight !== fixture.height) throw Error('Original pixel dimensions changed');
@@ -54,6 +54,8 @@ try {
           section.append(heading, source, canvas, text); document.body.append(section);
         }
       }, { data: `data:image/jpeg;base64,${original.toString('base64')}`, slots: subset, fixture: annotation.fixture });
+      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'Contact sheet overflow');
       const name = `${shelf}-${start + 1}.png`;
       await page.screenshot({ path: join(output, name), fullPage: true });
       sheets.push({ shelf, slots: subset.map((slot) => slot.id), image: name });

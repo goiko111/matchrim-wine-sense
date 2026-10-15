@@ -51,3 +51,16 @@ tests and real-versus-fixture boundary. This assignment is not product approval.
   PASS. Detailed report and private output paths are in QA90 report.
 - Local delta SHA will be captured in the per-delta receipt. No push/deploy/build
   version/channel or physical-device action. Continue red-cabinet annotation.
+
+### Block2:14:59Z-15:13Z
+
+- Completed68selected red label surfaces and hash-bound magnification review,
+ 14contact sheets. Canonicalnull, no physical count or independent human truth.
+- Confirmed prefix60starves lower shelves in78normalized real proposals. Spatial
+  cell allocation restores12lower label slots while losing5upper slots; total
+ 29->36/68geometry coverage, white33/37unchanged. Bottom0/14already absent before
+  cap: unresolved upstream detection, not fixed by selection.
+-322allocation assertions and existing multi-wine checksPASS. Renderer stale
+  heading-prefix artifact corrected without changing original image bytes.
+- Source-only local change, no model/catalog/device/deploy/push operation. Next
+  food availability semantics and mobile regression for actual deltas.

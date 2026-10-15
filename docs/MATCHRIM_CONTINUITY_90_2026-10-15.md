@@ -64,9 +64,54 @@ Private artifacts: recovered task
 `white-contact-r2/`, `white-spatial-baseline.json`, `white-spatial-after-cluster.json`,
 `white-spatial-comparison-r1.json`. Every audited source/review/trace has hashes.
 
+## Block2: Red Cabinet / Spatial Batch Selection
+
+Facts:
+- The red cabinet original1600x1200 has SHA256
+  `a7c4dba8e642bceb7fc9a97cc24f6165c5aff05f0e6dc8d087cec11ab9afbbb6`.
+  Its68 selected bounded label surfaces span four heights, including three wine
+  cartons. Neither68bottles nor an exhaustive scene inventory is claimed.
+- Fourteen contact sheets were inspected before individual detector proposals.
+  A hash-bound same-agent review withdraws unsupported cuvees/vintages/names,
+  including Reserva,2022,PINTIA,TRITON and a neighboring HERAS CORDON attribution.
+  Unknown fragments remain unknown. All canonical values remainnull.
+- Contact-sheet rendering now resets the document and waits two paint frames;
+  this fixes stale heading-prefix painting in the diagnostic browser. Actual
+  crops and earlier sheets remain preserved. New14sheets have zero remote calls.
+
+Reproduced product defect and decision:
+- With the existing shelf-merge fix, frozen real replies normalize to78proposals.
+  The reading-order prefix keeps60 and discards all useful lower-shelf proposals.
+- Retain the same60limit, but round-robin occupied4x4spatial cells. Prefer detector
+  confidence then legibility within each cell; restore reading order and compact
+  IDs afterward. No box, confidence, candidate, analysis limit or API budget is
+  manufactured/increased. Uncapped scenes are unchanged.
+
+Expected/actual (>=70% reviewed-label containment, geometry only):
+
+| Source / shelf | Before cap | Old prefix60 | Spatial60 |
+| --- | ---: | ---: | ---: |
+| Red top |10/13|10/13|8/13|
+| Red middle |19/21|19/21|16/21|
+| Red lower |12/20|0/20|12/20|
+| Red bottom |0/14|0/14|0/14|
+| Red total |41/68|29/68|36/68|
+| White total |33/37|33/37|33/37|
+
+This is a bounded allocation tradeoff, not identity precision/recall or a new
+recognition run. Five upper labels lose coverage while12lower labels gain it;
+seven net slots recover. The model did not propose covering boxes for the bottom
+row at all: client allocation cannot recover absent evidence. Mixed-label
+proposals remain (red2,white8), and canonical/sensory approval stays blocked.
+
+Verification:322spatial-selection assertionsPASS, existing multi-wine checksPASS;
+full targeted/type/lint verification is recorded in the delta receipt. Preserved
+private red drafts/review/contact-r1/r2 and before/after selection audits are in
+the QA90 artifact directory. No new model calls, catalog reads or device actions.
+
 ## Next Block
 
-Apply the same pixel-first review to the newer red cabinet before examining its
-frozen detector outputs. Test the upper-shelf cap hypothesis there; do not assume
-that a cap caused omissions in IMG_7605, where the baseline normalized count was60.
-Production/public web, installed82, TestFlight85 and staging86 remain untouched.
+Audit food-menu availability/source-row semantics against the frozen BBQ result
+and original pixels. Keep actual dish identity, availability, alternatives and
+operational signage distinct. Production/public web, installed82, TestFlight85
+and staging86 remain untouched; neither source-only correction is in binary86.
