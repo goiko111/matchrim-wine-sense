@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { streamAiRimResponse } from '@/lib/aiRimStream';
-import { emptySpecialMomentAnswers, isCompleteSpecialMoment, SPECIAL_MOMENT_LABELS, SPECIAL_MOMENT_OPTIONS, type SpecialMomentType, type SpecialMomentAnswers } from '@/utils/specialMomentsRequest';
+import { emptySpecialMomentAnswers, isCompleteSpecialMoment, specialMomentPlainText, SPECIAL_MOMENT_LABELS, SPECIAL_MOMENT_OPTIONS, type SpecialMomentType, type SpecialMomentAnswers } from '@/utils/specialMomentsRequest';
 import WineRecommendationCard from './WineRecommendationCard';
 
 interface SpecialMomentsFlowProps {
@@ -371,8 +371,9 @@ const SpecialMomentsSession: React.FC<SpecialMomentsFlowProps & { ownerId: strin
             </section>
           ) : result.trim() ? (
             isNative ? (
-              <section aria-label="Recomendación de aiRIM" className="min-w-0 border-y border-slate-200 py-5">
-                <p className="whitespace-pre-wrap break-words text-sm leading-6 text-slate-800 [overflow-wrap:anywhere]">{result}</p>
+              <section aria-label="Recomendación de aiRIM" className="min-w-0 space-y-4 border-y border-slate-200 py-5">
+                <p role="note" className="border-l-2 border-stone-300 pl-3 text-xs leading-5 text-slate-600">Respuesta generada por IA. Referencias, precios y disponibilidad no verificados con el catálogo Winerim.</p>
+                <p className="whitespace-pre-wrap break-words text-sm leading-6 text-slate-800 [overflow-wrap:anywhere]">{specialMomentPlainText(result)}</p>
               </section>
             ) : <WineRecommendationCard response={result} functionType="special-moments" />
           ) : (

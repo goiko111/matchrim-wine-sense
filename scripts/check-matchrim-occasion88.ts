@@ -5,7 +5,7 @@ import { createServer } from 'node:http';
 import vm from 'node:vm';
 import { build } from 'esbuild';
 import ts from 'typescript';
-import { emptySpecialMomentAnswers, isCompleteSpecialMoment, SPECIAL_MOMENT_LABELS, SPECIAL_MOMENT_OPTIONS } from '../src/utils/specialMomentsRequest';
+import { emptySpecialMomentAnswers, isCompleteSpecialMoment, specialMomentPlainText, SPECIAL_MOMENT_LABELS, SPECIAL_MOMENT_OPTIONS } from '../src/utils/specialMomentsRequest';
 
 declare global {
   interface Window {
@@ -39,6 +39,15 @@ const frame = (text: string) => 'data: ' + JSON.stringify({ choices: [{ delta: {
 const end = 'data: [DONE]\n\n';
 const response = (body: string) => new Response(body, { headers: { 'Content-Type': 'text/event-stream' } });
 const source = readFileSync('src/components/SpecialMomentsFlow.tsx', 'utf8');
+await check('Native inert text retains the answer without heading/bold control marks', () => {
+  assert.equal(specialMomentPlainText('### 1. Albariño\n\n**Precio aproximado:** 15 € - 20 €\n\n***\n\nConsulta la ficha.'), '1. Albariño\n\nPrecio aproximado: 15 € - 20 €\n\n\n\nConsulta la ficha.');
+  for (const text of ['Plain answer', 'C++ 3*2 = 6', '<img src="https://unverified.invalid" onerror="alert(1)">', '[Ficha](https://unverified.invalid)']) {
+    assert.equal(specialMomentPlainText(text), text);
+  }
+  assert.match(source, /Referencias, precios y disponibilidad no verificados/);
+  assert.match(source, /\{specialMomentPlainText\(result\)\}/);
+  assert.doesNotMatch(source, /dangerouslySetInnerHTML/);
+});
 const transportSource = readFileSync('src/lib/aiRimStream.ts', 'utf8');
 const transportBuild = await build({
   entryPoints: ['src/lib/aiRimStream.ts'], bundle: true, write: false, format: 'iife', globalName: 'subject',

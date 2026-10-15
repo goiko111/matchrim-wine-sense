@@ -30,3 +30,10 @@ export const isCompleteSpecialMoment = (data: SpecialMomentAnswers): boolean => 
     (SPECIAL_MOMENT_OPTIONS[key] as readonly string[]).includes(data[key]),
   )
 );
+
+// Keep the response inert and complete; remove only visual heading/bold markers.
+export const specialMomentPlainText = (text: string): string => text
+  .replace(/^[ \t]{0,3}#{1,6}[ \t]+/gm, '')
+  .replace(/\*\*([^\n]+?)\*\*/g, '$1')
+  .replace(/^[ \t]*(?:\*\*\*+|___+|---+)[ \t]*$/gm, '')
+  .trim();
