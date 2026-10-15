@@ -46,7 +46,7 @@ export const parseFoodScanResponse = (value: unknown): FoodScanResult => {
   }
   return {
     ...parsed.data,
-    summary: `${parsed.data.dishes.length} platos devueltos. La cobertura de la carta no está verificada.`,
+    summary: `${parsed.data.dishes.length} lecturas devueltas. La cobertura y disponibilidad no están verificadas.`,
     dishes: parsed.data.dishes.map((item) => ({
       ...item,
       // A wine questionnaire does not establish dietary, dessert or dish preferences.

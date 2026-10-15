@@ -152,7 +152,7 @@ export const mergeFoodMenuTiles89 = (outcomes: TileOutcome[]): FoodMenuScanResul
     && read.result.profile_source === first.profile_source);
   return { ...first, mode: 'menu', dishes, orchestration_version: 'food-menu-bounded-crops89-v2',
     has_profile: profileAgrees && first.has_profile, profile_source: profileAgrees ? first.profile_source : 'none',
-    summary: `${dishes.length} platos devueltos. La cobertura de la carta no esta verificada.`,
+    summary: `${dishes.length} lecturas devueltas. La cobertura y disponibilidad no están verificadas.`,
     coverage: { estimated_visible_dishes: null, unreadable_dishes: null, returned_dishes: dishes.length,
       truncated: true, partial: true, duplicate_rows: duplicates, coordinate_space: 'original_percent',
       tiles: outcomes.map((outcome) => outcome.ok === true ? outcome.read.coverage : {

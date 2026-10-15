@@ -31,6 +31,7 @@ import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
 import { FoodScanResponseError, parseFoodScanResponse, type FoodScanResult, type FoodDishResult, type FoodWineRecommendation } from "@/utils/foodScanResponse";
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { scanFoodMenu89 } from '@/utils/foodMenuScan89';
+import { foodRowPolicy90, foodPairingContext90 } from '@/utils/foodRowPolicy90';
 import { readRestaurantCarry, restaurantCarryIsForeign, restaurantCarryState, restaurantScanPath, unsupportedRestaurantClaim } from "@/utils/restaurantPairingContext";
 
 type FoodScanMode = "menu" | "dish";
@@ -212,7 +213,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
       if (scanResult?.dishes?.length) {
         toast.success(
           mode === "menu"
-            ? `${scanResult.dishes.length} platos detectados`
+            ? `${scanResult.dishes.length} lecturas para revisar`
             : "Plato analizado"
         );
       } else {
@@ -243,6 +244,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
     recommendationIndex: number,
     favorite = false
   ) => {
+    if (!foodRowPolicy90(dish).pairingAllowed) return;
     if (!user) {
       navigate(buildAuthRedirectPath("/my-wines"));
       return;
@@ -336,7 +338,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
   const contextWithMenu = () => ({
     ...carriedContext,
     restaurantName: restaurantName || carriedContext.restaurantName,
-    foodMenu: result?.dishes.map((dish) => dish.source_text || dish.nombre).join('\n').slice(0, 12000) || carriedContext.foodMenu,
+    foodMenu: result ? foodPairingContext90(result.dishes) : carriedContext.foodMenu,
   });
 
   const findBottle = (dishName?: string) => {
@@ -347,7 +349,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
   };
 
   const askWithMenu = () => {
-    if (!selectedWine.trim() || !result?.dishes.length) return;
+    if (!selectedWine.trim() || !result?.dishes.some((dish) => foodRowPolicy90(dish).pairingAllowed)) return;
     const query = new URLSearchParams({ function: 'dish-for-wine', wine: selectedWine.trim() });
     navigate(`/inteligencia-liquida?${query}`, {
       state: restaurantCarryState(user?.id ?? null, contextWithMenu()),
@@ -357,7 +359,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
   const currentStep = processingSteps[mode][stepIndex];
 
   return (
-    <div className="space-y-5">
+    <div className={`space-y-5${isNative ? ' [&_button]:h-auto [&_button]:min-h-11 [&_button]:whitespace-normal' : ''}`}>
       {isNative && mode === 'menu' && (
         <div className="space-y-2 border-b border-stone-200 pb-4 [overflow-wrap:anywhere]">
           <label htmlFor="restaurant-menu-wine" className="text-sm font-semibold text-slate-800">Vino para este menú</label>
@@ -511,7 +513,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
 
       {result && (
         <div ref={resultRef} className="scroll-mt-24 space-y-4">
-          {isNative && mode === 'menu' && selectedWine.trim() && result.dishes.length > 0 && (
+          {isNative && mode === 'menu' && selectedWine.trim() && result.dishes.some((dish) => foodRowPolicy90(dish).pairingAllowed) && (
             <Button type="button" className="min-h-11 w-full gap-2 whitespace-normal bg-red-900 hover:bg-red-950" onClick={askWithMenu}>
               <Sparkles className="h-4 w-4 shrink-0" />Elegir plato de este menú para mi vino
             </Button>
@@ -541,19 +543,22 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
             </p>
           </div>
 
-          {result.dishes.map((dish, dishIndex) => (
-            <div key={`${dish.nombre}-${dishIndex}`} className="overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm">
+          {result.dishes.map((dish, dishIndex) => {
+            const policy = foodRowPolicy90(dish);
+            return (
+            <div key={`${dish.nombre}-${dishIndex}`} data-testid={`food-row-${dishIndex}`} className="overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm [overflow-wrap:anywhere]">
               <div className="flex items-start justify-between gap-4 border-b border-stone-100 p-4">
                 <div className="min-w-0">
                   <Badge variant="outline" className="mb-2 border-red-100 text-red-900">
                     {dish.categoria}
                   </Badge>
                   <h3 className="text-lg font-bold leading-tight text-slate-950">{dish.nombre}</h3>
+                  <p data-testid="food-availability" className="mt-2 text-sm font-medium text-amber-900">{policy.label}</p>
                   {dish.source_text && <p className="mt-2 text-sm leading-6 text-slate-600">Lectura: {dish.source_text}</p>}
                 </div>
               </div>
 
-              <div className="space-y-3 p-4">
+              {policy.pairingAllowed ? <div className="space-y-3 p-4">
                 <div className="flex items-center gap-2 font-semibold text-slate-900">
                   <WineIcon />
                   Ideas de vino para este plato
@@ -653,16 +658,17 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
 	                  <ScanLine className="h-4 w-4" />
 	                  Encontrar botella real en la carta
 	                </Button>
-              </div>
+              </div> : <p className="p-4 text-sm leading-6 text-stone-700">Esta lectura no se usa para elegir un maridaje hasta confirmar el plato y su disponibilidad.</p>}
             </div>
-          ))}
+            );
+          })}
 
           <Button
             type="button"
             variant="outline"
             className="w-full gap-2 bg-white"
             onClick={() => {
-              const firstDishName = result.dishes[0]?.nombre;
+              const firstDishName = result.dishes.find((dish) => foodRowPolicy90(dish).pairingAllowed)?.nombre;
               if (isNative) { findBottle(firstDishName); return; }
               const query = firstDishName ? `?dish=${encodeURIComponent(firstDishName)}` : "";
               navigate(`/escanear/carta-vinos${query}`);

@@ -1,5 +1,5 @@
 {
   "extends": "../tsconfig.app.json",
   "compilerOptions": { "noEmit": true, "types": ["node", "vite/client"], "baseUrl": "..", "paths": { "@/*": ["./src/*"] } },
-  "include": ["matchrim-scene-evidence90.ts", "audit-matchrim-scene90.ts", "check-matchrim-scene-evidence90.ts", "check-matchrim-shelf-clusters90.ts", "check-matchrim-spatial-selection90.ts"]
+  "include": ["matchrim-scene-evidence90.ts", "audit-matchrim-scene90.ts", "check-matchrim-scene-evidence90.ts", "check-matchrim-shelf-clusters90.ts", "check-matchrim-spatial-selection90.ts", "check-matchrim-food-policy90.ts"]
 }

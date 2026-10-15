@@ -109,9 +109,60 @@ full targeted/type/lint verification is recorded in the delta receipt. Preserved
 private red drafts/review/contact-r1/r2 and before/after selection audits are in
 the QA90 artifact directory. No new model calls, catalog reads or device actions.
 
+## Block3: Food Availability / Large-Text Recovery
+
+Facts and corrected behavior:
+- Original BBQ pixels (SHA256`15a82f5bbaace92067533e1820ba3428b362561216de93cdaba4bbaa64cfff6a`)
+  explicitly show COMING SOON, unavailable Sundays, weekends only and ASK US.
+  The frozen real35-row response retains these text markers, but the old client
+  offered the same pairing/bottle actions for every row.
+- New pure source-text policy preserves every returned row. Two COMING SOON
+  rows and one ASK US row do not offer pairing/save/aiRIM actions or seed carried
+  dish context. A fourth row contains only`LG (1.5-1.75 LB)=$38`; its model-expanded
+  Beef Ribs identity is not validated by that line and also needs clarification.
+- Explicit day restrictions remain conditional, not an invented current-day
+  stock decision. All other rows remain availabilityunknown, never available by
+  default. Ordinary dish choices remain actionable as hypotheses, not verified
+  in-stock dishes. Only source_text supplies markers; a generated name cannot.
+- Summary/toast now count readings, not confirmed dishes. A menu with no eligible
+  row cannot seed a dead dish-for-wine shortcut or carry an earlier menu by truthy
+  fallback. General wine-menu scanning remains possible without a selected dish.
+
+Visual finding and actual fix:
+-200%text exposed an existing long nowrap button. It enlarged the mobile layout
+  viewport487px while the visible width stayed393px, placing Profile offscreen.
+  The old scrollWidth<=innerWidth check falsely passed this condition.
+- Mobile food controls now grow/wrap within their container. The regression
+  compares against document.clientWidth and measures all five44px navigation
+  targets. No global navigation redesign or unrelated web styling change.
+- Native-surface text200 now keeps all five links visible. Long nav labels wrap;
+  exact iOS Dynamic Type/VoiceOver still needs native/physical verification.
+
+Verification:
+-68pure policy assertionsPASS, existing food client contractsPASS,
+ 20crop-orchestration testsPASS,40food robustness testsPASS, application types
+  and scoped lintPASS. No taste weights, dietary claims or model prompt changed.
+- `food-ui-r3`:8/8scenarios,124assertionsPASS. Original BBQ photo through the real
+  upload controls; frozen real replies plus an explicit all-blocked fixture;
+ 320x568,393x852,852x393 and200%text. Full35rows preserved, unavailable actions
+  absent, restrictions visible in the AX tree, source context filtered, all five
+  nav targets fit, zero horizontal overflow/page exceptions/remote traffic.
+- Preserve r1 and diagnostic failures: default local build attempted telemetry;
+  all attempts were intercepted/blocked before remote writes. Safe r2/r3 use an
+  invalid-only backend/key/catalog and analyticsfalse. No API/account/SQL mutation
+  occurred. No earlier failure is relabeledPASS; r2preceded the final portion-line
+  guard and r3covers final source.
+
+Limitations:
+- This is a conservative literal-marker safety net, not a semantic menu engine,
+  exhaustive dish inventory, stock/date validation or new OCR result. Missing
+  markers, inherited section restrictions and compound alternatives still need
+  independent source review. The original board and model replies are unchanged.
+- Canonical wine precision, real taste usefulness and physical device gates stay
+  open. Production/public web, installed82, TestFlight85 and staging86 are untouched.
+
 ## Next Block
 
-Audit food-menu availability/source-row semantics against the frozen BBQ result
-and original pixels. Keep actual dish identity, availability, alternatives and
-operational signage distinct. Production/public web, installed82, TestFlight85
-and staging86 remain untouched; neither source-only correction is in binary86.
+Bounded public catalog coverage of six unchanged pixel-read names, without photo
+uploads, credentials, canonical assertions, AI requests, retries or pagination;
+then focused dense-scene client and native candidate regression.

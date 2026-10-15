@@ -64,3 +64,18 @@ tests and real-versus-fixture boundary. This assignment is not product approval.
   heading-prefix artifact corrected without changing original image bytes.
 - Source-only local change, no model/catalog/device/deploy/push operation. Next
   food availability semantics and mobile regression for actual deltas.
+
+### Block3:15:13Z-15:26Z
+
+- Food source-text policy keeps35raw BBQ rows but blocks pairing actions/context
+  on2coming-soon rows,1ask-us line and1portion-only/inferred-parent row. Other
+  statuses remain unknown/conditional, not stock approval.68policy assertionsPASS.
+- Reproduced large-text viewport expansion from a nowrap food button, not the
+  nav grid. Local mobile wrapping restores all five44px nav targets. Strengthened
+  overflow oracle checks document.clientWidth, not already-expanded innerWidth.
+- Final frozen-reply/controlled-negative mobile8/8scenarios and124checksPASS;
+  food-client/20crop/40robustness regressions, types and scoped lintPASS. Preserve
+  blocked telemetry attempts and diagnostic failures; safe final preview sends
+  no remote traffic. No model call, SQL write, physical action, deploy or push.
+- Next six literal-only public catalog probes (maximum7GETs) are a separate
+  coverage block, not identity proof or permission to spend model quota.
