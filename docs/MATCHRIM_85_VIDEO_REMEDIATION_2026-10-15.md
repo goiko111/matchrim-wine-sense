@@ -1,14 +1,15 @@
 # Matchrim 1.0 (85): video and QA87 remediation
 
-Status: product corrections committed and distribution candidate verified;
-native regression and Apple upload receipts are still pending below. This is
+Status: corrected beta1.0(85) uploaded successfully; Apple reports package
+processing. Installable availability and tester-group assignment are not yet
+verified. The scoped native regression is3/3PASS. This is
 QA88 evidence, not build88. The owner's latest instruction explicitly authorizes
 fixing the supplied videos and uploading the corrected TestFlight. No owner
 phone, public web deployment or hosted-function deployment is part of this delta.
 
 Product corrections: `e2a32d8`; native presentation delta: `bbdad72`.
-The final single-text-node question counter revision is recorded in the final
-build receipt after its native verification.
+Final production candidate and single-text-node counter source:
+`c0fcfb33d1b50505d12a71078fb5641e02c98d99`.
 Historical QA85/QA87 evidence and datasets are retained.
 Private evidence root in the recovered task:
 `artifacts/matchrim88-remediation-testflight-20261015`.
@@ -22,7 +23,7 @@ Raw videos, images, account credentials, responses and binaries are not in Git.
 | Back leaves an old loading state and question index | Supplied video2; baseline gift opens at question5 with the previous loading state | Request generation, AbortController, owner/route lifetime and full reset; new occasion starts at1 and stale response is ignored |
 | Stream errors look like success | Empty/truncated/error responses can leave an unusable result | Bounded90s operation, SSE framing and completion validation;31 transport/state contractsPASS, no automatic paid retries |
 | Real generated answer reads as raw Markdown and implies verified data | Live production response contains heading/bold markers and unverified reference/price claims | Native-only inert text cleanup and explicit AI/catalog caveat; no HTML, active generated links, remote images or new dependency |
-| Native question counter is fragmented in accessibility | WKWebView AX exports four separate labels: Pregunta,1,de,5 | One template-string text node retains the same visual text; native verification pending |
+| Native question counter is fragmented in accessibility | WKWebView AX exports four separate labels: Pregunta,1,de,5 | One template-string text node retains the same visual text; native question/reset assertionsPASS |
 | Native Profile contradicts current affinity |31/138 scores disagree with reconstruction from the visible graph; max9points | Actual rendered chart preserves0..5 and decimals;138/138 numeric reconstructions agree,62/62 unavailable cases abstain |
 | Compact Bodega hides missing data |138 missing-data assertions fail; default65% identity appears without measured identity confidence | Sources and missing wood/intensity are visible; linked catalog identity is qualitative, not invented OCR confidence;138/138 disclosure checksPASS |
 | Cropped menu rows inherit unsupported prices | Six unsupported amounts among eight right-column rows | Conservative price grounding with visible uncertainty;0 unsupported amounts among six retained right rows;10/10 readable left pairs retained |
@@ -68,11 +69,17 @@ different accounts or another50-account study.
 | Video UI |17/17PASS, portrait393x852, landscape852x393 and small320x700; controlled SSE, not fresh AI |
 | Recorded images |Four unchanged input scenes, eight views,25 historical reply deliveries; no page errors/overflow, not fresh recognition |
 | Simulator build |Isolated `wine.matchrim.qa85`1.0(85), staging schema; unsigned simulator buildPASS |
+| Actual native UI |R4 three testsPASS, zero failures/skips; profile fractions/raw quiz zero, compact explanation and pending identity, occasion questions/back/reset, portrait/landscape and scoped AX dynamicType/textClipped audits |
 | Production archive/export |`wine.matchrim.app`1.0(85), SDKiphoneos26.0, distribution exportPASS |
 | Export verification |388/388 signature/profile/native-resource/production-config checksPASS; no staging host, fixture backend or privileged JWT |
 
 Production IPA SHA256:
-`00364909ca49cdab510aac15ccac55403218da52d4596d10c4eb9f2785e1a4d4`.
+`4614e1e12a3515af8deaa177775aac81332b57afb7184490eeed9c3822aea0b6`.
+Final native, browser and distribution snapshots at `c0fcfb3` match328 files:
+984/984 comparisonsPASS. Browser application-tree fingerprint after the counter
+fix: `532ab82ac9ca0e1b2e05497070a20280bef94985c515b785bc8cb1a0d08261c8`.
+The final exported IPA is in private `candidate-final3`, not the earlier signed
+candidate-final/final2 artifacts. All three archives remain unmodified evidence.
 Production backend remains `cbjynrbvrhcmpaojmqdp`, existing vision72/catalog75/
 affinity73 aliases. Staging is a distinct app/environment, not the exported IPA.
 
@@ -124,6 +131,41 @@ meter's hit-test requirement, an exact region label lacking iOS's spoken region
 suffix, and the real fragmented question-counter AX text. Native R4 separates
 visibility from clickability, binds the wine region with its native suffix, and
 checks the corrected single-text-node counter. Every prior failure is retained.
-No failed run is counted as productPASS or silently erased. Final native
-regression and exact Apple receipt will be appended after completion. Do not interpret a successful archive
-or an upload attempt as TestFlight availability or external tester approval.
+No failed run is counted as productPASS or silently erased. R4 then completed
+all three tests successfully on the owned simulator at10:27:14UTC, frozen source
+`c0fcfb3`, build85. Ten exported native screenshots and AX attachments preserve
+portrait/landscape profile, raw zero, compact explanation, identity abstention,
+question5 and gift restart at1. The corrected counter is one accessible text.
+Representative source-matched screenshots were visually inspected. Native test
+duration includes runner setup, gestures, audits and waits; it is not app latency.
+
+The native occasion test deliberately stops before the final budget, so it makes
+no live AI submission. Native pending/empty/retry scenarios remain covered by
+the separate controlled browser tests, and live production answer handling by
+the anonymous canary; this does not certify every native network failure or
+spoken VoiceOver. A successful archive/upload is not proof of those wider gates.
+
+## Apple Delivery
+
+Authorized upload completed2026-10-15 at12:28CEST/10:28UTC. Xcode reported
+`Uploaded App`, `EXPORT SUCCEEDED`, `Uploaded package is processing` and
+`Upload succeeded`; exit0. This used the validated final3 production archive,
+not the staging simulator or earlier final/final2 IPA. Delivery receipt and log
+are private `apple-upload-r1/receipt.json` and `apple-upload-r1/upload.log`.
+The stored Xcode account authenticated successfully despite an expired web
+session; no additional Apple login was necessary for the upload.
+
+Apple processing completion, installation from TestFlight, internal automatic
+group assignment and the historical external invitation/review are NOT_VERIFIED
+here. Do not claim the external tester received a new invitation or that85 is
+already installable. No public App Store submission, source push, web/backend
+deployment or owner-phone operation occurred.
+
+Nonblocking Apple warning: the current iOS14 minimum must become15 or later for
+uploads starting April2027. No deployment-target change or device-support
+removal was made just to silence this future requirement.
+
+Final private evidence: `gates-r4-accessibility`, `profile-final-50-r1`,
+`profile-visual-two-r2`, `occasion-accessibility-final-r4`, `image-final-r1`,
+`menu-field-audit.json`, `cloud-full-r1`, `native-ui-r4/execution-r1`,
+`source-parity-accessibility.json`, `candidate-final3` and `apple-upload-r1`.
