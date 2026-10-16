@@ -1,4 +1,5 @@
-import type { MenuScanResponse } from './wineMenuScan';
+import { buildMenuScanTiles, getRightFocusMenuScanTile, mayHaveUnreadMenuColumn,
+  type MenuScanResponse, type MenuScanTile } from './wineMenuScan';
 
 export type MenuScanPhase93 = 'quality' | 'profile' | 'ocr' | 'refinement' | 'ranking';
 export type MenuScanMetrics93 = {
@@ -12,6 +13,16 @@ export const needsNativeMenuRefinement93 = (response: MenuScanResponse): boolean
   const count = response.vinos?.length ?? 0;
   return response.coverage?.status !== 'reported_complete'
     || (response.coverage.estimated_visible_wines ?? 0) > count;
+};
+
+export const planNativeMenuRefinement93 = (width: number, height: number, response: MenuScanResponse): MenuScanTile[] => {
+  if (!needsNativeMenuRefinement93(response) || !Number.isFinite(width) || !Number.isFinite(height)
+    || width <= 0 || height <= 0) return [];
+  const tiles = buildMenuScanTiles(width, height, response.layout);
+  const coversBothColumns = tiles.some(tile => tile.id === 'left') && tiles.some(tile => tile.id === 'right');
+  // The narrow column complements vertical crops; start it in the same bounded batch, not a later serial pass.
+  if (!coversBothColumns && mayHaveUnreadMenuColumn(response)) tiles.push(getRightFocusMenuScanTile());
+  return tiles;
 };
 
 export class MenuScanLimitError93 extends Error {
@@ -31,7 +42,7 @@ export const createMenuScanRun93 = (options: {
   const startedAt = now();
   const totalMs = options.totalMs ?? 90_000;
   const requestMs = options.requestMs ?? 58_000;
-  const maxRequests = options.maxRequests ?? 3;
+  const maxRequests = options.maxRequests ?? 4;
   let phaseStartedAt = startedAt;
   let finished = false;
   const metrics: MenuScanMetrics93 = {

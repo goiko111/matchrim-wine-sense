@@ -35,7 +35,7 @@ import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
 import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
 import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
-import { createMenuScanRun93, needsNativeMenuRefinement93, type MenuScanMetrics93 } from '@/utils/wineMenuExecution93';
+import { createMenuScanRun93, planNativeMenuRefinement93, type MenuScanMetrics93 } from '@/utils/wineMenuExecution93';
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
@@ -726,10 +726,10 @@ const WineMenuScannerSession = ({
         failedTileCount += 1;
       }
       const fullResponse = successfulTiles[0]?.response;
-      const scanTiles = !isMatchrimFixtureQaEnabled && (!fullResponse || (nativeRun
-        ? needsNativeMenuRefinement93(fullResponse) : needsMenuRefinement(fullResponse)))
-        ? buildMenuScanTiles(prepared.width, prepared.height, fullResponse?.layout)
-        : [];
+      const scanTiles = isMatchrimFixtureQaEnabled ? []
+        : nativeRun && fullResponse ? planNativeMenuRefinement93(prepared.width, prepared.height, fullResponse)
+          : !fullResponse || needsMenuRefinement(fullResponse)
+            ? buildMenuScanTiles(prepared.width, prepared.height, fullResponse?.layout) : [];
       if (nativeRun && scanTiles.length) { setScanPhase('refinement'); nativeRun.phase('refinement'); }
       attemptedTileCount += scanTiles.length;
       const settledTiles = await Promise.allSettled(scanTiles.map(async (tile) => ({

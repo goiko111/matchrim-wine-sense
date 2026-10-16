@@ -29,8 +29,10 @@ final class Matchrim93ReleaseTests: XCTestCase {
     }
 
     @MainActor private func openRestaurant(_ app: XCUIApplication) {
+        XCTAssertTrue(app.buttons["Inicio de Matchrim"].waitForExistence(timeout: 15), app.debugDescription)
         let scan = app.links.matching(identifier: "Escanear").firstMatch
         XCTAssertTrue(scan.waitForExistence(timeout: 15), app.debugDescription)
+        XCTAssertTrue(scan.isHittable)
         scan.tap()
         let entry = app.buttons["Comida y vinos del restaurante"]
         XCTAssertTrue(entry.waitForExistence(timeout: 10), app.debugDescription)
@@ -157,7 +159,7 @@ final class Matchrim93ReleaseTests: XCTestCase {
         }
         XCTAssertFalse(choices.element(boundBy: 5).isEnabled)
         capture("native93-real-comparison-five-selected", app)
-        let service = app.buttons["Servicio"]
+        let service = app.switches["Servicio"]
         reveal(service, in: app); service.tap()
         capture("native93-real-comparison-service", app)
         XCUIDevice.shared.orientation = .landscapeLeft

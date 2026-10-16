@@ -92,9 +92,19 @@ with sync_playwright() as pw:
         fixture = RestaurantFixture(browser, a.url, viewport={'width': width, 'height': height}, is_mobile=True, has_touch=True)
         fixture.mobile_surface()
         page = fixture.page()
+        dialog_warnings = []
+        page.on('console', lambda message: dialog_warnings.append(message.text) if message.type == 'warning' and 'DialogContent' in message.text else None)
         checks = []
         def check(name, value, actual=None):
             checks.append({'name': name, 'passed': bool(value), 'actual': actual})
+        def check_description(dialog, name):
+            description = dialog.evaluate(r'''e => {
+                const ids = (e.getAttribute('aria-describedby') || '').trim().split(/\s+/).filter(Boolean);
+                const nodes = ids.map(id => document.getElementById(id));
+                return {ids, texts: nodes.map(node => node?.textContent?.trim() || ''),
+                    owned: nodes.every(node => node && e.contains(node))};
+            }''')
+            check(name + ' aria-describedby resolves to nonempty description', bool(description['ids']) and description['owned'] and all(description['texts']), description)
         def upload(files):
             with page.expect_file_chooser() as event:
                 page.get_by_role('button', name='Añadir archivos', exact=True).click()
@@ -118,14 +128,27 @@ with sync_playwright() as pw:
             page.get_by_role('button', name='Analizar pendientes', exact=True).click()
             expect(page.get_by_role('button', name='Cancelar', exact=True)).to_have_count(0, timeout=20000)
             check('Only failed page reruns; no duplicate paid calls for read pages', len(fixture.reads) == 4)
-            check('Duplicate readings retain origins instead of duplicate dishes', page.get_by_role('heading', name='Chuleta', exact=True).count() == 1 and page.get_by_text('3 orígenes · lectura de IA sin confirmar', exact=True).count() == 2)
+            check('Duplicate readings retain origins instead of duplicate dishes', page.get_by_role('heading', name='Chuleta', exact=True).count() == 1 and page.get_by_text('3 orígenes · 3 lecturas · lectura de IA sin confirmar', exact=True).count() == 2)
             page.get_by_role('button', name='Corregir Chuleta', exact=True).click()
             dialog = page.get_by_role('dialog')
             expect(dialog).to_be_visible()
+            check_description(dialog, 'Grouped-row edit dialog')
+            page.screenshot(path=str(a.output / (case + '-edit-description.png')))
             dialog.get_by_label('Nombre', exact=True).fill('Chuleta corregida')
             dialog.get_by_role('button', name='Guardar corrección', exact=True).click()
             expect(page.get_by_role('heading', name='Chuleta corregida', exact=True)).to_be_visible()
-            check('Manual correction preserves the original source', page.get_by_text('Chuleta a la brasa 45 EUR', exact=True).count() == 1)
+            corrected = page.get_by_role('listitem').filter(has=page.get_by_role('heading', name='Chuleta corregida', exact=True))
+            source_texts = corrected.locator(':scope > p').all_text_contents()
+            check('Manual correction preserves the original source', 'Chuleta a la brasa 45 EUR' in source_texts, source_texts)
+            document = page.get_by_role('listitem').filter(has=page.get_by_role('heading', name=a.image.name, exact=True))
+            document.get_by_text('Revisar páginas', exact=True).click()
+            document.get_by_role('button', name='Ver página 1', exact=True).click()
+            dialog = page.get_by_role('dialog')
+            expect(dialog).to_be_visible()
+            check_description(dialog, 'Original-page preview dialog')
+            page.screenshot(path=str(a.output / (case + '-preview-description.png')))
+            dialog.get_by_role('button', name='Close', exact=True).click()
+            expect(dialog).to_be_hidden()
             page.get_by_role('tab', name='Vinos').click()
             upload([str(a.image)])
             analyze()
@@ -201,6 +224,7 @@ with sync_playwright() as pw:
             check('No horizontal overflow', page.evaluate('document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1'))
             check('Five navigation targets stay within viewport', page.get_by_role('navigation', name='Navegación principal').get_by_role('link').evaluate_all('els=>els.length===5&&els.every(e=>{const r=e.getBoundingClientRect();return r.width>=44&&r.height>=44&&r.left>=0&&r.right<=document.documentElement.clientWidth+1})'))
             check('No runtime exceptions', not fixture.errors, fixture.errors)
+            check('No DialogContent accessibility warning', not dialog_warnings, dialog_warnings)
             check('All remote traffic intercepted and no unknown mutations', fixture.finish()['externalIntercepted'] and not fixture.unexpected, fixture.unexpected)
         except Exception as failure:
             check('Full scenario completed', False, str(failure))

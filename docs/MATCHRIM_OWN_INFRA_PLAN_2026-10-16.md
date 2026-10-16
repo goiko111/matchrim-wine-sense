@@ -2,6 +2,8 @@
 
 Fecha: 2026-10-16. Estado: inventario realizado; migracion NO autorizada ni iniciada.
 
+Este inventario conserva el estado observado a las10:29Madrid. La candidata nativa91 y el backend citados como baseline fueron superados durante el carril paralelo; consultar [Release93](MATCHRIM_RELEASE_93_2026-10-16.md) para la version final. Eso no cambia los datos/metadatos remotos observados ni autoriza una migracion.
+
 ## Respuesta practica
 
 Si, podemos sacar Matchrim de Lovable Cloud sin rehacer el producto. Necesitamos controlar el backend completo, no solo alojar el codigo: datos, Auth, permisos, funciones, configuracion y recuperacion ante fallos. El trabajo delicado es conservar identidades y acceso, reconciliar el estado real con el repo y cambiar los endpoints de los clientes instalados sin crear dos bases de datos divergentes.

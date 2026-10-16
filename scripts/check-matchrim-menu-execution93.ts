@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createMenuScanRun93, MenuScanLimitError93, needsNativeMenuRefinement93 } from '../src/utils/wineMenuExecution93';
+import { createMenuScanRun93, MenuScanLimitError93, needsNativeMenuRefinement93, planNativeMenuRefinement93 } from '../src/utils/wineMenuExecution93';
 import type { MenuScanMetrics93 } from '../src/utils/wineMenuExecution93';
-import type { MenuScanResponse } from '../src/utils/wineMenuScan';
+import { getFullMenuScanTile, resolveMenuTileResults, type MenuScanResponse, type MenuScanTile } from '../src/utils/wineMenuScan';
 
 let checks = 0;
 const check = (value: unknown) => { assert.ok(value); checks++; };
@@ -16,6 +16,20 @@ for (const count of [0, 1, 8, 30, 60]) check(!needsNativeMenuRefinement93(page(c
 for (const status of ['partial', 'unknown'] as const) check(needsNativeMenuRefinement93(page(8, status)));
 check(needsNativeMenuRefinement93(page(8, 'reported_complete', 12)));
 check(needsNativeMenuRefinement93({ vinos: [] }));
+assert.deepEqual(planNativeMenuRefinement93(1000, 2000, page(8, 'reported_complete')), []); checks++;
+assert.deepEqual(planNativeMenuRefinement93(1000, 2000, page(14, 'partial', 17)).map(tile => tile.id), ['top', 'bottom', 'right-focus']); checks++;
+assert.deepEqual(planNativeMenuRefinement93(2000, 1000, page(14, 'partial', 17)).map(tile => tile.id), ['left', 'right']); checks++;
+assert.deepEqual(planNativeMenuRefinement93(1000, 2000, { ...page(8, 'partial'), layout: 'rows' }).map(tile => tile.id), ['top', 'bottom']); checks++;
+for (const width of [0, -1, NaN, Infinity]) check(planNativeMenuRefinement93(width, 1000, page(14, 'partial')).length === 0);
+const recorded = JSON.parse(readFileSync('qa/fixtures/menu-food-evidence-oct8.json', 'utf8')).cases[0].calls as Array<{ scan_region: MenuScanTile; payload: MenuScanResponse }>;
+const full = recorded.find(call => call.scan_region.id === 'full')!;
+const plan = planNativeMenuRefinement93(1000, 2000, full.payload);
+const recovered = resolveMenuTileResults([{ tile: getFullMenuScanTile(), response: full.payload }, ...plan.map(tile => ({
+  tile, response: recorded.find(call => call.scan_region.id === tile.id)!.payload,
+}))]);
+assert.equal(recovered.vinos?.length, 16, 'Latency policy must retain the two references recovered by the narrow column'); checks++;
+check(recovered.vinos?.some(wine => wine.nombre === 'Costa di ros'));
+check(recovered.vinos?.some(wine => wine.nombre === 'La Rosa'));
 
 let clock = 100;
 const traces: MenuScanMetrics93[] = [];
@@ -38,9 +52,9 @@ assert.equal(calls, 1); checks++;
 
 const cap = createMenuScanRun93({ signal: new AbortController().signal });
 await cap.request(async () => 1);
-await Promise.all([cap.request(async () => 2), cap.request(async () => 3)]);
-await assert.rejects(cap.request(async () => 4), error => error instanceof MenuScanLimitError93 && error.reason === 'request_limit'); checks++;
-assert.equal(cap.snapshot().requests, 3); checks++;
+await Promise.all([cap.request(async () => 2), cap.request(async () => 3), cap.request(async () => 4)]);
+await assert.rejects(cap.request(async () => 5), error => error instanceof MenuScanLimitError93 && error.reason === 'request_limit'); checks++;
+assert.equal(cap.snapshot().requests, 4); checks++;
 cap.finish('completed');
 
 let budgetClock = 0;
@@ -92,7 +106,8 @@ check(!/image|filename|authorization|token|user_id|wine_name/.test(JSON.stringif
 const component = readFileSync('src/components/wine-import/WineMenuScanner.tsx', 'utf8');
 check(component.includes('if (nativeRun) return nativeRun.request('));
 check(component.includes('if (!nativeRun && !isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn'));
-check(component.includes('needsNativeMenuRefinement93(fullResponse) : needsMenuRefinement(fullResponse)'));
+check(component.includes('planNativeMenuRefinement93(prepared.width, prepared.height, fullResponse)'));
+check(component.includes('Promise.allSettled(scanTiles.map('));
 check(component.includes("nativeRun.phase('profile')") && component.includes("nativeRun.phase('refinement')"));
 check(component.includes('data-testid="menu-scan-metrics"'));
 const catalog = readFileSync('src/services/winerimApi.ts', 'utf8');
