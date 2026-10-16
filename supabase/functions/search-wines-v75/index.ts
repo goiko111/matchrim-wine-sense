@@ -63,7 +63,7 @@ serve(async (req) => {
   try {
     let body: unknown;
     try { body = await req.json(); } catch { throw new CatalogSearchInputError('JSON invalido'); }
-    const { query, limit } = parseCatalogSearchInput(body);
+    const { query, limit, catalogOnly } = parseCatalogSearchInput(body);
     
     if (!query || query.trim().length < 2) {
       return new Response(
@@ -98,7 +98,7 @@ serve(async (req) => {
 
     // Always search externally to complement results
     const hasOpenAiKey = hasMatchrimOpenAiKey();
-    if (hasOpenAiKey) {
+    if (!catalogOnly && hasOpenAiKey) {
       try {
         console.log('Searching external sources for wines...');
         
