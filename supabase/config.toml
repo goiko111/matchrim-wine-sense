@@ -16,3 +16,9 @@ verify_jwt = true
 
 [functions.search-wines-v75]
 verify_jwt = true
+
+[functions.restaurant-workspace91]
+verify_jwt = true
+
+[functions.restaurant-import91]
+verify_jwt = true
