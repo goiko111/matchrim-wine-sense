@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Active Window: 2026-10-16, Restaurant91
+
+- New native restaurant session `/restaurante`: multiple files/photos, all PDF pages (up to50/file,100/session), food/wine cards, reversible focus, strict source-ID pairing, separate original-fiche/current affinity and owner-scoped local drafts. Existing web is not published/changed, prior scanners/scorer/learner preserved.
+- Product frozen in83e159c:22session/13ranking/170workspace/27import checksPASS; actual50-page PDF.js rendering, five controlled browser journeys98checks and six real Chromium local-storage checksPASS. Native entry/type/orientation and simulator/generic compilationPASS; max-text layout stacks controls and keeps tab-bar chrome compact. These are not human or live OCR outcomes.
+- Supabase CLI still403 after owner reconnection claim and final retry; MCP independently denies function access. No deployment/new TestFlight/push/phone or paid-model call. Build91 is local only; last evidenced upload85 is unchanged. URL transport now pins the validated IP through original-hostname TLS, with no fetch/attestation fallback; hosted runtime/provider and signed distribution gates remain.
+- [Restaurant91 architecture, QA and exact release gates](docs/MATCHRIM_RESTAURANT_91_2026-10-16.md). QA89/90 recognition, independent/human and physical gates remain open.
+
 ## Active Window: 2026-10-15, QA90 Local Continuity
 
 - Authorized14:36Z-16:36Z, baseline8f52291. No paid inference, new accounts, SQL writes, downloads, deploy/push/publication/TestFlight or physical UI operation. Exactly7explicit free public catalog GETs; no credentials/images sent.
