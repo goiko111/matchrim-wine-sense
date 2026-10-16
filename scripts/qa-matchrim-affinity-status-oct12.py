@@ -90,7 +90,9 @@ with sync_playwright() as pw:
                 check('No missing/inference result appears as rejection', card.get_by_text('Sin encaje', exact=True).count() == 0 and card.get_by_text('No priorizaría', exact=True).count() == 0)
                 check('Badge/card explicitly pending, not absent-as-zero', card.get_by_text('Afinidad pendiente', exact=True).count() >= 2 and not re.search(r'≈(?:0|NaN|Infinity|71)%', observed['card']))
                 check('Explanation is explicit and consistent with pending', card.get_by_role('status').get_by_text('Afinidad pendiente', exact=True).count() == 1)
-                check('Profile unavailable cause remains honest', page.locator('[data-testid="scan-profile-source"]').get_by_text('Perfil no disponible para este análisis; afinidad pendiente.', exact=True).count() == 1)
+                observed['profileNote'] = page.get_by_test_id('scan-profile-source').inner_text()
+                expected_note = 'No se pudo cargar tu perfil; afinidad pendiente.' if scenario == 'profile-error' else 'No hay un perfil guardado para esta cuenta; afinidad pendiente.'
+                check('Profile unavailable cause remains honest', observed['profileNote'] == expected_note, {'expected': expected_note, 'actual': observed['profileNote']})
                 check('Price provenance unchanged in readonly result', '25,00' in observed['card'] and 'EUR' in observed['card'] or '25,00' in observed['card'] and '€' in observed['card'])
                 card.screenshot(path=str(args.output / (case.replace(':', '-') + '-card.png')))
                 row.click()

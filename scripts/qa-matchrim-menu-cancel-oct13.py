@@ -125,7 +125,7 @@ with sync_playwright() as pw:
                 expected=['Abrir vino '+str(i+1)+': '+wine['nombre'] for i,wine in enumerate(response['vinos'])]
                 check('Retried exact file finishes full unchanged four-candidate contract',observed['completed']['rows']==expected and not observed['completed']['cancelFeedback'],observed['completed']['rows'])
                 check('Retry final lifecycle resets loading/inputs normally',not observed['completed']['cancelVisible'] and all(not i['disabled'] for i in observed['completed']['inputs']))
-                check('Measured per-attempt plan: cancelled1/0/1, retry3/2/1',counts[1]=={'ocr':1,'canonical':0,'base':1} and counts[2]=={'ocr':3,'canonical':2,'base':1},json.loads(json.dumps(counts)))
+                check('Measured per-attempt plan: cancelled1/0/1, complete retry1/2/1',counts[1]=={'ocr':1,'canonical':0,'base':1} and counts[2]=={'ocr':1,'canonical':2,'base':1},json.loads(json.dumps(counts)))
                 page.screenshot(path=str(args.output/(key+'-completed.png')))
                 observed['selectionEvents']=page.evaluate('window.__qa14SelectionEvents')
                 check('Two browser change events observed from standard chooser',len([e for e in observed['selectionEvents'] if e['kind']=='change'])==2,observed['selectionEvents'])

@@ -4,6 +4,7 @@ import copy
 import hashlib
 import json
 import re
+import time
 from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
@@ -32,6 +33,8 @@ currencies['vinos'][2]['moneda'] = 'GBP'
 prices = copy.deepcopy(units)
 for wine in prices['vinos'][1:3]:
     wine['precio'] = None
+complete8 = {'vinos': copy.deepcopy([full[i] for i in [0, 1, 2, 3, 5, 6, 7, 11]]), 'layout': 'columns',
+             'coverage': {'status': 'reported_complete', 'extracted_wines': 8, 'estimated_visible_wines': 8}}
 args.output.mkdir(parents=True, exist_ok=True)
 (args.output / 'response-provenance.json').write_text(json.dumps({
     'scope': 'One existing image. Recorded replay is not fresh OCR. EUR/GBP assignments are synthetic contract values, never claimed extracted. No invented prices, vintages, sensory sheets or profile.',
@@ -39,7 +42,8 @@ args.output.mkdir(parents=True, exist_ok=True)
     'recordedVersion': by_tile['full'].get('scan_version'),
     'recordedReadingInstances': sum(len(call['payload']['vinos']) for call in recorded['calls']),
     'contractRowSources': ['full:0', 'bottom:1', 'bottom:2', 'full:11'],
-    'variants': {'units': units, 'currencies': currencies, 'prices': prices},
+    'variants': {'units': units, 'currencies': currencies, 'prices': prices, 'complete8': complete8},
+    'complete8Scope': 'Explicit synthetic complete-eight coverage contract on existing pixels; not fresh OCR or image truth.',
 }, ensure_ascii=False, indent=2) + '\n')
 results = []
 names = ['Lugana Allegrini', 'Barbaresco Marchesi di Barolo', 'Barolo Marchesi di Barolo', 'Laurent Perriere Ultra']
@@ -53,6 +57,10 @@ with sync_playwright() as pw:
             context = browser.new_context(viewport={'width': width, 'height': height}, is_mobile=True, has_touch=True, reduced_motion='reduce', service_workers='block')
             context.add_init_script("window.CapacitorCustomPlatform={name:'ios'};localStorage.setItem('matchrim.local_profile_owner.v1','anonymous');localStorage.setItem('matchrim.onboarding.v2:anonymous',JSON.stringify({version:2,result:'skipped'}));localStorage.setItem('matchrim.scan_privacy_notice.v2','accepted');")
             requests, errors, console, steps, failures = [], [], [], [], []
+            held_refinements = []
+            refinement = {'released': False, 'beforeRelease': []}
+            observed = {}
+            started = time.monotonic()
 
             def intercept(route):
                 req = route.request
@@ -61,10 +69,13 @@ with sync_playwright() as pw:
                     return route.continue_()
                 body = req.post_data_json if req.method == 'POST' else {}
                 tile = body.get('scan_region', {}).get('id', 'full') if isinstance(body, dict) else None
-                requests.append({'method': req.method, 'path': parsed.path, 'tile': tile})
+                requests.append({'method': req.method, 'path': parsed.path, 'tile': tile, 'started_ms': round((time.monotonic() - started) * 1000, 3)})
                 payload = [] if '/rest/v1/' in parsed.path else {}
                 if '/functions/v1/scan-wine-menu' in parsed.path:
-                    payload = by_tile.get(tile, {'vinos': []}) if variant == 'recorded' else {'units': units, 'currencies': currencies, 'prices': prices}[variant]
+                    payload = by_tile.get(tile, {'vinos': []}) if variant == 'recorded' else {'units': units, 'currencies': currencies, 'prices': prices, 'complete8': complete8}[variant]
+                    if variant == 'recorded' and tile != 'full' and not refinement['released']:
+                        held_refinements.append((route, tile, payload))
+                        return
                 elif '/functions/v1/' in parsed.path:
                     payload = {'wines': []}
                 route.fulfill(status=200, content_type='application/json', body=json.dumps(payload), headers={'Access-Control-Allow-Origin': '*'})
@@ -87,11 +98,31 @@ with sync_playwright() as pw:
             try:
                 page.goto(args.url + '/escanear/carta-vinos', wait_until='networkidle')
                 page.locator('input[type=file]').first.set_input_files(str(image))
+                if variant == 'recorded':
+                    for _ in range(120):
+                        if len(held_refinements) == 3:
+                            break
+                        page.wait_for_timeout(25)
+                    refinement['beforeRelease'] = [tile for _, tile, _ in held_refinements]
+                    refinement['released'] = True
+                    for route, _, payload in held_refinements:
+                        route.fulfill(status=200, content_type='application/json', body=json.dumps(payload), headers={'Access-Control-Allow-Origin': '*'})
                 section = page.locator('section[aria-labelledby="wine-comparison-title"]')
                 section.wait_for(timeout=45000)
                 page.get_by_role('button', name=re.compile(r'^Abrir vino \d+:')).first.wait_for()
                 check('Actual active route', page.url.endswith('/escanear/carta-vinos'))
-                check('Merged row/reference choices, not physical bottles', section.get_by_role('checkbox').count() == (16 if variant == 'recorded' else 4), section.get_by_role('checkbox').count())
+                check('Merged row/reference choices, not physical bottles', section.get_by_role('checkbox').count() == (16 if variant == 'recorded' else 8 if variant == 'complete8' else 4), section.get_by_role('checkbox').count())
+                ocr = [request for request in requests if '/functions/v1/scan-wine-menu' in request['path']]
+                if variant == 'recorded':
+                    check('Native partial column retains Costa di ros and La Rosa', all(section.get_by_role('checkbox', name='Comparar ' + name, exact=True).count() == 1 for name in ['Costa di ros', 'La Rosa']))
+                    check('Native partial column uses exactly four bounded OCR calls', len(ocr) == 4 and sorted(request['tile'] for request in ocr) == ['bottom', 'full', 'right-focus', 'top'], ocr)
+                    check('All three refinement calls start before any refinement response, not fourth serial', sorted(refinement['beforeRelease']) == ['bottom', 'right-focus', 'top'], refinement['beforeRelease'])
+                elif variant == 'complete8':
+                    check('Complete eight skips all refinement and uses exactly one OCR call', len(ocr) == 1 and ocr[0]['tile'] == 'full', ocr)
+                if variant in ['recorded', 'complete8']:
+                    observed['metrics'] = page.get_by_test_id('menu-scan-metrics').inner_text()
+                    metrics = re.fullmatch(r'(\d+) s · (\d+) solicitudes de lectura', observed['metrics'])
+                    check('Native UI metrics retain the ninety-second and four-request bounds', bool(metrics) and int(metrics[1]) <= 90 and int(metrics[2]) == len(ocr) <= 4, observed['metrics'])
                 check('Literal partial/full duplicate is one Ultra reference', section.get_by_role('checkbox', name='Comparar Laurent Perriere Ultra', exact=True).count() == 1)
                 initial_requests, initial_storage = len(requests), storage()
 
@@ -192,7 +223,7 @@ with sync_playwright() as pw:
                 check('No mobile horizontal expansion', geometry['width'] == width and geometry['scroll'] <= width, geometry)
                 check('No console or runtime errors', not errors and not console, {'errors': errors, 'console': console})
                 section.screenshot(path=str(args.output / (case + '-corrected.png')))
-                results.append({'case': case, 'passed': not failures, 'steps': steps, 'failures': failures, 'requests': requests, 'comparisonNewRequests': len(requests) - initial_requests, 'storageBefore': initial_storage, 'storageAfter': storage(), 'errors': errors, 'console': console})
+                results.append({'case': case, 'passed': not failures, 'steps': steps, 'failures': failures, 'requests': requests, 'observed': observed, 'refinementBeforeRelease': refinement['beforeRelease'], 'comparisonNewRequests': len(requests) - initial_requests, 'storageBefore': initial_storage, 'storageAfter': storage(), 'errors': errors, 'console': console})
             except Exception as error:
                 page.screenshot(path=str(args.output / (case + '-exception.png')))
                 results.append({'case': case, 'passed': False, 'error': str(error), 'steps': steps, 'failures': failures, 'requests': requests, 'errors': errors, 'console': console})
