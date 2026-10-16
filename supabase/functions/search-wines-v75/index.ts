@@ -63,7 +63,7 @@ serve(async (req) => {
   try {
     let body: unknown;
     try { body = await req.json(); } catch { throw new CatalogSearchInputError('JSON invalido'); }
-    const { query, limit } = parseCatalogSearchInput(body);
+    const { query, limit, catalogOnly } = parseCatalogSearchInput(body);
 
     if (!query || query.trim().length < 2) {
       return new Response(
@@ -97,7 +97,7 @@ serve(async (req) => {
     console.log(`Found ${allWines.length} wines in database matching "${query}"`);
 
     // Complement catalog results with AI suggestions, without a web search tool.
-    if (hasMatchrimOpenAiKey()) {
+    if (!catalogOnly && hasMatchrimOpenAiKey()) {
       try {
         console.log('Requesting AI wine suggestions...');
 

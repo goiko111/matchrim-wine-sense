@@ -58,6 +58,8 @@ const remediation89Changes = new Set(['src/utils/scanAnalysisPolicy.ts', 'src/ut
 // The focused AST guard verifies prompts and auth/catalog queries before exemption.
 execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-openai92-routing.ts']);
 const openAi92Changes = new Set(openAi92LegacyHandlers.map(name => `supabase/functions/${name}/index.ts`));
+execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-catalog93.ts']);
+const catalog93Changes = new Set(['supabase/functions/_shared/matchrim-catalog-search-v75.ts']);
 // QA90 changes only this parser's disclosure count, not schema, scores or data.
 const qa90FoodDisclosure = 'src/utils/foodScanResponse.ts';
 const qa90NativeNavigation = 'src/components/MobileBottomNav.tsx';
@@ -76,7 +78,7 @@ let immutableCount = 0;
 for (const row of manifest.productSourceFingerprints as Array<{ path: string; sha256: string }>) {
   assert.equal(hash(execFileSync('git', ['show', `${snapshot}:${row.path}`])), row.sha256, `Snapshot hash: ${row.path}`);
   if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && !build84Changes.has(row.path)
-    && !build85Changes.has(row.path) && !remediation88Changes.has(row.path) && !remediation89Changes.has(row.path) && !openAi92Changes.has(row.path)
+    && !build85Changes.has(row.path) && !remediation88Changes.has(row.path) && !remediation89Changes.has(row.path) && !openAi92Changes.has(row.path) && !catalog93Changes.has(row.path)
     && row.path !== build85LearningPath && row.path !== qa90FoodDisclosure && row.path !== qa90NativeNavigation && row.path !== 'package.json') {
     const expected = localPricePaths.has(row.path)
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256;

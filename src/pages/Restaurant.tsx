@@ -15,8 +15,9 @@ import { inspectRestaurantFile, renderRestaurantPage, importRestaurantUrl91 } fr
 import { parseRestaurantRead91 } from '../../supabase/functions/_shared/matchrim-restaurant91';
 import { planRestaurantRanking91, runRestaurantRanking91 } from '@/utils/restaurantRanking91';
 import {
-  activeRestaurantRows91, addRestaurantDocument91, completeRestaurantPage91, createRestaurantSession91, editRestaurantRow91,
+  activeRestaurantRows91, addRestaurantDocument91, completeRestaurantPage91, createRestaurantSession91, discardRestaurantRow91, editRestaurantRow91,
   readRestaurantSession91, removeRestaurantDocument91, resetInterruptedRestaurant91, restaurantCoverage91,
+  restaurantRowForRequest91, restaurantRowOrigins91,
   writeRestaurantSession91, type MenuKind91, type RestaurantSession91, type SourcedRestaurantRow91,
 } from '@/utils/restaurantSession91';
 import { lookupWinerimOriginalSheet, type WinerimOriginalSheet as OriginalSheet } from '@/utils/winerimOriginalSheet';
@@ -217,7 +218,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
     }
     let batches: ReturnType<typeof planRestaurantRanking91>;
     try {
-      batches = planRestaurantRanking91(foods, wines, { selectedFoodId: selectedFood || undefined,
+      batches = planRestaurantRanking91(foods.map(restaurantRowForRequest91), wines.map(restaurantRowForRequest91), { selectedFoodId: selectedFood || undefined,
         selectedWineId: selectedWine || undefined, service,
         ...(budget ? { budget: { amount: Number(budget.replace(',', '.')), currency, service } } : {}),
       });
@@ -276,6 +277,13 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
     const doc = state.documents.find(item => item.id === page?.documentId);
     return page && doc ? `${doc.name} · página ${page.number}` : 'Origen no disponible';
   };
+  const readingDetails = (row: SourcedRestaurantRow91) => <ul className="space-y-3">{restaurantRowOrigins91(row).map((origin, index) =>
+    <li key={`${origin.pageId}:${origin.row.id}:${index}`} className="break-words text-xs text-slate-500">
+      <p>{sourceLabel(origin.pageId)}</p><p className="mt-1 whitespace-pre-wrap">{origin.row.sourceText}</p>
+      <p className="mt-1">{origin.row.price != null ? `${origin.row.price} ${origin.row.currency || '(moneda sin confirmar)'}` : 'Precio sin confirmar'} · {origin.row.service === 'glass' ? 'Copa' : origin.row.service === 'bottle' ? 'Botella' : 'Formato sin confirmar'}</p>
+      {origin.row.description && <p>{origin.row.description}</p>}
+      {origin.row.notes?.map((note, noteIndex) => <p key={noteIndex}>{note}</p>)}
+    </li>)}</ul>;
   const attributes = sheet?.sensoryAttributes ? { potencia: sheet.sensoryAttributes.power, acidez: sheet.sensoryAttributes.acidity,
     dulzura: sheet.sensoryAttributes.sweetness, taninos: sheet.sensoryAttributes.tannin, afrutado: sheet.sensoryAttributes.fruity } : null;
   const affinity = calculateLocalMatchrimAffinity(profile?.profile, attributes);
@@ -337,10 +345,10 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
           <p className="mt-1 text-sm text-slate-500">{restaurantCoverage91(state, tab).read}/{restaurantCoverage91(state, tab).total} páginas seleccionadas leídas · {restaurantCoverage91(state, tab).omitted} excluidas</p></div>
         <ul className="divide-y divide-slate-200">{(tab === 'food' ? foods : wines).map(row => <li key={row.id} className="py-4">
           <div className="flex items-start justify-between gap-2"><div className="min-w-0"><h3 className="break-words font-semibold">{row.name}</h3>
-            <p className="mt-1 text-xs text-slate-500">{row.manual ? 'Vino aportado por ti · no confirma que esté en carta' : `${row.pageIds.length} ${row.pageIds.length === 1 ? 'origen' : 'orígenes'} · ${row.reviewed ? 'revisado por ti' : 'lectura de IA sin confirmar'}`}</p></div>
+            <p className="mt-1 text-xs text-slate-500">{row.manual ? 'Vino aportado por ti · no confirma que esté en carta' : `${row.pageIds.length} ${row.pageIds.length === 1 ? 'origen' : 'orígenes'} · ${restaurantRowOrigins91(row).length} ${restaurantRowOrigins91(row).length === 1 ? 'lectura' : 'lecturas'} · ${row.reviewed ? 'revisado por ti' : 'lectura de IA sin confirmar'}`}</p></div>
             <Button size="icon" variant="ghost" className={iconClass} aria-label={`Corregir ${row.name}`} title="Corregir lectura" disabled={Boolean(busy)} onClick={() => setEditing({ ...row })}><Pencil className="h-4 w-4" /></Button></div>
           <p className="mt-2 break-words text-sm text-slate-600">{row.sourceText}</p>
-          {row.pageIds.length > 0 && <details className="mt-2"><summary className="min-h-[44px] cursor-pointer py-[8px] text-sm">Páginas de origen</summary><ul>{row.pageIds.map(id => <li key={id} className="break-words text-xs text-slate-500">{sourceLabel(id)}</li>)}</ul></details>}
+          {row.pageIds.length > 0 && <details className="mt-2"><summary className="min-h-[44px] cursor-pointer py-[8px] text-sm">Páginas y lecturas de origen</summary>{readingDetails(row)}</details>}
           <p className="mt-1 text-sm text-slate-500">{row.price != null ? `${row.price} ${row.currency || '(moneda sin confirmar)'}` : 'Precio sin confirmar'} · {row.service === 'glass' ? 'Copa' : row.service === 'bottle' ? 'Botella' : 'Formato sin confirmar'}</p>
           {row.availability && row.availability !== 'unknown' && <p className="mt-1 text-sm text-amber-800">{row.availability === 'unavailable' ? 'No disponible según la lectura' : row.availability === 'coming_soon' ? 'Próximamente · excluido de combinaciones' : 'Disponibilidad condicionada · confirmar'}</p>}
           <div className="mt-3 flex flex-wrap gap-2"><Button variant="outline" className={actionClass} disabled={Boolean(busy)} onClick={() => { if (row.kind === 'food') { setSelectedFood(row.id); setSelectedWine(''); } else { setSelectedWine(row.id); setSelectedFood(''); } setTab('pairs'); }}>
@@ -368,7 +376,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
             <h3 className="mt-4 text-sm font-semibold">Por qué puede encajar</h3><ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">{pair.positives.map((text, i) => <li key={i}>{text}</li>)}</ul>
             {pair.frictions.length > 0 && <><h3 className="mt-3 text-sm font-semibold">Posibles fricciones</h3><ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">{pair.frictions.map((text, i) => <li key={i}>{text}</li>)}</ul></>}
             {pair.missing.length > 0 && <p className="mt-3 text-sm text-amber-800">Falta confirmar: {pair.missing.join(' · ')}</p>}
-            <details className="mt-3"><summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold">Lecturas de origen</summary><p className="break-words text-sm text-slate-600">Comida: {food.sourceText}</p><p className="mt-2 break-words text-sm text-slate-600">Vino: {wine.sourceText}</p></details>
+            <details className="mt-3"><summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold">Lecturas de origen</summary><p className="mb-2 text-sm font-semibold">Comida</p>{readingDetails(food)}<p className="mb-2 mt-3 text-sm font-semibold">Vino</p>{wine.manual ? <p className="break-words text-sm text-slate-600">{wine.sourceText}</p> : readingDetails(wine)}</details>
             <Button variant="outline" className={`${actionClass} mt-3`} disabled={Boolean(busy)} onClick={() => { setTab('wine'); void inspectWine(wine); }}><ExternalLink className="h-4 w-4 shrink-0" />Ver ficha y afinidad del vino</Button>
           </li>;
         })}</ol>
@@ -380,7 +388,8 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       {editing.kind === 'wine' && <><label className="block text-sm">Bodega<Input value={editing.producer ?? ''} maxLength={160} onChange={event => setEditing({ ...editing, producer: event.target.value })} className="mt-1 h-auto min-h-11" /></label><label className="block text-sm">Añada<Input value={editing.vintage ?? ''} maxLength={4} inputMode="numeric" pattern="(19|20)[0-9]{2}|" onChange={event => setEditing({ ...editing, vintage: event.target.value || undefined })} className="mt-1 h-auto min-h-11" /></label></>}
       <label className="block text-sm">Descripción aportada por ti<Input value={editing.description ?? ''} maxLength={1000} onChange={event => setEditing({ ...editing, description: event.target.value })} className="mt-1 h-auto min-h-11" /></label>
       <p className="text-sm text-slate-500">Lectura original conservada: {editing.sourceText}</p>
-      <DialogFooter className="gap-2"><Button type="button" variant="outline" className={actionClass} onClick={() => { const id = editing.id; mutate(current => ({ ...current, revision: current.revision + 1, pairs: [], rows: current.rows.filter(row => row.id !== id) })); setEditing(null); }}><Trash2 className="h-4 w-4" />Descartar</Button><Button type="submit" className={actionClass}><Check className="h-4 w-4" />Guardar corrección</Button></DialogFooter>
+      {editing.pageIds.length > 0 && <details><summary className="min-h-11 cursor-pointer py-2 text-sm">Todas las lecturas originales</summary>{readingDetails(editing)}</details>}
+      <DialogFooter className="gap-2"><Button type="button" variant="outline" className={actionClass} onClick={() => { mutate(current => discardRestaurantRow91(current, editing.id)); setEditing(null); }}><Trash2 className="h-4 w-4" />Descartar</Button><Button type="submit" className={actionClass}><Check className="h-4 w-4" />Guardar corrección</Button></DialogFooter>
     </form>}</DialogContent></Dialog>
     <Dialog open={Boolean(preview)} onOpenChange={open => { if (!open) setPreview(null); }}><DialogContent className="max-h-[90dvh] overflow-y-auto [overflow-wrap:anywhere]"><DialogHeader><DialogTitle>{preview?.name}</DialogTitle></DialogHeader>{preview?.image && <img src={preview.image} alt="Página original seleccionada" className="h-auto w-full object-contain" />}{preview?.text && <pre className="whitespace-pre-wrap break-words text-sm">{preview.text}</pre>}</DialogContent></Dialog>
   </>;

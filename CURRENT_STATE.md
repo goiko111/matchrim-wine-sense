@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Active Window: 2026-10-16, Release93 remediation
+
+- Owner requests closing classic latency/duplicates/mobile QA and a new TestFlight; parallel own-infra exploration only, no migration. Native classic flow now avoids count/identity-only reprocessing, caps3calls/58s per-call/90s reading budget, cancels ignored transports and exposes real phase/time/call metrics. Native canonical lookup skips unused AI suggestions and is bounded/cancellable; web default behavior and formulas unchanged.
+- Food duplicates preserve individual source readings and prevent stale price/identity after page changes; page/reading order preserved. Focused execution95/catalog155/handler17/dedup46groupsPASS, cloud/type/lintPASS (106inherited warnings). New-source native QA and live improvement measurements pending; prior92canaries are not93results.
+- One minimal backend deploy search-wines-v75 at320152b,1.3credits;3sourcehash/config readbackPASS. Main61afb43 restores generated frontend files exactly, no web Publish/migration/account/secret change. iOS version1.0(93) candidate, NOT uploaded yet. [Release93/gates](docs/MATCHRIM_RELEASE_93_2026-10-16.md); [own infrastructure inventory](docs/MATCHRIM_OWN_INFRA_PLAN_2026-10-16.md).
+
 ## Active Window: 2026-10-16, OpenAI92 backend routing
 
 - Owner confirmed the dedicated Lovable Cloud secret name `openai_matchrim` and explicitly authorized a minimal-credit batch for all29AI functions, not only Restaurant91. Central Chat/Responses routing is prepared; no Anthropic/Lovable fallback, no key in client. Web/native sources remain unchanged. Defaults are documented OpenAI fast/quality/vision models; actual account access remains a hosted gate.

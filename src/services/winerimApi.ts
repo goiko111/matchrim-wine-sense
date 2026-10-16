@@ -752,15 +752,23 @@ const scoreCandidate = (input: WinerimLabelLookupInput, candidate: RawSearchWine
  */
 export const findWinerimWineForLabel = async (
   input: WinerimLabelLookupInput,
+  options: { signal?: AbortSignal; catalogOnly?: boolean } = {},
 ): Promise<WinerimLabelLookupResult | null> => {
   const trimmedName = (input.name || '').trim();
   if (trimmedName.length < 2) return null;
 
   const query = canonicalLabelSearchQuery(input);
+  const catalogOnly = options.catalogOnly ?? Capacitor.isNativePlatform();
+  const request = new AbortController();
+  const abort = () => request.abort();
+  options.signal?.addEventListener('abort', abort, { once: true });
+  if (options.signal?.aborted) request.abort();
+  const deadline = catalogOnly ? setTimeout(abort, 5000) : undefined;
 
   try {
     const { data, error } = await supabase.functions.invoke(resolveMatchrimEdgeFunctionName('search-wines', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
-      body: { query, limit: 20 },
+      body: { query, limit: 20, ...(catalogOnly ? { catalogOnly: true } : {}) },
+      ...(catalogOnly || options.signal ? { signal: request.signal } : {}),
     });
     if (error) throw error;
 
@@ -811,8 +819,12 @@ export const findWinerimWineForLabel = async (
       restaurantUuid: null,
     };
   } catch (error) {
-    console.warn('[Winerim] findWinerimWineForLabel failed:', error);
+    if (catalogOnly) console.warn('[Winerim] catalog lookup unavailable');
+    else console.warn('[Winerim] findWinerimWineForLabel failed:', error);
     return null;
+  } finally {
+    if (deadline !== undefined) clearTimeout(deadline);
+    options.signal?.removeEventListener('abort', abort);
   }
 };
 

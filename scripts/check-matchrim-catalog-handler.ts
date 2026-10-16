@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { resolve } from 'node:path';
 import ts from 'typescript';
 import * as contract from '../supabase/functions/_shared/matchrim-catalog-search';
+import * as contract75 from '../supabase/functions/_shared/matchrim-catalog-search-v75';
 
 const baseline=process.env.MATCHRIM_DELTA_BASELINE==='1';
 const source=resolve(baseline?'../../matchrim73-qa-20261007/build-workspace':'.',baseline?'supabase/functions/search-wines/index.ts':'supabase/functions/search-wines-v75/index.ts');
@@ -12,7 +13,7 @@ let calls=0; let filter=''; let localFailure=false; let external=false; let exte
 const client={from:()=>({select:()=>({or:(value:string)=>{filter=value;return {limit:async()=>{calls++;return localFailure?{data:null,error:{code:'TEST_UNAVAILABLE'}}:{data:[{id:'fixture-only',name:'Stored wine'}],error:null};}};}})})};
 const compiled=ts.transpileModule(readFileSync(source,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
 const requireFixture=(id:string)=>id.includes('/http/server')?{serve:(fn:typeof handler)=>{handler=fn;}}:
-  id.includes('supabase-js')?{createClient:()=>client}:id.includes('matchrim-catalog-search')?contract:
+  id.includes('supabase-js')?{createClient:()=>client}:id.includes('matchrim-catalog-search-v75')?contract75:id.includes('matchrim-catalog-search')?contract:
   id.includes('matchrim-openai')?{hasMatchrimOpenAiKey:()=>external,fetchMatchrimAiChat:async(options:RequestInit)=>{
     externalCalls++;assert(options.signal,'External search must have a timeout');throw new Error('fixture provider unavailable');
   }}:assert.fail(`Unexpected import ${id}`);
@@ -36,6 +37,11 @@ await check('punctuated label remains a quoted filter operand',async()=>{
 });
 await check('catalog failure preserves a valid empty result',async()=>{localFailure=true;const r=await handler(request({query:'Valid wine'}));assert.equal(r.status,200);assert.deepEqual((await r.json()).wines,[]);localFailure=false;});
 await check('bounded external failure preserves stored results',async()=>{external=true;const r=await handler(request({query:'Stored wine'}));assert.equal(r.status,200);assert.equal((await r.json()).wines[0].id,'fixture-only');assert.equal(externalCalls,1);external=false;});
+if(!baseline){
+  await check('native catalog-only lookup never invokes a model',async()=>{external=true;const before=externalCalls;const r=await handler(request({query:'Stored wine',catalogOnly:true}));assert.equal(r.status,200);assert.equal((await r.json()).wines[0].id,'fixture-only');assert.equal(externalCalls,before);external=false;});
+  await check('catalog-only flag must be a boolean before data access',async()=>{const before=calls;for(const flag of ['true',1,null,{}])assert.equal((await handler(request({query:'Stored wine',catalogOnly:flag}))).status,400);assert.equal(calls,before);});
+  await check('explicit default retains ordinary web search behavior',async()=>{external=true;const before=externalCalls;const r=await handler(request({query:'Stored wine',catalogOnly:false}));assert.equal(r.status,200);assert.equal(externalCalls,before+1);external=false;});
+}
 const report={baseline,scope:'Actual Edge handler with stubbed database/provider; zero remote calls. Production 500 cause not established.',passed:results.filter(r=>r.status==='PASS').length,failed:results.filter(r=>r.status==='FAIL').length,results};
 if (process.env.MATCHRIM_QA_REPORT_DIR) writeFileSync(join(process.env.MATCHRIM_QA_REPORT_DIR,
   `catalog-${baseline?'baseline':'candidate'}.json`), JSON.stringify(report,null,2));

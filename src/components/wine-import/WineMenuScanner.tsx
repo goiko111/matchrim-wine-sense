@@ -35,6 +35,7 @@ import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
 import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
 import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
+import { createMenuScanRun93, needsNativeMenuRefinement93, type MenuScanMetrics93 } from '@/utils/wineMenuExecution93';
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
@@ -235,7 +236,8 @@ const WineMenuScannerSession = ({
   const [highlightedWineIndex, setHighlightedWineIndex] = useState<number | null>(null);
   const [scanFeedback, setScanFeedback] = useState<string | null>(null);
   const [menuQualityWarnings, setMenuQualityWarnings] = useState<string[]>([]);
-  const [scanPhase, setScanPhase] = useState<'quality' | 'ocr' | 'ranking'>('quality');
+  const [scanPhase, setScanPhase] = useState<'quality' | 'profile' | 'ocr' | 'refinement' | 'ranking'>('quality');
+  const [nativeScanMetrics, setNativeScanMetrics] = useState<MenuScanMetrics93 | null>(null);
   const [imageZoom, setImageZoom] = useState(1);
   const [selectedPinIndex, setSelectedPinIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -254,6 +256,13 @@ const WineMenuScannerSession = ({
   const profileRetryLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
   const detectionNoticeRef = useRef({ active: false, generation: 0, id: null as string | number | null });
   const detailFocusRef = useRef({ active: false, open: false, generation: 0, opener: null as HTMLElement | null });
+
+  useEffect(() => {
+    if (!isNative || !loading) return;
+    const timer = window.setInterval(() => setNativeScanMetrics(current => current && !current.outcome
+      ? { ...current, elapsedMs: Math.max(0, performance.now() - current.startedAt) } : current), 1000);
+    return () => window.clearInterval(timer);
+  }, [isNative, loading]);
 
   const invalidateDetailFocus = useCallback(() => {
     const focus = detailFocusRef.current;
@@ -642,6 +651,13 @@ const WineMenuScannerSession = ({
     scanAbortRef.current?.abort();
     const controller = new AbortController();
     scanAbortRef.current = controller;
+    const nativeRun = isNative ? createMenuScanRun93({ signal: controller.signal,
+      onChange: metrics => {
+        if (scanAbortRef.current === controller && !controller.signal.aborted) setNativeScanMetrics(metrics);
+      },
+    }) : null;
+    if (nativeRun) setNativeScanMetrics(nativeRun.snapshot());
+    let outcome: 'completed' | 'failed' | 'cancelled' = 'failed';
 
     try {
       setScanPhase('quality');
@@ -664,21 +680,25 @@ const WineMenuScannerSession = ({
         return;
       }
       setScanPhase('ocr');
+      if (nativeRun) { setScanPhase('profile'); nativeRun.phase('profile'); }
       const profileSnapshot = await loadMatchrimScanProfile(user?.id ?? null, controller.signal);
       if (controller.signal.aborted) return;
       const profile = profileSnapshot.profile;
       setScanProfile(profileSnapshot);
+      if (nativeRun) { setScanPhase('ocr'); nativeRun.phase('ocr'); }
 
       const invokeScan = async (tile: MenuScanTile, tileImage: string, attempt = 1): Promise<WineMenuScanResponse> => {
+	        const payload = {
+	          image: tileImage,
+	          qa_fixture_name: `${file.name}:${tile.id}`,
+	          scan_region: tile,
+	          matchrimProfile: profile,
+	          pairingDishName: pairingDishName || null,
+	          similarWineName: similarWineName || null,
+	        };
+          if (nativeRun) return nativeRun.request(signal => invokeEdgeFunction<WineMenuScanResponse>('scan-wine-menu', payload, signal));
 	        try {
-	          return await invokeEdgeFunction<WineMenuScanResponse>('scan-wine-menu', {
-	            image: tileImage,
-	            qa_fixture_name: `${file.name}:${tile.id}`,
-	            scan_region: tile,
-	            matchrimProfile: profile,
-	            pairingDishName: pairingDishName || null,
-	            similarWineName: similarWineName || null,
-	          }, controller.signal);
+	          return await invokeEdgeFunction<WineMenuScanResponse>('scan-wine-menu', payload, controller.signal);
 	        } catch (error) {
 	          if (error instanceof DOMException && error.name === 'AbortError') throw error;
 	          const rawMessage = error instanceof Error ? error.message : String(error);
@@ -700,13 +720,17 @@ const WineMenuScannerSession = ({
         successfulTiles.push({ tile: fullTile, response: await invokeScan(fullTile, base64File) });
       } catch (error) {
         if (controller.signal.aborted) throw error;
+        // Native retries require an explicit user action, not another paid full-page pass.
+        if (nativeRun) throw error;
         fullFailure = error;
         failedTileCount += 1;
       }
       const fullResponse = successfulTiles[0]?.response;
-      const scanTiles = !isMatchrimFixtureQaEnabled && (!fullResponse || needsMenuRefinement(fullResponse))
+      const scanTiles = !isMatchrimFixtureQaEnabled && (!fullResponse || (nativeRun
+        ? needsNativeMenuRefinement93(fullResponse) : needsMenuRefinement(fullResponse)))
         ? buildMenuScanTiles(prepared.width, prepared.height, fullResponse?.layout)
         : [];
+      if (nativeRun && scanTiles.length) { setScanPhase('refinement'); nativeRun.phase('refinement'); }
       attemptedTileCount += scanTiles.length;
       const settledTiles = await Promise.allSettled(scanTiles.map(async (tile) => ({
         tile,
@@ -720,7 +744,7 @@ const WineMenuScannerSession = ({
       }
       failedTileCount += settledTiles.filter((result) => result.status === 'rejected').length;
       let data = resolveMenuTileResults(successfulTiles);
-      if (!isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn({ ...data, layout: fullResponse?.layout }) && shouldRunRightFocusMenuScan(
+      if (!nativeRun && !isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn({ ...data, layout: fullResponse?.layout }) && shouldRunRightFocusMenuScan(
         data.coverage?.status,
         data.vinos?.length ?? 0,
         successfulTiles.some(({ tile }) => tile.id === 'left')
@@ -749,6 +773,7 @@ const WineMenuScannerSession = ({
       }
 
       setScanPhase('ranking');
+      nativeRun?.phase('ranking');
       const normalizedWines = await mapWithConcurrency(
         (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : [])
           .filter(isWineMenuItem).map(clearMenuManualPriceOrigin).map(normalizeScannedWine),
@@ -757,7 +782,8 @@ const WineMenuScannerSession = ({
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
           const catalog = !isMatchrimFixtureQaEnabled && isMenuIdentityConfirmed(wine)
             ? await awaitMenuCatalog(
-              () => findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada }),
+              () => findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada },
+                isNative ? { signal: controller.signal } : undefined),
               controller.signal,
             )
             : null;
@@ -815,9 +841,11 @@ const WineMenuScannerSession = ({
           : "No he encontrado vinos claros en el documento. Prueba con una foto más cercana o con una sección más pequeña de la carta.");
         toast.info("No se encontraron vinos en el documento");
       }
+      outcome = 'completed';
     } catch (error) {
       if (scanAbortRef.current !== controller) return;
 	    if (error instanceof DOMException && error.name === 'AbortError') {
+      outcome = 'cancelled';
       if (scanAbortRef.current === controller) {
         setScanFeedback('Análisis cancelado. Puedes reintentarlo con la misma imagen o elegir otra.');
       }
@@ -842,6 +870,10 @@ const WineMenuScannerSession = ({
       setScanFeedback(`${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
       toast.error(message);
     } finally {
+      if (nativeRun) {
+        const metrics = nativeRun.finish(controller.signal.aborted ? 'cancelled' : outcome);
+        console.info('matchrim.menu_scan.metrics', JSON.stringify(metrics));
+      }
       if (scanAbortRef.current === controller) setLoading(false);
     }
   };
@@ -871,6 +903,7 @@ const WineMenuScannerSession = ({
     setHighlightedWineIndex(null);
     setScanFeedback(null);
     setMenuQualityWarnings([]);
+    setNativeScanMetrics(null);
     setImageZoom(1);
     setSelectedPinIndex(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -1240,6 +1273,10 @@ const WineMenuScannerSession = ({
 	                      ? 'Convirtiendo PDF a imagen...'
 	                      : scanPhase === 'quality'
 	                        ? 'Comprobando calidad y perspectiva...'
+	                        : scanPhase === 'profile'
+                            ? 'Preparando perfil...'
+                          : scanPhase === 'refinement'
+                            ? 'Leyendo zonas pendientes...'
 	                        : scanPhase === 'ranking'
 	                          ? 'Ordenando resultados...'
                           : 'Leyendo secciones, líneas y precios...'}
@@ -1249,12 +1286,20 @@ const WineMenuScannerSession = ({
                       ? 'Renderizando primera página del PDF' 
 	                      : 'El texto se mantiene fuera de la imagen para no tapar la carta'}
                   </p>
-	                  <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
-	                    <div className="h-full bg-amber-400 animate-pulse" style={{ width: '70%' }} />
-                  </div>
-	                  <p className="mt-2 text-xs text-white/50">
-	                    Esto puede tardar 30-60 segundos dependiendo del tamaño de la carta
-	                  </p>
+                    {isNative ? <>
+                      <progress aria-label="Fase del analisis" max={4} value={scanPhase === 'quality' ? 0
+                        : scanPhase === 'profile' ? 1 : scanPhase === 'ranking' ? 3 : 2} className="h-2 w-full accent-amber-400" />
+                      <p className="mt-2 text-xs text-white/70" aria-live="off" data-testid="menu-scan-progress">
+                        {Math.floor((nativeScanMetrics?.elapsedMs ?? 0) / 1000)} s · {nativeScanMetrics?.completed ?? 0}/{nativeScanMetrics?.requests ?? 0} lecturas terminadas
+                      </p>
+                    </> : <>
+	                    <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+	                      <div className="h-full bg-amber-400 animate-pulse" style={{ width: '70%' }} />
+	                    </div>
+	                    <p className="mt-2 text-xs text-white/50">
+	                      Esto puede tardar 30-60 segundos dependiendo del tamaño de la carta
+	                    </p>
+                    </>}
 	                  {!convertingPdf && (
 	                    <Button type="button" variant="outline" className="mt-4 min-h-11 border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white" onClick={() => scanAbortRef.current?.abort()}>
                       <X className="mr-2 h-4 w-4" /> Cancelar análisis
@@ -1344,6 +1389,9 @@ const WineMenuScannerSession = ({
       {/* Results Section */}
       {scannedWines.length > 0 && (
         <div ref={resultsRef} className="scroll-mt-24 space-y-4 break-words">
+          {isNative && nativeScanMetrics?.outcome === 'completed' && <p className="text-xs text-slate-500" data-testid="menu-scan-metrics">
+            {Math.round(nativeScanMetrics.elapsedMs / 1000)} s · {nativeScanMetrics.requests} solicitudes de lectura
+          </p>}
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <h3 className="text-2xl font-bold">
