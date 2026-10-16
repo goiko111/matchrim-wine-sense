@@ -63,7 +63,7 @@ const normalizeSensoryAttributes = (
 };
 
 const buildLearnedProfile = async (
-  supabaseClient: ReturnType<typeof createClient>,
+  supabaseClient: ReturnType<typeof createClient<any, string>>,
   userId: string,
   baseProfile: MatchrimProfile
 ): Promise<MatchrimProfile> => {
@@ -337,7 +337,7 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       content = content.substring(firstBrace, lastBrace + 1);
     }
 
-    let result: { vinos?: unknown; wines?: unknown; coverage?: unknown };
+    let result: { vinos?: unknown; wines?: unknown; coverage?: unknown; moneda?: unknown; layout?: unknown };
     try {
       result = JSON.parse(content);
     } catch (parseError) {

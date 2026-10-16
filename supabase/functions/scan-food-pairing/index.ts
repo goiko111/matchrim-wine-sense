@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -154,8 +155,8 @@ serve(async (req) => {
     if (!image || !image.startsWith("data:")) throw new Error("image debe ser data URL");
     if (mode !== "menu" && mode !== "dish") throw new Error("mode debe ser 'menu' o 'dish'");
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    const hasOpenAiKey = hasMatchrimOpenAiKey();
+    if (!hasOpenAiKey) throw new Error("Matchrim OpenAI key not configured");
 
     const authHeader = req.headers.get("Authorization") ?? "";
     const supabaseClient = createClient(
@@ -241,10 +242,10 @@ REGLAS ESTRICTAS:
 - 2 recomendaciones de vino por plato.
 - No incluyas texto fuera del JSON.`;
 
-    const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const aiRes = await fetchMatchrimAiChat({
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

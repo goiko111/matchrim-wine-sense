@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { evaluateCandidateGrounding, normalizeGroundingTokens } from './grounding.ts';
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -92,8 +93,8 @@ serve(async (request) => {
     const body = await request.json();
     const image = typeof body?.image === 'string' ? body.image : '';
     if (!image.startsWith('data:image/')) throw new Error('Falta el recorte de etiqueta');
-    const apiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!apiKey) throw new Error('LOVABLE_API_KEY no configurada');
+    const hasOpenAiKey = hasMatchrimOpenAiKey();
+    if (!hasOpenAiKey) throw new Error('LOVABLE_API_KEY no configurada');
 
     const prompt = `Analiza UN SOLO recorte de botella o etiqueta de vino. El recorte procede de un detector previo y puede estar parcialmente oculto, desenfocado o contener reflejos.
 
@@ -141,10 +142,10 @@ Responde SOLO JSON:
   ]
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetchMatchrimAiChat({
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

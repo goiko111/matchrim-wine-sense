@@ -1,4 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -91,8 +92,8 @@ serve(async (request) => {
     const image = typeof body?.image === 'string' ? body.image : '';
     if (!image.startsWith('data:image/')) throw new Error('Falta una imagen valida');
 
-    const apiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!apiKey) throw new Error('LOVABLE_API_KEY no configurada');
+    const hasOpenAiKey = hasMatchrimOpenAiKey();
+    if (!hasOpenAiKey) throw new Error('LOVABLE_API_KEY no configurada');
 
     const prompt = `Actua solo como detector visual. No identifiques marcas ni nombres de vino.
 
@@ -130,10 +131,10 @@ Responde SOLO JSON:
   "notes": ["motivo breve si faltan objetos o la imagen es dudosa"]
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetchMatchrimAiChat({
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

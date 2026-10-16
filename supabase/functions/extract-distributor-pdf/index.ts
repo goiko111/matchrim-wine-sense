@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,9 +18,9 @@ serve(async (req) => {
       throw new Error('No PDF provided');
     }
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    const hasOpenAiKey = hasMatchrimOpenAiKey();
+    if (!hasOpenAiKey) {
+      throw new Error('Matchrim OpenAI key not configured');
     }
 
     const prompt = `Analiza este PDF de una carta de distribuidor de vinos y extrae TODOS los vinos con sus precios.
@@ -45,10 +46,10 @@ Responde SOLO con un JSON válido en este formato:
   ]
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetchMatchrimAiChat({
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

@@ -1,8 +1,9 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat, getMatchrimOpenAiModel } from '../_shared/matchrim-openai.ts';
 
-const lovableApiKey = Deno.env.get("LOVABLE_API_KEY");
+const hasOpenAiKey = hasMatchrimOpenAiKey();
 const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
 const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 
@@ -36,7 +37,7 @@ interface QuizResult {
 }
 
 const systemPrompt = `Eres aiRIM, el motor de IA de Winerim especializado en vinos y maridajes.
-Hablas siempre en primera persona: "Te recomiendo", "He seleccionado para ti", "En mi experiencia".
+Hablas siempre en primera persona: "Te recomiendo", "He seleccionado para ti".
 Nunca te refieras a ti mismo en tercera persona como "un sommelier" o "tu colega sommelier".
 Responde siempre en español, con tono amigable, educativo y profesional.
 Evita latinismos como "platillo"; usa "plato".`;
@@ -251,21 +252,20 @@ const logAiRimQuery = (
       context: payload.context ?? null,
       event_details: payload.eventDetails ?? null,
       had_profile: hadProfile,
-      model: "google/gemini-2.5-pro",
+      model: getMatchrimOpenAiModel('quality'),
     })
-    .then(() => {})
-    .catch((err) => console.error("Error logging aiRIM query:", err));
+    .then(() => {}, (err: unknown) => console.error("Error logging aiRIM query:", err));
 };
 
 const callLovableGateway = async (messages: Array<{ role: string; content: string }>, stream: boolean) => {
-  if (!lovableApiKey) {
-    throw new Error("LOVABLE_API_KEY not configured");
+  if (!hasOpenAiKey) {
+    throw new Error("Matchrim OpenAI key not configured");
   }
 
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const response = await fetchMatchrimAiChat({
     method: "POST",
     headers: {
-      Authorization: `Bearer ${lovableApiKey}`,
+      
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -293,7 +293,7 @@ const callLovableGateway = async (messages: Array<{ role: string; content: strin
         handledError: true,
         response: new Response(
           JSON.stringify({
-            error: "Se requiere pago. Por favor, añade créditos a tu cuenta de Lovable.",
+            error: "El servicio de IA no dispone de credito suficiente.",
             success: false,
           }),
           { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } },

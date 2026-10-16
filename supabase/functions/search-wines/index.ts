@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -100,8 +101,8 @@ serve(async (req) => {
     console.log(`Found ${allWines.length} wines in database matching "${query}"`);
 
     // Always search externally to complement results
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (LOVABLE_API_KEY) {
+    const hasOpenAiKey = hasMatchrimOpenAiKey();
+    if (hasOpenAiKey) {
       try {
         console.log('Searching external sources for wines...');
         
@@ -139,10 +140,10 @@ Formato JSON (sin markdown):
 
 DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
 
-        const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        const response = await fetchMatchrimAiChat({
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({

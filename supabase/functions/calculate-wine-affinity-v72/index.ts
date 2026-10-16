@@ -57,7 +57,7 @@ const normalizeSensoryAttributes = (
 };
 
 const buildLearnedProfile = async (
-  supabaseClient: ReturnType<typeof createClient>,
+  supabaseClient: ReturnType<typeof createClient<any, string>>,
   userId: string,
   baseProfile: MatchrimProfile
 ): Promise<MatchrimEdgeLearningAudit> => {

@@ -1,12 +1,13 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+const hasOpenAiKey = hasMatchrimOpenAiKey();
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -25,10 +26,10 @@ serve(async (req) => {
 
     console.log('Processing text with Gemini...');
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetchMatchrimAiChat({
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

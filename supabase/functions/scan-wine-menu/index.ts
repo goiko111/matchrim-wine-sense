@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -72,7 +73,7 @@ const ratingWeight = (rating: string | null) => {
 };
 
 const buildLearnedProfile = async (
-  supabaseClient: ReturnType<typeof createClient>,
+  supabaseClient: ReturnType<typeof createClient<any, string>>,
   userId: string,
   baseProfile: MatchrimProfile
 ): Promise<MatchrimProfile> => {
@@ -247,9 +248,9 @@ serve(async (req) => {
     const profileSource: 'auth' | 'client' | 'none' = authProfile ? 'auth' : clientProfile ? 'client' : 'none';
 
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    const hasOpenAiKey = hasMatchrimOpenAiKey();
+    if (!hasOpenAiKey) {
+      throw new Error('Matchrim OpenAI key not configured');
     }
 
     let prompt = `Analiza esta carta de vinos o pizarra y extrae un MÁXIMO de 30 vinos conservando su estructura visual.
@@ -354,10 +355,10 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       throw new Error('Por favor, convierte el PDF a imagen (captura de pantalla) antes de subirlo.');
     }
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetchMatchrimAiChat({
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
