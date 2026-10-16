@@ -277,3 +277,39 @@ This supersedes the earlier zero-agent-credit restriction, not the no-web scope.
 
 Fresh isolated signed candidate preparation is not an upload or release approval.
 Source/backend/provider/login/Apple results must be reconciled before upload.
+
+## Signed Local Candidate91
+
+Fresh source3a464b7511df320ccb9052b91b556b8cfdc796e7 was archived in an isolated
+directory, without reusing the offline QA91 app. Seven regression groups pass,
+including the complete restaurant suite and no-Lovable-AI policy. Two production
+Vite/cap-copy runs have byte-identical manifests. CocoaPods deployment install,
+generic iOS archive and local export pass with no provisioning/account expansion.
+
+- Version1.0(91), bundle wine.matchrim.app, team8X3XTD6XYX, Apple Distribution
+  signature/profile.372/372final local checks pass, including all160web resources,
+  frozen dependencies/source, production public-anon configuration, original
+  v75/v73/v72 routing and both restaurant91 endpoints. No bundled mock or staging
+  configuration was found. This is not real model, human or physical acceptance.
+- IPA SHA256:97fec5c1986ccdb5f068b4522411831abe25cafec5dab7ea850366e7881c4130.
+  Archive ZIP SHA256:19dd4ee9e4c4d5b9e937adc1943a4a31b517cdd5b6af6bd2c27075fba1910c65.
+  Parent independently rehashed both files and preserved them under private
+  artifacts/matchrim91-restaurant-20261016/candidate91/, alongside
+  verification91.json and preservation-receipt.json.
+- Original archive: /private/tmp/Matchrim91-production-r2lEO3KR/Matchrim91.xcarchive.
+  Failed verifier receipts remain at evidence/verification91.json and the
+  subsequent retry directory. Two harness parsing issues were repaired; no app
+  source changes or rebuilds were used to make the checks pass.
+- Local preview http://127.0.0.1:4597 was restarted; the actual login form is
+  visible in Brave. Production disables anonymous sign-in and unconfirmed-email
+  login. No credential was available to the parent, no password was guessed or
+  reset, and no account was created. Secret addition requires the owner's
+  action-time consent; no secret value has been entered into Cloud.
+- HOLD: no TestFlight upload/Apple build91 availability claim. The minimum next
+  operational steps are independent-provider secret authorization/configuration,
+  a valid user login, bounded real URL/read/pairing tests with expected/actual
+  evidence, then Apple slot/auth verification and a single upload if approved.
+
+Mobile source remains on its integration branch; backend-only main67b9086 retains
+the pre-existing Lovable web source. Do not merge the entire mobile branch into
+Lovable's active main or publish web as a shortcut to releasing the native app.
