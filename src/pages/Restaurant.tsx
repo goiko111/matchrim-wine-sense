@@ -6,7 +6,7 @@ import MobileBottomNav from '@/components/MobileBottomNav';
 import { ScanPrivacyGate } from '@/components/ScanPrivacyGate';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
@@ -383,7 +383,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       </>}
     </TabsContent>
     </Tabs>
-    <Dialog open={Boolean(editing)} onOpenChange={open => { if (!open) setEditing(null); }}><DialogContent className="max-h-[85dvh] overflow-y-auto [overflow-wrap:anywhere]"><DialogHeader><DialogTitle>Corregir lectura</DialogTitle></DialogHeader>{editing && <form onSubmit={event => { event.preventDefault(); if (!editing.name.trim()) return; mutate(current => editRestaurantRow91(current, editing.id, { name: editing.name.trim(), producer: editing.producer || undefined, vintage: editing.vintage || undefined, description: editing.description || undefined })); if (sheetRow === editing.id) setSheet(null); setEditing(null); }} className="space-y-4">
+    <Dialog open={Boolean(editing)} onOpenChange={open => { if (!open) setEditing(null); }}><DialogContent className="max-h-[85dvh] overflow-y-auto [overflow-wrap:anywhere]"><DialogHeader><DialogTitle>Corregir lectura</DialogTitle><DialogDescription className="sr-only">Cambios en el borrador de este dispositivo. Las lecturas originales se conservan.</DialogDescription></DialogHeader>{editing && <form onSubmit={event => { event.preventDefault(); if (!editing.name.trim()) return; mutate(current => editRestaurantRow91(current, editing.id, { name: editing.name.trim(), producer: editing.producer || undefined, vintage: editing.vintage || undefined, description: editing.description || undefined })); if (sheetRow === editing.id) setSheet(null); setEditing(null); }} className="space-y-4">
       <label className="block text-sm">Nombre<Input value={editing.name} maxLength={200} required onChange={event => setEditing({ ...editing, name: event.target.value })} className="mt-1 h-auto min-h-11" /></label>
       {editing.kind === 'wine' && <><label className="block text-sm">Bodega<Input value={editing.producer ?? ''} maxLength={160} onChange={event => setEditing({ ...editing, producer: event.target.value })} className="mt-1 h-auto min-h-11" /></label><label className="block text-sm">Añada<Input value={editing.vintage ?? ''} maxLength={4} inputMode="numeric" pattern="(19|20)[0-9]{2}|" onChange={event => setEditing({ ...editing, vintage: event.target.value || undefined })} className="mt-1 h-auto min-h-11" /></label></>}
       <label className="block text-sm">Descripción aportada por ti<Input value={editing.description ?? ''} maxLength={1000} onChange={event => setEditing({ ...editing, description: event.target.value })} className="mt-1 h-auto min-h-11" /></label>
@@ -391,7 +391,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       {editing.pageIds.length > 0 && <details><summary className="min-h-11 cursor-pointer py-2 text-sm">Todas las lecturas originales</summary>{readingDetails(editing)}</details>}
       <DialogFooter className="gap-2"><Button type="button" variant="outline" className={actionClass} onClick={() => { mutate(current => discardRestaurantRow91(current, editing.id)); setEditing(null); }}><Trash2 className="h-4 w-4" />Descartar</Button><Button type="submit" className={actionClass}><Check className="h-4 w-4" />Guardar corrección</Button></DialogFooter>
     </form>}</DialogContent></Dialog>
-    <Dialog open={Boolean(preview)} onOpenChange={open => { if (!open) setPreview(null); }}><DialogContent className="max-h-[90dvh] overflow-y-auto [overflow-wrap:anywhere]"><DialogHeader><DialogTitle>{preview?.name}</DialogTitle></DialogHeader>{preview?.image && <img src={preview.image} alt="Página original seleccionada" className="h-auto w-full object-contain" />}{preview?.text && <pre className="whitespace-pre-wrap break-words text-sm">{preview.text}</pre>}</DialogContent></Dialog>
+    <Dialog open={Boolean(preview)} onOpenChange={open => { if (!open) setPreview(null); }}><DialogContent className="max-h-[90dvh] overflow-y-auto [overflow-wrap:anywhere]"><DialogHeader><DialogTitle>{preview?.name}</DialogTitle><DialogDescription className="sr-only">Página original del borrador, sin correcciones sobre el archivo.</DialogDescription></DialogHeader>{preview?.image && <img src={preview.image} alt="Página original seleccionada" className="h-auto w-full object-contain" />}{preview?.text && <pre className="whitespace-pre-wrap break-words text-sm">{preview.text}</pre>}</DialogContent></Dialog>
   </>;
 };
 

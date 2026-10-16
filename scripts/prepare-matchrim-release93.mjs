@@ -49,7 +49,7 @@ for (const kind of ['production', 'live']) {
 }
 const runner = path.join(root, 'ui');
 fs.mkdirSync(runner);
-fs.cpSync('/private/tmp/Matchrim91-live-0hIFoH/ui/Matchrim73QA.xcodeproj', path.join(runner, 'Matchrim73QA.xcodeproj'), { recursive: true });
+fs.cpSync(path.join(repo, 'scripts/native-matchrim-qa.xcodeproj'), path.join(runner, 'Matchrim73QA.xcodeproj'), { recursive: true });
 fs.copyFileSync(path.join(repo, 'scripts/native-matchrim-release93-tests.swift'), path.join(runner, 'MatchrimCandidateUITests.swift'));
 if (JSON.stringify(inputs()) !== JSON.stringify(before) || git('rev-parse', 'HEAD').trim() !== sourceCommit) throw new Error('Sources changed during preparation; preserve attempt and freeze before retry');
 const walk = folder => fs.readdirSync(folder, { withFileTypes: true }).flatMap(entry => entry.isDirectory()

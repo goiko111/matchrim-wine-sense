@@ -22,7 +22,8 @@ final class Matchrim93ReleaseTests: XCTestCase {
     @MainActor private func reveal(_ element: XCUIElement, in app: XCUIApplication) {
         for _ in 0..<12 {
             if element.exists && element.isHittable { return }
-            app.swipeUp()
+            if element.exists && element.frame.maxY < app.frame.midY { app.swipeDown() }
+            else { app.swipeUp() }
         }
         XCTAssertTrue(element.isHittable, app.debugDescription)
     }
@@ -112,5 +113,82 @@ final class Matchrim93ReleaseTests: XCTestCase {
         let library = app.buttons["Photo Library"]
         XCTAssertTrue(library.waitForExistence(timeout: 5), app.debugDescription); library.tap()
         capture("native93-classic-photo-picker-inspection-no-analysis", app)
+    }
+
+    @MainActor func test04ObserveRealClassicResult() throws {
+        let app = try ownedApp()
+        XCTAssertEqual(app.state, .runningForeground, "Attach to the manually selected real IMG_7548 run; do not fabricate a session")
+        if app.buttons["Cerrar detalle"].exists { app.buttons["Cerrar detalle"].tap() }
+        let results = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Vinos Detectados (")).firstMatch
+        XCTAssertTrue(results.waitForExistence(timeout: 110), app.debugDescription)
+        capture("native93-classic-real-7548-results", app)
+        XCTAssertTrue(app.otherElements.matching(NSPredicate(format: "label == %@", "Vinos Detectados (8)")).firstMatch.exists, app.debugDescription)
+        let first = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Abrir vino 1:")).firstMatch
+        reveal(first, in: app)
+        first.tap()
+        XCTAssertTrue(app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido del vino")).firstMatch.waitForExistence(timeout: 5), app.debugDescription)
+        capture("native93-classic-real-detail", app)
+        XCUIDevice.shared.orientation = .landscapeLeft
+        capture("native93-classic-detail-landscape", app)
+        XCUIDevice.shared.orientation = .portrait
+        let close = app.buttons["Cerrar detalle"]
+        XCTAssertTrue(close.isHittable, app.debugDescription); close.tap()
+        capture("native93-classic-real-detail-dismissed", app)
+    }
+
+    @MainActor func test05ReviewAllEightAndCompareFive() throws {
+        let app = try ownedApp()
+        XCTAssertEqual(app.state, .runningForeground)
+        let first = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Abrir vino 1:")).firstMatch
+        reveal(first, in: app); first.tap()
+        for index in 1...8 {
+            XCTAssertTrue(app.buttons["Cerrar detalle"].waitForExistence(timeout: 5), app.debugDescription)
+            capture("native93-real-7548-reference-\(index)", app)
+            if index < 8 { app.buttons["Siguiente"].tap() }
+            else { XCTAssertFalse(app.buttons["Siguiente"].isEnabled) }
+        }
+        app.buttons["Cerrar detalle"].tap()
+        let choices = app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", "Comparar "))
+        let settledChoices = NSPredicate { _, _ in choices.count == 8 }
+        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: settledChoices, object: nil)], timeout: 5), .completed, app.debugDescription)
+        for index in [3, 4] {
+            let choice = choices.element(boundBy: index)
+            reveal(choice, in: app); choice.tap()
+        }
+        XCTAssertFalse(choices.element(boundBy: 5).isEnabled)
+        capture("native93-real-comparison-five-selected", app)
+        let service = app.buttons["Servicio"]
+        reveal(service, in: app); service.tap()
+        capture("native93-real-comparison-service", app)
+        XCUIDevice.shared.orientation = .landscapeLeft
+        let settled = NSPredicate { _, _ in app.frame.width > app.frame.height }
+        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: settled, object: nil)], timeout: 10), .completed)
+        capture("native93-real-comparison-landscape", app)
+        XCUIDevice.shared.orientation = .portrait
+    }
+
+    @MainActor func test06MainNavigationPreservesAccount() throws {
+        let app = try ownedApp()
+        app.launchArguments = []; app.launch()
+        for name in ["Inicio", "aiRIM", "Bodega", "Perfil", "Escanear"] {
+            let link = app.links.matching(identifier: name).firstMatch
+            XCTAssertTrue(link.waitForExistence(timeout: 15), app.debugDescription)
+            XCTAssertTrue(link.isHittable)
+            link.tap()
+            capture("native93-navigation-\(name)", app)
+        }
+    }
+
+    @MainActor func test07ObserveAndCancelClassicReading() throws {
+        let app = try ownedApp()
+        XCTAssertEqual(app.state, .runningForeground)
+        let cancel = app.buttons["Cancelar an\u{00e1}lisis"]
+        XCTAssertTrue(cancel.waitForExistence(timeout: 15), app.debugDescription)
+        let began = Date()
+        cancel.tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Análisis cancelado.")).firstMatch.waitForExistence(timeout: 5), app.debugDescription)
+        XCTAssertLessThan(Date().timeIntervalSince(began), 6)
+        XCTAssertTrue(app.buttons["Reintentar foto"].exists)
+        capture("native93-classic-cancelled-retry-available", app)
     }
 }
