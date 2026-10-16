@@ -49,7 +49,10 @@ const manifest = {
   additiveConfigPatch: definitions.map(item => `[functions.${item.name}]\nverify_jwt = true`).join('\n\n'),
   preserveExistingConfig: true,
   preservePublishedWeb: true,
-  externalAi: { required: 'anthropic', lovableAiAllowed: false, retries: 0 },
+  externalAi: { required: 'independent', supported: ['anthropic', 'openai'],
+    providerSetting: 'MATCHRIM_RESTAURANT91_AI_PROVIDER',
+    openAiRequired: ['OPENAI_API_KEY', 'MATCHRIM_RESTAURANT91_OPENAI_MODEL'],
+    lovableAiAllowed: false, retries: 0 },
   externalImports: [...externalImports].sort(),
   files: [...files.values()].sort((a, b) => a.path.localeCompare(b.path)),
 };

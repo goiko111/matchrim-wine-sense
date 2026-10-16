@@ -313,3 +313,77 @@ generic iOS archive and local export pass with no provisioning/account expansion
 Mobile source remains on its integration branch; backend-only main67b9086 retains
 the pre-existing Lovable web source. Do not merge the entire mobile branch into
 Lovable's active main or publish web as a shortcut to releasing the native app.
+
+## OpenAI Preference And Live Mobile Checkpoint
+
+The owner prefers OpenAI and will enter its key directly in Lovable Cloud.
+This is NOT authorization to store the available Anthropic key. No secret value
+was entered, exported or sent through chat; Cloud key saving remains unconfirmed.
+The prepared Add secret form is named OPENAI_API_KEY. No extra Lovable agent turn,
+model request, deployment, public web publish or TestFlight upload occurred.
+
+The optional local adapter uses OpenAI Responses for text/image input. It is
+selected ONLY by Restaurant91's independent-provider path:
+
+- MATCHRIM_RESTAURANT91_AI_PROVIDER=openai
+- OPENAI_API_KEY, entered by the owner in Cloud Secrets
+- MATCHRIM_RESTAURANT91_OPENAI_MODEL, an explicit available vision model to be
+  selected and validated before inference; no unverified default/availability claim
+
+Other scanner/affinity callers retain their prior Anthropic/Lovable routing even
+when the restaurant-specific settings exist. No provider failure retries or
+falls back to another paid service. store=false disables Responses application
+storage; this is NOT a claim of zero retention across the provider's data policy.
+Images use high detail and the existing bounded data-URL contract. Refusal,
+missing output, incomplete generation, output errors and unexpected tool output
+cannot be accepted as a complete restaurant reading. OpenAI error response bodies
+are not logged because they may contain submitted source text.
+
+65actual-adapter/stub-transport checksPASS (23prior+42new). These include missing
+key/model, text/JPEG/PNG payloads, exact endpoint and storage fields, seven HTTP
+errors, six incomplete statuses, per-message status, refusal, missing text,
+unexpected tools, unsupported image input and old-caller isolation. Zero remote
+provider requests; this is NOT a model accuracy benchmark. Complete restaurant,
+release/cloud/remediation89/scene90 suites, app typecheck, lint and web buildPASS;
+lint remains0errors/106inherited warnings. Deno checks for the helper and actual
+restaurant-workspace91 entrypointPASS. The deployment manifest now advertises
+both independent providers and the explicit OpenAI configuration requirements.
+
+The existing signed production91 client is not modified by this backend/tooling
+delta. It remains source3a464b7, locally verified372/372 and HOLD. Remote backend
+main67b9086 still contains the previously verified Anthropic-only source; the new
+OpenAI adapter must be deployed/read back before OpenAI testing, not assumed live.
+
+### Fresh Browser Evidence With Valid Production Session
+
+The owner-supplied Brave login now visibly opens /restaurante successfully. No
+session token was extracted/copied, account created, password reset or auth setting
+changed. A local draft is clearly named QA tecnico / cartas de fuentes distintas.
+
+| Check | Expected | Actual |
+| --- | --- | --- |
+| Authenticated hosted URL import | Public HTTPS via deployed pinned transport, no AI | example.com appears as1page; real production importPASS |
+| Control source exclusion | Do not spend inference on benign health-check text | Page unchecked;0/2food pages read,1excluded |
+| Multiple food files | Both originals queued separately | Commons177500191board+148324546menu,1page eachPASS |
+| Wine card separation | Wine image belongs only to Vinos | Authorized IMG_7548 JPEG conversion queued as1wine pagePASS |
+| Reopen local draft | Name and all sources survive after saved state | Browser reload retains name,3food documents and1wine documentPASS |
+| No fabricated recommendation | Require actual reads before comparison | Combine disabled, explicit missing/partial-read noticePASS |
+| Mobile393x852 | No horizontal overflow, adequate buttons | body/document393px; measured buttons >=44pxPASS |
+| Console during this bounded journey | No captured client exceptions | Captured error/warn entries0 |
+| Requested browser landscape | Must verify actual852x393 before claiming | Actual tab stayed393x852; override NOT VALIDATED, prior portrait screenshot retained as live-mobile-landscape-not-applied.png |
+| Real OCR / pairing with OpenAI | Available model+key+deployed adapter and expected/actual | PENDING, not replaced by the above client/import passes |
+
+The food and wine inputs are from different establishments: this is a technical
+cross-card test, not a claim about any restaurant's actual stock/menu/maridage.
+All originals remain local until explicit analysis. No recognition precision,
+recall, latency or independent human taste result is newly claimed.
+
+Private new evidence: openai-secret-setup.png (empty-value setup),
+live-mobile-url-import.png, live-mobile-pairs-pending.png and live-native/.
+The new isolated simulator uses a distinct production-connected bundle; normal
+Brave auth is not shared with its WKWebView. Simulator/UI evidence must remain
+separate from valid-user live inference and from physical iPhone approval.
+
+Primary OpenAI documentation checked2026-10-16:
+[Responses API](https://developers.openai.com/api/reference/resources/responses/methods/create),
+[Image input](https://developers.openai.com/api/docs/guides/images-vision).
