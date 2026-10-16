@@ -239,3 +239,41 @@ Primary documentation checked2026-10-16:
 [Edge functions: project-chat deployment and monitoring-only view](https://docs.lovable.dev/features/edge-functions),
 [Code editing is free; project-chat agent work uses credits](https://docs.lovable.dev/features/code-mode),
 [Cloud and AI gateway run credit usage](https://docs.lovable.dev/features/cloud).
+
+## Scoped Deployment Execution
+
+Subsequent owner approval permits minimal Lovable credits exclusively for these
+two function deployments, then real tests and TestFlight only after validation.
+This supersedes the earlier zero-agent-credit restriction, not the no-web scope.
+
+- One non-Max build-agent turn cost1.7credits; no additional Lovable agent turn.
+  Message umsg_01m51nd4hjej0rq0frf8ky0hjz, deployment source ff8d9613d840d2e04bb3a350fe2379db6122f619.
+  The agent reports deploying only restaurant-workspace91 and restaurant-import91.
+- Parent independently read all six remote sources and verified exact content/
+  SHA256 against the3a464b7 package. Config readback preserves all six previous
+  versioned sections and adds only the two new verify_jwt=true sections.
+  Evidence: deployment-readback.json and no-credit-deployment-final.json.
+- Contrary to the agent's final statement, its resulting diff also included
+  platform-generated previewAuthStorage.ts runtime changes and a14.5->14.4
+  PostgREST type marker. Parent did not accept them. Corrective main67b9086
+  restores both exactly to d84018d with a scoped GitHub push; final Lovable diff
+  from d84018d contains only the six new backend files and config. No frontend
+  feature changes, web Publish/Update or SQL/data/secret changes were made.
+- Eight real production HTTP checks pass: OPTIONS204/200, missing JWT401,
+  malformed JWT401 and public anonymous JWT401 for both functions. The anon
+  token reaches each handler and is rejected as invalid_session; it cannot
+  bypass getUser. Evidence: hosted-auth-security.json. No inference occurred.
+- Public auth settings report anonymous_users=false and mailer_autoconfirm=false.
+  No account was created and neither setting was changed. The actual local app
+  login was opened; LastPass search found no Matchrim credential and browser
+  password focus offered none. The owner password was not guessed or reset.
+- Cloud Secrets NAME inventory contains GOOGLE_MAPS_API_KEY,
+  SEND_EMAIL_HOOK_SECRET and LOVABLE_API_KEY only; no ANTHROPIC_API_KEY or
+  provider/model overrides. No secret value was viewed/exported. The parent
+  requested explicit authorization before adding the independent local key.
+- Real OCR/pairing, authenticated URL transport, individual source expected/
+  actual results, and TestFlight remain pending. Auth guards and exact source
+  deployment are real passes, not substitutes for those functional gates.
+
+Fresh isolated signed candidate preparation is not an upload or release approval.
+Source/backend/provider/login/Apple results must be reconciled before upload.
