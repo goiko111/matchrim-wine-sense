@@ -136,11 +136,18 @@ Candidate source build number is1.0(91), not evidence of an Apple upload.
 The isolated native app is`wine.matchrim.qa91`, invalid-only backend, no fixtures;
 it must NEVER be exported/uploaded as the production app.
 
-1. **Supabase permissions:** CLI function inventory returns403, including after
-   the owner said access was ready. The connected MCP independently returns no
-   permission for`cbjynrbvrhcmpaojmqdp`. This proves an access block, not quota
-   exhaustion. Minimum owner action: reconnect a credential/account with Edge
-   Function deployment access to this exact project; no secrets in chat.
+1. **Lovable Cloud deployment channel (corrected2026-10-16):** direct Supabase
+   CLI/MCP inventory403 was observed, but the earlier conclusion that the owner
+   must reconnect Supabase with deployment privileges was incorrect. The Lovable
+   project7e9b6f66-d4ee-404a-8678-c9afab22de75 has its managed Cloud Database,
+   Users and Edge functions UI available; get_database_status reports enabled
+   Supabase stack, and its config matches cbjynrbvrhcmpaojmqdp. The observed
+   Cloud inventory lists active v72/v73/v75 functions, with prior scoped Lovable
+   deployments in the project history. The two new restaurant91 functions are
+   not listed. Use that established Lovable backend deployment channel, not a
+   direct personal Supabase account; no owner reconnection or migration is
+   justified by this403. No new deployment was attempted during this read-only
+   diagnosis. Hosted runtime/provider checks below are still required.
 2. Verify the implemented pinned URL transport in the deployed runtime, along
    with body/rate limits. Do not restore native fetch or an attestation bypass.
 3. Deploy only the two new functions and their reviewed imports, JWT verification
