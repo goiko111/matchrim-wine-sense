@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,9 +19,9 @@ serve(async (req) => {
       throw new Error('No image provided');
     }
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    const hasOpenAiKey = hasMatchrimOpenAiKey();
+    if (!hasOpenAiKey) {
+      throw new Error('Matchrim OpenAI key not configured');
     }
 
     const prompt = `Analiza esta etiqueta de vino y extrae TODA la información visible.
@@ -53,10 +54,10 @@ Responde SOLO con un JSON válido en este formato:
   "notas_cata": "Notas de cata si están presentes"
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetchMatchrimAiChat({
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -130,10 +131,10 @@ Responde SOLO con JSON:
   "nota": "explicación breve de las fuentes consultadas o por qué no se pudo verificar"
 }`;
 
-        const webResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        const webResponse = await fetchMatchrimAiChat({
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({

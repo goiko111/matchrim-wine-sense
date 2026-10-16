@@ -1,5 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { hasMatchrimOpenAiKey, fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -9,7 +10,7 @@ const corsHeaders = {
 // Configuración de proveedores de APIs
 const WINE_API_PROVIDER = Deno.env.get('WINE_API_PROVIDER') || 'ai';
 const WINE_API_KEY = Deno.env.get('WINE_API_KEY');
-const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+const hasOpenAiKey = hasMatchrimOpenAiKey();
 
 interface WineSearchParams {
   query: string;
@@ -37,10 +38,10 @@ interface SearchResponse {
 }
 
 async function analyzeSearchQuery(query: string, filters: any): Promise<string> {
-  const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+  const response = await fetchMatchrimAiChat({
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+      
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -93,10 +94,10 @@ ${filters.region !== 'cualquiera' ? `Región: ${filters.region}` : ''}`
 }
 
 async function searchWinesWithAI(params: WineSearchParams, reasoning: string): Promise<WineResult[]> {
-  const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+  const response = await fetchMatchrimAiChat({
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+      
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -297,10 +298,10 @@ serve(async (req) => {
 
     const getImageCandidatesAI = async (wine: WineResult): Promise<string[]> => {
       try {
-        const resp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        const resp = await fetchMatchrimAiChat({
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${LOVABLE_API_KEY}`,
+            
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
