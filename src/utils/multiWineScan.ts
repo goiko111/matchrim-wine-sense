@@ -57,6 +57,7 @@ export interface WineCandidate {
   originalSheet?: WinerimOriginalSheet | null;
   sensorySource?: 'catalog' | 'inference';
   sensoryAttributes?: {
+    scale?: 'winerim-0-5';
     potencia?: number | null;
     acidez?: number | null;
     dulzura?: number | null;

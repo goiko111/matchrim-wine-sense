@@ -6,7 +6,7 @@ import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { findOriginalWinerimWineForLabel, findWinerimWineForLabel } from '@/services/winerimApi';
 import { applyScanWineEvidence } from '@/utils/scanWineEvidence';
-import { normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
+import { normalizeWineAttributesForInsight, type WineAttributeInput } from '@/utils/wineAffinityExplanation';
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AppNav from "@/components/AppNav";
@@ -184,12 +184,14 @@ const normalizeAttributeTo5 = (value: unknown) => {
   return Math.max(1, Math.min(5, Math.round(scaled)));
 };
 
-const normalizeSensoryAttributesTo5 = (attributes: unknown) => {
+const normalizeSensoryAttributesTo5 = (attributes: unknown): WineAttributeInput | null => {
   if (!attributes || typeof attributes !== 'object' || Array.isArray(attributes)) return null;
   const attrs = attributes as Record<string, unknown>;
-  if (Capacitor.isNativePlatform()) {
+  if (attrs.scale !== undefined && attrs.scale !== 'winerim-0-5') return null;
+  if (Capacitor.isNativePlatform() || attrs.scale === 'winerim-0-5') {
     const known = normalizeWineAttributesForInsight(attrs);
-    return known ? { potencia: known.potente, acidez: known.acidez, dulzura: known.dulce,
+    return known ? { ...(attrs.scale === 'winerim-0-5' ? { scale: 'winerim-0-5' as const } : {}),
+      potencia: known.potente, acidez: known.acidez, dulzura: known.dulce,
       taninos: known.tanico, afrutado: known.afrutado } : null;
   }
   const normalized = {
@@ -930,7 +932,7 @@ const MyWinesForOwner = () => {
         vintage: wine.vintage, region: wine.region });
       if (!action.isCurrent()) return;
       let catalog = match?.wine;
-      if (!catalog?.tastingAttributes) catalog = await findOriginalWinerimWineForLabel({
+      if (!Capacitor.isNativePlatform() && !catalog?.tastingAttributes) catalog = await findOriginalWinerimWineForLabel({
         name: wine.name, producer: wine.producer, vintage: wine.vintage, region: wine.region, country: wine.country,
       });
       if (!action.isCurrent()) return;
@@ -938,7 +940,9 @@ const MyWinesForOwner = () => {
         vintage: wine.vintage, region: wine.region, country: wine.country, grapes: wine.grape_varieties ?? [],
         alcohol: wine.alcohol_content, source: 'inference', confidence: 1, evidence: [],
         uncertaintyReasons: [], inferredFields: [], sensoryAttributes: null }, null, catalog);
-      const attributes = grounded.sensorySource === 'catalog' ? normalizeSensoryAttributesTo5(grounded.sensoryAttributes) : null;
+      const attributes = grounded.sensorySource === 'catalog'
+        ? isNative ? grounded.sensoryAttributes : normalizeSensoryAttributesTo5(grounded.sensoryAttributes)
+        : null;
       const evidence = catalog?.id && attributes ? makeCellarCatalogEvidence(wine, catalog.id, attributes) : null;
       if (!evidence || !attributes) {
         toast.info('Vino guardado. No encontramos una ficha sensorial completa y verificable; afinidad pendiente.');

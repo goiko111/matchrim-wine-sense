@@ -5,7 +5,7 @@ type AttributeKey = 'potente' | 'acidez' | 'dulce' | 'tanico' | 'afrutado';
 
 export type AffinityDataSource = 'label' | 'catalog' | 'inference' | 'preference';
 
-export type WineAttributeInput = Partial<{
+export type WineAttributeInput = { scale?: 'winerim-0-5' } & Partial<{
   power: number | null;
   acidity: number | null;
   sweetness: number | null;
@@ -55,13 +55,17 @@ const normalizeProfileAttribute = (value: unknown) => {
 
 export const normalizeWineAttributesForInsight = (attrs?: WineAttributeInput | null) => {
   if (!attrs) return null;
+  if (attrs.scale !== undefined && attrs.scale !== 'winerim-0-5') return null;
+  const normalize = attrs.scale === 'winerim-0-5'
+    ? (value: unknown) => typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 5 ? value : null
+    : clampAttribute;
 
   const normalized = {
-    potente: clampAttribute(attrs.power ?? attrs.potencia),
-    acidez: clampAttribute(attrs.acidity ?? attrs.acidez),
-    dulce: clampAttribute(attrs.sweetness ?? attrs.dulzura ?? attrs.dulce),
-    tanico: clampAttribute(attrs.tannin ?? attrs.taninos ?? attrs.tanico),
-    afrutado: clampAttribute(attrs.fruity ?? attrs.afrutado),
+    potente: normalize(attrs.power ?? attrs.potencia),
+    acidez: normalize(attrs.acidity ?? attrs.acidez),
+    dulce: normalize(attrs.sweetness ?? attrs.dulzura ?? attrs.dulce),
+    tanico: normalize(attrs.tannin ?? attrs.taninos ?? attrs.tanico),
+    afrutado: normalize(attrs.fruity ?? attrs.afrutado),
   };
 
   return Object.values(normalized).some((value) => value === null)
@@ -92,7 +96,8 @@ export const calculateLocalMatchrimAffinity = (
     + Math.pow(normalizedProfile.tanico - wineAttributes.tanico, 2)
     + Math.pow(normalizedProfile.afrutado - wineAttributes.afrutado, 2)
   );
-  const rawScore = Math.max(0, Math.min(100, (1 - distance / Math.sqrt(5 * Math.pow(4, 2))) * 100));
+  const range = rawWineAttributes?.scale === 'winerim-0-5' ? 5 : 4;
+  const rawScore = Math.max(0, Math.min(100, (1 - distance / Math.sqrt(5 * Math.pow(range, 2))) * 100));
   return Math.round(50 + (rawScore - 50) * 0.85);
 };
 
@@ -265,7 +270,7 @@ export const buildDetailedAffinityExplanation = (
   const identification = Number.isFinite(rawIdentification) ? Math.max(0, Math.min(1, rawIdentification)) : 0;
   const confidence = Math.round(Math.min(identification, sourceReliability[sensorySource]) * 100) / 100;
   const coreDimensions = base.insights.map((insight) => {
-    const alignment = Math.round(Math.max(0, 1 - insight.delta / 4) * 100);
+    const alignment = Math.round(Math.max(0, 1 - insight.delta / (rawWineAttributes?.scale === 'winerim-0-5' ? 5 : 4)) * 100);
     const weight = DIMENSION_WEIGHTS[insight.key];
     return {
       ...insight,

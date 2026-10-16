@@ -4,7 +4,8 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
 
 const root = process.argv[2];
-if (!root?.startsWith('/private/tmp/Matchrim93-') || fs.existsSync(root)) throw new Error('A new isolated /private/tmp/Matchrim93-* directory is required');
+const buildNumber = Number(process.argv.find(arg => arg.startsWith('--build='))?.slice(8) ?? 93);
+if (!Number.isSafeInteger(buildNumber) || buildNumber < 93 || !root?.startsWith(`/private/tmp/Matchrim${buildNumber}-`) || fs.existsSync(root)) throw new Error('A new isolated /private/tmp/Matchrim<build>-* directory is required');
 const repo = process.cwd();
 process.loadEnvFile(path.join(repo, '.env'));
 const key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -36,6 +37,8 @@ for (const kind of ['production', 'live']) {
   fs.symlinkSync(path.join(repo, 'node_modules'), path.join(target, 'node_modules'), 'dir');
   const app = path.join(target, 'ios/App/App');
   fs.cpSync(web, path.join(app, 'public'), { recursive: true });
+  const project = path.join(target, 'ios/App/App.xcodeproj/project.pbxproj');
+  fs.writeFileSync(project, fs.readFileSync(project, 'utf8').replace(/CURRENT_PROJECT_VERSION = \d+;/g, `CURRENT_PROJECT_VERSION = ${buildNumber};`));
   const configFile = path.join(app, 'capacitor.config.json');
   const config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
   delete config.server?.url;
@@ -43,7 +46,7 @@ for (const kind of ['production', 'live']) {
     const pbx = path.join(target, 'ios/App/App.xcodeproj/project.pbxproj');
     fs.writeFileSync(pbx, fs.readFileSync(pbx, 'utf8').replaceAll('wine.matchrim.app', 'wine.matchrim.qa91live'));
     config.appId = 'wine.matchrim.qa91live';
-    execFileSync('/usr/libexec/PlistBuddy', ['-c', 'Set :CFBundleDisplayName Matchrim 93 Live', path.join(app, 'Info.plist')]);
+    execFileSync('/usr/libexec/PlistBuddy', ['-c', `Set :CFBundleDisplayName Matchrim ${buildNumber} Live`, path.join(app, 'Info.plist')]);
   }
   fs.writeFileSync(configFile, JSON.stringify(config, null, 2) + '\n');
 }
@@ -55,10 +58,10 @@ if (JSON.stringify(inputs()) !== JSON.stringify(before) || git('rev-parse', 'HEA
 const walk = folder => fs.readdirSync(folder, { withFileTypes: true }).flatMap(entry => entry.isDirectory()
   ? walk(path.join(folder, entry.name)) : [path.join(folder, entry.name)]);
 const receipt = { root, web, production: path.join(root, 'production'), live: path.join(root, 'live'), runner,
-  sourceCommit, sourceDirty: Boolean(git('status', '--porcelain=v1').trim()), build: 93, version: '1.0',
+  sourceCommit, sourceDirty: Boolean(git('status', '--porcelain=v1').trim()), build: buildNumber, version: '1.0',
   simulatorBundle: 'wine.matchrim.qa91live', productionBundle: 'wine.matchrim.app',
   publicClient: { ref: claims.ref, role: claims.role, edgeRelease: '75', fixtures: false, analytics: false },
   inputs: before, webResources: Object.fromEntries(walk(web).map(file => [path.relative(web, file), sha(fs.readFileSync(file))])),
 };
 fs.writeFileSync(path.join(root, 'preparation.json'), JSON.stringify(receipt, null, 2) + '\n');
-console.log(JSON.stringify({ root, sourceCommit, sourceDirty: receipt.sourceDirty, build: 93, resources: Object.keys(receipt.webResources).length }));
+console.log(JSON.stringify({ root, sourceCommit, sourceDirty: receipt.sourceDirty, build: buildNumber, resources: Object.keys(receipt.webResources).length }));

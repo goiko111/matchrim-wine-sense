@@ -50,6 +50,7 @@ import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat 
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
+import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import { awaitMenuCatalog } from '@/utils/menuCatalogAwait';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
@@ -71,6 +72,7 @@ import {
   needsMenuRefinement,
   mayHaveUnreadMenuColumn,
   isMenuIdentityConfirmed,
+  canResolveMenuCatalogIdentity,
   type MenuScanResponse as WineMenuScanResponse,
   type MenuScanTile,
   type MenuTileResult,
@@ -780,9 +782,10 @@ const WineMenuScannerSession = ({
         3,
         async (wine) => {
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
-          const catalog = !isMatchrimFixtureQaEnabled && isMenuIdentityConfirmed(wine)
+          const catalog = !isMatchrimFixtureQaEnabled && (isNative ? canResolveMenuCatalogIdentity(wine) : isMenuIdentityConfirmed(wine))
             ? await awaitMenuCatalog(
-              () => findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada },
+              () => findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada,
+                ...(isNative ? { region: wine.region, country: wine.pais, inferredFields: wine.campos_inferidos } : {}) },
                 isNative ? { signal: controller.signal } : undefined),
               controller.signal,
             )
@@ -995,6 +998,7 @@ const WineMenuScannerSession = ({
         identificationConfidence={wine.confidence}
         attributes={wine.atributos}
         sensorySource={wine.sensorySource ?? 'inference'}
+        catalogIdentityLinked={Boolean(wine.originalSheet?.detailVerified)}
       />
     );
   };
@@ -2149,6 +2153,14 @@ const WineMenuScannerSession = ({
                       inferredFields: selectedPinWine.campos_inferidos,
                       region: selectedPinWine.campos_inferidos?.includes('region') ? null : selectedPinWine.region,
                       country: selectedPinWine.campos_inferidos?.some(field => /^(country|pais|país)$/i.test(field)) ? null : selectedPinWine.pais,
+                    }} onVerified={(sheet) => {
+                      const identity = menuCardIdentity(selectedPinWine);
+                      setScannedWines(current => current.map((wine, index) => {
+                        if (index !== selectedPinIndex || menuCardIdentity(wine) !== identity) return wine;
+                        const catalog = catalogWineFromVerifiedSheet({ name: wine.nombre, producer: wine.productor,
+                          vintage: wine.anada, region: wine.region, country: wine.pais, inferredFields: wine.campos_inferidos }, sheet);
+                        return catalog ? applyMenuWineEvidence(wine, scanProfile?.profile ?? null, catalog) : wine;
+                      }));
                     }} />}
 	                {selectedPinWine.descripcion && <p className="mb-4 text-sm leading-6 text-slate-600">{selectedPinWine.descripcion}</p>}
 	                <div className="matchrim-soft-surface mb-4 rounded-lg p-3 text-sm text-slate-600">

@@ -8,7 +8,7 @@ import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch, hasAmbiguousCanon
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { isNonWineIdentity } from '@/utils/wineCategory';
-import { hasExactWinerimProducer, hasWinerimGeographyConflict, validateWinerimOriginalSheetUrl } from '@/utils/winerimOriginalSheet';
+import { catalogWineFromVerifiedSheet, lookupWinerimOriginalSheet, hasExactWinerimProducer, hasWinerimGeographyConflict, validateWinerimOriginalSheetUrl, type WinerimOriginalSheet } from '@/utils/winerimOriginalSheet';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
@@ -23,6 +23,7 @@ export interface WinerimWine {
   slugname?: string;
   originalSheetUrl?: string;
   originalSheetSource?: 'winerim-api';
+  verifiedOriginalSheet?: WinerimOriginalSheet;
   winery?: string;
   region?: string;
   country?: string;
@@ -669,6 +670,7 @@ export interface WinerimLabelLookupInput {
   vintage?: number | string | null;
   region?: string | null;
   country?: string | null;
+  inferredFields?: readonly string[];
 }
 
 export interface WinerimLabelLookupResult {
@@ -766,6 +768,12 @@ export const findWinerimWineForLabel = async (
   const deadline = catalogOnly ? setTimeout(abort, 5000) : undefined;
 
   try {
+    if (Capacitor.isNativePlatform()) {
+      const result = await lookupWinerimOriginalSheet(input, request.signal);
+      if (request.signal.aborted || result.status !== 'verified') return null;
+      const wine = catalogWineFromVerifiedSheet(input, result.sheet);
+      return wine ? { wine, confidence: 1, restaurantUuid: null } : null;
+    }
     const { data, error } = await supabase.functions.invoke(resolveMatchrimEdgeFunctionName('search-wines', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE), {
       body: { query, limit: 20, ...(catalogOnly ? { catalogOnly: true } : {}) },
       ...(catalogOnly || options.signal ? { signal: request.signal } : {}),

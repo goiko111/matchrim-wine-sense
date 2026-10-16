@@ -1,4 +1,4 @@
-import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
+import { canonicalProducerKey, isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 import { isNonWineIdentity } from './wineCategory';
 
 export interface WinerimOriginalIdentity {
@@ -18,6 +18,7 @@ export interface WinerimOriginalSheet {
   producer: string | null;
   vintage: string | null;
   region: string | null;
+  country?: string | null;
   grapes: string[];
   url: string | null;
   detailVerified?: boolean;
@@ -45,10 +46,7 @@ export const hasWinerimGeographyConflict = (
 };
 
 export const hasExactWinerimProducer = (left?: string | null, right?: string | null) => {
-  const key = (value?: string | null) => geoWords(value).join(' ')
-    .replace(/^(bodega|bodegas|winery) /, '')
-    .replace(/ (s a|s l|sa|sl|ltd|limited)$/, '');
-  return Boolean(key(left) && key(left) === key(right));
+  return Boolean(canonicalProducerKey(left) && canonicalProducerKey(left) === canonicalProducerKey(right));
 };
 
 const clean = (value: unknown) => typeof value === 'string' || typeof value === 'number' ? String(value).trim() || null : null;
@@ -144,13 +142,29 @@ const parseLibraryWine = (value: unknown): LibraryWine | null => {
     grapes: [...new Set(grapes)], sensoryAttributes };
 };
 const matchesLibraryIdentity = (input: WinerimOriginalIdentity, wine: WinerimOriginalIdentity) =>
-  identityName(input.name, input.vintage) === identityName(wine.name, wine.vintage)
+  (identityName(input.name, input.vintage) === identityName(wine.name, wine.vintage)
+    || isSafeCanonicalLabelMatch({ ...input, name: identityName(input.name, input.vintage) },
+      { ...wine, name: identityName(wine.name, wine.vintage) }))
   && hasExactWinerimProducer(input.producer, wine.producer)
   && String(clean(input.vintage) ?? '') === String(clean(wine.vintage) ?? '')
   && !hasWinerimGeographyConflict({
     region: input.inferredFields?.includes('region') ? null : input.region,
     country: input.inferredFields?.some(field => /^(country|pais|país)$/i.test(field)) ? null : input.country,
   }, wine);
+
+export const isVerifiedWinerimSheetForIdentity = (input: WinerimOriginalIdentity, sheet?: WinerimOriginalSheet | null) =>
+  Boolean(sheet?.detailVerified && validateWinerimOriginalSheetUrl(sheet.id, sheet.url)
+    && canLookupWinerimOriginal(input) && matchesLibraryIdentity(input, sheet));
+
+export const catalogWineFromVerifiedSheet = (input: WinerimOriginalIdentity, sheet?: WinerimOriginalSheet | null) => {
+  if (!isVerifiedWinerimSheetForIdentity(input, sheet) || !sheet) return null;
+  return {
+    id: sheet.id, name: sheet.name, winery: sheet.producer || undefined,
+    vintage: sheet.vintage || undefined, region: sheet.region || undefined, country: sheet.country || undefined,
+    grapes: sheet.grapes, tastingAttributes: validateWinerimOriginalSensory(sheet.sensoryAttributes),
+    originalSheetSource: 'winerim-api' as const, originalSheetUrl: sheet.url!, verifiedOriginalSheet: sheet,
+  };
+};
 
 // Observed in the public Library client (chunk-RBZVLNIE.js / chunk-KCMF6UK6.js),
 // 2026-10-15: slug resolver -> text search -> ID/slug detail. Recommendation IDs
@@ -164,24 +178,39 @@ export const lookupWinerimOriginalSheet = async (
   const abort = () => controller.abort();
   signal?.addEventListener('abort', abort, { once: true });
   const timeout = setTimeout(abort, 12000);
+  const bounded = <T,>(work: Promise<T>): Promise<T> => new Promise((resolve, reject) => {
+    const stop = () => reject(new DOMException('Aborted', 'AbortError'));
+    if (controller.signal.aborted) { void work.catch(() => undefined); stop(); return; }
+    controller.signal.addEventListener('abort', stop, { once: true });
+    work.then(resolve, reject).finally(() => controller.signal.removeEventListener('abort', stop));
+  });
   const read = async (path: string): Promise<unknown> => {
-    const response = await fetcher(`https://app.winerim.com/api/v1/${path}`, {
+    if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
+    const pending = fetcher(`https://app.winerim.com/api/v1/${path}`, {
       method: 'GET', headers: { Accept: 'application/json' }, credentials: 'omit',
       redirect: 'error', referrerPolicy: 'no-referrer', signal: controller.signal,
     });
-    if (!response.ok || !response.headers.get('content-type')?.includes('application/json') || !response.body) throw new Error('Unavailable Library');
+    void pending.then(response => { if (controller.signal.aborted) void response.body?.cancel().catch(() => undefined); }, () => undefined);
+    const response = await bounded(pending);
+    if (!response.ok || !response.headers.get('content-type')?.includes('application/json') || !response.body) {
+      void response.body?.cancel().catch(() => undefined);
+      throw new Error('Unavailable Library');
+    }
     const reader = response.body.getReader();
+    const cancel = () => { void reader.cancel().catch(() => undefined); };
+    controller.signal.addEventListener('abort', cancel, { once: true });
     const decoder = new TextDecoder();
     let text = '', size = 0;
     try {
       while (true) {
-        const { done, value } = await reader.read();
+        const { done, value } = await bounded(reader.read());
+        if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
         if (done) break;
         size += value.byteLength;
         if (size > 262144) { await reader.cancel(); throw new Error('Library response too large'); }
         text += decoder.decode(value, { stream: true });
       }
-    } finally { reader.releaseLock(); }
+    } finally { controller.signal.removeEventListener('abort', cancel); reader.releaseLock(); }
     return JSON.parse(text + decoder.decode());
   };
   try {
@@ -189,7 +218,8 @@ export const lookupWinerimOriginalSheet = async (
     const uuid = resolved?.restaurant;
     if (typeof uuid !== 'string' || !/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(uuid)) return { status: 'unavailable' };
     const root = `restaurant/${uuid}/wines`;
-    const page = record(await read(`${root}?${new URLSearchParams({ page: '1', text: input.name.trim() })}`));
+    const query = input.vintage ? input.name.trim().replace(new RegExp(`\\s+\\(?${input.vintage}\\)?$`), '').trim() : input.name.trim();
+    const page = record(await read(`${root}?${new URLSearchParams({ page: '1', text: query })}`));
     if (!page || !Array.isArray(page.results) || page.page !== 1 || !Number.isSafeInteger(page.count)
       || Number(page.count) < 0 || page.results.length > 20 || Number(page.count) !== page.results.length) return { status: 'incomplete' };
     const wines = page.results.map(parseLibraryWine);
@@ -211,7 +241,7 @@ export const lookupWinerimOriginalSheet = async (
     const sheet = createWinerimOriginalSheet({ id: detail.id, name: detail.name, winery: detail.producer,
       vintage: detail.vintage, region: detail.region, grapes: detail.grapes, originalSheetSource: 'winerim-api',
       originalSheetUrl: `https://web.winerim.com/the-library/wines/${detail.id}/${detail.slug}` });
-    return sheet ? { status: 'verified', sheet: { ...sheet, detailVerified: true, sensoryAttributes: detail.sensoryAttributes } }
+    return sheet ? { status: 'verified', sheet: { ...sheet, country: detail.country, detailVerified: true, sensoryAttributes: detail.sensoryAttributes } }
       : { status: 'unavailable' };
   } catch {
     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');

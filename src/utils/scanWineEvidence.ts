@@ -7,7 +7,7 @@ import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 import { isNonWineIdentity } from './wineCategory';
 import { isMenuCurrencyAmountValid } from './menuPriceReview';
 import { normalizeScanCurrency } from './scanMoney';
-import { createWinerimOriginalSheet, hasWinerimGeographyConflict } from './winerimOriginalSheet';
+import { createWinerimOriginalSheet, hasWinerimGeographyConflict, isVerifiedWinerimSheetForIdentity, type WinerimOriginalSheet } from './winerimOriginalSheet';
 
 export const MISSING_SCAN_SENSORY = 'Afinidad pendiente: faltan atributos sensoriales de una ficha de vino identificada. La foto no permite verificarlos.';
 
@@ -19,6 +19,7 @@ export interface ScanCatalogWine {
   vintage?: string | number;
   originalSheetUrl?: string;
   originalSheetSource?: 'winerim-api';
+  verifiedOriginalSheet?: WinerimOriginalSheet;
   region?: string;
   country?: string;
   grapes?: string[];
@@ -43,14 +44,18 @@ export const applyScanWineEvidence = (
     country: candidate.inferredFields.some(field => /^(country|pais|país)$/i.test(field)) ? null : candidate.country }, catalog)) return pending;
   // Missing vintages must not silently borrow a vintage-specific sensory sheet.
   if ((candidate.vintage || catalog.vintage) && String(candidate.vintage ?? '') !== String(catalog.vintage ?? '')) return pending;
-  const values = normalizeWineAttributesForInsight(catalog.tastingAttributes);
+  const original = isVerifiedWinerimSheetForIdentity(candidate, catalog.verifiedOriginalSheet)
+    && String(catalog.id) === catalog.verifiedOriginalSheet?.id ? catalog.verifiedOriginalSheet : null;
+  if (catalog.verifiedOriginalSheet && !original) return pending;
+  const scale = original ? { scale: 'winerim-0-5' as const } : {};
+  const values = normalizeWineAttributesForInsight(original ? { ...original.sensoryAttributes, ...scale } : catalog.tastingAttributes);
   const sensoryAttributes = values ? {
     potencia: values.potente, acidez: values.acidez, dulzura: values.dulce,
-    taninos: values.tanico, afrutado: values.afrutado,
+    taninos: values.tanico, afrutado: values.afrutado, ...scale,
   } : null;
   const affinity = calculateLocalMatchrimAffinity(profile, sensoryAttributes);
   return {
-    ...pending, canonicalId: String(catalog.id), originalSheet: createWinerimOriginalSheet(catalog), source: 'catalog', sensorySource: 'catalog',
+    ...pending, canonicalId: String(catalog.id), originalSheet: original || createWinerimOriginalSheet(catalog), source: 'catalog', sensorySource: 'catalog',
     sensoryAttributes, affinity,
     affinityConfidence: affinity === null ? null : Math.min(candidate.confidence, 0.9),
     affinityReason: affinity !== null

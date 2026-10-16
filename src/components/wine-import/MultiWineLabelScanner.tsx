@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 import { AffinityExplanation } from '@/components/AffinityExplanation';
 import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
+import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { Button } from '@/components/ui/button';
@@ -266,7 +267,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           vintage: candidate.vintage,
           region: candidate.region,
           country: candidate.country,
-        });
+          inferredFields: candidate.inferredFields,
+        }, isNative ? { signal } : undefined);
     if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
 
     if (catalogMatch) {
@@ -278,7 +280,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         region: catalogMatch.wine.region || candidate.region,
         country: catalogMatch.wine.country || candidate.country,
         grapes: catalogMatch.wine.grapes?.length ? catalogMatch.wine.grapes : candidate.grapes,
-        confidence: Math.max(candidate.confidence, catalogMatch.confidence),
+        confidence: isNative ? candidate.confidence : Math.max(candidate.confidence, catalogMatch.confidence),
         source: candidate.source,
         evidence: [...candidate.evidence, 'Coincidencia en el catálogo Winerim'],
       };
@@ -1057,7 +1059,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   affinity: group.candidate.affinity,
                   confidence: group.candidate.confidence,
                   identityReviewedByUser: group.candidate.source === 'manual',
-                  identityConfirmed: group.regionIds.some((id) => regions.some((region) => region.id === id && region.status === 'recognized')),
+                  identityConfirmed: Boolean(group.candidate.originalSheet?.detailVerified)
+                    || group.regionIds.some((id) => regions.some((region) => region.id === id && region.status === 'recognized')),
                   attributes: group.candidate.sensoryAttributes ? {
                     body: group.candidate.sensoryAttributes.potencia,
                     acidity: group.candidate.sensoryAttributes.acidez,
@@ -1269,6 +1272,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           inferredFields: selectedCandidate.inferredFields,
                           region: selectedCandidate.inferredFields.includes('region') ? null : selectedCandidate.region,
                           country: selectedCandidate.inferredFields.some(field => /^(country|pais|país)$/i.test(field)) ? null : selectedCandidate.country,
+                        }} onVerified={(sheet) => {
+                          updateRegion(selectedRegion.id, current => ({ ...current, candidates: current.candidates.map(candidate => {
+                            if (candidate.id !== selectedCandidate.id) return candidate;
+                            const catalog = catalogWineFromVerifiedSheet(candidate, sheet);
+                            return catalog ? applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, catalog) : candidate;
+                          }) }));
                         }} />}
                         {isNative && <Button type="button" variant="outline" disabled={regionActionsLocked} className="min-h-11 gap-2" onClick={() => {
                           const input = document.getElementById('region-wine-name');
@@ -1343,6 +1352,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           identityReviewedByUser={selectedCandidate.source === 'manual'}
                           attributes={selectedCandidate.sensoryAttributes}
                           sensorySource={selectedCandidate.sensorySource ?? 'inference'}
+                          catalogIdentityLinked={Boolean(selectedCandidate.originalSheet?.detailVerified)}
                         />
                       </>
                     )}

@@ -1,5 +1,6 @@
 import type { NormalizedBox } from '@/utils/multiWineScan';
 import type { WinerimOriginalSheet } from './winerimOriginalSheet';
+import { canLookupWinerimOriginal, isVerifiedWinerimSheetForIdentity } from './winerimOriginalSheet';
 
 export interface MenuScanPosition {
   x?: number | null;
@@ -46,6 +47,7 @@ export interface MenuScanWine {
   descripcion: string | null;
   uvas?: string[];
   atributos?: {
+    scale?: 'winerim-0-5';
     potencia: number;
     acidez: number;
     dulzura: number;
@@ -93,9 +95,23 @@ export interface MenuTileResult {
   response: MenuScanResponse;
 }
 
-export const isMenuIdentityConfirmed = (wine: MenuScanWine) => (wine.confidence ?? 0) >= 0.85
+export const isMenuIdentityConfirmed = (wine: MenuScanWine) => (Boolean(wine.canonicalId
+  && wine.canonicalId === wine.originalSheet?.id && isVerifiedWinerimSheetForIdentity({
+    name: wine.nombre, producer: wine.productor, vintage: wine.anada, region: wine.region, country: wine.pais,
+    inferredFields: wine.campos_inferidos,
+  }, wine.originalSheet)) || (wine.confidence ?? 0) >= 0.85
   && !(wine.dudas?.length)
-  && !(wine.campos_inferidos ?? []).some((field) => /^(nombre|name|productor|producer|winery|bodega|anada|añada|vintage|year)$/i.test(field));
+  && !(wine.campos_inferidos ?? []).some((field) => /^(nombre|name|productor|producer|winery|bodega|anada|añada|vintage|year)$/i.test(field)));
+
+export const canResolveMenuCatalogIdentity = (wine: MenuScanWine) => {
+  if ((wine.confidence ?? 0) < 0.72 || !wine.texto_fuente?.trim()) return false;
+  const words = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().match(/[a-z0-9]+/g) ?? [];
+  const visible = new Set(words(wine.texto_fuente));
+  return canLookupWinerimOriginal({ name: wine.nombre, producer: wine.productor, vintage: wine.anada,
+    inferredFields: wine.campos_inferidos })
+    && words(`${wine.nombre} ${wine.productor || ''}`).every(word => visible.has(word));
+};
 
 const fullTile: MenuScanTile = {
   id: 'full',

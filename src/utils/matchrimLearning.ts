@@ -6,7 +6,7 @@ import { selectMatchrimTrainingEvidence } from '../../supabase/functions/_shared
 export { calibrateMatchrimAffinityScore } from './matchrimAffinityCalibration';
 
 type Rating = 'love' | 'ok' | 'not_for_me' | null;
-type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', unknown>>;
+type SensoryAttributes = { scale?: 'winerim-0-5' } & Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', unknown>>;
 
 export interface TrainableWine {
   id?: string;
@@ -69,7 +69,9 @@ const ATTRS = [
 
 const clamp = (value: number, min = 0, max = 5) => Math.max(min, Math.min(max, value));
 
-const normalizeSensoryValue = (value: unknown) => {
+const normalizeSensoryValue = (value: unknown, scale?: unknown) => {
+  if (scale !== undefined) return scale === 'winerim-0-5' && typeof value === 'number'
+    && Number.isFinite(value) && value >= 0 && value <= 5 ? value : null;
   const numeric = optionalScanNumber(value);
   if (numeric === null || numeric < 0) return null;
   let v = numeric;
@@ -94,9 +96,9 @@ export const scoreMatchrimProfileAgainstSensory = (
   let availableWeight = 0;
 
   ATTRS.forEach(([profileKey, sensoryKey]) => {
-    const value = normalizeSensoryValue(sensory[sensoryKey]);
+    const value = normalizeSensoryValue(sensory[sensoryKey], sensory.scale);
     if (value === null) return;
-    const match = Math.max(0, 1 - Math.abs(profile[profileKey] - value) / 4);
+    const match = Math.max(0, 1 - Math.abs(profile[profileKey] - value) / (sensory.scale === 'winerim-0-5' ? 5 : 4));
     weightedScore += match * weights[profileKey];
     availableWeight += weights[profileKey];
   });
@@ -120,7 +122,7 @@ const evidenceTimestamp = (wine: TrainableWine) => {
 };
 
 const sensorySignature = (attrs: SensoryAttributes) => ATTRS
-  .map(([, sourceKey]) => normalizeSensoryValue(attrs[sourceKey]))
+  .map(([, sourceKey]) => normalizeSensoryValue(attrs[sourceKey], attrs.scale))
   .join(':');
 
 export const detectMatchrimPreferenceShift = (
@@ -142,7 +144,7 @@ export const detectMatchrimPreferenceShift = (
     const totalWeight = rows.reduce((sum, wine) => sum + Math.abs(ratingWeight(wine.rating ?? null)), 0);
     ATTRS.forEach(([targetKey, sourceKey]) => {
       const direction = rows.reduce((sum, wine) => {
-        const value = normalizeSensoryValue(wine.sensory_attributes?.[sourceKey]);
+        const value = normalizeSensoryValue(wine.sensory_attributes?.[sourceKey], wine.sensory_attributes?.scale);
         if (value === null) return sum;
         return sum + (value - baseProfile[targetKey]) * ratingWeight(wine.rating ?? null);
       }, 0);
@@ -188,7 +190,7 @@ export const calculateLearnedMatchrimProfile = (
     const weight = ratingWeight(wine.rating ?? null);
     const attrs = wine.sensory_attributes;
     return Boolean(weight && attrs && ATTRS.every(([, sourceKey]) => (
-      normalizeSensoryValue(attrs[sourceKey]) !== null
+      normalizeSensoryValue(attrs[sourceKey], attrs.scale) !== null
     )));
   });
   const preferenceShift = options.detectPreferenceShift
@@ -216,7 +218,7 @@ export const calculateLearnedMatchrimProfile = (
     if (timestamp !== null) datedSamples += 1;
 
     ATTRS.forEach(([targetKey, sourceKey]) => {
-      const sensoryValue = normalizeSensoryValue(attrs[sourceKey]);
+      const sensoryValue = normalizeSensoryValue(attrs[sourceKey], attrs.scale);
       if (sensoryValue === null) return;
       const contribution = (sensoryValue - baseProfile[targetKey]) * effectiveWeight;
       deltas[targetKey] += contribution;

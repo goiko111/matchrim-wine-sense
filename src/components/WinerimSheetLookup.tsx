@@ -4,7 +4,7 @@ import { Loader2, BookOpen, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WinerimOriginalSheet } from './WinerimOriginalSheet';
 import { canLookupWinerimOriginal, lookupWinerimOriginalSheet, type WinerimOriginalIdentity,
-  type WinerimOriginalLookupResult } from '@/utils/winerimOriginalSheet';
+  type WinerimOriginalLookupResult, type WinerimOriginalSheet as OriginalSheet } from '@/utils/winerimOriginalSheet';
 
 const lookupMessages = {
   'identity-required': 'Ficha pendiente: falta un nombre y una bodega confirmados, o la añada no es válida.',
@@ -14,9 +14,12 @@ const lookupMessages = {
   unavailable: 'No se ha podido consultar la ficha original de Winerim. Puedes volver a intentarlo; la identificación y la afinidad no han cambiado.',
 };
 
-const OriginalSheetLookup = ({ identity }: { identity: WinerimOriginalIdentity }) => {
+type LookupProps = { identity: WinerimOriginalIdentity; onVerified?: (sheet: OriginalSheet) => void };
+const OriginalSheetLookup = ({ identity, onVerified }: LookupProps) => {
   const controller = useRef<AbortController | null>(null);
   const mounted = useRef(true);
+  const verifiedCallback = useRef(onVerified);
+  verifiedCallback.current = onVerified;
   const [loading, setLoading] = useState(false);
   const [outcome, setOutcome] = useState<WinerimOriginalLookupResult | null>(null);
   const result = useRef<HTMLDivElement>(null);
@@ -34,7 +37,10 @@ const OriginalSheetLookup = ({ identity }: { identity: WinerimOriginalIdentity }
     setOutcome(null);
     try {
       const next = await lookupWinerimOriginalSheet(identity, abort.signal);
-      if (mounted.current && !abort.signal.aborted) setOutcome(next);
+      if (mounted.current && !abort.signal.aborted) {
+        setOutcome(next);
+        if (next.status === 'verified') verifiedCallback.current?.(next.sheet);
+      }
     } catch {
       if (mounted.current && !abort.signal.aborted) setOutcome({ status: 'unavailable' });
     } finally {
@@ -61,8 +67,8 @@ const OriginalSheetLookup = ({ identity }: { identity: WinerimOriginalIdentity }
   );
 };
 
-export const WinerimSheetLookup = ({ identity }: { identity: WinerimOriginalIdentity }) => {
+export const WinerimSheetLookup = ({ identity, onVerified }: LookupProps) => {
   if (!Capacitor.isNativePlatform()) return null;
   const key = JSON.stringify([identity.name, identity.producer, identity.vintage, identity.region, identity.country, identity.inferredFields]);
-  return <OriginalSheetLookup key={key} identity={identity} />;
+  return <OriginalSheetLookup key={key} identity={identity} onVerified={onVerified} />;
 };
