@@ -51,6 +51,20 @@ html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-native-tab-bar
   display: none;
 }
 
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-restaurant91 .restaurant91-header,
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-restaurant91 .restaurant91-upload-actions,
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-restaurant91 .restaurant91-inline-form,
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-restaurant91 .restaurant91-budget {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Stable tab-bar chrome; restaurant content still uses the user's full text size. */
+html.matchrim-native-platform .matchrim-restaurant91 .matchrim-native-tab-bar a > span[aria-hidden="true"] {
+  font-size: 12px;
+  -webkit-text-size-adjust: 100%;
+}
+
 html.matchrim-native-platform .matchrim-result-tabs {
   position: sticky;
   top: var(--matchrim-safe-top);

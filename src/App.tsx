@@ -31,6 +31,7 @@ const WineImport = lazy(() => import('@/pages/WineImport'));
 const MyWines = lazy(() => import('@/pages/MyWines'));
 const UseMatchrim = lazy(() => import('@/pages/UseMatchrim'));
 const Scan = lazy(() => import('@/pages/Scan'));
+const Restaurant = lazy(() => import('@/pages/Restaurant'));
 const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
 const Terms = lazy(() => import('@/pages/Terms'));
 const AccountDeletion = lazy(() => import('@/pages/AccountDeletion'));
@@ -106,6 +107,7 @@ function AppRoutes() {
             <Route path="/usar-matchrim" element={<UseMatchrim />} />
             <Route path="/escanear" element={<Scan />} />
             <Route path="/escanear/:mode" element={<Scan />} />
+            <Route path="/restaurante" element={<Restaurant />} />
             <Route path="/inteligencia-liquida" element={<LiquidIntelligence />} />
             <Route path="/liquid-intelligence" element={<Navigate to="/inteligencia-liquida" replace />} />
             <Route path="/import-csv" element={<AdminOnly><ImportCSV /></AdminOnly>} />

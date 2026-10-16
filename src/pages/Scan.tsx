@@ -9,7 +9,7 @@ import type { Json } from "@/integrations/supabase/types";
 import { trackAppEvent } from "@/lib/analytics";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { confirmedLabelInsertId, labelInsertErrorResult, type LabelSaveCallback } from "@/utils/labelScanSave";
-import { ArrowLeft, ScanLine } from "lucide-react";
+import { ArrowLeft, ChefHat, ChevronRight, ScanLine } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { Navigate, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -208,6 +208,13 @@ const Scan = () => {
               </p>}
             </div>
 
+            {isNative && <button type="button" aria-label="Comida y vinos del restaurante" onClick={() => navigate('/restaurante')}
+              className="matchrim-pressable mb-5 flex min-h-16 w-full items-center gap-3 border-y border-slate-200 py-4 text-left">
+              <ChefHat className="h-6 w-6 shrink-0 text-red-900" />
+              <span className="min-w-0 flex-1"><span className="block font-semibold">Comida + vinos del restaurante</span>
+                <span className="mt-1 block text-sm text-slate-500">Cartas completas, fotos, PDF y enlaces</span></span>
+              <ChevronRight className="h-5 w-5 shrink-0" />
+            </button>}
             <ScanHub
               onExtractComplete={handleExtractComplete}
               variant="hub"

@@ -197,6 +197,13 @@ const LiquidIntelligence = () => {
           </div>
         </section>
 
+        {isNative && <button type="button" aria-label="Comida y vinos del restaurante" onClick={() => navigate('/restaurante')}
+          className="matchrim-pressable mt-6 flex min-h-16 w-full items-center gap-3 border-y border-slate-200 py-4 text-left">
+          <ChefHat className="h-6 w-6 shrink-0 text-red-900" />
+          <span className="min-w-0 flex-1"><span className="block font-semibold">Comida + vinos del restaurante</span>
+            <span className="mt-1 block text-sm text-slate-500">Elegir entre platos y botellas de sus cartas</span></span>
+          <ArrowRight className="h-5 w-5 shrink-0" />
+        </button>}
         <section className="mt-7 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
           aiRIM usa tu perfil cuando está disponible. Las fotos siguen en el flujo Escanear y no se incorporan a memoria por conversar aquí.
         </section>
