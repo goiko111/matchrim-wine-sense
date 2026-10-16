@@ -2,6 +2,7 @@ type MatchrimAiRequest = {
   prompt: string;
   image?: string;
   maxTokens: number;
+  allowLovable?: boolean;
 };
 
 export type MatchrimAiResult = {
@@ -93,6 +94,12 @@ const runLovable = async ({ prompt, image, maxTokens }: MatchrimAiRequest): Prom
 
 export const runMatchrimAi = async (request: MatchrimAiRequest): Promise<MatchrimAiResult> => {
   const configured = Deno.env.get('MATCHRIM_AI_PROVIDER')?.trim().toLowerCase();
+  if (request.allowLovable === false) {
+    if ((configured && configured !== 'anthropic') || !Deno.env.get('ANTHROPIC_API_KEY')?.trim()) {
+      throw new Error('Configura el proveedor independiente para este analisis. Lovable AI no esta permitido.');
+    }
+    return runAnthropic(request);
+  }
   if (configured === 'anthropic') return runAnthropic(request);
   if (configured === 'lovable') return runLovable(request);
   if (Deno.env.get('ANTHROPIC_API_KEY')) return runAnthropic(request);

@@ -159,6 +159,7 @@ export const handleRequest = async (
       result = await runBoundedAi({
         prompt, image: input.operation === 'rank' ? undefined : input.image,
         maxTokens: input.operation === 'rank' ? 8192 : 16384,
+        allowLovable: false,
       }, request, dependencies);
     } catch (error) {
       if (error instanceof RestaurantContractError91) throw error;

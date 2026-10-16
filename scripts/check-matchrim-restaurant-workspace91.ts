@@ -322,11 +322,12 @@ let capturedImage: string | undefined;
 const compiled = ts.transpileModule(readFileSync('supabase/functions/restaurant-workspace91/index.ts', 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
 }).outputText;
-const provider = async (input: { prompt: string; image?: string; maxTokens: number }) => {
+const provider = async (input: { prompt: string; image?: string; maxTokens: number; allowLovable?: boolean }) => {
   aiCalls++;
   capturedPrompt = input.prompt;
   capturedImage = input.image;
   assert.ok(input.maxTokens > 0 && input.maxTokens <= 16384);
+  assert.equal(input.allowLovable, false, 'Restaurant91 must never opt in to Lovable AI');
   if (providerError) throw providerError;
   return { text: aiOutput, provider: 'anthropic' as const, model: 'offline-stub', complete: aiComplete };
 };

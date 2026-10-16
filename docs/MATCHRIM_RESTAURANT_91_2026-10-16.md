@@ -2,6 +2,8 @@
 
 Date:2026-10-16. Baseline:`981d7887b95ec50102562d39c0886af23cfc6a0a`.
 Frozen product:`83e159c856f9ef4e41a30870e6ff394e2e3524f8`.
+That commit remains the UI/native QA baseline; the no-credit follow-up below
+changes only the server provider policy and local deployment/test tooling.
 User authorizes the multi-source, two-card restaurant flow and TestFlight only
 after completion. This report does not certify a deployed or uploaded release.
 Private evidence is under the recovered task's
@@ -148,6 +150,15 @@ it must NEVER be exported/uploaded as the production app.
    direct personal Supabase account; no owner reconnection or migration is
    justified by this403. No new deployment was attempted during this read-only
    diagnosis. Hosted runtime/provider checks below are still required.
+   **Latest owner constraint: no Lovable credits.** The available Lovable MCP
+   has no backend-only deployment method; deploy_project publishes web hosting
+   and is not an acceptable substitute. The observed Cloud function list/detail
+   has monitoring, logs and View code, with no create/deploy action. Official
+   Edge functions documentation directs creation/deployment to project chat,
+   whose agent work uses credits. No agent message, publish, branch sync or
+   undocumented/private API was invoked to bypass this constraint. Therefore
+   the established paid-agent channel is known, but a supported zero-credit
+   backend deployment channel has NOT been established with current access.
 2. Verify the implemented pinned URL transport in the deployed runtime, along
    with body/rate limits. Do not restore native fetch or an attestation bypass.
 3. Deploy only the two new functions and their reviewed imports, JWT verification
@@ -193,3 +204,38 @@ Apple build-number availability or new processing/installation status is invente
 Transport implementation references:
 [Supabase node HTTP restrictions](https://github.com/supabase/edge-runtime/blob/main/ext/node/polyfills/http.ts),
 [Deno TLS resource wrapping](https://github.com/denoland/deno/blob/v2.1.4/ext/net/ops_tls.rs).
+
+## No-Credit Deployment Follow-Up
+
+The owner explicitly requests deploying both functions and releasing TestFlight
+only after real validation, while forbidding Lovable credit spending. No Lovable
+agent turn or hosted function/model invocation was made in this follow-up. The
+documentation also associates Cloud/AI gateway operation with run credits; a
+blanket zero-credit guarantee cannot be inferred for real hosted tests either.
+
+- Restaurant91 always passes allowLovable=false to the shared provider. Missing
+  independent key, an explicit Lovable/unknown provider or independent provider
+  failure cannot fall back to Lovable AI. Existing callers keep their prior policy.
+-23 new actual-adapter cases with stub HTTP pass, including zero requests for
+  forbidden configuration and no retry/fallback for402/429/500. The existing12
+  provider completion contracts and170workspace handler contracts also pass.
+- Restaurant suite22session/13ranking/170workspace/23provider/27import groups
+  passes locally, with real50-page PDF.js rendering but stub AI/hosted transport.
+  Six local release/cloud/remediation89/scene90/type/lint groups pass in
+  no-credit-gates-r2; the first run correctly caught a protected config snapshot.
+  The temporary local config addition was removed, not repinned or bypassed.
+  JWT enablement is an additive deployment patch, preserving remote config.
+- Both Edge entrypoints pass Deno check; the web build passes. No new signed
+  archive, simulator/physical run or TestFlight upload is claimed for this delta.
+- prepare-matchrim-restaurant-deployment91.mjs generates a six-file exact source
+  closure with SHA256, additive verify_jwt=true sections for only these functions,
+  Git provenance and deploymentPerformed=false. It never sends or deploys it.
+  This package is preparation, not evidence of a supported free deploy channel.
+- Prior UI/native evidence and final-receipt.json remain baseline evidence,
+  not a receipt for the new provider policy. Real OCR/pairing/runtime checks and
+  Apple signing/upload stay pending behind a permissible deployment channel.
+
+Primary documentation checked2026-10-16:
+[Edge functions: project-chat deployment and monitoring-only view](https://docs.lovable.dev/features/edge-functions),
+[Code editing is free; project-chat agent work uses credits](https://docs.lovable.dev/features/code-mode),
+[Cloud and AI gateway run credit usage](https://docs.lovable.dev/features/cloud).
