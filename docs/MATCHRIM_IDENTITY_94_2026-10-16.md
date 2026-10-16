@@ -1,5 +1,11 @@
 # Matchrim: identity and sensory linkage94
 
+Distribution update: after this local QA checkpoint, the owner authorized upload.
+Apple accepted the corrected1.0(94) at13:10:59Madrid; package processing observed,
+installability/groups unverified. See [TestFlight94](MATCHRIM_TESTFLIGHT_94_2026-10-16.md)
+for the packaging collision/fix and exact receipts. Local-only statements below
+describe the original implementation checkpoint, not the latest distribution state.
+
 ## Scope And Distribution
 
 Application source: `6f45254`, after `f66edd6` and `21aec97`, on

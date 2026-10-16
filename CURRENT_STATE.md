@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Active Window: 2026-10-16, uploaded TestFlight94
+
+- Owner explicitly requests94upload. Apple accepted corrected1.0(94) at13:10:59Madrid, exit0, `Uploaded App` / `Upload succeeded` / package processing. App source6f45254 and158tested resources unchanged; no web/backend/provider/account change or App Store release. TestFlight installability/groups remain unverified: post-upload App Store Connect `/apps` still redirects to FAILED login. Do not equate acceptance with availability or upload94again.
+- First94attempt was rejected with `CFBundleIdentifier Collision`, exit70. Root cause: inherited archive command globally overrode bundle/version for App AND all three Pods frameworks. Rebuilt cleanly without global identity/version overrides; App retainswine.matchrim.app, frameworks retainorg.cocoapods identifiers. Final204distribution checksPASS and same345app inputs. Standalone versioned bundle guard rejects the real bad artifact and passes the fixed artifact; focused lintPASS.93IPA also has that local collision, but its remote state/cause remains unknown.
+- Final signed IPA SHA2562bf8bc0be6596ff67aafff5b9614cf419427e2997815d3713a0e2e66686c55ba. Earlier11source gates/27controlled mobile cases/two bounded native methods reconciled, not a new vision/physical/human QA claim. Native distribution target14warning is nonblocking now; Apple warns about15minimum for April2027. [Upload94/gates/evidence](docs/MATCHRIM_TESTFLIGHT_94_2026-10-16.md). Prior identity94 local-only statements below describe the pre-upload checkpoint.
+
 ## Active Window: 2026-10-16, identity/sensory94
 
 - Owner explicitly reports uploaded93 is NOT visible in their TestFlight. Apple accepted the upload11:25Madrid, but current readiness/group assignment remains unknown: Brave/Chrome App Store Connect login stalls and credential-free official altool requires authentication22. No repeat upload; ordinary Apple login requested, no credentials extracted. Published web/backend/schema/secrets/corpora/accounts unchanged,0Lovable agent credits/paid model calls in this block.
