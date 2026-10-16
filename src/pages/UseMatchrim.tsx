@@ -387,6 +387,7 @@ const UseMatchrim = () => {
     try {
       const sensoryAttributes = wine.tastingAttributes
         ? {
+            ...(wine.tastingAttributes.scale ? { scale: wine.tastingAttributes.scale } : {}),
             potencia: wine.tastingAttributes.power,
             acidez: wine.tastingAttributes.acidity,
             dulzura: wine.tastingAttributes.sweetness,

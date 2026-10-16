@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import * as scanValues from '../supabase/functions/_shared/matchrim-scan-values';
 import * as calibration from '../src/utils/matchrimAffinityCalibration';
@@ -7,7 +8,7 @@ import * as trainingEvidence from '../supabase/functions/_shared/matchrim-traini
 import * as learning from '../src/utils/matchrimLearning';
 import * as affinity from '../src/utils/wineAffinityExplanation';
 import { catalogWineFromVerifiedSheet, isVerifiedWinerimSheetForIdentity, lookupWinerimOriginalSheet,
-  type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
+  validateWinerimOriginalSensory, type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import { isSafeCanonicalLabelMatch, hasAmbiguousCanonicalMatches } from '../src/utils/winerimLabelIdentity';
 import { applyScanWineEvidence, applyMenuWineEvidence, updateMenuWineEvidence } from '../src/utils/scanWineEvidence';
 import { canResolveMenuCatalogIdentity, isMenuIdentityConfirmed, type MenuScanWine } from '../src/utils/wineMenuScan';
@@ -157,6 +158,25 @@ await check('Legacy scoring, explanation and learning retain exact provider-migr
       }
     }
   }
+});
+await check('Actual recommendation normalization agrees with scan source values and keeps web legacy behavior', () => {
+  const source = readFileSync('src/services/winerimApi.ts', 'utf8');
+  const ast = ts.createSourceFile('winerimApi.ts', source, ts.ScriptTarget.Latest, true);
+  const names = ['asRecord', 'normalizeAttributeTo5', 'normalizeTastingAttributes'];
+  const bodies = ast.statements.filter(node => ts.isVariableStatement(node)
+    && node.declarationList.declarations.some(item => names.includes(item.name.getText(ast))));
+  assert.equal(bodies.length, names.length);
+  const compiled = ts.transpileModule(bodies.map(node => node.getText(ast)).join('\n'),
+    { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None } }).outputText;
+  const normalize = (native: boolean) => new Function('Capacitor', 'validateWinerimOriginalSensory', compiled + '\nreturn normalizeTastingAttributes;')(
+    { isNativePlatform: () => native }, validateWinerimOriginalSensory);
+  const raw = { tastingAttributes: sheet.sensoryAttributes };
+  const attrs = normalize(true)(raw);
+  assert.deepEqual(attrs, { ...sheet.sensoryAttributes, scale: 'winerim-0-5' });
+  assert.equal(normalize(false)(raw).tannin, 1); assert.equal(normalize(false)(raw).power, 2);
+  assert.equal(normalize(true)({ tastingAttributes: { ...sheet.sensoryAttributes, power: 6 } }), null);
+  const profile = { potente: 2.4, acidez: 4, dulce: 1, tanico: 0, afrutado: 3 };
+  assert.equal(calculateLocalMatchrimAffinity(profile, attrs), applyScanWineEvidence(candidate, profile, catalog).affinity);
 });
 console.log(JSON.stringify({ checks, passed: checks, profiles: 50, realUsers: 0, remoteCalls: 0,
   scope: 'Synthetic contract fixtures, not wine recognition or human taste accuracy' }));

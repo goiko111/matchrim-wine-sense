@@ -8,7 +8,7 @@ import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch, hasAmbiguousCanon
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
 import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { isNonWineIdentity } from '@/utils/wineCategory';
-import { catalogWineFromVerifiedSheet, lookupWinerimOriginalSheet, hasExactWinerimProducer, hasWinerimGeographyConflict, validateWinerimOriginalSheetUrl, type WinerimOriginalSheet } from '@/utils/winerimOriginalSheet';
+import { catalogWineFromVerifiedSheet, lookupWinerimOriginalSheet, hasExactWinerimProducer, hasWinerimGeographyConflict, validateWinerimOriginalSensory, validateWinerimOriginalSheetUrl, type WinerimOriginalSheet } from '@/utils/winerimOriginalSheet';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
 const WINERIM_API_URL = import.meta.env.VITE_WINERIM_API_URL || 'https://app.winerim.com';
@@ -33,6 +33,7 @@ export interface WinerimWine {
   section?: string | null;
   grapes?: string[];
   tastingAttributes?: {
+    scale?: 'winerim-0-5';
     power: number;
     acidity: number;
     fruity: number;
@@ -52,7 +53,7 @@ export interface WinerimWineWithMatch extends WinerimWine {
   matchPercentage: number;
   rawMatchPercentage?: number;
   affinityConfidence?: number;
-  affinityModel?: typeof MATCHRIM_AFFINITY_MODEL | 'raw-v1' | 'scan-local-l2-v1';
+  affinityModel?: typeof MATCHRIM_AFFINITY_MODEL | 'raw-v1' | 'scan-local-l2-v1' | 'scan-local-l2-0to5-v2';
   matchSource?: 'winerim-api' | 'style-range';
   styleName?: PublicWineStyle;
 }
@@ -220,6 +221,10 @@ const normalizeAttributeTo5 = (value: unknown) => {
 const normalizeTastingAttributes = (rawWine: RawWinerimWine) => {
   const attrs = asRecord(rawWine.tastingAttributes || rawWine.tasting_attributes || rawWine.atributos);
   if (!attrs) return null;
+  if (Capacitor.isNativePlatform()) {
+    const exact = validateWinerimOriginalSensory(attrs);
+    return exact ? { ...exact, scale: 'winerim-0-5' as const } : null;
+  }
 
   const normalized = {
     power: normalizeAttributeTo5(attrs.power ?? attrs.potencia),
@@ -584,7 +589,7 @@ export const fetchWinesByAttributes = async (
       const score = calculateLocalMatchrimAffinity(quizResult, wine.tastingAttributes);
       if (score === null) return null;
       return { ...wine, matchPercentage: score, rawMatchPercentage: undefined, affinityConfidence: undefined,
-        affinityModel: 'scan-local-l2-v1' as const };
+        affinityModel: wine.tastingAttributes?.scale === 'winerim-0-5' ? 'scan-local-l2-0to5-v2' as const : 'scan-local-l2-v1' as const };
     }
     const rawMatchPercentage = wine.matchPercentage;
     if (options.affinityCalibrationConfidence === null || options.affinityCalibrationConfidence === undefined) {
