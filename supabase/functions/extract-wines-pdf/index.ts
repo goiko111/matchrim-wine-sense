@@ -1,12 +1,11 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
-
-const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -23,14 +22,12 @@ serve(async (req) => {
       );
     }
 
-    console.log('Processing PDF with Gemini...');
+    console.log('Processing PDF with OpenAI...');
 
-    // For PDFs, we'll use Gemini's multimodal capabilities
-    // Convert base64 PDF to image pages and process
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // The shared helper normalizes PDF data URLs into file inputs.
+    const response = await fetchMatchrimAiChat({
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -81,7 +78,7 @@ Formato:
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Error from Lovable AI:', errorText);
+      console.error('Error from OpenAI:', errorText);
       throw new Error('Error al procesar el PDF con IA');
     }
 

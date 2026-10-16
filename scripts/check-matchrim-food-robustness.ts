@@ -4,24 +4,19 @@ import { test } from 'node:test';
 import ts from 'typescript';
 import * as contract from '../supabase/functions/scan-food-pairing/contract';
 import * as learning from '../supabase/functions/_shared/matchrim-learning';
+import { loadOpenAiTest } from './load-matchrim-openai-test';
 
 const source = readFileSync('supabase/functions/scan-food-pairing/index.ts', 'utf8');
 const compiled = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
 }).outputText;
-const providerCompiled = ts.transpileModule(readFileSync('supabase/functions/_shared/matchrim-ai-provider.ts', 'utf8'), {
-  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
-}).outputText;
-
 const run = async (response: Response, requestBody: unknown = {
   image: 'data:image/jpeg;base64,local-fixture', mode: 'menu',
-}, provider = 'lovable') => {
+}, provider = 'openai') => {
   let handler!: (req: Request) => Promise<Response>;
   let requests = 0;
   const env = { get: (key: string) => {
-    if (key === 'MATCHRIM_AI_PROVIDER') return provider;
-    if (key === 'LOVABLE_API_KEY') return provider === 'lovable' ? 'local-test-only' : undefined;
-    if (key === 'ANTHROPIC_API_KEY') return provider === 'anthropic' ? 'local-test-only' : undefined;
+    if (key === 'openai_matchrim') return provider === 'openai' ? 'local-test-only' : undefined;
     return undefined;
   } };
   const requestBodies: Record<string, unknown>[] = [];
@@ -30,14 +25,14 @@ const run = async (response: Response, requestBody: unknown = {
     requestBodies.push(JSON.parse(String(options.body)));
     return response;
   };
-  const providerModule = {};
-  new Function('exports', 'Deno', 'fetch', providerCompiled)(providerModule, { env }, fetchFixture);
+  const loaded = loadOpenAiTest({ env: provider === 'openai' ? { openai_matchrim: 'local-test-only' } : {}, fetch: fetchFixture });
   const dependencies: Record<string, unknown> = {
     'https://deno.land/std@0.168.0/http/server.ts': { serve: (fn: typeof handler) => { handler = fn; } },
     'https://esm.sh/@supabase/supabase-js@2.7.1': { createClient: () => ({}) },
     './contract.ts': contract,
     '../_shared/matchrim-learning.ts': learning,
-    '../_shared/matchrim-ai-provider.ts': providerModule,
+    '../_shared/matchrim-ai-provider.ts': loaded.provider,
+    '../_shared/matchrim-openai.ts': loaded.helper,
   };
   if (source.includes('structured-response.ts')) {
     dependencies['../_shared/structured-response.ts'] = await import('../supabase/functions/_shared/structured-response');
@@ -55,7 +50,8 @@ const run = async (response: Response, requestBody: unknown = {
 };
 
 const completion = (content: unknown, finish_reason = 'stop') => new Response(JSON.stringify({
-  choices: [{ message: { content }, finish_reason }],
+  status: finish_reason === 'stop' ? 'completed' : 'incomplete',
+  output: [{ type: 'message', role: 'assistant', status: 'completed', content: [{ type: 'output_text', text: content }] }],
 }));
 const valid = { summary: 'Carta', dishes: [{ nombre: 'Gambas', recomendaciones: [] }] };
 
@@ -242,12 +238,11 @@ test('Unicode literal evidence is retained', () => {
   assert.deepEqual(result.dishes.map((dish) => dish.nombre), ['\u9c7c', '\u9e21']);
 });
 
-const anthropic = (text: string) => new Response(JSON.stringify({ content: [{ type: 'text', text }], stop_reason: 'end_turn' }));
-test('Anthropic path uses existing provider and never trusts model profile ownership', async () => {
-  const result = await run(anthropic(JSON.stringify({ ...valid, has_profile: true, profile_source: 'auth' })),
-    { image: 'data:image/jpeg;base64,local-fixture', mode: 'menu', has_profile: true }, 'anthropic');
+test('OpenAI path never trusts model profile ownership', async () => {
+  const result = await run(completion(JSON.stringify({ ...valid, has_profile: true, profile_source: 'auth' })),
+    { image: 'data:image/jpeg;base64,local-fixture', mode: 'menu', has_profile: true });
   assert.equal(result.status, 200);
-  assert.equal(result.body.ai_provider, 'anthropic');
+  assert.equal(result.body.ai_provider, 'openai');
   assert.equal(result.body.has_profile, false);
   assert.equal(result.body.profile_source, 'none');
   assert.equal(result.requests, 1);
@@ -255,11 +250,11 @@ test('Anthropic path uses existing provider and never trusts model profile owner
 
 for (const [name, response] of [
   ['malformed envelope', new Response('{"content":[')],
-  ['malformed model JSON', anthropic('{"dishes":[')],
-  ['wrong type', anthropic('{"dishes":{}}')],
+  ['malformed model JSON', completion('{"dishes":[')],
+  ['wrong type', completion('{"dishes":{}}')],
 ] as const) {
-  test(`Anthropic ${name} is safe and has no fallback or retry`, async () => {
-    const result = await run(response, undefined, 'anthropic');
+  test(`OpenAI ${name} is safe and has no fallback or retry`, async () => {
+    const result = await run(response);
     assert.equal(result.status, 502);
     assert.equal(result.body.error, 'invalid_model_response');
     assert.equal(result.body.retryable, false);
@@ -284,7 +279,7 @@ test('tile hint is validated, echoed by the server and caps rows and model outpu
   });
   assert.equal(result.status, 200);
   assert.equal(result.requests, 1);
-  assert.equal(result.requestBodies[0].max_tokens, 8192);
+  assert.equal(result.requestBodies[0].max_output_tokens, 8192);
   assert.equal(result.body.dishes.length, 30);
   assert.deepEqual(result.body.scan_region, scanRegion);
   assert.equal(result.body.coverage.partial, true);

@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Active Window: 2026-10-16, OpenAI92 backend routing
+
+- Owner confirmed the dedicated Lovable Cloud secret name `openai_matchrim` and explicitly authorized a minimal-credit batch for all29AI functions, not only Restaurant91. Central Chat/Responses routing is prepared; no Anthropic/Lovable fallback, no key in client. Web/native sources remain unchanged. Defaults are documented OpenAI fast/quality/vision models; actual account access remains a hosted gate.
+- Production package is reconstructed from exact main67b9086, not from the broader mobile integration branch:29entrypoints/41source files, AST range/hash provenance, config/JWT preserved, five type-erased inherited compilation repairs. Actual package Deno29/29and independent parent network-denied rerunPASS. Current local release/cloud/remediation/restaurant/typecheck/lint/build checksPASS;106inherited lint warnings. Single authorized deploy, remote readback and real authenticated model tests remain pending. Build1.0(91) stays local/HOLD; no new TestFlight claim.
+- [OpenAI92 scope, verification and live gates](docs/MATCHRIM_OPENAI_92_2026-10-16.md). Earlier restaurant-only statements below are historical, not the current provider scope.
+
 ## Active Window: 2026-10-16, Restaurant91
 
 - Latest owner preference: OpenAI instead of storing the local Anthropic key. Optional OpenAI Responses adapter is prepared locally for Restaurant91 ONLY, via MATCHRIM_RESTAURANT91_AI_PROVIDER=openai plus OPENAI_API_KEY and explicit MATCHRIM_RESTAURANT91_OPENAI_MODEL; no default model, automatic retry or Lovable fallback.65provider transport/completion/privacy/isolation checksPASS; release/cloud/remediation89/scene90/typecheck/lint/build and Deno checksPASS (106inherited lint warnings,0errors). No new paid turn, provider call, secret storage, backend deployment or TestFlight upload. Owner will save OPENAI_API_KEY directly in the prepared Cloud Secrets form; saving is not yet confirmed.

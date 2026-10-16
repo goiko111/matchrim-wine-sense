@@ -1,12 +1,11 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { fetchMatchrimAiChat } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
-
-const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -23,7 +22,7 @@ serve(async (req) => {
       );
     }
 
-    console.log('Processing image with Gemini Vision...');
+    console.log('Processing image with OpenAI...');
 
     // Create AbortController with timeout
     const controller = new AbortController();
@@ -32,10 +31,9 @@ serve(async (req) => {
     let aiResponse: Response;
 
     try {
-      aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      aiResponse = await fetchMatchrimAiChat({
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${LOVABLE_API_KEY}`,
           'Content-Type': 'application/json',
         },
         signal: controller.signal,
@@ -84,12 +82,12 @@ Formato de salida:
 
       if (!aiResponse.ok) {
         const errorText = await aiResponse.text();
-        console.error('Error from Lovable AI:', aiResponse.status, errorText);
+        console.error('Error from OpenAI:', aiResponse.status, errorText);
         if (aiResponse.status === 429) {
           throw new Error('Demasiadas solicitudes. Por favor, inténtalo de nuevo en unos segundos.');
         }
         if (aiResponse.status === 402) {
-          throw new Error('Créditos agotados. Añade créditos en tu workspace de Lovable AI.');
+          throw new Error('Créditos agotados. Revisa la configuración de facturación de OpenAI.');
         }
         throw new Error('Error al procesar la imagen con IA');
       }

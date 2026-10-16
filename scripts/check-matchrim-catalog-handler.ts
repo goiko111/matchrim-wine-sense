@@ -12,7 +12,10 @@ let calls=0; let filter=''; let localFailure=false; let external=false; let exte
 const client={from:()=>({select:()=>({or:(value:string)=>{filter=value;return {limit:async()=>{calls++;return localFailure?{data:null,error:{code:'TEST_UNAVAILABLE'}}:{data:[{id:'fixture-only',name:'Stored wine'}],error:null};}};}})})};
 const compiled=ts.transpileModule(readFileSync(source,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
 const requireFixture=(id:string)=>id.includes('/http/server')?{serve:(fn:typeof handler)=>{handler=fn;}}:
-  id.includes('supabase-js')?{createClient:()=>client}:id.includes('matchrim-catalog-search')?contract:assert.fail(`Unexpected import ${id}`);
+  id.includes('supabase-js')?{createClient:()=>client}:id.includes('matchrim-catalog-search')?contract:
+  id.includes('matchrim-openai')?{hasMatchrimOpenAiKey:()=>external,fetchMatchrimAiChat:async(options:RequestInit)=>{
+    externalCalls++;assert(options.signal,'External search must have a timeout');throw new Error('fixture provider unavailable');
+  }}:assert.fail(`Unexpected import ${id}`);
 const quiet={log:()=>{},warn:()=>{},error:()=>{}};
 new Function('require','exports','Deno','fetch','console',compiled)(requireFixture,{},
   {env:{get:(key:string)=>key==='LOVABLE_API_KEY'?(external?'fixture-key-not-real':undefined):'fixture-value'}},

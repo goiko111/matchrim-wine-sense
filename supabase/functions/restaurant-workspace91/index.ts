@@ -116,9 +116,8 @@ const runBoundedAi = (
   };
   if (request.signal.aborted) { aborted(); return; }
   request.signal.addEventListener('abort', aborted, { once: true });
-  // This bounds our response wait only: the shared helper has no AbortSignal
-  // parameter. Never retry or claim the upstream paid request was cancelled.
-  Promise.resolve().then(() => dependencies.runAi(input)).then(
+  // Cancellation also reaches transport; it cannot promise reversal of provider charges.
+  Promise.resolve().then(() => dependencies.runAi({ ...input, signal: request.signal })).then(
     (result) => { cleanup(); resolve(result); },
     (error) => { cleanup(); reject(providerFailure(error)); },
   );

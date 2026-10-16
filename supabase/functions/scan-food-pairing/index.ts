@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 import { isFoodScanPayload, MAX_MENU_DISHES, MAX_MENU_TILE_DISHES, normalizeFoodScan, parseFoodMenuRegionContext } from "./contract.ts";
 import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from "../_shared/matchrim-learning.ts";
 import { runMatchrimAi } from "../_shared/matchrim-ai-provider.ts";
+import { hasMatchrimOpenAiKey } from "../_shared/matchrim-openai.ts";
 import { parseStructuredObject, structuredResponseError, STRUCTURED_RESPONSE_ERROR_STATUS,
   type StructuredResponseError } from "../_shared/structured-response.ts";
 
@@ -75,11 +76,7 @@ serve(async (req: Request) => {
     const scanRegion = parseFoodMenuRegionContext(rawScanRegion);
     if (rawScanRegion !== undefined && (!scanRegion || mode !== 'menu')) return invalidRequest();
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    const configuredProvider = Deno.env.get("MATCHRIM_AI_PROVIDER")?.trim().toLowerCase();
-    const useIndependentProvider = configuredProvider === "anthropic"
-      || (configuredProvider !== "lovable" && Boolean(Deno.env.get("ANTHROPIC_API_KEY")));
-    if (!(useIndependentProvider ? Deno.env.get("ANTHROPIC_API_KEY") : LOVABLE_API_KEY)) {
+    if (!hasMatchrimOpenAiKey()) {
       return new Response(JSON.stringify({ error: "provider_not_configured", recoverable: true,
         retryable: false, dishes: [], scan_version: FUNCTION_VERSION }), {
         status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -201,76 +198,24 @@ REGLAS ESTRICTAS:
 - No incluyas texto fuera del JSON.`;
 
     let content: unknown;
-    let provider = "lovable";
-    let model = "google/gemini-2.5-flash";
-    if (useIndependentProvider) {
-      try {
-        const ai = await runMatchrimAi({ prompt, image, maxTokens });
-        if (ai.complete === false) return invalidModelResponse(structuredResponseError('incomplete_response'));
-        content = ai.text;
-        provider = ai.provider;
-        model = ai.model;
-      } catch (error) {
-        if (error instanceof SyntaxError || error instanceof TypeError) {
-          return invalidModelResponse(structuredResponseError("invalid_json"));
-        }
-        console.error("Food AI provider unavailable");
-        return new Response(JSON.stringify({ error: "provider_unavailable", recoverable: true,
-          retryable: false, dishes: [], scan_version: FUNCTION_VERSION }), {
-          status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+    let provider = "openai";
+    let model = "";
+    try {
+      const ai = await runMatchrimAi({ prompt, image, maxTokens, signal: req.signal });
+      if (ai.complete === false) return invalidModelResponse(structuredResponseError('incomplete_response'));
+      content = ai.text;
+      provider = ai.provider;
+      model = ai.model;
+    } catch (error) {
+      if (error instanceof SyntaxError || error instanceof TypeError) {
+        return invalidModelResponse(structuredResponseError("invalid_json"));
       }
-    } else {
-      const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
-          messages: [
-            {
-              role: "user",
-              content: [
-                { type: "text", text: prompt },
-                { type: "image_url", image_url: { url: image } },
-              ],
-            },
-          ],
-          max_tokens: maxTokens,
-        }),
+      const limited = error instanceof Error && /demasiadas solicitudes/i.test(error.message);
+      console.error("Food AI provider unavailable");
+      return new Response(JSON.stringify({ error: limited ? "rate_limited" : "provider_unavailable", recoverable: true,
+        retryable: false, dishes: [], scan_version: FUNCTION_VERSION }), {
+        status: limited ? 429 : 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
-
-      if (!aiRes.ok) {
-        const errTxt = await aiRes.text();
-        console.error("AI gateway error:", aiRes.status, errTxt);
-        if (aiRes.status === 429) {
-          return new Response(JSON.stringify({ error: "rate_limited" }), {
-            status: 429,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
-        if (aiRes.status === 402) {
-          return new Response(JSON.stringify({ error: "credits_exhausted" }), {
-            status: 402,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
-        throw new Error(`AI gateway ${aiRes.status}`);
-      }
-
-      const envelope = parseStructuredObject(await aiRes.text());
-      if (!envelope.ok) return invalidModelResponse(envelope.error);
-      const choices = envelope.value.choices;
-      const choice = Array.isArray(choices) && choices.length === 1 ? choices[0] : null;
-      if (!choice || typeof choice !== "object" || Array.isArray(choice)) {
-        return invalidModelResponse(structuredResponseError("invalid_schema"));
-      }
-      if (choice.finish_reason != null && choice.finish_reason !== "stop") {
-        return invalidModelResponse(structuredResponseError("incomplete_response"));
-      }
-      content = choice.message?.content;
     }
     const parsed = parseStructuredObject(content);
     if (!parsed.ok) return invalidModelResponse(parsed.error);

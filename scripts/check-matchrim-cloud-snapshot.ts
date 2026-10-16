@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { manualWineIdentityNotice } from '../src/utils/manualWineIdentityNotice';
 import { confirmWineCandidateIdentity, correctWineCandidateIdentity, normalizeWineCandidates } from '../src/utils/multiWineScan';
 import { ImagePreparationError } from '../src/utils/imageAnalysis';
+import { openAi92LegacyHandlers } from './matchrim-openai92-scope';
 
 const snapshot = '0c1a29728fb2f6b7f033b7d5e68bc8ea8e5335b1';
 const localRelease = '89d478d6a391c4594fa09d815bb6546fb874231b';
@@ -53,6 +54,10 @@ const remediation89Changes = new Set(['src/utils/scanAnalysisPolicy.ts', 'src/ut
   'supabase/functions/scan-food-pairing/index.ts', 'supabase/functions/scan-food-pairing/contract.ts',
   'supabase/functions/scan-wine-menu/index.ts',
   'supabase/functions/_shared/matchrim-ai-provider.ts']);
+// The owner explicitly requested every AI caller move to the dedicated OpenAI key.
+// The focused AST guard verifies prompts and auth/catalog queries before exemption.
+execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-openai92-routing.ts']);
+const openAi92Changes = new Set(openAi92LegacyHandlers.map(name => `supabase/functions/${name}/index.ts`));
 // QA90 changes only this parser's disclosure count, not schema, scores or data.
 const qa90FoodDisclosure = 'src/utils/foodScanResponse.ts';
 const qa90NativeNavigation = 'src/components/MobileBottomNav.tsx';
@@ -71,7 +76,7 @@ let immutableCount = 0;
 for (const row of manifest.productSourceFingerprints as Array<{ path: string; sha256: string }>) {
   assert.equal(hash(execFileSync('git', ['show', `${snapshot}:${row.path}`])), row.sha256, `Snapshot hash: ${row.path}`);
   if (!allowedClientChanges.has(row.path) && !build83Changes.has(row.path) && !build84Changes.has(row.path)
-    && !build85Changes.has(row.path) && !remediation88Changes.has(row.path) && !remediation89Changes.has(row.path)
+    && !build85Changes.has(row.path) && !remediation88Changes.has(row.path) && !remediation89Changes.has(row.path) && !openAi92Changes.has(row.path)
     && row.path !== build85LearningPath && row.path !== qa90FoodDisclosure && row.path !== qa90NativeNavigation && row.path !== 'package.json') {
     const expected = localPricePaths.has(row.path)
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256;

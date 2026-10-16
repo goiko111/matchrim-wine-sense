@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 import { CatalogSearchInputError, catalogSearchFilter, parseCatalogSearchInput } from '../_shared/matchrim-catalog-search-v75.ts';
+import { fetchMatchrimAiChat, hasMatchrimOpenAiKey } from '../_shared/matchrim-openai.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -95,11 +96,10 @@ serve(async (req) => {
     let allWines = error ? [] : (wines || []);
     console.log(`Found ${allWines.length} wines in database matching "${query}"`);
 
-    // Always search externally to complement results
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (LOVABLE_API_KEY) {
+    // Complement catalog results with AI suggestions, without a web search tool.
+    if (hasMatchrimOpenAiKey()) {
       try {
-        console.log('Searching external sources for wines...');
+        console.log('Requesting AI wine suggestions...');
 
         const remainingSlots = Math.max(5, limit - allWines.length);
         const aliases = searchVariants
@@ -135,10 +135,9 @@ Formato JSON (sin markdown):
 
 DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
 
-        const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        const response = await fetchMatchrimAiChat({
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -168,7 +167,7 @@ DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
           const externalData = JSON.parse(content) as { wines?: SearchWine[] };
 
           if (externalData.wines && Array.isArray(externalData.wines)) {
-            console.log(`Found ${externalData.wines.length} wines from external sources`);
+            console.log(`Received ${externalData.wines.length} AI wine suggestions`);
 
             // Merge results, avoiding duplicates
             const existingNames = new Set(allWines.map(w => w.name?.toLowerCase()));
@@ -180,7 +179,7 @@ DEVUELVE SOLO EL JSON, SIN TEXTO ADICIONAL.`;
           }
         }
       } catch (externalError) {
-        console.error('Error searching external sources:', externalError);
+        console.error('Error requesting AI wine suggestions:', externalError);
         // Continue with database results
       }
     }
