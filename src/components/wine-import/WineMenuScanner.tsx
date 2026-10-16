@@ -51,6 +51,7 @@ import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
+import { normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import { awaitMenuCatalog } from '@/utils/menuCatalogAwait';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
@@ -137,6 +138,11 @@ const normalizeAttributeTo5 = (value: unknown) => {
 
 const normalizeAttributesTo5 = (attributes: ScannedWine['atributos']) => {
   if (!attributes) return null;
+  if (attributes.scale === 'winerim-0-5') {
+    const exact = normalizeWineAttributesForInsight(attributes);
+    return exact ? { scale: attributes.scale, potencia: exact.potente, acidez: exact.acidez,
+      dulzura: exact.dulce, taninos: exact.tanico, afrutado: exact.afrutado } : null;
+  }
 
   const normalized = {
     potencia: normalizeAttributeTo5(attributes.potencia),

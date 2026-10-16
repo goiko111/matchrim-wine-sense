@@ -1,4 +1,11 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import ts from 'typescript';
+import * as scanValues from '../supabase/functions/_shared/matchrim-scan-values';
+import * as calibration from '../src/utils/matchrimAffinityCalibration';
+import * as trainingEvidence from '../supabase/functions/_shared/matchrim-training-evidence';
+import * as learning from '../src/utils/matchrimLearning';
+import * as affinity from '../src/utils/wineAffinityExplanation';
 import { catalogWineFromVerifiedSheet, isVerifiedWinerimSheetForIdentity, lookupWinerimOriginalSheet,
   type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import { isSafeCanonicalLabelMatch, hasAmbiguousCanonicalMatches } from '../src/utils/winerimLabelIdentity';
@@ -121,6 +128,35 @@ await check('Twelve-second deadline bounds an uncooperative transport', async ()
   globalThis.setTimeout = ((callback, delay, ...rest) => original(callback, delay === 12000 ? 5 : delay, ...rest)) as typeof setTimeout;
   try { assert.equal((await lookupWinerimOriginalSheet(identity, undefined, async () => new Promise(() => undefined))).status, 'unavailable'); }
   finally { globalThis.setTimeout = original; }
+});
+await check('Legacy scoring, explanation and learning retain exact provider-migration baseline behavior', () => {
+  const baseline = <T,>(file: string): T => {
+    const source = execFileSync('git', ['show', `0ae0c98:${file}`], { encoding: 'utf8' });
+    const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
+    const exports = {};
+    new Function('exports', 'require', compiled)(exports, (id: string) => {
+      if (id.endsWith('matchrim-scan-values')) return scanValues;
+      if (id.endsWith('matchrimAffinityCalibration')) return calibration;
+      if (id.endsWith('matchrim-training-evidence')) return trainingEvidence;
+      throw new Error('Unexpected legacy dependency ' + id);
+    });
+    return exports as T;
+  };
+  const oldAffinity = baseline<typeof affinity>('src/utils/wineAffinityExplanation.ts');
+  const oldLearning = baseline<typeof learning>('src/utils/matchrimLearning.ts');
+  for (let i = 0; i < 50; i++) {
+    const profile = { potente: i % 6, acidez: i * 3 % 6, dulce: i * 5 % 6, tanico: i * 7 % 6, afrutado: i * 11 % 6 };
+    for (const value of [0, .4, 1, 3.2, 5, 8, 60]) {
+      const attrs = { potencia: value, acidez: 4, dulzura: 1, taninos: value, afrutado: 3 };
+      assert.deepEqual(affinity.normalizeWineAttributesForInsight(attrs), oldAffinity.normalizeWineAttributesForInsight(attrs));
+      assert.equal(affinity.calculateLocalMatchrimAffinity(profile, attrs), oldAffinity.calculateLocalMatchrimAffinity(profile, attrs));
+      assert.deepEqual(affinity.buildDetailedAffinityExplanation(profile, attrs), oldAffinity.buildDetailedAffinityExplanation(profile, attrs));
+      for (const rating of ['love', 'ok', 'not_for_me'] as const) {
+        const rows = [{ id: 'one', rating, use_for_profile_training: true, sensory_attributes: attrs }];
+        assert.deepEqual(learning.calculateLearnedMatchrimProfile(profile, rows), oldLearning.calculateLearnedMatchrimProfile(profile, rows));
+      }
+    }
+  }
 });
 console.log(JSON.stringify({ checks, passed: checks, profiles: 50, realUsers: 0, remoteCalls: 0,
   scope: 'Synthetic contract fixtures, not wine recognition or human taste accuracy' }));

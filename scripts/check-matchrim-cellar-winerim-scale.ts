@@ -8,8 +8,15 @@ import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } fro
 import { cellarAffinityView, cellarTrainingRows, confirmsCellarSaveEvidence, makeCellarCatalogEvidence,
   readCellarInitialAffinity, readCellarSensoryEvidence, withCellarInitialAffinity } from '../src/utils/bodegaAffinity';
 import { confirmsWineMutation } from '../src/utils/matchrimWineMutation';
-import { readMenuPrice, hasStoredMenuCatalogEvidence } from '../src/utils/menuWineSave';
-import { optionalScanNumber } from '../supabase/functions/_shared/matchrim-scan-values';
+import { readMenuPrice, hasStoredMenuCatalogEvidence, confirmsMenuInsert, menuFinancialPrice,
+  menuPriceSnapshot, menuSaveEvidence } from '../src/utils/menuWineSave';
+import { confirmsMenuAction, menuCardIdentity, menuIntentChanges } from '../src/utils/menuWineActions';
+import { labelInsertErrorResult } from '../src/utils/labelScanSave';
+import { normalizeScanCurrency } from '../src/utils/scanMoney';
+import { applyMenuWineEvidence } from '../src/utils/scanWineEvidence';
+import { catalogWineFromVerifiedSheet, type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
+import type { MenuScanWine } from '../src/utils/wineMenuScan';
+import { optionalScanNumber, normalizeScanSensoryValue } from '../supabase/functions/_shared/matchrim-scan-values';
 
 globalThis.fetch = () => { throw new Error('Offline cellar scale contracts: remote fetch forbidden'); };
 const object = (value: unknown): Record<string, unknown> => {
@@ -206,6 +213,139 @@ await check('Actual native resolver persists grounded scale unchanged and never 
   assert.equal(object(object(payload!.place_details).bodega_sensory_evidence).scale, scale);
   assert.equal(object(object(payload!.place_details).matchrim_affinity_initial).model, 'scan-local-l2-0to5-v2');
 });
+
+const menuSource = readFileSync('src/components/wine-import/WineMenuScanner.tsx', 'utf8');
+const menuAst = ts.createSourceFile('WineMenuScanner.tsx', menuSource, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+const menuNames = ['normalizeAttributeTo5', 'normalizeAttributesTo5', 'saveScannedWine'];
+const menuDeclarations = new Map<string, ts.VariableDeclaration>();
+const visitMenu = (node: ts.Node) => {
+  if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && menuNames.includes(node.name.text)) {
+    assert.ok(!menuDeclarations.has(node.name.text));
+    menuDeclarations.set(node.name.text, node);
+  }
+  ts.forEachChild(node, visitMenu);
+};
+visitMenu(menuAst); assert.equal(menuDeclarations.size, menuNames.length);
+const menuNormalization = compile(menuNames.slice(0, 2)
+  .map(name => 'const ' + menuDeclarations.get(name)!.getText(menuAst) + ';').join('\n'));
+const normalizeMenu = new Function('normalizeScanSensoryValue', 'normalizeWineAttributesForInsight',
+  menuNormalization + '\nreturn normalizeAttributesTo5;')(normalizeScanSensoryValue, normalizeWineAttributesForInsight);
+const menuInput: MenuScanWine = { nombre: identity.name, productor: identity.producer, anada: identity.vintage,
+  region: identity.region, pais: identity.country, precio: 20, moneda: 'EUR', servicio: 'botella',
+  tipo: 'tinto', descripcion: null, confidence: .78, dudas: ['Synthetic medium OCR signal'], campos_inferidos: [],
+  texto_fuente: `${identity.name} ${identity.producer} 2021` };
+const menuSheet: WinerimOriginalSheet = { id: 'SYN-SCALE', name: identity.name, producer: identity.producer,
+  vintage: '2021', region: identity.region, country: identity.country, grapes: [], detailVerified: true,
+  url: 'https://web.winerim.com/the-library/wines/SYN-SCALE/synthetic-scale',
+  sensoryAttributes: { power: 0, acidity: .4, sweetness: 1.7, tannin: 0, fruity: 5 } };
+const menuCatalog = catalogWineFromVerifiedSheet(identity, menuSheet);
+assert.ok(menuCatalog);
+
+const saveMenu = async (wine: MenuScanWine, profile: ScanProfileSnapshot) => {
+  let payload: Record<string, unknown> | undefined, persisted: Record<string, unknown> | undefined;
+  let inserts = 0, savedKeys = new Set<string>();
+  const errors: string[] = [], warnings: string[] = [], successes: string[] = [];
+  const ownerId = 'synthetic-menu-owner';
+  const savingRef = { current: false }, pendingIdentitiesRef = { current: new Map<number, string>() };
+  const savedCardsRef = { current: new Map() };
+  const chain = { select: () => chain, single: async () => ({ data: persisted, error: null }) };
+  const dependencies = {
+    user: { id: ownerId }, isNative: true,
+    navigate: () => { throw new Error('Unexpected navigation'); }, buildAuthRedirectPath: (path: string) => path,
+    location: { pathname: '/escanear/carta-vinos', search: '' }, savingRef,
+    unconfirmedRef: { current: new Set() }, identityHoldsRef: { current: new Set() }, savedWineKeys: savedKeys,
+    saveLifetime: { current: { active: true, generation: 1, ownerId } }, pendingIdentitiesRef, savedCardsRef,
+    setUnconfirmedWineIndexes: () => undefined, setIdentityHoldIndexes: () => undefined, setSavingWineKey: () => undefined,
+    menuCardIdentity, normalizeAttributesTo5: normalizeMenu, menuSaveEvidence, menuPriceSnapshot, menuFinancialPrice,
+    normalizeScanCurrency, makeCellarCatalogEvidence, withCellarInitialAffinity, scanProfile: profile,
+    restaurantName: 'Synthetic restaurant', restaurantSessionId: null, matchrimCode: null,
+    pairingDishName: null, similarWineName: null, menuIntentChanges, labelInsertErrorResult,
+    confirmsMenuAction, confirmsMenuInsert, confirmsCellarSaveEvidence,
+    supabase: { from: (table: string) => {
+      assert.equal(table, 'user_wines');
+      return { insert: (value: Record<string, unknown>) => {
+        inserts++; payload = structuredClone(value);
+        persisted = JSON.parse(JSON.stringify({ ...value, id: 'synthetic-menu-row', rating: null }));
+        return chain;
+      }, update: () => { throw new Error('Unexpected existing-row update'); } };
+    } },
+    setSavedWineKeys: (update: (keys: Set<string>) => Set<string>) => { savedKeys = update(savedKeys); },
+    trackAppEvent: () => undefined,
+    toast: { error: (message: string) => errors.push(message), warning: (message: string) => warnings.push(message),
+      success: (message: string) => successes.push(message) },
+    console: { error: (...args: unknown[]) => errors.push(args.map(String).join(' ')) },
+  };
+  const code = compile('const ' + menuDeclarations.get('saveScannedWine')!.getText(menuAst) + ';')
+    + '\nreturn saveScannedWine;';
+  const run = new Function(...Object.keys(dependencies), code)(...Object.values(dependencies));
+  const original = JSON.stringify(wine);
+  await run(wine, 0, 'wishlist');
+  assert.equal(inserts, 1); assert.deepEqual(errors, []); assert.deepEqual(warnings, []);
+  assert.equal(successes.length, 1); assert.equal(savedCardsRef.current.size, 1); assert.equal(savedKeys.size, 1);
+  assert.equal(savingRef.current, false); assert.equal(pendingIdentitiesRef.current.size, 0);
+  assert.equal(JSON.stringify(wine), original);
+  assert.ok(payload); assert.ok(persisted);
+  return { payload, persisted, reopened: nativeNormalizer(true)(persisted) };
+};
+
+await check('Actual menu normalizer preserves explicit zero/decimals and leaves the unmarked legacy branch intact', () => {
+  assert.deepEqual(normalizeMenu(attributes), attributes);
+  assert.deepEqual(normalizeMenu({ potencia: 0, acidez: .4, dulzura: 1.7, taninos: 0, afrutado: 5 }),
+    { potencia: 1, acidez: 1, dulzura: 2, taninos: 1, afrutado: 5 });
+});
+await check('Actual menu normalizer abstains on missing or invalid explicit axes instead of inventing sensory data', () => {
+  const missing = { ...attributes }; delete missing.taninos;
+  for (const value of [null, missing, { ...attributes, taninos: null }, { ...attributes, taninos: '0' },
+    { ...attributes, taninos: 6 }]) assert.equal(normalizeMenu(value), null);
+});
+await check('Actual menu save to Bodega retains v2 source values, displayed/current score and immutable initial snapshot', async () => {
+  const menu = applyMenuWineEvidence(menuInput, snapshot.profile, menuCatalog);
+  assert.equal(menu.compatibilidad, 93); assert.deepEqual(menu.atributos, attributes);
+  const result = await saveMenu(menu, snapshot);
+  assert.deepEqual(result.payload.sensory_attributes, attributes);
+  assert.deepEqual(result.reopened.sensory_attributes, attributes);
+  assert.equal(result.persisted.matchrim_affinity, menu.compatibilidad);
+  assert.equal(object(object(result.persisted.place_details).bodega_sensory_evidence).version, 2);
+  const view = cellarAffinityView(result.reopened, snapshot);
+  assert.equal(view.current, menu.compatibilidad); assert.equal(view.initial?.score, menu.compatibilidad);
+  assert.equal(view.initial?.model, 'scan-local-l2-0to5-v2'); assert.equal(view.initial?.scale, scale);
+  assert.deepEqual(view.initial?.profile, snapshot.profile);
+  assert.deepEqual(withCellarInitialAffinity(result.reopened, { ...snapshot,
+    profile: { potente: 5, acidez: 5, dulce: 5, tanico: 5, afrutado: 5 } }, 'first_verified'), result.reopened.place_details);
+});
+await check('Actual menu save with missing original sensory stays pending after Bodega reload', async () => {
+  const missing = catalogWineFromVerifiedSheet(identity, { ...menuSheet, sensoryAttributes: null });
+  const menu = applyMenuWineEvidence(menuInput, snapshot.profile, missing);
+  assert.equal(menu.compatibilidad, null); assert.equal(menu.atributos, null);
+  const result = await saveMenu(menu, snapshot);
+  assert.equal(result.persisted.sensory_attributes, null); assert.equal(result.persisted.matchrim_affinity, null);
+  assert.equal(readCellarSensoryEvidence(result.reopened), null);
+  assert.equal(readCellarInitialAffinity(result.reopened), null);
+  assert.equal(cellarAffinityView(result.reopened, snapshot).current, null);
+  assert.equal(object(result.persisted.place_details).bodega_sensory_evidence, undefined);
+});
+await check('Actual menu save without a profile keeps exact v2 sensory but does not manufacture an initial score', async () => {
+  const missing: ScanProfileSnapshot = { ...snapshot, profile: null, source: 'unavailable', status: 'missing' };
+  const menu = applyMenuWineEvidence(menuInput, null, menuCatalog);
+  const result = await saveMenu(menu, missing);
+  assert.deepEqual(result.reopened.sensory_attributes, attributes);
+  assert.equal(result.persisted.matchrim_affinity, null); assert.equal(readCellarInitialAffinity(result.reopened), null);
+  assert.equal(cellarAffinityView(result.reopened, missing).current, null);
+});
+await check('Actual unmarked legacy menu save keeps the historical v1 model and score on Bodega reload', async () => {
+  const attrs = { potencia: 2, acidez: 5, dulzura: 1, taninos: 1, afrutado: 4 };
+  const profile: ScanProfileSnapshot = { ...snapshot, profile: { potente: 2, acidez: 3, dulce: 2, tanico: 1, afrutado: 5 } };
+  const score = calculateLocalMatchrimAffinity(profile.profile, attrs);
+  const menu: MenuScanWine = { ...menuInput, confidence: .95, dudas: [], canonicalId: 'SYN-LEGACY-MENU',
+    sensorySource: 'catalog', atributos: attrs, compatibilidad: score, affinity_calibrated: true };
+  const result = await saveMenu(menu, profile);
+  assert.equal(score, 69); assert.deepEqual(result.reopened.sensory_attributes, attrs);
+  assert.equal(result.persisted.matchrim_affinity, score);
+  const view = cellarAffinityView(result.reopened, profile);
+  assert.equal(view.current, score); assert.equal(view.initial?.score, score);
+  assert.equal(view.initial?.model, 'scan-local-l2-v1'); assert.equal(view.initial?.version, 1);
+  assert.equal(view.initial?.scale, undefined);
+});
 assert.equal(JSON.stringify(saved), before);
 console.log(JSON.stringify({ checks, passed: true, remoteCalls: 0, realDatabaseWrites: 0,
-  scope: 'Synthetic exact-scale Bodega contracts and actual MyWines bodies with in-memory dependencies; no migration, build or provider calls' }));
+  scope: 'Synthetic exact-scale Bodega contracts and actual MyWines/menu save bodies with in-memory dependencies; no migration, build or provider calls' }));

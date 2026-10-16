@@ -148,12 +148,14 @@ for (const immutable of ['src/data/quizData.ts']) {
     execFileSync('git', ['-C', root, 'show', '598dda8:' + immutable], { encoding: 'utf8' })));
 }
 for (const guarded of ['src/utils/matchrimLearning.ts', 'supabase/functions/_shared/matchrim-learning.ts']) {
-  check('Exact negative guard only; all learning weights/formula unchanged: ' + guarded, () => {
+  check('Historical negative guard retained; explicit client scale94 is separately fingerprinted: ' + guarded, () => {
     const original = execFileSync('git', ['-C', root, 'show', '598dda8:' + guarded], { encoding: 'utf8' });
     const oldGuard = 'if (numeric === null) return null;';
     assert.equal(original.split(oldGuard).length, 2, 'Exactly one baseline guard');
-    assert.equal(readFileSync(resolve(root, guarded), 'utf8'),
-      original.replace(oldGuard, 'if (numeric === null || numeric < 0) return null;'));
+    const expected = original.replace(oldGuard, 'if (numeric === null || numeric < 0) return null;');
+    assert.equal(execFileSync('git', ['-C', root, 'show', '71ac7eb:' + guarded], { encoding: 'utf8' }), expected);
+    assert.equal(readFileSync(resolve(root, guarded), 'utf8'), guarded.startsWith('src/')
+      ? execFileSync('git', ['-C', root, 'show', 'f66edd6:' + guarded], { encoding: 'utf8' }) : expected);
   });
 }
 for (const key of ['potencia', 'acidez', 'dulzura', 'taninos', 'afrutado'] as const) {

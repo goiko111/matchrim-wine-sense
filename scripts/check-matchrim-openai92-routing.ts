@@ -6,6 +6,8 @@ import ts from 'typescript';
 import { openAi92LegacyHandlers } from './matchrim-openai92-scope';
 
 const baseline = '0ae0c98';
+const reviewedClientSensory = 'f66edd6';
+const providerMigration = 'b27011b';
 const printer = ts.createPrinter({ removeComments: true });
 const parse = (file: string, text: string) => ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true);
 const print = (node: ts.Node, source: ts.SourceFile) => printer.printNode(ts.EmitHint.Unspecified, node, source);
@@ -67,8 +69,12 @@ for (const file of list('supabase/functions')) {
 }
 for (const file of ['src/utils/matchrimLearning.ts', 'src/utils/wineAffinityExplanation.ts',
   'supabase/functions/_shared/matchrim-learning.ts', 'supabase/functions/_shared/matchrim-affinity.ts']) {
-  assert.equal(readFileSync(file, 'utf8'), execFileSync('git', ['show', `${baseline}:${file}`], { encoding: 'utf8' }),
-    'Taste scoring/learning evidence is not altered by provider migration: ' + file);
+  const historical = execFileSync('git', ['show', `${baseline}:${file}`], { encoding: 'utf8' });
+  assert.equal(execFileSync('git', ['show', `${providerMigration}:${file}`], { encoding: 'utf8' }), historical,
+    'The provider migration itself did not alter taste scoring/learning: ' + file);
+  assert.equal(readFileSync(file, 'utf8'), file.startsWith('src/')
+    ? execFileSync('git', ['show', `${reviewedClientSensory}:${file}`], { encoding: 'utf8' }) : historical,
+  'Only the separately reviewed explicit-scale client change is accepted; hosted scoring stays frozen: ' + file);
 }
 console.log(JSON.stringify({ passed: true, handlers: openAi92LegacyHandlers.length, legacyCallsites: calls,
   remoteCalls: 0, scope: 'AST request/prompt/auth/query preservation and complete local provider/client boundary audit; not deployed routing proof' }));
