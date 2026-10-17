@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import ts from 'typescript';
 import { openAi92LegacyHandlers } from './matchrim-openai92-scope';
@@ -8,6 +9,12 @@ import { openAi92LegacyHandlers } from './matchrim-openai92-scope';
 const baseline = '0ae0c98';
 const reviewedClientSensory = 'f66edd6';
 const providerMigration = 'b27011b';
+const reviewedSpecialBaseline95 = '86df5feac04a6d33026c1ebc20cebab34ae4f3a4';
+const reviewedSpecialSources95 = {
+  'supabase/functions/ai-wine-chat/index.ts': '9cfc34dc222e9d0d19fc9f1edd852c580b1aadc71b8db9cc3337d6f38c7accbd',
+  'supabase/functions/_shared/matchrim-special-moments95.ts': 'bbda4f7971782fd4d1f3ce337841f709b2e20ffcba3e975d63999a45c75d82bc',
+  'supabase/functions/_shared/matchrim-profile95.ts': 'cb4d874ae2567fa4cef9aa6f4915cc887db90d4b75a25ee4a93d3f1b386d67b4',
+};
 const printer = ts.createPrinter({ removeComments: true });
 const parse = (file: string, text: string) => ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true);
 const print = (node: ts.Node, source: ts.SourceFile) => printer.printNode(ts.EmitHint.Unspecified, node, source);
@@ -43,6 +50,47 @@ const databaseCalls = (source: ts.SourceFile) => {
   };
   visit(source); return calls;
 };
+// The only new DB scope is the separately reviewed special-moments loader.
+// Pin the complete reviewed sources, then prove every remaining legacy node.
+const projectSpecial95 = (source: ts.SourceFile, removeSpecial: boolean) => {
+  let loaders = 0, branches = 0;
+  const transformed = ts.transform(source, [context => root => {
+    const visit = (node: ts.Node): ts.VisitResult<ts.Node> => {
+      if (ts.isImportDeclaration(node)) return undefined;
+      if (removeSpecial && ts.isVariableStatement(node)
+        && node.declarationList.declarations.some(d => d.name.getText(source) === 'loadSpecialMomentProfile95')) {
+        loaders++; return undefined;
+      }
+      if (removeSpecial && ts.isIfStatement(node)
+        && node.expression.getText(source) === 'payload.functionType === "special-moments"') {
+        branches++; return undefined;
+      }
+      return ts.visitEachChild(node, visit, context);
+    };
+    return ts.visitNode(root, visit) as ts.SourceFile;
+  }]);
+  const output = printer.printFile(transformed.transformed[0]); transformed.dispose();
+  if (removeSpecial) { assert.equal(loaders, 1, 'Exactly one reviewed loader'); assert.equal(branches, 1, 'Exactly one special-only early branch'); }
+  return parse(source.fileName, output);
+};
+const assertSpecialLegacyProjection95 = (source: ts.SourceFile) => {
+  const previous = parse(source.fileName, execFileSync('git', ['show', `${reviewedSpecialBaseline95}:${source.fileName}`], { encoding: 'utf8' }));
+  const projected = projectSpecial95(source, true);
+  assert.equal(printer.printFile(projected), printer.printFile(projectSpecial95(previous, false)),
+    'Entire ordinary handler/module AST stays exact86df, not merely its DB calls');
+  return projected;
+};
+const reviewedSpecialDb95 = (source: ts.SourceFile) => {
+  assert.equal(source.fileName, 'supabase/functions/ai-wine-chat/index.ts');
+  assert.equal(createHash('sha256').update(source.text).digest('hex'),
+    reviewedSpecialSources95['supabase/functions/ai-wine-chat/index.ts'],
+    'The supplied AST source, including the special-only loader, must match the reviewed freeze');
+  for (const [file, expected] of Object.entries(reviewedSpecialSources95)) {
+    assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex'), expected,
+      'Additive v95 source freeze; no unreviewed helper/body/query change: ' + file);
+  }
+  return assertSpecialLegacyProjection95(source);
+};
 let calls = 0;
 for (const name of openAi92LegacyHandlers) {
   const file = `supabase/functions/${name}/index.ts`;
@@ -52,9 +100,26 @@ for (const name of openAi92LegacyHandlers) {
   const oldBodies = callBodies(before, true);
   const newBodies = callBodies(after, false);
   assert.deepEqual(newBodies, oldBodies, `${name}: every prompt, token limit and model-tier hint preserved`);
-  assert.deepEqual(databaseCalls(after), databaseCalls(before), `${name}: auth/catalog query semantics retained`);
+  const databaseSource = name === 'ai-wine-chat' ? reviewedSpecialDb95(after) : after;
+  assert.deepEqual(databaseCalls(databaseSource), databaseCalls(before), `${name}: auth/catalog query semantics retained`);
   assert.doesNotMatch(afterText, /Deno\.env\.get\(["'](?:LOVABLE_API_KEY|ANTHROPIC_API_KEY)["']\)|ai\.gateway\.lovable\.dev/);
   calls += newBodies.length;
+}
+// Test both the complete source pin and the independent legacy AST projection.
+const chatPath95 = 'supabase/functions/ai-wine-chat/index.ts';
+const chatText95 = readFileSync(chatPath95, 'utf8');
+for (const [label, candidate] of [
+  ['legacy auth', chatText95.replace('getUser(token)', 'getUser("unreviewed-owner")')],
+  ['strict owner filter', chatText95.replace('.eq("user_id", userId).order', '.eq("user_id", "unreviewed-owner").order')],
+  ['ordinary prompt/body', chatText95.replace('model: stream ? "google/gemini-2.5-pro"', 'model: stream ? "unreviewed-model"')],
+  ['extra side query', chatText95 + '\ngetSupabaseClient(null).from("unreviewed_table").select("*");\n'],
+] as const) {
+  assert.notEqual(candidate, chatText95, 'Mutation fixture must change source: ' + label);
+  assert.throws(() => reviewedSpecialDb95(parse(chatPath95, candidate)), undefined, 'Guard rejects: ' + label);
+  if (label !== 'strict owner filter') {
+    assert.throws(() => assertSpecialLegacyProjection95(parse(chatPath95, candidate)), undefined,
+      'Legacy AST projection independently rejects: ' + label);
+  }
 }
 const list = (folder: string): string[] => readdirSync(folder, { withFileTypes: true }).flatMap(entry => {
   const name = path.join(folder, entry.name);
@@ -77,4 +142,5 @@ for (const file of ['src/utils/matchrimLearning.ts', 'src/utils/wineAffinityExpl
   'Only the separately reviewed explicit-scale client change is accepted; hosted scoring stays frozen: ' + file);
 }
 console.log(JSON.stringify({ passed: true, handlers: openAi92LegacyHandlers.length, legacyCallsites: calls,
-  remoteCalls: 0, scope: 'AST request/prompt/auth/query preservation and complete local provider/client boundary audit; not deployed routing proof' }));
+  reviewedSpecial95: true, negativeMutationControls: 4, independentLegacyAstMutationControls: 3,
+  remoteCalls: 0, scope: 'AST request/prompt/auth/query preservation plus hash-pinned special95-only projection; complete provider/client/scoring boundary audit; not deployed routing proof' }));

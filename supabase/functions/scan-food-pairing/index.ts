@@ -1,7 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 import { isFoodScanPayload, MAX_MENU_DISHES, MAX_MENU_TILE_DISHES, normalizeFoodScan, parseFoodMenuRegionContext } from "./contract.ts";
-import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from "../_shared/matchrim-learning.ts";
+import { calculateLearnedMatchrimProfile95, readMatchrimProfile95, MATCHRIM_PROFILE95_VERSION,
+  MATCHRIM_PROFILE95_TRAINING_COLUMNS, type MatchrimProfile95 } from "../_shared/matchrim-profile95.ts";
 import { runMatchrimAi } from "../_shared/matchrim-ai-provider.ts";
 import { hasMatchrimOpenAiKey } from "../_shared/matchrim-openai.ts";
 import { parseStructuredObject, structuredResponseError, STRUCTURED_RESPONSE_ERROR_STATUS,
@@ -12,45 +13,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const FUNCTION_VERSION = 'scan-food-pairing-2026-10-15-tiled-regions-v8';
-
-type MatchrimProfile = {
-  potente: number;
-  acidez: number;
-  dulce: number;
-  tanico: number;
-  afrutado: number;
-};
-
-const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
-
-const normalizeSensoryValueTo5 = (value: unknown): number | null => {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return null;
-  let v = n;
-  if (v > 10) v = v / 20;
-  else if (v > 5) v = v / 2;
-  return clamp(Math.round(v), 1, 5);
-};
-
-const buildLearnedProfile = async (
-  // deno-lint-ignore no-explicit-any
-  client: any,
-  userId: string,
-  baseProfile: MatchrimProfile,
-): Promise<MatchrimProfile> => {
-  const { data, error } = await client
-    .from("user_wines")
-    .select("rating, sensory_attributes, use_for_profile_training, created_at, updated_at")
-    .eq("user_id", userId)
-    .eq("use_for_profile_training", true)
-    .not("rating", "is", null)
-    .not("sensory_attributes", "is", null)
-    .limit(50);
-  if (error || !data?.length) return baseProfile;
-
-  return calculateEdgeLearnedProfile(baseProfile, data as MatchrimTrainingRow[]);
-};
+const FUNCTION_VERSION = 'scan-food-pairing-2026-10-17-profile95-v9';
 
 const invalidModelResponse = (error: StructuredResponseError) => new Response(JSON.stringify({
   ...error, dishes: [], scan_version: FUNCTION_VERSION,
@@ -90,52 +53,68 @@ serve(async (req: Request) => {
       { global: { headers: { Authorization: authHeader } } },
     );
 
-    let authProfile: MatchrimProfile | null = null;
-    let userId: string | null = null;
-    if (authHeader) {
+    const checkCancelled = () => { if (req.signal.aborted) throw new DOMException('Cancelled', 'AbortError'); };
+    let learnedProfile: MatchrimProfile95 | null = null;
+    let profileSource: 'auth' | 'client' | 'none' = 'none';
+    let profileStatus: 'base' | 'learned' | 'client' | 'none' | 'missing' | 'invalid' | 'unavailable' | 'training-unavailable' = 'none';
+    let profileSamples: number | null = null;
+    const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+    const anonymous = !authHeader || token === Deno.env.get('SUPABASE_ANON_KEY');
+    checkCancelled();
+    if (!anonymous) {
       try {
-        const token = authHeader.replace("Bearer", "").trim();
-        const { data: { user } } = await supabaseClient.auth.getUser(token);
-        if (user) {
-          userId = user.id;
-          const { data: prof } = await supabaseClient
+        const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
+        checkCancelled();
+        if (!authError && user) {
+          const { data: prof, error: baseError } = await supabaseClient
             .from("quiz_results")
             .select("potente, acidez, dulce, tanico, afrutado")
             .eq("user_id", user.id)
             .order("created_at", { ascending: false })
             .limit(1)
+            .abortSignal(req.signal)
             .maybeSingle();
-          if (prof) authProfile = prof as MatchrimProfile;
+          checkCancelled();
+          learnedProfile = baseError ? null : readMatchrimProfile95(prof);
+          profileStatus = baseError ? 'unavailable' : !prof ? 'missing' : !learnedProfile ? 'invalid' : 'base';
+          if (learnedProfile) {
+            profileSource = 'auth';
+            try {
+              const { data: rows, error: trainingError } = await supabaseClient.from('user_wines')
+                .select(MATCHRIM_PROFILE95_TRAINING_COLUMNS).eq('user_id', user.id)
+                .eq('use_for_profile_training', true).not('rating', 'is', null)
+                .not('sensory_attributes', 'is', null).abortSignal(req.signal);
+              checkCancelled();
+              if (trainingError || !Array.isArray(rows)) {
+                profileStatus = 'training-unavailable';
+              } else {
+                const learned = calculateLearnedMatchrimProfile95(learnedProfile, rows);
+                learnedProfile = learned.profile;
+                profileSamples = learned.samples;
+                profileStatus = learned.samples > 0 ? 'learned' : 'base';
+              }
+            } catch {
+              checkCancelled();
+              profileStatus = 'training-unavailable';
+            }
+          }
+        } else {
+          profileStatus = 'unavailable';
         }
-      } catch (e) {
-        console.log("Anonymous request:", (e as Error).message);
+      } catch {
+        checkCancelled();
+        learnedProfile = null; profileSource = 'none'; profileStatus = 'unavailable';
       }
+    } else {
+      learnedProfile = readMatchrimProfile95(matchrimProfile);
+      profileSource = learnedProfile ? 'client' : 'none';
+      profileStatus = learnedProfile ? 'client' : 'none';
+      profileSamples = learnedProfile ? 0 : null;
     }
-
-    const normalizeClientProfile = (raw: unknown): MatchrimProfile | null => {
-      if (!raw || typeof raw !== "object") return null;
-      const r = raw as Record<string, unknown>;
-      const keys: (keyof MatchrimProfile)[] = ["potente", "acidez", "dulce", "tanico", "afrutado"];
-      const out: Partial<MatchrimProfile> = {};
-      for (const k of keys) {
-        const v = normalizeSensoryValueTo5(r[k]);
-        if (v == null) return null;
-        out[k] = v;
-      }
-      return out as MatchrimProfile;
-    };
-    const clientProfile = normalizeClientProfile(matchrimProfile);
-    const baseProfile: MatchrimProfile | null = authProfile ?? clientProfile;
-    const profileSource: "auth" | "client" | "none" = authProfile ? "auth" : clientProfile ? "client" : "none";
-
-    const learnedProfile = baseProfile && userId && authProfile
-      ? await buildLearnedProfile(supabaseClient, userId, baseProfile)
-      : baseProfile;
-
-
+    checkCancelled();
     const profileText = learnedProfile
-      ? `Perfil Matchrim del usuario (escala 1-5): potencia=${learnedProfile.potente}, acidez=${learnedProfile.acidez}, dulzura=${learnedProfile.dulce}, taninos=${learnedProfile.tanico}, afrutado=${learnedProfile.afrutado}.`
-      : "El usuario no tiene perfil Matchrim. Usa recomendaciones de afinidad clásica.";
+      ? `Perfil Matchrim del usuario (escala 0-5): potencia=${learnedProfile.potente}, acidez=${learnedProfile.acidez}, dulzura=${learnedProfile.dulce}, taninos=${learnedProfile.tanico}, afrutado=${learnedProfile.afrutado}.${profileStatus === 'training-unavailable' ? ' Solo test base; valoraciones no disponibles.' : ''}`
+      : "No hay un perfil Matchrim verificable disponible. Usa orientacion general, sin preferencias personales.";
 
     const maxDishes = mode === "menu" ? (scanRegion ? MAX_MENU_TILE_DISHES : MAX_MENU_DISHES) : 1;
     const maxTokens = scanRegion ? 8192 : 16384;
@@ -236,6 +215,7 @@ REGLAS ESTRICTAS:
         coverage: normalized.coverage,
         has_profile: Boolean(learnedProfile),
         profile_source: profileSource,
+        profile_context: { version: MATCHRIM_PROFILE95_VERSION, source: profileSource, status: profileStatus, samples: profileSamples },
         scan_version: FUNCTION_VERSION,
         ai_provider: provider,
         ai_model: model,

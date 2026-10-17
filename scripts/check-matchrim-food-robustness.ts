@@ -4,6 +4,7 @@ import { test } from 'node:test';
 import ts from 'typescript';
 import * as contract from '../supabase/functions/scan-food-pairing/contract';
 import * as learning from '../supabase/functions/_shared/matchrim-learning';
+import * as profile95 from '../supabase/functions/_shared/matchrim-profile95';
 import { loadOpenAiTest } from './load-matchrim-openai-test';
 
 const source = readFileSync('supabase/functions/scan-food-pairing/index.ts', 'utf8');
@@ -31,6 +32,7 @@ const run = async (response: Response, requestBody: unknown = {
     'https://esm.sh/@supabase/supabase-js@2.7.1': { createClient: () => ({}) },
     './contract.ts': contract,
     '../_shared/matchrim-learning.ts': learning,
+    '../_shared/matchrim-profile95.ts': profile95,
     '../_shared/matchrim-ai-provider.ts': loaded.provider,
     '../_shared/matchrim-openai.ts': loaded.helper,
   };

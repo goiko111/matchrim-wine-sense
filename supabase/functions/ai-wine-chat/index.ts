@@ -2,6 +2,8 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 import { fetchMatchrimAiChat, getMatchrimOpenAiModel, hasMatchrimOpenAiKey } from "../_shared/matchrim-openai.ts";
+import { calculateLearnedMatchrimProfile95, MATCHRIM_PROFILE95_TRAINING_COLUMNS, readMatchrimProfile95 } from "../_shared/matchrim-profile95.ts";
+import { specialMomentsResponse95, type SpecialMomentProfile95 } from "../_shared/matchrim-special-moments95.ts";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
 const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
@@ -233,6 +235,26 @@ const loadProfile = async (authHeader: string | null, userId: string | null) => 
   return (data ?? null) as QuizResult | null;
 };
 
+const loadSpecialMomentProfile95 = async (
+  authHeader: string | null, userId: string | null, signal: AbortSignal,
+): Promise<SpecialMomentProfile95> => {
+  if (!userId) return { profile: null, status: "missing" };
+  const client = getSupabaseClient(authHeader);
+  const [quiz, training] = await Promise.all([
+    client.from("quiz_results").select("potente, acidez, dulce, tanico, afrutado")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(1).abortSignal(signal).maybeSingle(),
+    client.from("user_wines").select(MATCHRIM_PROFILE95_TRAINING_COLUMNS).eq("user_id", userId).abortSignal(signal),
+  ]);
+  if (signal.aborted) throw signal.reason;
+  if (quiz.error || training.error) return { profile: null, status: "unavailable", learningUnavailable: Boolean(training.error) };
+  if (!quiz.data) return { profile: null, status: "missing" };
+  const base = readMatchrimProfile95(quiz.data);
+  if (!base) return { profile: null, status: "unavailable" };
+  const learned = calculateLearnedMatchrimProfile95(base, training.data ?? []);
+  return { profile: learned.profile, status: learned.profile ? "available" : "unavailable",
+    source: learned.samples > 0 ? "strict-owner-learned" : "strict-owner-base" };
+};
+
 const logAiRimQuery = (
   authHeader: string | null,
   userId: string | null,
@@ -316,6 +338,28 @@ serve(async (req) => {
   try {
     const payload = (await req.json()) as AiRimPayload;
     const authHeader = req.headers.get("Authorization");
+    if (payload.functionType === "special-moments") {
+      if (typeof payload.input1 !== "string" || !payload.input1.trim()) {
+        return new Response(JSON.stringify({ error: "input1 es obligatorio" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      let hadProfile = false;
+      let specialUserId: string | null = null;
+      const response = await specialMomentsResponse95({ payload, signal: req.signal, headers: corsHeaders,
+        loadProfile: async signal => {
+          if (signal.aborted) throw signal.reason;
+          specialUserId = await getUserId(authHeader);
+          if (signal.aborted) throw signal.reason;
+          const context = await loadSpecialMomentProfile95(authHeader, specialUserId, signal);
+          hadProfile = context.status === "available" && context.profile !== null;
+          return context;
+        },
+        callModel: fetchMatchrimAiChat,
+      });
+      if (!req.signal.aborted) logAiRimQuery(authHeader, specialUserId, payload, hadProfile);
+      return response;
+    }
     const userId = await getUserId(authHeader);
     const profile = await loadProfile(authHeader, userId);
 

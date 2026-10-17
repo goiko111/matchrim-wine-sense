@@ -22,7 +22,7 @@ const buildOutput = path.join(output, 'web');
 const resources = folder => Object.fromEntries(fs.readdirSync(folder, { recursive: true }).sort()
   .filter(file => fs.lstatSync(path.join(folder, file)).isFile())
   .map(file => [file, sha(fs.readFileSync(path.join(folder, file)))]));
-const groups = ['test:consumer95', 'test:identity94', 'test:release', 'test:cloud', 'test:remediation89',
+const groups = ['test:consumer95', 'test:backend95', 'test:identity94', 'test:release', 'test:cloud', 'test:remediation89',
   'test:scene90', 'test:restaurant91', 'test:openai92', 'test:release93', 'typecheck', 'lint', 'build'];
 const results = [];
 const env = { ...process.env, VITE_MATCHRIM_EDGE_RELEASE: '75', VITE_SUPABASE_DB_SCHEMA: 'public',
