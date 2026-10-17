@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { loadEnv } from 'vite';
 
 const root = process.argv[2];
 const buildNumber = Number(process.argv.find(arg => arg.startsWith('--build='))?.slice(8) ?? 93);
@@ -10,12 +11,17 @@ if (!['release93', 'consumer95'].includes(uiSuite)) throw new Error('Unknown nat
 const uiTestSource = `scripts/native-matchrim-${uiSuite === 'consumer95' ? 'consumer95' : 'release93'}-tests.swift`;
 if (!Number.isSafeInteger(buildNumber) || buildNumber < 93 || !root?.startsWith(`/private/tmp/Matchrim${buildNumber}-`) || fs.existsSync(root)) throw new Error('A new isolated /private/tmp/Matchrim<build>-* directory is required');
 const repo = process.cwd();
-process.loadEnvFile(path.join(repo, '.env'));
-const key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const claims = key ? JSON.parse(Buffer.from(key.split('.')[1], 'base64url')) : {};
-if (claims.role !== 'anon' || claims.ref !== 'cbjynrbvrhcmpaojmqdp'
-  || process.env.VITE_SUPABASE_URL !== 'https://cbjynrbvrhcmpaojmqdp.supabase.co') throw new Error('Verified production public client configuration required');
-const env = { ...process.env, VITE_MATCHRIM_EDGE_RELEASE: '75', VITE_SUPABASE_DB_SCHEMA: 'public',
+const publicNames = ['VITE_SUPABASE_PUBLISHABLE_KEY', 'VITE_SUPABASE_URL'];
+const loadedEnv = loadEnv('production', repo, publicNames);
+const publicEnv = Object.fromEntries(publicNames.map(name => [name, loadedEnv[name]]));
+const key = publicEnv.VITE_SUPABASE_PUBLISHABLE_KEY;
+let claims = {};
+try { claims = key ? JSON.parse(Buffer.from(key.split('.')[1], 'base64url')) : {}; }
+catch { throw new Error('Verified production public client configuration required'); }
+if (!claims || typeof claims !== 'object' || Array.isArray(claims)
+  || claims.role !== 'anon' || claims.ref !== 'cbjynrbvrhcmpaojmqdp'
+  || publicEnv.VITE_SUPABASE_URL !== 'https://cbjynrbvrhcmpaojmqdp.supabase.co') throw new Error('Verified production public client configuration required');
+const env = { ...process.env, ...publicEnv, VITE_MATCHRIM_EDGE_RELEASE: '75', VITE_SUPABASE_DB_SCHEMA: 'public',
   VITE_MATCHRIM_QA_FIXTURES: 'false', VITE_APP_ANALYTICS_ENABLED: 'false',
   VITE_MATCHRIM_NATIVE_GUIDE_ENABLED: 'true', VITE_MATCHRIM_ONBOARDING_PREVIEW: 'false',
   VITE_MATCHRIM_SHARE_ORIGIN: 'https://matchrim-wine-sense.lovable.app',

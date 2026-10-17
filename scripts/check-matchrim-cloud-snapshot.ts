@@ -46,6 +46,8 @@ const reviewed95 = new Map([
   ['src/components/NativeAppHome.tsx', { before: '9447712478b1a3119819c59059f6d2f59224ece08ed079d1252f1ce2e2baff28', current: 'b33d1edd58c7267e370d4f6b4dbfeba14d6dcc64f7002586300b996fb799d137' }],
   ['src/pages/Index.tsx', { before: '66a5b0427ef655e3c2f51320d04806d3e3e83969b54c24f19800b443ed386e6b', current: 'b1a031e515e0384307f2813696be0ba56510a13b30220b0e0f62d179924543f8' }],
   ['src/pages/UseMatchrim.tsx', { before: '540c19f7fb8547cfc720b1700aae5f54c1230a5c4be9308323e747b2f65c3ae5', current: '320d4da2dd16da7b38fd1f0b19ec56d1c874e04d19f5a048755c92a08b32a4f4' }],
+  ['src/components/wine-import/WineShopLinkAdvisor.tsx', { before: 'a7b9ddd9db73b93bd20b229ccb388efe46d75319ded8d723150fd1933ed60471', current: '17529a6c6285fbf0d348981b1b01e42b73d7816539033c92b7d3934ef6b1da0f' }],
+  ['src/pages/Restaurant.tsx', { before: 'ea5da2c5320c9e0475e286be34c0ef4edab9dbc1f1f0a7563603d31ebdfecc9b', current: '0dfa74ac51fa1aa033d909b5e5e429599579e95547bd15a9c36e5dff86f6a918' }],
 ]);
 for (const [path, fingerprints] of reviewed95) {
   assert.equal(hash(execFileSync('git', ['show', `${pre95}:${path}`])), fingerprints.before, `Pre95 source: ${path}`);
@@ -55,6 +57,8 @@ for (const [path, fingerprints] of reviewed95) {
 // and actual-body/native/web parity suites below must both match. R5's explicit
 // source freeze adds the two signout clients and strengthens the prior broad
 // build83/84 allowances for current-profile recommendations and cellar targets.
+// The31e native layout/serving amendment also requires exact five-source pairs,
+// full web JSX/lifetime parity and actual public menu merge/resolver units.
 const reviewed95Suites = [
   ['scripts/check-matchrim-consumer95-auth.ts', 22],
   ['scripts/check-matchrim-consumer95-passport.ts', 4],
@@ -63,6 +67,8 @@ const reviewed95Suites = [
   ['scripts/check-matchrim-consumer95-signout.ts', 8],
   ['scripts/check-matchrim-consumer95-cellar-targets.ts', 6],
   ['scripts/check-matchrim-consumer95-cellar-dialog.ts', 4],
+  ['scripts/check-matchrim-consumer95-native-layout.ts', 14],
+  ['scripts/check-matchrim-consumer95-menu-serving.ts', 29],
 ] as const;
 const reviewed95SuiteResults = reviewed95Suites.map(([path, minimum]) => {
   const output = execFileSync(process.execPath, ['--import', 'tsx', path], { encoding: 'utf8' });

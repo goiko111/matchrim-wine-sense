@@ -68,7 +68,29 @@ const before = initializers(execFileSync('git', ['show', `${release}:${path}`], 
 const currentSource = readFileSync(path, 'utf8');
 const after = initializers(currentSource);
 const hash = (text: string) => createHash('sha256').update(text).digest('hex');
-check(() => assert.equal(hash(currentSource), reviewedMenu950.current, 'Only the exact reviewed95 Menu is projected'));
+// Retain the exact old950 projection, then prove the bounded native-serving
+// amendment separately. All initializer/behavior tests below use actual source.
+const reviewedSource = execFileSync('git', ['show', `31e060828d1b370b275cdcf6691052368916f39f:${path}`], { encoding: 'utf8' });
+check(() => assert.equal(hash(reviewedSource), reviewedMenu950.current, 'Only the exact reviewed95 Menu is projected'));
+check(() => assert.equal(hash(currentSource), 'df1d513633f04e716c162bfd8374a735d2e19dc5f3e10386e716c92a4e5e95b9',
+  'Only the exact ddba35c native-serving amendment is accepted'));
+let nativeLayoutGroups = 0;
+check(() => {
+  const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-native-layout.ts'], { encoding: 'utf8' });
+  const report = JSON.parse(output.trim().split('\n').at(-1)!);
+  assert.equal(report.baseline, '31e060828d1b370b275cdcf6691052368916f39f');
+  assert.equal(report.failed, 0);
+  assert.equal(report.passed, 14);
+  assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 14);
+  nativeLayoutGroups = report.passed;
+});
+check(() => {
+  const reviewedInitializers = initializers(reviewedSource);
+  for (const name of ['saveScannedWine', 'updateScannedWine', 'normalizeScannedWine', 'menuDecision', 'listPriceText', 'calculateWineSimilarity', 'getSimilarWines']) {
+    assert.ok(reviewedInitializers.get(name), `Missing reviewed950 initializer: ${name}`);
+    assert.equal(after.get(name), reviewedInitializers.get(name), `Native-serving amendment cannot alter the old950 projection: ${name}`);
+  }
+});
 const withoutNativeCellar84 = (initializer: string) => {
   const tree = ts.createSourceFile('save-proof.ts', `const proof = ${initializer};`, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   let literalGuards = 0;
@@ -197,4 +219,4 @@ for (const [row, currentProfile, ready] of [
     assert.deepEqual(JSON.parse(JSON.stringify(web.decision)), JSON.parse(JSON.stringify(runDecision(before.get('menuDecision')!, false, row, currentProfile).decision)));
   });
 }
-console.log(JSON.stringify({ checks, release, scope: 'Combined menu price/style/save invariants and synthetic math, not provider recognition, real preferences or hosted writes' }));
+console.log(JSON.stringify({ checks, release, nativeLayoutGroups, scope: 'Combined menu price/style/save invariants and synthetic math, not provider recognition, real preferences or hosted writes' }));
