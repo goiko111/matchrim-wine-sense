@@ -613,7 +613,16 @@ export const fetchWinesByAttributes = async (
     };
   });
   const results = scoredResults.filter((wine): wine is WinerimWineWithMatch => wine !== null);
-  if (Capacitor.isNativePlatform()) results.sort((left, right) => right.matchPercentage - left.matchPercentage);
+  if (Capacitor.isNativePlatform()) {
+    results.sort((left, right) => {
+      const byAffinity = right.matchPercentage - left.matchPercentage;
+      if (byAffinity) return byAffinity;
+      // Local-affinity ties must not inherit the upstream raw-score order.
+      const leftIdentity = JSON.stringify([String(left.id), typeof left.id, left.name]);
+      const rightIdentity = JSON.stringify([String(right.id), typeof right.id, right.name]);
+      return leftIdentity < rightIdentity ? -1 : leftIdentity > rightIdentity ? 1 : 0;
+    });
+  }
   const totalCount = extractTotalCount(responseData, directResults.length);
 
   winerimWineResultsMeta.set(results, {

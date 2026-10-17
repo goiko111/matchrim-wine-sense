@@ -19,10 +19,22 @@ export interface PreparedImage {
   quality: ImageQualityReport;
 }
 
+export interface ImagePreparationOptions {
+  maxFileBytes?: number;
+  maxImagePixels?: number;
+}
+
+export const NATIVE_IMAGE_PREPARATION_LIMITS = Object.freeze({
+  maxFileBytes: 25 * 1024 * 1024,
+  maxImagePixels: 64_000_000,
+});
+
 const imagePreparationMessages = {
   read: 'No se pudo leer la imagen. Elige otra foto o vuelve a capturarla.',
   decode: 'El dispositivo no puede abrir este formato de imagen. Elige una foto JPEG o PNG.',
   prepare: 'No se pudo preparar la imagen. Elige otra foto o vuelve a capturarla.',
+  file_size_limit: 'No se puede preparar esta foto por su tamaño. Elige una foto más ligera o vuelve a capturarla.',
+  image_pixel_limit: 'La resolución de esta foto es demasiado grande o no es válida. Elige una foto de menor resolución o vuelve a capturarla.',
 } as const;
 
 export class ImagePreparationError extends Error {
@@ -136,11 +148,34 @@ export const shouldRejectTextAnalysis = (quality: ImageQualityReport) => (
   && quality.sharpness < 12
 );
 
-export const prepareImageForAnalysis = async (file: File, maxDimension = 2400, signal?: AbortSignal): Promise<PreparedImage> => {
+export const prepareImageForAnalysis = async (
+  file: File,
+  maxDimension = 2400,
+  signal?: AbortSignal,
+  options?: ImagePreparationOptions,
+): Promise<PreparedImage> => {
+  if (options?.maxFileBytes !== undefined) {
+    throwIfAborted(signal);
+    const size = file.size;
+    if (!Number.isSafeInteger(options.maxFileBytes) || options.maxFileBytes <= 0
+      || !Number.isSafeInteger(size) || size <= 0 || size > options.maxFileBytes) {
+      throw new ImagePreparationError('file_size_limit');
+    }
+  }
   const originalDataUrl = await fileToDataUrl(file, signal);
   throwIfAborted(signal);
   const image = await loadImage(originalDataUrl, signal);
   throwIfAborted(signal);
+  if (options?.maxImagePixels !== undefined) {
+    const { naturalWidth, naturalHeight } = image;
+    const pixels = naturalWidth * naturalHeight;
+    if (!Number.isSafeInteger(options.maxImagePixels) || options.maxImagePixels <= 0
+      || !Number.isSafeInteger(naturalWidth) || naturalWidth <= 0
+      || !Number.isSafeInteger(naturalHeight) || naturalHeight <= 0
+      || !Number.isSafeInteger(pixels) || pixels > options.maxImagePixels) {
+      throw new ImagePreparationError('image_pixel_limit');
+    }
+  }
   const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
   const width = Math.max(1, Math.round(image.naturalWidth * scale));
   const height = Math.max(1, Math.round(image.naturalHeight * scale));

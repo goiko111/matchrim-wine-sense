@@ -2,6 +2,7 @@ import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
 import { X } from "lucide-react"
+import { Capacitor } from "@capacitor/core"
 
 import { cn } from "@/lib/utils"
 
@@ -14,7 +15,9 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+      Capacitor.isNativePlatform()
+        ? 'fixed inset-x-0 top-[calc(var(--matchrim-safe-top)+12px)] z-[100] flex max-h-[calc(100dvh-var(--matchrim-safe-top)-24px)] w-full min-w-0 flex-col-reverse p-[12px]'
+        : "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
       className
     )}
     {...props}
@@ -46,7 +49,7 @@ const Toast = React.forwardRef<
   return (
     <ToastPrimitives.Root
       ref={ref}
-      className={cn(toastVariants({ variant }), className)}
+      className={cn(toastVariants({ variant }), Capacitor.isNativePlatform() ? 'min-w-0 gap-2 space-x-0 p-[16px] pr-[60px] [overflow-wrap:anywhere]' : undefined, className)}
       {...props}
     />
   )
@@ -75,13 +78,17 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
+      Capacitor.isNativePlatform()
+        ? 'absolute right-[4px] top-[4px] flex h-[44px] w-[44px] items-center justify-center rounded-md p-0 text-foreground/70 focus:outline-none focus:ring-2 group-[.destructive]:text-red-100'
+        : "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
       className
     )}
     toast-close=""
+    aria-label={Capacitor.isNativePlatform() ? 'Cerrar aviso' : undefined}
+    title={Capacitor.isNativePlatform() ? 'Cerrar aviso' : undefined}
     {...props}
   >
-    <X className="h-4 w-4" />
+    <X className={Capacitor.isNativePlatform() ? 'h-[20px] w-[20px]' : 'h-4 w-4'} />
   </ToastPrimitives.Close>
 ))
 ToastClose.displayName = ToastPrimitives.Close.displayName

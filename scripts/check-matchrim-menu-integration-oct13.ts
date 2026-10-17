@@ -1,11 +1,19 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import vm from 'node:vm';
 import ts from 'typescript';
 import { parseMenuPriceDraft, resolveMenuPriceReview, isMenuCurrencyAmountValid } from '../src/utils/menuPriceReview';
 import { menuPriceSnapshot, readMenuPrice } from '../src/utils/menuWineSave';
 import { menuWineSensorySimilarity } from '../src/utils/menuWineSimilarity';
-import type { MenuScanWine } from '../src/utils/wineMenuScan';
+import { isMenuIdentityConfirmed, type MenuScanWine } from '../src/utils/wineMenuScan';
+import { isLiteralWineStyle95 } from '../src/utils/menuLiteralStyle95';
+import { buildAuthRedirectPath } from '../src/utils/navigation';
+import { reviewedMenu950 } from './matchrim-menu-etapa950-scope';
+import { nativeMenuWineAffinity } from '../src/utils/menuWineConsumer95';
+import { applyMenuWineEvidence } from '../src/utils/scanWineEvidence';
+import { catalogWineFromVerifiedSheet, type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 
 const release = '89d478d6a391c4594fa09d815bb6546fb874231b';
 const bank = JSON.parse(readFileSync('docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json', 'utf8'));
@@ -57,11 +65,24 @@ const initializers = (source: string) => {
   visit(tree); return values;
 };
 const before = initializers(execFileSync('git', ['show', `${release}:${path}`], { encoding: 'utf8' }));
-const after = initializers(readFileSync(path, 'utf8'));
+const currentSource = readFileSync(path, 'utf8');
+const after = initializers(currentSource);
+const hash = (text: string) => createHash('sha256').update(text).digest('hex');
+check(() => assert.equal(hash(currentSource), reviewedMenu950.current, 'Only the exact reviewed95 Menu is projected'));
 const withoutNativeCellar84 = (initializer: string) => {
   const tree = ts.createSourceFile('save-proof.ts', `const proof = ${initializer};`, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  let literalGuards = 0;
   const transformed = ts.transform(tree, [context => root => {
     const visit: ts.Visitor = node => {
+      if (ts.isIfStatement(node) && node.expression.getText(tree) === 'isNative && isLiteralWineStyle95(wine)') {
+        assert.equal(hash(initializer), reviewedMenu950.initializers.saveScannedWine, 'Only the reviewed actual initializer can project this guard');
+        assert.ok(ts.isBlock(node.thenStatement));
+        assert.equal(node.thenStatement.statements.length, 2);
+        assert.equal(node.thenStatement.statements[0].getText(tree), "toast.info('Identifica primero la botella concreta para guardarla en Bodega.');");
+        assert.equal(node.thenStatement.statements[1].getText(tree), 'return;');
+        literalGuards += 1;
+        return undefined;
+      }
       if (ts.isIfStatement(node) && [
         'isNative && wine.canonicalId && evidence.sensory_attributes',
         '!saved && isNative && !confirmsCellarSaveEvidence(data, payload)',
@@ -77,15 +98,103 @@ const withoutNativeCellar84 = (initializer: string) => {
     return ts.visitNode(root, visit) as ts.SourceFile;
   }]);
   const printed = ts.createPrinter({ removeComments: true }).printFile(transformed.transformed[0]);
+  assert.equal(literalGuards, hash(initializer) === reviewedMenu950.initializers.saveScannedWine ? 1 : 0);
+  transformed.dispose(); return printed;
+};
+const withoutNativeDecision95 = (initializer: string) => {
+  const tree = ts.createSourceFile('decision-proof.ts', `const proof = ${initializer};`, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  let filters = 0, dependencies = 0;
+  const transformed = ts.transform(tree, [context => root => {
+    const visit: ts.Visitor = node => {
+      if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken
+        && node.right.getText(tree) === "(!isNative || nativeMenuWineAffinity(wine, scanProfile?.profile ?? null).state === 'ready')") {
+        assert.equal(hash(initializer), reviewedMenu950.initializers.menuDecision); filters += 1;
+        return ts.visitNode(node.left, visit);
+      }
+      if (ts.isCallExpression(node) && node.expression.getText(tree) === 'useMemo' && ts.isArrayLiteralExpression(node.arguments[1])
+        && node.arguments[1].elements.length === 7) {
+        assert.equal(hash(initializer), reviewedMenu950.initializers.menuDecision);
+        assert.deepEqual(node.arguments[1].elements.slice(-2).map(value => value.getText(tree)), ['isNative', 'scanProfile?.profile']);
+        dependencies += 1;
+        return ts.factory.updateCallExpression(node, node.expression, node.typeArguments,
+          [ts.visitNode(node.arguments[0], visit) as ts.Expression, ts.factory.createArrayLiteralExpression(node.arguments[1].elements.slice(0, -2))]);
+      }
+      return ts.visitEachChild(node, visit, context);
+    }; return ts.visitNode(root, visit) as ts.SourceFile;
+  }]);
+  const expected = hash(initializer) === reviewedMenu950.initializers.menuDecision ? 1 : 0;
+  assert.equal(filters, expected); assert.equal(dependencies, expected);
+  const printed = ts.createPrinter({ removeComments: true }).printFile(transformed.transformed[0]);
   transformed.dispose(); return printed;
 };
 for (const name of ['saveScannedWine', 'updateScannedWine', 'normalizeScannedWine', 'menuDecision', 'listPriceText', 'calculateWineSimilarity', 'getSimilarWines']) {
   check(() => {
     assert.ok(before.get(name), `Missing protected initializer: ${name}`);
-    assert.equal(name === 'saveScannedWine' ? withoutNativeCellar84(after.get(name)!) : after.get(name),
-      name === 'saveScannedWine' ? withoutNativeCellar84(before.get(name)!) : before.get(name), `Local beta logic preserved: ${name}`);
+    assert.equal(name === 'saveScannedWine' ? withoutNativeCellar84(after.get(name)!) : name === 'menuDecision' ? withoutNativeDecision95(after.get(name)!) : after.get(name),
+      name === 'saveScannedWine' ? withoutNativeCellar84(before.get(name)!) : name === 'menuDecision' ? withoutNativeDecision95(before.get(name)!) : before.get(name), `Local beta logic preserved: ${name}`);
   });
 }
 check(() => assert.match(after.get('saveScannedWine')!, /withCellarInitialAffinity/));
 check(() => assert.match(after.get('saveScannedWine')!, /confirmsCellarSaveEvidence\(data, payload\)/));
+const literal = { nombre: 'Chardonnay', productor: null, tipo: 'blanco', seccion: 'White wine', texto_fuente: 'White wine Chardonnay' };
+const named = { ...literal, nombre: 'Synthetic Estate Chardonnay', productor: 'Synthetic Estate', texto_fuente: 'White wine Synthetic Estate Chardonnay' };
+const sourceAbsent = { ...literal, texto_fuente: null };
+check(() => { assert.equal(isLiteralWineStyle95(literal), true); assert.equal(isLiteralWineStyle95(named), false); assert.equal(isLiteralWineStyle95(sourceAbsent), false); });
+for (const native of [true, false]) for (const row of [literal, named, sourceAbsent]) {
+  for (const status of ['wishlist', 'tasted']) for (const favorite of [false, true]) {
+    const events: unknown[] = []; let ownerReads = 0, classifierCalls = 0;
+    const sandbox = { exports: {} as { save?: (wine: unknown, index: number, status: string, favorite: boolean) => Promise<void> }, isNative: native,
+      isLiteralWineStyle95: (input: typeof literal) => { assert.equal(native, true, 'Web must not call the new classifier'); classifierCalls += 1; return isLiteralWineStyle95(input); },
+      toast: { info: (message: string) => events.push(['info', message]), error: (message: string) => events.push(['error', message]) },
+      navigate: (destination: string) => events.push(['navigate', destination]), buildAuthRedirectPath,
+      location: { pathname: '/use-matchrim', search: '?tab=menu' } };
+    Object.defineProperty(sandbox, 'user', { get: () => { ownerReads += 1; return null; } });
+    vm.runInNewContext(ts.transpileModule(`exports.save=${after.get('saveScannedWine')};`, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText, sandbox);
+    await sandbox.exports.save!(row, 0, status, favorite);
+    if (native && row === literal) {
+      assert.deepEqual(events, [['info', 'Identifica primero la botella concreta para guardarla en Bodega.']]);
+      assert.equal(ownerReads, 0, 'A generic style cannot reach owner lookup or any mutation');
+    } else {
+      assert.deepEqual(events, [['error', 'Inicia sesión para guardar vinos'], ['navigate', '/auth?redirect=%2Fuse-matchrim%3Ftab%3Dmenu']]);
+      assert.equal(ownerReads, 1, 'Legacy authentication flow is retained');
+    }
+    assert.equal(classifierCalls, native ? 1 : 0); checks += 1;
+  }
+}
+check(() => assert.throws(() => withoutNativeCellar84(after.get('saveScannedWine')! + '\n'), /Only the reviewed actual initializer/));
+const profile = { potente: 2.4, acidez: 4, dulce: 1, tanico: 0, afrutado: 3 };
+const identity = { name: 'Synthetic Luna Reserva', producer: 'Synthetic Estate', vintage: 2021, region: 'Rioja', country: 'Spain' };
+const sheet: WinerimOriginalSheet = { id: '123', ...identity, vintage: '2021', detailVerified: true, grapes: [],
+  url: 'https://web.winerim.com/the-library/wines/123/Synthetic-Luna-Reserva_2021',
+  sensoryAttributes: { power: 2.4, acidity: 4, sweetness: 1, tannin: 0, fruity: 3 } };
+const resolved = applyMenuWineEvidence({ ...wine, nombre: identity.name, productor: identity.producer, anada: 2021, region: 'Rioja', pais: 'Spain',
+  confidence: .9, dudas: [], campos_inferidos: [], precio: null, texto_fuente: `${identity.name} ${identity.producer}` }, profile, catalogWineFromVerifiedSheet(identity, sheet)!);
+const runDecision = (initializer: string, native: boolean, row: MenuScanWine, currentProfile: typeof profile | null) => {
+  let affinityCalls = 0;
+  const sandbox = { exports: {} as { decision?: { best: { score: number; index: number } | null; highMatches: number } },
+    useMemo: (callback: () => unknown) => callback(), scannedWines: [row], isNative: native,
+    scanProfile: { profile: currentProfile }, menuCurrency: null, listPriceFormat: null, menuPriceRows: [], scanMaxPrice: '',
+    isMenuIdentityConfirmed, getWinePosition: () => null,
+    nativeMenuWineAffinity: (input: MenuScanWine, inputProfile: typeof profile | null) => { affinityCalls += 1; return nativeMenuWineAffinity(input, inputProfile); } };
+  vm.runInNewContext(ts.transpileModule(`exports.decision=${initializer};`, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText, sandbox);
+  return { decision: sandbox.exports.decision!, affinityCalls };
+};
+for (const [row, currentProfile, ready] of [
+  [resolved, profile, true], [{ ...resolved, originalSheet: null }, profile, false],
+  [{ ...resolved, productor: 'Synthetic wrong producer' }, profile, false], [resolved, null, false],
+  [resolved, { ...profile, dulce: 5 }, false],
+] as Array<[MenuScanWine, typeof profile | null, boolean]>) {
+  check(() => {
+    assert.equal(isMenuIdentityConfirmed(row), true, 'This control must reach the added readiness gate, not short-circuit at the existing identity gate');
+    const native = runDecision(after.get('menuDecision')!, true, row, currentProfile);
+    assert.equal(native.affinityCalls, 1);
+    assert.equal(native.decision.best?.index ?? null, ready ? 0 : null);
+    assert.equal(native.decision.highMatches, ready ? 1 : 0);
+    if (ready) assert.equal(native.decision.best?.score, 93);
+    const web = runDecision(after.get('menuDecision')!, false, row, currentProfile);
+    assert.equal(web.affinityCalls, 0);
+    assert.equal(web.decision.best?.score, 93); assert.equal(web.decision.highMatches, 1);
+    assert.deepEqual(JSON.parse(JSON.stringify(web.decision)), JSON.parse(JSON.stringify(runDecision(before.get('menuDecision')!, false, row, currentProfile).decision)));
+  });
+}
 console.log(JSON.stringify({ checks, release, scope: 'Combined menu price/style/save invariants and synthetic math, not provider recognition, real preferences or hosted writes' }));

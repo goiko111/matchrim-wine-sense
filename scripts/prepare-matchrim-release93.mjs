@@ -5,6 +5,9 @@ import { execFileSync, spawnSync } from 'node:child_process';
 
 const root = process.argv[2];
 const buildNumber = Number(process.argv.find(arg => arg.startsWith('--build='))?.slice(8) ?? 93);
+const uiSuite = process.argv.find(arg => arg.startsWith('--ui-tests='))?.slice(11) ?? 'release93';
+if (!['release93', 'consumer95'].includes(uiSuite)) throw new Error('Unknown native UI suite');
+const uiTestSource = `scripts/native-matchrim-${uiSuite === 'consumer95' ? 'consumer95' : 'release93'}-tests.swift`;
 if (!Number.isSafeInteger(buildNumber) || buildNumber < 93 || !root?.startsWith(`/private/tmp/Matchrim${buildNumber}-`) || fs.existsSync(root)) throw new Error('A new isolated /private/tmp/Matchrim<build>-* directory is required');
 const repo = process.cwd();
 process.loadEnvFile(path.join(repo, '.env'));
@@ -19,8 +22,10 @@ const env = { ...process.env, VITE_MATCHRIM_EDGE_RELEASE: '75', VITE_SUPABASE_DB
   DEVELOPER_DIR: '/Applications/Xcode-26.0.1.app/Contents/Developer' };
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8' });
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const inputs = () => Object.fromEntries(git('ls-files', '--cached', '--others', '--exclude-standard', '--',
-  'src', 'ios', 'package.json', 'package-lock.json', 'capacitor.config.ts').trim().split('\n').filter(Boolean)
+const inputs = () => Object.fromEntries([...new Set(git('ls-files', '--cached', '--others', '--exclude-standard', '--',
+  'src', 'public', 'ios', 'supabase', 'index.html', 'package.json', 'package-lock.json', 'capacitor.config.ts',
+  'vite.config.*', 'tailwind.config.*', 'postcss.config.*', 'tsconfig*.json', '.npmrc', 'components.json')
+  .trim().split('\n').filter(Boolean))].sort()
   .map(file => [file, sha(fs.readFileSync(file))]));
 const before = inputs();
 const sourceCommit = git('rev-parse', 'HEAD').trim();
@@ -53,13 +58,15 @@ for (const kind of ['production', 'live']) {
 const runner = path.join(root, 'ui');
 fs.mkdirSync(runner);
 fs.cpSync(path.join(repo, 'scripts/native-matchrim-qa.xcodeproj'), path.join(runner, 'Matchrim73QA.xcodeproj'), { recursive: true });
-fs.copyFileSync(path.join(repo, 'scripts/native-matchrim-release93-tests.swift'), path.join(runner, 'MatchrimCandidateUITests.swift'));
+fs.copyFileSync(path.join(repo, uiTestSource), path.join(runner, 'MatchrimCandidateUITests.swift'));
 if (JSON.stringify(inputs()) !== JSON.stringify(before) || git('rev-parse', 'HEAD').trim() !== sourceCommit) throw new Error('Sources changed during preparation; preserve attempt and freeze before retry');
 const walk = folder => fs.readdirSync(folder, { withFileTypes: true }).flatMap(entry => entry.isDirectory()
   ? walk(path.join(folder, entry.name)) : [path.join(folder, entry.name)]);
 const receipt = { root, web, production: path.join(root, 'production'), live: path.join(root, 'live'), runner,
   sourceCommit, sourceDirty: Boolean(git('status', '--porcelain=v1').trim()), build: buildNumber, version: '1.0',
   simulatorBundle: 'wine.matchrim.qa91live', productionBundle: 'wine.matchrim.app',
+  uiTests: { suite: uiSuite, source: uiTestSource, sha256: sha(fs.readFileSync(path.join(repo, uiTestSource))) },
+  preparer: { source: 'scripts/prepare-matchrim-release93.mjs', sha256: sha(fs.readFileSync(path.join(repo, 'scripts/prepare-matchrim-release93.mjs'))) },
   publicClient: { ref: claims.ref, role: claims.role, edgeRelease: '75', fixtures: false, analytics: false },
   inputs: before, webResources: Object.fromEntries(walk(web).map(file => [path.relative(web, file), sha(fs.readFileSync(file))])),
 };

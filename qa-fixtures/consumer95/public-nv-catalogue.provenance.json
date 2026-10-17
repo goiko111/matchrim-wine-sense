@@ -1,0 +1,10 @@
+{
+  "observedAt": "2026-10-16T10:18:34.354Z",
+  "sourceFile": "live-catalog94.json",
+  "sourceSha256": "0d29daff11c0cadd75d74f7bd7d538c8aacfc2533076560f27578a03a4e6e106",
+  "selection": "reads where case equals public-nv-control, in original order",
+  "projection": "case, url, status, original identity/grapes/tastingAttributes and original page count/page/limit; unrelated public fields omitted",
+  "fixture": "public-nv-catalogue.projected.json",
+  "networkCallsInReplay": 0,
+  "scope": "Public Winerim API binding control only. Restaurant-scoped Library, not proof of global catalogue completeness or human preference accuracy. Original private evidence remains unchanged."
+}

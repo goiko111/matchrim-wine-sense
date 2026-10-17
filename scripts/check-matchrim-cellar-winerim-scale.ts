@@ -17,6 +17,7 @@ import { applyMenuWineEvidence } from '../src/utils/scanWineEvidence';
 import { catalogWineFromVerifiedSheet, type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import type { MenuScanWine } from '../src/utils/wineMenuScan';
 import { optionalScanNumber, normalizeScanSensoryValue } from '../supabase/functions/_shared/matchrim-scan-values';
+import { isLiteralWineStyle95 } from '../src/utils/menuLiteralStyle95';
 
 globalThis.fetch = () => { throw new Error('Offline cellar scale contracts: remote fetch forbidden'); };
 const object = (value: unknown): Record<string, unknown> => {
@@ -256,7 +257,7 @@ const saveMenu = async (wine: MenuScanWine, profile: ScanProfileSnapshot) => {
     unconfirmedRef: { current: new Set() }, identityHoldsRef: { current: new Set() }, savedWineKeys: savedKeys,
     saveLifetime: { current: { active: true, generation: 1, ownerId } }, pendingIdentitiesRef, savedCardsRef,
     setUnconfirmedWineIndexes: () => undefined, setIdentityHoldIndexes: () => undefined, setSavingWineKey: () => undefined,
-    menuCardIdentity, normalizeAttributesTo5: normalizeMenu, menuSaveEvidence, menuPriceSnapshot, menuFinancialPrice,
+    isLiteralWineStyle95, menuCardIdentity, normalizeAttributesTo5: normalizeMenu, menuSaveEvidence, menuPriceSnapshot, menuFinancialPrice,
     normalizeScanCurrency, makeCellarCatalogEvidence, withCellarInitialAffinity, scanProfile: profile,
     restaurantName: 'Synthetic restaurant', restaurantSessionId: null, matchrimCode: null,
     pairingDishName: null, similarWineName: null, menuIntentChanges, labelInsertErrorResult,
@@ -287,6 +288,21 @@ const saveMenu = async (wine: MenuScanWine, profile: ScanProfileSnapshot) => {
   assert.ok(payload); assert.ok(persisted);
   return { payload, persisted, reopened: nativeNormalizer(true)(persisted) };
 };
+
+await check('Actual native save refuses a literal style before any owner, identity or persistence authority is used', async () => {
+  const style = { nombre: 'Pinot Grigio', productor: null, texto_fuente: 'White wines Pinot Grigio', tipo: 'Blanco' };
+  assert.equal(isLiteralWineStyle95(style), true);
+  assert.equal(isLiteralWineStyle95({ ...style, productor: 'Synthetic producer' }), false);
+  assert.equal(isLiteralWineStyle95({ ...style, texto_fuente: '' }), false);
+  assert.equal(isLiteralWineStyle95(menuInput), false);
+  const notices: string[] = [];
+  const run = new Function('isNative', 'isLiteralWineStyle95', 'toast',
+    compile('const ' + menuDeclarations.get('saveScannedWine')!.getText(menuAst) + ';')
+      + '\nreturn saveScannedWine;')(true, isLiteralWineStyle95, { info: (message: string) => notices.push(message) });
+  // No owner, Supabase or save-state doubles are supplied: reaching them must fail.
+  await run(style, 0, 'wishlist');
+  assert.deepEqual(notices, ['Identifica primero la botella concreta para guardarla en Bodega.']);
+});
 
 await check('Actual menu normalizer preserves explicit zero/decimals and leaves the unmarked legacy branch intact', () => {
   assert.deepEqual(normalizeMenu(attributes), attributes);

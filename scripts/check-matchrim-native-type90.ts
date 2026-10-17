@@ -43,7 +43,23 @@ assert.match(native, /gap-\[2px\]/);
 assert.match(readFileSync('src/index.css', 'utf8'), /html\.matchrim-native-platform \.matchrim-native-display-title \{\s*font-size: 2rem;\s*overflow-wrap: anywhere;/);
 const nonNativeCss = (source: string) => {
   const rows: unknown[] = [];
-  postcss.parse(source).walk((node) => {
+  const tree = postcss.parse(source);
+  const pruneNative = (container: postcss.Root | postcss.AtRule): boolean => {
+    let removedNative = false;
+    for (const node of [...(container.nodes ?? [])]) {
+      if (node.type === 'rule' && node.selectors.every(selector => selector.startsWith('html.matchrim-native-platform'))) {
+        node.remove(); removedNative = true;
+      } else if (node.type === 'atrule' && node.nodes) {
+        const removedChild = pruneNative(node);
+        if (removedChild && node.nodes.every(child => child.type === 'comment')) {
+          node.remove(); removedNative = true;
+        }
+      }
+    }
+    return removedNative;
+  };
+  pruneNative(tree);
+  tree.walk((node) => {
     if (node.type === 'decl' || node.type === 'comment') return;
     if (node.type === 'rule' && node.selectors.every((s) => s.startsWith('html.matchrim-native-platform'))) return;
     if (node.type === 'rule') rows.push({ selector: node.selector, declarations: node.nodes.filter((n) => n.type === 'decl').map((n) => n.toString()) });
@@ -52,4 +68,17 @@ const nonNativeCss = (source: string) => {
   return rows;
 };
 assert.deepEqual(nonNativeCss(readFileSync('src/index.css', 'utf8')), nonNativeCss(baseline('src/index.css')), 'Every non-native CSS rule/declaration remains unchanged');
-console.log(JSON.stringify({ checks: 10, passed: true, scope: 'Native source/untouched web-branch and CSS contracts; actual font sizing and layout require UI/runtime evidence' }));
+const projectionCases = [
+  { css: '@media (max-height: 240px) { html.matchrim-native-platform .editor { padding: 2px; } }', expected: [] },
+  { css: '@media print {}', expected: [{ name: 'media', params: 'print' }] },
+  { css: '@media print { /* untouched web container */ }', expected: [{ name: 'media', params: 'print' }] },
+  { css: '@media print { .web { color: red; } html.matchrim-native-platform .editor { color: blue; } }',
+    expected: [{ name: 'media', params: 'print' }, { selector: '.web', declarations: ['color: red'] }] },
+  { css: '@supports (display: grid) { @media print { html.matchrim-native-platform .editor { padding: 2px; } } }', expected: [] },
+  { css: '@media print { html.matchrim-native-platform .editor { padding: 2px; } @supports (display: grid) {} }',
+    expected: [{ name: 'media', params: 'print' }, { name: 'supports', params: '(display: grid)' }] },
+  { css: '@font-face { font-family: Synthetic; src: url(synthetic.woff); }', expected: [{ name: 'font-face', params: '' }] },
+];
+for (const example of projectionCases) assert.deepEqual(nonNativeCss(example.css), example.expected);
+assert.notDeepEqual(nonNativeCss('@media print { .web { color: blue; } }'), nonNativeCss('@media print { .web { color: red; } }'), 'A web declaration mutation must still be rejected');
+console.log(JSON.stringify({ checks: 10, projectionCases: projectionCases.length + 1, passed: true, scope: 'Native source/untouched web-branch and CSS contracts; actual font sizing and layout require UI/runtime evidence' }));

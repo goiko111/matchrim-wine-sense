@@ -190,7 +190,10 @@ const Index = () => {
       matchrimCode={homeMatchrimCode}
       loadingCode={loadingHomeProfile}
       learningInfo={learningInfo}
-      recommendations={recommendations}
+      activeProfile={Capacitor.isNativePlatform() && !authLoading && !loadingHomeProfile
+        && savedWineOwnerId === (user?.id ?? 'anonymous') ? activeProfile : null}
+      recommendations={Capacitor.isNativePlatform() && (authLoading || loadingHomeProfile
+        || savedWineOwnerId !== (user?.id ?? 'anonymous')) ? [] : recommendations}
       loadingRecommendations={loadingRecommendations}
       recommendationsUnavailable={recommendationsUnavailable}
       recommendationsExhausted={recommendationsExhausted}

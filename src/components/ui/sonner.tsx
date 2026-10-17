@@ -1,14 +1,19 @@
 import { useTheme } from "next-themes"
-import { Toaster as Sonner, toast } from "sonner"
+import { Toaster as Sonner, toast, useSonner } from "sonner"
+import { Capacitor } from '@capacitor/core'
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
+  const isNative = Capacitor.isNativePlatform()
+  const { toasts } = useSonner()
 
-  return (
+  const rendered = (
     <Sonner
       theme={theme as ToasterProps["theme"]}
+      hotkey={isNative ? [] : undefined}
+      customAriaLabel={isNative ? 'Avisos' : undefined}
       className="toaster group"
       toastOptions={{
         closeButtonAriaLabel: "Cerrar aviso",
@@ -25,6 +30,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       {...props}
     />
   )
+  return isNative ? <div aria-hidden={toasts.length === 0 ? true : undefined}>{rendered}</div> : rendered
 }
 
 export { Toaster, toast }

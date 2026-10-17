@@ -10,6 +10,7 @@ import {
   FileUp,
   Heart,
   Loader2,
+  RotateCcw,
   ScanLine,
   Sparkles,
   Utensils,
@@ -26,7 +27,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { trackAppEvent } from "@/lib/analytics";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { convertPdfFirstPageToImageFile } from "@/utils/pdfToImage";
-import { prepareImageForAnalysis } from "@/utils/imageAnalysis";
+import { NATIVE_IMAGE_PREPARATION_LIMITS, prepareImageForAnalysis } from "@/utils/imageAnalysis";
+import { renderRestaurantPage } from '@/utils/restaurantDocuments91';
+import { confirmsNativeFoodSave95, nativeFoodScanFailure, runNativeFoodRead95 } from '@/utils/foodScanRecovery95';
+import { labelInsertErrorResult } from '@/utils/labelScanSave';
 import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
 import { FoodScanResponseError, parseFoodScanResponse, type FoodScanResult, type FoodDishResult, type FoodWineRecommendation } from "@/utils/foodScanResponse";
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
@@ -72,12 +76,17 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
   const [mode, setMode] = useState<FoodScanMode>(initialMode);
   const [loading, setLoading] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
+  const [nativePhase, setNativePhase] = useState<'preparing' | 'reading'>('preparing');
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const retainedInput = useRef<{ file: File; source: 'camera' | 'file' } | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [scanError, setScanError] = useState<string | null>(null);
   const [result, setResult] = useState<FoodScanResult | null>(null);
   const [savingKey, setSavingKey] = useState<string | null>(null);
   const [savedKeys, setSavedKeys] = useState<Set<string>>(new Set());
   const [saveError, setSaveError] = useState<{ rowKey: string; message: string } | null>(null);
+  const [unconfirmedRows, setUnconfirmedRows] = useState<Set<string>>(new Set());
+  const unconfirmedRowsRef = useRef(new Set<string>());
   const savedRows = useRef(new Map<string, string>());
   const savingRef = useRef(false);
   const mountedRef = useRef(true);
@@ -92,6 +101,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
     return () => {
       mountedRef.current = false;
       scanController.current?.abort();
+      retainedInput.current = null;
     };
   }, []);
 
@@ -101,12 +111,22 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
       return;
     }
 
+    if (isNative) return;
+
     const timer = window.setInterval(() => {
       setStepIndex((current) => (current + 1) % processingSteps[mode].length);
     }, 1800);
 
     return () => window.clearInterval(timer);
-  }, [loading, mode]);
+  }, [loading, mode, isNative]);
+
+  useEffect(() => {
+    if (!isNative || !loading) return;
+    const started = Date.now();
+    setElapsedSeconds(0);
+    const timer = window.setInterval(() => setElapsedSeconds(Math.floor((Date.now() - started) / 1000)), 1000);
+    return () => window.clearInterval(timer);
+  }, [isNative, loading]);
 
   useEffect(() => {
     if (!result || loading) return;
@@ -127,6 +147,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
   const selectMode = (nextMode: FoodScanMode) => {
     if (savingRef.current) return;
     scanController.current?.abort();
+    retainedInput.current = null;
     setLoading(false);
     setScanError(null);
     setMode(nextMode);
@@ -134,6 +155,8 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
     setPreview(null);
     setSavedKeys(new Set());
     setSaveError(null);
+    unconfirmedRowsRef.current.clear();
+    setUnconfirmedRows(new Set());
     savedRows.current.clear();
     resetFileInputs();
     trackAppEvent("scan_option_selected", {
@@ -165,20 +188,34 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
       return;
     }
 
+    await processSelectedFile(file, source, input);
+  };
+
+  const processSelectedFile = async (file: File, source: 'camera' | 'file', input?: HTMLInputElement) => {
+    if (isNative) {
+      retainedInput.current = { file, source };
+      setNativePhase('preparing');
+      setPreview(null);
+    }
     setLoading(true);
     setScanError(null);
     setResult(null);
     setSavedKeys(new Set());
     setSaveError(null);
+    unconfirmedRowsRef.current.clear();
+    setUnconfirmedRows(new Set());
     savedRows.current.clear();
     scanController.current?.abort();
     const controller = new AbortController();
     scanController.current = controller;
 
     try {
-      const imageFile = isPdf ? await convertPdfFirstPageToImageFile(file, "menu-page.jpg") : file;
+      const isPdf = file.type === 'application/pdf';
+      const imageFile = isPdf
+        ? isNative ? await renderRestaurantPage(file, 1, controller.signal) : await convertPdfFirstPageToImageFile(file, "menu-page.jpg")
+        : file;
       if (controller.signal.aborted) return;
-      const { dataUrl: image, width, height } = await prepareImageForAnalysis(imageFile, 2400, controller.signal);
+      const { dataUrl: image, width, height } = await prepareImageForAnalysis(imageFile, 2400, controller.signal, isNative ? NATIVE_IMAGE_PREPARATION_LIMITS : undefined);
       if (controller.signal.aborted) return;
       setPreview(image);
       trackAppEvent("food_scan_started", {
@@ -192,11 +229,12 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
       });
 
       const context = { restaurantName, matchrimProfile: readMatchrimLocalProfile() };
-      const scanResult = mode === 'menu'
-        ? await scanFoodMenu89({ image, width, height, signal: controller.signal, context,
+      if (isNative) setNativePhase('reading');
+      const read = (signal: AbortSignal) => mode === 'menu'
+        ? scanFoodMenu89({ image, width, height, signal, context,
           invoke: (body, signal) => invokeEdgeFunction<unknown>('scan-food-pairing', body, signal) })
-        : parseFoodScanResponse(await invokeEdgeFunction<unknown>('scan-food-pairing',
-          { image, mode, ...context }, controller.signal));
+        : invokeEdgeFunction<unknown>('scan-food-pairing', { image, mode, ...context }, signal).then(parseFoodScanResponse);
+      const scanResult = isNative ? await runNativeFoodRead95(read, controller.signal) : await read(controller.signal);
 
       if (controller.signal.aborted || !mountedRef.current || scanController.current !== controller) return;
 
@@ -220,19 +258,19 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
         toast.info("No he podido detectar platos claros. Prueba con una foto más cercana.");
       }
     } catch (error) {
-      if (controller.signal.aborted) return;
+      if (controller.signal.aborted || isNative && (!mountedRef.current || scanController.current !== controller)) return;
       if (error instanceof FoodScanResponseError) console.warn("Invalid food scan response");
       else console.error("Error scanning food pairing:", error);
-      const message = error instanceof Error ? error.message : "No se pudo analizar la imagen";
+      const message = isNative ? nativeFoodScanFailure(error) : error instanceof Error ? error.message : "No se pudo analizar la imagen";
       setScanError(message);
       trackAppEvent("food_scan_failed", {
         userId: user?.id,
         metadata: { mode, error: message },
       });
     } finally {
-      if (!controller.signal.aborted) {
+      if (!controller.signal.aborted && (!isNative || mountedRef.current && scanController.current === controller)) {
         setLoading(false);
-        input.value = "";
+        if (input) input.value = "";
       }
     }
   };
@@ -252,10 +290,16 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
 
     const rowKey = `${dishIndex}-${recommendationIndex}`;
     const saveKey = `${favorite ? "favorite" : "wishlist"}-${rowKey}`;
-    if (savingRef.current || savedKeys.has(saveKey)) return;
+    if (savingRef.current || savedKeys.has(saveKey) || isNative && unconfirmedRowsRef.current.has(rowKey)) return;
     savingRef.current = true;
     setSaveError(null);
     setSavingKey(saveKey);
+    const markUnconfirmed = () => {
+      if (!mountedRef.current) return;
+      unconfirmedRowsRef.current.add(rowKey);
+      setUnconfirmedRows(new Set(unconfirmedRowsRef.current));
+      setSaveError({ rowKey, message: 'Guardado sin confirmar. Revisa Bodega antes de repetirlo.' });
+    };
 
     try {
       const existingId = savedRows.current.get(rowKey);
@@ -289,9 +333,17 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
             evidence: 'unverified_style_suggestion',
           } as Json,
         });
-      const { data, error } = await mutation.select('id').single();
+      const { data, error } = await (isNative
+        ? mutation.select('id,user_id,name,status,is_favorite,use_for_profile_training,sensory_attributes,matchrim_affinity')
+        : mutation.select('id')).single();
 
-      if (error) throw error;
+      if (error) {
+        if (isNative && labelInsertErrorResult(error).status !== 'rejected') { markUnconfirmed(); return; }
+        throw error;
+      }
+      if (isNative && !confirmsNativeFoodSave95(data, {
+        ownerId: user.id, name: recommendation.nombre, favorite, id: existingId,
+      })) { markUnconfirmed(); return; }
       if (!data?.id) throw new Error('Saved recommendation not confirmed');
       if (!mountedRef.current) return;
       savedRows.current.set(rowKey, data.id);
@@ -314,6 +366,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
       );
     } catch (error) {
       if (!mountedRef.current) return;
+      if (isNative && labelInsertErrorResult(error as { code?: string }).status !== 'rejected') { markUnconfirmed(); return; }
       console.error("Error saving food recommendation:", error);
       setSaveError({ rowKey, message: "No se pudo guardar la recomendación" });
     } finally {
@@ -325,13 +378,23 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
   const clearScan = () => {
     if (savingRef.current) return;
     scanController.current?.abort();
+    retainedInput.current = null;
     setLoading(false);
     setScanError(null);
     setPreview(null);
     setResult(null);
     setSavedKeys(new Set());
     setSaveError(null);
+    unconfirmedRowsRef.current.clear();
+    setUnconfirmedRows(new Set());
     savedRows.current.clear();
+    resetFileInputs();
+  };
+
+  const cancelNativeScan = () => {
+    scanController.current?.abort();
+    setLoading(false);
+    setScanError('Análisis cancelado. El archivo sigue disponible para reintentar.');
     resetFileInputs();
   };
 
@@ -357,6 +420,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
   };
 
   const currentStep = processingSteps[mode][stepIndex];
+  const nativeFileActionClass = 'min-h-[44px] w-full min-w-0 justify-start gap-[12px] whitespace-normal px-[12px] py-[10px] text-left [overflow-wrap:normal] [&_svg]:shrink-0';
 
   return (
     <div className={`space-y-5${isNative ? ' [&_button]:h-auto [&_button]:min-h-11 [&_button]:whitespace-normal' : ''}`}>
@@ -393,7 +457,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
         </div>
       )}
 
-      <div className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+      <div className={isNative ? 'min-w-0 border-y border-stone-200 bg-white py-[16px]' : "rounded-lg border border-stone-200 bg-white p-4 shadow-sm"}>
         <div className="mb-4 flex items-start gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-md bg-red-50 text-red-900">
             {mode === "menu" ? <BookOpen className="h-5 w-5" /> : <Utensils className="h-5 w-5" />}
@@ -455,14 +519,15 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
               <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
                 <div className="mb-3 flex items-center gap-3 text-amber-950">
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  <span className="font-medium">{currentStep}</span>
+                  <span className="font-medium" role={isNative ? 'status' : undefined}>{isNative ? 'Leyendo el contenido y preparando propuestas...' : currentStep}</span>
                 </div>
-                <Progress value={((stepIndex + 1) / processingSteps[mode].length) * 100} aria-label="Progreso del análisis de comida" className="h-2" />
+                {isNative ? <p className="text-sm text-amber-900">{elapsedSeconds} s · Puedes cancelar el análisis.</p>
+                  : <Progress value={((stepIndex + 1) / processingSteps[mode].length) * 100} aria-label="Progreso del análisis de comida" className="h-2" />}
               </div>
             )}
           </div>
         ) : (
-          <div className="rounded-lg border-2 border-dashed border-red-100 bg-red-50/40 p-6 text-center">
+          <div className={isNative ? 'min-w-0 border-t border-stone-100 pt-[16px] text-center' : "rounded-lg border-2 border-dashed border-red-100 bg-red-50/40 p-6 text-center"}>
             <Camera className="mx-auto h-12 w-12 text-red-900/50" />
             <p className="mt-3 font-semibold text-slate-950">
               {mode === "menu" ? "Haz una foto del menú" : "Haz una foto del plato"}
@@ -472,10 +537,10 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                 ? "Haz una foto o sube una imagen/PDF claro del menú. Subir archivo permite elegir biblioteca o archivo."
                 : "Haz una foto o sube una imagen guardada desde biblioteca o archivo."}
             </p>
-            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+            <div className={isNative ? 'mt-[16px] grid min-w-0 grid-cols-1 gap-[8px]' : "mt-5 grid gap-2 sm:grid-cols-2"}>
               <Button
                 type="button"
-                className="gap-2 bg-red-900 hover:bg-red-950"
+                className={isNative ? `${nativeFileActionClass} bg-red-900 hover:bg-red-950` : "gap-2 bg-red-900 hover:bg-red-950"}
                 disabled={loading}
                 onClick={() => cameraInputRef.current?.click()}
               >
@@ -485,7 +550,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
               <Button
                 type="button"
                 variant="outline"
-                className="gap-2"
+                className={isNative ? nativeFileActionClass : "gap-2"}
                 disabled={loading}
                 onClick={() => fileInputRef.current?.click()}
               >
@@ -498,13 +563,20 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
       </div>
 
       {isNative && loading && (
-        <Button type="button" variant="outline" className="min-h-11 w-full gap-2" onClick={clearScan}><X className="h-4 w-4" />Cancelar análisis de comida</Button>
+        <div className="space-y-3">
+          {!preview && <p role="status" className="text-sm text-slate-600">{nativePhase === 'preparing' ? 'Preparando el archivo...' : 'Leyendo el contenido...'} · {elapsedSeconds} s</p>}
+          <Button type="button" variant="outline" className="min-h-11 w-full gap-2" onClick={cancelNativeScan}><X className="h-4 w-4" />Cancelar análisis de comida</Button>
+        </div>
       )}
 
       {scanError && (
-        <div ref={errorRef} role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900">
+        <div ref={errorRef} role="alert" className={isNative ? 'min-w-0 border-y border-red-200 bg-red-50 py-[12px] text-sm text-red-900' : "rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900"}>
           <p>{scanError}</p>
-          <Button type="button" variant="outline" className="mt-3 min-h-11 gap-2" onClick={() => fileInputRef.current?.click()}>
+          {isNative && retainedInput.current && <Button type="button" variant="outline" className={`${nativeFileActionClass} mt-[12px]`} disabled={loading} onClick={() => {
+            const input = retainedInput.current;
+            if (input) void processSelectedFile(input.file, input.source);
+          }}><RotateCcw className="h-4 w-4" />Reintentar este archivo</Button>}
+          <Button type="button" variant="outline" className={isNative ? `${nativeFileActionClass} mt-[12px]` : "mt-3 min-h-11 gap-2"} onClick={() => fileInputRef.current?.click()}>
             <FileUp className="h-4 w-4" />
             Seleccionar otra foto
           </Button>
@@ -513,6 +585,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
 
       {result && (
         <div ref={resultRef} className="scroll-mt-24 space-y-4">
+          {isNative && retainedInput.current?.file.type === 'application/pdf' && <p className="text-sm text-slate-600">PDF: analizada solo la primera página.</p>}
           {isNative && mode === 'menu' && selectedWine.trim() && result.dishes.some((dish) => foodRowPolicy90(dish).pairingAllowed) && (
             <Button type="button" className="min-h-11 w-full gap-2 whitespace-normal bg-red-900 hover:bg-red-950" onClick={askWithMenu}>
               <Sparkles className="h-4 w-4 shrink-0" />Elegir plato de este menú para mi vino
@@ -546,8 +619,8 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
           {result.dishes.map((dish, dishIndex) => {
             const policy = foodRowPolicy90(dish);
             return (
-            <div key={`${dish.nombre}-${dishIndex}`} data-testid={`food-row-${dishIndex}`} className="overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm [overflow-wrap:anywhere]">
-              <div className="flex items-start justify-between gap-4 border-b border-stone-100 p-4">
+            <div key={`${dish.nombre}-${dishIndex}`} data-testid={`food-row-${dishIndex}`} className={isNative ? 'min-w-0 border-b border-stone-200 bg-white [overflow-wrap:break-word]' : "overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm [overflow-wrap:anywhere]"}>
+              <div className={isNative ? 'flex min-w-0 items-start gap-[12px] border-b border-stone-100 py-[12px]' : "flex items-start justify-between gap-4 border-b border-stone-100 p-4"}>
                 <div className="min-w-0">
                   <Badge variant="outline" className="mb-2 border-red-100 text-red-900">
                     {dish.categoria}
@@ -558,7 +631,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                 </div>
               </div>
 
-              {policy.pairingAllowed ? <div className="space-y-3 p-4">
+              {policy.pairingAllowed ? <div className={isNative ? 'min-w-0 space-y-[16px] py-[16px]' : "space-y-3 p-4"}>
                 <div className="flex items-center gap-2 font-semibold text-slate-900">
                   <WineIcon />
                   Ideas de vino para este plato
@@ -576,7 +649,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                   return (
                     <div
                       key={saveKey}
-                      className="rounded-lg border border-stone-100 bg-stone-50 p-3"
+                      className={isNative ? 'min-w-0 border-b border-stone-100 pb-[16px] last:border-0' : "rounded-lg border border-stone-100 bg-stone-50 p-3"}
                     >
                       <div className="flex items-start justify-between gap-3">
 	                        <div className="min-w-0">
@@ -601,12 +674,12 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
 	                        Esto todavía no es una botella concreta: úsalo como dirección de búsqueda o escanea la carta de vinos para elegir el vino real del restaurante.
 	                      </p>
 
-	                      <div className="mt-3 grid gap-2 sm:grid-cols-3">
+	                      <div className={isNative ? 'mt-[12px] grid min-w-0 grid-cols-1 gap-[8px]' : "mt-3 grid gap-2 sm:grid-cols-3"}>
                         <Button
                           type="button"
                           variant={isSaved ? "secondary" : "outline"}
-                          className="gap-2"
-                          disabled={isSaved || Boolean(savingKey)}
+                          className={isNative ? 'min-h-[44px] w-full min-w-0 justify-start gap-[12px] whitespace-normal px-[12px] py-[10px] text-left [overflow-wrap:normal] [&_svg]:shrink-0' : "gap-2"}
+                          disabled={isSaved || Boolean(savingKey) || isNative && unconfirmedRows.has(`${dishIndex}-${recommendationIndex}`)}
                           onClick={() => saveRecommendation(dish, recommendation, dishIndex, recommendationIndex)}
                         >
                           {isSaved ? (
@@ -621,8 +694,8 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                         <Button
                           type="button"
                           variant={isFavoriteSaved ? "secondary" : "outline"}
-                          className="gap-2"
-                          disabled={isFavoriteSaved || Boolean(savingKey)}
+                          className={isNative ? 'min-h-[44px] w-full min-w-0 justify-start gap-[12px] whitespace-normal px-[12px] py-[10px] text-left [overflow-wrap:normal] [&_svg]:shrink-0' : "gap-2"}
+                          disabled={isFavoriteSaved || Boolean(savingKey) || isNative && unconfirmedRows.has(`${dishIndex}-${recommendationIndex}`)}
                           onClick={() => saveRecommendation(dish, recommendation, dishIndex, recommendationIndex, true)}
                         >
                           {isFavoriteSaved ? (
@@ -637,7 +710,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                         <Button
                           type="button"
                           variant="ghost"
-                          className="gap-2"
+                          className={isNative ? 'min-h-[44px] w-full min-w-0 justify-start gap-[12px] whitespace-normal px-[12px] py-[10px] text-left [overflow-wrap:normal] [&_svg]:shrink-0' : "gap-2"}
                           onClick={() => navigate(`/inteligencia-liquida?function=pairing-check&wine=${encodeURIComponent(recommendation.nombre)}&dish=${encodeURIComponent(dish.nombre)}`, isNative ? { state: restaurantCarryState(user?.id ?? null, contextWithMenu()) } : undefined)}
                         >
                           <Sparkles className="h-4 w-4" />
@@ -645,14 +718,17 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                         </Button>
                       </div>
                       {saveError?.rowKey === `${dishIndex}-${recommendationIndex}` && (
-                        <p ref={saveErrorRef} role="alert" className="mt-2 text-sm text-red-800">{saveError.message}</p>
+                        <div className="mt-2 space-y-2">
+                          <p ref={saveErrorRef} role="alert" className="text-sm text-red-800">{saveError.message}</p>
+                          {isNative && unconfirmedRows.has(`${dishIndex}-${recommendationIndex}`) && <Button type="button" variant="outline" className="min-h-[44px] w-full min-w-0 whitespace-normal px-[12px] py-[10px] [overflow-wrap:normal]" onClick={() => navigate('/my-wines')}>Revisar Bodega</Button>}
+                        </div>
                       )}
                     </div>
                   );
                 })}
                 <Button
                   type="button"
-                  className="w-full gap-2 bg-red-900 hover:bg-red-950"
+                  className={isNative ? 'min-h-[44px] w-full min-w-0 gap-[12px] whitespace-normal bg-red-900 px-[12px] py-[10px] hover:bg-red-950 [&_svg]:shrink-0' : "w-full gap-2 bg-red-900 hover:bg-red-950"}
 	                  onClick={() => isNative ? findBottle(dish.nombre) : navigate(`/escanear/carta-vinos?dish=${encodeURIComponent(dish.nombre)}`)}
 	                >
 	                  <ScanLine className="h-4 w-4" />
@@ -666,7 +742,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
           <Button
             type="button"
             variant="outline"
-            className="w-full gap-2 bg-white"
+            className={isNative ? 'min-h-[44px] w-full min-w-0 gap-[12px] whitespace-normal bg-white px-[12px] py-[10px] [&_svg]:shrink-0' : "w-full gap-2 bg-white"}
             onClick={() => {
               const firstDishName = result.dishes.find((dish) => foodRowPolicy90(dish).pairingAllowed)?.nombre;
               if (isNative) { findBottle(firstDishName); return; }

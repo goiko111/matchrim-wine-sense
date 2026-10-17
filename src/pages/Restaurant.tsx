@@ -20,11 +20,13 @@ import {
   restaurantRowForRequest91, restaurantRowOrigins91,
   writeRestaurantSession91, type MenuKind91, type RestaurantSession91, type SourcedRestaurantRow91,
 } from '@/utils/restaurantSession91';
-import { lookupWinerimOriginalSheet, type WinerimOriginalSheet as OriginalSheet } from '@/utils/winerimOriginalSheet';
+import { isVerifiedWinerimSheetForIdentity, lookupWinerimOriginalSheet, validateWinerimOriginalSensory, type WinerimOriginalSheet as OriginalSheet } from '@/utils/winerimOriginalSheet';
 import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import { calculateLocalMatchrimAffinity } from '@/utils/wineAffinityExplanation';
 import { AffinityExplanation } from '@/components/AffinityExplanation';
+import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
+import { buildConsumerAffinity } from '@/utils/consumerAffinity95';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 
 const actionClass = 'h-auto min-h-[44px] min-w-0 flex-wrap whitespace-normal [overflow-wrap:anywhere] gap-[8px] px-[12px] py-[8px]';
@@ -49,8 +51,20 @@ const stopped = (signal: AbortSignal) => { if (signal.aborted) throw new DOMExce
 const digestText = async (text: string) => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))))
   .map(value => value.toString(16).padStart(2, '0')).join('');
 
+const nativeRestaurantAffinity95 = (
+  row: Pick<SourcedRestaurantRow91, 'kind' | 'name' | 'producer' | 'vintage'> | null | undefined,
+  sheet: OriginalSheet | null, profile: ScanProfileSnapshot['profile'],
+) => {
+  const linked = Boolean(row?.kind === 'wine' && isVerifiedWinerimSheetForIdentity(row, sheet));
+  const sensory = linked ? validateWinerimOriginalSensory(sheet?.sensoryAttributes) : null;
+  const attributes = sensory ? { scale: 'winerim-0-5' as const, ...sensory } : null;
+  return buildConsumerAffinity({ catalogIdentityLinked: linked, sensorySource: sensory ? 'catalog' : 'inference',
+    attributes, profile, score: calculateLocalMatchrimAffinity(profile, attributes) });
+};
+
 const RestaurantSession = ({ owner }: { owner: string }) => {
   const { user } = useAuth();
+  const native = Capacitor.isNativePlatform();
   const [state, setState] = useState<RestaurantSession91>(createRestaurantSession91);
   const stateRef = useRef(state);
   const [ready, setReady] = useState(false);
@@ -255,6 +269,10 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       check(controller);
       if (found.status !== 'verified') { setError('No hay una ficha original inequívoca para esta bodega, vino y añada. Afinidad pendiente.'); return; }
       const snapshot = await loadMatchrimScanProfile(user?.id ?? null, controller.signal); check(controller);
+      const currentRow = activeRestaurantRows91(stateRef.current).find(item => item.id === row.id && item.kind === 'wine');
+      if (native && (!currentRow || !isVerifiedWinerimSheetForIdentity(currentRow, found.sheet))) {
+        setError('La lectura ha cambiado. Revisa el vino y vuelve a contrastar su ficha.'); return;
+      }
       setSheet(found.sheet); setProfile(snapshot);
     } catch (failure) { if (!controller.signal.aborted) setError(message(failure)); }
     finally { finish(controller); }
@@ -284,7 +302,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       {origin.row.description && <p>{origin.row.description}</p>}
       {origin.row.notes?.map((note, noteIndex) => <p key={noteIndex}>{note}</p>)}
     </li>)}</ul>;
-  const attributes = sheet?.sensoryAttributes ? { potencia: sheet.sensoryAttributes.power, acidez: sheet.sensoryAttributes.acidity,
+  const attributes = !native && sheet?.sensoryAttributes ? { potencia: sheet.sensoryAttributes.power, acidez: sheet.sensoryAttributes.acidity,
     dulzura: sheet.sensoryAttributes.sweetness, taninos: sheet.sensoryAttributes.tannin, afrutado: sheet.sensoryAttributes.fruity } : null;
   const affinity = calculateLocalMatchrimAffinity(profile?.profile, attributes);
   if (!ready) return <p role="status" className="py-8">Recuperando cartas...</p>;
@@ -354,7 +372,13 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
           <div className="mt-3 flex flex-wrap gap-2"><Button variant="outline" className={actionClass} disabled={Boolean(busy)} onClick={() => { if (row.kind === 'food') { setSelectedFood(row.id); setSelectedWine(''); } else { setSelectedWine(row.id); setSelectedFood(''); } setTab('pairs'); }}>
             {row.kind === 'food' ? <Wine className="h-4 w-4 shrink-0" /> : <ChefHat className="h-4 w-4 shrink-0" />}{row.kind === 'food' ? 'Vinos para este plato' : 'Platos para este vino'}</Button>
             {row.kind === 'wine' && <Button variant="ghost" className={actionClass} disabled={Boolean(busy)} onClick={() => void inspectWine(row)}><ExternalLink className="h-4 w-4 shrink-0" />Ficha y afinidad</Button>}</div>
-          {sheetRow === row.id && sheet && <><WinerimOriginalSheet sheet={sheet} />{affinity != null ? <><p className="mt-3 font-semibold">Afinidad contigo: {affinity}%</p><AffinityExplanation wineKey={`restaurant91:${row.id}:${sheet.id}`} attributes={attributes} profile={profile?.profile} score={affinity} sensorySource="catalog" catalogIdentityLinked /></> : <p className="mt-2 text-sm text-slate-500">Afinidad pendiente: faltan perfil o atributos sensoriales verificados.</p>}</>}
+          {sheetRow === row.id && sheet && (native ? <>
+            <NativeAffinitySummary result={nativeRestaurantAffinity95(row, sheet, profile?.profile ?? null)} />
+            {isVerifiedWinerimSheetForIdentity(row, sheet) && <details className="mt-3 min-w-0 text-sm" data-testid="restaurant-original-details">
+              <summary className="flex min-h-11 cursor-pointer items-center gap-2 font-semibold text-red-900"><ChevronDown className="h-4 w-4 shrink-0" />Ver la ficha del vino</summary>
+              <WinerimOriginalSheet sheet={sheet} />
+            </details>}
+          </> : <><WinerimOriginalSheet sheet={sheet} />{affinity != null ? <><p className="mt-3 font-semibold">Afinidad contigo: {affinity}%</p><AffinityExplanation wineKey={`restaurant91:${row.id}:${sheet.id}`} attributes={attributes} profile={profile?.profile} score={affinity} sensorySource="catalog" catalogIdentityLinked /></> : <p className="mt-2 text-sm text-slate-500">Afinidad pendiente: faltan perfil o atributos sensoriales verificados.</p>}</>)}
         </li>)}</ul>
       </> : <>
         <div className="grid gap-4 sm:grid-cols-2"><label className="min-w-0 text-sm font-semibold">Plato<select aria-label="Plato" value={selectedFood} disabled={Boolean(busy)} onChange={event => { setSelectedFood(event.target.value); invalidateSelection(); }} className="mt-1 min-h-11 w-full min-w-0 rounded-md border border-slate-300 bg-white p-2 text-base"><option value="">Todos los platos</option>{foods.map(row => <option key={row.id} value={row.id}>{row.name}</option>)}</select></label>

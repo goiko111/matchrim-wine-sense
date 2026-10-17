@@ -13,6 +13,7 @@ import type { MenuScanWine } from '../src/utils/wineMenuScan';
 import { isMenuIdentityConfirmed } from '../src/utils/wineMenuScan';
 import * as money from '../src/utils/scanMoney';
 import * as mutation from '../src/utils/matchrimWineMutation';
+import { assertMenu950ProtectedSource, createMenu950StructuralScope } from './matchrim-menu-etapa950-scope';
 
 const bankBytes = readFileSync('docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json');
 assert.equal(createHash('sha256').update(bankBytes).digest('hex'), 'f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5');
@@ -186,14 +187,28 @@ const initializers = (source: string) => {
   };
   visit(tree); return result;
 };
-const activeBefore = initializers(execFileSync('git', ['show', baseline + ':' + activePath], { encoding: 'utf8' }));
-const activeAfter = initializers(readFileSync(activePath, 'utf8'));
+const historicalActiveSource = execFileSync('git', ['show', baseline + ':' + activePath], { encoding: 'utf8' });
+const currentActiveSource = readFileSync(activePath, 'utf8');
+const activeBefore = initializers(historicalActiveSource), activeAfter = initializers(currentActiveSource);
+const structural950 = createMenu950StructuralScope('price', historicalActiveSource, currentActiveSource);
+check('Historical and reviewed etapa950 menu fingerprints are exact', structural950.assertSource);
 for (const name of ['saveScannedWine', 'updateScannedWine', 'resetSaveBatch', 'normalizeScannedWine', 'getWineDecision', 'getSimilarWines', 'menuDecision', 'retryScanProfile']) {
-  check('Protected price-lane initializer unchanged: ' + name, () => assert.equal(activeAfter.get(name), activeBefore.get(name)));
+  check('Protected price-lane initializer unchanged or reviewed950: ' + name, () => structural950.initializer(name, activeAfter.get(name), activeBefore.get(name)));
 }
 for (const path of ['src/utils/wineComparison.ts', 'src/components/AffinityExplanation.tsx', 'src/components/wine-import/WineComparisonWorkspace.tsx', 'src/components/wine-import/MultiWineLabelScanner.tsx', 'src/utils/multiWineScan.ts', 'src/utils/wineAffinityExplanation.ts', 'src/utils/menuWineActions.ts', 'src/utils/imageAnalysis.ts', 'src/integrations/supabase/client.ts', 'src/integrations/supabase/types.ts', 'supabase/functions/search-wines/index.ts']) {
-  check('Protected independent source unchanged: ' + path, () => assert.equal(readFileSync(path, 'utf8'), execFileSync('git', ['show', baseline + ':' + path], { encoding: 'utf8' })));
+  check('Protected independent source unchanged or reviewed950: ' + path, () => assertMenu950ProtectedSource('price', path,
+    readFileSync(path, 'utf8'), execFileSync('git', ['show', baseline + ':' + path], { encoding: 'utf8' })));
 }
+check('Etapa950 structural fingerprints reject price, receipt, owner and later-source mutations', () => {
+  for (const [needle, replacement] of [["entry.price > 0", "entry.price >= 0"],
+    ['confirmsMenuInsert(data, payload)', 'true'], [".eq('user_id', ownerId)", ".eq('user_id', 'foreign')"]]) {
+    assert.equal(currentActiveSource.split(needle).length, 2, 'Exactly one mutation target: ' + needle);
+    const altered = currentActiveSource.replace(needle, replacement);
+    assert.throws(() => createMenu950StructuralScope('price', historicalActiveSource, altered).assertSource());
+  }
+  const path = 'src/utils/wineAffinityExplanation.ts', previous = execFileSync('git', ['show', baseline + ':' + path], { encoding: 'utf8' });
+  assert.throws(() => assertMenu950ProtectedSource('price', path, readFileSync(path, 'utf8') + '\n', previous));
+});
 const result = { scope: 'Synthetic price/provenance contracts; not human preference or wine recognition', checks, passed: checks.every((c) => c.passed) };
 if (process.argv[2]) writeFileSync(process.argv[2], JSON.stringify(result, null, 2) + '\n');
 for (const c of checks.filter((c) => !c.passed)) console.error(c.name, c.error);

@@ -12,7 +12,7 @@ interface AuthContextType {
   loading: boolean;
   signUp: (email: string, password: string, firstName?: string, lastName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signOut: () => Promise<void>;
+  signOut: () => Promise<boolean>;
   resetPassword: (email: string) => Promise<{ error: any }>;
 }
 
@@ -175,11 +175,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           description: error.message,
           variant: "destructive"
         });
+        return false;
       } else {
         toast({
           title: "Sesión cerrada",
           description: "Has cerrado sesión exitosamente."
         });
+        return true;
       }
     } catch (error: any) {
       console.error('Unexpected signout error:', error);
@@ -188,6 +190,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         description: "Ocurrió un error inesperado.",
         variant: "destructive"
       });
+      return false;
     }
   };
 

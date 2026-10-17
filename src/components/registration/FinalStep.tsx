@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RegistrationData } from '@/hooks/useRegistrationData';
+import { Capacitor } from '@capacitor/core';
 
 interface FinalStepProps {
   data: RegistrationData;
@@ -15,6 +16,7 @@ interface FinalStepProps {
 }
 
 const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPrevious, isSaving }) => {
+  const isNative = Capacitor.isNativePlatform();
   const referralOptions = [
     { value: 'redes_sociales', label: 'Redes Sociales' },
     { value: 'recomendacion', label: 'Recomendación de un amigo' },
@@ -54,7 +56,7 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
   const isValid = data.termsAccepted && data.privacyAccepted;
 
   return (
-    <div className="space-y-6">
+    <div className={isNative ? 'min-w-0 space-y-6 [overflow-wrap:anywhere]' : 'space-y-6'}>
       <div>
         <Label htmlFor="referralSource" className="text-lg font-semibold">¿Cómo nos conociste?</Label>
         <p className="text-sm text-gray-600 mb-4">Ayúdanos a mejorar (Opcional)</p>
@@ -62,12 +64,12 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
           value={data.referralSource} 
           onValueChange={(value) => onUpdate({ referralSource: value })}
         >
-          <SelectTrigger>
+          <SelectTrigger id={isNative ? 'referralSource' : undefined} className={isNative ? 'h-auto min-h-[44px] min-w-0 px-[12px] py-[8px] text-left [&>span]:line-clamp-none [&>span]:break-words [&>span]:whitespace-normal' : undefined}>
             <SelectValue placeholder="Selecciona una opción" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className={isNative ? 'max-w-[calc(100vw-32px)]' : undefined}>
             {referralOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
+              <SelectItem key={option.value} value={option.value} className={isNative ? 'min-h-[44px] whitespace-normal break-words' : undefined}>
                 {option.label}
               </SelectItem>
             ))}
@@ -78,15 +80,16 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
       <div>
         <Label className="text-lg font-semibold">Restricciones Dietéticas</Label>
         <p className="text-sm text-gray-600 mb-4">¿Tienes alguna restricción dietética? (Opcional)</p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-[8px] sm:grid-cols-2' : 'grid grid-cols-2 gap-3'}>
           {dietaryOptions.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2">
+            <div key={option.value} className={isNative ? 'relative min-w-0' : 'flex items-center space-x-2'}>
               <Checkbox
+                className={isNative ? 'absolute left-[12px] top-1/2 z-10 h-[16px] w-[16px] -translate-y-1/2' : undefined}
                 id={option.value}
                 checked={data.dietaryRestrictions.includes(option.value)}
                 onCheckedChange={(checked) => handleDietaryChange(option.value, checked as boolean)}
               />
-              <Label htmlFor={option.value} className="text-sm">
+              <Label htmlFor={option.value} className={isNative ? 'flex min-h-[44px] w-full min-w-0 cursor-pointer items-center py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm'}>
                 {option.label}
               </Label>
             </div>
@@ -97,15 +100,16 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
       <div>
         <Label className="text-lg font-semibold">Maridajes Favoritos</Label>
         <p className="text-sm text-gray-600 mb-4">¿Con qué alimentos te gusta maridar el vino? (Opcional)</p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-[8px] sm:grid-cols-2' : 'grid grid-cols-2 gap-3'}>
           {foodPairingOptions.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2">
+            <div key={option.value} className={isNative ? 'relative min-w-0' : 'flex items-center space-x-2'}>
               <Checkbox
+                className={isNative ? 'absolute left-[12px] top-1/2 z-10 h-[16px] w-[16px] -translate-y-1/2' : undefined}
                 id={option.value}
                 checked={data.foodPairings.includes(option.value)}
                 onCheckedChange={(checked) => handlePairingChange(option.value, checked as boolean)}
               />
-              <Label htmlFor={option.value} className="text-sm">
+              <Label htmlFor={option.value} className={isNative ? 'flex min-h-[44px] w-full min-w-0 cursor-pointer items-center py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm'}>
                 {option.label}
               </Label>
             </div>
@@ -118,31 +122,33 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
         <p className="text-sm text-gray-600 mb-4">Para completar tu registro, necesitamos tu consentimiento:</p>
         
         <div className="space-y-4">
-          <div className="flex items-start space-x-2">
+          <div className={isNative ? 'relative min-w-0' : 'flex items-start space-x-2'}>
             <Checkbox
+              className={isNative ? 'absolute left-[12px] top-[14px] z-10 h-[16px] w-[16px]' : undefined}
               id="terms"
               checked={data.termsAccepted}
               onCheckedChange={(checked) => onUpdate({ termsAccepted: checked as boolean })}
             />
-            <Label htmlFor="terms" className="text-sm leading-relaxed">
-              Acepto los <a href="/terms" target="_blank" rel="noreferrer" className="text-red-700 hover:underline">términos y condiciones</a> de uso de la plataforma
+            <Label htmlFor="terms" className={isNative ? 'block min-h-[44px] w-full min-w-0 cursor-pointer py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm leading-relaxed'}>
+              Acepto los <a href="/terms" target="_blank" rel="noreferrer" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center text-red-700 hover:underline' : 'text-red-700 hover:underline'}>términos y condiciones</a> de uso de la plataforma
             </Label>
           </div>
 
-          <div className="flex items-start space-x-2">
+          <div className={isNative ? 'relative min-w-0' : 'flex items-start space-x-2'}>
             <Checkbox
+              className={isNative ? 'absolute left-[12px] top-[14px] z-10 h-[16px] w-[16px]' : undefined}
               id="privacy"
               checked={data.privacyAccepted}
               onCheckedChange={(checked) => onUpdate({ privacyAccepted: checked as boolean })}
             />
-            <Label htmlFor="privacy" className="text-sm leading-relaxed">
-              Acepto la <a href="/privacy" target="_blank" rel="noreferrer" className="text-red-700 hover:underline">política de privacidad</a> y el tratamiento de mis datos personales
+            <Label htmlFor="privacy" className={isNative ? 'block min-h-[44px] w-full min-w-0 cursor-pointer py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm leading-relaxed'}>
+              Acepto la <a href="/privacy" target="_blank" rel="noreferrer" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center text-red-700 hover:underline' : 'text-red-700 hover:underline'}>política de privacidad</a> y el tratamiento de mis datos personales
             </Label>
           </div>
         </div>
       </div>
 
-      <div className="bg-red-50 p-4 rounded-lg">
+      <div className={isNative ? 'min-w-0 rounded-lg bg-red-50 p-[12px] [overflow-wrap:anywhere]' : 'bg-red-50 p-4 rounded-lg'}>
         <p className="text-sm text-red-800">
           <strong>Resumen de tu perfil:</strong>
         </p>
@@ -156,18 +162,18 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
         </ul>
       </div>
 
-      <div className="flex space-x-4">
+      <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-[8px] sm:grid-cols-2' : 'flex space-x-4'}>
         <Button 
           variant="outline" 
           onClick={onPrevious}
-          className="flex-1"
+          className={isNative ? 'h-auto min-h-[44px] min-w-0 whitespace-normal px-[12px] py-[10px]' : 'flex-1'}
           disabled={isSaving}
         >
           Anterior
         </Button>
         <Button 
           onClick={onComplete}
-          className="flex-1 bg-red-700 hover:bg-red-800"
+          className={isNative ? 'h-auto min-h-[44px] min-w-0 whitespace-normal bg-red-700 px-[12px] py-[10px] hover:bg-red-800' : 'flex-1 bg-red-700 hover:bg-red-800'}
           disabled={!isValid || isSaving}
         >
           {isSaving ? 'Creando cuenta...' : 'Completar Registro'}

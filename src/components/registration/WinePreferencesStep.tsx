@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RegistrationData } from '@/hooks/useRegistrationData';
+import { Capacitor } from '@capacitor/core';
 
 interface WinePreferencesStepProps {
   data: RegistrationData;
@@ -14,6 +15,7 @@ interface WinePreferencesStepProps {
 }
 
 const WinePreferencesStep: React.FC<WinePreferencesStepProps> = ({ data, onUpdate, onNext, onPrevious }) => {
+  const isNative = Capacitor.isNativePlatform();
   const wineTypeOptions = [
     { value: 'blancos', label: 'Vinos Blancos' },
     { value: 'tintos', label: 'Vinos Tintos' },
@@ -66,19 +68,20 @@ const WinePreferencesStep: React.FC<WinePreferencesStepProps> = ({ data, onUpdat
   };
 
   return (
-    <div className="space-y-8">
+    <div className={isNative ? 'min-w-0 space-y-8' : 'space-y-8'}>
       <div>
         <Label className="text-lg font-semibold">¿Qué tipos de vino te interesan?</Label>
         <p className="text-sm text-gray-600 mb-4">Selecciona todas las opciones que te interesen</p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-[8px] sm:grid-cols-2' : 'grid grid-cols-2 gap-3'}>
           {wineTypeOptions.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2">
+            <div key={option.value} className={isNative ? 'relative min-w-0' : 'flex items-center space-x-2'}>
               <Checkbox
+                className={isNative ? 'absolute left-[12px] top-1/2 z-10 h-[16px] w-[16px] -translate-y-1/2' : undefined}
                 id={option.value}
                 checked={data.wineTypes.includes(option.value)}
                 onCheckedChange={(checked) => handleWineTypeChange(option.value, checked as boolean)}
               />
-              <Label htmlFor={option.value} className="text-sm">
+              <Label htmlFor={option.value} className={isNative ? 'flex min-h-[44px] w-full min-w-0 cursor-pointer items-center py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm'}>
                 {option.label}
               </Label>
             </div>
@@ -89,15 +92,16 @@ const WinePreferencesStep: React.FC<WinePreferencesStepProps> = ({ data, onUpdat
       <div>
         <Label className="text-lg font-semibold">Preferencias de Sabor</Label>
         <p className="text-sm text-gray-600 mb-4">¿Qué características buscas en un vino?</p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-[8px] sm:grid-cols-2' : 'grid grid-cols-2 gap-3'}>
           {tasteOptions.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2">
+            <div key={option.value} className={isNative ? 'relative min-w-0' : 'flex items-center space-x-2'}>
               <Checkbox
+                className={isNative ? 'absolute left-[12px] top-1/2 z-10 h-[16px] w-[16px] -translate-y-1/2' : undefined}
                 id={option.value}
                 checked={data.tastePreferences.includes(option.value)}
                 onCheckedChange={(checked) => handleTasteChange(option.value, checked as boolean)}
               />
-              <Label htmlFor={option.value} className="text-sm">
+              <Label htmlFor={option.value} className={isNative ? 'flex min-h-[44px] w-full min-w-0 cursor-pointer items-center py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm'}>
                 {option.label}
               </Label>
             </div>
@@ -108,15 +112,16 @@ const WinePreferencesStep: React.FC<WinePreferencesStepProps> = ({ data, onUpdat
       <div>
         <Label className="text-lg font-semibold">Tipo de Experiencia</Label>
         <p className="text-sm text-gray-600 mb-4">¿Qué buscas en tu experiencia con el vino?</p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-[8px] sm:grid-cols-2' : 'grid grid-cols-2 gap-3'}>
           {experienceOptions.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2">
+            <div key={option.value} className={isNative ? 'relative min-w-0' : 'flex items-center space-x-2'}>
               <Checkbox
+                className={isNative ? 'absolute left-[12px] top-1/2 z-10 h-[16px] w-[16px] -translate-y-1/2' : undefined}
                 id={option.value}
                 checked={data.experienceType.includes(option.value)}
                 onCheckedChange={(checked) => handleExperienceChange(option.value, checked as boolean)}
               />
-              <Label htmlFor={option.value} className="text-sm">
+              <Label htmlFor={option.value} className={isNative ? 'flex min-h-[44px] w-full min-w-0 cursor-pointer items-center py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm'}>
                 {option.label}
               </Label>
             </div>
@@ -131,12 +136,12 @@ const WinePreferencesStep: React.FC<WinePreferencesStepProps> = ({ data, onUpdat
           value={data.priceRange} 
           onValueChange={(value) => onUpdate({ priceRange: value })}
         >
-          <SelectTrigger>
+          <SelectTrigger id={isNative ? 'priceRange' : undefined} className={isNative ? 'h-auto min-h-[44px] min-w-0 px-[12px] py-[8px] text-left [&>span]:line-clamp-none [&>span]:break-words [&>span]:whitespace-normal' : undefined}>
             <SelectValue placeholder="Selecciona un rango" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className={isNative ? 'max-w-[calc(100vw-32px)]' : undefined}>
             {priceRanges.map((range) => (
-              <SelectItem key={range.value} value={range.value}>
+              <SelectItem key={range.value} value={range.value} className={isNative ? 'min-h-[44px] whitespace-normal break-words' : undefined}>
                 {range.label}
               </SelectItem>
             ))}
@@ -144,17 +149,17 @@ const WinePreferencesStep: React.FC<WinePreferencesStepProps> = ({ data, onUpdat
         </Select>
       </div>
 
-      <div className="flex space-x-4">
+      <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-[8px] sm:grid-cols-2' : 'flex space-x-4'}>
         <Button 
           variant="outline" 
           onClick={onPrevious}
-          className="flex-1"
+          className={isNative ? 'h-auto min-h-[44px] min-w-0 whitespace-normal px-[12px] py-[10px]' : 'flex-1'}
         >
           Anterior
         </Button>
         <Button 
           onClick={onNext}
-          className="flex-1 bg-red-700 hover:bg-red-800"
+          className={isNative ? 'h-auto min-h-[44px] min-w-0 whitespace-normal bg-red-700 px-[12px] py-[10px] hover:bg-red-800' : 'flex-1 bg-red-700 hover:bg-red-800'}
         >
           Continuar
         </Button>

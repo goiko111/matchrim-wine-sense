@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowUpRight,
@@ -15,6 +16,7 @@ import {
   Sparkles,
   UserRound,
   Wine,
+  X,
 } from 'lucide-react';
 import AppNav from '@/components/AppNav';
 import { Button } from '@/components/ui/button';
@@ -30,6 +32,9 @@ import {
 import { buildWinerimWineUrl, type WinerimWineWithMatch } from '@/services/winerimApi';
 import AiRimMark from '@/components/AiRimMark';
 import MatchrimQuickGuide from '@/components/MatchrimQuickGuide';
+import WineCard from '@/components/WineCard';
+import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
 
 type HomeLearningInfo = {
   samples: number;
@@ -47,6 +52,7 @@ interface NativeAppHomeProps {
   loadingRecommendations?: boolean;
   recommendationsUnavailable?: boolean;
   recommendationsExhausted?: boolean;
+  activeProfile?: MatchrimProfileLike | null;
 }
 
 const scanTypeLabels: Record<ScanHistoryItem['type'], string> = {
@@ -77,6 +83,7 @@ const NativeAppHome = ({
   loadingRecommendations = false,
   recommendationsUnavailable = false,
   recommendationsExhausted = false,
+  activeProfile = null,
 }: NativeAppHomeProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -84,6 +91,10 @@ const NativeAppHome = ({
   const hasCode = hasQuizResults && Boolean(matchrimCode);
   const ownerId = user?.id ?? null;
   const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory(ownerId).slice(0, 3));
+  const [selection, setSelection] = useState<{ wine: WinerimWineWithMatch; ownerId: string | null } | null>(null);
+  useLayoutEffect(() => { setSelection(null); }, [ownerId, activeProfile, recommendations]);
+  const selectedWine = selection?.ownerId === ownerId && recommendations.includes(selection.wine)
+    ? selection.wine : null;
 
   useLayoutEffect(() => {
     const refresh = () => setRecentScans(getScanHistory(ownerId).slice(0, 3));
@@ -231,7 +242,7 @@ const NativeAppHome = ({
             type="button"
             onClick={() => navigate('/inteligencia-liquida')}
             aria-label="Pregunta a aiRIM"
-            className={`matchrim-pressable flex w-full items-center gap-3 text-left ${isNative ? 'min-h-[4.75rem] py-3 text-slate-950' : 'rounded-lg bg-red-950 p-4 text-white shadow-sm'}`}
+            className={`matchrim-pressable flex w-full items-center gap-3 text-left ${isNative ? 'min-h-[4.75rem] flex-wrap py-3 text-slate-950' : 'rounded-lg bg-red-950 p-4 text-white shadow-sm'}`}
           >
             {isNative ? (
               <AiRimMark className="h-11 w-11 rounded-md bg-red-50 text-red-900 ring-red-50" iconClassName="h-6 w-6" />
@@ -240,7 +251,7 @@ const NativeAppHome = ({
                 <BrainCircuit className="h-6 w-6" />
               </span>
             )}
-            <span className="min-w-0 flex-1">
+            <span className={isNative ? 'min-w-0 max-w-full flex-1 basis-[min(100%,14rem)]' : 'min-w-0 flex-1'}>
               <span id="airim-home-title" className="block text-base font-bold">{isNative ? 'Consultar a aiRIM' : 'Pregunta a aiRIM'}</span>
               <span className={`mt-0.5 block text-sm leading-5 ${isNative ? 'text-slate-500' : 'text-red-100/85'}`}>
                 {learningInfo
@@ -311,7 +322,22 @@ const NativeAppHome = ({
               </div>
             ) : recommendations.length > 0 ? (
               <div className="mt-3 divide-y divide-slate-200 border-y border-slate-200">
-                {recommendations.map((wine) => (
+                {isNative ? recommendations.map((wine) => {
+                  const { result } = buildNativeRecommendation95(wine, activeProfile);
+                  return <button key={String(wine.id)} type="button"
+                    onClick={() => setSelection({ wine, ownerId })}
+                    className="matchrim-pressable flex min-h-[5.25rem] w-full flex-wrap items-center gap-3 py-3 text-left"
+                    aria-label={`Ver por qué ${wine.name}${result.state === 'ready' ? `. Afinidad orientativa ${result.score} de 100` : '. Afinidad pendiente'}`}>
+                    <span className="min-w-0 flex-1 basis-40">
+                      <span className="block break-words text-sm font-semibold text-slate-950">{wine.name}</span>
+                      <span className="mt-0.5 block break-words text-xs text-slate-500">{wine.winery || 'Referencia pendiente'}</span>
+                    </span>
+                    <span className="shrink-0 text-sm font-semibold text-red-900">
+                      {result.state === 'ready' ? `≈${result.score}/100` : 'Afinidad pendiente'}
+                    </span>
+                    <ChevronRight aria-hidden="true" className="h-5 w-5 shrink-0 text-slate-400" />
+                  </button>;
+                }) : recommendations.map((wine) => (
                   <button
                     key={String(wine.id)}
                     type="button"
@@ -418,6 +444,22 @@ const NativeAppHome = ({
         )}
       </main>
 
+      {isNative && <DialogPrimitive.Root open={Boolean(selectedWine)} onOpenChange={open => { if (!open) setSelection(null); }}>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60" />
+          <DialogPrimitive.Content aria-describedby="home-wine-description"
+            className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[90dvh] w-full max-w-2xl flex-col overflow-hidden rounded-t-lg bg-white text-slate-950">
+            <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 px-3 py-2">
+              <DialogPrimitive.Title className="min-w-0 text-base font-semibold">Tu elección</DialogPrimitive.Title>
+              <DialogPrimitive.Close className="flex h-11 w-11 shrink-0 items-center justify-center" aria-label="Cerrar explicación del vino"><X aria-hidden="true" className="h-5 w-5" /></DialogPrimitive.Close>
+            </div>
+            <div className="min-h-0 overflow-y-auto px-3 pb-[calc(1rem+var(--matchrim-safe-bottom,0px))]">
+              <DialogPrimitive.Description id="home-wine-description" className="sr-only">Cómo encaja este vino con tus gustos actuales.</DialogPrimitive.Description>
+              {selectedWine && <WineCard wine={selectedWine} index={0} profile={activeProfile} />}
+            </div>
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>}
       {(isNative || !user) && <MobileBottomNav />}
     </div>
   );

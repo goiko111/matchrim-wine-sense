@@ -1,0 +1,37 @@
+{
+  "cases": [
+    {
+      "id": "mixed-drinks",
+      "categories": ["mixed_drinks", "printed_wine_list", "service_columns", "glare"],
+      "annotation_scope": "full_visible_wine_subsection_literals_and_displayed_price_groups_only",
+      "full_subsection": "Right-hand WINE LIST only: five generic wine names and four displayed price blocks. Not full-scene canonical identity or whole-document OCR.",
+      "evaluation": "literal_controls_only",
+      "columns": ["175ml", "250ml", "BTL"],
+      "rows": [
+        {"id":"pinot","literal_name":"Pinot Grigio","name_extent":"full_visible_row_name","section":"WHITE","price_group":"white","prices":null},
+        {"id":"merlot","literal_name":"Merlot","name_extent":"full_visible_row_name","section":"RED","price_group":"red","prices":null},
+        {"id":"shiraz","literal_name":"Shiraz","name_extent":"full_visible_row_name","section":"RED","price_group":"red","prices":null},
+        {"id":"blush","literal_name":"Blush Pinot Grigio","name_extent":"full_visible_row_name","section":"ROS\u00c9","price_group":"rose","prices":null},
+        {"id":"prosecco","literal_name":"Prosecco","name_extent":"full_visible_row_name","section":"FIZZ","price_group":"fizz","prices":null}
+      ],
+      "price_groups": [
+        {"id":"white","applies_to":["pinot"],"displayed_once":true,"prices":[{"column":"175ml","literal":"5.5","value":5.5},{"column":"250ml","literal":"7","value":7},{"column":"BTL","literal":"19","value":19}]},
+        {"id":"red","applies_to":["merlot","shiraz"],"displayed_once":true,"prices":[{"column":"175ml","literal":"5.5","value":5.5},{"column":"250ml","literal":"7","value":7},{"column":"BTL","literal":"19","value":19}]},
+        {"id":"rose","applies_to":["blush"],"displayed_once":true,"prices":[{"column":"175ml","literal":"5.5","value":5.5},{"column":"250ml","literal":"7","value":7},{"column":"BTL","literal":"19","value":19}]},
+        {"id":"fizz","applies_to":["prosecco"],"displayed_once":true,"prices":[{"column":"175ml","literal":null,"value":null},{"column":"250ml","literal":null,"value":null},{"column":"BTL","literal":"21","value":21}]}
+      ],
+      "currency_iso": null,
+      "excluded_literal_names_from_wine_identity": ["Coca cola / diet cola", "Sanpellegrino", "Still / sparkling water", "Peroni", "Moretti"],
+      "exclusions": [
+        "Do not fill the two blank FIZZ glass-price cells",
+        "Do not treat the shared RED price block as two separately printed blocks",
+        "Generic grapes/styles supply no winery, cuvee, catalog ID or vintage",
+        "No currency symbol is printed beside the selected wine prices; do not infer GBP from venue metadata"
+      ],
+      "limits": [
+        "Ten numeric price cells displayed across four blocks, not thirteen separately observed per-wine cells",
+        "Only literal subsection completeness can be judged; no canonical identity completeness or consumer taste truth"
+      ]
+    }
+  ]
+}

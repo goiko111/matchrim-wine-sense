@@ -42,10 +42,10 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   };
   if (isNative) {
     return (
-      <section className="matchrim-native-quiz-question mx-auto w-full max-w-2xl px-4 pb-6">
-        <div className="flex items-center justify-between gap-3 text-sm text-slate-500">
+      <section className="matchrim-native-quiz-question mx-auto w-full min-w-0 max-w-2xl px-0 pb-[24px]">
+        <div className="flex min-w-0 flex-wrap items-center justify-between gap-[8px] text-sm text-slate-500">
           <span>Pregunta {currentQuestionIndex + 1} de {totalQuestions}</span>
-          <progress aria-label="Progreso del test" value={currentQuestionIndex + 1} max={totalQuestions} className="h-2 w-28 accent-red-800" />
+          <progress aria-label="Progreso del test" value={currentQuestionIndex + 1} max={totalQuestions} className="h-2 w-[96px] max-w-full accent-red-800" />
         </div>
         <img src={question.image} alt="" aria-hidden="true" className="matchrim-native-quiz-image mt-4 aspect-[3/2] max-h-64 w-full rounded-lg bg-white object-contain" />
         <h1 ref={title} tabIndex={-1} className="mt-5 text-xl font-semibold leading-tight text-slate-950 outline-none">{question.text}</h1>
@@ -56,10 +56,10 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
             </label>
           ))}
         </RadioGroup>
-        <div className="mt-5 flex flex-wrap gap-2">
-          <Button type="button" onClick={onPrevious} disabled={isFirst} variant="outline" className="min-h-11 gap-2"><ChevronLeft className="h-4 w-4" /> Anterior</Button>
-          <Button type="button" onClick={onContinue} disabled={!currentAnswer} className="min-h-11 flex-1 bg-red-900">{isLast ? 'Ver mi perfil' : 'Siguiente'}</Button>
-          <Button type="button" onClick={onBackToStart} variant="ghost" size="icon" aria-label="Salir del test" title="Salir del test"><Home className="h-5 w-5" /></Button>
+        <div className="mt-5 grid min-w-0 grid-cols-[44px_minmax(0,1fr)_44px] gap-[8px]">
+          <Button type="button" onClick={onPrevious} disabled={isFirst} variant="outline" size="icon" className="col-start-1 row-start-1 h-[44px] min-h-[44px] w-[44px] min-w-[44px] p-0" aria-label="Anterior" title="Anterior"><ChevronLeft className="h-4 w-4" /></Button>
+          <Button type="button" onClick={onContinue} disabled={!currentAnswer} className="col-span-3 row-start-2 h-auto min-h-[44px] w-full min-w-0 whitespace-normal bg-red-900 px-[12px] py-[8px]">{isLast ? 'Ver mi perfil' : 'Siguiente'}</Button>
+          <Button type="button" onClick={onBackToStart} variant="ghost" size="icon" className="col-start-3 row-start-1 h-[44px] min-h-[44px] w-[44px] min-w-[44px] shrink-0 p-0" aria-label="Salir del test" title="Salir del test"><Home className="h-5 w-5" /></Button>
         </div>
       </section>
     );

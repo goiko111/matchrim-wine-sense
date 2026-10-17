@@ -1,0 +1,55 @@
+{
+  "scope": "Recorded public response projection for offline contract regression, not fresh recognition or human taste ground truth. Only original identity and sensory fields used by the lookup are retained; unrelated prices, stock, related wines and marketing fields are omitted.",
+  "observedAt": "2026-10-16T10:18:34.354Z",
+  "reads": [
+    {
+      "case": "public-nv-control",
+      "url": "https://app.winerim.com/api/v1/whoami/slugname?s=the-library",
+      "status": 200,
+      "body": { "restaurant": "b653e084-e8e1-448c-bc03-507a1cea3810" }
+    },
+    {
+      "case": "public-nv-control",
+      "url": "https://app.winerim.com/api/v1/restaurant/b653e084-e8e1-448c-bc03-507a1cea3810/wines?page=1&text=Manzanilla+La+Gitana",
+      "status": 200,
+      "body": {
+        "results": [
+          {
+            "id": 278688,
+            "name": "Manzanilla La Gitana",
+            "subname": null,
+            "slugname": "Manzanilla-La-Gitana",
+            "type": "fortificado",
+            "country": "ES",
+            "region": "Jerez-Xérès-Sherry",
+            "winery": "Bodegas Hidalgo La Gitana",
+            "grapes": [["Palomino Fino"]],
+            "vintage": null,
+            "tastingAttributes": { "power": 2, "sweetness": 1, "acidity": 4, "tannin": 0, "fruity": 1, "aging": null }
+          }
+        ],
+        "count": 1,
+        "page": 1,
+        "limit": 20
+      }
+    },
+    {
+      "case": "public-nv-control",
+      "url": "https://app.winerim.com/api/v1/restaurant/b653e084-e8e1-448c-bc03-507a1cea3810/wines/278688/Manzanilla-La-Gitana",
+      "status": 200,
+      "body": {
+        "id": 278688,
+        "name": "Manzanilla La Gitana",
+        "subname": null,
+        "slugname": "Manzanilla-La-Gitana",
+        "type": "fortificado",
+        "country": "ES",
+        "region": "Jerez-Xérès-Sherry",
+        "winery": "Bodegas Hidalgo La Gitana",
+        "vintage": null,
+        "grapes": [{ "name": "Palomino Fino" }],
+        "tastingAttributes": { "power": 2, "sweetness": 1, "acidity": 4, "tannin": 0, "fruity": 1, "aging": null }
+      }
+    }
+  ]
+}

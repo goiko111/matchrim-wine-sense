@@ -286,6 +286,42 @@ const MyWinesForOwner = () => {
     if (wineLoadFailed && !loading) wineLoadErrorRef.current?.scrollIntoView({ block: 'center', behavior: 'instant' });
   }, [wineLoadFailed, loading]);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const manualEditorBody = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isNative || !showAddDialog) return;
+    let frame = 0;
+    const revealFocusedField = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const body = manualEditorBody.current;
+        const field = document.activeElement;
+        if (!body || !(field instanceof HTMLElement) || !body.contains(field)) return;
+        // WebKit does not always reveal the focused field after rotating with a keyboard.
+        const bounds = body.getBoundingClientRect();
+        const input = field.getBoundingClientRect();
+        const inset = Math.min(8, Math.max(0, (bounds.height - input.height) / 2));
+        if (input.bottom > bounds.bottom - inset) body.scrollTop += input.bottom - bounds.bottom + inset;
+        else if (input.top < bounds.top + inset) body.scrollTop -= bounds.top + inset - input.top;
+      });
+    };
+    window.addEventListener('resize', revealFocusedField);
+    window.addEventListener('focusin', revealFocusedField);
+    window.visualViewport?.addEventListener('resize', revealFocusedField);
+    const observer = new ResizeObserver(revealFocusedField);
+    const observeFrame = requestAnimationFrame(() => {
+      if (manualEditorBody.current) observer.observe(manualEditorBody.current);
+      revealFocusedField();
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(observeFrame);
+      observer.disconnect();
+      window.removeEventListener('resize', revealFocusedField);
+      window.removeEventListener('focusin', revealFocusedField);
+      window.visualViewport?.removeEventListener('resize', revealFocusedField);
+    };
+  }, [isNative, showAddDialog]);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [saving, setSaving] = useState(false);
   const [extractedData, setExtractedData] = useState<ExtractedWineData | null>(null);
@@ -884,15 +920,22 @@ const MyWinesForOwner = () => {
     pendingFavorites.current.add(wineId);
     setSavingFavorites(new Set(pendingFavorites.current));
     try {
-      const { data, error } = await supabase
+      const query = supabase
         .from("user_wines")
         .update({ is_favorite: !currentFavorite })
         .eq("id", wineId)
-        .eq("user_id", ownerId).select('id').single();
+        .eq("user_id", ownerId);
+      const { data, error } = isNative
+        ? await query.select('id, user_id, is_favorite').single()
+        : await query.select('id').single();
 
       if (!isCurrent()) return;
       if (error) throw error;
-      if (!data?.id) throw new Error('Favorite update not confirmed');
+      if (isNative) {
+        if (!confirmsWineMutation(data, wineId, { user_id: ownerId, is_favorite: !currentFavorite })) {
+          throw new Error('Favorite update not confirmed');
+        }
+      } else if (!data?.id) throw new Error('Favorite update not confirmed');
 
       toast.success(currentFavorite ? "Eliminado de Favoritos" : "Añadido a Mis vinos > Favoritos");
       loadWines();
@@ -1047,7 +1090,7 @@ const MyWinesForOwner = () => {
       const priorDetails = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
         ? wine.place_details : {};
       const excluded = priorDetails.matchrim_training_policy === 'excluded'
-        || (Boolean(wine.rating) && wine.use_for_profile_training === false && priorDetails.matchrim_training_policy !== 'included');
+        || (Boolean(wine.rating) && wine.use_for_profile_training === false);
       
       const updateData: {
         rating: typeof rating;
@@ -2033,6 +2076,16 @@ const MyWinesForOwner = () => {
                                   </p>
                                 </div>
                                 {wine.sensory_attributes ? (
+                                  isNative ? <label htmlFor={`cellar-training-${wine.id}`} className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center">
+                                    <Switch
+                                      id={`cellar-training-${wine.id}`}
+                                      checked={Boolean(wine.use_for_profile_training)}
+                                      onCheckedChange={(checked) => handleToggleProfileTraining(wine.id, checked)}
+                                      aria-label={`Usar ${wine.name} para entrenar perfil`}
+                                      disabled={savingWineActions.has(wine.id)}
+                                      aria-busy={savingWineActions.has(wine.id)}
+                                    />
+                                  </label> :
                                   <Switch
                                     checked={Boolean(wine.use_for_profile_training)}
                                     onCheckedChange={(checked) => handleToggleProfileTraining(wine.id, checked)}
@@ -2130,10 +2183,11 @@ const MyWinesForOwner = () => {
           }
           closeAddDialog();
         }}>
-          <DialogContent className={isNative
-            ? 'matchrim-native-cellar-dialog left-0 top-0 h-[100dvh] max-h-[100dvh] w-screen min-w-0 max-w-none translate-x-0 translate-y-0 grid-cols-[minmax(0,1fr)] overflow-x-hidden overflow-y-auto rounded-none pb-[calc(1.5rem+var(--matchrim-safe-bottom))] pt-[calc(1.5rem+var(--matchrim-safe-top))] [overflow-wrap:anywhere] [&>button:last-child]:fixed [&>button:last-child]:top-[calc(1rem+var(--matchrim-safe-top))] [&>button:last-child]:flex [&>button:last-child]:h-11 [&>button:last-child]:w-11 [&>button:last-child]:items-center [&>button:last-child]:justify-center [&>button:last-child]:bg-background'
+          <DialogContent style={isNative ? { transform: 'none', animation: 'none' } : undefined}
+            onOpenAutoFocus={isNative ? event => event.preventDefault() : undefined} className={isNative
+            ? 'matchrim-native-cellar-dialog left-0 top-0 flex h-[100dvh] max-h-[100dvh] w-screen min-w-0 max-w-none translate-x-0 translate-y-0 flex-col gap-[16px] overflow-hidden rounded-none px-[16px] pb-[calc(16px+var(--matchrim-safe-bottom))] pt-[calc(16px+var(--matchrim-safe-top))] [overflow-wrap:anywhere] [&>button:last-child]:fixed [&>button:last-child]:right-[calc(12px+var(--matchrim-safe-right))] [&>button:last-child]:top-[calc(12px+var(--matchrim-safe-top))] [&>button:last-child]:flex [&>button:last-child]:h-[44px] [&>button:last-child]:w-[44px] [&>button:last-child]:items-center [&>button:last-child]:justify-center [&>button:last-child]:bg-background [&>button:last-child_svg]:h-[20px] [&>button:last-child_svg]:w-[20px]'
             : 'h-[100dvh] max-h-[100dvh] w-screen max-w-none overflow-y-auto rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg'}>
-            <DialogHeader className={isNative ? 'pr-12' : undefined}>
+            <DialogHeader className={isNative ? 'matchrim-native-cellar-editor-heading shrink-0 pr-[56px]' : undefined}>
               <DialogTitle>
                 {extractedData ? "Verificar y Guardar Vino" : "Añadir Vino"}
               </DialogTitle>
@@ -2144,7 +2198,7 @@ const MyWinesForOwner = () => {
               </DialogDescription>
             </DialogHeader>
 
-            <div className={isNative ? 'min-w-0 space-y-4 py-4' : 'space-y-4 py-4'}>
+            <div ref={isNative ? manualEditorBody : undefined} className={isNative ? 'matchrim-native-cellar-editor-body min-h-0 min-w-0 flex-1 space-y-[16px] overflow-y-auto overscroll-contain py-[8px]' : 'space-y-4 py-4'}>
               <div className="grid gap-4">
                 <div>
                   <Label htmlFor="name">Nombre del Vino *</Label>
@@ -2221,7 +2275,7 @@ const MyWinesForOwner = () => {
                             type="button"
                             variant={manualWineNameConfirmed ? "secondary" : "outline"}
                             size="sm"
-                            className="gap-2"
+                            className={isNative ? 'h-auto min-h-[44px] w-full min-w-0 max-w-full flex-col gap-[4px] whitespace-normal px-[12px] py-[10px] [overflow-wrap:normal]' : "gap-2"}
                             onClick={() => {
                               setManualWineNameConfirmed(true);
                               setManualWineSelectedFromResults(false);
@@ -2236,7 +2290,7 @@ const MyWinesForOwner = () => {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className={isNative ? 'grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))] gap-4' : 'grid grid-cols-2 gap-4'}>
                   <div>
                     <Label htmlFor="producer">Bodega/Productor</Label>
                     <Input
@@ -2258,7 +2312,7 @@ const MyWinesForOwner = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className={isNative ? 'grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))] gap-4' : 'grid grid-cols-2 gap-4'}>
                   <div>
                     <Label htmlFor="region">Región</Label>
                     <Input
@@ -2279,7 +2333,7 @@ const MyWinesForOwner = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className={isNative ? 'grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))] gap-4' : 'grid grid-cols-2 gap-4'}>
                   <div>
                     <Label htmlFor="grapes">Uvas (separadas por comas)</Label>
                     <Input

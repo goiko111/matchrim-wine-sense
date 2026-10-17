@@ -97,7 +97,7 @@ const MobileBottomNav = () => {
                 ) : (
                   <Icon className="h-[22px] w-[22px]" strokeWidth={isActive ? 2.3 : 1.9} aria-hidden="true" />
                 )}
-                <span className="max-w-full whitespace-normal text-center [overflow-wrap:anywhere]" aria-hidden="true">{link.label}</span>
+                <span className="max-w-full whitespace-nowrap text-center text-[12px] leading-[16px] [overflow-wrap:normal]" style={{ WebkitTextSizeAdjust: '100%' }} aria-hidden="true">{link.label}</span>
                 {isActive && !isScan && <span className="absolute top-0 h-0.5 w-5 rounded-full bg-red-800" aria-hidden="true" />}
               </Link>
             );

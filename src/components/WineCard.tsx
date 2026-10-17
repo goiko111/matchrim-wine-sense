@@ -1,4 +1,5 @@
 import React from 'react';
+import { Capacitor } from '@capacitor/core';
 import { Wine, TrendingUp, ExternalLink } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,8 @@ import { formatWineType, formatCountryName } from '@/utils/wineFormatters';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { buildAffinityInsights } from '@/utils/wineAffinityExplanation';
 import { getWinerimPriceDisplay } from '@/utils/winerimPrice';
+import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
+import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
 
 interface WineCardProps {
   wine: WinerimWineWithMatch;
@@ -17,6 +20,24 @@ interface WineCardProps {
 }
 
 const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false, setWineRef, profile }) => {
+  if (Capacitor.isNativePlatform()) {
+    const evidence = buildNativeRecommendation95(wine, profile);
+    return (
+      <div ref={(node) => setWineRef?.(wine.id, node)}
+        data-testid="native-recommendation-card"
+        className={`min-w-0 border-b border-stone-200 py-4 text-left ${isHighlighted ? 'border-l-2 border-l-red-800 pl-3' : ''}`}>
+        <h4 className="break-words text-base font-semibold leading-6 text-slate-950">{wine.name}</h4>
+        <p className="mt-1 break-words text-sm leading-6 text-stone-600">{[wine.winery, wine.vintage, wine.region].filter(Boolean).join(' · ')}</p>
+        <div className="mt-3"><NativeAffinitySummary result={evidence.result} /></div>
+        {evidence.sourceAvailable && <Button type="button" variant="outline"
+          className="mt-3 min-h-11 w-full whitespace-normal text-left"
+          onClick={() => window.open(buildWinerimWineUrl(wine), '_blank', 'noopener,noreferrer')}>
+          <ExternalLink aria-hidden="true" className="mr-2 h-4 w-4 shrink-0" />Ver en Winerim
+        </Button>}
+      </div>
+    );
+  }
+
   const openInWinerim = () => {
     window.open(buildWinerimWineUrl(wine), '_blank', 'noopener,noreferrer');
   };

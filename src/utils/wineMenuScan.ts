@@ -86,7 +86,7 @@ export interface MenuScanResponse {
 }
 
 export interface MenuScanTile {
-  id: 'full' | 'left' | 'right' | 'right-focus' | 'top' | 'bottom';
+  id: 'full' | 'left' | 'right' | 'right-focus' | 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   box: NormalizedBox;
 }
 
@@ -348,7 +348,13 @@ const sameLiteralSourceRow = (left: MenuScanWine, right: MenuScanWine) => {
       || overlappingLiteralRow(left, right));
 };
 
-const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine) => {
+const conflictingNumericReference = (left: MenuScanWine, right: MenuScanWine) => {
+  const a = normalizeText(left.nombre).match(/\d+/g) ?? [], b = normalizeText(right.nombre).match(/\d+/g) ?? [];
+  return a.length > 0 && b.length > 0 && a.join(' ') !== b.join(' ');
+};
+
+const isOverlapDuplicate = (left: MenuScanWine, right: MenuScanWine, preserveNumericReferences = false) => {
+  if (preserveNumericReferences && conflictingNumericReference(left, right)) return false;
   if (conflictingMenuIdentity(left, right)) return false;
   if (sameUncertainSourceRow(left, right)) return true;
   if (sameLiteralSourceRow(left, right)) return true;
@@ -520,7 +526,9 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine): MenuScanWine => {
   };
 };
 
-export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanResponse => {
+export interface MenuMergeOptions95 { preserveNumericReferences?: boolean; }
+
+export const mergeMenuTileResults = (results: MenuTileResult[], options: MenuMergeOptions95 = {}): MenuScanResponse => {
   const wines: MenuScanWine[] = [];
   const observations = results.flatMap(({ tile, response }) => (response.vinos ?? []).map((wine) => ({
     tile,
@@ -532,11 +540,11 @@ export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanRespons
   })));
   const ambiguousSourceMatch = (left: MenuScanWine, right: MenuScanWine) => sameUncertainSourceRow(left, right)
     && observations.some(({ wine: other }) => (
-      (sameUncertainSourceRow(left, other) && !isOverlapDuplicate(right, other))
-      || (sameUncertainSourceRow(right, other) && !isOverlapDuplicate(left, other))
+      (sameUncertainSourceRow(left, other) && !isOverlapDuplicate(right, other, options.preserveNumericReferences))
+      || (sameUncertainSourceRow(right, other) && !isOverlapDuplicate(left, other, options.preserveNumericReferences))
     ));
   observations.forEach(({ tile, wine }) => {
-    const duplicates = wines.map((existing, index) => isOverlapDuplicate(existing, wine)
+    const duplicates = wines.map((existing, index) => isOverlapDuplicate(existing, wine, options.preserveNumericReferences)
       && !ambiguousSourceMatch(existing, wine) ? index : -1).filter((index) => index !== -1);
     // Never resolve an ambiguous truncated heading by the order of results.
     const duplicateIndex = duplicates.length === 1 ? duplicates[0] : -1;
@@ -597,18 +605,19 @@ export const mergeMenuTileResults = (results: MenuTileResult[]): MenuScanRespons
   };
 };
 
-export const resolveMenuTileResults = (results: MenuTileResult[]): MenuScanResponse => {
+export const resolveMenuTileResults = (results: MenuTileResult[], options: MenuMergeOptions95 = {}): MenuScanResponse => {
   const fullResult = results.find((result) => result.tile.id === 'full');
   const focusResults = results.filter((result) => result.tile.id === 'right-focus');
   const regionalResults = results.filter((result) => result.tile.id !== 'full' && result.tile.id !== 'right-focus');
-  if (!fullResult) return mergeMenuTileResults(results);
-  if (regionalResults.length === 0) return mergeMenuTileResults([fullResult, ...focusResults]);
+  if (!fullResult) return mergeMenuTileResults(results, options);
+  if (regionalResults.length === 0) return mergeMenuTileResults([fullResult, ...focusResults], options);
 
-  const fullWines = mergeMenuTileResults([fullResult]).vinos ?? [];
-  const regionalWines = mergeMenuTileResults(regionalResults).vinos ?? [];
+  const fullWines = mergeMenuTileResults([fullResult], options).vinos ?? [];
+  const regionalWines = mergeMenuTileResults(regionalResults, options).vinos ?? [];
   const overlappingRegionalRows = regionalWines.filter((regionalWine) => (
-    fullWines.some((fullWine) => isOverlapDuplicate(fullWine, regionalWine)
-      || tokenOverlap(fullWine.nombre, regionalWine.nombre) >= 0.8)
+    fullWines.some((fullWine) => (!options.preserveNumericReferences || !conflictingNumericReference(fullWine, regionalWine))
+      && (isOverlapDuplicate(fullWine, regionalWine, options.preserveNumericReferences)
+        || tokenOverlap(fullWine.nombre, regionalWine.nombre) >= 0.8))
   )).length;
   const overlapRatio = overlappingRegionalRows / Math.max(1, Math.min(fullWines.length, regionalWines.length));
 
@@ -624,5 +633,5 @@ export const resolveMenuTileResults = (results: MenuTileResult[]): MenuScanRespo
       ? (regionalMateriallyBroader ? regionalResults : [fullResult])
       : [fullResult, ...regionalResults];
 
-  return mergeMenuTileResults([...baseResults, ...focusResults]);
+  return mergeMenuTileResults([...baseResults, ...focusResults], options);
 };

@@ -7,6 +7,7 @@ import ts from 'typescript';
 import { hasVerifiedMenuSensorySheet, menuWineSensorySimilarity, menuWineSimilarityBand, menuWineSimilarityUnavailable } from '../src/utils/menuWineSimilarity';
 import { updateMenuWineEvidence, applyMenuWineEvidence } from '../src/utils/scanWineEvidence';
 import type { MenuScanWine } from '../src/utils/wineMenuScan';
+import { assertMenu950ProtectedSource, createMenu950StructuralScope } from './matchrim-menu-etapa950-scope';
 
 const bytes = readFileSync('docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json');
 assert.equal(createHash('sha256').update(bytes).digest('hex'), 'f4f7fbbf6ce5d19868baf78ff3983f8ca585a7fb1a070ca2386175d308e19fe5');
@@ -89,8 +90,11 @@ const baseline = 'ca73c57efa52c205fc173fb69e5f0ac11ae90f7c';
 // The later reviewed currency fix intentionally changed these price-only guards.
 const precisionBaseline = '86418edafd942d21732313d284d8eee9a255d5f4';
 const precisionPaths = new Set(['src/utils/menuPriceReview.ts', 'src/utils/menuWineSave.ts', 'src/utils/scanWineEvidence.ts']);
-const before = initializers(execFileSync('git', ['show', baseline + ':' + activePath], { encoding: 'utf8' }));
-const after = initializers(readFileSync(activePath, 'utf8'));
+const historicalActiveSource = execFileSync('git', ['show', baseline + ':' + activePath], { encoding: 'utf8' });
+const currentActiveSource = readFileSync(activePath, 'utf8');
+const before = initializers(historicalActiveSource), after = initializers(currentActiveSource);
+const structural950 = createMenu950StructuralScope('style', historicalActiveSource, currentActiveSource);
+check('Historical and reviewed etapa950 menu fingerprints are exact', structural950.assertSource);
 const scope = vm.createContext({ menuWineSensorySimilarity, scannedWines: [source, candidate] });
 vm.runInContext(ts.transpileModule('globalThis.calculateWineSimilarity=' + after.get('calculateWineSimilarity') + ';globalThis.getSimilarWines=' + after.get('getSimilarWines'), { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText, scope);
 check('Actual reachable similarity wrapper invokes evidence gate', () => { assert.equal(scope.calculateWineSimilarity(rows[0], rows[1]), 0); assert.equal(scope.calculateWineSimilarity(source, candidate), 100); });
@@ -99,12 +103,20 @@ check('Actual list excludes missing sheets while preserving real indexes', () =>
   scope.scannedWines = [source, candidate]; const similar = scope.getSimilarWines(source, 0); assert.equal(similar.length, 1); assert.equal(similar[0].index, 1);
 });
 for (const name of ['saveScannedWine', 'updateScannedWine', 'normalizeScannedWine', 'processFile', 'retryScanProfile', 'listPriceText', 'menuDecision', 'getSimilarWines']) {
-  check('Protected active initializer unchanged: ' + name, () => assert.equal(after.get(name), before.get(name)));
+  check('Protected active initializer unchanged or reviewed950: ' + name, () => structural950.initializer(name, after.get(name), before.get(name)));
 }
 for (const path of ['src/utils/menuPriceReview.ts', 'src/utils/menuWineSave.ts', 'src/utils/scanWineEvidence.ts', 'src/utils/wineMenuScan.ts', 'src/utils/wineAffinityExplanation.ts', 'src/utils/wineComparison.ts', 'src/components/wine-import/WineComparisonWorkspace.tsx', 'src/components/wine-import/MultiWineLabelScanner.tsx']) {
   const sourceBaseline = precisionPaths.has(path) ? precisionBaseline : baseline;
-  check('Protected independent source unchanged: ' + path, () => assert.equal(readFileSync(path, 'utf8'), execFileSync('git', ['show', sourceBaseline + ':' + path], { encoding: 'utf8' })));
+  check('Protected independent source unchanged or reviewed950: ' + path, () => assertMenu950ProtectedSource(precisionPaths.has(path) ? 'precision' : 'style', path,
+    readFileSync(path, 'utf8'), execFileSync('git', ['show', sourceBaseline + ':' + path], { encoding: 'utf8' })));
 }
+check('Etapa950 structural guard rejects removed identity gate and altered similarity wrapper', () => {
+  const body = after.get('calculateWineSimilarity')!;
+  assert.throws(() => structural950.initializer('calculateWineSimilarity', body + '\n', before.get('calculateWineSimilarity')));
+  const needle = 'isMenuIdentityConfirmed(wine)';
+  assert.ok(currentActiveSource.includes(needle));
+  assert.throws(() => createMenu950StructuralScope('style', historicalActiveSource, currentActiveSource.replace(needle, 'true')).assertSource());
+});
 const editorPath = 'src/components/wine-import/MenuPriceEditor.tsx';
 const editorBefore = initializers(execFileSync('git', ['show', baseline + ':' + editorPath], { encoding: 'utf8' }));
 const editorAfter = initializers(readFileSync(editorPath, 'utf8'));

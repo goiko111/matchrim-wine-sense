@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { Coins, BriefcaseBusiness, Scale, ShieldCheck, UserRound } from 'lucide-react';
 import { formatScanPrice, singlePriceCurrency } from '@/utils/scanMoney';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -46,11 +47,15 @@ const formatService = (service: ComparableWine['service']) => {
 
 const AttributeValue = ({ value }: { value: number | null | undefined }) => {
   if (typeof value !== 'number' || !Number.isFinite(value)) return <span className="text-slate-400">-</span>;
+  if (Capacitor.isNativePlatform()) return value >= 0 && value <= 5
+    ? <span aria-label={`${value} de 5`}>{value}/5</span> : <span className="text-slate-400">-</span>;
   const normalized = Math.max(1, Math.min(5, Math.round(value)));
   return <span aria-label={`${normalized} de 5`}>{normalized}/5</span>;
 };
 
 export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps) => {
+  const isNative = Capacitor.isNativePlatform();
+  const formatAffinity = (score: number) => `${Math.round(score)}${isNative ? '/100' : '%'}`;
   const comparisonId = useId();
   const [selectedIds, setSelectedIds] = useState<string[]>(() => wines.slice(0, 3).map((wine) => wine.id));
   const selectionEditedRef = useRef(false);
@@ -112,7 +117,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
   if (wines.length < 2) return null;
 
   return (
-    <section className="matchrim-surface min-w-0 break-words rounded-lg p-4" aria-labelledby="wine-comparison-title">
+    <section className={isNative ? 'min-w-0 break-words py-4' : 'matchrim-surface min-w-0 break-words rounded-lg p-4'} aria-labelledby="wine-comparison-title">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h3 id="wine-comparison-title" className="text-lg font-semibold text-slate-950">Comparar 2–5 vinos</h3>
@@ -137,7 +142,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 <span className="block whitespace-normal break-words text-xs text-slate-500">{wine.producer || wine.region || 'Identidad parcial'}</span>
                 {wine.identityConfirmed === false && <span id={identityDescriptionId} className="block text-xs font-medium text-amber-800">Referencia por confirmar</span>}
               </span>
-              {wine.affinity != null && <span className="shrink-0 text-sm font-bold text-red-900">{Math.round(wine.affinity)}%</span>}
+              {wine.affinity != null && <span className="shrink-0 text-sm font-bold text-red-900">{formatAffinity(wine.affinity)}</span>}
             </label>
           );
         })}
@@ -207,7 +212,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
             )}
           </div>
 
-          {decision.primary && (
+          {decision.primary && (!isNative || hasAffinities) && (
             <div className={`mt-5 rounded-lg border-l-4 px-4 py-3 ${decision.actionability === 'ready' ? 'border-red-900 bg-stone-50' : 'border-amber-500 bg-amber-50'}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
@@ -238,7 +243,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                <tr><th className="px-2 py-2 text-left font-medium">Afinidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.affinity == null ? '-' : `${Math.round(wine.affinity)}%`}</td>)}</tr>
+                <tr><th className="px-2 py-2 text-left font-medium">Afinidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.affinity == null ? '-' : formatAffinity(wine.affinity)}</td>)}</tr>
                 <tr><th className="px-2 py-2 text-left font-medium">Confianza de identidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.identityReviewedByUser ? 'Revisada por ti' : wine.confidence == null ? '-' : `${Math.round((wine.confidence > 1 ? wine.confidence / 100 : wine.confidence) * 100)}%`}</td>)}</tr>
                 {hasPrices && <tr><th className="px-2 py-2 text-left font-medium">Precio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatPrice(wine)}</td>)}</tr>}
                 {hasServiceFormats && <tr><th className="px-2 py-2 text-left font-medium">Servicio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatService(wine.service)}</td>)}</tr>}
@@ -254,7 +259,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               <div key={wine.id} className="py-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0"><span className="mr-2 text-xs font-bold text-red-900">{index + 1}</span><span className="font-semibold text-slate-950">{wine.name}</span></div>
-                  {wine.affinity != null && <span className="shrink-0 font-bold text-red-900">{Math.round(wine.affinity)}%</span>}
+                  {wine.affinity != null && <span className="shrink-0 font-bold text-red-900">{formatAffinity(wine.affinity)}</span>}
                 </div>
                 <p className="mt-1 text-xs text-slate-500">{[hasPrices ? formatPrice(wine) : null, hasServiceFormats ? formatService(wine.service) : null].filter(Boolean).join(' · ')}</p>
                 <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-600">

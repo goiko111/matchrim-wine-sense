@@ -24,19 +24,31 @@ export const runRestaurantRanking91 = async (
   const check = () => { if (signal.aborted) throw new DOMException('Cancelado', 'AbortError'); };
   // One in-flight bounded block at a time. No hidden retry or truncated prefix.
   for (const [index, batch] of batches.entries()) {
-    check(); progress(index, batches.length);
+    check(); progress(index, batches.length); check();
     const controller = new AbortController();
-    const abort = () => controller.abort();
+    const abort = () => controller.abort(new DOMException('Cancelado', 'AbortError'));
     signal.addEventListener('abort', abort, { once: true });
-    const timer = setTimeout(abort, 100_000);
+    const timer = setTimeout(() => controller.abort(new Error('Un bloque de combinaciones agotó su tiempo. No se muestran resultados como si el análisis estuviera completo.')), 100_000);
+    let onAbort: (() => void) | undefined;
+    const aborted = new Promise<never>((_, reject) => {
+      onAbort = () => reject(controller.signal.reason);
+      controller.signal.addEventListener('abort', onAbort, { once: true });
+    });
     try {
-      const raw = await invoke({ operation: 'rank', ...batch }, controller.signal);
+      // Bound local waiting even when the transport ignores its abort signal.
+      const raw = await Promise.race([Promise.resolve().then(() => {
+        if (controller.signal.aborted) throw controller.signal.reason;
+        return invoke({ operation: 'rank', ...batch }, controller.signal);
+      }), aborted]);
       check();
-      if (controller.signal.aborted) throw new Error('Un bloque de combinaciones agotó su tiempo. No se muestran resultados como si el análisis estuviera completo.');
+      if (controller.signal.aborted) throw controller.signal.reason;
       const result = parseRestaurantPairs91(raw, batch.foods, batch.wines, batch);
       for (const pair of result.pairs) pairs.set(`${pair.foodId}\0${pair.wineId}`, pair);
       for (const warning of result.warnings) warnings.add(warning);
-    } finally { clearTimeout(timer); signal.removeEventListener('abort', abort); }
+    } finally {
+      clearTimeout(timer); signal.removeEventListener('abort', abort);
+      if (onAbort) controller.signal.removeEventListener('abort', onAbort);
+    }
   }
   check(); progress(batches.length, batches.length);
   if (batches.length > 1) warnings.add(`Se han comparado ${batches.length} bloques completos. El orden agrupa el encaje orientativo de cada bloque; no es una puntuación global calibrada.`);

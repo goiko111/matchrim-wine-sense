@@ -67,12 +67,42 @@ check('Passport classifier remains deliberately rounded for both surfaces', () =
 check('Native display preserves known0.4 and0', () => assert.deepEqual(functions.normalizeProfileForDisplay(profile, true), profile));
 check('Web display preserves its existing minimum1', () => assert.deepEqual(functions.normalizeProfileForDisplay(profile, false),
   { potente: 2.4, acidez: 4.6, dulce: 1, tanico: 1, afrutado: 3.2 }));
+const profileCallsiteProjection95 = () => {
+  assert.equal(createHash('sha256').update(profileSource).digest('hex'), '95f2cd4f65f5b072f20c0b44795520f27dbabb391f4c63c8997e3a540b15754b');
+  const declarations = new Map<string, ts.Expression>();
+  const collect = (node: ts.Node) => {
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer
+      && ['baseProfile', 'currentDisplayProfile', 'isNative'].includes(node.name.text)) {
+      assert.equal(declarations.has(node.name.text), false); declarations.set(node.name.text, node.initializer);
+    }
+    ts.forEachChild(node, collect);
+  }; collect(file);
+  assert.equal(declarations.get('isNative')?.getText(file), 'Capacitor.isNativePlatform()');
+  assert.equal(declarations.get('baseProfile')?.getText(file), 'isNative ? normalizeProfileForDisplay(currentProfile, true) : currentProfile');
+  const memo = declarations.get('currentDisplayProfile'); assert.ok(memo && ts.isCallExpression(memo));
+  assert.equal(memo.expression.getText(file), 'useMemo'); assert.equal(memo.arguments[1].getText(file), '[baseProfile]');
+  const callback = memo.arguments[0]; assert.ok(ts.isArrowFunction(callback) && ts.isConditionalExpression(callback.body));
+  assert.equal(callback.body.condition.getText(file), 'baseProfile'); assert.equal(callback.body.whenFalse.getText(file), 'null');
+  const call = callback.body.whenTrue; assert.ok(ts.isCallExpression(call));
+  assert.equal(call.expression.getText(file), 'normalizeProfileForDisplay'); assert.equal(call.arguments.length, 2);
+  assert.equal(call.arguments[0].getText(file), 'baseProfile'); assert.equal(call.arguments[1].getText(file), 'Capacitor.isNativePlatform()');
+  // Only the validated input alias is projected for the original wiring assertion.
+  // Actual component/effect/JSX execution below still reads the unmodified source.
+  const input = call.arguments[0];
+  return profileSource.slice(0, input.getStart(file)) + 'currentProfile' + profileSource.slice(input.end);
+};
 check('Native query/helper and effect dependencies are wired to the actual callsite', () => {
+  const profileSource = profileCallsiteProjection95();
   assert.equal(queryArgument, 'wineQueryProfile');
   assert.match(profileSource, /selectProfileWineQuery\(activeProfile, Capacitor\.isNativePlatform\(\)\)/);
   assert.match(profileSource, /\[wineQueryProfile, learnedProfile\?\.confidence, profileWinerimRetryKey\]/);
   assert.match(profileSource, /normalizeProfileForDisplay\(activeProfile, Capacitor\.isNativePlatform\(\)\)/);
   assert.match(profileSource, /normalizeProfileForDisplay\(currentProfile, Capacitor\.isNativePlatform\(\)\)/);
+});
+check('Reviewed95 Profile alias is validated by actual native/web component, effects and JSX across50 synthetic profiles', () => {
+  const result = JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-profile.ts'], { cwd: root, encoding: 'utf8' }));
+  assert.equal(result.failed, 0); assert.equal(result.passed, 9); assert.equal(result.syntheticProfiles, 50);
+  assert.equal(result.sourceSha256, createHash('sha256').update(profileSource).digest('hex'));
 });
 
 const wine = { name: 'Synthetic QA85 fixture', producer: 'Synthetic', vintage: 2021,

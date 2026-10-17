@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,7 @@ const generateEmotionalDescription = (result: QuizResult): string => {
 
 const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommendations, onRestart, isLoggedIn, returnTo, restartDisabled = false }) => {
   const navigate = useNavigate();
+  const native = Capacitor.isNativePlatform();
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
   const [countryOverrides, setCountryOverrides] = useState<Record<string, string>>({});
@@ -795,18 +797,18 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   };
 
   return (
-    <div className="flex flex-col max-w-4xl mx-auto p-6">
-      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-md mb-8">
-        <div className="flex items-center justify-center mb-8">
-          <div className="flex flex-col items-center">
-            <div className="w-24 h-24 flex items-center justify-center bg-red-100 rounded-full mb-2">
+    <div className={native ? 'mx-auto flex w-full min-w-0 max-w-4xl flex-col py-4 [overflow-wrap:anywhere] [&_button]:min-h-[44px] [&_button]:max-w-full [&_button]:whitespace-normal' : 'flex flex-col max-w-4xl mx-auto p-6'}>
+      <div className={native ? 'mb-8 min-w-0' : 'bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-md mb-8'}>
+        <div className={native ? 'mb-6 min-w-0' : 'flex items-center justify-center mb-8'}>
+          <div className={native ? 'flex min-w-0 items-start gap-3' : 'flex flex-col items-center'}>
+            <div className={native ? 'flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-md bg-red-100' : 'w-24 h-24 flex items-center justify-center bg-red-100 rounded-full mb-2'}>
               <img
                 src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
                 alt="Logo Matchrim"
-                className="h-12 w-12"
+                className={native ? 'h-[28px] w-[28px]' : 'h-12 w-12'}
               />
             </div>
-            <h2 className="text-3xl font-bold text-red-900">Resultados de tu perfil</h2>
+            <h2 className={native ? 'min-w-0 text-2xl font-bold leading-8 text-red-900' : 'text-3xl font-bold text-red-900'}>{native ? 'Tu perfil' : 'Resultados de tu perfil'}</h2>
           </div>
         </div>
 

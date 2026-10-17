@@ -14,6 +14,8 @@ import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/mat
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 import { cellarTrainingRows } from '@/utils/bodegaAffinity';
+import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
+import { aiRimRequestContext95, assertAiRimConsumerAnswer95, buildAiRimConsumer95, loadAiRimConsumer95, pendingAiRimConsumer95, type AiRimConsumerContext95 } from '@/utils/aiRimConsumer95';
 import WineRecommendationCard from './WineRecommendationCard';
 import DishRecommendationCard from './DishRecommendationCard';
 import PairingAnalysisCard from './PairingAnalysisCard';
@@ -44,6 +46,10 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [profileContext, setProfileContext] = useState<string | null>(null);
+  const [nativeProfile, setNativeProfile] = useState(() => buildAiRimConsumer95(ownerId, null));
+  const [nativeRequestContext, setNativeRequestContext] = useState<AiRimConsumerContext95 | null>(null);
+  const currentOwner = useRef(ownerId);
+  currentOwner.current = ownerId;
   const [restaurant, setRestaurant] = useState(initialRestaurantContext ?? emptyRestaurantContext());
   const [advice, setAdvice] = useState<RestaurantAdvice | null>(null);
   const [requestNotice, setRequestNotice] = useState('');
@@ -57,6 +63,7 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
     previousOwner.current = user?.id;
     requestGeneration.current += 1;
     requestController.current?.abort();
+    if (isNative) requestController.current = null;
     setInput1(ownerChanged ? '' : initialInput1 ?? '');
     setInput2(ownerChanged ? '' : initialInput2 ?? '');
     setRestaurant(ownerChanged ? emptyRestaurantContext() : initialRestaurantContext ?? emptyRestaurantContext());
@@ -64,13 +71,23 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
     setAdvice(null);
     setRequestNotice('');
     setIsLoading(false);
+    if (isNative) setNativeRequestContext(null);
     return () => {
       requestGeneration.current += 1;
       requestController.current?.abort();
     };
-  }, [user?.id, functionType, initialInput1, initialInput2, initialRestaurantContext]);
+  }, [user?.id, functionType, initialInput1, initialInput2, initialRestaurantContext, isNative]);
 
   useEffect(() => {
+    if (isNative) {
+      const controller = new AbortController();
+      setNativeProfile(buildAiRimConsumer95(ownerId, null));
+      void loadAiRimConsumer95(ownerId, controller.signal, signal => loadMatchrimScanProfile(ownerId, signal))
+        .then(context => {
+          if (!controller.signal.aborted && currentOwner.current === ownerId) setNativeProfile(context);
+        }).catch(() => { /* A cancelled owner cannot commit a profile. */ });
+      return () => controller.abort();
+    }
     setProfileContext(null);
     if (!ownerId) {
       setProfileContext(null);
@@ -132,6 +149,10 @@ const MatchrimFunction: React.FC<MatchrimFunctionProps> = ({ functionType, onBac
       cancelled = true;
     };
   }, [ownerId, isNative]);
+
+  const nativeContext = nativeProfile.ownerId === ownerId ? nativeProfile : pendingAiRimConsumer95(ownerId);
+  const sentNativeContext = nativeRequestContext?.ownerId === ownerId ? nativeRequestContext : null;
+  const nativeCanSend = Boolean(aiRimRequestContext95(ownerId, nativeContext));
 
   const getFunctionConfig = () => {
     switch (functionType) {
@@ -318,10 +339,13 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
     setResult('');
     setAdvice(null);
     setRequestNotice('');
+    if (isNative) setNativeRequestContext(null);
   };
 
   const handleSubmit = async () => {
     if (isLoading) return;
+    const requestContext = isNative ? aiRimRequestContext95(ownerId, nativeContext) : null;
+    if (isNative && (!requestContext || requestController.current)) return;
     if (!input1.trim() || (config.showSecondInput && !input2.trim())) {
       toast({
         title: "Campos requeridos",
@@ -339,7 +363,9 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
     const generation = requestGeneration.current;
     const controller = new AbortController();
     requestController.current = controller;
-    const isCurrent = () => requestGeneration.current === generation && !controller.signal.aborted;
+    const isCurrent = () => requestGeneration.current === generation && !controller.signal.aborted
+      && (!isNative || currentOwner.current === ownerId);
+    if (isNative) setNativeRequestContext(requestContext);
     setIsLoading(true);
     setResult('');
 
@@ -349,13 +375,13 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           signal: controller.signal,
           body: {
             message: buildRestaurantPairingPrompt(functionType, input1.trim(), input2.trim(), restaurant),
-            context: [profileContext, AIRIM_EVIDENCE_GUARDRAILS].filter(Boolean).join('\n'),
+            context: [requestContext!.context, AIRIM_EVIDENCE_GUARDRAILS].filter(Boolean).join('\n'),
           },
         });
         if (!isCurrent()) return;
         if (error || !data?.success) throw new Error('Restaurant request failed');
         try {
-          setAdvice(parseRestaurantAdvice(data.response));
+          setAdvice(parseRestaurantAdvice(assertAiRimConsumerAnswer95(String(data.response))));
         } catch {
           setRequestNotice('La respuesta contiene datos no verificables o un formato no válido. No la he mostrado. Puedes reintentar.');
         }
@@ -404,6 +430,8 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
     });
   };
 
+  if (isNative && previousOwner.current !== user?.id) return <p role="status">Actualizando el contexto de esta cuenta...</p>;
+
   return (
     <main className="matchrim-native-safe-x mx-auto min-h-screen w-full max-w-2xl pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
       <div className="flex items-center gap-3">
@@ -425,7 +453,12 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
       </div>
 
       <section className="mt-7 space-y-4" aria-label="Datos para la recomendación">
-        {profileContext && (
+        {isNative ? <div className="text-sm leading-6 text-slate-700" data-testid="airim-consumer-context">
+          <p className="font-semibold">{sentNativeContext ? 'Contexto enviado: ' : 'Contexto para esta consulta: '}{(sentNativeContext ?? nativeContext).label}</p>
+          <p role="status">{(sentNativeContext ?? nativeContext).notice}</p>
+          <p>Un consejo general no es una afinidad personal con una botella.</p>
+          <Button variant="ghost" className="min-h-11 gap-2" onClick={() => { invalidateRequest(); navigate('/escanear'); }}><ScanLine className="h-4 w-4" />Escanear etiqueta o carta</Button>
+        </div> : profileContext && (
           <div className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-700 shadow-sm">
             <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-red-800" />
             <p>Usaré tu perfil Matchrim activo y señalaré cualquier dato que falte.</p>
@@ -519,7 +552,7 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
         <div className="flex flex-wrap gap-2">
           <Button
             onClick={handleSubmit}
-            disabled={isLoading || !input1.trim() || (config.showSecondInput && !input2.trim())}
+            disabled={isLoading || !input1.trim() || (config.showSecondInput && !input2.trim()) || (isNative && !nativeCanSend)}
             className="matchrim-pressable min-h-12 flex-1 bg-red-900 text-white hover:bg-red-950"
           >
             {isLoading ? (
@@ -550,7 +583,7 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
       </section>
 
       {isNative && requestNotice && <p role="status" className="mt-4 text-sm text-amber-900">{requestNotice}</p>}
-      {isNative && advice && (
+      {isNative && sentNativeContext && advice && (
         <section aria-label="Ideas de maridaje contextual" className="mt-7 space-y-4 [overflow-wrap:anywhere]">
           <h2 className="text-base font-semibold text-slate-950">Hipótesis de maridaje, sin puntuación personal</h2>
           {!advice.options.length && <p className="text-sm text-slate-600">No hay una combinación justificable con el contexto aportado.</p>}

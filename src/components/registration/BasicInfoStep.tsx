@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RegistrationData } from '@/hooks/useRegistrationData';
 import { useI18n } from '@/i18n';
+import { Capacitor } from '@capacitor/core';
 
 interface BasicInfoStepProps {
   data: RegistrationData;
@@ -61,6 +62,7 @@ const splitLocation = (raw: string): { country: string; city: string } => {
 
 const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext }) => {
   const { t, locale, setLocale } = useI18n();
+  const isNative = Capacitor.isNativePlatform();
   const { dial: initialDial, rest: initialRest } = splitPhone(data.phone);
   const [dial, setDial] = React.useState(initialDial);
   const [phoneLocal, setPhoneLocal] = React.useState(initialRest);
@@ -95,8 +97,8 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
   const isValid = !!(data.firstName && data.lastName && data.email && data.password && phoneLocal);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className={isNative ? 'min-w-0 space-y-6 [&_input]:min-w-0' : 'space-y-6'}>
+      <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2' : 'grid grid-cols-2 gap-4'}>
         <div>
           <Label htmlFor="firstName">{t('reg.basic.firstName')} *</Label>
           <Input
@@ -141,16 +143,16 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
       </div>
 
       <div>
-        <Label>{t('reg.basic.phone')} *</Label>
-        <div className="flex gap-2">
-          <div className="w-40">
+        <Label id={isNative ? 'phone-label' : undefined} htmlFor={isNative ? 'phoneLocal' : undefined}>{t('reg.basic.phone')} *</Label>
+        <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-[8px] sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]' : 'flex gap-2'}>
+          <div className={isNative ? 'min-w-0' : 'w-40'}>
             <Select value={dial} onValueChange={setDial}>
-              <SelectTrigger>
+              <SelectTrigger id={isNative ? 'phoneDial' : undefined} aria-labelledby={isNative ? 'phone-label' : undefined} className={isNative ? 'h-auto min-h-[44px] min-w-0 px-[12px] py-[8px] text-left [&>span]:line-clamp-none [&>span]:break-words [&>span]:whitespace-normal' : undefined}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className={isNative ? 'max-w-[calc(100vw-32px)]' : undefined}>
                 {COUNTRY_CODES.map((c) => (
-                  <SelectItem key={c.code} value={c.dial}>
+                  <SelectItem key={c.code} value={c.dial} className={isNative ? 'min-h-[44px] min-w-0 whitespace-normal break-words' : undefined}>
                     {c.label}
                   </SelectItem>
                 ))}
@@ -158,13 +160,14 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
             </Select>
           </div>
           <Input
+            id={isNative ? 'phoneLocal' : undefined}
             type="tel"
             inputMode="tel"
             value={phoneLocal}
             onChange={(e) => setPhoneLocal(e.target.value)}
             placeholder="600 000 000"
             required
-            className="flex-1"
+            className={isNative ? 'min-w-0' : 'flex-1'}
           />
         </div>
       </div>
@@ -178,27 +181,27 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
             if (value === 'ES' || value === 'EN' || value === 'FR') setLocale(value);
           }}
         >
-          <SelectTrigger>
+          <SelectTrigger id={isNative ? 'preferredLanguage' : undefined} className={isNative ? 'h-auto min-h-[44px] min-w-0 px-[12px] py-[8px] text-left [&>span]:line-clamp-none [&>span]:break-words [&>span]:whitespace-normal' : undefined}>
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ES">Español</SelectItem>
-            <SelectItem value="EN">English</SelectItem>
-            <SelectItem value="FR">Français</SelectItem>
+          <SelectContent className={isNative ? 'max-w-[calc(100vw-32px)]' : undefined}>
+            <SelectItem value="ES" className={isNative ? 'min-h-[44px] whitespace-normal break-words' : undefined}>Español</SelectItem>
+            <SelectItem value="EN" className={isNative ? 'min-h-[44px] whitespace-normal break-words' : undefined}>English</SelectItem>
+            <SelectItem value="FR" className={isNative ? 'min-h-[44px] whitespace-normal break-words' : undefined}>Français</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className={isNative ? 'grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2' : 'grid grid-cols-2 gap-4'}>
         <div>
-          <Label htmlFor="country">{t('reg.basic.country')}</Label>
+          <Label htmlFor="country" id={isNative ? 'country-label' : undefined}>{t('reg.basic.country')}</Label>
           <Select value={country} onValueChange={setCountry}>
-            <SelectTrigger>
+            <SelectTrigger id={isNative ? 'country' : undefined} className={isNative ? 'h-auto min-h-[44px] min-w-0 px-[12px] py-[8px] text-left [&>span]:line-clamp-none [&>span]:break-words [&>span]:whitespace-normal' : undefined}>
               <SelectValue placeholder={t('reg.basic.countryHint')} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className={isNative ? 'max-w-[calc(100vw-32px)]' : undefined}>
               {COUNTRY_OPTIONS.map((c) => (
-                <SelectItem key={c.value} value={c.value}>
+                <SelectItem key={c.value} value={c.value} className={isNative ? 'min-h-[44px] min-w-0 whitespace-normal break-words' : undefined}>
                   {c.label}
                 </SelectItem>
               ))}
@@ -206,6 +209,8 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
           </Select>
           {country === 'OTHER' && (
             <Input
+              id={isNative ? 'customCountry' : undefined}
+              aria-labelledby={isNative ? 'country-label' : undefined}
               className="mt-2"
               value={customCountry}
               onChange={(e) => setCustomCountry(e.target.value)}
@@ -236,18 +241,18 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
 
       <Button
         type="submit"
-        className="w-full bg-red-700 hover:bg-red-800"
+        className={isNative ? 'h-auto min-h-[44px] w-full min-w-0 whitespace-normal bg-red-700 px-[12px] py-[10px] hover:bg-red-800' : 'w-full bg-red-700 hover:bg-red-800'}
         disabled={!isValid}
       >
         {t('common.continue')}
       </Button>
-      <p className="text-[11px] text-muted-foreground text-center">
+      {!isNative && <p className="text-[11px] text-muted-foreground text-center">
         {locale === 'EN'
           ? 'Tip: city autocomplete with Google Places will be enabled once the API key is provisioned.'
           : locale === 'FR'
           ? 'Astuce : l’autocomplétion de la ville via Google Places sera activée dès que la clé API sera disponible.'
           : 'Pronto: autocompletado de ciudad con Google Places cuando la API key esté disponible.'}
-      </p>
+      </p>}
     </form>
   );
 };

@@ -4,6 +4,8 @@ import { createHash } from 'node:crypto';
 import vm from 'node:vm';
 import ts from 'typescript';
 import { optionalScanNumber } from '../supabase/functions/_shared/matchrim-scan-values';
+import { normalizeWineAttributesForInsight } from '../src/utils/wineAffinityExplanation';
+import { readCellarSensoryEvidence } from '../src/utils/bodegaAffinity';
 import { confirmsMenuInsert, hasStoredMenuCatalogEvidence, menuFinancialPrice, menuPriceSnapshot, menuSaveEvidence, readMenuPrice } from '../src/utils/menuWineSave';
 import { updateMenuWineEvidence } from '../src/utils/scanWineEvidence';
 import type { MenuScanWine } from '../src/utils/wineMenuScan';
@@ -134,7 +136,10 @@ const visit = (node: ts.Node) => {
   ts.forEachChild(node, visit);
 };
 visit(readerTree);
-const context = vm.createContext({ readMenuPrice, hasStoredMenuCatalogEvidence, optionalScanNumber });
+let nativeReader = false;
+const context = vm.createContext({ readMenuPrice, hasStoredMenuCatalogEvidence, optionalScanNumber,
+  normalizeWineAttributesForInsight, readCellarSensoryEvidence,
+  Capacitor: { isNativePlatform: () => nativeReader } });
 for (const name of ['normalizeAttributeTo5', 'normalizeSensoryAttributesTo5', 'normalizeAffinity', 'normalizeUserWine']) {
   const init = initializers.get(name);
   assert.ok(init);
@@ -153,6 +158,13 @@ check('Active Bodega keeps original inconsistency warning after masking scalar',
   assert.ok((read.menu_price_view as { lines: string[] }).lines.some((line) => /incoherente/.test(line)));
 });
 check('Active Bodega leaves non-menu monetary amounts unchanged', () => assert.equal(normalizeReader({ ...row, place_details: { source: 'manual' }, price: 35 }).price, 35));
+check('Actual native reader retains non-menu money and abstains from unbound sensory', () => {
+  nativeReader = true;
+  try {
+    const read = normalizeReader({ ...row, place_details: { source: 'manual' }, price: 35, sensory_attributes: bottle.atributos });
+    assert.equal(read.price, 35); assert.equal(read.sensory_attributes, null);
+  } finally { nativeReader = false; }
+});
 const output = {
   scope: 'Pure price/metadata/negative provenance/confirmation contracts. Existing replay and synthetic units/currencies, no OCR/new catalog-positive fiche/profile/account.',
   sourceHashes: Object.fromEntries(['src/utils/menuWineSave.ts', 'src/components/wine-import/WineMenuScanner.tsx', 'src/pages/MyWines.tsx', bankPath].map((path) => [path, createHash('sha256').update(readFileSync(path)).digest('hex')])),

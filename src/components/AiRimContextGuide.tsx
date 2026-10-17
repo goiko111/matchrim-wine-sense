@@ -1,5 +1,6 @@
 import { useId } from 'react';
-import { Sparkles } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
+import { MessageCircle, Sparkles } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +12,7 @@ import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 
 interface AiRimContextGuideProps extends AiRimContextInput {
   profile?: MatchrimProfileLike | null;
+  catalogIdentityLinked?: boolean;
   primaryAction?: { label: string; onClick: () => void } | null;
   secondaryAction?: { label: string; onClick: () => void } | null;
 }
@@ -19,10 +21,26 @@ export const AiRimContextGuide = ({
   primaryAction,
   secondaryAction,
   profile,
+  catalogIdentityLinked = false,
   ...input
 }: AiRimContextGuideProps) => {
   const titleId = useId();
   const guidance = buildAiRimContextGuidance(input, profile === undefined ? readStoredMatchrimProfile() : profile);
+  if (Capacitor.isNativePlatform()) {
+    if (!primaryAction && !secondaryAction) return null;
+    const hasName = Boolean(input.name?.trim());
+    return <section className="min-w-0 border-l-2 border-stone-300 py-2 pl-3 text-sm" aria-labelledby={titleId} data-testid="airim-context-guide">
+      <h4 className="flex items-center gap-2 font-semibold text-stone-800" id={titleId}><MessageCircle className="h-4 w-4 shrink-0 text-red-900" aria-hidden="true" />aiRIM</h4>
+      <p className="mt-2 leading-6 text-stone-700">{hasName
+        ? catalogIdentityLinked ? `He encontrado la ficha de «${input.name}». Confirma que es el vino que tienes delante.`
+          : `He leído «${input.name}». Comprueba que el nombre y la añada coinciden con tu etiqueta.`
+        : 'No he podido leer esta etiqueta con suficiente claridad. Prueba con una foto más cercana y sin reflejos.'}</p>
+      {(primaryAction || secondaryAction) && <div className="mt-3 flex flex-wrap gap-2">
+        {primaryAction && <Button type="button" className="min-h-11 h-auto max-w-full whitespace-normal bg-red-950 hover:bg-red-900" onClick={primaryAction.onClick}>{primaryAction.label}</Button>}
+        {secondaryAction && <Button type="button" variant="outline" className="min-h-11 h-auto max-w-full whitespace-normal" onClick={secondaryAction.onClick}>{secondaryAction.label}</Button>}
+      </div>}
+    </section>;
+  }
   const toneClass = guidance.tone === 'caution'
     ? 'border-amber-300 bg-amber-50 text-amber-950'
     : guidance.tone === 'positive'

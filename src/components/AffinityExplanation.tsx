@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { Check, CircleHelp, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { useAuth } from '@/contexts/AuthContext';
+import { NativeAffinitySummary } from './NativeAffinitySummary';
 import {
   buildDetailedAffinityExplanation,
   readStoredMatchrimProfile,
@@ -70,6 +72,12 @@ export const AffinityExplanation = ({
   useEffect(() => {
     setStoredFeedback({ key: feedbackKey, values: readStoredFeedback(feedbackKey) });
   }, [feedbackKey]);
+
+  if (Capacitor.isNativePlatform()) return <NativeAffinitySummary
+    profile={profile === undefined ? readStoredMatchrimProfile() : profile}
+    score={score} attributes={attributes} sensorySource={sensorySource}
+    catalogIdentityLinked={catalogIdentityLinked}
+  />;
 
   if (!explanation) {
     return (

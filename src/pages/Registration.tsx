@@ -11,12 +11,14 @@ import FinalStep from '@/components/registration/FinalStep';
 import { useRegistrationData } from '@/hooks/useRegistrationData';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 import { useI18n } from '@/i18n';
+import { Capacitor } from '@capacitor/core';
 
 const Registration = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { t } = useI18n();
+  const isNative = Capacitor.isNativePlatform();
   const [currentStep, setCurrentStep] = useState(1);
   const [emailConfirmationAddress, setEmailConfirmationAddress] = useState('');
   const { registrationData, updateRegistrationData, saveRegistrationData, isSaving } = useRegistrationData();
@@ -103,8 +105,8 @@ const Registration = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
+    <div className={isNative ? 'matchrim-app-shell min-h-screen px-[calc(16px+var(--matchrim-safe-left))] pb-[calc(24px+var(--matchrim-safe-bottom))] pt-[calc(16px+var(--matchrim-safe-top))]' : 'min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4'}>
+      <div className={isNative ? 'mx-auto w-full min-w-0 max-w-2xl [overflow-wrap:anywhere]' : 'w-full max-w-2xl'}>
         <div className="flex items-center justify-between mb-4">
           <Button
             variant="ghost"
@@ -116,7 +118,7 @@ const Registration = () => {
                 navigate('/');
               }
             }}
-            className="gap-1 text-red-900"
+            className={isNative ? 'h-auto min-h-[44px] min-w-[44px] gap-1 whitespace-normal px-[12px] py-[8px] text-red-900' : 'gap-1 text-red-900'}
           >
             <ArrowLeft className="h-4 w-4" />
             {t('common.back')}
@@ -133,36 +135,36 @@ const Registration = () => {
         </div>
 
         {emailConfirmationAddress ? (
-          <Card>
-            <CardHeader>
+          <Card className={isNative ? 'min-w-0 border-0 bg-transparent shadow-none' : undefined}>
+            <CardHeader className={isNative ? 'min-w-0 p-0 pb-[16px] [overflow-wrap:anywhere]' : undefined}>
               <CardTitle className="text-center text-red-900">Revisa tu email</CardTitle>
               <CardDescription className="text-center">
                 Hemos creado tu cuenta y enviado un enlace de confirmacion a {emailConfirmationAddress}.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 text-center">
+            <CardContent className={isNative ? 'min-w-0 space-y-4 p-0 text-center' : 'space-y-4 text-center'}>
               <p className="text-sm leading-6 text-gray-600">
                 Abre el enlace desde tu bandeja de entrada o spam. Despues podras iniciar sesion y continuar hacia tu zona personal.
               </p>
               <Button
                 onClick={() => navigate(buildAuthRedirectPath(redirectPath))}
-                className="w-full bg-red-700 hover:bg-red-800"
+                className={isNative ? 'h-auto min-h-[44px] w-full min-w-0 whitespace-normal bg-red-700 px-[12px] py-[10px] hover:bg-red-800' : 'w-full bg-red-700 hover:bg-red-800'}
               >
                 Ir a iniciar sesion
               </Button>
               <Button
                 onClick={() => navigate('/')}
                 variant="outline"
-                className="w-full border-red-200 text-red-800 hover:bg-red-50"
+                className={isNative ? 'h-auto min-h-[44px] w-full min-w-0 whitespace-normal border-red-200 px-[12px] py-[10px] text-red-800 hover:bg-red-50' : 'w-full border-red-200 text-red-800 hover:bg-red-50'}
               >
                 Volver a Matchrim
               </Button>
             </CardContent>
           </Card>
         ) : (
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
+          <Card className={isNative ? 'min-w-0 border-0 bg-transparent shadow-none' : undefined}>
+            <CardHeader className={isNative ? 'min-w-0 p-0 pb-[16px]' : undefined}>
+              <div className={isNative ? 'flex min-w-0 flex-col items-start gap-[8px]' : 'flex items-center justify-between'}>
                 <CardTitle className="text-red-900">{getStepTitle()}</CardTitle>
                 <span className="text-sm text-red-600">
                   Paso {currentStep} de {totalSteps}
@@ -175,17 +177,17 @@ const Registration = () => {
                 />
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className={isNative ? 'min-w-0 p-0' : undefined}>
               {renderStep()}
             </CardContent>
           </Card>
         )}
-        <div className="mt-5 flex items-center justify-center gap-4 text-xs text-red-900">
-          <Link to="/privacy" className="hover:underline">
+        <div className={isNative ? 'mt-5 flex min-w-0 flex-wrap items-center justify-center gap-[8px] text-sm text-red-900' : 'mt-5 flex items-center justify-center gap-4 text-xs text-red-900'}>
+          <Link to="/privacy" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] items-center py-[10px] hover:underline' : 'hover:underline'}>
             Privacidad
           </Link>
           <span className="text-red-300">|</span>
-          <Link to="/terms" className="hover:underline">
+          <Link to="/terms" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] items-center py-[10px] hover:underline' : 'hover:underline'}>
             Términos
           </Link>
         </div>

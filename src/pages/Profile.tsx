@@ -59,7 +59,11 @@ const clampProfileValue = (value: unknown, fallback = 3, minimum = 1) => {
   return Math.max(minimum, Math.min(5, numeric));
 };
 
-const normalizeProfileForDisplay = <T extends MatchrimProfileLike>(profile: T, preserveQuizRange = false): T => {
+const normalizeProfileForDisplay = <T extends MatchrimProfileLike>(profile: T | null, preserveQuizRange = false): T | null => {
+  if (preserveQuizRange) return profile && typeof profile === 'object' && !Array.isArray(profile)
+    && (['potente', 'acidez', 'dulce', 'tanico', 'afrutado'] as const).every(key =>
+      typeof profile[key] === 'number' && Number.isFinite(profile[key]) && profile[key] >= 0 && profile[key] <= 5)
+    ? profile : null;
   const displayValue = (value: unknown) => {
     const clamped = clampProfileValue(value, 3, preserveQuizRange ? 0 : 1);
     return preserveQuizRange ? clamped : Math.round(clamped * 10) / 10;
@@ -82,9 +86,9 @@ const normalizeProfileForClassifier = (profile: MatchrimProfileLike): MatchrimPr
   afrutado: Math.round(clampProfileValue(profile.afrutado)),
 });
 
-// Native affinity uses the learned vector; web and passport classification keep their legacy rounding.
-const selectProfileWineQuery = (profile: MatchrimProfileLike, native: boolean): MatchrimProfileLike =>
-  native ? profile : normalizeProfileForClassifier(profile);
+// Classification stays discrete; native display, passport and affinity keep the exact vector.
+const selectProfileWineQuery = (profile: MatchrimProfileLike, native: boolean): MatchrimProfileLike | null =>
+  native ? normalizeProfileForDisplay(profile, true) : normalizeProfileForClassifier(profile);
 
 const getSafeProfileStyles = (profile: MatchrimProfileLike | null): string[] => {
   if (!profile) return [];
@@ -263,6 +267,7 @@ const Profile = () => {
   const [profileWinerimError, setProfileWinerimError] = useState<string | null>(null);
   const [profileWinerimRetryKey, setProfileWinerimRetryKey] = useState(0);
   const [expandedRegionMap, setExpandedRegionMap] = useState<string | null>(null);
+  const baseProfile = isNative ? normalizeProfileForDisplay(currentProfile, true) : currentProfile;
 
   useEffect(() => {
     if (authLoading) return;
@@ -333,7 +338,7 @@ const Profile = () => {
   useEffect(() => {
     let cancelled = false;
     setTrainingWines([]);
-    if (!user || !currentProfile) return;
+    if (!user || !baseProfile) return;
 
     const loadTrainingWines = async () => {
       const { data, error } = await supabase
@@ -356,16 +361,16 @@ const Profile = () => {
 
     loadTrainingWines();
     return () => { cancelled = true; };
-  }, [user, currentProfile]);
+  }, [user, baseProfile]);
 
   const learnedProfile = useMemo(
-    () => currentProfile ? calculateLearnedMatchrimProfile(currentProfile, trainingWines) : null,
-    [currentProfile, trainingWines]
+    () => baseProfile ? calculateLearnedMatchrimProfile(baseProfile, trainingWines) : null,
+    [baseProfile, trainingWines]
   );
 
   const activeProfile = learnedProfile && learnedProfile.samples > 0
     ? learnedProfile.profile
-    : currentProfile;
+    : baseProfile;
   const activeDisplayProfile = useMemo(
     () => activeProfile ? normalizeProfileForDisplay(activeProfile, Capacitor.isNativePlatform()) : null,
     [activeProfile]
@@ -379,12 +384,12 @@ const Profile = () => {
     [activeProfile]
   );
   const currentDisplayProfile = useMemo(
-    () => currentProfile ? normalizeProfileForDisplay(currentProfile, Capacitor.isNativePlatform()) : null,
-    [currentProfile]
+    () => baseProfile ? normalizeProfileForDisplay(baseProfile, Capacitor.isNativePlatform()) : null,
+    [baseProfile]
   );
   const passportProfile = useMemo(
-    () => currentProfile ? normalizeProfileForClassifier(currentProfile) : null,
-    [currentProfile]
+    () => baseProfile ? isNative ? baseProfile : normalizeProfileForClassifier(baseProfile) : null,
+    [baseProfile, isNative]
   );
 
   // Generate profile data
@@ -806,7 +811,7 @@ const Profile = () => {
         </TabsList>
 
         <TabsContent value="profile">
-          {currentProfile ? (
+          {baseProfile ? (
             <div className="space-y-8">
               {passportProfile && <MatchrimPassport profile={passportProfile} />}
 

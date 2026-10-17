@@ -1,0 +1,38 @@
+{
+  "fixtureKind": "immutable-recorded-public-regression-projection",
+  "recordedDate": "2026-10-17",
+  "scope": "Existing public mixed-drinks receipt only: thirteen service/size rows across five generic styles. No new extraction, corpus generation, independent recognition metric or app UI result.",
+  "originalTrace": {
+    "relativeEvidencePath": "artifacts/matchrim95-eight-hours-20261017/live-public-menu-r1/public-mixed-drinks/backend-trace.json",
+    "sha256": "cc6cc9ab98248746c9ac1070c11c2d44e48577276acc9ab476d6e9b9bf7fdc14",
+    "selectedRecord": "function=scan-wine-menu-v72; status=200; payload.vinos",
+    "originalVinosJsonStringifySha256": "27aaa05315d95bbd891c8eb9f804bc242cbb358cc9843a9628d0ebb24b99c388",
+    "projectedVinosJsonStringifySha256": "ecfcb37a54f5b45c9597fa2ddde78a3a8a08ad44726fb9c5672b9ccc57dae00b",
+    "projectionKeys": ["nombre", "productor", "anada", "region", "pais", "precio", "moneda", "precios", "servicio", "formato", "seccion", "confidence", "texto_fuente", "dudas", "campos_inferidos", "tipo", "uvas", "atributos", "compatibilidad", "affinity_calibrated"],
+    "omitted": "All request/transport data and payload metadata, including has_profile/profile_source/provider/model. Row razon (palate-related generated explanations), descripcion and posicion omitted. No copied photograph or personal profile. No row values changed in the retained projection."
+  },
+  "originalControls": {
+    "relativeEvidencePath": "artifacts/matchrim95-eight-hours-20261017/corpus/selected-cases.pre-result.json",
+    "sha256": "2977619344affc741efc764a978c34d83abe77d360dd6da6b77eaf148e0e732a",
+    "selectedCase": "mixed-drinks",
+    "projectedControlJsonStringifySha256": "332e9f272dfdaee9c084e02318dc1b4707e932e3c128eb58027a65235bd29909",
+    "omitted": "Only asset_path and image sha256 omitted from this control copy; all literal annotations, categories, price groups, scope and exclusions unchanged. Other cases are not copied. The original sealed controls remain untouched.",
+    "annotationScope": "full_visible_wine_subsection_literals_and_displayed_price_groups_only",
+    "coverage": "Right-hand WINE LIST: five full visible generic names, four displayed blocks and ten numeric price cells. Not thirteen separately printed prices, canonical identities, sensory truth or a complete whole-scene transcript.",
+    "unknowns": "No producer, vintage or currency inferred. Preserve both blank FIZZ glass cells and the shared RED block."
+  },
+  "publicSourceAsRecorded": {
+    "title": "Drink menu of Joe's Burger House, Church Road, Hove 2024-07-07.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Drink_menu_of_Joe%27s_Burger_House,_Church_Road,_Hove_2024-07-07.jpg",
+    "author": "Andy Li",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "metadataSource": "Existing artifacts/matchrim-consumer-qa-20261017/public-fixtures.json; no new download or live lookup"
+  },
+  "sensoryEvidence": "Raw recorded attributes/confidence/affinity_calibrated are untrusted generated regression inputs, not verified sensory axes, a validated scale, a personal profile or ground truth. They are retained to ensure the consumer leaves these generic styles pending.",
+  "files": {
+    "public-mixed-drinks.payload.json": "85b87e9b08c84faae816f2b40581d5f4a9f521eb4d93208852be03aa4bb46d2c",
+    "public-mixed-drinks.controls.json": "1eddc66341cf93343e61c099ed8041e673121ae66de260b41b131634e1ce40fb"
+  },
+  "policy": "Do not regenerate or refresh these recorded values. New captures belong in new fixture versions. Default tests read only these repo files; explicit --trace/--controls may replay a separately supplied receipt. Original private trace, sealed ground truth, prior corpora and UI receipts are immutable. No photos, profile values, account information, credentials or secrets are included."
+}

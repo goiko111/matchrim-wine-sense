@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { optionalScanNumber, normalizeScanSensoryValue } from '../../../supabase/functions/_shared/matchrim-scan-values';
 import { useLocation, useNavigate } from "react-router-dom";
 import { Capacitor } from '@capacitor/core';
@@ -21,6 +21,13 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { AffinityExplanation } from "@/components/AffinityExplanation";
+import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
+import { nativeLiteralMenuEvidence95, nativeMenuWineAffinity } from '@/utils/menuWineConsumer95';
+import { isLiteralWineStyle95, isNativeWineMenuItem95 } from '@/utils/menuLiteralStyle95';
+import { nativeMenuScanFailure } from '@/utils/menuScanFailure95';
+import { menuRecoveryTiles95, type MenuRecoveryLayout } from '@/utils/menuRecovery95';
+import { MenuRecoveryControls95 } from './MenuRecoveryControls95';
+import { renderRestaurantPage, RestaurantDocumentError91 } from '@/utils/restaurantDocuments91';
 import { AiRimContextGuide } from "@/components/AiRimContextGuide";
 import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
 import { MenuPriceEditor } from '@/components/wine-import/MenuPriceEditor';
@@ -33,7 +40,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
-import { cropImageRegion, prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
+import { cropImageRegion, NATIVE_IMAGE_PREPARATION_LIMITS, prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
 import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
 import { createMenuScanRun93, planNativeMenuRefinement93, type MenuScanMetrics93 } from '@/utils/wineMenuExecution93';
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
@@ -50,6 +57,8 @@ import { wineComparisonPrice, wineComparisonPriceFormat, type WineServiceFormat 
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
+import { WinerimCandidatePicker95 } from '@/components/WinerimCandidatePicker95';
+import { confirmedMenuCatalogIdentity95 } from '@/utils/confirmedCatalogIdentity95';
 import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
 import { normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
@@ -115,6 +124,8 @@ interface WineMenuScannerProps {
 }
 
 type ScannedWineSortMode = 'compatibility' | 'price-asc' | 'price-desc' | 'name';
+type NativeMenuReadMode95 = 'full' | 'regions' | 'failed-regions';
+type PartialMenuReading95 = { file: File; ownerId: string | null; successful: MenuTileResult[]; failed: MenuScanTile[] };
 
 const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
 const formatPrice = formatMenuPriceAmount;
@@ -246,6 +257,9 @@ const WineMenuScannerSession = ({
   const [menuQualityWarnings, setMenuQualityWarnings] = useState<string[]>([]);
   const [scanPhase, setScanPhase] = useState<'quality' | 'profile' | 'ocr' | 'refinement' | 'ranking'>('quality');
   const [nativeScanMetrics, setNativeScanMetrics] = useState<MenuScanMetrics93 | null>(null);
+  const [recoveryLayout, setRecoveryLayout] = useState<MenuRecoveryLayout>('auto');
+  const [recoveryColumnSplit, setRecoveryColumnSplit] = useState(50);
+  const [failedRegionCount, setFailedRegionCount] = useState(0);
   const [imageZoom, setImageZoom] = useState(1);
   const [selectedPinIndex, setSelectedPinIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -254,6 +268,8 @@ const WineMenuScannerSession = ({
   const detailNextRef = useRef<HTMLButtonElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const scanAbortRef = useRef<AbortController | null>(null);
+  const lastScanInputRef = useRef<{ file: File; type: 'image' | 'pdf' } | null>(null);
+  const partialMenuReadingRef = useRef<PartialMenuReading95 | null>(null);
   const saveLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
   const savingRef = useRef(false);
   const unconfirmedRef = useRef(new Set<number>());
@@ -355,6 +371,9 @@ const WineMenuScannerSession = ({
 
   useEffect(() => {
     scanAbortRef.current?.abort();
+    lastScanInputRef.current = null;
+    partialMenuReadingRef.current = null;
+    setFailedRegionCount(0);
     setScannedWines([]);
     setPreview(null);
     setSelectedPinIndex(null);
@@ -364,7 +383,7 @@ const WineMenuScannerSession = ({
     setScanProfile(null);
     setHasProfile(false);
     setLoading(false);
-    return () => { scanAbortRef.current?.abort(); };
+    return () => { scanAbortRef.current?.abort(); lastScanInputRef.current = null; partialMenuReadingRef.current = null; };
   }, [user?.id]);
 
   const scannedWineTypes = useMemo(
@@ -419,7 +438,8 @@ const WineMenuScannerSession = ({
 
     const scored = scannedWines
       .map((wine, index) => ({ wine, index, score: wine.compatibilidad as number }))
-      .filter(({ wine }) => typeof wine.compatibilidad === 'number' && isMenuIdentityConfirmed(wine))
+      .filter(({ wine }) => typeof wine.compatibilidad === 'number' && isMenuIdentityConfirmed(wine)
+        && (!isNative || nativeMenuWineAffinity(wine, scanProfile?.profile ?? null).state === 'ready'))
       .sort((a, b) => b.score - a.score);
 
     const best = scored[0] ?? null;
@@ -452,7 +472,7 @@ const WineMenuScannerSession = ({
       highMatches,
       mediumMatches,
     };
-  }, [scannedWines, menuCurrency, listPriceFormat, menuPriceRows, scanMaxPrice]);
+  }, [scannedWines, menuCurrency, listPriceFormat, menuPriceRows, scanMaxPrice, isNative, scanProfile?.profile]);
 
   const visibleScannedWines = useMemo(() => {
     const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice) : null;
@@ -577,6 +597,7 @@ const WineMenuScannerSession = ({
     setScannedWines([]);
     setScanFeedback(null);
     setFileType(isPDF ? 'pdf' : 'image');
+    if (isNative) { setRecoveryLayout('auto'); setRecoveryColumnSplit(50); }
     trackAppEvent("wine_menu_scan_started", {
       userId: user?.id,
       metadata: {
@@ -600,7 +621,28 @@ const WineMenuScannerSession = ({
     }
   };
 
-  const convertPdfToImage = async (file: File, noticeGeneration: number) => {
+  const convertPdfToImage = async (file: File, noticeGeneration: number, readMode: NativeMenuReadMode95 = 'full') => {
+    if (isNative) {
+      scanAbortRef.current?.abort();
+      const controller = new AbortController();
+      scanAbortRef.current = controller;
+      lastScanInputRef.current = { file, type: 'pdf' };
+      setNativeScanMetrics(null);
+      try {
+        const image = await renderRestaurantPage(file, 1, controller.signal);
+        if (controller.signal.aborted || scanAbortRef.current !== controller || !detectionNoticeRef.current.active
+          || detectionNoticeRef.current.generation !== noticeGeneration) return;
+        setConvertingPdf(false);
+        await processFile(image, 'image', noticeGeneration, readMode);
+      } catch (failure) {
+        if (scanAbortRef.current !== controller || !detectionNoticeRef.current.active) return;
+        setScanFeedback(controller.signal.aborted ? 'Conversión cancelada. El PDF sigue disponible para reintentar.'
+          : failure instanceof RestaurantDocumentError91 ? failure.message : nativeMenuScanFailure(failure));
+      } finally {
+        if (scanAbortRef.current === controller && detectionNoticeRef.current.active) { setLoading(false); setConvertingPdf(false); }
+      }
+      return;
+    }
     try {
       toast.info("Convirtiendo PDF a imagen...");
       
@@ -650,7 +692,12 @@ const WineMenuScannerSession = ({
     }
   };
 
-  const processFile = async (file: File, type: 'image' | 'pdf', noticeGeneration: number) => {
+  const processFile = async (file: File, type: 'image' | 'pdf', noticeGeneration: number, readMode: NativeMenuReadMode95 = 'full') => {
+    const retained = isNative && readMode === 'failed-regions' ? partialMenuReadingRef.current : null;
+    if (readMode === 'failed-regions' && (!retained || retained.file !== file || retained.ownerId !== (user?.id ?? null)
+      || retained.failed.length === 0)) return;
+    if (isNative && readMode !== 'failed-regions') { partialMenuReadingRef.current = null; setFailedRegionCount(0); }
+    if (isNative) lastScanInputRef.current = { file, type };
     // Mantener el loader activo durante todo el proceso real
     setLoading(true);
     setScannedWines([]);
@@ -669,7 +716,7 @@ const WineMenuScannerSession = ({
 
     try {
       setScanPhase('quality');
-      const prepared = await prepareImageForAnalysis(file, 2400, controller.signal);
+      const prepared = await prepareImageForAnalysis(file, 2400, controller.signal, isNative ? NATIVE_IMAGE_PREPARATION_LIMITS : undefined);
       if (scanAbortRef.current !== controller || controller.signal.aborted) return;
       const base64File = prepared.dataUrl;
       setPreview(prepared.dataUrl);
@@ -721,10 +768,26 @@ const WineMenuScannerSession = ({
 
       const fullTile = getFullMenuScanTile();
       const successfulTiles: MenuTileResult[] = [];
+      const failedTiles: MenuScanTile[] = [];
       let failedTileCount = 0;
       let attemptedTileCount = 1;
       let fullFailure: unknown;
-      try {
+      if (isNative && readMode !== 'full') {
+        const initialTiles = retained?.failed ?? menuRecoveryTiles95(prepared.width, prepared.height, recoveryLayout, recoveryColumnSplit);
+        if (retained) successfulTiles.push(...retained.successful);
+        attemptedTileCount = successfulTiles.length + initialTiles.length;
+        const initial = await Promise.allSettled(initialTiles.map(async tile => ({
+          tile, response: await invokeScan(tile, await cropImageRegion(base64File, tile.box, 0, 1800, controller.signal)),
+        })));
+        if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
+        successfulTiles.push(...initial.flatMap(result => result.status === 'fulfilled' ? [result.value] : []));
+        initial.forEach((result, index) => { if (result.status === 'rejected') failedTiles.push(initialTiles[index]); });
+        failedTileCount += initial.filter(result => result.status === 'rejected').length;
+        if (!successfulTiles.length) {
+          const failure = initial.find(result => result.status === 'rejected');
+          throw failure?.status === 'rejected' ? failure.reason : new Error('No se pudo leer ninguna zona');
+        }
+      } else try {
         successfulTiles.push({ tile: fullTile, response: await invokeScan(fullTile, base64File) });
       } catch (error) {
         if (controller.signal.aborted) throw error;
@@ -734,7 +797,7 @@ const WineMenuScannerSession = ({
         failedTileCount += 1;
       }
       const fullResponse = successfulTiles[0]?.response;
-      const scanTiles = isMatchrimFixtureQaEnabled ? []
+      const scanTiles = isMatchrimFixtureQaEnabled || (isNative && readMode !== 'full') ? []
         : nativeRun && fullResponse ? planNativeMenuRefinement93(prepared.width, prepared.height, fullResponse)
           : !fullResponse || needsMenuRefinement(fullResponse)
             ? buildMenuScanTiles(prepared.width, prepared.height, fullResponse?.layout) : [];
@@ -746,12 +809,18 @@ const WineMenuScannerSession = ({
       })));
       if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
       successfulTiles.push(...settledTiles.flatMap((result) => result.status === 'fulfilled' ? [result.value] : []));
+      settledTiles.forEach((result, index) => { if (result.status === 'rejected') failedTiles.push(scanTiles[index]); });
       if (successfulTiles.length === 0) {
         const firstFailure = settledTiles.find((result) => result.status === 'rejected');
         throw firstFailure?.status === 'rejected' ? firstFailure.reason : fullFailure ?? new Error('No se pudo analizar la carta');
       }
       failedTileCount += settledTiles.filter((result) => result.status === 'rejected').length;
-      let data = resolveMenuTileResults(successfulTiles);
+      if (isNative) {
+        partialMenuReadingRef.current = failedTiles.length ? { file, ownerId: user?.id ?? null,
+          successful: successfulTiles, failed: failedTiles } : null;
+        setFailedRegionCount(failedTiles.length);
+      }
+      let data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative });
       if (!nativeRun && !isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn({ ...data, layout: fullResponse?.layout }) && shouldRunRightFocusMenuScan(
         data.coverage?.status,
         data.vinos?.length ?? 0,
@@ -763,13 +832,15 @@ const WineMenuScannerSession = ({
         try {
           const focusImage = await cropImageRegion(base64File, focusTile.box, 0, 1800, controller.signal);
           successfulTiles.push({ tile: focusTile, response: await invokeScan(focusTile, focusImage) });
-          data = resolveMenuTileResults(successfulTiles);
+          data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative });
         } catch (error) {
           if (error instanceof DOMException && error.name === 'AbortError') throw error;
           failedTileCount += 1;
         }
       }
       if (failedTileCount > 0) {
+        if (isNative) setMenuQualityWarnings(warnings => [...warnings,
+          `${failedTileCount} de ${attemptedTileCount} zonas no se han podido leer. Conservamos lo recuperado; la carta no está completa.`]);
         data.coverage = {
           ...data.coverage,
           status: 'partial',
@@ -784,11 +855,12 @@ const WineMenuScannerSession = ({
       nativeRun?.phase('ranking');
       const normalizedWines = await mapWithConcurrency(
         (Array.isArray(data?.vinos) ? data.vinos as ScannedWine[] : [])
-          .filter(isWineMenuItem).map(clearMenuManualPriceOrigin).map(normalizeScannedWine),
+          .filter(isNative ? isNativeWineMenuItem95 : isWineMenuItem).map(clearMenuManualPriceOrigin).map(normalizeScannedWine),
         3,
         async (wine) => {
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
-          const catalog = !isMatchrimFixtureQaEnabled && (isNative ? canResolveMenuCatalogIdentity(wine) : isMenuIdentityConfirmed(wine))
+          const literalStyle = isNative && isLiteralWineStyle95(wine);
+          const catalog = !literalStyle && !isMatchrimFixtureQaEnabled && (isNative ? canResolveMenuCatalogIdentity(wine) : isMenuIdentityConfirmed(wine))
             ? await awaitMenuCatalog(
               () => findWinerimWineForLabel({ name: wine.nombre, producer: wine.productor, vintage: wine.anada,
                 ...(isNative ? { region: wine.region, country: wine.pais, inferredFields: wine.campos_inferidos } : {}) },
@@ -797,7 +869,8 @@ const WineMenuScannerSession = ({
             )
             : null;
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
-          return applyMenuWineEvidence(wine, profile, catalog?.wine);
+          const evidence = applyMenuWineEvidence(wine, profile, catalog?.wine);
+          return literalStyle ? nativeLiteralMenuEvidence95(evidence) : evidence;
         },
       );
       if (normalizedWines.length > 0) {
@@ -841,7 +914,8 @@ const WineMenuScannerSession = ({
 
         if (detectionNoticeRef.current.active && detectionNoticeRef.current.generation === noticeGeneration
           && scanAbortRef.current === controller && !controller.signal.aborted) {
-          detectionNoticeRef.current.id = toast.success(`✨ ${normalizedWines.length} vinos detectados en la carta`);
+          detectionNoticeRef.current.id = toast.success(isNative ? `${normalizedWines.length} lecturas para revisar`
+            : `✨ ${normalizedWines.length} vinos detectados en la carta`);
         }
       } else {
         setScannedWines([]);
@@ -862,7 +936,7 @@ const WineMenuScannerSession = ({
 	    }
       console.error('Error processing file:', error);
       const rawMessage = error instanceof Error ? error.message : 'Error al procesar el documento';
-      const message = /scanline|scanlines/i.test(rawMessage)
+      const message = isNative ? nativeMenuScanFailure(error) : /scanline|scanlines/i.test(rawMessage)
         ? 'No he podido leer esta imagen correctamente. Repite la foto con más luz o sube la carta desde archivo'
         : /non-2xx|FunctionsHttpError|User not authenticated|auth/i.test(rawMessage)
           ? 'No he podido analizar esta carta ahora. Reintenta en unos segundos o prueba con una foto más cercana'
@@ -876,8 +950,8 @@ const WineMenuScannerSession = ({
           similar_wine_name: similarWineName || null,
         },
       });
-      setScanFeedback(`${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
-      toast.error(message);
+      setScanFeedback(isNative ? message : `${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
+      if (!isNative) toast.error(message);
     } finally {
       if (nativeRun) {
         const metrics = nativeRun.finish(controller.signal.aborted ? 'cancelled' : outcome);
@@ -887,11 +961,28 @@ const WineMenuScannerSession = ({
     }
   };
 
+  const retryNativeScan = (readMode: NativeMenuReadMode95) => {
+    const input = lastScanInputRef.current;
+    if (!input || loading || savingRef.current) return;
+    invalidateDetailFocus();
+    dismissDetectionNotice();
+    invalidateProfileRetry();
+    resetSaveBatch();
+    setScanFeedback(null);
+    if (input.file.type === 'application/pdf') {
+      setLoading(true); setConvertingPdf(true);
+      void convertPdfToImage(input.file, detectionNoticeRef.current.generation, readMode);
+    } else void processFile(input.file, input.type, detectionNoticeRef.current.generation, readMode);
+  };
+
   const clearScan = () => {
     invalidateDetailFocus();
     dismissDetectionNotice();
     invalidateProfileRetry();
     scanAbortRef.current?.abort();
+    lastScanInputRef.current = null;
+    partialMenuReadingRef.current = null;
+    setFailedRegionCount(0);
     resetSaveBatch();
     setPreview(null);
     setScannedWines([]);
@@ -913,6 +1004,8 @@ const WineMenuScannerSession = ({
     setScanFeedback(null);
     setMenuQualityWarnings([]);
     setNativeScanMetrics(null);
+    setRecoveryLayout('auto');
+    setRecoveryColumnSplit(50);
     setImageZoom(1);
     setSelectedPinIndex(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -945,10 +1038,17 @@ const WineMenuScannerSession = ({
     return <AlertCircle className="h-5 w-5 text-red-600" />;
   };
 
-  const getWineDecision = (wine: ScannedWine) => presentMenuAffinity(
-    wine.compatibilidad, wine.affinity_calibrated === true && Boolean(scanProfile?.profile),
-    scanProfile?.source === 'unavailable' ? scanProfile.note : wine.razon,
-  );
+  const getWineDecision = (wine: ScannedWine) => {
+    if (isNative) {
+      const result = nativeMenuWineAffinity(wine, scanProfile?.profile ?? null);
+      const presentation = presentMenuAffinity(result.state === 'ready' ? result.score : null, result.state === 'ready',
+        result.state === 'pending' ? result.description : null);
+      return result.state === 'ready' ? { ...presentation, label: result.title,
+        description: result.matches[0] ?? result.caution ?? 'Compara la ficha de este vino con tus gustos actuales.' } : presentation;
+    }
+    return presentMenuAffinity(wine.compatibilidad, wine.affinity_calibrated === true && Boolean(scanProfile?.profile),
+      scanProfile?.source === 'unavailable' ? scanProfile.note : wine.razon);
+  };
   const retryScanProfile = async () => {
     const ownerId = user?.id;
     if (!ownerId || loading || !scannedWines.length || profileRetryRef.current || !canRetryScanProfile(scanProfile)) return;
@@ -975,7 +1075,9 @@ const WineMenuScannerSession = ({
   };
   const renderProfileRecovery = () => scanProfile && (
     <div role="status" aria-label="Estado del perfil del escáner" data-testid="scan-profile-recovery" className="mt-2 space-y-2 text-sm text-stone-600">
-      <p data-testid="scan-profile-source">{retryingProfile ? 'Cargando perfil...' : scanProfile.note}</p>
+      <p data-testid="scan-profile-source">{retryingProfile ? 'Cargando perfil...' : isNative && scanProfile.status === 'ready'
+        ? scanProfile.source === 'learned' ? 'Basado en tu test y en tus valoraciones.' : 'Basado en tu test de paladar.'
+        : scanProfile.note}</p>
       {user && canRetryScanProfile(scanProfile) && (
         <div className="flex flex-wrap items-center gap-2">
           <Button type="button" variant="outline" className="min-h-11 gap-2" disabled={retryingProfile} onClick={retryScanProfile}>
@@ -988,8 +1090,24 @@ const WineMenuScannerSession = ({
     </div>
   );
   const selectedPinDecision = selectedPinWine ? getWineDecision(selectedPinWine) : null;
+  const selectedReadingEvidence = selectedPinWine && (
+    <div className="matchrim-soft-surface mb-4 rounded-lg p-3 text-sm text-slate-600">
+      {selectedPinWine.texto_fuente ? (
+        <p><span className="font-semibold text-slate-900">Texto visible:</span> {selectedPinWine.texto_fuente}</p>
+      ) : (
+        <p>No hay una transcripción enlazada a esta fila. Productor, región y estilo pueden ser inferencias y requieren confirmación.</p>
+      )}
+      {selectedPinWine.dudas && selectedPinWine.dudas.length > 0 && (
+        <p className="mt-1"><span className="font-semibold text-slate-900">Dudas:</span> {selectedPinWine.dudas.join(', ')}</p>
+      )}
+      {selectedPinWine.campos_inferidos && selectedPinWine.campos_inferidos.length > 0 && (
+        <p className="mt-1"><span className="font-semibold text-slate-900">Datos inferidos:</span> {selectedPinWine.campos_inferidos.join(', ')}</p>
+      )}
+    </div>
+  );
   const renderWineAffinityExplanation = (wine: ScannedWine) => {
     const decision = getWineDecision(wine);
+    if (isNative) return <NativeAffinitySummary result={nativeMenuWineAffinity(wine, scanProfile?.profile ?? null)} />;
     return decision.state === 'pending' ? (
       <div role="status" aria-label={`Estado de afinidad de ${wine.nombre}`} className="matchrim-soft-surface rounded-lg p-3 text-sm text-stone-600">
         <p className="font-medium text-stone-800">Afinidad pendiente</p>
@@ -1008,8 +1126,17 @@ const WineMenuScannerSession = ({
       />
     );
   };
+  const renderOptionalNativePanel = (kind: 'comparison' | 'filters', title: string, children: ReactNode) => isNative
+    ? <details className="min-w-0 border-y border-stone-200 py-2" data-testid={`native-menu-${kind}`}>
+      <summary className="flex min-h-11 cursor-pointer items-center font-semibold text-stone-800">{title}</summary>
+      <div className="min-w-0 pt-2">{children}</div>
+    </details> : children;
 
   const saveScannedWine = async (wine: ScannedWine, index: number, status: 'wishlist' | 'tasted', favorite = false) => {
+    if (isNative && isLiteralWineStyle95(wine)) {
+      toast.info('Identifica primero la botella concreta para guardarla en Bodega.');
+      return;
+    }
     if (!user) {
       toast.error("Inicia sesión para guardar vinos");
       navigate(buildAuthRedirectPath(`${location.pathname}${location.search}`));
@@ -1310,8 +1437,11 @@ const WineMenuScannerSession = ({
 	                      Esto puede tardar 30-60 segundos dependiendo del tamaño de la carta
 	                    </p>
                     </>}
-	                  {!convertingPdf && (
-	                    <Button type="button" variant="outline" className="mt-4 min-h-11 border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white" onClick={() => scanAbortRef.current?.abort()}>
+	                  {(isNative || !convertingPdf) && (
+	                    <Button type="button" variant="outline" className="mt-4 min-h-11 border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white" onClick={() => {
+                          if (isNative) { partialMenuReadingRef.current = null; setFailedRegionCount(0); }
+                          scanAbortRef.current?.abort();
+                        }}>
                       <X className="mr-2 h-4 w-4" /> Cancelar análisis
 	                    </Button>
 	                  )}
@@ -1380,7 +1510,20 @@ const WineMenuScannerSession = ({
               <p className="font-semibold text-amber-950">No ha salido un escaneo útil</p>
               <p className="mt-1 text-sm text-amber-900">{scanFeedback}</p>
             </div>
-            <Button
+            {isNative ? <div className="flex min-w-0 flex-wrap gap-2" data-testid="native-menu-retry-actions">
+              {lastScanInputRef.current && <>
+                <Button variant="outline" className="h-auto min-h-[44px] min-w-0 w-full flex-col gap-[4px] whitespace-normal bg-white px-[12px] py-[10px]" onClick={() => retryNativeScan('full')}>
+                  <RefreshCw aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />
+                  <span className="min-w-0 w-full text-center">Reintentar esta imagen</span>
+                </Button>
+                <MenuRecoveryControls95 layout={recoveryLayout} columnSplit={recoveryColumnSplit} image={preview}
+                  disabled={Boolean(savingWineKey)} onLayout={setRecoveryLayout} onColumnSplit={setRecoveryColumnSplit}
+                  onRead={() => retryNativeScan('regions')} />
+              </>}
+              <Button variant="ghost" className="h-auto min-h-11 min-w-0 whitespace-normal" onClick={() => {
+                if (fileInputRef.current) { fileInputRef.current.value = ''; fileInputRef.current.click(); }
+              }}>Elegir otra imagen o PDF</Button>
+            </div> : <Button
               variant="outline"
               className="gap-2 bg-white"
               onClick={() => {
@@ -1391,7 +1534,7 @@ const WineMenuScannerSession = ({
             >
               <Camera className="h-4 w-4" />
               Reintentar foto
-            </Button>
+            </Button>}
           </CardContent>
         </Card>
       )}
@@ -1400,12 +1543,30 @@ const WineMenuScannerSession = ({
       {scannedWines.length > 0 && (
         <div ref={resultsRef} className="scroll-mt-24 space-y-4 break-words">
           {isNative && nativeScanMetrics?.outcome === 'completed' && <p className="text-xs text-slate-500" data-testid="menu-scan-metrics">
-            {Math.round(nativeScanMetrics.elapsedMs / 1000)} s · {nativeScanMetrics.requests} solicitudes de lectura
+            {Math.round(nativeScanMetrics.elapsedMs / 1000)} s · {nativeScanMetrics.requests} {nativeScanMetrics.requests === 1 ? 'solicitud' : 'solicitudes'} de lectura
           </p>}
+          {isNative && failedRegionCount > 0 && !loading && <div className="min-w-0 space-y-2 border-l-2 border-amber-500 pl-[12px]">
+            <p className="text-sm text-stone-700">Se conservan las zonas ya leídas. El reintento actualizará la lista y sustituirá las correcciones manuales de esta lectura.</p>
+            <Button type="button" variant="outline" disabled={Boolean(savingWineKey)}
+              className="h-auto min-h-[44px] min-w-0 w-full flex-col gap-[4px] whitespace-normal px-[12px] py-[10px]"
+              onClick={() => retryNativeScan('failed-regions')}>
+              <RefreshCw aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />
+              <span className="min-w-0 w-full text-center">{failedRegionCount === 1 ? 'Reintentar la zona pendiente' : `Reintentar ${failedRegionCount} zonas pendientes`}</span>
+            </Button>
+          </div>}
+          {isNative && lastScanInputRef.current && !loading && <details className="min-w-0 border-y border-stone-200 py-[8px]">
+            <summary className="flex min-h-[44px] cursor-pointer items-center text-sm font-medium text-stone-700">Volver a leer la imagen</summary>
+            <div className="min-w-0 space-y-[12px] py-[12px]">
+              <p className="text-sm text-stone-600">La nueva lectura sustituirá a la actual.</p>
+              <MenuRecoveryControls95 layout={recoveryLayout} columnSplit={recoveryColumnSplit} image={preview}
+                disabled={Boolean(savingWineKey)} onLayout={setRecoveryLayout} onColumnSplit={setRecoveryColumnSplit}
+                onRead={() => retryNativeScan('regions')} />
+            </div>
+          </details>}
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <h3 className="text-2xl font-bold">
-                Vinos Detectados ({scannedWines.length})
+                {isNative ? 'Lecturas de la carta' : 'Vinos Detectados'} ({scannedWines.length})
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">
                 Revisa nombre, añada y precio antes de guardar. La carta puede tener errores de lectura.
@@ -1438,7 +1599,32 @@ const WineMenuScannerSession = ({
 	            </div>
 	          </div>
 
-	          {menuDecision && (
+              {isNative && menuDecision && <section className="min-w-0 space-y-3 border-y border-stone-200 py-4" aria-label="Tu elección en esta carta" data-testid="native-menu-decision">
+                {menuDecision.best ? <>
+                  <p className="text-sm font-medium text-stone-600">Mayor afinidad entre los vinos con ficha</p>
+                  <Button variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(menuDecision.best!.index, event.currentTarget)}>
+                    <span className="min-w-0 text-base font-semibold text-stone-950">{menuDecision.best.wine.nombre}</span>
+                    <span className="shrink-0 font-bold text-red-900">≈{menuDecision.best.score}/100</span>
+                  </Button>
+                  {(() => {
+                    const result = nativeMenuWineAffinity(menuDecision.best.wine, scanProfile?.profile ?? null);
+                    return result.state === 'ready' && <p className="text-sm text-stone-700">{result.matches[0] ?? result.caution ?? result.title}</p>;
+                  })()}
+                  {[menuDecision.safeAlternative, menuDecision.value].some(entry => entry && entry.index !== menuDecision.best?.index) && <details className="border-t border-stone-200 pt-2">
+                    <summary className="flex min-h-11 cursor-pointer items-center text-sm font-medium">Otras opciones</summary>
+                    {[menuDecision.safeAlternative && { entry: menuDecision.safeAlternative, label: 'También puedes considerar' },
+                      menuDecision.value && menuDecision.value.index !== menuDecision.safeAlternative?.index && { entry: menuDecision.value, label: 'Por afinidad y precio' }]
+                      .filter(option => option && option.entry.index !== menuDecision.best?.index)
+                      .map(option => option && <Button key={option.entry.index} variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(option.entry.index, event.currentTarget)}>
+                        <span className="min-w-0"><span className="block text-xs text-stone-500">{option.label}</span>{option.entry.wine.nombre}</span>
+                        <span className="shrink-0 text-red-900">≈{option.entry.score}/100</span>
+                      </Button>)}
+                  </details>}
+                </> : <p role="status" className="text-sm leading-6 text-stone-700">{hasProfile
+                  ? 'Todavía faltan fichas sensoriales verificadas para ordenar estos vinos por tus gustos.'
+                  : 'Completa tu test de paladar para comparar los vinos que he podido leer con tus gustos.'}</p>}
+              </section>}
+	          {!isNative && menuDecision && (
 	            <Card className="matchrim-surface overflow-hidden rounded-lg border-red-100 bg-white">
 	              <CardHeader className="border-b border-white/10 matchrim-ink-panel text-white">
 	                <CardTitle className="flex items-center gap-2 text-xl">
@@ -1611,14 +1797,14 @@ const WineMenuScannerSession = ({
 	            </Card>
 		          )}
 
-              <WineComparisonWorkspace
+              {(!isNative || scannedWines.length >= 2) && renderOptionalNativePanel('comparison', 'Comparar 2–5 vinos', <WineComparisonWorkspace
                 wines={scannedWines.map((wine, index) => ({
                   id: `menu-row-${index}`,
                   ...menuWinePriceEvidence(wine),
                   name: wine.nombre,
                   producer: wine.productor,
                   region: wine.region,
-                  affinity: wine.compatibilidad,
+                  affinity: isNative ? (() => { const result = nativeMenuWineAffinity(wine, scanProfile?.profile ?? null); return result.state === 'ready' ? result.score : null; })() : wine.compatibilidad,
                   confidence: wine.confidence,
                   identityConfirmed: isMenuIdentityConfirmed(wine),
                   attributes: wine.sensorySource === 'catalog' && isMenuIdentityConfirmed(wine) && wine.atributos ? {
@@ -1629,9 +1815,9 @@ const WineMenuScannerSession = ({
                     fruit: wine.atributos.afrutado,
                   } : null,
                 }))}
-              />
+              />)}
 
-		          <div className="matchrim-surface rounded-lg p-3">
+		          {renderOptionalNativePanel('filters', 'Filtrar y ordenar', <div className={isNative ? 'min-w-0 py-2' : 'matchrim-surface rounded-lg p-3'}>
 		            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-2">
                 <Label htmlFor="scan-sort">Orden</Label>
@@ -1721,7 +1907,7 @@ const WineMenuScannerSession = ({
                 />
               </div>
             </div>
-		          </div>
+		          </div>)}
 
 		          {visibleScannedWines.length > 0 && (
 		            <div className="matchrim-surface overflow-hidden rounded-lg bg-white">
@@ -1734,7 +1920,7 @@ const WineMenuScannerSession = ({
 		                  <button
 		                    key={`${wine.nombre}-${index}-list-row`}
 		                    type="button"
-		                    aria-label={`Abrir vino ${index + 1}: ${wine.nombre}`}
+                    aria-label={`Abrir ${isNative && isLiteralWineStyle95(wine) ? 'estilo' : 'vino'} ${index + 1}: ${wine.nombre}`}
 		                    className={`matchrim-pressable flex min-h-16 w-full flex-wrap items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
 		                    onClick={(event) => openWineDetail(index, event.currentTarget)}
 		                  >
@@ -1750,9 +1936,13 @@ const WineMenuScannerSession = ({
 		                    </span>
 		                    <span className="shrink-0 text-right">
 		                      {getWineDecision(wine).score !== null
-                            ? <span className="block text-lg font-bold text-red-900">≈{getWineDecision(wine).score}%</span>
+                            ? <span className="block text-lg font-bold text-red-900">≈{getWineDecision(wine).score}{isNative ? '/100' : '%'}</span>
                             : <span className="block text-xs text-stone-600">Afinidad pendiente</span>}
-		                      <span className="block text-[11px] text-slate-500">Identidad {getConfidenceBand(wine.confidence)}</span>
+		                      <span className="block text-[11px] text-slate-500">{isNative ? catalogWineFromVerifiedSheet({
+                            name: wine.nombre, producer: wine.productor, vintage: wine.anada, region: wine.region, country: wine.pais,
+                            inferredFields: wine.campos_inferidos,
+                          }, wine.originalSheet) ? 'Ficha original vinculada' : isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar' : 'Referencia por confirmar'
+                            : `Identidad ${getConfidenceBand(wine.confidence)}`}</span>
 		                    </span>
 		                  </button>
 		                ))}
@@ -1794,34 +1984,35 @@ const WineMenuScannerSession = ({
 			                      <span className="shrink-0 text-xs font-medium text-red-900">Editar y guardar</span>
 			                    </button>
 			                    {expandedWineActionsIndex === index && (
-			                    <div id={`wine-actions-${index}`} className="bg-stone-50 p-2 sm:p-3">
+			                    <div id={`wine-actions-${index}`} className={isNative ? 'min-w-0 bg-white' : "bg-stone-50 p-2 sm:p-3"}>
 			              <Card
-		                className={`overflow-hidden rounded-lg transition ${
+		                className={isNative ? 'min-w-0 rounded-none border-0 bg-transparent shadow-none' : `overflow-hidden rounded-lg transition ${
 		                  highlightedWineIndex === index ? 'ring-2 ring-red-700 ring-offset-2' : ''
 		                }`}
 	              >
 	                <CardContent className="p-0">
-                    <div className="border-b border-white/10 matchrim-ink-panel px-3 py-4 text-white sm:px-5">
+                    <div className={isNative ? 'min-w-0 border-b border-stone-200 px-[12px] py-[12px] text-stone-950' : "border-b border-white/10 matchrim-ink-panel px-3 py-4 text-white sm:px-5"}>
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
-	                          <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Ficha de carta</p>
+	                          {!isNative && <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Ficha de carta</p>}
 	                          <h4 className="mt-1 break-words text-xl font-bold leading-tight">{wine.nombre}</h4>
 	                          {wine.productor && (
-	                            <p className="mt-1 break-words text-sm text-white/68">{wine.productor}</p>
+	                            <p className={isNative ? 'mt-1 break-words text-sm text-stone-600' : "mt-1 break-words text-sm text-white/68"}>{wine.productor}</p>
 	                          )}
-	                          <Badge variant="outline" className="mt-3 border-white/15 bg-white/10 text-white">
+	                          {!isNative && <Badge variant="outline" className="mt-3 border-white/15 bg-white/10 text-white">
 	                            {wineDecision.label}
-	                          </Badge>
+	                          </Badge>}
 	                        </div>
-                        {wineDecision.score !== null && (
+                        {!isNative && wineDecision.score !== null && (
                           <div className="shrink-0 rounded-md bg-white px-3 py-2 text-center text-red-950">
-                            <div className="text-2xl font-bold leading-none">≈{wineDecision.score}%</div>
+                            <div className="text-2xl font-bold leading-none">≈{wineDecision.score}{isNative ? '/100' : '%'}</div>
 	                            <div className="mt-1 text-[10px] font-semibold uppercase text-red-900/70">Encaje</div>
 	                          </div>
 	                        )}
                       </div>
                     </div>
-                    <div className="p-3 sm:p-6 [&_p]:break-words">
+                    <div className={isNative ? 'min-w-0 p-[12px] [&_p]:break-words' : "p-3 sm:p-6 [&_p]:break-words"}>
+                      {isNative && <div className="mb-[16px]">{renderWineAffinityExplanation(wine)}</div>}
 	                  <div className="flex flex-col gap-4 lg:flex-row">
 	                    {/* Wine Info */}
 	                    <div className="flex-1 space-y-3">
@@ -1953,21 +2144,21 @@ const WineMenuScannerSession = ({
 	                        </p>
 	                      )}
 
-	                      <div className={`rounded-lg border p-3 text-sm leading-6 ${wineDecision.className}`}>
+	                      {!isNative && <div className={`rounded-lg border p-3 text-sm leading-6 ${wineDecision.className}`}>
 	                        <p className="font-semibold">{wineDecision.label}</p>
 	                        <p className="mt-1">{wineDecision.description}</p>
-	                      </div>
+	                      </div>}
 
 	                    </div>
 
-	                    {wineDecision.score !== null && (
+	                    {!isNative && wineDecision.score !== null && (
 	                      <div className="matchrim-soft-surface flex flex-col justify-center gap-3 rounded-lg p-4 lg:min-w-[170px]">
                           <div className="flex items-center gap-2">
                             {getCompatibilityIcon(wineDecision.score)}
                             <span className="text-sm font-semibold">Encaje conmigo</span>
                           </div>
                           <div>
-                            <div className="text-3xl font-bold">≈{wineDecision.score}%</div>
+                            <div className="text-3xl font-bold">≈{wineDecision.score}{isNative ? '/100' : '%'}</div>
                             <div className={`mt-2 h-2 w-full rounded-full ${getCompatibilityColor(wineDecision.score)}`} />
                           </div>
                           <p className="text-xs leading-5 text-muted-foreground">
@@ -1977,9 +2168,9 @@ const WineMenuScannerSession = ({
 	                    )}
 	                  </div>
 
-		                  <div className="mt-4">
+		                  {!isNative && <div className="mt-4">
 		                    {renderWineAffinityExplanation(wine)}
-		                  </div>
+		                  </div>}
 
 	                  {similarWines.length > 0 && (
 	                    <div className="mt-4 rounded-lg border border-red-100 bg-red-50/70 p-3">
@@ -2019,10 +2210,11 @@ const WineMenuScannerSession = ({
                         {identityHoldIndexes.has(index) && (
                           <p role="status" className="mt-4 text-sm text-amber-900">Identidad editada; el guardado anterior no se modifica. Revisa la identificación en Bodega.</p>
                         )}
-			                  <div className="mt-4 grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5 [&>button]:h-auto [&>button]:min-h-11 [&>button]:whitespace-normal [&>button]:py-2 [&>button_svg]:shrink-0">
+			                {isNative && isLiteralWineStyle95(wine) && <p role="status" className="mt-4 text-sm text-stone-700">Esta carta indica un estilo, no la botella. Corrige la identificación con su nombre y bodega antes de guardarla.</p>}
+			                  <div className={isNative ? 'mt-[16px] grid min-w-0 grid-cols-1 gap-[8px] [&>button]:h-auto [&>button]:min-h-[44px] [&>button]:min-w-0 [&>button]:whitespace-normal [&>button]:px-[12px] [&>button]:py-[10px] [&>button_svg]:shrink-0' : "mt-4 grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5 [&>button]:h-auto [&>button]:min-h-11 [&>button]:whitespace-normal [&>button]:py-2 [&>button_svg]:shrink-0"}>
 		                    <Button
 		                      onClick={() => saveWineToWishlist(wine, index)}
-		                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(wishlistSaveKey)}
+		                      disabled={isNative && isLiteralWineStyle95(wine) || Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(wishlistSaveKey)}
 		                      variant="outline"
 		                      className="gap-2"
 		                    >
@@ -2037,7 +2229,7 @@ const WineMenuScannerSession = ({
 		                    </Button>
 			                    <Button
 			                      onClick={() => saveWineAsTasted(wine, index)}
-			                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(tastedSaveKey)}
+			                      disabled={isNative && isLiteralWineStyle95(wine) || Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(tastedSaveKey)}
 			                      variant="outline"
 		                      className="gap-2"
 		                    >
@@ -2052,7 +2244,7 @@ const WineMenuScannerSession = ({
 			                    </Button>
 			                    <Button
 			                      onClick={() => saveWineAsFavorite(wine, index)}
-			                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(favoriteSaveKey)}
+			                      disabled={isNative && isLiteralWineStyle95(wine) || Boolean(savingWineKey) || unconfirmedWineIndexes.has(index) || identityHoldIndexes.has(index) || savedWineKeys.has(favoriteSaveKey)}
 			                      variant="outline"
 			                      className="gap-2"
 			                    >
@@ -2130,29 +2322,32 @@ const WineMenuScannerSession = ({
 	      <Drawer autoFocus open={selectedPinIndex !== null} onOpenChange={(open) => {
           if (!open) { detailFocusRef.current.open = false; if (profileRetryRef.current) invalidateProfileRetry(); setSelectedPinIndex(null); }
         }}>
-	        <DrawerContent onCloseAutoFocus={restoreDetailFocus} className="w-full min-w-0 max-w-[100vw] max-h-[88vh] border-stone-200 bg-stone-50">
+	        <DrawerContent onCloseAutoFocus={restoreDetailFocus} className={isNative ? 'w-full min-w-0 max-w-[100vw] max-h-[88vh] border-stone-200 bg-stone-50 [&>div:first-child]:mt-[8px] [&>div:first-child]:h-[4px]' : 'w-full min-w-0 max-w-[100vw] max-h-[88vh] border-stone-200 bg-stone-50'}>
 	          {selectedPinWine && selectedPinIndex !== null && (
 	            <>
-	              <DrawerHeader className="min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left">
+	              <DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white p-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
 	                <div className="flex items-start justify-between gap-3">
-	                  <div className="min-w-0">
-	                    <DrawerTitle>{selectedPinIndex + 1}. {selectedPinWine.nombre}</DrawerTitle>
-	                    <DrawerDescription className="mt-1">
+	                  <div className={isNative ? 'max-h-[28vh] min-w-0 overflow-y-auto' : 'min-w-0'}>
+	                    <DrawerTitle className={isNative ? 'tracking-normal' : undefined}>{selectedPinIndex + 1}. {selectedPinWine.nombre}</DrawerTitle>
+	                    <DrawerDescription className={isNative ? 'sr-only' : 'mt-1'}>
 	                      {[selectedPinWine.productor, selectedPinWine.region, formatPrice(selectedPinWine.precio, selectedPinWine.moneda)].filter(Boolean).join(' · ') || 'Datos por revisar'}
 	                    </DrawerDescription>
 	                  </div>
 	                  <DrawerClose asChild>
-	                    <Button type="button" variant="ghost" size="icon" className="h-11 w-11 shrink-0" aria-label="Cerrar detalle"><X className="h-4 w-4" /></Button>
+	                    <Button type="button" variant="ghost" size="icon" className={isNative ? 'h-[44px] w-[44px] shrink-0' : 'h-11 w-11 shrink-0'} aria-label="Cerrar detalle"><X className={isNative ? 'h-[20px] w-[20px]' : 'h-4 w-4'} /></Button>
 	                  </DrawerClose>
 	                </div>
 	              </DrawerHeader>
-              <div role="region" aria-label="Contenido del vino" tabIndex={0} className="min-h-0 min-w-0 flex-1 overflow-y-auto break-words p-4">
+              <div role="region" aria-label="Contenido del vino" tabIndex={0} className={isNative ? 'min-h-[min(30vh,240px)] min-w-0 flex-1 overflow-y-auto break-words p-[16px]' : 'min-h-0 min-w-0 flex-1 overflow-y-auto break-words p-4'}>
                 {renderProfileRecovery()}
-	                <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
+                {isNative && renderWineAffinityExplanation(selectedPinWine)}
+                {isNative && <p className="my-3 text-sm text-slate-600">{[selectedPinWine.productor, selectedPinWine.region,
+                  formatPrice(selectedPinWine.precio, selectedPinWine.moneda)].filter(Boolean).join(' · ')}</p>}
+	                {!isNative && <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
 	                  <div><div className="text-xl font-bold text-red-900">{selectedPinDecision?.score == null ? '-' : `≈${selectedPinDecision.score}%`}</div><div className="text-xs text-slate-500">{selectedPinDecision?.state === 'pending' ? 'Afinidad pendiente' : 'Afinidad estimada'}</div></div>
 	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>
 	                  <div><div className="truncate text-sm font-bold capitalize text-slate-900">{selectedPinWine.tipo || '-'}</div><div className="text-xs text-slate-500">Tipo</div></div>
-	                </div>
+	                </div>}
 	                <WinerimOriginalSheet sheet={selectedPinWine.originalSheet} />
                     {!selectedPinWine.originalSheet?.detailVerified && <WinerimSheetLookup identity={{
                       name: selectedPinWine.nombre, producer: selectedPinWine.productor, vintage: selectedPinWine.anada,
@@ -2168,20 +2363,24 @@ const WineMenuScannerSession = ({
                         return catalog ? applyMenuWineEvidence(wine, scanProfile?.profile ?? null, catalog) : wine;
                       }));
                     }} />}
-	                {selectedPinWine.descripcion && <p className="mb-4 text-sm leading-6 text-slate-600">{selectedPinWine.descripcion}</p>}
-	                <div className="matchrim-soft-surface mb-4 rounded-lg p-3 text-sm text-slate-600">
-	                  {selectedPinWine.texto_fuente ? (
-	                    <p><span className="font-semibold text-slate-900">Texto visible:</span> {selectedPinWine.texto_fuente}</p>
-	                  ) : (
-                    <p>No hay una transcripción enlazada a esta fila. Productor, región y estilo pueden ser inferencias y requieren confirmación.</p>
-	                  )}
-	                  {selectedPinWine.dudas && selectedPinWine.dudas.length > 0 && (
-	                    <p className="mt-1"><span className="font-semibold text-slate-900">Dudas:</span> {selectedPinWine.dudas.join(', ')}</p>
-	                  )}
-			                  {selectedPinWine.campos_inferidos && selectedPinWine.campos_inferidos.length > 0 && (
-			                    <p className="mt-1"><span className="font-semibold text-slate-900">Datos inferidos:</span> {selectedPinWine.campos_inferidos.join(', ')}</p>
-			                  )}
-			                </div>
+	                {isNative && !loading && !retryingProfile && !selectedPinWine.originalSheet?.detailVerified && !savingRef.current
+                    && !savedCardsRef.current.has(selectedPinIndex) && !unconfirmedRef.current.has(selectedPinIndex)
+                    && !identityHoldsRef.current.has(selectedPinIndex) && <WinerimCandidatePicker95
+                      initialQuery={selectedPinWine.nombre}
+                      contextKey={JSON.stringify([selectedPinIndex, menuCardIdentity(selectedPinWine), scanProfile?.profile])}
+                      onConfirmed={sheet => {
+                        if (savingRef.current || savedCardsRef.current.has(selectedPinIndex) || unconfirmedRef.current.has(selectedPinIndex)
+                          || identityHoldsRef.current.has(selectedPinIndex)) return;
+                        const identity = menuCardIdentity(selectedPinWine);
+                        setScannedWines(current => current.map((wine, index) => index === selectedPinIndex && menuCardIdentity(wine) === identity
+                          ? confirmedMenuCatalogIdentity95(wine, sheet, scanProfile?.profile ?? null) ?? wine : wine));
+                      }}
+                    />}
+	                {!isNative && selectedPinWine.descripcion && <p className="mb-4 text-sm leading-6 text-slate-600">{selectedPinWine.descripcion}</p>}
+                    {isNative ? <details className="my-3 text-sm">
+                      <summary className="min-h-11 cursor-pointer py-3 font-medium text-stone-700">Qué he leído en la carta</summary>
+                      {selectedReadingEvidence}
+                    </details> : selectedReadingEvidence}
 			                <div className="mb-4">
 			                  <AiRimContextGuide
                             profile={scanProfile?.profile ?? null}
@@ -2191,28 +2390,30 @@ const WineMenuScannerSession = ({
 			                    affinity={selectedPinDecision?.score ?? null}
 			                    attributes={selectedPinWine.atributos}
 			                    sensorySource={selectedPinWine.sensorySource ?? 'inference'}
+                            catalogIdentityLinked={Boolean(selectedPinWine.originalSheet?.detailVerified)}
 			                    uncertaintyReasons={selectedPinWine.dudas}
 			                    hasAlternatives={scannedWines.length > 1}
 			                  />
 			                </div>
-	                {renderWineAffinityExplanation(selectedPinWine)}
+	                {!isNative && renderWineAffinityExplanation(selectedPinWine)}
 	              </div>
-	              <DrawerFooter className="min-w-0 shrink-0 border-t border-stone-200 bg-white">
-	                <div className="grid grid-cols-2 gap-2">
-	                  <Button ref={detailPreviousRef} type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={selectedPinIndex === 0} onClick={(event) => {
+	              <DrawerFooter className={isNative ? 'min-w-0 shrink-0 border-t border-stone-200 bg-white p-[12px]' : 'min-w-0 shrink-0 border-t border-stone-200 bg-white'}>
+	                <div className={isNative ? 'grid grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-2' : 'grid grid-cols-2 gap-2'}>
+	                  <Button ref={detailPreviousRef} type="button" variant="outline" aria-label={isNative ? 'Anterior' : undefined} title={isNative ? 'Vino anterior' : undefined} className={isNative ? 'matchrim-pressable h-[44px] w-[44px] min-w-0 bg-white p-0' : 'matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2'} disabled={selectedPinIndex === 0} onClick={(event) => {
 	                    const next = Math.max(0, selectedPinIndex - 1);
                       if (next === 0 && document.activeElement === event.currentTarget) {
                         detailNextRef.current?.focus({ preventScroll: true });
                       }
 	                    openWineDetail(next);
-	                  }}><ChevronLeft className="h-4 w-4" /> Anterior</Button>
-	                  <Button ref={detailNextRef} type="button" variant="outline" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={selectedPinIndex >= scannedWines.length - 1} onClick={(event) => {
+	                  }}><ChevronLeft className={isNative ? 'h-[20px] w-[20px]' : 'h-4 w-4'} />{!isNative && ' Anterior'}</Button>
+                    {isNative && <span className="min-w-0 text-center text-sm text-slate-600" aria-live="polite">{selectedPinIndex + 1} de {scannedWines.length}</span>}
+	                  <Button ref={detailNextRef} type="button" variant="outline" aria-label={isNative ? 'Siguiente' : undefined} title={isNative ? 'Vino siguiente' : undefined} className={isNative ? 'matchrim-pressable h-[44px] w-[44px] min-w-0 bg-white p-0' : 'matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2'} disabled={selectedPinIndex >= scannedWines.length - 1} onClick={(event) => {
 	                    const next = Math.min(scannedWines.length - 1, selectedPinIndex + 1);
                       if (next === scannedWines.length - 1 && document.activeElement === event.currentTarget) {
                         detailPreviousRef.current?.focus({ preventScroll: true });
                       }
 	                    openWineDetail(next);
-	                  }}>Siguiente <ChevronRight className="h-4 w-4" /></Button>
+	                  }}>{!isNative && 'Siguiente '}<ChevronRight className={isNative ? 'h-[20px] w-[20px]' : 'h-4 w-4'} /></Button>
 	                </div>
 	              </DrawerFooter>
 	            </>

@@ -22,6 +22,8 @@ import {
   type MatchrimProfileLike,
 } from '@/utils/matchrimPassport';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { cellarTrainingRows } from '@/utils/bodegaAffinity';
+import { Capacitor } from '@capacitor/core';
 import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
@@ -30,6 +32,10 @@ import { toast } from 'sonner';
 import { trackAppEvent } from '@/lib/analytics';
 
 const WineMenuScanner = lazy(() => import('@/components/wine-import/WineMenuScanner'));
+
+const calculateUseMatchrimLearnedProfile = (
+  base: MatchrimProfileLike, wines: TrainableWine[], options: { requireCatalogEvidence: true },
+) => calculateLearnedMatchrimProfile(base, cellarTrainingRows(wines, options.requireCatalogEvidence));
 
 const parseProfileVector = (vector: string | null): MatchrimProfileLike | null => {
   if (!vector || !/^\d{5}$/.test(vector)) return null;
@@ -174,9 +180,11 @@ const UseMatchrim = () => {
           // Local cache only accelerates future screens.
         }
 
-        const { data: trainingWines, error: trainingError } = await supabase
-          .from('user_wines')
-          .select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+        const trainingQuery = supabase.from('user_wines');
+        const trainingSelection = Capacitor.isNativePlatform()
+          ? trainingQuery.select('id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
+          : trainingQuery.select('id, rating, sensory_attributes, use_for_profile_training, created_at, updated_at');
+        const { data: trainingWines, error: trainingError } = await trainingSelection
           .eq('user_id', user.id)
           .eq('use_for_profile_training', true)
           .not('rating', 'is', null)
@@ -191,7 +199,9 @@ const UseMatchrim = () => {
           return;
         }
 
-        const learned = calculateLearnedMatchrimProfile(data, (trainingWines || []) as TrainableWine[]);
+        const learned = Capacitor.isNativePlatform()
+          ? calculateUseMatchrimLearnedProfile(data, (trainingWines || []) as TrainableWine[], { requireCatalogEvidence: true })
+          : calculateLearnedMatchrimProfile(data, (trainingWines || []) as TrainableWine[]);
         if (learned.samples > 0) {
           setProfile(learned.profile);
           setLearnedProfileInfo({
@@ -690,13 +700,14 @@ const UseMatchrim = () => {
                               <WineCard
                                 wine={wine}
                                 index={index}
+                                profile={Capacitor.isNativePlatform() ? profile : undefined}
                               />
-                              <div className="rounded-lg border border-red-100 bg-red-50 p-3 text-sm text-red-950">
+                              {!Capacitor.isNativePlatform() && <div className="rounded-lg border border-red-100 bg-red-50 p-3 text-sm text-red-950">
                                 <div className="flex gap-2">
                                   <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-red-800" />
                                   <p>{getWinerimFitReason(wine)}</p>
                                 </div>
-                              </div>
+                              </div>}
                               <Button
                                 onClick={() => saveWinerimWineToMyWines(wine)}
                                 disabled={savingWineId === wine.id || isSaved}

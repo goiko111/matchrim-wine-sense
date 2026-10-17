@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import ts from 'typescript';
+import { NATIVE_IMAGE_PREPARATION_LIMITS } from '../src/utils/imageAnalysis';
+import { parseFoodScanResponse } from '../src/utils/foodScanResponse';
+import { runNativeFoodRead95 } from '../src/utils/foodScanRecovery95';
 import {
   FOOD_MENU_TILE_LIMIT, FOOD_MENU_SCAN_TIMEOUT_MS, planFoodMenuTiles89,
   parseFoodMenuTile89, mergeFoodMenuTiles89, scanFoodMenu89, type FoodMenuTile, type FoodMenuBox,
@@ -255,14 +261,148 @@ test('timeout with no completed tile is a recoverable error, never empty success
   assert.equal(requests, 2);
 });
 
+const foodClientPath = 'src/components/wine-import/FoodPairingScanner.tsx';
+const foodClient = readFileSync(foodClientPath, 'utf8');
+const preparationCall = (source: string) => {
+  const ast = ts.createSourceFile(foodClientPath, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const calls: ts.CallExpression[] = [];
+  const visit = (node: ts.Node) => {
+    if (ts.isCallExpression(node) && node.expression.getText(ast) === 'prepareImageForAnalysis') calls.push(node);
+    ts.forEachChild(node, visit);
+  };
+  visit(ast); assert.equal(calls.length, 1, 'Exactly one image preparation, never a second paid reading');
+  return { text: calls[0].getText(ast), args: calls[0].arguments.map(argument => argument.getText(ast)) };
+};
+const oldFoodClient = execFileSync('git', ['show', `c25b282:${foodClientPath}`], { encoding: 'utf8' });
+const oldPreparation = preparationCall(oldFoodClient);
+const currentPreparation = preparationCall(foodClient);
+const sha256 = (value: string) => createHash('sha256').update(value).digest('hex');
+// Keep the historical three-argument oracle on the exact web projection. Only
+// the reviewed native safety argument is projected out, not other source logic.
+assert.equal(sha256(oldPreparation.text), 'a6986249e1b236cb6ddc70758997cd9ef15ab1088df6a79c7e6738fdef46bde8');
+assert.equal(sha256(currentPreparation.text), '9f605736fa5e00b213a6e8e4361f5e22db30381adb88350d6e72f5b4d6a46566');
+assert.deepEqual(currentPreparation.args, [...oldPreparation.args, 'isNative ? NATIVE_IMAGE_PREPARATION_LIMITS : undefined']);
+const declaration = (source: string, name: string) => {
+  const ast = ts.createSourceFile(foodClientPath, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const matches: ts.VariableDeclaration[] = [];
+  const visit = (node: ts.Node) => {
+    if (ts.isVariableDeclaration(node) && node.name.getText(ast) === name) matches.push(node);
+    ts.forEachChild(node, visit);
+  };
+  visit(ast); assert.equal(matches.length, 1, `Exactly one actual ${name} declaration`);
+  return matches[0].getText(ast);
+};
+const oldRead = declaration(oldFoodClient, 'scanResult');
+const currentRead = declaration(foodClient, 'read');
+const currentDispatch = declaration(foodClient, 'scanResult');
+assert.equal(sha256(oldRead), '5aa6914899d130bb7672ec75cbff75aca2810bd9e90d35060b3f1a3d3ead9f34');
+assert.equal(sha256(currentRead), '6a41c2d85ea49a8e1d98dafa8b0b2dbc6eb2373687ce7d2bff782994c0b748e2');
+assert.equal(sha256(currentDispatch), '5147ef3cdf801562e29505ed95f8c6e475289a2236b03d23e2b735c787e5e95a');
+const oldSaveGuard = 'if (savingRef.current || savedKeys.has(saveKey)) return;';
+const currentSaveGuard = 'if (savingRef.current || savedKeys.has(saveKey) || isNative && unconfirmedRowsRef.current.has(rowKey)) return;';
+assert.equal(oldFoodClient.split(oldSaveGuard).length, 2);
+assert.equal(foodClient.split(currentSaveGuard).length, 2);
+const webFoodClient = foodClient.replace(currentPreparation.text, oldPreparation.text)
+  .replace(currentRead, 'reviewed95Read').replace(currentDispatch, oldRead).replace(currentSaveGuard, oldSaveGuard);
+
+test('actual save guard retains the independent busy/saved truth table and native-only unconfirmed lock', () => {
+  const evaluate = new Function('savingRef', 'savedKeys', 'saveKey', 'isNative', 'unconfirmedRowsRef', 'rowKey',
+    `${currentSaveGuard} return 'allowed';`);
+  const oldEvaluate = new Function('savingRef', 'savedKeys', 'saveKey', `${oldSaveGuard} return 'allowed';`);
+  for (const native of [false, true]) for (const busy of [false, true]) {
+    for (const saved of [false, true]) for (const unconfirmed of [false, true]) {
+      const args = [{ current: busy }, new Set(saved ? ['save'] : []), 'save'] as const;
+      const actual = evaluate(...args, native, { current: new Set(unconfirmed ? ['row'] : []) }, 'row');
+      assert.equal(actual, busy || saved || native && unconfirmed ? undefined : 'allowed');
+      if (!native) assert.equal(actual, oldEvaluate(...args), 'Web duplicate-save policy is identical');
+    }
+  }
+});
+
+test('reviewed95 actual menu/dish read bodies preserve web results/errors, and native dispatch remains single-shot', async () => {
+  const compile = (text: string) => ts.transpileModule(text, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None },
+  }).outputText;
+  const makeRun = (before: boolean, deps: Record<string, unknown>) => new Function(...Object.keys(deps),
+    compile(before ? `return (async () => { const ${oldRead}; return scanResult; })();`
+      : `return (async () => { const ${currentRead}; const ${currentDispatch}; return scanResult; })();`))(...Object.values(deps));
+  for (const mode of ['menu', 'dish']) for (const failure of [false, true]) {
+    const error = new Error('Synthetic controlled failure'), controller = new AbortController();
+    const results: unknown[] = [], traces: unknown[] = [];
+    for (const before of [true, false]) for (const native of before ? [false] : [false, true]) {
+      let menuCalls = 0, edgeCalls = 0, wrappers = 0;
+      const trace: unknown[] = [], context = { restaurantName: 'Synthetic', matchrimProfile: null };
+      const raw = { mode, summary: 'Synthetic', dishes: [dish('Synthetic dish')], has_profile: false };
+      const invoke = async (name: string, body: unknown, signal: AbortSignal) => {
+        edgeCalls++; assert.equal(name, 'scan-food-pairing'); assert.equal(signal.aborted, false);
+        if (!native) assert.equal(signal, controller.signal, 'Web keeps the exact original controller signal');
+        trace.push({ name, body }); if (failure) throw error; return raw;
+      };
+      const deps = { mode, controller, context, image: 'synthetic-image', width: 1200, height: 800, isNative: native,
+        parseFoodScanResponse, invokeEdgeFunction: invoke,
+        scanFoodMenu89: async (options: { image: string; width: number; height: number; signal: AbortSignal;
+          context: unknown; invoke: (body: unknown, signal: AbortSignal) => Promise<unknown> }) => {
+          menuCalls++; assert.equal(options.signal.aborted, false);
+          trace.push({ menu: { image: options.image, width: options.width, height: options.height, context: options.context } });
+          return parseFoodScanResponse(await options.invoke({ crop: 'synthetic' }, options.signal));
+        },
+        runNativeFoodRead95: (read: (signal: AbortSignal) => Promise<unknown>, signal: AbortSignal) => {
+          wrappers++; assert.equal(signal, controller.signal); return runNativeFoodRead95(read, signal);
+        },
+      };
+      if (failure) await assert.rejects(makeRun(before, deps), value => value === error);
+      else results.push(await makeRun(before, deps));
+      traces.push(trace);
+      assert.equal(menuCalls, mode === 'menu' ? 1 : 0); assert.equal(edgeCalls, 1);
+      assert.equal(wrappers, native ? 1 : 0);
+    }
+    traces.slice(1).forEach(trace => assert.deepEqual(trace, traces[0], 'Actual web/native bodies preserve request payloads'));
+    results.slice(1).forEach(result => assert.deepEqual(result, results[0], 'Actual parser result parity'));
+    if (!failure) {
+      const result = results[0] as ReturnType<typeof parseFoodScanResponse>;
+      assert.equal(result.dishes.length, 1); assert.equal(result.dishes[0].nombre, 'Synthetic dish');
+      assert.equal(result.dishes[0].match, null); assert.equal(result.dishes[0].razon, '');
+    }
+  }
+});
+
+test('reviewed95 actual preparation call preserves web arguments and native signal/limits without retry', async () => {
+  assert.deepEqual(oldPreparation.args, ['imageFile', '2400', 'controller.signal']);
+  assert.deepEqual(NATIVE_IMAGE_PREPARATION_LIMITS, { maxFileBytes: 25 * 1024 * 1024, maxImagePixels: 64_000_000 });
+  assert.ok(Object.isFrozen(NATIVE_IMAGE_PREPARATION_LIMITS));
+  for (const native of [false, true]) {
+    for (const aborted of [false, true]) {
+      const imageFile = { name: 'explicitly-synthetic.jpg' }, controller = new AbortController();
+      if (aborted) controller.abort();
+      const receipt = { dataUrl: 'synthetic-prepared', width: 1200, height: 800 };
+      const calls: unknown[][] = [];
+      const prepare = (...args: unknown[]) => { calls.push(args); return Promise.resolve(receipt); };
+      const run = new Function('prepareImageForAnalysis', 'imageFile', 'controller', 'isNative', 'NATIVE_IMAGE_PREPARATION_LIMITS',
+        `return ${currentPreparation.text};`);
+      assert.equal(await run(prepare, imageFile, controller, native, NATIVE_IMAGE_PREPARATION_LIMITS), receipt);
+      assert.equal(calls.length, 1); assert.equal(calls[0][0], imageFile);
+      assert.equal(calls[0][1], 2400); assert.equal(calls[0][2], controller.signal);
+      assert.equal((calls[0][2] as AbortSignal).aborted, aborted);
+      assert.equal(calls[0][3], native ? NATIVE_IMAGE_PREPARATION_LIMITS : undefined);
+      if (!native) {
+        const beforeCalls: unknown[][] = [];
+        new Function('prepareImageForAnalysis', 'imageFile', 'controller', `return ${oldPreparation.text};`)(
+          (...args: unknown[]) => beforeCalls.push(args), imageFile, controller);
+        assert.deepEqual(calls[0].slice(0, 3), beforeCalls[0]);
+        assert.equal(beforeCalls[0].length, 3); assert.equal(calls[0].length, 4);
+      }
+    }
+  }
+});
+
 test('client retains dish single-call branch, owner lifetime aborts and save protections', () => {
   const source = readFileSync('src/components/wine-import/FoodPairingScanner.tsx', 'utf8');
-  assert.match(source, /mode === 'menu'\s*\? await scanFoodMenu89/);
-  assert.match(source, /: parseFoodScanResponse\(await invokeEdgeFunction/);
-  assert.match(source, /prepareImageForAnalysis\(imageFile, 2400, controller.signal\)/);
+  assert.match(webFoodClient, /mode === 'menu'\s*\? await scanFoodMenu89/);
+  assert.match(webFoodClient, /: parseFoodScanResponse\(await invokeEdgeFunction/);
+  assert.match(webFoodClient, /prepareImageForAnalysis\(imageFile, 2400, controller.signal\)/);
   assert.match(source, /scanController.current\?\.abort\(\)/);
   assert.match(source, /scanController.current !== controller/);
-  assert.match(source, /if \(savingRef.current \|\| savedKeys.has\(saveKey\)\) return/);
+  assert.match(webFoodClient, /if \(savingRef.current \|\| savedKeys.has\(saveKey\)\) return/);
   assert.match(source, /use_for_profile_training: false/);
   assert.doesNotMatch(source, /Faltan platos por revisar/);
 });
