@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-17, integrated95
+
+- Newest95 checkpoint supersedes older95 bullets below: app fixes `ddba35c`, QA/preparer `2c2b90b`, clean candidate `/private/tmp/Matchrim95-consumer-r12`. Full R9 **13/13 PASS**,798 unchanged inputs/156 resources; lint0errors/105warnings. Unsigned iOS arm64/simulator and six-copy156-resource/public-policy checks PASS. Actual new-payload native **9/9 PASS**,30 screenshots; controlled Chromium **Label27/27 and memory100/100 PASS**,0 external calls. **Two additional Home AX activation follow-ups FAIL** after scrolling at maximum text; one separate physical Botellas touch opens the label destination, not AX/VoiceOver approval. Carta body not exercised; portrait brand wraps. Complete mobile QA is not green; release HOLD.
+- Fifty actual synthetic native methods/1000 quiz answers passed on baseline31e only; do not transfer them to changed R12. Real image/canonical/coverage/latency P1 gaps and hosted Foodv9 profile failure remain. Foodv10 is local, extra deployment permission pending. No95 signing/upload or physical-phone action.
+- Exactly two authorized Lovable functions deployed for1.6credits; generated frontend drift restored without web Publish. Apple session verified;94assigned to the internal group,95absent. The eight requested hours are complete and the continuation heartbeat is paused; closing in-flight QA. [Integrated validation and exact remaining gates](docs/MATCHRIM_95_VALIDATION_2026-10-17.md).
+
 ## Active Window: 2026-10-17, consumer95 eight-hour remediation
 
 - Source freeze13:25UTC supersedes the older checkpoint bullets below: R11actualnative7/7, keyboardnormal/AXXXLportrait/landscape1/1, cleanoriginal7548Photos/read/eight-details/compare-fiveE2E1/1PASS; originalfailedattemptsretained. FinalR11Label27/27, memory100/100samebudgets, fullR4local12/12PASS (lint0errors/106inheritedwarnings). Parent61/64hostedEdgeattemptsincluding1chat. Finalcleancommitmanifest/50-profilematrices/sign/upload/availabilitystillpending; no95distributionapprovalyet. Furtherapplicationwritesfrozen; publishedweb/backend/phoneuntouched.
