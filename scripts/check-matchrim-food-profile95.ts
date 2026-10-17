@@ -59,15 +59,16 @@ type Scenario = { owner?: string; base?: unknown; rows?: Wine[]; authError?: boo
   throwAuth?: boolean; throwBase?: boolean; throwRows?: boolean; rowsGate?: Promise<void>; rowsStarted?: () => void };
 type Query = { table: string; columns: string; filters: unknown[][]; limits: number[]; signal?: AbortSignal };
 type Handler = (request: Request) => Promise<Response>;
-function fixture(scenarios: Record<string, Scenario>, code = source) {
+function fixture(scenarios: Record<string, Scenario>, code = source, providerPayload: unknown = model) {
   let handler!: Handler;
-  const queries: Query[] = [], prompts: string[] = [];
+  const queries: Query[] = [], prompts: string[] = [], authTokens: string[] = [];
   const modules: Record<string, unknown> = {
     'https://deno.land/std@0.168.0/http/server.ts': { serve: (fn: Handler) => { handler = fn; } },
     'https://esm.sh/@supabase/supabase-js@2.7.1': { createClient: (_url: string, _key: string, options: { global: { headers: { Authorization: string } } }) => {
       const token = options.global.headers.Authorization.replace(/^Bearer\s+/i, '');
       const scenario = scenarios[token] ?? {};
-      return { auth: { getUser: async () => {
+      return { auth: { getUser: async (accessToken: string) => {
+        authTokens.push(accessToken);
         if (scenario.throwAuth) throw new Error('SYN-AUTH-FAILURE');
         return { data: { user: scenario.authError ? null : { id: scenario.owner ?? 'SYN-OWNER' } }, error: scenario.authError ? new Error('SYN-AUTH') : null };
       } }, from: (table: string) => {
@@ -97,21 +98,22 @@ function fixture(scenarios: Record<string, Scenario>, code = source) {
     '../_shared/structured-response.ts': structured,
     '../_shared/matchrim-openai.ts': { hasMatchrimOpenAiKey: () => true },
     '../_shared/matchrim-ai-provider.ts': { runMatchrimAi: async (request: { prompt: string }) => {
-      prompts.push(request.prompt); return { complete: true, text: JSON.stringify(model), provider: 'openai', model: 'SYNTHETIC-NO-NETWORK' };
+      prompts.push(request.prompt); return { complete: true, text: JSON.stringify(providerPayload), provider: 'openai', model: 'SYNTHETIC-NO-NETWORK' };
     } },
   };
   const sandbox = { exports: {}, require: (name: string) => { assert.ok(name in modules, name); return modules[name]; },
     Deno: { env: { get: (key: string) => key === 'SUPABASE_URL' ? 'https://synthetic.invalid' : 'SYN-ANON' } },
-    Response, Request, Headers, DOMException, console: { log() {}, error() {} }, fetch: deny };
+    Response, Request, Headers, DOMException, URL, atob, TextDecoder, console: { log() {}, error() {} }, fetch: deny };
   vm.runInNewContext(ts.transpileModule(code, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } }).outputText,
     sandbox, { filename: sourcePath });
-  const run = async (token = 'SYN-AUTH', clientProfile: unknown = all(5), signal?: AbortSignal, body: Record<string, unknown> = {}) => {
+  const run = async (token = 'SYN-AUTH', clientProfile: unknown = all(5), signal?: AbortSignal,
+    body: Record<string, unknown> = {}, requestHeaders: Record<string, string> = {}) => {
     const response = await handler(new Request('https://synthetic.invalid/functions/v1/scan-food-pairing', { method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) }, signal,
+      headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}), ...requestHeaders }, signal,
       body: JSON.stringify({ mode: 'dish', image: 'data:image/png;base64,U1lOVEhFVElD', matchrimProfile: clientProfile, ...body }) }));
     return { status: response.status, body: await response.json() as Record<string, unknown> };
   };
-  return { run, queries, prompts };
+  return { run, queries, prompts, authTokens };
 }
 const profileLine = (prompt: string) => prompt.split('\n').find(line => line.startsWith('Perfil Matchrim'));
 
@@ -278,6 +280,149 @@ await check('whole vision prompt, output contract, OpenAI selection and non-prof
     .replace("    '../_shared/matchrim-learning.ts': learning,", "    '../_shared/matchrim-learning.ts': learning,\n    '../_shared/matchrim-profile95.ts': profile95,");
   assert.notEqual(expectedRobustness, oldRobustness);
   assert.equal(read(robustnessPath), expectedRobustness, 'Exactly two VM dependency registration lines change; all 40 old test bodies remain byte-identical');
+});
+const publicProfile = { potente: 0, acidez: 0.25, dulce: 2.5, tanico: 4.75, afrutado: 5 };
+const publicClaims = { role: 'anon', ref: 'synthetic', exp: Math.floor(Date.now() / 1000) + 3600 };
+const syntheticJwt = (claims: unknown, header: unknown = { alg: 'HS256', typ: 'JWT' }) =>
+  Buffer.from(JSON.stringify(header)).toString('base64url') + '.' + Buffer.from(JSON.stringify(claims)).toString('base64url') + '.U1lOVEhFVElDX05PVF9BX1NJR05BVFVSRQ';
+const publicJwt = syntheticJwt(publicClaims), publishable = 'sb_publishable_SYNTHETIC_PUBLIC_NOT_A_REAL_KEY';
+for (const [name, token] of [['legacy public JWT different from edge env key', publicJwt], ['current publishable presentation', publishable]]) {
+  await check(`v10 actual handler accepts ${name} only as unprivileged client preferences`, async () => {
+    const f = fixture({ [token]: { throwAuth: true } });
+    const result = await f.run(token, publicProfile, undefined, { user_id: 'SYN-SPOOF-OWNER', profile_source: 'auth' }, { apikey: token });
+    assert.equal(result.status, 200); assert.equal(result.body.scan_version, 'scan-food-pairing-2026-10-17-profile95-v10');
+    assert.deepEqual(result.body.profile_context, { version: profile95.MATCHRIM_PROFILE95_VERSION, source: 'client', status: 'client', samples: 0 });
+    assert.equal(result.body.profile_source, 'client'); assert.equal(f.authTokens.length, 0); assert.equal(f.queries.length, 0);
+    assert.match(profileLine(f.prompts[0])!, /potencia=0, acidez=0\.25, dulzura=2\.5, taninos=4\.75, afrutado=5/);
+    assert.ok(!JSON.stringify(result.body.profile_context).includes('SYN-SPOOF-OWNER'));
+  });
+}
+await check('v10 public presentations with invalid client profiles abstain without inventing or loading server preferences', async () => {
+  for (const token of [publicJwt, publishable]) for (const p of [null, { ...publicProfile, potente: '0' }, { ...publicProfile, acidez: 6 }]) {
+    const f = fixture({ [token]: { throwAuth: true, base: all(3) } });
+    const result = await f.run(token, p, undefined, {}, { apikey: token });
+    assert.equal(result.body.has_profile, false); assert.equal(f.authTokens.length, 0); assert.equal(f.queries.length, 0);
+    assert.deepEqual(result.body.profile_context, { version: profile95.MATCHRIM_PROFILE95_VERSION, source: 'none', status: 'none', samples: null });
+    assert.equal(profileLine(f.prompts[0]), undefined);
+  }
+});
+const rejectedPresentations: Array<{ name: string; token: string; apiKey?: string; authorization?: string }> = [
+  { name: 'non-anon account role', token: syntheticJwt({ ...publicClaims, role: 'authenticated', sub: 'SYN-USER' }) },
+  { name: 'service role', token: syntheticJwt({ ...publicClaims, role: 'service_role' }) },
+  { name: 'spoofed anon with account sub', token: syntheticJwt({ ...publicClaims, sub: 'SYN-USER' }) },
+  { name: 'spoofed anon with null sub', token: syntheticJwt({ ...publicClaims, sub: null }) },
+  { name: 'spoofed anon with user_id', token: syntheticJwt({ ...publicClaims, user_id: 'SYN-USER' }) },
+  { name: 'spoofed anon with session_id', token: syntheticJwt({ ...publicClaims, session_id: 'SYN-SESSION' }) },
+  { name: 'wrong project', token: syntheticJwt({ ...publicClaims, ref: 'foreign-synthetic-project' }) },
+  { name: 'expired public JWT', token: syntheticJwt({ ...publicClaims, exp: 1 }) },
+  { name: 'future not-before', token: syntheticJwt({ ...publicClaims, nbf: Math.floor(Date.now() / 1000) + 3600 }) },
+  { name: 'missing expiry', token: syntheticJwt({ role: 'anon', ref: 'synthetic' }) },
+  { name: 'malformed payload object', token: syntheticJwt([]) },
+  { name: 'unsigned JWT algorithm', token: syntheticJwt(publicClaims, { alg: 'none' }) },
+  { name: 'malformed JWT encoding', token: 'eyJhbGciOiJIUzI1NiJ9.bm90LWpzb24.U1lOVEhFVElD' },
+  { name: 'empty publishable suffix', token: 'sb_publishable_' },
+  { name: 'secret key prefix', token: 'sb_secret_SYNTHETIC_NOT_A_REAL_SECRET' },
+  { name: 'mismatched public headers', token: publicJwt, apiKey: publishable },
+  { name: 'missing apikey', token: publicJwt, apiKey: '' },
+  { name: 'non-Bearer authorization', token: publicJwt, authorization: 'Basic ' + publicJwt },
+  { name: 'expired account with public apikey', token: syntheticJwt({ ...publicClaims, role: 'authenticated', sub: 'SYN-USER', exp: 1 }), apiKey: publishable },
+];
+for (const input of rejectedPresentations) await check(`v10 ${input.name} stays on getUser path without client fallback`, async () => {
+  const authorization = input.authorization ?? 'Bearer ' + input.token;
+  const actualToken = authorization.replace(/^Bearer\s+/i, '');
+  const f = fixture({ [actualToken]: { authError: true } });
+  const headers: Record<string, string> = { Authorization: authorization };
+  const apiKey = input.apiKey ?? input.token; if (apiKey) headers.apikey = apiKey;
+  const result = await f.run(input.token, publicProfile, undefined, {}, headers);
+  assert.equal(result.status, 200); assert.deepEqual(f.authTokens, [actualToken]); assert.equal(f.queries.length, 0);
+  assert.equal(result.body.has_profile, false);
+  assert.deepEqual(result.body.profile_context, { version: profile95.MATCHRIM_PROFILE95_VERSION, source: 'none', status: 'unavailable', samples: null });
+  assert.equal(profileLine(f.prompts[0]), undefined);
+});
+await check('v10 verified account token still requires getUser and only owner-filtered server profile, even with matching headers', async () => {
+  const token = syntheticJwt({ ...publicClaims, role: 'authenticated', sub: 'SYN-OWNER' });
+  const f = fixture({ [token]: { base: all(4), rows: [] } });
+  const result = await f.run(token, publicProfile, undefined, {}, { apikey: token });
+  assert.deepEqual(f.authTokens, [token]); assert.equal(f.queries.length, 2);
+  assert.ok(f.queries.every(query => query.filters.some(filter => filter[0] === 'user_id' && filter[1] === 'SYN-OWNER')));
+  assert.deepEqual(result.body.profile_context, { version: profile95.MATCHRIM_PROFILE95_VERSION, source: 'auth', status: 'base', samples: 0 });
+  assert.match(profileLine(f.prompts[0])!, /potencia=4, acidez=4, dulzura=4, taninos=4, afrutado=4/);
+});
+await check('v10 public presentation never authenticates an extra claimed identity', async () => {
+  const token = syntheticJwt({ ...publicClaims, owner_id: 'SYN-CLAIMED-OWNER', profile_source: 'auth' });
+  const f = fixture({ [token]: { throwAuth: true, base: all(5) } });
+  const result = await f.run(token, publicProfile, undefined, {}, { apikey: token });
+  assert.equal(f.authTokens.length, 0); assert.equal(f.queries.length, 0);
+  assert.equal((result.body.profile_context as Record<string, unknown>).source, 'client');
+  assert.ok(!f.prompts[0].includes('SYN-CLAIMED-OWNER'));
+});
+const genericProviderPayload = (attributes: unknown) => ({
+  summary: 'SYN-GENERIC-STYLES-ONLY',
+  coverage: { estimated_visible_dishes: 3, unreadable_dishes: 1, truncated: true, notes: ['SYN-PRESERVE-COVERAGE'],
+    regions: [{ id: 'left', box: { x: 0, y: 0, width: 55, height: 100 }, estimated_visible_dishes: 3, unreadable_dishes: 1, truncated: true }] },
+  dishes: [0, 1].map(index => ({ nombre: `Synthetic dish ${index}`, categoria: 'principal', match: 91,
+    razon: `SYN-DISH-REASON-${index}`, source_order: index + 1, source_text: `Synthetic dish ${index}`,
+    region_id: 'left', source_box: { x: 5, y: 10 + index * 20, width: 40, height: 10 }, confidence: 87,
+    recomendaciones: ['Blanco seco', 'Tinto ligero'].map((nombre, i) => ({ nombre, tipo: i ? 'Tinto' : 'Blanco',
+      uvas: ['Synthetic grape'], match: 99 - i, razon: 'SYN-GENERIC-REASON', atributos: attributes })) })),
+});
+const withoutRecommendationAttributes = (dishes: contract.FoodDish[]) => dishes.map(dish => ({ ...dish,
+  recomendaciones: dish.recomendaciones.map(recommendation => {
+    const { atributos: _attributes, ...rest } = recommendation; return rest;
+  }) }));
+const attributeCases: Array<[string, unknown]> = [
+  ['full exact zero/decimal vector', { potencia: 0, acidez: 0.25, dulzura: 2.5, taninos: 4.75, afrutado: 5 }],
+  ['full positive vector', { potencia: 3, acidez: 3, dulzura: 3, taninos: 3, afrutado: 3 }],
+  ['partial numeric vector', { acidez: 3 }],
+  ['out-of-range numeric claims', { potencia: -1, acidez: 1000 }],
+  ['unknown numeric evidence claim', { provider_verified: 1 }],
+  ['empty vector', {}], ['explicit null', null], ['omitted vector', undefined],
+];
+for (const [name, attributes] of attributeCases) await check(`v10 final generic-style response abstains from ${name}`, async () => {
+  const payload = genericProviderPayload(attributes), snapshot = JSON.stringify(payload);
+  for (const body of [{ mode: 'dish' as const }, { mode: 'menu' as const },
+    { mode: 'menu' as const, scan_region: { id: 'left', box: { x: 0, y: 0, width: 55, height: 100 }, tile_count: 2, max_dishes: 30, coordinate_space: 'crop_percent' } }]) {
+    const f = fixture({}, source, payload), result = await f.run('', publicProfile, undefined, body);
+    assert.equal(result.status, 200); assert.equal(f.prompts.length, 1);
+    const dishes = result.body.dishes as contract.FoodDish[];
+    assert.equal(dishes.length, body.mode === 'dish' ? 1 : 2);
+    for (const dish of dishes) {
+      assert.equal(dish.match, null); assert.equal(dish.recomendaciones.length, 2);
+      for (const recommendation of dish.recomendaciones) {
+        assert.equal(recommendation.atributos, null, 'Provider numbers are not evidence for a generic style');
+        assert.equal(recommendation.match, null, 'Existing numerical affinity abstention remains mandatory');
+      }
+    }
+    const expected = contract.normalizeFoodScan(payload.dishes, payload.coverage, body.mode, 'scan_region' in body ? 30 : 60);
+    assert.deepEqual(withoutRecommendationAttributes(dishes), withoutRecommendationAttributes(expected.dishes), 'No other dish/recommendation field changes at this boundary');
+    assert.deepEqual(result.body.coverage, expected.coverage);
+    assert.equal(result.body.summary, payload.summary); assert.equal(result.body.ai_provider, 'openai');
+    assert.equal(result.body.scan_version, 'scan-food-pairing-2026-10-17-profile95-v10');
+    assert.deepEqual(result.body.profile_context, { version: profile95.MATCHRIM_PROFILE95_VERSION, source: 'client', status: 'client', samples: 0 });
+  }
+  assert.equal(JSON.stringify(payload), snapshot);
+});
+for (const [name, attributes] of [['string number', { potencia: '3' }], ['boolean number', { acidez: true }],
+  ['array vector', [1, 2, 3]], ['scalar vector', 3], ['provider scale/evidence claim', { potencia: 3, scale: 'winerim-0-5' }]] as Array<[string, unknown]>) {
+  await check(`v10 malformed generic ${name} retains strict model-schema rejection`, async () => {
+    const f = fixture({}, source, genericProviderPayload(attributes)), result = await f.run('', publicProfile);
+    assert.equal(result.status, 502); assert.equal(result.body.error, 'invalid_model_response');
+    assert.equal(result.body.reason, 'invalid_schema'); assert.deepEqual(result.body.dishes, []);
+    assert.equal(f.prompts.length, 1);
+  });
+}
+await check('v10 final response boundary is necessary: unchanged low-level normalizer and auth-only v10 still expose full/partial vectors', async () => {
+  const enforced = 'dishes: normalized.dishes.map(dish => ({\n          ...dish,\n          recomendaciones: dish.recomendaciones.map(recommendation => ({ ...recommendation, atributos: null })),\n        }))';
+  assert.equal(source.split(enforced).length, 2);
+  const authOnlyV10 = source.replace(enforced, 'dishes: normalized.dishes');
+  for (const attributes of [{ potencia: 3, acidez: 3, dulzura: 3, taninos: 3, afrutado: 3 }, { acidez: 3 }]) {
+    const payload = genericProviderPayload(attributes);
+    assert.notEqual(contract.normalizeFoodScan(payload.dishes, payload.coverage, 'dish').dishes[0].recomendaciones[0].atributos, null);
+    const old = await fixture({}, authOnlyV10, payload).run('', publicProfile);
+    assert.equal(old.status, 200);
+    const dishes = old.body.dishes as contract.FoodDish[];
+    assert.notEqual(dishes[0].recomendaciones[0].atributos, null, 'Negative control must reproduce the independently observed historical v10-auth-only defect');
+  }
 });
 assert.equal(outbound, 0);
 const report = { syntheticOnly: true, groups: checks.length, checks, profiles: 50, outbound, observations,

@@ -13,7 +13,34 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const FUNCTION_VERSION = 'scan-food-pairing-2026-10-17-profile95-v9';
+const FUNCTION_VERSION = 'scan-food-pairing-2026-10-17-profile95-v10';
+
+// This selects unprivileged caller-supplied preferences, never a user or a server
+// profile. Decoded public-key fields are NOT verified authentication claims.
+const isPublicPreferencePresentation95 = (authorization: string, apiKey: string | null, supabaseUrl: string): boolean => {
+  const bearer = /^Bearer\s+(\S+)\s*$/i.exec(authorization);
+  if (!bearer || !apiKey || bearer[1] !== apiKey.trim()) return false;
+  const token = bearer[1];
+  if (/^sb_publishable_[A-Za-z0-9_-]+$/.test(token)) return true;
+  if (!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token)) return false;
+  try {
+    const decode = (part: string): Record<string, unknown> | null => {
+      const bytes = Uint8Array.from(atob(part.replace(/-/g, '+').replace(/_/g, '/')), char => char.charCodeAt(0));
+      const value: unknown = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+      return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null;
+    };
+    const [header, claims] = token.split('.').slice(0, 2).map(decode);
+    if (!header || header.alg !== 'HS256' || !claims || claims.role !== 'anon'
+      || ['sub', 'user_id', 'session_id'].some(key => key in claims)) return false;
+    const expectedRef = new URL(supabaseUrl).hostname.split('.')[0];
+    const now = Date.now() / 1000;
+    return Boolean(expectedRef && claims.ref === expectedRef
+      && typeof claims.exp === 'number' && Number.isFinite(claims.exp) && claims.exp > now
+      && (claims.nbf === undefined || (typeof claims.nbf === 'number' && Number.isFinite(claims.nbf) && claims.nbf <= now)));
+  } catch {
+    return false;
+  }
+};
 
 const invalidModelResponse = (error: StructuredResponseError) => new Response(JSON.stringify({
   ...error, dishes: [], scan_version: FUNCTION_VERSION,
@@ -59,7 +86,8 @@ serve(async (req: Request) => {
     let profileStatus: 'base' | 'learned' | 'client' | 'none' | 'missing' | 'invalid' | 'unavailable' | 'training-unavailable' = 'none';
     let profileSamples: number | null = null;
     const token = authHeader.replace(/^Bearer\s+/i, '').trim();
-    const anonymous = !authHeader || token === Deno.env.get('SUPABASE_ANON_KEY');
+    const anonymous = !authHeader || token === Deno.env.get('SUPABASE_ANON_KEY')
+      || isPublicPreferencePresentation95(authHeader, req.headers.get('apikey'), Deno.env.get('SUPABASE_URL') ?? '');
     checkCancelled();
     if (!anonymous) {
       try {
@@ -211,7 +239,10 @@ REGLAS ESTRICTAS:
       JSON.stringify({
         mode,
         summary: parsed.value.summary ?? "",
-        dishes: normalized.dishes,
+        dishes: normalized.dishes.map(dish => ({
+          ...dish,
+          recomendaciones: dish.recomendaciones.map(recommendation => ({ ...recommendation, atributos: null })),
+        })),
         coverage: normalized.coverage,
         has_profile: Boolean(learnedProfile),
         profile_source: profileSource,
