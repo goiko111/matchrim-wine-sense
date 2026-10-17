@@ -1,9 +1,10 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
-import { hasMatchrimOpenAiKey, fetchMatchrimAiChat, getMatchrimOpenAiModel } from '../_shared/matchrim-openai.ts';
+import { fetchMatchrimAiChat, getMatchrimOpenAiModel, hasMatchrimOpenAiKey } from "../_shared/matchrim-openai.ts";
+import { calculateLearnedMatchrimProfile95, MATCHRIM_PROFILE95_TRAINING_COLUMNS, readMatchrimProfile95 } from "../_shared/matchrim-profile95.ts";
+import { specialMomentsResponse95, type SpecialMomentProfile95 } from "../_shared/matchrim-special-moments95.ts";
 
-const hasOpenAiKey = hasMatchrimOpenAiKey();
 const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
 const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 
@@ -37,7 +38,8 @@ interface QuizResult {
 }
 
 const systemPrompt = `Eres aiRIM, el motor de IA de Winerim especializado en vinos y maridajes.
-Hablas siempre en primera persona: "Te recomiendo", "He seleccionado para ti".
+Hablas en primera persona para asesorar: "Te recomiendo", "He seleccionado para ti".
+No afirmes haber probado vinos ni tener experiencias personales de cata.
 Nunca te refieras a ti mismo en tercera persona como "un sommelier" o "tu colega sommelier".
 Responde siempre en español, con tono amigable, educativo y profesional.
 Evita latinismos como "platillo"; usa "plato".`;
@@ -233,6 +235,26 @@ const loadProfile = async (authHeader: string | null, userId: string | null) => 
   return (data ?? null) as QuizResult | null;
 };
 
+const loadSpecialMomentProfile95 = async (
+  authHeader: string | null, userId: string | null, signal: AbortSignal,
+): Promise<SpecialMomentProfile95> => {
+  if (!userId) return { profile: null, status: "missing" };
+  const client = getSupabaseClient(authHeader);
+  const [quiz, training] = await Promise.all([
+    client.from("quiz_results").select("potente, acidez, dulce, tanico, afrutado")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(1).abortSignal(signal).maybeSingle(),
+    client.from("user_wines").select(MATCHRIM_PROFILE95_TRAINING_COLUMNS).eq("user_id", userId).abortSignal(signal),
+  ]);
+  if (signal.aborted) throw signal.reason;
+  if (quiz.error || training.error) return { profile: null, status: "unavailable", learningUnavailable: Boolean(training.error) };
+  if (!quiz.data) return { profile: null, status: "missing" };
+  const base = readMatchrimProfile95(quiz.data);
+  if (!base) return { profile: null, status: "unavailable" };
+  const learned = calculateLearnedMatchrimProfile95(base, training.data ?? []);
+  return { profile: learned.profile, status: learned.profile ? "available" : "unavailable",
+    source: learned.samples > 0 ? "strict-owner-learned" : "strict-owner-base" };
+};
+
 const logAiRimQuery = (
   authHeader: string | null,
   userId: string | null,
@@ -252,20 +274,19 @@ const logAiRimQuery = (
       context: payload.context ?? null,
       event_details: payload.eventDetails ?? null,
       had_profile: hadProfile,
-      model: getMatchrimOpenAiModel('quality'),
+      model: getMatchrimOpenAiModel("quality"),
     })
     .then(() => {}, (err: unknown) => console.error("Error logging aiRIM query:", err));
 };
 
-const callLovableGateway = async (messages: Array<{ role: string; content: string }>, stream: boolean) => {
-  if (!hasOpenAiKey) {
+const callMatchrimAi = async (messages: Array<{ role: string; content: string }>, stream: boolean) => {
+  if (!hasMatchrimOpenAiKey()) {
     throw new Error("Matchrim OpenAI key not configured");
   }
 
   const response = await fetchMatchrimAiChat({
     method: "POST",
     headers: {
-      
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -293,7 +314,7 @@ const callLovableGateway = async (messages: Array<{ role: string; content: strin
         handledError: true,
         response: new Response(
           JSON.stringify({
-            error: "El servicio de IA no dispone de credito suficiente.",
+            error: "El servicio de IA no dispone de crédito suficiente.",
             success: false,
           }),
           { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } },
@@ -317,6 +338,28 @@ serve(async (req) => {
   try {
     const payload = (await req.json()) as AiRimPayload;
     const authHeader = req.headers.get("Authorization");
+    if (payload.functionType === "special-moments") {
+      if (typeof payload.input1 !== "string" || !payload.input1.trim()) {
+        return new Response(JSON.stringify({ error: "input1 es obligatorio" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      let hadProfile = false;
+      let specialUserId: string | null = null;
+      const response = await specialMomentsResponse95({ payload, signal: req.signal, headers: corsHeaders,
+        loadProfile: async signal => {
+          if (signal.aborted) throw signal.reason;
+          specialUserId = await getUserId(authHeader);
+          if (signal.aborted) throw signal.reason;
+          const context = await loadSpecialMomentProfile95(authHeader, specialUserId, signal);
+          hadProfile = context.status === "available" && context.profile !== null;
+          return context;
+        },
+        callModel: fetchMatchrimAiChat,
+      });
+      if (!req.signal.aborted) logAiRimQuery(authHeader, specialUserId, payload, hadProfile);
+      return response;
+    }
     const userId = await getUserId(authHeader);
     const profile = await loadProfile(authHeader, userId);
 
@@ -329,7 +372,7 @@ serve(async (req) => {
       }
 
       const prompt = buildAiRimPrompt(payload, profile);
-      const upstream = await callLovableGateway(
+      const upstream = await callMatchrimAi(
         [
           { role: "system", content: systemPrompt },
           { role: "user", content: prompt },
@@ -361,7 +404,7 @@ serve(async (req) => {
     }
 
     const legacyContext = payload.context ? `\nContexto: ${payload.context}` : "";
-    const response = await callLovableGateway(
+    const response = await callMatchrimAi(
       [
         { role: "system", content: `${systemPrompt}${legacyContext}` },
         { role: "user", content: payload.message },
