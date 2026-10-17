@@ -12,6 +12,7 @@ import { recordOwnedScanHistory } from "@/utils/scanHistory";
 import { isMatchrimLocalOwner } from "@/utils/matchrimLocalOwner";
 import { trackAppEvent } from "@/lib/analytics";
 import { useAuth } from "@/contexts/AuthContext";
+import { Capacitor } from "@capacitor/core";
 
 type Recommendation = {
   nombre: string;
@@ -41,6 +42,7 @@ const EXAMPLES = [
 
 const WineShopLinkAdvisorSession = () => {
   const { user } = useAuth();
+  const native = Capacitor.isNativePlatform();
   const [intent, setIntent] = useState("");
   const [url, setUrl] = useState("");
   const [budget, setBudget] = useState("");
@@ -124,18 +126,18 @@ const WineShopLinkAdvisorSession = () => {
   };
 
   return (
-    <div className="space-y-4">
-      <Card className="min-w-0 [overflow-wrap:anywhere]">
-        <CardHeader className="p-3 sm:p-6">
-          <CardTitle className="flex min-w-0 items-start gap-2 tracking-normal">
+    <div className="space-y-4" data-testid={native ? "native-shop-advisor95" : undefined}>
+      <Card className={native ? "min-w-0 [overflow-wrap:normal]" : "min-w-0 [overflow-wrap:anywhere]"}>
+        <CardHeader className={native ? "min-w-0 space-y-[8px] p-[12px]" : "p-3 sm:p-6"}>
+          <CardTitle className={native ? "flex min-w-0 flex-wrap items-start gap-[8px] tracking-normal" : "flex min-w-0 items-start gap-2 tracking-normal"}>
             <ShoppingBag className="h-5 w-5 shrink-0 text-red-900" />
-            Encontrar vino
+            {native ? <span className="min-w-0 basis-full">Encontrar vino</span> : "Encontrar vino"}
           </CardTitle>
           <CardDescription>
             Haz una pregunta abierta o pega una tienda. Matchrim no vende vino: te ayuda a decidir qué botella buscaría para ti.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4 p-3 pt-0 sm:p-6 sm:pt-0">
+        <CardContent className={native ? "min-w-0 space-y-[16px] px-[12px] pb-[12px] pt-0" : "space-y-4 p-3 pt-0 sm:p-6 sm:pt-0"}>
           <div className="space-y-2">
             <Label htmlFor="shop-intent">Qué quieres encontrar</Label>
             <Textarea
@@ -151,7 +153,7 @@ const WineShopLinkAdvisorSession = () => {
                   key={ex}
                   type="button"
                   onClick={() => setIntent(ex)}
-                  className="min-h-11 w-full min-w-0 whitespace-normal rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-left text-xs leading-5 text-slate-700 hover:border-red-200 hover:bg-red-50"
+                  className={native ? "min-h-[44px] w-full min-w-0 whitespace-normal rounded-lg border border-stone-200 bg-stone-50 px-[12px] py-[8px] text-left text-xs leading-5 text-slate-700 hover:border-red-200 hover:bg-red-50" : "min-h-11 w-full min-w-0 whitespace-normal rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-left text-xs leading-5 text-slate-700 hover:border-red-200 hover:bg-red-50"}
                 >
                   {ex}
                 </button>
@@ -195,20 +197,20 @@ const WineShopLinkAdvisorSession = () => {
       </Card>
 
       {result && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
+        <Card className={native ? "min-w-0 [overflow-wrap:anywhere]" : undefined}>
+          <CardHeader className={native ? "min-w-0 space-y-[8px] p-[12px]" : undefined}>
+            <CardTitle className={native ? "flex min-w-0 flex-wrap items-start gap-[8px] text-lg tracking-normal" : "flex items-center gap-2 text-lg"}>
               <Wine className="h-5 w-5 text-red-900" />
-              Qué buscaría para ti
+              {native ? <span className="min-w-0 basis-full">Qué buscaría para ti</span> : "Qué buscaría para ti"}
             </CardTitle>
             {result.summary && <CardDescription>{result.summary}</CardDescription>}
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className={native ? "min-w-0 space-y-[12px] px-[12px] pb-[12px] pt-0" : "space-y-3"}>
             {result.recomendaciones.length === 0 && (
               <p className="text-sm text-slate-500">No he podido armar recomendaciones. Prueba a dar más pistas.</p>
             )}
             {result.recomendaciones.map((rec, i) => (
-              <div key={i} className="rounded-lg border border-stone-200 bg-white p-4">
+              <div key={i} className={native ? "min-w-0 rounded-lg border border-stone-200 bg-white p-[12px]" : "rounded-lg border border-stone-200 bg-white p-4"}>
                 <div className="flex flex-wrap items-baseline gap-2">
                   <h3 className="font-semibold text-slate-950">{rec.nombre}</h3>
                   {rec.tipo && (
@@ -226,7 +228,7 @@ const WineShopLinkAdvisorSession = () => {
               </div>
             ))}
             {result.consejo && (
-              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-950">
+              <div className={native ? "min-w-0 rounded-lg border border-amber-200 bg-amber-50 p-[12px] text-sm leading-6 text-amber-950" : "rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-950"}>
                 {result.consejo}
               </div>
             )}

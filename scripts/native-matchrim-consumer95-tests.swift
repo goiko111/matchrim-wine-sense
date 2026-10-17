@@ -471,4 +471,45 @@ final class Matchrim95ConsumerTests: XCTestCase {
             app.terminate()
         }
     }
+
+    @MainActor func test12HomeLargeTextNavigationInBothOrientations() throws {
+        let app = try ownedApp()
+        defer {
+            XCUIDevice.shared.orientation = .portrait
+            app.launchArguments = []
+            app.terminate()
+            app.launch()
+        }
+        var normalHeadingHeight: CGFloat = 0
+        for large in [false, true] {
+            XCUIDevice.shared.orientation = .portrait
+            app.launchArguments = ["-UIPreferredContentSizeCategoryName", large ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL"]
+            app.launch()
+            open("Inicio", heading: "¿Qué quieres elegir?", app: app)
+            let heading = app.staticTexts["¿Qué quieres elegir?"].firstMatch
+            if large { XCTAssertGreaterThan(heading.frame.height, normalHeadingHeight * 1.5) }
+            else { normalHeadingHeight = heading.frame.height }
+            for landscape in [false, true] {
+                XCUIDevice.shared.orientation = landscape ? .landscapeLeft : .portrait
+                let settled = NSPredicate { _, _ in (app.frame.width > app.frame.height) == landscape }
+                XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: settled, object: nil)], timeout: 10), .completed)
+                let navigationReady = NSPredicate { _, _ in
+                    ["Inicio", "aiRIM", "Escanear", "Bodega", "Perfil"].allSatisfy { name in
+                        let link = app.links.matching(identifier: name).firstMatch
+                        return link.isHittable && link.frame.width >= 43.5 && link.frame.height >= 43.5
+                            && link.frame.minX >= app.frame.minX - 1 && link.frame.maxX <= app.frame.maxX + 1
+                            && link.frame.minY >= app.frame.minY - 1
+                            && link.frame.maxY <= app.frame.maxY + 1
+                    }
+                }
+                XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: navigationReady, object: nil)], timeout: 10), .completed, app.debugDescription)
+                assertNavigation(app)
+                capture("native95-home-\(large ? "max" : "normal")-\(landscape ? "landscape" : "portrait")", app)
+                open("Escanear", heading: "Escanear", app: app)
+                assertNavigation(app)
+                open("Inicio", heading: "¿Qué quieres elegir?", app: app)
+            }
+            app.terminate()
+        }
+    }
 }

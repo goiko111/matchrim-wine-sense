@@ -78,6 +78,7 @@ import {
   getFullMenuScanTile,
   getRightFocusMenuScanTile,
   resolveMenuTileResults,
+  literalMenuServingFormat95,
   shouldRunRightFocusMenuScan,
   needsMenuRefinement,
   mayHaveUnreadMenuColumn,
@@ -820,7 +821,7 @@ const WineMenuScannerSession = ({
           successful: successfulTiles, failed: failedTiles } : null;
         setFailedRegionCount(failedTiles.length);
       }
-      let data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative });
+      let data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative, preserveServingFormats: isNative });
       if (!nativeRun && !isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn({ ...data, layout: fullResponse?.layout }) && shouldRunRightFocusMenuScan(
         data.coverage?.status,
         data.vinos?.length ?? 0,
@@ -832,7 +833,7 @@ const WineMenuScannerSession = ({
         try {
           const focusImage = await cropImageRegion(base64File, focusTile.box, 0, 1800, controller.signal);
           successfulTiles.push({ tile: focusTile, response: await invokeScan(focusTile, focusImage) });
-          data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative });
+          data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative, preserveServingFormats: isNative });
         } catch (error) {
           if (error instanceof DOMException && error.name === 'AbortError') throw error;
           failedTileCount += 1;
@@ -1920,7 +1921,7 @@ const WineMenuScannerSession = ({
 		                  <button
 		                    key={`${wine.nombre}-${index}-list-row`}
 		                    type="button"
-                    aria-label={`Abrir ${isNative && isLiteralWineStyle95(wine) ? 'estilo' : 'vino'} ${index + 1}: ${wine.nombre}`}
+                    aria-label={`Abrir ${isNative && isLiteralWineStyle95(wine) ? 'estilo' : 'vino'} ${index + 1}: ${wine.nombre}${isNative && literalMenuServingFormat95(wine) ? ` · ${literalMenuServingFormat95(wine)}` : ''}`}
 		                    className={`matchrim-pressable flex min-h-16 w-full flex-wrap items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
 		                    onClick={(event) => openWineDetail(index, event.currentTarget)}
 		                  >
@@ -1930,7 +1931,7 @@ const WineMenuScannerSession = ({
                             {wine.nombre}{wine.anada ? ` ${wine.anada}` : ''}
                           </span>
 		                      <span className="block whitespace-normal break-words text-xs text-slate-500">
-		                        {[wine.productor, wine.region, wine.campos_inferidos?.includes('servicio') ? 'Servicio sin confirmar' : wine.servicio].filter(Boolean).join(' · ') || 'Datos por revisar'}
+		                        {[wine.productor, wine.region, wine.campos_inferidos?.includes('servicio') ? 'Servicio sin confirmar' : wine.servicio, isNative ? literalMenuServingFormat95(wine) : null].filter(Boolean).join(' · ') || 'Datos por revisar'}
 		                      </span>
                           <span className={`block whitespace-normal break-words text-xs ${wine.precio_manual_pendiente ? 'font-medium text-amber-800' : 'text-slate-500'}`}>{listPriceText(wine, index)}</span>
 		                    </span>
@@ -2328,7 +2329,7 @@ const WineMenuScannerSession = ({
 	              <DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white p-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
 	                <div className="flex items-start justify-between gap-3">
 	                  <div className={isNative ? 'max-h-[28vh] min-w-0 overflow-y-auto' : 'min-w-0'}>
-	                    <DrawerTitle className={isNative ? 'tracking-normal' : undefined}>{selectedPinIndex + 1}. {selectedPinWine.nombre}</DrawerTitle>
+	                    <DrawerTitle className={isNative ? 'tracking-normal' : undefined}>{selectedPinIndex + 1}. {selectedPinWine.nombre}{isNative && literalMenuServingFormat95(selectedPinWine) && <span className="block text-sm font-normal leading-6 text-slate-600">{literalMenuServingFormat95(selectedPinWine)}</span>}</DrawerTitle>
 	                    <DrawerDescription className={isNative ? 'sr-only' : 'mt-1'}>
 	                      {[selectedPinWine.productor, selectedPinWine.region, formatPrice(selectedPinWine.precio, selectedPinWine.moneda)].filter(Boolean).join(' · ') || 'Datos por revisar'}
 	                    </DrawerDescription>

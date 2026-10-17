@@ -326,7 +326,7 @@ html.matchrim-native-platform [data-sonner-toaster].matchrim-notices [data-icon]
   }
 
   html.matchrim-native-platform .matchrim-native-home-main [aria-labelledby="home-decision-title"] > div {
-    grid-template-columns: repeat(2, minmax(14rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
   }
 
   html.matchrim-native-platform .matchrim-native-home-main [aria-labelledby="home-decision-title"] button {
