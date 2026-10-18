@@ -224,3 +224,5 @@ assert.deepEqual(
 );
 
 console.log('Matchrim learning checks passed');
+
+await import('./check-matchrim-feedback-strength96');

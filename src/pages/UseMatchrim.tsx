@@ -21,7 +21,7 @@ import {
   generateMatchrimCode,
   type MatchrimProfileLike,
 } from '@/utils/matchrimPassport';
-import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';
 import { cellarTrainingRows } from '@/utils/bodegaAffinity';
 import { Capacitor } from '@capacitor/core';
 import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';

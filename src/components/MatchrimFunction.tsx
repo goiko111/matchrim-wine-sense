@@ -10,7 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { streamAiRimResponse } from '@/lib/aiRimStream';
-import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 import { cellarTrainingRows } from '@/utils/bodegaAffinity';

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 import AiRimMark from '@/components/AiRimMark';

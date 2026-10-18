@@ -6,7 +6,7 @@ import NativeAppHome from '@/components/NativeAppHome';
 import { useAuth } from '@/contexts/AuthContext';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
-import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';
 import {
   selectUnseenWineRecommendations,
   type WineIdentityLike,

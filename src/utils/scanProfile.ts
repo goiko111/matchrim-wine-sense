@@ -1,5 +1,5 @@
 import type { MatchrimProfileLike } from './matchrimPassport';
-import { calculateLearnedMatchrimProfile, type TrainableWine } from './matchrimLearning';
+import { calculateLearnedMatchrimProfile, type TrainableWine } from './matchrimLearningPlatform';
 
 export interface ScanProfileSnapshot {
   profile: MatchrimProfileLike | null;

@@ -19,7 +19,7 @@ import {
   generateGrapeRecommendations,
   generateRegionRecommendations
 } from '@/utils/profileUtils';
-import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
+import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';
 import { Capacitor } from '@capacitor/core';
 import { cellarTrainingRows } from '@/utils/bodegaAffinity';
 import { buildAuthRedirectPath } from '@/utils/navigation';

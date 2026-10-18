@@ -53,6 +53,7 @@ export interface MatchrimLearningAudit {
 }
 
 export interface MatchrimLearningOptions {
+  evidenceStrength?: 'legacy-v1' | 'native-v2';
   detectPreferenceShift?: boolean;
   driftThreshold?: number;
   calibrateAffinity?: boolean;
@@ -172,6 +173,7 @@ export const calculateLearnedMatchrimProfile = (
   wines: TrainableWine[],
   options: MatchrimLearningOptions = {},
 ): LearnedMatchrimProfile => {
+  const strengthAware = options.evidenceStrength === 'native-v2';
   const deltas: Record<keyof MatchrimProfileLike, number> = {
     potente: 0,
     acidez: 0,
@@ -250,7 +252,7 @@ export const calculateLearnedMatchrimProfile = (
     ? ATTRS.reduce((sum, [targetKey]) => sum + Math.abs(deltas[targetKey]), 0) / totalAbsoluteDelta
     : 1;
   const diversityRatio = Math.min(1, signatures.size / Math.min(samples, 6));
-  const sampleCoverage = Math.min(1, samples / 12);
+  const sampleCoverage = Math.min(1, (strengthAware ? totalWeight : samples) / 12);
   const confidence = Math.round(
     sampleCoverage
       * (0.55 + 0.45 * consistencyRatio)
@@ -258,11 +260,12 @@ export const calculateLearnedMatchrimProfile = (
       * 100,
   );
   const blend = Math.min(0.9, 0.25 + samples * 0.05);
+  const evidenceDenominator = strengthAware ? samples : totalWeight;
   const learnedProfile = { ...baseProfile };
 
   ATTRS.forEach(([targetKey]) => {
     learnedProfile[targetKey] = clamp(
-      Math.round((baseProfile[targetKey] + (deltas[targetKey] / totalWeight) * blend) * 10) / 10
+      Math.round((baseProfile[targetKey] + (deltas[targetKey] / evidenceDenominator) * blend) * 10) / 10
     );
   });
 
