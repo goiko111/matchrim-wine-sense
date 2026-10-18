@@ -31,6 +31,19 @@ const shape = (node: any): any => Array.isArray(node) ? Array.from(node).filter(
 const vector = (profile: Vector) => Object.fromEntries(axes.map(key => [key, profile[key]]));
 const jsx = (type: string, props: Node95['props']) => ({ type, props });
 const components = new Proxy({}, { get: (_, key) => String(key) });
+const learningPlatformSource96 = readFileSync(resolve(root, 'src/utils/matchrimLearningPlatform.ts'), 'utf8');
+const loadLearningPlatform96 = (native: boolean) => {
+  const sandbox = { exports: {} as { calculateLearnedMatchrimProfile: typeof calculateLearnedMatchrimProfile },
+    require: (id: string) => {
+      if (id === '@capacitor/core') return { Capacitor: { isNativePlatform: () => native } };
+      if (id === './matchrimLearning') return { calculateLearnedMatchrimProfile };
+      throw Error('Unmodeled platform-wrapper dependency: ' + id);
+    } };
+  vm.runInNewContext(ts.transpileModule(learningPlatformSource96, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS },
+  }).outputText, sandbox);
+  return sandbox.exports;
+};
 const checks: Array<{ name: string; passed: boolean; error?: string }> = [];
 const check = async (name: string, run: () => unknown) => {
   try { await run(); checks.push({ name, passed: true }); }
@@ -44,6 +57,7 @@ const profiles = Array.from({ length: 50 }, (_, i) => Object.freeze({
 const owner = { id: 'synthetic-owner-profile95' };
 const tick = async () => { for (let i = 0; i < 8; i++) await Promise.resolve(); };
 const actor = (text: string, native: boolean, profile: any, rows: any[] = [], suppliedTraining: TrainableWine[] = []) => {
+  const actualLearningPlatform96 = loadLearningPlatform96(native);
   const slots: any[] = [[profile].filter(Boolean), profile, false, [], false, suppliedTraining, new Set(), [], false, null, 0, null];
   let cursor = 0;
   const effects: Array<() => any> = [], queries: any[] = [], timers: Array<() => any> = [], wineCalls: any[] = [], learningCalls: any[] = [];
@@ -83,6 +97,9 @@ const actor = (text: string, native: boolean, profile: any, rows: any[] = [], su
       if (id === '@/utils/profileUtils') return profileUtils;
       if (id === '@/utils/matchrimLearning') return { calculateLearnedMatchrimProfile: (base: Vector, training: TrainableWine[]) => {
         learningCalls.push({ base, training }); return calculateLearnedMatchrimProfile(base, training);
+      } };
+      if (id === '@/utils/matchrimLearningPlatform') return { calculateLearnedMatchrimProfile: (base: Vector, training: TrainableWine[]) => {
+        learningCalls.push({ base, training }); return actualLearningPlatform96.calculateLearnedMatchrimProfile(base, training);
       } };
       if (id === '@/utils/bodegaAffinity') return { cellarTrainingRows };
       if (id === '@/utils/navigation') return { buildAuthRedirectPath: (url: string) => '/auth?redirect=' + encodeURIComponent(url) };
@@ -182,6 +199,23 @@ const attributes = { scale: 'winerim-0-5' as const, potencia: 0, acidez: 2.33333
 const identity = { name: 'Explicitly synthetic profile95 reference', producer: 'Synthetic producer', vintage: null, region: null, country: null };
 const verified = { ...identity, id: 'synthetic-row95', user_id: owner.id, rating: 'love' as const, use_for_profile_training: true,
   sensory_attributes: attributes, place_details: { bodega_sensory_evidence: makeCellarCatalogEvidence(identity, 950095, attributes) } };
+await check('Real platform wrapper in actual Profile effects distinguishes native OK from LOVE and preserves legacy web', async () => {
+  const base = Object.freeze({ potente: 1, acidez: 1, dulce: 1, tanico: 1, afrutado: 1 });
+  const high = { scale: 'winerim-0-5' as const, potencia: 5, acidez: 5, dulzura: 5, taninos: 5, afrutado: 5 };
+  const highWine = { ...verified, sensory_attributes: high,
+    place_details: { bodega_sensory_evidence: makeCellarCatalogEvidence(identity, 950096, high) } };
+  for (const [native, rating, expected, confidence] of [
+    [true, 'love', 2.2, 8], [true, 'ok', 1.3, 2], [false, 'ok', 2.2, 8],
+  ] as const) {
+    const subject = actor(source, native, base, [{ ...highWine, rating }]);
+    subject.render(); await subject.trainingEffect();
+    const { observed } = subject.render();
+    assert.deepEqual(vector(observed.learnedProfile.profile), Object.fromEntries(axes.map(key => [key, expected])));
+    assert.equal(observed.learnedProfile.confidence, confidence);
+    assert.deepEqual(vector(observed.passportProfile), vector(base));
+    if (native) assert.equal(observed.passportProfile, base);
+  }
+});
 await check('Actual native training effect includes strict identity columns/owner/consent filters and preserves marked 0..5 attributes exactly', async () => {
   const subject = actor(source, true, profiles[0], [verified]); subject.render(); await subject.trainingEffect();
   const query = subject.queries[0]; assert.equal(query.table, 'user_wines');
@@ -235,9 +269,10 @@ await check('Ordinary native first screen and initial tab stay in place; missing
 const traceInput = { potente: 0, acidez: 2.333333, dulce: 5, tanico: 0, afrutado: 4.999 };
 const trace = actor(source, true, traceInput).render().observed;
 const report = { baseline: Boolean(values.baseline), sourceSha256: sha(source), beforeSha256: sha(before),
+  learningPlatformSourceSha256: sha(learningPlatformSource96),
   scriptSha256: sha(readFileSync(fileURLToPath(import.meta.url), 'utf8')),
   traceExample: { input: traceInput, passport: trace.passportProfile, activeDisplay: trace.activeDisplayProfile, query: trace.wineQueryProfile, classifier: trace.activeClassifierProfile },
   syntheticProfiles: profiles.length, passed: checks.filter(x => x.passed).length, failed: checks.filter(x => !x.passed).length, checks,
-  limits: 'Actual Profile component/effects/JSX with controlled hooks and offline transports; actual QuizResults Passport callsite. Not layout, real native runtime, persistence or human-taste certification. No scoring/model edits.' };
+  limits: 'Actual Profile component/effects/JSX and actual learning platform wrapper with controlled Capacitor/hooks/offline transports; actual QuizResults Passport callsite. Native feedback-strength opt-in is explicit; not layout, real native runtime, persistence or human-taste certification.' };
 if (values.output !== undefined) writeFileSync(resolve(values.output), JSON.stringify(report, null, 2) + '\n', { mode: 0o600 });
 console.log(JSON.stringify(report, null, 2)); process.exitCode = report.failed ? 1 : 0;

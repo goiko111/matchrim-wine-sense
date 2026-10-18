@@ -49,9 +49,29 @@ const reviewed95 = new Map([
   ['src/components/wine-import/WineShopLinkAdvisor.tsx', { before: 'a7b9ddd9db73b93bd20b229ccb388efe46d75319ded8d723150fd1933ed60471', current: '17529a6c6285fbf0d348981b1b01e42b73d7816539033c92b7d3934ef6b1da0f' }],
   ['src/pages/Restaurant.tsx', { before: 'ea5da2c5320c9e0475e286be34c0ef4edab9dbc1f1f0a7563603d31ebdfecc9b', current: '0dfa74ac51fa1aa033d909b5e5e429599579e95547bd15a9c36e5dff86f6a918' }],
 ]);
+const learningImportPaths96 = new Set(['src/pages/Index.tsx', 'src/pages/UseMatchrim.tsx']);
+const projectLearningImport96 = (source: string) => {
+  const current = "import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';";
+  const previous = current.replace('matchrimLearningPlatform', 'matchrimLearning');
+  assert.equal(source.split(current).length, 2, 'Exactly one native learning wrapper import');
+  return source.replace(current, previous);
+};
+const assertReviewedClient96 = (path: string, source: string) => {
+  const expected = reviewed95.get(path);
+  assert.ok(expected);
+  const projected = learningImportPaths96.has(path) ? projectLearningImport96(source) : source;
+  assert.equal(hash(Buffer.from(projected)), expected.current, `Exact reviewed95 source after bounded import inverse: ${path}`);
+};
 for (const [path, fingerprints] of reviewed95) {
   assert.equal(hash(execFileSync('git', ['show', `${pre95}:${path}`])), fingerprints.before, `Pre95 source: ${path}`);
-  assert.equal(hash(readFileSync(path)), fingerprints.current, `Exact reviewed95 source: ${path}`);
+  assertReviewedClient96(path, readFileSync(path, 'utf8'));
+}
+for (const path of learningImportPaths96) {
+  const source = readFileSync(path, 'utf8');
+  for (const candidate of [source.replace('matchrimLearningPlatform', 'unreviewedLearning'), source + '\n// unreviewed lifetime change\n']) {
+    assert.notEqual(candidate, source);
+    assert.throws(() => assertReviewedClient96(path, candidate), undefined, 'Entire source outside the one import remains protected');
+  }
 }
 // These reviewed native clients are not exempted by path: their full hashes above
 // and actual-body/native/web parity suites below must both match. R5's explicit

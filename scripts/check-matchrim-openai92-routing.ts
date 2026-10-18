@@ -132,15 +132,54 @@ for (const file of list('supabase/functions')) {
   assert.doesNotMatch(readFileSync(file, 'utf8'), /api\.anthropic\.com|ai\.gateway\.lovable\.dev/,
     'No remaining alternate-provider endpoint: ' + file);
 }
-for (const file of ['src/utils/matchrimLearning.ts', 'src/utils/wineAffinityExplanation.ts',
+const learnerPath96 = 'src/utils/matchrimLearning.ts';
+const projectNativeLearner96 = (source: string) => {
+  for (const [current, previous] of [
+    ["  evidenceStrength?: 'legacy-v1' | 'native-v2';\n", ''],
+    ["  const strengthAware = options.evidenceStrength === 'native-v2';\n", ''],
+    ['(strengthAware ? totalWeight : samples) / 12', 'samples / 12'],
+    ['  const evidenceDenominator = strengthAware ? samples : totalWeight;\n', ''],
+    ['deltas[targetKey] / evidenceDenominator', 'deltas[targetKey] / totalWeight'],
+  ]) {
+    assert.equal(source.split(current).length, 2, 'Exactly one reviewed native evidence-strength delta: ' + current);
+    source = source.replace(current, previous);
+  }
+  return source;
+};
+const assertNativeLearner96 = (source: string) => assert.equal(projectNativeLearner96(source),
+  execFileSync('git', ['show', `${reviewedClientSensory}:${learnerPath96}`], { encoding: 'utf8' }),
+  'Exact opt-in inverse preserves the full reviewed legacy client learner');
+const learnerText96 = readFileSync(learnerPath96, 'utf8');
+assertNativeLearner96(learnerText96);
+for (const [current, changed] of [
+  ["options.evidenceStrength === 'native-v2'", "options.evidenceStrength !== 'native-v2'"],
+  ['strengthAware ? samples : totalWeight', 'strengthAware ? totalWeight : samples'],
+  ["if (rating === 'love') return 1;", "if (rating === 'love') return 0.5;"],
+  ['Math.round(', 'Math.floor('],
+]) {
+  const candidate = learnerText96.replace(current, changed);
+  assert.notEqual(candidate, learnerText96, 'Native learner mutation must be reachable: ' + current);
+  assert.throws(() => assertNativeLearner96(candidate));
+}
+for (const [file, expected] of [
+  [learnerPath96, '070999f26f18b8ff3958b1d2864d5bf9f3ddb23aaffe7e0c1eee05b5af5d3fee'],
+  ['src/utils/matchrimLearningPlatform.ts', 'f3a6ded6020ffb16aca44f79c50cbcda473c1f5549ce01d9670755b17ccd9178'],
+  ['scripts/check-matchrim-feedback-strength96.ts', 'f2642c532de5c940510e0627b336c9e9613f66fb5459e8527ae48798851714e8'],
+]) assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex'), expected, 'Reviewed opt-in source: ' + file);
+const nativeLearningOutput96 = execFileSync(process.execPath,
+  ['--import', 'tsx', 'scripts/check-matchrim-feedback-strength96.ts'], { encoding: 'utf8' });
+assert.equal(nativeLearningOutput96.split('\n').filter(line => line.startsWith('PASS ')).length, 12,
+  'All twelve native-strength and default/web parity groups execute');
+for (const file of [learnerPath96, 'src/utils/wineAffinityExplanation.ts',
   'supabase/functions/_shared/matchrim-learning.ts', 'supabase/functions/_shared/matchrim-affinity.ts']) {
   const historical = execFileSync('git', ['show', `${baseline}:${file}`], { encoding: 'utf8' });
   assert.equal(execFileSync('git', ['show', `${providerMigration}:${file}`], { encoding: 'utf8' }), historical,
     'The provider migration itself did not alter taste scoring/learning: ' + file);
-  assert.equal(readFileSync(file, 'utf8'), file.startsWith('src/')
+  assert.equal(file === learnerPath96 ? projectNativeLearner96(readFileSync(file, 'utf8')) : readFileSync(file, 'utf8'), file.startsWith('src/')
     ? execFileSync('git', ['show', `${reviewedClientSensory}:${file}`], { encoding: 'utf8' }) : historical,
   'Only the separately reviewed explicit-scale client change is accepted; hosted scoring stays frozen: ' + file);
 }
 console.log(JSON.stringify({ passed: true, handlers: openAi92LegacyHandlers.length, legacyCallsites: calls,
   reviewedSpecial95: true, negativeMutationControls: 4, independentLegacyAstMutationControls: 3,
+  nativeFeedback96: { exactInverseDeltas: 5, mutationControls: 4, functionalGroups: 12, importOnlyClientBridges: 2 },
   remoteCalls: 0, scope: 'AST request/prompt/auth/query preservation plus hash-pinned special95-only projection; complete provider/client/scoring boundary audit; not deployed routing proof' }));
