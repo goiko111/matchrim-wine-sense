@@ -27,7 +27,7 @@ const wine = (rating: 'love' | 'ok' | 'not_for_me', value = 5, id = 'synthetic',
 };
 const native = { evidenceStrength: 'native-v2' as const };
 
-check('Six whole-source inverses preserve owner/auth/cancellation/web and all unreviewed bytes', () => {
+check('Eight whole-source inverses preserve owner/auth/cancellation/web and all unreviewed bytes', () => {
   for (const file of feedbackServerScope96) {
     const source = readFileSync(file, 'utf8'), historical = prior(file);
     const validate = (candidate: string) => assert.equal(projectFeedbackServer96(file, candidate), historical);

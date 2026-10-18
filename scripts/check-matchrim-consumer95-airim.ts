@@ -11,6 +11,7 @@ import { cellarTrainingRows, makeCellarCatalogEvidence } from '../src/utils/bode
 import { generateMatchrimCode } from '../src/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '../src/utils/aiRimGrounding';
 import * as restaurant from '../src/utils/restaurantPairingContext';
+import * as profile95 from '../supabase/functions/_shared/matchrim-profile95';
 
 const root = new URL('../', import.meta.url);
 const before = process.argv.find(arg => arg.startsWith('--before='))?.slice(9);
@@ -43,6 +44,16 @@ const normalize = (tree: unknown): unknown => {
 // Execute the real component, effects, JSX and event closures with deterministic hooks.
 // No import of the live client, browser, account or provider transport is possible here.
 function mount(componentName: 'AiRimConversation' | 'MatchrimFunction', native: boolean, baseline = false) {
+  const wrapper = { exports: {} as { calculateLearnedMatchrimProfile: typeof calculateLearnedMatchrimProfile },
+    require: (id: string) => {
+      if (id === '@capacitor/core') return { Capacitor: { isNativePlatform: () => native } };
+      if (id === './matchrimLearning') return { calculateLearnedMatchrimProfile };
+      if (id === '../../supabase/functions/_shared/matchrim-profile95') return profile95;
+      throw Error('Unmodeled platform dependency: ' + id);
+    } };
+  vm.runInNewContext(ts.transpileModule(readFileSync(new URL('src/utils/matchrimLearningPlatform.ts', root), 'utf8'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+  }).outputText, wrapper);
   const file = `src/components/${componentName}.tsx`;
   const source = baseline ? before ? readFileSync(resolve(before, file), 'utf8')
     : execFileSync('git', ['show', `${baselineRef}:${file}`], { cwd: root, encoding: 'utf8' })
@@ -56,7 +67,7 @@ function mount(componentName: 'AiRimConversation' | 'MatchrimFunction', native: 
   let owner: string | null = 'owner-a95';
   let user: { id: string } | null = { id: owner };
   let tree: unknown;
-  const invokes: { body: { message: string; context: string }; signal: AbortSignal }[] = [];
+  const invokes: { body: { message: string; context: string; matchrimLearningModel?: string }; signal: AbortSignal }[] = [];
   const streams: unknown[] = [];
   const loads: string[] = [];
   const profileReply = { value: quiz() };
@@ -100,7 +111,9 @@ function mount(componentName: 'AiRimConversation' | 'MatchrimFunction', native: 
     React: { createElement: (tag: string, p: Record<string, unknown> | null, ...children: unknown[]) => ({ type: tag, props: p || {}, children }) },
     Capacitor: { isNativePlatform: () => native }, useAuth: () => ({ user }), useNavigate: () => () => {},
     useToast: () => ({ toast: () => {} }), toast: { error: () => {} }, supabase,
-    calculateLearnedMatchrimProfile, cellarTrainingRows, generateMatchrimCode, AIRIM_EVIDENCE_GUARDRAILS,
+    calculateLearnedMatchrimProfile: wrapper.exports.calculateLearnedMatchrimProfile,
+    NATIVE_MATCHRIM_LEARNING_MODEL: profile95.NATIVE_MATCHRIM_LEARNING_MODEL,
+    cellarTrainingRows, generateMatchrimCode, AIRIM_EVIDENCE_GUARDRAILS,
     loadMatchrimScanProfile: (id: string, signal: AbortSignal) => { loads.push(id); return profileLoad(id, signal); },
     streamAiRimResponse: async (request: unknown, onData: (s: string) => void) => { streams.push(request); onData('Controlled legacy stream95'); },
   };
@@ -205,6 +218,7 @@ async function main() {
         await h.flush(); assert.equal(h.button(component === 'AiRimConversation' ? 'Enviar pregunta' : 'Analizar').props.disabled, true);
         h.send(); await h.flush(); assert.equal(h.invokes.length, 0); assert.match(h.text(), /Cargando tu perfil/);
         late.resolve(quiz()); await h.flush(); h.send(); await h.flush(); assert.equal(h.invokes.length, 1);
+        assert.equal(h.invokes[0].body.matchrimLearningModel, profile95.NATIVE_MATCHRIM_LEARNING_MODEL);
         assert(h.invokes[0].body.context.includes('potencia 0, acidez 2.4'));
         assert.match(h.text(), /Contexto enviado/);
       } finally { h.unmount(); late.resolve(quiz()); }

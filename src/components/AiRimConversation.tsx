@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';
+import { calculateLearnedMatchrimProfile, NATIVE_MATCHRIM_LEARNING_MODEL, type TrainableWine } from '@/utils/matchrimLearningPlatform';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 import AiRimMark from '@/components/AiRimMark';
@@ -171,6 +171,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
         signal: controller.signal,
         body: {
           message: question,
+          ...(isNative ? { matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL } : {}),
           context: [
             'aiRIM dentro de Matchrim. Responde con una recomendación accionable, breve y trazable.',
             isNative ? requestContext!.context : profileContext,

@@ -10,7 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { streamAiRimResponse } from '@/lib/aiRimStream';
-import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';
+import { calculateLearnedMatchrimProfile, NATIVE_MATCHRIM_LEARNING_MODEL, type TrainableWine } from '@/utils/matchrimLearningPlatform';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 import { cellarTrainingRows } from '@/utils/bodegaAffinity';
@@ -375,6 +375,7 @@ IMPORTANTE: Habla en primera persona. "En mi opinión", "Te sugiero".`
           signal: controller.signal,
           body: {
             message: buildRestaurantPairingPrompt(functionType, input1.trim(), input2.trim(), restaurant),
+            matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL,
             context: [requestContext!.context, AIRIM_EVIDENCE_GUARDRAILS].filter(Boolean).join('\n'),
           },
         });

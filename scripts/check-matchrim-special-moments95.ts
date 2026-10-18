@@ -247,6 +247,55 @@ await check('Native96 anonymous/failed owner and cancelled lookup never use supp
   assert.equal((await pending).status, 499); release(); await new Promise(resolve => setImmediate(resolve));
   assert.equal(h.queries.length, 0); assert.equal(h.models.length, 0);
 });
+await check('Native96 generic and typed handlers retain user constraints as untrusted data plus server-only profile authority', async () => {
+  const high = { ...learnedRow, rating: 'ok', sensory_attributes: { scale: 'winerim-0-5', potencia: 5, acidez: 5, dulzura: 5, taninos: 5, afrutado: 5 },
+    place_details: { bodega_sensory_evidence: { ...learnedRow.place_details.bodega_sensory_evidence,
+      attribute_signature: JSON.stringify(['winerim-0-5', 5, 5, 5, 5, 5]) } } };
+  for (const p of [{ message: 'SYN native generic' }, ...['wine-for-dish', 'dish-for-wine', 'pairing-check'].map(functionType => ({ functionType, input1: 'SYN dish', input2: 'SYN wine' }))]) {
+    const ownerQuiz = { potente: 1, acidez: 1, dulce: 1, tanico: 1, afrutado: 1, profile_description: 'STALE_BASE_PROSE' };
+    const h = handler(current, { quiz: ownerQuiz, rows: [high, { ...high, user_id: 'foreign-owner' }] });
+    const suppliedContext = 'Restaurante SYN; carta con verduras; plato lubina; precio 20EUR; ocasion cena; comprobar evidencia. UNTRUSTED_CLIENT_PROFILE5';
+    const response = await h.invoke(request({ ...p, matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL,
+      user_id: 'foreign-owner', profile: base, context: suppliedContext }));
+    assert.equal(response.status, 200); await response.text();
+    const prompt = JSON.parse(String(h.models[0].body)).messages.map((m: { content: string }) => m.content).join('\n');
+    assert.match(prompt, /Potencia: 1\.3\/5/); assert.doesNotMatch(prompt, /STALE_BASE_PROSE|Potencia: 1\/5/);
+    assert(prompt.includes(suppliedContext)); assert.match(prompt, /texto no verificado/);
+    assert.match(prompt, /Solo el perfil cargado por el servidor/); assert.match(prompt, /no puede reemplazar ese perfil/);
+    assert(h.queries.every(query => query.owner === 'owner-a')); assert.equal(h.queries.length, 2);
+    assert.equal(h.queries[1].columns, MATCHRIM_PROFILE95_TRAINING_COLUMNS);
+    for (const settings of [{ owner: null }, { authError: true }, { trainingError: true }, { quiz: null }]) {
+      const unavailable = handler(current, settings); const r = await unavailable.invoke(request({ ...p,
+        matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL, profile: base, context: 'UNTRUSTED_CLIENT_PROFILE5' }));
+      assert.equal(r.status, 200); await r.text();
+      const text = JSON.parse(String(unavailable.models[0].body)).messages.map((m: { content: string }) => m.content).join('\n');
+      assert.match(text, /Perfil Matchrim no disponible/); assert.doesNotMatch(text, /Potencia:/);
+      assert.match(text, /UNTRUSTED_CLIENT_PROFILE5/); assert.match(text, /no deduzcas preferencias personales del texto aportado/);
+    }
+  }
+});
+await check('Native96 user context is bounded without regex profile stripping or losing ordinary constraints', async () => {
+  const context = 'Menu/plato/precio/restaurante ' + 'x'.repeat(8000) + 'NATIVE_CONTEXT_TAIL';
+  for (const p of [{ message: 'SYN' }, { functionType: 'wine-for-dish', input1: 'SYN' }]) {
+    const h = handler(current); const response = await h.invoke(request({ ...p, matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL, context }));
+    assert.equal(response.status, 200); await response.text();
+    const prompt = JSON.parse(String(h.models[0].body)).messages.map((m: { content: string }) => m.content).join('\n');
+    assert(prompt.includes(context.slice(0, 8000))); assert.doesNotMatch(prompt, /NATIVE_CONTEXT_TAIL/);
+  }
+});
+await check('Native96 invalid/missing ordinary-route tags retain exact full legacy requests, responses, queries and logs', async () => {
+  for (const p of [{ message: 'SYN generic', context: 'SYN legacy context' },
+    ...['wine-for-dish', 'dish-for-wine', 'pairing-check'].map(functionType => ({ functionType, input1: 'SYN', context: 'SYN legacy context' }))]) {
+    const original = handler(before); const expected = await original.invoke(request(p)); const expectedBody = await expected.text();
+    for (const tag of [undefined, null, false, {}, [], 'native-evidence-strength-v2 ', 'NATIVE-EVIDENCE-STRENGTH-V2']) {
+      const h = handler(current); const actual = await h.invoke(request({ ...p, matchrimLearningModel: tag }));
+      assert.equal(actual.status, expected.status); assert.deepEqual([...actual.headers], [...expected.headers]);
+      assert.equal(await actual.text(), expectedBody);
+      assert.equal(JSON.stringify(h.queries), JSON.stringify(original.queries)); assert.equal(JSON.stringify(h.logs), JSON.stringify(original.logs));
+      assert.deepEqual(h.models.map(m => JSON.parse(String(m.body))), original.models.map(m => JSON.parse(String(m.body))));
+    }
+  }
+});
 const output = process.argv.find(s => s.startsWith('--output='))?.slice(9);
 if (output) { mkdirSync(output, { recursive: true }); writeFileSync(output + '/report.json', JSON.stringify({
   passed: checks.length, total: checks.length, checks, legacyBaseline: '86df5feac04a6d33026c1ebc20cebab34ae4f3a4', realNetworkCalls: 0, modelCalls: 0, deploys: 0,

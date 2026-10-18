@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import ts from 'typescript';
 import { openAi92LegacyHandlers } from './matchrim-openai92-scope';
-import { projectFeedbackServer96 } from './matchrim-feedback-server96-scope';
+import { feedbackServerScope96, projectFeedbackServer96, projectStrengthTest96 } from './matchrim-feedback-server96-scope';
 
 const baseline = '0ae0c98';
 const reviewedClientSensory = 'f66edd6';
@@ -172,7 +172,8 @@ for (const [file, expected] of [
 ]) {
   const text = readFileSync(file, 'utf8');
   assert.equal(createHash('sha256').update(file === 'src/utils/matchrimLearningPlatform.ts'
-    ? projectFeedbackServer96(file, text) : text).digest('hex'), expected, 'Reviewed opt-in source: ' + file);
+    ? projectFeedbackServer96(file, text) : file === 'scripts/check-matchrim-feedback-strength96.ts'
+      ? projectStrengthTest96(text) : text).digest('hex'), expected, 'Reviewed opt-in source: ' + file);
 }
 const nativeLearningOutput96 = execFileSync(process.execPath,
   ['--import', 'tsx', 'scripts/check-matchrim-feedback-strength96.ts'], { encoding: 'utf8' });
@@ -190,4 +191,6 @@ for (const file of [learnerPath96, 'src/utils/wineAffinityExplanation.ts',
 console.log(JSON.stringify({ passed: true, handlers: openAi92LegacyHandlers.length, legacyCallsites: calls,
   reviewedSpecial95: true, negativeMutationControls: 4, independentLegacyAstMutationControls: 3,
   nativeFeedback96: { exactInverseDeltas: 5, mutationControls: 4, functionalGroups: 12, importOnlyClientBridges: 2 },
+  nativeServer96: { exactOptInFiles: feedbackServerScope96, knownTagOnly: true, ownerQueriesUnchanged: true,
+    ordinaryNativeUsesStrictOwnerLoader: true, requestContext: 'Bounded untrusted data; server profile authority, not parsed client profile' },
   remoteCalls: 0, scope: 'AST request/prompt/auth/query preservation plus hash-pinned special95-only projection; complete provider/client/scoring boundary audit; not deployed routing proof' }));
