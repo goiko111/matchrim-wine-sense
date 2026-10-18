@@ -9,6 +9,7 @@ import * as identity from '../src/utils/winerimLabelIdentity';
 import * as picker from '../src/utils/winerimCandidateSearch95';
 import { canLookupWinerimOriginal, catalogWineFromVerifiedSheet, isVerifiedWinerimSheetForIdentity,
   lookupWinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
+import { nativeLabelKeyboard96, restoreNativeLabelKeyboard96 } from './check-matchrim-label-keyboard96';
 
 // Synthetic contracts only. No images, ground truth, private paths or real API.
 const baseline = 'ebee038059778f1f10bdb5dd647bccb8324fb580';
@@ -18,8 +19,11 @@ const labelUi96 = {
   path: 'src/components/wine-import/MultiWineLabelScanner.tsx',
   revision: '2dc2246207e600d1767637803891383f2aaad60c',
   beforeHash: 'bc496d943d6ed7631c3505e1b63f11a18c0e641a31f2cf6a9ae9763773ae4146',
-  currentHash: 'b48b9fb5ac81cfb3eeb329f3e99b9709d5a0c22851bdf049280031784efcd11a',
+  currentHash: '9d2123e37af1de7d69a55c3f9dd333b04ef7c5f6940ccc747bc27117737c860f',
+  priorNativeClassHash: 'b48b9fb5ac81cfb3eeb329f3e99b9709d5a0c22851bdf049280031784efcd11a',
 };
+const keyboard96 = { path: 'scripts/check-matchrim-label-keyboard96.ts',
+  testHash: '54a47abda40574d0b74551825f50ddb87042306fd95755aa8a2f85d4c56339c3' };
 const labelClassAmendments96: [string, string][] = [
   ['className="matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"',
     `className={isNative
@@ -62,6 +66,7 @@ const labelWebProjection96 = (source: string) => {
   finally { transformed.dispose(); }
 };
 let labelUi96Result: { classAmendments: number; rejectedMutations: number; exactSourceRestored: boolean; fullWebAstEqual: boolean } | undefined;
+let nativeKeyboardBridge: object | undefined;
 const groups: string[] = [];
 const check = async (name: string, run: () => void | Promise<void>) => { await run(); groups.push(name); console.log('PASS', name); };
 const oldFetch = globalThis.fetch;
@@ -243,13 +248,15 @@ try {
     assert.equal(sha(original), labelUi96.beforeHash);
     assert.equal(historical, original, 'The complete reviewed2dc scanner is still the original ebee scanner');
     assert.equal(sha(scanner), labelUi96.currentHash, 'Exact frozen C native-list UI source');
+    assert.equal(sha(restoreNativeLabelKeyboard96(scanner)), labelUi96.priorNativeClassHash, 'Declared3a native keyboard/count inverse restores whole05ca/b48');
     const legacyWeb = labelWebProjection96(original);
     assert.equal(legacyWeb.projected, 0);
     const prove = (source: string) => {
-      assert.equal(restoreLabelClasses96(source), original, 'Every byte outside the five exact native classes, including every callback, remains unchanged');
-      const web = labelWebProjection96(source);
+      const classSource = restoreNativeLabelKeyboard96(source);
+      assert.equal(restoreLabelClasses96(classSource), original, 'After the declared keyboard inverse, every byte outside the five exact native classes, including every callback, remains unchanged');
+      const web = labelWebProjection96(classSource);
       assert.equal(web.projected, 5);
-      assert.equal(web.source, legacyWeb.source, 'Complete web-false module AST, text, attributes and callbacks remain unchanged');
+      assert.equal(web.source, legacyWeb.source, 'After the declared keyboard inverse, complete web-false module AST, text, attributes and callbacks remain unchanged');
     };
     prove(scanner);
     const mutations: [string, string, string][] = labelClassAmendments96.map(([, revised], index) =>
@@ -275,6 +282,20 @@ try {
     assert.equal(mutations.length, 15);
     assert.equal(current('src/utils/imageCropGeometry.ts'), before('src/utils/imageCropGeometry.ts'));
     labelUi96Result = { classAmendments: 5, rejectedMutations: mutations.length, exactSourceRestored: true, fullWebAstEqual: true };
+  });
+  await check('Declared native keyboard/count bridge runs all five original proxy groups and rejects14 gate/ref/copy/handler/crop leaks', () => {
+    assert.equal(createHash('sha256').update(current(keyboard96.path)).digest('hex'), keyboard96.testHash);
+    const output = execFileSync(process.execPath, ['--import', 'tsx', keyboard96.path], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60_000, maxBuffer: 1024 * 1024,
+    });
+    assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 5);
+    const report = JSON.parse(output.trim().split('\n').at(-1)!);
+    assert.equal(report.passed, true); assert.equal(report.groups, 5); assert.equal(report.baseline, '05ca1e2');
+    assert.equal(report.sourceSha256, labelUi96.currentHash); assert.equal(report.SDKOrNativeRuntimeUsed, false);
+    assert.equal(report.appOrProviderCalls, 0); assert.equal(report.ui, null);
+    assert.deepEqual(report.nativeKeyboardBridge, { ...nativeLabelKeyboard96, earlyNativeGuard: true,
+      refsUndefinedOnWeb: true, whole05caSourceRestored: true, rejectedMutations: 14 });
+    nativeKeyboardBridge = { ...keyboard96, ...report.nativeKeyboardBridge, childGroups: 5 };
   });
   await check('Original helper source adds only symmetric producer-role gates before the exact-name shortcut', () => {
     const path = 'src/utils/winerimOriginalSheet.ts';
@@ -482,5 +503,6 @@ try {
   assert.equal(forbiddenFetches, 0);
   console.log(JSON.stringify({ passed: groups.length, failed: 0, baseline, groups, remoteCalls: 0, paidCalls: 0,
     nativeLabelUi96: { ...labelUi96, ...labelUi96Result },
+    nativeKeyboardBridge,
     scope: 'Synthetic actual-helper/AST contracts only. No image, GT, private corpus, fresh OCR, global catalogue, owner account, native UI or human-taste claims.' }));
 } finally { globalThis.fetch = oldFetch; }

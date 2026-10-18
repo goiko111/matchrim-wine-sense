@@ -14,6 +14,59 @@ import tailwindcss from 'tailwindcss';
 import tailwindConfig from '../tailwind.config';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
+export const nativeLabelKeyboard96 = {
+  revision: '3a215039b91a6d3d57b806e3874f336a3010bc0e',
+  priorRevision: '05ca1e2da53d581424f873fe0a9c1c2cd9d82018',
+  priorSourceHash: 'b48b9fb5ac81cfb3eeb329f3e99b9709d5a0c22851bdf049280031784efcd11a',
+  currentSourceHash: '9d2123e37af1de7d69a55c3f9dd333b04ef7c5f6940ccc747bc27117737c860f',
+  webAstScope: 'Complete legacy web AST after the declared native keyboard/count inverse; not the literal current module AST',
+};
+export const restoreNativeLabelKeyboard96 = (source: string) => {
+  const tree = ts.createSourceFile('MultiWineLabelScanner.tsx', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const nodes: ts.Node[] = [];
+  const visit = (node: ts.Node) => { nodes.push(node); ts.forEachChild(node, visit); }; visit(tree);
+  const sha = (text: string) => createHash('sha256').update(text).digest('hex');
+  const one = <T,>(values: T[]) => { assert.equal(values.length, 1, 'One exact declared keyboard amendment'); return values[0]; };
+  const statement = (name: string) => one(nodes.filter((n): n is ts.VariableStatement => ts.isVariableStatement(n)
+    && n.declarationList.declarations.some(d => d.name.getText(tree) === name)));
+  const body = statement('regionEditorBody'), layout = statement('regionEditorLayout');
+  assert.equal(body.getText(tree), 'const regionEditorBody = useRef<HTMLDivElement>(null);');
+  assert.equal(layout.getText(tree), 'const regionEditorLayout = useRef<HTMLDivElement>(null);');
+  const effect = one(nodes.filter((n): n is ts.ExpressionStatement => ts.isExpressionStatement(n)
+    && ts.isCallExpression(n.expression) && n.expression.expression.getText(tree) === 'useEffect'
+    && n.getText(tree).includes('const body = regionEditorBody.current')));
+  assert.ok(ts.isCallExpression(effect.expression));
+  const callback = effect.expression.arguments[0];
+  assert.ok(ts.isArrowFunction(callback) && ts.isBlock(callback.body));
+  assert.equal(callback.body.statements[0].getText(tree), 'if (!isNative || !selectedRegionId) return;', 'Native guard precedes every listener/RAF/observer');
+  assert.equal(effect.expression.arguments[1].getText(tree), '[isNative, selectedRegionId]');
+  assert.equal(sha(effect.getText(tree)), '76eb39e94ca807b9c6b19f238c2cd00eea7db26f0efc0f370aa27d77c9905c1f');
+  const begin = source.lastIndexOf('\n', body.getStart(tree)) + 1, end = effect.end + 1;
+  assert.ok(layout.getStart(tree) > begin && layout.end < effect.getStart(tree));
+  assert.equal(source[effect.end], '\n');
+  assert.equal(sha(source.slice(begin, end)), '86f8e31b0465cce95cd322b774a09ed9a89c945e85b14f63dad80fbd367d1c47');
+  const replacements: Array<[number, number, string]> = [[begin, end, '']];
+  const count = statement('nativeCloserPhotoCount');
+  assert.equal(sha(count.getText(tree)), 'f04d05fe2d1d23bc86c9fcf62da0d2230f0333896e5d98c987532c89e977f2dc');
+  replacements.push([source.lastIndexOf('\n', count.getStart(tree)) + 1, count.end + 1, '']);
+  for (const name of ['regionEditorBody', 'regionEditorLayout']) {
+    const attr = one(nodes.filter((n): n is ts.JsxAttribute => ts.isJsxAttribute(n) && n.name.getText(tree) === 'ref'
+      && n.getText(tree).includes(name)));
+    assert.equal(attr.getText(tree), `ref={isNative ? ${name} : undefined}`, 'Web refs must remain absent/undefined');
+    assert.equal(source[attr.end], ' ');
+    replacements.push([attr.getStart(tree), attr.end + 1, '']);
+  }
+  const copy = one(nodes.filter((n): n is ts.JsxElement => ts.isJsxElement(n) && n.openingElement.tagName.getText(tree) === 'p'
+    && n.getText(tree).includes('nativeCloserPhotoCount')));
+  assert.equal(sha(copy.getText(tree)), 'c6d247b1ab09c98945b1f66beec93b65eb97e6aa0680661221207673e5f0c830');
+  replacements.push([copy.getStart(tree), copy.end,
+    '<p className="text-sm text-stone-800">{continuationPlan.automatic.length + continuationPlan.deferred.length} regiones pendientes de lectura.</p>']);
+  for (const [start, finish, value] of replacements.sort((a, b) => b[0] - a[0])) source = source.slice(0, start) + value + source.slice(finish);
+  return source;
+};
+
+// Imported by the two source guards without executing a child, browser or test group.
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
 const { values } = parseArgs({ options: { ui: { type: 'boolean' }, output: { type: 'string' } } });
 const file = 'src/components/wine-import/MultiWineLabelScanner.tsx';
 const source = readFileSync(resolve(root, file), 'utf8');
@@ -25,17 +78,36 @@ const effect = nodes.find(n => ts.isCallExpression(n) && n.expression.getText(as
   && n.arguments[0].getText(ast).includes('const body = regionEditorBody.current')) as ts.CallExpression;
 assert.ok(effect); assert.equal(effect.arguments[1].getText(ast), '[isNative, selectedRegionId]');
 const checks: string[] = [];
+let rejectedKeyboardBridgeMutations = 0;
 const check = (name: string, run: () => void) => { run(); checks.push(name); console.log('PASS', name); };
 check('Whole source byte-inverse to05ca outside native-only effect, refs and copy; no CSS/shared/data/handler changes', () => {
-  let inverse = source.slice(0, source.indexOf('  const regionEditorBody =')) + '\n' + source.slice(source.indexOf('  useLayoutEffect'));
-  inverse = inverse.replace(/^ {2}const nativeCloserPhotoCount = .*\n/m, '');
-  for (const name of ['regionEditorLayout', 'regionEditorBody']) inverse = inverse.replace(`ref={isNative ? ${name} : undefined} `, '');
-  const begin = inverse.indexOf('<p className="text-sm text-stone-800">{isNative ? <>');
-  const end = inverse.indexOf('</p>', begin) + 4;
-  assert.ok(begin > 0 && end > begin);
-  inverse = inverse.slice(0, begin) + '<p className="text-sm text-stone-800">{continuationPlan.automatic.length + continuationPlan.deferred.length} regiones pendientes de lectura.</p>' + inverse.slice(end);
+  const inverse = restoreNativeLabelKeyboard96(source);
   assert.equal(inverse, baseline);
+  assert.equal(createHash('sha256').update(inverse).digest('hex'), nativeLabelKeyboard96.priorSourceHash);
   assert.ok(effect.arguments[0].getText(ast).startsWith('() => {\n    if (!isNative || !selectedRegionId) return;'));
+  const mutations = [
+    ['removed native gate', 'if (!isNative || !selectedRegionId) return;', 'if (!selectedRegionId) return;'],
+    ['removed early guard', '    if (!isNative || !selectedRegionId) return;\n', ''],
+    ['inverted native gate', 'if (!isNative || !selectedRegionId)', 'if (isNative || !selectedRegionId)'],
+    ['web body ref leak', 'ref={isNative ? regionEditorBody : undefined}', 'ref={isNative ? regionEditorBody : regionEditorBody}'],
+    ['web layout ref leak', 'ref={isNative ? regionEditorLayout : undefined}', 'ref={regionEditorLayout}'],
+    ['removed body ref', 'ref={isNative ? regionEditorBody : undefined} ', ''],
+    ['web count leak', ".deferral?.code === 'resolution').length : 0", ".deferral?.code === 'resolution').length : regions.length"],
+    ['copy native gate leak', '<p className="text-sm text-stone-800">{isNative ? <>', '<p className="text-sm text-stone-800">{true ? <>'],
+    ['web copy changed', 'regiones pendientes de lectura.', 'regiones por leer.'],
+    ['consumer count-copy changed', 'Puedes seguir leyendo', 'Ya has terminado'],
+    ['resolution membership changed', "region.deferral?.code === 'resolution'", "region.deferral?.code === 'automatic_limit'"],
+    ['focused-field input handler changed', 'editCandidate({ name: event.target.value })', 'editCandidate({ name: "changed" })'],
+    ['old callback changed', 'onClick={() => setSelectedRegionId(regions.find', 'onClick={() => setSelectedRegionId(regions.filter'],
+    ['crop changed', 'cropImageRegionWithQuality(', 'cropImageRegion('],
+  ];
+  for (const [name, from, to] of mutations) {
+    assert.ok(source.includes(from), `Applicable keyboard negative: ${name}`);
+    const changed = source.replace(from, to); assert.notEqual(changed, source);
+    assert.throws(() => assert.equal(restoreNativeLabelKeyboard96(changed), baseline), undefined, name);
+    rejectedKeyboardBridgeMutations++;
+  }
+  assert.equal(rejectedKeyboardBridgeMutations, 14);
 });
 
 function fixture(options: any = {}) {
@@ -175,6 +247,9 @@ print(json.dumps({'passed':True,'cases':cases,'scope':'Actual Drawer/referenceRe
   console.log('PASS Four real React/Vaul editor layouts, keyboard shrink/input reflow/rotation, complete focused-field clipping checks');
 }
 const report = { passed: true, groups: checks.length, checks, ui, sourceSha256: createHash('sha256').update(source).digest('hex'),
-  baseline: '05ca1e2', SDKOrNativeRuntimeUsed: false, appOrProviderCalls: 0 };
+  baseline: '05ca1e2', SDKOrNativeRuntimeUsed: false, appOrProviderCalls: 0,
+  nativeKeyboardBridge: { ...nativeLabelKeyboard96, earlyNativeGuard: true, refsUndefinedOnWeb: true,
+    whole05caSourceRestored: true, rejectedMutations: rejectedKeyboardBridgeMutations } };
 if (values.output) { mkdirSync(resolve(values.output), { recursive: true }); writeFileSync(resolve(values.output, 'report.json'), JSON.stringify(report, null, 2) + '\n', { flag: 'wx' }); }
 console.log(JSON.stringify(report));
+}
