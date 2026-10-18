@@ -14,8 +14,8 @@ const menu = 'src/components/wine-import/WineMenuScanner.tsx';
 const fingerprints = new Map([
   [shop, ['a7b9ddd9db73b93bd20b229ccb388efe46d75319ded8d723150fd1933ed60471', '17529a6c6285fbf0d348981b1b01e42b73d7816539033c92b7d3934ef6b1da0f']],
   [restaurant, ['e427d602485f0029884add6708393ac5ef841c3c99f4901af605cf4fb19d9d86', '0dfa74ac51fa1aa033d909b5e5e429599579e95547bd15a9c36e5dff86f6a918']],
-  ['src/index.css', ['eb03f6feb6b397d524cbf3fbf5f57148df5afeb11b3524ef084212814544ff52', '09dd22de7a2db31b3e4e94c9cbc1ab19fd3dd5d79207f751bc8d8b119a86106b']],
-  [menu, ['23e05fd6fe37074b5ad48ac396535974a3086f7da7e10219c365916ad89768f6', '81476126b861468da831106d5d5a21b03f9534df7c20ba331be1d0b84d911161']],
+  ['src/index.css', ['eb03f6feb6b397d524cbf3fbf5f57148df5afeb11b3524ef084212814544ff52', '548ff193ba713bce9595b28cb53bb316e3929653540199a4ca86789a4b2097dd']],
+  [menu, ['23e05fd6fe37074b5ad48ac396535974a3086f7da7e10219c365916ad89768f6', '7a499bfac75d6e89cb16a6fdfe32276c1502bf27a4e11d934ce99c44b52dfd8d']],
   ['src/utils/wineMenuScan.ts', ['4e619d70f425f107564a786ac0cca15f1f917a68634de2eaae2d303a457d32a9', '9dbd68df74c8c79ce656c968c811b1c144512e684c7c3ddeaa692b48eeaee7d4']],
 ]);
 const reviewed95Fingerprints = new Map([
@@ -27,11 +27,11 @@ const reviewed95Fingerprints = new Map([
 ]);
 const home96 = {
   test: 'scripts/check-matchrim-native-home-accessibility96.ts',
-  testHash: '62ef23ab3f76feebfdac63a9ca03a90bf6aab918e15d822694f2161f201132e1',
+  testHash: 'c9f6e66c4cd36de7eb8d4e9fb5e2282036501282767f736de176f2d8b801fd33',
   sources: new Map([
     ['src/components/NativeAppHome.tsx', '04d35a6fcfb4536b060fa701e86a168b81ac7320368ef7e3eae3a689a46cfca1'],
     ['src/components/MobileBottomNav.tsx', '9c6edc7cec29bdec7c3f2ec3696f84b69a6073e7296d669a24906c8caa820271'],
-    ['src/index.css', '09dd22de7a2db31b3e4e94c9cbc1ab19fd3dd5d79207f751bc8d8b119a86106b'],
+    ['src/index.css', '548ff193ba713bce9595b28cb53bb316e3929653540199a4ca86789a4b2097dd'],
   ]),
 };
 const before = (path: string) => execFileSync('git', ['show', `${baseline}:${path}`], { encoding: 'utf8' });
@@ -117,7 +117,7 @@ const oldShop = parse(shop, before(shop)), newShop = parse(shop, current(shop));
 const oldRestaurant = parse(restaurant, before(restaurant)), newRestaurant = parse(restaurant, current(restaurant));
 const oldSession = component(oldShop, 'WineShopLinkAdvisorSession'), newSession = component(newShop, 'WineShopLinkAdvisorSession');
 const oldRest = component(oldRestaurant, 'RestaurantSession'), newRest = component(newRestaurant, 'RestaurantSession');
-let home96Result: { passed: number; failed: number; baseline: string } | undefined;
+let home96Result: { passed: number; failed: number; baseline: string; nativeInitialScannerLandscapePaddingAmendments: number } | undefined;
 
 check('All five exact pre31e and reviewed current sources are bound, not broad path exemptions', () => {
   assert.equal(fingerprints.size, 5);
@@ -197,7 +197,19 @@ check('Home stylesheet delta is one existing native landscape declaration, no na
 }
 
 `;
-  const currentCss = current('src/index.css');
+  const initialLandscapePadding96 = `@media (orientation: landscape) and (min-width: 700px) and (max-height: 600px) {
+  html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty),
+  html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title) {
+    padding-top: calc(12px + var(--matchrim-safe-top));
+  }
+}
+
+`;
+  const actualCss = current('src/index.css');
+  assert.equal(actualCss.split(initialLandscapePadding96).length, 2);
+  const currentCss = actualCss.replace(initialLandscapePadding96, '');
+  assert.equal(hash(currentCss), '09dd22de7a2db31b3e4e94c9cbc1ab19fd3dd5d79207f751bc8d8b119a86106b',
+    'Only the exact initial nativeAX landscape top padding may amend the accepted A_R6 CSS');
   const uploadMarker = '/* Initial scanner copy keeps its full width at accessibility text sizes. */';
   assert.equal(currentCss.split(uploadMarker).length, 2);
   const uploadStart = currentCss.indexOf(uploadMarker);
@@ -221,6 +233,7 @@ check('Home stylesheet delta is one existing native landscape declaration, no na
   home96Result = JSON.parse(lines.at(-1) ?? '') as typeof home96Result;
   assert.ok(home96Result);
   assert.equal(home96Result.passed, 12); assert.equal(home96Result.failed, 0); assert.equal(home96Result.baseline, baseline96);
+  assert.equal(home96Result.nativeInitialScannerLandscapePaddingAmendments, 1);
 });
 check('MenuScanner exact scoped delta is import, two native option gates and three native serving labels', () => {
   let expected = before(menu);
@@ -269,7 +282,60 @@ check('MenuScanner exact scoped delta is import, two native option gates and thr
     assert.equal(expected.split(oldText).length - 1, 1, oldText);
     expected = expected.replace(oldText, newText);
   }
-  assert.equal(current(menu), expected, 'No change outside exact95 serving, B_R2 row crops and six reviewed native B_R3 parallel-read amendments');
+  assert.equal(hash(expected), '81476126b861468da831106d5d5a21b03f9534df7c20ba331be1d0b84d911161', 'Exact frozen B_R3 source before native-only consumer UI amendments');
+  let priorConsumerUi96 = current(menu);
+  const headerCloseAmendments96: [string, string][] = [
+    ["<DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white px-[8px] py-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>",
+      "<DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white p-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>"],
+    ["<div className={isNative ? 'flex min-w-0 items-start justify-between gap-[4px]' : 'flex items-start justify-between gap-3'}>",
+      '<div className="flex items-start justify-between gap-3">'],
+    ["<div className={isNative ? 'max-h-[28vh] min-w-0 flex-1 overflow-y-auto' : 'min-w-0'}>",
+      "<div className={isNative ? 'max-h-[28vh] min-w-0 overflow-y-auto' : 'min-w-0'}>"],
+    ["<X className={isNative ? 'h-[20px] w-[20px]' : 'h-4 w-4'} style={isNative ? { width: 20, height: 20 } : undefined} />",
+      "<X className={isNative ? 'h-[20px] w-[20px]' : 'h-4 w-4'} />"],
+  ];
+  assert.equal(headerCloseAmendments96.length, 4, 'Four new header blocks; comparison MAX reflow is retained below, not counted twice');
+  for (const [amendment, prior] of headerCloseAmendments96) {
+    assert.equal(priorConsumerUi96.split(amendment).length, 2, amendment);
+    priorConsumerUi96 = priorConsumerUi96.replace(amendment, prior);
+  }
+  assert.equal(hash(priorConsumerUi96), '4000c9c5eb70b3f02d4191d765a7e8bbb8679e51d4c71b001f34c511fb4cfe38',
+    'Reversing only the four native header/close blocks must restore the complete frozen B4000 source');
+  const unchangedRowBridge96 = '\n\t\t                    onClick={(event) => openWineDetail(index, event.currentTarget)}\n\t\t                  >\n\t                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>\n\t\t                    ';
+  const consumerUiAmendments96: [string, string][] = [
+    ["{isNative ? 'Transcripción automática, sin verificar:' : 'Texto visible:'}", 'Texto visible:'],
+    ["<div className={kind === 'comparison' ? 'min-w-0 pt-2 [html.matchrim-accessibility-text_&_label]:flex-wrap [html.matchrim-accessibility-text_&_label]:px-[12px] [html.matchrim-accessibility-text_&_label>span]:basis-full' : 'min-w-0 pt-2'}>{children}</div>",
+      '<div className="min-w-0 pt-2">{children}</div>'],
+    ["\t\t\t                    className={`matchrim-pressable flex min-h-16 w-full flex-wrap items-center gap-3 ${isNative ? 'px-[12px]' : 'px-3'} py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}"
+      + unchangedRowBridge96 + "<span className={isNative ? 'min-w-[min(6rem,100%)] flex-1 [html.matchrim-accessibility-text_&]:basis-full' : 'min-w-[min(6rem,100%)] flex-1'}>",
+      "\t\t                    className={`matchrim-pressable flex min-h-16 w-full flex-wrap items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}"
+      + unchangedRowBridge96 + '<span className="min-w-[min(6rem,100%)] flex-1">'],
+    [`                          {isNative && !isLiteralWineStyle95(wine) && !catalogWineFromVerifiedSheet({
+                            name: wine.nombre, producer: wine.productor, vintage: wine.anada, region: wine.region, country: wine.pais,
+                            inferredFields: wine.campos_inferidos,
+                          }, wine.originalSheet) && <span className="block text-xs font-medium text-stone-600">Nombre leído por confirmar</span>}
+`, ''],
+    [`                            {isNative && !isLiteralWineStyle95(selectedPinWine) && !catalogWineFromVerifiedSheet({
+                              name: selectedPinWine.nombre, producer: selectedPinWine.productor, vintage: selectedPinWine.anada,
+                              region: selectedPinWine.region, country: selectedPinWine.pais, inferredFields: selectedPinWine.campos_inferidos,
+                            }, selectedPinWine.originalSheet) && <p className="text-sm text-stone-600">Nombre leído por confirmar</p>}
+`, ''],
+  ];
+  assert.equal(consumerUiAmendments96.length, 5, 'Three approved categories: caption, native row padding/MAX layout and two adjacent name qualifications');
+  for (const [amendment, prior] of consumerUiAmendments96) {
+    assert.equal(priorConsumerUi96.split(amendment).length, 2, amendment);
+    priorConsumerUi96 = priorConsumerUi96.replace(amendment, prior);
+  }
+  assert.equal(priorConsumerUi96, expected, 'Removing only the exact native consumer caption/padding/name qualifications must recover the complete frozen B_R3 source');
+  const qualifiedNames = collect(parse(menu, current(menu)), ts.isJsxExpression).filter(node =>
+    node.getText().startsWith('{isNative && !isLiteralWineStyle95(') && node.getText().includes('Nombre leído por confirmar'));
+  assert.equal(qualifiedNames.length, 2);
+  const detailQualification = qualifiedNames.find(node => node.getText().includes('selectedPinWine'));
+  assert.ok(detailQualification && ts.isJsxElement(detailQualification.parent));
+  const headerChildren = detailQualification.parent.children.filter(node => !ts.isJsxText(node));
+  assert.equal(headerChildren[0], detailQualification, 'Qualification precedes the potentially long title in its same bounded header');
+  assert.ok(ts.isJsxElement(headerChildren[1]));
+  assert.equal(headerChildren[1].openingElement.tagName.getText(), 'DrawerTitle');
 
   const execution = 'src/utils/wineMenuExecution93.ts';
   let expectedExecution = reviewed95(execution);
@@ -342,5 +408,5 @@ check('Full web AST proof rejects text, attributes and callback changes instead 
 
 console.log(JSON.stringify({ passed, failed: 0, baseline, sources: Object.fromEntries(fingerprints),
   reviewed95: { revision: baseline96, sources: Object.fromEntries(reviewed95Fingerprints) },
-  scope96: { homeSources: Object.fromEntries(home96.sources), child: { path: home96.test, hash: home96.testHash, ...home96Result }, nativeHomeLandscapeAmendments: 1, nativeInitialScannerRules: 12, nativeMenuCropAmendments: 2, nativeMenuParallelAmendments: 6 },
-  scope: 'Offline full native=false JSX AST, exact lifetime closures, native layout controls and five frozen source pairs, preserving the reviewed95 and B_R2 bridges. Separate96 scope executes the exact12-group Home/nav child quietly and permits only two native menu crop amendments plus six reviewed B_R3 parallel amendments and its exact execution planner addition. Menu behavior is separately executed by the29-group public serving suite. Not browser/native execution, recognition, stock, accounts or human validation.' }));
+  scope96: { homeSources: Object.fromEntries(home96.sources), child: { path: home96.test, hash: home96.testHash, ...home96Result }, nativeHomeLandscapeAmendments: 1, nativeInitialScannerRules: 12, nativeInitialScannerLandscapePaddingAmendments: 1, nativeMenuCropAmendments: 2, nativeMenuParallelAmendments: 6, nativeMenuConsumerUiAmendments: 9, nativeMenuConsumerUiCategories: 4 },
+  scope: 'Offline full native=false JSX AST, exact lifetime closures, native layout controls and five frozen source pairs, preserving reviewed95, B_R2, B_R3 and B4000 bridges. Separate96 scope executes the exact12-group Home/nav/initial-padding child quietly; two menu crop amendments, six B_R3 parallel amendments and its exact planner, plus nine exact native consumer UI blocks in four categories are separately bounded. Comparison MAX reflow is retained, not counted twice. Menu behavior is separately executed by the29-group public serving suite. Not browser/native execution, recognition, stock, accounts or human validation.' }));

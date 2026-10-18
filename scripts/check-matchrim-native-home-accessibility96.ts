@@ -105,6 +105,14 @@ const end = css.indexOf('\nbody,\n#root,\n.App', start) + 1;
 assert.ok(start > 0 && end > start);
 const amendment = css.slice(start, end);
 const rules = postcss.parse(amendment);
+const initialLandscapePadding96 = `@media (orientation: landscape) and (min-width: 700px) and (max-height: 600px) {
+  html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty),
+  html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title) {
+    padding-top: calc(12px + var(--matchrim-safe-top));
+  }
+}
+
+`;
 check('CSS changes are only native Home rules plus removal of its obsolete rem-based header minimum', () => {
   const oldHeader = '  html.matchrim-native-platform .matchrim-native-home-main > div:first-child {\n    min-height: 2.5rem;\n  }\n\n';
   assert.equal(cssBefore.split(oldHeader).length, 2);
@@ -112,7 +120,11 @@ check('CSS changes are only native Home rules plus removal of its obsolete rem-b
   const uploadStart = amendment.indexOf('/* Initial scanner copy keeps its full width at accessibility text sizes. */');
   assert.ok(uploadStart > 0);
   const homeRules = postcss.parse(amendment.slice(0, uploadStart));
-  const uploadCss = amendment.slice(uploadStart);
+  const completeUploadCss = amendment.slice(uploadStart);
+  assert.equal(completeUploadCss.split(initialLandscapePadding96).length, 2);
+  const uploadCss = completeUploadCss.replace(initialLandscapePadding96, '');
+  assert.equal(createHash('sha256').update(css.replace(initialLandscapePadding96, '')).digest('hex'),
+    '09dd22de7a2db31b3e4e94c9cbc1ab19fd3dd5d79207f751bc8d8b119a86106b', 'Removing only the landscape initial padding restores the full accepted A_R6 stylesheet');
   assert.equal(createHash('sha256').update(uploadCss).digest('hex'),
     '10007d8f067152acb6f276359357385c81a4dd92bb0adf2a74db3f3a361685a0', 'Exact reviewed initial scanner amendment');
   homeRules.walkRules(rule => {
@@ -124,6 +136,17 @@ check('CSS changes are only native Home rules plus removal of its obsolete rem-b
   const menu = prefix + 'section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage)';
   const labelMain = prefix + '.scan-page-main:has(.scan-upload-empty)';
   const menuMain = prefix + '.scan-page-main:has(#wine-menu-upload-title)';
+  const paddingRules = postcss.parse(initialLandscapePadding96).nodes;
+  assert.equal(paddingRules.length, 1);
+  const paddingMedia = paddingRules[0] as postcss.AtRule;
+  assert.equal(paddingMedia.type, 'atrule'); assert.equal(paddingMedia.name, 'media');
+  assert.equal(paddingMedia.params, '(orientation: landscape) and (min-width: 700px) and (max-height: 600px)');
+  assert.equal(paddingMedia.nodes.length, 1);
+  const paddingRule = paddingMedia.nodes[0] as postcss.Rule;
+  assert.equal(paddingRule.type, 'rule');
+  assert.deepEqual(paddingRule.selectors, [labelMain,
+    prefix + '.scan-page-main:has(section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title)']);
+  assert.deepEqual(paddingRule.nodes.map(node => node.toString()), ['padding-top: calc(12px + var(--matchrim-safe-top))']);
   const expectedUpload: [string[], Record<string, string>][] = [
     [[labelMain, prefix + '.scan-page-main:has(section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title)'],
       { 'padding-left': 'calc(12px + var(--matchrim-safe-left))', 'padding-right': 'calc(12px + var(--matchrim-safe-right))' }],
@@ -271,4 +294,5 @@ check('Whole web projection detects changed text and navigation callback rather 
   }
 });
 console.log(JSON.stringify({ passed, failed: 0, baseline,
-  scope: 'Actual Home JSX/CSS contracts, exact12-rule nativeAX initial-upload amendment and native=false parity. No WK AX hitpoint, VoiceOver, browser or simulator acceptance claim.' }));
+  nativeInitialScannerLandscapePaddingAmendments: 1,
+  scope: 'Actual Home JSX/CSS contracts, exact12-rule nativeAX initial-upload amendment plus one exact initial-only landscape padding rule and native=false parity. No WK AX hitpoint, VoiceOver, browser or simulator acceptance claim.' }));

@@ -376,6 +376,13 @@ html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledb
   flex-shrink: 0;
 }
 
+@media (orientation: landscape) and (min-width: 700px) and (max-height: 600px) {
+  html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty),
+  html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title) {
+    padding-top: calc(12px + var(--matchrim-safe-top));
+  }
+}
+
 body,
 #root,
 .App {

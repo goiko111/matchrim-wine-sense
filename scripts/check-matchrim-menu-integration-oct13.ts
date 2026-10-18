@@ -76,14 +76,14 @@ check(() => {
   const nativeServingSource = execFileSync('git', ['show', `ebee038059778f1f10bdb5dd647bccb8324fb580:${path}`], { encoding: 'utf8' });
   assert.equal(hash(nativeServingSource), 'df1d513633f04e716c162bfd8374a735d2e19dc5f3e10386e716c92a4e5e95b9',
     'Retain the exact ddba35c native-serving source before the separately proved96 amendment');
-  assert.equal(hash(currentSource), '81476126b861468da831106d5d5a21b03f9534df7c20ba331be1d0b84d911161',
-    'Only the exact reviewed native row-context and bounded parallel-read amendment is accepted');
+  assert.equal(hash(currentSource), '7a499bfac75d6e89cb16a6fdfe32276c1502bf27a4e11d934ce99c44b52dfd8d',
+    'Only the exact reviewed native row-context, bounded parallel reads and consumer UI amendment is accepted');
 });
 let nativeLayoutGroups = 0;
 check(() => {
   assert.equal(hash(readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8')),
-    '5806299527b39bd5b351ac5d3867b1c19f703027ffd59e3c3837dc2362388be2',
-    'Exact source-preservation child for native/web parity and the reviewed B_R3 scope');
+    'de69c492a9b7677ec8caf0c29d8dd45b0a36f5b6722534e89c66b3175e1d2399',
+    'Exact source-preservation child for native/web parity, B_R3 and the scoped consumer UI amendment');
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-native-layout.ts'], { encoding: 'utf8' });
   const report = JSON.parse(output.trim().split('\n').at(-1)!);
   assert.equal(report.baseline, '31e060828d1b370b275cdcf6691052368916f39f');
@@ -92,6 +92,9 @@ check(() => {
   assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 14);
   assert.equal(report.scope96.nativeMenuCropAmendments, 2);
   assert.equal(report.scope96.nativeMenuParallelAmendments, 6);
+  assert.equal(report.scope96.nativeInitialScannerLandscapePaddingAmendments, 1);
+  assert.equal(report.scope96.nativeMenuConsumerUiAmendments, 9);
+  assert.equal(report.scope96.nativeMenuConsumerUiCategories, 4);
   nativeLayoutGroups = report.passed;
 });
 check(() => {

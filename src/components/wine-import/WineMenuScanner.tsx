@@ -1100,7 +1100,7 @@ const WineMenuScannerSession = ({
   const selectedReadingEvidence = selectedPinWine && (
     <div className="matchrim-soft-surface mb-4 rounded-lg p-3 text-sm text-slate-600">
       {selectedPinWine.texto_fuente ? (
-        <p><span className="font-semibold text-slate-900">Texto visible:</span> {selectedPinWine.texto_fuente}</p>
+        <p><span className="font-semibold text-slate-900">{isNative ? 'Transcripción automática, sin verificar:' : 'Texto visible:'}</span> {selectedPinWine.texto_fuente}</p>
       ) : (
         <p>No hay una transcripción enlazada a esta fila. Productor, región y estilo pueden ser inferencias y requieren confirmación.</p>
       )}
@@ -1136,7 +1136,7 @@ const WineMenuScannerSession = ({
   const renderOptionalNativePanel = (kind: 'comparison' | 'filters', title: string, children: ReactNode) => isNative
     ? <details className="min-w-0 border-y border-stone-200 py-2" data-testid={`native-menu-${kind}`}>
       <summary className="flex min-h-11 cursor-pointer items-center font-semibold text-stone-800">{title}</summary>
-      <div className="min-w-0 pt-2">{children}</div>
+      <div className={kind === 'comparison' ? 'min-w-0 pt-2 [html.matchrim-accessibility-text_&_label]:flex-wrap [html.matchrim-accessibility-text_&_label]:px-[12px] [html.matchrim-accessibility-text_&_label>span]:basis-full' : 'min-w-0 pt-2'}>{children}</div>
     </details> : children;
 
   const saveScannedWine = async (wine: ScannedWine, index: number, status: 'wishlist' | 'tasted', favorite = false) => {
@@ -1928,14 +1928,18 @@ const WineMenuScannerSession = ({
 		                    key={`${wine.nombre}-${index}-list-row`}
 		                    type="button"
                     aria-label={`Abrir ${isNative && isLiteralWineStyle95(wine) ? 'estilo' : 'vino'} ${index + 1}: ${wine.nombre}${isNative && literalMenuServingFormat95(wine) ? ` · ${literalMenuServingFormat95(wine)}` : ''}`}
-		                    className={`matchrim-pressable flex min-h-16 w-full flex-wrap items-center gap-3 px-3 py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
+			                    className={`matchrim-pressable flex min-h-16 w-full flex-wrap items-center gap-3 ${isNative ? 'px-[12px]' : 'px-3'} py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
 		                    onClick={(event) => openWineDetail(index, event.currentTarget)}
 		                  >
 	                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-stone-950 text-sm font-bold text-white">{index + 1}</span>
-		                    <span className="min-w-[min(6rem,100%)] flex-1">
+		                    <span className={isNative ? 'min-w-[min(6rem,100%)] flex-1 [html.matchrim-accessibility-text_&]:basis-full' : 'min-w-[min(6rem,100%)] flex-1'}>
 	                      <span className="block whitespace-normal break-words font-semibold text-slate-950">
                             {wine.nombre}{wine.anada ? ` ${wine.anada}` : ''}
                           </span>
+                          {isNative && !isLiteralWineStyle95(wine) && !catalogWineFromVerifiedSheet({
+                            name: wine.nombre, producer: wine.productor, vintage: wine.anada, region: wine.region, country: wine.pais,
+                            inferredFields: wine.campos_inferidos,
+                          }, wine.originalSheet) && <span className="block text-xs font-medium text-stone-600">Nombre leído por confirmar</span>}
 		                      <span className="block whitespace-normal break-words text-xs text-slate-500">
 		                        {[wine.productor, wine.region, wine.campos_inferidos?.includes('servicio') ? 'Servicio sin confirmar' : wine.servicio, isNative ? literalMenuServingFormat95(wine) : null].filter(Boolean).join(' · ') || 'Datos por revisar'}
 		                      </span>
@@ -2332,16 +2336,20 @@ const WineMenuScannerSession = ({
 	        <DrawerContent onCloseAutoFocus={restoreDetailFocus} className={isNative ? 'w-full min-w-0 max-w-[100vw] max-h-[88vh] border-stone-200 bg-stone-50 [&>div:first-child]:mt-[8px] [&>div:first-child]:h-[4px]' : 'w-full min-w-0 max-w-[100vw] max-h-[88vh] border-stone-200 bg-stone-50'}>
 	          {selectedPinWine && selectedPinIndex !== null && (
 	            <>
-	              <DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white p-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
-	                <div className="flex items-start justify-between gap-3">
-	                  <div className={isNative ? 'max-h-[28vh] min-w-0 overflow-y-auto' : 'min-w-0'}>
+	              <DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white px-[8px] py-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
+	                <div className={isNative ? 'flex min-w-0 items-start justify-between gap-[4px]' : 'flex items-start justify-between gap-3'}>
+	                  <div className={isNative ? 'max-h-[28vh] min-w-0 flex-1 overflow-y-auto' : 'min-w-0'}>
+                            {isNative && !isLiteralWineStyle95(selectedPinWine) && !catalogWineFromVerifiedSheet({
+                              name: selectedPinWine.nombre, producer: selectedPinWine.productor, vintage: selectedPinWine.anada,
+                              region: selectedPinWine.region, country: selectedPinWine.pais, inferredFields: selectedPinWine.campos_inferidos,
+                            }, selectedPinWine.originalSheet) && <p className="text-sm text-stone-600">Nombre leído por confirmar</p>}
 	                    <DrawerTitle className={isNative ? 'tracking-normal' : undefined}>{selectedPinIndex + 1}. {selectedPinWine.nombre}{isNative && literalMenuServingFormat95(selectedPinWine) && <span className="block text-sm font-normal leading-6 text-slate-600">{literalMenuServingFormat95(selectedPinWine)}</span>}</DrawerTitle>
 	                    <DrawerDescription className={isNative ? 'sr-only' : 'mt-1'}>
 	                      {[selectedPinWine.productor, selectedPinWine.region, formatPrice(selectedPinWine.precio, selectedPinWine.moneda)].filter(Boolean).join(' · ') || 'Datos por revisar'}
 	                    </DrawerDescription>
 	                  </div>
 	                  <DrawerClose asChild>
-	                    <Button type="button" variant="ghost" size="icon" className={isNative ? 'h-[44px] w-[44px] shrink-0' : 'h-11 w-11 shrink-0'} aria-label="Cerrar detalle"><X className={isNative ? 'h-[20px] w-[20px]' : 'h-4 w-4'} /></Button>
+	                    <Button type="button" variant="ghost" size="icon" className={isNative ? 'h-[44px] w-[44px] shrink-0' : 'h-11 w-11 shrink-0'} aria-label="Cerrar detalle"><X className={isNative ? 'h-[20px] w-[20px]' : 'h-4 w-4'} style={isNative ? { width: 20, height: 20 } : undefined} /></Button>
 	                  </DrawerClose>
 	                </div>
 	              </DrawerHeader>

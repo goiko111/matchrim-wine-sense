@@ -4,6 +4,79 @@ Status: ACTIVE. No TestFlight95 upload or release approval is claimed here.
 This continuation supersedes the Food deployment-permission blocker in the
 October17 report, not its historical results or remaining product findings.
 
+## Current Checkpoint, 10:18 UTC
+
+Foodv10 is deployed and its original hosted controls pass;1.1 Lovable credits
+were consumed, with no web Publish. App runtime `fe547ed` and QA commits
+`a290cec`, `bfc8da0`, `dcd934d` are pushed to the task branch only. At clean
+`dcd934d`, all14 local groups and fresh unsigned device/simulator builds pass;
+470 app inputs and156 resources are bound. The earlier clean `bfc8da0`
+controlled Label27/27 and memory100/100 pass with the original budgets,
+640468B maximum heap growth and stable DOM231/listeners316. These executions
+do not transfer automatically to the subsequent native UI amendments.
+
+Fresh actual native safe11 at `dcd934d` finishes10 PASS/1 FAIL. Both portrait
+scanner Photos-open/cancel/empty-return contexts pass inside test14, but that
+whole method fails on landscape Botellas: the heading spans y283..352 against
+a0..349 content clip. Twelve full-app swipes overshoot; this is not a44pt
+target failure or proof that every finer gesture is impossible. A native-only
+MAX-landscape initial-state top-padding fix now passes20 controlled browser
+cases and62 state-isolation comparisons; actual native rerun is pending.
+Native menu copy/padding amendments also label unverified names and automatic
+transcription explicitly. No source/text/identity is completed from ground truth.
+The old raw FAILs remain unchanged and contribute zero whole-method passes.
+
+The dense canary is now real, not a fixture: three detector requests plus eleven
+priority crop analyses, all HTTP200, with no retry. Frozen first-eleven controls
+retain4/6 complete tokens in visible text and2/6 in candidate names/evidence;
+neither is complete-wine recall. KRIPTA becomes unrelated Cyrillic text with
+identity abstention. DEUTZ is incorrectly proposed as Juvé & Camps, confidence.66.
+The exact current consumer helpers keep all four candidate proposals uncertain,
+with zero canonical links, verified fiches or numerical affinities. That safety
+result is source-bound offline evidence, not a successful real native scan.
+The47 combined proposals contain4 uncertain,7 unrecognized,35 deferred and
+one crop not executed under the internal budget; they are not47 identified wines.
+
+The internal Edge window is exhausted: Food1 + wine31 =32/32. Eleven analyses
+take2.862-12.035s each,70.247s from first reservation to last response, sequential
+direct probes only. The twelfth app-priority crop remains budget-pending, not
+negative; the app's twelve-region limit is unchanged. A separate read-only
+public Library control verifies Flor de Muga Blanco2022, ID279035, its original
+fiche and five sensory attributes, then scores the immutable fifty synthetic
+profile vectors locally43-74/100. It transmits no photo/profile and proves
+neither photographic recognition nor fifty UI journeys or human taste accuracy.
+
+Source/channel reconciliation finds the release75 aliases still use the older
+detector-v4, region-v8 and menu-v9 handler pool retained by the29-function OpenAI
+migration. Local v5/v9/v10 add strict numeric/box/JSON/schema handling. They do
+not change OCR prompts or demonstrate improved identity accuracy by themselves.
+A minimal three-alias safety package and additional owner authorization are
+pending; Food-only permission does not authorize extra Lovable spend. No new
+canary window, deployment, signing or TestFlight upload is implied.
+
+The new fifty-profile native run has NOT started. It must follow the corrected
+candidate's native QA/source freeze and finish with actual1000 quiz answers;
+fifty technical fixtures contain34 distinct five-axis vectors, not fifty people.
+Recognition utility, final source-bound QA and release risk disposition remain
+HOLD. Later sections preserve earlier timepoint evidence and must be read with
+this checkpoint, not as current pending-work claims.
+
+The subsequent parent pixel review found a real previously uncovered menu-header
+close defect at320px/root32: its44px button ended at x333.53, outside the320px
+viewport. Footer geometry had not covered that control. The narrow native
+header fix uses physical spacing and a20px glyph, retaining full text scaling;
+the same focused control now spans x267..311, all five interior hit samples
+pass, and the complete44px target is inside the header and viewport. The
+four-view/all32-detail regression now passes4/4 with1652 checks:128 complete
+close targets,20px glyphs and640/640 interior hit samples. Whole words,
+qualifications and comparator labels fit at root32. Exact decoded crops and
+complete request objects remain unchanged; the fresh wire assertion accounts
+only for compact versus pretty JSON serialization, with60 mutation controls.
+All prior raw failures remain. These are controlled browser results with
+captured backend replies and mocked authentication/catalogue, not live iOS,
+recognition, owner persistence or taste approval. Earlier green footer checks
+do not retrospectively approve the clipped header or erase its FAIL.
+
 ## Scope And Boundaries
 
 - Baseline `ebee038059778f1f10bdb5dd647bccb8324fb580`; mobile integration branch.
