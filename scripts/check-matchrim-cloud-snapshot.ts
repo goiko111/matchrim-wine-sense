@@ -70,7 +70,7 @@ const reviewed95Suites = [
   ['scripts/check-matchrim-consumer95-native-layout.ts', 14],
   ['scripts/check-matchrim-consumer95-menu-serving.ts', 29],
   ['scripts/check-matchrim-native-home-accessibility96.ts', 12],
-  ['scripts/check-matchrim-recognition96.ts', 35],
+  ['scripts/check-matchrim-recognition96.ts', 36],
 ] as const;
 const reviewed95SuiteResults = reviewed95Suites.map(([path, minimum]) => {
   const output = execFileSync(process.execPath, ['--import', 'tsx', path], { encoding: 'utf8' });

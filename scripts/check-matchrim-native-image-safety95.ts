@@ -272,9 +272,9 @@ await check('Read/decode/resizing/quality/crop source exact; scoped recognition9
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-recognition96.ts'], { encoding: 'utf8' });
   const report = JSON.parse(output.trim().split('\n').at(-1)!);
   assert.equal(report.baseline, 'ebee038059778f1f10bdb5dd647bccb8324fb580');
-  assert.equal(report.passed, 35); assert.equal(report.failed, 0);
+  assert.equal(report.passed, 36); assert.equal(report.failed, 0);
   assert.equal(report.remoteCalls, 0); assert.equal(report.paidCalls, 0);
-  assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 35);
+  assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 36);
 });
 await check('Actual label call supplies native limits only; original three arguments and all other startScan code stay exact', async () => {
   const scannerPath = 'src/components/wine-import/MultiWineLabelScanner.tsx';
