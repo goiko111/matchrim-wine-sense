@@ -68,7 +68,11 @@ check('Native display preserves known0.4 and0', () => assert.deepEqual(functions
 check('Web display preserves its existing minimum1', () => assert.deepEqual(functions.normalizeProfileForDisplay(profile, false),
   { potente: 2.4, acidez: 4.6, dulce: 1, tanico: 1, afrutado: 3.2 }));
 const profileCallsiteProjection95 = () => {
-  assert.equal(createHash('sha256').update(profileSource).digest('hex'), '95f2cd4f65f5b072f20c0b44795520f27dbabb391f4c63c8997e3a540b15754b');
+  const nativeImport = "import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';";
+  assert.equal(profileSource.split(nativeImport).length, 2, 'Exactly one reviewed platform import');
+  assert.equal(createHash('sha256').update(profileSource.replace(nativeImport,
+    nativeImport.replace('matchrimLearningPlatform', 'matchrimLearning'))).digest('hex'),
+  '95f2cd4f65f5b072f20c0b44795520f27dbabb391f4c63c8997e3a540b15754b');
   const declarations = new Map<string, ts.Expression>();
   const collect = (node: ts.Node) => {
     if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer
@@ -101,7 +105,9 @@ check('Native query/helper and effect dependencies are wired to the actual calls
 });
 check('Reviewed95 Profile alias is validated by actual native/web component, effects and JSX across50 synthetic profiles', () => {
   const result = JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-profile.ts'], { cwd: root, encoding: 'utf8' }));
-  assert.equal(result.failed, 0); assert.equal(result.passed, 9); assert.equal(result.syntheticProfiles, 50);
+  assert.equal(result.failed, 0); assert.equal(result.passed, 10); assert.equal(result.syntheticProfiles, 50);
+  assert.equal(result.checks.filter((check: { name: string; passed: boolean }) => check.passed
+    && check.name === 'Real platform wrapper in actual Profile effects distinguishes native OK from LOVE and preserves legacy web').length, 1);
   assert.equal(result.sourceSha256, createHash('sha256').update(profileSource).digest('hex'));
 });
 
@@ -184,7 +190,18 @@ for (const guarded of ['src/utils/matchrimLearning.ts', 'supabase/functions/_sha
     assert.equal(original.split(oldGuard).length, 2, 'Exactly one baseline guard');
     const expected = original.replace(oldGuard, 'if (numeric === null || numeric < 0) return null;');
     assert.equal(execFileSync('git', ['-C', root, 'show', '71ac7eb:' + guarded], { encoding: 'utf8' }), expected);
-    assert.equal(readFileSync(resolve(root, guarded), 'utf8'), guarded.startsWith('src/')
+    let current = readFileSync(resolve(root, guarded), 'utf8');
+    if (guarded.startsWith('src/')) for (const [delta, prior] of [
+      ["  evidenceStrength?: 'legacy-v1' | 'native-v2';\n", ''],
+      ["  const strengthAware = options.evidenceStrength === 'native-v2';\n", ''],
+      ['(strengthAware ? totalWeight : samples) / 12', 'samples / 12'],
+      ['  const evidenceDenominator = strengthAware ? samples : totalWeight;\n', ''],
+      ['deltas[targetKey] / evidenceDenominator', 'deltas[targetKey] / totalWeight'],
+    ]) {
+      assert.equal(current.split(delta).length, 2, 'Only the reviewed native opt-in slot');
+      current = current.replace(delta, prior);
+    }
+    assert.equal(current, guarded.startsWith('src/')
       ? execFileSync('git', ['-C', root, 'show', 'f66edd6:' + guarded], { encoding: 'utf8' }) : expected);
   });
 }
