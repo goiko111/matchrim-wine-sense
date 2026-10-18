@@ -185,6 +185,58 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const lastFileRef = useRef<File | null>(null);
   const preparedSizeRef = useRef<{ width: number; height: number } | null>(null);
   const scanProfileRef = useRef<ScanProfileSnapshot | null>(null);
+  const regionEditorBody = useRef<HTMLDivElement>(null);
+  const regionEditorLayout = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isNative || !selectedRegionId) return;
+    let frame = 0;
+    const revealFocusedField = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const body = regionEditorBody.current;
+        const layout = regionEditorLayout.current;
+        const field = document.activeElement;
+        if (!body || !layout || !(field instanceof HTMLInputElement) || !body.contains(field)) return;
+        // MAX text scrolls the outer layout; normal text scrolls the inner body.
+        const scrollport = getComputedStyle(body).overflowY === 'visible' ? layout : body;
+        const bounds = scrollport.getBoundingClientRect();
+        const viewport = window.visualViewport;
+        const top = Math.max(bounds.top, viewport?.offsetTop ?? 0);
+        const bottom = Math.min(bounds.bottom, (viewport?.offsetTop ?? 0) + (viewport?.height ?? window.innerHeight));
+        const input = field.getBoundingClientRect();
+        const inset = Math.min(8, Math.max(0, (bottom - top - input.height) / 2));
+        if (bottom <= top) return;
+        if (input.bottom > bottom - inset) scrollport.scrollTop += input.bottom - bottom + inset;
+        else if (input.top < top + inset) scrollport.scrollTop -= top + inset - input.top;
+      });
+    };
+    window.addEventListener('resize', revealFocusedField);
+    window.addEventListener('focusin', revealFocusedField);
+    window.addEventListener('input', revealFocusedField);
+    window.visualViewport?.addEventListener('resize', revealFocusedField);
+    window.visualViewport?.addEventListener('scroll', revealFocusedField);
+    const observer = new ResizeObserver(revealFocusedField);
+    const observeFrame = requestAnimationFrame(() => {
+      const body = regionEditorBody.current;
+      if (body) {
+        observer.observe(body);
+        for (const child of body.children) observer.observe(child);
+      }
+      if (regionEditorLayout.current) observer.observe(regionEditorLayout.current);
+      revealFocusedField();
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(observeFrame);
+      observer.disconnect();
+      window.removeEventListener('resize', revealFocusedField);
+      window.removeEventListener('focusin', revealFocusedField);
+      window.removeEventListener('input', revealFocusedField);
+      window.visualViewport?.removeEventListener('resize', revealFocusedField);
+      window.visualViewport?.removeEventListener('scroll', revealFocusedField);
+    };
+  }, [isNative, selectedRegionId]);
 
   useLayoutEffect(() => {
     const lifetime = saveLifetime.current;
@@ -217,6 +269,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const continuationPlan = useMemo(() => preparedSizeRef.current
     ? planAdditionalRegionAnalysis(regions, preparedSizeRef.current.width, preparedSizeRef.current.height)
     : { automatic: [], deferred: [] }, [regions]);
+  const nativeCloserPhotoCount = isNative ? regions.filter(region => region.status === 'deferred' && region.deferral?.code === 'resolution').length : 0;
   const duplicateGroups = useMemo(() => groupDuplicateWines(regions), [regions]);
   const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions), [regions]);
   const savedCount = saveResults.filter((result) => result?.status === 'saved').length;
@@ -1088,7 +1141,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
           {continuationPlan.automatic.length > 0 && !batchLocked && (
             <div className="flex flex-wrap items-center justify-between gap-3 border-l-4 border-stone-400 bg-stone-50 p-3" data-testid="scan-continue-batch">
-              <p className="text-sm text-stone-800">{continuationPlan.automatic.length + continuationPlan.deferred.length} regiones pendientes de lectura.</p>
+              <p className="text-sm text-stone-800">{isNative ? <>
+                Puedes seguir leyendo {continuationPlan.automatic.length + continuationPlan.deferred.length} zonas de esta foto.
+                {nativeCloserPhotoCount > 0 && <> Para otras {nativeCloserPhotoCount}, haz una foto más cercana.</>}
+              </> : <>{continuationPlan.automatic.length + continuationPlan.deferred.length} regiones pendientes de lectura.</>}</p>
               <Button type="button" variant="outline" disabled={loading || saving} className="min-h-11 max-w-full gap-2 whitespace-normal bg-white" onClick={() => void continueScan()}>
                 <ScanLine aria-hidden="true" className="h-4 w-4 shrink-0" /> {`Analizar siguientes ${continuationPlan.automatic.length}`}
               </Button>
@@ -1306,7 +1362,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => !open && setSelectedRegionId(null)} repositionInputs={!isNative} shouldScaleBackground={!isNative}>
         <DrawerContent className="matchrim-scan-region-sheet w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
-            <div role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
+            <div ref={isNative ? regionEditorLayout : undefined} role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
               <DrawerHeader className="min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left">
                 <DrawerTitle>{isNative ? `Vino ${selectedRegion.index}` : <>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</>}</DrawerTitle>
                 <DrawerDescription>
@@ -1314,7 +1370,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 </DrawerDescription>
               </DrawerHeader>
 
-              <div role="region" aria-label={`Contenido de la región ${selectedRegion.index}`} tabIndex={0} className="matchrim-scan-region-body min-h-0 min-w-0 flex-1 space-y-4 overflow-y-auto break-words px-4 pb-4">
+              <div ref={isNative ? regionEditorBody : undefined} role="region" aria-label={`Contenido de la región ${selectedRegion.index}`} tabIndex={0} className="matchrim-scan-region-body min-h-0 min-w-0 flex-1 space-y-4 overflow-y-auto break-words px-4 pb-4">
                 {loading && (
                   <p role="status" className="text-sm text-slate-600" data-testid="region-analysis-lock">
                     Análisis del lote en curso. Las identidades aún pueden cambiar.
