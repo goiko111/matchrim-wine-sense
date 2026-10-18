@@ -26,7 +26,13 @@ const withoutNativeBranch = (text: string) => {
   visit(ast); assert.ok(native);
   return text.slice(0, native.getStart(ast)) + '[native branch]' + text.slice(native.end);
 };
-assert.equal(withoutNativeBranch(readFileSync(file, 'utf8')), withoutNativeBranch(baseline(file)), 'All navigation outside the native branch is unchanged');
+const originalObserver = '    observer.observe(nav);';
+const nativeObserver = "    if (isNative) {\n      observer.observe(nav, { box: 'border-box' });\n    } else {\n      observer.observe(nav);\n    }";
+const currentNav = readFileSync(file, 'utf8');
+assert.equal(currentNav.split(nativeObserver).length, 2, 'Exactly the reviewed native border-box observation');
+assert.equal(baseline(file).split(originalObserver).length, 2, 'Original web observer remains one argument');
+assert.equal(withoutNativeBranch(currentNav.replace(nativeObserver, originalObserver)), withoutNativeBranch(baseline(file)),
+  'Navigation outside the native render and explicit native-only border-box observation is unchanged');
 const swiftPath = 'ios/App/App/AppDelegate.swift';
 const oldSwift = baseline(swiftPath);
 const expected = oldSwift
@@ -36,7 +42,16 @@ const expected = oldSwift
 assert.notEqual(expected, oldSwift, 'Native bridge delta must be explicit');
 assert.equal(readFileSync(swiftPath, 'utf8'), expected, 'Only uncapped user font scaling changes the bridge; permissions/lifetimes stay intact');
 assert.equal(readFileSync('src/App.css', 'utf8'), baseline('src/App.css'), 'Actual nav-height reservation is preserved');
-const native = readFileSync(file, 'utf8').split('if (isNative) {')[1].split('\n  return (')[0];
+const navAst = ts.createSourceFile(file, currentNav, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+const renderBranches: ts.IfStatement[] = [];
+const findRender = (node: ts.Node) => {
+  if (ts.isIfStatement(node) && node.expression.getText(navAst) === 'isNative'
+    && ts.isBlock(node.thenStatement) && node.thenStatement.statements.some(ts.isReturnStatement)) renderBranches.push(node);
+  ts.forEachChild(node, findRender);
+};
+findRender(navAst);
+assert.equal(renderBranches.length, 1, 'Only the actual native render supplies navigation layout');
+const native = renderBranches[0].thenStatement.getText(navAst);
 assert.match(native, /min-h-\[56px\]/);
 assert.match(native, /w-\[48px\]/);
 assert.match(native, /gap-\[2px\]/);

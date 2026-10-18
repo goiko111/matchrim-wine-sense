@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
@@ -233,7 +234,7 @@ await check('Actual dense 1320x1239 is not upsampled; legacy output/quality and 
     }
   }
 });
-await check('Read, decode, resizing, quality, crop and detector/defer policy source preserved outside two optional guards', () => {
+await check('Read/decode/resizing/quality/crop source exact; scoped recognition96 policy amendment fingerprinted and behavior-checked', () => {
   const inspect = (text: string) => {
     const tree = ts.createSourceFile(path, text, ts.ScriptTarget.Latest, true), values = new Map<string, ts.Expression>();
     const visit = (node: ts.Node) => {
@@ -250,9 +251,30 @@ await check('Read, decode, resizing, quality, crop and detector/defer policy sou
   const statements = body(current).statements.filter(statement => !ts.isIfStatement(statement) || !statement.expression.getText(current.tree).startsWith('options?.max'));
   assert.equal(body(current).statements.length - statements.length, 2);
   assert.deepEqual(statements.map(node => node.getText(current.tree)), body(legacy).statements.map(node => node.getText(legacy.tree)));
-  for (const name of ['src/utils/imageCropGeometry.ts', 'src/utils/scanAnalysisPolicy.ts', 'src/utils/multiWineScan.ts']) {
+  for (const name of ['src/utils/imageCropGeometry.ts']) {
     assert.equal(readFileSync(name, 'utf8'), execFileSync('git', ['show', `${baseline}:${name}`], { encoding: 'utf8' }), name);
   }
+  const reviewedRecognition96 = new Map([
+    ['src/utils/scanAnalysisPolicy.ts', {
+      before: '1240250042be94af0af926b4c4d5f25a8acfbd92f9b28bd43dce97f29504a5f5',
+      current: '648615ba1129dc1741683c997f87d1517f1fe44a7affefc888d983b23239cd34',
+    }],
+    ['src/utils/multiWineScan.ts', {
+      before: 'a1f4a526a0ab30255dd4ebccd661c70ed14f9170298cd44f439178f053bbc8b1',
+      current: '58a4dc10fcd13f4f5661224025f2686e8f82cdc4b7ea7bf15416e4b44bcccb38',
+    }],
+  ]);
+  const sha256 = (value: Buffer) => createHash('sha256').update(value).digest('hex');
+  for (const [name, expected] of reviewedRecognition96) {
+    assert.equal(sha256(execFileSync('git', ['show', `${baseline}:${name}`])), expected.before, `Exact c25 policy source: ${name}`);
+    assert.equal(sha256(readFileSync(name)), expected.current, `Exact reviewed recognition96 source: ${name}`);
+  }
+  const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-recognition96.ts'], { encoding: 'utf8' });
+  const report = JSON.parse(output.trim().split('\n').at(-1)!);
+  assert.equal(report.baseline, 'ebee038059778f1f10bdb5dd647bccb8324fb580');
+  assert.equal(report.passed, 35); assert.equal(report.failed, 0);
+  assert.equal(report.remoteCalls, 0); assert.equal(report.paidCalls, 0);
+  assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 35);
 });
 await check('Actual label call supplies native limits only; original three arguments and all other startScan code stay exact', async () => {
   const scannerPath = 'src/components/wine-import/MultiWineLabelScanner.tsx';

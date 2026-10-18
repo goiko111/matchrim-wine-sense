@@ -106,7 +106,7 @@ check(!/image|filename|authorization|token|user_id|wine_name/.test(JSON.stringif
 const component = readFileSync('src/components/wine-import/WineMenuScanner.tsx', 'utf8');
 check(component.includes('if (nativeRun) return nativeRun.request('));
 check(component.includes('if (!nativeRun && !isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn'));
-check(component.includes('planNativeMenuRefinement93(prepared.width, prepared.height, fullResponse)'));
+check(component.includes('planNativeMenuRefinement93(prepared.width, prepared.height, fullResponse, { preserveRowContext: true })'));
 check(component.includes('Promise.allSettled(scanTiles.map('));
 check(component.includes("nativeRun.phase('profile')") && component.includes("nativeRun.phase('refinement')"));
 check(component.includes('data-testid="menu-scan-metrics"'));

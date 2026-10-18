@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import Vision
 
 // Parent compiles this file only into a separate QA95 UI-test target. No custom
 // XCUIApplication.openURL API or AppDelegate hook is assumed. The QA app's
@@ -210,6 +211,118 @@ final class Matchrim95NativeSyntheticTests: XCTestCase {
         if skip.waitForExistence(timeout: 2) { try tap(skip, app) }
     }
 
+
+    @MainActor private func homeRequire(_ condition: Bool, _ message: String) throws {
+        guard condition else {
+            XCTFail(message)
+            throw NSError(domain: "QA95Home", code: 1, userInfo: [NSLocalizedDescriptionKey: message])
+        }
+    }
+
+    @MainActor private func homeClip(_ app: XCUIApplication) throws -> CGRect {
+        let web = app.webViews.firstMatch
+        let navigation = app.descendants(matching: .any).matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Navegaci\u{00f3}n principal")).firstMatch
+        try homeRequire(web.exists && navigation.exists, "Home WebView and named fixed navigation required")
+        var clip = web.frame.intersection(app.frame)
+        clip.size.height = min(clip.maxY, navigation.frame.minY) - clip.minY
+        try homeRequire(!clip.isNull && clip.width >= 44 && clip.height >= 44, "Home body clip must exclude fixed navigation")
+        return clip
+    }
+
+    @MainActor private func homeBodyAction(_ name: String, destination: String,
+                                           tag: String, app: XCUIApplication) throws {
+        let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", name)).firstMatch
+        try homeRequire(button.waitForExistence(timeout: 12), "Missing Home body button " + name)
+        var observations: [[String: Any]] = []
+        var ready = false
+        for attempt in 0...12 {
+            let clip = try homeClip(app)
+            let frame = button.frame
+            let visible = frame.intersection(clip)
+            let center = CGPoint(x: frame.midX, y: frame.midY)
+            // Do not ask offscreen WebKit for an AX activation point. Geometry
+            // is only a prerequisite: standard isHittable and tap remain gates.
+            ready = frame.width >= 44 && frame.height >= 44 && !visible.isNull
+                && visible.width >= 44 && visible.height >= 44
+                && clip.insetBy(dx: 22, dy: 22).contains(center)
+            observations.append(["attempt": attempt, "button": NSCoder.string(for: frame),
+                                 "clip": NSCoder.string(for: clip), "visible": NSCoder.string(for: visible),
+                                 "geometryReady": ready])
+            if ready { break }
+            if attempt < 12 {
+                if frame.midY < clip.midY { app.swipeDown() }
+                else { app.swipeUp() }
+            }
+        }
+        let data = try JSONSerialization.data(withJSONObject: observations, options: [.sortedKeys])
+        let geometry = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+        geometry.name = tag + "-geometry"; geometry.lifetime = .keepAlways; add(geometry)
+        capture(tag + "-before-standardAX", app)
+        try homeRequire(ready, "Home body " + name + " lacks an unclipped 44pt activation footprint after bounded scroll")
+        try homeRequire(button.isHittable, "Home body " + name + " standard AX activation is not hittable")
+        button.tap()
+        try homeRequire(app.staticTexts[destination].firstMatch.waitForExistence(timeout: 15),
+                        "Home body " + name + " did not open " + destination)
+        try homeRequire(app.state == .runningForeground, "Home action left the app foreground")
+        capture(tag + "-destination", app)
+    }
+
+    @MainActor private func homeBrand(_ tag: String, app: XCUIApplication) throws {
+        let brand = app.buttons["Inicio de Matchrim"].firstMatch
+        try homeRequire(brand.waitForExistence(timeout: 12), "Named Home brand control missing")
+        for _ in 0..<12 {
+            let clip = try homeClip(app)
+            if clip.contains(brand.frame) { break }
+            app.swipeDown()
+        }
+        let clip = try homeClip(app)
+        capture(tag + "-brand", app)
+        try homeRequire(clip.contains(brand.frame) && brand.frame.width >= 44 && brand.frame.height >= 44,
+                        "MAXportrait brand AX bounds must be wholly visible")
+        try homeRequire(brand.isHittable, "MAXportrait brand control must remain AX reachable")
+        let screen = XCUIScreen.main.screenshot().image
+        guard let pixels = screen.cgImage else { try homeRequire(false, "Native screenshot pixels unavailable"); return }
+        try homeRequire(app.frame.width < app.frame.height, "Brand oracle requires actual portrait")
+        let sx = CGFloat(pixels.width) / app.frame.width
+        let sy = CGFloat(pixels.height) / app.frame.height
+        let rect = CGRect(x: (brand.frame.minX - app.frame.minX) * sx,
+                          y: (brand.frame.minY - app.frame.minY) * sy,
+                          width: brand.frame.width * sx, height: brand.frame.height * sy).integral
+        guard let cropped = pixels.cropping(to: rect) else { try homeRequire(false, "Brand crop outside native screenshot"); return }
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = .accurate
+        request.usesLanguageCorrection = false
+        request.recognitionLanguages = ["en-US", "es-ES"]
+        try VNImageRequestHandler(cgImage: cropped, options: [:]).perform([request])
+        let rows = (request.results ?? []).map { row in
+            ["text": row.topCandidates(1).first?.string ?? "",
+             "bounds": NSCoder.string(for: row.boundingBox)] as [String: Any]
+        }
+        let receipt = try JSONSerialization.data(withJSONObject: [
+            "brandAX": brand.label, "brandRect": NSCoder.string(for: brand.frame),
+            "clip": NSCoder.string(for: clip), "localOCR": rows,
+            "scope": "Local native pixels, no provider; explicit screenshot review still required"
+        ], options: [.sortedKeys])
+        let evidence = XCTAttachment(data: receipt, uniformTypeIdentifier: "public.json")
+        evidence.name = tag + "-brand-localOCR"; evidence.lifetime = .keepAlways; add(evidence)
+        let brandPattern = try NSRegularExpression(pattern: "^[\\p{P}\\p{S}\\s]*Matchrim[\\p{P}\\p{S}\\s]*$")
+        let hasWholeBrandRow = rows.first { row in
+            guard let text = row["text"] as? String else { return false }
+            let range = NSRange(text.startIndex..<text.endIndex, in: text)
+            return brandPattern.firstMatch(in: text, range: range)?.range == range
+        } != nil
+        try homeRequire(hasWholeBrandRow,
+                        "MAXportrait native brand must be one unbroken Matchrim word, not Ma/tch/rim")
+    }
+
+    @MainActor private func homeOrientation(_ landscape: Bool, app: XCUIApplication) throws {
+        XCUIDevice.shared.orientation = landscape ? .landscapeLeft : .portrait
+        let settled = NSPredicate { _, _ in (app.frame.width > app.frame.height) == landscape }
+        try homeRequire(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: settled, object: nil)], timeout: 10) == .completed,
+                        "Actual Home orientation did not settle")
+    }
+
     @MainActor private func journey(_ index: Int, _ initial: [String: Any], _ app: XCUIApplication) throws {
         app.launchArguments = []
         app.launch()
@@ -229,6 +342,10 @@ final class Matchrim95NativeSyntheticTests: XCTestCase {
         _ = try control("/__qa95/fault", ["fault": "user_wines", "enabled": false])
 
         try open("Inicio", "\u{00bf}Qu\u{00e9} quieres elegir?", app)
+        for (body, destination) in [("Botellas", "Etiqueta de vino"), ("Carta", "Carta de vinos")] {
+            try homeBodyAction(body, destination: destination, tag: "persona-\(index)-Home-" + body, app: app)
+            try open("Inicio", "\u{00bf}Qu\u{00e9} quieres elegir?", app)
+        }
         try tap(app.buttons["Crear mi perfil Matchrim"].firstMatch, app)
         try tap(app.buttons["Comenzar el test"].firstMatch, app)
         guard let answers = initial["answers"] as? [String: String], let prompts = initial["prompts"] as? [String] else {
@@ -290,10 +407,12 @@ final class Matchrim95NativeSyntheticTests: XCTestCase {
         // First Radix auth toast in this new launch must become accessible.
         _ = try control("/__qa95/fault", ["fault": "login", "enabled": true])
         try login(index + 100, app)
+        // Observe the five-second toast before loopback receipt polling. The
+        // same independent HTTP400 and null-owner checks still run afterwards.
+        try closeToast("Error de autenticaci\u{00f3}n", app)
         _ = try receipt { state in
             (state["requests"] as? [[String: Any]] ?? []).contains { $0["path"] as? String == "/auth/v1/token" && $0["status"] as? Int == 400 }
         }
-        try closeToast("Error de autenticaci\u{00f3}n", app)
         let failedLogin = try control("/__qa95/state")
         try ensure(failedLogin["currentOwner"] is NSNull, "Controlled invalid login created a session")
         _ = try control("/__qa95/fault", ["fault": "login", "enabled": false])
@@ -344,7 +463,7 @@ final class Matchrim95NativeSyntheticTests: XCTestCase {
         capture("persona-\(index)-complete", app)
     }
 
-    @MainActor func testSequentialSyntheticNativeProfiles() throws {
+    @MainActor private func authorizedApp(_ index: Int) throws -> XCUIApplication {
         #if !targetEnvironment(simulator)
         throw QA95Failure.failed("Owned simulator only; never a device or desktop application")
         #endif
@@ -357,17 +476,117 @@ final class Matchrim95NativeSyntheticTests: XCTestCase {
         try ensure(health["bundle"] as? String == bundle && health["origin"] as? String == origin && health["manifestSha256"] as? String == expected, "Wrong harness, bundle or frozen build")
         guard let indices = health["indices"] as? [Int] else { throw QA95Failure.failed("No explicit profile indices") }
         try ensure(indices == [0,31,32,40,49] || indices == Array(0..<50), "Only pinned QA5 or complete QA50 matrix")
-        let app = XCUIApplication(bundleIdentifier: bundle)
-        defer { app.terminate() }
-        for index in indices {
-            app.terminate()
-            let state = try control("/__qa95/select", ["persona": index, "reset": true])
-            do {
-                try journey(index, state, app)
-            } catch {
-                capture("persona-\(index)-FAIL", app)
-                throw error
-            }
-        }
+        try ensure(indices.contains(index), "Method persona is outside the explicitly enabled fixture indices")
+        return XCUIApplication(bundleIdentifier: bundle)
     }
+
+    @MainActor private func runProfile(_ index: Int) throws {
+        let app = try authorizedApp(index)
+        defer { app.terminate(); XCUIDevice.shared.orientation = .portrait }
+        app.terminate()
+        XCUIDevice.shared.orientation = .portrait
+        let state = try control("/__qa95/select", ["persona": index, "reset": true])
+        do { try journey(index, state, app) }
+        catch { capture("persona-\(index)-FAIL", app); throw error }
+    }
+
+    @MainActor private func runMaxHome(_ index: Int) throws {
+        try ensure([0,31,32,40,49].contains(index), "Only five predeclared MAX companions")
+        let app = try authorizedApp(index)
+        defer { app.terminate(); XCUIDevice.shared.orientation = .portrait }
+        app.terminate()
+        XCUIDevice.shared.orientation = .portrait
+        let initial = try control("/__qa95/select", ["persona": index, "reset": true])
+        do {
+            app.launchArguments = ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+            app.launch()
+            try ensure(app.webViews.firstMatch.waitForExistence(timeout: 15), "MAX companion WebView missing")
+            _ = try receipt { ($0["bootCount"] as? Int) == 1 }
+            try dismissGuide(app)
+            try open("Inicio", "\u{00bf}Qu\u{00e9} quieres elegir?", app)
+            try homeBrand("max-home-\(index)-portrait", app: app)
+            try homeOrientation(true, app: app)
+            capture("max-home-\(index)-landscape-initial", app)
+            for (name, heading) in [("Botellas", "Etiqueta de vino"), ("Carta", "Carta de vinos")] {
+                try homeBodyAction(name, destination: heading, tag: "max-home-\(index)-" + name, app: app)
+                try open("Inicio", "\u{00bf}Qu\u{00e9} quieres elegir?", app)
+            }
+            let final = try control("/__qa95/state")
+            try ensure(final["bootCount"] as? Int == 1 && final["actualQuizCount"] as? Int == 0
+                       && final["secondaryQuizCount"] as? Int == 0
+                       && final["currentOwner"] as? String == initial["primaryOwner"] as? String,
+                       "Separate MAX companion changed the bootstrap/owner/quiz contract")
+            let beforeWines = try JSONSerialization.data(withJSONObject: initial["userWines"] ?? [], options: [.sortedKeys])
+            let afterWines = try JSONSerialization.data(withJSONObject: final["userWines"] ?? [], options: [.sortedKeys])
+            try ensure(beforeWines == afterWines, "MAX companion must not mutate cellar data")
+            for key in ["blocked", "safetyErrors", "unmodeled"] {
+                try ensure((final[key] as? [Any])?.isEmpty == true, "MAX companion transport safety failure: " + key)
+            }
+            try ensure(final["externalForwardCount"] as? Int == 0, "MAX companion external forwarding forbidden")
+            try ensure((final["requests"] as? [[String: Any]] ?? []).allSatisfy {
+                ["GET", "OPTIONS"].contains($0["method"] as? String ?? "")
+            }, "MAX companion must perform no backend mutations")
+            capture("max-home-\(index)-complete", app)
+        } catch { capture("max-home-\(index)-FAIL", app); throw error }
+    }
+
+    // Run with one worker and four explicit -only-testing sets: 00...12,
+    // 13...25, 26...37, 38...49. The strict reader rejects larger batches,
+    // mixed MAX/profile batches, old seeds, missing or non-Passed methods.
+    @MainActor func testProfile00() throws { try runProfile(0) }
+    @MainActor func testProfile01() throws { try runProfile(1) }
+    @MainActor func testProfile02() throws { try runProfile(2) }
+    @MainActor func testProfile03() throws { try runProfile(3) }
+    @MainActor func testProfile04() throws { try runProfile(4) }
+    @MainActor func testProfile05() throws { try runProfile(5) }
+    @MainActor func testProfile06() throws { try runProfile(6) }
+    @MainActor func testProfile07() throws { try runProfile(7) }
+    @MainActor func testProfile08() throws { try runProfile(8) }
+    @MainActor func testProfile09() throws { try runProfile(9) }
+    @MainActor func testProfile10() throws { try runProfile(10) }
+    @MainActor func testProfile11() throws { try runProfile(11) }
+    @MainActor func testProfile12() throws { try runProfile(12) }
+    @MainActor func testProfile13() throws { try runProfile(13) }
+    @MainActor func testProfile14() throws { try runProfile(14) }
+    @MainActor func testProfile15() throws { try runProfile(15) }
+    @MainActor func testProfile16() throws { try runProfile(16) }
+    @MainActor func testProfile17() throws { try runProfile(17) }
+    @MainActor func testProfile18() throws { try runProfile(18) }
+    @MainActor func testProfile19() throws { try runProfile(19) }
+    @MainActor func testProfile20() throws { try runProfile(20) }
+    @MainActor func testProfile21() throws { try runProfile(21) }
+    @MainActor func testProfile22() throws { try runProfile(22) }
+    @MainActor func testProfile23() throws { try runProfile(23) }
+    @MainActor func testProfile24() throws { try runProfile(24) }
+    @MainActor func testProfile25() throws { try runProfile(25) }
+    @MainActor func testProfile26() throws { try runProfile(26) }
+    @MainActor func testProfile27() throws { try runProfile(27) }
+    @MainActor func testProfile28() throws { try runProfile(28) }
+    @MainActor func testProfile29() throws { try runProfile(29) }
+    @MainActor func testProfile30() throws { try runProfile(30) }
+    @MainActor func testProfile31() throws { try runProfile(31) }
+    @MainActor func testProfile32() throws { try runProfile(32) }
+    @MainActor func testProfile33() throws { try runProfile(33) }
+    @MainActor func testProfile34() throws { try runProfile(34) }
+    @MainActor func testProfile35() throws { try runProfile(35) }
+    @MainActor func testProfile36() throws { try runProfile(36) }
+    @MainActor func testProfile37() throws { try runProfile(37) }
+    @MainActor func testProfile38() throws { try runProfile(38) }
+    @MainActor func testProfile39() throws { try runProfile(39) }
+    @MainActor func testProfile40() throws { try runProfile(40) }
+    @MainActor func testProfile41() throws { try runProfile(41) }
+    @MainActor func testProfile42() throws { try runProfile(42) }
+    @MainActor func testProfile43() throws { try runProfile(43) }
+    @MainActor func testProfile44() throws { try runProfile(44) }
+    @MainActor func testProfile45() throws { try runProfile(45) }
+    @MainActor func testProfile46() throws { try runProfile(46) }
+    @MainActor func testProfile47() throws { try runProfile(47) }
+    @MainActor func testProfile48() throws { try runProfile(48) }
+    @MainActor func testProfile49() throws { try runProfile(49) }
+
+    @MainActor func testMaxHomeProfile00() throws { try runMaxHome(0) }
+    @MainActor func testMaxHomeProfile31() throws { try runMaxHome(31) }
+    @MainActor func testMaxHomeProfile32() throws { try runMaxHome(32) }
+    @MainActor func testMaxHomeProfile40() throws { try runMaxHome(40) }
+    @MainActor func testMaxHomeProfile49() throws { try runMaxHome(49) }
 }

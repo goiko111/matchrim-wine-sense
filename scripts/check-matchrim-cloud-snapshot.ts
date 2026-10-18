@@ -43,7 +43,7 @@ const reviewed95 = new Map([
   ['src/contexts/AuthContext.tsx', { before: '29d5d2a7378a227591e3b78354f91f658c71c8d7d4fef6e24eba9d0bdb857863', current: '2736a90c8e1c57df0c3fdd44a2eebdc8a9a7decadab889813f24c04431ed8d1e' }],
   ['src/components/NativeAccountActions.tsx', { before: 'a36e1e671fd876cc070dbe154429e6a9d21a7edf0d5a379566f8a2a984bedc43', current: '1168b0d99ef442998350625d39039fceb4ac034fa99f3255c8fc0cd9ce5ded7b' }],
   ['src/pages/MyWines.tsx', { before: 'd5bc7c18ec8a29c4bd6d6a6cd624cfd81e6e54054ffda11709f1f1b0035d138c', current: '90be420fb0fae1dedf75f406130f7e0781410a67151ec55d12ce9e59bbbd29da' }],
-  ['src/components/NativeAppHome.tsx', { before: '9447712478b1a3119819c59059f6d2f59224ece08ed079d1252f1ce2e2baff28', current: 'b33d1edd58c7267e370d4f6b4dbfeba14d6dcc64f7002586300b996fb799d137' }],
+  ['src/components/NativeAppHome.tsx', { before: '9447712478b1a3119819c59059f6d2f59224ece08ed079d1252f1ce2e2baff28', current: '04d35a6fcfb4536b060fa701e86a168b81ac7320368ef7e3eae3a689a46cfca1' }],
   ['src/pages/Index.tsx', { before: '66a5b0427ef655e3c2f51320d04806d3e3e83969b54c24f19800b443ed386e6b', current: 'b1a031e515e0384307f2813696be0ba56510a13b30220b0e0f62d179924543f8' }],
   ['src/pages/UseMatchrim.tsx', { before: '540c19f7fb8547cfc720b1700aae5f54c1230a5c4be9308323e747b2f65c3ae5', current: '320d4da2dd16da7b38fd1f0b19ec56d1c874e04d19f5a048755c92a08b32a4f4' }],
   ['src/components/wine-import/WineShopLinkAdvisor.tsx', { before: 'a7b9ddd9db73b93bd20b229ccb388efe46d75319ded8d723150fd1933ed60471', current: '17529a6c6285fbf0d348981b1b01e42b73d7816539033c92b7d3934ef6b1da0f' }],
@@ -69,6 +69,8 @@ const reviewed95Suites = [
   ['scripts/check-matchrim-consumer95-cellar-dialog.ts', 4],
   ['scripts/check-matchrim-consumer95-native-layout.ts', 14],
   ['scripts/check-matchrim-consumer95-menu-serving.ts', 29],
+  ['scripts/check-matchrim-native-home-accessibility96.ts', 12],
+  ['scripts/check-matchrim-recognition96.ts', 35],
 ] as const;
 const reviewed95SuiteResults = reviewed95Suites.map(([path, minimum]) => {
   const output = execFileSync(process.execPath, ['--import', 'tsx', path], { encoding: 'utf8' });

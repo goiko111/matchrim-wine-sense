@@ -55,11 +55,25 @@ check('no source metadata is synthesized or mutated', () => {
 });
 
 type Element = { type: unknown; props: Record<string, unknown>; children: unknown[] };
+const fragment = Symbol('React.Fragment');
 const element = (type: unknown, props: Record<string, unknown> | null, ...children: unknown[]): Element => ({ type, props: props || {}, children });
 const flatten = (tree: unknown): Element[] => Array.isArray(tree) ? tree.flatMap(flatten)
   : tree && typeof tree === 'object' && 'children' in tree ? [tree as Element, ...flatten((tree as Element).children)] : [];
+const renderedChildren = (x: unknown): unknown[] => Array.isArray(x) ? x.flatMap(renderedChildren)
+  : x === null || x === undefined || typeof x === 'boolean' ? []
+    : x && typeof x === 'object' && 'type' in x && (x as Element).type === fragment
+      ? renderedChildren((x as Element).children) : [clean(x)];
 const clean = (x: unknown): unknown => Array.isArray(x) ? x.filter(v => v !== false && v !== null && v !== undefined).map(clean)
-  : x && typeof x === 'object' ? Object.fromEntries(Object.entries(x).filter(([, v]) => typeof v !== 'function').map(([k, v]) => [k, clean(v)])) : x;
+  : x && typeof x === 'object' ? Object.fromEntries(Object.entries(x).filter(([, v]) => typeof v !== 'function')
+    .map(([k, v]) => [k, k === 'children' ? renderedChildren(v) : clean(v)])) : x;
+// React fragments and nested child arrays do not create DOM nodes. Real element
+// boundaries, text and attributes must still fail the complete render comparison.
+const span = element('span', { 'aria-label': 'same' }, 'same');
+assert.deepEqual(clean(element('div', null, element(fragment, null, span))), clean(element('div', null, span)));
+for (const changed of [element('b', { 'aria-label': 'same' }, 'same'),
+  element('span', { 'aria-label': 'changed' }, 'same'), element('span', { 'aria-label': 'same' }, 'changed')]) {
+  assert.notDeepEqual(clean(element('div', null, element(fragment, null, changed))), clean(element('div', null, span)));
+}
 const root = new URL('../', import.meta.url);
 function mount(file: string, source: string, native: boolean) {
   const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
@@ -68,7 +82,7 @@ function mount(file: string, source: string, native: boolean) {
   const slots: unknown[] = []; let cursor = 0, owner: string | null = 'owner-a', effects: (() => void)[] = [];
   const icons = ['ArrowUpRight','BrainCircuit','Camera','ChevronRight','Compass','FileText','History','Layers3','LoaderCircle','ScanLine','Sparkles','UserRound','Wine','X','TrendingUp','ExternalLink'];
   const deps: Record<string, unknown> = Object.fromEntries(icons.map(k => [k, k]));
-  const sandbox = vm.createContext({ ...deps, React: { createElement: element }, exports: {},
+  const sandbox = vm.createContext({ ...deps, React: { createElement: element, Fragment: fragment }, exports: {},
     useState: (initial: unknown) => { const i = cursor++; if (!(i in slots)) slots[i] = typeof initial === 'function' ? initial() : initial; return [slots[i], (v: unknown) => { slots[i] = typeof v === 'function' ? v(slots[i]) : v; }]; },
     useLayoutEffect: (effect: () => void, next: unknown[]) => { const i = cursor++; const old = slots[i] as unknown[] | undefined;
       if (!old || old.some((v, n) => v !== next[n])) { slots[i] = next; effects.push(effect); } },

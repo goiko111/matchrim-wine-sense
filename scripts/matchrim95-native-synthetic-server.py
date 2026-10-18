@@ -35,7 +35,10 @@ from urllib.parse import parse_qs, unquote, urlsplit
 sys.dont_write_bytecode = True
 REPO = Path('/Users/GOIKO/2matchrim76-recognition-20261008')
 PRIVATE = Path('/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim95-eight-hours-20261017/native-synthetic95')
-PROFILES = PRIVATE.parent / 'personas/synthetic-profiles.json'
+CLOSURE_PRIVATE = Path('/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim95-closure-20261018/native-D')
+PRIVATE_ROOTS = (PRIVATE, CLOSURE_PRIVATE)
+PROFILES = Path('/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim95-eight-hours-20261017/personas/synthetic-profiles.json')
+PROFILES_SHA256 = '00061bd5b722b9e62f12337c64fc17cbf7342f93dd19e9a5623987b39c34272c'
 SOURCE = REPO / 'scripts/qa-matchrim-consumer95-journeys.py'
 BOOTSTRAP = REPO / 'scripts/matchrim95-native-synthetic-bootstrap.js'
 BUNDLE = 'wine.matchrim.qa95synthetic'
@@ -65,14 +68,15 @@ def require(condition, message):
 
 def private_path(value):
     path = Path(value).resolve()
-    require(path.is_relative_to(PRIVATE) and path != PRIVATE, 'Evidence must be below the private QA95 directory')
+    require(any(path.is_relative_to(root) and path != root for root in PRIVATE_ROOTS),
+            'Evidence must be below an exact private QA95 directory')
     return path
 
 
 def fresh_directory(value):
     path = private_path(value)
     path.mkdir(parents=True, mode=0o700, exist_ok=False)
-    PRIVATE.chmod(0o700)
+    next(root for root in PRIVATE_ROOTS if path.is_relative_to(root)).chmod(0o700)
     path.chmod(0o700)
     return path
 
@@ -98,7 +102,9 @@ def install_network_fence():
         if event == 'open':
             name, mode, flags = args
             if isinstance(name, (str, bytes, os.PathLike)) and flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT):
-                require(Path(os.fsdecode(name)).resolve().is_relative_to(PRIVATE), 'QA95 writes restricted to private evidence')
+                target = Path(os.fsdecode(name)).resolve()
+                require(any(target.is_relative_to(root) and target != root for root in PRIVATE_ROOTS),
+                        'QA95 writes restricted to exact private evidence roots')
     sys.addaudithook(audit)
 
 
@@ -130,6 +136,7 @@ class TransportLoader(importlib.abc.Loader):
 
 
 def load_fixture(source_bytes, profile_bytes):
+    require(sha(profile_bytes) == PROFILES_SHA256, 'Original immutable 20261017 profile fixture SHA256 required')
     loader = TransportLoader(source_bytes)
     spec = importlib.util.spec_from_loader('qa95_frozen_transport', loader)
     module = importlib.util.module_from_spec(spec)
