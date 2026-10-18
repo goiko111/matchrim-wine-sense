@@ -42,7 +42,7 @@ import { trackAppEvent } from "@/lib/analytics";
 import { toast } from "sonner";
 import { cropImageRegion, NATIVE_IMAGE_PREPARATION_LIMITS, prepareImageForAnalysis, shouldRejectTextAnalysis } from "@/utils/imageAnalysis";
 import { invokeEdgeFunction } from "@/utils/invokeEdgeFunction";
-import { createMenuScanRun93, planNativeMenuRefinement93, type MenuScanMetrics93 } from '@/utils/wineMenuExecution93';
+import { createMenuScanRun93, planNativeMenuInitialRead96, planNativeMenuRefinement93, type MenuScanMetrics93 } from '@/utils/wineMenuExecution93';
 import { isMatchrimFixtureQaEnabled } from "@/utils/matchrimQaMode";
 import { isWineMenuItem } from "@/utils/wineMenuGrounding";
 import { normalizeScanCurrency, singlePriceCurrency } from '@/utils/scanMoney';
@@ -773,14 +773,19 @@ const WineMenuScannerSession = ({
       let failedTileCount = 0;
       let attemptedTileCount = 1;
       let fullFailure: unknown;
-      if (isNative && readMode !== 'full') {
-        const initialTiles = retained?.failed ?? menuRecoveryTiles95(prepared.width, prepared.height, recoveryLayout, recoveryColumnSplit);
+      const nativeInitialTiles = nativeRun && readMode === 'full' && !isMatchrimFixtureQaEnabled
+        ? planNativeMenuInitialRead96(prepared.width, prepared.height) : [];
+      if (nativeInitialTiles.length || (isNative && readMode !== 'full')) {
+        const initialTiles = nativeInitialTiles.length ? nativeInitialTiles : retained?.failed ?? (recoveryLayout === 'auto'
+          ? buildMenuScanTiles(prepared.width, prepared.height, 'unknown', { preserveRowContext: true })
+          : menuRecoveryTiles95(prepared.width, prepared.height, recoveryLayout, recoveryColumnSplit));
         if (retained) successfulTiles.push(...retained.successful);
         attemptedTileCount = successfulTiles.length + initialTiles.length;
         const initial = await Promise.allSettled(initialTiles.map(async tile => ({
-          tile, response: await invokeScan(tile, await cropImageRegion(base64File, tile.box, 0, 1800, controller.signal)),
+          tile, response: await invokeScan(tile, tile.id === 'full' ? base64File
+            : await cropImageRegion(base64File, tile.box, 0, 1800, controller.signal)),
         })));
-        if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
+        if (scanAbortRef.current !== controller || controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
         successfulTiles.push(...initial.flatMap(result => result.status === 'fulfilled' ? [result.value] : []));
         initial.forEach((result, index) => { if (result.status === 'rejected') failedTiles.push(initialTiles[index]); });
         failedTileCount += initial.filter(result => result.status === 'rejected').length;
@@ -797,9 +802,10 @@ const WineMenuScannerSession = ({
         fullFailure = error;
         failedTileCount += 1;
       }
-      const fullResponse = successfulTiles[0]?.response;
-      const scanTiles = isMatchrimFixtureQaEnabled || (isNative && readMode !== 'full') ? []
-        : nativeRun && fullResponse ? planNativeMenuRefinement93(prepared.width, prepared.height, fullResponse)
+      const fullResponse = nativeInitialTiles.length
+        ? successfulTiles.find(({ tile }) => tile.id === 'full')?.response : successfulTiles[0]?.response;
+      const scanTiles = isMatchrimFixtureQaEnabled || nativeInitialTiles.length || (isNative && readMode !== 'full') ? []
+        : nativeRun && fullResponse ? planNativeMenuRefinement93(prepared.width, prepared.height, fullResponse, { preserveRowContext: true })
           : !fullResponse || needsMenuRefinement(fullResponse)
             ? buildMenuScanTiles(prepared.width, prepared.height, fullResponse?.layout) : [];
       if (nativeRun && scanTiles.length) { setScanPhase('refinement'); nativeRun.phase('refinement'); }

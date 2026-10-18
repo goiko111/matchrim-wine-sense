@@ -26,6 +26,19 @@ export const canonicalProducerKey = (value?: string | null) => normalize(value)
   .replace(/ (s a|s l|sa|sl|ltd|limited)$/, '');
 const producerWords = (value: string | null | undefined) => canonicalProducerKey(value).split(' ').filter(Boolean);
 
+// A repeated location is not independent winery evidence. Keep explicit names
+// such as "Bodegas Rioja" distinct from the bare geographical value "Rioja".
+export const hasLabelProducerRoleConflict = (identity: LabelIdentity, other?: LabelIdentity): boolean => {
+  const producer = normalize(identity.producer);
+  if (!producer) return false;
+  const locations = [identity.region, identity.country, other?.region, other?.country]
+    .flatMap(value => typeof value === 'string' ? [value, ...value.split(/[/|;,]/)] : [])
+    .map(normalize).filter(Boolean);
+  return locations.includes(producer)
+    || [identity, other].some(value => value?.region && value.country
+      && producer === normalize(`${value.region} ${value.country}`));
+};
+
 // The catalog searches name and producer columns separately; producer evidence
 // is checked on returned candidates, not appended to the name substring.
 export const canonicalLabelSearchQuery = (input: LabelIdentity): string =>
@@ -33,6 +46,7 @@ export const canonicalLabelSearchQuery = (input: LabelIdentity): string =>
 
 export const isSafeCanonicalLabelMatch = (input: LabelIdentity, candidate: LabelIdentity): boolean => {
   if (isNonWineIdentity(input.name, candidate.name)) return false;
+  if (hasLabelProducerRoleConflict(input, candidate) || hasLabelProducerRoleConflict(candidate, input)) return false;
   const inputName = nameWords(input);
   const candidateName = nameWords(candidate);
   if (!inputName.length || !candidateName.length) return false;

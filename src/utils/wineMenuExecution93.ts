@@ -1,5 +1,5 @@
-import { buildMenuScanTiles, getRightFocusMenuScanTile, mayHaveUnreadMenuColumn,
-  type MenuScanResponse, type MenuScanTile } from './wineMenuScan';
+import { buildMenuScanTiles, getFullMenuScanTile, getRightFocusMenuScanTile, mayHaveUnreadMenuColumn,
+  type MenuScanResponse, type MenuScanTile, type MenuScanTileOptions96 } from './wineMenuScan';
 
 export type MenuScanPhase93 = 'quality' | 'profile' | 'ocr' | 'refinement' | 'ranking';
 export type MenuScanMetrics93 = {
@@ -15,14 +15,24 @@ export const needsNativeMenuRefinement93 = (response: MenuScanResponse): boolean
     || (response.coverage.estimated_visible_wines ?? 0) > count;
 };
 
-export const planNativeMenuRefinement93 = (width: number, height: number, response: MenuScanResponse): MenuScanTile[] => {
+export const planNativeMenuRefinement93 = (width: number, height: number, response: MenuScanResponse,
+  options: MenuScanTileOptions96 = {}): MenuScanTile[] => {
   if (!needsNativeMenuRefinement93(response) || !Number.isFinite(width) || !Number.isFinite(height)
     || width <= 0 || height <= 0) return [];
-  const tiles = buildMenuScanTiles(width, height, response.layout);
+  const tiles = buildMenuScanTiles(width, height, response.layout, options);
   const coversBothColumns = tiles.some(tile => tile.id === 'left') && tiles.some(tile => tile.id === 'right');
   // The narrow column complements vertical crops; start it in the same bounded batch, not a later serial pass.
   if (!coversBothColumns && mayHaveUnreadMenuColumn(response)) tiles.push(getRightFocusMenuScanTile());
   return tiles;
+};
+
+export const planNativeMenuInitialRead96 = (width: number, height: number): MenuScanTile[] => {
+  if (!Number.isFinite(width) || !Number.isFinite(height) || Math.min(width, height) < 1200
+    || Math.max(width, height) <= 1800) return [];
+  // Large documents get independent row/column context before a slow full read can consume the deadline.
+  // Smaller images remain full-first; this geometry is not a claim about the document's contents.
+  return [getFullMenuScanTile(), ...buildMenuScanTiles(width, height, 'unknown', { preserveRowContext: true }),
+    getRightFocusMenuScanTile()];
 };
 
 export class MenuScanLimitError93 extends Error {

@@ -34,18 +34,38 @@ export const deferRegion = (region: ScanRegion, deferral: RegionDeferral): ScanR
 });
 
 export const planRegionAnalysis = (regions: ScanRegion[], width: number, height: number) => {
-  const automatic: ScanRegion[] = [];
+  const eligible: ScanRegion[] = [];
   const deferred: ScanRegion[] = [];
   for (const region of prioritizeRegionsForAnalysis(regions)) {
-    const reason = regionPreflight(region, width, height)
-      ?? (automatic.length >= MAX_AUTOMATIC_REGION_ANALYSES ? {
-        code: 'automatic_limit' as const,
-        message: 'Pendiente de análisis: la primera pasada lee hasta 12 regiones. Puedes continuar con el siguiente lote o revisar esta región.',
-      } : null);
+    const reason = regionPreflight(region, width, height);
     if (reason) deferred.push(deferRegion(region, reason));
-    else automatic.push(region);
+    else eligible.push(region);
   }
-  return { automatic, deferred };
+  let ordered = eligible;
+  if (eligible.length > MAX_AUTOMATIC_REGION_ANALYSES) {
+    // Nine occupied areas fit within the unchanged twelve-request first pass.
+    // Preserve quality order inside each area and original region IDs for retry.
+    const cells = new Map<number, ScanRegion[]>();
+    for (const region of eligible) {
+      const column = Math.max(0, Math.min(2, Math.floor((region.box.x + region.box.width / 2) * 3 / 100)));
+      const row = Math.max(0, Math.min(2, Math.floor((region.box.y + region.box.height / 2) * 3 / 100)));
+      const key = row * 3 + column;
+      const cell = cells.get(key) ?? [];
+      cell.push(region);
+      cells.set(key, cell);
+    }
+    const buckets = [...cells].sort(([a], [b]) => a - b).map(([, cell]) => cell);
+    ordered = [];
+    for (let round = 0; ordered.length < eligible.length; round++) {
+      for (const cell of buckets) if (cell[round]) ordered.push(cell[round]);
+    }
+  }
+  const automatic = ordered.slice(0, MAX_AUTOMATIC_REGION_ANALYSES);
+  for (const region of ordered.slice(MAX_AUTOMATIC_REGION_ANALYSES)) deferred.push(deferRegion(region, {
+    code: 'automatic_limit',
+    message: 'Pendiente de an\u00e1lisis: la primera pasada lee hasta 12 regiones. Puedes continuar con el siguiente lote o revisar esta regi\u00f3n.',
+  }));
+  return { automatic, deferred: deferred.sort((a, b) => a.index - b.index) };
 };
 
 export const planAdditionalRegionAnalysis = (regions: ScanRegion[], width: number, height: number) => {

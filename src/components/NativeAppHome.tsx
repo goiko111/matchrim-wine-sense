@@ -111,8 +111,18 @@ const NativeAppHome = ({
     navigate(user ? '/profile' : buildAuthRedirectPath('/profile'));
   };
 
+  const homeIntroduction = <>
+    <p className="text-sm font-semibold text-red-800">Tu vino, con contexto</p>
+    <h1 id="home-decision-title" className="matchrim-native-display-title mt-1 text-[2rem] font-bold leading-[1.08] text-slate-950">
+      ¿Qué quieres elegir?
+    </h1>
+    <p className="mt-2 max-w-xl text-[15px] leading-6 text-slate-600">
+      Haz una foto. Matchrim identifica, compara y explica qué encaja contigo.
+    </p>
+  </>;
+
   return (
-    <div className="matchrim-app-shell min-h-screen text-slate-950">
+    <div className={isNative ? 'matchrim-native-home-shell matchrim-app-shell min-h-screen text-slate-950' : 'matchrim-app-shell min-h-screen text-slate-950'}>
       {!isNative && (user ? <AppNav /> : (
         <header className="border-b border-slate-200 bg-white px-4 py-3">
           <div className="mx-auto flex max-w-6xl items-center justify-between">
@@ -126,13 +136,7 @@ const NativeAppHome = ({
       ))}
 
       <main className="matchrim-native-home-main matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(7.5rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">
-        {isNative && import.meta.env.VITE_MATCHRIM_NATIVE_GUIDE_ENABLED === 'true' && (
-          <div className="flex justify-end">
-            <MatchrimQuickGuide key={user?.id ?? 'anonymous'} ownerId={user?.id ?? null} ready={onboardingReady}
-              existing={Boolean(hasQuizResults || hasSavedWines || recentScans.length)} />
-          </div>
-        )}
-        <div className="flex min-h-12 items-center justify-between gap-3">
+        <div className={isNative ? 'matchrim-native-home-header flex min-h-12 items-center justify-between gap-3' : 'flex min-h-12 items-center justify-between gap-3'}>
           <button type="button" onClick={() => navigate('/')} className="matchrim-pressable flex min-h-11 items-center gap-2.5 text-left" aria-label="Inicio de Matchrim">
             <img src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" alt="" className="h-8 w-8" />
             <span className="text-lg font-bold text-slate-950">Matchrim</span>
@@ -148,13 +152,7 @@ const NativeAppHome = ({
         </div>
 
         <section className="mt-6" aria-labelledby="home-decision-title">
-          <p className="text-sm font-semibold text-red-800">Tu vino, con contexto</p>
-          <h1 id="home-decision-title" className="matchrim-native-display-title mt-1 text-[2rem] font-bold leading-[1.08] text-slate-950">
-            ¿Qué quieres elegir?
-          </h1>
-          <p className="mt-2 max-w-xl text-[15px] leading-6 text-slate-600">
-            Haz una foto. Matchrim identifica, compara y explica qué encaja contigo.
-          </p>
+          {!isNative && homeIntroduction}
 
           <div className="matchrim-native-scan-grid mt-5 grid grid-cols-2 gap-3">
             <button
@@ -188,7 +186,15 @@ const NativeAppHome = ({
               <ScanLine className="absolute right-3 top-3 h-16 w-16 text-white/8" strokeWidth={1.25} aria-hidden="true" />
             </button>
           </div>
+          {isNative && <div className="matchrim-native-home-intro mt-6">{homeIntroduction}</div>}
         </section>
+
+        {isNative && import.meta.env.VITE_MATCHRIM_NATIVE_GUIDE_ENABLED === 'true' && (
+          <div className="flex justify-end">
+            <MatchrimQuickGuide key={user?.id ?? 'anonymous'} ownerId={user?.id ?? null} ready={onboardingReady}
+              existing={Boolean(hasQuizResults || hasSavedWines || recentScans.length)} />
+          </div>
+        )}
 
         {isNative && recentScans.length > 0 && (
           <section className="mt-6" aria-labelledby="recent-native-scans-title">

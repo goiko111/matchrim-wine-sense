@@ -32,7 +32,11 @@ const MobileBottomNav = () => {
       '--matchrim-bottom-nav-height', `${nav.getBoundingClientRect().height}px`,
     );
     const observer = new ResizeObserver(updateHeight);
-    observer.observe(nav);
+    if (isNative) {
+      observer.observe(nav, { box: 'border-box' });
+    } else {
+      observer.observe(nav);
+    }
     updateHeight();
 
     return () => {

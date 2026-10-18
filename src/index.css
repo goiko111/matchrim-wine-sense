@@ -185,6 +185,197 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-scan-
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* Home scrolls inside a stable viewport so WK accessibility ancestors do not follow body offsets. */
+html.matchrim-native-platform .matchrim-native-home-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: var(--matchrim-bottom-nav-height, 88px);
+}
+
+html.matchrim-native-platform .matchrim-native-home-shell > .matchrim-native-home-main {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: calc(12px + var(--matchrim-safe-top)) calc(16px + var(--matchrim-safe-right)) 16px calc(16px + var(--matchrim-safe-left));
+  scroll-padding-block: 16px;
+}
+
+html.matchrim-native-platform .matchrim-native-home-shell .matchrim-native-home-main > section:first-of-type {
+  margin-top: 16px;
+}
+
+html.matchrim-native-platform .matchrim-native-home-header {
+  min-height: 44px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+html.matchrim-native-platform .matchrim-native-home-header > button:first-child {
+  flex: 1 0 auto;
+  flex-wrap: wrap;
+  min-width: 0;
+  min-height: 44px;
+  max-width: 100%;
+  gap: 10px;
+}
+
+html.matchrim-native-platform .matchrim-native-home-header > button:first-child span {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+html.matchrim-native-platform .matchrim-native-home-header img {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+html.matchrim-native-platform .matchrim-native-home-header > button:last-child {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+html.matchrim-native-platform .matchrim-native-home-header > button:last-child svg {
+  width: 20px;
+  height: 20px;
+}
+
+html.matchrim-native-platform .matchrim-native-home-shell .matchrim-native-scan-grid > button > svg.absolute[aria-hidden="true"] {
+  display: none;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-home-shell .matchrim-native-scan-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-home-shell .matchrim-native-scan-grid > button {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 12px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-home-shell .matchrim-native-scan-grid > button > span:first-of-type {
+  width: 36px;
+  height: 36px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-home-shell .matchrim-native-scan-grid > button > span:last-of-type {
+  min-width: 0;
+  margin-top: 0;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-home-shell .matchrim-native-scan-grid > button > span:first-of-type svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (orientation: landscape) and (min-width: 700px) and (max-height: 600px) {
+  html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-home-shell .matchrim-native-scan-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Initial scanner copy keeps its full width at accessibility text sizes. */
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty),
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title) {
+  padding-left: calc(12px + var(--matchrim-safe-left));
+  padding-right: calc(12px + var(--matchrim-safe-right));
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty) .scan-page-heading,
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-heading {
+  margin-bottom: 16px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty) .scan-page-heading > div,
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-heading > div {
+  gap: 12px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty) .scan-page-back svg,
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-back svg {
+  width: 20px;
+  height: 20px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-upload-empty,
+html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 12px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-upload-empty > div:first-child,
+html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) > .text-left > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-upload-empty > div:first-child > span,
+html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) > .text-left > div:first-child > span {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-upload-empty > div:first-child > div,
+html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) > .text-left,
+html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) > .text-left > div:first-child > div {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-upload-empty h2,
+html.matchrim-native-platform.matchrim-accessibility-text #wine-menu-upload-title {
+  margin-top: 0;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-upload-empty .scan-upload-actions,
+html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) > .text-left > .grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-upload-empty .scan-upload-actions > button,
+html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) > .text-left > .grid > button {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  height: auto;
+  gap: 8px;
+  padding: 12px;
+  white-space: normal;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-upload-empty svg,
+html.matchrim-native-platform.matchrim-accessibility-text section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) > .text-left svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 body,
 #root,
 .App {
@@ -314,10 +505,6 @@ html.matchrim-native-platform [data-sonner-toaster].matchrim-notices [data-icon]
   html.matchrim-native-platform .matchrim-native-airim-main {
     max-width: 54rem;
     padding-top: calc(0.5rem + var(--matchrim-safe-top));
-  }
-
-  html.matchrim-native-platform .matchrim-native-home-main > div:first-child {
-    min-height: 2.5rem;
   }
 
   html.matchrim-native-platform .matchrim-native-home-main > section,

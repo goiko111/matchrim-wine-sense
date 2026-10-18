@@ -135,13 +135,17 @@ export const shouldRunRightFocusMenuScan = (
 export const mayHaveUnreadMenuColumn = (response: MenuScanResponse) => response.layout === 'columns'
   || (response.coverage?.status !== 'reported_complete' && (response.vinos?.length ?? 0) >= 12);
 
-export const buildMenuScanTiles = (width: number, height: number, layout: MenuScanResponse['layout'] = 'unknown'): MenuScanTile[] => {
+export interface MenuScanTileOptions96 { preserveRowContext?: boolean; }
+
+export const buildMenuScanTiles = (width: number, height: number, layout: MenuScanResponse['layout'] = 'unknown',
+  options: MenuScanTileOptions96 = {}): MenuScanTile[] => {
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
     return [getFullMenuScanTile()];
   }
 
-  // A 12% overlap preserves rows close to a fold without making both calls near-duplicates.
-  return width >= height && layout === 'columns'
+  // Native whole-row crops retain names and their distant price columns together.
+  // The 12% overlap protects seam rows; it does not supply missing service headers.
+  return options.preserveRowContext !== true && width >= height && layout === 'columns'
     ? [
         { id: 'left', box: { x: 0, y: 0, width: 56, height: 100 } },
         { id: 'right', box: { x: 44, y: 0, width: 56, height: 100 } },

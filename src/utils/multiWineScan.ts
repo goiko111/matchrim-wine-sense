@@ -1,9 +1,10 @@
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { hasSpecificWineIdentity } from '../../supabase/functions/_shared/matchrim-menu-grounding';
 import { isNonWineIdentity } from './wineCategory';
+import { hasLabelProducerRoleConflict } from './winerimLabelIdentity';
 import type { CropGeometry } from './imageCropGeometry';
 import type { RegionDeferral } from './scanAnalysisPolicy';
-import type { WinerimOriginalSheet } from './winerimOriginalSheet';
+import { hasWinerimGeographyConflict, type WinerimOriginalSheet } from './winerimOriginalSheet';
 
 export type ScanRegionStatus =
   | 'pending'
@@ -587,7 +588,11 @@ export const normalizeWineCandidates = (payload: unknown, regionId: string): Win
     const name = textValue(raw?.name ?? raw?.nombre);
     if (!raw || !name || name.toLowerCase() === 'sin nombre'
       || isNonWineIdentity(name, raw.type, raw.tipo, raw.category, raw.beverage_type)) return [];
-    const producer = textValue(raw.producer ?? raw.productor);
+    const rawProducer = textValue(raw.producer ?? raw.productor);
+    const region = textValue(raw.region);
+    const country = textValue(raw.country ?? raw.pais);
+    const producerRoleConflict = hasLabelProducerRoleConflict({ producer: rawProducer, region, country });
+    const producer = producerRoleConflict ? null : rawProducer;
     if (!hasSpecificWineIdentity(name, producer || '')) return [];
     const sensory = asRecord(raw.sensory_attributes ?? raw.atributos);
 
@@ -596,15 +601,17 @@ export const normalizeWineCandidates = (payload: unknown, regionId: string): Win
       name,
       producer,
       vintage: numericValue(raw.vintage ?? raw.anada),
-      region: textValue(raw.region),
-      country: textValue(raw.country ?? raw.pais),
+      region,
+      country,
       grapes: stringArray(raw.grapes ?? raw.uvas),
       alcohol: numericValue(raw.alcohol),
       confidence: normalizeConfidence(raw.confidence ?? raw.confianza, index === 0 ? 0.55 : 0.35),
       source: raw.source === 'inference' ? 'inference' : 'label',
       evidence: stringArray(raw.evidence ?? raw.evidencias),
-      uncertaintyReasons: stringArray(raw.uncertainty_reasons ?? raw.motivos_duda),
-      inferredFields: stringArray(raw.inferred_fields ?? raw.campos_inferidos),
+      uncertaintyReasons: [...stringArray(raw.uncertainty_reasons ?? raw.motivos_duda),
+        ...(producerRoleConflict ? ['La ubicaci\u00f3n le\u00edda no confirma la bodega. Revisa el productor en la etiqueta.'] : [])],
+      inferredFields: [...new Set([...stringArray(raw.inferred_fields ?? raw.campos_inferidos),
+        ...(producerRoleConflict ? ['producer'] : [])])],
       sensoryAttributes: sensory ? {
         potencia: numericValue(sensory.potencia ?? sensory.power),
         acidez: numericValue(sensory.acidez ?? sensory.acidity),
@@ -661,9 +668,19 @@ const genericWineNameTokens = new Set([
   'wine',
 ]);
 
+const hasUnresolvedProducerGeographyConflict = (left: WineCandidate, right: WineCandidate) => {
+  if (![left, right].some(candidate => candidate.inferredFields.some(field => /^(producer|productor|winery|bodega)$/i.test(field)))) return false;
+  const geography = (candidate: WineCandidate) => ({
+    region: candidate.inferredFields.includes('region') ? null : candidate.region,
+    country: candidate.inferredFields.some(field => /^(country|pais|pa\u00eds)$/i.test(field)) ? null : candidate.country,
+  });
+  return hasWinerimGeographyConflict(geography(left), geography(right));
+};
+
 const hasWineIdentityConflict = (left: WineCandidate, right: WineCandidate) => {
   if (left.canonicalId && right.canonicalId && left.canonicalId !== right.canonicalId) return true;
   if (left.vintage && right.vintage && left.vintage !== right.vintage) return true;
+  if (hasUnresolvedProducerGeographyConflict(left, right)) return true;
   const leftProducer = [...identityTokens(left.producer)].filter((token) => !producerStopWords.has(token));
   const rightProducer = [...identityTokens(right.producer)].filter((token) => !producerStopWords.has(token));
   return leftProducer.length > 0 && rightProducer.length > 0
@@ -737,8 +754,10 @@ export const groupDuplicateWines = (regions: ScanRegion[]): DuplicateWineGroup[]
       current.count += 1;
       if (candidate.confidence > current.candidate.confidence) current.candidate = candidate;
     } else {
+      const geographicSplit = canGroup && groups.some(group => buildCanonicalWineKey(group.candidate) === canonicalKey
+        && members.get(group)?.some(member => hasUnresolvedProducerGeographyConflict(member, candidate)));
       const group: DuplicateWineGroup = {
-        key: canGroup ? canonicalKey : `${canonicalKey}|region:${region.id}`,
+        key: canGroup && !geographicSplit ? canonicalKey : `${canonicalKey}|region:${region.id}`,
         regionIds: [region.id],
         count: 1,
         candidate,

@@ -1,4 +1,4 @@
-import { canonicalProducerKey, isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
+import { canonicalProducerKey, hasLabelProducerRoleConflict, isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 import { isNonWineIdentity } from './wineCategory';
 
 export interface WinerimOriginalIdentity {
@@ -142,7 +142,9 @@ const parseLibraryWine = (value: unknown): LibraryWine | null => {
     grapes: [...new Set(grapes)], sensoryAttributes };
 };
 const matchesLibraryIdentity = (input: WinerimOriginalIdentity, wine: WinerimOriginalIdentity) =>
-  (identityName(input.name, input.vintage) === identityName(wine.name, wine.vintage)
+  !hasLabelProducerRoleConflict(input, wine)
+  && !hasLabelProducerRoleConflict(wine, input)
+  && (identityName(input.name, input.vintage) === identityName(wine.name, wine.vintage)
     || isSafeCanonicalLabelMatch({ ...input, name: identityName(input.name, input.vintage) },
       { ...wine, name: identityName(wine.name, wine.vintage) }))
   && hasExactWinerimProducer(input.producer, wine.producer)

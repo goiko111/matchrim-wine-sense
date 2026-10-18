@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { isNonWineIdentity } from './wineCategory';
+import { hasLabelProducerRoleConflict } from './winerimLabelIdentity';
 import { canLookupWinerimOriginal, isVerifiedWinerimSheetForIdentity, lookupWinerimOriginalSheet,
   type WinerimOriginalIdentity, type WinerimOriginalLookupResult } from './winerimOriginalSheet';
 
@@ -24,6 +25,7 @@ const rowSchema = z.object({
   id: idSchema, name: publicText(120), subname: publicText(120).nullable().optional(),
   winery: publicText(160), vintage: vintageSchema, slugname: slugSchema,
   type: publicText(80).nullable().optional(), region: publicText(160).nullable().optional(),
+  country: publicText(160).nullable().optional(),
 }).strict();
 const pageSchema = z.object({ page: z.literal(1), count: z.number().int().nonnegative().safe(),
   results: z.array(z.unknown()).max(20), limit: z.number().int().positive().max(20).optional() }).strip();
@@ -58,10 +60,11 @@ const parseCandidate = (value: unknown): WinerimCandidate95 | null => {
   if (!raw) return null;
   // Project public identity fields before strict validation; photos, prices, profiles
   // and sensory fields from the wire never become proposal evidence.
-  const row = rowSchema.safeParse(Object.fromEntries(['id', 'name', 'subname', 'winery', 'vintage', 'slugname', 'type', 'region']
+  const row = rowSchema.safeParse(Object.fromEntries(['id', 'name', 'subname', 'winery', 'vintage', 'slugname', 'type', 'region', 'country']
     .map(key => [key, raw[key]])));
   if (!row.success) return null;
   const wine = row.data;
+  if (hasLabelProducerRoleConflict({ producer: wine.winery, region: wine.region, country: wine.country })) return null;
   const subname = wine.subname;
   const name = subname && !` ${words(wine.name)} `.includes(` ${words(subname)} `) ? `${wine.name} ${subname}` : wine.name;
   const parsed = candidateSchema.safeParse({ id: wine.id, name, winery: wine.winery, vintage: wine.vintage,
