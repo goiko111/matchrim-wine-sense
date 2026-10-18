@@ -814,6 +814,13 @@ final class Matchrim95ConsumerTests: XCTestCase {
                         && upload.waitForExistence(timeout: 12), "QA14_STATE cancel did not return unchanged initial scanner")
         try homeRequire(!app.buttons["Cancelar an\u{00e1}lisis"].exists && !app.buttons["Revisar vinos"].exists
                         && !app.buttons["Quitar carta"].exists, "QA14_STATE cancelling Photos must not select/preview/analyze")
+        let postCancelFrame = upload.frame, postCancelClip = try homeClip(app)
+        capture(tag + "-post-cancel-return-initial", app)
+        try scanner14Record(tag + "-post-cancel-return-position", ["label": upload.label,
+            "frame": NSCoder.string(for: postCancelFrame), "clip": NSCoder.string(for: postCancelClip),
+            "initialHittable": upload.isHittable,
+            "photosPickerAndOSCancelDisappearanceWaitPassed": true])
+        _ = try scanner14Reveal(upload, tag: tag + "-post-cancel-return", requiresTarget44: true, app: app)
         try homeRequire(upload.label == label && upload.isHittable,
                         "QA14_STATE same empty scanner upload must regain standard AX reachability after Photos dismissal")
         let selectedSource = app.images.matching(NSPredicate(format: "label IN %@",
