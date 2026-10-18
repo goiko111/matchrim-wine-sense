@@ -13,6 +13,7 @@ import * as classifier from '../src/lib/winerimClassifier';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '../src/utils/matchrimLearning';
 import { cellarTrainingRows, makeCellarCatalogEvidence } from '../src/utils/bodegaAffinity';
 import { resolveScanProfile } from '../src/utils/scanProfile';
+import * as profile95 from '../supabase/functions/_shared/matchrim-profile95';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const { values } = parseArgs({ options: { baseline: { type: 'boolean' }, output: { type: 'string' } } });
@@ -37,6 +38,7 @@ const loadLearningPlatform96 = (native: boolean) => {
     require: (id: string) => {
       if (id === '@capacitor/core') return { Capacitor: { isNativePlatform: () => native } };
       if (id === './matchrimLearning') return { calculateLearnedMatchrimProfile };
+      if (id === '../../supabase/functions/_shared/matchrim-profile95') return profile95;
       throw Error('Unmodeled platform-wrapper dependency: ' + id);
     } };
   vm.runInNewContext(ts.transpileModule(learningPlatformSource96, {

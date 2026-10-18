@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 import { isFoodScanPayload, MAX_MENU_DISHES, MAX_MENU_TILE_DISHES, normalizeFoodScan, parseFoodMenuRegionContext } from "./contract.ts";
-import { calculateLearnedMatchrimProfile95, readMatchrimProfile95, MATCHRIM_PROFILE95_VERSION,
+import { calculateLearnedMatchrimProfile95, readMatchrimLearningOptions96, readMatchrimProfile95, MATCHRIM_PROFILE95_VERSION,
   MATCHRIM_PROFILE95_TRAINING_COLUMNS, type MatchrimProfile95 } from "../_shared/matchrim-profile95.ts";
 import { runMatchrimAi } from "../_shared/matchrim-ai-provider.ts";
 import { hasMatchrimOpenAiKey } from "../_shared/matchrim-openai.ts";
@@ -59,7 +59,7 @@ serve(async (req: Request) => {
     let body: unknown;
     try { body = await req.json(); } catch { return invalidRequest(); }
     if (!body || typeof body !== "object" || Array.isArray(body)) return invalidRequest();
-    const { image, mode, restaurantName, matchrimProfile, scan_region: rawScanRegion } = body as Record<string, unknown>;
+    const { image, mode, restaurantName, matchrimProfile, matchrimLearningModel, scan_region: rawScanRegion } = body as Record<string, unknown>;
     if (typeof image !== "string" || !image.startsWith("data:")) return invalidRequest();
     if (mode !== "menu" && mode !== "dish") return invalidRequest();
     if (restaurantName != null && typeof restaurantName !== "string") return invalidRequest();
@@ -116,7 +116,7 @@ serve(async (req: Request) => {
               if (trainingError || !Array.isArray(rows)) {
                 profileStatus = 'training-unavailable';
               } else {
-                const learned = calculateLearnedMatchrimProfile95(learnedProfile, rows);
+                const learned = calculateLearnedMatchrimProfile95(learnedProfile, rows, readMatchrimLearningOptions96(matchrimLearningModel));
                 learnedProfile = learned.profile;
                 profileSamples = learned.samples;
                 profileStatus = learned.samples > 0 ? 'learned' : 'base';

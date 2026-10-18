@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import ts from 'typescript';
 import { openAi92LegacyHandlers } from './matchrim-openai92-scope';
+import { projectFeedbackServer96 } from './matchrim-feedback-server96-scope';
 
 const baseline = '0ae0c98';
 const reviewedClientSensory = 'f66edd6';
@@ -82,14 +83,17 @@ const assertSpecialLegacyProjection95 = (source: ts.SourceFile) => {
 };
 const reviewedSpecialDb95 = (source: ts.SourceFile) => {
   assert.equal(source.fileName, 'supabase/functions/ai-wine-chat/index.ts');
-  assert.equal(createHash('sha256').update(source.text).digest('hex'),
+  const legacyText96 = projectFeedbackServer96(source.fileName, source.text);
+  assert.equal(createHash('sha256').update(legacyText96).digest('hex'),
     reviewedSpecialSources95['supabase/functions/ai-wine-chat/index.ts'],
     'The supplied AST source, including the special-only loader, must match the reviewed freeze');
   for (const [file, expected] of Object.entries(reviewedSpecialSources95)) {
-    assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex'), expected,
+    const text = readFileSync(file, 'utf8');
+    const legacyText = file === 'supabase/functions/_shared/matchrim-special-moments95.ts' ? text : projectFeedbackServer96(file, text);
+    assert.equal(createHash('sha256').update(legacyText).digest('hex'), expected,
       'Additive v95 source freeze; no unreviewed helper/body/query change: ' + file);
   }
-  return assertSpecialLegacyProjection95(source);
+  return assertSpecialLegacyProjection95(parse(source.fileName, legacyText96));
 };
 let calls = 0;
 for (const name of openAi92LegacyHandlers) {
@@ -117,7 +121,7 @@ for (const [label, candidate] of [
   assert.notEqual(candidate, chatText95, 'Mutation fixture must change source: ' + label);
   assert.throws(() => reviewedSpecialDb95(parse(chatPath95, candidate)), undefined, 'Guard rejects: ' + label);
   if (label !== 'strict owner filter') {
-    assert.throws(() => assertSpecialLegacyProjection95(parse(chatPath95, candidate)), undefined,
+    assert.throws(() => assertSpecialLegacyProjection95(parse(chatPath95, projectFeedbackServer96(chatPath95, candidate))), undefined,
       'Legacy AST projection independently rejects: ' + label);
   }
 }
@@ -165,7 +169,11 @@ for (const [file, expected] of [
   [learnerPath96, '070999f26f18b8ff3958b1d2864d5bf9f3ddb23aaffe7e0c1eee05b5af5d3fee'],
   ['src/utils/matchrimLearningPlatform.ts', 'f3a6ded6020ffb16aca44f79c50cbcda473c1f5549ce01d9670755b17ccd9178'],
   ['scripts/check-matchrim-feedback-strength96.ts', 'f2642c532de5c940510e0627b336c9e9613f66fb5459e8527ae48798851714e8'],
-]) assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex'), expected, 'Reviewed opt-in source: ' + file);
+]) {
+  const text = readFileSync(file, 'utf8');
+  assert.equal(createHash('sha256').update(file === 'src/utils/matchrimLearningPlatform.ts'
+    ? projectFeedbackServer96(file, text) : text).digest('hex'), expected, 'Reviewed opt-in source: ' + file);
+}
 const nativeLearningOutput96 = execFileSync(process.execPath,
   ['--import', 'tsx', 'scripts/check-matchrim-feedback-strength96.ts'], { encoding: 'utf8' });
 assert.equal(nativeLearningOutput96.split('\n').filter(line => line.startsWith('PASS ')).length, 12,

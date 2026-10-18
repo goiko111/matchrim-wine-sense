@@ -1,4 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
+import { Capacitor } from '@capacitor/core';
+import { NATIVE_MATCHRIM_LEARNING_MODEL } from '@/utils/matchrimLearningPlatform';
 
 export type AiRimFunctionType =
   | 'wine-for-dish'
@@ -80,7 +82,8 @@ export const streamAiRimResponse = async (
         Authorization: `Bearer ${accessToken}`,
         apikey: publishableKey,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(Capacitor.isNativePlatform()
+        ? { ...payload, matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL } : payload),
       signal,
     }).then(response => {
       if (signal.aborted) void response.body?.cancel().catch(() => {});

@@ -4,10 +4,11 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import vm from 'node:vm';
 import ts from 'typescript';
-import { calculateLearnedMatchrimProfile95, MATCHRIM_PROFILE95_TRAINING_COLUMNS, readMatchrimProfile95 } from '../supabase/functions/_shared/matchrim-profile95';
+import { calculateLearnedMatchrimProfile95, MATCHRIM_PROFILE95_TRAINING_COLUMNS, NATIVE_MATCHRIM_LEARNING_MODEL, readMatchrimLearningOptions96, readMatchrimProfile95 } from '../supabase/functions/_shared/matchrim-profile95';
 import { safeSpecialMomentsText95, specialMomentsPrompt95, specialMomentsResponse95, SPECIAL_MOMENTS_FALLBACK95,
   SPECIAL_MOMENTS95_VERSION } from '../supabase/functions/_shared/matchrim-special-moments95';
 import { specialMomentPlainText } from '../src/utils/specialMomentsRequest';
+import { projectFeedbackServer96 } from './matchrim-feedback-server96-scope';
 
 const current = readFileSync('supabase/functions/ai-wine-chat/index.ts', 'utf8');
 const before = execFileSync('git', ['show', '86df:supabase/functions/ai-wine-chat/index.ts'], { encoding: 'utf8' });
@@ -22,10 +23,10 @@ const checks: string[] = [];
 const check = async (name: string, run: () => unknown | Promise<unknown>) => { await run(); checks.push(name); console.log('PASS', name); };
 globalThis.fetch = async () => { throw new Error('Real network/provider forbidden in special95 unit'); };
 const completion = (content: unknown, finish = 'stop') => new Response(JSON.stringify({ choices: [{ finish_reason: finish, message: { content } }] }), { headers: { 'Content-Type': 'application/json' } });
-type Settings = { rows?: unknown[]; quiz?: unknown; quizError?: boolean; trainingError?: boolean; owner?: string | null; authGate?: Promise<void>; model?: (init: RequestInit) => Promise<Response> };
+type Settings = { rows?: unknown[]; quiz?: unknown; quizError?: boolean; trainingError?: boolean; owner?: string | null; authError?: boolean; authGate?: Promise<void>; model?: (init: RequestInit) => Promise<Response> };
 function handler(source = current, settings: Settings = {}) {
   const queries: { table: string; columns?: string; owner?: unknown }[] = [], logs: unknown[] = [], models: RequestInit[] = [];
-  const client = { auth: { getUser: async () => { await settings.authGate; return { data: { user: settings.owner === null ? null : { id: settings.owner ?? 'owner-a' } }, error: null }; } },
+  const client = { auth: { getUser: async () => { await settings.authGate; return { data: { user: settings.owner === null ? null : { id: settings.owner ?? 'owner-a' } }, error: settings.authError ? { message: 'Synthetic auth unavailable' } : null }; } },
     from(table: string) {
       const query = { table } as typeof queries[number];
       const run = () => {
@@ -46,7 +47,7 @@ function handler(source = current, settings: Settings = {}) {
     Deno: { env: { get: (key: string) => key === 'SUPABASE_URL' ? 'https://synthetic.invalid' : key === 'SUPABASE_ANON_KEY' ? 'synthetic-anon' : undefined } },
     console: { error() {} }, serve: (fn: typeof invoke) => { invoke = fn; }, createClient: () => client,
     hasMatchrimOpenAiKey: () => true, getMatchrimOpenAiModel: () => 'synthetic-model',
-    calculateLearnedMatchrimProfile95, MATCHRIM_PROFILE95_TRAINING_COLUMNS, readMatchrimProfile95, specialMomentsResponse95,
+    calculateLearnedMatchrimProfile95, MATCHRIM_PROFILE95_TRAINING_COLUMNS, readMatchrimLearningOptions96, readMatchrimProfile95, specialMomentsResponse95,
     fetchMatchrimAiChat: async (init: RequestInit) => { models.push(init); if (settings.model) return settings.model(init);
       return JSON.parse(String(init.body)).stream ? new Response('data: {"choices":[{"delta":{"content":"LEGACY"}}]}\n\ndata: [DONE]\n\n') : completion(valid); },
   });
@@ -170,7 +171,7 @@ await check('ordinary source AST exactly86df after projecting only special95 add
     }]);
     const output = ts.createPrinter({ removeComments: true }).printFile(result.transformed[0]); result.dispose(); return output;
   };
-  assert.equal(project(current, true), project(before, false));
+  assert.equal(project(projectFeedbackServer96('supabase/functions/ai-wine-chat/index.ts', current), true), project(before, false));
 });
 for (const [name, p, status] of [
   ['missing-input', { functionType: 'wine-for-dish', input1: ' ' }, 200],
@@ -189,6 +190,7 @@ await check('actual frontend SSE parser and native formatter never receive99 per
   const code = ast.statements.filter(n => !ts.isImportDeclaration(n)).map(n => n.getText(ast)).join('\n')
     .replace(/import\.meta\.env\.[A-Z_]+/g, '"synthetic"');
   const context = vm.createContext({ exports: {}, AbortController, DOMException, ReadableStream, TextDecoder, setTimeout, clearTimeout,
+    Capacitor: { isNativePlatform: () => false }, NATIVE_MATCHRIM_LEARNING_MODEL,
     supabase: { supabaseUrl: 'https://synthetic.invalid', auth: { getSession: async () => ({ data: { session: { user: { id: 'owner-a' }, access_token: 'synthetic-owner-token' } }, error: null }),
       onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }) } },
     fetch: async (_url: string, init: RequestInit) => h.invoke(new Request('https://synthetic.invalid', init)),
@@ -200,6 +202,51 @@ await check('actual frontend SSE parser and native formatter never receive99 per
 await check('prompt remains general without valid exact profile and never trusts payload profile', () => {
   const text = specialMomentsPrompt95(payload, { profile: { ...base, potente: NaN }, status: 'available' }); assert.doesNotMatch(text, /NaN|"potente"/);
 });
+await check('Native96 only the exact model tag selects weighted strength in the actual owner-only Moments loader', async () => {
+  const high = { ...learnedRow, rating: 'ok', sensory_attributes: { scale: 'winerim-0-5', potencia: 5, acidez: 5, dulzura: 5, taninos: 5, afrutado: 5 },
+    place_details: { bodega_sensory_evidence: { ...learnedRow.place_details.bodega_sensory_evidence,
+      attribute_signature: JSON.stringify(['winerim-0-5', 5, 5, 5, 5, 5]) } } };
+  for (const tag of [NATIVE_MATCHRIM_LEARNING_MODEL, undefined, null, '', false, [], {}, 'native-evidence-strength-v2 ', 'NATIVE-EVIDENCE-STRENGTH-V2']) {
+    const h = handler(current, { quiz: { potente: 1, acidez: 1, dulce: 1, tanico: 1, afrutado: 1 }, rows: [high] });
+    const r = await h.invoke(request({ ...payload, matchrimLearningModel: tag, profile: base, user_id: 'foreign-owner' }));
+    assert.equal(await decodeSse(r), valid);
+    assert.match(JSON.parse(String(h.models[0].body)).messages[1].content,
+      tag === NATIVE_MATCHRIM_LEARNING_MODEL ? /"potente":1\.3/ : /"potente":2\.2/);
+    assert(h.queries.every(query => query.owner === 'owner-a')); assert.equal(h.queries.length, 2);
+  }
+});
+await check('Native96 actual stream adds the tag only on native and preserves the exact web JSON/headers', async () => {
+  const source = readFileSync('src/lib/aiRimStream.ts', 'utf8');
+  const ast = ts.createSourceFile('transport.ts', source, ts.ScriptTarget.Latest, true);
+  const code = ast.statements.filter(n => !ts.isImportDeclaration(n)).map(n => n.getText(ast)).join('\n')
+    .replace(/import\.meta\.env\.[A-Z_]+/g, '"synthetic"');
+  for (const native of [false, true]) {
+    const requests: RequestInit[] = [];
+    const context = vm.createContext({ exports: {}, AbortController, DOMException, ReadableStream, TextDecoder, setTimeout, clearTimeout,
+      Capacitor: { isNativePlatform: () => native }, NATIVE_MATCHRIM_LEARNING_MODEL,
+      supabase: { supabaseUrl: 'https://synthetic.invalid', auth: { getSession: async () => ({ data: { session: null }, error: null }) } },
+      fetch: async (_url: string, init: RequestInit) => { requests.push(init); return new Response('data: {"choices":[{"delta":{"content":"Synthetic"}}]}\n\ndata: [DONE]\n\n', { headers: { 'content-type': 'text/event-stream' } }); },
+    });
+    vm.runInContext(ts.transpileModule(code, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } }).outputText, context);
+    await context.exports.streamAiRimResponse(payload, () => {});
+    assert.equal(requests.length, 1);
+    assert.equal(requests[0].body, JSON.stringify(native ? { ...payload, matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL } : payload));
+    assert.deepEqual(plainHeaders(requests[0].headers), { 'Content-Type': 'application/json', Authorization: 'Bearer synthetic', apikey: 'synthetic' });
+  }
+});
+function plainHeaders(headers: HeadersInit | undefined) { return JSON.parse(JSON.stringify(headers)); }
+await check('Native96 anonymous/failed owner and cancelled lookup never use supplied profile or issue late queries', async () => {
+  const p = { ...payload, matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL, user_id: 'foreign-owner', profile: base };
+  for (const settings of [{ owner: null }, { authError: true }]) {
+    const anonymous = handler(current, settings); await anonymous.invoke(request(p));
+    assert.equal(anonymous.queries.length, 0); assert.doesNotMatch(JSON.parse(String(anonymous.models[0].body)).messages[1].content, /"potente"/);
+  }
+  let release!: () => void; const controller = new AbortController();
+  const h = handler(current, { authGate: new Promise<void>(resolve => { release = resolve; }) });
+  const pending = h.invoke(request(p, controller.signal)); await new Promise(resolve => setImmediate(resolve)); controller.abort();
+  assert.equal((await pending).status, 499); release(); await new Promise(resolve => setImmediate(resolve));
+  assert.equal(h.queries.length, 0); assert.equal(h.models.length, 0);
+});
 const output = process.argv.find(s => s.startsWith('--output='))?.slice(9);
 if (output) { mkdirSync(output, { recursive: true }); writeFileSync(output + '/report.json', JSON.stringify({
   passed: checks.length, total: checks.length, checks, legacyBaseline: '86df5feac04a6d33026c1ebc20cebab34ae4f3a4', realNetworkCalls: 0, modelCalls: 0, deploys: 0,
@@ -207,3 +254,4 @@ if (output) { mkdirSync(output, { recursive: true }); writeFileSync(output + '/r
     .map(f => [f, createHash('sha256').update(readFileSync(f)).digest('hex')])),
 }, null, 2) + '\n', { flag: 'wx' }); }
 console.log(`${checks.length}/${checks.length} PASS`);
+await import('./check-matchrim-feedback-server96');

@@ -32,6 +32,7 @@ import { renderRestaurantPage } from '@/utils/restaurantDocuments91';
 import { confirmsNativeFoodSave95, nativeFoodScanFailure, runNativeFoodRead95 } from '@/utils/foodScanRecovery95';
 import { labelInsertErrorResult } from '@/utils/labelScanSave';
 import { readMatchrimLocalProfile } from "@/utils/matchrimLocalProfile";
+import { NATIVE_MATCHRIM_LEARNING_MODEL } from '@/utils/matchrimLearningPlatform';
 import { FoodScanResponseError, parseFoodScanResponse, type FoodScanResult, type FoodDishResult, type FoodWineRecommendation } from "@/utils/foodScanResponse";
 import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { scanFoodMenu89 } from '@/utils/foodMenuScan89';
@@ -228,7 +229,8 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
         },
       });
 
-      const context = { restaurantName, matchrimProfile: readMatchrimLocalProfile() };
+      const context = { restaurantName, matchrimProfile: readMatchrimLocalProfile(),
+        ...(isNative ? { matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL } : {}) };
       if (isNative) setNativePhase('reading');
       const read = (signal: AbortSignal) => mode === 'menu'
         ? scanFoodMenu89({ image, width, height, signal, context,

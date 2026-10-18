@@ -424,6 +424,36 @@ await check('v10 final response boundary is necessary: unchanged low-level norma
     assert.notEqual(dishes[0].recomendaciones[0].atributos, null, 'Negative control must reproduce the independently observed historical v10-auth-only defect');
   }
 });
+await check('Native96 exact model tag selects weak evidence only in the actual authenticated Food handler', async () => {
+  const rows = [wine('native-weak', all(5), 'ok')];
+  const f = fixture({ 'SYN-AUTH': { base: all(1), rows } });
+  const result = await f.run('SYN-AUTH', all(5), undefined, {
+    matchrimLearningModel: profile95.NATIVE_MATCHRIM_LEARNING_MODEL, user_id: 'SPOOF-OWNER', profile_source: 'client',
+  });
+  assert.equal(result.status, 200); assert.match(profileLine(f.prompts[0])!, /potencia=1\.3, acidez=1\.3/);
+  assert.deepEqual(f.authTokens, ['SYN-AUTH']); assert.equal(f.queries.length, 2);
+  assert(f.queries.every(query => query.filters.some(filter => filter[0] === 'user_id' && filter[1] === 'SYN-OWNER')));
+  assert.deepEqual(result.body.profile_context, { version: profile95.MATCHRIM_PROFILE95_VERSION, source: 'auth', status: 'learned', samples: 1 });
+});
+await check('Native96 missing and invalid Food model tags retain exact legacy response and provider prompt', async () => {
+  const scenario = { 'SYN-AUTH': { base: all(1), rows: [wine('weak', all(5), 'ok')] } };
+  const old = fixture(scenario), original = await old.run();
+  assert.match(profileLine(old.prompts[0])!, /potencia=2\.2,/);
+  for (const tag of [undefined, null, '', false, 2, [], {}, 'native-evidence-strength-v2 ', 'NATIVE-EVIDENCE-STRENGTH-V2']) {
+    const f = fixture(scenario), current = await f.run('SYN-AUTH', all(5), undefined, { matchrimLearningModel: tag });
+    assert.deepEqual(current, original); assert.deepEqual(f.prompts, old.prompts); assert.deepEqual(f.queries, old.queries);
+  }
+});
+await check('Native96 tag cannot authenticate, select another owner or turn auth failure into client fallback', async () => {
+  const body = { matchrimLearningModel: profile95.NATIVE_MATCHRIM_LEARNING_MODEL, user_id: 'SPOOF-OWNER' };
+  for (const scenario of [{ authError: true }, { throwAuth: true }]) {
+    const f = fixture({ 'SYN-AUTH': scenario }), result = await f.run('SYN-AUTH', all(5), undefined, body);
+    assert.equal(result.body.has_profile, false); assert.equal(f.queries.length, 0); assert.equal(profileLine(f.prompts[0]), undefined);
+  }
+  const anon = fixture({}), response = await anon.run('', all(0), undefined, body);
+  assert.equal(response.body.profile_source, 'client'); assert.equal(anon.queries.length, 0); assert.equal(anon.authTokens.length, 0);
+  assert.match(profileLine(anon.prompts[0])!, /potencia=0,/);
+});
 assert.equal(outbound, 0);
 const report = { syntheticOnly: true, groups: checks.length, checks, profiles: 50, outbound, observations,
   sourceSha256: sha(source), helperSha256: sha(read('supabase/functions/_shared/matchrim-profile95.ts')),

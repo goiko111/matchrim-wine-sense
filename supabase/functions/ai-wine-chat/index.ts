@@ -2,7 +2,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 import { fetchMatchrimAiChat, getMatchrimOpenAiModel, hasMatchrimOpenAiKey } from "../_shared/matchrim-openai.ts";
-import { calculateLearnedMatchrimProfile95, MATCHRIM_PROFILE95_TRAINING_COLUMNS, readMatchrimProfile95 } from "../_shared/matchrim-profile95.ts";
+import { calculateLearnedMatchrimProfile95, MATCHRIM_PROFILE95_TRAINING_COLUMNS, readMatchrimLearningOptions96, readMatchrimProfile95 } from "../_shared/matchrim-profile95.ts";
 import { specialMomentsResponse95, type SpecialMomentProfile95 } from "../_shared/matchrim-special-moments95.ts";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
@@ -26,6 +26,7 @@ interface AiRimPayload {
   context?: string;
   eventDetails?: Record<string, string | null>;
   message?: string;
+  matchrimLearningModel?: unknown;
 }
 
 interface QuizResult {
@@ -236,7 +237,7 @@ const loadProfile = async (authHeader: string | null, userId: string | null) => 
 };
 
 const loadSpecialMomentProfile95 = async (
-  authHeader: string | null, userId: string | null, signal: AbortSignal,
+  authHeader: string | null, userId: string | null, signal: AbortSignal, learningModel?: unknown,
 ): Promise<SpecialMomentProfile95> => {
   if (!userId) return { profile: null, status: "missing" };
   const client = getSupabaseClient(authHeader);
@@ -250,7 +251,7 @@ const loadSpecialMomentProfile95 = async (
   if (!quiz.data) return { profile: null, status: "missing" };
   const base = readMatchrimProfile95(quiz.data);
   if (!base) return { profile: null, status: "unavailable" };
-  const learned = calculateLearnedMatchrimProfile95(base, training.data ?? []);
+  const learned = calculateLearnedMatchrimProfile95(base, training.data ?? [], readMatchrimLearningOptions96(learningModel));
   return { profile: learned.profile, status: learned.profile ? "available" : "unavailable",
     source: learned.samples > 0 ? "strict-owner-learned" : "strict-owner-base" };
 };
@@ -351,7 +352,7 @@ serve(async (req) => {
           if (signal.aborted) throw signal.reason;
           specialUserId = await getUserId(authHeader);
           if (signal.aborted) throw signal.reason;
-          const context = await loadSpecialMomentProfile95(authHeader, specialUserId, signal);
+          const context = await loadSpecialMomentProfile95(authHeader, specialUserId, signal, payload.matchrimLearningModel);
           hadProfile = context.status === "available" && context.profile !== null;
           return context;
         },

@@ -8,7 +8,7 @@ import {
 
 export type { TrainableWine } from './matchrimLearning';
 
-export const NATIVE_MATCHRIM_LEARNING_MODEL = 'native-evidence-strength-v2' as const;
+export { NATIVE_MATCHRIM_LEARNING_MODEL } from '../../supabase/functions/_shared/matchrim-profile95';
 
 export const calculateLearnedMatchrimProfile = (
   base: MatchrimProfileLike,
