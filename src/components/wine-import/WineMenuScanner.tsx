@@ -32,6 +32,7 @@ import { AiRimContextGuide } from "@/components/AiRimContextGuide";
 import { WineComparisonWorkspace } from "@/components/wine-import/WineComparisonWorkspace";
 import { MenuPriceEditor } from '@/components/wine-import/MenuPriceEditor';
 import { clearMenuManualPriceOrigin, formatMenuPriceAmount, manualMenuPriceLines } from '@/utils/menuPriceReview';
+import { menuReadingSourceLabel96, nativeMenuTakeawayText96 } from '@/utils/menuReadingPresentation96';
 import { menuWineSensorySimilarity, menuWineSimilarityBand, menuWineSimilarityUnavailable } from '@/utils/menuWineSimilarity';
 import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -518,6 +519,11 @@ const WineMenuScannerSession = ({
       ? `${formatPrice(evidence.price, evidence.currency)} · formato pendiente` : 'Precio pendiente'));
   };
 
+  const renderNativeTakeawayPrice = (wine: ScannedWine, filteredFormat: 'glass' | 'bottle' | null = null) => {
+    const text = isNative ? nativeMenuTakeawayText96(wine, filteredFormat) : null;
+    return text ? <span data-testid="native-menu-takeaway-price" className="block whitespace-normal break-words text-xs text-slate-600">{text}</span> : null;
+  };
+
   useEffect(() => {
     if (loading || scannedWines.length === 0) return;
 
@@ -827,7 +833,7 @@ const WineMenuScannerSession = ({
           successful: successfulTiles, failed: failedTiles } : null;
         setFailedRegionCount(failedTiles.length);
       }
-      let data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative, preserveServingFormats: isNative });
+      let data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative, preserveServingFormats: isNative, preserveReadingAlternatives: isNative });
       if (!nativeRun && !isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn({ ...data, layout: fullResponse?.layout }) && shouldRunRightFocusMenuScan(
         data.coverage?.status,
         data.vinos?.length ?? 0,
@@ -839,7 +845,7 @@ const WineMenuScannerSession = ({
         try {
           const focusImage = await cropImageRegion(base64File, focusTile.box, 0, 1800, controller.signal);
           successfulTiles.push({ tile: focusTile, response: await invokeScan(focusTile, focusImage) });
-          data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative, preserveServingFormats: isNative });
+          data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative, preserveServingFormats: isNative, preserveReadingAlternatives: isNative });
         } catch (error) {
           if (error instanceof DOMException && error.name === 'AbortError') throw error;
           failedTileCount += 1;
@@ -887,7 +893,8 @@ const WineMenuScannerSession = ({
 	          setMenuQualityWarnings((warnings) => [
 	            ...warnings,
 	            expected && expected > normalizedWines.length
-              ? `Cobertura parcial: ${normalizedWines.length} de aproximadamente ${expected} líneas legibles.`
+              ? isNative ? `Cobertura parcial: ${normalizedWines.length} de unas ${expected} líneas legibles.`
+                : `Cobertura parcial: ${normalizedWines.length} de aproximadamente ${expected} líneas legibles.`
               : 'Cobertura parcial: revisa la imagen y vuelve a escanear la sección que falte.',
 	          ]);
 	        }
@@ -1109,6 +1116,25 @@ const WineMenuScannerSession = ({
       )}
       {selectedPinWine.campos_inferidos && selectedPinWine.campos_inferidos.length > 0 && (
         <p className="mt-1"><span className="font-semibold text-slate-900">Datos inferidos:</span> {selectedPinWine.campos_inferidos.join(', ')}</p>
+      )}
+      {isNative && selectedPinIndex !== null && Boolean(selectedPinWine.lecturas_alternativas?.length) && (
+        <div className="mt-3 min-w-0 space-y-3 border-t border-stone-300 pt-3">
+          <p className="font-semibold text-stone-800">Otra lectura de esta zona, sin verificar</p>
+          <p>Los recortes discrepan. Revisa la imagen antes de elegir un nombre; ninguna lectura confirma la botella.</p>
+          {selectedPinWine.lecturas_alternativas.map(reading => (
+            <div key={`${reading.tile.id}-${reading.rawIndex}`} className="min-w-0 space-y-2 break-words">
+              <p className="font-medium">{reading.nombre}</p>
+              <p>Productor leído, sin verificar: {reading.productor || 'No indicado'}</p>
+              <p>{menuReadingSourceLabel96(reading.tile.id)} · Lectura {reading.rawIndex + 1}</p>
+              <p>Transcripción alternativa, sin verificar: {reading.texto_fuente}</p>
+              <Button type="button" variant="outline" className="h-auto min-h-[44px] max-w-full whitespace-normal px-[12px] py-[8px] text-left"
+                disabled={loading || selectedPinWine.nombre === reading.nombre}
+                onClick={() => updateScannedWine(selectedPinIndex, { nombre: reading.nombre, productor: null })}>
+                Usar este nombre como edición manual
+              </Button>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
@@ -1944,6 +1970,8 @@ const WineMenuScannerSession = ({
 		                        {[wine.productor, wine.region, wine.campos_inferidos?.includes('servicio') ? 'Servicio sin confirmar' : wine.servicio, isNative ? literalMenuServingFormat95(wine) : null].filter(Boolean).join(' · ') || 'Datos por revisar'}
 		                      </span>
                           <span className={`block whitespace-normal break-words text-xs ${wine.precio_manual_pendiente ? 'font-medium text-amber-800' : 'text-slate-500'}`}>{listPriceText(wine, index)}</span>
+                          {renderNativeTakeawayPrice(wine, requestedServiceFormat === 'any' ? null : requestedServiceFormat)}
+                          {isNative && Boolean(wine.lecturas_alternativas?.length) && <span className="block whitespace-normal break-words text-xs font-medium text-amber-800">Lecturas distintas: abre el detalle para revisar</span>}
 		                    </span>
 		                    <span className="shrink-0 text-right">
 		                      {getWineDecision(wine).score !== null
@@ -2358,6 +2386,7 @@ const WineMenuScannerSession = ({
                 {isNative && renderWineAffinityExplanation(selectedPinWine)}
                 {isNative && <p className="my-3 text-sm text-slate-600">{[selectedPinWine.productor, selectedPinWine.region,
                   formatPrice(selectedPinWine.precio, selectedPinWine.moneda)].filter(Boolean).join(' · ')}</p>}
+                {renderNativeTakeawayPrice(selectedPinWine)}
 	                {!isNative && <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
 	                  <div><div className="text-xl font-bold text-red-900">{selectedPinDecision?.score == null ? '-' : `≈${selectedPinDecision.score}%`}</div><div className="text-xs text-slate-500">{selectedPinDecision?.state === 'pending' ? 'Afinidad pendiente' : 'Afinidad estimada'}</div></div>
 	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>

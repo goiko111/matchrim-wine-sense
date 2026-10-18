@@ -42,6 +42,16 @@ const labelUi96 = {
   test: 'scripts/check-matchrim-recognition96.ts',
   testHash: 'f91cc0c272aa53919c17dc01e563bda2bea84a0a89c5e2f05ae6a73f837b26f3',
 };
+const menuReading96 = {
+  revision: '9704e23631dfcaa9bbcfc77203f0c32f53d9bab0',
+  scan: 'src/utils/wineMenuScan.ts',
+  sources: new Map([
+    [menu, 'ac27302f41c93d51ac2ad58de798b1928cde97d092773e349b1cc61e8af0e337'],
+    ['src/utils/wineMenuScan.ts', '467be55f7138563662d96001a3f17f696c153418316097973c8a8a0d7ae28940'],
+    ['src/utils/menuReadingPresentation96.ts', '13340660fcaa658f071361ae3fd7f9a402327b2c54ac1e03b81d1180f1a00f68'],
+    ['scripts/check-matchrim-menu-reading96.ts', '429da3c23e7a0687b6eaf529276b5b029434173673cab65792c103e7104009fa'],
+  ]),
+};
 const before = (path: string) => execFileSync('git', ['show', `${baseline}:${path}`], { encoding: 'utf8' });
 const reviewed95 = (path: string) => execFileSync('git', ['show', `${baseline96}:${path}`], { encoding: 'utf8' });
 const current = (path: string) => readFileSync(path, 'utf8');
@@ -121,6 +131,123 @@ const nativeClass = (attr: ts.JsxAttribute): string | null => {
   return value && ts.isConditionalExpression(value) && ts.isIdentifier(value.condition)
     && value.condition.text === 'native' && ts.isStringLiteral(value.whenTrue) ? value.whenTrue.text : null;
 };
+const replaceExact96 = (source: string, revised: string, prior: string, count = 1) => {
+  assert.equal(source.split(revised).length - 1, count, revised);
+  return source.split(revised).join(prior);
+};
+const removeReadingNode96 = (source: string, node: ts.Node, tree: ts.SourceFile) => {
+  const start = source.lastIndexOf('\n', node.getStart(tree)) + 1, next = source.indexOf('\n', node.end);
+  assert.ok(next >= 0);
+  assert.match(source.slice(start, node.getStart(tree)), /^\s*$/);
+  assert.match(source.slice(node.end, next), /^\s*$/);
+  return replaceExact96(source, source.slice(start, next + 1), '');
+};
+const restoreMenuReadingUi96 = (source: string) => {
+  source = replaceExact96(source,
+    '? isNative ? `Cobertura parcial: ${normalizedWines.length} de unas ${expected} l\u00edneas legibles.`\n                : `Cobertura parcial: ${normalizedWines.length} de aproximadamente ${expected} l\u00edneas legibles.`',
+    '? `Cobertura parcial: ${normalizedWines.length} de aproximadamente ${expected} l\u00edneas legibles.`');
+  for (const expected of [
+    'ac3107eb6fd40e7d2b0f3304f2fcb8a39f16b0c5f0043f3294c735b3b845d729',
+    '8e5678af0ba1d38a59ab01f00b42a81b186781ca9d4890a0b05cad9559cc52a2',
+    'd49d192388180c2e00e75c541a881745b208fb52e33a3dc7a8473ac3329c5cff',
+    '4ee6147e0b4ee223abf134f2f633329841e507f7a7c0a0eaf858f12cf8bb4b8d',
+  ]) {
+    const tree = parse(menu, source), nodes = collect(tree, ts.isJsxExpression).filter(node => hash(node.getText(tree)) === expected);
+    assert.equal(nodes.length, 1, `Exactly one reviewed added JSX block: ${expected}`);
+    source = removeReadingNode96(source, nodes[0], tree);
+  }
+  source = replaceExact96(source, "import { menuReadingSourceLabel96, nativeMenuTakeawayText96 } from '@/utils/menuReadingPresentation96';\n", '');
+  const tree = parse(menu, source), helpers = collect(tree, ts.isVariableStatement).filter(node =>
+    node.declarationList.declarations.some(value => value.name.getText(tree) === 'renderNativeTakeawayPrice'));
+  assert.equal(helpers.length, 1);
+  assert.equal(hash(helpers[0].getText(tree)), '474c8ddfaac9ee35485a4899f8270a7c567e91bf52ea13d4864892985c8739cd');
+  source = replaceExact96(source, `  ${helpers[0].getText(tree)}\n\n`, '');
+  return replaceExact96(source, '{ preserveNumericReferences: isNative, preserveServingFormats: isNative, preserveReadingAlternatives: isNative }',
+    '{ preserveNumericReferences: isNative, preserveServingFormats: isNative }', 2);
+};
+const restoreMenuReadingScan96 = (source: string) => {
+  source = replaceExact96(source, '  // Client-only uncertainty, never identity or scoring evidence.\n  lecturas_alternativas?: MenuReadingAlternative96[];\n', '');
+  source = replaceExact96(source, `export interface MenuReadingAlternative96 {
+  tile: MenuScanTile;
+  rawIndex: number;
+  nombre: string;
+  productor: string | null;
+  texto_fuente: string;
+}
+
+`, '');
+  source = replaceExact96(source, `export interface MenuMergeOptions95 {
+  preserveNumericReferences?: boolean;
+  preserveServingFormats?: boolean;
+  preserveReadingAlternatives?: boolean;
+}`, 'export interface MenuMergeOptions95 { preserveNumericReferences?: boolean; preserveServingFormats?: boolean; }');
+  const tree = parse(menuReading96.scan, source), helpers = collect(tree, ts.isVariableStatement).filter(node =>
+    node.declarationList.declarations.some(value => value.name.getText(tree) === 'retainExcludedReadings96'));
+  assert.equal(helpers.length, 1);
+  assert.equal(hash(helpers[0].getText(tree)), 'fa12b2e159b4e0b50f4c43c4384ba0658478d2db36e959e0861c1b29286deea9');
+  const priorHelper = replaceExact96(helpers[0].getText(tree), `  const knownTiles: MenuScanTile['id'][] = ['full', 'left', 'right', 'right-focus', 'top', 'bottom',
+    'top-left', 'top-right', 'bottom-left', 'bottom-right'];
+  excluded.filter(({ tile }) => {
+    const box = tile.box;
+    return knownTiles.includes(tile.id) && box
+      && [box.x, box.y, box.width, box.height].every(value => typeof value === 'number' && Number.isFinite(value))
+      && box.x >= 0 && box.y >= 0 && box.width > 0 && box.height > 0
+      && box.x + box.width <= 100 && box.y + box.height <= 100;
+  }).forEach(({ tile, response }) => (response.vinos ?? []).forEach((raw, rawIndex) => {`,
+  '  excluded.forEach(({ tile, response }) => (response.vinos ?? []).forEach((raw, rawIndex) => {');
+  assert.equal(hash(priorHelper), '0a9e8d14522e08d05e3f590fa9177586e6526cf00ae314e92c7fe1907b2f8696',
+    'Only the exact R14 source tile/box admission block amends the original metadata helper');
+  source = replaceExact96(source, `${helpers[0].getText(tree)}\n\n`, '');
+  for (const [condition, args] of [['!fullResult', 'results'], ['regionalResults.length === 0', '[fullResult, ...focusResults]']]) {
+    source = replaceExact96(source, `  if (${condition}) {
+    const resolved = mergeMenuTileResults95(${args}, options, memo);
+    return options.preserveReadingAlternatives ? retainExcludedReadings96(resolved, [], new Set(), memo) : resolved;
+  }`, `  if (${condition}) return mergeMenuTileResults95(${args}, options, memo);`);
+  }
+  return replaceExact96(source, `  const resolved = mergeMenuTileResults95([...baseResults, ...complementaryServingResults, ...focusResults], options, memo);
+  return options.preserveReadingAlternatives ? retainExcludedReadings96(resolved,
+    [fullResult, ...regionalResults].filter(result => !baseResults.includes(result)),
+    new Set(complementaryServingResults.flatMap(result => result.response.vinos ?? [])), memo) : resolved;`,
+  '  return mergeMenuTileResults95([...baseResults, ...complementaryServingResults, ...focusResults], options, memo);');
+};
+const priorMenuReading96 = (path: string) => path === menu ? restoreMenuReadingUi96(current(path))
+  : path === menuReading96.scan ? restoreMenuReadingScan96(current(path)) : current(path);
+const resolverWithoutReadings96 = (source: string) => {
+  const tree = parse(menuReading96.scan, source), fn = component(tree, 'resolveMenuTileResults');
+  let returns = 0, earlyWrappers = 0;
+  const result = ts.transform(fn, [context => {
+    const visit: ts.Visitor = node => {
+      if (ts.isIfStatement(node) && ts.isBlock(node.thenStatement)
+        && ['!fullResult', 'regionalResults.length === 0'].includes(node.expression.getText(tree))) {
+        const changed = ts.visitEachChild(node, visit, context);
+        assert.ok(ts.isBlock(changed.thenStatement)); assert.equal(changed.thenStatement.statements.length, 1);
+        const last = changed.thenStatement.statements[0]; assert.ok(ts.isReturnStatement(last));
+        assert.equal(changed.elseStatement, undefined); earlyWrappers++;
+        return context.factory.updateIfStatement(changed, changed.expression, last, undefined);
+      }
+      if (ts.isBlock(node) && node.statements.length >= 2) {
+        const declaration = node.statements.at(-2), last = node.statements.at(-1);
+        if (declaration && ts.isVariableStatement(declaration) && declaration.declarationList.declarations.length === 1
+          && declaration.declarationList.declarations[0].name.getText(tree) === 'resolved'
+          && last && ts.isReturnStatement(last) && last.expression && ts.isConditionalExpression(last.expression)
+          && last.expression.condition.getText(tree) === 'options.preserveReadingAlternatives'
+          && last.expression.whenFalse.getText(tree) === 'resolved') {
+          const value = declaration.declarationList.declarations[0].initializer;
+          assert.ok(value && ts.isCallExpression(value) && value.expression.getText(tree) === 'mergeMenuTileResults95');
+          returns++;
+          node = context.factory.updateBlock(node, [...node.statements.slice(0, -2), context.factory.createReturnStatement(value)]);
+        }
+      }
+      return ts.visitEachChild(node, visit, context);
+    };
+    return root => ts.visitNode(root, visit) as ts.ArrowFunction;
+  }]);
+  try {
+    assert.equal(returns, 3);
+    assert.equal(earlyWrappers, 2);
+    return ts.createPrinter({ removeComments: true }).printNode(ts.EmitHint.Unspecified, result.transformed[0], tree);
+  } finally { result.dispose(); }
+};
 const oldShop = parse(shop, before(shop)), newShop = parse(shop, current(shop));
 const oldRestaurant = parse(restaurant, before(restaurant)), newRestaurant = parse(restaurant, current(restaurant));
 const oldSession = component(oldShop, 'WineShopLinkAdvisorSession'), newSession = component(newShop, 'WineShopLinkAdvisorSession');
@@ -133,8 +260,48 @@ check('All five exact pre31e and reviewed current sources are bound, not broad p
   for (const [path, [prior, now]] of fingerprints) {
     assert.equal(hash(before(path)), prior, `Exact31e: ${path}`);
     assert.equal(hash(reviewed95(path)), reviewed95Fingerprints.get(path), `Exact reviewed95 bridge: ${path}`);
-    assert.equal(hash(current(path)), now, `Exact reviewed current: ${path}`);
+    assert.equal(hash(priorMenuReading96(path)), now, `Exact reviewed current or complete9704 bridge: ${path}`);
   }
+  for (const [path, expected] of menuReading96.sources) assert.equal(hash(current(path)), expected, `Exact reading96 source: ${path}`);
+  const historical = (path: string) => execFileSync('git', ['show', `${menuReading96.revision}:${path}`], { encoding: 'utf8' });
+  const oldMenu = historical(menu), oldScan = historical(menuReading96.scan);
+  const proveMenu = (source: string) => assert.equal(restoreMenuReadingUi96(source), oldMenu, 'Full9704 Menu source, callbacks and all preexisting behavior remain exact');
+  const proveScan = (source: string) => assert.equal(restoreMenuReadingScan96(source), oldScan, 'Full9704 resolver module, base choice, prices and defaults remain exact');
+  proveMenu(current(menu)); proveScan(current(menuReading96.scan));
+  assert.equal(resolverWithoutReadings96(current(menuReading96.scan)), ts.createPrinter({ removeComments: true }).printNode(ts.EmitHint.Unspecified,
+    component(parse(menuReading96.scan, oldScan), 'resolveMenuTileResults'), parse(menuReading96.scan, oldScan)), 'Complete resolver AST with optional readings=false equals9704');
+  const mutations: [string, string, string, string][] = [
+    [menu, 'preserveReadingAlternatives: isNative', 'preserveReadingAlternatives: true', 'web option leak'],
+    [menu, 'onClick={(event) => openWineDetail(index, event.currentTarget)}', 'onClick={() => undefined}', 'old callback'],
+    [menu, '{ nombre: reading.nombre, productor: null }', '{ nombre: reading.nombre, productor: reading.productor }', 'manual identity authority'],
+    [menu, 'reading.rawIndex + 1', 'reading.rawIndex', 'raw provenance'],
+    [menu, '{isNative && selectedPinIndex !== null', '{selectedPinIndex !== null', 'native evidence gate'],
+    [menu, 'const text = isNative ? nativeMenuTakeawayText96', 'const text = true ? nativeMenuTakeawayText96', 'web helper gate'],
+    [menuReading96.scan, 'overlapRatio >= 0.6', 'overlapRatio >= 0.5', 'base selection'],
+    [menuReading96.scan, 'Math.abs(a - b) > priceTolerance', 'Math.abs(a - b) > 0.5', 'price comparison'],
+    [menuReading96.scan, 'options: MenuMergeOptions95 = {}', 'options: MenuMergeOptions95 = { preserveReadingAlternatives: true }', 'default option'],
+    [menuReading96.scan, 'return options.preserveReadingAlternatives ?', 'return !options.preserveReadingAlternatives ?', 'opt-out branch'],
+    [menuReading96.scan, 'rawIndex,\n      nombre:', 'rawIndex: 0,\n      nombre:', 'alternate source index'],
+    [menuReading96.scan, 'entries.length >= 3', 'entries.length >= 4', 'metadata bound'],
+  ];
+  for (const [path, from, to, name] of mutations) {
+    const original = current(path); assert.ok(original.includes(from), `Applicable reading96 negative: ${name}`);
+    const changed = original.replace(from, to); assert.notEqual(changed, original, name);
+    assert.throws(() => path === menu ? proveMenu(changed) : proveScan(changed), undefined, `Hash-independent bridge rejects ${name}`);
+  }
+  assert.equal(mutations.length, 12);
+  const r3Mutations: [string, string, string, string][] = [
+    [menu, 'de unas ${expected}', 'de otras ${expected}', 'native coverage copy'],
+    [menu, 'de aproximadamente ${expected}', 'de otras ${expected}', 'legacy web coverage copy'],
+    [menuReading96.scan, 'knownTiles.includes(tile.id) && box', 'true && box', 'known source tile admission'],
+    [menuReading96.scan, 'Number.isFinite(value)', 'true', 'finite source box admission'],
+  ];
+  for (const [path, from, to, name] of r3Mutations) {
+    const original = current(path); assert.ok(original.includes(from), `Applicable R3 negative: ${name}`);
+    const changed = original.replace(from, to); assert.notEqual(changed, original, name);
+    assert.throws(() => path === menu ? proveMenu(changed) : proveScan(changed), undefined, `R3 bridge rejects ${name}`);
+  }
+  assert.equal(r3Mutations.length, 4);
   assert.equal(hash(current(labelUi96.source)), labelUi96.currentHash, 'Exact separate C native-list UI source');
   assert.equal(hash(current(labelUi96.test)), labelUi96.testHash, 'Exact reviewed scanner source/AST/negative-control child');
   const output = execFileSync(process.execPath, ['--import', 'tsx', labelUi96.test], {
@@ -304,7 +471,7 @@ check('MenuScanner exact scoped delta is import, two native option gates and thr
     expected = expected.replace(oldText, newText);
   }
   assert.equal(hash(expected), '81476126b861468da831106d5d5a21b03f9534df7c20ba331be1d0b84d911161', 'Exact frozen B_R3 source before native-only consumer UI amendments');
-  let priorConsumerUi96 = current(menu);
+  let priorConsumerUi96 = priorMenuReading96(menu);
   const headerCloseAmendments96: [string, string][] = [
     ["<DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white px-[8px] py-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>",
       "<DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white p-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>"],
@@ -393,11 +560,17 @@ check('MenuScanner exact scoped delta is import, two native option gates and thr
   assert.equal(current(execution), expectedExecution, 'Existing limiter, right-focus guard, defaults, abort race and cleanup remain byte exact');
 });
 check('Actual menu resolver callsites opt in only with native; all previous arguments remain intact', () => {
-  const calls = collect(parse(menu, current(menu)), ts.isCallExpression).filter(node => node.expression.getText() === 'resolveMenuTileResults');
+  const calls = collect(parse(menu, priorMenuReading96(menu)), ts.isCallExpression).filter(node => node.expression.getText() === 'resolveMenuTileResults');
   assert.equal(calls.length, 2);
   for (const call of calls) {
     assert.equal(call.arguments.length, 2); assert.equal(call.arguments[0].getText(), 'successfulTiles');
     assert.equal(call.arguments[1].getText(), '{ preserveNumericReferences: isNative, preserveServingFormats: isNative }');
+  }
+  const actual = collect(parse(menu, current(menu)), ts.isCallExpression).filter(node => node.expression.getText() === 'resolveMenuTileResults');
+  assert.equal(actual.length, 2);
+  for (const call of actual) {
+    assert.equal(call.arguments.length, 2); assert.equal(call.arguments[0].getText(), 'successfulTiles');
+    assert.equal(call.arguments[1].getText(), '{ preserveNumericReferences: isNative, preserveServingFormats: isNative, preserveReadingAlternatives: isNative }');
   }
 });
 check('Closure proof rejects owner, pending, current-response, transport and history mutations', () => {
@@ -430,5 +603,11 @@ check('Full web AST proof rejects text, attributes and callback changes instead 
 console.log(JSON.stringify({ passed, failed: 0, baseline, sources: Object.fromEntries(fingerprints),
   reviewed95: { revision: baseline96, sources: Object.fromEntries(reviewed95Fingerprints) },
   scope96: { homeSources: Object.fromEntries(home96.sources), child: { path: home96.test, hash: home96.testHash, ...home96Result }, nativeHomeLandscapeAmendments: 1, nativeInitialScannerRules: 12, nativeInitialScannerLandscapePaddingAmendments: 1, nativeMenuCropAmendments: 2, nativeMenuParallelAmendments: 6, nativeMenuConsumerUiAmendments: 9, nativeMenuConsumerUiCategories: 4,
-    nativeLabelUi96: { ...labelUi96, passed: 35, failed: 0, classAmendments: 5, rejectedMutations: 15 } },
-  scope: 'Offline full native=false JSX AST, exact lifetime closures, native layout controls and five frozen source pairs, preserving reviewed95, B_R2, B_R3 and B4000 bridges. Separate96 scope executes the exact12-group Home/nav/initial-padding child quietly; two menu crop amendments, six B_R3 parallel amendments and its exact planner, plus nine exact native consumer UI blocks in four categories are separately bounded. The separate35-group scanner child reverses only five native class attributes to the exact2dc/ebee source, proves the full web AST and rejects15 mutations without changing crop geometry or prior C6 checks. Comparison MAX reflow is retained, not counted twice. Menu behavior is separately executed by the29-group public serving suite. Not browser/native execution, recognition, stock, accounts or human validation.' }));
+    nativeLabelUi96: { ...labelUi96, passed: 35, failed: 0, classAmendments: 5, rejectedMutations: 15 },
+    nativeMenuReading96: { revision: menuReading96.revision, sources: Object.fromEntries(menuReading96.sources), componentJsxBlocks: 4, componentDeclarationBlocks: 2,
+      componentOptInCalls: 2, resolverDeclarationBlocks: 4, resolverReturnWrappers: 3, resolverFalseAstEqual: true, rejectedMutations: 12,
+      nativeCoverageCopyAmendments: 1, metadataSourceAdmissionAmendments: 1, r3RejectedMutations: 4,
+      metadataSourceHelperHash: 'fa12b2e159b4e0b50f4c43c4384ba0658478d2db36e959e0861c1b29286deea9',
+      metadataPriorHelperHash: '0a9e8d14522e08d05e3f590fa9177586e6526cf00ae314e92c7fe1907b2f8696', knownSourceTileIds: 10,
+      functionalGroups: 11, functionalExecution: 'Registered separately in test:closure96; not duplicated by this source guard' } },
+  scope: 'Offline full native=false JSX AST, exact lifetime closures, native layout controls and five frozen source pairs, preserving reviewed95, B_R2, B_R3 and B4000 bridges. Separate96 scope executes the exact12-group Home/nav/initial-padding child quietly; two menu crop amendments, six B_R3 parallel amendments and its exact planner, plus nine exact native consumer UI blocks in four categories are separately bounded. The separate35-group scanner child reverses only five native class attributes to the exact2dc/ebee source, proves the full web AST and rejects15 mutations without changing crop geometry or prior C6 checks. Reading96 separately pins all four new sources, restores complete9704 Menu/resolver source, compares its complete opt-out resolver AST and rejects12 hash-independent mutations. R3 separately binds one native coverage-copy amendment with the exact old web branch and one metadata-only R14 source tile/box admission block, with four additional negatives. Its eleven functional groups run separately in test:closure96. Comparison MAX reflow is retained, not counted twice. Menu behavior is separately executed by the29-group public serving suite. Not browser/native execution, recognition, stock, accounts or human validation.' }));

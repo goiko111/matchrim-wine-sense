@@ -4,7 +4,57 @@ Status: ACTIVE. No TestFlight95 upload or release approval is claimed here.
 This continuation supersedes the Food deployment-permission blocker in the
 October17 report, not its historical results or remaining product findings.
 
-## Current Checkpoint, 11:27 UTC
+## Current Checkpoint, 12:26 UTC
+
+The native large-text dense-list correction is committed/pushed as `9704e23`.
+The subsequent minimum internal menu block is now frozen for clean integration:
+native-only separate takeaway price, raw alternative-reading provenance and
+explicit manual name choice through the existing identity-clear/save-hold guard.
+It does not change the full-page base selection, requests, crops, model, money
+lanes, canonical authority, affinity or old web output. The actual7548 row keeps
+its130 bottle reading and separately shows104 for takeaway; the existing top
+reading with a different spelling is preserved for review, not elected as truth.
+
+Fresh controlled compiled-browser replays complete7548 4/4 and7553 4/4 across
+normal/MAX portrait/landscape,2072 assertions,160 complete44px close targets,
+800 close hit samples and40 manual-choice/input hit samples. Parent viewed the
+critical320px price/choice and landscape keyboard-height captures.32 intercepted
+requests retain exact sealed body objects, Node serialization and JPEG crops;
+all authentication/profile/catalogue responses are controlled and0 requests
+leave the test browser. This is not fresh OCR, UIKit keyboard or latency proof.
+Closing the inline editor is explicitly NOT a rollback cancel.
+
+Two real post-unit findings are retained: the native word aproximadamente split
+at320px/root32 and is now the equivalent unas, with the original web text kept;
+E's defensive R14 admitted an unknown internal tile as provenance and is now
+guarded by known IDs plus finite positive in-bounds boxes. New public tests
+contain the original9 groups plus2 additive groups,13 original price controls
+and the new tile/box negatives. Old consumer26, serving29 and row-context12/1107
+checks pass. Exact source restoration and opt-out AST proofs remain separate
+from functional and pixel evidence. A strict printer-byte projection comparison
+still records FALSE for lifted-template whitespace; complete parsed AST and
+literal values match, not an invented byte-equality claim.
+
+All prior strict86/90 price and80/84 service failures remain. Independent review
+locates their four unmatched cells in two nominal associations, not demonstrated
+wrong amounts or swapped services. The unchanged legacy-web price audit still
+exits1 and is not called green. The original R14, visual, browser transport and
+source-pin failures are preserved. These changes give no new recognition credit.
+
+The original2dc native07 failure remains unresolved. Four fixed private passive
+diagnostics finish6/6 methods and4 complete readouts; every trusted click reaches
+the scanner, with no cancellation. They perturb timing and do not explain the
+failed process or justify a speculative AppDelegate change. The private app is
+terminated; a fresh clean native candidate MUST replace it before new QA.
+
+Final independent integration review, clean preparation/build, all14 local
+groups, original controlled27/100, complete native11 and the new50 remain gates.
+The original harnesses, fifty records and budgets are not reduced. Foodv10 stays
+deployed for1.1credits; no additional provider/Lovable call, web Publish, signing
+or TestFlight upload occurred. The separately requested three-alias deployment
+authorization remains pending. No release approval is implied by this checkpoint.
+
+## Earlier Checkpoint, 11:27 UTC
 
 The clean integrated candidate `2dc2246` completed all14 local groups, fresh
 unsigned simulator/device builds95, controlled Label27/27 and memory100/100.

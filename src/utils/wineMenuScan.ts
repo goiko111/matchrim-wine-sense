@@ -71,6 +71,8 @@ export interface MenuScanWine {
     llevar?: number | null;
   } | null;
   posicion?: MenuScanPosition | null;
+  // Client-only uncertainty, never identity or scoring evidence.
+  lecturas_alternativas?: MenuReadingAlternative96[];
 }
 
 export interface MenuScanResponse {
@@ -95,6 +97,14 @@ export interface MenuScanTile {
 export interface MenuTileResult {
   tile: MenuScanTile;
   response: MenuScanResponse;
+}
+
+export interface MenuReadingAlternative96 {
+  tile: MenuScanTile;
+  rawIndex: number;
+  nombre: string;
+  productor: string | null;
+  texto_fuente: string;
 }
 
 export const isMenuIdentityConfirmed = (wine: MenuScanWine) => (Boolean(wine.canonicalId
@@ -636,7 +646,67 @@ const richerWine = (left: MenuScanWine, right: MenuScanWine, preserveServingForm
   return merged;
 };
 
-export interface MenuMergeOptions95 { preserveNumericReferences?: boolean; preserveServingFormats?: boolean; }
+export interface MenuMergeOptions95 {
+  preserveNumericReferences?: boolean;
+  preserveServingFormats?: boolean;
+  preserveReadingAlternatives?: boolean;
+}
+
+const retainExcludedReadings96 = (resolved: MenuScanResponse, excluded: MenuTileResult[],
+  included: Set<MenuScanWine>, memo?: LiteralServingMemo95): MenuScanResponse => {
+  // Raw indices come from the original responses, not a filtered/reordered merge.
+  const wines = (resolved.vinos ?? []).map(wine => {
+    if (!Object.prototype.hasOwnProperty.call(wine, 'lecturas_alternativas')) return wine;
+    const clean = { ...wine };
+    delete clean.lecturas_alternativas;
+    return clean;
+  });
+  const alternatives = new Map<number, MenuReadingAlternative96[]>();
+  const reliablePosition = (wine: MenuScanWine) => {
+    const value = optionalScanNumber(wine.posicion?.confidence ?? wine.posicion?.confianza);
+    return value !== null && value <= 100 && (value > 1 ? value / 100 : value) >= 0.7;
+  };
+  const knownTiles: MenuScanTile['id'][] = ['full', 'left', 'right', 'right-focus', 'top', 'bottom',
+    'top-left', 'top-right', 'bottom-left', 'bottom-right'];
+  excluded.filter(({ tile }) => {
+    const box = tile.box;
+    return knownTiles.includes(tile.id) && box
+      && [box.x, box.y, box.width, box.height].every(value => typeof value === 'number' && Number.isFinite(value))
+      && box.x >= 0 && box.y >= 0 && box.width > 0 && box.height > 0
+      && box.x + box.width <= 100 && box.y + box.height <= 100;
+  }).forEach(({ tile, response }) => (response.vinos ?? []).forEach((raw, rawIndex) => {
+    if (included.has(raw) || typeof raw.nombre !== 'string' || !raw.nombre.trim() || raw.nombre.length > 300
+      || typeof raw.texto_fuente !== 'string' || !raw.texto_fuente.trim() || raw.texto_fuente.length > 4000
+      || (raw.productor != null && (typeof raw.productor !== 'string' || raw.productor.length > 300))
+      || !normalizeText(raw.texto_fuente).includes(normalizeText(raw.nombre))) return;
+    const reading = mapMenuWineFromTile(raw, tile);
+    const matches = wines.flatMap((wine, index) => {
+      if (!reliablePosition(wine) || !reliablePosition(reading) || !overlappingLiteralRow(wine, reading)
+        || [...(wine.campos_inferidos ?? []), ...(reading.campos_inferidos ?? [])].some(field =>
+          /^(servicio|service|formato|format|precio|price|precios(?:\.(?:copa|botella|llevar))?|moneda|currency)$/i.test(field))
+        || tokenOverlap(wine.nombre, reading.nombre) < 0.6 || hasConflictingVariant(wine, reading)
+        || conflictingNumericReference(wine, reading)
+        || (wine.anada != null && reading.anada != null && wine.anada !== reading.anada)
+        || !wine.servicio || wine.servicio !== reading.servicio
+        || readLiteralServing95(wine, memo)?.key !== readLiteralServing95(reading, memo)?.key
+        || resolveScanCurrency(wine.moneda, wine.texto_fuente) !== resolveScanCurrency(reading.moneda, reading.texto_fuente, response.moneda)) return [];
+      const amounts = (row: MenuScanWine) => [row.precio, row.precios?.copa, row.precios?.botella, row.precios?.llevar].map(normalizeScanPrice);
+      const a = amounts(wine), b = amounts(reading);
+      return a.some(value => value !== null) && a.every((value, lane) => value === b[lane]) ? [index] : [];
+    });
+    // This associates an uncertain physical area, not two producer identities.
+    if (matches.length !== 1) return;
+    const index = matches[0];
+    if (raw.nombre.trim() === wines[index].nombre.trim()) return;
+    const entries = alternatives.get(index) ?? [];
+    if (entries.length >= 3 || entries.some(entry => entry.tile.id === tile.id && entry.rawIndex === rawIndex)) return;
+    entries.push({ tile: { id: tile.id, box: { ...tile.box } }, rawIndex,
+      nombre: raw.nombre, productor: raw.productor ?? null, texto_fuente: raw.texto_fuente });
+    alternatives.set(index, entries);
+  }));
+  return { ...resolved, vinos: wines.map((wine, index) => alternatives.has(index)
+    ? { ...wine, lecturas_alternativas: alternatives.get(index) } : wine) };
+};
 
 const mergeMenuTileResults95 = (results: MenuTileResult[], options: MenuMergeOptions95,
   memo?: LiteralServingMemo95): MenuScanResponse => {
@@ -735,8 +805,14 @@ export const resolveMenuTileResults = (results: MenuTileResult[], options: MenuM
   const fullResult = results.find((result) => result.tile.id === 'full');
   const focusResults = results.filter((result) => result.tile.id === 'right-focus');
   const regionalResults = results.filter((result) => result.tile.id !== 'full' && result.tile.id !== 'right-focus');
-  if (!fullResult) return mergeMenuTileResults95(results, options, memo);
-  if (regionalResults.length === 0) return mergeMenuTileResults95([fullResult, ...focusResults], options, memo);
+  if (!fullResult) {
+    const resolved = mergeMenuTileResults95(results, options, memo);
+    return options.preserveReadingAlternatives ? retainExcludedReadings96(resolved, [], new Set(), memo) : resolved;
+  }
+  if (regionalResults.length === 0) {
+    const resolved = mergeMenuTileResults95([fullResult, ...focusResults], options, memo);
+    return options.preserveReadingAlternatives ? retainExcludedReadings96(resolved, [], new Set(), memo) : resolved;
+  }
 
   const fullWines = mergeMenuTileResults95([fullResult], options, memo).vinos ?? [];
   const regionalWines = mergeMenuTileResults95(regionalResults, options, memo).vinos ?? [];
@@ -777,5 +853,8 @@ export const resolveMenuTileResults = (results: MenuTileResult[], options: MenuM
       });
       return vinos.length ? [{ ...result, response: { ...result.response, vinos } }] : [];
     }) : [];
-  return mergeMenuTileResults95([...baseResults, ...complementaryServingResults, ...focusResults], options, memo);
+  const resolved = mergeMenuTileResults95([...baseResults, ...complementaryServingResults, ...focusResults], options, memo);
+  return options.preserveReadingAlternatives ? retainExcludedReadings96(resolved,
+    [fullResult, ...regionalResults].filter(result => !baseResults.includes(result)),
+    new Set(complementaryServingResults.flatMap(result => result.response.vinos ?? [])), memo) : resolved;
 };
