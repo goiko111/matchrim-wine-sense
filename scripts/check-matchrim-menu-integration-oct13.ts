@@ -82,8 +82,8 @@ check(() => {
 let nativeLayoutGroups = 0;
 check(() => {
   assert.equal(hash(readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8')),
-    'de69c492a9b7677ec8caf0c29d8dd45b0a36f5b6722534e89c66b3175e1d2399',
-    'Exact source-preservation child for native/web parity, B_R3 and the scoped consumer UI amendment');
+    '5e3bf4fbc3fc81a74653a8608ff2eaef1449a2211d37593a096399e372ea1026',
+    'Exact source-preservation child for native/web parity, B_R3 and the scoped menu/label UI amendments');
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-native-layout.ts'], { encoding: 'utf8' });
   const report = JSON.parse(output.trim().split('\n').at(-1)!);
   assert.equal(report.baseline, '31e060828d1b370b275cdcf6691052368916f39f');
@@ -95,6 +95,12 @@ check(() => {
   assert.equal(report.scope96.nativeInitialScannerLandscapePaddingAmendments, 1);
   assert.equal(report.scope96.nativeMenuConsumerUiAmendments, 9);
   assert.equal(report.scope96.nativeMenuConsumerUiCategories, 4);
+  assert.equal(report.scope96.nativeLabelUi96.currentHash, 'b48b9fb5ac81cfb3eeb329f3e99b9709d5a0c22851bdf049280031784efcd11a');
+  assert.equal(report.scope96.nativeLabelUi96.beforeHash, 'bc496d943d6ed7631c3505e1b63f11a18c0e641a31f2cf6a9ae9763773ae4146');
+  assert.equal(report.scope96.nativeLabelUi96.passed, 35);
+  assert.equal(report.scope96.nativeLabelUi96.failed, 0);
+  assert.equal(report.scope96.nativeLabelUi96.classAmendments, 5);
+  assert.equal(report.scope96.nativeLabelUi96.rejectedMutations, 15);
   nativeLayoutGroups = report.passed;
 });
 check(() => {

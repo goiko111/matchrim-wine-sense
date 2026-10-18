@@ -4,7 +4,60 @@ Status: ACTIVE. No TestFlight95 upload or release approval is claimed here.
 This continuation supersedes the Food deployment-permission blocker in the
 October17 report, not its historical results or remaining product findings.
 
-## Current Checkpoint, 10:18 UTC
+## Current Checkpoint, 11:27 UTC
+
+The clean integrated candidate `2dc2246` completed all14 local groups, fresh
+unsigned simulator/device builds95, controlled Label27/27 and memory100/100.
+The actual native scanner14 completed all four MAX portrait/landscape gallery
+open/cancel contexts. Parent reviewed the actual critical landscape captures;
+the earlier3pt heading clip is not present in this execution. No photo or AI
+request is part of this accessibility-only native test.
+
+The subsequent complete native safe11 at the same candidate finished10PASS and
+1FAIL: test07's first standard AX tap on Escanear after launch stayed on Home,
+before Photos. The synthesized point196,907 lies inside the FINAL link frame,
+but no tap-time frame or DOM-delivery measurement exists. The original FAIL
+remains. Two fixed diagnostic runs, isolated07 and06-to07, then passed without
+changing the original test, adding a wait, retapping or changing the binary.
+They do not demonstrate a cause or replace the failed whole-suite gate. A
+private, passive nav-event diagnostic is being prepared; no speculative app
+navigation patch or accessibility-coordinate waiver has been made.
+
+A captured-response dense-scene UI replay exposed an additional real P1 at
+320px/root32: the results row squeezed names into single letters and clipped
+Pendiente. The narrow native-only correction changes FIVE class attributes:
+identity, affinity and pending-region text get full-width stacked rows. It
+does not change JSX elements, text, callbacks, values, thresholds, requests,
+crops, identity or score calculations. The exact web branches remain unchanged.
+The corrected four-view replay passes300 assertions, retaining all212 original
+oracles; parent viewed normal, MAX and pending-row screenshots. Native UIKit
+validation and new final-source27/100 executions are still required, not
+inferred from the historical2dc passes.
+
+This replay delivers the exact three captured detector and eleven captured
+analysis responses, holds the twelfth request and cancels through the real
+button. It makes zero external calls. Its model proposal is Juvé & Camps;
+DEUTZ is explicitly QA manual input, never recognition credit. Neither user
+confirmation nor manual correction creates a verified fiche or numerical
+affinity. The resulting47 regions include35 deferred and one still pending,
+not47 identities or a complete inventory.
+
+Foodv10 remains the one actual minimum Lovable deployment, costing1.1credits.
+Remote main still reads `8744fc5`, whose full tree differs from the prior
+baseline only in the Food handler. No web Publish or additional spend occurred.
+The three-alias strict-response deployment requires the separately requested
+additional owner authorization; the prepared package and28 Parent offline
+six-canary controls do not constitute a deployment or approval. The old32/32
+internal request window remains consumed. No new paid call has been submitted.
+
+The fifty-profile run has NOT started. Final clean-source build/gates, native
+navigation disposition and the new50 remain required. Historical101 failed
+intelligence assertions, the known rounding tie and57 backend/native differences
+are preserved with current exposure classifications, not erased or advertised
+as a new human taste study. Recognition source coverage and conditional
+TestFlight remain HOLD. No95 signing, archive, export or upload has occurred.
+
+## Earlier Checkpoint, 10:18 UTC
 
 Foodv10 is deployed and its original hosted controls pass;1.1 Lovable credits
 were consumed, with no web Publish. App runtime `fe547ed` and QA commits

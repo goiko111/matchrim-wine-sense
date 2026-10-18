@@ -14,6 +14,54 @@ import { canLookupWinerimOriginal, catalogWineFromVerifiedSheet, isVerifiedWiner
 const baseline = 'ebee038059778f1f10bdb5dd647bccb8324fb580';
 const before = (path: string) => execFileSync('git', ['show', `${baseline}:${path}`], { encoding: 'utf8' });
 const current = (path: string) => readFileSync(path, 'utf8');
+const labelUi96 = {
+  path: 'src/components/wine-import/MultiWineLabelScanner.tsx',
+  revision: '2dc2246207e600d1767637803891383f2aaad60c',
+  beforeHash: 'bc496d943d6ed7631c3505e1b63f11a18c0e641a31f2cf6a9ae9763773ae4146',
+  currentHash: 'b48b9fb5ac81cfb3eeb329f3e99b9709d5a0c22851bdf049280031784efcd11a',
+};
+const labelClassAmendments96: [string, string][] = [
+  ['className="matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"',
+    `className={isNative
+                      ? 'matchrim-pressable flex min-h-16 w-full min-w-0 flex-col items-stretch gap-2 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800'
+                      : 'matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800'}`],
+  ['className="min-w-0 flex-1"', "className={isNative ? 'min-w-0 w-full' : 'min-w-0 flex-1'}"],
+  ['className="shrink-0 text-right"', "className={isNative ? 'min-w-0 w-full text-left [overflow-wrap:anywhere]' : 'shrink-0 text-right'}"],
+  ['className="flex min-h-16 w-full items-start gap-3 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800"',
+    `className={isNative
+                        ? 'flex min-h-16 w-full min-w-0 flex-col items-stretch gap-2 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800'
+                        : 'flex min-h-16 w-full items-start gap-3 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800'}`],
+  ['className="min-w-0"', "className={isNative ? 'min-w-0 w-full [overflow-wrap:anywhere]' : 'min-w-0'}"],
+];
+const restoreLabelClasses96 = (source: string) => {
+  for (const [original, revised] of labelClassAmendments96) {
+    assert.equal(source.split(revised).length - 1, 1, `Exactly one reviewed class amendment: ${original}`);
+    source = source.replace(revised, original);
+  }
+  return source;
+};
+const labelWebProjection96 = (source: string) => {
+  const tree = ts.createSourceFile(labelUi96.path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  let projected = 0;
+  const transformed = ts.transform(tree, [context => {
+    const visit: ts.Visitor = node => {
+      if (ts.isJsxAttribute(node) && node.name.getText(tree) === 'className'
+        && node.initializer && ts.isJsxExpression(node.initializer)) {
+        const value = node.initializer.expression;
+        if (value && ts.isConditionalExpression(value) && ts.isIdentifier(value.condition)
+          && value.condition.text === 'isNative' && ts.isStringLiteral(value.whenTrue) && ts.isStringLiteral(value.whenFalse)) {
+          projected++;
+          return context.factory.updateJsxAttribute(node, node.name, context.factory.createStringLiteral(value.whenFalse.text));
+        }
+      }
+      return ts.visitEachChild(node, visit, context);
+    };
+    return root => ts.visitNode(root, visit) as ts.SourceFile;
+  }]);
+  try { return { source: ts.createPrinter({ removeComments: true }).printFile(transformed.transformed[0]), projected }; }
+  finally { transformed.dispose(); }
+};
+let labelUi96Result: { classAmendments: number; rejectedMutations: number; exactSourceRestored: boolean; fullWebAstEqual: boolean } | undefined;
 const groups: string[] = [];
 const check = async (name: string, run: () => void | Promise<void>) => { await run(); groups.push(name); console.log('PASS', name); };
 const oldFetch = globalThis.fetch;
@@ -189,9 +237,44 @@ try {
     assert.equal(restored, before(path));
   });
   await check('Actual scanner lifecycle closures and crop geometry stay byte exact', () => {
-    for (const path of ['src/components/wine-import/MultiWineLabelScanner.tsx', 'src/utils/imageCropGeometry.ts']) {
-      assert.equal(current(path), before(path));
+    const scanner = current(labelUi96.path), original = before(labelUi96.path);
+    const historical = execFileSync('git', ['show', `${labelUi96.revision}:${labelUi96.path}`], { encoding: 'utf8' });
+    const sha = (source: string) => createHash('sha256').update(source).digest('hex');
+    assert.equal(sha(original), labelUi96.beforeHash);
+    assert.equal(historical, original, 'The complete reviewed2dc scanner is still the original ebee scanner');
+    assert.equal(sha(scanner), labelUi96.currentHash, 'Exact frozen C native-list UI source');
+    const legacyWeb = labelWebProjection96(original);
+    assert.equal(legacyWeb.projected, 0);
+    const prove = (source: string) => {
+      assert.equal(restoreLabelClasses96(source), original, 'Every byte outside the five exact native classes, including every callback, remains unchanged');
+      const web = labelWebProjection96(source);
+      assert.equal(web.projected, 5);
+      assert.equal(web.source, legacyWeb.source, 'Complete web-false module AST, text, attributes and callbacks remain unchanged');
+    };
+    prove(scanner);
+    const mutations: [string, string, string][] = labelClassAmendments96.map(([, revised], index) =>
+      [`native class ${index + 1}`, revised, revised.replace('min-w-0', 'min-w-[1px]')]);
+    mutations.push(
+      ['web class', "'min-w-0 flex-1'", "'min-w-0 w-1'"],
+      ['callback', 'onClick={() => setSelectedRegionId(regions.find', 'onClick={() => setSelectedRegionId(regions.filter'],
+      ['threshold', 'candidate.confidence >= 0.72', 'candidate.confidence >= 0.71'],
+      ['crop', 'cropImageRegionWithQuality(', 'cropImageRegion('],
+      ['ARIA', 'Abrir detalle de ${group.candidate.name}', 'Detalle ${group.candidate.name}'],
+      ['raw affinity bypass', 'isNative ? consumer?.affinityValue :', 'isNative ? group.candidate.affinity :'],
+      ['fabricated score', 'isNative ? consumer?.affinityValue :', "isNative ? '99/100' :"],
+      ['native gate inversion', 'className={isNative\n', 'className={!isNative\n'],
+      ['missing amendment', labelClassAmendments96[1][1], labelClassAmendments96[1][0]],
+      ['duplicate amendment', labelClassAmendments96[1][1], labelClassAmendments96[1][1] + labelClassAmendments96[1][1]],
+    );
+    for (const [name, from, to] of mutations) {
+      assert.ok(scanner.includes(from), `Applicable negative control: ${name}`);
+      const changed = scanner.replace(from, to);
+      assert.notEqual(changed, scanner, name);
+      assert.throws(() => prove(changed), undefined, `Scope proof must reject ${name} independently of the source fingerprint`);
     }
+    assert.equal(mutations.length, 15);
+    assert.equal(current('src/utils/imageCropGeometry.ts'), before('src/utils/imageCropGeometry.ts'));
+    labelUi96Result = { classAmendments: 5, rejectedMutations: mutations.length, exactSourceRestored: true, fullWebAstEqual: true };
   });
   await check('Original helper source adds only symmetric producer-role gates before the exact-name shortcut', () => {
     const path = 'src/utils/winerimOriginalSheet.ts';
@@ -398,5 +481,6 @@ try {
   });
   assert.equal(forbiddenFetches, 0);
   console.log(JSON.stringify({ passed: groups.length, failed: 0, baseline, groups, remoteCalls: 0, paidCalls: 0,
+    nativeLabelUi96: { ...labelUi96, ...labelUi96Result },
     scope: 'Synthetic actual-helper/AST contracts only. No image, GT, private corpus, fresh OCR, global catalogue, owner account, native UI or human-taste claims.' }));
 } finally { globalThis.fetch = oldFetch; }

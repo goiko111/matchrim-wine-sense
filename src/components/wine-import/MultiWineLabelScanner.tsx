@@ -1213,14 +1213,16 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <button
                     key={group.key}
                     type="button"
-                    className="matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"
+                    className={isNative
+                      ? 'matchrim-pressable flex min-h-16 w-full min-w-0 flex-col items-stretch gap-2 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800'
+                      : 'matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800'}
                     onClick={() => setSelectedRegionId(regions.find((region) => (
                       group.regionIds.includes(region.id) && getSelectedCandidate(region)?.id === group.candidate.id
                     ))?.id ?? group.regionIds[0])}
                     aria-label={`Abrir detalle de ${group.candidate.name}`}
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-950 text-sm font-bold text-white">{index + 1}</span>
-                    <span className="min-w-0 flex-1">
+                    <span className={isNative ? 'min-w-0 w-full' : 'min-w-0 flex-1'}>
                       <span className={`block font-semibold text-slate-950${isNative ? ' break-words [overflow-wrap:anywhere]' : ''}`}>{group.candidate.name}</span>
                       <span className={`block text-xs leading-5 text-slate-500${isNative ? ' break-words [overflow-wrap:anywhere]' : ''}`}>
                         {[group.candidate.producer, group.candidate.region].filter(Boolean).join(' · ') || 'Identidad parcial'}
@@ -1237,7 +1239,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         </span>
                       )}
                     </span>
-                    <span className="shrink-0 text-right">
+                    <span className={isNative ? 'min-w-0 w-full text-left [overflow-wrap:anywhere]' : 'shrink-0 text-right'}>
                       <span data-testid="scan-affinity-value" className="block font-bold text-red-900">{isNative ? consumer?.affinityValue : group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
                       <span className="block text-[11px] text-slate-500">{isNative ? 'Afinidad' : group.candidate.affinity == null ? 'Sin datos' : identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
                     </span>
@@ -1250,10 +1252,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 <section aria-label="Regiones pendientes de identificar" className="divide-y divide-stone-200">
                   {regions.filter((region) => region.status === 'deferred' || region.status === 'unrecognized').map((region) => (
                     <button key={region.id} type="button" onClick={() => setSelectedRegionId(region.id)}
-                      className="flex min-h-16 w-full items-start gap-3 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800"
+                      className={isNative
+                        ? 'flex min-h-16 w-full min-w-0 flex-col items-stretch gap-2 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800'
+                        : 'flex min-h-16 w-full items-start gap-3 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800'}
                       aria-label={`Revisar región ${region.index}: ${statusLabel(region)}`}>
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-stone-200 text-sm font-semibold">{region.index}</span>
-                      <span className="min-w-0"><span className="block font-semibold">{statusLabel(region)}</span>
+                      <span className={isNative ? 'min-w-0 w-full [overflow-wrap:anywhere]' : 'min-w-0'}><span className="block font-semibold">{statusLabel(region)}</span>
                         <span className="block text-xs leading-5 text-stone-600">{region.deferral?.message ?? region.fallback?.message ?? region.error ?? 'Revisa el recorte o identifica el vino manualmente.'}</span>
                       </span>
                     </button>
