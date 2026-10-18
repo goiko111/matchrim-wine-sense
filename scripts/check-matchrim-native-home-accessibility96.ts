@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { Script } from 'node:vm';
 import postcss from 'postcss';
 import ts from 'typescript';
+import { restoreNativeScanHub96 } from './check-matchrim-scan-hub96';
 
 const baseline = 'ebee038059778f1f10bdb5dd647bccb8324fb580';
 const file = 'src/components/NativeAppHome.tsx';
@@ -99,7 +100,8 @@ check('Native actions precede the full unchanged introduction and guide without 
   assert.equal((current.match(/<MatchrimQuickGuide /g) ?? []).length, 1);
 });
 const cssBefore = execFileSync('git', ['show', `${baseline}:src/index.css`], { encoding: 'utf8' });
-const css = readFileSync('src/index.css', 'utf8');
+// The separately pinned hub-only amendment is removed before the original12 checks.
+const css = restoreNativeScanHub96(readFileSync('src/index.css', 'utf8'));
 const start = css.indexOf('/* Home scrolls inside a stable viewport');
 const end = css.indexOf('\nbody,\n#root,\n.App', start) + 1;
 assert.ok(start > 0 && end > start);

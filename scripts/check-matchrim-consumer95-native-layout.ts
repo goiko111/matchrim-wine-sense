@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import postcss from 'postcss';
 import ts from 'typescript';
 import { nativeLabelKeyboard96 } from './check-matchrim-label-keyboard96';
+import { restoreNativeScanHub96 } from './check-matchrim-scan-hub96';
 
 // Public, offline source checks. Browser/native receipts are separate evidence.
 const baseline = '31e060828d1b370b275cdcf6691052368916f39f';
@@ -28,12 +29,24 @@ const reviewed95Fingerprints = new Map([
 ]);
 const home96 = {
   test: 'scripts/check-matchrim-native-home-accessibility96.ts',
-  testHash: 'c9f6e66c4cd36de7eb8d4e9fb5e2282036501282767f736de176f2d8b801fd33',
+  testHash: '962bdbb1a8f7d3ca3d7afbd7b39464abdb880e00243b989261f39df7bfd2f9ce',
   sources: new Map([
     ['src/components/NativeAppHome.tsx', '04d35a6fcfb4536b060fa701e86a168b81ac7320368ef7e3eae3a689a46cfca1'],
     ['src/components/MobileBottomNav.tsx', '9c6edc7cec29bdec7c3f2ec3696f84b69a6073e7296d669a24906c8caa820271'],
     ['src/index.css', '548ff193ba713bce9595b28cb53bb316e3929653540199a4ca86789a4b2097dd'],
   ]),
+};
+// Report the finite CSS projection separately from all unchanged historical oracles.
+const scanHub96 = {
+  test: 'scripts/check-matchrim-scan-hub96.ts',
+  testHash: '7149a47039c0382f4985051755e888cd36dc685efcf8a76a164c9db1a3cec4ad',
+  revision: 'efc61c547fb04e1ac5adbe4974dbfe29aebd59fa',
+  currentCssHash: '7bcbb68daff30c8b475e606d9f67d8f593617ef4456e73a72e57a9b4f3c3c50c',
+  projectedCssHash: '548ff193ba713bce9595b28cb53bb316e3929653540199a4ca86789a4b2097dd',
+  blockHash: '056d4d2f5b3907c4051637884114826a11f1321a8d944c22cff3a1355e5a2f02',
+  childGroups: 5,
+  rejectedMutations: 4,
+  scope: 'One exact native-accessibility hub-only CSS block inverse before all historical checks; no component, route, callback, text or data projection',
 };
 const labelUi96 = {
   source: 'src/components/wine-import/MultiWineLabelScanner.tsx',
@@ -56,7 +69,11 @@ const menuReading96 = {
 };
 const before = (path: string) => execFileSync('git', ['show', `${baseline}:${path}`], { encoding: 'utf8' });
 const reviewed95 = (path: string) => execFileSync('git', ['show', `${baseline96}:${path}`], { encoding: 'utf8' });
-const current = (path: string) => readFileSync(path, 'utf8');
+// Only the exact new hub block is projected; all historical source oracles remain intact.
+const current = (path: string) => {
+  const source = readFileSync(path, 'utf8');
+  return path === 'src/index.css' ? restoreNativeScanHub96(source) : source;
+};
 const hash = (value: string) => createHash('sha256').update(value).digest('hex');
 const parse = (path: string, source: string) => ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 let passed = 0;
@@ -609,12 +626,29 @@ check('Full web AST proof rejects text, attributes and callback changes instead 
     assert.throws(() => assert.deepEqual(canonical(render(changed)), canonical(render(oldSession))));
   }
 });
+check('Separate native AX hub CSS amendment preserves whole EFC stylesheet and runs five additive scope/negative groups', () => {
+  assert.equal(hash(readFileSync(scanHub96.test, 'utf8')), scanHub96.testHash);
+  const actualCss = readFileSync('src/index.css', 'utf8');
+  assert.equal(hash(actualCss), scanHub96.currentCssHash);
+  const projected = restoreNativeScanHub96(actualCss);
+  assert.equal(hash(projected), scanHub96.projectedCssHash);
+  assert.equal(projected, execFileSync('git', ['show', `${scanHub96.revision}:src/index.css`], { encoding: 'utf8' }));
+  const output = execFileSync(process.execPath, ['--import', 'tsx', scanHub96.test], {
+    encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60_000, maxBuffer: 1024 * 1024,
+  });
+  const report = JSON.parse(output.trim().split('\n').at(-1)!);
+  assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 5);
+  assert.equal(report.groups, 5); assert.equal(report.passed, true); assert.equal(report.baseline, false);
+  assert.equal(report.SDKOrNativeRuntimeUsed, false); assert.equal(report.sourceComponentUnchanged, true);
+  assert.equal(report.webAndNormalNativeExactOptOut, true); assert.equal(report.ui, null);
+});
 
 console.log(JSON.stringify({ passed, failed: 0, baseline, sources: Object.fromEntries(fingerprints),
   reviewed95: { revision: baseline96, sources: Object.fromEntries(reviewed95Fingerprints) },
   scope96: { homeSources: Object.fromEntries(home96.sources), child: { path: home96.test, hash: home96.testHash, ...home96Result }, nativeHomeLandscapeAmendments: 1, nativeInitialScannerRules: 12, nativeInitialScannerLandscapePaddingAmendments: 1, nativeMenuCropAmendments: 2, nativeMenuParallelAmendments: 6, nativeMenuConsumerUiAmendments: 9, nativeMenuConsumerUiCategories: 4,
     nativeLabelUi96: { ...labelUi96, passed: 36, failed: 0, classAmendments: 5, rejectedMutations: 15 },
     nativeKeyboardBridge: nativeKeyboardBridge96Result,
+    nativeScanHubAccessibility96: scanHub96,
     nativeMenuReading96: { revision: menuReading96.revision, sources: Object.fromEntries(menuReading96.sources), componentJsxBlocks: 4, componentDeclarationBlocks: 2,
       componentOptInCalls: 2, resolverDeclarationBlocks: 4, resolverReturnWrappers: 3, resolverFalseAstEqual: true, rejectedMutations: 12,
       nativeCoverageCopyAmendments: 1, metadataSourceAdmissionAmendments: 1, r3RejectedMutations: 4,

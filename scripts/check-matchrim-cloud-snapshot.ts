@@ -67,7 +67,7 @@ const reviewed95Suites = [
   ['scripts/check-matchrim-consumer95-signout.ts', 8],
   ['scripts/check-matchrim-consumer95-cellar-targets.ts', 6],
   ['scripts/check-matchrim-consumer95-cellar-dialog.ts', 4],
-  ['scripts/check-matchrim-consumer95-native-layout.ts', 14],
+  ['scripts/check-matchrim-consumer95-native-layout.ts', 15],
   ['scripts/check-matchrim-consumer95-menu-serving.ts', 29],
   ['scripts/check-matchrim-native-home-accessibility96.ts', 12],
   ['scripts/check-matchrim-recognition96.ts', 36],

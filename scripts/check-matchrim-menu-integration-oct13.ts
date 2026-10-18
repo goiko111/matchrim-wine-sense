@@ -82,14 +82,14 @@ check(() => {
 let nativeLayoutGroups = 0;
 check(() => {
   assert.equal(hash(readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8')),
-    'aeb2a03b2efc2e407171795b36cfadf33a8f9a51c7989915762bc33c9927f4f4',
+    '9979389b5bf9d2fab7136381cc4956763b5efbba0812c1180fe7c3deba92f6a2',
     'Exact source-preservation child for native/web parity, B_R3 and scoped menu/label/reading96 amendments');
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-native-layout.ts'], { encoding: 'utf8' });
   const report = JSON.parse(output.trim().split('\n').at(-1)!);
   assert.equal(report.baseline, '31e060828d1b370b275cdcf6691052368916f39f');
   assert.equal(report.failed, 0);
-  assert.equal(report.passed, 14);
-  assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 14);
+  assert.equal(report.passed, 15);
+  assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 15);
   assert.equal(report.scope96.nativeMenuCropAmendments, 2);
   assert.equal(report.scope96.nativeMenuParallelAmendments, 6);
   assert.equal(report.scope96.nativeInitialScannerLandscapePaddingAmendments, 1);
@@ -115,6 +115,17 @@ check(() => {
     whole05caSourceRestored: true,
     rejectedMutations: 14,
     childGroups: 5,
+  });
+  assert.deepEqual(report.scope96.nativeScanHubAccessibility96, {
+    test: 'scripts/check-matchrim-scan-hub96.ts',
+    testHash: '7149a47039c0382f4985051755e888cd36dc685efcf8a76a164c9db1a3cec4ad',
+    revision: 'efc61c547fb04e1ac5adbe4974dbfe29aebd59fa',
+    currentCssHash: '7bcbb68daff30c8b475e606d9f67d8f593617ef4456e73a72e57a9b4f3c3c50c',
+    projectedCssHash: '548ff193ba713bce9595b28cb53bb316e3929653540199a4ca86789a4b2097dd',
+    blockHash: '056d4d2f5b3907c4051637884114826a11f1321a8d944c22cff3a1355e5a2f02',
+    childGroups: 5,
+    rejectedMutations: 4,
+    scope: 'One exact native-accessibility hub-only CSS block inverse before all historical checks; no component, route, callback, text or data projection',
   });
   assert.deepEqual(report.scope96.nativeMenuReading96.sources, {
     'src/components/wine-import/WineMenuScanner.tsx': 'ac27302f41c93d51ac2ad58de798b1928cde97d092773e349b1cc61e8af0e337',

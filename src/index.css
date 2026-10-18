@@ -887,3 +887,82 @@ body.has-native-app-nav .matchrim-native-page-x {
 .radar-fill {
   @apply h-full bg-primary rounded-full transition-all duration-700 ease-out;
 }
+/* Native accessibility scan hub keeps option controls within the viewport. */
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) {
+  padding: calc(12px + var(--matchrim-safe-top)) calc(8px + var(--matchrim-safe-right)) 24px calc(8px + var(--matchrim-safe-left));
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) > div:has(> section[aria-labelledby="more-scan-options-title"]) {
+  display: grid;
+  gap: 16px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) > div:has(> section[aria-labelledby="more-scan-options-title"]) > div:first-child {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) > div:has(> section[aria-labelledby="more-scan-options-title"]) > section {
+  margin: 0;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) :is(button[aria-label="Comida y vinos del restaurante"], div:has(> section[aria-labelledby="more-scan-options-title"]) > div:first-child > button, section[aria-labelledby="more-scan-options-title"] > div > button) {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20px;
+  align-items: start;
+  gap: 8px;
+  min-height: 44px;
+  padding: 12px;
+  margin-bottom: 0;
+  border-radius: 8px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) :is(div:has(> section[aria-labelledby="more-scan-options-title"]) > div:first-child > button, section[aria-labelledby="more-scan-options-title"] > div > button) > span:first-of-type {
+  grid-column: 1;
+  grid-row: 1;
+  width: 44px;
+  height: 44px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) :is(div:has(> section[aria-labelledby="more-scan-options-title"]) > div:first-child > button, section[aria-labelledby="more-scan-options-title"] > div > button) > span:first-of-type svg {
+  width: 24px;
+  height: 24px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) :is(button[aria-label="Comida y vinos del restaurante"], div:has(> section[aria-labelledby="more-scan-options-title"]) > div:first-child > button, section[aria-labelledby="more-scan-options-title"] > div > button) > svg:last-child {
+  grid-column: 2;
+  grid-row: 1;
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) > button[aria-label="Comida y vinos del restaurante"] > svg:first-child {
+  grid-column: 1;
+  grid-row: 1;
+  width: 44px;
+  height: 44px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) :is(div:has(> section[aria-labelledby="more-scan-options-title"]) > div:first-child > button, section[aria-labelledby="more-scan-options-title"] > div > button) > span:nth-of-type(2),
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) > button[aria-label="Comida y vinos del restaurante"] > span {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  min-width: 0;
+  padding-top: 0;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) :is(div:has(> section[aria-labelledby="more-scan-options-title"]) > div:first-child > button, section[aria-labelledby="more-scan-options-title"] > div > button) > span:nth-of-type(2) > span + span,
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#more-scan-options-title) > button[aria-label="Comida y vinos del restaurante"] > span > span + span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* End native accessibility scan hub. */
