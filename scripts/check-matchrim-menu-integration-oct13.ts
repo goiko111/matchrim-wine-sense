@@ -82,7 +82,7 @@ check(() => {
 let nativeLayoutGroups = 0;
 check(() => {
   assert.equal(hash(readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8')),
-    'e9a43e5060548c88d6535028b89b9c1ae0279946344caa027ce81a4ecfc2df6e',
+    'aeb2a03b2efc2e407171795b36cfadf33a8f9a51c7989915762bc33c9927f4f4',
     'Exact source-preservation child for native/web parity, B_R3 and scoped menu/label/reading96 amendments');
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-native-layout.ts'], { encoding: 'utf8' });
   const report = JSON.parse(output.trim().split('\n').at(-1)!);
@@ -95,12 +95,27 @@ check(() => {
   assert.equal(report.scope96.nativeInitialScannerLandscapePaddingAmendments, 1);
   assert.equal(report.scope96.nativeMenuConsumerUiAmendments, 9);
   assert.equal(report.scope96.nativeMenuConsumerUiCategories, 4);
-  assert.equal(report.scope96.nativeLabelUi96.currentHash, 'b48b9fb5ac81cfb3eeb329f3e99b9709d5a0c22851bdf049280031784efcd11a');
+  assert.equal(report.scope96.nativeLabelUi96.currentHash, '9d2123e37af1de7d69a55c3f9dd333b04ef7c5f6940ccc747bc27117737c860f');
+  assert.equal(report.scope96.nativeLabelUi96.priorNativeClassHash, 'b48b9fb5ac81cfb3eeb329f3e99b9709d5a0c22851bdf049280031784efcd11a');
   assert.equal(report.scope96.nativeLabelUi96.beforeHash, 'bc496d943d6ed7631c3505e1b63f11a18c0e641a31f2cf6a9ae9763773ae4146');
-  assert.equal(report.scope96.nativeLabelUi96.passed, 35);
+  assert.equal(report.scope96.nativeLabelUi96.passed, 36);
   assert.equal(report.scope96.nativeLabelUi96.failed, 0);
   assert.equal(report.scope96.nativeLabelUi96.classAmendments, 5);
   assert.equal(report.scope96.nativeLabelUi96.rejectedMutations, 15);
+  assert.deepEqual(report.scope96.nativeKeyboardBridge, {
+    path: 'scripts/check-matchrim-label-keyboard96.ts',
+    testHash: '54a47abda40574d0b74551825f50ddb87042306fd95755aa8a2f85d4c56339c3',
+    revision: '3a215039b91a6d3d57b806e3874f336a3010bc0e',
+    priorRevision: '05ca1e2da53d581424f873fe0a9c1c2cd9d82018',
+    priorSourceHash: 'b48b9fb5ac81cfb3eeb329f3e99b9709d5a0c22851bdf049280031784efcd11a',
+    currentSourceHash: '9d2123e37af1de7d69a55c3f9dd333b04ef7c5f6940ccc747bc27117737c860f',
+    webAstScope: 'Complete legacy web AST after the declared native keyboard/count inverse; not the literal current module AST',
+    earlyNativeGuard: true,
+    refsUndefinedOnWeb: true,
+    whole05caSourceRestored: true,
+    rejectedMutations: 14,
+    childGroups: 5,
+  });
   assert.deepEqual(report.scope96.nativeMenuReading96.sources, {
     'src/components/wine-import/WineMenuScanner.tsx': 'ac27302f41c93d51ac2ad58de798b1928cde97d092773e349b1cc61e8af0e337',
     'src/utils/wineMenuScan.ts': '467be55f7138563662d96001a3f17f696c153418316097973c8a8a0d7ae28940',
