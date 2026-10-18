@@ -36,6 +36,20 @@ from its exact component-call fingerprint adopting the explicit native option;
 remain and a fourteenth group exercises the new contracts. Final clean-source
 execution is still required; targeted passes are not that release gate.
 
+The first clean full14 run at `a290cec` finishes12/14: its menu integration
+guard still pins the pre-parallel component, and the restaurant document checks
+lack their existing offline dependency-prefix selection. Both raw failures remain
+preserved. The scoped guard amendment retains the exact old-serving source and
+executes the unchanged14-group native/web preservation proof for B_R3; its122
+integration checks pass. Selecting the existing parse5@7.3.0, ipaddr.js@2.2.0 and
+http-parser-js@0.5.10 prefix gives all27 document checks PASS without package or
+application changes. A new clean full run is still required, using:
+
+```bash
+MATCHRIM_RESTAURANT91_TEST_DEPS=/path/to/offline-prefix \
+  node scripts/run-matchrim-consumer95-gates.mjs /new/absolute/evidence-directory
+```
+
 The earlier actual native Home follow-up FAILS on landscape Carta after bounded
 scrolling; its pixels and geometry are retained. The corrected R6 layout now
 passes the complete actual native13 method, with four standard AX activations,
