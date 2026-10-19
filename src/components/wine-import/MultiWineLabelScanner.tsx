@@ -296,6 +296,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   }), [duplicateGroups, regions]);
   const loading = phase === 'quality' || phase === 'profile' || phase === 'detecting' || phase === 'analyzing';
   const regionActionsLocked = batchLocked || loading;
+  const [manualLookupLoading, setManualLookupLoading] = useState(false);
+  const manualLookupContext = { owner: user?.id ?? null, regionId: selectedRegionId, candidate: selectedCandidate,
+    profile: scanProfile?.profile ?? null, locked: regionActionsLocked || saving || Boolean(batchRef.current) };
+  const manualLookupKey = JSON.stringify(manualLookupContext);
+  const currentManualLookupKey = useRef(manualLookupKey);
+  currentManualLookupKey.current = manualLookupKey;
   const progress = phase === 'quality'
     ? 8
     : phase === 'profile' || phase === 'detecting'
@@ -953,7 +959,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   />;
   const referenceReview = selectedCandidate && selectedRegion && <>
     <WinerimOriginalSheet sheet={selectedCandidate.originalSheet} />
-    {!selectedCandidate.originalSheet?.detailVerified && <WinerimSheetLookup identity={{
+    {!selectedCandidate.originalSheet?.detailVerified && (!isNative || selectedCandidate.source !== 'manual') && <WinerimSheetLookup identity={{
       name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage,
       inferredFields: selectedCandidate.inferredFields,
       region: selectedCandidate.inferredFields.includes('region') ? null : selectedCandidate.region,
@@ -965,7 +971,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         return catalog ? applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, catalog) : candidate;
       }) }));
     }} />}
-    {isNative && !regionActionsLocked && !selectedCandidate.originalSheet?.detailVerified && <WinerimCandidatePicker95
+    {isNative && !regionActionsLocked && !manualLookupLoading && !selectedCandidate.originalSheet?.detailVerified && <WinerimCandidatePicker95
       initialQuery={selectedCandidate.name}
       contextKey={JSON.stringify([selectedRegion.id, selectedCandidate.id, selectedCandidate.name, selectedCandidate.producer, selectedCandidate.vintage])}
       onConfirmed={sheet => {
@@ -1383,14 +1389,30 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     {selectedCandidate && !nativeConsumer?.canExplainAffinity && <p role="status" className="mt-2 text-sm font-medium text-stone-700">Afinidad pendiente</p>}
                   </div>
                   {nativeConsumer?.canExplainAffinity && affinityExplanation}
+                  {selectedCandidate?.source === 'manual' && !nativeConsumer?.catalogIdentityLinked && <div className="min-w-0" data-testid="native-manual-affinity-lookup">
+                    <WinerimSheetLookup contextKey={manualLookupKey} disabled={manualLookupContext.locked}
+                      buttonLabel="Buscar ficha para mi afinidad" onLoadingChange={setManualLookupLoading}
+                      identity={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage,
+                        inferredFields: selectedCandidate.inferredFields, region: selectedCandidate.region, country: selectedCandidate.country }}
+                      onVerified={sheet => {
+                        if (currentManualLookupKey.current !== manualLookupKey) return;
+                        const catalog = catalogWineFromVerifiedSheet(selectedCandidate, sheet);
+                        if (!catalog) return;
+                        setRegions(current => currentManualLookupKey.current !== manualLookupKey ? current : current.map(region =>
+                          region.id === selectedRegion.id && region.status !== 'discarded' && region.selectedCandidateId === selectedCandidate.id
+                            ? { ...region, candidates: region.candidates.map(candidate => candidate.id === selectedCandidate.id
+                              && JSON.stringify({ ...manualLookupContext, candidate }) === manualLookupKey
+                              ? applyScanWineEvidence(candidate, manualLookupContext.profile, catalog) : candidate) } : region));
+                      }} />
+                  </div>}
                   {selectedCandidate ? contextGuidance : <p className="text-sm text-stone-700">Afinidad pendiente</p>}
-                  {selectedCandidate && <Button type="button" variant="outline" disabled={regionActionsLocked} className="h-auto min-h-11 max-w-full gap-2 whitespace-normal" onClick={() => {
+                  {selectedCandidate && <Button type="button" variant="outline" aria-label="Corregir identificación" disabled={regionActionsLocked} className="h-auto min-h-11 max-w-full gap-2 whitespace-normal" onClick={() => {
                     const input = document.getElementById('region-wine-name');
                     const details = input?.closest('details');
                     if (details) details.open = true;
                     input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
                     input?.focus({ preventScroll: true });
-                  }}><Pencil aria-hidden="true" className="h-4 w-4 shrink-0" /> Corregir identificación</Button>}
+                  }}><Pencil aria-hidden="true" className="h-4 w-4 shrink-0" /> Corregir vino</Button>}
                 </section>}
                 {selectedRegion.error && selectedRegion.candidates.length > 0 && (
                   <div role="alert" data-testid="region-analysis-error" className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
