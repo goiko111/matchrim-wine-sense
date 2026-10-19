@@ -34,7 +34,7 @@ import { MenuPriceEditor } from '@/components/wine-import/MenuPriceEditor';
 import { clearMenuManualPriceOrigin, formatMenuPriceAmount, manualMenuPriceLines } from '@/utils/menuPriceReview';
 import { menuReadingSourceLabel96, nativeMenuTakeawayText96 } from '@/utils/menuReadingPresentation96';
 import { menuWineSensorySimilarity, menuWineSimilarityBand, menuWineSimilarityUnavailable } from '@/utils/menuWineSimilarity';
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw, ArrowUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
@@ -269,6 +269,8 @@ const WineMenuScannerSession = ({
   const detailPreviousRef = useRef<HTMLButtonElement>(null);
   const detailNextRef = useRef<HTMLButtonElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const comparisonPanelRef = useRef<HTMLDetailsElement>(null);
+  const comparisonReturnCleanup = useRef<(() => void) | null>(null);
   const scanAbortRef = useRef<AbortController | null>(null);
   const lastScanInputRef = useRef<{ file: File; type: 'image' | 'pdf' } | null>(null);
   const partialMenuReadingRef = useRef<PartialMenuReading95 | null>(null);
@@ -282,6 +284,52 @@ const WineMenuScannerSession = ({
   const profileRetryLifetime = useRef({ active: false, generation: 0, ownerId: user?.id });
   const detectionNoticeRef = useRef({ active: false, generation: 0, id: null as string | number | null });
   const detailFocusRef = useRef({ active: false, open: false, generation: 0, opener: null as HTMLElement | null });
+
+  useLayoutEffect(() => () => comparisonReturnCleanup.current?.(), [user?.id, preview, loading]);
+
+  const returnToComparison = () => {
+    if (!isNative) return;
+    comparisonReturnCleanup.current?.();
+    const panel = comparisonPanelRef.current;
+    const summary = panel?.querySelector('summary');
+    if (!panel?.isConnected || !(summary instanceof HTMLElement)) return;
+    (document.activeElement as HTMLElement | null)?.blur();
+    panel.open = true;
+    let frame = 0;
+    let active = true;
+    const viewport = window.visualViewport;
+    const reveal = () => {
+      cancelAnimationFrame(frame);
+      // Recenter after WebKit's keyboard-dismissal scroll restoration, not before it.
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          if (!active || comparisonPanelRef.current !== panel || !panel.isConnected || !panel.open) return;
+          summary.focus({ preventScroll: true });
+          summary.scrollIntoView({ behavior: 'instant', block: 'center' });
+        });
+      });
+    };
+    const observer = new MutationObserver(reveal);
+    const cleanup = () => {
+      active = false;
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      window.removeEventListener('resize', reveal);
+      viewport?.removeEventListener('resize', reveal);
+      document.removeEventListener('pointerdown', cleanup);
+      document.removeEventListener('keydown', cleanup);
+      observer.disconnect();
+      if (comparisonReturnCleanup.current === cleanup) comparisonReturnCleanup.current = null;
+    };
+    const timer = window.setTimeout(cleanup, 1000);
+    comparisonReturnCleanup.current = cleanup;
+    window.addEventListener('resize', reveal);
+    viewport?.addEventListener('resize', reveal);
+    document.addEventListener('pointerdown', cleanup);
+    document.addEventListener('keydown', cleanup);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    reveal();
+  };
 
   useEffect(() => {
     if (!isNative || !loading) return;
@@ -1160,7 +1208,7 @@ const WineMenuScannerSession = ({
     );
   };
   const renderOptionalNativePanel = (kind: 'comparison' | 'filters', title: string, children: ReactNode) => isNative
-    ? <details className="min-w-0 border-y border-stone-200 py-2" data-testid={`native-menu-${kind}`}>
+    ? <details ref={kind === 'comparison' ? comparisonPanelRef : undefined} className="min-w-0 border-y border-stone-200 py-2" data-testid={`native-menu-${kind}`}>
       <summary className="flex min-h-11 cursor-pointer items-center font-semibold text-stone-800">{title}</summary>
       <div className={kind === 'comparison' ? 'min-w-0 pt-2 [html.matchrim-accessibility-text_&_label]:flex-wrap [html.matchrim-accessibility-text_&_label]:px-[12px] [html.matchrim-accessibility-text_&_label>span]:basis-full' : 'min-w-0 pt-2'}>{children}</div>
     </details> : children;
@@ -2093,6 +2141,15 @@ const WineMenuScannerSession = ({
                           <Edit3 className="h-4 w-4" />
                           {isEditing ? 'Cerrar edición' : 'Editar'}
                         </Button>
+                        {isNative && scannedWines.length >= 2 && <Button
+                          type="button"
+                          variant="outline"
+                          className="h-auto min-h-[44px] w-full min-w-0 gap-[8px] self-start whitespace-normal px-[12px] py-[8px] sm:w-auto"
+                          onClick={returnToComparison}
+                        >
+                          <ArrowUp aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />
+                          Ir al comparador
+                        </Button>}
                       </div>
 
                       {isEditing && (
