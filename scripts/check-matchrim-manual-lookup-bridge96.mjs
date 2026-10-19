@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { restoreNativeHeadingGuard96 } from './check-matchrim-scan-heading96.mjs';
+import { restoreMenuResultsSource96, restoreMenuResultsGuard96 } from './matchrim-menu-results-first96-scope.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const digest = value => createHash('sha256').update(value).digest('hex');
@@ -12,6 +13,7 @@ const data = readFileSync(resolve(root, 'scripts/matchrim-manual-lookup96-scope.
 assert.equal(digest(data), 'eb4eb08d3630f7474835ffc836929924fa4a1d289ab23fbdaf25e9c5a4dd33df', 'Exact reviewed C and QA inverse data');
 const scope = JSON.parse(data);
 const inverse = (file, source, kind) => {
+  source = kind === 'component' ? restoreMenuResultsSource96(file, source) : restoreMenuResultsGuard96(file, source);
   if (kind === 'guard') source = restoreNativeHeadingGuard96(file, source);
   const row = scope.files.find(row => row.file === file && row.kind === kind);
   if (!row) return source;
@@ -28,7 +30,7 @@ export const restoreManualLookupGuard96 = (file, source) => inverse(file, source
 
 const actual = new Map();
 for (const row of scope.files) {
-  const source = restoreNativeHeadingGuard96(row.file, readFileSync(resolve(root, row.file), 'utf8'));
+  const source = restoreNativeHeadingGuard96(row.file, restoreMenuResultsGuard96(row.file, restoreMenuResultsSource96(row.file, readFileSync(resolve(root, row.file), 'utf8'))));
   actual.set(row.file, source);
   assert.equal(digest(source), row.afterHash, `Exact actual reviewed source: ${row.file}`);
   assert.equal(inverse(row.file, source, row.kind), execFileSync('git', ['show', `${scope.baseline}:${row.file}`], { cwd: root, encoding: 'utf8' }));

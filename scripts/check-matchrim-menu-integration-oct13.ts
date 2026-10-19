@@ -17,6 +17,7 @@ import { catalogWineFromVerifiedSheet, type WinerimOriginalSheet } from '../src/
 import { assertLayoutComparisonBridge96, comparisonTargetScope96 } from './matchrim-comparison-target96-scope';
 import { restoreNativeHubLayout96, nativeHubSvg96Result } from './check-matchrim-scan-hub-svg96.mjs';
 import { restoreManualLookupGuard96, manualLookup96Result } from './check-matchrim-manual-lookup-bridge96.mjs';
+import { restoreMenuResultsSource96 } from './matchrim-menu-results-first96-scope.mjs';
 
 const release = '89d478d6a391c4594fa09d815bb6546fb874231b';
 const bank = JSON.parse(readFileSync('docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json', 'utf8'));
@@ -79,7 +80,7 @@ check(() => {
   const nativeServingSource = execFileSync('git', ['show', `ebee038059778f1f10bdb5dd647bccb8324fb580:${path}`], { encoding: 'utf8' });
   assert.equal(hash(nativeServingSource), 'df1d513633f04e716c162bfd8374a735d2e19dc5f3e10386e716c92a4e5e95b9',
     'Retain the exact ddba35c native-serving source before the separately proved96 amendment');
-  assert.equal(hash(currentSource), 'ac27302f41c93d51ac2ad58de798b1928cde97d092773e349b1cc61e8af0e337',
+  assert.equal(hash(restoreMenuResultsSource96(path, currentSource)), 'ac27302f41c93d51ac2ad58de798b1928cde97d092773e349b1cc61e8af0e337',
     'Only the exact reviewed native row-context, parallel reads, consumer UI and reading96 amendment is accepted');
 });
 let nativeLayoutGroups = 0;

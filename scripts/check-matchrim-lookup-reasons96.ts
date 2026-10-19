@@ -1,13 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
 import vm from 'node:vm';
 import ts from 'typescript';
 import { canLookupWinerimOriginal } from '../src/utils/winerimOriginalSheet';
+import { restoreLookupReasons96 } from './matchrim-menu-results-first96-scope.mjs';
 
 const file = 'src/components/WinerimSheetLookup.tsx';
-const before = execFileSync('git', ['show', `8af2104:${file}`], { encoding: 'utf8' });
 const source = readFileSync(file, 'utf8');
 const oldHost = readFileSync('scripts/check-matchrim-manual-label-affinity96.ts', 'utf8');
 const ast = ts.createSourceFile('actual-test.ts', oldHost, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
@@ -17,25 +15,16 @@ const wine = { name: 'Synthetic Luna', producer: 'Synthetic Estate', vintage: nu
 const deferred = () => { let resolve: (value: unknown) => void = () => undefined; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
 const context = vm.createContext({ ts, vm, canLookupWinerimOriginal, lookupSource: source, wine, deferred, AbortController });
 vm.runInContext(ts.transpileModule(hostNode.getText(ast) + '\nglobalThis.host = host;', { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText, context);
-const host = context.host;
-const nodes = (v: any): any[] => Array.isArray(v) ? v.flatMap(nodes) : v && typeof v === 'object' && v.props ? [v, ...nodes(v.props.children)] : [];
-const text = (v: any): string => Array.isArray(v) ? v.map(text).join('') : v && typeof v === 'object' && v.props ? text(v.props.children) : v == null || typeof v === 'boolean' ? '' : String(v);
-const status = (h: any) => nodes(h.render()).filter(n => n.props.role === 'status').map(text).join('');
+type Element = { props: Record<string, unknown> };
+type Host = { render(): unknown; lookup(): void; calls: number; unmount(): void; buttons(): Element[]; setNative(value: boolean): void; wrapper(): unknown };
+const host = context.host as (identity?: Record<string, unknown>, options?: Record<string, unknown>) => Host;
+const isElement = (v: unknown): v is Element => Boolean(v && typeof v === 'object' && 'props' in v);
+const nodes = (v: unknown): Element[] => Array.isArray(v) ? v.flatMap(nodes) : isElement(v) ? [v, ...nodes(v.props.children)] : [];
+const text = (v: unknown): string => Array.isArray(v) ? v.map(text).join('') : isElement(v) ? text(v.props.children) : v == null || typeof v === 'boolean' ? '' : String(v);
+const status = (h: Host) => nodes(h.render()).filter(n => n.props.role === 'status').map(text).join('');
 const groups: string[] = [];
 const check = (name: string, run: () => void) => { run(); groups.push(name); console.log('PASS', name); };
 
-export function restoreLookupReasons96(value: string) {
-  const marker = '\nconst pendingIdentityMessage = ', start = value.indexOf(marker), end = value.indexOf('\nconst OriginalSheetLookup = ', start);
-  assert.ok(start >= 0 && end > start);
-  // Exact reviewed helper, not an arbitrary function-body deletion.
-  assert.equal(createHash('sha256').update(value.slice(start, end)).digest('hex'), '1424cb7aec13ac80dd2f52ab33ebada33515f9da11f890c5468d5430ae060f7b');
-  value = value.slice(0, start - 1) + value.slice(end);
-  const from = "{status === 'identity-required' ? pendingIdentityMessage(identity, disabled) : lookupMessages[status]}";
-  assert.equal(value.split(from).length, 2);
-  value = value.replace(from, '{lookupMessages[status]}');
-  assert.equal(value, before, 'Every ready/canonical/vintage/cancel/stale closure and native/web wrapper remains exact8af');
-  return value;
-}
 check('Whole lookup source inverse restores every original guard and handler; no dispatch projection', () => { restoreLookupReasons96(source); });
 check('Actual DEUTZ-present/empty-winery reports only the missing winery, not absent name or invalid year', () => {
   const h = host({ ...wine, name: 'DEUTZ', producer: '' });
