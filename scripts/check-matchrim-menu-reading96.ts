@@ -11,6 +11,7 @@ import { menuWinePriceEvidence, updateMenuWineEvidence } from '../src/utils/scan
 import { menuCardIdentity } from '../src/utils/menuWineActions';
 import { formatMenuPriceAmount } from '../src/utils/menuPriceReview';
 import { wineComparisonPrice } from '../src/utils/wineComparison';
+import { restoreMenuEntrySource96 } from './check-matchrim-native-menu-entry-bridge96.mjs';
 
 // SYNTHETIC literal readings only. No owner images, GT spellings, network or catalogue claims.
 const base: MenuScanWine = {
@@ -156,7 +157,7 @@ check('Only known tiles with finite positive in-bounds normalized boxes may supp
   assert.deepEqual(resolve()[0].lecturas_alternativas, [expectedReading]);
 });
 
-const source = readFileSync(new URL('../src/components/wine-import/WineMenuScanner.tsx', import.meta.url), 'utf8');
+const source = restoreMenuEntrySource96('src/components/wine-import/WineMenuScanner.tsx', readFileSync(new URL('../src/components/wine-import/WineMenuScanner.tsx', import.meta.url), 'utf8'));
 const ast = ts.createSourceFile('WineMenuScanner.tsx', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const initializers = new Map<string, ts.Expression>();
 const visit = (node: ts.Node) => {

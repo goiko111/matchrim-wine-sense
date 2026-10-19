@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
+import { restoreMenuEntrySource96 } from './check-matchrim-native-menu-entry-bridge96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url)), require = createRequire(root + 'package.json');
 const ts = require('typescript'), React = require('react'), { renderToStaticMarkup } = require('react-dom/server');
@@ -35,6 +36,7 @@ const tags = source => {
   return { ast, result };
 };
 export function restoreNativeScanPrivacy96(source) {
+  source = restoreMenuEntrySource96(file, source);
   assert.equal(createHash('sha256').update(source).digest('hex'), '6a8fe9477f76c866d2ace52849fe3938917fd43d0a191c3df07bb0bd30454ec1', 'Only this reviewed native layout candidate');
   const old = tags(before), now = tags(source); assert.equal(now.result.length, old.result.length);
   const edits = [];
@@ -90,7 +92,7 @@ function host(source, native, { stored = null, readError = false, writeError = f
 const walk = node => Array.isArray(node) ? node.flatMap(walk) : React.isValidElement(node) ? [node, ...walk(node.props.children)] : [];
 const text = node => Array.isArray(node) ? node.map(text).join('') : React.isValidElement(node) ? text(node.props.children) : typeof node === 'string' ? node : '';
 export function runScanPrivacy96() {
-  const source = readFileSync(root + file, 'utf8'), groups = [];
+  const source = restoreMenuEntrySource96(file, readFileSync(root + file, 'utf8')), groups = [];
   const check = (name, run) => { run(); groups.push(name); };
   check('Exact native attributes inverse, whole8af consent/storage/session/copy and handlers byte identical', () => { restoreNativeScanPrivacy96(source); });
   check('Actual web SSR identical for fresh/accepted/read-error states', () => {

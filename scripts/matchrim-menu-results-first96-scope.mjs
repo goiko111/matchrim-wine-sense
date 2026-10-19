@@ -5,12 +5,14 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { restoreNativeMenuResultsFirst96 } from './check-matchrim-menu-results-first96.mjs';
 import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.mjs';
+import { restoreMenuEntryGuard96, restoreMenuEntryPackage96 } from './check-matchrim-native-menu-entry-bridge96.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const original = file => execFileSync('git', ['show', `8af21043075ee42f00b04c30979a1abddf8c3e27:${file}`], { cwd: root, encoding: 'utf8' });
 const once = (value, from, to) => { assert.equal(value.split(from).length, 2, 'One exact presentation amendment'); return value.replace(from, to); };
 const commandTail = ' && node scripts/check-matchrim-menu-results-first96.mjs && node --import tsx scripts/check-matchrim-lookup-reasons96.ts && node scripts/check-matchrim-menu-results-bridge96.mjs && node scripts/check-matchrim-scan-privacy96.mjs && node scripts/check-matchrim-menu-comparator-return96.mjs';
 export function restoreMenuResultsPackage96(value) {
+  value = restoreMenuEntryPackage96(value);
   const before = original('package.json'), command = JSON.parse(before).scripts['test:closure96'];
   value = once(value, command + commandTail, command);
   assert.equal(value, before, 'Only four additive commands; no old command, dependency or package field removed');
@@ -32,6 +34,7 @@ export function restoreMenuResultsSource96(file, value) {
   return value;
 }
 export function restoreMenuResultsGuard96(file, value) {
+  value = restoreMenuEntryGuard96(file, value);
   if (file === 'scripts/check-matchrim-consumer95-native-layout.ts' && value.includes("const fullCss = restoreManualLookup96('src/index.css'")) {
     value = once(value, "const fullCss = restoreManualLookup96('src/index.css', readFileSync('src/index.css', 'utf8'));", "const fullCss = readFileSync('src/index.css', 'utf8');");
     value = once(value, "hash(restoreManualLookupGuard96(comparisonTargetScope96.test, readFileSync(comparisonTargetScope96.test, 'utf8')))", "hash(readFileSync(comparisonTargetScope96.test, 'utf8'))");

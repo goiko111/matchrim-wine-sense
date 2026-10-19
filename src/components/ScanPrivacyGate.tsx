@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { BrainCircuit, Camera, ShieldCheck, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,13 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
   const isNative = Capacitor.isNativePlatform();
   const [accepted, setAccepted] = useState(hasAcknowledgedNotice);
   const [checked, setChecked] = useState(false);
+  const justAcceptedRef = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!isNative || !accepted || !justAcceptedRef.current) return;
+    justAcceptedRef.current = false;
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [accepted, isNative]);
 
   if (accepted) return <>{children}</>;
 
@@ -34,6 +41,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
     } catch (error) {
       console.warn('[privacy] Could not persist scan notice:', error);
     }
+    justAcceptedRef.current = isNative;
     setAccepted(true);
   };
 

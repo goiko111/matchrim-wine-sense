@@ -8,6 +8,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { restoreNativeMenuComparatorReturn96 } from './check-matchrim-menu-comparator-return96.mjs';
+import { restoreMenuEntrySource96 } from './check-matchrim-native-menu-entry-bridge96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const require = createRequire(path.join(root, 'package.json'));
@@ -93,7 +94,7 @@ function web(value) {
 }
 
 export function runMenuResultsFirst96() {
-  const source = readFileSync(path.join(root, file), 'utf8'), current = initializers(source);
+  const source = restoreMenuEntrySource96(file, readFileSync(path.join(root, file), 'utf8')), current = initializers(source);
   const evaluate = (name, values = {}) => {
     const expression = current.values.get(name); assert.ok(expression, name);
     const context = vm.createContext({ React, Button: 'button', Upload: 'svg', X: 'svg', ChevronRight: 'svg', ...values });

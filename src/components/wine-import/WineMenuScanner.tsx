@@ -2014,12 +2014,49 @@ const WineMenuScannerSession = ({
 
 		          {visibleScannedWines.length > 0 && (
 		            <div className="matchrim-surface overflow-hidden rounded-lg bg-white">
-		              <div className="flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2">
+		              <div className={isNative ? 'flex min-w-0 flex-col items-start gap-3 border-b border-stone-100 px-[12px] py-2' : 'flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2'}>
 		                <h3 className="font-semibold text-slate-950">Lista de la carta</h3>
 		                <span role="status" aria-live="polite" aria-atomic="true" className="text-xs text-slate-500">{visibleScannedWines.length} {visibleScannedWines.length === 1 ? 'resultado' : 'resultados'}</span>
 		              </div>
-		              <div className="divide-y divide-stone-100">
-	                        {visibleScannedWines.map(({ wine, index }) => (
+		              <div className="divide-y divide-stone-100" role={isNative ? 'list' : undefined}>
+	                        {visibleScannedWines.map(({ wine, index }) => isNative ? (
+                        <div key={`${wine.nombre}-${index}-list-row`} role="listitem" className="min-w-0 space-y-2 px-[12px] py-3">
+                          <button
+                            type="button"
+                            aria-label={`Abrir ${isNative && isLiteralWineStyle95(wine) ? 'estilo' : 'vino'} ${index + 1}: ${wine.nombre}${isNative && literalMenuServingFormat95(wine) ? ` · ${literalMenuServingFormat95(wine)}` : ''}`}
+                            className={`matchrim-pressable flex min-h-[44px] w-full min-w-0 flex-wrap items-center gap-[8px] px-[12px] py-[8px] text-left text-sm font-semibold ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
+                            onClick={(event) => openWineDetail(index, event.currentTarget)}
+                          >
+                            <span aria-hidden="true">{index + 1}.</span>
+                            <span>Abrir {isLiteralWineStyle95(wine) ? 'estilo' : 'vino'}</span>
+                            <ChevronRight aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />
+                          </button>
+                          <div className="min-w-0">
+                            <span className="block whitespace-normal break-words font-semibold text-slate-950">
+                              {wine.nombre}{wine.anada ? ` ${wine.anada}` : ''}
+                            </span>
+                            {!isLiteralWineStyle95(wine) && !catalogWineFromVerifiedSheet({
+                              name: wine.nombre, producer: wine.productor, vintage: wine.anada, region: wine.region, country: wine.pais,
+                              inferredFields: wine.campos_inferidos,
+                            }, wine.originalSheet) && <span className="block text-xs font-medium text-stone-600">Nombre leído por confirmar</span>}
+                            <span className="block whitespace-normal break-words text-xs text-slate-500">
+                              {[wine.productor, wine.region, wine.campos_inferidos?.includes('servicio') ? 'Servicio sin confirmar' : wine.servicio, literalMenuServingFormat95(wine)].filter(Boolean).join(' · ') || 'Datos por revisar'}
+                            </span>
+                            <span className={`block whitespace-normal break-words text-xs ${wine.precio_manual_pendiente ? 'font-medium text-amber-800' : 'text-slate-500'}`}>{listPriceText(wine, index)}</span>
+                            {renderNativeTakeawayPrice(wine, requestedServiceFormat === 'any' ? null : requestedServiceFormat)}
+                            {Boolean(wine.lecturas_alternativas?.length) && <span className="block whitespace-normal break-words text-xs font-medium text-amber-800">Lecturas distintas: abre el detalle para revisar</span>}
+                          </div>
+                          <div className="min-w-0">
+                            {getWineDecision(wine).score !== null
+                              ? <span className="block text-lg font-bold text-red-900">≈{getWineDecision(wine).score}/100</span>
+                              : <span className="block text-xs text-stone-600">Afinidad pendiente</span>}
+                            <span className="block text-[11px] text-slate-500">{catalogWineFromVerifiedSheet({
+                              name: wine.nombre, producer: wine.productor, vintage: wine.anada, region: wine.region, country: wine.pais,
+                              inferredFields: wine.campos_inferidos,
+                            }, wine.originalSheet) ? 'Ficha original vinculada' : isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar' : 'Referencia por confirmar'}</span>
+                          </div>
+                        </div>
+                      ) : (
 		                  <button
 		                    key={`${wine.nombre}-${index}-list-row`}
 		                    type="button"
