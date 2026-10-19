@@ -16,6 +16,27 @@ const lookupMessages = {
 
 type LookupProps = { identity: WinerimOriginalIdentity; onVerified?: (sheet: OriginalSheet) => void;
   buttonLabel?: string; contextKey?: string; disabled?: boolean; onLoadingChange?: (loading: boolean) => void };
+
+const pendingIdentityMessage = (identity: WinerimOriginalIdentity, disabled: boolean) => {
+  if (disabled) return 'Ficha pendiente: termina la operación en curso antes de buscar la ficha.';
+  const missingName = identity.name == null || (typeof identity.name === 'string' && !identity.name.trim());
+  const missingProducer = identity.producer == null || (typeof identity.producer === 'string' && !identity.producer.trim());
+  const reasons: string[] = [];
+  if (missingName && missingProducer) reasons.push('añade el nombre y la bodega');
+  else if (missingName) reasons.push('añade el nombre del vino');
+  else if (missingProducer) reasons.push('añade la bodega');
+  const vintage = identity.vintage;
+  if (vintage != null && ((typeof vintage !== 'string' && typeof vintage !== 'number')
+    || (String(vintage).trim() && !/^(19|20)\d{2}$/.test(String(vintage).trim())))) reasons.push('revisa la añada');
+  if (Array.isArray(identity.inferredFields)) {
+    if (!missingName && identity.inferredFields.some(field => typeof field === 'string' && /^(name|nombre)$/i.test(field))) reasons.push('confirma el nombre del vino');
+    if (!missingProducer && identity.inferredFields.some(field => typeof field === 'string' && /^(producer|productor|winery|bodega)$/i.test(field))) reasons.push('confirma la bodega');
+    if (identity.inferredFields.some(field => typeof field === 'string' && /^(vintage|anada|añada|year)$/i.test(field))) reasons.push('confirma la añada');
+  }
+  return reasons.length ? `Ficha pendiente: ${reasons.join('; ')}.`
+    : 'Ficha pendiente: revisa los datos de identificación antes de buscar la ficha.';
+};
+
 const OriginalSheetLookup = ({ identity, onVerified, buttonLabel, disabled = false, onLoadingChange }: LookupProps) => {
   const controller = useRef<AbortController | null>(null);
   const mounted = useRef(true);
@@ -66,7 +87,7 @@ const OriginalSheetLookup = ({ identity, onVerified, buttonLabel, disabled = fal
         }}><X aria-hidden="true" className="h-4 w-4" /></Button>}
       </div>
       {loading && <p role="status" className="mt-2 text-xs text-slate-600">Consultando la ficha original de Winerim...</p>}
-      {status && <p role="status" className="mt-2 text-xs text-slate-600">{lookupMessages[status]}</p>}
+      {status && <p role="status" className="mt-2 text-xs text-slate-600">{status === 'identity-required' ? pendingIdentityMessage(identity, disabled) : lookupMessages[status]}</p>}
     </div>
   );
 };
