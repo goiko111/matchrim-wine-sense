@@ -58,7 +58,7 @@ const OriginalSheetLookup = ({ identity, onVerified, buttonLabel, disabled = fal
   return (
     <div className="min-w-0" aria-busy={loading}>
       <div className="flex min-w-0 items-center gap-2">
-        <Button type="button" variant="outline" disabled={loading || !ready} aria-label={`Ficha original Winerim: ${identity.name}${identity.vintage ? ` ${identity.vintage}` : ''}`} onClick={() => void lookup()} className={buttonLabel ? 'h-auto min-h-[44px] min-w-0 flex-1 gap-2 whitespace-normal px-3 py-3 text-left [overflow-wrap:normal]' : 'h-auto min-h-11 min-w-0 flex-1 gap-2 whitespace-normal break-words'}>
+        <Button type="button" variant="outline" disabled={loading || !ready} aria-label={`Ficha original Winerim: ${identity.name}${identity.vintage ? ` ${identity.vintage}` : ''}${buttonLabel ? `. ${buttonLabel}` : ''}`} onClick={() => void lookup()} className={buttonLabel ? 'h-auto min-h-[44px] min-w-0 flex-1 gap-2 whitespace-normal px-3 py-3 text-left [overflow-wrap:normal]' : 'h-auto min-h-11 min-w-0 flex-1 gap-2 whitespace-normal break-words'}>
           {loading ? <Loader2 aria-hidden="true" className="h-4 w-4 shrink-0 animate-spin" /> : <BookOpen aria-hidden="true" className="h-4 w-4 shrink-0" />} {buttonLabel || (outcome ? 'Reintentar ficha original Winerim' : 'Ficha original Winerim')}
         </Button>
         {loading && <Button type="button" variant="ghost" size="icon" className="h-11 w-11 shrink-0" aria-label="Cancelar búsqueda de ficha" title="Cancelar búsqueda de ficha" onClick={() => {

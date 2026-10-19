@@ -59,13 +59,21 @@ await check('existing entry defaults retain accessible label and web null render
 });
 await check('new caption retains original100 entry, one controller and actual cancel closure', async () => {
   const h = host(wine, { buttonLabel: 'Buscar ficha para mi afinidad' });
-  assert.equal(h.buttons()[0].props['aria-label'], 'Ficha original Winerim: Synthetic Luna'); assert.ok(JSON.stringify(h.buttons()[0]).includes('Buscar ficha para mi afinidad'));
+  assert.equal(h.buttons()[0].props['aria-label'], 'Ficha original Winerim: Synthetic Luna. Buscar ficha para mi afinidad'); assert.ok(JSON.stringify(h.buttons()[0]).includes('Buscar ficha para mi afinidad'));
   h.lookup(); h.lookup(); assert.equal(h.calls, 1); h.render(); assert.equal(h.buttons()[0].props.disabled, true); h.cancel(); assert.equal(h.signals[0].aborted, true);
   h.response.resolve({ status: 'verified', sheet }); await flush(); assert.deepEqual(h.commits, []); assert.equal(h.loading.at(-1), false); h.unmount();
 });
 await check('verified result uses latest callback', async () => {
   const h = host(), values: unknown[] = []; h.lookup(); h.setCallback(v => values.push(v)); h.render(); h.response.resolve({ status: 'verified', sheet }); await flush();
   assert.deepEqual(values, [sheet]); assert.deepEqual(h.commits, []); h.unmount();
+});
+await check('custom visible caption is contained in native accessible name; default exact and web null', () => {
+  const caption = 'Buscar ficha para mi afinidad', custom = host(wine, { buttonLabel: caption }), standard = host();
+  assert.ok(String(custom.buttons()[0].props['aria-label']).startsWith('Ficha original Winerim:'));
+  assert.ok(String(custom.buttons()[0].props['aria-label']).includes(caption));
+  assert.equal(standard.buttons()[0].props['aria-label'], 'Ficha original Winerim: Synthetic Luna');
+  custom.setNative(false); standard.setNative(false); assert.equal(custom.wrapper(), null); assert.equal(standard.wrapper(), null);
+  custom.unmount(); standard.unmount();
 });
 await check('layout unmount rejects ignored late response', async () => {
   const h = host(); h.lookup(); h.unmount(); assert.equal(h.signals[0].aborted, true); h.response.resolve({ status: 'verified', sheet }); await flush(); assert.deepEqual(h.commits, []); assert.equal(h.loading.at(-1), false);
@@ -126,7 +134,13 @@ await check('full legacy reference/session web-false JSX exact; mutation detecte
  assert.notEqual(web(current.replace('value={selectedCandidate.name}','value={"Wrong web"}'),'referenceReview'),web(old,'referenceReview'));
 });
 await check('exclusive original100-compatible entry, current context callback and short native caption', () => {
- for(const text of ["(!isNative || selectedCandidate.source !== 'manual')",'contextKey={manualLookupKey}','currentManualLookupKey.current !== manualLookupKey','JSON.stringify({ ...manualLookupContext, candidate }) === manualLookupKey','!manualLookupLoading','buttonLabel="Buscar ficha para mi afinidad"','aria-label="Corregir identificación"',' /> Corregir vino</Button>'])assert.ok(current.includes(text),text);
+ for(const text of ["(!isNative || selectedCandidate.source !== 'manual')",'contextKey={manualLookupKey}','currentManualLookupKey.current !== manualLookupKey','JSON.stringify({ ...manualLookupContext, candidate }) === manualLookupKey','!manualLookupLoading','buttonLabel="Buscar ficha para mi afinidad"','aria-label="Corregir identificación"',' /> Corregir</Button>'])assert.ok(current.includes(text),text);
  assert.ok(readFileSync('scripts/qa-matchrim-consumer95-memory.py','utf8').includes("re.compile('^Ficha original Winerim:')"));assert.ok(lookupSource.includes('aria-label={`Ficha original Winerim: ${identity.name}'));
+});
+await check('short native correction caption is contained in unchanged accessible name', () => {
+  assert.ok('Corregir identificación'.includes('Corregir'));
+  assert.ok(current.includes('aria-label="Corregir identificación"'));
+  assert.ok(current.includes(' /> Corregir</Button>'));
+  assert.ok(!current.includes(' /> Corregir vino</Button>'));
 });
 console.log(JSON.stringify({passed:passed.length,failed:0,groups:passed,actualLookupClosures:true,actualStrictReaderMockFetch:true,externalCalls:0,nativeUI:false}));

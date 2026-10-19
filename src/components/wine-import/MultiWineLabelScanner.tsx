@@ -1412,7 +1412,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     if (details) details.open = true;
                     input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
                     input?.focus({ preventScroll: true });
-                  }}><Pencil aria-hidden="true" className="h-4 w-4 shrink-0" /> Corregir vino</Button>}
+                  }}><Pencil aria-hidden="true" className="h-4 w-4 shrink-0" /> Corregir</Button>}
                 </section>}
                 {selectedRegion.error && selectedRegion.candidates.length > 0 && (
                   <div role="alert" data-testid="region-analysis-error" className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
