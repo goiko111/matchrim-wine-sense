@@ -593,10 +593,10 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
               <Sparkles className="h-4 w-4 shrink-0" />Elegir plato de este menú para mi vino
             </Button>
           )}
-          <div className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="flex items-start gap-3">
-              <Sparkles className="mt-0.5 h-5 w-5 text-red-900" />
-              <div className={isNative ? 'min-w-0 flex-1' : undefined}>
+          <div className={isNative ? 'min-w-0 bg-white py-[16px] [overflow-wrap:anywhere]' : "rounded-lg border border-stone-200 bg-white p-4"}>
+            <div className={isNative ? 'flex min-w-0 flex-col items-start gap-[8px]' : "flex items-start gap-3"}>
+              <Sparkles className={isNative ? 'h-5 w-5 shrink-0 text-red-900' : "mt-0.5 h-5 w-5 text-red-900"} />
+              <div className={isNative ? 'min-w-0 w-full' : undefined}>
                 <h3 className="font-semibold text-slate-950">Resultado</h3>
                 <p className="mt-1 text-sm leading-6 text-slate-600">{result.summary}</p>
                 <p className="mt-2 text-sm text-amber-800">Tus gustos en vino no determinan tus preferencias de comida.</p>
@@ -608,7 +608,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
             </div>
           </div>
 
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+          <div className={isNative ? 'min-w-0 border-y border-amber-200 bg-amber-50 py-[12px] text-sm leading-6 text-amber-950 [overflow-wrap:anywhere]' : "rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950"}>
             <p className="font-semibold">Maridajes orientativos, sin puntuación personal</p>
             <p className="mt-1">
               Faltan una botella identificada y sus datos sensoriales para calcular afinidad. No se han evaluado tus gustos de comida, alergias ni restricciones dietéticas.
