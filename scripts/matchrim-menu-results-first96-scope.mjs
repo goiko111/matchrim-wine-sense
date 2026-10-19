@@ -8,6 +8,13 @@ import { restoreNativeMenuResultsFirst96 } from './check-matchrim-menu-results-f
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const original = file => execFileSync('git', ['show', `8af21043075ee42f00b04c30979a1abddf8c3e27:${file}`], { cwd: root, encoding: 'utf8' });
 const once = (value, from, to) => { assert.equal(value.split(from).length, 2, 'One exact presentation amendment'); return value.replace(from, to); };
+const commandTail = ' && node scripts/check-matchrim-menu-results-first96.mjs && node --import tsx scripts/check-matchrim-lookup-reasons96.ts && node scripts/check-matchrim-menu-results-bridge96.mjs && node scripts/check-matchrim-scan-privacy96.mjs';
+export function restoreMenuResultsPackage96(value) {
+  const before = original('package.json'), command = JSON.parse(before).scripts['test:closure96'];
+  value = once(value, command + commandTail, command);
+  assert.equal(value, before, 'Only four additive commands; no old command, dependency or package field removed');
+  return value;
+}
 export function restoreLookupReasons96(value) {
   const marker = '\nconst pendingIdentityMessage = ', start = value.indexOf(marker), end = value.indexOf('\nconst OriginalSheetLookup = ', start);
   assert.ok(start >= 0 && end > start);
@@ -23,6 +30,26 @@ export function restoreMenuResultsSource96(file, value) {
   return value;
 }
 export function restoreMenuResultsGuard96(file, value) {
+  if (file === 'scripts/check-matchrim-manual-lookup-bridge96.mjs' && value.includes("import { restoreMenuResultsSource96, restoreMenuResultsGuard96 }")) {
+    value = once(value, "import { restoreMenuResultsSource96, restoreMenuResultsGuard96 } from './matchrim-menu-results-first96-scope.mjs';\n", '');
+    value = once(value, "  source = kind === 'component' ? restoreMenuResultsSource96(file, source) : restoreMenuResultsGuard96(file, source);\n", '');
+    value = once(value, "restoreNativeHeadingGuard96(row.file, restoreMenuResultsGuard96(row.file, restoreMenuResultsSource96(row.file, readFileSync(resolve(root, row.file), 'utf8'))))", "restoreNativeHeadingGuard96(row.file, readFileSync(resolve(root, row.file), 'utf8'))");
+    assert.equal(value, original(file), 'All original bridge assertions, source pairs, old commands and24 closure checks exact');
+    return value;
+  }
+  if (file === 'scripts/check-matchrim-scan-heading96.mjs' && value.includes("import { restoreMenuResultsGuard96, restoreMenuResultsPackage96 }")) {
+    value = once(value, "import { restoreMenuResultsGuard96, restoreMenuResultsPackage96 } from './matchrim-menu-results-first96-scope.mjs';\n", '');
+    value = once(value, '  source = restoreMenuResultsGuard96(file, source);\n', '');
+    value = once(value, "JSON.parse(restoreMenuResultsPackage96(read('package.json')))", "JSON.parse(read('package.json'))");
+    assert.equal(value, original(file), 'Every original named-heading assertion and negative exact');
+    return value;
+  }
+  if (file === 'scripts/check-matchrim-cloud-snapshot.ts' && value.includes("import { restoreNativeScanPrivacy96 }")) {
+    value = once(value, "import { restoreNativeScanPrivacy96 } from './check-matchrim-scan-privacy96.mjs';\n", '');
+    value = once(value, "row.path === 'src/components/ScanPrivacyGate.tsx'\n      ? Buffer.from(restoreNativeScanPrivacy96(readFileSync(row.path, 'utf8'))) : row.path === 'src/components/wine-import/ScanHub.tsx'", "row.path === 'src/components/wine-import/ScanHub.tsx'");
+    assert.equal(value, original(file), 'No protected path exemption or old assertion removed; exact privacy source inverse only');
+    return value;
+  }
   if (file !== 'scripts/check-matchrim-menu-integration-oct13.ts') return value;
   if (value.includes("import { restoreMenuResultsSource96 } from './matchrim-menu-results-first96-scope.mjs';")) {
     value = once(value, "import { restoreMenuResultsSource96 } from './matchrim-menu-results-first96-scope.mjs';\n", '');

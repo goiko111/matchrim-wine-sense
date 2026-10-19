@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { restoreMenuResultsGuard96, restoreMenuResultsPackage96 } from './matchrim-menu-results-first96-scope.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const baseline = 'df2d5b168515b59931c3360597a07d9a1f38e4f0';
@@ -45,6 +46,7 @@ const guardEdits = {
   ],
 };
 export function restoreNativeHeadingGuard96(file, source) {
+  source = restoreMenuResultsGuard96(file, source);
   const edits = guardEdits[file];
   if (!edits) return source;
   const before = previous(file);
@@ -189,7 +191,7 @@ export function runNativeScanHeading96Checks() {
     const wrongBridge = read(svgGuard).replace('restoreNativeHeadingTree96(copy);', 'restoreNativeHeadingTree96(nativeBefore);');
     assert.throws(() => restoreNativeHeadingGuard96(svgGuard, wrongBridge)); sourceGuardNegatives++;
     const oldCommands = JSON.parse(previous('package.json')).scripts['test:closure96'];
-    assert.equal(JSON.parse(read('package.json')).scripts['test:closure96'], oldCommands + ' && node scripts/check-matchrim-scan-heading96.mjs');
+    assert.equal(JSON.parse(restoreMenuResultsPackage96(read('package.json'))).scripts['test:closure96'], oldCommands + ' && node scripts/check-matchrim-scan-heading96.mjs');
   });
   return { passed: groups.length, failed: 0, groups, rejectedMutations: mutations.length, sourceGuardNegatives,
     wholeFileInverse: true, webDOMByteExact: true, currentHandlersPreserved: true, externalCalls: 0, SDK: 0,

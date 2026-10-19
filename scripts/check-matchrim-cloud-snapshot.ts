@@ -12,6 +12,7 @@ import { confirmWineCandidateIdentity, correctWineCandidateIdentity, normalizeWi
 import { ImagePreparationError } from '../src/utils/imageAnalysis';
 import { openAi92LegacyHandlers } from './matchrim-openai92-scope';
 import { restoreNativeHubSvg96 } from './check-matchrim-scan-hub-svg96.mjs';
+import { restoreNativeScanPrivacy96 } from './check-matchrim-scan-privacy96.mjs';
 
 const snapshot = '0c1a29728fb2f6b7f033b7d5e68bc8ea8e5335b1';
 const localRelease = '89d478d6a391c4594fa09d815bb6546fb874231b';
@@ -375,7 +376,8 @@ for (const row of manifest.productSourceFingerprints as Array<{ path: string; sh
     && row.path !== build85LearningPath && row.path !== qa90FoodDisclosure && row.path !== qa90NativeNavigation && row.path !== 'package.json') {
     const expected = reviewed95.get(row.path)?.current ?? (localPricePaths.has(row.path)
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256);
-    const actual = row.path === 'src/components/wine-import/ScanHub.tsx'
+    const actual = row.path === 'src/components/ScanPrivacyGate.tsx'
+      ? Buffer.from(restoreNativeScanPrivacy96(readFileSync(row.path, 'utf8'))) : row.path === 'src/components/wine-import/ScanHub.tsx'
       ? Buffer.from(restoreNativeHubSvg96(row.path, readFileSync(row.path, 'utf8'))) : readFileSync(row.path);
     assert.equal(hash(actual), expected, `Protected source: ${row.path}`);
     immutableCount += 1;
