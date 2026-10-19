@@ -1295,6 +1295,28 @@ const WineMenuScannerSession = ({
   const saveWineAsTasted = (wine: ScannedWine, index: number) => saveScannedWine(wine, index, 'tasted');
   const saveWineAsFavorite = (wine: ScannedWine, index: number) => saveScannedWine(wine, index, 'wishlist', true);
 
+  const nativeResultPreview = isNative && Boolean(preview) && scannedWines.length > 0 && !loading && !convertingPdf;
+  const renderMenuPreview = (image: ReactNode) => nativeResultPreview ? (
+    <div className="min-w-0 space-y-[8px]" data-testid="native-menu-image-review">
+      <div className="flex justify-end gap-[8px]">
+        <Button type="button" variant="outline" size="icon" className="h-[44px] w-[44px] shrink-0 bg-white text-stone-900 hover:bg-stone-100"
+          aria-label="Subir otra carta" title="Subir otra carta" onClick={() => {
+            if (fileInputRef.current) { fileInputRef.current.value = ''; fileInputRef.current.click(); }
+          }}><Upload aria-hidden="true" style={{ width: 20, height: 20 }} /></Button>
+        <Button type="button" variant="destructive" size="icon" className="h-[44px] w-[44px] shrink-0"
+          aria-label="Quitar carta" title="Quitar carta" onClick={clearScan}>
+          <X aria-hidden="true" style={{ width: 20, height: 20 }} />
+        </Button>
+      </div>
+      <details className="group min-w-0" data-testid="native-menu-preview">
+        <summary aria-label="Ver carta" className="flex min-h-[44px] cursor-pointer items-center gap-[8px] py-[8px] text-left text-sm font-semibold">
+          <span aria-hidden="true">Ver carta</span><ChevronRight aria-hidden="true" className="ml-auto shrink-0 group-open:rotate-90" style={{ width: 20, height: 20 }} />
+        </summary>
+        <div className="min-w-0 pt-[8px]">{image}</div>
+      </details>
+    </div>
+  ) : image;
+
   return (
     <div className="space-y-6">
       {isMatchrimFixtureQaEnabled && (
@@ -1328,7 +1350,7 @@ const WineMenuScannerSession = ({
 
       {/* Scanner Section */}
       <section aria-labelledby="wine-menu-upload-title">
-          <div className={preview || loading || convertingPdf
+          <div className={nativeResultPreview ? "matchrim-scan-stage min-w-0 rounded-lg p-[12px] text-left text-white" : preview || loading || convertingPdf
             ? "matchrim-scan-stage rounded-lg p-4 text-center text-white"
             : "rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5"}
           >
@@ -1350,7 +1372,7 @@ const WineMenuScannerSession = ({
               disabled={loading}
             />
 
-	            {(preview || convertingPdf) && !loading ? (
+	            {(preview || convertingPdf) && !loading ? renderMenuPreview(
 	              <div className="space-y-4">
 	                <div className="relative inline-block max-w-full">
 		                  {preview ? (
@@ -1410,7 +1432,7 @@ const WineMenuScannerSession = ({
 		                      <p className="text-sm text-white/70">Convirtiendo PDF a imagen...</p>
                     </div>
                   ) : null}
-	                <Button
+	                {!nativeResultPreview && <Button
 	                    onClick={clearScan}
 	                    variant="destructive"
 	                    size="icon"
@@ -1418,7 +1440,7 @@ const WineMenuScannerSession = ({
 	                    aria-label="Quitar carta"
                   >
 	                    <X className="h-4 w-4" />
-	                  </Button>
+	                  </Button>}
 	                </div>
 	                {preview && scannedWines.length > 0 && (
 		                  <div className="mx-auto max-w-2xl rounded-md border border-white/10 bg-white/8 p-3 text-left text-xs text-white/72">
