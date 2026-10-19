@@ -2,10 +2,11 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import postcss from 'postcss';
+import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.mjs';
 
 const path = 'src/index.css';
 const before = execFileSync('git', ['show', `06d56c76af9135559926e99b321ed8b00225c229:${path}`], { encoding: 'utf8' });
-const current = readFileSync(path, 'utf8');
+const current = restoreNativeScanPrivacyCss96(readFileSync(path, 'utf8'));
 const start = '\n/* Native comparison checkbox: compact indicator, full accessible touch target. */';
 const end = '/* End native comparison checkbox touch target. */\n';
 const scope = 'html.matchrim-native-platform section[aria-labelledby="wine-comparison-title"] button[role="checkbox"]';

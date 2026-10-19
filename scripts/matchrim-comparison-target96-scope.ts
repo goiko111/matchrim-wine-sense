@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.mjs';
 
 export const comparisonTargetMarker96 = '\n/* Native comparison checkbox: compact indicator, full accessible touch target. */';
 const hash = (source: string) => createHash('sha256').update(source).digest('hex');
@@ -13,6 +14,7 @@ export const comparisonTargetScope96 = {
   rules: 4, rejectedMutations: 6,
 };
 export function restoreComparisonTarget96(css: string): string {
+  css = restoreNativeScanPrivacyCss96(css);
   assert.equal(css.split(comparisonTargetMarker96).length, 2);
   const start = css.indexOf(comparisonTargetMarker96);
   assert.equal(hash(css.slice(start)), comparisonTargetScope96.blockHash, 'Only the exact four comparison rules');

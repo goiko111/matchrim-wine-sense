@@ -38,7 +38,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
   };
 
   return (
-    <section className={isNative ? 'matchrim-surface min-w-0 rounded-lg p-[12px]' : 'matchrim-surface rounded-lg p-4 sm:p-6'} aria-labelledby="scan-privacy-title">
+    <section className={isNative ? 'matchrim-native-scan-privacy matchrim-surface min-w-0 rounded-lg p-[12px]' : 'matchrim-surface rounded-lg p-4 sm:p-6'} aria-labelledby="scan-privacy-title">
       <div className={isNative ? 'grid min-w-0 gap-[8px]' : 'flex items-start gap-3'}>
         <div className={isNative ? 'flex h-[44px] w-[44px] items-center justify-center rounded-full bg-emerald-50 text-emerald-800' : 'flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-800'}>
           <ShieldCheck className="h-5 w-5" style={isNative ? { width: 20, height: 20 } : undefined} aria-hidden={isNative ? true : undefined} focusable={isNative ? false : undefined} />

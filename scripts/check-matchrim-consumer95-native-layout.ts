@@ -635,9 +635,9 @@ check('Separate native AX hub CSS amendment preserves whole EFC stylesheet and r
   assert.equal(hash(restoreManualLookupGuard96('scripts/check-matchrim-scan-hub-svg96.mjs', readFileSync('scripts/check-matchrim-scan-hub-svg96.mjs', 'utf8'))), '011785b7ac48e6c3d8517b25b132b689b230ff899c8e121afc5234801979b59d');
   const oldScanHub = execFileSync('git', ['show', `983146c6d87a49bfa58aa503a166e0dc4e972ec1:${scanHub96.test}`], { encoding: 'utf8' });
   assert.equal(hash(oldScanHub), scanHub96.testHash);
-  const fullCss = readFileSync('src/index.css', 'utf8');
+  const fullCss = restoreManualLookup96('src/index.css', readFileSync('src/index.css', 'utf8'));
   assert.equal(hash(fullCss), comparisonTargetScope96.currentCssHash);
-  assert.equal(hash(readFileSync(comparisonTargetScope96.test, 'utf8')), comparisonTargetScope96.testHash);
+  assert.equal(hash(restoreManualLookupGuard96(comparisonTargetScope96.test, readFileSync(comparisonTargetScope96.test, 'utf8'))), comparisonTargetScope96.testHash);
   const comparisonOutput = execFileSync(process.execPath, ['--import', 'tsx', comparisonTargetScope96.test], { encoding: 'utf8' });
   assert.equal(comparisonOutput.trim(), 'Comparison target96: CSS scope/inverse, 44px target, 20px indicator and six directed negatives PASS. Not UIKit geometry proof.');
   const actualCss = restoreComparisonTarget96(fullCss);

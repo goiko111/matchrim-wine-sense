@@ -289,23 +289,27 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-native-home-
 
 /* Initial scanner copy keeps its full width at accessibility text sizes. */
 html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty),
-html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title) {
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title),
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.matchrim-native-scan-privacy) {
   padding-left: calc(12px + var(--matchrim-safe-left));
   padding-right: calc(12px + var(--matchrim-safe-right));
 }
 
 html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty) .scan-page-heading,
-html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-heading {
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-heading,
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.matchrim-native-scan-privacy) .scan-page-heading {
   margin-bottom: 16px;
 }
 
 html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty) .scan-page-heading > div,
-html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-heading > div {
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-heading > div,
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.matchrim-native-scan-privacy) .scan-page-heading > div {
   gap: 12px;
 }
 
 html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.scan-upload-empty) .scan-page-back svg,
-html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-back svg {
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#wine-menu-upload-title) .scan-page-back svg,
+html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.matchrim-native-scan-privacy) .scan-page-back svg {
   width: 20px;
   height: 20px;
 }

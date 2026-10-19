@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { restoreNativeMenuResultsFirst96 } from './check-matchrim-menu-results-first96.mjs';
+import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const original = file => execFileSync('git', ['show', `8af21043075ee42f00b04c30979a1abddf8c3e27:${file}`], { cwd: root, encoding: 'utf8' });
@@ -25,11 +26,26 @@ export function restoreLookupReasons96(value) {
   return value;
 }
 export function restoreMenuResultsSource96(file, value) {
+  if (file === 'src/index.css' && value.includes('.scan-page-main:has(.matchrim-native-scan-privacy)')) return restoreNativeScanPrivacyCss96(value);
   if (file === 'src/components/wine-import/WineMenuScanner.tsx' && value.includes('  const nativeResultPreview =')) return restoreNativeMenuResultsFirst96(value);
   if (file === 'src/components/WinerimSheetLookup.tsx' && value.includes('\nconst pendingIdentityMessage = ')) return restoreLookupReasons96(value);
   return value;
 }
 export function restoreMenuResultsGuard96(file, value) {
+  if (file === 'scripts/check-matchrim-consumer95-native-layout.ts' && value.includes("const fullCss = restoreManualLookup96('src/index.css'")) {
+    value = once(value, "const fullCss = restoreManualLookup96('src/index.css', readFileSync('src/index.css', 'utf8'));", "const fullCss = readFileSync('src/index.css', 'utf8');");
+    value = once(value, "hash(restoreManualLookupGuard96(comparisonTargetScope96.test, readFileSync(comparisonTargetScope96.test, 'utf8')))", "hash(readFileSync(comparisonTargetScope96.test, 'utf8'))");
+    assert.equal(value, original(file), 'All15 original layout groups and every nested comparison/Home/menu proof exact');
+    return value;
+  }
+  if (['scripts/check-matchrim-comparison-target96.ts', 'scripts/matchrim-comparison-target96-scope.ts'].includes(file) && value.includes("import { restoreNativeScanPrivacyCss96 }")) {
+    value = once(value, "import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.mjs';\n", '');
+    value = file.includes('/check-')
+      ? once(value, "const current = restoreNativeScanPrivacyCss96(readFileSync(path, 'utf8'));", "const current = readFileSync(path, 'utf8');")
+      : once(value, '  css = restoreNativeScanPrivacyCss96(css);\n', '');
+    assert.equal(value, original(file), 'Only privacy CSS inverse precedes all unchanged comparison scope/44-target/negative checks');
+    return value;
+  }
   if (file === 'scripts/check-matchrim-manual-lookup-bridge96.mjs' && value.includes("import { restoreMenuResultsSource96, restoreMenuResultsGuard96 }")) {
     value = once(value, "import { restoreMenuResultsSource96, restoreMenuResultsGuard96 } from './matchrim-menu-results-first96-scope.mjs';\n", '');
     value = once(value, "  source = kind === 'component' ? restoreMenuResultsSource96(file, source) : restoreMenuResultsGuard96(file, source);\n", '');

@@ -42,8 +42,11 @@ for (const [from, to] of [['assert.equal(report.passed, 24)', 'assert.equal(repo
   assert.ok(bridge.includes(from)); assert.throws(() => originalBridge(bridge.replace(from, to))); rejected++;
 }
 console.log('PASS All original nested source guards,24 groups and mutation negatives preserved byte-for-byte');
-assert.equal(readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8'), old('scripts/check-matchrim-consumer95-native-layout.ts'));
-console.log('PASS Entire native-layout guard is unchanged');
+for (const file of ['scripts/check-matchrim-consumer95-native-layout.ts', 'scripts/check-matchrim-comparison-target96.ts', 'scripts/matchrim-comparison-target96-scope.ts']) {
+  const source=readFileSync(file,'utf8');assert.equal(restoreMenuResultsGuard96(file,source),old(file));
+  assert.throws(()=>restoreMenuResultsGuard96(file,source.replace('assert.equal(', 'assert.notEqual(')));rejected++;
+}
+console.log('PASS Entire native-layout/comparison guard sources restored before all historical assertions');
 for (const file of ['scripts/check-matchrim-scan-heading96.mjs', 'scripts/check-matchrim-cloud-snapshot.ts']) {
   const source = readFileSync(file, 'utf8'); assert.equal(restoreMenuResultsGuard96(file, source), old(file));
   const changed = source.replace('assert.equal(', 'assert.notEqual('); assert.notEqual(changed, source); assert.throws(() => restoreMenuResultsGuard96(file, changed)); rejected++;
@@ -53,4 +56,4 @@ console.log('PASS Named-heading/cloud protection retain all old assertions and p
 const pkg = readFileSync('package.json', 'utf8'); assert.equal(restoreMenuResultsPackage96(pkg), old('package.json'));
 assert.throws(() => restoreMenuResultsPackage96(pkg.replace('&& node --import tsx scripts/check-matchrim-recognition96.ts', ''))); rejected++;
 console.log('PASS Exact four additive commands; every old command/dependency retained');
-console.log(JSON.stringify({passed:6,failed:0,rejectedMutations:rejected,productFiles:3,guardFiles:4,originalNativeLayoutExact:true,actualRuntimeUnprojected:true,externalCalls:0,SDK:false}));
+console.log(JSON.stringify({passed:6,failed:0,rejectedMutations:rejected,productFiles:3,guardFiles:7,originalNativeLayoutByteUnchanged:false,nativeLayoutWholeInverse:true,actualRuntimeUnprojected:true,externalCalls:0,SDK:false}));

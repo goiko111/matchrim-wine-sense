@@ -11,6 +11,23 @@ const root = fileURLToPath(new URL('../', import.meta.url)), require = createReq
 const ts = require('typescript'), React = require('react'), { renderToStaticMarkup } = require('react-dom/server');
 const file = 'src/components/ScanPrivacyGate.tsx';
 const before = execFileSync('git', ['show', `8af2104:${file}`], { cwd: root, encoding: 'utf8' });
+const beforeCss = execFileSync('git', ['show', '8af2104:src/index.css'], { cwd: root, encoding: 'utf8' });
+const privacySelector = 'html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(.matchrim-native-scan-privacy)';
+const cssGroups = [
+  ['section[aria-labelledby="wine-menu-upload-title"] > div:not(.matchrim-scan-stage) #wine-menu-upload-title)', ''],
+  ['#wine-menu-upload-title) .scan-page-heading', ' .scan-page-heading'],
+  ['#wine-menu-upload-title) .scan-page-heading > div', ' .scan-page-heading > div'],
+  ['#wine-menu-upload-title) .scan-page-back svg', ' .scan-page-back svg'],
+].map(([tail, suffix]) => {
+  const old = `html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(${tail} {`;
+  return [old, old.slice(0, -2) + ',\n' + privacySelector + suffix + ' {'];
+});
+export function restoreNativeScanPrivacyCss96(css) {
+  if (css === beforeCss) return css;
+  for (const [prior, current] of cssGroups) { assert.equal(css.split(current).length, 2, 'Exactly one privacy selector per reviewed group'); css = css.replace(current, prior); }
+  assert.equal(css, beforeCss, 'Whole8af CSS: declarations, fonts, all other states and web rules unchanged');
+  return css;
+}
 const parse = source => ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const tags = source => {
   const result = [], ast = parse(source);
@@ -18,7 +35,7 @@ const tags = source => {
   return { ast, result };
 };
 export function restoreNativeScanPrivacy96(source) {
-  assert.equal(createHash('sha256').update(source).digest('hex'), '52cde3aa52c41a2f1ee23610ef0ce5275534a09ac2e325e33372397bfb5215fe', 'Only this reviewed native layout candidate');
+  assert.equal(createHash('sha256').update(source).digest('hex'), '6a8fe9477f76c866d2ace52849fe3938917fd43d0a191c3df07bb0bd30454ec1', 'Only this reviewed native layout candidate');
   const old = tags(before), now = tags(source); assert.equal(now.result.length, old.result.length);
   const edits = [];
   for (let i = 0; i < now.result.length; i++) {
@@ -106,12 +123,22 @@ export function runScanPrivacy96() {
     assert.ok(all.find(n => n.type === 'button').props.className.includes('whitespace-normal'));
     assert.doesNotMatch(source, /fontSize|text-\[(?:\d+(?:px|rem))\]/);
   });
+  check('Exactly four native-MAX privacy ancestor selector admissions, no declaration or other-state change', () => {
+    const css = readFileSync(root + 'src/index.css', 'utf8'); restoreNativeScanPrivacyCss96(css);
+    assert.equal(css.split(privacySelector).length, 5);
+    assert.ok(host(source, true).render().props.className.includes('matchrim-native-scan-privacy'));
+    assert.ok(!renderToStaticMarkup(host(source, false).render()).includes('matchrim-native-scan-privacy'));
+    for (const changed of [css.replace(privacySelector, privacySelector.replace('.matchrim-accessibility-text', '')),
+      css.replace(privacySelector, privacySelector.replace(':has(.matchrim-native-scan-privacy)', '')),
+      css.replace('padding-left: calc(12px + var(--matchrim-safe-left))', 'padding-left: 0'),
+      css.replace('width: 20px;', 'width: 19px;')]) assert.throws(() => restoreNativeScanPrivacyCss96(changed));
+  });
   let rejected = 0;
   check('Directed glyph/width/hidden-heading/consent/storage/default-web mutations reject', () => {
     for (const [from, to] of [['width: 20', 'width: 150'], ['h-[44px] w-[44px]', 'h-[43px] w-[43px]'], ['<h2 id="scan-privacy-title"', '<h2 aria-hidden="true" id="scan-privacy-title"'], ['if (!checked) return;', 'if (false) return;'], ["'accepted');", "'changed');"], ['La imagen y sus recortes', 'Different legal text'], ["'matchrim-surface rounded-lg p-4 sm:p-6'", "'web changed'"]]) {
       assert.ok(source.includes(from)); assert.throws(() => restoreNativeScanPrivacy96(source.replace(from, to))); rejected++;
     }
   });
-  return { passed: groups.length, failed: 0, groups, rejectedMutations: rejected, whole8afInverse: true, webSSRExact: true, consentHandlersUnchanged: true, SDK: false, externalCalls: 0 };
+  return { passed: groups.length, failed: 0, groups, rejectedMutations: rejected, cssRejectedMutations: 4, whole8afInverse: true, webSSRExact: true, consentHandlersUnchanged: true, SDK: false, externalCalls: 0 };
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) console.log(JSON.stringify(runScanPrivacy96()));
