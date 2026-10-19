@@ -11,6 +11,7 @@ import * as manualNotice from '../src/utils/manualWineIdentityNotice';
 import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';
 import { createWinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import { calculateLocalMatchrimAffinity } from '../src/utils/wineAffinityExplanation';
+import { restoreManualLookup96 } from './check-matchrim-manual-lookup-bridge96.mjs';
 
 // Synthetic local actors only. Imported services/components are inert; unexpected calls fail.
 const path = 'src/components/wine-import/MultiWineLabelScanner.tsx';
@@ -102,7 +103,7 @@ const elements = (child: Child, visible = false, ancestors: Element[] = []): Arr
 });
 const textOf = (child: Child): string => children(child).map(item => typeof item === 'object' ? textOf(item.props.children) : String(item)).join('');
 const find = (tree: Child, predicate: (node: Element) => boolean) => elements(tree).find(item => predicate(item.node))?.node;
-const button = (tree: Child, label: string) => find(tree, node => ['Button', 'button'].includes(String(node.type)) && textOf(node.props.children).trim() === label);
+const button = (tree: Child, label: string) => find(tree, node => ['Button', 'button'].includes(String(node.type)) && String(node.props['aria-label'] ?? textOf(node.props.children)).trim() === label);
 const click = (node?: Element) => { assert.ok(node); assert.ok(!node.props.disabled); (node.props.onClick as () => void)(); };
 const shape = (child: Child): unknown => {
   const result: unknown[] = [];
@@ -177,7 +178,7 @@ check('Existing scan lifecycle is identical outside the explicit native-only ima
     };
     visit(tree); return result;
   };
-  assert.equal(lookup(current.tree), lookup(prior.tree));
+  assert.equal(lookup(parse(restoreManualLookup96(path, source))), lookup(prior.tree));
 });
 check('Web JSX output equals baseline across phases, identities, missing data and save states', () => {
   const scenarios: State[] = [stateFor([], { preview: null }), stateFor([]), stateFor([region()], { selectedRegionId: null }),

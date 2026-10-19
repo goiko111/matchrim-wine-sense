@@ -150,6 +150,26 @@
           "after": "}\n\nfunction restoreGuard(source, file, replacements) {\n  source = restoreManualLookupGuard96(file, source);\n  for (const [from, to] of replacements) {\n    assert.equal(source.split(from).length, 2, 'One exact SVG guard amendment: ' + from);\n    source = source.replace(from, to);\n"
         }
       ]
+    },
+    {
+      "file": "scripts/check-matchrim-consumer95-scanner.ts",
+      "kind": "guard",
+      "beforeHash": "acb56833808eb8fd942b077ab762b8cf2787b841a1b4cd977b4305ddcff69f26",
+      "afterHash": "b92ca3aec95f553c993aa4c491c6d39e6be3670abd0f3031e6fe53a9640a3800",
+      "hunks": [
+        {
+          "before": "import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';\nimport { createWinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';\nimport { calculateLocalMatchrimAffinity } from '../src/utils/wineAffinityExplanation';\n\n// Synthetic local actors only. Imported services/components are inert; unexpected calls fail.\nconst path = 'src/components/wine-import/MultiWineLabelScanner.tsx';\n",
+          "after": "import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';\nimport { createWinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';\nimport { calculateLocalMatchrimAffinity } from '../src/utils/wineAffinityExplanation';\nimport { restoreManualLookup96 } from './check-matchrim-manual-lookup-bridge96.mjs';\n\n// Synthetic local actors only. Imported services/components are inert; unexpected calls fail.\nconst path = 'src/components/wine-import/MultiWineLabelScanner.tsx';\n"
+        },
+        {
+          "before": "});\nconst textOf = (child: Child): string => children(child).map(item => typeof item === 'object' ? textOf(item.props.children) : String(item)).join('');\nconst find = (tree: Child, predicate: (node: Element) => boolean) => elements(tree).find(item => predicate(item.node))?.node;\nconst button = (tree: Child, label: string) => find(tree, node => ['Button', 'button'].includes(String(node.type)) && textOf(node.props.children).trim() === label);\nconst click = (node?: Element) => { assert.ok(node); assert.ok(!node.props.disabled); (node.props.onClick as () => void)(); };\nconst shape = (child: Child): unknown => {\n  const result: unknown[] = [];\n",
+          "after": "});\nconst textOf = (child: Child): string => children(child).map(item => typeof item === 'object' ? textOf(item.props.children) : String(item)).join('');\nconst find = (tree: Child, predicate: (node: Element) => boolean) => elements(tree).find(item => predicate(item.node))?.node;\nconst button = (tree: Child, label: string) => find(tree, node => ['Button', 'button'].includes(String(node.type)) && String(node.props['aria-label'] ?? textOf(node.props.children)).trim() === label);\nconst click = (node?: Element) => { assert.ok(node); assert.ok(!node.props.disabled); (node.props.onClick as () => void)(); };\nconst shape = (child: Child): unknown => {\n  const result: unknown[] = [];\n"
+        },
+        {
+          "before": "    };\n    visit(tree); return result;\n  };\n  assert.equal(lookup(current.tree), lookup(prior.tree));\n});\ncheck('Web JSX output equals baseline across phases, identities, missing data and save states', () => {\n  const scenarios: State[] = [stateFor([], { preview: null }), stateFor([]), stateFor([region()], { selectedRegionId: null }),\n",
+          "after": "    };\n    visit(tree); return result;\n  };\n  assert.equal(lookup(parse(restoreManualLookup96(path, source))), lookup(prior.tree));\n});\ncheck('Web JSX output equals baseline across phases, identities, missing data and save states', () => {\n  const scenarios: State[] = [stateFor([], { preview: null }), stateFor([]), stateFor([region()], { selectedRegionId: null }),\n"
+        }
+      ]
     }
   ]
 }

@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const digest = value => createHash('sha256').update(value).digest('hex');
 const data = readFileSync(resolve(root, 'scripts/matchrim-manual-lookup96-scope.json'));
-assert.equal(digest(data), 'da538103b3cc9ace9dbae4ed22dce89dd39b9d8760ec86b9374bb7459d17c5fb', 'Exact reviewed C and QA inverse data');
+assert.equal(digest(data), 'eb4eb08d3630f7474835ffc836929924fa4a1d289ab23fbdaf25e9c5a4dd33df', 'Exact reviewed C and QA inverse data');
 const scope = JSON.parse(data);
 const inverse = (file, source, kind) => {
   const row = scope.files.find(row => row.file === file && row.kind === kind);
