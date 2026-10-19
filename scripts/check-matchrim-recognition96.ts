@@ -10,11 +10,12 @@ import * as picker from '../src/utils/winerimCandidateSearch95';
 import { canLookupWinerimOriginal, catalogWineFromVerifiedSheet, isVerifiedWinerimSheetForIdentity,
   lookupWinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import { nativeLabelKeyboard96, restoreNativeLabelKeyboard96 } from './check-matchrim-label-keyboard96';
+import { restoreManualLookup96, restoreManualLookupGuard96, manualLookup96Result } from './check-matchrim-manual-lookup-bridge96.mjs';
 
 // Synthetic contracts only. No images, ground truth, private paths or real API.
 const baseline = 'ebee038059778f1f10bdb5dd647bccb8324fb580';
 const before = (path: string) => execFileSync('git', ['show', `${baseline}:${path}`], { encoding: 'utf8' });
-const current = (path: string) => readFileSync(path, 'utf8');
+const current = (path: string) => restoreManualLookupGuard96(path, restoreManualLookup96(path, readFileSync(path, 'utf8')));
 const labelUi96 = {
   path: 'src/components/wine-import/MultiWineLabelScanner.tsx',
   revision: '2dc2246207e600d1767637803891383f2aaad60c',
@@ -502,7 +503,7 @@ try {
   });
   assert.equal(forbiddenFetches, 0);
   console.log(JSON.stringify({ passed: groups.length, failed: 0, baseline, groups, remoteCalls: 0, paidCalls: 0,
-    nativeLabelUi96: { ...labelUi96, ...labelUi96Result },
+    nativeLabelUi96: { ...labelUi96, ...labelUi96Result }, nativeManualLookup96: manualLookup96Result,
     nativeKeyboardBridge,
     scope: 'Synthetic actual-helper/AST contracts only. No image, GT, private corpus, fresh OCR, global catalogue, owner account, native UI or human-taste claims.' }));
 } finally { globalThis.fetch = oldFetch; }

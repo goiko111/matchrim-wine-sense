@@ -12,6 +12,7 @@ import { buildSync } from 'esbuild';
 import postcss from 'postcss';
 import tailwindcss from 'tailwindcss';
 import tailwindConfig from '../tailwind.config';
+import { restoreManualLookup96 } from './check-matchrim-manual-lookup-bridge96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 export const nativeLabelKeyboard96 = {
@@ -69,7 +70,7 @@ export const restoreNativeLabelKeyboard96 = (source: string) => {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
 const { values } = parseArgs({ options: { ui: { type: 'boolean' }, output: { type: 'string' } } });
 const file = 'src/components/wine-import/MultiWineLabelScanner.tsx';
-const source = readFileSync(resolve(root, file), 'utf8');
+const source = restoreManualLookup96(file, readFileSync(resolve(root, file), 'utf8'));
 const baseline = execFileSync('git', ['show', `05ca1e2:${file}`], { cwd: root, encoding: 'utf8' });
 const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const nodes: ts.Node[] = [];

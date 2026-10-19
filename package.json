@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test:closure96": "node --import tsx scripts/check-matchrim-native-home-accessibility96.ts && node --import tsx scripts/check-matchrim-menu-row-context96.ts && node --import tsx scripts/check-matchrim-recognition96.ts && node --import tsx scripts/check-matchrim-menu-reading96.ts",
+    "test:closure96": "node --import tsx scripts/check-matchrim-native-home-accessibility96.ts && node --import tsx scripts/check-matchrim-menu-row-context96.ts && node --import tsx scripts/check-matchrim-recognition96.ts && node --import tsx scripts/check-matchrim-menu-reading96.ts && node --import tsx scripts/check-matchrim-manual-label-affinity96.ts && node scripts/check-matchrim-manual-lookup-bridge96.mjs",
     "test:backend95": "node --import tsx scripts/check-matchrim-food-profile95.ts && node --import tsx scripts/check-matchrim-special-moments95.ts",
     "dev": "vite",
     "build": "vite build",

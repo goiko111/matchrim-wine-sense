@@ -16,6 +16,7 @@ import { applyMenuWineEvidence } from '../src/utils/scanWineEvidence';
 import { catalogWineFromVerifiedSheet, type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import { assertLayoutComparisonBridge96, comparisonTargetScope96 } from './matchrim-comparison-target96-scope';
 import { restoreNativeHubLayout96, nativeHubSvg96Result } from './check-matchrim-scan-hub-svg96.mjs';
+import { restoreManualLookupGuard96, manualLookup96Result } from './check-matchrim-manual-lookup-bridge96.mjs';
 
 const release = '89d478d6a391c4594fa09d815bb6546fb874231b';
 const bank = JSON.parse(readFileSync('docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json', 'utf8'));
@@ -83,7 +84,7 @@ check(() => {
 });
 let nativeLayoutGroups = 0;
 check(() => {
-  const layoutSource = readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8');
+  const layoutSource = restoreManualLookupGuard96('scripts/check-matchrim-consumer95-native-layout.ts', readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8'));
   assertLayoutComparisonBridge96(restoreNativeHubLayout96(layoutSource));
   assert.equal(hash(layoutSource), '5f2bb24b44f75c271665955e7a43f84f39b2016d83f6bd908f2f72b799d50efd', 'Exact current SVG-only layout bridge');
   for (const [from, to] of [['assert.equal(hash(fullCss)', 'assert.notEqual(hash(fullCss)'],
@@ -96,6 +97,7 @@ check(() => {
     'Exact source-preservation child for native/web parity, B_R3 and scoped menu/label/reading96 amendments');
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-native-layout.ts'], { encoding: 'utf8' });
   const report = JSON.parse(output.trim().split('\n').at(-1)!);
+  assert.deepEqual(report.scope96.nativeManualLookup96, manualLookup96Result);
   assert.equal(report.baseline, '31e060828d1b370b275cdcf6691052368916f39f');
   assert.equal(report.failed, 0);
   assert.equal(report.passed, 15);

@@ -8,6 +8,7 @@ import { nativeLabelKeyboard96 } from './check-matchrim-label-keyboard96';
 import { restoreNativeScanHub96 } from './check-matchrim-scan-hub96';
 import { assertScanHubComparisonBridge96, comparisonTargetScope96, restoreComparisonTarget96 } from './matchrim-comparison-target96-scope';
 import { nativeHubSvg96Result, restoreScanHubSvgGuard96 } from './check-matchrim-scan-hub-svg96.mjs';
+import { restoreManualLookup96, restoreManualLookupGuard96, manualLookup96Result } from './check-matchrim-manual-lookup-bridge96.mjs';
 
 // Public, offline source checks. Browser/native receipts are separate evidence.
 const baseline = '31e060828d1b370b275cdcf6691052368916f39f';
@@ -73,7 +74,7 @@ const before = (path: string) => execFileSync('git', ['show', `${baseline}:${pat
 const reviewed95 = (path: string) => execFileSync('git', ['show', `${baseline96}:${path}`], { encoding: 'utf8' });
 // Only the exact new hub block is projected; all historical source oracles remain intact.
 const current = (path: string) => {
-  const source = readFileSync(path, 'utf8');
+  const source = restoreManualLookupGuard96(path, restoreManualLookup96(path, readFileSync(path, 'utf8')));
   return path === 'src/index.css' ? restoreNativeScanHub96(source) : source;
 };
 const hash = (value: string) => createHash('sha256').update(value).digest('hex');
@@ -631,7 +632,7 @@ check('Full web AST proof rejects text, attributes and callback changes instead 
 check('Separate native AX hub CSS amendment preserves whole EFC stylesheet and runs five additive scope/negative groups', () => {
   const scanHubSource = readFileSync(scanHub96.test, 'utf8');
   assertScanHubComparisonBridge96(restoreScanHubSvgGuard96(scanHubSource));
-  assert.equal(hash(readFileSync('scripts/check-matchrim-scan-hub-svg96.mjs', 'utf8')), '011785b7ac48e6c3d8517b25b132b689b230ff899c8e121afc5234801979b59d');
+  assert.equal(hash(restoreManualLookupGuard96('scripts/check-matchrim-scan-hub-svg96.mjs', readFileSync('scripts/check-matchrim-scan-hub-svg96.mjs', 'utf8'))), '011785b7ac48e6c3d8517b25b132b689b230ff899c8e121afc5234801979b59d');
   const oldScanHub = execFileSync('git', ['show', `983146c6d87a49bfa58aa503a166e0dc4e972ec1:${scanHub96.test}`], { encoding: 'utf8' });
   assert.equal(hash(oldScanHub), scanHub96.testHash);
   const fullCss = readFileSync('src/index.css', 'utf8');
@@ -658,7 +659,7 @@ check('Separate native AX hub CSS amendment preserves whole EFC stylesheet and r
 console.log(JSON.stringify({ passed, failed: 0, baseline, sources: Object.fromEntries(fingerprints),
   reviewed95: { revision: baseline96, sources: Object.fromEntries(reviewed95Fingerprints) },
   scope96: { homeSources: Object.fromEntries(home96.sources), child: { path: home96.test, hash: home96.testHash, ...home96Result }, nativeHomeLandscapeAmendments: 1, nativeInitialScannerRules: 12, nativeInitialScannerLandscapePaddingAmendments: 1, nativeMenuCropAmendments: 2, nativeMenuParallelAmendments: 6, nativeMenuConsumerUiAmendments: 9, nativeMenuConsumerUiCategories: 4,
-    nativeLabelUi96: { ...labelUi96, passed: 36, failed: 0, classAmendments: 5, rejectedMutations: 15 },
+    nativeLabelUi96: { ...labelUi96, passed: 36, failed: 0, classAmendments: 5, rejectedMutations: 15 }, nativeManualLookup96: manualLookup96Result,
     nativeKeyboardBridge: nativeKeyboardBridge96Result,
     nativeScanHubAccessibility96: scanHub96,
     nativeHubDecorativeSvg96: { test: 'scripts/check-matchrim-scan-hub-svg96.mjs', testHash: '011785b7ac48e6c3d8517b25b132b689b230ff899c8e121afc5234801979b59d', ...nativeHubSvg96Result },

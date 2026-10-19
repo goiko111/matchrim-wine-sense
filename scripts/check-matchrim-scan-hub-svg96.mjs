@@ -6,11 +6,12 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { restoreManualLookupGuard96 } from './check-matchrim-manual-lookup-bridge96.mjs';
 
 const baselineRevision = 'e3fd4c73913469a3f084be7f1296b17fe7c3ac70';
 const deny = () => { throw new Error('No transport or scanner execution in SVG source/render fixture'); };
 const hash = (source) => createHash('sha256').update(source).digest('hex');
-const ownHash = () => hash(fs.readFileSync(fileURLToPath(import.meta.url)));
+const ownHash = () => hash(restoreManualLookupGuard96('scripts/check-matchrim-scan-hub-svg96.mjs', fs.readFileSync(fileURLToPath(import.meta.url), 'utf8')));
 export const nativeHubSvg96Result = { groups: 7, rejectedMutations: 5, sourceGuardNegatives: 3, edits: 9, nativeSVGs: 12, webCases: 2 };
 
 export function restoreNativeHubSvg96(file, source) {
@@ -32,6 +33,7 @@ export function restoreNativeHubSvg96(file, source) {
 }
 
 function restoreGuard(source, file, replacements) {
+  source = restoreManualLookupGuard96(file, source);
   for (const [from, to] of replacements) {
     assert.equal(source.split(from).length, 2, 'One exact SVG guard amendment: ' + from);
     source = source.replace(from, to);
