@@ -1,5 +1,11 @@
 export const MATCHRIM_PROFILE95_VERSION = 'matchrim-profile95-strict-0to5-v1';
 export const MATCHRIM_PROFILE95_TRAINING_COLUMNS = 'id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at';
+export const NATIVE_MATCHRIM_LEARNING_MODEL = 'native-evidence-strength-v2' as const;
+export type MatchrimLearningOptions96 = { evidenceStrength?: 'legacy-v1' | 'native-v2' };
+// Model selection is not identity or authorization; unknown tags retain legacy.
+export const readMatchrimLearningOptions96 = (model: unknown): MatchrimLearningOptions96 => ({
+  evidenceStrength: model === NATIVE_MATCHRIM_LEARNING_MODEL ? 'native-v2' : 'legacy-v1',
+});
 
 export type MatchrimProfile95 = { potente: number; acidez: number; dulce: number; tanico: number; afrutado: number };
 export type MatchrimLearnedProfile95 = { profile: MatchrimProfile95 | null; samples: number; confidence: number };
@@ -59,7 +65,8 @@ const readTraining = (value: unknown): Training95 | null => {
 };
 
 // v2 is exact 0..5; explicitly bound v1 keeps native compatibility, never coercion.
-export const calculateLearnedMatchrimProfile95 = (base: unknown, rows: readonly unknown[]): MatchrimLearnedProfile95 => {
+export const calculateLearnedMatchrimProfile95 = (base: unknown, rows: readonly unknown[], options: MatchrimLearningOptions96 = {}): MatchrimLearnedProfile95 => {
+  const strengthAware = options.evidenceStrength === 'native-v2';
   const profile = readMatchrimProfile95(base);
   if (!profile) return { profile: null, samples: 0, confidence: 0 };
   type Candidate = { row: Training95 | null; timestamp: number | null; conflicting: boolean };
@@ -100,9 +107,10 @@ export const calculateLearnedMatchrimProfile95 = (base: unknown, rows: readonly 
   }
   const totalAbsolute = axes.reduce((sum, key) => sum + absolute[key], 0);
   const consistency = totalAbsolute > 0 ? axes.reduce((sum, key) => sum + Math.abs(deltas[key]), 0) / totalAbsolute : 1;
-  const confidence = Math.round(Math.min(1, samples / 12) * (0.55 + 0.45 * consistency)
+  const confidence = Math.round(Math.min(1, (strengthAware ? totalWeight : samples) / 12) * (0.55 + 0.45 * consistency)
     * (0.65 + 0.35 * Math.min(1, signatures.size / Math.min(samples, 6))) * 100);
   const blend = Math.min(0.9, 0.25 + samples * 0.05);
-  for (const key of axes) profile[key] = clamp(Math.round((profile[key] + deltas[key] / totalWeight * blend) * 10) / 10);
+  const evidenceDenominator = strengthAware ? samples : totalWeight;
+  for (const key of axes) profile[key] = clamp(Math.round((profile[key] + deltas[key] / evidenceDenominator * blend) * 10) / 10);
   return { profile, samples, confidence };
 };

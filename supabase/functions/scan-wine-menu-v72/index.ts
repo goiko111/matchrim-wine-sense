@@ -5,6 +5,7 @@ import { calculateEdgeLearnedProfile, type MatchrimTrainingRow } from '../_share
 import { normalizeScanSensoryValue, optionalScanNumber } from '../_shared/matchrim72/matchrim-scan-values.ts';
 import { hasGroundedMenuName } from '../_shared/matchrim72/matchrim-menu-grounding.ts';
 import { normalizeScanCurrency, normalizeScanPrice, resolveScanCurrency } from '../_shared/matchrim72/matchrim-scan-money.ts';
+import { parseStructuredObject, structuredResponseError, type StructuredResponseError } from '../_shared/structured-response.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,7 +22,14 @@ type MatchrimProfile = {
 type SensoryAttributes = Partial<Record<'potencia' | 'acidez' | 'dulzura' | 'taninos' | 'afrutado', number>>;
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const FUNCTION_VERSION = 'scan-wine-menu-2026-10-05-no-placeholder-v9';
+const FUNCTION_VERSION = 'scan-wine-menu-2026-10-18-strict-response-v10-alias72';
+const invalidModel = (error: StructuredResponseError) => new Response(JSON.stringify({
+  ...error, vinos: [], scan_version: FUNCTION_VERSION,
+}), { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json', 'sb-error-code': error.error } });
+const invalidRequest = () => new Response(JSON.stringify({ error: 'invalid_request',
+  message: 'Selecciona una imagen valida. Convierte el PDF a imagen antes de analizarlo.',
+  recoverable: true, retryable: false, vinos: [], scan_version: FUNCTION_VERSION,
+}), { status: 422, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
 const normalizeText = (value: unknown) => typeof value === 'string' ? value.trim() : '';
 const normalizeStringArray = (value: unknown) => Array.isArray(value)
@@ -159,17 +167,11 @@ serve(async (req) => {
   }
 
   try {
-    const body = await req.json();
+    const body = await req.json().catch(() => null);
+    if (!body || typeof body !== 'object' || Array.isArray(body)) return invalidRequest();
     const { image, pdf, matchrimProfile } = body ?? {};
 
-    if (!image && !pdf) {
-      throw new Error('No image or PDF provided');
-    }
-
-    const dataUrl = pdf || image;
-    if (!dataUrl.startsWith('data:')) {
-      throw new Error('Invalid image/PDF format. Must be a data URL.');
-    }
+    if (pdf != null || typeof image !== 'string' || !/^data:image\/[a-z0-9.+-]+;base64,.+/i.test(image)) return invalidRequest();
 
     console.log('Processing file type:', pdf ? 'PDF' : 'Image');
 
@@ -322,68 +324,20 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
     }
 
     const ai = await runMatchrimAi({ prompt, image: imageUrl, maxTokens: 8192 });
-    let content = ai.text || '{"vinos":[]}';
-
-    content = content
-      .replace(/```json\s*/g, '')
-      .replace(/```\s*/g, '')
-      .replace(/^[^{]*/g, '')
-      .replace(/[^}]*$/g, '')
-      .trim();
-
-    const firstBrace = content.indexOf('{');
-    const lastBrace = content.lastIndexOf('}');
-    if (firstBrace !== -1 && lastBrace !== -1) {
-      content = content.substring(firstBrace, lastBrace + 1);
-    }
-
-    let result: { vinos?: unknown; wines?: unknown; coverage?: unknown; moneda?: unknown; layout?: unknown };
-    try {
-      result = JSON.parse(content);
-    } catch (parseError) {
-      console.error('JSON Parse Error:', parseError);
-      try {
-        let fixedContent = content;
-        if (content.length < 100) {
-          throw new Error('Respuesta de IA muy corta. Intenta con una sección más pequeña de la carta.');
-        }
-        const vinosMatch = content.match(/"vinos"\s*:\s*\[/);
-        if (!vinosMatch) throw new Error('No se encontró la lista de vinos en la respuesta.');
-        const vinosStart = vinosMatch.index! + vinosMatch[0].length;
-        let bracketCount = 0;
-        let braceCount = 0;
-        let lastCompleteObject = vinosStart;
-        let inString = false;
-        let escapeNext = false;
-        for (let i = vinosStart; i < content.length; i++) {
-          const char = content[i];
-          if (char === '"' && !escapeNext) inString = !inString;
-          escapeNext = char === '\\' && !escapeNext;
-          if (!inString) {
-            if (char === '{') braceCount++;
-            if (char === '}') {
-              braceCount--;
-              if (braceCount === 0 && bracketCount === 0) lastCompleteObject = i + 1;
-            }
-            if (char === '[') bracketCount++;
-            if (char === ']') bracketCount--;
-          }
-        }
-        fixedContent = content.substring(0, lastCompleteObject).trim();
-        if (!fixedContent.endsWith(']')) fixedContent += '\n  ]\n}';
-        else if (!fixedContent.endsWith('}')) fixedContent += '\n}';
-        result = JSON.parse(fixedContent);
-      } catch (fixError) {
-        console.error('JSON repair failed:', fixError);
-        throw new Error('La carta es muy extensa. Por favor fotografía solo una sección con menos vinos.');
-      }
-    }
+    if (!ai.complete) return invalidModel(structuredResponseError('incomplete_response'));
+    const parsed = parseStructuredObject(ai.text);
+    if (!parsed.ok) return invalidModel(parsed.error);
+    const result = parsed.value;
 
     const rawVinos = Array.isArray(result.vinos)
       ? result.vinos
       : Array.isArray(result.wines)
         ? result.wines
-        : [];
+        : null;
+    if (!rawVinos || rawVinos.length > 30 || rawVinos.some((wine) => !wine || typeof wine !== 'object' || Array.isArray(wine)
+      || typeof (wine.nombre ?? wine.name) !== 'string' || !(wine.nombre ?? wine.name).trim())) {
+      return invalidModel(structuredResponseError('invalid_schema'));
+    }
 
     const vinos = (rawVinos as Array<Record<string, unknown>>).filter(isWineRecord).map((w) => {
       const out: Record<string, unknown> = { ...w };
@@ -435,15 +389,15 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
     const rawCoverage = result.coverage && typeof result.coverage === 'object' && !Array.isArray(result.coverage)
       ? result.coverage as Record<string, unknown>
       : {};
-    const estimatedVisibleWines = Number(rawCoverage.estimated_visible_wines);
+    const estimatedVisibleWines = optionalScanNumber(rawCoverage.estimated_visible_wines);
     let coverageStatus = rawCoverage.status === 'reported_complete' || rawCoverage.status === 'partial'
       ? rawCoverage.status
       : 'unknown';
-    if (Number.isFinite(estimatedVisibleWines) && estimatedVisibleWines > vinos.length) coverageStatus = 'partial';
+    if (estimatedVisibleWines !== null && estimatedVisibleWines > vinos.length) coverageStatus = 'partial';
     const coverage = {
       status: coverageStatus,
       extracted_wines: vinos.length,
-      estimated_visible_wines: Number.isFinite(estimatedVisibleWines) && estimatedVisibleWines >= vinos.length
+      estimated_visible_wines: estimatedVisibleWines !== null && estimatedVisibleWines >= vinos.length
         ? Math.round(estimatedVisibleWines)
         : null,
       notes: normalizeStringArray(rawCoverage.notes).slice(0, 5),
