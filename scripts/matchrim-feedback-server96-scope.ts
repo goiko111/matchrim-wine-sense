@@ -1,4 +1,14 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { restoreNativeFoodSummary96 } from './check-matchrim-food-summary96';
+
+const foodSummaryOutput96 = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-food-summary96.ts'], {
+  encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000,
+});
+const foodSummaryChild96 = JSON.parse(foodSummaryOutput96.trim().split('\n').at(-1)!);
+for (const [key, expected] of Object.entries({ passed: 6, failed: 0, nativeClassAttributes: 5, rejectedMutations: 4, sourceGuardNegatives: 3 })) {
+  assert.equal(foodSummaryChild96[key], expected, 'Actual native Food summary child: ' + key);
+}
 
 const modelExport = "export const NATIVE_MATCHRIM_LEARNING_MODEL = 'native-evidence-strength-v2' as const;";
 const modelOptions = `${modelExport}
@@ -58,6 +68,7 @@ const pairs: Record<string, readonly (readonly [string, string])[]> = {
 export const feedbackServerScope96 = Object.keys(pairs);
 export const projectFeedbackServer96 = (file: string, source: string): string => {
   assert.ok(file in pairs, 'Only the eight reviewed opt-in files may be projected');
+  if (file === 'src/components/wine-import/FoodPairingScanner.tsx') source = restoreNativeFoodSummary96(source);
   for (const [current, previous] of pairs[file]) {
     assert.equal(source.split(current).length, 2, 'Exactly one reviewed native opt-in slot: ' + file + ': ' + current);
     source = source.replace(current, previous);
