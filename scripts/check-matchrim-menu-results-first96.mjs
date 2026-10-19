@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { restoreNativeMenuComparatorReturn96 } from './check-matchrim-menu-comparator-return96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const require = createRequire(path.join(root, 'package.json'));
@@ -33,6 +34,7 @@ const oldClear = nodes(before, (n, tree) => ts.isJsxElement(n) && n.openingEleme
 assert.equal(oldClear.length, 1);
 
 export function restoreNativeMenuResultsFirst96(value) {
+  value = restoreNativeMenuComparatorReturn96(value);
   const start = value.indexOf('  const nativeResultPreview ='), end = value.indexOf('\n  return (', start);
   assert.ok(start >= 0 && end > start);
   const block = value.slice(start, end);
@@ -70,6 +72,8 @@ function web(value) {
         if (next.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken) { if (a === false || b === false) return context.factory.createFalse(); if (a === true) return next.right; if (b === true) return next.left; }
         if (next.operatorToken.kind === ts.SyntaxKind.BarBarToken) { if (a === true || b === true) return context.factory.createTrue(); if (a === false) return next.right; if (b === false) return next.left; }
       }
+      if (ts.isJsxElement(next)) return context.factory.updateJsxElement(next, next.openingElement,
+        next.children.filter(child => !(ts.isJsxExpression(child) && child.expression && boolean(child.expression) === false)), next.closingElement);
       return next;
     };
     return node => ts.visitNode(node, visit);

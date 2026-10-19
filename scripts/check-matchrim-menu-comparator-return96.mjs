@@ -33,6 +33,7 @@ const newButton = source => {
 };
 
 export function restoreNativeMenuComparatorReturn96(source) {
+  if (source === before) return source;
   const start = source.indexOf('  useLayoutEffect(() => () => comparisonReturnCleanup.current?.(),');
   const end = source.indexOf('\n  useEffect(() => {', start);
   assert(start >= 0 && end > start);
@@ -118,6 +119,7 @@ export function runMenuComparatorReturn96() {
   test('Exact b5 baseline and whole-file inverse', () => {
     assert.equal(sha(before), 'b9d3e74f3eb55ea783c1b1551ad070148eb8fe20f3454da4367604cd194f3dc9');
     restoreNativeMenuComparatorReturn96(source);
+    assert.equal(restoreNativeMenuComparatorReturn96(before), before, 'Already-exact b5 is the only no-op');
   });
   test('Complete native-false main JSX AST unchanged', () => assert.equal(webJSX(source), webJSX(before)));
   test('Original panel helper web SSR exact; native has only one same details', () => {
@@ -194,6 +196,23 @@ export function runMenuComparatorReturn96() {
     const h = closureHarness(source); h.action(); h.action(); h.flush();
     assert.equal(h.stats().scrolls, 1); assert.equal(h.timers.size, 1); assert.equal(h.observers.filter(o => o.observing).length, 1);
     h.cleanup.current();
+  });
+  test('QA wiring preserves every old guard byte and exact closure96 command prefix', () => {
+    const guardFile = 'scripts/check-matchrim-menu-results-first96.mjs';
+    const guardBefore = execFileSync('git', ['show', `${baseline}:${guardFile}`], { cwd: root, encoding: 'utf8' });
+    let guard = fs.readFileSync(path.join(root, guardFile), 'utf8');
+    guard = once(guard, "import { restoreNativeMenuComparatorReturn96 } from './check-matchrim-menu-comparator-return96.mjs';\n", '');
+    guard = once(guard, '  value = restoreNativeMenuComparatorReturn96(value);\n', '');
+    guard = once(guard, "      if (ts.isJsxElement(next)) return context.factory.updateJsxElement(next, next.openingElement,\n        next.children.filter(child => !(ts.isJsxExpression(child) && child.expression && boolean(child.expression) === false)), next.closingElement);\n", '');
+    assert.equal(guard, guardBefore, 'Only exact native inverse and inert false-child JSX normalization precede old assertions');
+    const packageBefore = execFileSync('git', ['show', `${baseline}:package.json`], { cwd: root, encoding: 'utf8' });
+    const pkg = fs.readFileSync(path.join(root, 'package.json'), 'utf8');
+    const command = JSON.parse(packageBefore).scripts['test:closure96'];
+    assert.equal(once(pkg, command + ' && node scripts/check-matchrim-menu-comparator-return96.mjs', command), packageBefore);
+    const scopeFile = 'scripts/matchrim-menu-results-first96-scope.mjs';
+    const scopeBefore = execFileSync('git', ['show', `${baseline}:${scopeFile}`], { cwd: root, encoding: 'utf8' });
+    const scope = fs.readFileSync(path.join(root, scopeFile), 'utf8');
+    assert.equal(once(scope, " && node scripts/check-matchrim-menu-comparator-return96.mjs';", "';"), scopeBefore);
   });
   const mutations = [
     ['if (!isNative) return;', 'if (false) return;'], ['min-h-[44px] w-full min-w-0 gap-[8px] self-start', 'min-h-[43px] w-full min-w-0 gap-[8px] self-start'],

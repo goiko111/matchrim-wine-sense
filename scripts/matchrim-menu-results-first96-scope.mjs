@@ -9,7 +9,7 @@ import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.m
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const original = file => execFileSync('git', ['show', `8af21043075ee42f00b04c30979a1abddf8c3e27:${file}`], { cwd: root, encoding: 'utf8' });
 const once = (value, from, to) => { assert.equal(value.split(from).length, 2, 'One exact presentation amendment'); return value.replace(from, to); };
-const commandTail = ' && node scripts/check-matchrim-menu-results-first96.mjs && node --import tsx scripts/check-matchrim-lookup-reasons96.ts && node scripts/check-matchrim-menu-results-bridge96.mjs && node scripts/check-matchrim-scan-privacy96.mjs';
+const commandTail = ' && node scripts/check-matchrim-menu-results-first96.mjs && node --import tsx scripts/check-matchrim-lookup-reasons96.ts && node scripts/check-matchrim-menu-results-bridge96.mjs && node scripts/check-matchrim-scan-privacy96.mjs && node scripts/check-matchrim-menu-comparator-return96.mjs';
 export function restoreMenuResultsPackage96(value) {
   const before = original('package.json'), command = JSON.parse(before).scripts['test:closure96'];
   value = once(value, command + commandTail, command);
