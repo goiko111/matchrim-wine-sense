@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
+import { restoreMenuMaxHeader96, restoreMenuMaxHeaderPackage96 } from './check-matchrim-menu-max-header96.mjs';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
@@ -37,6 +38,7 @@ export const MENU_EDIT_SHORTCUT96_TAIL = ' && node scripts/check-matchrim-menu-e
 
 export function restoreMenuEditShortcut96(value) {
   if (value === before) return value;
+  value = restoreMenuMaxHeader96(value);
   value = once(value, ref, '');
   value = once(value, handler, '');
   value = once(value, action, '');
@@ -48,6 +50,7 @@ export function restoreMenuEditShortcut96(value) {
 export function restoreMenuEditShortcutPackage96(value) {
   const old = prior('package.json');
   if (value === old) return value;
+  value = restoreMenuMaxHeaderPackage96(value);
   const command = JSON.parse(old).scripts['test:closure96'];
   value = once(value, command + MENU_EDIT_SHORTCUT96_TAIL, command);
   assert.equal(value, old, 'Exact old package, dependencies and closure prefix; one appended leaf only');
@@ -153,7 +156,7 @@ export function runMenuEditShortcut96() {
     assert(source.includes('<summary' + summaryRef));
   });
   test('Exact package registration and old command/dependencies', () => {
-    const pkg = fs.readFileSync(path.join(root, 'package.json'), 'utf8');
+    const pkg = restoreMenuMaxHeaderPackage96(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
     assert.equal(JSON.parse(pkg).scripts['test:closure96'], JSON.parse(prior('package.json')).scripts['test:closure96'] + MENU_EDIT_SHORTCUT96_TAIL);
     restoreMenuEditShortcutPackage96(pkg);
   });

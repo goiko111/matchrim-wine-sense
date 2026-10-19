@@ -2493,11 +2493,7 @@ const WineMenuScannerSession = ({
 	            <>
 	              <DrawerHeader className={isNative ? 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white px-[8px] py-[12px] text-left' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
 	                <div className={isNative ? 'flex min-w-0 items-start justify-between gap-[4px]' : 'flex items-start justify-between gap-3'}>
-	                  <div className={isNative ? 'max-h-[28vh] min-w-0 flex-1 overflow-y-auto' : 'min-w-0'}>
-                            {isNative && !isLiteralWineStyle95(selectedPinWine) && !catalogWineFromVerifiedSheet({
-                              name: selectedPinWine.nombre, producer: selectedPinWine.productor, vintage: selectedPinWine.anada,
-                              region: selectedPinWine.region, country: selectedPinWine.pais, inferredFields: selectedPinWine.campos_inferidos,
-                            }, selectedPinWine.originalSheet) && <p className="text-sm text-stone-600">Nombre leído por confirmar</p>}
+	                  <div className={isNative ? 'max-h-[40vh] min-w-0 flex-1 overflow-y-auto' : 'min-w-0'}>
 	                    <DrawerTitle className={isNative ? 'tracking-normal' : undefined}>{selectedPinIndex + 1}. {selectedPinWine.nombre}{isNative && literalMenuServingFormat95(selectedPinWine) && <span className="block text-sm font-normal leading-6 text-slate-600">{literalMenuServingFormat95(selectedPinWine)}</span>}</DrawerTitle>
 	                    <DrawerDescription className={isNative ? 'sr-only' : 'mt-1'}>
 	                      {[selectedPinWine.productor, selectedPinWine.region, formatPrice(selectedPinWine.precio, selectedPinWine.moneda)].filter(Boolean).join(' · ') || 'Datos por revisar'}
@@ -2508,7 +2504,11 @@ const WineMenuScannerSession = ({
 	                  </DrawerClose>
 	                </div>
 	              </DrawerHeader>
-              <div role="region" aria-label="Contenido del vino" tabIndex={0} className={isNative ? 'min-h-[min(30vh,240px)] min-w-0 flex-1 overflow-y-auto break-words p-[16px]' : 'min-h-0 min-w-0 flex-1 overflow-y-auto break-words p-4'}>
+              <div role="region" aria-label="Contenido del vino" tabIndex={0} className={isNative ? 'min-h-[44px] min-w-0 flex-1 overflow-y-auto break-words p-[16px]' : 'min-h-0 min-w-0 flex-1 overflow-y-auto break-words p-4'}>
+                            {isNative && !isLiteralWineStyle95(selectedPinWine) && !catalogWineFromVerifiedSheet({
+                              name: selectedPinWine.nombre, producer: selectedPinWine.productor, vintage: selectedPinWine.anada,
+                              region: selectedPinWine.region, country: selectedPinWine.pais, inferredFields: selectedPinWine.campos_inferidos,
+                            }, selectedPinWine.originalSheet) && <p className="text-sm text-stone-600">Nombre leído por confirmar</p>}
                 {renderProfileRecovery()}
                 {isNative && renderWineAffinityExplanation(selectedPinWine)}
                 {isNative && <p className="my-3 text-sm text-slate-600">{[selectedPinWine.productor, selectedPinWine.region,
