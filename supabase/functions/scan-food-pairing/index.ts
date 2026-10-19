@@ -15,6 +15,14 @@ const corsHeaders = {
 
 const FUNCTION_VERSION = 'scan-food-pairing-2026-10-17-profile95-v10';
 
+// Observed error/signal only; this does not establish an upstream root cause.
+const classifyNativeFoodProviderFailure96 = (error: unknown, signal: AbortSignal) => {
+  const namedError = error instanceof Error || error instanceof DOMException;
+  if (namedError && error.name === 'TimeoutError') return 'timeout_error';
+  if (namedError && error.name === 'AbortError' && signal.aborted) return 'client_abort';
+  return 'provider_unavailable';
+};
+
 // This selects unprivileged caller-supplied preferences, never a user or a server
 // profile. Decoded public-key fields are NOT verified authentication claims.
 const isPublicPreferencePresentation95 = (authorization: string, apiKey: string | null, supabaseUrl: string): boolean => {
@@ -218,7 +226,13 @@ REGLAS ESTRICTAS:
         return invalidModelResponse(structuredResponseError("invalid_json"));
       }
       const limited = error instanceof Error && /demasiadas solicitudes/i.test(error.message);
-      console.error("Food AI provider unavailable");
+      if (readMatchrimLearningOptions96(matchrimLearningModel).evidenceStrength === 'native-v2') {
+        console.error("Food AI provider failure", {
+          version: FUNCTION_VERSION, failure: classifyNativeFoodProviderFailure96(error, req.signal),
+        });
+      } else {
+        console.error("Food AI provider unavailable");
+      }
       return new Response(JSON.stringify({ error: limited ? "rate_limited" : "provider_unavailable", recoverable: true,
         retryable: false, dishes: [], scan_version: FUNCTION_VERSION }), {
         status: limited ? 429 : 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
