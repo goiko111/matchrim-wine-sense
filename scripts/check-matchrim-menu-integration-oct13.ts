@@ -15,6 +15,7 @@ import { nativeMenuWineAffinity } from '../src/utils/menuWineConsumer95';
 import { applyMenuWineEvidence } from '../src/utils/scanWineEvidence';
 import { catalogWineFromVerifiedSheet, type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import { assertLayoutComparisonBridge96, comparisonTargetScope96 } from './matchrim-comparison-target96-scope';
+import { restoreNativeHubLayout96, nativeHubSvg96Result } from './check-matchrim-scan-hub-svg96.mjs';
 
 const release = '89d478d6a391c4594fa09d815bb6546fb874231b';
 const bank = JSON.parse(readFileSync('docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json', 'utf8'));
@@ -83,13 +84,14 @@ check(() => {
 let nativeLayoutGroups = 0;
 check(() => {
   const layoutSource = readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8');
-  assertLayoutComparisonBridge96(layoutSource);
+  assertLayoutComparisonBridge96(restoreNativeHubLayout96(layoutSource));
+  assert.equal(hash(layoutSource), '5f2bb24b44f75c271665955e7a43f84f39b2016d83f6bd908f2f72b799d50efd', 'Exact current SVG-only layout bridge');
   for (const [from, to] of [['assert.equal(hash(fullCss)', 'assert.notEqual(hash(fullCss)'],
     ['assert.equal(fingerprints.size, 5)', 'assert.equal(fingerprints.size, 4)']]) {
     const mutation = layoutSource.replace(from, to); assert.notEqual(mutation, layoutSource);
-    assert.throws(() => assertLayoutComparisonBridge96(mutation));
+    assert.throws(() => assertLayoutComparisonBridge96(restoreNativeHubLayout96(mutation)));
   }
-  assert.equal(hash(layoutSource),
+  assert.equal(hash(restoreNativeHubLayout96(layoutSource)),
     '500ed88a169f4f3e2bdfb02be5208cdd763eb18a8c1538d876e1f6260b15e5bb',
     'Exact source-preservation child for native/web parity, B_R3 and scoped menu/label/reading96 amendments');
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-native-layout.ts'], { encoding: 'utf8' });
@@ -136,6 +138,10 @@ check(() => {
     scope: 'One exact native-accessibility hub-only CSS block inverse before all historical checks; no component, route, callback, text or data projection',
   });
   assert.deepEqual(report.scope96.nativeComparisonTarget96, comparisonTargetScope96);
+  assert.deepEqual(report.scope96.nativeHubDecorativeSvg96, {
+    test: 'scripts/check-matchrim-scan-hub-svg96.mjs',
+    testHash: '011785b7ac48e6c3d8517b25b132b689b230ff899c8e121afc5234801979b59d', ...nativeHubSvg96Result,
+  });
   assert.deepEqual(report.scope96.nativeMenuReading96.sources, {
     'src/components/wine-import/WineMenuScanner.tsx': 'ac27302f41c93d51ac2ad58de798b1928cde97d092773e349b1cc61e8af0e337',
     'src/utils/wineMenuScan.ts': '467be55f7138563662d96001a3f17f696c153418316097973c8a8a0d7ae28940',

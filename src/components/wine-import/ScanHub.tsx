@@ -23,6 +23,7 @@ interface ScanHubProps {
   initialMode?: ScanMode;
   mode?: ScanMode;
   variant?: "hub" | "selected" | "legacy";
+  isNative?: boolean;
   pairingDishName?: string | null;
   similarWineName?: string | null;
   onSelectMode?: (mode: ScanMode) => void;
@@ -168,6 +169,7 @@ export const ScanHub = ({
   initialMode = "label",
   mode,
   variant = "legacy",
+  isNative = false,
   pairingDishName,
   similarWineName,
   onSelectMode,
@@ -278,7 +280,7 @@ export const ScanHub = ({
                 <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${
                   isMenu ? "bg-emerald-50 text-emerald-950" : "bg-red-50 text-red-900"
                 }`}>
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-5 w-5" {...(isNative ? { 'aria-hidden': true, focusable: false } : {})} />
                 </span>
                 <span className="min-w-0 flex-[1_1_9rem] pt-0.5">
                   <span className="block text-lg font-bold">{option.title}</span>
@@ -286,7 +288,7 @@ export const ScanHub = ({
                     {option.description}
                   </span>
                 </span>
-                <ChevronRight className={`mt-1 h-5 w-5 shrink-0 ${isMenu ? "text-white/45" : "text-slate-400"}`} />
+                <ChevronRight className={`mt-1 h-5 w-5 shrink-0 ${isMenu ? "text-white/45" : "text-slate-400"}`} {...(isNative ? { 'aria-hidden': true, focusable: false } : {})} />
               </button>
             );
           })}
@@ -305,13 +307,13 @@ export const ScanHub = ({
                   className="matchrim-pressable flex min-h-[4.75rem] w-full min-w-0 flex-wrap items-center gap-3 py-3 text-left"
                 >
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-700">
-                    <Icon className="h-[1.1rem] w-[1.1rem]" />
+                    <Icon className="h-[1.1rem] w-[1.1rem]" {...(isNative ? { 'aria-hidden': true, focusable: false } : {})} />
                   </span>
                   <span className="min-w-0 flex-[1_1_9rem]">
                     <span className="block text-sm font-semibold text-slate-950">{option.title}</span>
                     <span className="mt-0.5 block text-xs text-slate-500">{option.description}</span>
                   </span>
-                  <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
+                  <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" {...(isNative ? { 'aria-hidden': true, focusable: false } : {})} />
                 </button>
               );
             })}

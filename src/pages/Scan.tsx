@@ -210,14 +210,15 @@ const Scan = () => {
 
             {isNative && <button type="button" aria-label="Comida y vinos del restaurante" onClick={() => navigate('/restaurante')}
               className="matchrim-pressable mb-5 flex min-h-16 w-full items-center gap-3 border-y border-slate-200 py-4 text-left">
-              <ChefHat className="h-6 w-6 shrink-0 text-red-900" />
+              <ChefHat className="h-6 w-6 shrink-0 text-red-900" aria-hidden="true" focusable="false" />
               <span className="min-w-0 flex-1"><span className="block font-semibold">Comida + vinos del restaurante</span>
                 <span className="mt-1 block text-sm text-slate-500">Cartas completas, fotos, PDF y enlaces</span></span>
-              <ChevronRight className="h-5 w-5 shrink-0" />
+              <ChevronRight className="h-5 w-5 shrink-0" aria-hidden="true" focusable="false" />
             </button>}
             <ScanHub
               onExtractComplete={handleExtractComplete}
               variant="hub"
+              isNative={isNative}
               onSelectMode={(mode) => navigate(`/escanear/${scanModePaths[mode]}`)}
             />
           </>

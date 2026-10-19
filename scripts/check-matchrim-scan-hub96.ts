@@ -11,6 +11,7 @@ import postcss from 'postcss';
 import tailwindcss from 'tailwindcss';
 import tailwindConfig from '../tailwind.config';
 import { comparisonTargetMarker96, restoreComparisonTarget96 } from './matchrim-comparison-target96-scope';
+import { restoreNativeHubSvg96, runNativeHubSvg96Checks } from './check-matchrim-scan-hub-svg96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const revision = 'efc61c547fb04e1ac5adbe4974dbfe29aebd59fa';
@@ -34,8 +35,9 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const css = readFileSync(resolve(root, 'src/index.css'), 'utf8');
   const checks: string[] = [];
   const check = (name: string, fn: () => void) => { fn(); checks.push(name); console.log('PASS', name); };
+  const nativeHubSvg96 = runNativeHubSvg96Checks();
   check('Whole Scan/ScanHub/nav sources, options, callbacks, content, route parsing and all five mode paths stay byte exact', () => {
-    for (const p of files) assert.equal(source[p], execFileSync('git', ['show', `${revision}:${p}`], { cwd: root, encoding: 'utf8' }));
+    for (const p of files) assert.equal(restoreNativeHubSvg96(p, source[p]), execFileSync('git', ['show', `${revision}:${p}`], { cwd: root, encoding: 'utf8' }));
   });
   if (!values.baseline) {
     check('One exact native-accessibility hub-only CSS block inverse restores the entire EFC stylesheet', () => {
@@ -177,6 +179,6 @@ print(json.dumps({'passed':result['passed'],'caseCount':len(rows),'failureCount'
     if (!values.baseline) assert.equal(result.status, 0, result.stderr + result.stdout);
     console.log(values.baseline ? 'BASELINE_RETAINED' : 'PASS', result.stdout.trim());
   }
-  console.log(JSON.stringify({ passed: !values.baseline, baseline: !!values.baseline, groups: checks.length, checks, ui,
+  console.log(JSON.stringify({ passed: !values.baseline, baseline: !!values.baseline, groups: checks.length, checks, nativeHubSvg96, ui,
     sourceRevision: revision, SDKOrNativeRuntimeUsed: false, sourceComponentUnchanged: true, webAndNormalNativeExactOptOut: true }));
 }
