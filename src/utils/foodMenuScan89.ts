@@ -28,7 +28,7 @@ type TileRead = { tile: FoodMenuTile; result: FoodScanResult; dishes: FoodMenuDi
 type TileOutcome = { ok: true; read: TileRead } | { ok: false; tile: FoodMenuTile; error: unknown };
 type ScanOptions = {
   image: string; width: number; height: number; signal: AbortSignal;
-  context?: { restaurantName?: string; matchrimProfile?: unknown };
+  context?: { restaurantName?: string; matchrimProfile?: unknown; matchrimLearningModel?: unknown };
   invoke: (body: Record<string, unknown>, signal: AbortSignal) => Promise<unknown>;
   crop?: typeof cropImageRegion;
   timeoutMs?: number;
@@ -132,7 +132,93 @@ const samePhysicalRow = (a: FoodMenuDish89, b: FoodMenuDish89) => {
   return intersection / union >= 0.65;
 };
 
-export const mergeFoodMenuTiles89 = (outcomes: TileOutcome[]): FoodMenuScanResult89 => {
+const literalRow89 = (text: string) => text.normalize('NFC').trim().replace(/\s+/gu, ' ').toLocaleLowerCase('en');
+const terminalPrice89 = (text: string) => {
+  if (/[\r\n/]/.test(text)) return null;
+  const match = /^(.*?)\s+(\d+(?:[.,]\d{1,2})?)\s*(zł|PLN|EUR|€|GBP|£|USD|\$|CHF)$/iu.exec(text.trim());
+  return match ? { body: literalRow89(match[1]), amount: Number(match[2].replace(',', '.')),
+    currency: ({ 'zł': 'PLN', '€': 'EUR', '£': 'GBP' } as Record<string, string>)[match[3].toLowerCase()]
+      ?? match[3].toUpperCase() } : null;
+};
+const nativeRowSection89 = (dish: FoodMenuDish89) => {
+  const prefix = `${dish.source_tile_ids[0]}:`;
+  const section = dish.region_id?.startsWith(prefix) ? dish.region_id.slice(prefix.length) : null;
+  return section?.trim() ? section : null;
+};
+const nativeRowContext89 = (a: FoodMenuDish89, b: FoodMenuDish89) => literalRow89(a.nombre) === literalRow89(b.nombre)
+  && Boolean(a.categoria && literalRow89(a.categoria)) && Boolean(b.categoria && literalRow89(b.categoria))
+  && literalRow89(a.categoria) === literalRow89(b.categoria)
+  && Number.isSafeInteger(a.source_order) && (a.source_order ?? -1) >= 0 && a.source_order === b.source_order
+  && Boolean(nativeRowSection89(a)) && nativeRowSection89(a) === nativeRowSection89(b);
+
+// Only a missing terminal price on a provably crop-edge-clipped overlapping read.
+// Geometry and text remain model claims, not independent physical-row verification.
+const nativeClippedPriceRow89 = (a: FoodMenuDish89, b: FoodMenuDish89, tiles: FoodMenuTile[]) => {
+  if (!a.source_box || !b.source_box || !a.source_text || !b.source_text
+    || a.source_tile_ids.length !== 1 || b.source_tile_ids.length !== 1
+    || a.source_tile_ids[0] === b.source_tile_ids[0]
+    || !nativeRowContext89(a, b)) return null;
+  const firstPrice = terminalPrice89(a.source_text), secondPrice = terminalPrice89(b.source_text);
+  if (Boolean(firstPrice) === Boolean(secondPrice)) return null;
+  const priced = firstPrice ? a : b, clipped = firstPrice ? b : a;
+  const price = firstPrice ?? secondPrice;
+  if (!price || !Number.isFinite(price.amount) || /[\r\n/]/.test(clipped.source_text!)
+    || price.body !== literalRow89(clipped.source_text!) || price.body !== literalRow89(clipped.nombre)) return null;
+  const pricedTiles = tiles.filter(tile => tile.id === priced.source_tile_ids[0]);
+  const clippedTiles = tiles.filter(tile => tile.id === clipped.source_tile_ids[0]);
+  if (pricedTiles.length !== 1 || clippedTiles.length !== 1) return null;
+  const fullTile = pricedTiles[0], cutTile = clippedTiles[0];
+  if (fullTile.tile_count !== cutTile.tile_count
+    || !box(fullTile.box) || !box(cutTile.box) || !box(priced.source_box) || !box(clipped.source_box)) return null;
+  const full = priced.source_box!, cut = clipped.source_box!;
+  const epsilon = 0.000001; // Same percent-coordinate rounding tolerance as crop-context validation.
+  const contains = (outer: FoodMenuBox, inner: FoodMenuBox) => inner.x >= outer.x - epsilon
+    && inner.y >= outer.y - epsilon && inner.x + inner.width <= outer.x + outer.width + epsilon
+    && inner.y + inner.height <= outer.y + outer.height + epsilon;
+  if (!contains(fullTile.box, full) || !contains(cutTile.box, cut) || !contains(full, cut)
+    || full.width * full.height <= cut.width * cut.height) return null;
+  if ((fullTile.box.y > 0 && full.y <= fullTile.box.y + epsilon)
+    || (fullTile.box.x > 0 && full.x <= fullTile.box.x + epsilon)
+    || (fullTile.box.y + fullTile.box.height < 100 && full.y + full.height >= fullTile.box.y + fullTile.box.height - epsilon)
+    || (fullTile.box.x + fullTile.box.width < 100 && full.x + full.width >= fullTile.box.x + fullTile.box.width - epsilon)) return null;
+  const overlap: FoodMenuBox = {
+    x: Math.max(fullTile.box.x, cutTile.box.x), y: Math.max(fullTile.box.y, cutTile.box.y),
+    width: Math.min(fullTile.box.x + fullTile.box.width, cutTile.box.x + cutTile.box.width) - Math.max(fullTile.box.x, cutTile.box.x),
+    height: Math.min(fullTile.box.y + fullTile.box.height, cutTile.box.y + cutTile.box.height) - Math.max(fullTile.box.y, cutTile.box.y),
+  };
+  if (!box(overlap) || !contains(overlap, cut)) return null;
+  const vertical = Math.abs(full.x - cut.x) <= epsilon && Math.abs(full.width - cut.width) <= epsilon && full.height <= cut.height * 2 && (
+    (cutTile.box.y > 0 && Math.abs(cut.y - cutTile.box.y) <= epsilon && full.y < cutTile.box.y - epsilon)
+    || (cutTile.box.y + cutTile.box.height < 100 && Math.abs(cut.y + cut.height - cutTile.box.y - cutTile.box.height) <= epsilon
+      && full.y + full.height > cutTile.box.y + cutTile.box.height + epsilon));
+  const horizontal = Math.abs(full.y - cut.y) <= epsilon && Math.abs(full.height - cut.height) <= epsilon && full.width <= cut.width * 2 && (
+    (cutTile.box.x > 0 && Math.abs(cut.x - cutTile.box.x) <= epsilon && full.x < cutTile.box.x - epsilon)
+    || (cutTile.box.x + cutTile.box.width < 100 && Math.abs(cut.x + cut.width - cutTile.box.x - cutTile.box.width) <= epsilon
+      && full.x + full.width > cutTile.box.x + cutTile.box.width + epsilon));
+  return vertical || horizontal ? priced : null;
+};
+
+const mergeNativeClippedPrices89 = (baseline: FoodMenuScanResult89, outcomes: TileOutcome[]): FoodMenuScanResult89 => {
+  const tiles = outcomes.flatMap(outcome => outcome.ok ? [outcome.read.tile] : []);
+  const dishes: FoodMenuDish89[] = [];
+  let duplicates = 0;
+  for (const dish of baseline.dishes) {
+    const candidates = dishes.flatMap((existing, index) => {
+      const preferred = nativeClippedPriceRow89(existing, dish, tiles);
+      return preferred ? [{ index, preferred }] : [];
+    });
+    if (candidates.length !== 1) { dishes.push(dish); continue; }
+    const { index, preferred } = candidates[0];
+    dishes[index] = { ...preferred, source_tile_ids: [...dishes[index].source_tile_ids, ...dish.source_tile_ids] };
+    duplicates += 1;
+  }
+  return { ...baseline, dishes,
+    summary: `${dishes.length} lecturas devueltas. La cobertura y disponibilidad no están verificadas.`,
+    coverage: { ...baseline.coverage, returned_dishes: dishes.length, duplicate_rows: baseline.coverage.duplicate_rows + duplicates },
+  };
+};
+
+export const mergeFoodMenuTiles89 = (outcomes: TileOutcome[], nativeClippedPrices = false): FoodMenuScanResult89 => {
   const reads = outcomes.flatMap((outcome) => outcome.ok === true ? [outcome.read] : []);
   if (!reads.length) throw outcomes.flatMap((outcome) => outcome.ok === false ? [outcome.error] : [])[0]
     ?? new Error('No se pudo leer el menu.');
@@ -140,7 +226,15 @@ export const mergeFoodMenuTiles89 = (outcomes: TileOutcome[]): FoodMenuScanResul
   let duplicates = 0;
   for (const read of reads) {
     for (const dish of read.dishes) {
-      const duplicate = dishes.find((existing) => samePhysicalRow(existing, dish));
+      const duplicate = dishes.find((existing) => {
+        if (!samePhysicalRow(existing, dish)) return false;
+        if (!nativeClippedPrices) return true;
+        if (!nativeRowContext89(existing, dish)) return false;
+        const firstPrice = existing.source_text ? terminalPrice89(existing.source_text) : null;
+        const secondPrice = dish.source_text ? terminalPrice89(dish.source_text) : null;
+        return !firstPrice || !secondPrice
+          || (firstPrice.amount === secondPrice.amount && firstPrice.currency === secondPrice.currency);
+      });
       if (duplicate) {
         duplicate.source_tile_ids.push(...dish.source_tile_ids);
         duplicates += 1;
@@ -150,7 +244,7 @@ export const mergeFoodMenuTiles89 = (outcomes: TileOutcome[]): FoodMenuScanResul
   const first = reads[0].result;
   const profileAgrees = reads.every((read) => read.result.has_profile === first.has_profile
     && read.result.profile_source === first.profile_source);
-  return { ...first, mode: 'menu', dishes, orchestration_version: 'food-menu-bounded-crops89-v2',
+  const merged: FoodMenuScanResult89 = { ...first, mode: 'menu', dishes, orchestration_version: 'food-menu-bounded-crops89-v2',
     has_profile: profileAgrees && first.has_profile, profile_source: profileAgrees ? first.profile_source : 'none',
     summary: `${dishes.length} lecturas devueltas. La cobertura y disponibilidad no están verificadas.`,
     coverage: { estimated_visible_dishes: null, unreadable_dishes: null, returned_dishes: dishes.length,
@@ -167,6 +261,7 @@ export const mergeFoodMenuTiles89 = (outcomes: TileOutcome[]): FoodMenuScanResul
       ],
     },
   };
+  return nativeClippedPrices ? mergeNativeClippedPrices89(merged, outcomes) : merged;
 };
 
 export const scanFoodMenu89 = async (options: ScanOptions): Promise<FoodMenuScanResult89> => {
@@ -196,7 +291,7 @@ export const scanFoodMenu89 = async (options: ScanOptions): Promise<FoodMenuScan
       }
     }));
     checkAbort(options.signal);
-    return mergeFoodMenuTiles89(outcomes);
+    return mergeFoodMenuTiles89(outcomes, options.context?.matchrimLearningModel === 'native-evidence-strength-v2');
   } finally {
     clearTimeout(timer);
     options.signal.removeEventListener('abort', cancelled);
