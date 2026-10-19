@@ -295,7 +295,9 @@ export const ScanHub = ({
         </div>
 
         <section aria-labelledby="more-scan-options-title">
-          <h2 id="more-scan-options-title" className="text-sm font-bold text-slate-950">También puedes</h2>
+          <h2 id="more-scan-options-title" className="text-sm font-bold text-slate-950" style={isNative ? { minHeight: 44 } : undefined} aria-label={isNative ? "También puedes" : undefined}>
+            {isNative ? <span aria-hidden="true">También puedes</span> : "También puedes"}
+          </h2>
           <div className="mt-2 divide-y divide-slate-200 border-y border-slate-200">
             {secondaryOptions.map((option) => {
               const Icon = option.icon;

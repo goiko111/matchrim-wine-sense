@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { restoreManualLookupGuard96 } from './check-matchrim-manual-lookup-bridge96.mjs';
+import { restoreNativeScanHeading96, restoreNativeHeadingTree96 } from './check-matchrim-scan-heading96.mjs';
 
 const baselineRevision = 'e3fd4c73913469a3f084be7f1296b17fe7c3ac70';
 const deny = () => { throw new Error('No transport or scanner execution in SVG source/render fixture'); };
@@ -15,6 +16,7 @@ const ownHash = () => hash(restoreManualLookupGuard96('scripts/check-matchrim-sc
 export const nativeHubSvg96Result = { groups: 7, rejectedMutations: 5, sourceGuardNegatives: 3, edits: 9, nativeSVGs: 12, webCases: 2 };
 
 export function restoreNativeHubSvg96(file, source) {
+  source = restoreNativeScanHeading96(file, source);
   const undo = (from, to, count) => {
     assert.equal(source.split(from).length - 1, count, 'Exact native SVG inverse: ' + from);
     source = source.split(from).join(to);
@@ -235,6 +237,7 @@ check('native full host DOM differs only in12 decorative SVG attribute pairs, al
   for (const action of buttons(copy)) for (const svg of svgs([action])) {
     delete svg.attrs['aria-hidden']; delete svg.attrs.focusable;
   }
+  restoreNativeHeadingTree96(copy);
   assert.equal(html(copy), html(nativeBefore));
   assert.deepEqual(buttons(nativeAfter).map((n) => n.attrs.className), buttons(nativeBefore).map((n) => n.attrs.className));
 });
