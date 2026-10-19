@@ -2,6 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { runMatchrimAi } from '../_shared/matchrim72/matchrim-ai-provider.ts';
 import { evaluateCandidateGrounding, normalizeGroundingTokens } from './grounding.ts';
 import { optionalScanNumber } from '../_shared/matchrim72/matchrim-scan-values.ts';
+import { parseStructuredObject, structuredResponseError, STRUCTURED_RESPONSE_ERROR_STATUS } from '../_shared/structured-response.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -9,15 +10,7 @@ const corsHeaders = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const ANALYSIS_VERSION = 'matchrim-region-analysis-v8-partial-name';
-
-const parseJsonObject = (raw: string) => {
-  const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-  const first = cleaned.indexOf('{');
-  const last = cleaned.lastIndexOf('}');
-  if (first === -1 || last === -1) throw new Error('El analisis no devolvio JSON valido');
-  return JSON.parse(cleaned.slice(first, last + 1)) as Record<string, unknown>;
-};
+const ANALYSIS_VERSION = 'matchrim-region-analysis-2026-10-18-structured-v9-alias72';
 
 const stringArray = (value: unknown) => Array.isArray(value)
   ? value.filter((item) => typeof item === 'string' && item.trim()).slice(0, 8)
@@ -66,7 +59,7 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
 
   const identitySignals = [raw.producer, raw.vintage, raw.region, raw.country]
     .filter((signal) => typeof signal === 'number' || (typeof signal === 'string' && signal.trim())).length;
-  let confidence = clamp(Number(raw.confidence) || 0.35, 0, 1);
+  let confidence = clamp(optionalScanNumber(raw.confidence) ?? 0, 0, 1);
   if (groundedEvidence.length === 0) confidence = Math.min(confidence, 0.4);
   else if (groundedEvidence.length < 2) confidence = Math.min(confidence, 0.62);
   if (identityMatches.length < 2) confidence = Math.min(confidence, 0.62);
@@ -107,9 +100,11 @@ serve(async (request) => {
   if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
-    const body = await request.json();
+    const body = await request.json().catch(() => null);
     const image = typeof body?.image === 'string' ? body.image : '';
-    if (!image.startsWith('data:image/')) throw new Error('Falta el recorte de etiqueta');
+    if (!image.startsWith('data:image/')) return new Response(JSON.stringify({ error: 'Falta el recorte de etiqueta', candidates: [] }), {
+      status: 422, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
     const prompt = `Analiza UN SOLO recorte de botella o etiqueta de vino. El recorte procede de un detector previo y puede estar parcialmente oculto, desenfocado o contener reflejos.
 
 Objetivo: proponer hasta 3 identidades candidatas sin inventar. Transcribe primero las senales visibles y separa lo leido de lo inferido.
@@ -157,7 +152,16 @@ Responde SOLO JSON:
 }`;
 
     const ai = await runMatchrimAi({ prompt, image, maxTokens: 3072 });
-    const parsed = parseJsonObject(ai.text);
+    const decoded = parseStructuredObject(ai.text);
+    if (ai.complete === false || !decoded.ok || !Array.isArray(decoded.value.candidates) || !Array.isArray(decoded.value.visible_text)) {
+      const error = ai.complete === false ? structuredResponseError('incomplete_response')
+        : decoded.ok ? structuredResponseError('invalid_schema') : decoded.error;
+      return new Response(JSON.stringify({ ...error, candidates: [], analysis_version: ANALYSIS_VERSION }), {
+        status: STRUCTURED_RESPONSE_ERROR_STATUS,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'sb-error-code': error.error },
+      });
+    }
+    const parsed = decoded.value;
     const visibleText = stringArray(parsed.visible_text);
     const rawCandidates = Array.isArray(parsed.candidates) ? parsed.candidates : [];
     const candidates = rawCandidates
