@@ -269,6 +269,7 @@ const WineMenuScannerSession = ({
   const detailPreviousRef = useRef<HTMLButtonElement>(null);
   const detailNextRef = useRef<HTMLButtonElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const fullActionsSummaryRef = useRef<HTMLElement>(null);
   const comparisonPanelRef = useRef<HTMLDetailsElement>(null);
   const comparisonReturnCleanup = useRef<(() => void) | null>(null);
   const scanAbortRef = useRef<AbortController | null>(null);
@@ -286,6 +287,13 @@ const WineMenuScannerSession = ({
   const detailFocusRef = useRef({ active: false, open: false, generation: 0, opener: null as HTMLElement | null });
 
   useLayoutEffect(() => () => comparisonReturnCleanup.current?.(), [user?.id, preview, loading]);
+
+  const goToEditing = () => {
+    const summary = fullActionsSummaryRef.current;
+    if (!isNative || !summary?.isConnected) return;
+    summary.focus({ preventScroll: true });
+    summary.scrollIntoView({ behavior: 'instant', block: 'center' });
+  };
 
   const returnToComparison = () => {
     if (!isNative) return;
@@ -2017,6 +2025,9 @@ const WineMenuScannerSession = ({
 		              <div className={isNative ? 'flex min-w-0 flex-col items-start gap-3 border-b border-stone-100 px-[12px] py-2' : 'flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2'}>
 		                <h3 className="font-semibold text-slate-950">Lista de la carta</h3>
 		                <span role="status" aria-live="polite" aria-atomic="true" className="text-xs text-slate-500">{visibleScannedWines.length} {visibleScannedWines.length === 1 ? 'resultado' : 'resultados'}</span>
+                    {isNative && <Button type="button" variant="outline" className="min-h-[44px] min-w-0 gap-[8px] whitespace-normal px-[12px] py-[8px] text-left" onClick={goToEditing}>
+                      <Edit3 aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />Ir a edición
+                    </Button>}
 		              </div>
 		              <div className="divide-y divide-stone-100" role={isNative ? 'list' : undefined}>
 	                        {visibleScannedWines.map(({ wine, index }) => isNative ? (
@@ -2104,7 +2115,7 @@ const WineMenuScannerSession = ({
             </Card>
 	          ) : (
 	            <details className="rounded-lg border border-stone-200 bg-white">
-	              <summary className="flex min-h-12 cursor-pointer items-center px-4 py-3 text-sm font-semibold text-slate-900">Ver fichas completas y acciones</summary>
+	              <summary ref={isNative ? fullActionsSummaryRef : undefined} className="flex min-h-12 cursor-pointer items-center px-4 py-3 text-sm font-semibold text-slate-900">Ver fichas completas y acciones</summary>
 	              <div className="divide-y divide-stone-100 border-t border-stone-100">
 			              {visibleScannedWines.map(({ wine, index }) => {
 			                const isEditing = editingWineIndex === index;

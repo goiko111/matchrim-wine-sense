@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { restoreMenuEditShortcut96 } from './check-matchrim-menu-edit-shortcut96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const file = 'src/components/wine-import/WineMenuScanner.tsx';
@@ -31,6 +32,7 @@ const role = ' role={isNative ? \'list\' : undefined}';
 
 export function restoreNativeMenuListAction96(source) {
   if (source === before) return source;
+  source = restoreMenuEditShortcut96(source);
   const current = list(source), old = list(before);
   const body = current.node.expression.arguments[0].body;
   assert(ts.isConditionalExpression(body)); assert.equal(body.condition.getText(current.tree), 'isNative');
@@ -96,7 +98,7 @@ function webShape(source) {
 }
 
 export function runMenuListAction96() {
-  const source = fs.readFileSync(path.join(root, file), 'utf8'), checks = [];
+  const source = restoreMenuEditShortcut96(fs.readFileSync(path.join(root, file), 'utf8')), checks = [];
   const test = (name, fn) => { fn(); checks.push(name); };
   test('Exact26 historical source bound', () => assert.equal(sha(before), '98a1d05392c40d4ad5527a7854102c487ba38617adce0dc2bee6eecc63dba10f'));
   test('Whole26 inverse; no changed closures, profile, data, callbacks or requests', () => restoreNativeMenuListAction96(source));

@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { restoreNativeMenuListAction96 } from './check-matchrim-menu-list-action96.mjs';
 import { restoreNativeConsentEntry96 } from './check-matchrim-native-consent-entry96.mjs';
+import { restoreMenuEditShortcutPackage96 } from './check-matchrim-menu-edit-shortcut96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const prior = file => execFileSync('git', ['show', '26d48c6b5661c9236f3bdd97fe6b81587361caeb:' + file], { cwd: root, encoding: 'utf8' });
@@ -16,6 +17,7 @@ export function restoreMenuEntrySource96(file, value) {
   return value;
 }
 export function restoreMenuEntryPackage96(value) {
+  value = restoreMenuEditShortcutPackage96(value);
   const before = prior('package.json');
   if (value === before || !value.includes('node scripts/check-matchrim-menu-list-action96.mjs')) return value;
   const command = JSON.parse(before).scripts['test:closure96'];
