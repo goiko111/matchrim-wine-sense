@@ -59,7 +59,7 @@ const normalizeCandidate = (value: unknown, visibleText: string[]) => {
 
   const identitySignals = [raw.producer, raw.vintage, raw.region, raw.country]
     .filter((signal) => typeof signal === 'number' || (typeof signal === 'string' && signal.trim())).length;
-  let confidence = clamp(Number(raw.confidence) || 0.35, 0, 1);
+  let confidence = clamp(optionalScanNumber(raw.confidence) ?? 0, 0, 1);
   if (groundedEvidence.length === 0) confidence = Math.min(confidence, 0.4);
   else if (groundedEvidence.length < 2) confidence = Math.min(confidence, 0.62);
   if (identityMatches.length < 2) confidence = Math.min(confidence, 0.62);

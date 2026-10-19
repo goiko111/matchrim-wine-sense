@@ -6,6 +6,7 @@ import postcss from 'postcss';
 import ts from 'typescript';
 import { nativeLabelKeyboard96 } from './check-matchrim-label-keyboard96';
 import { restoreNativeScanHub96 } from './check-matchrim-scan-hub96';
+import { assertScanHubComparisonBridge96, comparisonTargetScope96, restoreComparisonTarget96 } from './matchrim-comparison-target96-scope';
 
 // Public, offline source checks. Browser/native receipts are separate evidence.
 const baseline = '31e060828d1b370b275cdcf6691052368916f39f';
@@ -627,8 +628,16 @@ check('Full web AST proof rejects text, attributes and callback changes instead 
   }
 });
 check('Separate native AX hub CSS amendment preserves whole EFC stylesheet and runs five additive scope/negative groups', () => {
-  assert.equal(hash(readFileSync(scanHub96.test, 'utf8')), scanHub96.testHash);
-  const actualCss = readFileSync('src/index.css', 'utf8');
+  const scanHubSource = readFileSync(scanHub96.test, 'utf8');
+  assertScanHubComparisonBridge96(scanHubSource);
+  const oldScanHub = execFileSync('git', ['show', `983146c6d87a49bfa58aa503a166e0dc4e972ec1:${scanHub96.test}`], { encoding: 'utf8' });
+  assert.equal(hash(oldScanHub), scanHub96.testHash);
+  const fullCss = readFileSync('src/index.css', 'utf8');
+  assert.equal(hash(fullCss), comparisonTargetScope96.currentCssHash);
+  assert.equal(hash(readFileSync(comparisonTargetScope96.test, 'utf8')), comparisonTargetScope96.testHash);
+  const comparisonOutput = execFileSync(process.execPath, ['--import', 'tsx', comparisonTargetScope96.test], { encoding: 'utf8' });
+  assert.equal(comparisonOutput.trim(), 'Comparison target96: CSS scope/inverse, 44px target, 20px indicator and six directed negatives PASS. Not UIKit geometry proof.');
+  const actualCss = restoreComparisonTarget96(fullCss);
   assert.equal(hash(actualCss), scanHub96.currentCssHash);
   const projected = restoreNativeScanHub96(actualCss);
   assert.equal(hash(projected), scanHub96.projectedCssHash);
@@ -649,6 +658,7 @@ console.log(JSON.stringify({ passed, failed: 0, baseline, sources: Object.fromEn
     nativeLabelUi96: { ...labelUi96, passed: 36, failed: 0, classAmendments: 5, rejectedMutations: 15 },
     nativeKeyboardBridge: nativeKeyboardBridge96Result,
     nativeScanHubAccessibility96: scanHub96,
+    nativeComparisonTarget96: comparisonTargetScope96,
     nativeMenuReading96: { revision: menuReading96.revision, sources: Object.fromEntries(menuReading96.sources), componentJsxBlocks: 4, componentDeclarationBlocks: 2,
       componentOptInCalls: 2, resolverDeclarationBlocks: 4, resolverReturnWrappers: 3, resolverFalseAstEqual: true, rejectedMutations: 12,
       nativeCoverageCopyAmendments: 1, metadataSourceAdmissionAmendments: 1, r3RejectedMutations: 4,

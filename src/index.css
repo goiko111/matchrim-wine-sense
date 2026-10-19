@@ -966,3 +966,34 @@ html.matchrim-native-platform.matchrim-accessibility-text .scan-page-main:has(#m
   border: 0;
 }
 /* End native accessibility scan hub. */
+
+/* Native comparison checkbox: compact indicator, full accessible touch target. */
+html.matchrim-native-platform section[aria-labelledby="wine-comparison-title"] button[role="checkbox"] {
+  position: relative;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+}
+
+html.matchrim-native-platform section[aria-labelledby="wine-comparison-title"] button[role="checkbox"]::before {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 1px solid hsl(var(--primary));
+  border-radius: 3px;
+  background: hsl(var(--background));
+  content: "";
+}
+
+html.matchrim-native-platform section[aria-labelledby="wine-comparison-title"] button[role="checkbox"][data-state="checked"]::before {
+  background: hsl(var(--primary));
+}
+
+html.matchrim-native-platform section[aria-labelledby="wine-comparison-title"] button[role="checkbox"] > span {
+  position: relative;
+}
+/* End native comparison checkbox touch target. */

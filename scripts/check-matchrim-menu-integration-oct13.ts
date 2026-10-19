@@ -14,6 +14,7 @@ import { reviewedMenu950 } from './matchrim-menu-etapa950-scope';
 import { nativeMenuWineAffinity } from '../src/utils/menuWineConsumer95';
 import { applyMenuWineEvidence } from '../src/utils/scanWineEvidence';
 import { catalogWineFromVerifiedSheet, type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
+import { assertLayoutComparisonBridge96, comparisonTargetScope96 } from './matchrim-comparison-target96-scope';
 
 const release = '89d478d6a391c4594fa09d815bb6546fb874231b';
 const bank = JSON.parse(readFileSync('docs/qa-evidence/matchrim-menu-comparison-2026-10-12/after/response-provenance.json', 'utf8'));
@@ -81,8 +82,15 @@ check(() => {
 });
 let nativeLayoutGroups = 0;
 check(() => {
-  assert.equal(hash(readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8')),
-    '9979389b5bf9d2fab7136381cc4956763b5efbba0812c1180fe7c3deba92f6a2',
+  const layoutSource = readFileSync('scripts/check-matchrim-consumer95-native-layout.ts', 'utf8');
+  assertLayoutComparisonBridge96(layoutSource);
+  for (const [from, to] of [['assert.equal(hash(fullCss)', 'assert.notEqual(hash(fullCss)'],
+    ['assert.equal(fingerprints.size, 5)', 'assert.equal(fingerprints.size, 4)']]) {
+    const mutation = layoutSource.replace(from, to); assert.notEqual(mutation, layoutSource);
+    assert.throws(() => assertLayoutComparisonBridge96(mutation));
+  }
+  assert.equal(hash(layoutSource),
+    '500ed88a169f4f3e2bdfb02be5208cdd763eb18a8c1538d876e1f6260b15e5bb',
     'Exact source-preservation child for native/web parity, B_R3 and scoped menu/label/reading96 amendments');
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-consumer95-native-layout.ts'], { encoding: 'utf8' });
   const report = JSON.parse(output.trim().split('\n').at(-1)!);
@@ -127,6 +135,7 @@ check(() => {
     rejectedMutations: 4,
     scope: 'One exact native-accessibility hub-only CSS block inverse before all historical checks; no component, route, callback, text or data projection',
   });
+  assert.deepEqual(report.scope96.nativeComparisonTarget96, comparisonTargetScope96);
   assert.deepEqual(report.scope96.nativeMenuReading96.sources, {
     'src/components/wine-import/WineMenuScanner.tsx': 'ac27302f41c93d51ac2ad58de798b1928cde97d092773e349b1cc61e8af0e337',
     'src/utils/wineMenuScan.ts': '467be55f7138563662d96001a3f17f696c153418316097973c8a8a0d7ae28940',

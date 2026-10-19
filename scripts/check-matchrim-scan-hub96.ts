@@ -10,12 +10,14 @@ import { build } from 'esbuild';
 import postcss from 'postcss';
 import tailwindcss from 'tailwindcss';
 import tailwindConfig from '../tailwind.config';
+import { comparisonTargetMarker96, restoreComparisonTarget96 } from './matchrim-comparison-target96-scope';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const revision = 'efc61c547fb04e1ac5adbe4974dbfe29aebd59fa';
 export const scanHub96Marker = '/* Native accessibility scan hub keeps option controls within the viewport. */';
 export const scanHub96End = '/* End native accessibility scan hub. */\n';
 export function restoreNativeScanHub96(css: string) {
+  if (css.includes(comparisonTargetMarker96)) css = restoreComparisonTarget96(css);
   const start = css.indexOf(scanHub96Marker), end = css.indexOf(scanHub96End, start);
   assert.ok(start >= 0 && end > start);
   assert.equal(css.split(scanHub96Marker).length, 2);
