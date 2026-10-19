@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
+import { restoreMenuListJump96 } from './check-matchrim-menu-list-jump96.mjs';
 import { restoreMenuMaxHeader96, restoreMenuMaxHeaderPackage96 } from './check-matchrim-menu-max-header96.mjs';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -123,7 +124,7 @@ function webTree(source) {
 }
 
 export function runMenuEditShortcut96() {
-  const source = fs.readFileSync(path.join(root, file), 'utf8'), checks = [];
+  const source = restoreMenuListJump96(fs.readFileSync(path.join(root, file), 'utf8')), checks = [];
   const test = (name, run) => { run(); checks.push(name); };
   test('Exact frozen d998 source', () => assert.equal(sha(before), 'e5057477d82d90ce331a6b9cfd50fb10d95393bf8408236ab8574a44e30013b0'));
   test('Whole source inverse preserves every existing callback, data, score and web byte', () => restoreMenuEditShortcut96(source));

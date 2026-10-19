@@ -34,7 +34,7 @@ import { MenuPriceEditor } from '@/components/wine-import/MenuPriceEditor';
 import { clearMenuManualPriceOrigin, formatMenuPriceAmount, manualMenuPriceLines } from '@/utils/menuPriceReview';
 import { menuReadingSourceLabel96, nativeMenuTakeawayText96 } from '@/utils/menuReadingPresentation96';
 import { menuWineSensorySimilarity, menuWineSimilarityBand, menuWineSimilarityUnavailable } from '@/utils/menuWineSimilarity';
-import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw, ArrowUp } from "lucide-react";
+import { Loader2, Upload, Camera, X, CheckCircle, AlertCircle, Sparkles, BookmarkPlus, Edit3, Mail, MessageCircle, Trophy, CircleSlash, Target, Heart, ScanLine, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RefreshCw, ArrowUp, List } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
@@ -270,6 +270,7 @@ const WineMenuScannerSession = ({
   const detailNextRef = useRef<HTMLButtonElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const fullActionsSummaryRef = useRef<HTMLElement>(null);
+  const wineListHeadingRef = useRef<HTMLHeadingElement>(null);
   const comparisonPanelRef = useRef<HTMLDetailsElement>(null);
   const comparisonReturnCleanup = useRef<(() => void) | null>(null);
   const scanAbortRef = useRef<AbortController | null>(null);
@@ -287,6 +288,13 @@ const WineMenuScannerSession = ({
   const detailFocusRef = useRef({ active: false, open: false, generation: 0, opener: null as HTMLElement | null });
 
   useLayoutEffect(() => () => comparisonReturnCleanup.current?.(), [user?.id, preview, loading]);
+
+  const goToWineList = () => {
+    const heading = wineListHeadingRef.current;
+    if (!isNative || !heading?.isConnected) return;
+    heading.focus({ preventScroll: true });
+    heading.scrollIntoView({ behavior: 'instant', block: 'center' });
+  };
 
   const goToEditing = () => {
     const summary = fullActionsSummaryRef.current;
@@ -1679,6 +1687,9 @@ const WineMenuScannerSession = ({
               <h3 className="text-2xl font-bold">
                 {isNative ? 'Lecturas de la carta' : 'Vinos Detectados'} ({scannedWines.length})
               </h3>
+              {isNative && visibleScannedWines.length > 0 && <Button type="button" variant="outline" className="mt-[8px] min-h-[44px] min-w-0 gap-[8px] whitespace-normal px-[12px] py-[8px] text-left" onClick={goToWineList}>
+                <List aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />Ver vinos ({visibleScannedWines.length})
+              </Button>}
               <p className="mt-1 text-sm text-muted-foreground">
                 Revisa nombre, añada y precio antes de guardar. La carta puede tener errores de lectura.
               </p>
@@ -2023,7 +2034,7 @@ const WineMenuScannerSession = ({
 		          {visibleScannedWines.length > 0 && (
 		            <div className="matchrim-surface overflow-hidden rounded-lg bg-white">
 		              <div className={isNative ? 'flex min-w-0 flex-col items-start gap-3 border-b border-stone-100 px-[12px] py-2' : 'flex items-center justify-between gap-3 border-b border-stone-100 px-3 py-2'}>
-		                <h3 className="font-semibold text-slate-950">Lista de la carta</h3>
+		                <h3 ref={isNative ? wineListHeadingRef : undefined} tabIndex={isNative ? -1 : undefined} className="font-semibold text-slate-950">Lista de la carta</h3>
 		                <span role="status" aria-live="polite" aria-atomic="true" className="text-xs text-slate-500">{visibleScannedWines.length} {visibleScannedWines.length === 1 ? 'resultado' : 'resultados'}</span>
                     {isNative && <Button type="button" variant="outline" className="min-h-[44px] min-w-0 gap-[8px] whitespace-normal px-[12px] py-[8px] text-left" onClick={goToEditing}>
                       <Edit3 aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />Ir a edición

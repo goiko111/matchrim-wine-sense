@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
+import { restoreMenuListJump96, restoreMenuListJumpPackage96, restoreMenuListJumpGuard96 } from './check-matchrim-menu-list-jump96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const baseline = 'c7290838df1669d051eaf26f4ebca0cd538fd715';
@@ -26,6 +27,7 @@ export const MENU_MAX_HEADER96_TAIL = ' && node scripts/check-matchrim-menu-max-
 
 export function restoreMenuMaxHeader96(source) {
   if (source === before) return source;
+  source = restoreMenuListJump96(source);
   source = once(source, 'max-h-[40vh] min-w-0 flex-1 overflow-y-auto', 'max-h-[28vh] min-w-0 flex-1 overflow-y-auto');
   source = once(source, 'min-h-[44px] min-w-0 flex-1 overflow-y-auto break-words p-[16px]', 'min-h-[min(30vh,240px)] min-w-0 flex-1 overflow-y-auto break-words p-[16px]');
   source = once(source, body + notice, body);
@@ -37,6 +39,7 @@ export function restoreMenuMaxHeader96(source) {
 export function restoreMenuMaxHeaderPackage96(source) {
   const old = prior('package.json');
   if (source === old) return source;
+  source = restoreMenuListJumpPackage96(source);
   const command = JSON.parse(old).scripts['test:closure96'];
   source = once(source, command + MENU_MAX_HEADER96_TAIL, command);
   assert.equal(source, old, 'Only one closure-tail registration; every old assertion/dependency retained');
@@ -44,7 +47,7 @@ export function restoreMenuMaxHeaderPackage96(source) {
 }
 
 export function runMenuMaxHeader96() {
-  const source = fs.readFileSync(path.join(root, file), 'utf8'), checks = [];
+  const source = restoreMenuListJump96(fs.readFileSync(path.join(root, file), 'utf8')), checks = [];
   const test = (name, run) => { run(); checks.push(name); };
   test('Explicit prior source SHA', () => assert.equal(createHash('sha256').update(before).digest('hex'), '8e8185f168223e4d3d77d1e5a9addcef72ca14f9528ba613f74060e76aec5472'));
   test('Whole source inverse exact', () => restoreMenuMaxHeader96(source));
@@ -65,6 +68,7 @@ export function runMenuMaxHeader96() {
   const guardFile = 'scripts/check-matchrim-menu-edit-shortcut96.mjs';
   test('Historical guard amended only by explicit inverse calls', () => {
     let guard = fs.readFileSync(path.join(root, guardFile), 'utf8');
+    guard = restoreMenuListJumpGuard96(guardFile, guard);
     guard = once(guard, "import { restoreMenuMaxHeader96, restoreMenuMaxHeaderPackage96 } from './check-matchrim-menu-max-header96.mjs';\n", '');
     guard = once(guard, '  value = restoreMenuMaxHeader96(value);\n', '');
     guard = once(guard, '  value = restoreMenuMaxHeaderPackage96(value);\n', '');
