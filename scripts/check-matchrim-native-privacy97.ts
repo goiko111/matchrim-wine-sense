@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import ts from 'typescript';
 import { nativePrivacySections97, NATIVE_SCAN_PRIVACY_KEY97, NATIVE_SCAN_PROVIDER_NOTICE97 } from '../src/utils/nativePrivacy97';
 import { restoreNativePrivacy97 } from './native-privacy97-scope.mjs';
+import { restoreNativePolicy97 } from './native-policy97-scope.mjs';
 
 type Element = { type: unknown; props: Record<string, any> };
 const file = 'src/components/ScanPrivacyGate.tsx';
@@ -105,6 +106,14 @@ check('Full policy web render tree is exact; native render names the active prov
   const nativeText = text(render(current, true));
   assert(nativeText.includes('OpenAI')); assert(!nativeText.includes('Gemini'));
   assert(nativeText.includes('20 de octubre de 2026'));
+});
+check('Native legal safe areas preserve the whole legacy policy and reject unrelated edits', () => {
+  const policyFile = 'src/pages/PrivacyPolicy.tsx';
+  const current = readFileSync(policyFile, 'utf8');
+  const prior = execFileSync('git', ['show', `8327ee7:${policyFile}`], { encoding: 'utf8' });
+  assert.equal(restoreNativePolicy97(policyFile, current), prior);
+  assert.throws(() => restoreNativePolicy97(policyFile, current.replace('8rem+var(--matchrim-safe-bottom)', '7rem+var(--matchrim-safe-bottom)')));
+  assert.throws(() => restoreNativePolicy97(policyFile, current.replace('Winerim es el responsable', 'Another company is responsible')));
 });
 check('Consent, storage key and visible provider mutations are rejected by inverse', () => {
   for (const [from, to] of [['if (!checked) return;', 'if (false) return;'], ['NATIVE_SCAN_PROVIDER_NOTICE97 :', "'Other' :"], ['h-[44px] w-[44px]', 'h-[43px] w-[43px]'], ["ACKNOWLEDGEMENT_KEY, 'accepted'", "ACKNOWLEDGEMENT_KEY, 'wrong'"]]) {

@@ -78,7 +78,7 @@ const PrivacyPolicy = () => {
   <div className="min-h-screen bg-stone-50">
     <Header />
 
-    <main className="mx-auto max-w-4xl px-4 py-10">
+    <main className={isNative ? 'mx-auto max-w-4xl pl-[calc(1rem+var(--matchrim-safe-left))] pr-[calc(1rem+var(--matchrim-safe-right))] pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'mx-auto max-w-4xl px-4 py-10'}>
       <Button asChild variant="ghost" className="mb-6 gap-2 text-red-900">
         <Link to="/">
           <ArrowLeft className="h-4 w-4" />

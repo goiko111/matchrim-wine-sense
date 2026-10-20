@@ -5,6 +5,11 @@ const digest = value => createHash('sha256').update(value).digest('hex');
 export function restoreNativePolicy97(file, source) {
   if (file !== 'src/pages/PrivacyPolicy.tsx') return source;
   if (digest(source) === 'ac35ed55d35ef1af82a2f1dbd74bd168392e96bec5a95c2445db7adc4bc1fc6b') return source;
+  const nativeMain = "className={isNative ? 'mx-auto max-w-4xl pl-[calc(1rem+var(--matchrim-safe-left))] pr-[calc(1rem+var(--matchrim-safe-right))] pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'mx-auto max-w-4xl px-4 py-10'}";
+  if (source.includes(nativeMain)) {
+    assert.equal(source.split(nativeMain).length, 2, 'One exact native legal safe-area amendment');
+    source = source.replace(nativeMain, 'className="mx-auto max-w-4xl px-4 py-10"');
+  }
   assert.equal(digest(source), '937e2f6f1ac14a780130ebef2f05b332bcd4ac62ac419aa0d2f5aba70df0ed87', 'Exact native provider policy97 input');
   const edits = [
     ["import { Capacitor } from '@capacitor/core';\n", ''],
