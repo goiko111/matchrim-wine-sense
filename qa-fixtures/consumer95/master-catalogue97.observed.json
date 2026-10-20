@@ -1,0 +1,49 @@
+{
+  "schema": "matchrim-master-catalogue-observation97-v1",
+  "observedDate": "2026-10-20",
+  "kind": "read-only authenticated Winerim administration; not an application API response",
+  "masterCount": 217391,
+  "sensoryScale": "winerim-0-5",
+  "sensoryProvenance": "Winerim Campos de IA; generated data, not independently verified tasting measurements",
+  "applicationReadContractVerified": false,
+  "cases": [
+    {
+      "key": "vidure-2020",
+      "observedIdentity": { "name": "Vidure", "producer": "Pago de Cirsus", "vintage": 2020 },
+      "master": {
+        "namespace": "App\\Entity\\Mantalak\\Wine",
+        "id": "201987",
+        "name": "Vidure",
+        "producer": "Pago de Cirsus",
+        "region": "Navarra",
+        "producerId": "956",
+        "availableSensoryVintages": [null, "2018"],
+        "selectedSensoryVintage": null,
+        "attributes": { "power": 5, "sweetness": 1, "acidity": 3, "tannin": 4, "fruity": 4 },
+        "researchConfidence": 0.58,
+        "adminDetailUrl": "https://app.winerim.com/admin?crudAction=detail&crudControllerFqcn=App%5CController%5CAdmin%5CCatalog%5CWineCrudController&entityId=201987&page=1&query=Vidure"
+      },
+      "existingLibrary": { "matchingReferenceFound": false },
+      "expected": "Keep2020 identity. Do not silently treat NV/reference-level or2018 attributes as a verified2020 sheet."
+    },
+    {
+      "key": "zorrera-2015",
+      "observedIdentity": { "name": "La Zorrera", "producer": "Chivite", "vintage": 2015 },
+      "master": {
+        "namespace": "App\\Entity\\Mantalak\\Wine",
+        "id": "180278",
+        "name": "La Zorrera",
+        "producer": "Chivite",
+        "region": "Navarra",
+        "producerId": "947",
+        "availableSensoryVintages": [null, "2015"],
+        "selectedSensoryVintage": "2015",
+        "attributes": { "power": 4, "sweetness": 0, "acidity": 3, "tannin": 3, "fruity": 4 },
+        "researchConfidence": null,
+        "adminDetailUrl": "https://app.winerim.com/admin?crudAction=detail&crudControllerFqcn=App%5CController%5CAdmin%5CCatalog%5CWineCrudController&entityId=180278&page=1&query=Zorrera"
+      },
+      "existingLibrary": { "id": "279839", "vintage": "2019", "attributes": null },
+      "expected": "Resolve the master2015 reference through an authorized app contract, preserve sweetness0 and label generated sensory provenance. Never substitute Library2019."
+    }
+  ]
+}

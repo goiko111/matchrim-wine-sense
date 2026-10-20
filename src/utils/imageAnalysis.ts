@@ -22,11 +22,13 @@ export interface PreparedImage {
 export interface ImagePreparationOptions {
   maxFileBytes?: number;
   maxImagePixels?: number;
+  compositeOnWhite?: boolean;
 }
 
 export const NATIVE_IMAGE_PREPARATION_LIMITS = Object.freeze({
   maxFileBytes: 25 * 1024 * 1024,
   maxImagePixels: 64_000_000,
+  compositeOnWhite: true,
 });
 
 const imagePreparationMessages = {
@@ -186,6 +188,11 @@ export const prepareImageForAnalysis = async (
   if (!context) throw new ImagePreparationError('prepare');
   context.imageSmoothingEnabled = true;
   context.imageSmoothingQuality = 'high';
+  // JPEG has no alpha; native packshots must not acquire a black backdrop.
+  if (options?.compositeOnWhite === true) {
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, width, height);
+  }
   context.drawImage(image, 0, 0, width, height);
 
   const { brightness, contrast, sharpness } = inspectPixels(context, width, height);

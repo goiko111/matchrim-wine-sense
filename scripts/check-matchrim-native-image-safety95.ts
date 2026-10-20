@@ -21,7 +21,7 @@ type Controls = {
 };
 const create = (controls: Controls = {}, text = source) => {
   const reads: Reader[] = [], images: Picture[] = [], canvases: Array<{ width: number; height: number }> = [];
-  const activity = { readCalls: 0, aborts: 0, removedSources: 0, draws: 0, encodes: 0 };
+  const activity = { readCalls: 0, aborts: 0, removedSources: 0, draws: 0, encodes: 0, matteFills: 0 };
   class Reader {
     static LOADING = 1;
     readyState = 0;
@@ -60,7 +60,12 @@ const create = (controls: Controls = {}, text = source) => {
     const canvas = {
       width: 0, height: 0,
       getContext: () => controls.noContext ? null : {
-        canvas, imageSmoothingEnabled: false, imageSmoothingQuality: 'low',
+        canvas, imageSmoothingEnabled: false, imageSmoothingQuality: 'low', fillStyle: '',
+        fillRect: (x: number, y: number, width: number, height: number) => {
+          assert.deepEqual([x, y, width, height], [0, 0, canvas.width, canvas.height]);
+          assert.equal(activity.draws, 0, 'Native matte precedes source pixels and quality sampling');
+          activity.matteFills++;
+        },
         drawImage: (..._args: unknown[]) => { activity.draws++; },
         getImageData: (_x: number, _y: number, width: number, height: number) => {
           assert.ok(width <= 96 && height <= 96, 'Only bounded sampling pixels are materialized');
@@ -115,6 +120,7 @@ const check = async (name: string, run: () => void | Promise<void>) => { await r
 await check('Native limits are immutable 25 MiB / 64 decimal MP, not a working-resolution change', () => {
   assert.equal(limits.maxFileBytes, 25 * 1024 * 1024);
   assert.equal(limits.maxImagePixels, 64_000_000);
+  assert.equal(limits.compositeOnWhite, true);
   assert.ok(Object.isFrozen(limits));
 });
 await check('Bytes over the limit, empty, negative, fractional, unsafe and nonfinite reject before FileReader', async () => {
@@ -234,7 +240,7 @@ await check('Actual dense 1320x1239 is not upsampled; legacy output/quality and 
     }
   }
 });
-await check('Read/decode/resizing/quality/crop source exact; scoped recognition96 policy amendment fingerprinted and behavior-checked', () => {
+await check('Only explicit native matte joins existing limits; read/decode/resizing/quality/crop remain exact', () => {
   const inspect = (text: string) => {
     const tree = ts.createSourceFile(path, text, ts.ScriptTarget.Latest, true), values = new Map<string, ts.Expression>();
     const visit = (node: ts.Node) => {
@@ -248,8 +254,13 @@ await check('Read/decode/resizing/quality/crop source exact; scoped recognition9
     assert.equal(current.values.get(name)!.getText(current.tree), legacy.values.get(name)!.getText(legacy.tree), name);
   }
   const body = (subject: ReturnType<typeof inspect>) => (subject.values.get('prepareImageForAnalysis') as ts.ArrowFunction).body as ts.Block;
-  const statements = body(current).statements.filter(statement => !ts.isIfStatement(statement) || !statement.expression.getText(current.tree).startsWith('options?.max'));
-  assert.equal(body(current).statements.length - statements.length, 2);
+  const matte = body(current).statements.filter(statement => ts.isIfStatement(statement)
+    && statement.expression.getText(current.tree) === 'options?.compositeOnWhite === true');
+  assert.equal(matte.length, 1);
+  assert.equal(matte[0].getText(current.tree), "if (options?.compositeOnWhite === true) {\n    context.fillStyle = '#fff';\n    context.fillRect(0, 0, width, height);\n  }");
+  const statements = body(current).statements.filter(statement => !ts.isIfStatement(statement)
+    || (!statement.expression.getText(current.tree).startsWith('options?.max') && !matte.includes(statement)));
+  assert.equal(body(current).statements.length - statements.length, 3);
   assert.deepEqual(statements.map(node => node.getText(current.tree)), body(legacy).statements.map(node => node.getText(legacy.tree)));
   for (const name of ['src/utils/imageCropGeometry.ts']) {
     assert.equal(readFileSync(name, 'utf8'), execFileSync('git', ['show', `${baseline}:${name}`], { encoding: 'utf8' }), name);
@@ -275,6 +286,15 @@ await check('Read/decode/resizing/quality/crop source exact; scoped recognition9
   assert.equal(report.passed, 36); assert.equal(report.failed, 0);
   assert.equal(report.remoteCalls, 0); assert.equal(report.paidCalls, 0);
   assert.equal(output.split('\n').filter(line => line.startsWith('PASS ')).length, 36);
+});
+await check('White matte is explicit native opt-in; default and other options keep the old canvas lifecycle', async () => {
+  for (const options of [undefined, {}, { maxFileBytes: limits.maxFileBytes }, { compositeOnWhite: false }, limits]) {
+    const subject = create();
+    await subject.module.prepareImageForAnalysis(file(), 2400, undefined, options);
+    assert.equal(subject.activity.matteFills, options === limits ? 1 : 0);
+    assert.equal(subject.activity.draws, 2);
+    assert.equal(subject.activity.encodes, 1);
+  }
 });
 await check('Actual label call supplies native limits only; original three arguments and all other startScan code stay exact', async () => {
   const scannerPath = 'src/components/wine-import/MultiWineLabelScanner.tsx';
