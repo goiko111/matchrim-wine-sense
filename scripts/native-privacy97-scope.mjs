@@ -3,7 +3,6 @@ import { execFileSync } from 'node:child_process';
 
 const file = 'src/components/ScanPrivacyGate.tsx';
 const changes = [
-  ["'inline-flex min-h-[44px] max-w-full items-center py-[8px] font-semibold text-red-800 underline underline-offset-2'", "'inline-block min-h-[44px] max-w-full py-[8px] font-semibold text-red-800 underline underline-offset-2'"],
   ["import { NATIVE_SCAN_PRIVACY_KEY97, NATIVE_SCAN_PROVIDER_NOTICE97 } from '@/utils/nativePrivacy97';\n", ''],
   ['const hasAcknowledgedNotice = (isNative = false) => {', 'const hasAcknowledgedNotice = () => {'],
   ["window.localStorage.getItem(isNative ? NATIVE_SCAN_PRIVACY_KEY97 : ACKNOWLEDGEMENT_KEY)", 'window.localStorage.getItem(ACKNOWLEDGEMENT_KEY)'],
@@ -19,6 +18,6 @@ export const restoreNativePrivacy97 = (source) => {
     assert.equal(source.split(next).length, 2, 'One reviewed native privacy edit: ' + next.slice(0, 70));
     source = source.replace(next, previous);
   }
-  assert.equal(source, baseline, 'Only native provider notice, acknowledgement version and reviewed native link display change; web/listeners remain exact.');
+  assert.equal(source, baseline, 'Only provider notice and native acknowledgement version change; web/layout/listeners remain exact.');
   return source;
 };
