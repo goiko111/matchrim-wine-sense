@@ -26,6 +26,9 @@ export function restoreNativeAuth97Guard(file, source) {
   source = once(source, "import { restoreNativeAuth97 } from './native-auth97-scope.mjs';\n", '');
   source = once(source, '  source = restoreNativeAuth97(path, source);\n', '');
   source = once(source, "['scripts/check-matchrim-consumer95-auth.ts', 24]", "['scripts/check-matchrim-consumer95-auth.ts', 22]");
+  source = once(source,
+    "? Buffer.from(restoreNativePolicy97(row.path, readFileSync(row.path, 'utf8'))) : row.path === 'src/pages/Auth.tsx'\n      ? Buffer.from(restoreNativeAuth97(row.path, readFileSync(row.path, 'utf8'))) : readFileSync(row.path);",
+    "? Buffer.from(restoreNativePolicy97(row.path, readFileSync(row.path, 'utf8'))) : readFileSync(row.path);");
   assert.equal(hash(source), '7157215be192ffa6aa7521baddbd712736f80d4f04506148eab5997865b81c1d',
     'Whole previous cloud oracle preserved, with two additive auth checks and a bounded native inverse');
   return source;

@@ -397,7 +397,8 @@ for (const row of manifest.productSourceFingerprints as Array<{ path: string; sh
     const actual = row.path === 'src/components/ScanPrivacyGate.tsx'
       ? Buffer.from(restoreNativeScanPrivacy96(readFileSync(row.path, 'utf8'))) : row.path === 'src/components/wine-import/ScanHub.tsx'
       ? Buffer.from(restoreNativeHubSvg96(row.path, readFileSync(row.path, 'utf8'))) : row.path === 'src/pages/PrivacyPolicy.tsx'
-      ? Buffer.from(restoreNativePolicy97(row.path, readFileSync(row.path, 'utf8'))) : readFileSync(row.path);
+      ? Buffer.from(restoreNativePolicy97(row.path, readFileSync(row.path, 'utf8'))) : row.path === 'src/pages/Auth.tsx'
+      ? Buffer.from(restoreNativeAuth97(row.path, readFileSync(row.path, 'utf8'))) : readFileSync(row.path);
     assert.equal(hash(actual), expected, `Protected source: ${row.path}`);
     immutableCount += 1;
   }
