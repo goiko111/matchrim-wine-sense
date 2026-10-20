@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
 import { restoreMenuEntrySource96 } from './check-matchrim-native-menu-entry-bridge96.mjs';
+import { restoreMenuEditorKeyboardCss96 } from './check-matchrim-menu-editor-keyboard96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url)), require = createRequire(root + 'package.json');
 const ts = require('typescript'), React = require('react'), { renderToStaticMarkup } = require('react-dom/server');
@@ -24,6 +25,7 @@ const cssGroups = [
   return [old, old.slice(0, -2) + ',\n' + privacySelector + suffix + ' {'];
 });
 export function restoreNativeScanPrivacyCss96(css) {
+  if (css.includes('.matchrim-native-menu-editor-body')) css = restoreMenuEditorKeyboardCss96(css);
   if (css === beforeCss) return css;
   for (const [prior, current] of cssGroups) { assert.equal(css.split(current).length, 2, 'Exactly one privacy selector per reviewed group'); css = css.replace(current, prior); }
   assert.equal(css, beforeCss, 'Whole8af CSS: declarations, fonts, all other states and web rules unchanged');

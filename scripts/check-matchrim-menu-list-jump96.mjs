@@ -9,6 +9,7 @@ import ts from 'typescript';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { List } from 'lucide-react';
+import { restoreMenuEditorKeyboard96, restoreMenuEditorKeyboardPackage96, restoreMenuEditorKeyboardGuard96 } from './check-matchrim-menu-editor-keyboard96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const baseline = '02e89e8308507c2c3c9045da9cdef2b328f3d773';
@@ -37,6 +38,7 @@ export const MENU_LIST_JUMP96_TAIL = ' && node scripts/check-matchrim-menu-list-
 
 export function restoreMenuListJump96(source) {
   if (source === before) return source;
+  source = restoreMenuEditorKeyboard96(source);
   source = once(source, ', ArrowUp, List } from "lucide-react";', ', ArrowUp } from "lucide-react";');
   source = once(source, ref, '');
   source = once(source, handler, '');
@@ -48,6 +50,7 @@ export function restoreMenuListJump96(source) {
 export function restoreMenuListJumpPackage96(source) {
   const old = prior('package.json');
   if (source === old) return source;
+  source = restoreMenuEditorKeyboardPackage96(source);
   const command = JSON.parse(old).scripts['test:closure96'];
   source = once(source, command + MENU_LIST_JUMP96_TAIL, command);
   assert.equal(source, old, 'Only new public leaf appended; no dependencies or old command changed');
@@ -70,6 +73,7 @@ export function restoreMenuListJumpGuard96(name, source) {
   assert(Object.hasOwn(guardChanges, name), 'No projection for unrelated guard paths');
   const old = prior(name);
   if (source === old) return source;
+  if (name === 'scripts/check-matchrim-menu-edit-shortcut96.mjs') source = restoreMenuEditorKeyboardGuard96(name, source);
   for (const [from, to] of guardChanges[name]) source = once(source, from, to);
   assert.equal(source, old, 'Entire02e guard exact: no assertions/counts/mutations removed');
   return source;
@@ -93,7 +97,7 @@ function render(source, native, count, title = false) {
   return renderToStaticMarkup(context.output);
 }
 export function runMenuListJump96() {
-  const source = fs.readFileSync(path.join(root,file),'utf8'),checks=[];
+  const source = restoreMenuEditorKeyboard96(fs.readFileSync(path.join(root,file),'utf8')),checks=[];
   const test=(name,run)=>{run();checks.push(name);};
   test('Explicit02e WMS source SHA',()=>assert.equal(createHash('sha256').update(before).digest('hex'),'e3df02cddfdf894cd467348e83d8cb9bcce9569a55c4cb7ee27736168857a974'));
   test('Full02e source inverse',()=>restoreMenuListJump96(source));

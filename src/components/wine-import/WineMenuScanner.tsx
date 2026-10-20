@@ -2212,7 +2212,7 @@ const WineMenuScannerSession = ({
                       </div>
 
                       {isEditing && (
-                        <div className="matchrim-soft-surface rounded-lg p-0 sm:p-4">
+                        <div className={isNative ? 'matchrim-native-menu-editor-body matchrim-soft-surface rounded-lg p-0 sm:p-4' : 'matchrim-soft-surface rounded-lg p-0 sm:p-4'}>
                           <div className="grid gap-3 md:grid-cols-2">
                             <div className="space-y-1.5 md:col-span-2">
                               <Label htmlFor={`scan-name-${index}`}>Nombre</Label>

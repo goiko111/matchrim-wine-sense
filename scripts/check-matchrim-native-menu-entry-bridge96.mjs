@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { restoreNativeMenuListAction96 } from './check-matchrim-menu-list-action96.mjs';
 import { restoreNativeConsentEntry96 } from './check-matchrim-native-consent-entry96.mjs';
 import { restoreMenuEditShortcutPackage96 } from './check-matchrim-menu-edit-shortcut96.mjs';
+import { restoreMenuEditorKeyboardGuard96 } from './check-matchrim-menu-editor-keyboard96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const prior = file => execFileSync('git', ['show', '26d48c6b5661c9236f3bdd97fe6b81587361caeb:' + file], { cwd: root, encoding: 'utf8' });
@@ -54,6 +55,7 @@ const changes = {
   ],
 };
 export function restoreMenuEntryGuard96(file, value) {
+  if (file === 'scripts/check-matchrim-scan-privacy96.mjs') value = restoreMenuEditorKeyboardGuard96(file, value);
   const replacements = changes[file];
   if (!replacements || !value.includes("from './check-matchrim-native-menu-entry-bridge96.mjs'")) return value;
   for (const [from, to] of replacements) value = once(value, from, to);

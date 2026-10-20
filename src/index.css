@@ -78,6 +78,11 @@ html.matchrim-native-platform .matchrim-native-cellar-dialog {
     padding-top: 2px;
     padding-bottom: 2px;
   }
+
+  html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-native-menu-editor-body input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]) {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
 }
 
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-restaurant91 .restaurant91-header,

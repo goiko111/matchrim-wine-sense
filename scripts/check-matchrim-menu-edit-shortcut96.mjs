@@ -10,6 +10,7 @@ import { restoreMenuListJump96 } from './check-matchrim-menu-list-jump96.mjs';
 import { restoreMenuMaxHeader96, restoreMenuMaxHeaderPackage96 } from './check-matchrim-menu-max-header96.mjs';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { restoreMenuEditorKeyboardGuard96 } from './check-matchrim-menu-editor-keyboard96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const file = 'src/components/wine-import/WineMenuScanner.tsx';
@@ -70,6 +71,7 @@ const guardChanges = {
   ],
 };
 function restoreGuard(name, value) {
+  if (name === 'scripts/check-matchrim-native-menu-entry-bridge96.mjs') value = restoreMenuEditorKeyboardGuard96(name, value);
   for (const [from, to] of guardChanges[name]) value = once(value, from, to);
   assert.equal(value, prior(name), 'Whole d998 guard inverse; all old assertions and counts retained');
   return value;
