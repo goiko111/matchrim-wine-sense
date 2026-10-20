@@ -1,5 +1,7 @@
 # Matchrim95 Closure: 2026-10-18
 
+Historical checkpoint. Superseded by [20 October QA and available private TestFlight95](MATCHRIM_95_CLOSURE_2026-10-20.md); original failures below remain unchanged.
+
 Status: ACTIVE. No TestFlight95 upload or release approval is claimed here.
 This continuation supersedes the Food deployment-permission blocker in the
 October17 report, not its historical results or remaining product findings.

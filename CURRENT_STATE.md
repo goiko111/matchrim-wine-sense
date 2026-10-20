@@ -1,5 +1,14 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-20, TestFlight95 Available
+
+- Production `wine.matchrim.app` **1.0 (95)** uploaded once; Apple accepted at05:48:35UTC. Parent verified completed processing and **En pruebas** in the existing private `Testers Matchrim` group, two testers. Spanish What to Test notes saved. No App Store submission, public link, new tester role or web Publish.
+- Binary source `7881650`; signed export188 checks PASS and157 exact resources. The later documentation-only commit does not change that binary. Product commits: `fb8ab80`, `e9a2159`, `7881650`; protected search-wines unchanged.
+- Actual7548 UIKit flow PASS81.316s/four complete200s; existing controls8/8 readable names and16/16 prices/services. Fresh recorded-response visual replay4/4 views,308/308 checks. Food crop union19->15 rows/four duplicates removed; four-view replay272/272. These are not global recognition or taste-accuracy rates.
+- Full14 local groups/typecheck/lint/build PASS;106 inherited lint warnings. Fifty historical synthetic profiles retain1000 answers/34 vectors; current calculation250/250 traits matches. Not50 humans or50 new UIKit runs.
+- Human explicitly authorized private beta with **Food full-image502 and intermittent MAX-rotation keyboard disappearance** documented. Original core10/11 FAIL and two later non-reproductions remain; no causal repair/global-green claim. Production catalogue/canonical/sensory coverage is not established by the public-only live scanner test.
+- Corrective Lovable turn:1.7credits/three backend functions; net frontend drift restored, no web Publish. This authorization window is closed at20/20 real attempts,0 remaining/0 retries. [Current report and evidence](docs/MATCHRIM_95_CLOSURE_2026-10-20.md). Earlier checkpoints below remain historical.
+
 ## Current Gate: 2026-10-18, closure95 active
 
 - Newest12:26UTC: dense-list fix `9704e23` pushed. The final native menu block now preserves separate takeaway prices and excluded raw readings for explicit manual review, with existing identity/score clearing. Compiled captured-response browser7548 4/4+7553 4/4 PASS,2072 checks,160 close44 targets/840 close+manual hit samples,32 exact intercepted requests/0 external calls; NOT fresh recognition or UIKit. Native-only short coverage copy and defensive tile/box guard close their specific new findings; original strict86/90,80/84/web-audit FAILs remain. All14/fresh27+100/native11/new50 still need final clean-source runs. [Newest source/evidence checkpoint](docs/MATCHRIM_95_CLOSURE_2026-10-18.md).
