@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-20, Foodv11 Deployed / Candidate96 Internal QA
+
+- New client source `7935959`: stale keyboard scroll race fixed,14 deterministic controls PASS. Native candidate1.0(96) builds/installs in the isolated simulator;3 MAX cycles/six rotations and separate test15 PASS. Real-UI first-run privacy acknowledgement test17 PASS, then unchanged native safe11 **11/11 PASS**. Original95 failures remain; no causal/frequency claim for every OS keyboard disappearance.
+- Foodv11 deployed/read back exact. Original FULL now **200/54.385s/15rows** (before502/55.867s); TOP **200/39.832s/11rows** (before49.942s). Both7/7 fixed controls PASS, but FULL has only0.615s observed provider margin. Not robust latency, exhaustive OCR or human-pairing approval.
+- Composite automated16-group matrix PASS,50 synthetic profiles/103groups PASS, browser Food4views/300controls PASS. Lint0errors/106 inherited warnings. No new50-human/account or full live mobile recognition study.
+- Commits `bf094e5`, `966a139`, `b1b693a`, `7935959`; protected search-wines unchanged. New Lovable window consumed1.2+1.9credits; real checks2/2 consumed,0remaining/retries. Two generated frontend changes restored under explicit authorization; net remote main diff only Food handler+contract, no web Publish.
+- No TestFlight upload, production96 archive/export or phone operation in this block. [Current report](docs/MATCHRIM_96_FOOD_KEYBOARD_QA_2026-10-20.md). Previous95 distribution and all failed attempts below remain historical.
+
 ## Current Gate: 2026-10-20, TestFlight95 Available
 
 - Production `wine.matchrim.app` **1.0 (95)** uploaded once; Apple accepted at05:48:35UTC. Parent verified completed processing and **En pruebas** in the existing private `Testers Matchrim` group, two testers. Spanish What to Test notes saved. No App Store submission, public link, new tester role or web Publish.
