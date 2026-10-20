@@ -39,12 +39,14 @@ final class Native97MaximumTextTests: XCTestCase {
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
         settle(app, landscape: false)
         attach(app, "02-maximum-auth-keyboard-portrait")
+        assertInputVisible(app, email)
         print("N97_MAX_PORTRAIT app=\(app.frame) web=\(app.webViews.firstMatch.frame) email=\(email.frame) keyboard=\(app.keyboards.firstMatch.frame)")
         XCTAssertTrue(email.isHittable)
         XCUIDevice.shared.orientation = .landscapeLeft
         settle(app, landscape: true)
         XCTAssertTrue(email.exists)
         attach(app, "03-maximum-auth-keyboard-landscape-settled")
+        assertInputVisible(app, email)
         XCTAssertTrue(email.isHittable)
         XCTAssertEqual(email.value as? String, "layout-qa@example.invalid")
         print("N97_MAX_LANDSCAPE app=\(app.frame) web=\(app.webViews.firstMatch.frame) email=\(email.frame) keyboard=\(app.keyboards.firstMatch.frame)")
@@ -53,7 +55,17 @@ final class Native97MaximumTextTests: XCTestCase {
         XCTAssertEqual(email.value as? String, "layout-qa@example.invalid")
         XCTAssertTrue(email.isHittable)
         attach(app, "04-maximum-auth-keyboard-return-settled")
+        assertInputVisible(app, email)
         print("N97_MAX_NATIVE_COMPLETED_NO_SUBMISSION_NO_IMAGE_ANALYSIS")
+    }
+
+    private func assertInputVisible(_ app: XCUIApplication, _ input: XCUIElement) {
+        XCTAssertTrue(app.keyboards.firstMatch.exists, "Rotation must not dismiss the keyboard")
+        let viewport = app.webViews.firstMatch.frame
+        XCTAssertGreaterThanOrEqual(input.frame.minY, viewport.minY)
+        XCTAssertLessThanOrEqual(input.frame.maxY, viewport.maxY + 1)
+        XCTAssertGreaterThanOrEqual(input.frame.minX, viewport.minX)
+        XCTAssertLessThanOrEqual(input.frame.maxX, viewport.maxX + 1)
     }
 
     private func settle(_ app: XCUIApplication, landscape: Bool) {
