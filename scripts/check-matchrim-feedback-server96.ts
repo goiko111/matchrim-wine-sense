@@ -7,6 +7,7 @@ import { feedbackServerScope96, projectFeedbackServer96 } from './matchrim-feedb
 import { calculateLearnedMatchrimProfile95 as server, NATIVE_MATCHRIM_LEARNING_MODEL, readMatchrimLearningOptions96 } from '../supabase/functions/_shared/matchrim-profile95';
 import { calculateLearnedMatchrimProfile as client } from '../src/utils/matchrimLearning';
 import { cellarTrainingRows, makeCellarCatalogEvidence } from '../src/utils/bodegaAffinity';
+import { restoreFoodDiagnostics96 } from './matchrim-food-diagnostics96-scope';
 
 const prior = (file: string) => execFileSync('git', ['show', `983146c6d87a49bfa58aa503a166e0dc4e972ec1:${file}`], { encoding: 'utf8' });
 const axes = ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'] as const;
@@ -30,7 +31,7 @@ const native = { evidenceStrength: 'native-v2' as const };
 check('Eight whole-source inverses preserve owner/auth/cancellation/web and all unreviewed bytes', () => {
   for (const file of feedbackServerScope96) {
     const source = readFileSync(file, 'utf8'), historical = prior(file);
-    const validate = (candidate: string) => assert.equal(projectFeedbackServer96(file, candidate), historical);
+    const validate = (candidate: string) => assert.equal(projectFeedbackServer96(file, file === 'supabase/functions/scan-food-pairing/index.ts' ? restoreFoodDiagnostics96(candidate) : candidate), historical);
     validate(source);
     for (const changed of [source + '\n// unreviewed\n', source.replace(/matchrim/i, 'unreviewed')]) {
       assert.notEqual(changed, source); assert.throws(() => validate(changed)); negatives++;

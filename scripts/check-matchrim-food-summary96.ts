@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import ts from 'typescript';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { restoreFoodDiagnosticsGuard96 } from './matchrim-food-diagnostics96-scope';
 
 const file = 'src/components/wine-import/FoodPairingScanner.tsx';
 const baseline = '55ee695ed51b5079e6eb0ab645c04b0b3420420a';
@@ -104,7 +105,7 @@ const negatives = [
 for (const mutation of negatives) { assert.notEqual(mutation, source); assert.throws(() => restoreNativeFoodSummary96(mutation)); }
 const backendGuard = readFileSync('scripts/check-matchrim-feedback-server96.ts', 'utf8');
 const originalBackendGuard = execFileSync('git', ['show', '848fec9af5f756df77412c227ce569bb52264d78:scripts/check-matchrim-feedback-server96.ts'], { encoding: 'utf8' });
-assert.equal(backendGuard, originalBackendGuard, 'All original backend assertions and seventeen negatives unchanged');
+assert.equal(restoreFoodDiagnosticsGuard96(backendGuard), originalBackendGuard, 'All original backend assertions and seventeen negatives unchanged');
 const scopeSource = readFileSync('scripts/matchrim-feedback-server96-scope.ts', 'utf8');
 restoreNativeFoodSummaryScope96(scopeSource);
 const scopeMutation = scopeSource.replace('assert.ok(file in pairs,', 'assert.ok(true,');

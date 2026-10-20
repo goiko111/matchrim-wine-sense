@@ -2184,8 +2184,8 @@ const WineMenuScannerSession = ({
 	                  <div className="flex flex-col gap-4 lg:flex-row">
 	                    {/* Wine Info */}
 	                    <div className="flex-1 space-y-3">
-	                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-	                        <div className="min-w-0">
+	                      <div className={isNative ? 'flex min-w-0 flex-col gap-2' : 'flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between'}>
+	                        <div className={isNative ? 'min-w-0 w-full' : 'min-w-0'}>
                             <p className="text-sm font-medium text-muted-foreground">
                               {[wine.region, wine.pais, wine.anada].filter(Boolean).join(' · ') || 'Origen por confirmar'}
                             </p>
@@ -2194,7 +2194,7 @@ const WineMenuScannerSession = ({
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="h-auto min-h-11 max-w-full gap-2 self-start whitespace-normal [&_svg]:shrink-0"
+                          className={isNative ? 'h-auto min-h-[44px] w-full min-w-0 gap-[8px] whitespace-normal px-[12px] py-[8px] [&_svg]:shrink-0' : 'h-auto min-h-11 max-w-full gap-2 self-start whitespace-normal [&_svg]:shrink-0'}
                           onClick={() => setEditingWineIndex(isEditing ? null : index)}
                         >
                           <Edit3 className="h-4 w-4" />
@@ -2203,7 +2203,7 @@ const WineMenuScannerSession = ({
                         {isNative && scannedWines.length >= 2 && <Button
                           type="button"
                           variant="outline"
-                          className="h-auto min-h-[44px] w-full min-w-0 gap-[8px] self-start whitespace-normal px-[12px] py-[8px] sm:w-auto"
+                          className="h-auto min-h-[44px] w-full min-w-0 gap-[8px] self-start whitespace-normal px-[12px] py-[8px]"
                           onClick={returnToComparison}
                         >
                           <ArrowUp aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />

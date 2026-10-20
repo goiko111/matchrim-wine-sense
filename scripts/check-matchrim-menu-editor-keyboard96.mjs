@@ -9,6 +9,7 @@ import ts from 'typescript';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import postcss from 'postcss';
+import { restoreMenuHeaderStack96, restoreMenuHeaderStackPackage96 } from './check-matchrim-menu-header-stack96.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const baseline = '954a7141840b77ce8cb07bb31190fbe821441ddc';
@@ -27,6 +28,7 @@ export const MENU_EDITOR_KEYBOARD96_TAIL = ' && node scripts/check-matchrim-menu
 export function restoreMenuEditorKeyboard96(source) {
   const before = old(component);
   if (source === before) return source;
+  source = restoreMenuHeaderStack96(source);
   source = once(source, newClass, oldClass);
   assert.equal(source, before, 'Whole954 component: only one native class; all web JSX, data, callbacks, keyboard/scroll logic exact');
   return source;
@@ -41,6 +43,7 @@ export function restoreMenuEditorKeyboardCss96(css) {
 export function restoreMenuEditorKeyboardPackage96(source) {
   const before = old('package.json');
   if (source === before) return source;
+  source = restoreMenuHeaderStackPackage96(source);
   const command = JSON.parse(before).scripts['test:closure96'];
   source = once(source, command + MENU_EDITOR_KEYBOARD96_TAIL, command);
   assert.equal(source, before, 'Only additive closure96 leaf, no old assertion/dependency/command change');
