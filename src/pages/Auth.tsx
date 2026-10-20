@@ -76,7 +76,7 @@ const Auth = () => {
           </Button>
           <LanguageSwitcher className={isNative ? 'h-auto min-h-[44px] min-w-[44px]' : undefined} />
         </div>
-        <div className={isNative ? 'matchrim-native-auth-brand mb-7 mt-8 text-left' : 'text-center mb-4'}>
+        <div className={isNative ? 'mb-7 mt-8 text-left' : 'text-center mb-4'}>
           <img
             src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
             alt="Logo Matchrim"
@@ -87,7 +87,7 @@ const Auth = () => {
         </div>
 
         <Card className={isNative ? 'border-0 bg-transparent shadow-none' : undefined}>
-          <CardHeader className={isNative ? 'matchrim-native-auth-intro min-w-0 p-0 pb-[16px] [overflow-wrap:anywhere]' : undefined}>
+          <CardHeader className={isNative ? 'min-w-0 p-0 pb-[16px] [overflow-wrap:anywhere]' : undefined}>
             <CardTitle className="text-center text-red-900">{t('auth.title')}</CardTitle>
             <CardDescription className="text-center">
               {t('auth.subtitle')}

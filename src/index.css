@@ -51,6 +51,8 @@ html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-native-tab-bar
   display: none;
 }
 
+html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-native-auth-brand,
+html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-native-auth-intro,
 html.matchrim-native-platform.matchrim-keyboard-visible .matchrim-native-cellar-editor-heading {
   display: none;
 }

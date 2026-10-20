@@ -6,6 +6,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import ts from 'typescript';
+import { restoreNativeAuth97, restoreNativeAuth97Guard } from './native-auth97-scope.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const { values } = parseArgs({ options: { before: { type: 'string' }, output: { type: 'string' }, help: { type: 'boolean' } } });
@@ -112,6 +113,17 @@ check(paths[0], 'native auth tabs stack for accessibility text and retain two co
   for (const expected of ['h-auto', 'min-w-0', '[.matchrim-accessibility-text_&]:grid-cols-1', '[.matchrim-accessibility-text_&]:md:grid-cols-2']) {
     assert.ok(classes.has(expected), expected);
   }
+});
+check(paths[0], 'native auth header remains in flow while WebKit pans to the keyboard', () => {
+  const current = readFileSync(resolve(root, paths[0]), 'utf8');
+  assert.doesNotMatch(current, /matchrim-native-auth-(?:brand|intro)/);
+  const prior = execFileSync('git', ['show', `db6a181:${paths[0]}`], { cwd: root, encoding: 'utf8' });
+  assert.equal(restoreNativeAuth97(paths[0], current), prior);
+  assert.throws(() => restoreNativeAuth97(paths[0], current.replace("t('auth.signIn')", "t('auth.register')")));
+  const guardPath = 'scripts/check-matchrim-cloud-snapshot.ts';
+  const guard = readFileSync(resolve(root, guardPath), 'utf8');
+  restoreNativeAuth97Guard(guardPath, guard);
+  assert.throws(() => restoreNativeAuth97Guard(guardPath, guard.replace('assert.equal(', 'assert.notEqual(')));
 });
 check(paths[5], 'all legal consent combinations and saving gate preserve the independent truth table', () => {
   const body = ts.transpileModule('return ' + final.values.get('isValid')!.getText(final.ast) + ';', { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;

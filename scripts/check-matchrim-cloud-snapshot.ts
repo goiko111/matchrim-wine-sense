@@ -16,6 +16,7 @@ import { restoreNativeScanPrivacy96 } from './check-matchrim-scan-privacy96.mjs'
 import { restoreNativeCellar97 } from './native-cellar97-scope.mjs';
 import { restoreNativePolicy97 } from './native-policy97-scope.mjs';
 import { restoreNativeSearch97 } from './native-search97-scope.mjs';
+import { restoreNativeAuth97 } from './native-auth97-scope.mjs';
 
 const snapshot = '0c1a29728fb2f6b7f033b7d5e68bc8ea8e5335b1';
 const localRelease = '89d478d6a391c4594fa09d815bb6546fb874231b';
@@ -74,6 +75,7 @@ const projectLearningImport96 = (source: string) => {
   return source.replace(current, previous);
 };
 const assertReviewedClient96 = (path: string, source: string) => {
+  source = restoreNativeAuth97(path, source);
   source = restoreNativeCellar97(path, restoreNativePolicy97(path, source));
   const expected = reviewed95.get(path);
   assert.ok(expected);
@@ -98,7 +100,7 @@ for (const path of learningImportPaths96) {
 // The31e native layout/serving amendment also requires exact five-source pairs,
 // full web JSX/lifetime parity and actual public menu merge/resolver units.
 const reviewed95Suites = [
-  ['scripts/check-matchrim-consumer95-auth.ts', 22],
+  ['scripts/check-matchrim-consumer95-auth.ts', 24],
   ['scripts/check-matchrim-consumer95-passport.ts', 4],
   ['scripts/check-matchrim-consumer95-toast.ts', 7],
   ['scripts/check-matchrim-consumer95-native-recommendation.ts', 40],
