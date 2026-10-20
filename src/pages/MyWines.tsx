@@ -1889,7 +1889,8 @@ const MyWinesForOwner = () => {
                     </CardContent>
                   </Card>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                    style={isNative ? { gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))' } : undefined}>
                     {filteredWines.map((wine) => (
                       <Card key={wine.id} className="relative group">
                         {/* Wine Image */}

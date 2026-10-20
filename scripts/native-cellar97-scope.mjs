@@ -9,6 +9,15 @@ const replacement = (source, current, prior) => {
 
 export const restoreNativeCellar97 = (file, source) => {
   if (file !== 'src/pages/MyWines.tsx') return source;
+  const responsiveGrid = '                    style={isNative ? { gridTemplateColumns: \'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))\' } : undefined}>';
+  if (source.includes(responsiveGrid)) {
+    assert.equal(createHash('sha256').update(source).digest('hex'), '9dab196c1df21b4e859e0b016a0486bcb135f1ea1fc2062388bb58856427a96e',
+      'Whole reviewed native text-responsive grid input');
+    source = replacement(source, '                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"\n' + responsiveGrid,
+      '                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">');
+    assert.equal(createHash('sha256').update(source).digest('hex'), '7b54b4a38e90a2dc7e8c0cd443de119ec235af41fb116b8d730cad4f3fc6404d',
+      'Every other byte retains the previous97 MyWines source');
+  }
   source = replacement(source, "import { NativeCellarToolbar97 } from '@/components/NativeCellarToolbar97';\n", '');
   source = replacement(source, '          body: isNative ? { query, limit: 6, catalogOnly: true } : { query, limit: 6 },',
     '          body: { query, limit: 6 },');

@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
+import { restoreNativeCellar97 } from './native-cellar97-scope.mjs';
 
 const require = createRequire(import.meta.url), ts = require('typescript'), React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
@@ -55,6 +57,13 @@ check('The component remains restricted to the existing native MyWines branch', 
   assert.match(host, /\{isNative && <CellarWineAffinity wine=\{wine\}/);
   assert.equal((host.match(/<CellarWineAffinity /g) ?? []).length, 1);
   assert.equal(resolveCalls, 0);
+});
+check('Only native grid sizing changes; all previous web, write and training code remains exact', () => {
+  const file = 'src/pages/MyWines.tsx', page = fs.readFileSync(new URL('../' + file, import.meta.url), 'utf8');
+  const prior = execFileSync('git', ['show', '0031c703fe6d20ead4e8aab8d85c09b0fb8ae5b2:' + file], { encoding: 'utf8' });
+  assert.equal(restoreNativeCellar97(file, page), restoreNativeCellar97(file, prior));
+  assert.throws(() => restoreNativeCellar97(file, page + '\n// unreviewed change\n'));
+  assert.throws(() => restoreNativeCellar97(file, page.replace('20rem', '2rem')));
 });
 console.log(JSON.stringify({ passed: results.length, failed: 0, results,
   scope: 'Actual native-only TSX with controlled calculated view. No taste accuracy, DB writes, profile or score formula changes.' }));
