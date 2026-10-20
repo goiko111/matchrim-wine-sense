@@ -151,13 +151,71 @@ const nativeRowContext89 = (a: FoodMenuDish89, b: FoodMenuDish89) => literalRow8
   && Number.isSafeInteger(a.source_order) && (a.source_order ?? -1) >= 0 && a.source_order === b.source_order
   && Boolean(nativeRowSection89(a)) && nativeRowSection89(a) === nativeRowSection89(b);
 
+const nativeSectionPair89 = (a: FoodMenuDish89, b: FoodMenuDish89) => JSON.stringify([
+  a.source_tile_ids[0], nativeRowSection89(a), b.source_tile_ids[0], nativeRowSection89(b),
+]);
+const nativeOverlapContext89 = (a: FoodMenuDish89, b: FoodMenuDish89, sections: Set<string>) =>
+  a.source_tile_ids.length === 1 && b.source_tile_ids.length === 1
+  && sections.has(nativeSectionPair89(a, b))
+  && literalRow89(a.nombre) === literalRow89(b.nombre)
+  && Boolean(a.categoria?.trim()) && literalRow89(a.categoria) === literalRow89(b.categoria)
+  && Number.isSafeInteger(a.source_order) && (a.source_order ?? -1) >= 0 && a.source_order === b.source_order;
+
+// Crop-local section labels may differ. Require two independent, uniquely matched
+// priced rows in the same physical overlap before treating their sections alike.
+const nativeOverlapSections89 = (reads: TileRead[]): Set<string> => {
+  const sections = new Set<string>();
+  if (new Set(reads.map(read => read.tile.id)).size !== reads.length) return sections;
+  for (let i = 0; i < reads.length; i += 1) for (let j = i + 1; j < reads.length; j += 1) {
+    const first = reads[i], second = reads[j];
+    if (!box(first.tile.box) || !box(second.tile.box) || first.tile.tile_count !== second.tile.tile_count) continue;
+    const overlap = { x: Math.max(first.tile.box.x, second.tile.box.x), y: Math.max(first.tile.box.y, second.tile.box.y),
+      width: Math.min(first.tile.box.x + first.tile.box.width, second.tile.box.x + second.tile.box.width) - Math.max(first.tile.box.x, second.tile.box.x),
+      height: Math.min(first.tile.box.y + first.tile.box.height, second.tile.box.y + second.tile.box.height) - Math.max(first.tile.box.y, second.tile.box.y) };
+    if (!box(overlap)) continue;
+    const contained = (dish: FoodMenuDish89) => dish.source_box && box(dish.source_box)
+      && dish.source_box.x >= overlap.x && dish.source_box.y >= overlap.y
+      && dish.source_box.x + dish.source_box.width <= overlap.x + overlap.width
+      && dish.source_box.y + dish.source_box.height <= overlap.y + overlap.height;
+    const matches = (a: FoodMenuDish89, b: FoodMenuDish89) => {
+      const left = a.source_text ? terminalPrice89(a.source_text) : null;
+      const right = b.source_text ? terminalPrice89(b.source_text) : null;
+      return a.source_tile_ids.length === 1 && a.source_tile_ids[0] === first.tile.id
+        && b.source_tile_ids.length === 1 && b.source_tile_ids[0] === second.tile.id
+        && Boolean(nativeRowSection89(a)) && Boolean(nativeRowSection89(b))
+        && contained(a) && contained(b) && samePhysicalRow(a, b)
+        && Boolean(a.categoria?.trim()) && literalRow89(a.categoria) === literalRow89(b.categoria)
+        && Number.isSafeInteger(a.source_order) && (a.source_order ?? -1) >= 0 && a.source_order === b.source_order
+        && left !== null && right !== null && left.amount === right.amount && left.currency === right.currency;
+    };
+    const anchors: { a: FoodMenuDish89; b: FoodMenuDish89 }[] = [];
+    for (const a of first.dishes) {
+      const found = second.dishes.filter(b => matches(a, b));
+      if (found.length === 1 && first.dishes.filter(other => matches(other, found[0])).length === 1) anchors.push({ a, b: found[0] });
+    }
+    for (const anchor of anchors) {
+      const group = anchors.filter(other => nativeSectionPair89(anchor.a, anchor.b) === nativeSectionPair89(other.a, other.b));
+      const ambiguous = anchors.some(other => nativeRowSection89(other.a) === nativeRowSection89(anchor.a)
+        && nativeRowSection89(other.b) !== nativeRowSection89(anchor.b)
+        || nativeRowSection89(other.b) === nativeRowSection89(anchor.b) && nativeRowSection89(other.a) !== nativeRowSection89(anchor.a));
+      if (ambiguous || !group.some(other => literalRow89(other.a.nombre) !== literalRow89(anchor.a.nombre)
+        && other.a.source_order !== anchor.a.source_order
+        && (other.a.source_box!.y >= anchor.a.source_box!.y + anchor.a.source_box!.height
+          || anchor.a.source_box!.y >= other.a.source_box!.y + other.a.source_box!.height))) continue;
+      sections.add(nativeSectionPair89(anchor.a, anchor.b));
+      sections.add(nativeSectionPair89(anchor.b, anchor.a));
+    }
+  }
+  return sections;
+};
+
 // Only a missing terminal price on a provably crop-edge-clipped overlapping read.
 // Geometry and text remain model claims, not independent physical-row verification.
-const nativeClippedPriceRow89 = (a: FoodMenuDish89, b: FoodMenuDish89, tiles: FoodMenuTile[]) => {
+const nativeClippedPriceRow89 = (a: FoodMenuDish89, b: FoodMenuDish89, tiles: FoodMenuTile[], sections: Set<string>) => {
   if (!a.source_box || !b.source_box || !a.source_text || !b.source_text
     || a.source_tile_ids.length !== 1 || b.source_tile_ids.length !== 1
     || a.source_tile_ids[0] === b.source_tile_ids[0]
-    || !nativeRowContext89(a, b)) return null;
+    || !(nativeRowContext89(a, b) || nativeOverlapContext89(a, b, sections))) return null;
   const firstPrice = terminalPrice89(a.source_text), secondPrice = terminalPrice89(b.source_text);
   if (Boolean(firstPrice) === Boolean(secondPrice)) return null;
   const priced = firstPrice ? a : b, clipped = firstPrice ? b : a;
@@ -198,18 +256,38 @@ const nativeClippedPriceRow89 = (a: FoodMenuDish89, b: FoodMenuDish89, tiles: Fo
   return vertical || horizontal ? priced : null;
 };
 
-const mergeNativeClippedPrices89 = (baseline: FoodMenuScanResult89, outcomes: TileOutcome[]): FoodMenuScanResult89 => {
+type NativeOriginalRows89 = Map<FoodMenuDish89, FoodMenuDish89[]>;
+const nativeFullRowMatch89 = (a: FoodMenuDish89, b: FoodMenuDish89, sections: Set<string>) => {
+  if (!samePhysicalRow(a, b) || !(nativeRowContext89(a, b) || nativeOverlapContext89(a, b, sections))) return false;
+  const first = a.source_text ? terminalPrice89(a.source_text) : null;
+  const second = b.source_text ? terminalPrice89(b.source_text) : null;
+  return !first || !second || first.amount === second.amount && first.currency === second.currency;
+};
+const nativeClippedGroup89 = (first: FoodMenuDish89[], second: FoodMenuDish89[], tiles: FoodMenuTile[], sections: Set<string>) => {
+  let preferred: FoodMenuDish89 | null = null;
+  for (const a of first) for (const b of second) {
+    if (nativeFullRowMatch89(a, b, sections)) continue;
+    const priced = nativeClippedPriceRow89(a, b, tiles, sections);
+    if (!priced) return null;
+    preferred ??= priced;
+  }
+  return preferred;
+};
+
+const mergeNativeClippedPrices89 = (baseline: FoodMenuScanResult89, outcomes: TileOutcome[], sections: Set<string>, originals: NativeOriginalRows89): FoodMenuScanResult89 => {
   const tiles = outcomes.flatMap(outcome => outcome.ok ? [outcome.read.tile] : []);
   const dishes: FoodMenuDish89[] = [];
   let duplicates = 0;
   for (const dish of baseline.dishes) {
     const candidates = dishes.flatMap((existing, index) => {
-      const preferred = nativeClippedPriceRow89(existing, dish, tiles);
+      const preferred = nativeClippedGroup89(originals.get(existing)!, originals.get(dish)!, tiles, sections);
       return preferred ? [{ index, preferred }] : [];
     });
     if (candidates.length !== 1) { dishes.push(dish); continue; }
     const { index, preferred } = candidates[0];
-    dishes[index] = { ...preferred, source_tile_ids: [...dishes[index].source_tile_ids, ...dish.source_tile_ids] };
+    const members = [...originals.get(dishes[index])!, ...originals.get(dish)!];
+    dishes[index] = { ...preferred, source_tile_ids: members.flatMap(member => member.source_tile_ids) };
+    originals.set(dishes[index], members);
     duplicates += 1;
   }
   return { ...baseline, dishes,
@@ -223,22 +301,25 @@ export const mergeFoodMenuTiles89 = (outcomes: TileOutcome[], nativeClippedPrice
   if (!reads.length) throw outcomes.flatMap((outcome) => outcome.ok === false ? [outcome.error] : [])[0]
     ?? new Error('No se pudo leer el menu.');
   const dishes: FoodMenuDish89[] = [];
+  const sections = nativeClippedPrices ? nativeOverlapSections89(reads) : new Set<string>();
+  // Keep each original row: aggregate IDs and preferred region metadata need not share an order.
+  const originals: NativeOriginalRows89 = new Map();
   let duplicates = 0;
   for (const read of reads) {
     for (const dish of read.dishes) {
       const duplicate = dishes.find((existing) => {
-        if (!samePhysicalRow(existing, dish)) return false;
-        if (!nativeClippedPrices) return true;
-        if (!nativeRowContext89(existing, dish)) return false;
-        const firstPrice = existing.source_text ? terminalPrice89(existing.source_text) : null;
-        const secondPrice = dish.source_text ? terminalPrice89(dish.source_text) : null;
-        return !firstPrice || !secondPrice
-          || (firstPrice.amount === secondPrice.amount && firstPrice.currency === secondPrice.currency);
+        if (!nativeClippedPrices) return samePhysicalRow(existing, dish);
+        return originals.get(existing)!.every(member => nativeFullRowMatch89(member, dish, sections));
       });
       if (duplicate) {
+        if (nativeClippedPrices) originals.set(duplicate, [...originals.get(duplicate)!, dish]);
         duplicate.source_tile_ids.push(...dish.source_tile_ids);
         duplicates += 1;
-      } else dishes.push({ ...dish, source_tile_ids: [...dish.source_tile_ids] });
+      } else {
+        const aggregate = { ...dish, source_tile_ids: [...dish.source_tile_ids] };
+        dishes.push(aggregate);
+        if (nativeClippedPrices) originals.set(aggregate, [dish]);
+      }
     }
   }
   const first = reads[0].result;
@@ -261,7 +342,7 @@ export const mergeFoodMenuTiles89 = (outcomes: TileOutcome[], nativeClippedPrice
       ],
     },
   };
-  return nativeClippedPrices ? mergeNativeClippedPrices89(merged, outcomes) : merged;
+  return nativeClippedPrices ? mergeNativeClippedPrices89(merged, outcomes, sections, originals) : merged;
 };
 
 export const scanFoodMenu89 = async (options: ScanOptions): Promise<FoodMenuScanResult89> => {

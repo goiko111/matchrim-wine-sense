@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import foodOverlapScope96 from './matchrim-food-overlap-context96-scope.cjs';
+const { restoreFoodOverlapPackage96 } = foodOverlapScope96;
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
@@ -20,7 +22,7 @@ const pairs=[
 ];
 export function restoreMenuHeaderStack96(source){if(source===before)return source;for(const [old,current]of pairs)source=once(source,current,old);assert.equal(source,before,'Whole fb8 WMS: only native classes; callbacks/data/web/copy/keyboard/scroll exact');return source;}
 export const MENU_HEADER_STACK96_TAIL=' && node scripts/check-matchrim-menu-header-stack96.mjs';
-export function restoreMenuHeaderStackPackage96(source){const old=prior('package.json');if(source===old)return source;const command=JSON.parse(old).scripts['test:closure96'];source=once(source,command+MENU_HEADER_STACK96_TAIL,command);assert.equal(source,old);return source;}
+export function restoreMenuHeaderStackPackage96(source){const old=prior('package.json');if(source===old)return source;source=restoreFoodOverlapPackage96(source);const command=JSON.parse(old).scripts['test:closure96'];source=once(source,command+MENU_HEADER_STACK96_TAIL,command);assert.equal(source,old);return source;}
 function header(source){const tree=ts.createSourceFile(file,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX),found=[];const visit=n=>{if(ts.isJsxElement(n)&&n.openingElement.tagName.getText(tree)==='div'&&n.getText(tree).includes('onClick={returnToComparison}')&&n.children.some(c=>ts.isJsxElement(c)&&c.openingElement.tagName.getText(tree)==='Button'))found.push(n);ts.forEachChild(n,visit);};visit(tree);assert.equal(found.length,1);return found[0].getText(tree);}
 function render(source,isNative,isEditing){const context=vm.createContext({React,Edit3,ArrowUp,isNative,isEditing,index:0,wine:{region:'Champagne',pais:'Francia',anada:null},scannedWines:Array(8),setEditingWineIndex(){},returnToComparison(){},Button:({variant,size,...props})=>React.createElement('button',props)});vm.runInContext(ts.transpileModule('globalThis.output='+header(source),{compilerOptions:{jsx:ts.JsxEmit.React}}).outputText,context);return renderToStaticMarkup(context.output);}
 export function runMenuHeaderStack96(){const source=fs.readFileSync(root+file,'utf8'),checks=[];const test=(name,fn)=>{fn();checks.push(name);};

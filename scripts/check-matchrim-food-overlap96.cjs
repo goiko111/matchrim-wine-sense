@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const { restoreFoodOverlapSource96 } = require('./matchrim-food-overlap-context96-scope.cjs');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
@@ -14,8 +15,9 @@ const json = value => JSON.parse(JSON.stringify(value));
 
 // Exact inverse of the narrow type/native-merge wiring. Parser, tile/crop planning,
 // request construction, cancellation, deadlines and default merge body stay exact.
-const helperStart = after.indexOf('const literalRow89 =');
-const helperEnd = after.indexOf('export const mergeFoodMenuTiles89 =', helperStart);
+const guardSource = restoreFoodOverlapSource96(after);
+const helperStart = guardSource.indexOf('const literalRow89 =');
+const helperEnd = guardSource.indexOf('export const mergeFoodMenuTiles89 =', helperStart);
 assert.ok(helperStart >= 0 && helperEnd > helperStart);
 const predicate = `      const duplicate = dishes.find((existing) => {
         if (!samePhysicalRow(existing, dish)) return false;
@@ -26,7 +28,7 @@ const predicate = `      const duplicate = dishes.find((existing) => {
         return !firstPrice || !secondPrice
           || (firstPrice.amount === secondPrice.amount && firstPrice.currency === secondPrice.currency);
       });`;
-let inverse = after.slice(0, helperStart) + after.slice(helperEnd);
+let inverse = guardSource.slice(0, helperStart) + guardSource.slice(helperEnd);
 inverse = inverse.replace('matchrimProfile?: unknown; matchrimLearningModel?: unknown', 'matchrimProfile?: unknown')
   .replace('(outcomes: TileOutcome[], nativeClippedPrices = false)', '(outcomes: TileOutcome[])')
   .replace(predicate, '      const duplicate = dishes.find((existing) => samePhysicalRow(existing, dish));')
