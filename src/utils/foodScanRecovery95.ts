@@ -18,6 +18,9 @@ export const nativeFoodScanFailure = (failure: unknown) => {
     || failure instanceof EdgeFunctionError && failure.errorCode === 'invalid_model_response') {
     return 'No he recibido una lectura fiable. Puedes reintentar el mismo archivo o elegir otra foto.';
   }
+  if (failure instanceof EdgeFunctionError && failure.errorCode === 'provider_timeout') {
+    return 'La lectura tardó demasiado. Conservo el archivo; prueba con fotos más cercanas de cada parte de la carta.';
+  }
   const message = failure instanceof Error ? failure.message : '';
   if (/timed?\s*out|timeout|tiempo|deadline|agot[oó]/i.test(message)) {
     return 'La lectura tardó demasiado. Conservo el archivo para que puedas reintentarlo o elegir una foto más cercana.';

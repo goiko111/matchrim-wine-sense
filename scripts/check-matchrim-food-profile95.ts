@@ -50,6 +50,7 @@ const wine = (id: string, p: profile95.MatchrimProfile95, rating: Wine['rating']
 const native = (base: profile95.MatchrimProfile95, rows: Wine[]) => calculateLearnedMatchrimProfile(base, cellarTrainingRows(rows, true));
 const sourcePath = 'supabase/functions/scan-food-pairing/index.ts';
 const source = read(sourcePath), before = baseline(sourcePath).toString('utf8');
+const shipped95 = execFileSync('git', ['show', `ea89a3fc8bdc58676a029ae1a1afdb4c679cb843:${sourcePath}`], { cwd: root }).toString('utf8');
 const model = { summary: 'Synthetic dish', dishes: [{ nombre: 'Synthetic dish', categoria: 'principal', match: 99,
   razon: 'Synthetic culinary note', recomendaciones: [{ nombre: 'Blanco seco', tipo: 'Blanco', uvas: [], match: 99,
     razon: 'Podria acompanar al plato.', atributos: null }] }] };
@@ -256,17 +257,23 @@ await check('active cancellation excludes late profile response before provider;
   const a = shared.run('SYN-A'), b = shared.run('SYN-B'); await a; await b;
   assert.ok(shared.prompts.some(prompt => /potencia=2\.1,/.test(prompt))); assert.ok(shared.prompts.some(prompt => /potencia=2\.2,/.test(prompt)));
 });
-await check('whole vision prompt, output contract, OpenAI selection and non-profile failures retain baseline behavior', async () => {
+await check('legacy vision prompt, output contract, OpenAI selection and non-profile failures retain baseline behavior', async () => {
   const initializer = (code: string, name: string) => {
     const tree = ts.createSourceFile('handler.ts', code, ts.ScriptTarget.Latest, true); const matches: string[] = [];
     const visit = (node: ts.Node) => { if (ts.isVariableDeclaration(node) && node.name.getText(tree) === name) matches.push(node.initializer!.getText(tree)); ts.forEachChild(node, visit); };
     visit(tree); assert.equal(matches.length, 1); return matches[0];
   };
-  assert.equal(initializer(source, 'prompt'), initializer(before, 'prompt'));
-  for (const path of ['supabase/functions/scan-food-pairing/contract.ts', 'supabase/functions/_shared/matchrim-ai-provider.ts',
+  const contractPath = 'supabase/functions/scan-food-pairing/contract.ts';
+  for (const name of ['normalizeFoodScan', 'isFoodScanPayload', 'parseFoodMenuRegionContext']) {
+    assert.equal(initializer(read(contractPath), name), initializer(baseline(contractPath).toString('utf8'), name), name);
+  }
+  for (const path of ['supabase/functions/_shared/matchrim-ai-provider.ts',
     'supabase/functions/_shared/matchrim-openai.ts', 'supabase/functions/_shared/matchrim-learning.ts']) assert.equal(sha(readFileSync(resolve(root, path))), sha(baseline(path)), path);
   for (const body of [{ mode: 'dish' }, { mode: 'menu' }, { mode: 'menu', scan_region: { id: 'left', box: { x: 0, y: 0, width: 55, height: 100 }, tile_count: 2, max_dishes: 30, coordinate_space: 'crop_percent' } }, { mode: 'invalid' }, { image: 'invalid' }]) {
     const f = fixture({}), old = fixture({}, before), current = await f.run('', null, undefined, body), previous = await old.run('', null, undefined, body);
+    const shipped = fixture({}, shipped95); await shipped.run('', null, undefined, body);
+    assert.deepEqual(f.prompts, shipped.prompts,
+      'native compact-menu opt-in must not change legacy prompt semantics');
     const normalized = { ...current.body }; delete normalized.profile_context; normalized.scan_version = previous.body.scan_version;
     assert.equal(current.status, previous.status); assert.deepEqual(normalized, previous.body);
   }
@@ -290,7 +297,7 @@ for (const [name, token] of [['legacy public JWT different from edge env key', p
   await check(`v10 actual handler accepts ${name} only as unprivileged client preferences`, async () => {
     const f = fixture({ [token]: { throwAuth: true } });
     const result = await f.run(token, publicProfile, undefined, { user_id: 'SYN-SPOOF-OWNER', profile_source: 'auth' }, { apikey: token });
-    assert.equal(result.status, 200); assert.equal(result.body.scan_version, 'scan-food-pairing-2026-10-17-profile95-v10');
+    assert.equal(result.status, 200); assert.equal(result.body.scan_version, 'scan-food-pairing-2026-10-20-profile95-v11');
     assert.deepEqual(result.body.profile_context, { version: profile95.MATCHRIM_PROFILE95_VERSION, source: 'client', status: 'client', samples: 0 });
     assert.equal(result.body.profile_source, 'client'); assert.equal(f.authTokens.length, 0); assert.equal(f.queries.length, 0);
     assert.match(profileLine(f.prompts[0])!, /potencia=0, acidez=0\.25, dulzura=2\.5, taninos=4\.75, afrutado=5/);
@@ -397,7 +404,7 @@ for (const [name, attributes] of attributeCases) await check(`v10 final generic-
     assert.deepEqual(withoutRecommendationAttributes(dishes), withoutRecommendationAttributes(expected.dishes), 'No other dish/recommendation field changes at this boundary');
     assert.deepEqual(result.body.coverage, expected.coverage);
     assert.equal(result.body.summary, payload.summary); assert.equal(result.body.ai_provider, 'openai');
-    assert.equal(result.body.scan_version, 'scan-food-pairing-2026-10-17-profile95-v10');
+    assert.equal(result.body.scan_version, 'scan-food-pairing-2026-10-20-profile95-v11');
     assert.deepEqual(result.body.profile_context, { version: profile95.MATCHRIM_PROFILE95_VERSION, source: 'client', status: 'client', samples: 0 });
   }
   assert.equal(JSON.stringify(payload), snapshot);

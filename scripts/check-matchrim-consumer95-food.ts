@@ -59,6 +59,7 @@ await check('Consumer errors never expose raw provider errors or parser internal
 await check('Quota and invalid-model failures have different next actions', () => {
   for (const status of [402, 429]) assert.match(nativeFoodScanFailure(new EdgeFunctionError('raw', { status, errorCode: null, retryAfterMs: null })), /más tarde/);
   assert.match(nativeFoodScanFailure(new EdgeFunctionError('raw', { status: 502, errorCode: 'invalid_model_response', retryAfterMs: null })), /lectura fiable/);
+  assert.match(nativeFoodScanFailure(new EdgeFunctionError('raw', { status: 504, errorCode: 'provider_timeout', retryAfterMs: null })), /cada parte de la carta/);
 });
 await check('Typed preparation and PDF limits stay useful without exposing English decoder internals', () => {
   for (const code of ['file_size_limit', 'image_pixel_limit', 'read', 'decode', 'prepare'] as const) {

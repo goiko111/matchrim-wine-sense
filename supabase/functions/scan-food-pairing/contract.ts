@@ -65,6 +65,38 @@ const isRecord = (value: unknown): value is RawRecord =>
 const isText = (value: unknown): value is string => typeof value === "string";
 const nonemptyText = (value: unknown): value is string => isText(value) && value.trim().length > 0;
 const optionalText = (value: unknown) => value == null || isText(value);
+
+// Native menu scans generate each shared style once, not twice for every dish.
+// Expand only explicit references; a missing/ambiguous style cannot invent a pairing.
+export const expandFoodPairingStyles = (value: RawRecord): RawRecord | null => {
+  const hasReferences = Array.isArray(value.dishes)
+    && value.dishes.some(dish => isRecord(dish) && 'pairing_ids' in dish);
+  if (!('pairing_styles' in value) && !hasReferences) return value;
+  if (!Array.isArray(value.pairing_styles) || value.pairing_styles.length > 12
+    || !Array.isArray(value.dishes) || value.dishes.length > MAX_MENU_DISHES) return null;
+  const styles = new Map<number, { nombre: string; tipo: string | null; uvas: string[];
+    razon: string; match: null; atributos: null }>();
+  for (const style of value.pairing_styles) {
+    if (!isRecord(style) || !Number.isSafeInteger(style.id) || Number(style.id) < 1
+      || Number(style.id) > 12 || styles.has(Number(style.id))
+      || !nonemptyText(style.nombre) || !optionalText(style.tipo) || !optionalText(style.razon)
+      || !Array.isArray(style.uvas) || !style.uvas.every(isText)) return null;
+    styles.set(Number(style.id), { nombre: style.nombre, tipo: isText(style.tipo) ? style.tipo : null,
+      uvas: [...style.uvas], razon: isText(style.razon) ? style.razon : '', match: null, atributos: null });
+  }
+  const dishes: RawRecord[] = [];
+  for (const dish of value.dishes) {
+    if (!isRecord(dish) || 'recomendaciones' in dish || !Array.isArray(dish.pairing_ids)
+      || dish.pairing_ids.length > MAX_DISH_RECOMMENDATIONS
+      || new Set(dish.pairing_ids).size !== dish.pairing_ids.length
+      || !dish.pairing_ids.every(id => Number.isSafeInteger(id) && styles.has(id))) return null;
+    const { pairing_ids, ...rest } = dish;
+    dishes.push({ ...rest, match: null,
+      recomendaciones: pairing_ids.map(id => ({ ...styles.get(id)!, uvas: [...styles.get(id)!.uvas] })) });
+  }
+  const { pairing_styles: _styles, ...rest } = value;
+  return { ...rest, dishes };
+};
 const isCount = (value: unknown) => value == null || (
   typeof value === "number" && Number.isSafeInteger(value) && value >= 0
 );
