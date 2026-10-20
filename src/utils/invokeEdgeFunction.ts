@@ -1,4 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
+import { Capacitor } from '@capacitor/core';
+import { NATIVE_MATCHRIM_LEARNING_MODEL } from '@/utils/matchrimLearningPlatform';
 import { EdgeFunctionError, parseRetryAfterMs } from '@/utils/edgeFunctionResilience';
 import { ensureMatchrimQaProfile, isMatchrimFixtureQaEnabled } from '@/utils/matchrimQaMode';
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
@@ -21,6 +23,10 @@ export const invokeEdgeFunction = async <ResponseBody>(
   }
 
   const { data: { session } } = await supabase.auth.getSession();
+  const requestBody = Capacitor.isNativePlatform()
+    && ['detect-wine-regions', 'analyze-wine-region', 'scan-wine-menu'].includes(functionName)
+    ? { ...body, matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL }
+    : body;
   const resolvedName = resolveMatchrimEdgeFunctionName(functionName, import.meta.env.VITE_MATCHRIM_EDGE_RELEASE);
   const response = await fetch(`${SUPABASE_URL}/functions/v1/${resolvedName}`, {
     method: 'POST',
@@ -29,7 +35,7 @@ export const invokeEdgeFunction = async <ResponseBody>(
       Authorization: `Bearer ${session?.access_token || SUPABASE_PUBLISHABLE_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(requestBody),
     signal,
   });
 
