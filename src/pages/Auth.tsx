@@ -95,7 +95,7 @@ const Auth = () => {
           </CardHeader>
           <CardContent className={isNative ? 'min-w-0 p-0' : undefined}>
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className={isNative ? 'grid h-auto w-full min-w-0 grid-cols-2 gap-[4px] p-[4px]' : 'grid w-full grid-cols-2'}>
+              <TabsList className={isNative ? 'grid h-auto w-full min-w-0 grid-cols-2 gap-[4px] p-[4px] [.matchrim-accessibility-text_&]:grid-cols-1 [.matchrim-accessibility-text_&]:md:grid-cols-2' : 'grid w-full grid-cols-2'}>
                 <TabsTrigger value="login" className={isNative ? 'h-auto min-h-[44px] min-w-0 whitespace-normal break-words px-[8px] py-[8px]' : undefined}>{t('auth.login')}</TabsTrigger>
                 <TabsTrigger value="signup" className={isNative ? 'h-auto min-h-[44px] min-w-0 whitespace-normal break-words px-[8px] py-[8px]' : undefined}>{t('auth.register')}</TabsTrigger>
               </TabsList>

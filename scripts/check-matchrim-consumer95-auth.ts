@@ -93,6 +93,26 @@ for (const path of paths) {
   });
 }
 const finalSource = readFileSync(resolve(root, paths[5]), 'utf8'), final = declarations(finalSource);
+check(paths[0], 'native auth tabs stack for accessibility text and retain two columns on wide screens', () => {
+  const ast = tree(readFileSync(resolve(root, paths[0]), 'utf8'));
+  let nativeClass = '';
+  const visit = (node: ts.Node) => {
+    if (ts.isJsxOpeningElement(node) && node.tagName.getText(ast) === 'TabsList') {
+      const attribute = node.attributes.properties.find(property => ts.isJsxAttribute(property) && property.name.getText(ast) === 'className');
+      assert.ok(attribute && ts.isJsxAttribute(attribute) && attribute.initializer && ts.isJsxExpression(attribute.initializer));
+      const expression = attribute.initializer.expression;
+      assert.ok(expression && ts.isConditionalExpression(expression) && expression.condition.getText(ast) === 'isNative');
+      assert.ok(ts.isStringLiteral(expression.whenTrue));
+      nativeClass = expression.whenTrue.text;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(ast);
+  const classes = new Set(nativeClass.split(/\s+/));
+  for (const expected of ['h-auto', 'min-w-0', '[.matchrim-accessibility-text_&]:grid-cols-1', '[.matchrim-accessibility-text_&]:md:grid-cols-2']) {
+    assert.ok(classes.has(expected), expected);
+  }
+});
 check(paths[5], 'all legal consent combinations and saving gate preserve the independent truth table', () => {
   const body = ts.transpileModule('return ' + final.values.get('isValid')!.getText(final.ast) + ';', { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
   for (const termsAccepted of [false, true]) for (const privacyAccepted of [false, true]) {
