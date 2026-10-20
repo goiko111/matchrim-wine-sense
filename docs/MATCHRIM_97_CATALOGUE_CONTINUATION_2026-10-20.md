@@ -2,6 +2,8 @@
 
 Continues `db6a181` and the sealed97 candidate; it does not replace the earlier QA report or its failures. No web Publish, remote catalogue mutation, backend deployment or TestFlight upload.
 
+Latest completed candidate: **1.0(97), internal r12, product24982d6049391823406c880ff170c1463180c344**. Signed archive,13 regression gates,11 controlled gallery cases, real two-wine QA-account evolution and scoped simulator checks pass. **Full master integration,200-label live canonical benchmark and physical97 approval remain open; TestFlight is not uploaded.** Historical intermediate results below retain their original scope.
+
 ## New Verified Finding
 
 Read-only Winerim administration shows **217391 master Mantalak references**, versus1711 in the public Library previously queried. A recommendation universe of20530 is a third scope, not an exhaustive catalogue.
@@ -136,3 +138,38 @@ Evidence: `live-account-parent/READBACK-AFTER-MANUAL-r2.json`, `SINGLE-JSON-READ
 The actual screenshot shows a rejected wine still leading with71/100, the same final coarse style score as a loved wine. The formula did respond to feedback, but making that score the primary message contradicts the user's known experience. A native-only presentation correction now prioritizes the saved rating ("Ya sabes que no te gusta", "Ya sabes que te gusta", or "Te parecio correcto") and keeps the unchanged numerical calculation/history behind an initially closed "Ver afinidad por estilo" disclosure. It explicitly distinguishes style comparison from the user's own tasting. No taste probabilities, stored scores, training weights or recommendation-backend exclusions are invented. Unrated wines retain their previous view.
 
 `scripts/check-matchrim-cellar-rating97.mjs` exercises the actual TSX with controlled score input:10 groups, including closed disclosures, unrated/unknown ratings, missing sensory scores and native-only call-site confinement. Product regression, new build and visual evidence for this presentation change must be recorded separately; the r10 evidence above predates it.
+
+## Final r12 Validation, 17:53 UTC
+
+| Before | After | Why |
+|---|---|---|
+| Rejected and loved wines both led with71/100 | Each leads with its own saved rating; unchanged style score/history remain in a closed disclosure | Known individual feedback should not be visually contradicted by a coarse inferred score |
+| Enlarged text in landscape retained two narrow wine columns and split words | Native grid uses rem-sized minimum tracks and collapses to one column as text grows | Preserve readable wine names, training copy and controls without changing the web grid |
+
+The first r11 browser geometry checks passed, but subsequent **visual inspection** found the two-column text problem. That intermediate pass was not accepted as sufficient. r12 adds an actual computed-grid assertion for one pixel-resolved track under enlarged text. The exact one-hunk MyWines inverse, full historical source hashes and negative mutations prove that all existing web, mutation, ownership and learning code remains unchanged. Shared CSS and the protected `search-wines/index.ts` still match `db6a181` byte-for-byte.
+
+| Final gate | Actual |
+|---|---|
+| Committed product |`24982d6049391823406c880ff170c1463180c344`; preceding rating presentation commit0031c70 |
+| Regression matrix |13/13 PASS in `final-matrix97-r7/report.json` |
+| Focused rating/grid controls |11 groups PASS; actual TSX with controlled score input, not a taste oracle |
+| Lint |594 files,0 errors,129 inherited warnings |
+| Gallery replay |11/11 cases,381 assertions,0 page exceptions,0 external forwarding; one deliberate503 resource error retained |
+| Real QA Bodega presentation |4 views PASS:393x852,852x393,320x568,CSS200 landscape;6 owner-filtered GETs,0 writes/model calls; keyboard-operated disclosure and unchanged71/72 score/history verified |
+| New production client build |PASS,158 resources, fixturesfalse; local output only |
+| Signed iOS Release archive |PASS,1.0(97),158 packaged resources verified; no distribution export/upload |
+| Simulator package |PASS;158 installed resources rehashed against r12; isolated QA bundle, no user-data reset |
+| UIKit maximum-text keyboard/orientation |PASS on installed r12; real keyboard and whole focused input remain visible through rotation |
+| Native anonymous navigation/audit |PASS on installed r12; existing four audit types and control/safe-area assertions, not VoiceOver certification |
+| Cleanup |All browsers/controllers closed; simulator text restored toLarge and own app returned toHome; no physical-device action |
+
+Current evidence, under the same continuation root:
+
+- `candidate97-r12/preparation.json`, `ARCHIVE97-RELEASE-RESULT.json`, `Matchrim97-release.xcarchive`.
+- `simulator97-r10/BUILD-RESULT.json`, `INSTALLED-R12-VERIFICATION.json`.
+- `final-matrix97-r7/report.json`, `gallery97-production-r11/report.json`.
+- `rating97-live-visual-r12/report.json`, `portrait.png`, `landscape.png`, `small.png`, `text200-landscape.png`: actual QA owner rows, not synthetic fiche replies. No new rating mutation occurred during this visual rerun.
+- `native-max97-r11/PROCESS-RESULT.json`, `result.xcresult`, `attachments-all/`: current UIKit MAX screenshots/assertions.
+- `native-audit97-r8/PROCESS-RESULT.json`, `result.xcresult`, `attachments-all/`: current native navigation, privacy safe area and automated accessibility.
+
+This closes the scoped local fixes and the two-wine account-persistence exercise, **not** the complete product study. The numerical learner is unchanged; the presentation fix is confined to Bodega, and precedence of known dislikes across scanner rankings and dedicated recommendation routes is not newly certified here. These results are not50/100 real accounts,200 recognized labels, measured taste accuracy or physical iPhone approval. The phone's earlier installed97-r3 is not the current r12 package. The external release decisions above remain required before sending a new TestFlight.
