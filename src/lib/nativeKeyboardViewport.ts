@@ -8,9 +8,35 @@ export const installNativeKeyboardViewport = () => {
   let pagePathBeforeKeyboard = window.location.pathname;
   let generation = 0;
   let restoreFrame: number | null = null;
+  let revealFrame: number | null = null;
   const root = document.documentElement;
+  const authField = () => {
+    const field = document.activeElement;
+    return Capacitor.getPlatform() === 'ios' && root.classList.contains('matchrim-keyboard-visible')
+      && field?.matches('input:not([type="button"]):not([type="submit"]), textarea')
+      && field.closest('.matchrim-native-auth') ? field : null;
+  };
+  const revealAuthField = () => {
+    if (!authField()) return;
+    if (revealFrame !== null) cancelAnimationFrame(revealFrame);
+    revealFrame = requestAnimationFrame(() => {
+      revealFrame = null;
+      const field = authField();
+      if (!field) return;
+      const viewport = window.visualViewport;
+      const safeTop = parseFloat(getComputedStyle(root).getPropertyValue('--matchrim-native-safe-top')) || 0;
+      const top = Math.max(viewport?.offsetTop ?? 0, safeTop);
+      const bottom = (viewport?.offsetTop ?? 0) + (viewport?.height ?? window.innerHeight);
+      const bounds = field.getBoundingClientRect();
+      const inset = Math.min(8, Math.max(0, (bottom - top - bounds.height) / 2));
+      if (bottom <= top) return;
+      // Reconcile WebKit's post-rotation focus pan without refocusing or moving the caret.
+      if (bounds.top < top + inset) window.scrollBy({ top: bounds.top - top - inset, behavior: 'instant' });
+      else if (bounds.bottom > bottom - inset) window.scrollBy({ top: bounds.bottom - bottom + inset, behavior: 'instant' });
+    });
+  };
   type Observation = {
-    event: 'show' | 'hide' | 'resize' | 'orientationchange' | 'focusin' | 'focusout' | 'restore' | 'restore-skipped';
+    event: 'show' | 'hide' | 'resize' | 'orientationchange' | 'focusin' | 'focusout' | 'input' | 'restore' | 'restore-skipped';
     nativeEventVisible: boolean;
     editableFocused: boolean;
     width: number;
@@ -44,10 +70,13 @@ export const installNativeKeyboardViewport = () => {
     }
     root.classList.add('matchrim-keyboard-visible');
     observe('show');
+    revealAuthField();
   };
   const hide = () => {
     cancelRestore();
     root.classList.remove('matchrim-keyboard-visible');
+    if (revealFrame !== null) cancelAnimationFrame(revealFrame);
+    revealFrame = null;
     observe('hide');
     const hiddenGeneration = generation;
     // WebKit's focus pan can survive dismissal even after the native frame is restored.
@@ -62,9 +91,12 @@ export const installNativeKeyboardViewport = () => {
       observe('restore');
     });
   };
-  for (const event of ['resize', 'orientationchange', 'focusin', 'focusout'] as const) {
-    window.addEventListener(event, () => observe(event), { passive: true });
+  for (const event of ['resize', 'orientationchange', 'focusin', 'focusout', 'input'] as const) {
+    window.addEventListener(event, () => { observe(event); revealAuthField(); }, { passive: true });
   }
+  window.visualViewport?.addEventListener('resize', revealAuthField, { passive: true });
+  window.visualViewport?.addEventListener('scroll', revealAuthField, { passive: true });
   void Keyboard.addListener('keyboardWillShow', show).catch(() => undefined);
+  void Keyboard.addListener('keyboardDidShow', revealAuthField).catch(() => undefined);
   void Keyboard.addListener('keyboardDidHide', hide).catch(() => undefined);
 };

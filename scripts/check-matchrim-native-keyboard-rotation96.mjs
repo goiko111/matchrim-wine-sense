@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import ts from 'typescript';
 
 const source = fs.readFileSync(new URL('../src/lib/nativeKeyboardViewport.ts', import.meta.url), 'utf8');
-const fixture = ({ native = true, platform = 'ios' } = {}) => {
+const fixture = ({ native = true, platform = 'ios', auth = false } = {}) => {
   const classes = new Set(), frames = new Map(), events = new Map(), plugin = new Map(), scrolls = [], calls = [];
   const attributes = new Map();
   let nextFrame = 0;
@@ -12,13 +12,17 @@ const fixture = ({ native = true, platform = 'ios' } = {}) => {
     classList: { contains: key => classes.has(key), add: key => classes.add(key), remove: key => classes.delete(key) },
     setAttribute: (key, value) => attributes.set(key, value),
   };
-  const field = { matches: () => true };
+  const field = { matches: () => true, closest: () => auth ? {} : null,
+    bounds: { top: 100, bottom: 144, height: 44 },
+    getBoundingClientRect: () => field.bounds };
   const document = { documentElement: root, activeElement: field };
   const window = {
     scrollY: 80, innerWidth: 440, innerHeight: 956, location: { pathname: '/my-wines' },
-    visualViewport: { height: 956 },
+    visualViewport: { height: 956, offsetTop: 0, events: new Map(),
+      addEventListener(key, callback) { this.events.set(key, callback); } },
     addEventListener: (key, callback) => events.set(key, callback),
     scrollTo: options => { scrolls.push({ ...options }); window.scrollY = options.top; },
+    scrollBy: options => { scrolls.push({ ...options, relative: true }); window.scrollY += options.top; },
   };
   const Keyboard = {
     setAccessoryBarVisible: options => { calls.push(['accessory', options]); return Promise.resolve(); },
@@ -26,6 +30,7 @@ const fixture = ({ native = true, platform = 'ios' } = {}) => {
   };
   const sandbox = {
     exports: {}, document, window,
+    getComputedStyle: () => ({ getPropertyValue: () => '62px' }),
     requestAnimationFrame: callback => { frames.set(++nextFrame, callback); return nextFrame; },
     cancelAnimationFrame: id => frames.delete(id),
     require: id => {
@@ -119,6 +124,35 @@ check('native visibility is reported as an event state, never asserted as proof 
   assert.equal(event.nativeEventVisible, true); assert.equal(event.editableFocused, false);
   assert.deepEqual(Object.keys(event).sort(), ['editableFocused', 'event', 'height', 'nativeEventVisible', 'width']);
   assert.equal(f.attributes.size, 1);
+});
+check('iOS auth corrects a focused field hidden above the safe area after rotation without reading its value', () => {
+  const f = fixture({ auth: true });
+  f.field.bounds = { top: -40, bottom: 83, height: 123 };
+  f.emit('keyboardWillShow'); f.flush();
+  assert.equal(f.scrolls.length, 1); assert.equal(f.scrolls[0].top, -110);
+  assert.equal(f.scrolls[0].relative, true); assert.equal(f.scrolls[0].behavior, 'instant');
+  assert.equal(f.document.activeElement, f.field);
+});
+check('iOS auth keeps the focused field above the resized keyboard and does not move an already visible field', () => {
+  const f = fixture({ auth: true }); f.window.visualViewport.height = 190;
+  f.field.bounds = { top: 150, bottom: 194, height: 44 };
+  f.emit('keyboardWillShow'); f.flush();
+  assert.equal(f.scrolls[0].top, 12);
+  f.field.bounds = { top: 90, bottom: 134, height: 44 };
+  f.window.visualViewport.events.get('resize')(); f.flush(); assert.equal(f.scrolls.length, 1);
+});
+check('queued auth reveal is cancelled on hide and cannot act after route or focus changes', () => {
+  const f = fixture({ auth: true }); f.field.bounds = { top: -40, bottom: 83, height: 123 };
+  f.emit('keyboardWillShow'); const stale = [...f.frames.values()][0];
+  f.emit('keyboardDidHide'); stale(); f.flush();
+  assert.equal(f.scrolls.length, 1); assert.equal(f.scrolls[0].relative, undefined);
+  f.emit('keyboardWillShow'); f.field.closest = () => null; f.flush(); assert.equal(f.scrolls.length, 1);
+});
+check('Android auth never uses the iOS focus-pan correction', () => {
+  const f = fixture({ auth: true, platform: 'android' });
+  f.field.bounds = { top: -40, bottom: 83, height: 123 };
+  f.emit('keyboardWillShow'); f.events.get('orientationchange')(); f.flush();
+  assert.equal(f.frames.size, 0); assert.equal(f.scrolls.length, 0);
 });
 
 console.log(JSON.stringify({ passed: results.filter(r => r.passed).length, total: results.length, results, scope: 'Actual helper in deterministic mocked event loop, not UIKit or reproduction of OS keyboard loss', SDK: 0, network: 0 }));
