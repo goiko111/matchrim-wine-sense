@@ -91,8 +91,13 @@ export const expandFoodPairingStyles = (value: RawRecord): RawRecord | null => {
       || new Set(dish.pairing_ids).size !== dish.pairing_ids.length
       || !dish.pairing_ids.every(id => Number.isSafeInteger(id) && styles.has(id))) return null;
     const { pairing_ids, ...rest } = dish;
-    dishes.push({ ...rest, match: null,
-      recomendaciones: pairing_ids.map(id => ({ ...styles.get(id)!, uvas: [...styles.get(id)!.uvas] })) });
+    const recomendaciones = [];
+    for (const id of pairing_ids) {
+      const style = styles.get(id);
+      if (!style) return null;
+      recomendaciones.push({ ...style, uvas: [...style.uvas] });
+    }
+    dishes.push({ ...rest, match: null, recomendaciones });
   }
   const { pairing_styles: _styles, ...rest } = value;
   return { ...rest, dishes };
