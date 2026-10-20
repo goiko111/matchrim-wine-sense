@@ -23,8 +23,27 @@ function restore(source){source=restoreR2(source);const start=source.indexOf('co
  ['mergeNativeClippedPrices89(merged, outcomes, sections)','mergeNativeClippedPrices89(merged, outcomes)'],
  ])source=once(source,a,b);assert.equal(source,before,'Full e9a source inverse: parser/crops/requests/budgets/cancel/default branch unchanged');return source;}
 function restoreFoodOverlapSource96(source){if(source===before)return source;assert.equal(sha(source),'6d4fd1ee001ac0462be4ed8bc3b13ff6a484fd5853407660bca8be75e424d6a0','Reviewed private R2 full source');return restore(source);}
-function restoreFoodOverlapPackage96(source){const old=prior('package.json');if(source===old)return source;const command=JSON.parse(old).scripts['test:closure96'];source=once(source,command+" && node scripts/check-matchrim-food-overlap-context96.cjs",command);assert.equal(source,old,'Whole e9a package except one appended leaf');return source;}
+const foodKeyboardPackageLines96=[
+ '    "test:food-latency96": "node --import tsx scripts/check-matchrim-food-latency96.ts",\n',
+ '    "test:keyboard-rotation96": "node scripts/check-matchrim-native-keyboard-rotation96.mjs",\n',
+];
+function restoreFoodOverlapPackage96(source){const old=prior('package.json');if(source===old)return source;
+ for(const line of foodKeyboardPackageLines96)source=once(source,line,'');
+ const command=JSON.parse(old).scripts['test:closure96'];source=once(source,command+" && node scripts/check-matchrim-food-overlap-context96.cjs",command);assert.equal(source,old,'Whole e9a package except one appended leaf and two exact Food/keyboard test registrations');return source;}
+// Keep the whole-package oracle: missing/duplicate registrations and unrelated edits fail too.
+const actualPackage96=require('node:fs').readFileSync(path.join(repo,'package.json'),'utf8');
+assert.equal(restoreFoodOverlapPackage96(actualPackage96),prior('package.json'));
+const packageMutations96=[
+ ...foodKeyboardPackageLines96.map(line=>once(actualPackage96,line,line.replace('node ','node --unreviewed '))),
+ ...foodKeyboardPackageLines96.map(line=>once(actualPackage96,line,'')),
+ ...foodKeyboardPackageLines96.map(line=>once(actualPackage96,line,line+line)),
+ once(actualPackage96,'"typecheck": "tsc -p tsconfig.app.json --noEmit"','"typecheck": "true"'),
+ once(actualPackage96,' && node scripts/check-matchrim-food-overlap-context96.cjs',''),
+ actualPackage96+'\n// unreviewed package bytes\n',
+];
+for(const changed of packageMutations96){assert.notEqual(changed,actualPackage96);assert.throws(()=>restoreFoodOverlapPackage96(changed));}
 function projectGuard(source,file,edits){for(const[old,next]of edits)source=once(source,next,old);assert.equal(source,prior(file),'Whole prior QA source restored');return source;}
 function restoreFoodOverlapGuard96(source){return projectGuard(source,'scripts/check-matchrim-food-overlap96.cjs',[["const fs = require('node:fs');\n","const fs = require('node:fs');\nconst { restoreFoodOverlapSource96 } = require('./matchrim-food-overlap-context96-scope.cjs');\n"],["const helperStart = after.indexOf('const literalRow89 =');","const guardSource = restoreFoodOverlapSource96(after);\nconst helperStart = guardSource.indexOf('const literalRow89 =');"],["const helperEnd = after.indexOf('export const mergeFoodMenuTiles89 =', helperStart);","const helperEnd = guardSource.indexOf('export const mergeFoodMenuTiles89 =', helperStart);"],["let inverse = after.slice(0, helperStart) + after.slice(helperEnd);","let inverse = guardSource.slice(0, helperStart) + guardSource.slice(helperEnd);"]]);}
 function restoreFoodHeaderScope96(source){return projectGuard(source,'scripts/check-matchrim-menu-header-stack96.mjs',[["import fs from 'node:fs';\n","import fs from 'node:fs';\nimport foodOverlapScope96 from './matchrim-food-overlap-context96-scope.cjs';\nconst { restoreFoodOverlapPackage96 } = foodOverlapScope96;\n"],["if(source===old)return source;const command=JSON.parse(old).scripts['test:closure96'];","if(source===old)return source;source=restoreFoodOverlapPackage96(source);const command=JSON.parse(old).scripts['test:closure96'];"]]);}
 module.exports={restoreFoodOverlapSource96,restoreFoodOverlapPackage96,restoreFoodOverlapGuard96,restoreFoodHeaderScope96};
+module.exports.foodKeyboardPackageControls96={exactRegistrations:2,rejectedMutations:packageMutations96.length,wholeHistoricalPackageRestored:true};
