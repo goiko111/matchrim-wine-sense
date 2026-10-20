@@ -368,7 +368,7 @@ test('reviewed95 actual menu/dish read bodies preserve web results/errors, and n
 
 test('reviewed95 actual preparation call preserves web arguments and native signal/limits without retry', async () => {
   assert.deepEqual(oldPreparation.args, ['imageFile', '2400', 'controller.signal']);
-  assert.deepEqual(NATIVE_IMAGE_PREPARATION_LIMITS, { maxFileBytes: 25 * 1024 * 1024, maxImagePixels: 64_000_000 });
+  assert.deepEqual(NATIVE_IMAGE_PREPARATION_LIMITS, { maxFileBytes: 25 * 1024 * 1024, maxImagePixels: 64_000_000, compositeOnWhite: true });
   assert.ok(Object.isFrozen(NATIVE_IMAGE_PREPARATION_LIMITS));
   for (const native of [false, true]) {
     for (const aborted of [false, true]) {
