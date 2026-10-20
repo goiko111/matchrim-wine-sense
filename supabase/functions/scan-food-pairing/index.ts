@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
-import { isFoodScanPayload, MAX_MENU_DISHES, MAX_MENU_TILE_DISHES, normalizeFoodScan, parseFoodMenuRegionContext } from "./contract.ts";
+import { expandFoodPairingStyles, isFoodScanPayload, MAX_MENU_DISHES, MAX_MENU_TILE_DISHES, normalizeFoodScan, parseFoodMenuRegionContext } from "./contract.ts";
 import { calculateLearnedMatchrimProfile95, readMatchrimLearningOptions96, readMatchrimProfile95, MATCHRIM_PROFILE95_VERSION,
   MATCHRIM_PROFILE95_TRAINING_COLUMNS, type MatchrimProfile95 } from "../_shared/matchrim-profile95.ts";
 import { runMatchrimAi } from "../_shared/matchrim-ai-provider.ts";
@@ -13,7 +13,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const FUNCTION_VERSION = 'scan-food-pairing-2026-10-17-profile95-v10';
+const FUNCTION_VERSION = 'scan-food-pairing-2026-10-20-profile95-v11';
 
 // Observed error/signal only; this does not establish an upstream root cause.
 const classifyNativeFoodProviderFailure96 = (error: unknown, signal: AbortSignal) => {
@@ -154,6 +154,8 @@ serve(async (req: Request) => {
 
     const maxDishes = mode === "menu" ? (scanRegion ? MAX_MENU_TILE_DISHES : MAX_MENU_DISHES) : 1;
     const maxTokens = scanRegion ? 8192 : 16384;
+    const compactMenu = mode === 'menu'
+      && readMatchrimLearningOptions96(matchrimLearningModel).evidenceStrength === 'native-v2';
     const restaurantHint = restaurantName ? `Restaurante: ${restaurantName}.` : "";
 
     const prompt = `Eres un sumiller experto. Analiza esta imagen de ${mode === "menu" ? "un menú de comida (lista de platos)" : "un plato de comida"}.
@@ -164,7 +166,7 @@ ${scanRegion ? `Esta imagen es SOLO el recorte ${scanRegion.id} de dos recortes 
 Responde EXCLUSIVAMENTE en JSON compacto valido, sin indentacion, con esta forma:
 {
   "summary": "resumen breve de lo detectado",
-  "coverage": {
+${compactMenu ? '  "pairing_styles": [{ "id": 1, "nombre": "estilo orientativo", "tipo": "Blanco", "uvas": [], "razon": "hipotesis general breve de maridaje" }],\n' : ''}  "coverage": {
     "estimated_visible_dishes": 0,
     "unreadable_dishes": 0,
     "truncated": false,
@@ -182,11 +184,10 @@ Responde EXCLUSIVAMENTE en JSON compacto valido, sin indentacion, con esta forma
       "source_box": { "x": 5, "y": 10, "width": 40, "height": 5 },
       "source_text": "texto exacto leído en la carta",
       "confidence": 0-100,
-      "match": null,
-      "razon": "características culinarias visibles o inferidas; nunca preferencias del usuario",
-      "recomendaciones": [
+${compactMenu ? '' : '      "match": null,\n'}      "razon": "características culinarias visibles o inferidas; nunca preferencias del usuario",
+      ${compactMenu ? '"pairing_ids": [1]' : `"recomendaciones": [
         { "nombre": "estilo de vino orientativo", "tipo": "Tinto|Blanco|...", "uvas": [], "match": null, "razon": "hipotesis breve de maridaje", "atributos": null }
-      ]
+      ]`}
     }
   ]
 }
@@ -209,7 +210,7 @@ REGLAS ESTRICTAS:
 - Si excepcionalmente una fila de salida contiene varios platos, incluye source_rows con una entrada por linea leida: {"nombre":"nombre literal", "source_text":"fragmento literal incluido en source_text de la fila", "region_id":"id del inventario", "source_order":1, "source_box":{"x":5,"y":10,"width":40,"height":5}}. Sus cajas deben ser distintas, no solaparse y quedar dentro de sus respectivas regiones y de la fila agregada si tiene caja. No lo uses para alternativas o ingredientes de un solo plato. Sin evidencia suficiente deja la duda en coverage.notes; no repares ni inventes filas. No atribuyas recomendaciones agregadas a cada fragmento.
 - No inventes texto ilegible. Indica confidence bajo, aumenta unreadable_dishes y explica la duda en coverage.notes.
 - Marca coverage.truncated=true y el limite local cuando falten filas en cualquier region, haya texto ilegible o estimated_visible_dishes sea mayor que el numero de filas devueltas; no declares cobertura completa por haber llenado una sola columna.
-- 2 recomendaciones de vino por plato.
+- ${compactMenu ? 'Genera primero TODO el inventario de platos. Para maridaje usa un diccionario pairing_styles de hasta 12 estilos compartidos (id entero unico 1..12), y pairing_ids con hasta 2 ids distintos por plato. Reutiliza un id solo cuando el estilo realmente acompane al plato; [] si no hay una hipotesis justificada. No escribas recomendaciones, atributos ni match dentro de los platos ni del diccionario. Las razones de los estilos son generales, no afirman ingredientes no leidos. No reduzcas ni agrupes platos para caber en el diccionario.' : '2 recomendaciones de vino por plato.'}
 - No incluyas texto fuera del JSON.`;
 
     let content: unknown;
@@ -226,25 +227,29 @@ REGLAS ESTRICTAS:
         return invalidModelResponse(structuredResponseError("invalid_json"));
       }
       const limited = error instanceof Error && /demasiadas solicitudes/i.test(error.message);
+      const failure = classifyNativeFoodProviderFailure96(error, req.signal);
+      const timedOut = compactMenu && failure === 'timeout_error';
       if (readMatchrimLearningOptions96(matchrimLearningModel).evidenceStrength === 'native-v2') {
         console.error("Food AI provider failure", {
-          version: FUNCTION_VERSION, failure: classifyNativeFoodProviderFailure96(error, req.signal),
+          version: FUNCTION_VERSION, failure,
         });
       } else {
         console.error("Food AI provider unavailable");
       }
-      return new Response(JSON.stringify({ error: limited ? "rate_limited" : "provider_unavailable", recoverable: true,
+      return new Response(JSON.stringify({ error: limited ? "rate_limited" : timedOut ? "provider_timeout" : "provider_unavailable",
+        ...(timedOut ? { message: "La lectura ha tardado demasiado. Prueba con fotos mas cercanas de cada parte de la carta." } : {}), recoverable: true,
         retryable: false, dishes: [], scan_version: FUNCTION_VERSION }), {
-        status: limited ? 429 : 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: limited ? 429 : timedOut ? 504 : 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
     const parsed = parseStructuredObject(content);
     if (!parsed.ok) return invalidModelResponse(parsed.error);
-    if (!isFoodScanPayload(parsed.value)) return invalidModelResponse(structuredResponseError("invalid_schema"));
+    const payload = compactMenu ? expandFoodPairingStyles(parsed.value) : parsed.value;
+    if (!payload || !isFoodScanPayload(payload)) return invalidModelResponse(structuredResponseError("invalid_schema"));
 
     const normalized = normalizeFoodScan(
-      parsed.value.dishes,
-      parsed.value.coverage,
+      payload.dishes,
+      payload.coverage,
       mode,
       maxDishes,
     );
@@ -252,7 +257,7 @@ REGLAS ESTRICTAS:
     return new Response(
       JSON.stringify({
         mode,
-        summary: parsed.value.summary ?? "",
+        summary: payload.summary ?? "",
         dishes: normalized.dishes.map(dish => ({
           ...dish,
           recomendaciones: dish.recomendaciones.map(recommendation => ({ ...recommendation, atributos: null })),
