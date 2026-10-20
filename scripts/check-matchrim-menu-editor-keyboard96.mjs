@@ -10,6 +10,7 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import postcss from 'postcss';
 import { restoreMenuHeaderStack96, restoreMenuHeaderStackPackage96 } from './check-matchrim-menu-header-stack96.mjs';
+import { restoreNativeLabelGuard97 } from './native-label97-scope.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const baseline = '954a7141840b77ce8cb07bb31190fbe821441ddc';
@@ -71,6 +72,7 @@ const guardChanges = {
   ],
 };
 export function restoreMenuEditorKeyboardGuard96(name, source) {
+  source = restoreNativeLabelGuard97(name, source);
   assert(Object.hasOwn(guardChanges, name), 'No unrelated guard projection');
   const before = old(name);
   if (source === before) return source;

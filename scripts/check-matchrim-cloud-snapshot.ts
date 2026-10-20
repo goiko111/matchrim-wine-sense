@@ -13,6 +13,9 @@ import { ImagePreparationError } from '../src/utils/imageAnalysis';
 import { openAi92LegacyHandlers } from './matchrim-openai92-scope';
 import { restoreNativeHubSvg96 } from './check-matchrim-scan-hub-svg96.mjs';
 import { restoreNativeScanPrivacy96 } from './check-matchrim-scan-privacy96.mjs';
+import { restoreNativeCellar97 } from './native-cellar97-scope.mjs';
+import { restoreNativePolicy97 } from './native-policy97-scope.mjs';
+import { restoreNativeSearch97 } from './native-search97-scope.mjs';
 
 const snapshot = '0c1a29728fb2f6b7f033b7d5e68bc8ea8e5335b1';
 const localRelease = '89d478d6a391c4594fa09d815bb6546fb874231b';
@@ -23,6 +26,18 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 assert.equal(readFileSync(manifestPath, 'utf8'), execFileSync('git', ['show', `${snapshot}:${manifestPath}`], { encoding: 'utf8' }));
 assert.equal(manifest.localProductSourceCommit, '3e75f30abc79c6262f96b06515437aec1e728a90');
 const hash = (data: Buffer) => createHash('sha256').update(data).digest('hex');
+const search97Path = 'src/components/wine-import/WineSearchBar.tsx';
+const search97Source = readFileSync(search97Path, 'utf8');
+assert.equal(restoreNativeSearch97(search97Path, search97Source),
+  execFileSync('git', ['show', `8327ee7e31fe73ab8edd90303de514147d13978d:${search97Path}`], { encoding: 'utf8' }),
+  'Whole legacy search remains immutable beneath the reviewed native97 wrapper');
+for (const candidate of [search97Source + '\n// undeclared search change\n',
+  search97Source.replace('Capacitor.isNativePlatform()', 'false'),
+  search97Source.replace('LegacyWineSearchBar97 {...props}', 'LegacyWineSearchBar97')]) {
+  assert.notEqual(candidate, search97Source);
+  assert.throws(() => restoreNativeSearch97(search97Path, candidate), undefined,
+    'Native97 search inverse must reject wrapper or legacy source mutations');
+}
 const pre95 = 'c25b28287d431e50239e45a25baebe8965f5077d';
 const guidePath = 'src/components/AiRimContextGuide.tsx';
 const comparisonPath = 'src/components/wine-import/WineComparisonWorkspace.tsx';
@@ -59,6 +74,7 @@ const projectLearningImport96 = (source: string) => {
   return source.replace(current, previous);
 };
 const assertReviewedClient96 = (path: string, source: string) => {
+  source = restoreNativeCellar97(path, restoreNativePolicy97(path, source));
   const expected = reviewed95.get(path);
   assert.ok(expected);
   const projected = learningImportPaths96.has(path) ? projectLearningImport96(source) : source;
@@ -378,7 +394,8 @@ for (const row of manifest.productSourceFingerprints as Array<{ path: string; sh
       ? hash(execFileSync('git', ['show', `${localRelease}:${row.path}`])) : row.sha256);
     const actual = row.path === 'src/components/ScanPrivacyGate.tsx'
       ? Buffer.from(restoreNativeScanPrivacy96(readFileSync(row.path, 'utf8'))) : row.path === 'src/components/wine-import/ScanHub.tsx'
-      ? Buffer.from(restoreNativeHubSvg96(row.path, readFileSync(row.path, 'utf8'))) : readFileSync(row.path);
+      ? Buffer.from(restoreNativeHubSvg96(row.path, readFileSync(row.path, 'utf8'))) : row.path === 'src/pages/PrivacyPolicy.tsx'
+      ? Buffer.from(restoreNativePolicy97(row.path, readFileSync(row.path, 'utf8'))) : readFileSync(row.path);
     assert.equal(hash(actual), expected, `Protected source: ${row.path}`);
     immutableCount += 1;
   }

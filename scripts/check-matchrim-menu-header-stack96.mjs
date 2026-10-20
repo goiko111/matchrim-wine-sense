@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { restoreNativeLabelGuard97 } from './native-label97-scope.mjs';
 import fs from 'node:fs';
 import foodOverlapScope96 from './matchrim-food-overlap-context96-scope.cjs';
 const { restoreFoodOverlapPackage96 } = foodOverlapScope96;
@@ -31,7 +32,7 @@ export function runMenuHeaderStack96(){const source=fs.readFileSync(root+file,'u
  test('Native stack and both existing actions full-width with physical44',()=>{const html=render(source,true,false);assert(html.includes('flex min-w-0 flex-col gap-2'));assert.equal((html.match(/<button/g)||[]).length,2);assert.equal((html.match(/min-h-\[44px\]/g)||[]).length,2);assert(!html.includes('sm:w-auto'));assert(html.includes('Editar'));assert(html.includes('Ir al comparador'));});
  test('No font/lineheight/copy/callback/DOM edit beyond four classes',()=>{assert.equal(header(source).replace(/className=(?:"[^"]*"|\{isNative \? '[^']*' : '[^']*'\})/g,'className="projection"'),header(before).replace(/className=(?:"[^"]*"|\{isNative \? '[^']*' : '[^']*'\})/g,'className="projection"'));});
  test('Package prefix exact',()=>restoreMenuHeaderStackPackage96(fs.readFileSync(root+'package.json','utf8')));
- test('Whole prior editor guard inverse',()=>{let guard=fs.readFileSync(root+'scripts/check-matchrim-menu-editor-keyboard96.mjs','utf8');for(const [from,to]of [
+ test('Whole prior editor guard inverse',()=>{let guard=restoreNativeLabelGuard97('scripts/check-matchrim-menu-editor-keyboard96.mjs',fs.readFileSync(root+'scripts/check-matchrim-menu-editor-keyboard96.mjs','utf8'));for(const [from,to]of [
   ["import { restoreMenuHeaderStack96, restoreMenuHeaderStackPackage96 } from './check-matchrim-menu-header-stack96.mjs';\n",''],
   ['  source = restoreMenuHeaderStack96(source);\n',''],['  source = restoreMenuHeaderStackPackage96(source);\n','']])guard=once(guard,from,to);assert.equal(guard,prior('scripts/check-matchrim-menu-editor-keyboard96.mjs'));});
  for(const [from,to]of [["isNative ? 'flex min-w-0 flex-col gap-2'","isNative ? 'flex min-w-0 sm:flex-row gap-2'"],['onClick={returnToComparison}','onClick={() => undefined}'],['setEditingWineIndex(isEditing ? null : index)','setEditingWineIndex(null)'],['min-h-[44px] w-full min-w-0 gap-[8px] whitespace-normal px-[12px]','min-h-[43px] w-full min-w-0 gap-[8px] whitespace-normal px-[12px]'],['Ir al comparador','Comparar ya']])test('Reject mutation '+from,()=>{assert(source.includes(from));assert.throws(()=>restoreMenuHeaderStack96(source.replace(from,to)));});

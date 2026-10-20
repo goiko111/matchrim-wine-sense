@@ -7,7 +7,8 @@ function load(override){const cache=new Map();const module=filename=>{filename=p
 const {restoreFoodOverlapSource96,restoreFoodOverlapGuard96,restoreFoodHeaderScope96}=require('./matchrim-food-overlap-context96-scope.cjs');
 assert.equal(restoreFoodOverlapSource96(source),before);
 restoreFoodOverlapGuard96(fs.readFileSync(path.join(repo,'scripts/check-matchrim-food-overlap96.cjs'),'utf8'));
-restoreFoodHeaderScope96(fs.readFileSync(path.join(repo,'scripts/check-matchrim-menu-header-stack96.mjs'),'utf8'));
+const headerGuard97=execFileSync(process.execPath,['--input-type=module','-e',"import{readFileSync}from'node:fs';import{restoreNativeLabelGuard97}from'./scripts/native-label97-scope.mjs';process.stdout.write(restoreNativeLabelGuard97('scripts/check-matchrim-menu-header-stack96.mjs',readFileSync(0,'utf8')));"],{cwd:repo,input:fs.readFileSync(path.join(repo,'scripts/check-matchrim-menu-header-stack96.mjs'),'utf8'),encoding:'utf8',timeout:10000,maxBuffer:1048576});
+restoreFoodHeaderScope96(headerGuard97);
 const sut=load(source),old=load(before),checks=[];const test=(name,fn)=>{fn();checks.push(name);};
 function fixture(three,clipped){const tiles=sut.planFoodMenuTiles89(...(three?[3000,1800]:[1800,2400]));return tiles.map((tile,i)=>{
  const dishes=[0,1,2].map(j=>{const cut=clipped&&j===2&&i===0,name='Generic Dish '+['A','B','C'][j],price=[20,30,42][j];let g=three?{x:48,y:30+j*10,width:4,height:3}:{x:40,y:45+j*3,width:8,height:1};

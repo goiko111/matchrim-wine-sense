@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import ts from 'typescript';
+import { restoreNativePrivacy97 } from './native-privacy97-scope.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const file = 'src/components/ScanPrivacyGate.tsx';
 const base = execFileSync('git', ['show', '26d48c6b5661c9236f3bdd97fe6b81587361caeb:' + file], { cwd: root, encoding: 'utf8' });
@@ -19,6 +20,7 @@ const refsAndEffect = `  const justAcceptedRef = useRef(false);
   }, [accepted, isNative]);
 `;
 export function restoreNativeConsentEntry96(s) {
+  s = restoreNativePrivacy97(s);
   if (s === base) return s;
   assert(s.includes(refsAndEffect));
   return s.replace("import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';", "import { useState, type ReactNode } from 'react';")
@@ -26,7 +28,7 @@ export function restoreNativeConsentEntry96(s) {
 }
 
 export function runNativeConsentEntry96() {
-  const candidate = fs.readFileSync(path.join(root, file), 'utf8');
+  const candidate = restoreNativePrivacy97(fs.readFileSync(path.join(root, file), 'utf8'));
   assert.equal(sha(candidate), '53a8d4e250e9c8e772566e9d525a2f0ca3e121e899fabf0164a46a80f88f5528', 'Exact approved product hook');
   assert.equal(restoreNativeConsentEntry96(candidate), base);
   const checks = [];

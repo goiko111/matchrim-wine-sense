@@ -12,11 +12,12 @@ import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';
 import { createWinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import { calculateLocalMatchrimAffinity } from '../src/utils/wineAffinityExplanation';
 import { restoreManualLookup96 } from './check-matchrim-manual-lookup-bridge96.mjs';
+import { restoreNativeLabel97 } from './native-label97-scope.mjs';
 
 // Synthetic local actors only. Imported services/components are inert; unexpected calls fail.
 const path = 'src/components/wine-import/MultiWineLabelScanner.tsx';
 const baseline = 'c25b28287d431e50239e45a25baebe8965f5077d';
-const source = readFileSync(path, 'utf8');
+const source = restoreNativeLabel97(path, readFileSync(path, 'utf8'));
 const before = execFileSync('git', ['show', `${baseline}:${path}`], { encoding: 'utf8' });
 const parse = (text: string) => ts.createSourceFile(path, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const declarations = (text: string) => {

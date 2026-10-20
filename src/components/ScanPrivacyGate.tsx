@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Capacitor } from '@capacitor/core';
+import { NATIVE_SCAN_PRIVACY_KEY97, NATIVE_SCAN_PROVIDER_NOTICE97 } from '@/utils/nativePrivacy97';
 
 const ACKNOWLEDGEMENT_KEY = 'matchrim.scan_privacy_notice.v2';
 
@@ -11,10 +12,10 @@ interface ScanPrivacyGateProps {
   children: ReactNode;
 }
 
-const hasAcknowledgedNotice = () => {
+const hasAcknowledgedNotice = (isNative = false) => {
   if (typeof window === 'undefined') return false;
   try {
-    return window.localStorage.getItem(ACKNOWLEDGEMENT_KEY) === 'accepted';
+    return window.localStorage.getItem(isNative ? NATIVE_SCAN_PRIVACY_KEY97 : ACKNOWLEDGEMENT_KEY) === 'accepted';
   } catch {
     return false;
   }
@@ -22,7 +23,7 @@ const hasAcknowledgedNotice = () => {
 
 export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
   const isNative = Capacitor.isNativePlatform();
-  const [accepted, setAccepted] = useState(hasAcknowledgedNotice);
+  const [accepted, setAccepted] = useState(() => hasAcknowledgedNotice(isNative));
   const [checked, setChecked] = useState(false);
   const justAcceptedRef = useRef(false);
 
@@ -37,7 +38,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
   const continueToScanner = () => {
     if (!checked) return;
     try {
-      window.localStorage.setItem(ACKNOWLEDGEMENT_KEY, 'accepted');
+      window.localStorage.setItem(isNative ? NATIVE_SCAN_PRIVACY_KEY97 : ACKNOWLEDGEMENT_KEY, 'accepted');
     } catch (error) {
       console.warn('[privacy] Could not persist scan notice:', error);
     }
@@ -66,7 +67,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
         </div>
         <div className={isNative ? 'grid min-w-0 gap-[8px] py-[12px]' : 'flex gap-3 py-2 sm:py-3'}>
           <BrainCircuit className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" style={isNative ? { width: 20, height: 20 } : undefined} aria-hidden={isNative ? true : undefined} focusable={isNative ? false : undefined} />
-          <p className={isNative ? 'min-w-0 w-full leading-relaxed text-slate-700 [overflow-wrap:normal]' : 'leading-5 text-slate-700'}>La imagen y sus recortes se envían a funciones de Matchrim y a proveedores de IA para detectar texto y vinos. No subas imágenes con personas o datos sensibles.</p>
+          <p className={isNative ? 'min-w-0 w-full leading-relaxed text-slate-700 [overflow-wrap:normal]' : 'leading-5 text-slate-700'}>{isNative ? NATIVE_SCAN_PROVIDER_NOTICE97 : 'La imagen y sus recortes se envían a funciones de Matchrim y a proveedores de IA para detectar texto y vinos. No subas imágenes con personas o datos sensibles.'}</p>
         </div>
         <div className={isNative ? 'grid min-w-0 gap-[8px] py-[12px]' : 'flex gap-3 py-2 sm:py-3'}>
           <Trash2 className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" style={isNative ? { width: 20, height: 20 } : undefined} aria-hidden={isNative ? true : undefined} focusable={isNative ? false : undefined} />

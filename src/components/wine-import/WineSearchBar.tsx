@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Capacitor } from '@capacitor/core';
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
+import { NativeWineSearch97 } from './NativeWineSearch97';
 
 interface Wine {
   id: string;
@@ -24,7 +25,7 @@ interface WineSearchBarProps {
   onSelectWine: (wine: Wine) => void;
 }
 
-export const WineSearchBar = ({ onSelectWine }: WineSearchBarProps) => {
+const LegacyWineSearchBar97 = ({ onSelectWine }: WineSearchBarProps) => {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<Wine[]>([]);
@@ -127,3 +128,7 @@ export const WineSearchBar = ({ onSelectWine }: WineSearchBarProps) => {
     </div>
   );
 };
+
+export const WineSearchBar = (props: WineSearchBarProps) => Capacitor.isNativePlatform()
+  ? <NativeWineSearch97 onSelectWine={props.onSelectWine} />
+  : <LegacyWineSearchBar97 {...props} />;

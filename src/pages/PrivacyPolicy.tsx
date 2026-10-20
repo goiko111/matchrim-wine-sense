@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Mail, ShieldCheck } from 'lucide-react';
 import Header from '@/components/Header';
 import { Button } from '@/components/ui/button';
+import { Capacitor } from '@capacitor/core';
+import { nativePrivacySections97 } from '@/utils/nativePrivacy97';
 
 const sections = [
   {
@@ -69,7 +71,10 @@ const sections = [
   },
 ];
 
-const PrivacyPolicy = () => (
+const PrivacyPolicy = () => {
+  const isNative = Capacitor.isNativePlatform();
+  const displayedSections = isNative ? nativePrivacySections97(sections) : sections;
+  return (
   <div className="min-h-screen bg-stone-50">
     <Header />
 
@@ -86,7 +91,7 @@ const PrivacyPolicy = () => (
           <ShieldCheck className="h-6 w-6" />
         </div>
         <p className="text-sm font-semibold uppercase tracking-wide text-white/60">
-          Ultima actualizacion: 26 de agosto de 2026
+          {isNative ? 'Ultima actualizacion: 20 de octubre de 2026' : 'Ultima actualizacion: 26 de agosto de 2026'}
         </p>
         <h1 className="mt-3 text-3xl font-bold">Politica de privacidad</h1>
         <p className="mt-4 max-w-3xl text-sm leading-6 text-white/80">
@@ -108,7 +113,7 @@ const PrivacyPolicy = () => (
           </p>
         </div>
 
-        {sections.map((section) => (
+        {displayedSections.map((section) => (
           <div key={section.title} className="rounded-lg border border-stone-200 bg-white p-5">
             <h2 className="text-xl font-semibold text-slate-950">{section.title}</h2>
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
@@ -145,6 +150,7 @@ const PrivacyPolicy = () => (
       </section>
     </main>
   </div>
-);
+  );
+};
 
 export default PrivacyPolicy;

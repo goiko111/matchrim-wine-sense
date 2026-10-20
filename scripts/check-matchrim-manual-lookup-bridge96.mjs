@@ -6,12 +6,14 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { restoreNativeHeadingGuard96 } from './check-matchrim-scan-heading96.mjs';
 import { restoreMenuResultsSource96, restoreMenuResultsGuard96 } from './matchrim-menu-results-first96-scope.mjs';
+import { restoreNativeLabelGuard97, runNativeLabel97Checks } from './native-label97-scope.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const digest = value => createHash('sha256').update(value).digest('hex');
 const data = readFileSync(resolve(root, 'scripts/matchrim-manual-lookup96-scope.json'));
 assert.equal(digest(data), 'eb4eb08d3630f7474835ffc836929924fa4a1d289ab23fbdaf25e9c5a4dd33df', 'Exact reviewed C and QA inverse data');
 const scope = JSON.parse(data);
+const nativeLabel97 = runNativeLabel97Checks();
 const inverse = (file, source, kind) => {
   source = kind === 'component' ? restoreMenuResultsSource96(file, source) : restoreMenuResultsGuard96(file, source);
   if (kind === 'guard') source = restoreNativeHeadingGuard96(file, source);
@@ -61,7 +63,7 @@ for (const row of scope.files.filter(row => row.kind === 'guard')) {
   assert.throws(() => restoreManualLookupGuard96(row.file, changed), undefined, row.file);
 }
 const feature = scope.feature;
-assert.equal(digest(readFileSync(resolve(root, feature.file))), feature.sha256);
+assert.equal(digest(restoreNativeLabelGuard97(feature.file, readFileSync(resolve(root, feature.file), 'utf8'))), feature.sha256);
 const output = execFileSync(process.execPath, ['--import', 'tsx', feature.file], {
   cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000, maxBuffer: 1024 * 1024,
 });
@@ -73,6 +75,7 @@ assert.ok(commands.startsWith(scope.originalClosure96 + ' && '), 'Every old clos
 assert.ok(commands.includes('node --import tsx ' + feature.file));
 assert.ok(commands.includes('node scripts/check-matchrim-manual-lookup-bridge96.mjs'));
 export const manualLookup96Result = {
+  nativeLabel97,
   baseline: scope.baseline, reviewedCommit: scope.reviewedCommit,
   componentFiles: scope.files.filter(row => row.kind === 'component').map(({ file, beforeHash, afterHash, hunks }) => ({ file, beforeHash, afterHash, amendments: hunks.length })),
   exactWholeTwoFileInverse: true, exactQAInverseFiles: scope.files.filter(row => row.kind === 'guard').length,

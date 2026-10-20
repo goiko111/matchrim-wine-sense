@@ -1,6 +1,7 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Capacitor } from '@capacitor/core';
 import { CellarWineAffinity } from '@/components/CellarWineAffinity';
+import { NativeCellarToolbar97 } from '@/components/NativeCellarToolbar97';
 import { cellarAffinityView, makeCellarCatalogEvidence, readCellarInitialAffinity, readCellarSensoryEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
@@ -440,7 +441,7 @@ const MyWinesForOwner = () => {
       try {
         const { data, error } = await supabase.functions.invoke(isNative
           ? resolveMatchrimEdgeFunctionName('search-wines', import.meta.env.VITE_MATCHRIM_EDGE_RELEASE) : 'search-wines', {
-          body: { query, limit: 6 },
+          body: isNative ? { query, limit: 6, catalogOnly: true } : { query, limit: 6 },
         });
 
         if (cancelled) return;
@@ -1465,14 +1466,21 @@ const MyWinesForOwner = () => {
       <AppNav />
 
       <main className="matchrim-native-page-top matchrim-native-page-x mx-auto max-w-7xl pb-8 [overflow-wrap:anywhere]">
-        <div className="mb-8">
+        {!isNative && <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">Mis Vinos</h1>
           <p className="text-muted-foreground">
             Tu bodega, tus pendientes y las señales que hacen que Matchrim aprenda.
           </p>
-        </div>
+        </div>}
 
         <div className="space-y-6">
+          {isNative && <NativeCellarToolbar97 section={statusFilter} counts={sectionCounts}
+            onSectionChange={section => { navigateToWineSection(section); setFilterType('all'); }}
+            onScanLabel={() => navigate('/escanear/etiqueta')}
+            onScanMenu={() => navigate('/escanear/carta-vinos')}
+            onAddManually={() => navigate('/my-wines/add')}
+            search={<WineSearchBar onSelectWine={handleSearchWineSelect} />} />}
+          {!isNative && <>
           <Card className="border-red-100 bg-white">
             <CardHeader className="p-4 sm:p-6">
               <CardTitle className="flex flex-wrap items-center gap-2">
@@ -1693,6 +1701,7 @@ const MyWinesForOwner = () => {
 	                </div>
 	              </CardContent>
 	            </Card>
+          </>}
 
 	            <Tabs
 	              value={statusFilter}
@@ -1701,7 +1710,7 @@ const MyWinesForOwner = () => {
                 setFilterType('all');
               }}
             >
-              <TabsList className="grid h-auto w-full grid-cols-[repeat(auto-fit,minmax(min(100%,8rem),1fr))]">
+              {!isNative && <TabsList className="grid h-auto w-full grid-cols-[repeat(auto-fit,minmax(min(100%,8rem),1fr))]">
                 <TabsTrigger value="collection" className="min-h-14 min-w-0 gap-1 whitespace-normal px-1 sm:gap-2 sm:px-3">
                   <Wine className="h-4 w-4" />
                   <div className="flex min-w-0 flex-col items-start">
@@ -1737,10 +1746,10 @@ const MyWinesForOwner = () => {
                     <span className="hidden text-[10px] text-muted-foreground font-normal sm:block">Señal negativa</span>
                   </div>
                 </TabsTrigger>
-              </TabsList>
+              </TabsList>}
 
-              <div className="mt-6 space-y-6">
-                {statusFilter === 'tasted' && (
+              <div className={isNative ? 'mt-2 space-y-3' : 'mt-6 space-y-6'}>
+                {statusFilter === 'tasted' && !isNative && (
                   <Card className="border-green-200 bg-green-50/80">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-green-950">
@@ -2150,6 +2159,11 @@ const MyWinesForOwner = () => {
                 )}
               </div>
             </Tabs>
+            {isNative && <details className="min-w-0 border-y border-stone-200 py-2" data-testid="native-cellar-learning97">
+              <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Tu perfil de gustos</summary>
+              <p className="text-sm leading-6 text-stone-600">{cellarProfile?.note || 'Cargando tu perfil.'}</p>
+              <Button type="button" variant="outline" className="mt-3 min-h-11" onClick={() => navigate('/profile')}>Ver mi perfil</Button>
+            </details>}
         </div>
 
         {/* Purchase Info Dialog */}

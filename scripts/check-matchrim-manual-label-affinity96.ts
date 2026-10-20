@@ -7,6 +7,7 @@ import { canLookupWinerimOriginal, lookupWinerimOriginalSheet, catalogWineFromVe
 import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';
 import { confirmWineCandidateIdentity, correctWineCandidateIdentity, type WineCandidate } from '../src/utils/multiWineScan';
 import { calculateLocalMatchrimAffinity } from '../src/utils/wineAffinityExplanation';
+import { restoreNativeLabel97 } from './native-label97-scope.mjs';
 
 // Actual lookup closures in a minimal hook host, not a DOM renderer or UIKit claim.
 const passed: string[] = [];
@@ -109,7 +110,7 @@ try {
  });
 } finally { globalThis.fetch = oldFetch; }
 const file = 'src/components/wine-import/MultiWineLabelScanner.tsx';
-const old = execFileSync('git', ['show', `a625e04b0e805214bf5f3482302c85f67712196a:${file}`], { encoding: 'utf8' }), current = readFileSync(file, 'utf8');
+const old = execFileSync('git', ['show', `a625e04b0e805214bf5f3482302c85f67712196a:${file}`], { encoding: 'utf8' }), current = restoreNativeLabel97(file, readFileSync(file, 'utf8'));
 const parse = (s: string) => ts.createSourceFile(file, s, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX), printer = ts.createPrinter({ removeComments: true });
 const initializers = (s: string) => { const map = new Map<string, ts.Expression>(); const visit = (n: ts.Node) => { if (ts.isVariableDeclaration(n) && ts.isIdentifier(n.name) && n.initializer) map.set(n.name.text, n.initializer); ts.forEachChild(n, visit); }; visit(parse(s)); return map; };
 await check('auto-lookup/lifecycle/edit/save actual AST closures unchanged', () => {

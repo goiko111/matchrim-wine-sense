@@ -3,10 +3,12 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { restoreMenuResultsSource96, restoreMenuResultsGuard96, restoreMenuResultsPackage96 } from './matchrim-menu-results-first96-scope.mjs';
 import { restoreNativeScanPrivacy96 } from './check-matchrim-scan-privacy96.mjs';
+import { restoreNativeLabelGuard97 } from './native-label97-scope.mjs';
 
 const old = file => execFileSync('git', ['show', `8af2104:${file}`], { encoding: 'utf8' });
 const once = (value, from, to) => { assert.equal(value.split(from).length, 2); return value.replace(from, to); };
 const originalBridge = value => {
+  value = restoreNativeLabelGuard97('scripts/check-matchrim-manual-lookup-bridge96.mjs', value);
   value = once(value, "import { restoreMenuResultsSource96, restoreMenuResultsGuard96 } from './matchrim-menu-results-first96-scope.mjs';\n", '');
   value = once(value, "  source = kind === 'component' ? restoreMenuResultsSource96(file, source) : restoreMenuResultsGuard96(file, source);\n", '');
   value = once(value,

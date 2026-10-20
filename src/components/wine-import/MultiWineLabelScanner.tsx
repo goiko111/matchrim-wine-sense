@@ -10,7 +10,6 @@ import {
   Eye,
   FolderOpen,
   Loader2,
-  Pencil,
   RefreshCw,
   ScanLine,
   Trash2,
@@ -23,8 +22,10 @@ import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import { WinerimCandidatePicker95 } from '@/components/WinerimCandidatePicker95';
 import { confirmedLabelCatalogIdentity95 } from '@/utils/confirmedCatalogIdentity95';
 import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
+import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
+import { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -188,6 +189,18 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const regionEditorBody = useRef<HTMLDivElement>(null);
   const regionEditorLayout = useRef<HTMLDivElement>(null);
 
+  useLayoutEffect(() => {
+    if (!isNative || !selectedRegionId) return;
+    // Opening another label must not inherit the previous label's reading position.
+    const frame = requestAnimationFrame(() => {
+      if (regionEditorLayout.current) regionEditorLayout.current.scrollTop = 0;
+      if (regionEditorBody.current) regionEditorBody.current.scrollTop = 0;
+      const header = regionEditorLayout.current?.firstElementChild;
+      if (header instanceof HTMLElement) header.scrollTop = 0;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [isNative, selectedRegionId]);
+
   useEffect(() => {
     if (!isNative || !selectedRegionId) return;
     let frame = 0;
@@ -321,8 +334,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     const canResolveCanonically = candidate.confidence >= 0.72
       && candidate.evidence.length >= 2
       && candidate.uncertaintyReasons.length === 0;
-    const shouldSearch = !isMatchrimFixtureQaEnabled && canResolveCanonically && budget.remaining > 0;
-    if (shouldSearch) budget.reserve(signal);
+    const shouldSearch = !isMatchrimFixtureQaEnabled && (isNative
+      ? canAdmitNativeCatalogLookup97(candidate)
+      : canResolveCanonically && budget.remaining > 0);
+    if (shouldSearch && !isNative) budget.reserve(signal);
     const catalogMatch = !shouldSearch
       ? null
       : await findWinerimWineForLabel({
@@ -1369,10 +1384,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         <DrawerContent className="matchrim-scan-region-sheet w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
             <div ref={isNative ? regionEditorLayout : undefined} role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
-              <DrawerHeader className="min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left">
-                <DrawerTitle>{isNative ? `Vino ${selectedRegion.index}` : <>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</>}</DrawerTitle>
+              <DrawerHeader className={isNative ? 'max-h-[40dvh] min-w-0 shrink-0 overflow-y-auto break-words border-b border-stone-200 bg-white text-left [overflow-wrap:anywhere]' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
+                <DrawerTitle>{isNative ? <>{selectedCandidate?.name || 'Etiqueta sin identificar'}{selectedCandidate?.vintage ? ` · ${selectedCandidate.vintage}` : ''}</> : <>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</>}</DrawerTitle>
                 <DrawerDescription>
-                  {isNative ? nativeConsumer?.identityLabel : `Detección ${Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.`}
+                  {isNative ? `${selectedCandidate?.producer || 'Bodega sin confirmar'}${selectedCandidate?.vintage ? '' : ' · Añada no indicada'}` : `Detección ${Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.`}
                 </DrawerDescription>
               </DrawerHeader>
 
@@ -1382,14 +1397,23 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     Análisis del lote en curso. Las identidades aún pueden cambiar.
                   </p>
                 )}
-                {isNative && <section className="min-w-0 space-y-3 break-words [overflow-wrap:anywhere]" aria-label="Vino seleccionado" data-testid="native-wine-primary">
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-950">{selectedCandidate?.name || 'Identificación pendiente'}</h3>
-                    {selectedCandidate && <p className="mt-1 text-sm text-stone-600">{[selectedCandidate.producer, selectedCandidate.vintage].filter(Boolean).join(' · ')}</p>}
-                    {selectedCandidate && !nativeConsumer?.canExplainAffinity && <p role="status" className="mt-2 text-sm font-medium text-stone-700">Afinidad pendiente</p>}
-                  </div>
-                  {nativeConsumer?.canExplainAffinity && affinityExplanation}
-                  {selectedCandidate?.source === 'manual' && !nativeConsumer?.catalogIdentityLinked && <div className="min-w-0" data-testid="native-manual-affinity-lookup">
+                {isNative && selectedCandidate && <LabelAnalysisView isNativePlatform={isNative} showIdentity={false}
+                  identity={selectedCandidate} identityLabel={nativeConsumer?.identityLabel ?? 'Referencia propuesta'}
+                  catalogIdentityLinked={Boolean(nativeConsumer?.catalogIdentityLinked)}
+                  canExplainAffinity={Boolean(nativeConsumer?.canExplainAffinity)} hasProfile={Boolean(scanProfile?.profile)}
+                  affinity={affinityExplanation} disabled={regionActionsLocked}
+                  onReturnToBatch={phase === 'ready' ? () => {
+                    setNativeResultView('wines');
+                    setSelectedRegionId(null);
+                  } : undefined}
+                  onFindSheet={() => {
+                    const details = document.getElementById('native-label-reference');
+                    if (!(details instanceof HTMLDetailsElement)) return;
+                    details.open = true;
+                    details.querySelector('summary')?.focus({ preventScroll: true });
+                    details.scrollIntoView({ block: 'start', behavior: 'instant' });
+                  }}
+                  lookup={selectedCandidate.source === 'manual' && !nativeConsumer?.catalogIdentityLinked ? <div className="min-w-0" data-testid="native-manual-affinity-lookup">
                     <WinerimSheetLookup contextKey={manualLookupKey} disabled={manualLookupContext.locked}
                       buttonLabel="Buscar ficha para mi afinidad" onLoadingChange={setManualLookupLoading}
                       identity={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage,
@@ -1404,16 +1428,14 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                               && JSON.stringify({ ...manualLookupContext, candidate }) === manualLookupKey
                               ? applyScanWineEvidence(candidate, manualLookupContext.profile, catalog) : candidate) } : region));
                       }} />
-                  </div>}
-                  {selectedCandidate ? contextGuidance : <p className="text-sm text-stone-700">Afinidad pendiente</p>}
-                  {selectedCandidate && <Button type="button" variant="outline" aria-label="Corregir identificación" disabled={regionActionsLocked} className="h-auto min-h-11 max-w-full gap-2 whitespace-normal" onClick={() => {
+                  </div> : null}
+                  onCorrect={() => {
                     const input = document.getElementById('region-wine-name');
                     const details = input?.closest('details');
                     if (details) details.open = true;
                     input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
                     input?.focus({ preventScroll: true });
-                  }}><Pencil aria-hidden="true" className="h-4 w-4 shrink-0" /> Corregir</Button>}
-                </section>}
+                  }} />}
                 {selectedRegion.error && selectedRegion.candidates.length > 0 && (
                   <div role="alert" data-testid="region-analysis-error" className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
                     <p className="font-semibold">Error de análisis</p>
@@ -1423,7 +1445,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 )}
 
                 {selectedRegion.cropDataUrl && (
-                  <img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} className="matchrim-scan-region-crop max-h-48 w-full rounded-lg bg-black object-contain" />
+                  isNative ? <details className="min-w-0 border-b border-stone-200 pb-3" data-testid="native-label-photo">
+                    <summary className="flex min-h-11 cursor-pointer items-center gap-2 text-sm font-medium text-stone-700"><Camera aria-hidden="true" className="h-4 w-4 shrink-0" /> Foto de la etiqueta</summary>
+                    <img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} className="matchrim-scan-region-crop mt-2 max-h-40 w-full rounded-md bg-black object-contain" />
+                  </details> : <img src={selectedRegion.cropDataUrl} alt={`Recorte de la región ${selectedRegion.index}`} className="matchrim-scan-region-crop max-h-48 w-full rounded-lg bg-black object-contain" />
                 )}
 
                 {selectedRegion.candidates.length === 0 ? (
@@ -1496,9 +1521,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
                     {selectedCandidate && (
                       <>
-                        {isNative ? <details className="space-y-3" data-testid="native-reference-details">
+                        {isNative ? <details id="native-label-reference" className="space-y-3" data-testid="native-reference-details">
                           <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Ficha e identificación</summary>
                           {referenceReview}
+                          {!regionActionsLocked && selectedRegion.status === 'uncertain' && <Button type="button" variant="outline" className="h-auto min-h-11 max-w-full gap-2 whitespace-normal" onClick={confirmSelectedCandidate}>
+                            <Check aria-hidden="true" className="h-4 w-4 shrink-0" /> Confirmar este candidato
+                          </Button>}
                         </details> : referenceReview}
 
                         {isNative ? <details className="space-y-3" data-testid="native-wine-diagnostics">
@@ -1523,7 +1551,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <Button type="button" variant="outline" title="Siguiente" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
                     <span className={isNative ? 'sr-only' : undefined}>Siguiente</span><ChevronRight className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={() => void reanalyzeSelected()}>
+                  <Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={isNative ? () => {
+                    if (window.confirm('Se enviará de nuevo el recorte al servicio de lectura con IA. ¿Quieres continuar?')) void reanalyzeSelected();
+                  } : () => void reanalyzeSelected()}>
                     <RefreshCw className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Reanalizar</span>
                   </Button>
                   <Button type="button" variant="outline" title="Descartar" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2 text-red-800" onClick={discardSelected}>

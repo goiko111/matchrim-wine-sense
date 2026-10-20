@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { restoreNativeMenuResultsFirst96 } from './check-matchrim-menu-results-first96.mjs';
 import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.mjs';
 import { restoreMenuEntryGuard96, restoreMenuEntryPackage96 } from './check-matchrim-native-menu-entry-bridge96.mjs';
+import { restoreNativeLabel97, restoreNativeLabelGuard97 } from './native-label97-scope.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const original = file => execFileSync('git', ['show', `8af21043075ee42f00b04c30979a1abddf8c3e27:${file}`], { cwd: root, encoding: 'utf8' });
@@ -28,12 +29,14 @@ export function restoreLookupReasons96(value) {
   return value;
 }
 export function restoreMenuResultsSource96(file, value) {
+  value = restoreNativeLabel97(file, value);
   if (file === 'src/index.css' && value.includes('.scan-page-main:has(.matchrim-native-scan-privacy)')) return restoreNativeScanPrivacyCss96(value);
   if (file === 'src/components/wine-import/WineMenuScanner.tsx' && value.includes('  const nativeResultPreview =')) return restoreNativeMenuResultsFirst96(value);
   if (file === 'src/components/WinerimSheetLookup.tsx' && value.includes('\nconst pendingIdentityMessage = ')) return restoreLookupReasons96(value);
   return value;
 }
 export function restoreMenuResultsGuard96(file, value) {
+  value = restoreNativeLabelGuard97(file, value);
   value = restoreMenuEntryGuard96(file, value);
   if (file === 'scripts/check-matchrim-consumer95-native-layout.ts' && value.includes("const fullCss = restoreManualLookup96('src/index.css'")) {
     value = once(value, "const fullCss = restoreManualLookup96('src/index.css', readFileSync('src/index.css', 'utf8'));", "const fullCss = readFileSync('src/index.css', 'utf8');");
