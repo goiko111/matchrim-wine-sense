@@ -16,7 +16,7 @@ const normalizeLevel = (value: unknown, allowed: string[], fallback: string) => 
   return allowed.includes(normalized) ? normalized : fallback;
 };
 
-const normalizeRegion = (value: unknown, index: number) => {
+const normalizeRegion = (value: unknown, index: number, nativeContract = false) => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const raw = value as Record<string, unknown>;
   const boxRaw = raw.box && typeof raw.box === 'object' ? raw.box as Record<string, unknown> : raw;
@@ -43,7 +43,9 @@ const normalizeRegion = (value: unknown, index: number) => {
       width: clippedWidth,
       height: clippedHeight,
     },
-    confidence: clamp(Number(raw.confidence) || 0.5, 0, 1),
+    confidence: nativeContract
+      ? clamp(optionalScanNumber(raw.confidence) ?? 0, 0, 1)
+      : clamp(Number(raw.confidence) || 0.5, 0, 1),
     quality: {
       glare: normalizeLevel(quality.glare, ['low', 'medium', 'high'], 'medium'),
       occlusion: normalizeLevel(quality.occlusion, ['low', 'medium', 'high'], 'medium'),
@@ -86,6 +88,7 @@ serve(async (request) => {
 
   try {
     const body = await request.json().catch(() => null);
+    const nativeContract = body?.matchrimLearningModel === 'native-evidence-strength-v2';
     const image = typeof body?.image === 'string' ? body.image : '';
     if (!image.startsWith('data:image/')) return new Response(JSON.stringify({ error: 'Falta una imagen valida', regions: [] }), {
       status: 422, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -139,7 +142,7 @@ Responde SOLO JSON:
     }
     const parsed = decoded.value;
     const rawRegions = parsed.regions as unknown[];
-    const normalizedRegions = rawRegions.map(normalizeRegion).filter((region): region is NormalizedRegion => Boolean(region));
+    const normalizedRegions = rawRegions.map((value, index) => normalizeRegion(value, index, nativeContract)).filter((region): region is NormalizedRegion => Boolean(region));
     const regions = deduplicateRegions(normalizedRegions).slice(0, 30);
     const rawCoverage = parsed.coverage && typeof parsed.coverage === 'object' && !Array.isArray(parsed.coverage)
       ? parsed.coverage as Record<string, unknown>
@@ -148,7 +151,7 @@ Responde SOLO JSON:
       ? rawCoverage.status
       : 'unknown';
     const estimatedVisibleObjects = Number(rawCoverage.estimated_visible_objects);
-    const coverageConfidence = Number(rawCoverage.confidence);
+    const coverageConfidence = nativeContract ? optionalScanNumber(rawCoverage.confidence) ?? NaN : Number(rawCoverage.confidence);
     if (Number.isFinite(estimatedVisibleObjects) && estimatedVisibleObjects > regions.length) {
       coverageStatus = 'partial';
     }

@@ -170,6 +170,7 @@ serve(async (req) => {
     const body = await req.json().catch(() => null);
     if (!body || typeof body !== 'object' || Array.isArray(body)) return invalidRequest();
     const { image, pdf, matchrimProfile } = body ?? {};
+    const nativeContract = body.matchrimLearningModel === 'native-evidence-strength-v2';
 
     if (pdf != null || typeof image !== 'string' || !/^data:image\/[a-z0-9.+-]+;base64,.+/i.test(image)) return invalidRequest();
 
@@ -231,7 +232,7 @@ IMPORTANTE:
 - Incluye TODAS las lineas de vino completas y legibles, hasta 30. Haz una segunda pasada por cada seccion y por el borde inferior antes de responder. Si hay mas de 30, prioriza lineas completas y legibles, no supuesta importancia.
 - Excluye cerveza, vermut/vermouth, sidra, destilados, cocteles, encabezados y cualquier producto que no sea vino. Espumosos, generosos y vinos dulces si cuentan como vino.
 - No completes productor, region, pais, uvas o anada por conocimiento general sin declararlo en campos_inferidos. Si no puede leerse ni inferirse con suficiente base, usa null.
-- Si una linea de marca o referencia va seguida por un estilo generico como "Brut", el nombre debe conservar la marca (por ejemplo "JP Chenet France Brut"). Nunca devuelvas solo "Brut", "Reserva", "Cava" o una variedad si la marca contigua es legible.
+- Si una linea de marca o referencia va seguida por un estilo generico como "Brut", el nombre debe conservar la marca${nativeContract ? '' : ' (por ejemplo "JP Chenet France Brut")'}. Nunca devuelvas solo "Brut", "Reserva", "Cava" o una variedad si la marca contigua es legible.
 
 Para cada vino proporciona:
 - nombre: Nombre del vino
@@ -258,7 +259,7 @@ Para cada vino proporciona:
       : null;
 
 
-    if (learnedProfile) {
+    if (learnedProfile && !nativeContract) {
       prompt += `
 
 ADEMÁS, calcula la compatibilidad de cada vino con este perfil de usuario (escala ENTERA 1-5, NO uses valores mayores que 5):
@@ -274,7 +275,38 @@ Para cada vino, estima también:
 - razon: explicacion de maximo 18 palabras basada en los atributos disponibles; null si no hay evidencia suficiente`;
     }
 
-    prompt += `
+    prompt += nativeContract ? `
+
+Extrae solo la lectura literal de esta imagen, sin preferencias ni puntuaciones de afinidad.
+No calcules compatibilidad ni razon de encaje; no generes atributos sensoriales inferidos.
+Conserva las reglas anteriores de bloques multilinea, productor/anada legibles, secciones, precios y servicios.
+El siguiente objeto describe el esquema, no una identidad ni datos que debas copiar.
+Responde SOLO JSON valido, maximo 30 vinos:
+{
+  "vinos": [{
+    "nombre": "<nombre literal completo>",
+    "productor": null,
+    "anada": null,
+    "region": null,
+    "pais": null,
+    "precio": null,
+    "moneda": null,
+    "precios": { "copa": null, "botella": null, "llevar": null },
+    "servicio": null,
+    "seccion": null,
+    "confidence": null,
+    "texto_fuente": "<transcripcion literal de la misma fila>",
+    "dudas": [],
+    "campos_inferidos": [],
+    "tipo": null,
+    "uvas": [],
+    "descripcion": null,
+    "posicion": null
+  }],
+  "moneda": null,
+  "layout": "unknown",
+  "coverage": { "status": "unknown", "estimated_visible_wines": null, "notes": [] }
+}` : `
 
 RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
 {
@@ -348,12 +380,12 @@ RECUERDA: Maximo 30 vinos. Responde SOLO con JSON válido sin markdown:
       const completeAttributes = atributos &&
         atributos.potencia != null && atributos.acidez != null &&
         atributos.dulzura != null && atributos.taninos != null && atributos.afrutado != null;
-      if (learnedProfile && completeAttributes) {
+      if (!nativeContract && learnedProfile && completeAttributes) {
         out.compatibilidad = calculateCompatibilityScale5(learnedProfile, atributos!);
       } else {
         out.compatibilidad = null;
       }
-      out.affinity_calibrated = true;
+      out.affinity_calibrated = !nativeContract;
 
       const position = normalizePosicion(w.posicion);
       out.posicion = position;
