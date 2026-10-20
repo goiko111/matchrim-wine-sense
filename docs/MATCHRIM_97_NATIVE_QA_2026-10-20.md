@@ -1,6 +1,6 @@
 # Matchrim 97: Native UX, Catalogue Admission and Physical QA
 
-Internal candidate, 2026-10-20. Baseline `8327ee7e31fe73ab8edd90303de514147d13978d`. This is a signed development build installed by cable, not a TestFlight release. No production web Publish, backend deployment or new Lovable turn was performed. Existing 95/96 reports remain the historical baseline.
+Internal candidate, 2026-10-20. Baseline `8327ee7e31fe73ab8edd90303de514147d13978d`; product commit `df601238a8e73ec126a9240341544c944bc7e89d`. A signed development build was installed by cable and a separate signed Release archive was generated. Neither was exported for App Store distribution or uploaded to TestFlight. No production web Publish, backend deployment or new Lovable turn was performed. Existing 95/96 reports remain the historical baseline.
 
 ## Product Changes
 
@@ -17,15 +17,18 @@ Internal candidate, 2026-10-20. Baseline `8327ee7e31fe73ab8edd90303de514147d1397
 
 | Gate | Actual | Limit |
 |---|---|---|
-| Six focused 97 suites | 106 control groups PASS | Offline component/contract evidence, not vision accuracy |
-| Closure96, Consumer95, Cloud | All three aggregate suites PASS | Composite run; final toolbar spacing change subsequently checked by its focused suite and visual replay |
+| Six focused 97 suites | 106 control groups PASS on final source | Offline component/contract evidence, not vision accuracy |
+| Final ten-gate regression matrix | Typecheck, lint and eight npm suites PASS | Nine gates passed initially; Restaurant91 passed on a separate rerun of the same commit after restoring the existing offline dependency-prefix setting. Initial failure retained |
+| Food profile / Moments intelligence | 103 groups across50 synthetic profiles plus46 handler controls and7 client/server groups PASS | Stubbed providers, zero live model calls; not50 humans or taste-validity evidence |
 | Typecheck | PASS | Client only |
 | ESLint | 0 errors, 129 warnings | Warnings remain; not a clean-warning claim |
 | Native Bodega visual replay | 5 views, 121 checks PASS; 0 console/page errors | Actual candidate97-r3 web assets, synthetic local data and blocked external traffic |
 | Landscape first wine | Title bottom318 before navigation limit322 | Earlier candidate clipped by4px; failure retained and toolbar spacing corrected |
 | Font stress | CSS200 portrait/landscape PASS | Not UIKit Dynamic Type maximum or VoiceOver validation |
+| Actual97 search browser interaction | 19 checks PASS; no JavaScript exceptions | Synthetic catalogue replies, stale/slow requests, debounce, explicit retry, route unmount and CSS200. One deliberately induced503 browser resource error retained |
 | Private production client build | PASS, 157 resources | Real project configuration, fixture flag false; no published web changes |
-| iOS development build/signature | 1.0(97), codesign verification PASS | Not an App Store archive/export |
+| iOS development build/signature | 1.0(97), codesign verification PASS | Installed package |
+| iOS Release archive/signature | 1.0(97), archive and codesign verification PASS |157 frontend resources byte-identical to the installed package. No App Store export, IPA upload or distribution approval |
 | Physical installation/launch | PASS, production bundle `wine.matchrim.app` | Installed without uninstalling or clearing data |
 | New97 physical screen walkthrough | BLOCKED on two bounded attempts | XCTest timed out enabling automation mode while iOS reported unlocked; no current screen was accepted as97 evidence |
 | Existing real QA quiz | 20 UI answers, one saved result, five axes read back5/5 | Performed on installed95 before the97 update, not50 real users or a taste-validity study |
@@ -54,12 +57,17 @@ Current root: `/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/recove
 
 - `PHONE97-WINDOW.json`, `INSTALL97-RESULT.json`, `installed97-app.json`: actual installation and two physical-controller failures.
 - `candidate97-r3/preparation.json`: explicit production configuration, source fingerprints,157 output hashes and isolated build recipe. `candidate97-r3/derived/Build/Products/Debug-iphoneos/App.app` is the installed97 package.
+- `candidate97-r3/COMMIT-BINDING.json`:378 source files checked against product commit `df60123`, with157 installed frontend resource hashes and original dirty preparation receipt retained.
+- `candidate97-r3/ARCHIVE97-RELEASE-RESULT.json` and `Matchrim97-release.xcarchive`: successful bounded Release archive, signature and frontend-resource verification. No App Store export or upload.
 - `ui-regression/cellar97-actual-ui-r4/report.json`: five-view visual matrix. The preceding r3 visual failure and earlier candidate attempts are retained separately.
-- `unit-final/report.json`, `regressions-binary-safe/report.json`, `lint-current-source.json`: automated evidence and inherited-warning count.
+- `ui-regression/search97-actual-ui/report.json`:19 current browser controls; screenshots/ARIA and all intercepted catalogue request bodies. Browser/context closed, no external forwarding. Python Playwright was unavailable, so the existing JavaScript runtime was used without installing dependencies.
+- `unit-source-freeze/report.json`, `source-freeze-matrix/report.json`, `restaurant91-source-freeze-r2/report.json`: final committed-source evidence, preserved initial dependency-prefix failure and corrected rerun. Final lint has0 errors/129 warnings across590 files.
 - `qa-profile-readback/RESULT.json`: actual read-only server verification of the UI-created profile. The adjacent private session file is not shareable evidence.
 - `settings-control-r2/private-control/`: real physical Vivino/Matchrim95 screenshots, observed quiz interactions and stopped97 initialization attempts. Stale95 pointers were not used as new97 screen evidence; a host timestamp guard now rejects them.
 
 Earlier complete pilot/catalogue artifacts are resident under `/Users/GOIKO/Library/Mobile Documents/com~apple~CloudDocs/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim97-physical-20261020`, including `catalog-E/GLOBAL-CONTRACT-HANDOFF-r2.md` and `dataset-A/pilot20`. Original manifests remain immutable; their old Documents paths require explicit relocation bindings before another paid run.
+
+The earlier native-label gallery replay in that root, `ux-C/gallery2400-ui-r1/report.json`, passed11 cases/381 controls using the complete frontend, actual gallery preparation/cropping and a1800x2400 request JPEG. Identities/profiles were synthetic and public detail responses recorded: it is not a recognition claim about that transport image. Its presentation matches the reviewed label-view component, but the replay predates the latest catalogue-admission wiring and must not be relabelled as its new live runtime validation. Earlier failures and source bindings remain intact.
 
 ## Residual Gate
 
