@@ -66,6 +66,15 @@ await test('Explicit choice verifies its ID, preserves photographed vintage for 
   assert.equal(h.confirmations[0].alcohol, null); assert.deepEqual(Array.from(h.confirmations[0].grapes), []);
   assert.equal(h.confirmations[0].appliedProfile, h.props.profile); h.unmount();
 });
+await test('A grape spelling proposal warns explicitly and never creates an automatic affinity', async () => {
+  const grape = { ...row, name: 'Ghost Block Cabernet Sauvignon', winery: 'Ghost Block' };
+  const h = host({ search: async () => ({ rows: [grape], status: 'complete' }) }, {
+    ...candidate, name: 'Ghost Block', evidence: ['GHOST BLOCK', 'CABERNET SALVIGNON'],
+  });
+  h.button('Encontrar mi vino en Winerim').onClick(); await tick();
+  assert(text(h.render()).includes('La lectura de la uva puede contener una errata'));
+  assert(text(h.render()).includes('Confirmar esta referencia')); assert.equal(h.confirmations.length, 0); h.unmount();
+});
 await test('Cancellation suppresses late adapter responses even when abort is ignored; retry works', async () => {
   const wait = deferred(); let first = true;
   const h = host({ search: () => first ? (first = false, wait.promise) : Promise.resolve({ rows: [row], status: 'complete' }) });

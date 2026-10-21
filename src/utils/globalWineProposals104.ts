@@ -4,7 +4,7 @@ import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 import { isNonWineIdentity } from './wineCategory';
 
 const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-const tokens = (value: string) => fold(value).match(/[a-z0-9]+/g) || [];
+const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
 const generic = new Set(('de del la el le les du des the and y et di do da dos das los las aoc doc docg vino wine vin '
   + 'reserva reserve gran grand premier cru blanc blanco blanca rouge red white tinto rosado rose brut extra sec seco '
   + 'pinot noir grigio gris cabernet sauvignon merlot chardonnay malbec alvarinho tempranillo garnacha riesling '
@@ -12,9 +12,10 @@ const generic = new Set(('de del la el le les du des the and y et di do da dos d
   + 'lagrein albarino godello mencia viognier gewurztraminer grenache monastrell mourvedre franc '
   + 'bodega bodegas winery chateau domaine finca quinta weingut tenuta estate').split(' '));
 const grapes = new Set('pinot cabernet sauvignon merlot chardonnay malbec alvarinho tempranillo garnacha riesling syrah shiraz lagrein albarino godello mencia viognier gewurztraminer grenache monastrell mourvedre'.split(' '));
+const connectors = new Set('de del la el le les du des the and y et di do da dos das los las'.split(' '));
 const fullName = (row: PublicGlobalRow103) => row.subname && !(` ${tokens(row.name).join(' ')} `).includes(` ${tokens(row.subname).join(' ')} `)
   ? `${row.name} ${row.subname}` : row.name;
-export type WineProposal104 = { row: PublicGlobalRow103; name: string; score: number; missingProducer: boolean; vintageConflict: boolean };
+export type WineProposal104 = { row: PublicGlobalRow103; name: string; score: number; missingProducer: boolean; vintageConflict: boolean; readingCorrections: string[] };
 
 // Ranking is an aid to explicit user selection, never canonical evidence or a
 // probability. No expected labels, Mantalak mapping or learned fixture dictionary.
@@ -26,24 +27,39 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
     const name = fullName(row);
     if (isNonWineIdentity(name, row.type) || hasConflictingNativeVintage100({ name, vintage: row.vintage })
       || hasMissingVisibleQualifier102({ name, evidence })) continue;
-    const words = [...new Set(tokens(name).filter(word => word.length > 1 && word !== String(row.vintage)))];
+    const words = [...new Set(tokens(name).filter(word => word.length > 1 && word !== String(row.vintage) && !connectors.has(word)))];
     const qualifiers = evidence.map(fold).flatMap(line => line.match(/\b\d{1,2}\s+(?:meses|months)\b|\b(?:gran reserva|reserva especial|vieilles vignes|old vines|seleccion del sumiller)\b/g) || []);
     if (qualifiers.some(qualifier => !fold(name).includes(qualifier))) continue;
     const producerWords = [...new Set(tokens(row.winery).filter(word => word.length > 1 && !generic.has(word)))];
-    const grapeWords = (row.grapes || []).flat(2).flatMap(grape => typeof grape === 'string' ? tokens(grape)
+    const producerCoverage = producerWords.length ? producerWords.filter(word => visible.has(word)).length / producerWords.length : 0;
+    const matched = new Set(visible), readingCorrections: string[] = [];
+    // Explicit classification text is evidence for the corresponding acronym,
+    // not permission to remove cru/aging/color qualifiers from identity.
+    if (['denominazione', 'origine', 'controllata'].every(word => visible.has(word))) {
+      matched.add(visible.has('garantita') ? 'docg' : 'doc');
+    }
+    const missingGrapes = words.filter(word => grapes.has(word) && !visible.has(word));
+    if (producerCoverage === 1 && missingGrapes.length === 1 && missingGrapes[0].length >= 8
+      && [...visible].filter(word => grapes.has(word)).every(word => words.includes(word))
+      && words.some(word => grapes.has(word) && visible.has(word))) {
+      const target = missingGrapes[0];
+      const possible = [...visible].filter(word => !grapes.has(word) && word.length === target.length
+        && [...word].filter((letter, i) => letter !== target[i]).length === 1);
+      if (possible.length === 1) { matched.add(target); readingCorrections.push(`${possible[0]} -> ${target}`); }
+    }
+    const grapeWords: string[] = (row.grapes || []).flat(2).flatMap(grape => typeof grape === 'string' ? tokens(grape)
       : grape && typeof grape === 'object' && 'name' in grape && typeof grape.name === 'string' ? tokens(grape.name) : []);
     const regionWords = tokens(row.region || '');
     const distinctive = words.filter(word => !generic.has(word) && !grapeWords.includes(word) && !regionWords.includes(word));
-    const coverage = words.length ? words.filter(word => visible.has(word)).length / words.length : 0;
-    const producerCoverage = producerWords.length ? producerWords.filter(word => visible.has(word)).length / producerWords.length : 0;
+    const coverage = words.length ? words.filter(word => matched.has(word)).length / words.length : 0;
     if (distinctive.some(word => !visible.has(word))) continue;
     if (coverage < .8 || (!distinctive.some(word => visible.has(word)) && producerCoverage < .8)) continue;
     if (producerCoverage < .8 && distinctive.filter(word => visible.has(word)).every(word => word.length < 6)) continue;
-    if ([...visible].some(word => grapes.has(word)) && words.some(word => grapes.has(word) && !visible.has(word))) continue;
+    if ([...visible].some(word => grapes.has(word)) && words.some(word => grapes.has(word) && !matched.has(word))) continue;
     const vintageConflict = Boolean(vintage && row.vintage != null && String(vintage) !== String(row.vintage));
     if (vintageConflict) continue;
-    const score = coverage * 70 + producerCoverage * 20 + (vintage && String(vintage) === String(row.vintage) ? 10 : 0) - (vintageConflict ? 20 : 0);
-    const candidate = { row, name, score, missingProducer: producerCoverage < 1, vintageConflict };
+    const score = coverage * 70 + producerCoverage * 20 + (vintage && String(vintage) === String(row.vintage) ? 10 : 0) - readingCorrections.length * 4;
+    const candidate = { row, name, score, missingProducer: producerCoverage < 1, vintageConflict, readingCorrections };
     const baseName = row.vintage == null ? name : name.replace(new RegExp(`\\s+\\(?${row.vintage}\\)?$`), '').trim();
     const group = `${tokens(baseName).join(' ')}|${tokens(row.winery).join(' ')}`;
     const previous = groups.get(group);

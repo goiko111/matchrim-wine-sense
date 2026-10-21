@@ -9,6 +9,8 @@ const preparation = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'pr
 const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
+const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 let scenario = 'observed-NV-reference';
 const image = '/Users/GOIKO/Downloads/IMG_8324.PNG';
@@ -34,7 +36,7 @@ const report = { startedUTC: new Date().toISOString(), sourceCommit: preparation
   scope: 'Production-mode React native branch in isolated Chromium portrait emulation; synthetic account, detector and candidate transport. User screenshot uploaded to fully intercepted test transport. Real saved public Vidure response replay plus synthetic exact2020 variant, NOT live recognition, paid image analysis or UIKit/device approval.',
   imageHash: sha(fs.readFileSync(image)), preparation: preparation.root, requests: [], snapshots: [], pageErrors: [], consoleErrors: [],
   paidModelStarts: 0, forwardedRequests: 0, realAccountsCreated: 0, productionWrites: 0, masterConnectionActive: false,
-  captureMode: 'Responsive desktop Chromium viewport with native Capacitor CSS branch and touch; not mobile-browser engine. Avoids known Chromium mobile fixed-layer screenshot duplication after viewport/text resizing.' };
+  scenarios, captureMode: 'Responsive desktop Chromium viewport with native Capacitor CSS branch and touch; not mobile-browser engine. Avoids known Chromium mobile fixed-layer screenshot duplication after viewport/text resizing.' };
 const write = (name, value) => fs.writeFileSync(path.join(folder, name), typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value, null, 2), { mode: 0o600 });
 let browser, context;
 try {
@@ -66,7 +68,7 @@ try {
       coverage: { status: 'reported_complete', detected_objects: 1, estimated_visible_objects: 1, confidence: .99 } });
     if (url.pathname.endsWith('/analyze-wine-region-v72')) return json({ candidates: [{ ...fixture.localCandidate,
       ...(scenario === 'assisted-missing-producer' ? { producer: null } : {}),
-      confidence: .95, source: 'label', evidence: fixture.ocrLines, inferred_fields: [], uncertainty_reasons: [] }] });
+      confidence: .95, source: 'label', evidence: scenario === 'assisted-missing-producer' ? ['VIDURE', '2020'] : fixture.ocrLines, inferred_fields: [], uncertainty_reasons: [] }] });
     if (url.hostname === 'app.winerim.com' && url.pathname.startsWith('/images/wines/')) return route.fulfill({ body: fs.readFileSync('qa-artifacts/global103-20261021/vidure-public-photo.png'), contentType: 'image/png' });
     if (url.hostname === 'app.winerim.com' && url.pathname.includes('/00000000-0000-0000-0000-000000000001/wines')) {
       const row = { ...globalObserved, ...(scenario === 'synthetic-exact2020' ? { vintage: '2020' } : {}) };
@@ -105,7 +107,7 @@ try {
     write(name + '-aria.txt', await page.locator('body').ariaSnapshot());
     report.snapshots.push({ name, geometry });
   };
-  for (const state of ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer']) {
+  for (const state of scenarios) {
     scenario = state;
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto(origin + '/escanear/etiqueta', { waitUntil: 'networkidle' });

@@ -78,4 +78,24 @@ await test('An observed name/subname proposal verifies directly; forged selectio
   const changed = createGlobalCatalogue103(async () => Response.json({ ...source, winery: 'Other' }));
   assert.equal((await changed.confirmSelection(input, chosen)).status, 'ambiguous');
 });
+await test('Connectors and explicit classification expansions do not erase distinctive name or aging evidence', () => {
+  const named = { ...vidure, name: 'Biografo del Vino', winery: 'An independent producer' };
+  assert.equal(rankGlobalProposals104(['BIOGRAFO', 'DEI VINO'], [named]).length, 1);
+  assert.equal(rankGlobalProposals104(['TOMBACCO', 'PRIMITIVO', 'MANDURIA', 'DENOMINAZIONE ORIGINE CONTROLLATA'],
+    [{ ...vidure, name: 'Primitivo di Manduria DOC', winery: 'Tombacco' }]).length, 1);
+  assert.deepEqual(rankGlobalProposals104(['TOMBACCO', 'PRIMITIVO', 'MANDURIA'], [{ ...vidure, name: 'Primitivo di Manduria DOC', winery: 'Tombacco' }]), []);
+  assert.deepEqual(rankGlobalProposals104(['BIOGRAFO', 'GRAN RESERVA'], [named]), []);
+});
+await test('One long grape OCR substitution needs exact producer, companion grape and explicit warning', () => {
+  const wine = { ...vidure, name: 'Ghost Block Cabernet Sauvignon', winery: 'Ghost Block' };
+  const visible = ['GHOST BLOCK', 'CABERNET SALVIGNON'];
+  const proposed = rankGlobalProposals104(visible, [wine]);
+  assert.equal(proposed.length, 1); assert.deepEqual(proposed[0].readingCorrections, ['salvignon -> sauvignon']);
+  assert.deepEqual(visible, ['GHOST BLOCK', 'CABERNET SALVIGNON']);
+  assert.deepEqual(rankGlobalProposals104(['CABERNET SALVIGNON'], [wine]), []);
+  assert.deepEqual(rankGlobalProposals104(['GHOST BLOCK', 'SALVIGNON'], [wine]), []);
+  assert.deepEqual(rankGlobalProposals104([...visible, 'GODELLO'], [wine]), []);
+  assert.deepEqual(rankGlobalProposals104(['GHOST BLOCK', 'CABERNET GODELLO'], [wine]), []);
+  assert.deepEqual(rankGlobalProposals104(['GHOST BLACK', 'CABERNET SALVIGNON'], [wine]), []);
+});
 console.log(JSON.stringify({ groups: count, paidStarts: 0, liveCalls: 0, verifiedIdentitiesFromRanking: 0 }));

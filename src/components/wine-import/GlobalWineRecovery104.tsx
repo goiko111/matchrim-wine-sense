@@ -69,6 +69,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
           <div className="min-w-0"><p className="font-semibold">{proposal.name}</p><p className="text-sm">{proposal.row.winery} · {proposal.row.vintage || 'Ficha sin añada'}</p></div>
         </div>
         {proposal.missingProducer && <p className="text-sm text-stone-700">Comprueba la bodega: no se lee completa en tu foto.</p>}
+        {proposal.readingCorrections.length > 0 && <p className="text-sm text-stone-700">La lectura de la uva puede contener una errata. Comprueba que coincide con la etiqueta antes de confirmar.</p>}
         {proposal.row.vintage == null ? <p className="text-sm text-stone-700">Esta ficha no confirma la cosecha de tu botella.</p>
           : candidate.vintage !== Number(proposal.row.vintage) && <p className="text-sm text-stone-700">Elegirla cambiará tu añada a {proposal.row.vintage}.</p>}
         <Button type="button" variant="outline" disabled={disabled || busy} onClick={() => void run(proposal)} className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3"><Check aria-hidden="true" className="h-4 w-4 shrink-0" /> Confirmar esta referencia</Button>

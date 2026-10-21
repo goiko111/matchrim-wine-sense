@@ -55,8 +55,11 @@ try {
   assert(/^(extra-small|small|medium|large|extra-large|extra-extra-large|extra-extra-extra-large|accessibility-medium|accessibility-large|accessibility-extra-large|accessibility-extra-extra-large|accessibility-extra-extra-extra-large)$/.test(originalSize));
   const shared = ['-destination', 'id=' + device, '-disableAutomaticPackageResolution', '-skipPackageUpdates', '-jobs', '1', 'CODE_SIGNING_ALLOWED=NO', `CURRENT_PROJECT_VERSION=${prep.build}`];
   await run('build', ['build', '-quiet', '-workspace', path.join(prep.production, 'ios/App/App.xcworkspace'), '-scheme', 'App', '-configuration', 'Debug', '-sdk', 'iphonesimulator',
-    '-derivedDataPath', root + '/build/derived', '-resultBundlePath', root + '/build/result.xcresult', ...shared, 'PRODUCT_BUNDLE_IDENTIFIER=' + bundleId]);
+    '-derivedDataPath', root + '/build/derived', '-resultBundlePath', root + '/build/result.xcresult', ...shared]);
   const app = root + '/build/derived/Build/Products/Debug-iphonesimulator/App.app'; verify(app); receipt.app = app;
+  // A command-line override also renames package frameworks. Isolate only the
+  // unsigned simulator app, preserving every framework's original identifier.
+  execFileSync('/usr/bin/plutil', ['-replace', 'CFBundleIdentifier', '-string', bundleId, app + '/Info.plist']);
   xcrun(['simctl', 'install', device, app]); receipt.installed = true;
   const harness = path.resolve('qa-artifacts/native99-20261021/native-audit-project'), project = root + '/project'; fs.mkdirSync(project);
   for (const name of ['Probe97.xcodeproj', 'Probe97.xctestplan', 'AutomationModeProbe.swift']) fs.cpSync(path.join(harness, name), path.join(project, name), { recursive: true });
