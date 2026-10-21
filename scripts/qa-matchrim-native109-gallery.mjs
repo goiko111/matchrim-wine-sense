@@ -3,12 +3,14 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync, spawn } from 'node:child_process';
+import { verifyArtifact } from './qa-matchrim-account114.mjs';
 
 const repo = process.cwd(), prep = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'preparation.json')));
 const app = path.resolve(process.argv[3]), output = path.resolve(process.argv[4]);
 const developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
 const device = 'B18822EF-BFBD-4A6A-89B2-33539BDE4127', bundle = 'wine.matchrim.qa99review';
-const env = { ...process.env, DEVELOPER_DIR: developer };
+const env = { ...Object.fromEntries(Object.entries(process.env).filter(([key]) =>
+  !/KEY|AUTH|PASSWORD|SECRET|TOKEN|CREDENTIAL/i.test(key))), DEVELOPER_DIR: developer };
 const sha = value => createHash('sha256').update(value).digest('hex');
 const guard = () => {
   const { leases } = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json'));
@@ -25,6 +27,7 @@ const verify = () => {
   for (const [file, hash] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(path.join(app, 'public', file))), hash, file);
   assert.equal(execFileSync('/usr/bin/plutil', ['-extract', 'CFBundleVersion', 'raw', '-o', '-', app + '/Info.plist'], { encoding: 'utf8' }).trim(), String(prep.build));
   assert.equal(execFileSync('/usr/bin/plutil', ['-extract', 'CFBundleIdentifier', 'raw', '-o', '-', app + '/Info.plist'], { encoding: 'utf8' }).trim(), bundle);
+  verifyArtifact({ repo, prep, app });
 };
 const xcrun = args => { guard(); return execFileSync('/usr/bin/xcrun', args, { env, encoding: 'utf8', timeout: 120000 }); };
 guard(); verify(); assert(!fs.existsSync(output)); fs.mkdirSync(output, { mode: 0o700 });

@@ -35,9 +35,11 @@ function rig(fault) {
   const manifest = { expectedNamesGivenToOCR: false, prepared: Array.from({ length: 200 }, (_, i) => ({ imageId: `img-${String(i + 1).padStart(3, '0')}`, sha256: sha122('image') })) };
   set(path.join(root, c.prepared, 'REPORT.json'), JSON.stringify(manifest));
   set(path.join(root, c.prepared, 'prepared/img-001.jpg'), 'image');
-  for (const name of ['Capacitor', 'CapacitorCordova']) {
+  for (const [name, packageName] of [['Capacitor', 'Capacitor'], ['Cordova', 'CapacitorCordova']]) {
     set(`/memory/Frameworks/${name}.framework/${name}`, name);
-    dirs.add(`/memory/Frameworks/${name}.framework/Modules/${name}.swiftmodule`);
+    const packageDir = path.resolve('/memory/Frameworks', '../..', packageName);
+    set(`${packageDir}/${name}.framework/${name}`, fault === 'framework-mismatch' ? 'changed' : name);
+    dirs.add(`${packageDir}/${name}.framework/Modules/module.modulemap`);
   }
   const io = {
     readFileSync(file) { assert(files.has(file), `UNEXPECTED_READ: ${file}`); return files.get(file); },
@@ -133,6 +135,17 @@ await test('Preflight holds/collision create nothing and launch nothing', async 
   for (const fault of ['lease', 'disk', 'collision']) {
     const r = rig(fault); await assert.rejects(r.run()); assert.equal(r.writes.length, 0); assert.equal(r.calls.length, 0);
   }
+});
+await test('Real package layout uses Cordova module from CapacitorCordova, with identical installed binary', async () => {
+  const r = rig(), receipt = await r.run();
+  assert.equal(receipt.passed, true, receipt.error);
+  const compile = r.calls.find(([, args]) => args.includes('-parse-as-library'))[1];
+  assert(compile.includes('/CapacitorCordova'));
+  assert(!compile.some(value => value.includes('CapacitorCordova.framework')));
+  const bad = rig('framework-mismatch'), failed = await bad.run();
+  assert.equal(failed.passed, false);
+  assert(failed.error.includes('CAPACITOR_FRAMEWORK_MISMATCH'));
+  assert.equal(bad.calls.length, 0);
 });
 await test('Exit zero cannot pass invalid raw or source/input drift; failure logs and receipt preserved', async () => {
   for (const fault of ['raw', 'empty', 'drift', 'input-drift']) {

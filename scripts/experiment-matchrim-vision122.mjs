@@ -200,11 +200,11 @@ export async function run122(args, { repo = process.cwd(), environment = process
     for (const item of inputs) { write('inputs/' + item.name, item.bytes); bind(path.join(o.output, 'inputs', item.name)); }
     const moduleDirs = [];
     receipt.frameworkSHA256 = {};
-    for (const name of ['Capacitor', 'CapacitorCordova']) {
+    for (const [name, packageName] of [['Capacitor', 'Capacitor'], ['Cordova', 'CapacitorCordova']]) {
       const installed = path.join(o.framework, name + '.framework', name);
       const bytes = bind(installed); receipt.frameworkSHA256[name] = sha122(bytes);
-      const candidates = [o.framework, path.resolve(o.framework, '../..', name)];
-      const moduleDir = candidates.find(dir => io.existsSync(path.join(dir, name + '.framework', 'Modules', name + '.swiftmodule')));
+      const candidates = [o.framework, path.resolve(o.framework, '../..', packageName)];
+      const moduleDir = candidates.find(dir => io.existsSync(path.join(dir, name + '.framework', 'Modules', 'module.modulemap')));
       assert(moduleDir, 'MISSING_REAL_CAPACITOR_MODULES');
       assert.equal(sha122(bind(path.join(moduleDir, name + '.framework', name))), sha122(bytes), 'CAPACITOR_FRAMEWORK_MISMATCH');
       moduleDirs.push(moduleDir);
