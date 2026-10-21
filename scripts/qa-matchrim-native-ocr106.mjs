@@ -8,6 +8,11 @@ const repo = process.cwd(), output = path.resolve(process.argv[2]);
 const developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
 const device = 'B18822EF-BFBD-4A6A-89B2-33539BDE4127';
 const framework = path.resolve(process.argv[3] || 'qa-artifacts/recovery104-20261021/uikit101-r2/build/derived/Build/Products/Debug-iphonesimulator/App.app/Frameworks');
+const corpusStart = process.argv[4] ? Number(process.argv[4]) : null;
+const corpusCount = process.argv[5] ? Number(process.argv[5]) : null;
+if (corpusStart !== null) assert(Number.isSafeInteger(corpusStart) && corpusStart >= 1
+  && Number.isSafeInteger(corpusCount) && corpusCount >= 1 && corpusCount <= 20 && corpusStart + corpusCount - 1 <= 200,
+  'Corpus mode requires a neutral 1-based start and at most20 preserved images');
 const modules = ['Capacitor', 'CapacitorCordova'].map(name => path.resolve(framework, '../..', name));
 const env = { ...process.env, DEVELOPER_DIR: developer };
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -21,7 +26,8 @@ const guard = () => {
 };
 guard(); assert(!fs.existsSync(output)); fs.mkdirSync(output, { mode: 0o700 });
 const receipt = { startedUTC: new Date().toISOString(), scope: 'Real Apple Vision in iOS simulator through actual CAPPluginCall, not WebView integration or physical iPhone.',
-  modelStarts: 0, networkCalls: 0, fixtureDictionary: false, framework, device, stages: [] };
+  modelStarts: 0, networkCalls: 0, fixtureDictionary: false, framework, device, stages: [],
+  corpusStart, corpusCount, expectedNamesGivenToOCR: false, runnerSHA256: sha(fs.readFileSync(import.meta.filename)) };
 const files = ['ios/App/App/MatchrimOCRPlugin106.swift', 'scripts/MatchrimOCR106Probe.swift'];
 receipt.sourceSHA256 = Object.fromEntries(files.map(file => [file, sha(fs.readFileSync(file))]));
 const execute = (label, binary, args, options = {}) => {
@@ -44,17 +50,26 @@ try {
     execute('boot', '/usr/bin/xcrun', ['simctl', 'boot', device]);
     execute('bootstatus', '/usr/bin/xcrun', ['simctl', 'bootstatus', device, '-b']);
   }
-  const inputs = ['img-184.jpg', 'img-061.jpg', 'img-174.jpg'].map(file =>
+  let inputs;
+  if (corpusStart !== null) {
+    const manifest = JSON.parse(fs.readFileSync('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/REPORT.json'));
+    assert.equal(manifest.expectedNamesGivenToOCR, false); assert.equal(manifest.prepared.length, 200);
+    inputs = manifest.prepared.slice(corpusStart - 1, corpusStart - 1 + corpusCount).map(item => {
+      const file = path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared', item.imageId + '.jpg');
+      assert(/^img-\d{3}$/.test(item.imageId)); assert.equal(sha(fs.readFileSync(file)), item.sha256); return file;
+    });
+  } else inputs = ['img-184.jpg', 'img-061.jpg', 'img-174.jpg'].map(file =>
     path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared', file));
   receipt.inputs = Object.fromEntries(inputs.map(file => [path.basename(file), sha(fs.readFileSync(file))]));
-  const raw = execute('recognize', '/usr/bin/xcrun', ['simctl', 'spawn', device, binary, ...inputs]);
+  const raw = execute('recognize', '/usr/bin/xcrun', ['simctl', 'spawn', device, binary, ...inputs],
+    { timeout: Math.max(120000, inputs.length * 25000 + 30000), maxBuffer: 16 * 1024 ** 2 });
   const data = JSON.parse(raw.trim()); fs.writeFileSync(output + '/OCR.json', JSON.stringify(data, null, 2) + '\n', { mode: 0o600 });
-  const images = data.results.filter(row => row.file); assert.equal(images.length, 3);
+  const images = data.results.filter(row => row.file); assert.equal(images.length, inputs.length);
   for (const image of images) {
     assert.equal(image.settlements, 1); assert.equal(image.response.ok, true);
     const result = image.response.data; assert.equal(result.source, 'apple-vision-device');
     assert.equal(result.requestId, image.requestId); assert.deepEqual(result.customWords, []);
-    assert(result.lines.length > 0 && result.lines.length <= 100);
+    assert(result.lines.length <= 100 && (corpusStart !== null || result.lines.length > 0));
     assert(result.width <= 2400 && result.height <= 2400);
     for (const line of result.lines) {
       assert(line.text.length > 0 && line.text.length <= 1000);

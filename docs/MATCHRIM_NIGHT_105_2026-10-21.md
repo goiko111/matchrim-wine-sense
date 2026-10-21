@@ -49,3 +49,11 @@ Checkpoint: `qa-artifacts/night105-20261021/CHECKPOINT.json`. This document is a
 ## Continuation 109
 
 Product commit7230a93 adds explicit local-first label reading and results-first recovery; it is not part of the frozen102 archive. Continue from `docs/MATCHRIM_LOCAL_FIRST_109_2026-10-21.md`. Seventeen actual-source handler groups, ten candidate groups,14 recovery groups,14 year-role groups and ten privacy groups pass. Typecheck/build103 and real gallery E2E remain pending the shared heavy resource. Do not reuse the102 QA receipts for109. A new UIKit gallery probe is being authored as an isolated test, not a production app escape hatch.
+
+## Continuation 110-111
+
+Commits49b253c and a3c11d1 are pushed to the native development branch.110 adds separate initial/current NV style estimates in Bodega, exact readback validation, personal-rejection precedence and fixed native bottle-photo dimensions. An independent read-only review caught initial-history replacement after catalogue revision and an incorrect repeat-quiz CTA during profile-load errors; both were corrected. Ten persistence groups and six actual React SSR presentation groups pass, with50 synthetic profiles; no claim of50 real users.
+
+111 fixes first-page-only recovery queries, explicitly capped at three pages/60 rows under one12-second operation. Existing automatic strict lookup is unchanged. Eight pagination groups,17 catalogue groups and14 recovery-handler groups pass.52 later public text-only pages were acquired successfully; total own free catalogue GETs this night61, paid model starts0. Dataset comparison is still pending, and HTTP200 is not recognition success. See `docs/MATCHRIM_CATALOGUE_PAGINATION_111_2026-10-21.md` and `docs/MATCHRIM_CELLAR_STYLE_110_2026-10-21.md`.
+
+The109 real gallery/video harness is now committed but unrun. The native OCR runner can accept bounded neutral corpus ranges of at most20 images; this extension is unrun and does not modify the plugin or supply expected wine names. Next: prepare/build103, visual109/110, genuine gallery E2E, and actual simulator Vision pilot20 before deciding whether to run the remaining180. The heavy resource is in use by another task, so only light work has proceeded; no foreign process or lease was interrupted.
