@@ -3,6 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { chromium } from '/Users/GOIKO/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+import { image128, names128, detection128, reading128 } from './matchrim-dense128-fixture.mjs';
 
 const repo = process.cwd();
 const preparation = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'preparation.json')));
@@ -10,7 +11,7 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116', 'quiz-history118'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116', 'quiz-history118', 'dense128'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
 const localOCR = scenarios.some(state => ['local-ocr106', 'local-first109'].includes(state)) ? JSON.parse(fs.readFileSync('qa-artifacts/night105-20261021/native-ocr106-r3/OCR.json')).results.find(row => row.file === 'img-061.jpg').response.data : null;
@@ -46,6 +47,8 @@ const report = { startedUTC: new Date().toISOString(), sourceCommit: preparation
   imageInputs: [], awardScenarioScope: 'If selected: img184 preserved prepared photo with synthetic inline LYON GOLD2026 evidence, not a real model response or runtime spatial OCR. Saved public search row projected without catalogue photo (asset unobserved); no fabricated detail/affinity.',
   paidModelStarts: 0, forwardedRequests: 0, realAccountsCreated: 0, productionWrites: 0, masterConnectionActive: false,
   scenarios, captureMode: 'Responsive desktop Chromium viewport with native Capacitor CSS branch and touch; not mobile-browser engine. Avoids known Chromium mobile fixed-layer screenshot duplication after viewport/text resizing.' };
+report.harnessSHA256 = sha(fs.readFileSync('scripts/qa-matchrim-global103.mjs'));
+report.dense128FixtureSHA256 = sha(fs.readFileSync('scripts/matchrim-dense128-fixture.mjs'));
 const write = (name, value) => fs.writeFileSync(path.join(folder, name), typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value, null, 2), { mode: 0o600 });
 let browser, context;
 try {
@@ -93,6 +96,15 @@ try {
       return json(table === 'profiles' ? { id: owner, preferred_language: 'ES' } : []);
     }
     if (['profile-history116', 'quiz-history118'].includes(scenario) && url.pathname.endsWith('/matchrim-recommendations')) return json([]);
+    if (scenario === 'dense128' && url.pathname.endsWith('/detect-wine-regions-v72')) {
+      report.dense128DetectorCalls = (report.dense128DetectorCalls || 0) + 1;
+      return json(detection128());
+    }
+    if (scenario === 'dense128' && url.pathname.endsWith('/analyze-wine-region-v72')) {
+      const index = request.postDataJSON().region_index;
+      report.dense128AnalysisCalls = [...(report.dense128AnalysisCalls || []), index];
+      return json(reading128(index));
+    }
     if (url.pathname.endsWith('/detect-wine-regions-v72')) return json({ regions: [{ box: { x: 3, y: 5, width: 94, height: 90 }, confidence: .99,
       object_type: 'bottle', quality: { glare: 'low', occlusion: 'low', legibility: 'good' } }],
       coverage: { status: 'reported_complete', detected_objects: 1, estimated_visible_objects: 1, confidence: .99 } });
@@ -254,7 +266,7 @@ try {
       await page.getByRole('button', { name: 'Entiendo y continuar', exact: true }).click();
     }
     if (state === 'local-first109') await page.getByRole('button', { name: 'Una etiqueta', exact: true }).click();
-    const activeImage = ['award-year-inline', 'local-ocr106', 'local-first109'].includes(state) ? path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared', state === 'award-year-inline' ? 'img-184.jpg' : 'img-061.jpg') : image;
+    const activeImage = state === 'dense128' ? image128 : ['award-year-inline', 'local-ocr106', 'local-first109'].includes(state) ? path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared', state === 'award-year-inline' ? 'img-184.jpg' : 'img-061.jpg') : image;
     report.imageInputs.push({ scenario: state, path: activeImage, sha256: sha(fs.readFileSync(activeImage)) });
     await page.locator('input[type=file]').nth(1).setInputFiles(activeImage);
     if (state !== 'local-first109') {
@@ -264,6 +276,70 @@ try {
     await page.getByRole('dialog').waitFor();
     await page.waitForFunction(() => { const el = document.querySelector('[role=dialog]'); return el && Math.abs(new DOMMatrixReadOnly(getComputedStyle(el).transform).m42) < 1; });
     const dialog = page.getByRole('dialog');
+    if (state === 'dense128') {
+      report.dense128Scope = 'Real preserved dense photo, synthetic30 detector boxes and six repeated synthetic identities plus one unreadable response. Fully intercepted transport, including intentionally unverified99 score. UI/budget/deduplication/comparison only; no real recognition, model, account, save or inventory accuracy claim.';
+      await dialog.getByRole('heading', { level: 2 }).waitFor();
+      assert(!(await dialog.innerText()).includes('99/100'), 'An unverified model number is not an affinity');
+      await capture('dense128-first-review');
+      await dialog.getByRole('button', { name: 'Cerrar', exact: true }).click();
+      for (let pass = 0; pass < 3; pass++) {
+        const next = page.getByTestId('scan-continue-batch').getByRole('button');
+        if (!await next.isVisible()) break;
+        await next.click();
+        await page.waitForFunction(() => {
+          const button = [...document.querySelectorAll('button')].find(node => node.textContent.trim() === 'Revisar vinos');
+          return button && !button.disabled;
+        }, null, { timeout: 20000 });
+      }
+      assert.equal(report.dense128DetectorCalls, 1, 'No unplanned detector refinement in a complete interface fixture');
+      assert.equal(report.dense128AnalysisCalls.length, 30);
+      assert.equal(new Set(report.dense128AnalysisCalls).size, 30, 'Continuation must not reread previous regions');
+      await page.getByRole('tab', { name: 'Escena', exact: true }).click();
+      const stage = page.locator('.matchrim-scan-stage');
+      await stage.scrollIntoViewIfNeeded();
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await stage.scrollIntoViewIfNeeded();
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        const pins = await stage.locator('button').evaluateAll(nodes => nodes.map(node => {
+          const r = node.getBoundingClientRect(); return { label: node.textContent.trim(), x: r.x, y: r.y, w: r.width, h: r.height };
+        }));
+        assert(pins.length > 0 && pins.length <= 30);
+        for (const pin of pins) assert(/^(?:\+)?\d+$/.test(pin.label) && pin.w >= 43.5 && pin.h >= 43.5);
+        for (let i = 0; i < pins.length; i++) for (let j = i + 1; j < pins.length; j++) {
+          const a = pins[i], b = pins[j];
+          assert(Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x) <= .5
+            || Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y) <= .5, 'Dense pin touch targets overlap');
+        }
+        await capture('dense128-scene-' + width + '-' + text);
+      }
+      await page.setViewportSize({ width: 393, height: 852 });
+      await page.evaluate(() => { document.documentElement.style.fontSize = '100%'; document.documentElement.classList.remove('matchrim-accessibility-text'); });
+      await page.getByRole('tab', { name: /^Vinos/ }).click();
+      assert.equal(await page.getByRole('button', { name: /^Abrir detalle de QA/ }).count(), 6, 'Six references, not thirty duplicate rows');
+      for (const value of await page.getByTestId('scan-affinity-value').allTextContents()) assert(!/\d/.test(value), 'Unverified scores stay pending');
+      await page.getByRole('tab', { name: 'Comparar', exact: true }).click();
+      const boxes = page.getByRole('checkbox', { name: /^Comparar QA/ });
+      assert.equal(await boxes.count(), 6);
+      for (const box of await boxes.all()) if (await box.isChecked()) await box.uncheck();
+      for (let i = 0; i < 2; i++) await boxes.nth(i).check();
+      await page.getByText('2/5 seleccionados', { exact: true }).waitFor();
+      for (let i = 2; i < 5; i++) await boxes.nth(i).check();
+      await page.getByText('5/5 seleccionados', { exact: true }).waitFor();
+      assert.equal(await boxes.nth(5).isDisabled(), true);
+      await page.getByRole('button', { name: 'Servicio', exact: true }).click();
+      assert.equal(await page.getByRole('button', { name: 'Servicio', exact: true }).getAttribute('aria-pressed'), 'true');
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await page.getByRole('heading', { name: 'Comparar 2–5 vinos', exact: true }).scrollIntoViewIfNeeded();
+        await capture('dense128-comparison-' + width + '-' + text);
+      }
+      assert(!/99\/100/.test(await page.locator('body').innerText()));
+      report.dense128Comparison = { references: names128.length, maximumSelection: 5, serviceMode: true, fakeAffinityHidden: true };
+      continue;
+    }
     if (state === 'local-ocr106' || state === 'local-first109') {
       const recovery = dialog.getByTestId('global-recovery104');
       if (state === 'local-ocr106') {
