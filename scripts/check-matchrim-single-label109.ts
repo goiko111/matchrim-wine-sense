@@ -89,11 +89,14 @@ test('Only one unique eligible year is a hint; awards, foundations and conflicts
     [line('Cosecha 2020 Gold Medal 2020')],
     [line('Cosecha 2020'), line('Since 2020', .1, .7)],
     [line('Since 1950')], [line('Gold Medal 2026')],
+    [line('Bottled in 2020')], [line('Mis en bouteille en 2020')],
+    [line('Cosecha 2020'), line('Bottled in 2020', .1, .7)],
     [line('Gold Medal 2025 2026')],
     [line('2020 '.repeat(8) + '2021')],
   ]) assert.equal(run(reading(lines))?.vintage, null, JSON.stringify(lines));
   assert.equal(run(reading([line('2020'), line('Cosecha 2020', .1, .7)]))?.vintage, 2020);
   assert.equal(run(reading([line('Since 1950'), line('2020', .1, .7)]))?.vintage, 2020);
+  assert.equal(run(reading([line('Cosecha 2018'), line('Bottled in 2020', .1, .7)]))?.vintage, 2018);
 });
 
 test('Evidence is verbatim, ordered and independent, including duplicates and whitespace', () => {
