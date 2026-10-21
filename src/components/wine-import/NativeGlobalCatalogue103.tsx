@@ -45,37 +45,53 @@ export const GlobalWineLookup103 = ({ candidate, contextKey, disabled, onVerifie
   onVerified: (wine: GlobalWine103) => void; onLoadingChange: (loading: boolean) => void;
 }) => {
   const [state, setState] = useState('');
-  const controller = useRef<AbortController | null>(null);
-  const callbacks = useRef({ onVerified, onLoadingChange });
-  callbacks.current = { onVerified, onLoadingChange };
+  const request = useRef<{ controller: AbortController; contextKey: string;
+    onLoadingChange: (loading: boolean) => void } | null>(null);
+  const current = useRef({ contextKey, disabled, onVerified });
+  current.current = { contextKey, disabled, onVerified };
   useEffect(() => {
     setState('');
-    return () => { controller.current?.abort(); controller.current = null; callbacks.current.onLoadingChange(false); };
+    return () => {
+      const owned = request.current;
+      if (owned?.contextKey === contextKey) {
+        request.current = null; owned.controller.abort(); owned.onLoadingChange(false);
+      }
+    };
   }, [contextKey]);
-  useEffect(() => { if (disabled) controller.current?.abort(); }, [disabled]);
+  useEffect(() => { if (disabled) request.current?.controller.abort(); }, [disabled]);
   const lookup = async () => {
-    if (disabled || controller.current) return;
+    if (disabled || request.current) return;
     if (candidate.source !== 'manual' && !canAdmitNativeCatalogLookup97(candidate)) {
       setState('Corrige o confirma primero el nombre, la bodega y la añada de tu etiqueta.'); return;
     }
-    const current = new AbortController(); controller.current = current;
-    setState('Buscando en Winerim…'); callbacks.current.onLoadingChange(true);
+    const owned = { controller: new AbortController(), contextKey, onLoadingChange };
+    request.current = owned;
+    const active = () => request.current === owned && !owned.controller.signal.aborted
+      && current.current.contextKey === owned.contextKey && !current.current.disabled;
+    setState('Buscando en Winerim…'); owned.onLoadingChange(true);
     try {
-      const result = await lookupGlobalCatalogue103(candidate, current.signal);
-      if (current.signal.aborted || controller.current !== current) return;
-      if ('wine' in result) { setState(''); callbacks.current.onVerified(result.wine); }
+      const result = await lookupGlobalCatalogue103(candidate, owned.controller.signal);
+      if (!active()) return;
+      if ('wine' in result) { setState(''); current.current.onVerified(result.wine); }
       else setState(result.status === 'identity-required' ? 'Revisa el nombre, la bodega y la añada antes de buscar.'
         : result.status === 'unavailable' ? 'Winerim no ha respondido. Puedes volver a intentarlo.'
           : result.status === 'ambiguous' || result.status === 'incomplete' ? 'Hay varias referencias posibles. Corrige o completa el nombre para distinguirlas.'
             : 'No se ha encontrado una ficha con ese nombre y bodega. Puedes corregirlos; no significa que el vino no exista en Winerim.');
-    } catch { if (!current.signal.aborted) setState('No se ha podido consultar Winerim.'); }
-    finally { if (controller.current === current) { controller.current = null; callbacks.current.onLoadingChange(false); if (current.signal.aborted) setState('Búsqueda cancelada.'); } }
+    } catch { if (active()) setState('No se ha podido consultar Winerim.'); }
+    finally {
+      if (request.current === owned) {
+        request.current = null; owned.onLoadingChange(false);
+        if (current.current.contextKey === owned.contextKey && (owned.controller.signal.aborted || current.current.disabled)) {
+          setState('Búsqueda cancelada.');
+        }
+      }
+    }
   };
   return <div className="min-w-0 space-y-2">
-    <Button type="button" disabled={disabled || Boolean(controller.current)} onClick={() => void lookup()} className="h-auto min-h-11 w-full gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white">
-      {controller.current ? <Loader2 aria-hidden="true" className="h-5 w-5 shrink-0 animate-spin" /> : <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" />} Buscar ficha en Winerim
+    <Button type="button" disabled={disabled || Boolean(request.current)} onClick={() => void lookup()} className="h-auto min-h-11 w-full gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white">
+      {request.current ? <Loader2 aria-hidden="true" className="h-5 w-5 shrink-0 animate-spin" /> : <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" />} Buscar ficha en Winerim
     </Button>
-    {controller.current && <Button type="button" variant="outline" onClick={() => controller.current?.abort()} className="min-h-11 gap-2"><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
+    {request.current && <Button type="button" variant="outline" onClick={() => request.current?.controller.abort()} className="min-h-11 gap-2"><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
     {state && <p role="status" className="text-sm leading-6 text-stone-700">{state}</p>}
   </div>;
 };
