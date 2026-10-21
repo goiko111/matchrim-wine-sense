@@ -1,7 +1,10 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Capacitor } from '@capacitor/core';
 import { CellarWineAffinity } from '@/components/CellarWineAffinity';
-import { NativeCellarToolbar97 } from '@/components/NativeCellarToolbar97';
+import { NativeCellarToolbar98 } from '@/components/NativeCellarToolbar98';
+import { NativeCellarItem98 } from '@/components/NativeCellarItem98';
+import { readNativeWineDraft98 } from '@/utils/nativeWineDraft98';
+import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { cellarAffinityView, makeCellarCatalogEvidence, readCellarInitialAffinity, readCellarSensoryEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
@@ -1002,13 +1005,17 @@ const MyWinesForOwner = () => {
       const details = withCellarInitialAffinity(enriched, snapshot, phase);
       const affinity = cellarAffinityView(enriched, snapshot).current;
       const update = { sensory_attributes: attributes as Json, place_details: details,
-        matchrim_affinity: affinity, use_for_profile_training: Boolean(wine.rating && wine.use_for_profile_training) };
-      const { data, error } = await supabase.from('user_wines').update(update).eq('id', wine.id)
-        .eq('user_id', action.ownerId).select('id, sensory_attributes, place_details, matchrim_affinity, use_for_profile_training').single();
+        matchrim_affinity: affinity, use_for_profile_training: Boolean(wine.rating && wine.use_for_profile_training),
+        ...(isNative && !wine.image_url && safeWineImageUrl98(catalog?.photo) ? { image_url: safeWineImageUrl98(catalog?.photo) } : {}) };
+      const query = supabase.from('user_wines').update(update).eq('id', wine.id).eq('user_id', action.ownerId);
+      const { data, error } = isNative
+        ? await query.select('id, sensory_attributes, place_details, matchrim_affinity, use_for_profile_training, image_url').single()
+        : await query.select('id, sensory_attributes, place_details, matchrim_affinity, use_for_profile_training').single();
       if (!action.isCurrent()) return;
       if (error) throw error;
       const persisted = { ...enriched, sensory_attributes: data?.sensory_attributes, place_details: data?.place_details };
-      if (!confirmsWineMutation(data, wine.id, { matchrim_affinity: affinity, use_for_profile_training: update.use_for_profile_training })
+      if (!confirmsWineMutation(data, wine.id, { matchrim_affinity: affinity, use_for_profile_training: update.use_for_profile_training,
+        ...('image_url' in update ? { image_url: update.image_url } : {}) })
         || !readCellarSensoryEvidence(persisted)
         || JSON.stringify(readCellarInitialAffinity(persisted)) !== JSON.stringify(readCellarInitialAffinity({ ...enriched, place_details: details }))) {
         throw new Error('Catalog enrichment not confirmed');
@@ -1246,8 +1253,13 @@ const MyWinesForOwner = () => {
   useEffect(() => {
     if (!isAddWineRoute || showAddDialog || showPurchaseDialog) return;
     resetForm();
+    const draft = isNative ? readNativeWineDraft98(location.state, user?.id) : null;
+    if (draft) {
+      setFormData(current => ({ ...current, name: draft.name, producer: draft.producer || '', vintage: draft.vintage?.toString() || '' }));
+      setManualWineNameConfirmed(true);
+    }
     setShowAddDialog(true);
-  }, [isAddWineRoute, showAddDialog, showPurchaseDialog]);
+  }, [isAddWineRoute, showAddDialog, showPurchaseDialog, isNative, location.state, user?.id]);
 
   const getAffinityColor = (score: number) => {
     if (score >= 80) return "text-green-600";
@@ -1474,7 +1486,7 @@ const MyWinesForOwner = () => {
         </div>}
 
         <div className="space-y-6">
-          {isNative && <NativeCellarToolbar97 section={statusFilter} counts={sectionCounts}
+          {isNative && <NativeCellarToolbar98 section={statusFilter} counts={sectionCounts}
             onSectionChange={section => { navigateToWineSection(section); setFilterType('all'); }}
             onScanLabel={() => navigate('/escanear/etiqueta')}
             onScanMenu={() => navigate('/escanear/carta-vinos')}
@@ -1891,7 +1903,8 @@ const MyWinesForOwner = () => {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                     style={isNative ? { gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))' } : undefined}>
-                    {filteredWines.map((wine) => (
+                    {filteredWines.map((wine, index) => (
+                      <NativeCellarItem98 key={wine.id} native={isNative} wine={wine} snapshot={cellarProfile} resolveImage={index < 4}>
                       <Card key={wine.id} className="relative group">
                         {/* Wine Image */}
                         {wine.image_url && (
@@ -2155,6 +2168,7 @@ const MyWinesForOwner = () => {
                           )}
                         </CardContent>
                       </Card>
+                      </NativeCellarItem98>
                     ))}
                   </div>
                 )}

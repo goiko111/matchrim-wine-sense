@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { restoreNativeVisual98 } from './native-visual98-scope.mjs';
 
 const priorSHA = '90be420fb0fae1dedf75f406130f7e0781410a67151ec55d12ce9e59bbbd29da';
 const replacement = (source, current, prior) => {
@@ -11,6 +12,7 @@ export const restoreNativeCellar97 = (file, source) => {
   if (file !== 'src/pages/MyWines.tsx') return source;
   const responsiveGrid = '                    style={isNative ? { gridTemplateColumns: \'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))\' } : undefined}>';
   if (source.includes(responsiveGrid)) {
+    source = restoreNativeVisual98(file, source);
     assert.equal(createHash('sha256').update(source).digest('hex'), '9dab196c1df21b4e859e0b016a0486bcb135f1ea1fc2062388bb58856427a96e',
       'Whole reviewed native text-responsive grid input');
     source = replacement(source, '                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"\n' + responsiveGrid,

@@ -35,6 +35,7 @@ import MatchrimQuickGuide from '@/components/MatchrimQuickGuide';
 import WineCard from '@/components/WineCard';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
+import { NativeHome98 } from '@/components/NativeHome98';
 
 type HomeLearningInfo = {
   samples: number;
@@ -110,6 +111,25 @@ const NativeAppHome = ({
   const openProfile = () => {
     navigate(user ? '/profile' : buildAuthRedirectPath('/profile'));
   };
+
+  if (isNative) return <NativeHome98 key={ownerId ?? 'anonymous'} ownerId={ownerId} hasProfile={hasCode}
+    loading={loadingCode || loadingRecommendations} unavailable={recommendationsUnavailable}
+    exhausted={recommendationsExhausted} recommendations={recommendations} profile={activeProfile}
+    recent={recentScans} onSelect={wine => setSelection({ wine, ownerId })}
+    detail={<DialogPrimitive.Root open={Boolean(selectedWine)} onOpenChange={open => { if (!open) setSelection(null); }}>
+      <DialogPrimitive.Portal><DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
+        <DialogPrimitive.Content aria-describedby="home-wine98-description" className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[94dvh] w-full max-w-xl flex-col overflow-hidden rounded-t-lg bg-white text-stone-950">
+          <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 px-4 py-2">
+            <DialogPrimitive.Title className="text-base font-semibold">El vino y tú</DialogPrimitive.Title>
+            <DialogPrimitive.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar explicación del vino"><X className="h-5 w-5" aria-hidden="true" /></DialogPrimitive.Close>
+          </div>
+          <div className="min-h-0 overflow-y-auto px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))]">
+            <DialogPrimitive.Description id="home-wine98-description" className="sr-only">La botella, su ficha y cómo encaja con tus gustos.</DialogPrimitive.Description>
+            {selectedWine && <WineCard wine={selectedWine} index={0} profile={activeProfile} />}
+          </div>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>} />;
 
   const homeIntroduction = <>
     <p className="text-sm font-semibold text-red-800">Tu vino, con contexto</p>

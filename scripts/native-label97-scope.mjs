@@ -5,13 +5,14 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { restoreNativeAuth97Guard } from './native-auth97-scope.mjs';
+import { restoreNativeVisual98Guard } from './native-visual98-scope.mjs';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
 const bytes = readFileSync(new URL('./native-label97-scope.json', import.meta.url));
 assert.equal(digest(bytes), 'b0d4c28b7833488a870cd47f38d8a5c32a1788a831c02b0fdb44557e7eb604f3', 'Exact reviewed97 source and guard inverses');
 const scope = JSON.parse(bytes);
 function restore(file, source, kind) {
-  if (kind === 'guard') source = restoreNativeAuth97Guard(file, source);
+  if (kind === 'guard') source = restoreNativeAuth97Guard(file, restoreNativeVisual98Guard(file, source));
   const row = scope.files.find(item => item.file === file && item.kind === kind);
   if (!row || digest(source) === row.beforeHash) return source;
   const marker = kind === 'guard' ? source.includes('native-label97-scope') || source.includes('native-cellar97-scope')
@@ -33,7 +34,7 @@ export function runNativeLabel97Checks() {
   const root = fileURLToPath(new URL('../', import.meta.url));
   let negatives = 0;
   for (const row of scope.files) {
-    const source = row.kind === 'guard' ? restoreNativeAuth97Guard(row.file, readFileSync(resolve(root, row.file), 'utf8'))
+    const source = row.kind === 'guard' ? restoreNativeAuth97Guard(row.file, restoreNativeVisual98Guard(row.file, readFileSync(resolve(root, row.file), 'utf8')))
       : readFileSync(resolve(root, row.file), 'utf8');
     assert.equal(digest(source), row.afterHash, `Current97 scope input: ${row.file}`);
     assert.equal(restore(row.file, source, row.kind), execFileSync('git', ['show', `${scope.baseline}:${row.file}`], { cwd: root, encoding: 'utf8' }));

@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import vm from 'node:vm';
 import ts from 'typescript';
 import { restoreNativeCellar97 } from './native-cellar97-scope.mjs';
+import { nativeVisual98Baseline, restoreNativeVisual98 } from './native-visual98-scope.mjs';
 
 type Element97 = { type: unknown; props: Record<string, unknown> };
 const element = (value: unknown): value is Element97 => Boolean(value && typeof value === 'object' && 'props' in value);
@@ -13,7 +14,10 @@ const text = (value: unknown): string => Array.isArray(value) ? value.map(text).
   : element(value) ? text(value.props.children) : typeof value === 'string' || typeof value === 'number' ? String(value) : '';
 const source = readFileSync('src/components/NativeCellarToolbar97.tsx', 'utf8');
 const file = 'src/pages/MyWines.tsx';
-const page = readFileSync(file, 'utf8');
+const currentPage98 = readFileSync(file, 'utf8');
+// These presentation97 assertions exercise the exact restored legacy source, not the current98 UI.
+const page97 = restoreNativeVisual98(file, currentPage98);
+assert.equal(page97, execFileSync('git', ['show', `${nativeVisual98Baseline}:${file}`], { encoding: 'utf8' }));
 const baseline = execFileSync('git', ['show', `8327ee7:${file}`], { encoding: 'utf8' });
 const exports97: Record<string, unknown> = {};
 const jsx = (type: unknown, props: Record<string, unknown>) => ({ type, props });
@@ -40,8 +44,9 @@ const search = jsx('ExistingWineSearchBar', { onSelectWine: () => calls.push('se
 const props = { section: 'collection', counts, search, onSectionChange: (section: string) => calls.push(section),
   onScanLabel: () => calls.push('label'), onScanMenu: () => calls.push('menu'), onAddManually: () => calls.push('manual') };
 
-check('Exact native-only inverse retains every prior web byte, mutation and affinity handler', () => {
-  assert.equal(restoreNativeCellar97(file, page), baseline);
+check('Current98 restores exact legacy97 before its native-only inverse retains every prior web byte, mutation and affinity handler', () => {
+  assert.equal(restoreNativeCellar97(file, currentPage98), baseline);
+  assert.equal(restoreNativeCellar97(file, page97), baseline);
 });
 check('Web, mutation, native ownership and filter-reset mutations cannot hide behind the inverse', () => {
   for (const [from, to] of [
@@ -49,7 +54,7 @@ check('Web, mutation, native ownership and filter-reset mutations cannot hide be
     ['{isNative && <NativeCellarToolbar97', '{true && <NativeCellarToolbar97'],
     ["navigateToWineSection(section); setFilterType('all');", "navigateToWineSection(section); setFilterType('high_affinity');"],
   ]) {
-    assert(page.includes(from)); assert.throws(() => restoreNativeCellar97(file, page.replace(from, to)));
+    assert(page97.includes(from)); assert.throws(() => restoreNativeCellar97(file, page97.replace(from, to)));
   }
 });
 check('All five sections preserve selected state and real section counts, not a new collection model', () => {
@@ -88,12 +93,12 @@ check('The existing catalogue search stays collapsed and retains its original se
   calls.length = 0; (search.props.onSelectWine as () => void)(); assert.deepEqual(calls, ['search-select']);
 });
 check('Native list precedes the collapsed learning note; legacy explanations are web-only', () => {
-  assert(page.indexOf('<NativeCellarToolbar97') < page.indexOf('{filteredWines.map'));
-  assert(page.indexOf('data-testid="native-cellar-learning97"') > page.indexOf('{filteredWines.map'));
-  assert(page.includes('{statusFilter === \'tasted\' && !isNative && ('));
-  assert(page.includes('search={<WineSearchBar onSelectWine={handleSearchWineSelect} />}'));
-  assert(page.includes("{cellarProfile?.note || 'Cargando tu perfil.'}"));
-  assert(page.includes('wine={wine} snapshot={cellarProfile}'));
+  assert(page97.indexOf('<NativeCellarToolbar97') < page97.indexOf('{filteredWines.map'));
+  assert(page97.indexOf('data-testid="native-cellar-learning97"') > page97.indexOf('{filteredWines.map'));
+  assert(page97.includes('{statusFilter === \'tasted\' && !isNative && ('));
+  assert(page97.includes('search={<WineSearchBar onSelectWine={handleSearchWineSelect} />}'));
+  assert(page97.includes("{cellarProfile?.note || 'Cargando tu perfil.'}"));
+  assert(page97.includes('wine={wine} snapshot={cellarProfile}'));
 });
 check('Compact controls retain labels, 44px minimums and no new cards or data services', () => {
   assert(String(render(props).props.className).includes('space-y-2'));
@@ -110,10 +115,10 @@ check('Native heading can wrap its row without splitting the name; list spacing 
   assert.equal(text(heading), 'Bodega');
   assert(String(heading.props.className).includes('[overflow-wrap:normal]'));
   assert(nodes.some(node => node.type === 'div' && String(node.props.className).includes('flex-wrap items-center justify-between')));
-  assert(page.includes("className={isNative ? 'mt-2 space-y-3' : 'mt-6 space-y-6'}"));
+  assert(page97.includes("className={isNative ? 'mt-2 space-y-3' : 'mt-6 space-y-6'}"));
 });
-check('Actual manual-name lookup uses catalogue-only on native and exact legacy body on web', () => {
-  const ast = ts.createSourceFile(file, page, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+check('Restored legacy97 manual-name lookup uses catalogue-only on native and exact legacy body on web', () => {
+  const ast = ts.createSourceFile(file, page97, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   const effects: ts.ArrowFunction[] = [];
   const visit = (node: ts.Node) => {
     if (ts.isCallExpression(node) && node.expression.getText(ast) === 'useEffect'
@@ -145,7 +150,8 @@ check('Actual manual-name lookup uses catalogue-only on native and exact legacy 
       ? { query: 'Roda I', limit: 6, catalogOnly: true } : { query: 'Roda I', limit: 6 }));
     cleanup();
   }
-  assert.throws(() => restoreNativeCellar97(file, page.replace('limit: 6, catalogOnly: true', 'limit: 6, catalogOnly: false')));
+  assert.throws(() => restoreNativeCellar97(file, page97.replace('limit: 6, catalogOnly: true', 'limit: 6, catalogOnly: false')));
 });
 console.log(JSON.stringify({ passed: checks, failed: 0, remoteCalls: remote,
-  scope: 'Native toolbar actual TSX in offline host, exact full-page source inverse and callback ownership. Browser/UIKit, authentication, saved data and taste accuracy are separate gates.' }));
+  presentationRevision: 'legacy97', restoredFrom: 'reviewed98', sourceBaseline: nativeVisual98Baseline,
+  scope: 'Legacy97 toolbar actual TSX in offline host, exact98-to97 full-page source inverse and callback ownership. No current98 presentation claim. Browser/UIKit, authentication, saved data and taste accuracy are separate gates.' }));

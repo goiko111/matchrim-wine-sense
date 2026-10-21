@@ -1,5 +1,6 @@
 import { canonicalProducerKey, hasLabelProducerRoleConflict, isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 import { isNonWineIdentity } from './wineCategory';
+import { safeWineImageUrl98 } from './wineImage98';
 
 export interface WinerimOriginalIdentity {
   name: string;
@@ -21,6 +22,7 @@ export interface WinerimOriginalSheet {
   country?: string | null;
   grapes: string[];
   url: string | null;
+  photo?: string;
   detailVerified?: boolean;
   sensoryAttributes?: WinerimOriginalSensory | null;
 }
@@ -160,10 +162,12 @@ export const isVerifiedWinerimSheetForIdentity = (input: WinerimOriginalIdentity
 
 export const catalogWineFromVerifiedSheet = (input: WinerimOriginalIdentity, sheet?: WinerimOriginalSheet | null) => {
   if (!isVerifiedWinerimSheetForIdentity(input, sheet) || !sheet) return null;
+  const photo = safeWineImageUrl98(sheet.photo);
   return {
     id: sheet.id, name: sheet.name, winery: sheet.producer || undefined,
     vintage: sheet.vintage || undefined, region: sheet.region || undefined, country: sheet.country || undefined,
     grapes: sheet.grapes, tastingAttributes: validateWinerimOriginalSensory(sheet.sensoryAttributes),
+    ...(photo ? { photo } : {}),
     originalSheetSource: 'winerim-api' as const, originalSheetUrl: sheet.url!, verifiedOriginalSheet: sheet,
   };
 };
@@ -236,14 +240,17 @@ export const lookupWinerimOriginalSheet = async (
     if (!matches.length) return { status: 'not-found' };
     if (matches.length !== 1) return { status: 'ambiguous' };
     const selected = matches[0];
-    const detail = parseLibraryWine(await read(`${root}/${selected.id}/${selected.slug}`));
+    const detailPayload = record(await read(`${root}/${selected.id}/${selected.slug}`));
+    const detail = parseLibraryWine(detailPayload);
     if (!detail || detail.id !== selected.id || detail.slug !== selected.slug
       || !matchesLibraryIdentity(input, detail) || !matchesLibraryIdentity(selected, detail)) return { status: 'ambiguous' };
     if (controller.signal.aborted) throw new DOMException('Aborted', 'AbortError');
+    const photo = safeWineImageUrl98(detailPayload?.photo);
     const sheet = createWinerimOriginalSheet({ id: detail.id, name: detail.name, winery: detail.producer,
       vintage: detail.vintage, region: detail.region, grapes: detail.grapes, originalSheetSource: 'winerim-api',
       originalSheetUrl: `https://web.winerim.com/the-library/wines/${detail.id}/${detail.slug}` });
-    return sheet ? { status: 'verified', sheet: { ...sheet, country: detail.country, detailVerified: true, sensoryAttributes: detail.sensoryAttributes } }
+    return sheet ? { status: 'verified', sheet: { ...sheet, country: detail.country, detailVerified: true,
+      sensoryAttributes: detail.sensoryAttributes, ...(photo ? { photo } : {}) } }
       : { status: 'unavailable' };
   } catch {
     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');

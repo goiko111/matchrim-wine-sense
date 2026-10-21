@@ -11,11 +11,12 @@ import { canLookupWinerimOriginal, catalogWineFromVerifiedSheet, isVerifiedWiner
   lookupWinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 import { nativeLabelKeyboard96, restoreNativeLabelKeyboard96 } from './check-matchrim-label-keyboard96';
 import { restoreManualLookup96, restoreManualLookupGuard96, manualLookup96Result } from './check-matchrim-manual-lookup-bridge96.mjs';
+import { restoreNativeVisual98 } from './native-visual98-scope.mjs';
 
 // Synthetic contracts only. No images, ground truth, private paths or real API.
 const baseline = 'ebee038059778f1f10bdb5dd647bccb8324fb580';
 const before = (path: string) => execFileSync('git', ['show', `${baseline}:${path}`], { encoding: 'utf8' });
-const current = (path: string) => restoreManualLookupGuard96(path, restoreManualLookup96(path, readFileSync(path, 'utf8')));
+const current = (path: string) => restoreManualLookupGuard96(path, restoreManualLookup96(path, restoreNativeVisual98(path, readFileSync(path, 'utf8'))));
 const labelUi96 = {
   path: 'src/components/wine-import/MultiWineLabelScanner.tsx',
   revision: '2dc2246207e600d1767637803891383f2aaad60c',

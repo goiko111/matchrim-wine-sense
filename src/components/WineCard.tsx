@@ -10,6 +10,9 @@ import { buildAffinityInsights } from '@/utils/wineAffinityExplanation';
 import { getWinerimPriceDisplay } from '@/utils/winerimPrice';
 import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
+import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
+import { NativeWineSave98 } from '@/components/NativeWineSave98';
+import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 
 interface WineCardProps {
   wine: WinerimWineWithMatch;
@@ -26,14 +29,16 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
       <div ref={(node) => setWineRef?.(wine.id, node)}
         data-testid="native-recommendation-card"
         className={`min-w-0 border-b border-stone-200 py-4 text-left ${isHighlighted ? 'border-l-2 border-l-red-800 pl-3' : ''}`}>
-        <h4 className="break-words text-base font-semibold leading-6 text-slate-950">{wine.name}</h4>
-        <p className="mt-1 break-words text-sm leading-6 text-stone-600">{[wine.winery, wine.vintage, wine.region].filter(Boolean).join(' · ')}</p>
+        <div className="flex min-w-0 flex-wrap items-start gap-4">
+          <NativeWinePhoto98 src={wine.photo} name={wine.name} identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage }} resolveMissing className="h-[176px] w-[96px]" />
+          <div className="min-w-[min(100%,12rem)] flex-1 pt-2">
+            <h4 className="break-words text-xl font-semibold leading-7 text-slate-950">{wine.name}</h4>
+            <p className="mt-2 break-words text-sm leading-6 text-stone-600">{[wine.winery, wine.vintage, wine.region].filter(Boolean).join(' · ')}</p>
+          </div>
+        </div>
         <div className="mt-3"><NativeAffinitySummary result={evidence.result} /></div>
-        {evidence.sourceAvailable && <Button type="button" variant="outline"
-          className="mt-3 min-h-11 w-full whitespace-normal text-left"
-          onClick={() => window.open(buildWinerimWineUrl(wine), '_blank', 'noopener,noreferrer')}>
-          <ExternalLink aria-hidden="true" className="mr-2 h-4 w-4 shrink-0" />Ver en Winerim
-        </Button>}
+        {evidence.sourceAvailable && <div className="mt-4"><WinerimSheetLookup identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country }} /></div>}
+        <NativeWineSave98 wine={wine} />
       </div>
     );
   }
