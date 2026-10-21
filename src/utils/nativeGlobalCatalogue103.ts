@@ -121,7 +121,7 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
     try { return await work(read); }
     finally { clearTimeout(timer); signal?.removeEventListener('abort', abort); controller.abort(); }
   };
-  const search = async (query: string, signal?: AbortSignal, allowPartialProposals = false) => {
+  const search = async (query: string, signal?: AbortSignal, allowPartialProposals = false, paginateProposals = false) => {
     if (!text.safeParse(query).success || query.trim().length < 2 || query.length > 120) return { status: 'identity-required' as const, rows: [] as Row[] };
     try {
       return await operation(signal, async read => {
@@ -129,7 +129,19 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
           .safeParse(await read(`${root}?${new URLSearchParams({ page: '1', text: query.trim(), store: '1' })}`));
         if (!page.success || page.data.count < page.data.results.length) return { status: 'incomplete' as const, rows: [] as Row[] };
         if (page.data.count !== page.data.results.length && !allowPartialProposals) return { status: 'incomplete' as const, rows: [] as Row[] };
-        const rows = page.data.results;
+        const rows = [...page.data.results];
+        // Only the explicit proposal flow may expand small, bounded searches.
+        // Automatic identity lookup retains its strict first-page contract.
+        if (paginateProposals && page.data.count > rows.length && page.data.count <= 60) {
+          if (rows.length !== 20) return { status: 'incomplete' as const, rows: [] as Row[] };
+          for (let number = 2; number <= Math.ceil(page.data.count / 20); number++) {
+            const next = z.object({ count: z.literal(page.data.count), page: z.literal(number), results: z.array(rowSchema).max(20) })
+              .safeParse(await read(`${root}?${new URLSearchParams({ page: String(number), text: query.trim(), store: '1' })}`));
+            const expected = Math.min(20, page.data.count - (number - 1) * 20);
+            if (!next.success || next.data.results.length !== expected) return { status: 'incomplete' as const, rows: [] as Row[] };
+            rows.push(...next.data.results);
+          }
+        }
         if (new Set(rows.map(row => row.id)).size !== rows.length) return { status: 'ambiguous' as const, rows: [] as Row[] };
         for (const row of rows) { Object.freeze(row); observedSelections.add(row); }
         return { status: page.data.count === rows.length ? 'complete' as const : 'partial' as const,
@@ -185,7 +197,8 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
       || (selected.vintage != null && String(input.vintage ?? '') !== String(selected.vintage))) return { status: 'identity-required' };
     return verifySelection(input, selected, signal);
   };
-  return { search, lookup, confirmSelection };
+  const searchProposals = (query: string, signal?: AbortSignal) => search(query, signal, true, true);
+  return { search, searchProposals, lookup, confirmSelection };
 };
 export const lookupGlobalCatalogue103 = (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, signal?: AbortSignal) =>
   createGlobalCatalogue103().lookup(input, signal);

@@ -78,7 +78,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
       const rows: PublicGlobalRow103[] = [];
       let unavailable = false;
       for (const query of globalRecoveryQueries104(candidate.name, evidence, !useLocalReading && candidate.source === 'manual')) {
-        const page = await client.search(query, controller.signal, true); if (!active()) return;
+        const page = await client.searchProposals(query, controller.signal); if (!active()) return;
         unavailable ||= page.status === 'unavailable';
         rows.push(...page.rows);
       }

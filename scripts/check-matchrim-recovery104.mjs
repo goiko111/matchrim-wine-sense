@@ -37,7 +37,7 @@ function host(client, input = candidate, local = null) {
       if (name.endsWith('/nativeOCR106')) return { localOCRAvailable106: () => Boolean(local), readLocalWineText106: local };
       if (name.endsWith('/wineYearRole105')) return { wineYearRoles105 };
       if (name.endsWith('/localOCRFragments108')) return { suggestLocalOCRFragments108 };
-      if (name.endsWith('/nativeGlobalCatalogue103')) return { createGlobalCatalogue103: () => client,
+      if (name.endsWith('/nativeGlobalCatalogue103')) return { createGlobalCatalogue103: () => ({ ...client, searchProposals: client.search }),
         independentGlobalProducer103: () => false,
         applyGlobalCatalogue103: (value, profile, wine, manual) => ({ ...value, globalRecord: wine, appliedProfile: profile, manual }) };
       if (name.endsWith('/nativeCatalogAdmission97')) return { canAdmitNativeCatalogLookup97: () => false };

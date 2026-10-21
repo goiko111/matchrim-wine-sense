@@ -72,8 +72,11 @@ export const makeCellarReferenceStyle110 = (
   const attributes = parsedAttributes.data as CellarReferenceStyleAttributes110;
   const attributeSignature = signature(attributes);
   const previous = readCellarReferenceStyle110(wine);
-  if (previous && previous.attribute_signature === attributeSignature
-    && JSON.stringify(previous.public_reference) === JSON.stringify(publicReference)) return previous as unknown as Json;
+  if (previous) {
+    // A catalogue refresh must never redefine what the user saw when saving.
+    // Keep that immutable snapshot; a different public binding needs a separate migration.
+    return JSON.stringify(previous.public_reference) === JSON.stringify(publicReference) ? previous as unknown as Json : null;
+  }
   const profile = validSnapshot(snapshot);
   const initial = profile ? { score: calculateLocalMatchrimAffinity(profile.profile, attributes),
     recorded_at: recordedAt, profile: profile.profile, profile_source: profile.profile_source, samples: profile.samples } : null;

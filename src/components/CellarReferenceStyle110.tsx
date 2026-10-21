@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
-import { CircleHelp } from 'lucide-react';
+import { CircleHelp, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import type { ScanProfileSnapshot } from '@/utils/scanProfile';
+import { canRetryScanProfile, type ScanProfileSnapshot } from '@/utils/scanProfile';
 import type { CellarReferenceStyleView110 } from '@/utils/cellarReferenceStyle110';
 import { buildAffinityInsights } from '@/utils/wineAffinityExplanation';
 
-export const CellarReferenceStyle110 = ({ view, snapshot }: { view: CellarReferenceStyleView110; snapshot: ScanProfileSnapshot | null }) => {
+export const CellarReferenceStyle110 = ({ view, snapshot, onRetryProfile }: {
+  view: CellarReferenceStyleView110; snapshot: ScanProfileSnapshot | null; onRetryProfile: () => void;
+}) => {
   const insights = buildAffinityInsights(snapshot?.profile, view.attributes);
   const names = { potente: 'cuerpo', acidez: 'frescura', dulce: 'dulzor', tanico: 'tanino', afrutado: 'fruta' };
   const matches = insights?.positives.slice(0, 2).map(item => names[item.key]).join(' y ');
@@ -18,14 +20,19 @@ export const CellarReferenceStyle110 = ({ view, snapshot }: { view: CellarRefere
     {view.current !== null ? <>
       {matches && <p className="text-sm leading-6 text-stone-800">Encaja contigo por su {matches}.</p>}
       {friction && <p className="text-sm leading-6 text-stone-800">{friction.direction === 'higher' ? 'Más' : 'Menos'} {names[friction.key]} que tu preferencia habitual.</p>}
-    </> : <Button asChild className="h-auto min-h-11 w-full whitespace-normal py-3"><Link to="/matchrim">Completar mi test de gustos</Link></Button>}
+    </> : !snapshot ? <p role="status" className="text-sm leading-6">Cargando tu perfil de gustos.</p>
+      : canRetryScanProfile(snapshot) ? <div className="space-y-2">
+        <p role="status" className="text-sm leading-6">No se ha podido cargar tu perfil. No necesitas repetir el test.</p>
+        <Button type="button" variant="outline" className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3" onClick={onRetryProfile}><RefreshCw aria-hidden="true" className="h-4 w-4 shrink-0" />Reintentar perfil</Button>
+      </div>
+        : <Button asChild className="h-auto min-h-11 w-full whitespace-normal py-3"><Link to="/matchrim">Completar mi test de gustos</Link></Button>}
     {view.initial && <p className="text-xs leading-5 text-stone-600">Al guardar: ≈{view.initial.score}/100 por estilo.
       {view.delta !== null && view.delta !== 0 && ` Tu perfil actual cambia esta orientación ${view.delta > 0 ? '+' : ''}${view.delta} puntos.`}
     </p>}
     <p className="text-xs leading-5 text-stone-600">Ficha Winerim sin añada. Orienta sobre el estilo, no verifica los datos de tu cosecha.</p>
     <details className="text-xs leading-5 text-stone-600">
       <summary className="flex min-h-11 cursor-pointer items-center gap-2 font-medium"><CircleHelp aria-hidden="true" className="h-4 w-4 shrink-0" />Origen y límites</summary>
-      <p>La ficha pública no especifica si los atributos proceden de una cata o han sido generados. La cifra no es una probabilidad de que te guste y estos datos de referencia no se usan para enseñar al perfil.</p>
+      <p>Compara tu perfil actual con la ficha guardada. La ficha pública no especifica si los atributos proceden de una cata o han sido generados. La cifra no es una probabilidad de que te guste y estos datos de referencia no se usan para enseñar al perfil.</p>
     </details>
   </div>;
 };

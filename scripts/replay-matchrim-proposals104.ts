@@ -18,6 +18,21 @@ for (const receipt of requests) {
   assert.equal(createHash('sha256').update(body).digest('hex'), receipt.sha256);
   if (receipt.status === 200) cache.set(receipt.url, body);
 }
+const overlay = process.argv[3] ? path.resolve(process.argv[3]) : null;
+if (overlay) {
+  assert(overlay.startsWith(path.resolve('qa-artifacts') + '/'));
+  const later = JSON.parse(fs.readFileSync(path.join(overlay, 'REQUESTS.json'), 'utf8'));
+  for (const receipt of later) {
+    assert(/^response-\d{3}\.json$/.test(receipt.body));
+    const url = new URL(receipt.url);
+    assert.equal(url.origin, 'https://app.winerim.com');
+    assert.equal(url.pathname, '/api/v1/restaurant/00000000-0000-0000-0000-000000000001/wines');
+    assert(['2', '3'].includes(url.searchParams.get('page')));
+    const bytes = fs.readFileSync(path.join(overlay, receipt.body));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), receipt.sha256);
+    if (receipt.status === 200) cache.set(receipt.url, bytes);
+  }
+}
 let reads = 0;
 const client = createGlobalCatalogue103(async url => {
   const body = cache.get(String(url)); assert(body, 'No new requests permitted'); reads++;
@@ -40,7 +55,8 @@ for (const scene of progress.rows) {
   const excluded = new Set(yearRoles.filter(role => ['award', 'foundation', 'ambiguous', 'unsupported'].includes(role.role)).map(role => String(role.year)));
   const possibleYears = years.filter(year => !excluded.has(year));
   const rows: PublicGlobalRow103[] = [];
-  for (const query of scene.queries) rows.push(...(await client.search(query.query, undefined, true)).rows);
+  for (const query of scene.queries) rows.push(...(overlay ? await client.searchProposals(query.query)
+    : await client.search(query.query, undefined, true)).rows);
   predictions.push({ imageId: scene.imageId, rawStandaloneYears: years, yearRoles,
     reconstructedFragments: fragments.alternatives,
     candidateVintageHint: possibleYears.length === 1 ? Number(possibleYears[0]) : null,
@@ -62,5 +78,5 @@ const summary = { scenes: rows.length, scenesWithProposals: rows.filter(row => r
 fs.writeFileSync(path.join(output, 'REPORT.json'), JSON.stringify({ scope: 'Assisted top3 ranking of each scene own frozen OCR-query pages. NOT automatic identification, live detector accuracy, all-catalogue recall or verified vintage affinity. Two initial OCR queries are unchanged from acquisition103, not a fresh validation of query generation104.',
   yearRoleScope: 'Uses frozen Mac OCR geometry, not freshly measured iPhone OCR. Initial provider evidence has text fragments; native106 explicit reread can supply device geometry but requires independent native validation. Reconstruction is suggestion-only, not canonical identity evidence.',
   sourceFingerprints: Object.fromEntries(['src/utils/globalWineProposals104.ts', 'src/utils/nativeGlobalCatalogue103.ts', 'src/utils/wineYearRole105.ts', 'src/utils/localOCRFragments108.ts', 'scripts/replay-matchrim-proposals104.ts'].map(file => [file, createHash('sha256').update(fs.readFileSync(file)).digest('hex')])),
-  expectedUsedBeforeRanking: false, summary, rows }, null, 2), { mode: 0o600 });
+  expectedUsedBeforeRanking: false, overlay, summary, rows }, null, 2), { mode: 0o600 });
 console.log(JSON.stringify(summary));

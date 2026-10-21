@@ -13,7 +13,9 @@ When a user explicitly selects an independently verified public Winerim referenc
 
 ## Tests And Gates
 
-`node --import tsx scripts/check-matchrim-cellar-style110.ts` passes nine contract groups, including 50 distinct synthetic profiles, serialization, invalid data, save acknowledgment and rejected-wine filtering. These are mathematical consistency checks, not 50 real users or evidence of prediction accuracy.
+`node --import tsx scripts/check-matchrim-cellar-style110.ts` passes ten contract groups, including 50 distinct synthetic profiles, serialization, invalid data, save acknowledgment and rejected-wine filtering. These are mathematical consistency checks, not 50 real users or evidence of prediction accuracy.
+
+A read-only independent review reproduced two defects before compilation. Both are fixed: a catalogue attribute revision can no longer reset the saved initial record (including an absent initial profile), and loading/profile-read failures no longer ask a user to repeat an existing test. The current comparison deliberately retains the originally saved catalogue snapshot; catalogue refresh/version migration is not silently performed. `TSX_TSCONFIG_PATH=tsconfig.app.json node --import tsx scripts/check-matchrim-cellar-style110-ui.tsx` passes six actual React presentation groups for loading, retry, missing/invalid and scored states. The first harness invocation used the root tsconfig's classic JSX transform and failed with `React is not defined`; the app-specific JSX configuration resolves that test setup issue without changing production imports.
 
 Focused lint, existing cellar scale and reload tests pass. Full typecheck, production-mode bundle, responsive visual regression, genuine simulator gallery flow and native accessibility are pending a new candidate103; frozen102 receipts do not certify110.
 

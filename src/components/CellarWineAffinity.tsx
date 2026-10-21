@@ -70,7 +70,7 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
     </>
   );
   const calculation = referenceStyle ? <>
-    <CellarReferenceStyle110 view={referenceStyle} snapshot={snapshot} />
+    <CellarReferenceStyle110 view={referenceStyle} snapshot={snapshot} onRetryProfile={onRetryProfile} />
     <details className="text-sm"><summary className="flex min-h-11 cursor-pointer items-center gap-2 font-medium"><CircleHelp className="h-4 w-4 shrink-0" aria-hidden="true" />Datos de esta añada</summary>
       <div className="space-y-2 pt-2">{exactCalculation}</div>
     </details>

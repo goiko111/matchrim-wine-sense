@@ -113,6 +113,16 @@ await test('Exact-year and missing-sensory catalogue records cannot mint referen
   assert.equal(makeCellarReferenceStyle110(identity, missing.wine, snapshot), null);
 });
 
+await test('A revised catalogue cannot reset initial history or backfill an initially absent profile', async () => {
+  const revised = await catalogue({ ...row, tastingAttributes: { ...row.tastingAttributes, power: 0 } }).lookup(candidate);
+  assert('wine' in revised);
+  const later = { ...snapshot, profile: { ...profile, potente: 0 }, source: 'learned' as const, samples: 12 };
+  assert.deepEqual(makeCellarReferenceStyle110(saved, revised.wine, later, '2026-10-22T19:00:00.000Z'), payload);
+  const unavailable = makeCellarReferenceStyle110(identity, global, null, recordedAt); assert(unavailable);
+  assert.deepEqual(makeCellarReferenceStyle110(styleWine(unavailable), revised.wine, later,
+    '2026-10-22T19:00:00.000Z'), unavailable);
+});
+
 await test('Unavailable and invalid profiles never produce current or initial style affinity', () => {
   const invalidSnapshots: ScanProfileSnapshot[] = [null, { ...snapshot, profile: null },
     { ...snapshot, source: 'unavailable' }, { ...snapshot, status: 'invalid' },
