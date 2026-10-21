@@ -10,7 +10,7 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
 const localOCR = scenarios.some(state => ['local-ocr106', 'local-first109'].includes(state)) ? JSON.parse(fs.readFileSync('qa-artifacts/night105-20261021/native-ocr106-r3/OCR.json')).results.find(row => row.file === 'img-061.jpg').response.data : null;
@@ -18,6 +18,7 @@ const localRequest = localOCR && JSON.parse(fs.readFileSync('qa-artifacts/global
 const localRows = localRequest ? JSON.parse(fs.readFileSync(path.join('qa-artifacts/global103-20261021/ocr200-r1', localRequest.body))).results : [];
 let scenario = 'observed-NV-reference';
 let savedWines = [];
+let profileHistoryHealthy = false;
 const image = '/Users/GOIKO/Downloads/IMG_8324.PNG';
 const guard = () => {
   const lease = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases['heavy-local'];
@@ -34,7 +35,8 @@ const origin = 'http://127.0.0.1:4898';
 const owner = '00000000-0000-4000-8000-000000010201';
 const profile = { potente: 4, acidez: 3, dulce: 1, tanico: 3, afrutado: 4 };
 let activeProfile = profile;
-const user = { id: owner, aud: 'authenticated', role: 'authenticated', email: 'native102@example.invalid',
+const profileEmail116 = 'synthetic-account115-' + 'long'.repeat(24) + '@example.invalid';
+const user = { id: owner, aud: 'authenticated', role: 'authenticated', email: scenarios.includes('profile-history116') ? profileEmail116 : 'native102@example.invalid',
   app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: {}, created_at: '2026-10-21T00:00:00Z' };
 const jwt = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url') + '.'
   + Buffer.from(JSON.stringify({ sub: owner, exp: 4102444800, role: 'authenticated' })).toString('base64url') + '.synthetic-not-a-real-signature';
@@ -66,6 +68,11 @@ try {
     if (url.pathname === '/auth/v1/user') return json(user);
     if (url.pathname.startsWith('/rest/v1/')) {
       const table = url.pathname.split('/').at(-1);
+      if (table === 'quiz_results' && scenario === 'profile-history116') {
+        if (!profileHistoryHealthy) return route.fulfill({ status: 503, contentType: 'application/json',
+          body: JSON.stringify({ message: 'Controlled offline regression', code: 'QA116' }), headers: { 'Access-Control-Allow-Origin': origin } });
+        return json([{ id: 'qa-quiz116', ...activeProfile, created_at: '2026-10-21T00:00:00Z', wine_recommendations: [] }]);
+      }
       if (table === 'quiz_results') return json(url.searchParams.get('select')?.split(',').includes('id') ? [{ id: 'qa-quiz', ...activeProfile }] : activeProfile);
       if (table === 'user_wines') {
         if (request.method() === 'POST') {
@@ -84,6 +91,7 @@ try {
       }
       return json(table === 'profiles' ? { id: owner, preferred_language: 'ES' } : []);
     }
+    if (scenario === 'profile-history116' && url.pathname.endsWith('/matchrim-recommendations')) return json([]);
     if (url.pathname.endsWith('/detect-wine-regions-v72')) return json({ regions: [{ box: { x: 3, y: 5, width: 94, height: 90 }, confidence: .99,
       object_type: 'bottle', quality: { glare: 'low', occlusion: 'low', legibility: 'good' } }],
       coverage: { status: 'reported_complete', detected_objects: 1, estimated_visible_objects: 1, confidence: .99 } });
@@ -131,7 +139,13 @@ try {
   }, { user, jwt, profile, owner, localOCR });
   const page = await context.newPage(); page.setDefaultTimeout(10000);
   page.on('pageerror', error => report.pageErrors.push(String(error)));
-  page.on('console', message => { if (message.type() === 'error') report.consoleErrors.push(message.text()); });
+  page.on('console', message => {
+    if (message.type() !== 'error') return;
+    if (scenario === 'profile-history116' && message.location().url.includes('/rest/v1/quiz_results')
+      && /503/.test(message.text())) {
+      report.expectedOfflineConsoleErrors = [...(report.expectedOfflineConsoleErrors || []), message.text()];
+    } else report.consoleErrors.push(message.text());
+  });
   const capture = async name => {
     guard();
     const geometry = await page.evaluate(() => ({ viewport: innerWidth, viewportHeight: innerHeight, document: document.documentElement.scrollWidth,
@@ -158,6 +172,37 @@ try {
     savedWines = [];
     activeProfile = profile;
     await page.setViewportSize({ width: 393, height: 852 });
+    if (state === 'profile-history116') {
+      report.profileScope116 = 'Actual native-branch React Profile with fully intercepted synthetic auth and503/history recovery. Not a real account, native runtime, model or production write.';
+      const email = profileEmail116;
+      await page.goto(origin + '/profile', { waitUntil: 'networkidle' });
+      await page.getByRole('heading', { name: 'No hemos podido cargar tu test', exact: true }).waitFor();
+      assert.equal(await page.getByRole('button', { name: 'Realizar Test de Perfil', exact: true }).count(), 0);
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        const retry = page.getByRole('button', { name: 'Reintentar perfil', exact: true });
+        await retry.scrollIntoViewIfNeeded(); const bounds = await retry.boundingBox(); assert(bounds && bounds.height >= 43.5);
+        await capture('profile116-error-' + width + '-' + text);
+      }
+      profileHistoryHealthy = true;
+      await page.getByRole('button', { name: 'Reintentar perfil', exact: true }).click();
+      await page.getByRole('heading', { name: 'Mi Perfil', exact: true }).waitFor();
+      await page.getByRole('tab', { name: 'Perfil Sensorial', exact: true }).waitFor();
+      assert.equal(await page.getByRole('heading', { name: 'No hemos podido cargar tu test', exact: true }).count(), 0);
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await page.getByText('Tu cuenta', { exact: true }).scrollIntoViewIfNeeded();
+        assert(await page.getByText(email, { exact: true }).isVisible());
+        const settings = await page.getByRole('button', { name: 'Ajustes de cuenta', exact: true }).boundingBox();
+        assert(settings && settings.width >= 43.5 && settings.height >= 43.5 && settings.x >= 0 && settings.x + settings.width <= width + 1);
+        await capture('profile115-account-' + width + '-' + text);
+      }
+      report.profileHistory116 = { errorDistinctFromEmpty: true, retryRecovered: true, minimumTouchTargets: true,
+        syntheticLongEmailVisible: true, productionWrites: 0 };
+      continue;
+    }
     await page.goto(origin + '/escanear/etiqueta', { waitUntil: 'networkidle' });
     const privacy = page.getByRole('checkbox', { name: 'He leído el aviso de privacidad del escáner' });
     if (await privacy.isVisible()) {
