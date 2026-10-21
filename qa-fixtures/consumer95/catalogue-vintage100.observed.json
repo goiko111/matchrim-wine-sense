@@ -1,0 +1,24 @@
+{
+  "observedDate": "2026-10-21",
+  "source": "Anonymous GET, existing public Winerim Library API via searchWinerimCandidates95",
+  "scope": "Identity-only console projection, not a raw signed response, master catalogue or verified sensory sheet",
+  "anonymousPublicGETs": 6,
+  "paidProviderCalls": 0,
+  "queries": [
+    { "query": "Chivite", "status": "proposals", "total": 3 },
+    { "query": "Chivite La Zorrera", "status": "proposals", "total": 1,
+      "rows": [{ "id": "279839", "name": "La Zorrera", "winery": "Chivite", "vintage": "2019" }] },
+    { "query": "Vidure", "status": "empty" }
+  ],
+  "contradictoryRow": {
+    "id": 279002,
+    "name": "Chivite Colección 125 Blanco 2023",
+    "subname": null,
+    "winery": "Chivite",
+    "vintage": "2022",
+    "slugname": "Chivite-Coleccion-125-Blanco-2023_2022",
+    "type": "blanco",
+    "region": "Navarra"
+  },
+  "interpretation": "The name suffix and separate vintage disagree. Do not decide which is correct or borrow sensory values. Review is required; no claim that the wine or source row does not exist."
+}

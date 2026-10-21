@@ -1,5 +1,6 @@
 import { canonicalProducerKey } from './winerimLabelIdentity';
 import { canLookupWinerimOriginal, type WinerimOriginalIdentity } from './winerimOriginalSheet';
+import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 
 export type NativeCatalogAdmissionCandidate97 = WinerimOriginalIdentity & {
   confidence: number;
@@ -18,7 +19,7 @@ const distinctiveTokens = (value: string, producer = false) => tokens(value)
 export const canAdmitNativeCatalogLookup97 = (candidate: NativeCatalogAdmissionCandidate97): boolean => {
   if (!candidate || !Number.isFinite(candidate.confidence) || candidate.confidence < 0.72
     || !Array.isArray(candidate.evidence) || candidate.evidence.some(fragment => typeof fragment !== 'string')
-    || !canLookupWinerimOriginal(candidate)) return false;
+    || !canLookupWinerimOriginal(candidate) || hasConflictingNativeVintage100(candidate)) return false;
 
   const fragments = candidate.evidence.map(tokens).filter(fragment => fragment.length > 0);
   // Punctuation/spacing variants of the same letters are not independent fragments.
