@@ -23,6 +23,8 @@ import { WinerimCandidatePicker95 } from '@/components/WinerimCandidatePicker95'
 import { confirmedLabelCatalogIdentity95 } from '@/utils/confirmedCatalogIdentity95';
 import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
 import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';
+import { applyNativeMaster102, lookupNativeMaster102, nativeMasterAudit102 } from '@/utils/nativeMasterCatalog102';
+import { hasMissingVisibleQualifier102 } from '@/utils/nativeWineQualifier102';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';
@@ -160,6 +162,7 @@ const userFacingScanError = (error: unknown) => {
 const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScannerProps) => {
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
+  const nativeMasterUrl = isNative ? import.meta.env.VITE_MATCHRIM_MASTER_CATALOG_URL : undefined;
   const [preview, setPreview] = useState<string | null>(null);
   const [quality, setQuality] = useState<ImageQualityReport | null>(null);
   const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);
@@ -330,6 +333,17 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const enrichCandidate = async (candidate: WineCandidate, signal: AbortSignal, budget: ScanRequestBudget) => {
+    if (isNative && !isMatchrimFixtureQaEnabled && hasMissingVisibleQualifier102(candidate)) {
+      return applyScanWineEvidence({ ...candidate, uncertaintyReasons: [...new Set([...candidate.uncertaintyReasons,
+        'El nombre propuesto omite un calificador legible de la etiqueta. Revisa la referencia antes de elegir.'])] },
+      scanProfileRef.current?.profile ?? null, null);
+    }
+    if (isNative && !isMatchrimFixtureQaEnabled && nativeMasterUrl && canAdmitNativeCatalogLookup97(candidate)) {
+      const master = await lookupNativeMaster102(candidate, nativeMasterUrl, signal);
+      if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+      if (master.status === 'verified') return applyNativeMaster102(candidate, scanProfileRef.current?.profile ?? null, master.record);
+      if (master.status === 'ambiguous') return applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, null);
+    }
     let enriched = candidate;
     const canResolveCanonically = candidate.confidence >= 0.72
       && candidate.evidence.length >= 2
@@ -857,9 +871,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             vintage: candidate.vintage, region: candidate.region, country: candidate.country };
           const evidence = isNative && candidate.sensorySource === 'catalog' && candidate.canonicalId && candidate.sensoryAttributes
             ? makeCellarCatalogEvidence(identity, candidate.canonicalId, candidate.sensoryAttributes) : null;
+          const masterAudit = isNative ? nativeMasterAudit102(candidate) : null;
           const details = evidence ? withCellarInitialAffinity({ ...identity,
             sensory_attributes: candidate.sensoryAttributes,
-            place_details: { bodega_sensory_evidence: evidence } }, scanProfileRef.current, 'saved') : null;
+            place_details: { bodega_sensory_evidence: evidence,
+              ...(masterAudit ? { winerim_master_evidence: masterAudit } : {}) } }, scanProfileRef.current, 'saved') : null;
           return {
           nombre: candidate.name,
           productor: candidate.producer,
@@ -1436,6 +1452,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
                     input?.focus({ preventScroll: true });
                   }} />}
+                {isNative && selectedCandidate && nativeMasterAudit102(selectedCandidate) && <p className="text-sm leading-6 text-stone-700" role="note">
+                  {selectedCandidate.affinityReason}
+                </p>}
                 {selectedRegion.error && selectedRegion.candidates.length > 0 && (
                   <div role="alert" data-testid="region-analysis-error" className="border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950">
                     <p className="font-semibold">Error de análisis</p>

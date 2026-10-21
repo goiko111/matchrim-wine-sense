@@ -1,0 +1,131 @@
+{
+  "baseline": "907e25c278efac034f92a25351e87f0a366eca1e",
+  "scope": "Exact native master102 additions plus declared legacy-reader bridges. No original fixture, count or assertion exempted.",
+  "files": [
+    {
+      "file": "scripts/check-matchrim-label-answer97.ts",
+      "beforeHash": "c1fba9969b5d93e1b415978f277a819a233323d21f361d4389b9025fe15ca0ff",
+      "afterHash": "046da9f43453f2f9be1e7cb43e32a3f093b0bd3c6df9e775c7535934bacd8549",
+      "historicalHashes": [],
+      "hunks": [
+        {
+          "before": "import { runInNewContext } from 'node:vm';\nimport { createHash } from 'node:crypto';\nimport ts from 'typescript';\n\nconst file = 'src/components/wine-import/MultiWineLabelScanner.tsx';\nconst viewFile = 'src/components/wine-import/LabelAnalysisView.tsx';\nconst base = '8327ee7e31fe73ab8edd90303de514147d13978d';\nconst before = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8' });\nconst source = readFileSync(file, 'utf8'), view = readFileSync(viewFile, 'utf8');\nconst parse = (s: string) => ts.createSourceFile(file, s, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);\nconst printer = ts.createPrinter({ removeComments: true });\nconst declarations = (s: string) => {\n",
+          "after": "import { runInNewContext } from 'node:vm';\nimport { createHash } from 'node:crypto';\nimport ts from 'typescript';\nimport { restoreNativeMaster102 } from './native-master102-scope.mjs';\n\nconst file = 'src/components/wine-import/MultiWineLabelScanner.tsx';\nconst viewFile = 'src/components/wine-import/LabelAnalysisView.tsx';\nconst base = '8327ee7e31fe73ab8edd90303de514147d13978d';\nconst before = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8' });\nconst source = restoreNativeMaster102(file, readFileSync(file, 'utf8')), view = readFileSync(viewFile, 'utf8');\nconst parse = (s: string) => ts.createSourceFile(file, s, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);\nconst printer = ts.createPrinter({ removeComments: true });\nconst declarations = (s: string) => {\n"
+        }
+      ]
+    },
+    {
+      "file": "scripts/check-matchrim-native-catalog-bridge97.ts",
+      "beforeHash": "0d500d0574350915b5dfbe9113c8bd997b2a70a4577e0626a100e4019c8975ac",
+      "afterHash": "2aa6fb1aa620700a2700d590e0efbc8da7ed135a00cffbd91177f87ecbddb61f",
+      "historicalHashes": [],
+      "hunks": [
+        {
+          "before": "import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';\nimport { createScanRequestBudget, type ScanRequestBudget } from '../src/utils/scanAnalysisPolicy';\nimport type { WineCandidate } from '../src/utils/multiWineScan';\n\nconst scanner = 'src/components/wine-import/MultiWineLabelScanner.tsx';\nconst service = 'src/services/winerimApi.ts';\n",
+          "after": "import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';\nimport { createScanRequestBudget, type ScanRequestBudget } from '../src/utils/scanAnalysisPolicy';\nimport type { WineCandidate } from '../src/utils/multiWineScan';\nimport { hasMissingVisibleQualifier102 } from '../src/utils/nativeWineQualifier102';\n\nconst scanner = 'src/components/wine-import/MultiWineLabelScanner.tsx';\nconst service = 'src/services/winerimApi.ts';\n"
+        },
+        {
+          "before": "  return found[0].getText(ast);\n}\nconst current = initializer(scanner, source, 'enrichCandidate');\nconst previous = initializer(scanner, oldSource, 'enrichCandidate');\nconst originalService = initializer(service, readFileSync(service, 'utf8'), 'findWinerimWineForLabel');\nconst envExpression = 'import.meta.env.VITE_MATCHRIM_EDGE_RELEASE';\n",
+          "after": "  return found[0].getText(ast);\n}\nconst current = initializer(scanner, source, 'enrichCandidate');\nconst master102Prefix = `    if (isNative && !isMatchrimFixtureQaEnabled && hasMissingVisibleQualifier102(candidate)) {\n      return applyScanWineEvidence({ ...candidate, uncertaintyReasons: [...new Set([...candidate.uncertaintyReasons,\n        'El nombre propuesto omite un calificador legible de la etiqueta. Revisa la referencia antes de elegir.'])] },\n      scanProfileRef.current?.profile ?? null, null);\n    }\n    if (isNative && !isMatchrimFixtureQaEnabled && nativeMasterUrl && canAdmitNativeCatalogLookup97(candidate)) {\n      const master = await lookupNativeMaster102(candidate, nativeMasterUrl, signal);\n      if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');\n      if (master.status === 'verified') return applyNativeMaster102(candidate, scanProfileRef.current?.profile ?? null, master.record);\n      if (master.status === 'ambiguous') return applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, null);\n    }\n`;\nassert.equal(current.split(master102Prefix).length, 2, 'Only the explicitly reviewed native master prefix may precede the unchanged97 closure');\nconst withoutMaster102 = current.replace(master102Prefix, '');\nconst previous = initializer(scanner, oldSource, 'enrichCandidate');\nconst originalService = initializer(service, readFileSync(service, 'utf8'), 'findWinerimWineForLabel');\nconst envExpression = 'import.meta.env.VITE_MATCHRIM_EDGE_RELEASE';\n"
+        },
+        {
+          "before": "    catalogWineFromVerifiedSheet, edgeRelease: 'unused-native', console: { warn() {} },\n  });\n  const enrich = load<Enrich>(body, {\n    isNative: native, isMatchrimFixtureQaEnabled: fixture, canAdmitNativeCatalogLookup97, DOMException,\n    scanProfileRef: { current: { profile } },\n    findWinerimWineForLabel: async (input: Parameters<Find>[0], options: Parameters<Find>[1]) => {\n",
+          "after": "    catalogWineFromVerifiedSheet, edgeRelease: 'unused-native', console: { warn() {} },\n  });\n  const enrich = load<Enrich>(body, {\n    nativeMasterUrl: undefined,\n    hasMissingVisibleQualifier102,\n    isNative: native, isMatchrimFixtureQaEnabled: fixture, canAdmitNativeCatalogLookup97, DOMException,\n    scanProfileRef: { current: { profile } },\n    findWinerimWineForLabel: async (input: Parameters<Find>[0], options: Parameters<Find>[1]) => {\n"
+        },
+        {
+          "before": "    const nativeGate = '!isMatchrimFixtureQaEnabled && (isNative\\n      ? canAdmitNativeCatalogLookup97(candidate)\\n      : canResolveCanonically && budget.remaining > 0)';\n    assert.equal(current.split(nativeGate).length, 2);\n    assert.equal(current.split('if (shouldSearch && !isNative)').length, 2);\n    assert.equal(current.replace(nativeGate, '!isMatchrimFixtureQaEnabled && canResolveCanonically && budget.remaining > 0')\n      .replace('if (shouldSearch && !isNative)', 'if (shouldSearch)'), previous);\n    assert.ok(source.includes(\"import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';\"));\n    assert.ok(originalService.includes('catalogOnly ? setTimeout(abort, 5000) : undefined'), 'No timeout increase');\n",
+          "after": "    const nativeGate = '!isMatchrimFixtureQaEnabled && (isNative\\n      ? canAdmitNativeCatalogLookup97(candidate)\\n      : canResolveCanonically && budget.remaining > 0)';\n    assert.equal(current.split(nativeGate).length, 2);\n    assert.equal(current.split('if (shouldSearch && !isNative)').length, 2);\n    assert.equal(withoutMaster102.replace(nativeGate, '!isMatchrimFixtureQaEnabled && canResolveCanonically && budget.remaining > 0')\n      .replace('if (shouldSearch && !isNative)', 'if (shouldSearch)'), previous);\n    assert.ok(source.includes(\"import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';\"));\n    assert.ok(originalService.includes('catalogOnly ? setTimeout(abort, 5000) : undefined'), 'No timeout increase');\n"
+        }
+      ]
+    },
+    {
+      "file": "scripts/check-matchrim-native-home98-scope.mjs",
+      "beforeHash": "47abb29cf836f78428488b07ef97653b281fd966244375872d0da062ef789195",
+      "afterHash": "2a90bdeb6c36331224c2af334a2beb5003043e0a95820334060efda00b941bde",
+      "historicalHashes": [],
+      "hunks": [
+        {
+          "before": "import { nativeHome98Baseline, nativeHome98GuardBaseline, restoreNativeHome98, restoreNativeHome98Guard as restoreHomeGuard } from './native-home98-scope.mjs';\nimport { restoreNativeVisual98Guard } from './native-visual98-scope.mjs';\nimport { restoreNativeScan99Guard } from './native-scan99-scope.mjs';\n\nconst restoreNativeHome98Guard = (file, source) => restoreHomeGuard(file, restoreNativeScan99Guard(file, source));\n\nconst root = new URL('../', import.meta.url);\nconst read = file => readFileSync(new URL(file, root), 'utf8');\nconst prior = (file, revision = nativeHome98GuardBaseline) => execFileSync('git', ['show', `${revision}:${file}`], { cwd: root, encoding: 'utf8' });\nconst home = 'src/components/NativeAppHome.tsx';\nconst guard = 'scripts/check-matchrim-native-home-accessibility96.ts';\n",
+          "after": "import { nativeHome98Baseline, nativeHome98GuardBaseline, restoreNativeHome98, restoreNativeHome98Guard as restoreHomeGuard } from './native-home98-scope.mjs';\nimport { restoreNativeVisual98Guard } from './native-visual98-scope.mjs';\nimport { restoreNativeScan99Guard } from './native-scan99-scope.mjs';\nimport { restoreNativeMaster102 } from './native-master102-scope.mjs';\n\nconst restoreNativeHome98Guard = (file, source) => restoreHomeGuard(file, restoreNativeScan99Guard(file, source));\n\nconst root = new URL('../', import.meta.url);\nconst read = file => restoreNativeMaster102(file, readFileSync(new URL(file, root), 'utf8'));\nconst prior = (file, revision = nativeHome98GuardBaseline) => execFileSync('git', ['show', `${revision}:${file}`], { cwd: root, encoding: 'utf8' });\nconst home = 'src/components/NativeAppHome.tsx';\nconst guard = 'scripts/check-matchrim-native-home-accessibility96.ts';\n"
+        }
+      ]
+    },
+    {
+      "file": "scripts/native-label97-scope.mjs",
+      "beforeHash": "1c6ca4f166fc3951a61a8c28c38b0097e6c7c4576803d2d878dc79e497a3e6fd",
+      "afterHash": "4cc36db84c7bd845b2376e30b66e9da00e20849851f8ec1c96ff9214d19aabce",
+      "historicalHashes": [],
+      "hunks": [
+        {
+          "before": "import { resolve } from 'node:path';\nimport { restoreNativeAuth97Guard } from './native-auth97-scope.mjs';\nimport { restoreNativeVisual98Guard } from './native-visual98-scope.mjs';\n\nconst digest = value => createHash('sha256').update(value).digest('hex');\nconst bytes = readFileSync(new URL('./native-label97-scope.json', import.meta.url));\nassert.equal(digest(bytes), 'b0d4c28b7833488a870cd47f38d8a5c32a1788a831c02b0fdb44557e7eb604f3', 'Exact reviewed97 source and guard inverses');\nconst scope = JSON.parse(bytes);\nfunction restore(file, source, kind) {\n  if (kind === 'guard') source = restoreNativeAuth97Guard(file, restoreNativeVisual98Guard(file, source));\n  const row = scope.files.find(item => item.file === file && item.kind === kind);\n  if (!row || digest(source) === row.beforeHash) return source;\n",
+          "after": "import { resolve } from 'node:path';\nimport { restoreNativeAuth97Guard } from './native-auth97-scope.mjs';\nimport { restoreNativeVisual98Guard } from './native-visual98-scope.mjs';\nimport { restoreNativeMaster102 } from './native-master102-scope.mjs';\n\nconst digest = value => createHash('sha256').update(value).digest('hex');\nconst bytes = readFileSync(new URL('./native-label97-scope.json', import.meta.url));\nassert.equal(digest(bytes), 'b0d4c28b7833488a870cd47f38d8a5c32a1788a831c02b0fdb44557e7eb604f3', 'Exact reviewed97 source and guard inverses');\nconst scope = JSON.parse(bytes);\nfunction restore(file, source, kind) {\n  source = restoreNativeMaster102(file, source);\n  if (kind === 'guard') source = restoreNativeAuth97Guard(file, restoreNativeVisual98Guard(file, source));\n  const row = scope.files.find(item => item.file === file && item.kind === kind);\n  if (!row || digest(source) === row.beforeHash) return source;\n"
+        },
+        {
+          "before": "  const root = fileURLToPath(new URL('../', import.meta.url));\n  let negatives = 0;\n  for (const row of scope.files) {\n    const source = row.kind === 'guard' ? restoreNativeAuth97Guard(row.file, restoreNativeVisual98Guard(row.file, readFileSync(resolve(root, row.file), 'utf8')))\n      : readFileSync(resolve(root, row.file), 'utf8');\n    assert.equal(digest(source), row.afterHash, `Current97 scope input: ${row.file}`);\n    assert.equal(restore(row.file, source, row.kind), execFileSync('git', ['show', `${scope.baseline}:${row.file}`], { cwd: root, encoding: 'utf8' }));\n    assert.throws(() => restore(row.file, source + '\\n// undeclared change\\n', row.kind)); negatives++;\n",
+          "after": "  const root = fileURLToPath(new URL('../', import.meta.url));\n  let negatives = 0;\n  for (const row of scope.files) {\n    const source = row.kind === 'guard' ? restoreNativeAuth97Guard(row.file, restoreNativeVisual98Guard(row.file, restoreNativeMaster102(row.file, readFileSync(resolve(root, row.file), 'utf8'))))\n      : restoreNativeMaster102(row.file, readFileSync(resolve(root, row.file), 'utf8'));\n    assert.equal(digest(source), row.afterHash, `Current97 scope input: ${row.file}`);\n    assert.equal(restore(row.file, source, row.kind), execFileSync('git', ['show', `${scope.baseline}:${row.file}`], { cwd: root, encoding: 'utf8' }));\n    assert.throws(() => restore(row.file, source + '\\n// undeclared change\\n', row.kind)); negatives++;\n"
+        },
+        {
+          "before": "  }\n  const features = [];\n  for (const feature of scope.features) {\n    assert.equal(digest(readFileSync(resolve(root, feature.file))), feature.sha256, 'Exact separately reviewed97 feature check');\n    const output = execFileSync(process.execPath, ['--import', 'tsx', feature.file], { cwd: root, encoding: 'utf8', timeout: 30000, maxBuffer: 1048576 });\n    const report = JSON.parse(output.trim().split('\\n').at(-1));\n    assert.equal(report.passed, feature.groups); assert.equal(report.failed, 0);\n",
+          "after": "  }\n  const features = [];\n  for (const feature of scope.features) {\n    assert.equal(digest(restoreNativeMaster102(feature.file, readFileSync(resolve(root, feature.file), 'utf8'))), feature.sha256, 'Exact separately reviewed97 feature check');\n    const output = execFileSync(process.execPath, ['--import', 'tsx', feature.file], { cwd: root, encoding: 'utf8', timeout: 30000, maxBuffer: 1048576 });\n    const report = JSON.parse(output.trim().split('\\n').at(-1));\n    assert.equal(report.passed, feature.groups); assert.equal(report.failed, 0);\n"
+        }
+      ]
+    },
+    {
+      "file": "src/components/wine-import/MultiWineLabelScanner.tsx",
+      "beforeHash": "819bb990475353289f333be43ae26f2d24351ec4cb204584e8bcb911ab19bfb4",
+      "afterHash": "317dee0eff31e1031f33efe3696d543bb25d64baf040dcd167d6f191989bdba5",
+      "historicalHashes": [
+        "d2b9ac33218f58a9a998c84523c8c32f908080ff25ff89f0f18869ebd2517a00",
+        "819bb990475353289f333be43ae26f2d24351ec4cb204584e8bcb911ab19bfb4",
+        "9d2123e37af1de7d69a55c3f9dd333b04ef7c5f6940ccc747bc27117737c860f",
+        "d2b9ac33218f58a9a998c84523c8c32f908080ff25ff89f0f18869ebd2517a00"
+      ],
+      "hunks": [
+        {
+          "before": "import { confirmedLabelCatalogIdentity95 } from '@/utils/confirmedCatalogIdentity95';\nimport { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';\nimport { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';\nimport { AiRimContextGuide } from '@/components/AiRimContextGuide';\nimport { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';\nimport { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';\n",
+          "after": "import { confirmedLabelCatalogIdentity95 } from '@/utils/confirmedCatalogIdentity95';\nimport { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';\nimport { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';\nimport { applyNativeMaster102, lookupNativeMaster102, nativeMasterAudit102 } from '@/utils/nativeMasterCatalog102';\nimport { hasMissingVisibleQualifier102 } from '@/utils/nativeWineQualifier102';\nimport { AiRimContextGuide } from '@/components/AiRimContextGuide';\nimport { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';\nimport { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';\n"
+        },
+        {
+          "before": "const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScannerProps) => {\n  const { user } = useAuth();\n  const isNative = Capacitor.isNativePlatform();\n  const [preview, setPreview] = useState<string | null>(null);\n  const [quality, setQuality] = useState<ImageQualityReport | null>(null);\n  const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);\n",
+          "after": "const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScannerProps) => {\n  const { user } = useAuth();\n  const isNative = Capacitor.isNativePlatform();\n  const nativeMasterUrl = isNative ? import.meta.env.VITE_MATCHRIM_MASTER_CATALOG_URL : undefined;\n  const [preview, setPreview] = useState<string | null>(null);\n  const [quality, setQuality] = useState<ImageQualityReport | null>(null);\n  const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);\n"
+        },
+        {
+          "before": "  };\n\n  const enrichCandidate = async (candidate: WineCandidate, signal: AbortSignal, budget: ScanRequestBudget) => {\n    let enriched = candidate;\n    const canResolveCanonically = candidate.confidence >= 0.72\n      && candidate.evidence.length >= 2\n",
+          "after": "  };\n\n  const enrichCandidate = async (candidate: WineCandidate, signal: AbortSignal, budget: ScanRequestBudget) => {\n    if (isNative && !isMatchrimFixtureQaEnabled && hasMissingVisibleQualifier102(candidate)) {\n      return applyScanWineEvidence({ ...candidate, uncertaintyReasons: [...new Set([...candidate.uncertaintyReasons,\n        'El nombre propuesto omite un calificador legible de la etiqueta. Revisa la referencia antes de elegir.'])] },\n      scanProfileRef.current?.profile ?? null, null);\n    }\n    if (isNative && !isMatchrimFixtureQaEnabled && nativeMasterUrl && canAdmitNativeCatalogLookup97(candidate)) {\n      const master = await lookupNativeMaster102(candidate, nativeMasterUrl, signal);\n      if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');\n      if (master.status === 'verified') return applyNativeMaster102(candidate, scanProfileRef.current?.profile ?? null, master.record);\n      if (master.status === 'ambiguous') return applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, null);\n    }\n    let enriched = candidate;\n    const canResolveCanonically = candidate.confidence >= 0.72\n      && candidate.evidence.length >= 2\n"
+        },
+        {
+          "before": "            vintage: candidate.vintage, region: candidate.region, country: candidate.country };\n          const evidence = isNative && candidate.sensorySource === 'catalog' && candidate.canonicalId && candidate.sensoryAttributes\n            ? makeCellarCatalogEvidence(identity, candidate.canonicalId, candidate.sensoryAttributes) : null;\n          const details = evidence ? withCellarInitialAffinity({ ...identity,\n            sensory_attributes: candidate.sensoryAttributes,\n            place_details: { bodega_sensory_evidence: evidence } }, scanProfileRef.current, 'saved') : null;\n          return {\n          nombre: candidate.name,\n          productor: candidate.producer,\n",
+          "after": "            vintage: candidate.vintage, region: candidate.region, country: candidate.country };\n          const evidence = isNative && candidate.sensorySource === 'catalog' && candidate.canonicalId && candidate.sensoryAttributes\n            ? makeCellarCatalogEvidence(identity, candidate.canonicalId, candidate.sensoryAttributes) : null;\n          const masterAudit = isNative ? nativeMasterAudit102(candidate) : null;\n          const details = evidence ? withCellarInitialAffinity({ ...identity,\n            sensory_attributes: candidate.sensoryAttributes,\n            place_details: { bodega_sensory_evidence: evidence,\n              ...(masterAudit ? { winerim_master_evidence: masterAudit } : {}) } }, scanProfileRef.current, 'saved') : null;\n          return {\n          nombre: candidate.name,\n          productor: candidate.producer,\n"
+        },
+        {
+          "before": "                    input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });\n                    input?.focus({ preventScroll: true });\n                  }} />}\n                {selectedRegion.error && selectedRegion.candidates.length > 0 && (\n                  <div role=\"alert\" data-testid=\"region-analysis-error\" className=\"border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950\">\n                    <p className=\"font-semibold\">Error de análisis</p>\n",
+          "after": "                    input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });\n                    input?.focus({ preventScroll: true });\n                  }} />}\n                {isNative && selectedCandidate && nativeMasterAudit102(selectedCandidate) && <p className=\"text-sm leading-6 text-stone-700\" role=\"note\">\n                  {selectedCandidate.affinityReason}\n                </p>}\n                {selectedRegion.error && selectedRegion.candidates.length > 0 && (\n                  <div role=\"alert\" data-testid=\"region-analysis-error\" className=\"border-l-4 border-red-700 bg-red-50 px-3 py-3 text-sm text-red-950\">\n                    <p className=\"font-semibold\">Error de análisis</p>\n"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/multiWineConsumer95.ts",
+      "beforeHash": "bb683a1e2f1ffe91600f15ff59864bdc9d0bdb6d2f83823c24aed064bd3871ec",
+      "afterHash": "18cce5569ddb871cb12df920f2b3ac267cd1fd509d22f4defca26180427100a6",
+      "historicalHashes": [],
+      "hunks": [
+        {
+          "before": "import { getSelectedCandidate, type ScanRegion, type WineCandidate } from './multiWineScan';\nimport { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';\nimport { isVerifiedWinerimSheetForIdentity, validateWinerimOriginalSensory } from './winerimOriginalSheet';\n\n// Presentation only: OCR confidence and user review never certify a catalog sheet.\nexport const nativeWineConsumerResult = (candidate: WineCandidate | null, profile: MatchrimProfileLike | null) => {\n  const sheet = candidate?.originalSheet;\n  const linked = Boolean(candidate && isVerifiedWinerimSheetForIdentity(candidate, sheet));\n  const original = validateWinerimOriginalSensory(sheet?.sensoryAttributes);\n",
+          "after": "import { getSelectedCandidate, type ScanRegion, type WineCandidate } from './multiWineScan';\nimport { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';\nimport { isVerifiedWinerimSheetForIdentity, validateWinerimOriginalSensory } from './winerimOriginalSheet';\nimport { isVerifiedNativeMaster102 } from './nativeMasterCatalog102';\n\n// Presentation only: OCR confidence and user review never certify a catalog sheet.\nexport const nativeWineConsumerResult = (candidate: WineCandidate | null, profile: MatchrimProfileLike | null) => {\n  const master = candidate && isVerifiedNativeMaster102(candidate, candidate.masterRecord) ? candidate.masterRecord : null;\n  if (master && candidate.canonicalId === `mantalak:${master.id}` && candidate.sensorySource === 'catalog') {\n    const attrs = master.sensory?.attributes;\n    const expected = attrs ? { scale: 'winerim-0-5' as const, potencia: attrs.power,\n      acidez: attrs.acidity, dulzura: attrs.sweetness, taninos: attrs.tannin, afrutado: attrs.fruity } : null;\n    const actual = normalizeWineAttributesForInsight(candidate.sensoryAttributes);\n    const canonical = normalizeWineAttributesForInsight(expected);\n    const same = Boolean(actual && canonical && candidate.sensoryAttributes?.scale === 'winerim-0-5'\n      && Object.entries(canonical).every(([key, value]) => actual[key as keyof typeof actual] === value));\n    const score = same ? calculateLocalMatchrimAffinity(profile, expected) : null;\n    const explain = score !== null && candidate.affinity === score;\n    return { catalogIdentityLinked: true, identityLabel: master.sensory?.provenance === 'winerim-generated'\n      ? 'Identificado en Winerim · perfil sensorial generado' : 'Identificado en el catálogo Winerim',\n    affinityLabel: explain ? 'Afinidad orientativa' : 'Afinidad pendiente',\n    affinityValue: explain ? `≈${Math.round(score!)}/100` : 'Pendiente', canExplainAffinity: explain };\n  }\n  const sheet = candidate?.originalSheet;\n  const linked = Boolean(candidate && isVerifiedWinerimSheetForIdentity(candidate, sheet));\n  const original = validateWinerimOriginalSensory(sheet?.sensoryAttributes);\n"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/multiWineScan.ts",
+      "beforeHash": "58a4dc10fcd13f4f5661224025f2686e8f82cdc4b7ea7bf15416e4b44bcccb38",
+      "afterHash": "de69553b478d465259c66dd732993289633df44ced97909cd4b2877b1f1b224b",
+      "historicalHashes": [],
+      "hunks": [
+        {
+          "before": "  uncertaintyReasons: string[];\n  inferredFields: string[];\n  canonicalId?: string | null;\n  originalSheet?: WinerimOriginalSheet | null;\n  sensorySource?: 'catalog' | 'inference';\n  sensoryAttributes?: {\n",
+          "after": "  uncertaintyReasons: string[];\n  inferredFields: string[];\n  canonicalId?: string | null;\n  masterRecord?: import('./nativeMasterCatalog102').NativeMasterRecord102 | null;\n  originalSheet?: WinerimOriginalSheet | null;\n  sensorySource?: 'catalog' | 'inference';\n  sensoryAttributes?: {\n"
+        }
+      ]
+    }
+  ]
+}

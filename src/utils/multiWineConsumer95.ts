@@ -2,9 +2,26 @@ import type { MatchrimProfileLike } from './matchrimPassport';
 import { getSelectedCandidate, type ScanRegion, type WineCandidate } from './multiWineScan';
 import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
 import { isVerifiedWinerimSheetForIdentity, validateWinerimOriginalSensory } from './winerimOriginalSheet';
+import { isVerifiedNativeMaster102 } from './nativeMasterCatalog102';
 
 // Presentation only: OCR confidence and user review never certify a catalog sheet.
 export const nativeWineConsumerResult = (candidate: WineCandidate | null, profile: MatchrimProfileLike | null) => {
+  const master = candidate && isVerifiedNativeMaster102(candidate, candidate.masterRecord) ? candidate.masterRecord : null;
+  if (master && candidate.canonicalId === `mantalak:${master.id}` && candidate.sensorySource === 'catalog') {
+    const attrs = master.sensory?.attributes;
+    const expected = attrs ? { scale: 'winerim-0-5' as const, potencia: attrs.power,
+      acidez: attrs.acidity, dulzura: attrs.sweetness, taninos: attrs.tannin, afrutado: attrs.fruity } : null;
+    const actual = normalizeWineAttributesForInsight(candidate.sensoryAttributes);
+    const canonical = normalizeWineAttributesForInsight(expected);
+    const same = Boolean(actual && canonical && candidate.sensoryAttributes?.scale === 'winerim-0-5'
+      && Object.entries(canonical).every(([key, value]) => actual[key as keyof typeof actual] === value));
+    const score = same ? calculateLocalMatchrimAffinity(profile, expected) : null;
+    const explain = score !== null && candidate.affinity === score;
+    return { catalogIdentityLinked: true, identityLabel: master.sensory?.provenance === 'winerim-generated'
+      ? 'Identificado en Winerim · perfil sensorial generado' : 'Identificado en el catálogo Winerim',
+    affinityLabel: explain ? 'Afinidad orientativa' : 'Afinidad pendiente',
+    affinityValue: explain ? `≈${Math.round(score!)}/100` : 'Pendiente', canExplainAffinity: explain };
+  }
   const sheet = candidate?.originalSheet;
   const linked = Boolean(candidate && isVerifiedWinerimSheetForIdentity(candidate, sheet));
   const original = validateWinerimOriginalSensory(sheet?.sensoryAttributes);

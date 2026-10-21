@@ -4,11 +4,12 @@ import { readFileSync } from 'node:fs';
 import { nativeHome98Baseline, nativeHome98GuardBaseline, restoreNativeHome98, restoreNativeHome98Guard as restoreHomeGuard } from './native-home98-scope.mjs';
 import { restoreNativeVisual98Guard } from './native-visual98-scope.mjs';
 import { restoreNativeScan99Guard } from './native-scan99-scope.mjs';
+import { restoreNativeMaster102 } from './native-master102-scope.mjs';
 
 const restoreNativeHome98Guard = (file, source) => restoreHomeGuard(file, restoreNativeScan99Guard(file, source));
 
 const root = new URL('../', import.meta.url);
-const read = file => readFileSync(new URL(file, root), 'utf8');
+const read = file => restoreNativeMaster102(file, readFileSync(new URL(file, root), 'utf8'));
 const prior = (file, revision = nativeHome98GuardBaseline) => execFileSync('git', ['show', `${revision}:${file}`], { cwd: root, encoding: 'utf8' });
 const home = 'src/components/NativeAppHome.tsx';
 const guard = 'scripts/check-matchrim-native-home-accessibility96.ts';

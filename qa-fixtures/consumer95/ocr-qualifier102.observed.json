@@ -1,0 +1,14 @@
+{
+  "imageId": "img-119",
+  "source": "Existing native-prepared Apple Vision receipt and independent Lovable local-catalogue projection, 2026-10-21",
+  "ocrReceiptSHA256": "f5208d6498b7d7103a0ac76250c05ecb8fe309b1b0298b752f609453ce2c66e6",
+  "ocrLines": ["•R", "2018", "CHASSAGNE-MONTRACHET", "Premier Cru \"Morgeot\"", "APPELLATION CONTRÔLÉE", "Jean-Claude RAMONET", "ÉLEVE ET MIS EN BOUTEILLE PAR J-C RAMONT L", "21190 CHASSAGNE MONTRACHET. CÔTE DOR - FEU"],
+  "localCandidate": {
+    "id": "ffa0204f-f03f-4eaf-ad24-99f3114d0bce",
+    "name": "Jean-Claude Ramonet Chassagne-Montrachet",
+    "producer": "Jean-Claude Ramonet",
+    "vintage": 2018
+  },
+  "identityVerified": false,
+  "expectedBehavior": "Hold for identity review; never omit the visible Premier Cru Morgeot qualifier to borrow this generic row's sensory values."
+}

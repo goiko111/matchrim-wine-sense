@@ -9,6 +9,7 @@ import { catalogWineFromVerifiedSheet, lookupWinerimOriginalSheet } from '../src
 import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';
 import { createScanRequestBudget, type ScanRequestBudget } from '../src/utils/scanAnalysisPolicy';
 import type { WineCandidate } from '../src/utils/multiWineScan';
+import { hasMissingVisibleQualifier102 } from '../src/utils/nativeWineQualifier102';
 
 const scanner = 'src/components/wine-import/MultiWineLabelScanner.tsx';
 const service = 'src/services/winerimApi.ts';
@@ -27,6 +28,20 @@ function initializer(file: string, text: string, name: string) {
   return found[0].getText(ast);
 }
 const current = initializer(scanner, source, 'enrichCandidate');
+const master102Prefix = `    if (isNative && !isMatchrimFixtureQaEnabled && hasMissingVisibleQualifier102(candidate)) {
+      return applyScanWineEvidence({ ...candidate, uncertaintyReasons: [...new Set([...candidate.uncertaintyReasons,
+        'El nombre propuesto omite un calificador legible de la etiqueta. Revisa la referencia antes de elegir.'])] },
+      scanProfileRef.current?.profile ?? null, null);
+    }
+    if (isNative && !isMatchrimFixtureQaEnabled && nativeMasterUrl && canAdmitNativeCatalogLookup97(candidate)) {
+      const master = await lookupNativeMaster102(candidate, nativeMasterUrl, signal);
+      if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+      if (master.status === 'verified') return applyNativeMaster102(candidate, scanProfileRef.current?.profile ?? null, master.record);
+      if (master.status === 'ambiguous') return applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, null);
+    }
+`;
+assert.equal(current.split(master102Prefix).length, 2, 'Only the explicitly reviewed native master prefix may precede the unchanged97 closure');
+const withoutMaster102 = current.replace(master102Prefix, '');
 const previous = initializer(scanner, oldSource, 'enrichCandidate');
 const originalService = initializer(service, readFileSync(service, 'utf8'), 'findWinerimWineForLabel');
 const envExpression = 'import.meta.env.VITE_MATCHRIM_EDGE_RELEASE';
@@ -86,6 +101,8 @@ function host({ native = true, fixture = false, body = current, response = row, 
     catalogWineFromVerifiedSheet, edgeRelease: 'unused-native', console: { warn() {} },
   });
   const enrich = load<Enrich>(body, {
+    nativeMasterUrl: undefined,
+    hasMissingVisibleQualifier102,
     isNative: native, isMatchrimFixtureQaEnabled: fixture, canAdmitNativeCatalogLookup97, DOMException,
     scanProfileRef: { current: { profile } },
     findWinerimWineForLabel: async (input: Parameters<Find>[0], options: Parameters<Find>[1]) => {
@@ -105,7 +122,7 @@ try {
     const nativeGate = '!isMatchrimFixtureQaEnabled && (isNative\n      ? canAdmitNativeCatalogLookup97(candidate)\n      : canResolveCanonically && budget.remaining > 0)';
     assert.equal(current.split(nativeGate).length, 2);
     assert.equal(current.split('if (shouldSearch && !isNative)').length, 2);
-    assert.equal(current.replace(nativeGate, '!isMatchrimFixtureQaEnabled && canResolveCanonically && budget.remaining > 0')
+    assert.equal(withoutMaster102.replace(nativeGate, '!isMatchrimFixtureQaEnabled && canResolveCanonically && budget.remaining > 0')
       .replace('if (shouldSearch && !isNative)', 'if (shouldSearch)'), previous);
     assert.ok(source.includes("import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';"));
     assert.ok(originalService.includes('catalogOnly ? setTimeout(abort, 5000) : undefined'), 'No timeout increase');
