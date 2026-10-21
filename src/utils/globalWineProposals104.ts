@@ -21,7 +21,9 @@ const queryMetadata = new Set(('celler cellar cava pet nat ancestral premium tra
   + 'origen origine controlee controllata controlada protegida protegee indicacion geografica '
   + 'malvar verdejo viura macabeo glera chenin verdicchio zibibbo cinsault '
   + 'dry trocken halbtrocken feinherb').split(' '));
-const automaticQueryMetadata = new Set('bio cosecha vendimia recolte vintage ernte vendemmia'.split(' '));
+const automaticQueryMetadata = new Set(('bio cosecha vendimia recolte vintage ernte vendemmia harvest anada millesime '
+  + 'bottled bottling embotellado embotellada envasado mis mise bouteille imbottigliato imbottigliata engarrafado '
+  + 'in en nel em par by date fecha year anno annata annee').split(' '));
 const fullName = (row: PublicGlobalRow103) => row.subname && !(` ${tokens(row.name).join(' ')} `).includes(` ${tokens(row.subname).join(' ')} `)
   ? `${row.name} ${row.subname}` : row.name;
 export type WineProposal104 = { row: PublicGlobalRow103; name: string; score: number; missingProducer: boolean; vintageConflict: boolean; readingCorrections: string[] };
@@ -81,8 +83,13 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
     return new Set(tokens(proposal.name).filter(word => visible.has(word)
       && !generic.has(word) && !brandAndPlace.has(word) && !/^\d+$/.test(word))).size;
   };
+  const observedGrapes = (proposal: WineProposal104) => new Set(tokens(proposal.name)
+    .filter(word => grapes.has(word) && visible.has(word))).size;
   // A fully read cuvee should beat generic producer/region rows at equal evidence score.
+  // Name-level blend agreement only breaks remaining ties; catalogue grape lists
+  // are not exhaustive and never exclude a broader reference by themselves.
   return [...groups.values()].sort((a, b) => b.score - a.score || specificity(b) - specificity(a)
+    || observedGrapes(b) - observedGrapes(a)
     || a.row.id - b.row.id).slice(0, 3);
 };
 

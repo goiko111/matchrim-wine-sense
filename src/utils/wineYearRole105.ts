@@ -1,12 +1,13 @@
 import type { WineCandidate } from './multiWineScan';
 
 export type YearLine105 = { text: string; box?: { x: number; y: number; width: number; height: number } };
-export type YearRole105 = { year: number; role: 'vintage' | 'award' | 'foundation' | 'ambiguous' | 'unclassified' | 'unsupported'; evidence: string[] };
+export type YearRole105 = { year: number; role: 'vintage' | 'award' | 'foundation' | 'bottling' | 'ambiguous' | 'unclassified' | 'unsupported'; evidence: string[] };
 const fold = (text: string) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const hasAward = (text: string) => /\b(?:medalla|medaille|medal|concours|competition|awards?|premio|trophy)\b/.test(text)
   || (/\b(?:lyon|decanter|iwsc|iwc|bruxelles|mundus vini)\b/.test(text) && /\b(?:gold|silver|bronze|oro|or|argent)\b/.test(text));
 const explicitVintage = (text: string, year: number) => new RegExp(`(?:vintage|cosecha|anada|millesime|vendimia|harvest)\\s*[:.-]?\\s*${year}\\b|\\b${year}\\s*(?:vintage|cosecha|anada|millesime|vendimia|harvest)\\b`).test(text);
 const explicitFoundation = (text: string, year: number) => new RegExp(`\\b(?:since|desde|depuis|seit|founded|established|fundad[ao]|fundacion|fondat[ao]|fondee?|est\\.)\\s*(?:(?:en|in|nel|em)\\s*)?${year}\\b`).test(text);
+const explicitBottling = (text: string, year: number) => new RegExp(`\\b(?:bottled|bottling|embotellad[ao]|envasad[ao]|mis(?:e)? en bouteille|imbottigliat[ao]|engarrafad[ao]|abgefullt)\\s*[:.-]?\\s*(?:(?:en|in|nel|em|im)\\s*)?${year}\\b`).test(text);
 const inlineAward = (text: string, year: number): 'award' | 'ambiguous' | null => {
   let uncertain = false;
   for (const clause of text.split(/[.;,\n]/)) {
@@ -50,7 +51,8 @@ export const wineYearRoles105 = (lines: readonly YearLine105[]): { supported: bo
       const year = Number(match[0]);
       const vintage = explicitVintage(inline, year);
       const foundation = explicitFoundation(inline, year);
-      const spatialAward = !vintage && !foundation && neighbours.length > 1 && hasAward(context);
+      const bottling = explicitBottling(inline, year);
+      const spatialAward = !vintage && !foundation && !bottling && neighbours.length > 1 && hasAward(context);
       const contextYears = new Set(context.match(/\b(?:19|20)\d{2}\b/g));
       const inlineRole = inlineAward(inline, year);
       const award = inlineRole === 'award' || (spatialAward && contextYears.size === 1);
@@ -59,6 +61,7 @@ export const wineYearRoles105 = (lines: readonly YearLine105[]): { supported: bo
       else {
         if (vintage) current.roles.add('vintage');
         if (foundation) current.roles.add('foundation');
+        if (bottling) current.roles.add('bottling');
         if (award) current.roles.add('award');
         if (inlineRole === 'ambiguous' || (spatialAward && contextYears.size > 1)) current.roles.add('ambiguous');
       }
@@ -76,7 +79,7 @@ export const nonVintageYear105 = (year: number | string | null | undefined, evid
   if (year == null) return null;
   if (Number(year) > new Date().getUTCFullYear()) return { year: Number(year), role: 'unsupported' as const, evidence: [] };
   return parsed.roles.find(value => value.year === Number(year)
-    && (value.role === 'award' || value.role === 'foundation' || value.role === 'ambiguous' || value.role === 'unsupported')) || null;
+    && (value.role === 'award' || value.role === 'foundation' || value.role === 'bottling' || value.role === 'ambiguous' || value.role === 'unsupported')) || null;
 };
 
 export const normalizeNativeYear105 = (candidate: WineCandidate): WineCandidate => {
@@ -86,6 +89,7 @@ export const normalizeNativeYear105 = (candidate: WineCandidate): WineCandidate 
   const reason = role.role === 'unsupported' ? 'La fecha o el contexto de la lectura no es valido; revisa la cosecha.'
     : role.role === 'award' ? `La fecha ${role.year} aparece vinculada a un premio; la cosecha sigue sin confirmar.`
     : role.role === 'foundation' ? `La fecha ${role.year} indica el origen de la bodega; la cosecha sigue sin confirmar.`
+    : role.role === 'bottling' ? `La fecha ${role.year} indica el embotellado; la cosecha sigue sin confirmar.`
       : `La fecha ${role.year} tiene usos contradictorios en la lectura; revisa la cosecha.`;
   return { ...candidate, vintage: null, inferredFields: [...new Set([...candidate.inferredFields, 'vintage'])],
     uncertaintyReasons: [...new Set([...candidate.uncertaintyReasons, reason])],

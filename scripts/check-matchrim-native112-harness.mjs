@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import ts from 'typescript';
 import { fileURLToPath } from 'node:url';
 import { assertLeases112, boundedFetch112, captureSources112, freeze112, isSearchCacheURL112, latestRanges112, loadCache112,
   loadReadings112, loadRuntime112, newState112, parseReading112, predict112, publicHeaders112, sha112, summarize112, verifySources112 } from './benchmark-matchrim-native112.ts';
@@ -134,7 +135,17 @@ await test('Production query, year and fragment geometry logic agree, including 
   const begin = source.indexOf('const fragments = suggestLocalOCRFragments108(text.lines);');
   const end = source.indexOf('\n      }\n      setProposalVintage', begin); assert(begin >= 0 && end > begin);
   const gate = source.slice(begin, end);
+  const tree = ts.createSourceFile('GlobalWineRecovery104.tsx', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const calls = [];
+  const visit = node => {
+    if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 'globalRecoveryQueries104') calls.push(node);
+    ts.forEachChild(node, visit);
+  }; visit(tree); assert.equal(calls.length, 1);
+  const invocation = calls[0].getText(tree);
   const samples = [reading([line('Synthetic Cuvee'), line('Cosecha 2020', .1, .7)]),
+    reading([line('Synthetic Cuvee 2020'), line('Casa Atlas', .1, .7)]),
+    reading([line('Synthetic Cuvee'), line('Añada 2020', .1, .7), line('Casa Atlas', .1, .8)]),
+    reading([line('Synthetic Cuvee'), line('Bottled in 2020', .1, .7)]),
     reading([line('Synthetic Cuvee'), line('2026', .37, .55, .1), line('LYON', .53, .55, .1), line('GOLD', .49, .53, .1), line('2020', .36, .1, .1)]),
     reading([line('Synthetic Cuvee', .1, .4), line('S', .1, .7, .01, .02), line('ynthetic', .111, .7, .08, .02)])];
   for (const raw of samples) {
@@ -146,7 +157,15 @@ await test('Production query, year and fragment geometry logic agree, including 
     assert(result);
     const r = rig({ live: true, maximum: 6, wire: async url => wireResponse(url) }), [scene] = await r.predict([text]);
     assert.equal(scene.candidateVintage, result.vintage);
-    assert.deepEqual(scene.queries, runtime.globalRecoveryQueries104(candidate.name, [...result.evidence]));
+    const context = { candidate, evidence: [...result.evidence], vintage: result.vintage, useLocalReading: true,
+      globalRecoveryQueries104: runtime.globalRecoveryQueries104 };
+    const actualComponentQueries = Array.from(vm.runInNewContext(invocation, context));
+    assert.deepEqual(scene.queries, actualComponentQueries);
+    if (text.lines[0].text === 'Synthetic Cuvee 2020') {
+      const missingHint = ts.factory.updateCallExpression(calls[0], calls[0].expression, calls[0].typeArguments, calls[0].arguments.slice(0, 3));
+      const mutant = ts.createPrinter().printNode(ts.EmitHint.Expression, missingHint, tree);
+      assert.notDeepEqual(scene.queries, Array.from(vm.runInNewContext(mutant, context)), 'Parity must catch a missing fourth argument');
+    }
     assert.deepEqual(scene.reconstructed, runtime.suggestLocalOCRFragments108(text.lines).alternatives);
   }
 });

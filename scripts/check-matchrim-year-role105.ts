@@ -118,4 +118,21 @@ await test('Year-occurrence overflow fails closed before a capped observation ca
   assert.equal(wineYearRoles105(evidence.map(text => ({ text }))).supported, false);
   assert.equal(nonVintageYear105(2018, evidence)?.role, 'unsupported');
 });
+await test('Explicit bottling dates cannot become vintages or retain a stale verified affinity', () => {
+  for (const text of ['Bottled in 2020', 'Bottling: 2020', 'Embotellado en 2020', 'Mis en bouteille en 2020',
+    'Mise en bouteille 2020', 'Imbottigliato nel 2020', 'Engarrafado em 2020', 'Abgefüllt im 2020']) {
+    assert.equal(role(text), 'bottling', text);
+    assert.equal(nonVintageYear105(2020, [text])?.role, 'bottling');
+    const input = { ...candidate, vintage: 2020, evidence: [text] };
+    const result = normalizeNativeYear105(input);
+    assert.equal(result.vintage, null); assert.equal(result.affinity, null); assert.equal(result.canonicalId, null);
+    assert.equal(result.evidence, input.evidence); assert(result.uncertaintyReasons.at(-1)?.includes('embotellado'));
+    assert.equal(normalizeNativeYear105({ ...input, source: 'manual' }).vintage, 2020);
+  }
+  const mixed = wineYearRoles105([{ text: 'Cosecha 2018. Bottled in 2020' }]).roles;
+  assert.equal(mixed.find(item => item.year === 2018)?.role, 'vintage');
+  assert.equal(mixed.find(item => item.year === 2020)?.role, 'bottling');
+  assert.equal(role('Cosecha 2020. Bottled in 2020'), 'ambiguous');
+  assert.equal(role('Bottled by Casa Atlas 2020'), 'unclassified', 'A producer prefix alone does not date the bottling');
+});
 console.log(JSON.stringify({ groups, networkCalls: 0, modelStarts: 0, verifiedVintagesCreated: 0 }));
