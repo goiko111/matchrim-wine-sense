@@ -45,3 +45,7 @@ Evidence: `qa-artifacts/night105-20261021/query-pilot108-r1`, `public-scope108-r
 - No new TestFlight candidate until source/build fingerprints and actual QA agree. Do not reuse the limited candidate-100 exception for a different build.
 
 Checkpoint: `qa-artifacts/night105-20261021/CHECKPOINT.json`. This document is a live handoff, not a declaration that QA or the 200-image benchmark is complete.
+
+## Continuation 109
+
+Product commit7230a93 adds explicit local-first label reading and results-first recovery; it is not part of the frozen102 archive. Continue from `docs/MATCHRIM_LOCAL_FIRST_109_2026-10-21.md`. Seventeen actual-source handler groups, ten candidate groups,14 recovery groups,14 year-role groups and ten privacy groups pass. Typecheck/build103 and real gallery E2E remain pending the shared heavy resource. Do not reuse the102 QA receipts for109. A new UIKit gallery probe is being authored as an isolated test, not a production app escape hatch.

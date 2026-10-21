@@ -52,6 +52,7 @@ import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { makeCellarCatalogEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import { makeCellarPublicReference107 } from '@/utils/cellarPublicReference107';
+import { makeCellarReferenceStyle110 } from '@/utils/cellarReferenceStyle110';
 import {
   EdgeFunctionError,
   invokeWithEdgeFunctionRetry,
@@ -941,10 +942,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           const masterAudit = isNative ? nativeMasterAudit102(candidate) : null;
           const global = isNative && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
           const publicReference = global ? makeCellarPublicReference107(candidate, global) : null;
+          const referenceStyle = global ? makeCellarReferenceStyle110(candidate, global, scanProfileRef.current) : null;
           const details = evidence || publicReference ? withCellarInitialAffinity({ ...identity,
             sensory_attributes: candidate.sensoryAttributes,
             place_details: { ...(evidence ? { bodega_sensory_evidence: evidence } : {}),
               ...(publicReference ? { winerim_public_catalogue: publicReference } : {}),
+              ...(referenceStyle ? { matchrim_reference_style110: referenceStyle } : {}),
               ...(masterAudit ? { winerim_master_evidence: masterAudit } : {}) } }, scanProfileRef.current, 'saved') : null;
           return {
           nombre: candidate.name,
@@ -1170,7 +1173,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               </p>
             </div>
           </div>
-          {isNative && localOCRAvailable106() && <div role="group" aria-label="Tipo de lectura" className="mt-4 grid grid-cols-2 gap-2">
+          {isNative && localOCRAvailable106() && <div role="group" aria-label="Tipo de lectura" className="mt-4 grid grid-cols-2 gap-2 [.matchrim-accessibility-text_&]:grid-cols-1">
             <Button type="button" variant={scanMode === 'local-single' ? 'default' : 'outline'} aria-pressed={scanMode === 'local-single'} disabled={loading || saving}
               className="h-auto min-h-11 gap-2 whitespace-normal py-3" onClick={() => setScanMode('local-single')}><Smartphone aria-hidden="true" className="h-4 w-4 shrink-0" />Una etiqueta</Button>
             <Button type="button" variant={scanMode === 'cloud' ? 'default' : 'outline'} aria-pressed={scanMode === 'cloud'} disabled={loading || saving}

@@ -6,6 +6,8 @@ import { Progress } from '@/components/ui/progress';
 import { AffinityExplanation } from './AffinityExplanation';
 import { cellarAffinityView, type CellarAffinityWine } from '@/utils/bodegaAffinity';
 import { canRetryScanProfile, type ScanProfileSnapshot } from '@/utils/scanProfile';
+import { cellarReferenceStyleView110 } from '@/utils/cellarReferenceStyle110';
+import { CellarReferenceStyle110 } from './CellarReferenceStyle110';
 
 interface Props {
   wine: CellarAffinityWine & { id: string; rating?: string | null };
@@ -19,6 +21,7 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const view = cellarAffinityView(wine, snapshot);
+  const referenceStyle = view.current === null ? cellarReferenceStyleView110(wine, snapshot) : null;
   const rating = wine.rating === 'not_for_me'
     ? { title: 'Ya sabes que no te gusta', note: 'Lo marcaste como un vino que no quieres repetir.', Icon: ThumbsDown }
     : wine.rating === 'love'
@@ -26,10 +29,10 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
       : wine.rating === 'ok'
         ? { title: 'Te pareci\u00f3 correcto', note: 'Tu valoraci\u00f3n de esta botella est\u00e1 guardada.', Icon: Minus }
         : null;
-  const calculation = (
+  const exactCalculation = (
     <>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="font-semibold text-slate-950">Afinidad actual</span>
+        <span className="font-semibold text-slate-950">{referenceStyle ? 'Afinidad de esta añada' : 'Afinidad actual'}</span>
         <span className="font-bold text-red-900" aria-live="polite">{view.current === null ? 'Por calcular' : `\u2248${view.current}/100`}</span>
       </div>
       {view.current !== null && <Progress value={view.current} role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={view.current} aria-label={`Afinidad actual orientativa de ${wine.name}`} className="h-2" />}
@@ -39,14 +42,14 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
           {' \u00b7 '}{new Date(view.initial.recorded_at).toLocaleDateString('es-ES')}
           {view.delta !== null && view.delta !== 0 && ` \u00b7 ${view.delta > 0 ? '+' : ''}${view.delta} puntos desde entonces`}
         </p>
-      ) : <p className="text-xs text-slate-500">No hay una afinidad inicial guardada para este vino.</p>}
+      ) : <p className="text-xs text-slate-500">{referenceStyle ? 'No hay una afinidad inicial verificada de esta añada.' : 'No hay una afinidad inicial guardada para este vino.'}</p>}
       <p className="text-xs leading-5 text-slate-600">{snapshot?.status === 'ready' && snapshot.profile
-        ? !view.attributes ? 'Necesito la ficha de este vino para compararlo con tus gustos.'
+        ? !view.attributes ? referenceStyle ? 'Falta una ficha sensorial verificable de esta añada.' : 'Necesito la ficha de este vino para compararlo con tus gustos.'
           : snapshot.source === 'learned' ? 'Basado en tu test y en tus valoraciones.' : 'Basado en tu test de paladar.'
         : view.reason}</p>
       {!view.attributes && <Button variant="outline" className="min-h-11 w-full whitespace-normal" onClick={onResolve} disabled={resolving} aria-busy={resolving}>
         {resolving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
-        Buscar ficha y calcular afinidad
+        {referenceStyle ? 'Buscar ficha de esta añada' : 'Buscar ficha y calcular afinidad'}
       </Button>}
       {snapshot && !snapshot.profile && ['missing', 'invalid'].includes(snapshot.status) && <Button variant="outline" className="min-h-11 w-full whitespace-normal"
         onClick={() => navigate('/matchrim')}>Completar test de paladar</Button>}
@@ -66,6 +69,12 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
       </div>}
     </>
   );
+  const calculation = referenceStyle ? <>
+    <CellarReferenceStyle110 view={referenceStyle} snapshot={snapshot} />
+    <details className="text-sm"><summary className="flex min-h-11 cursor-pointer items-center gap-2 font-medium"><CircleHelp className="h-4 w-4 shrink-0" aria-hidden="true" />Datos de esta añada</summary>
+      <div className="space-y-2 pt-2">{exactCalculation}</div>
+    </details>
+  </> : exactCalculation;
   return (
     <section aria-label={`Afinidad de ${wine.name}`} className="space-y-2 border-y border-slate-200 py-3 text-sm" data-testid="cellar-wine-affinity">
       {rating ? <>

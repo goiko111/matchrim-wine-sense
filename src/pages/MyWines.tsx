@@ -6,6 +6,7 @@ import { NativeCellarItem98 } from '@/components/NativeCellarItem98';
 import { readNativeWineDraft98 } from '@/utils/nativeWineDraft98';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { cellarAffinityView, makeCellarCatalogEvidence, readCellarInitialAffinity, readCellarSensoryEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
+import { cellarDisplayAffinity110, isHighCellarAffinity110 } from '@/utils/cellarReferenceStyle110';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { findOriginalWinerimWineForLabel, findWinerimWineForLabel } from '@/services/winerimApi';
@@ -474,10 +475,9 @@ const MyWinesForOwner = () => {
         filtered = filtered.filter(w => w.is_favorite);
         break;
       case 'high_affinity':
-        filtered = filtered.filter(w => (isNative ? cellarAffinityView(w, cellarProfile).current : w.matchrim_affinity) !== null
-          && (isNative ? cellarAffinityView(w, cellarProfile).current! : w.matchrim_affinity!) >= 70);
-        filtered.sort((a, b) => ((isNative ? cellarAffinityView(b, cellarProfile).current : b.matchrim_affinity) ?? 0)
-          - ((isNative ? cellarAffinityView(a, cellarProfile).current : a.matchrim_affinity) ?? 0));
+        filtered = filtered.filter(w => isNative ? isHighCellarAffinity110(w, cellarProfile) : w.matchrim_affinity !== null && w.matchrim_affinity >= 70);
+        filtered.sort((a, b) => ((isNative ? cellarDisplayAffinity110(b, cellarProfile) : b.matchrim_affinity) ?? 0)
+          - ((isNative ? cellarDisplayAffinity110(a, cellarProfile) : a.matchrim_affinity) ?? 0));
         break;
       default:
         filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -1812,7 +1812,7 @@ const MyWinesForOwner = () => {
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => setFilterType('high_affinity')}>
                         <Star className="h-4 w-4 mr-2" />
-                        Alta Afinidad ({wines.filter(w => ((isNative ? cellarAffinityView(w, cellarProfile).current : w.matchrim_affinity) ?? -1) >= 70).length})
+                        Alta Afinidad ({wines.filter(w => isNative ? isHighCellarAffinity110(w, cellarProfile) : (w.matchrim_affinity ?? -1) >= 70).length})
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -1908,7 +1908,7 @@ const MyWinesForOwner = () => {
                       <Card key={wine.id} className="relative group">
                         {/* Wine Image */}
                         {wine.image_url && (
-                          <div className="w-full h-48 overflow-hidden rounded-t-lg bg-muted">
+                          <div className={isNative ? 'mx-auto mt-[12px] h-[144px] w-[88px] overflow-hidden bg-white' : 'w-full h-48 overflow-hidden rounded-t-lg bg-muted'}>
                             <img 
                               src={wine.image_url} 
                               alt={wine.name}

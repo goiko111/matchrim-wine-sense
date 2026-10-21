@@ -33,6 +33,7 @@ assert(!fs.existsSync(folder)); fs.mkdirSync(folder, { mode: 0o700 });
 const origin = 'http://127.0.0.1:4898';
 const owner = '00000000-0000-4000-8000-000000010201';
 const profile = { potente: 4, acidez: 3, dulce: 1, tanico: 3, afrutado: 4 };
+let activeProfile = profile;
 const user = { id: owner, aud: 'authenticated', role: 'authenticated', email: 'native102@example.invalid',
   app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: {}, created_at: '2026-10-21T00:00:00Z' };
 const jwt = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url') + '.'
@@ -65,7 +66,7 @@ try {
     if (url.pathname === '/auth/v1/user') return json(user);
     if (url.pathname.startsWith('/rest/v1/')) {
       const table = url.pathname.split('/').at(-1);
-      if (table === 'quiz_results') return json(url.searchParams.get('select')?.includes('id') ? [{ id: 'qa-quiz', ...profile }] : profile);
+      if (table === 'quiz_results') return json(url.searchParams.get('select')?.includes('id') ? [{ id: 'qa-quiz', ...activeProfile }] : activeProfile);
       if (table === 'user_wines') {
         if (request.method() === 'POST') {
           assert.equal(scenario, 'saved-NV-reference', 'Unexpected simulated write');
@@ -73,6 +74,7 @@ try {
           assert.equal(payload.place_details.winerim_public_catalogue.catalogue_vintage, null);
           assert.equal(payload.place_details.winerim_public_catalogue.bottle_identity.vintage, 2020);
           assert.equal(payload.sensory_attributes, null); assert.equal(payload.matchrim_affinity, null);
+          assert.equal(payload.place_details.matchrim_reference_style110.initial.score, report.initialReferenceStyle);
           savedWines = [{ ...payload, id: '00000000-0000-4000-8000-000000010701', created_at: '2026-10-21T19:00:00Z', updated_at: '2026-10-21T19:00:00Z', rating: null }];
           report.simulatedSave = { referenceId: payload.place_details.winerim_public_catalogue.id,
             vintage: payload.vintage, sensory: null, affinity: null, productionWrite: false };
@@ -154,6 +156,7 @@ try {
   for (const state of scenarios) {
     scenario = state;
     savedWines = [];
+    activeProfile = profile;
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto(origin + '/escanear/etiqueta', { waitUntil: 'networkidle' });
     const privacy = page.getByRole('checkbox', { name: 'He leído el aviso de privacidad del escáner' });
@@ -198,6 +201,7 @@ try {
     }
     if (state === 'saved-NV-reference') {
       await dialog.getByTestId('global-style-estimate').waitFor();
+      report.initialReferenceStyle = Number((await dialog.getByTestId('global-style-estimate').innerText()).match(/≈(\d+)\/100/)[1]);
       await dialog.getByRole('button', { name: 'Cerrar', exact: true }).click();
       await page.getByRole('button', { name: 'Confirmar 1 referencia', exact: true }).click();
       await page.getByRole('button', { name: 'Lote confirmado', exact: true }).waitFor();
@@ -207,11 +211,25 @@ try {
       const link = page.getByTestId('cellar-public-reference107'); await link.waitFor();
       assert.equal(await link.getAttribute('href'), `https://web.winerim.com/matchrim/store/${globalObserved.id}/${globalObserved.slugname}`);
       assert((await page.getByRole('dialog').innerText()).includes('Referencia sin añada'));
+      const style = page.getByTestId('cellar-reference-style110'); await style.waitFor();
+      assert((await style.innerText()).includes(`Al guardar: ≈${report.initialReferenceStyle}/100`));
       for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
         await page.setViewportSize({ width, height });
         await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
-        await link.scrollIntoViewIfNeeded(); await capture('saved-NV-fiche-' + width + '-' + text);
+        await style.scrollIntoViewIfNeeded(); await capture('saved-NV-fiche-' + width + '-' + text);
       }
+      await page.evaluate(() => { document.documentElement.style.fontSize = '100%'; document.documentElement.classList.remove('matchrim-accessibility-text'); });
+      await page.setViewportSize({ width: 393, height: 852 });
+      activeProfile = { potente: 0, acidez: 0, dulce: 0, tanico: 0, afrutado: 0 };
+      await page.reload({ waitUntil: 'networkidle' });
+      await page.getByTestId('native-cellar-item98').getByText('Vidure', { exact: true }).click();
+      const evolved = page.getByTestId('cellar-reference-style110'); await evolved.waitFor();
+      const current = Number((await evolved.innerText()).match(/≈(\d+)\/100/)[1]);
+      assert.notEqual(current, report.initialReferenceStyle, 'Current style follows the new profile');
+      assert((await evolved.innerText()).includes(`Al guardar: ≈${report.initialReferenceStyle}/100`));
+      assert.equal(savedWines[0].place_details.matchrim_reference_style110.initial.score, report.initialReferenceStyle);
+      report.styleProfileEvolution = { initial: report.initialReferenceStyle, current, syntheticProfiles: 2, serverHistoryUnchanged: true };
+      await evolved.scrollIntoViewIfNeeded(); await capture('saved-NV-style-profile-evolved');
       continue;
     }
     if (state === 'award-year-inline') {

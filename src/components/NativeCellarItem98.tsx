@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { BookOpen, ChevronRight, ThumbsDown, ThumbsUp, X } from 'lucide-react';
 import { readCellarPublicReference107 } from '@/utils/cellarPublicReference107';
+import { cellarReferenceStyleView110 } from '@/utils/cellarReferenceStyle110';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { cellarAffinityView, type CellarAffinityWine } from '@/utils/bodegaAffinity';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
@@ -21,12 +22,14 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
   if (!native) return <>{children}</>;
   const view = cellarAffinityView(wine, snapshot);
   const reference = readCellarPublicReference107(wine);
+  const style = view.current === null ? cellarReferenceStyleView110(wine, snapshot) : null;
+  const displayScore = view.current ?? style?.current ?? null;
   const rating = wine.rating === 'love' ? 'Te gusta' : wine.rating === 'not_for_me' ? 'No es para ti' : wine.rating === 'ok' ? 'Te pareció correcto' : null;
   return <>
     <button type="button" className="flex min-h-36 w-full min-w-0 items-center gap-4 border-b border-stone-200 py-4 text-left" aria-label={`Ver ${wine.name}`} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
       <NativeWinePhoto98 src={wine.image_url} ownedCapture name={wine.name} identity={{ name: wine.name, producer: wine.producer, vintage: wine.vintage }} resolveMissing={resolveImage || open} onResolved={url => setResolved({ key: identityKey, url })} className="h-[112px] w-[80px] border border-stone-200" />
       <span className="min-w-0 flex-1"><span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span><span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.producer, wine.vintage].filter(Boolean).join(' · ')}</span>
-        <span className={`mt-2 flex items-center gap-1 text-sm font-semibold ${wine.rating === 'not_for_me' ? 'text-stone-700' : rating || view.current !== null ? 'text-emerald-800' : 'text-stone-600'}`}>{wine.rating === 'love' && <ThumbsUp className="h-4 w-4" aria-hidden="true" />}{wine.rating === 'not_for_me' && <ThumbsDown className="h-4 w-4" aria-hidden="true" />}{rating || (view.current !== null ? `≈${view.current}/100 para ti` : 'Afinidad por calcular')}</span>
+        <span className={`mt-2 flex items-center gap-1 text-sm font-semibold ${wine.rating === 'not_for_me' ? 'text-stone-700' : wine.rating === 'love' || (displayScore ?? -1) >= 70 ? 'text-emerald-800' : 'text-stone-600'}`}>{wine.rating === 'love' && <ThumbsUp className="h-4 w-4" aria-hidden="true" />}{wine.rating === 'not_for_me' && <ThumbsDown className="h-4 w-4" aria-hidden="true" />}{rating || (view.current !== null ? `≈${view.current}/100 para ti` : style?.current != null ? `≈${style.current}/100 por estilo` : 'Afinidad por calcular')}</span>
         {wine.status === 'collection' && wine.quantity != null && <span className="mt-1 block text-xs text-stone-500">{wine.quantity} {wine.quantity === 1 ? 'botella' : 'botellas'}</span>}
       </span><ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
     </button>
@@ -41,7 +44,7 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
           </a>
           {reference.catalogue_vintage === null && <p className="text-xs leading-5 text-stone-600">Referencia sin añada. No confirma los datos sensoriales de tu botella.</p>}
         </div>}
-        {!wine.image_url && resolved?.key === identityKey && <NativeWinePhoto98 src={resolved.url} name={wine.name} className="mx-auto mt-4 h-48 w-32" />}
+        {!wine.image_url && resolved?.key === identityKey && <NativeWinePhoto98 src={resolved.url} name={wine.name} className="mx-auto mt-[12px] h-[144px] w-[88px]" />}
         {children}
       </div>
     </Dialog.Content></Dialog.Portal></Dialog.Root>

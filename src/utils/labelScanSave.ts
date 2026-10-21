@@ -2,6 +2,7 @@ import type { Json } from '@/integrations/supabase/types';
 import { confirmsWineMutation } from './matchrimWineMutation';
 import { confirmsCellarSaveEvidence } from './bodegaAffinity';
 import { confirmsCellarPublicReference107 } from './cellarPublicReference107';
+import { confirmsCellarReferenceStyle110 } from './cellarReferenceStyle110';
 
 export interface LabelSaveWine {
   nombre: string;
@@ -41,7 +42,9 @@ export const confirmedLabelInsertId = (data: unknown, wine: LabelSaveWine, owner
     status: 'wishlist',
     is_favorite: Boolean(wine.is_favorite),
     use_for_profile_training: false,
-  }) && confirmsCellarPublicReference107(data, { name: wine.nombre, producer: wine.productor || null,
+  }) && confirmsCellarReferenceStyle110(data, { name: wine.nombre, producer: wine.productor || null,
+    vintage: wine.anada ?? null, region: wine.region || null, country: wine.pais || null,
+    place_details: wine.affinity_details }) && confirmsCellarPublicReference107(data, { name: wine.nombre, producer: wine.productor || null,
     vintage: wine.anada ?? null, region: wine.region || null, country: wine.pais || null,
     place_details: wine.affinity_details }) && confirmsCellarSaveEvidence(data, { name: wine.nombre, producer: wine.productor || null,
     vintage: wine.anada ?? null, region: wine.region || null, country: wine.pais || null,
