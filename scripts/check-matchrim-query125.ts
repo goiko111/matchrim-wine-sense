@@ -4,7 +4,7 @@ import { globalRecoveryQueries104 as queries } from '../src/utils/globalWineProp
 const pending = 'Etiqueta por identificar';
 assert.deepEqual(queries(pending, ['Synthetic Estate', 'TROCKEN', 'Aurora', 'RHEINGAU']), ['Synthetic Estate', 'Aurora']);
 assert.deepEqual(queries(pending, ['DRY', 'HALBTROCKEN', 'FEINHERB']), []);
-assert.deepEqual(queries(pending, ['Synthetic Estate', 'Northern Valley', "'La Aurora'", '2020']), ['Synthetic Estate', 'La Aurora']);
+assert.deepEqual(queries(pending, ['Synthetic Estate', 'Northern Valley', "'La Aurora'", '2020']), ['Synthetic Estate', 'Northern Valley']);
 assert.deepEqual(queries(pending, ['"La Aurora"', 'Synthetic Estate']), ['La Aurora', 'Synthetic Estate']);
 assert.deepEqual(queries(pending, ['Synthetic Estate', 'Cuvee Second', '"a very long landscape description in quotation marks"']),
   ['Synthetic Estate', 'Cuvee Second'], 'Long quoted marketing copy must not consume the second slot');
@@ -14,5 +14,7 @@ assert.deepEqual(queries(pending, ['Synthetic Estate', 'Northern Valley', "'www.
   ['Synthetic Estate', 'Northern Valley'], 'Quoted URLs, dates and metadata cannot allocate a query');
 const evidence = Object.freeze(['Synthetic Estate', 'Northern Valley', "'La Aurora'"]);
 const before = [...evidence]; queries(pending, evidence); assert.deepEqual(evidence, before);
-console.log(JSON.stringify({ groups: 8, networkCalls: 0, models: 0,
+assert.deepEqual(queries(pending, ['Synthetic Estate', 'Aurora', '"Drink Responsibly"']), ['Synthetic Estate', 'Aurora']);
+assert.deepEqual(queries('"Sol"', ['"Sol"']), ['"Sol"'], 'Retain an existing short quoted name rather than dropping it after unquoting');
+console.log(JSON.stringify({ checks: 11, networkCalls: 0, models: 0,
   scope: 'Synthetic literal query allocation, not identity inference or measured recognition improvement.' }));

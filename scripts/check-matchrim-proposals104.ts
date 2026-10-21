@@ -113,8 +113,8 @@ await test('Queries prefer a complete observed word over redundant partial logo 
 });
 await test('A distinctive read cuvee outranks generic rows of the same producer at an equal evidence score', () => {
   const broad = [1, 2, 3].map(id => ({ ...vidure, id, name: ['Synthetic Estate Dry', 'Northern Valley Dry', 'Synthetic Estate Northern Valley Dry'][id - 1],
-    winery: 'Synthetic Estate', region: 'Northern Valley', grapes: undefined }));
-  const specific = { ...vidure, id: 99, name: 'Aurora Pinot Noir Rose Dry', winery: 'Synthetic Estate', region: 'Northern Valley', grapes: ['Pinot Noir'] };
+    winery: 'Synthetic Estate', region: 'Northern Valley', grapes: undefined, type: undefined }));
+  const specific = { ...vidure, id: 99, name: 'Aurora Pinot Noir Rose Dry', winery: 'Synthetic Estate', region: 'Northern Valley', grapes: ['Pinot Noir'], type: 'rosado' };
   const result = rankGlobalProposals104(['Synthetic Estate', 'DRY', 'AURORA', 'PINOT NOIR ROSE', 'NORTHERN VALLEY'], [...broad, specific]);
   assert.equal(result[0].row.id, 99); assert.equal(result.length, 3);
   assert.equal(result[0].score, 90); assert.equal(Object.hasOwn(result[0], 'affinity'), false);

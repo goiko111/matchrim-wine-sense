@@ -3,7 +3,7 @@ import { hasMissingVisibleQualifier102 } from './nativeWineQualifier102';
 import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 import { isNonWineIdentity } from './wineCategory';
 import { hasObservedAppellationConflict120 } from './nativeAppellation120';
-import { hasObservedGrapeConflict124 } from './nativeGrapeConflict124';
+import { hasObservedWineColorConflict124 } from './nativeWineColor124';
 
 const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
@@ -35,7 +35,7 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
     const name = fullName(row);
     if (isNonWineIdentity(name, row.type) || hasConflictingNativeVintage100({ name, vintage: row.vintage })
       || hasMissingVisibleQualifier102({ name, evidence }) || hasObservedAppellationConflict120(evidence, { name, region: row.region })
-      || hasObservedGrapeConflict124(evidence, row.grapes)) continue;
+      || hasObservedWineColorConflict124(evidence, row.type)) continue;
     const words = [...new Set(tokens(name).filter(word => word.length > 1 && word !== String(row.vintage) && !connectors.has(word)))];
     const qualifiers = evidence.map(fold).flatMap(line => line.match(/\b\d{1,2}\s+(?:meses|months)\b|\b(?:gran reserva|reserva especial|vieilles vignes|old vines|seleccion del sumiller)\b/g) || []);
     if (qualifiers.some(qualifier => !fold(name).includes(qualifier))) continue;
@@ -93,13 +93,11 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     && !metadataOnly(value)
     && tokens(value).some(word => word.length >= 3 && !generic.has(word) && !queryMetadata.has(word));
   if (manuallyEntered) return meaningful(queryName) ? [queryName] : [];
-  const quotedKeys = new Set<string>();
   const unquote = (value: string) => {
     const match = value.match(/^(['"])([^\r\n]{3,100})\1$/);
     if (!match || match[2].includes(match[1])) return value;
     const inner = match[2].trim(), words = tokens(inner);
-    if (words.length < 1 || words.length > 4) return value;
-    quotedKeys.add(words.join(' '));
+    if (inner.length < 4 || words.length < 1 || words.length > 4) return value;
     return inner;
   };
   const automaticName = unquote(queryName);
@@ -116,9 +114,5 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
   const bounded = literal.filter(([key]) => !literal.some(([other]) => other !== key && key.length >= 4
     && other.length <= key.length * 2 && !key.includes(' ') && !other.includes(' ') && other.includes(key)))
     .map(([, query]) => query);
-  const [first, ...rest] = bounded;
-  // Preserve the primary observed name. A short explicitly quoted name may use
-  // the second slot before generic unquoted label lines; evidence stays verbatim.
-  return first ? [first, ...rest.filter(query => quotedKeys.has(tokens(query).join(' '))),
-    ...rest.filter(query => !quotedKeys.has(tokens(query).join(' ')))].slice(0, 2) : [];
+  return bounded.slice(0, 2);
 };
