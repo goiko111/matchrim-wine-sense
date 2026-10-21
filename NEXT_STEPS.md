@@ -1,5 +1,13 @@
 # Matchrim next steps
 
+## Current Delta: 2026-10-21, Native Visual98
+
+1. Preserve clean ec13656/candidate98-r1 and portrait evidence. Home, wine detail and Mis vinos are implemented, not another conceptual redesign. TestFlight95 does not contain them. No more horizontal QA requested.
+2. Continue the next native-only block: reduce duplicate entry points in Escanear/aiRIM while preserving restaurant, multi-image/document and comparison workflows. Do not publish or redesign the web.
+3. Verify real authenticated save/reload/photo hydration and initial/current affinity on exact current Winerim fiches. Establish the accessible master search/detail contract before claiming all Mantalak200 wines are available; a Library subset miss is not nonexistence.
+4. Keep the previous20-label/50-paid-start/15EUR limit. No200-label paid expansion was approved; local OCR and visual fixtures are not real recognition or human-taste validation. Do not regenerate the preserved corpus or contaminate the real user's tastes with synthetic ratings.
+5. After applicable quality gates, prepare a signed production98-or-later archive, physical portrait camera/gallery/VoiceOver gate, then verify Apple processing before distribution. Never upload the isolated QA bundle or call the current unsigned simulator build TestFlight-ready.
+
 ## Active Delta: 2026-10-15, QA89 Implemented
 
 1. Preserve uploaded85, isolated candidate86 and all failed/intermediate evidence. Do not repeat the frozen200-image corpus or create another technical cohort as a substitute for human outcomes.

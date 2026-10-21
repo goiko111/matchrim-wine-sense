@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-21, Native Visual98 First Block Implemented
+
+- Product `ec13656`: bottle-first Home, shared native wine photo/affinity/detail/save, compact Mis vinos and owner-bound explicit-save draft. Original-fiche photo now survives strict verification and can fill a missing saved photo without replacing owner imagery. No identity/score/learning relaxation.
+- Existing release and consumer regressions PASS, current component49 / photo15 / draft7 / cellar-photo6 / inverse53 PASS; typecheck PASS, lint0errors/129warnings. Clean candidate98-r1 binds385source files and163resources to reviewed source. Unsigned isolated iOS98 build PASS; no signed98 archive or TestFlight upload.
+- Portrait browser9captures PASS with synthetic catalogue/users and four provided real bottle images, NOT recognition accuracy. UIKit anonymous Home/search/scanner/auth PASS; visual inspection caught MAX overflow despite automated PASS, corrected and rerun with brand/profile assertions. Actual VoiceOver speech, authenticated hosted saves and physical corrected-source QA remain separate.
+- Native-only source; public web not published, protected CSS/search-wines exact.0new model calls, image uploads, Lovable turns, deploys or phone operations. No paid-cap expansion, new accounts or ratings. The user's TestFlight95 does not include98. [Implementation, captures, failures and exact gates](docs/MATCHRIM_NATIVE_VISUAL_98_2026-10-21.md).
+
 ## Current Gate: 2026-10-21, Physical97 Resumed / Catalogue Scope Verified
 
 - Fresh human phone window used and released early. Current signed97-r12 (product24982d6,158 resources) installed without clearing data. App-free startup PASS; actual Inicio/Bodega/Escanear navigation, two QA wines and read-only Vivino home observed. This supersedes the historical blanket automation blocker, not the incomplete full physical QA gate.
