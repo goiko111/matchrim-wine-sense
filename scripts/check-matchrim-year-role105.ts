@@ -99,4 +99,23 @@ await test('Foundation clauses and multiple award dates cannot leave an unrelate
   for (const year of [2025, 2026]) assert(nonVintageYear105(year, ['2025 Gold Medal 2026 Gold Medal']));
   assert.equal(nonVintageYear105(2020, ['Gold Medal 2025 Cosecha 2020']), null);
 });
+await test('Clearly labelled Italian/French/English foundation years cannot become vintages', () => {
+  for (const text of ['Fondata nel 1919', 'Fondato nel 1919', 'Fondée en 1919', 'Founded in 1919', 'Established in 1919', 'Seit 1919'])
+    assert.equal(role(text), 'foundation', text);
+});
+await test('Future OCR years fail before any catalogue request even when labelled as vintage', async () => {
+  const future = new Date().getUTCFullYear() + 20;
+  assert.equal(role(`Cosecha ${future}`), 'unsupported');
+  assert.equal(nonVintageYear105(future, [])?.role, 'unsupported');
+  assert.equal(normalizeNativeYear105({ ...candidate, vintage: future, evidence: [`Cosecha ${future}`] }).vintage, null);
+  let calls = 0;
+  const result = await createGlobalCatalogue103(async () => { calls++; throw Error('NO_NETWORK'); })
+    .lookup({ ...candidate, vintage: future, evidence: [] });
+  assert.equal(result.status, 'identity-required'); assert.equal(calls, 0);
+});
+await test('Year-occurrence overflow fails closed before a capped observation can certify identity', () => {
+  const evidence = [Array(8).fill('2018').join(' ') + ' 2019'];
+  assert.equal(wineYearRoles105(evidence.map(text => ({ text }))).supported, false);
+  assert.equal(nonVintageYear105(2018, evidence)?.role, 'unsupported');
+});
 console.log(JSON.stringify({ groups, networkCalls: 0, modelStarts: 0, verifiedVintagesCreated: 0 }));

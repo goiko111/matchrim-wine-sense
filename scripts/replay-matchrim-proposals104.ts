@@ -37,7 +37,7 @@ for (const scene of progress.rows) {
   const inspectedYears = wineYearRoles105(ocr.lines.map((line: { text: string; box?: { bottomLeft?: YearLine105['box'] } }) => ({ text: line.text, box: line.box?.bottomLeft })));
   assert.equal(inspectedYears.supported, true, 'Unsupported year evidence must not silently enable ranking');
   const yearRoles = inspectedYears.roles;
-  const excluded = new Set(yearRoles.filter(role => ['award', 'foundation', 'ambiguous'].includes(role.role)).map(role => String(role.year)));
+  const excluded = new Set(yearRoles.filter(role => ['award', 'foundation', 'ambiguous', 'unsupported'].includes(role.role)).map(role => String(role.year)));
   const possibleYears = years.filter(year => !excluded.has(year));
   const rows: PublicGlobalRow103[] = [];
   for (const query of scene.queries) rows.push(...(await client.search(query.query, undefined, true)).rows);

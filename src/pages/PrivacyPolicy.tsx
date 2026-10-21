@@ -91,7 +91,7 @@ const PrivacyPolicy = () => {
           <ShieldCheck className="h-6 w-6" />
         </div>
         <p className="text-sm font-semibold uppercase tracking-wide text-white/60">
-          {isNative ? 'Ultima actualizacion: 20 de octubre de 2026' : 'Ultima actualizacion: 26 de agosto de 2026'}
+          {isNative ? 'Ultima actualizacion: 21 de octubre de 2026' : 'Ultima actualizacion: 26 de agosto de 2026'}
         </p>
         <h1 className="mt-3 text-3xl font-bold">Politica de privacidad</h1>
         <p className="mt-4 max-w-3xl text-sm leading-6 text-white/80">

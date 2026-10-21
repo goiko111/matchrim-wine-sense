@@ -10,10 +10,10 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
-const localOCR = scenarios.includes('local-ocr106') ? JSON.parse(fs.readFileSync('qa-artifacts/night105-20261021/native-ocr106-r3/OCR.json')).results.find(row => row.file === 'img-061.jpg').response.data : null;
+const localOCR = scenarios.some(state => ['local-ocr106', 'local-first109'].includes(state)) ? JSON.parse(fs.readFileSync('qa-artifacts/night105-20261021/native-ocr106-r3/OCR.json')).results.find(row => row.file === 'img-061.jpg').response.data : null;
 const localRequest = localOCR && JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/REQUESTS.json')).find(row => new URL(row.url).searchParams.get('text') === 'BIOGRAFO');
 const localRows = localRequest ? JSON.parse(fs.readFileSync(path.join('qa-artifacts/global103-20261021/ocr200-r1', localRequest.body))).results : [];
 let scenario = 'observed-NV-reference';
@@ -97,7 +97,7 @@ try {
       confidence: .95, source: 'label', evidence: scenario === 'assisted-missing-producer' ? ['VIDURE', '2020'] : fixture.ocrLines, inferred_fields: [], uncertainty_reasons: [] }] });
     if (url.hostname === 'app.winerim.com' && url.pathname.startsWith('/images/wines/')) return route.fulfill({ body: fs.readFileSync('qa-artifacts/global103-20261021/vidure-public-photo.png'), contentType: 'image/png' });
     if (url.hostname === 'app.winerim.com' && url.pathname.includes('/00000000-0000-0000-0000-000000000001/wines')) {
-      if (scenario === 'local-ocr106') {
+      if (scenario === 'local-ocr106' || scenario === 'local-first109') {
         assert(url.searchParams.has('text'), 'Local OCR visual scenario does not fabricate independent detail');
         return json({ count: localRows.length, page: 1, results: localRows.map(row => ({ ...row, photo: null })) });
       }
@@ -161,27 +161,38 @@ try {
       await privacy.check();
       await page.getByRole('button', { name: 'Entiendo y continuar', exact: true }).click();
     }
-    const activeImage = state === 'award-year-inline' || state === 'local-ocr106' ? path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared', state === 'local-ocr106' ? 'img-061.jpg' : 'img-184.jpg') : image;
+    if (state === 'local-first109') await page.getByRole('button', { name: 'Una etiqueta', exact: true }).click();
+    const activeImage = ['award-year-inline', 'local-ocr106', 'local-first109'].includes(state) ? path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared', state === 'award-year-inline' ? 'img-184.jpg' : 'img-061.jpg') : image;
     report.imageInputs.push({ scenario: state, path: activeImage, sha256: sha(fs.readFileSync(activeImage)) });
     await page.locator('input[type=file]').nth(1).setInputFiles(activeImage);
-    await page.getByRole('button', { name: 'Revisar vinos', exact: true }).waitFor({ timeout: 20000 });
-    await page.getByRole('button', { name: 'Revisar vinos', exact: true }).click();
+    if (state !== 'local-first109') {
+      await page.getByRole('button', { name: 'Revisar vinos', exact: true }).waitFor({ timeout: 20000 });
+      await page.getByRole('button', { name: 'Revisar vinos', exact: true }).click();
+    }
     await page.getByRole('dialog').waitFor();
     await page.waitForFunction(() => { const el = document.querySelector('[role=dialog]'); return el && Math.abs(new DOMMatrixReadOnly(getComputedStyle(el).transform).m42) < 1; });
     const dialog = page.getByRole('dialog');
-    if (state === 'local-ocr106') {
+    if (state === 'local-ocr106' || state === 'local-first109') {
       const recovery = dialog.getByTestId('global-recovery104');
-      const read = recovery.getByRole('button', { name: 'Releer recorte en este iPhone', exact: true }); await read.waitFor();
-      await read.click();
+      if (state === 'local-ocr106') {
+        const read = recovery.getByRole('button', { name: 'Releer recorte en este iPhone', exact: true }); await read.waitFor();
+        await read.click();
+      }
       await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).waitFor();
       assert.match(await recovery.innerText(), /Biógrafo del Vino/i);
       assert.equal(await page.evaluate(() => window.__localOCRCalls106), 1);
       assert.equal(await dialog.getByTestId('global-wine-reference').count(), 0, 'No automatic identity from local OCR');
+      if (state === 'local-first109') {
+        assert.equal(report.requests.filter(row => row.path.startsWith('/functions/v1/')).length, 0, 'No cloud analysis function may be dispatched by explicit local mode');
+        assert((await dialog.getByRole('heading', { level: 2 }).innerText()).includes('Etiqueta por identificar'));
+        report.localFirst109 = { noCloudFunctions: true, automaticCanonicalIdentity: false, userSelectedOneLabel: true };
+      }
       report.localOCRScope = 'Replays actual simulator106 whole-image OCR for img061 through emulated Capacitor nativePromise into the crop recovery UI. Not live WebView-to-Vision E2E or independent crop OCR; no independent detail fabricated.';
       for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
         await page.setViewportSize({ width, height });
         await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
-        await recovery.scrollIntoViewIfNeeded(); await capture('local-ocr-proposals-' + width + '-' + text);
+        await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).first().scrollIntoViewIfNeeded();
+        await capture((state === 'local-first109' ? 'local-first109' : 'local-ocr-proposals') + '-' + width + '-' + text);
       }
       continue;
     }

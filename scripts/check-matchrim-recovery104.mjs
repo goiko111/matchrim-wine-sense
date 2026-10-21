@@ -33,7 +33,7 @@ function host(client, input = candidate, local = null) {
         } },
       };
       if (name.endsWith('/button')) return { Button: 'button' };
-      if (name === 'lucide-react') return Object.fromEntries(['BookOpen', 'Check', 'Loader2', 'Smartphone', 'X'].map(k => [k, k]));
+      if (name === 'lucide-react') return Object.fromEntries(['BookOpen', 'Check', 'Loader2', 'Search', 'Smartphone', 'X'].map(k => [k, k]));
       if (name.endsWith('/nativeOCR106')) return { localOCRAvailable106: () => Boolean(local), readLocalWineText106: local };
       if (name.endsWith('/wineYearRole105')) return { wineYearRoles105 };
       if (name.endsWith('/localOCRFragments108')) return { suggestLocalOCRFragments108 };
@@ -178,5 +178,48 @@ await test('Geometry-supported fragments are explicit suggestions, never a silen
   assert(text(h.render()).includes('Se han unido fragmentos de texto cercanos'));
   assert(text(h.render()).includes('Confirmar esta referencia')); assert.equal(h.confirmations.length, 0);
   assert(queries.includes('GALIZEUS')); h.unmount();
+});
+await test('Completed searches put candidates before collapsed search actions, with a focusable results heading', async () => {
+  const h = host({ search: async () => ({ rows: [row], status: 'complete' }) });
+  h.button('Encontrar mi vino en Winerim').onClick(); await tick();
+  const nodes = walk(h.render());
+  const confirm = nodes.findIndex(node => node.type === 'button' && text(node).trim() === 'Confirmar esta referencia');
+  const search = nodes.findIndex(node => node.type === 'button' && text(node).trim() === 'Encontrar mi vino en Winerim');
+  assert(confirm >= 0 && search > confirm);
+  const heading = nodes.find(node => node.type === 'h3' && text(node) === 'Propuestas de Winerim');
+  assert.equal(heading.props.tabIndex, -1);
+  const details = nodes.find(node => node.type === 'details'); assert(details); assert(!details.props.open);
+  assert(text(details).includes('Buscar de nuevo')); h.unmount();
+});
+await test('Explicit local-first intent searches already-read text once, never rereads or automatically confirms identity', async () => {
+  let calls = 0;
+  const h = host({ search: async () => { calls++; return { rows: [row], status: 'complete' }; },
+    lookup: () => { throw Error('No automatic identity lookup from local text'); } }, { ...candidate, name: 'Etiqueta por identificar', producer: null, vintage: null });
+  h.props.reading = { lines: [{ text: 'VIDURE', confidence: 1, box: { x: .1, y: .1, width: .6, height: .1 } }] };
+  h.render(); await tick(); assert.equal(calls, 0, 'Stored reading alone is not search consent');
+  h.props.autoSearch = true; h.render(); await tick(); h.render(); await tick();
+  assert.equal(calls, 1); assert.equal(h.confirmations.length, 0);
+  assert(text(h.render()).includes('Confirmar esta referencia')); h.unmount();
+});
+await test('Year-occurrence overflow cannot silently become a vintage during recovery', async () => {
+  let calls = 0;
+  const h = host({ search: async () => { calls++; return { rows: [row], status: 'complete' }; } }, { ...candidate, vintage: 2018 });
+  h.props.reading = { lines: [{ text: 'VIDURE', confidence: 1, box: { x: .1, y: .1, width: .5, height: .1 } },
+    { text: Array(8).fill('2018').join(' ') + ' 2019', confidence: 1, box: { x: .1, y: .5, width: .5, height: .1 } }] };
+  h.button('Encontrar mi vino en Winerim').onClick(); await tick();
+  assert.equal(calls, 0); assert.equal(h.confirmations.length, 0);
+  assert(text(h.render()).includes('No se ha podido revisar la fecha')); h.unmount();
+});
+await test('Searching again retains the latest explicit reread instead of restoring older reading props', async () => {
+  let confirmed;
+  const line = text => ({ text, confidence: 1, box: { x: .1, y: .1, width: .5, height: .1 } });
+  const h = host({ search: async () => ({ rows: [row], status: 'complete' }), confirmSelection: async input => { confirmed = input; return { wine: row }; } },
+    { ...candidate, vintage: null }, async () => ({ lines: [line('VIDURE'), line('Cosecha 2020')] }));
+  h.props.reading = { lines: [line('VIDURE'), line('Cosecha 2018')] };
+  h.button('Encontrar mi vino en Winerim').onClick(); await tick();
+  h.button('Releer recorte en este iPhone').onClick(); await tick();
+  h.button('Encontrar mi vino en Winerim').onClick(); await tick();
+  h.button('Confirmar esta referencia').onClick(); await tick();
+  assert.equal(confirmed.vintage, 2020); assert.equal(h.props.reading.lines[1].text, 'Cosecha 2018'); h.unmount();
 });
 console.log(JSON.stringify({ groups, source: 'Actual TSX handlers with isolated hooks/transport; not browser layout or native QA', liveCalls: 0, modelStarts: 0 }));

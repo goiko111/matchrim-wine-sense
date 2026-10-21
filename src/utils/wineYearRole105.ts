@@ -6,7 +6,7 @@ const fold = (text: string) => text.normalize('NFD').replace(/[\u0300-\u036f]/g,
 const hasAward = (text: string) => /\b(?:medalla|medaille|medal|concours|competition|awards?|premio|trophy)\b/.test(text)
   || (/\b(?:lyon|decanter|iwsc|iwc|bruxelles|mundus vini)\b/.test(text) && /\b(?:gold|silver|bronze|oro|or|argent)\b/.test(text));
 const explicitVintage = (text: string, year: number) => new RegExp(`(?:vintage|cosecha|anada|millesime|vendimia|harvest)\\s*[:.-]?\\s*${year}\\b|\\b${year}\\s*(?:vintage|cosecha|anada|millesime|vendimia|harvest)\\b`).test(text);
-const explicitFoundation = (text: string, year: number) => new RegExp(`\\b(?:since|desde|depuis|founded|established|fundad[ao]|fundacion|est\\.)\\s*(?:en\\s*)?${year}\\b`).test(text);
+const explicitFoundation = (text: string, year: number) => new RegExp(`\\b(?:since|desde|depuis|seit|founded|established|fundad[ao]|fundacion|fondat[ao]|fondee?|est\\.)\\s*(?:(?:en|in|nel|em)\\s*)?${year}\\b`).test(text);
 const inlineAward = (text: string, year: number): 'award' | 'ambiguous' | null => {
   let uncertain = false;
   for (const clause of text.split(/[.;,\n]/)) {
@@ -37,7 +37,8 @@ const close = (a: YearLine105, b: YearLine105) => {
 // Regions only: a medal on a neighbouring bottle must not classify this label.
 // Without geometry, only explicit context within the same fragment is used.
 export const wineYearRoles105 = (lines: readonly YearLine105[]): { supported: boolean; roles: YearRole105[] } => {
-  if (!Array.isArray(lines) || lines.length > 100 || lines.some(line => typeof line?.text !== 'string' || line.text.length > 1000)) return { supported: false, roles: [] };
+  if (!Array.isArray(lines) || lines.length > 100 || lines.some(line => typeof line?.text !== 'string' || line.text.length > 1000
+    || (line.text.match(/\b(?:19|20)\d{2}\b/g)?.length ?? 0) > 8)) return { supported: false, roles: [] };
   const observations = new Map<number, { roles: Set<YearRole105['role']>; evidence: Set<string> }>();
   for (const line of lines) {
     const matches = [...line.text.matchAll(/\b(?:19|20)\d{2}\b/g)].slice(0, 8);
@@ -54,10 +55,13 @@ export const wineYearRoles105 = (lines: readonly YearLine105[]): { supported: bo
       const inlineRole = inlineAward(inline, year);
       const award = inlineRole === 'award' || (spatialAward && contextYears.size === 1);
       const current = observations.get(year) || { roles: new Set<YearRole105['role']>(), evidence: new Set<string>() };
-      if (vintage) current.roles.add('vintage');
-      if (foundation) current.roles.add('foundation');
-      if (award) current.roles.add('award');
-      if (inlineRole === 'ambiguous' || (spatialAward && contextYears.size > 1)) current.roles.add('ambiguous');
+      if (year > new Date().getUTCFullYear()) current.roles.add('unsupported');
+      else {
+        if (vintage) current.roles.add('vintage');
+        if (foundation) current.roles.add('foundation');
+        if (award) current.roles.add('award');
+        if (inlineRole === 'ambiguous' || (spatialAward && contextYears.size > 1)) current.roles.add('ambiguous');
+      }
       for (const value of neighbours) current.evidence.add(value.text);
       observations.set(year, current);
     }
@@ -70,15 +74,16 @@ export const nonVintageYear105 = (year: number | string | null | undefined, evid
   const parsed = wineYearRoles105(evidence.map(text => ({ text })));
   if (!parsed.supported) return { year: Number(year || 0), role: 'unsupported' as const, evidence: [] };
   if (year == null) return null;
+  if (Number(year) > new Date().getUTCFullYear()) return { year: Number(year), role: 'unsupported' as const, evidence: [] };
   return parsed.roles.find(value => value.year === Number(year)
-    && (value.role === 'award' || value.role === 'foundation' || value.role === 'ambiguous')) || null;
+    && (value.role === 'award' || value.role === 'foundation' || value.role === 'ambiguous' || value.role === 'unsupported')) || null;
 };
 
 export const normalizeNativeYear105 = (candidate: WineCandidate): WineCandidate => {
   if (candidate.source === 'manual') return candidate;
   const role = nonVintageYear105(candidate.vintage, candidate.evidence);
   if (!role) return candidate;
-  const reason = role.role === 'unsupported' ? 'El contexto de la lectura supera los limites admitidos; revisa la cosecha.'
+  const reason = role.role === 'unsupported' ? 'La fecha o el contexto de la lectura no es valido; revisa la cosecha.'
     : role.role === 'award' ? `La fecha ${role.year} aparece vinculada a un premio; la cosecha sigue sin confirmar.`
     : role.role === 'foundation' ? `La fecha ${role.year} indica el origen de la bodega; la cosecha sigue sin confirmar.`
       : `La fecha ${role.year} tiene usos contradictorios en la lectura; revisa la cosecha.`;

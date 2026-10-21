@@ -10,6 +10,11 @@ export function restoreNativePolicy97(file, source) {
     assert.equal(source.split(nativeMain).length, 2, 'One exact native legal safe-area amendment');
     source = source.replace(nativeMain, 'className="mx-auto max-w-4xl px-4 py-10"');
   }
+  const localDate = "{isNative ? 'Ultima actualizacion: 21 de octubre de 2026' : 'Ultima actualizacion: 26 de agosto de 2026'}";
+  if (source.includes(localDate)) {
+    assert.equal(source.split(localDate).length, 2, 'One exact native local-mode notice date');
+    source = source.replace(localDate, "{isNative ? 'Ultima actualizacion: 20 de octubre de 2026' : 'Ultima actualizacion: 26 de agosto de 2026'}");
+  }
   assert.equal(digest(source), '937e2f6f1ac14a780130ebef2f05b332bcd4ac62ac419aa0d2f5aba70df0ed87', 'Exact native provider policy97 input');
   const edits = [
     ["import { Capacitor } from '@capacitor/core';\n", ''],

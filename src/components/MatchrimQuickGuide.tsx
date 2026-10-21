@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { ArrowLeft, ArrowRight, Check, CircleHelp, MessageCircleMore, ScanLine, Wine } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -80,7 +81,7 @@ export default function MatchrimQuickGuide({ existing, ownerId = null, ready = t
           </div>}
           {step === 2 && <div className="space-y-2 border-l-2 border-emerald-600 pl-3 text-sm leading-6 text-slate-700"><Wine className="h-5 w-5" /><p>Tu gusto es opcional: puedes reconocer vinos antes de hacer el test. El porcentaje de afinidad no es una probabilidad de que te guste.</p></div>}
           {step === 3 && <p className="border-l-2 border-emerald-600 pl-3 text-sm leading-6 text-slate-700">Un vino guardado sin valoración no enseña al perfil. Las valoraciones con datos sensoriales incompletos tampoco bastan para calcular afinidad.</p>}
-          {step === 4 && <div className="flex items-start gap-3 border-l-2 border-amber-500 pl-3 text-sm leading-6 text-slate-700"><ScanLine className="mt-1 h-5 w-5 shrink-0" /><p>Antes de analizar, el escáner pide consentimiento para enviar la foto y sus recortes. Si cancelas o falla la conexión, puedes reintentar cuando estés listo.</p></div>}
+          {step === 4 && <div className="flex items-start gap-3 border-l-2 border-amber-500 pl-3 text-sm leading-6 text-slate-700"><ScanLine className="mt-1 h-5 w-5 shrink-0" /><p>{Capacitor.isNativePlatform() ? 'El análisis con IA envía la foto y sus recortes. El modo local Una etiqueta mantiene la foto en el iPhone y busca solo el texto en Winerim. Puedes cancelar o reintentar.' : 'Antes de analizar, el escáner pide consentimiento para enviar la foto y sus recortes. Si cancelas o falla la conexión, puedes reintentar cuando estés listo.'}</p></div>}
           {step === 5 && <div className="flex items-start gap-3 border-l-2 border-red-800 pl-3 text-sm leading-6 text-slate-700"><MessageCircleMore className="mt-1 h-5 w-5 shrink-0" /><p>Si aún no tienes vinos, empieza con una etiqueta o una carta. Revisa la identificación antes de guardar tu primera selección.</p></div>}
           </div>
           <div className="matchrim-guide-footer shrink-0 space-y-3 border-t border-slate-200 pt-3">

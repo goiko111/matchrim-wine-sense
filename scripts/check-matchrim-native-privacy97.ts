@@ -70,6 +70,11 @@ check('Native new acknowledgement persists only after explicit checkbox true', (
   assert.deepEqual(h.writes, [[NATIVE_SCAN_PRIVACY_KEY97, 'accepted']]); assert.equal(text(h.tree()), 'Scanner child');
   assert.equal(h.storage.has('matchrim.scan_privacy_notice.v2'), false);
 });
+check('Older native provider-only acknowledgement does not silently accept the local-mode notice', () => {
+  const h = host(source, true, { 'matchrim.scan_privacy_notice.openai.v3': 'accepted' });
+  assert.equal(h.tree().type, 'section'); assert.equal(h.action().props.disabled, true);
+  assert(text(h.tree()).includes('Apple Vision')); assert(text(h.tree()).includes('la foto no se envía'));
+});
 check('Previously accepted native v3 and denied storage fail safely', () => {
   assert.equal(text(host(source, true, { [NATIVE_SCAN_PRIVACY_KEY97]: 'accepted' }).tree()), 'Scanner child');
   assert.equal(host(source, true, {}, true).tree().type, 'section');
@@ -105,7 +110,7 @@ check('Full policy web render tree is exact; native render names the active prov
   assert.deepEqual(JSON.parse(JSON.stringify(render(current, false))), JSON.parse(JSON.stringify(render(prior, false))));
   const nativeText = text(render(current, true));
   assert(nativeText.includes('OpenAI')); assert(!nativeText.includes('Gemini'));
-  assert(nativeText.includes('20 de octubre de 2026'));
+  assert(nativeText.includes('21 de octubre de 2026'));
 });
 check('Native legal safe areas preserve the whole legacy policy and reject unrelated edits', () => {
   const policyFile = 'src/pages/PrivacyPolicy.tsx';
