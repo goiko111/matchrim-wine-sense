@@ -114,7 +114,9 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
       const photo = safeWineImageUrl98(proposal.row.photo);
       return <li key={proposal.row.id} className="min-w-0 space-y-2 py-3 [overflow-wrap:anywhere]">
         <div className="flex min-w-0 items-start gap-3">{photo && <img src={photo} alt={`Propuesta de catálogo: ${proposal.name}`} className="h-24 w-14 shrink-0 object-contain" referrerPolicy="no-referrer" loading="lazy" />}
-          <div className="min-w-0"><p className="font-semibold">{proposal.name}</p><p className="text-sm">{proposal.row.winery} · {proposal.row.vintage || 'Ficha sin añada'}</p></div>
+          <div className="min-w-0"><p className="font-semibold">{proposal.name}</p><p className="text-sm">{proposal.row.winery} · {proposal.row.vintage || 'Ficha sin añada'}</p>
+            {(proposal.row.type || proposal.row.region) && <p className="text-sm text-stone-600">{[proposal.row.type, proposal.row.region].filter(Boolean).join(' · ')}</p>}
+          </div>
         </div>
         {proposal.missingProducer && <p className="text-sm text-stone-700">Comprueba la bodega: no se lee completa en tu foto.</p>}
         {proposal.readingCorrections.length > 0 && <p className="text-sm text-stone-700">La lectura de la uva puede contener una errata. Comprueba que coincide con la etiqueta antes de confirmar.</p>}

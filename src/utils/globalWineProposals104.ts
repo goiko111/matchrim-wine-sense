@@ -2,6 +2,7 @@ import type { PublicGlobalRow103 } from './nativeGlobalCatalogue103';
 import { hasMissingVisibleQualifier102 } from './nativeWineQualifier102';
 import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 import { isNonWineIdentity } from './wineCategory';
+import { hasObservedAppellationConflict120 } from './nativeAppellation120';
 
 const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
@@ -27,7 +28,7 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
   for (const row of rows.slice(0, 120)) {
     const name = fullName(row);
     if (isNonWineIdentity(name, row.type) || hasConflictingNativeVintage100({ name, vintage: row.vintage })
-      || hasMissingVisibleQualifier102({ name, evidence })) continue;
+      || hasMissingVisibleQualifier102({ name, evidence }) || hasObservedAppellationConflict120(evidence, { name, region: row.region })) continue;
     const words = [...new Set(tokens(name).filter(word => word.length > 1 && word !== String(row.vintage) && !connectors.has(word)))];
     const qualifiers = evidence.map(fold).flatMap(line => line.match(/\b\d{1,2}\s+(?:meses|months)\b|\b(?:gran reserva|reserva especial|vieilles vignes|old vines|seleccion del sumiller)\b/g) || []);
     if (qualifiers.some(qualifier => !fold(name).includes(qualifier))) continue;
